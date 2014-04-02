@@ -21,7 +21,9 @@
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\osinterface.h" />
+    <ClInclude Include="..\src\peep.h" />
     <ClInclude Include="..\src\rct2.h" />
+    <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\strings.h" />
     <ClInclude Include="..\src\title.h" />
     <ClInclude Include="..\src\window.h" />
@@ -33,6 +35,7 @@
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\osinterface.c" />
+    <ClCompile Include="..\src\peep.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\window.c" />

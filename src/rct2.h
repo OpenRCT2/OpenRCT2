@@ -32,4 +32,12 @@ typedef unsigned long long uint64;
 
 void rct2_finish();
 
+enum {
+	SCREEN_FLAGS_PLAYING = 0,
+	SCREEN_FLAGS_TITLE_DEMO = 1,
+	SCREEN_FLAGS_SCENARIO_EDITOR = 2,
+	SCREEN_FLAGS_TRACK_DESIGNER = 4,
+	SCREEN_FLAGS_TRACK_MANAGER = 8,
+};
+
 #endif

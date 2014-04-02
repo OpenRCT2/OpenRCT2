@@ -48,6 +48,12 @@
     <ClInclude Include="..\src\strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\peep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -72,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gfx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\peep.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

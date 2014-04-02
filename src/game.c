@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "rct2.h"
 #include "game.h"
+#include "peep.h"
 #include "window.h"
 
 void game_update()
@@ -112,7 +113,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
 	RCT2_CALLPROC_EBPSAFE(0x006A876D);
 
-	RCT2_CALLPROC_EBPSAFE(0x0068F0A9); // peep_update_all()
+	peep_update_all();
 
 	// update ride
 	RCT2_CALLPROC_EBPSAFE(0x006D4204);
