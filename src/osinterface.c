@@ -42,6 +42,7 @@ static SDL_Window *_window;
 static SDL_Surface *_surface;
 static SDL_Palette *_palette;
 
+static int _screenBufferSize;
 static void *_screenBuffer;
 
 void osinterface_init()
@@ -94,6 +95,8 @@ static void osinterface_create_window()
 static void osinterface_resize(int width, int height)
 {
 	rct_drawpixelinfo *screenDPI;
+	int newScreenBufferSize;
+	void *newScreenBuffer;
 
 	if (_surface != NULL)
 		SDL_FreeSurface(_surface);
@@ -105,11 +108,19 @@ static void osinterface_resize(int width, int height)
 
 	SDL_SetSurfacePalette(_surface, _palette);
 
-	if (_screenBuffer != NULL)
+	newScreenBufferSize = _surface->pitch * _surface->h;
+	newScreenBuffer = malloc(newScreenBufferSize);
+	if (_screenBuffer == NULL) {
+		memset(newScreenBuffer, 0, newScreenBufferSize);
+	} else {
+		memcpy(newScreenBuffer, _screenBuffer, _screenBufferSize);
+		if (newScreenBufferSize - _screenBufferSize > 0)
+			memset((uint8*)newScreenBuffer + _screenBufferSize, 0, newScreenBufferSize - _screenBufferSize);
 		free(_screenBuffer);
+	}
 
-	_screenBuffer = malloc(_surface->pitch * _surface->h);
-	memset(_screenBuffer, 0, _surface->pitch * _surface->h);
+	_screenBuffer = newScreenBuffer;
+	_screenBufferSize = newScreenBufferSize;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) = width;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) = height;
