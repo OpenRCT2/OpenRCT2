@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "rct2.h"
 #include "game.h"
+#include "window.h"
 
 void game_update()
 {
@@ -133,7 +134,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);
 
 	// Update windows
-	RCT2_CALLPROC_EBPSAFE(0x006ED7B0); // window_update_all()
+	window_update_all();
 
 	if (RCT2_GLOBAL(0x009AC31B, uint8) != 0) {
 		_bx = 3010;

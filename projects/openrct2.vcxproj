@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build0;Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="Build0">
     <Copy SourceFiles="..\openrct2.exe" DestinationFolder="$(OutDir)" />
-	<Copy SourceFiles="..\SDL2.dll" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\SDL2.dll" DestinationFolder="$(OutDir)" />
   </Target>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,6 +21,7 @@
     <ClInclude Include="..\src\osinterface.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\title.h" />
+    <ClInclude Include="..\src\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c" />
@@ -28,6 +29,7 @@
     <ClCompile Include="..\src\osinterface.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\title.c" />
+    <ClCompile Include="..\src\window.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
@@ -81,7 +83,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-	  <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
