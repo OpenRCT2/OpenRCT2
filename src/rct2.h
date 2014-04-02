@@ -30,17 +30,6 @@ typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 
-typedef struct {
-	char* bits;			// 0x00
-	short x;			// 0x04
-	short y;			// 0x06
-	short width;		// 0x08
-	short height;		// 0x0A
-	short pitch;		// 0x0C
-	char pad_0E;		// 0x0E
-	char var_0F;		// 0x0F
-} rct_drawpixelinfo;
-
 void rct2_finish();
 
 #endif

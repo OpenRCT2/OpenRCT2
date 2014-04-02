@@ -25,10 +25,11 @@
 #include <windows.h>
 #include <SDL.h>
 #include "addresses.h"
-#include "rct2.h"
-#include "osinterface.h"
-#include "intro.h"
 #include "game.h"
+#include "gfx.h"
+#include "intro.h"
+#include "osinterface.h"
+#include "rct2.h"
 #include "title.h"
 
 void rct2_init_directories();
@@ -126,8 +127,8 @@ void rct2_init()
 
 	RCT2_CALLPROC_EBPSAFE(0x0068E8DA); // screen_title_load();
 
-	// gfx_clear(screen_dpi, 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 0;
+	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 8;
 }
 
 // rct2: 0x00683499
