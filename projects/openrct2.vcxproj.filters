@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{611458dc-7dd2-4c37-af0f-306cf9d85fb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\addresses.h">
@@ -54,6 +57,18 @@
     <ClInclude Include="..\src\sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\news_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sprites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -82,6 +97,24 @@
     </ClCompile>
     <ClCompile Include="..\src\peep.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\news_item.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\viewport.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_main.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_title_menu.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_title_logo.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_title_exit.c">
+      <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

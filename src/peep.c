@@ -24,9 +24,9 @@
 #include "sprite.h"
 
 /**
-*
-*  rct2: 0x0068F0A9
-*/
+ *
+ *  rct2: 0x0068F0A9
+ */
 void peep_update_all()
 {
 	int i;

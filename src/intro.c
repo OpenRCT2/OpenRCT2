@@ -277,9 +277,9 @@ static void screen_intro_process_mouse_input()
 }
 
 /**
-*
-*  rct2: 0x006E3AEC
-*/
+ *
+ *  rct2: 0x006E3AEC
+ */
 static void screen_intro_process_keyboard_input()
 {
 	if (gLastKeyPressed != 0)

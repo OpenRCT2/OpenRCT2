@@ -113,7 +113,7 @@ static void osinterface_resize(int width, int height)
 	if (_screenBuffer == NULL) {
 		memset(newScreenBuffer, 0, newScreenBufferSize);
 	} else {
-		memcpy(newScreenBuffer, _screenBuffer, _screenBufferSize);
+		memcpy(newScreenBuffer, _screenBuffer, min(_screenBufferSize, newScreenBufferSize));
 		if (newScreenBufferSize - _screenBufferSize > 0)
 			memset((uint8*)newScreenBuffer + _screenBufferSize, 0, newScreenBufferSize - _screenBufferSize);
 		free(_screenBuffer);

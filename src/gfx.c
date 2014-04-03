@@ -23,9 +23,9 @@
 #include "rct2.h"
 
 /**
-* Clears the screen with the specified colour.
-*  rct2: 0x00678A9F
-*/
+ * Clears the screen with the specified colour.
+ *  rct2: 0x00678A9F
+ */
 void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 {
 	int y, w, h;
@@ -42,37 +42,37 @@ void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 }
 
 /**
-*
-*  rct2: 0x00678AD4
-* left (ax)
-* top (cx)
-* right (bx)
-* bottom (dx)
-* colour (ebp)
-*/
+ *
+ *  rct2: 0x00678AD4
+ * left (ax)
+ * top (cx)
+ * right (bx)
+ * bottom (dx)
+ * colour (ebp)
+ */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
 	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
 
 /**
-*
-*  rct2: 0x0067A28E
-* image_id (ebx)
-* x (cx)
-* y (dx)
-*/
+ *
+ *  rct2: 0x0067A28E
+ * image_id (ebx)
+ * x (cx)
+ * y (dx)
+ */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
 	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 }
 
 /**
-*
-*  rct2: 0x00683854
-* a1 (ebx)
-* product (cl)
-*/
+ *
+ *  rct2: 0x00683854
+ * a1 (ebx)
+ * product (cl)
+ */
 void gfx_transpose_palette(int pal, unsigned char product)
 {
 	int eax, ebx, ebp;
@@ -96,24 +96,24 @@ void gfx_transpose_palette(int pal, unsigned char product)
 }
 
 /**
-* Draws i formatted text string centred at i specified position.
-*  rct2: 0x006C1D6C
-* dpi (edi)
-* format (bx)
-* x (cx)
-* y (dx)
-* colour (al)
-* args (esi)
-*/
+ * Draws i formatted text string centred at i specified position.
+ *  rct2: 0x006C1D6C
+ * dpi (edi)
+ * format (bx)
+ * x (cx)
+ * y (dx)
+ * colour (al)
+ * args (esi)
+ */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
 	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, args, dpi, 0);
 }
 
 /**
-*
-*  rct2: 0x006ED7E5
-*/
+ *
+ *  rct2: 0x006ED7E5
+ */
 void gfx_invalidate_screen()
 {
 	RCT2_CALLPROC_EBPSAFE(0x006ED7E5);

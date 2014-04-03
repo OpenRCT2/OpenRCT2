@@ -1,22 +1,22 @@
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+ * Copyright (c) 2014 Ted John
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * This file is part of OpenRCT2.
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************************/
 
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
@@ -29,9 +29,9 @@ union rct_window_event;
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 
 /**
-* Widget structure
-* size: 0x10
-*/
+ * Widget structure
+ * size: 0x10
+ */
 typedef struct {
 	uint8 type;						// 0x00
 	uint8 colour;					// 0x01
@@ -57,9 +57,9 @@ typedef struct {
 } widget_identifier;
 
 /**
-* Viewport structure
-* size: 0x14
-*/
+ * Viewport structure
+ * size: 0x14
+ */
 typedef struct {
 	sint16 width;					// 0x00
 	sint16 height;					// 0x02
@@ -115,9 +115,9 @@ typedef struct {
 } rct_scroll;
 
 /**
-* Window structure
-* size: 0x4C0
-*/
+ * Window structure
+ * size: 0x4C0
+ */
 typedef struct rct_window {
 	uint32* event_handlers;		// 0x000
 	rct_viewport* viewport;		// 0x004
@@ -267,5 +267,10 @@ enum {
 } WINDOW_CLASS;
 
 void window_update_all();
+rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
+void window_close(rct_window *window);
+rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
+void window_invalidate(rct_window *window);
+void window_init_scroll_widgets(rct_window *w);
 
 #endif
