@@ -21,6 +21,8 @@
 #ifndef _WIDGET_H_
 #define _WIDGET_H_
 
+#include "window.h"
+
 typedef enum {
 	WWT_EMPTY = 0,
 	WWT_FRAME = 1,
@@ -41,5 +43,7 @@ typedef enum {
 	WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+
+void widget_scroll_update_thumbs(rct_window *w, int widget_index);
 
 #endif

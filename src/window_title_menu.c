@@ -24,6 +24,8 @@
 #include "widget.h"
 #include "window.h"
 
+void window_levelselect_open();
+
 enum {
 	WIDX_START_NEW_GAME,
 	WIDX_CONTINUE_SAVED_GAME,
@@ -39,6 +41,37 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static uint32 window_title_menu_events[] = {
+	0x0066B834,
+	0x0066B6EC,
+	0x0066B834,
+	0x0066B70E,
+	0x0066B71F,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B834,
+	0x0066B730,
+	0x0066B834,
+	0x0066B834,
+	0x0066B6E6,
+	0x0066B834
+};
+
 /**
  * Creates the window containing the menu buttons on the title screen.
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
@@ -50,9 +83,9 @@ void window_title_menu_open()
 	window = window_create(
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 328) / 2,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 142,
-		328, 82, 0x0097BE8C, WC_TITLE_MENU, 0x02
+		328, 82, window_title_menu_events, WC_TITLE_MENU, 0x02
 	);
-	window->widgets = 0x009A9600;
+	window->widgets = window_title_menu_widgets;
 	window->enabled_widgets |= (8 | 4 | 2 | 1);
 	window_init_scroll_widgets(window);
 	window->flags |= 16;

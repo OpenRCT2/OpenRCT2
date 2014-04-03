@@ -272,5 +272,9 @@ void window_close(rct_window *window);
 rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
 void window_invalidate(rct_window *window);
 void window_init_scroll_widgets(rct_window *w);
+int window_get_scroll_data_index(rct_window *w, int widget_index);
+
+rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
+rct_window *window_bring_to_front(rct_window *w);
 
 #endif

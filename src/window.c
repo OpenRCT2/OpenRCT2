@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "audio.h"
 #include "rct2.h"
+#include "widget.h"
 #include "window.h"
 
 #define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
@@ -206,5 +207,108 @@ void window_invalidate(rct_window *window)
  */
 void window_init_scroll_widgets(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006EAEB8, 0, 0, 0, 0, w, 0, 0);
+	rct_widget* widget;
+	rct_scroll* scroll;
+	int widget_index, scroll_index;
+
+	widget_index = 0;
+	scroll_index = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+		if (widget->type != WWT_SCROLL) {
+			widget_index++;
+			continue;
+		}
+
+		scroll = &w->scrolls[scroll_index];
+
+		{
+			int _eax = 0, _ebx = scroll_index * sizeof(rct_scroll), _ecx = 0, _edx = 0, _esi = w, _edi = widget_index * sizeof(rct_widget), _ebp = 0;
+			RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & _eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+
+			scroll->h_left = 0;
+			scroll->h_right = _ecx + 1;
+			scroll->v_top = 0;
+			scroll->v_bottom = _edx + 1;
+		}
+
+		if (widget->image & 0x01)
+			scroll->flags |= HSCROLLBAR_VISIBLE;
+		if (widget->image & 0x02)
+			scroll->flags |= VSCROLLBAR_VISIBLE;
+
+		widget_scroll_update_thumbs(w, widget_index);
+
+		widget_index++;
+		scroll_index++;
+	}
+}
+
+int window_get_scroll_data_index(rct_window *w, int widget_index)
+{
+	int i, result;
+
+	result = 0;
+	for (i = 0; i < widget_index; i++) {
+		if (w->widgets[i].type == WWT_SCROLL)
+			result++;
+	}
+	return result;
+}
+
+/**
+ * 
+ *  rct2: 0x006ED78A
+ * cls (cl)
+ * number (dx)
+ */
+rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number)
+{
+	rct_window* w;
+
+	w = window_find_by_id(cls, number);
+	if (w != NULL) {
+		w->flags |= WF_WHITE_BORDER_MASK;
+		window_invalidate(w);
+		w = window_bring_to_front(w);
+	}
+
+	return w;
+}
+
+/**
+ * 
+ *  rct2: 0x006ECDA4
+ */
+rct_window *window_bring_to_front(rct_window *w)
+{
+	int i;
+	rct_window* v, t;
+
+	if (w->flags & 0x03)
+		return w;
+
+	for (v = RCT2_LAST_WINDOW; v >= RCT2_FIRST_WINDOW; v--)
+		if (!(v->flags & 2))
+			break;
+
+	if (v >= RCT2_FIRST_WINDOW && w != v) {
+		do {
+			t = *w;
+			*w = *(w + 1);
+			*(w + 1) = t;
+			w++;
+		} while (w != v);
+
+		window_invalidate(w);
+	}
+
+	if (w->x + w->width < 20) {
+		i = 20 - w->x;
+		w->x += i;
+		if (w->viewport != NULL)
+			w->viewport->x += i;
+		window_invalidate(w);
+	}
+
+	return w;
 }

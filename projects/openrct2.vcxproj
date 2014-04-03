@@ -44,11 +44,13 @@
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\viewport.c" />
+    <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />
     <ClCompile Include="..\src\window_title_menu.c" />
+    <ClCompile Include="..\src\window_title_scenarioselect.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
@@ -99,6 +101,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,6 +116,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

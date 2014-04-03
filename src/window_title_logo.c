@@ -36,7 +36,7 @@ void window_title_logo_open()
 {
 	int i, packs;
 	rct_window *window;
-
+	
 	// Count number of expansion packs
 	packs = 0;
 	for (i = 0; i < 16; i++)
@@ -45,7 +45,7 @@ void window_title_logo_open()
 
 	// Create the window
 	window = window_create(0, 0, 200, 106 + (10 * packs), 0x0097BF6C, WC_TITLE_LOGO, 0x02);
-	window->widgets = 0x009A9658;
+	window->widgets = 0x009A9658; // mouse move bug in original game, keep this address and no crash happens
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
 	window->colours[0] = 129;

@@ -42,7 +42,7 @@ void window_title_exit_open()
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 64,
 		40, 64, 0x0097BEFC, WC_TITLE_EXIT, 0x02
 	);
-	window->widgets = 0x009A9644;
+	window->widgets = window_title_exit_widgets;
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
