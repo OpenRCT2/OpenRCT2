@@ -31,6 +31,11 @@ int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c)
 	return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, var_8, var_c);
 }
 
+void sound_play_panned(int sound_id, int x)
+{
+	RCT2_CALLPROC_X(0x006BB76E, sound_id, x, 0, 0, 0, 0, 0);
+}
+
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency)
 {
 	return RCT2_CALLFUNC_5(0x00404E7F, int, rct_sound*, int, int, int, int, sound, looping, volume, pan, frequency);
@@ -38,5 +43,5 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 
 void sound_stop(rct_sound* sound)
 {
-	return RCT2_CALLPROC_1(0x00404DD8, rct_sound*, sound);
+	RCT2_CALLPROC_1(0x00404DD8, rct_sound*, sound);
 }

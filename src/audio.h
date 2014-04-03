@@ -45,6 +45,7 @@ typedef struct {
 
 void get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
+void sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
 void sound_stop(rct_sound *sound);
 

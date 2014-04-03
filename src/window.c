@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
 #include "rct2.h"
 #include "window.h"
 
@@ -54,7 +55,7 @@ void window_update_all()
  */
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	rct_window *w, *v;
+	rct_window *w;
 
 	// Check if there are any window slots left
 	if (RCT2_NEW_WINDOW == &(RCT2_FIRST_WINDOW[12])) {
@@ -93,7 +94,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 
 	// Play sound
 	if (!(flags & 0x03))
-		RCT2_CALLPROC_X(0x006BB76E, 40, x + (width / 2), 0, 0, 0, 0, 0);
+		sound_play_panned(40, x + (width / 2));
 
 	w->number = 0;
 	w->x = x;

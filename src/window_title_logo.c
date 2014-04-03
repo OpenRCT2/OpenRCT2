@@ -45,7 +45,7 @@ void window_title_logo_open()
 
 	// Create the window
 	window = window_create(0, 0, 200, 106 + (10 * packs), 0x0097BF6C, WC_TITLE_LOGO, 0x02);
-	window->widgets = window_title_logo_widgets;
+	window->widgets = 0x009A9658;
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
 	window->colours[0] = 129;

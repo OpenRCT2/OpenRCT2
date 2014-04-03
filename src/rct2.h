@@ -21,7 +21,9 @@
 #ifndef _SDL_RCT2_H_
 #define _SDL_RCT2_H_
 
-#define NULL 0
+#ifndef NULL
+	#define NULL 0
+#endif
 
 typedef signed char sint8;
 typedef signed short sint16;
