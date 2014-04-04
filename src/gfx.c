@@ -160,3 +160,16 @@ void gfx_invalidate_screen()
 {
 	RCT2_CALLPROC_EBPSAFE(0x006ED7E5);
 }
+
+/**
+ * 
+ *  rct2: 0x006E732D
+ * left (ax)
+ * top (bx)
+ * right (dx)
+ * bottom (bp)
+ */
+void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
+{
+	RCT2_CALLPROC_X(0x006E732D, left, top, 0, right, 0, 0, bottom);
+}

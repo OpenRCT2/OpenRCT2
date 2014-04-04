@@ -271,6 +271,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 void window_close(rct_window *window);
 rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
 void window_invalidate(rct_window *window);
+void window_invalidate_by_id(uint16 cls, rct_windownumber number);
 void window_init_scroll_widgets(rct_window *w);
 int window_get_scroll_data_index(rct_window *w, int widget_index);
 

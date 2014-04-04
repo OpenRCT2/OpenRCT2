@@ -66,7 +66,7 @@ int gfx_get_string_width(char *buffer);
 int clip_text(char *buffer, int width);
 void gfx_fill_rect_inset(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom, int colour, short _si);
 
-void gfx_set_dirty_blocks(short left, short top, short right, short bottom);
+void gfx_set_dirty_blocks(int left, int top, int right, int bottom);
 void gfx_draw_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();

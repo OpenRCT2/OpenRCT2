@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "audio.h"
+#include "gfx.h"
 #include "rct2.h"
 #include "widget.h"
 #include "window.h"
@@ -193,10 +194,45 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
  */
 void window_invalidate(rct_window *window)
 {
-	RCT2_CALLPROC_X(0x006EB31A, 0, 0, 0, 0, window, 0, 0);
+	if (window != NULL)
+		gfx_set_dirty_blocks(window->x, window->y, window->x + window->width, window->y + window->height);
+}
 
-	// if (window != NULL)
-	//	gfx_set_dirty_blocks(window->x, window->y, window->x + window->width, window->y + window->height);
+/**
+ * 
+ *  rct2: 0x006EC3AC
+ *
+ * @param cls (ax)
+ * @param number (bx)
+ */
+void window_invalidate_by_id(uint16 cls, rct_windownumber number)
+{
+	rct_window* w;
+	rct_widget* widget;
+	uint8 widgetIndex;
+
+	if (cls & 0x80) {
+		widgetIndex = cls >> 8;
+		cls &= 0x7F;
+		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+			if (w->classification == cls && w->number == number) {
+				widget = &w->widgets[widgetIndex];
+				if (widget->left != -2) {
+					gfx_set_dirty_blocks(w->x + widget->left, w->y + widget->top,
+						w->x + widget->right + 1, w->y + widget->bottom + 1);
+				}
+			}
+		}
+	} else if (cls & 0x40) {
+		cls &= 0xBF;
+		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+			if (w->classification == cls)
+				window_invalidate(w);
+	} else {
+		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+			if (w->classification == cls && w->number == number)
+				window_invalidate(w);
+	}
 }
 
 /**

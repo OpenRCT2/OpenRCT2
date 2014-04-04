@@ -105,7 +105,7 @@ void rct2_init()
 	osinterface_init();
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	RCT2_CALLPROC_EBPSAFE(0x006E6EAC); // viewport_init_all();
-	RCT2_CALLPROC_EBPSAFE(0x0066DF32); // news_item_init_queue()
+	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);

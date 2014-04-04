@@ -54,5 +54,6 @@ typedef struct {
 } rct_news_item;
 
 void news_item_init_queue();
+void news_item_close_current();
 
 #endif
