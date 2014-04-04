@@ -69,6 +69,8 @@
 #define RCT2_ADDRESS_PLACE_OBJECT_MODIFIER			0x009DEA70
 #define RCT2_ADDRESS_ON_TUTORIAL					0x009DEA71
 
+#define RCT2_ADDRESS_G1_ELEMENTS					0x009EBD28
+
 #define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
 #define RCT2_ADDRESS_SPRITES_NEXT_INDEX				0x013573BC
 #define RCT2_ADDRESS_SPRITES_START_VEHICLE			0x013573BE
@@ -113,23 +115,47 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 	__asm {
 		push ebp
 		push address
+
+		// Set register to variable address, then set register to variable value
 		mov eax, [_eax]
+		mov eax, [eax]
 		mov ebx, [_ebx]
+		mov ebx, [ebx]
 		mov ecx, [_ecx]
+		mov ecx, [ecx]
 		mov edx, [_edx]
+		mov edx, [edx]
 		mov esi, [_esi]
+		mov esi, [esi]
 		mov edi, [_edi]
+		mov edi, [edi]
 		mov ebp, [_ebp]
+		mov ebp, [ebp]
+
+		// Call func address
 		call[esp]
 		add esp, 4
 		pop ebp
+
 		// mov[_ebp], ebp
-		mov[_edi], edi
-		mov[_esi], esi
-		mov[_edx], edx
-		mov[_ecx], ecx
-		mov[_ebx], ebx
-		mov [_eax], eax		
+
+		// Get resulting ebx, ecx, edx, esi, edi registers
+		push eax
+		mov eax, [_edi]
+		mov [eax], edi
+		mov eax, [_esi]
+		mov [eax], esi
+		mov eax, [_edx]
+		mov [eax], edx
+		mov eax, [_ecx]
+		mov [eax], ecx
+		mov eax, [_ebx]
+		mov [eax], ebx
+		pop eax
+
+		// Get resulting eax register
+		mov ebx, [_eax]
+		mov [ebx], eax
 	}
 }
 

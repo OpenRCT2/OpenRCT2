@@ -100,7 +100,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list()
 	RCT2_CALLPROC_EBPSAFE(0x006775A8); // scenario_load_list()
 	RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, 253, 0, 0, 0); // track_load_list(253)
-	RCT2_CALLPROC_EBPSAFE(0x00678998); // gfx_load_g1()
+	gfx_load_g1();
 	RCT2_CALLPROC_EBPSAFE(0x006C19AC);
 	osinterface_init();
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
@@ -205,4 +205,26 @@ void rct2_update_2()
 		title_update();
 	else
 		game_update();
+}
+
+/**
+ * 
+ *  rct2: 0x00674E6C
+ */
+char *get_file_path(int pathId)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	ebx = pathId;
+	RCT2_CALLFUNC_X(0x00674E6C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
+/**
+ * 
+ *  rct2: 0x004068B2
+ */
+void *rct2_malloc(size_t numBytes)
+{
+	return RCT2_CALLFUNC_1(0x004068B2, void*, size_t, numBytes);
 }

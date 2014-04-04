@@ -18,9 +18,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <assert.h>
+#include <stdio.h>
+#include <windows.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
+
+/**
+ * 
+ *  rct2: 0x00678998
+ */
+void gfx_load_g1()
+{
+	HANDLE hFile;
+	DWORD bytesRead;
+	DWORD header[2];
+
+	int i;
+	int g1BufferSize;
+	void* g1Buffer;
+
+	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+
+	hFile = CreateFile(get_file_path(PATH_ID_G1), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) {
+		ReadFile(hFile, header, 8, &bytesRead, NULL);
+		if (bytesRead == 8) {
+			g1BufferSize = header[1];
+			g1Buffer = rct2_malloc(g1BufferSize);
+			ReadFile(hFile, g1Elements, 29294 * sizeof(rct_g1_element), &bytesRead, NULL);
+			ReadFile(hFile, g1Buffer, g1BufferSize, &bytesRead, NULL);
+			CloseHandle(hFile);
+
+			for (i = 0; i < 29294; i++)
+				g1Elements[i].offset += (int)g1Buffer;
+
+			return;
+		}
+	}
+
+	// exit with error
+	fprintf(stderr, "Unable to load g1.dat");
+	assert(0);
+}
 
 /**
  * Clears the screen with the specified colour.

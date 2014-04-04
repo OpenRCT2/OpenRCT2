@@ -21,6 +21,9 @@
 #ifndef _GFX_H_
 #define _GFX_H_
 
+#include "rct2.h"
+
+// Size: 0x10
 typedef struct {
 	char* bits;			// 0x00
 	short x;			// 0x04
@@ -31,6 +34,19 @@ typedef struct {
 	char pad_0E;		// 0x0E
 	char var_0F;		// 0x0F
 } rct_drawpixelinfo;
+
+// Size: 0x10
+typedef struct {
+	uint8* offset;			// 0x00
+	sint16 width;			// 0x04
+	sint16 height;			// 0x06
+	sint16 x_offset;		// 0x08
+	sint16 y_offset;		// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 unused;			// 0x0E
+} rct_g1_element;
+
+void gfx_load_g1();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);

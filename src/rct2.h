@@ -21,9 +21,7 @@
 #ifndef _SDL_RCT2_H_
 #define _SDL_RCT2_H_
 
-#ifndef NULL
-	#define NULL 0
-#endif
+#include <stddef.h>
 
 typedef signed char sint8;
 typedef signed short sint16;
@@ -43,5 +41,17 @@ enum {
 	SCREEN_FLAGS_TRACK_DESIGNER = 4,
 	SCREEN_FLAGS_TRACK_MANAGER = 8,
 };
+
+enum {
+	PATH_ID_G1,
+	PATH_ID_PLUGIN,
+	PATH_ID_CSS1,
+	PATH_ID_CSS2,
+	PATH_ID_CSS4,
+	PATH_ID_CSS5
+};
+
+char *get_file_path(int pathId);
+void *rct2_malloc(size_t numBytes);
 
 #endif
