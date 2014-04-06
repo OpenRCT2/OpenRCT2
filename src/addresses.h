@@ -23,16 +23,16 @@
 
 #pragma warning(disable : 4731)
 
-#define RCT2_ADDRESS(address, type)				((type*)address)
-#define RCT2_GLOBAL(address, type)				(*((type*)address))
-#define RCT2_CALLPROC(address)					(((void(*)())address)())
-#define RCT2_CALLFUNC(address, returnType)		(((returnType(*)())address)())
+#define RCT2_ADDRESS(address, type)				((type*)(address))
+#define RCT2_GLOBAL(address, type)				(*((type*)(address)))
+#define RCT2_CALLPROC(address)					(((void(*)())(address))())
+#define RCT2_CALLFUNC(address, returnType)		((((returnType)(*)())(address))())
 
-#define RCT2_CALLFUNC_1(address, returnType, a1, v1)							(((returnType(*)(a1))address)(v1))
-#define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)					(((returnType(*)(a1, a2))address)(v1, v2))
-#define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)			(((returnType(*)(a1, a2, a3))address)(v1, v2, v3))
-#define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)	(((returnType(*)(a1, a2, a3, a4))address)(v1, v2, v3, v4))
-#define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	(((returnType(*)(a1, a2, a3, a4, a5))address)(v1, v2, v3, v4, v5))
+#define RCT2_CALLFUNC_1(address, returnType, a1, v1)							(((returnType(*)(a1))(address))(v1))
+#define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)					(((returnType(*)(a1, a2))(address))(v1, v2))
+#define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)			(((returnType(*)(a1, a2, a3))(address))(v1, v2, v3))
+#define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)	(((returnType(*)(a1, a2, a3, a4))(address))(v1, v2, v3, v4))
+#define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	(((returnType(*)(a1, a2, a3, a4, a5))(address))(v1, v2, v3, v4, v5))
 
 #define RCT2_CALLPROC_1(address, a1, v1)									RCT2_CALLFUNC_1(address, void, a1, v1)
 #define RCT2_CALLPROC_2(address, a1, a2, v1, v2)							RCT2_CALLFUNC_2(address, void, a1, a2, v1, v2)
@@ -40,7 +40,8 @@
 #define RCT2_CALLPROC_4(address, a1, a2, a3, a4, v1, v2, v3, v4)			RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, v1, v2, v3, v4)
 #define RCT2_CALLPROC_5(address, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 
-#define RCT2_ADDRESS_CMDLINE						0x009E2D98
+#define RCT2_ADDRESS_SCENARIO_LIST					0x009A9FF4
+#define RCT2_ADDRESS_NUM_SCENARIOS					0x009AA008
 
 #define RCT2_ADDRESS_APP_PATH						0x009AA214
 #define RCT2_ADDRESS_APP_PATH_SLASH					0x009AB4D9
@@ -69,6 +70,8 @@
 #define RCT2_ADDRESS_PLACE_OBJECT_MODIFIER			0x009DEA70
 #define RCT2_ADDRESS_ON_TUTORIAL					0x009DEA71
 
+#define RCT2_ADDRESS_CMDLINE						0x009E2D98
+
 #define RCT2_ADDRESS_G1_ELEMENTS					0x009EBD28
 
 #define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
@@ -79,6 +82,9 @@
 #define RCT2_ADDRESS_SPRITES_START_LITTER			0x013573C4
 
 #define RCT2_ADDRESS_NEWS_ITEM_LIST					0x013CA754
+
+#define RCT2_ADDRESS_SCENARIO_NAME					0x0141F5B8
+#define RCT2_ADDRESS_SCENARIO_DETAILS				0x0141F5F8
 
 #define RCT2_ADDRESS_WINDOW_LIST					0x01420078
 #define RCT2_ADDRESS_NEW_WINDOW_PTR					0x014234B8
@@ -115,10 +121,13 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	__asm {
+		// Store C's base pointer
 		push ebp
+
+		// Store address to call
 		push address
 
-		// Set register to variable address, then set register to variable value
+		// Set all registers to the input values
 		mov eax, [_eax]
 		mov eax, [eax]
 		mov ebx, [_ebx]
@@ -134,15 +143,28 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 		mov ebp, [_ebp]
 		mov ebp, [ebp]
 
-		// Call func address
-		call[esp]
+		// Call function
+		call [esp]
 		add esp, 4
-		pop ebp
 
-		// mov[_ebp], ebp
+		// Store output eax
+		push eax
+		
+		// Put original C base pointer into eax
+		mov eax, [esp+4]
+
+		// Store output ebp
+		push ebp
+
+		// Set ebp to the original C base pointer
+		mov ebp, eax
+
+		// Put output ebp into ebp parameter
+		mov eax, [esp]
+		mov [_ebp], eax
+		add esp, 4
 
 		// Get resulting ebx, ecx, edx, esi, edi registers
-		push eax
 		mov eax, [_edi]
 		mov [eax], edi
 		mov eax, [_esi]
@@ -158,6 +180,8 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 		// Get resulting eax register
 		mov ebx, [_eax]
 		mov [ebx], eax
+
+		add esp, 4
 	}
 }
 

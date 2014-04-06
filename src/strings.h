@@ -23,7 +23,7 @@
 
 typedef unsigned short rct_string_id;
 
-void format_string(char* dest, rct_string_id format, void* args);
+void format_string(char *dest, rct_string_id format, void *args);
 void generate_string_file();
 
 enum {

@@ -50,7 +50,7 @@ void news_item_update_current()
 	short ax, bx, remove_time;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
-	// get_system_time();
+	RCT2_CALLPROC_EBPSAFE(0x00407671); // get_system_time()
 
 	ax = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
 	bx = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);

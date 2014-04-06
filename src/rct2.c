@@ -30,6 +30,7 @@
 #include "intro.h"
 #include "osinterface.h"
 #include "rct2.h"
+#include "scenario.h"
 #include "title.h"
 
 void rct2_init_directories();
@@ -98,7 +99,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006752D5); // config_load()
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list()
-	RCT2_CALLPROC_EBPSAFE(0x006775A8); // scenario_load_list()
+	scenario_load_list();
 	RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, 253, 0, 0, 0); // track_load_list(253)
 	gfx_load_g1();
 	RCT2_CALLPROC_EBPSAFE(0x006C19AC);
@@ -167,9 +168,11 @@ void rct2_startup_checks()
 
 void rct2_update()
 {
+	// Set 0x009DE564 to the value of esp
+	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
 	__asm {
 		mov eax, 009DE564h
-			mov[eax], esp
+		mov [eax], esp
 	}
 
 	if (!setjmp(_end_update_jump))
@@ -221,10 +224,30 @@ char *get_file_path(int pathId)
 }
 
 /**
- * 
+ * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to allocate memory if RCT2 is still able to
+ * free it.
  *  rct2: 0x004068B2
  */
 void *rct2_malloc(size_t numBytes)
 {
 	return RCT2_CALLFUNC_1(0x004068B2, void*, size_t, numBytes);
+}
+
+/**
+ * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to reallocate memory if RCT2 is still able to
+ * free it.
+ *  rct2: 0x004068BD
+ */
+void *rct2_realloc(void *block, size_t numBytes)
+{
+	return RCT2_CALLFUNC_2(0x004068BD, void*, void*, size_t, block, numBytes);
+}
+
+/**
+ * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to free memory that was allocated by RCT2.
+ *  rct2: 0x004068DE
+ */
+void rct2_free(void *block)
+{
+	return RCT2_CALLPROC_1(0x004068DE, void*, block);
 }
