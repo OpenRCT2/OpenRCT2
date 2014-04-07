@@ -22,6 +22,7 @@
 #define _SDL_RCT2_H_
 
 #include <stddef.h>
+#include <stdlib.h>
 
 typedef signed char sint8;
 typedef signed short sint16;
@@ -31,6 +32,11 @@ typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
+
+#define rol32(x, shift)		(((x) << (shift)) | ((x) >> (32 - (shift))))
+#define ror32(x, shift)		(((x) >> (shift)) | ((x) << (32 - (shift))))
+#define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
+#define clamp(l, x, h)		(min(h, max(l, x)))
 
 void rct2_finish();
 
