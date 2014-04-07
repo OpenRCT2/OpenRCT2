@@ -25,6 +25,7 @@
 #include <windows.h>
 #include <SDL.h>
 #include "addresses.h"
+#include "config.h"
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
@@ -96,7 +97,7 @@ void rct2_init()
 	rct2_startup_checks();
 	RCT2_CALLPROC_EBPSAFE(0x06E3604); // reset_keyboard_shortcuts()
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006752D5); // config_load()
+	config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list()
 	scenario_load_list();

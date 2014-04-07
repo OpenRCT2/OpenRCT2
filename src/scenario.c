@@ -197,7 +197,7 @@ static void scenario_scores_load()
 	}
 
 	// Try and load the scores
-	hFile = CreateFile(get_file_path(32), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		ReadFile(hFile, (void*)0x009A9FFC, 16, &bytes_read, NULL);

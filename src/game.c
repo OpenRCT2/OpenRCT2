@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "rct2.h"
 #include "game.h"
+#include "news_item.h"
 #include "peep.h"
 #include "window.h"
 
@@ -131,7 +132,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006BCB91);
 	RCT2_CALLPROC_EBPSAFE(0x006BD0F8);
 
-	RCT2_CALLPROC_EBPSAFE(0x0066E252); // news_item_update_current()
+	news_item_update_current();
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);
 
 	// Update windows

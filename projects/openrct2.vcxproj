@@ -17,6 +17,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio.h" />
+    <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\intro.h" />
@@ -36,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\audio.c" />
+    <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\intro.c" />
