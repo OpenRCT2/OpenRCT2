@@ -24,13 +24,17 @@
 #include "rct2.h"
 #include "widget.h"
 #include "window.h"
+#include "viewport.h"
 
 #define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
 #define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
 
-// rct2: 0x006ED7B0
-void window_update_all()
+/**
+ * 
+ *  rct2: 0x006ED7B0
+ */
+void window_dispatch_update_all()
 {
 	rct_window *w;
 
@@ -41,6 +45,47 @@ void window_update_all()
 	}
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);
+}
+
+/**
+ * 
+ *  rct2: 0x006E77A1
+ */
+void window_update_all()
+{
+	rct_window* w;
+
+	RCT2_GLOBAL(0x009E3CD8, sint32)++;
+	// if (RCT2_GLOBAL(0x009E3CD8, sint32) == 224 && RCT2_GLOBAL(0x009ABDF2, sint8) != 0)
+	//	RCT2_CALLPROC(0x004067E3); // ddwindow_move_to_top_corner
+
+	if (RCT2_GLOBAL(0x009ABDF2, sint8) == 0)
+		return;
+
+	gfx_draw_dirty_blocks();
+
+	for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		if (w->viewport != NULL)
+			viewport_update_position(w);
+
+	// 1000 tick update
+	RCT2_GLOBAL(0x009DEB7C, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
+	if (RCT2_GLOBAL(0x009DEB7C, sint16) >= 1000) {
+		RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
+		for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
+			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, w, 0, 0);
+	}
+
+	// Border flash invalidation
+	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--) {
+		if (w->flags & WF_WHITE_BORDER_MASK) {
+			w->flags -= WF_WHITE_BORDER_ONE;
+			if (!(w->flags & WF_WHITE_BORDER_MASK))
+				window_invalidate(w);
+		}
+	}
+
+	RCT2_CALLPROC_X(0x006E7868, 0, 0, 0, 0, 0, RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 0); // process_mouse_wheel_input();
 }
 
 /**
@@ -140,7 +185,7 @@ void window_close(rct_window* window)
 		return;
 
 	// Call close event of window
-	// window_call_basic_event(window, WE_CLOSE);
+	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, window, 0, 0);
 
 	window = window_find_by_id(window->classification, window->number);
 
@@ -159,8 +204,7 @@ void window_close(rct_window* window)
 	if (num_windows > 0)
 		memmove(window, window + 1, num_windows * sizeof(rct_window));
 
-	// ?
-	RCT2_CALLPROC(0x006EE510);
+	viewport_update_pointers();
 }
 
 /**
@@ -347,4 +391,17 @@ rct_window *window_bring_to_front(rct_window *w)
 	}
 
 	return w;
+}
+
+/**
+ * Draws a window that is in the specified region.
+ *  rct2: 0x006E756C
+ * left (ax)
+ * top (bx)
+ * right (dx)
+ * bottom (bp)
+ */
+void window_draw(rct_window *w, int left, int top, int right, int bottom)
+{
+	RCT2_CALLPROC_X(0x006E756C, left, top, 0, right, w, 0, bottom);
 }

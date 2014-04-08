@@ -65,7 +65,6 @@ void scenario_load_list()
 	HANDLE hFindFile;
 	WIN32_FIND_DATAA findFileData;
 	int i;
-	char *src, *dst;
 
 	// Load scores
 	scenario_scores_load();

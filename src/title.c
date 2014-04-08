@@ -118,7 +118,7 @@ void title_update()
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
 
-	RCT2_CALLPROC_EBPSAFE(0x006E77A1); // window_refresh_all();
+	window_update_all();
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 

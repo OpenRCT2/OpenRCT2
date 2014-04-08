@@ -21,6 +21,10 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
+#include "window.h"
+
 void viewport_init_all();
+void viewport_update_pointers();
+void viewport_update_position(rct_window *window);
 
 #endif

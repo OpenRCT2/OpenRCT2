@@ -266,6 +266,7 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
+void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
@@ -277,5 +278,7 @@ int window_get_scroll_data_index(rct_window *w, int widget_index);
 
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
+
+void window_draw(rct_window *w, int left, int top, int right, int bottom);
 
 #endif

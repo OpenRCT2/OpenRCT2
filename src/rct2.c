@@ -29,10 +29,12 @@
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
+#include "news_item.h"
 #include "osinterface.h"
 #include "rct2.h"
 #include "scenario.h"
 #include "title.h"
+#include "viewport.h"
 
 void rct2_init_directories();
 void rct2_startup_checks();
@@ -90,7 +92,7 @@ void rct2_init()
 {
 	RCT2_GLOBAL(0x00F663AC, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
-	RCT2_CALLPROC_EBPSAFE(0x00407671); // get_system_time()
+	get_system_time();
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(0x01424304, short);
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(0x01424304, short);
 	rct2_init_directories();
@@ -106,7 +108,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006C19AC);
 	osinterface_init();
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
-	RCT2_CALLPROC_EBPSAFE(0x006E6EAC); // viewport_init_all();
+	viewport_init_all();
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
@@ -221,7 +223,22 @@ char *get_file_path(int pathId)
 
 	ebx = pathId;
 	RCT2_CALLFUNC_X(0x00674E6C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
+	return (char*)ebx;
+}
+
+/**
+ * Obtains os system time (day, month, year and day of the week).
+ *  rct2: 0x00407671
+ */
+void get_system_time()
+{
+	SYSTEMTIME systime;
+
+	GetSystemTime(&systime);
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = systime.wDay;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
 }
 
 /**
@@ -250,5 +267,5 @@ void *rct2_realloc(void *block, size_t numBytes)
  */
 void rct2_free(void *block)
 {
-	return RCT2_CALLPROC_1(0x004068DE, void*, block);
+	RCT2_CALLPROC_1(0x004068DE, void*, block);
 }

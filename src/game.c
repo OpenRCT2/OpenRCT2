@@ -79,7 +79,7 @@ void game_update()
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
 
-	RCT2_CALLPROC_EBPSAFE(0x006E77A1); // window_refresh_all();
+	window_update_all();
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
@@ -136,7 +136,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);
 
 	// Update windows
-	window_update_all();
+	window_dispatch_update_all();
 
 	if (RCT2_GLOBAL(0x009AC31B, uint8) != 0) {
 		_bx = 3010;

@@ -19,9 +19,12 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
 #include "news_item.h"
 #include "rct2.h"
 #include "window.h"
+
+static int news_item_get_new_history_slot();
 
 /**
  *
@@ -46,11 +49,10 @@ void news_item_init_queue()
  */
 void news_item_update_current()
 {
-	int _ebp;
 	short ax, bx, remove_time;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
-	RCT2_CALLPROC_EBPSAFE(0x00407671); // get_system_time()
+	get_system_time();
 
 	ax = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
 	bx = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
@@ -143,7 +145,7 @@ void news_item_close_current()
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
  */
-int news_item_get_new_history_slot()
+static int news_item_get_new_history_slot()
 {
 	int i;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
