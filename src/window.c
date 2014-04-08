@@ -30,6 +30,8 @@
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
 #define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
 
+static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
+
 /**
  * 
  *  rct2: 0x006ED7B0
@@ -403,5 +405,136 @@ rct_window *window_bring_to_front(rct_window *w)
  */
 void window_draw(rct_window *w, int left, int top, int right, int bottom)
 {
-	RCT2_CALLPROC_X(0x006E756C, left, top, 0, right, w, 0, bottom);
+	rct_window* v;
+	rct_drawpixelinfo *dpi, copy;
+	int overflow;
+
+	char *copyBits;
+	int copyLeft;
+	int copyWidth;
+	int copyPitch;
+
+	// RCT2_CALLPROC_X(0x006E756C, left, top, 0, right, w, 0, bottom);
+	// return;
+
+	// Split window into only the regions that require drawing
+	if (window_draw_split(w, left, top, right, bottom))
+		return;
+
+	// Clamp region
+	left = max(left, w->x);
+	top = max(top, w->y);
+	right = min(right, w->x + w->width);
+	bottom = min(bottom, w->y + w->height);
+	if (left >= right)
+		return;
+	if (top >= bottom)
+		return;
+
+	// Draw the window in this region
+	for (v = w; v < RCT2_NEW_WINDOW; v++) {
+		// Don't draw overlapping opaque windows, they won't have changed
+		if (w != v && !(v->flags & WF_TRANSPARENT))
+			continue;
+
+		copy = *RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
+		dpi = &copy;
+
+		// Clamp left to 0
+		overflow = left - dpi->x;
+		if (overflow > 0) {
+			dpi->x += overflow;
+			dpi->width -= overflow;
+			if (dpi->width <= 0)
+				continue;
+			dpi->pitch += overflow;
+			dpi->bits += overflow;
+		}
+
+		// Clamp width to right
+		overflow = dpi->x + dpi->width - right;
+		if (overflow > 0) {
+			dpi->width -= overflow;
+			if (dpi->width <= 0)
+				continue;
+			dpi->pitch += overflow;
+		}
+
+		// Clamp top to 0
+		overflow = top - dpi->y;
+		if (overflow > 0) {
+			dpi->y += overflow;
+			dpi->height -= overflow;
+			if (dpi->height <= 0)
+				continue;
+			dpi->bits += (dpi->width + dpi->pitch) * overflow;
+		}
+
+		// Clamp height to bottom
+		overflow = dpi->y + dpi->height - bottom;
+		if (overflow > 0) {
+			dpi->height -= overflow;
+			if (dpi->height <= 0)
+				continue;
+		}
+
+		RCT2_GLOBAL(0x01420070, sint32) = v->x;
+
+		// Text colouring
+		RCT2_GLOBAL(0x0141F740, uint8) = v->colours[0] & 0x7F;
+		RCT2_GLOBAL(0x0141F741, uint8) = v->colours[1] & 0x7F;
+		RCT2_GLOBAL(0x0141F742, uint8) = v->colours[2] & 0x7F;
+		RCT2_GLOBAL(0x0141F743, uint8) = v->colours[3] & 0x7F;
+
+		// Invalidate the window
+		RCT2_CALLPROC_X(v->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, v, 0, 0);
+
+		// Paint the window
+		RCT2_CALLPROC_X(v->event_handlers[WE_PAINT], 0, 0, 0, 0, v, dpi, 0);
+	}
+}
+
+/**
+ * Splits a drawing of a window into regions that can be seen and are not hidden
+ * by other opaque overlapping windows.
+ */
+static int window_draw_split(rct_window *w, int left, int top, int right, int bottom)
+{
+	rct_window* topwindow;
+
+	// Divide the draws up for only the visible regions of the window recursively
+	for (topwindow = w + 1; topwindow < RCT2_NEW_WINDOW; topwindow++) {
+		// Check if this window overlaps w
+		if (topwindow->x >= right || topwindow->y >= bottom)
+			continue;
+		if (topwindow->x + topwindow->width <= left || topwindow->y + topwindow->height <= top)
+			continue;
+		if (topwindow->flags & WF_TRANSPARENT)
+			continue;
+
+		// A window overlaps w, split up the draw into two regions where the window starts to overlap
+		if (topwindow->x > left) {
+			// Split draw at topwindow.left
+			window_draw(w, left, top, topwindow->x, bottom);
+			window_draw(w, topwindow->x, top, right, bottom);
+		} else if (topwindow->x + topwindow->width < right) {
+			// Split draw at topwindow.right
+			window_draw(w, left, top, topwindow->x + topwindow->width, bottom);
+			window_draw(w, topwindow->x + topwindow->width, top, right, bottom);
+		} else if (topwindow->y > top) {
+			// Split draw at topwindow.top
+			window_draw(w, left, top, right, topwindow->y);
+			window_draw(w, left, topwindow->y, right, bottom);
+		} else if (topwindow->y + topwindow->height < bottom) {
+			// Split draw at topwindow.bottom
+			window_draw(w, left, top, right, topwindow->y + topwindow->height);
+			window_draw(w, left, topwindow->y + topwindow->height, right, bottom);
+		}
+
+		// Drawing for this region should be done now, exit
+		return 1;
+	}
+
+	// No windows overlap
+	return 0;
 }
