@@ -32,6 +32,7 @@
 #include "news_item.h"
 #include "osinterface.h"
 #include "rct2.h"
+#include "ride.h"
 #include "scenario.h"
 #include "title.h"
 #include "viewport.h"
@@ -114,7 +115,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
-	RCT2_CALLPROC_EBPSAFE(0x006ACA89); // init_rides
+	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window guest list init vars a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB4C); // init_map();

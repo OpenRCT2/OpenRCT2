@@ -18,58 +18,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _RIDE_H_
-#define _RIDE_H_
+#include "addresses.h"
+#include "ride.h"
 
-#include "rct2.h"
-
-/**
- * Ride structure.
- * size: 0x0260
- */
-typedef struct {
-	uint8 type;						// 0x000
-	uint8 pad_001[0xEF];
-	sint16 excitement;				// 0x0F0
-	sint16 intensity;				// 0x0F2
-	sint16 nausea;					// 0x0F4
-	uint8 pad_0F6[0x2E];
-	sint16 var_124;
-	sint16 var_126;
-	sint16 var_128;
-	sint16 var_12A;
-	sint16 var_12C;
-	sint16 var_12E;
-	uint16 age;						// 0x130
-	sint16 running_cost;			// 0x132
-	sint16 var_134;
-	sint16 var_136;
-	uint8 pad_138[0x08];
-	sint16 var_140;
-	sint16 var_142;
-	uint16 pad_144;
-	uint16 reliability;				// 0x146
-	uint8 pad_148[0x51];
-	uint8 var_199;
-	uint8 pad_19A[0xC6];
-} rct_ride;
+#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
+#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
 
 /**
- * Ride measurement structure.
- * size: 0x04B0C
+ *
+ *  rct2: 0x006ACA89
  */
-typedef struct {
-	uint8 var_00;
-	uint8 pad_01[0x4B0B];
-} rct_ride_measurement;
+void ride_init_all()
+{
+	int i;
+	rct_ride *ride;
+	rct_ride_measurement *ride_measurement;
 
-enum {
-	RIDE_TYPE_NULL = (uint8)-1
-};
+	for (i = 0; i < MAX_RIDES; i++) {
+		ride = GET_RIDE(i);
+		ride->type = RIDE_TYPE_NULL;
+	}
 
-#define MAX_RIDES 256
-#define MAX_RIDE_MEASUREMENTS 8
+	RCT2_GLOBAL(0x0138B590, sint8) = 0;
+	RCT2_GLOBAL(0x0138B591, sint8) = 0;
 
-void ride_init_all();
-
-#endif
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		ride_measurement = GET_RIDE_MEASUREMENT(i);
+		ride_measurement->var_00 = 0xFF;
+	}
+}

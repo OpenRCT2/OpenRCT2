@@ -23,6 +23,7 @@
 #include "gfx.h"
 #include "news_item.h"
 #include "rct2.h"
+#include "ride.h"
 #include "intro.h"
 #include "viewport.h"
 
@@ -48,7 +49,7 @@ void title_load()
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
-	RCT2_CALLPROC_EBPSAFE(0x006ACA89);
+	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083);
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB4C);

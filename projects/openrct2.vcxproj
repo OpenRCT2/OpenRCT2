@@ -48,6 +48,7 @@
     <ClCompile Include="..\src\park.c" />
     <ClCompile Include="..\src\peep.c" />
     <ClCompile Include="..\src\rct2.c" />
+    <ClCompile Include="..\src\ride.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />

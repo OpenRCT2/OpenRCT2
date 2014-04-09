@@ -42,9 +42,8 @@ void window_dispatch_update_all()
 
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
-	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--) {
+	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
 		RCT2_CALLPROC_X(w->event_handlers[WE_UPDATE], 0, 0, 0, 0, w, 0, 0);
-	}
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);
 }
@@ -282,7 +281,7 @@ void window_invalidate_by_id(uint16 cls, rct_windownumber number)
 }
 
 /**
- * Invalidates the specified window.
+ * Initialises scroll widgets to their virtual size.
  *  rct2: 0x006EAEB8
  *
  * @param window The window (esi).
