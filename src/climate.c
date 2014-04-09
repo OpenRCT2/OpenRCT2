@@ -18,45 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _SCENARIO_H_
-#define _SCENARIO_H_
-
+#include "addresses.h"
+#include "date.h"
 #include "rct2.h"
 
 /**
- * Scenario basic structure, mainly for scenario select
- * size: 0x02B0
+ *
+ *  rct2: 0x006C45ED
  */
-typedef struct {
-	char path[256];				// 0x0000
-	uint8 category;				// 0x0100
-	uint8 pad_0101[0x1F];
-	sint8 var_0120;
-	sint8 var_0121;
-	sint32 var_0122;
-	sint16 var_0126;
-	char name[64];				// 0x0128
-	char details[256];			// 0x0168
-	sint32 var_0268;
-	uint32 pad_026C;
-	sint8 var_0270[64];
-} rct_scenario_basic;
+void climate_reset(int climate)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-enum {
-	OBJECTIVE_NONE,
-	OBJECTIVE_GUESTS_BY,
-	OBJECTIVE_PARK_VALUE_BY,
-	OBJECTIVE_HAVE_FUN,
-	OBJECTIVE_BUILD_THE_BEST,
-	OBJECTIVE_10_ROLLERCOASTERS,
-	OBJECTIVE_GUESTS_AND_RATING,
-	OBJECTIVE_MONTHLY_RIDE_INCOME,
-	OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
-	OBJECTIVE_FINISH_5_ROLLERCOASTERS,
-	OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE,
-	OBJECTIVE_MONTHLY_FOOD_INCOME
-};
+	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = climate;
 
-void scenario_load_list();
+	eax = 1;
+	RCT2_CALLFUNC_X(0x006C4672, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
-#endif
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = eax & 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = ebx & 0xFF;
+
+	RCT2_GLOBAL(0x013CA74E, sint8) = (ebx >> 8) & 0xFF;
+	RCT2_GLOBAL(0x013CA750, sint8) = ecx & 0xFF;
+	RCT2_GLOBAL(0x013CA752, sint8) = (ecx >> 8) & 0xFF;
+	RCT2_CALLPROC_X(0x6C461C, 0, 0, 0, 0, 0, 0, 0);
+}

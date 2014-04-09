@@ -18,45 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _SCENARIO_H_
-#define _SCENARIO_H_
-
-#include "rct2.h"
-
-/**
- * Scenario basic structure, mainly for scenario select
- * size: 0x02B0
- */
-typedef struct {
-	char path[256];				// 0x0000
-	uint8 category;				// 0x0100
-	uint8 pad_0101[0x1F];
-	sint8 var_0120;
-	sint8 var_0121;
-	sint32 var_0122;
-	sint16 var_0126;
-	char name[64];				// 0x0128
-	char details[256];			// 0x0168
-	sint32 var_0268;
-	uint32 pad_026C;
-	sint8 var_0270[64];
-} rct_scenario_basic;
+#ifndef _CLIMATE_H_
+#define _CLIMATE_H_
 
 enum {
-	OBJECTIVE_NONE,
-	OBJECTIVE_GUESTS_BY,
-	OBJECTIVE_PARK_VALUE_BY,
-	OBJECTIVE_HAVE_FUN,
-	OBJECTIVE_BUILD_THE_BEST,
-	OBJECTIVE_10_ROLLERCOASTERS,
-	OBJECTIVE_GUESTS_AND_RATING,
-	OBJECTIVE_MONTHLY_RIDE_INCOME,
-	OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
-	OBJECTIVE_FINISH_5_ROLLERCOASTERS,
-	OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE,
-	OBJECTIVE_MONTHLY_FOOD_INCOME
+	CLIMATE_COOL_AND_WET,
+	CLIMATE_WARM,
+	CLIMATE_HOT_AND_DRY,
+	CLIMATE_COLD
 };
 
-void scenario_load_list();
+void climate_reset(int climate);
 
 #endif

@@ -19,6 +19,8 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "climate.h"
+#include "date.h"
 #include "map.h"
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
@@ -32,7 +34,7 @@ void map_init()
 	int i;
 	rct_map_element *map_element;
 
-	RCT2_CALLPROC_EBPSAFE(0x006C4494); // date_init();
+	date_reset();
 	RCT2_GLOBAL(0x0138B580, sint16) = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
 
@@ -58,5 +60,6 @@ void map_init()
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
 	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);
-	RCT2_CALLPROC_X(0x006C45ED, 1, 0, 0, 0, 0, 0, 0); // init_climate_and_date
+
+	climate_reset(CLIMATE_WARM);
 }
