@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "gfx.h"
+#include "map.h"
 #include "news_item.h"
 #include "rct2.h"
 #include "ride.h"
@@ -52,7 +53,7 @@ void title_load()
 	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083);
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
-	RCT2_CALLPROC_EBPSAFE(0x0068AB4C);
+	map_init();
 	RCT2_CALLPROC_EBPSAFE(0x00667132);
 	RCT2_CALLPROC_EBPSAFE(0x006C4494);
 	RCT2_CALLPROC_X(0x006C45ED, 0, 0, 0, 0, 0, 0, 0);

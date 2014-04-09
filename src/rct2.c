@@ -29,6 +29,7 @@
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
+#include "map.h"
 #include "news_item.h"
 #include "osinterface.h"
 #include "rct2.h"
@@ -118,7 +119,7 @@ void rct2_init()
 	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window guest list init vars a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
-	RCT2_CALLPROC_EBPSAFE(0x0068AB4C); // init_map();
+	map_init();
 	RCT2_CALLPROC_EBPSAFE(0x00667132); // init_park();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
 	RCT2_CALLPROC_EBPSAFE(0x006C4494); // init_date
