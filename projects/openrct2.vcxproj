@@ -20,6 +20,7 @@
     <ClInclude Include="..\src\climate.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\date.h" />
+    <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\intro.h" />
@@ -35,9 +36,11 @@
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\strings.h" />
     <ClInclude Include="..\src\title.h" />
+    <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\viewport.h" />
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
+    <ClInclude Include="..\src\window_dropdown.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +48,7 @@
     <ClCompile Include="..\src\climate.c" />
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\date.c" />
+    <ClCompile Include="..\src\editor.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\intro.c" />
@@ -58,9 +62,11 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />
+    <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\viewport.c" />
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
+    <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />
@@ -133,6 +139,9 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
+      <OmitFramePointers>
+      </OmitFramePointers>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

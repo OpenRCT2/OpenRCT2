@@ -90,6 +90,15 @@
     <ClInclude Include="..\src\climate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\window_dropdown.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tutorial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -165,6 +174,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\climate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_dropdown.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tutorial.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\editor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

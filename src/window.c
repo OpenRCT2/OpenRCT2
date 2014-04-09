@@ -109,7 +109,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	if (RCT2_NEW_WINDOW == &(RCT2_FIRST_WINDOW[12])) {
 		// Close least recently used window
 		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
-			if (!(w->flags & 0x203))
+			if (!(w->flags & (0x01 | 0x02 | 0x200)))
 				break;
 
 		window_close(w);
@@ -119,14 +119,17 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 
 	// Flags
 	if (flags & 0x01) {
-		for (; w >= RCT2_FIRST_WINDOW + 1; w--)
-			if (((w - 1)->flags & 0x01) && !((w - 1)->flags & 0x02))
+		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
+			if ((w - 1)->flags & 0x02)
+				continue;
+			if ((w - 1)->flags & 0x01)
 				break;
-	}
-	else if (flags & 0x02) {
-		for (; w >= RCT2_FIRST_WINDOW + 1; w--)
+		}
+	} else if (!(flags & 0x02)) {
+		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
 			if (!((w - 1)->flags & 0x02))
 				break;
+		}
 	}
 
 	// Move w to new window slot
@@ -137,11 +140,10 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->classification = cls;
 	w->var_4B8 = -1;
 	w->var_4B9 = -1;
-	w->flags = 0;
-	w->flags |= flags;
+	w->flags = flags;
 
 	// Play sound
-	if (!(flags & 0x03))
+	if (!(flags & (0x01 | 0x02)))
 		sound_play_panned(40, x + (width / 2));
 
 	w->number = 0;
@@ -169,6 +171,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->var_4AE = 0;
 	RCT2_NEW_WINDOW++;
 
+	window_invalidate(w);
 	return w;
 }
 
@@ -206,6 +209,33 @@ void window_close(rct_window* window)
 		memmove(window, window + 1, num_windows * sizeof(rct_window));
 
 	viewport_update_pointers();
+}
+
+/**
+ * 
+ *  rct2: 0x006ECCF4
+ * @param cls (cl)
+ * @param number (dx)
+ */
+void window_close_by_id(rct_windowclass cls, rct_windownumber number)
+{
+	rct_window* w;
+	
+	if (cls & 0x80) {
+		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+			if (w->classification == cls) {
+				window_close(w);
+				w = RCT2_FIRST_WINDOW - 1;
+			}
+		}
+	} else {
+		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+			if (w->classification == cls && w->number == number) {
+				window_close(w);
+				w = RCT2_FIRST_WINDOW - 1;
+			}
+		}
+	}
 }
 
 /**
@@ -536,4 +566,16 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 
 	// No windows overlap
 	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006EB15C
+ *
+ * @param window (esi)
+ * @param dpi (edi)
+ */
+void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	RCT2_CALLPROC_X(0x006EB15C, 0, 0, 0, 0, w, dpi, 0);
 }

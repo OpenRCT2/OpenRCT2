@@ -272,3 +272,43 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 		window_draw(w, left, top, right, bottom);
 	}
 }
+
+/**
+ * 
+ *  rct2: 0x006C2321
+ * buffer (esi)
+ */
+int gfx_get_string_width(char *buffer)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	esi = buffer;
+	RCT2_CALLFUNC_X(0x006C2321, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	return ecx & 0xFFFF;
+}
+
+/**
+ * Draws i formatted text string left aligned at i specified position but clips
+ * the text with an elipsis if the text width exceeds the specified width.
+ *  rct2: 0x006C1B83
+ * dpi (edi)
+ * format (bx)
+ * args (esi)
+ * colour (al)
+ * x (cx)
+ * y (dx)
+ * width (bp)
+ */
+void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
+{
+	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, args, dpi, width);
+
+	//char* buffer;
+
+	//buffer = (char*)0x0141ED68;
+	//format_string(buffer, format, args);
+	//rctmem->current_font_sprite_base = 224;
+	//clip_text(buffer, width);
+	//gfx_draw_string(dpi, buffer, colour, x, y);
+}

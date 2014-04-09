@@ -19,10 +19,13 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "editor.h"
 #include "strings.h"
 #include "sprites.h"
+#include "tutorial.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 
 void window_levelselect_open();
 
@@ -41,35 +44,42 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static void window_title_menu_emptysub() { }
+static void window_title_menu_mouseup();
+static void window_title_menu_mousedown();
+static void window_title_menu_dropdown();
+static void window_title_menu_unknown17();
+static void window_title_menu_paint();
+
 static uint32 window_title_menu_events[] = {
-	0x0066B834,
-	0x0066B6EC,
-	0x0066B834,
-	0x0066B70E,
-	0x0066B71F,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B834,
-	0x0066B730,
-	0x0066B834,
-	0x0066B834,
-	0x0066B6E6,
-	0x0066B834
+	window_title_menu_emptysub,
+	window_title_menu_mouseup,
+	window_title_menu_emptysub,
+	window_title_menu_mousedown,
+	window_title_menu_dropdown,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_unknown17,
+	window_title_menu_emptysub,
+	window_title_menu_emptysub,
+	window_title_menu_paint,
+	window_title_menu_emptysub
 };
 
 /**
@@ -92,4 +102,97 @@ void window_title_menu_open()
 	window->colours[0] = 140;
 	window->colours[1] = 140;
 	window->colours[2] = 140;
+}
+
+static void window_title_menu_mouseup()
+{
+	short widgetIndex;
+
+	__asm mov widgetIndex, dx
+	if (widgetIndex == WIDX_START_NEW_GAME) {
+		window_levelselect_open();
+	} else if (widgetIndex == WIDX_CONTINUE_SAVED_GAME) {
+		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 0, 0);
+	}
+}
+
+static void window_title_menu_mousedown()
+{
+	short widgetIndex;
+	rct_window *w;
+	rct_widget *widget;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+	__asm mov widget, edi
+
+	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
+		gDropdownItemsFormat[0] = STR_TUTORIAL_BEGINNERS;
+		gDropdownItemsFormat[1] = STR_TUTORIAL_CUSTOM_RIDES;
+		gDropdownItemsFormat[2] = STR_TUTORIAL_ROLLER_COASTER;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[0] | 0x80,
+			0x80,
+			3
+		);
+	} else if (widgetIndex == WIDX_GAME_TOOLS) {
+		gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
+		gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
+		gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
+		gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[0] | 0x80,
+			0x80,
+			4
+		);
+	}
+}
+
+static void window_title_menu_dropdown()
+{
+	short widgetIndex, dropdownIndex;
+
+	__asm mov widgetIndex, dx
+	__asm mov dropdownIndex, ax
+
+	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
+		tutorial_start(dropdownIndex);
+	} else if (widgetIndex == WIDX_GAME_TOOLS) {
+		switch (dropdownIndex) {
+		case 0:
+			editor_load();
+			break;
+		case 1:
+			editor_convert_save_to_scenario();
+			break;
+		case 2:
+			trackdesigner_load();
+			break;
+		case 3:
+			trackmanager_load();
+			break;
+		}
+	}
+}
+
+static void window_title_menu_unknown17()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, sint16) = 2000;
+}
+
+static void window_title_menu_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	__asm mov w, esi
+	__asm mov dpi, edi
+
+	window_draw_widgets(w, dpi);
 }

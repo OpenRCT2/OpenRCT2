@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "addresses.h"
+#include "scenario.h"
 #include "strings.h"
 #include "sprites.h"
 #include "widget.h"
@@ -45,18 +46,22 @@ static rct_widget window_levelselect_widgets[] = {
 void window_levelselect_open()
 {
 	rct_window* window;
-	int y;
 
 	if (window_bring_to_front_by_id(WC_LEVEL_SELECT, 0) != NULL)
 		return;
 
 	// Load scenario list
-	RCT2_CALLPROC_EBPSAFE(0x006775A8); // scenario_load_list();
+	scenario_load_list();
 
-	y = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167;
-	if (y < 28)
-		y = 28;
-	window = window_create((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - 305, y, 610, 334, 0x0097FC4C, WC_LEVEL_SELECT, 0x0402);
+	window = window_create(
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - 305,
+		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167),
+		610,
+		334,
+		0x0097FC4C,
+		WC_LEVEL_SELECT,
+		0x400 | 0x02
+	);
 	window->widgets = window_levelselect_widgets;
 	
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
