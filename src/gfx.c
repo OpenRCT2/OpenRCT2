@@ -101,6 +101,22 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 }
 
 /**
+ * 
+ *  rct2: 0x006E6F81
+ * dpi (edi)
+ * left (ax)
+ * top (cx)
+ * right (bx)
+ * bottom (dx)
+ * colour (ebp)
+ * _si (si)
+ */
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
+{
+	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, dpi, colour);
+}
+
+/**
  *
  *  rct2: 0x0067A28E
  * image_id (ebx)
@@ -161,7 +177,9 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
  */
 void gfx_invalidate_screen()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006ED7E5);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	gfx_set_dirty_blocks(0, 0, width, height);
 }
 
 /**
@@ -394,4 +412,18 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, in
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	return (sint16)(edx & 0xFFFF) - y;
+}
+
+/**
+ * 
+ *  rct2: 0x00682702
+ * dpi (edi)
+ * format (esi)
+ * colour (al)
+ * x (cx)
+ * y (dx)
+ */
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y)
+{
+	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, format, dpi, 0);
 }

@@ -592,5 +592,22 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
  */
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	RCT2_CALLPROC_X(0x006EB15C, 0, 0, 0, 0, w, dpi, 0);
+	rct_widget *widget;
+	int widgetIndex;
+
+	// RCT2_CALLPROC_X(0x006EB15C, 0, 0, 0, 0, w, dpi, 0);
+	// return;
+
+	if ((w->flags & WF_TRANSPARENT) && !(w->flags & 0x20))
+		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
+
+	widgetIndex = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+		// Check if widget is outside the draw region
+		if (w->x + widget->left < dpi->x + dpi->width && w->x + widget->right > dpi->x)
+			if (w->y + widget->top < dpi->y + dpi->height && w->y + widget->bottom > dpi->y)
+				widget_draw(dpi, w, widgetIndex);
+
+		widgetIndex++;
+	}
 }

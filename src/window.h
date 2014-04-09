@@ -77,12 +77,12 @@ typedef struct {
 
 enum {
 	HSCROLLBAR_VISIBLE = (1 << 0),
-	HSCROLLBAR_LEFT_PRESSED = (1 << 1),
-	HSCROLLBAR_THUMB_PRESSED = (1 << 2),
+	HSCROLLBAR_THUMB_PRESSED = (1 << 1),
+	HSCROLLBAR_LEFT_PRESSED = (1 << 2),
 	HSCROLLBAR_RIGHT_PRESSED = (1 << 3),
 	VSCROLLBAR_VISIBLE = (1 << 4),
-	VSCROLLBAR_UP_PRESSED = (1 << 5),
-	VSCROLLBAR_THUMB_PRESSED = (1 << 6),
+	VSCROLLBAR_THUMB_PRESSED = (1 << 5),
+	VSCROLLBAR_UP_PRESSED = (1 << 6),
 	VSCROLLBAR_DOWN_PRESSED = (1 << 7),
 };
 
@@ -158,8 +158,8 @@ typedef struct rct_window {
 	sint16 var_4B4;
 	rct_windowclass classification;	// 0x4B6
 	uint8 pad_4B7;
-	uint8 var_4B8;
-	uint8 var_4B9;
+	sint8 var_4B8;
+	sint8 var_4B9;
 	uint8 colours[6];			// 0x4BA
 } rct_window;
 

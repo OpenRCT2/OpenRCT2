@@ -29,21 +29,32 @@ typedef enum {
 	WWT_RESIZE = 2,
 	WWT_IMGBTN = 3,
 	WWT_4 = 4,
+	WWT_5 = 5,
+	WWT_6 = 6,
 	WWT_TRNBTN = 7,
 	WWT_TAB = 8,
 	WWT_FLATBTN = 9,
 	WWT_DROPDOWN_BUTTON = 10,
-	WWT_12 = 12,
+	WWT_11,
+	WWT_12,
+	WWT_13,
+	WWT_14,
+	WWT_15,
 	WWT_DROPDOWN = 16,
 	WWT_VIEWPORT = 17,
+	WWT_18,
+	WWT_19,
 	WWT_CAPTION = 20,
 	WWT_CLOSEBOX = 21,
 	WWT_SCROLL = 22,
-	WWT_25 = 25,
+	WWT_23,
+	WWT_24,
+	WWT_25,
 	WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 
 void widget_scroll_update_thumbs(rct_window *w, int widget_index);
+void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
 #endif

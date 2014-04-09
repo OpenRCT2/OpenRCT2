@@ -50,8 +50,9 @@ void gfx_load_g1();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y);
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int x, int y);
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y);
 void gfx_transpose_palette(int pal, unsigned char product);
 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
