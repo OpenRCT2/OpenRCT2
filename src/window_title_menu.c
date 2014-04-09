@@ -27,7 +27,7 @@
 #include "window.h"
 #include "window_dropdown.h"
 
-void window_levelselect_open();
+void window_scenarioselect_open();
 
 enum {
 	WIDX_START_NEW_GAME,
@@ -110,7 +110,7 @@ static void window_title_menu_mouseup()
 
 	__asm mov widgetIndex, dx
 	if (widgetIndex == WIDX_START_NEW_GAME) {
-		window_levelselect_open();
+		window_scenarioselect_open();
 	} else if (widgetIndex == WIDX_CONTINUE_SAVED_GAME) {
 		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 0, 0);
 	}

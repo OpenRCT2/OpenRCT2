@@ -134,7 +134,8 @@ void rct2_init()
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 8;
+	// RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 0;
 }
 
 // rct2: 0x00683499

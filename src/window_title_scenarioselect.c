@@ -19,13 +19,27 @@
 *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
 #include "scenario.h"
 #include "strings.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
 
-static rct_widget window_levelselect_widgets[] = {
+enum {
+	WIDX_BACKGROUND,
+	WIDX_TITLEBAR,
+	WIDX_CLOSE,
+	WIDX_TABCONTENT,
+	WIDX_TAB1,
+	WIDX_TAB2,
+	WIDX_TAB3,
+	WIDX_TAB4,
+	WIDX_TAB5,
+	WIDX_SCENARIOLIST
+};
+
+static rct_widget window_scenarioselect_widgets[] = {
 	{ WWT_FRAME,	0,	0,		609,	0,		333,	-1,						STR_NONE },				// panel / background
 	{ WWT_CAPTION,	0,	1,		608,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,	0,	597,	607,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
@@ -39,11 +53,54 @@ static rct_widget window_levelselect_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static void window_scenarioselect_init_tabs();
+
+static void window_scenarioselect_emptysub() { }
+static void window_scenarioselect_mouseup();
+static void window_scenarioselect_mousedown();
+static void window_scenarioselect_scrollgetsize();
+static void window_scenarioselect_scrollmousedown();
+static void window_scenarioselect_scrollmouseover();
+static void window_scenarioselect_invalidate();
+static void window_scenarioselect_paint();
+static void window_scenarioselect_scrollpaint();
+
+static uint32 window_scenarioselect_events[] = {
+	window_scenarioselect_emptysub,
+	window_scenarioselect_mouseup,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_mousedown,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_scrollgetsize,
+	window_scenarioselect_scrollmousedown,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_scrollmouseover,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_emptysub,
+	window_scenarioselect_invalidate,
+	window_scenarioselect_paint,
+	window_scenarioselect_scrollpaint
+};
+
 /**
  * 
  *  rct2: 0x006781B5
  */
-void window_levelselect_open()
+void window_scenarioselect_open()
 {
 	rct_window* window;
 
@@ -58,11 +115,11 @@ void window_levelselect_open()
 		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167),
 		610,
 		334,
-		0x0097FC4C,
+		window_scenarioselect_events,
 		WC_LEVEL_SELECT,
 		0x400 | 0x02
 	);
-	window->widgets = window_levelselect_widgets;
+	window->widgets = window_scenarioselect_widgets;
 	
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
@@ -70,9 +127,280 @@ void window_levelselect_open()
 	window->colours[1] = 26;
 	window->colours[2] = 26;
 	window->var_480 = -1;
-	window->var_494 = -1;
+	window->var_494 = NULL;
 
-	RCT2_CALLPROC_EBPSAFE(0x00677C8A); // window_levelselect_init_tabs();
+	window_scenarioselect_init_tabs();
 
 	window->var_4AC = 0;
+}
+
+/**
+ * 
+ *  rct2: 0x00677C8A
+ */
+static void window_scenarioselect_init_tabs()
+{
+	int i, x, show_pages;
+	rct_widget* widget;
+	rct_scenario_basic* scenario;
+
+	show_pages = 0;
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		if (!(scenario->var_0268 & 1))
+			continue;
+
+		show_pages |= 1 << scenario->category;
+	}
+
+	x = 3;
+	for (i = 0; i < 5; i++) {
+		widget = &window_scenarioselect_widgets[i + 4];
+		if (!(show_pages & (1 << i))) {
+			widget->type = WWT_EMPTY;
+			continue;
+		}
+
+		widget->type = WWT_TAB;
+		widget->left = x;
+		widget->right = x + 90;
+		x += 91;
+	}
+}
+
+static void window_scenarioselect_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_CLOSE)
+		window_close(w);
+}
+
+static void window_scenarioselect_mousedown()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
+		w->var_4AC = widgetIndex - 4;
+		w->var_494 = NULL;
+		window_invalidate(w);
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_02], 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+		window_init_scroll_widgets(w);
+		window_invalidate(w);
+	}
+}
+
+static void window_scenarioselect_scrollgetsize()
+{
+	int i, height;
+	rct_window *w;
+	rct_scenario_basic *scenario;
+
+	__asm mov w, esi
+
+	height = 0;
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		if (scenario->category != w->var_4AC)
+			continue;
+		if (!(scenario->var_0268 & 1))
+			continue;
+
+		height += 24;
+	}
+
+	__asm mov ecx, 0
+	__asm mov edx, height
+}
+
+static void window_scenarioselect_scrollmousedown()
+{
+	int i;
+	short x, y;
+	rct_window *w;
+	rct_scenario_basic *scenario;
+
+	__asm mov x, cx
+	__asm mov y, dx
+	__asm mov w, esi
+
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		if (scenario->category != w->var_4AC)
+			continue;
+		if (!(scenario->var_0268 & 1))
+			continue;
+
+		y -= 24;
+		if (y >= 0)
+			continue;
+
+		sound_play_panned(4, w->width / 2 + w->x);
+		scenario_load(scenario);
+		break;
+	}
+}
+
+static void window_scenarioselect_scrollmouseover()
+{
+	int i;
+	short x, y;
+	rct_window *w;
+	rct_scenario_basic *scenario, *selected;
+
+	__asm mov x, cx
+	__asm mov y, dx
+	__asm mov w, esi
+
+	selected = NULL;
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		if (scenario->category != w->var_4AC)
+			continue;
+		if (!(scenario->var_0268 & 1))
+			continue;
+
+		y -= 24;
+		if (y >= 0)
+			continue;
+
+		selected = scenario;
+		break;
+	}
+	if (w->var_494 != selected) {
+		w->var_494 = selected;
+		window_invalidate(w);
+	}
+}
+
+static void window_scenarioselect_invalidate()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
+	w->pressed_widgets |= 1 << (w->var_4AC + 4);
+}
+
+static void window_scenarioselect_paint()
+{
+	int i, x, y;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_widget *widget;
+
+	__asm mov w, esi
+	__asm mov dpi, edi
+
+	window_draw_widgets(w, dpi);
+
+	// Text for each tab
+	for (i = 0; i < 5; i++) {
+		widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
+		if (widget->type == WWT_EMPTY)
+			continue;
+
+		x = (widget->left + widget->right) / 2 + w->x;
+		y = (widget->top + widget->bottom) / 2 + w->y - 3;
+		*((short*)(0x0013CE952 + 0)) = STR_BEGINNER_PARKS + i;
+		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, 1193, 10);
+	}
+
+	// Return if no scenario highlighted
+	if (w->var_494 == NULL)
+		return;
+
+	// Draw SixFlags image
+	if (*((int*)(w->var_494 + 0x0268)) & 4)
+		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75);
+
+	// Scenario name
+	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+	strcpy(0x009BC677, (char*)(w->var_494 + 0x0128));
+	*((short*)(0x0013CE952 + 0)) = 3165;
+	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
+	y += 15;
+
+	// Scenario description
+	strcpy(0x009BC677, (char*)(w->var_494 + 0x0168));
+	*((short*)(0x0013CE952 + 0)) = 3165;
+	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
+
+	// Scenario objective
+	*((short*)(0x0013CE952 + 0)) = *((unsigned char*)(w->var_494 + 0x0120)) + STR_OBJECTIVE_NONE;
+	*((short*)(0x0013CE952 + 2)) = *((short*)(w->var_494 + 0x0126));
+	*((short*)(0x0013CE956 + 0)) = *((unsigned char*)(w->var_494 + 0x0121)) * 8 - 1;
+	*((int*)(0x0013CE956 + 2)) = *((int*)(w->var_494 + 0x0122));
+	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_OBJECTIVE, 0) + 5;
+
+	// Scenario score
+	if (!(*((int*)(w->var_494 + 0x0268)) & 2))
+		return;
+	strcpy(0x009BC677, (char*)(w->var_494 + 0x0270));
+	*((short*)(0x0013CE952 + 0)) = 3165;
+	*((int*)(0x0013CE952 + 2)) = *((int*)(w->var_494 + 0x026C));
+	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+}
+
+static void window_scenarioselect_scrollpaint()
+{
+	int i, y, colour, highlighted;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_scenario_basic *scenario;
+
+	__asm mov w, esi
+	__asm mov dpi, edi
+
+	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
+	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
+	gfx_clear(dpi, colour);
+
+	y = 0;
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		if (scenario->category != w->var_4AC)
+			continue;
+		if (!(scenario->var_0268 & 1))
+			continue;
+
+		if (y > dpi->y + dpi->height)
+			continue;
+
+		highlighted = w->var_494 == (int)scenario;
+
+		// Draw hover highlight
+		if (highlighted)
+			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+
+		// Draw scenario name
+		strcpy((char*)0x009BC677, scenario->name);
+		*((short*)0x013CE952) = 3165;
+		gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 1, 0, (void*)0x013CE952);
+
+		// Check if scenario is completed
+		if (scenario->var_0268 & 2) {
+			// Draw completion tick
+			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1);
+
+			// Draw completion score
+			strcpy((char*)0x009BC677, scenario->var_0270);
+			*((short*)0x013CE952) = 2793;
+			*((short*)0x013CE954) = 3165;
+			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
+		}
+
+		y += 24;
+	}
 }

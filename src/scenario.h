@@ -58,5 +58,6 @@ enum {
 };
 
 void scenario_load_list();
+void scenario_load(rct_scenario_basic *scenario);
 
 #endif

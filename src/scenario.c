@@ -284,3 +284,13 @@ static int scenario_load_basic(char *path)
 	RCT2_GLOBAL(0x009AC31C, sint16) = 3011;
 	return 0;
 }
+
+/**
+ * 
+ *  rct2: 0x00678282
+ * scenario (ebx)
+ */
+void scenario_load(rct_scenario_basic *scenario)
+{
+	RCT2_CALLPROC_X(0x00678282, 0, scenario, 0, 0, 0, 0, 0);
+}

@@ -312,3 +312,86 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
 	//clip_text(buffer, width);
 	//gfx_draw_string(dpi, buffer, colour, x, y);
 }
+
+/**
+ * Draws i formatted text string centred at i specified position but clips the
+ * text with an elipsis if the text width exceeds the specified width.
+ *  rct2: 0x006C1BBA
+ * dpi (edi)
+ * format (bx)
+ * args (esi)
+ * colour (al)
+ * x (cx)
+ * y (dx)
+ * width (bp)
+ */
+void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
+{
+	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, args, dpi, width);
+
+	//char* buffer;
+	//short text_width;
+
+	//buffer = (char*)0x0141ED68;
+	//format_string(buffer, format, args);
+	//rctmem->current_font_sprite_base = 224;
+	//text_width = clip_text(buffer, width);
+
+	//// Draw the text centred
+	//x -= (text_width - 1) / 2;
+	//gfx_draw_string(dpi, buffer, colour, x, y);
+}
+
+/**
+ * 
+ *  rct2: 0x006C1E53
+ * dpi (edi)
+ * args (esi)
+ * x (cx)
+ * y (dx)
+ * width (bp)
+ * colour (al)
+ * format (ebx)
+ */
+int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	eax = colour;
+	ebx = format;
+	ecx = x;
+	edx = y;
+	esi = args;
+	edi = dpi;
+	ebp = width;
+	RCT2_CALLFUNC_X(0x006C1E53, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	return (sint16)(edx & 0xFFFF) - y;
+}
+
+/**
+ * 
+ *  rct2: 0x006C2105
+ * dpi (edi)
+ * format (esi)
+ * x (cx)
+ * y (dx)
+ * width (bp)
+ * colour (bx)
+ * unknown (al)
+ */
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	eax = unknown;
+	ebx = colour;
+	ecx = x;
+	edx = y;
+	esi = format;
+	edi = dpi;
+	ebp = width;
+	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	return (sint16)(edx & 0xFFFF) - y;
+}
