@@ -281,6 +281,8 @@ int window_get_scroll_data_index(rct_window *w, int widget_index);
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
 
+rct_window *window_get_main();
+
 void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 

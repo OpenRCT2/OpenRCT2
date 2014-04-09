@@ -114,6 +114,7 @@ enum {
 
 };
 
+void rct2_endupdate();
 char *get_file_path(int pathId);
 void get_system_time();
 void *rct2_malloc(size_t numBytes);

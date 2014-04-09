@@ -26,6 +26,15 @@
 
 /**
  * 
+ *  rct2: 0x00667132
+ */
+void park_init()
+{
+	RCT2_CALLPROC_EBPSAFE(0x00667132);
+}
+
+/**
+ * 
  *  rct2: 0x00669EAA
  */
 int calculate_park_rating()

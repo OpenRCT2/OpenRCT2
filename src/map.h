@@ -50,7 +50,10 @@ enum {
 };
 
 #define MAP_ELEMENT_TYPE_MASK 0x3C
-#define MAX_MAP_ELEMENTS 65536
+#define MAX_MAP_ELEMENTS 196608
+#define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
+
+#define TILE_UNDEFINED_MAP_ELEMENT -1
 
 void map_init();
 

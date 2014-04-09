@@ -425,6 +425,21 @@ rct_window *window_bring_to_front(rct_window *w)
 }
 
 /**
+ * 
+ *  rct2: 0x006EE2E4
+ */
+rct_window *window_get_main()
+{
+	rct_window* w;
+	
+	for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == WC_MAIN_WINDOW)
+			return w;
+
+	return NULL;
+}
+
+/**
  * Draws a window that is in the specified region.
  *  rct2: 0x006E756C
  * left (ax)

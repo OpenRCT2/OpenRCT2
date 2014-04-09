@@ -215,6 +215,11 @@ void rct2_update_2()
 		game_update();
 }
 
+void rct2_endupdate()
+{
+	longjmp(_end_update_jump, 0);
+}
+
 /**
  * 
  *  rct2: 0x00674E6C

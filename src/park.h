@@ -26,6 +26,8 @@
 #define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
 #define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
 
+void park_init();
+
 int calculate_park_rating();
 int calculate_park_value();
 int calculate_company_value();

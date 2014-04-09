@@ -24,6 +24,9 @@
 #include "map.h"
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
+#define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
+
+static void tiles_init();
 
 /**
  * 
@@ -38,7 +41,7 @@ void map_init()
 	RCT2_GLOBAL(0x0138B580, sint16) = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
 
-	for (i = 0; i < MAX_MAP_ELEMENTS; i++) {
+	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
 		map_element = GET_MAP_ELEMENT(i);
 		map_element->var_0 = 0;
 		map_element->var_1 = 128;
@@ -58,8 +61,35 @@ void map_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
 	RCT2_GLOBAL(0x01358836, sint16) = 4767;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
-	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
+	tiles_init();
 	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);
 
 	climate_reset(CLIMATE_WARM);
+}
+
+/**
+ * 
+ *  rct2: 0x0068AFFD
+ */
+static void tiles_init()
+{
+	int i, x, y, lastTile;
+
+	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++)
+		TILE_MAP_ELEMENT_POINTER(i) = TILE_UNDEFINED_MAP_ELEMENT;
+
+	rct_map_element *mapElement = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
+	rct_map_element **tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+			*tile++ = mapElement;
+			do {
+				lastTile = (mapElement->var_1 & 128);
+				mapElement++;
+			} while (!lastTile);
+		}
+	}
+
+	// Possible next free map element
+	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
 }

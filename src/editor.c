@@ -19,7 +19,17 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "date.h"
 #include "editor.h"
+#include "gfx.h"
+#include "map.h"
+#include "news_item.h"
+#include "park.h"
+#include "ride.h"
+#include "window.h"
+#include "viewport.h"
+
+static void set_all_land_owned();
 
 /**
  *
@@ -27,7 +37,39 @@
  */
 void editor_load()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0066FFE1);
+	rct_window *mainWindow;
+
+	RCT2_CALLPROC_EBPSAFE(0x006BABB4);
+	RCT2_CALLPROC_EBPSAFE(0x006BABD8);
+	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	map_init();
+	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	RCT2_CALLPROC_EBPSAFE(0x00667104);
+	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	ride_init_all();
+	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
+	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	park_init();
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	date_reset();
+	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
+	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	RCT2_GLOBAL(0x013573E4, uint32) |= 16;
+	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	RCT2_GLOBAL(0x0141F571, uint8) = 4;
+	viewport_init_all();
+	news_item_init_queue();
+	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
+	mainWindow = window_get_main();
+	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	mainWindow->flags &= ~0x08;
+	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	rct2_endupdate();
 }
 
 /**
@@ -45,7 +87,36 @@ void editor_convert_save_to_scenario()
  */
 void trackdesigner_load()
 {
-	RCT2_CALLPROC_EBPSAFE(0x00672957);
+	rct_window *mainWindow;
+
+	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	map_init();
+	set_all_land_owned();
+	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	RCT2_CALLPROC_EBPSAFE(0x00667104);
+	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	ride_init_all();
+	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
+	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	park_init();
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	date_reset();
+	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
+	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
+	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	viewport_init_all();
+	news_item_init_queue();
+	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
+	mainWindow = window_get_main();
+	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	mainWindow->flags &= ~0x08;
+	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	rct2_endupdate();
 }
 
 /**
@@ -54,5 +125,45 @@ void trackdesigner_load()
  */
 void trackmanager_load()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006729FD);
+	rct_window *mainWindow;
+
+	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	map_init();
+	set_all_land_owned();
+	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	RCT2_CALLPROC_EBPSAFE(0x00667104);
+	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	ride_init_all();
+	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
+	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	park_init();
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	date_reset();
+	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
+	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
+	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	viewport_init_all();
+	news_item_init_queue();
+	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
+	mainWindow = window_get_main();
+	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	mainWindow->flags &= ~0x08;
+	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	rct2_endupdate();
+}
+
+/**
+ *
+ *  rct2: 0x0068ABEC
+ */
+static void set_all_land_owned()
+{
+	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+
+	RCT2_CALLPROC_X(0x006677F2, 64, 1, 64, 2, 56, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }

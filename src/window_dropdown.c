@@ -146,7 +146,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	_dropdown_highlighted_index = -1;
 	RCT2_GLOBAL(0x009DED34, sint32) = 0;
 	RCT2_GLOBAL(0x009DED38, sint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
 	RCT2_GLOBAL(0x009DEBA0, sint16) = _dropdown_num_items;
