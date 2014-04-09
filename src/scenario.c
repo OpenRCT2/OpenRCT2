@@ -23,6 +23,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "rct2.h"
+#include "sawyercoding.h"
 #include "scenario.h"
 #include "strings.h"
 
@@ -237,6 +238,8 @@ static void scenario_scores_save()
 	}
 }
 
+void sub_67685F(HFILE hFile, uint32 address);
+
 /**
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
@@ -250,9 +253,9 @@ static int scenario_load_basic(char *path)
 		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
-		RCT2_CALLPROC_X(0x0067685F, 0, 0, 0, 0, 0x009E34E4, 0, 0);
+		sawyercoding_read_chunk(hFile, 0x009E34E4);
 		if (RCT2_GLOBAL(0x009E34E4, uint8) == 1) {
-			RCT2_CALLPROC_X(0x0067685F, 0, 0, 0, 0, 0x0141F570, 0, 0);
+			sawyercoding_read_chunk(hFile, 0x0141F570);
 			CloseHandle(hFile);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 			if (RCT2_GLOBAL(0x0141F6F8, uint8) != 255) {

@@ -31,6 +31,7 @@
     <ClInclude Include="..\src\peep.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\ride.h" />
+    <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
@@ -59,6 +60,7 @@
     <ClCompile Include="..\src\peep.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride.c" />
+    <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />

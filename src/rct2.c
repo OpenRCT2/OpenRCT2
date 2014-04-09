@@ -25,13 +25,16 @@
 #include <windows.h>
 #include <SDL.h>
 #include "addresses.h"
+#include "climate.h"
 #include "config.h"
+#include "date.h"
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
 #include "map.h"
 #include "news_item.h"
 #include "osinterface.h"
+#include "park.h"
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
@@ -120,15 +123,13 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window guest list init vars a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
-	RCT2_CALLPROC_EBPSAFE(0x00667132); // init_park();
+	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
-	RCT2_CALLPROC_EBPSAFE(0x006C4494); // init_date
-	RCT2_CALLPROC_X(0x6C45ED, 0, 0, 0, 0, 0, 0, 0); // init_climate_and_date()
+	date_reset();
+	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
-
-	// Window guest list init vars b
-	RCT2_CALLPROC_EBPSAFE(0x0068F050);
+	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window guest list init vars b
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
 
 	title_load();

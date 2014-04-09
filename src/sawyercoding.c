@@ -1,0 +1,146 @@
+/*****************************************************************************
+ * Copyright (c) 2014 Ted John
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * 
+ * This file is part of OpenRCT2.
+ * 
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************************/
+
+#include <windows.h>
+#include "addresses.h"
+#include "rct2.h"
+#include "sawyercoding.h"
+
+static int decode_chunk_rle(char *buffer, int length);
+static int decode_chunk_repeat(char *buffer, int length);
+static void decode_chunk_rotate(char *buffer, int length);
+
+/**
+ * 
+ *  rct2: 0x0067685F
+ * buffer (esi)
+ */
+int sawyercoding_read_chunk(HFILE hFile, uint8 *buffer)
+{
+	DWORD numBytesRead;
+	int i, code;
+
+	uint8 encoding;
+	uint32 length;
+
+	// Read chunk encoding and length
+	ReadFile(hFile, &encoding, 1, &numBytesRead, NULL);
+	ReadFile(hFile, &length, 4, &numBytesRead, NULL);
+
+	// Read chunk data
+	ReadFile(hFile, buffer, length, &numBytesRead, NULL);
+
+	// Decode chunk data
+	switch (encoding) {
+	case CHUNK_ENCODING_RLE:
+		length = decode_chunk_rle(buffer, length);
+		break;
+	case CHUNK_ENCODING_RLECOMPRESSED:
+		length = decode_chunk_rle(buffer, length);
+		length = decode_chunk_repeat(buffer, length);
+		break;
+	case CHUNK_ENCODING_ROTATE:
+		decode_chunk_rotate(buffer, length);
+		break;
+	}
+
+	// Set length
+	RCT2_GLOBAL(0x009E3828, uint32) = length;
+	return length;
+}
+
+/**
+ * 
+ *  rct2: 0x0067693A
+ */
+static int decode_chunk_rle(char *buffer, int length)
+{
+	int i, j, count;
+	uint8 *src, *dst, rleCodeByte;
+
+	// Backup buffer
+	src = malloc(length);
+	memcpy(src, buffer, length);
+	dst = buffer;
+
+	for (i = 0; i < length; i++) {
+		rleCodeByte = src[i];
+		if (rleCodeByte & 128) {
+			i++;
+			count = 1 - rleCodeByte + 256;
+			for (j = 0; j < count; j++)
+				*dst++ = src[i];
+		} else {
+			for (j = 0; j < rleCodeByte; j++)
+				*dst++ = src[++i];
+		}
+	}
+	
+	// Free backup buffer
+	free(src);
+
+	// Return final size
+	return dst - buffer;
+}
+
+/**
+ * 
+ *  rct2: 0x006769F1
+ */
+static int decode_chunk_repeat(char *buffer, int length)
+{
+	int i, j, count;
+	uint8 *src, *dst, *copyOffset, rleCodeByte;
+
+	// Backup buffer
+	src = malloc(length);
+	memcpy(src, buffer, length);
+	dst = buffer;
+
+	for (i = 0; i < length; i++) {
+		if (src[i] == 0xFF) {
+			*dst++ = src[++i];
+		} else {
+			count = src[i] & 7;
+			copyOffset = dst + (int)(src[i] >> 3) - 32;
+			for (j = 0; j < count; j++)
+				*dst++ = *copyOffset++;
+		}
+	}
+
+	// Free backup buffer
+	free(src);
+
+	// Return final size
+	return dst - buffer;
+}
+
+/**
+ * 
+ *  rct2: 0x006768F4
+ */
+static void decode_chunk_rotate(char *buffer, int length)
+{
+	int i, code = 1;
+	for (i = 0; i < length; i++) {
+		buffer[i] = ror8(buffer[i], code);
+		code = (code + 2) % 8;
+	}
+}

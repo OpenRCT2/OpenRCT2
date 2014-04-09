@@ -19,13 +19,15 @@
  *****************************************************************************/
  
 #include "addresses.h"
+#include "date.h"
 #include "game.h"
 #include "gfx.h"
+#include "intro.h"
 #include "map.h"
 #include "news_item.h"
+#include "park.h"
 #include "rct2.h"
 #include "ride.h"
-#include "intro.h"
 #include "viewport.h"
 
 static void title_create_windows();
@@ -51,15 +53,15 @@ void title_load()
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
 	ride_init_all();
-	RCT2_CALLPROC_EBPSAFE(0x0068F083);
+	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
-	RCT2_CALLPROC_EBPSAFE(0x00667132);
-	RCT2_CALLPROC_EBPSAFE(0x006C4494);
+	park_init();
+	date_reset();
 	RCT2_CALLPROC_X(0x006C45ED, 0, 0, 0, 0, 0, 0, 0);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
-	RCT2_CALLPROC_EBPSAFE(0x0068F050);
+	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
 	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
 	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
