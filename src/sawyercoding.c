@@ -35,35 +35,31 @@ static void decode_chunk_rotate(char *buffer, int length);
 int sawyercoding_read_chunk(HFILE hFile, uint8 *buffer)
 {
 	DWORD numBytesRead;
-	int i, code;
+	sawyercoding_chunk_header chunkHeader;
 
-	uint8 encoding;
-	uint32 length;
-
-	// Read chunk encoding and length
-	ReadFile(hFile, &encoding, 1, &numBytesRead, NULL);
-	ReadFile(hFile, &length, 4, &numBytesRead, NULL);
+	// Read chunk header
+	ReadFile(hFile, &chunkHeader, sizeof(sawyercoding_chunk_header), &numBytesRead, NULL);
 
 	// Read chunk data
-	ReadFile(hFile, buffer, length, &numBytesRead, NULL);
+	ReadFile(hFile, buffer, chunkHeader.length, &numBytesRead, NULL);
 
 	// Decode chunk data
-	switch (encoding) {
+	switch (chunkHeader.encoding) {
 	case CHUNK_ENCODING_RLE:
-		length = decode_chunk_rle(buffer, length);
+		chunkHeader.length = decode_chunk_rle(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		length = decode_chunk_rle(buffer, length);
-		length = decode_chunk_repeat(buffer, length);
+		chunkHeader.length = decode_chunk_rle(buffer, chunkHeader.length);
+		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
-		decode_chunk_rotate(buffer, length);
+		decode_chunk_rotate(buffer, chunkHeader.length);
 		break;
 	}
 
 	// Set length
-	RCT2_GLOBAL(0x009E3828, uint32) = length;
-	return length;
+	RCT2_GLOBAL(0x009E3828, uint32) = chunkHeader.length;
+	return chunkHeader.length;
 }
 
 /**

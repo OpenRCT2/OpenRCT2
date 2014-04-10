@@ -22,6 +22,12 @@
 #define _SAWYERCODING_H_
 
 #include <windows.h>
+#include "rct2.h"
+
+typedef struct {
+	uint8 encoding;
+	uint32 length;
+} sawyercoding_chunk_header;
 
 enum {
 	CHUNK_ENCODING_NONE,

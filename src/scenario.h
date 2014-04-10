@@ -24,6 +24,37 @@
 #include "rct2.h"
 
 /**
+ * SV6/SC6 header chunk
+ * size: 0x20
+ */
+typedef struct {
+	uint16 type;				// 0x00
+	uint16 num_packed_objects;	// 0x02
+	uint32 version;				// 0x04
+	uint32 magic_number;		// 0x08
+	uint8 pad_0C[0x14];
+} rct_s6_header;
+
+/**
+ * SC6 information chunk
+ * size: 0x198
+ */
+typedef struct {
+	uint8 var_000;
+	uint8 category;				// 0x01
+	uint8 objective_type;		// 0x02
+	uint8 objective_arg_1;		// 0x03
+	sint32 objective_arg_2;		// 0x04
+	sint16 objective_arg_3;		// 0x08
+	uint8 pad_00A[0x3E];
+	char name[64];				// 0x48
+	char details[256];			// 0x88
+	uint8 flags;				// 0x188
+	uint8 pad_189[0x0F];
+} rct_s6_info;
+
+
+/**
  * Scenario basic structure, mainly for scenario select
  * size: 0x02B0
  */
@@ -31,16 +62,35 @@ typedef struct {
 	char path[256];				// 0x0000
 	uint8 category;				// 0x0100
 	uint8 pad_0101[0x1F];
-	sint8 var_0120;
-	sint8 var_0121;
-	sint32 var_0122;
-	sint16 var_0126;
+	sint8 objective_type;		// 0x0120
+	sint8 objective_arg_1;		// 0x0121
+	sint32 objective_arg_2;		// 0x0122
+	sint16 objective_arg_3;		// 0x0126
 	char name[64];				// 0x0128
 	char details[256];			// 0x0168
-	sint32 var_0268;
-	uint32 pad_026C;
-	sint8 var_0270[64];
+	sint32 flags;				// 0x0268
+	uint32 company_value;		// 0x026C
+	char completed_by[64];		// 0x0270
 } rct_scenario_basic;
+
+enum {
+	SCENARIO_FLAGS_VISIBLE = (1 << 0),
+	SCENARIO_FLAGS_COMPLETED = (1 << 1),
+	SCENARIO_FLAGS_SIXFLAGS = (1 << 2)
+};
+
+enum {
+	S6_TYPE_SAVEDGAME,
+	S6_TYPE_SCENARIO
+};
+
+enum {
+	SCENARIO_CATEGORY_BEGINNER,
+	SCENARIO_CATEGORY_CHALLENGING,
+	SCENARIO_CATEGORY_EXPERT,
+	SCENARIO_CATEGORY_REAL,
+	SCENARIO_CATEGORY_BUILDYOUROWN
+};
 
 enum {
 	OBJECTIVE_NONE,

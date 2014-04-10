@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "audio.h"
+#include "date.h"
 #include "scenario.h"
 #include "strings.h"
 #include "sprites.h"
@@ -147,10 +148,8 @@ static void window_scenarioselect_init_tabs()
 	show_pages = 0;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (!(scenario->var_0268 & 1))
-			continue;
-
-		show_pages |= 1 << scenario->category;
+		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
+			show_pages |= 1 << scenario->category;
 	}
 
 	x = 3;
@@ -212,10 +211,8 @@ static void window_scenarioselect_scrollgetsize()
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
 		if (scenario->category != w->var_4AC)
 			continue;
-		if (!(scenario->var_0268 & 1))
-			continue;
-
-		height += 24;
+		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
+			height += 24;
 	}
 
 	__asm mov ecx, 0
@@ -237,7 +234,7 @@ static void window_scenarioselect_scrollmousedown()
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
 		if (scenario->category != w->var_4AC)
 			continue;
-		if (!(scenario->var_0268 & 1))
+		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		y -= 24;
@@ -266,7 +263,7 @@ static void window_scenarioselect_scrollmouseover()
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
 		if (scenario->category != w->var_4AC)
 			continue;
-		if (!(scenario->var_0268 & 1))
+		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		y -= 24;
@@ -298,6 +295,7 @@ static void window_scenarioselect_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
+	rct_scenario_basic *scenario;
 
 	__asm mov w, esi
 	__asm mov dpi, edi
@@ -317,40 +315,41 @@ static void window_scenarioselect_paint()
 	}
 
 	// Return if no scenario highlighted
-	if (w->var_494 == NULL)
+	scenario = (rct_scenario_basic*)w->var_494;
+	if (scenario == NULL)
 		return;
 
 	// Draw SixFlags image
-	if (*((int*)(w->var_494 + 0x0268)) & 4)
+	if (scenario->flags & SCENARIO_FLAGS_SIXFLAGS)
 		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75);
 
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	strcpy(0x009BC677, (char*)(w->var_494 + 0x0128));
+	strcpy(0x009BC677, scenario->name);
 	*((short*)(0x0013CE952 + 0)) = 3165;
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
 	y += 15;
 
-	// Scenario description
-	strcpy(0x009BC677, (char*)(w->var_494 + 0x0168));
+	// Scenario details
+	strcpy(0x009BC677, scenario->details);
 	*((short*)(0x0013CE952 + 0)) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
-	*((short*)(0x0013CE952 + 0)) = *((unsigned char*)(w->var_494 + 0x0120)) + STR_OBJECTIVE_NONE;
-	*((short*)(0x0013CE952 + 2)) = *((short*)(w->var_494 + 0x0126));
-	*((short*)(0x0013CE956 + 0)) = *((unsigned char*)(w->var_494 + 0x0121)) * 8 - 1;
-	*((int*)(0x0013CE956 + 2)) = *((int*)(w->var_494 + 0x0122));
+	*((short*)(0x0013CE952 + 0)) = scenario->objective_type + STR_OBJECTIVE_NONE;
+	*((short*)(0x0013CE952 + 2)) = scenario->objective_arg_3;
+	*((short*)(0x0013CE952 + 4)) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
+	*((int*)(0x0013CE952 + 6)) = scenario->objective_arg_2;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
-	if (!(*((int*)(w->var_494 + 0x0268)) & 2))
-		return;
-	strcpy(0x009BC677, (char*)(w->var_494 + 0x0270));
-	*((short*)(0x0013CE952 + 0)) = 3165;
-	*((int*)(0x0013CE952 + 2)) = *((int*)(w->var_494 + 0x026C));
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
+		strcpy(0x009BC677, scenario->completed_by);
+		*((short*)(0x0013CE952 + 0)) = 3165;
+		*((int*)(0x0013CE952 + 2)) = scenario->company_value;
+		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+	}
 }
 
 static void window_scenarioselect_scrollpaint()
@@ -372,7 +371,7 @@ static void window_scenarioselect_scrollpaint()
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
 		if (scenario->category != w->var_4AC)
 			continue;
-		if (!(scenario->var_0268 & 1))
+		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		if (y > dpi->y + dpi->height)
@@ -390,12 +389,12 @@ static void window_scenarioselect_scrollpaint()
 		gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 1, 0, (void*)0x013CE952);
 
 		// Check if scenario is completed
-		if (scenario->var_0268 & 2) {
+		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 			// Draw completion tick
 			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1);
 
 			// Draw completion score
-			strcpy((char*)0x009BC677, scenario->var_0270);
+			strcpy((char*)0x009BC677, scenario->completed_by);
 			*((short*)0x013CE952) = 2793;
 			*((short*)0x013CE954) = 3165;
 			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);

@@ -34,6 +34,7 @@ enum {
 	MONTH_COUNT
 };
 
+int date_get_total_months(int month, int year);
 void date_reset();
 
 #endif

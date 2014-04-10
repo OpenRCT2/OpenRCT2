@@ -32,6 +32,11 @@ int date_get_year(int months)
 	return months / MONTH_COUNT;
 }
 
+int date_get_total_months(int month, int year)
+{
+	return (year - 1) * MONTH_COUNT + month;
+}
+
 /**
  *
  *  rct2: 0x006C4494
