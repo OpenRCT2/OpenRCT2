@@ -63,7 +63,7 @@ void window_update_all()
 	if (RCT2_GLOBAL(0x009ABDF2, sint8) == 0)
 		return;
 
-	gfx_draw_dirty_blocks();
+	gfx_draw_all_dirty_blocks();
 
 	for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
 		if (w->viewport != NULL)

@@ -28,6 +28,8 @@
 
 uint8 _screenDirtyBlocks[5120];
 
+static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
+
 /**
  * 
  *  rct2: 0x00678998
@@ -219,41 +221,59 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 }
 
 /**
-*
-*  rct2: 0x006E73BE
-*/
-void gfx_draw_dirty_blocks()
+ *
+ *  rct2: 0x006E73BE
+ */
+void gfx_draw_all_dirty_blocks()
 {
-	int i, x, y, yy, yyy;
+	int x, y, xx, yy, columns, rows;
 	short left, top, right, bottom;
 	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
 
-	x = y = i = 0;
-	for (x = 0; x < RCT2_GLOBAL(0x009ABDE8, sint32); x++) {
-		for (y = 0; y < RCT2_GLOBAL(0x009ABDEC, sint32); y++) {
-			if (screenDirtyBlocks[y * RCT2_GLOBAL(0x009ABDE8, sint32) + x] == 0)
+	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
+		for (y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); y++) {
+			if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] == 0)
 				continue;
 
-			for (yy = y; yy < RCT2_GLOBAL(0x009ABDEC, sint32); yy++)
-				if (screenDirtyBlocks[yy * RCT2_GLOBAL(0x009ABDE8, sint32) + x] == 0)
+			// Determine columns
+			for (xx = x; xx < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); xx++)
+				if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
 					break;
-			yy--;
+			columns = xx - x;
 
-			// Reset the dirty blocks
-			for (yyy = y; yyy <= yy; yyy += RCT2_GLOBAL(0x009ABDE8, sint32))
-				screenDirtyBlocks[yyy * RCT2_GLOBAL(0x009ABDE8, sint32) + x] = 0;
-
-			left = x * RCT2_GLOBAL(0x009ABDE4, sint16);
-			top = y * RCT2_GLOBAL(0x009ABDE6, sint16);
-			right = ((x + 1) * RCT2_GLOBAL(0x009ABDE4, sint16));
-			bottom = ((yy + 1) * RCT2_GLOBAL(0x009ABDE4, sint16));
-			if (left < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) && top < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16)) {
-				right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
-				bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
-				gfx_redraw_screen_rect(left, top, right, bottom);
-			}
+			// Check rows
+			for (yy = y; yy < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); yy++)
+				for (xx = x; xx < x + columns; xx++)
+					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
+						goto endRowCheck;
+			
+		endRowCheck:
+			rows = yy - y;
+			gfx_draw_dirty_blocks(x, y, columns, rows);
 		}
 	}
+}
+
+static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
+{
+	int left, top, right, bottom;
+	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+
+	// Unset dirty blocks
+	for (top = y; top < y + rows; top++)
+		for (left = x; left < x + columns; left++)
+			screenDirtyBlocks[top * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + left] = 0;
+
+	// Determine region in pixels
+	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16));
+	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16));
+	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16)));
+	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16)));
+	if (right <= left || bottom <= top)
+		return;
+
+	// Draw region
+	gfx_redraw_screen_rect(left, top, right, bottom);
 }
 
 /**

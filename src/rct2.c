@@ -33,6 +33,7 @@
 #include "intro.h"
 #include "map.h"
 #include "news_item.h"
+#include "object.h"
 #include "osinterface.h"
 #include "park.h"
 #include "rct2.h"
@@ -106,7 +107,7 @@ void rct2_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
-	RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list()
+	object_load_list();
 	scenario_load_list();
 	RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, 253, 0, 0, 0); // track_load_list(253)
 	gfx_load_g1();

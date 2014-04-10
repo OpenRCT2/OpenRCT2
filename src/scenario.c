@@ -241,7 +241,7 @@ static void scenario_scores_save()
 	HANDLE hFile;
 	DWORD bytes_written;
 
-	hFile = CreateFile(get_file_path(32), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
+	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		WriteFile(hFile, (void*)0x009A9FFC, 16, &bytes_written, NULL);
