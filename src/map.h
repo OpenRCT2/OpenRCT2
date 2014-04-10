@@ -23,33 +23,140 @@
 
 #include "rct2.h"
 
+typedef struct {
+	uint8 slope;
+	uint8 terrain;
+	uint8 grass_length;
+	uint8 ownership;
+} rct_map_element_surface_properties;
+
+typedef struct {
+	uint8 type;
+	uint8 additions;
+	uint8 edges;
+	uint8 addition_status;
+} rct_map_element_path_properties;
+
+typedef struct {
+	uint8 type;
+	uint8 sequence;
+	uint8 colour;
+	uint8 ride_index;
+} rct_map_element_track_properties;
+
+typedef struct {
+	uint8 type;
+	uint8 age;
+	uint8 colour;
+	uint8 unused;
+} rct_map_element_scenery_properties;
+
+typedef struct {
+	uint8 type;
+	uint8 index;
+	uint8 path_type;
+	uint8 ride_index;
+} rct_map_element_entrance_properties;
+
+typedef struct {
+	uint8 slope;
+	uint8 item[3];
+} rct_map_element_fence_properties;
+
+typedef struct {
+	uint8 type;
+	uint8 index;
+	uint8 colour[2];
+} rct_map_element_scenerymultiple_properties;
+
+typedef struct {
+	uint8 index;
+	uint8 position;
+	uint8 flags;
+	uint8 unused;
+} rct_map_element_banner_properties;
+
+typedef union {
+	rct_map_element_surface_properties surface;
+	rct_map_element_path_properties path;
+	rct_map_element_track_properties track;
+	rct_map_element_scenery_properties scenery;
+	rct_map_element_entrance_properties entrance;
+	rct_map_element_fence_properties fence;
+	rct_map_element_scenerymultiple_properties scenerymultiple;
+	rct_map_element_banner_properties banner;
+} rct_map_element_properties;
+
 /**
  * Map element structure
  * size: 0x08
  */
 typedef struct {
-	sint8 var_0;
-	sint8 var_1;
-	sint8 var_2;
-	sint8 var_3;
-	sint8 var_4;
-	sint8 var_5;
-	sint8 var_6;
-	sint8 var_7;
+	uint8 type;
+	uint8 flags;
+	uint8 base_height;
+	uint8 clearance_height;
+	rct_map_element_properties properties;
 } rct_map_element;
 
 enum {
-	MAP_ELEMENT_TYPE_UNKNOWN = (0 << 2),
+	MAP_ELEMENT_QUADRANT_SW,
+	MAP_ELEMENT_QUADRANT_NW,
+	MAP_ELEMENT_QUADRANT_NE,
+	MAP_ELEMENT_QUADRANT_SE
+};
+
+enum {
+	MAP_ELEMENT_TYPE_SURFACE = (0 << 2),
 	MAP_ELEMENT_TYPE_PATH = (1 << 2),
 	MAP_ELEMENT_TYPE_TRACK = (2 << 2),
 	MAP_ELEMENT_TYPE_SCENERY = (3 << 2),
 	MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
 	MAP_ELEMENT_TYPE_FENCE = (5 << 2),
-	MAP_ELEMENT_TYPE_SCENERY_M = (6 << 2),
+	MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
 	MAP_ELEMENT_TYPE_BANNER = (7 << 2)
 };
 
+enum {
+	MAP_ELEMENT_DIRECTION_WEST,
+	MAP_ELEMENT_DIRECTION_NORTH,
+	MAP_ELEMENT_DIRECTION_EAST,
+	MAP_ELEMENT_DIRECTION_SOUTH
+};
+
+enum {
+	MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
+};
+
+enum {
+	TERRAIN_GRASS,
+	TERRAIN_SAND,
+	TERRAIN_DIRT,
+	TERRAIN_ROCK,
+	TERRAIN_MARTIAN,
+	TERRAIN_CHECKERBOARD,
+	TERRAIN_DIRTGRASS
+};
+
+enum {
+	PATH_QUEUE,
+	PATH_TARMAC,
+	PATH_DIRT,
+	PATH_CRAZY,
+	PATH_ROAD,
+	PATH_TILE
+};
+
+enum {
+	ENTRANCE_TYPE_RIDE_ENTRANCE,
+	ENTRANCE_TYPE_RIDE_EXIT,
+	ENTRANCE_TYPE_PARK_ENTRANCE
+};
+
+#define MAP_ELEMENT_QUADRANT_MASK 0xC0
 #define MAP_ELEMENT_TYPE_MASK 0x3C
+#define MAP_ELEMENT_DIRECTION_MASK 0x03
+
 #define MAX_MAP_ELEMENTS 196608
 #define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
 

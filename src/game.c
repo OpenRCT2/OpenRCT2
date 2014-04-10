@@ -108,17 +108,6 @@ void game_logic_update()
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
 
-	{
-		int i;
-		rct_map_element *mapElement = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
-		for (i = 0; i < MAX_MAP_ELEMENTS; i++) {
-			if (mapElement->var_0 == 0) {
-				// mapElement->var_0 = 2;
-			}
-			mapElement++;
-		}
-	}
-
 	RCT2_CALLPROC_EBPSAFE(0x0068B089);
 	RCT2_CALLPROC_EBPSAFE(0x006C44B1);	// update_objective
 	RCT2_CALLPROC_EBPSAFE(0x006C46B1);	// update_climate
