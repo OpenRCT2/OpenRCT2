@@ -440,6 +440,15 @@ rct_window *window_get_main()
 }
 
 /**
+ * 
+ *  rct2: 0x0068881A
+ */
+void window_rotate_camera(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, w, 0, 0);
+}
+
+/**
  * Draws a window that is in the specified region.
  *  rct2: 0x006E756C
  * left (ax)

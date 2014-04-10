@@ -22,6 +22,7 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "map.h"
 #include "rct2.h"
 #include "sawyercoding.h"
 #include "scenario.h"
@@ -249,8 +250,6 @@ static void scenario_scores_save()
 	}
 }
 
-void sub_67685F(HFILE hFile, uint32 address);
-
 /**
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
@@ -262,8 +261,9 @@ static int scenario_load_basic(char *path)
 	rct_s6_header *s6Header = 0x009E34E4;
 	rct_s6_info *s6Info = 0x0141F570;
 
-	hFile = CreateFile(path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFile(
+		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
+	);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
 
@@ -294,9 +294,8 @@ static int scenario_load_basic(char *path)
 			loc_67628F :
 				return _eax;
 			}
-		} else {
-			CloseHandle(hFile);
 		}
+		CloseHandle(hFile);
 	}
 
 	RCT2_GLOBAL(0x009AC31B, sint8) = -1;
@@ -306,10 +305,110 @@ static int scenario_load_basic(char *path)
 
 /**
  * 
+ *  rct2: 0x006AA2B7
+ */
+static int object_load_packed()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
+}
+
+/**
+ * 
+ *  rct2: 0x00676053
+ * scenario (ebx)
+ */
+void scenario_load(char *path)
+{
+	HANDLE hFile;
+	int i, j;
+	rct_s6_header *s6Header = 0x009E34E4;
+	rct_s6_info *s6Info = 0x0141F570;
+
+	strcpy(RCT2_ADDRESS(0x0141EF68, char), path);
+	RCT2_CALLPROC_EBPSAFE(0x00676053);
+	return;
+
+	hFile = CreateFile(
+		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
+	);
+	if (hFile != INVALID_HANDLE_VALUE) {
+		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
+
+		// Read first chunk
+		sawyercoding_read_chunk(hFile, s6Header);
+		if (s6Header->type == S6_TYPE_SCENARIO) {
+			// Read second chunk
+			sawyercoding_read_chunk(hFile, s6Info);
+
+			// Read packed objects
+			if (s6Header->num_packed_objects > 0) {
+				j = 0;
+				for (i = 0; i < s6Header->num_packed_objects; i++)
+					j += object_load_packed();
+				if (j > 0)
+					RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list
+			}
+
+			// Read available items (721 * 16)
+			RCT2_CALLPROC_EBPSAFE(0x006AA0C6);
+
+			// Read flags (16 bytes)
+			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+
+			// Read map elements
+			memset(RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_MAP_ELEMENTS);
+
+			// Read game data, including sprites
+			sawyercoding_read_chunk(hFile, 0x010E63B8);
+
+			// Read number of guests in park and something else
+			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_GUESTS_IN_PARK);
+
+			// Read ?
+			sawyercoding_read_chunk(hFile, 0x01357BC8);
+
+			// Read park rating
+			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_PARK_RATING);
+
+			// Read ?
+			sawyercoding_read_chunk(hFile, 0x01357CF2);
+
+			// Read ?
+			sawyercoding_read_chunk(hFile, 0x0135832C);
+
+			// Read ?
+			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_PARK_VALUE);
+
+			// Read more game data, including research items and rides
+			sawyercoding_read_chunk(hFile, 0x01358740);
+
+			CloseHandle(hFile);
+
+			// Check expansion pack
+			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
+
+			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+			map_update_tile_pointers();
+			RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+			return;
+		}
+
+		CloseHandle(hFile);
+	}
+
+	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+	RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+}
+
+/**
+ * 
  *  rct2: 0x00678282
  * scenario (ebx)
  */
-void scenario_load(rct_scenario_basic *scenario)
+void scenario_load_and_play(rct_scenario_basic *scenario)
 {
 	RCT2_CALLPROC_X(0x00678282, 0, scenario, 0, 0, 0, 0, 0);
 }

@@ -283,6 +283,8 @@ rct_window *window_bring_to_front(rct_window *w);
 
 rct_window *window_get_main();
 
+void window_rotate_camera(rct_window *w);
+
 void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 

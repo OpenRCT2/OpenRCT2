@@ -108,6 +108,7 @@ enum {
 };
 
 void scenario_load_list();
-void scenario_load(rct_scenario_basic *scenario);
+void scenario_load(char *path);
+void scenario_load_and_play(rct_scenario_basic *scenario);
 
 #endif

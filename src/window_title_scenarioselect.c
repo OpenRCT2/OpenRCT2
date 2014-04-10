@@ -242,7 +242,7 @@ static void window_scenarioselect_scrollmousedown()
 			continue;
 
 		sound_play_panned(4, w->width / 2 + w->x);
-		scenario_load(scenario);
+		scenario_load_and_play(scenario);
 		break;
 	}
 }

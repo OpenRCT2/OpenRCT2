@@ -157,11 +157,15 @@ enum {
 #define MAP_ELEMENT_TYPE_MASK 0x3C
 #define MAP_ELEMENT_DIRECTION_MASK 0x03
 
+#define MAP_ELEMENT_SLOPE_MASK 0x1F
+#define MAP_ELEMENT_WATER_HEIGHT_MASK 0x1F
+
 #define MAX_MAP_ELEMENTS 196608
 #define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
 
 #define TILE_UNDEFINED_MAP_ELEMENT -1
 
 void map_init();
+void map_update_tile_pointers();
 
 #endif

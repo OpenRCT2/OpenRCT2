@@ -61,7 +61,7 @@ void map_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
 	RCT2_GLOBAL(0x01358836, sint16) = 4767;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
-	tiles_init();
+	map_update_tile_pointers();
 	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);
 
 	climate_reset(CLIMATE_WARM);
@@ -71,7 +71,7 @@ void map_init()
  * 
  *  rct2: 0x0068AFFD
  */
-static void tiles_init()
+void map_update_tile_pointers()
 {
 	int i, x, y, lastTile;
 
@@ -92,4 +92,37 @@ static void tiles_init()
 
 	// Possible next free map element
 	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
+}
+
+/**
+ * 
+ *  rct2: 0x00662783
+ * UNFINISHED
+ */
+int sub_662783(int x, int y)
+{
+	int i;
+	rct_map_element *mapElement;
+
+	if (x >= 8192 || y >= 8192)
+		return 16;
+
+	x &= 0xFFFFFFE0;
+	y &= 0xFFFFFFE0;
+
+	i = ((y * 256) + x) / 8;
+
+	mapElement = TILE_MAP_ELEMENT_POINTER(i);
+	while (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
+		mapElement++;
+	}
+
+	uint32 result =
+		((mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 20) |
+		(mapElement->base_height << 3);
+
+	uint32 ebx = (mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) & ~0x16;
+	// slope logic
+
+	return result;
 }
