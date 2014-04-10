@@ -23,6 +23,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "map.h"
+#include "object.h"
 #include "rct2.h"
 #include "sawyercoding.h"
 #include "scenario.h"
@@ -305,17 +306,6 @@ static int scenario_load_basic(char *path)
 
 /**
  * 
- *  rct2: 0x006AA2B7
- */
-static int object_load_packed()
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax;
-}
-
-/**
- * 
  *  rct2: 0x00676053
  * scenario (ebx)
  */
@@ -325,10 +315,6 @@ void scenario_load(char *path)
 	int i, j;
 	rct_s6_header *s6Header = 0x009E34E4;
 	rct_s6_info *s6Info = 0x0141F570;
-
-	strcpy(RCT2_ADDRESS(0x0141EF68, char), path);
-	RCT2_CALLPROC_EBPSAFE(0x00676053);
-	return;
 
 	hFile = CreateFile(
 		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
@@ -348,11 +334,10 @@ void scenario_load(char *path)
 				for (i = 0; i < s6Header->num_packed_objects; i++)
 					j += object_load_packed();
 				if (j > 0)
-					RCT2_CALLPROC_EBPSAFE(0x006A8B40); // object_load_list
+					object_load_list();
 			}
 
-			// Read available items (721 * 16)
-			RCT2_CALLPROC_EBPSAFE(0x006AA0C6);
+			object_read_and_load_entries(hFile);
 
 			// Read flags (16 bytes)
 			sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_MONTH_YEAR);

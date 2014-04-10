@@ -80,11 +80,11 @@ static int decode_chunk_rle(char *buffer, int length)
 		rleCodeByte = src[i];
 		if (rleCodeByte & 128) {
 			i++;
-			count = 1 - rleCodeByte + 256;
+			count = 257 - rleCodeByte;
 			for (j = 0; j < count; j++)
 				*dst++ = src[i];
 		} else {
-			for (j = 0; j < rleCodeByte; j++)
+			for (j = 0; j <= rleCodeByte; j++)
 				*dst++ = src[++i];
 		}
 	}
@@ -114,7 +114,7 @@ static int decode_chunk_repeat(char *buffer, int length)
 		if (src[i] == 0xFF) {
 			*dst++ = src[++i];
 		} else {
-			count = src[i] & 7;
+			count = (src[i] & 7) + 1;
 			copyOffset = dst + (int)(src[i] >> 3) - 32;
 			for (j = 0; j < count; j++)
 				*dst++ = *copyOffset++;

@@ -26,6 +26,7 @@
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\news_item.h" />
+    <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\osinterface.h" />
     <ClInclude Include="..\src\park.h" />
     <ClInclude Include="..\src\peep.h" />
@@ -55,6 +56,7 @@
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\news_item.c" />
+    <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\osinterface.c" />
     <ClCompile Include="..\src\park.c" />
     <ClCompile Include="..\src\peep.c" />
