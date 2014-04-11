@@ -45,6 +45,7 @@ int _dropdown_highlighted_index;
 
 uint16 gDropdownItemsFormat[64];
 sint32 gDropdownItemsArgs[64];
+uint32 gDropdownItemsChecked;
 
 static void window_dropdown_emptysub() { }
 static void window_dropdown_paint();
@@ -145,7 +146,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	// Input state
 	_dropdown_highlighted_index = -1;
 	RCT2_GLOBAL(0x009DED34, sint32) = 0;
-	RCT2_GLOBAL(0x009DED38, sint32) = 0;
+	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
@@ -211,7 +212,7 @@ static void window_dropdown_paint()
 				} else {
 					// Text item
 					if (i < 32)
-						if (RCT2_GLOBAL(0x009DED38, uint32) & (1 << i))
+						if (gDropdownItemsChecked & (1 << i))
 							item++;
 
 					// Calculate colour

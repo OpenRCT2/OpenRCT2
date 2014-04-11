@@ -127,4 +127,6 @@ void *rct2_malloc(size_t numBytes);
 void *rct2_realloc(void *block, size_t numBytes);
 void rct2_free(void *block);
 
+void show_gridlines();
+
 #endif

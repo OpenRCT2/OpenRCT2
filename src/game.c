@@ -25,6 +25,22 @@
 #include "peep.h"
 #include "window.h"
 
+void window_main_open();
+void window_top_toolbar_open();
+void window_bottom_toolbar_open();
+
+/**
+ * 
+ *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
+ */
+void game_create_windows()
+{
+	window_main_open();
+	window_top_toolbar_open();
+	window_bottom_toolbar_open();
+	RCT2_CALLPROC_EBPSAFE(0x0066B905);
+}
+
 void game_update()
 {
 	int eax, tmp;
@@ -97,7 +113,7 @@ void game_update()
 		}
 	}
 }
-#include "map.h"
+
 void game_logic_update()
 {
 	short _bx, _dx;

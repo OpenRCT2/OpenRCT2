@@ -57,4 +57,8 @@ typedef enum {
 void widget_scroll_update_thumbs(rct_window *w, int widget_index);
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
+int widget_is_disabled(rct_window *w, int widgetIndex);
+int widget_is_pressed(rct_window *w, int widgetIndex);
+int widget_is_highlighted(rct_window *w, int widgetIndex);
+
 #endif

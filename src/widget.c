@@ -33,9 +33,6 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour);
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour);
-static int widget_is_disabled(rct_window *w, int widgetIndex);
-static int widget_is_pressed(rct_window *w, int widgetIndex);
-static int widget_is_highlighted(rct_window *w, int widgetIndex);
 
 /**
  * 
@@ -554,12 +551,12 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
 }
 
-static int widget_is_disabled(rct_window *w, int widgetIndex)
+int widget_is_disabled(rct_window *w, int widgetIndex)
 {
 	return w->disabled_widgets & (1LL << widgetIndex);
 }
 
-static int widget_is_pressed(rct_window *w, int widgetIndex)
+int widget_is_pressed(rct_window *w, int widgetIndex)
 {
 	int inputState = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8);
 
@@ -578,7 +575,7 @@ static int widget_is_pressed(rct_window *w, int widgetIndex)
 	return 0;
 }
 
-static int widget_is_highlighted(rct_window *w, int widgetIndex)
+int widget_is_highlighted(rct_window *w, int widgetIndex)
 {
 	return 0;
 }

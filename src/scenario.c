@@ -22,12 +22,16 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "game.h"
 #include "map.h"
+#include "news_item.h"
 #include "object.h"
+#include "park.h"
 #include "rct2.h"
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "strings.h"
+#include "viewport.h"
 
 #define UNINITIALISED_SCENARIO_LIST ((rct_scenario_basic*)-1)
 
@@ -395,5 +399,69 @@ void scenario_load(char *path)
  */
 void scenario_load_and_play(rct_scenario_basic *scenario)
 {
-	RCT2_CALLPROC_X(0x00678282, 0, scenario, 0, 0, 0, 0, 0);
+	rct_window *mainWindow;
+	rct_s6_info *s6Info = 0x0141F570;
+
+	RCT2_GLOBAL(0x009AA0F0, uint32) = RCT2_GLOBAL(0x00F663B0, uint32) ^ timeGetTime();
+	RCT2_GLOBAL(0x009AA0F4, uint32) = RCT2_GLOBAL(0x00F663B4, uint32) ^ timeGetTime();
+	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
+
+	subsitute_path(
+		RCT2_ADDRESS(0x0141EF68, char),
+		RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char),
+		scenario->path
+	);
+	scenario_load(0x0141EF68);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	viewport_init_all();
+	game_create_windows();
+	mainWindow = window_get_main();
+
+	mainWindow->var_4B0 = -1;
+	mainWindow->var_4B2 = RCT2_GLOBAL(0x0138869A, sint16);
+	mainWindow->var_4B4 = RCT2_GLOBAL(0x0138869C, sint16);
+
+	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
+	*((char*)(&RCT2_GLOBAL(0x0141E9E0, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	if (_cl != 0) {
+		if (_cl < 0) {
+			_cl = -_cl;
+			mainWindow->viewport->view_width >>= _cl;
+			mainWindow->viewport->view_height >>= _cl;
+		} else {
+			mainWindow->viewport->view_width <<= _cl;
+			mainWindow->viewport->view_height <<= _cl;
+		}
+	}
+	mainWindow->var_4B2 -= mainWindow->viewport->view_width >> 1;
+	mainWindow->var_4B4 -= mainWindow->viewport->view_height >> 1;
+	window_invalidate(mainWindow);
+
+	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+
+	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
+	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
+	RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
+	RCT2_GLOBAL(0x013573E4, sint32) &= 0xFFFFF7FF;
+	if (RCT2_GLOBAL(0x013573E4, sint32) & 0x20000)
+		RCT2_GLOBAL(0x013573E4, sint32) |= 0x800;
+	RCT2_CALLPROC_EBPSAFE(0x00684AC3);
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	news_item_init_queue();
+	if (RCT2_ADDRESS(0x013580F8, uint8) != OBJECTIVE_NONE)
+		RCT2_CALLPROC_EBPSAFE(0x00667E57); // window_park_page_6_open();
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint16) = calculate_park_value();
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint16) = calculate_company_value();
+	RCT2_GLOBAL(0x013587D0, sint16) = RCT2_GLOBAL(0x013573DC, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint16) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
+	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+
+	strcpy(0x0135924A, s6Info->details);
+	strcpy(0x0135920A, s6Info->name);
+
+	RCT2_CALLPROC_EBPSAFE(0x00678461);
 }

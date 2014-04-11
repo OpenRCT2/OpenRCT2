@@ -21,6 +21,12 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+enum {
+	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
+	CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS = (1 << 1),
+	CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE = (1 << 2)	
+};
+
 void config_load();
 
 #endif

@@ -23,6 +23,25 @@
 
 #include "window.h"
 
+enum {
+	VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),
+	VIEWPORT_FLAG_SEETHROUGH_RIDES = (1 << 1),
+	VIEWPORT_FLAG_SEETHROUGH_SCENERY = (1 << 2),
+	VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1 << 3),
+	VIEWPORT_FLAG_LAND_HEIGHTS = (1 << 4),
+	VIEWPORT_FLAG_TRACK_HEIGHTS = (1 << 5),
+	VIEWPORT_FLAG_PATH_HEIGHTS = (1 << 6),
+	VIEWPORT_FLAG_GRIDLINES = (1 << 7),
+	VIEWPORT_FLAG_LAND_OWNERSHIP = (1 << 8),
+	VIEWPORT_FLAG_9 = (1 << 9),
+	VIEWPORT_FLAG_10 = (1 << 10),
+	VIEWPORT_FLAG_INVISIBLE_PEEPS = (1 << 11),
+	VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
+	VIEWPORT_FLAG_HIDE_VERTICAL = (1 << 13),
+	VIEWPORT_FLAG_INVISIBLE_SPRITES = (1 << 14),
+	VIEWPORT_FLAG_15 = (1 << 15)
+};
+
 void viewport_init_all();
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
