@@ -22,6 +22,7 @@
 #include "climate.h"
 #include "news_item.h"
 #include "park.h"
+#include "peep.h"
 #include "sprites.h"
 #include "strings.h"
 #include "widget.h"
@@ -62,8 +63,7 @@ rct_widget window_game_bottom_toolbar_widgets[] = {
 
 static void window_game_bottom_toolbar_emptysub() { }
 static void window_game_bottom_toolbar_mouseup();
-static void window_game_bottom_toolbar_mousedown();
-static void window_game_bottom_toolbar_dropdown();
+static void window_game_bottom_toolbar_tooltip();
 static void window_game_bottom_toolbar_invalidate();
 static void window_game_bottom_toolbar_paint();
 
@@ -77,8 +77,6 @@ static uint32 window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_mouseup,
 	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_mousedown,
-	window_game_bottom_toolbar_dropdown,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
@@ -97,6 +95,8 @@ static uint32 window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_tooltip,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_invalidate,
@@ -133,19 +133,92 @@ void window_game_bottom_toolbar_open()
 	window->colours[2] = 0;
 }
 
+/**
+ * 
+ *  rct2: 0x0066C588
+ */
 static void window_game_bottom_toolbar_mouseup()
 {
+	short widgetIndex;
+	rct_window *w, *mainWindow;
+	rct_news_item *newsItem;
 
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	switch (widgetIndex) {
+	case WIDX_LEFT_OUTSET:
+	case WIDX_MONEY:
+		if (!(RCT2_GLOBAL(0x013573E4, uint32) & 0x800))
+			RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		break;
+	case WIDX_GUESTS:
+		RCT2_CALLPROC_EBPSAFE(0x00667D35);
+		break;
+	case WIDX_PARK_RATING:
+		RCT2_CALLPROC_EBPSAFE(0x00667CA4);
+		break;
+	case WIDX_MIDDLE_INSET:
+		news_item_close_current();
+		break;
+	case WIDX_NEWS_SUBJECT:
+		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
+		RCT2_CALLPROC_X(0x0066EBE6, 0, newsItem->type, newsItem->assoc, 0, 0, 0, 0);
+		break;
+	case WIDX_NEWS_LOCATE:
+		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
+		if (newsItem->type == NEWS_ITEM_NULL)
+			break;
+
+		{
+			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+			ecx = newsItem->assoc;
+			edx = newsItem->type;
+			RCT2_CALLFUNC_X(0x0066BA74, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			if ((eax & 0xFFFF) == 0x8000)
+				break;
+
+			if ((mainWindow = window_get_main()) != NULL)
+				window_scroll_to_location(mainWindow, eax & 0xFFFF, ecx & 0xFFFF, edx & 0xFFFF);
+		}
+		break;
+	case WIDX_RIGHT_OUTSET:
+	case WIDX_DATE:
+		RCT2_CALLPROC_EBPSAFE(0x0066E464);
+		break;
+	}
 }
 
-static void window_game_bottom_toolbar_mousedown()
+static void window_game_bottom_toolbar_tooltip()
 {
+	int month, day;
+	short widgetIndex;
+	rct_window *w, *mainWindow;
+	rct_news_item *newsItem;
 
-}
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
 
-static void window_game_bottom_toolbar_dropdown()
-{
+	switch (widgetIndex) {
+	case WIDX_MONEY:
+		*((int*)0x013CE952) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
+		*((int*)0x013CE956) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+		widgetIndex = 0;
+		break;
+	case WIDX_PARK_RATING:
+		*((short*)0x013CE952) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+		widgetIndex = 0;
+		break;
+	case WIDX_DATE:
+		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_DAY, sint16) * ((short*)0x00993988)[month]) >> 16) & 0xFF;
+		*((short*)0x013CE952) = STR_DATE_DAY_1 + day;
+		*((short*)0x013CE954) = STR_MONTH_MARCH + month;
+		widgetIndex = 0;
+		break;
+	}
 
+	__asm mov dx, widgetIndex
 }
 
 /**
@@ -386,9 +459,138 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x0066BFA5
+ */
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
+	int x, y;
+	rct_news_item *newsItem;
 
+	newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
+
+	// Current news item
+	gfx_fill_rect_inset(
+		dpi,
+		w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + 1,
+		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + 1,
+		w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right - 1,
+		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom - 1,
+		w->colours[2],
+		48
+	);
+
+	// Text
+	memcpy((void*)0x009B5F2C, &newsItem->colour, 256);
+	RCT2_CALLPROC_X(
+		0x006C1F57,
+		14,
+		1926,
+		(window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right) / 2 + w->x,
+		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + 11,
+		0,
+		dpi,
+		(newsItem->ticks << 16) | (window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right - window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left - 62)
+	);
+
+	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
+	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
+	switch (newsItem->type) {
+	case NEWS_ITEM_RIDE:
+		gfx_draw_sprite(dpi, SPR_RIDE, x, y);
+		break;
+	case NEWS_ITEM_PEEP_1:
+	case NEWS_ITEM_PEEP_2:
+		if (newsItem->flags & 1)
+			break;
+
+		/*
+		_edi = (int)e->paint.dpi;
+		_cx = x;
+		_dx = y;
+		__asm {
+		mov cx, _cx
+		mov dx, _dx
+		mov esi, w
+		mov edi, _edi
+		push ebp
+		mov ebp, 0066C3B8h
+		push after
+		push esi
+		jmp ebp
+		after:
+		pop ebp
+		}
+		break;
+		*/
+
+		//_ax = x + 1;
+		//_cx = y + 1;
+		//_edi = (int)dpi;
+		//__asm {
+		//	mov edi, _edi
+		//		mov ax, _ax
+		//		mov cx, _cx
+		//		mov bx, 22
+		//		mov dx, 22
+		//		push ebp
+		//}
+		//sub_6EE53B();
+		//__asm {
+		//	pop ebp
+		//		mov dpi, edi
+		//}
+		//if (dpi == NULL)
+		//	break;
+
+		//x = 10;
+		//y = 19;
+
+		//peep = &rctmem->sprites[*((short*)&newsItem->assoc)].peep;
+		//if (peep->type == PEEP_TYPE_STAFF && peep->var_2F == 3)
+		//	y += 3;
+
+		//_eax = *((int*)(0x00982708 + (peep->sprite_type * 8)));
+		//_ebx = w->var_48E & 0xFFFFFFFC;
+		//_ebx += *((int*)_eax);
+		//_ebx++;
+
+		//gfx_draw_sprite(dpi, _ebx | (peep->var_30 << 19) | (peep->var_31 << 24) | 0xA0000000, x, y);
+
+		//if (_ebx >= 0x2A1D && _ebx >= 0x2A3D) {
+		//	_ebx += 32;
+		//	_ebx |= 0x20000000;
+		//	_ebx |= peep->balloon_colour << 19;
+		//	gfx_draw_sprite(dpi, _ebx, x, y);
+		//} else if (_ebx >= 0x2BBD && _ebx >= 0x2BDD) {
+		//	_ebx += 32;
+		//	_ebx |= 0x20000000;
+		//	_ebx |= peep->umbrella_colour << 19;
+		//	gfx_draw_sprite(dpi, _ebx, x, y);
+		//} else if (_ebx >= 0x29DD && _ebx >= 0x29FD) {
+		//	_ebx += 32;
+		//	_ebx |= 0x20000000;
+		//	_ebx |= peep->hat_colour << 19;
+		//	gfx_draw_sprite(dpi, _ebx, x, y);
+		//} else {
+
+		//}
+
+		break;
+	case NEWS_ITEM_MONEY:
+		gfx_draw_sprite(dpi, SPR_FINANCE, x, y);
+	case NEWS_ITEM_SCENERY:
+		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y);
+		break;
+	case NEWS_ITEM_PEEPS:
+		gfx_draw_sprite(dpi, SPR_GUESTS, x, y);
+	case NEWS_ITEM_AWARD:
+		gfx_draw_sprite(dpi, SPR_AWARD, x, y);
+	case NEWS_ITEM_GRAPH:
+		gfx_draw_sprite(dpi, SPR_GRAPH, x, y);
+		break;
+	}
 }
 
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w)

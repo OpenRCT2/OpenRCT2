@@ -64,7 +64,7 @@ void editor_load()
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
-	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~0x08;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
@@ -111,7 +111,7 @@ void trackdesigner_load()
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
-	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~0x08;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
@@ -149,7 +149,7 @@ void trackmanager_load()
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
-	RCT2_CALLPROC_X(0x006E7C9C, 0x960, 0, 0x960, 0x70, mainWindow, 0, 0);
+	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~0x08;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();

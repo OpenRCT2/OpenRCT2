@@ -206,7 +206,7 @@ static void title_update_showcase()
 				// Update viewport
 				w = window_get_main();
 				if (w != NULL) {
-					RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, _edx, w, 0, 0);
+					window_scroll_to_location(w, x, y, _edx);
 					w->flags &= ~0x08;
 					viewport_update_position(w);
 				}

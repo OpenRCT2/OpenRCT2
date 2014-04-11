@@ -29,6 +29,19 @@ union rct_window_event;
 
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 
+typedef sint8 rct_windowclass;
+typedef sint16 rct_windownumber;
+
+typedef struct {
+	rct_windowclass classification;
+	rct_windownumber number;
+} window_identifier;
+
+typedef struct {
+	window_identifier window;
+	int widget_index;
+} widget_identifier;
+
 /**
  * Widget structure
  * size: 0x10
@@ -43,19 +56,6 @@ typedef struct {
 	uint32 image;					// 0x0A
 	uint16 tooltip;					// 0x0E
 } rct_widget;
-
-typedef sint8 rct_windowclass;
-typedef sint16 rct_windownumber;
-
-typedef struct {
-	rct_windowclass classification;
-	rct_windownumber number;
-} window_identifier;
-
-typedef struct {
-	window_identifier window;
-	int widget_index;
-} widget_identifier;
 
 /**
  * Viewport structure
@@ -74,34 +74,6 @@ typedef struct {
 	uint8 var_11;
 	uint16 flags;					// 0x12
 } rct_viewport;
-
-enum {
-	HSCROLLBAR_VISIBLE = (1 << 0),
-	HSCROLLBAR_THUMB_PRESSED = (1 << 1),
-	HSCROLLBAR_LEFT_PRESSED = (1 << 2),
-	HSCROLLBAR_RIGHT_PRESSED = (1 << 3),
-	VSCROLLBAR_VISIBLE = (1 << 4),
-	VSCROLLBAR_THUMB_PRESSED = (1 << 5),
-	VSCROLLBAR_UP_PRESSED = (1 << 6),
-	VSCROLLBAR_DOWN_PRESSED = (1 << 7),
-};
-
-#define SCROLLBAR_SIZE			16
-
-enum {
-	SCROLL_PART_NONE = -1,
-	SCROLL_PART_VIEW = 0,
-	SCROLL_PART_HSCROLLBAR_LEFT = 1,
-	SCROLL_PART_HSCROLLBAR_RIGHT = 2,
-	SCROLL_PART_HSCROLLBAR_LEFT_TROUGH = 3,
-	SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH = 4,
-	SCROLL_PART_HSCROLLBAR_THUMB = 5,
-	SCROLL_PART_VSCROLLBAR_TOP = 6,
-	SCROLL_PART_VSCROLLBAR_BOTTOM = 7,
-	SCROLL_PART_VSCROLLBAR_TOP_TROUGH = 8,
-	SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH = 9,
-	SCROLL_PART_VSCROLLBAR_THUMB = 10,
-};
 
 typedef struct {
 	uint16 flags;				// 0x00
@@ -216,6 +188,34 @@ typedef enum {
 } WINDOW_FLAGS;
 
 enum {
+	HSCROLLBAR_VISIBLE = (1 << 0),
+	HSCROLLBAR_THUMB_PRESSED = (1 << 1),
+	HSCROLLBAR_LEFT_PRESSED = (1 << 2),
+	HSCROLLBAR_RIGHT_PRESSED = (1 << 3),
+	VSCROLLBAR_VISIBLE = (1 << 4),
+	VSCROLLBAR_THUMB_PRESSED = (1 << 5),
+	VSCROLLBAR_UP_PRESSED = (1 << 6),
+	VSCROLLBAR_DOWN_PRESSED = (1 << 7),
+};
+
+#define SCROLLBAR_SIZE			16
+
+enum {
+	SCROLL_PART_NONE = -1,
+	SCROLL_PART_VIEW = 0,
+	SCROLL_PART_HSCROLLBAR_LEFT = 1,
+	SCROLL_PART_HSCROLLBAR_RIGHT = 2,
+	SCROLL_PART_HSCROLLBAR_LEFT_TROUGH = 3,
+	SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH = 4,
+	SCROLL_PART_HSCROLLBAR_THUMB = 5,
+	SCROLL_PART_VSCROLLBAR_TOP = 6,
+	SCROLL_PART_VSCROLLBAR_BOTTOM = 7,
+	SCROLL_PART_VSCROLLBAR_TOP_TROUGH = 8,
+	SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH = 9,
+	SCROLL_PART_VSCROLLBAR_THUMB = 10,
+};
+
+enum {
 	INPUT_STATE_RESET = 0,
 	INPUT_STATE_NORMAL = 1,
 	INPUT_STATE_WIDGET_PRESSED = 2,
@@ -283,6 +283,7 @@ rct_window *window_bring_to_front(rct_window *w);
 
 rct_window *window_get_main();
 
+void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w);
 
 void window_draw(rct_window *w, int left, int top, int right, int bottom);

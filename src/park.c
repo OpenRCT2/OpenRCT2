@@ -39,6 +39,13 @@ void park_init()
  */
 int calculate_park_rating()
 {
+	{
+		int eax, ebx, ecx, edx, esi, edi, ebp;
+		RCT2_CALLFUNC_X(0x00669EAA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		return eax & 0xFFFF;
+	}
+
+
 	int result;
 
 	result = 1150;

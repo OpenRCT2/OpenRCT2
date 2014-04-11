@@ -33,6 +33,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour);
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour);
+static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
 /**
  * 
@@ -208,34 +209,16 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	// ?
 	if (widget->image == -2) {
+		// Draw border with no fill
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | 0x10);
 		return;
 	}
 
-	// Draw the button
+	// Draw the border with fill
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
-	if (widget->image == -1)
-		return;
-
-	// Draw the image
-	image = widget->image;
-	if (!widget_is_disabled(w, widgetIndex)) {
-		if (image & 0x80000000) {
-			// ?
-		}
-
-		if (image & 0x40000000)
-			image &= ~0x40000000;
-		else
-			image |= colour << 19;
-
-		gfx_draw_sprite(dpi, image, l, t);
-	} else {
-		// ?
-	}
+	widget_draw_image(dpi, w, widgetIndex);
 }
 
 /**
@@ -257,8 +240,18 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 		return;
 
 	// Check if tab is disabled
-	if (widget_is_disabled(w, widgetIndex))
+	if (!widget_is_disabled(w, widgetIndex)) {
+		widget_draw_image(dpi, w, widgetIndex);
 		return;
+	}
+
+	if (widget->type == WWT_TAB)
+		return;
+
+	if (widget->type != WWT_TRNBTN) {
+		widget_draw_image(dpi, w, widgetIndex);
+		return;
+	}
 
 	// Resolve the absolute ltrb
 	l = w->x + widget->left;
@@ -266,20 +259,12 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	r = w->x + widget->right;
 	b = w->y + widget->bottom;
 
-	// Get the colour
-	colour = w->colours[widget->colour];
+	// Get the colour and image
+	colour = w->colours[widget->colour] << 19;
+	image = widget->image + 2;
 
-	// Check if the tab is pressed down
-	image = widget->image;
-	if (widget_is_pressed(w, widgetIndex))
-		image++;
-
-	if (image & 0x40000000)
-		image &= ~0x40000000;
-	else
-		image |= colour << 19;
-
-	gfx_draw_sprite(dpi, image, l, t);
+	// Draw coloured image
+	gfx_draw_sprite(dpi, image | colour, l, t);
 }
 
 /**
@@ -289,9 +274,14 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, state;
+	int l, t, r, b, press;
 	uint32 image;
 	uint8 colour;
+
+	if (!widget_is_disabled(w, widgetIndex) && widget_is_highlighted(w, widgetIndex)) {
+		widget_button_draw(dpi, w, widgetIndex);
+		return;
+	}
 
 	// Get the widget
 	widget = &w->widgets[widgetIndex];
@@ -302,22 +292,23 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 	r = w->x + widget->right;
 	b = w->y + widget->bottom;
 
-	// Check if the button is pressed down
-	state = 0;
-	if (widget_is_pressed(w, widgetIndex))
-		state = 1;
-
-	// Check if the button is highlighted
-	if (state == 0 && widget_is_highlighted(w, widgetIndex))
-		state = 2;
-
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	if (state == 1)
+	// Check if the button is pressed down
+	if (widget_is_pressed(w, widgetIndex)) {
+		if (widget->image == -2) {
+			// Draw border with no fill
+			gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | 0x10);
+			return;
+		}
+
+		// Draw the border with fill
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20);
-	else if (state == 2)
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x10);
+	}
+
+	// Draw image
+	widget_draw_image(dpi, w, widgetIndex);
 }
 
 /**
@@ -551,6 +542,48 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
 }
 
+static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	int l, t, r, b, colour, image;
+	rct_widget *widget;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Get the image
+	image = widget->image;
+	if (image == -1)
+		return;
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	if (widget->type == WWT_4 || widget->type == WWT_6 || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
+		if (widget_is_pressed(w, widgetIndex))
+			image++;
+
+	if (!widget_is_disabled(w, widgetIndex)) {
+		if (image & 0x80000000) {
+			// ?
+		}
+
+		if (image & 0x40000000)
+			image &= ~0x40000000;
+		else
+			image |= colour << 19;
+
+		gfx_draw_sprite(dpi, image, l, t);
+	} else {
+		// ?
+	}
+}
+
 int widget_is_disabled(rct_window *w, int widgetIndex)
 {
 	return w->disabled_widgets & (1LL << widgetIndex);
@@ -577,5 +610,11 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 
 int widget_is_highlighted(rct_window *w, int widgetIndex)
 {
-	return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) != w->classification)
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) != w->number)
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) != widgetIndex)
+		return 0;
+	return 1;
 }

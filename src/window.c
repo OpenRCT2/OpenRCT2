@@ -441,6 +441,15 @@ rct_window *window_get_main()
 
 /**
  * 
+ *  rct2: 0x006E7C9C
+ */
+void window_scroll_to_location(rct_window *w, int x, int y, int z)
+{
+	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z , w, 0, 0);
+}
+
+/**
+ * 
  *  rct2: 0x0068881A
  */
 void window_rotate_camera(rct_window *w)
