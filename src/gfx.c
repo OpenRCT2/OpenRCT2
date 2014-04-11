@@ -24,6 +24,7 @@
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
+#include "strings.h"
 #include "window.h"
 
 uint8 _screenDirtyBlocks[5120];
@@ -432,6 +433,25 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, in
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	return (sint16)(edx & 0xFFFF) - y;
+}
+
+/**
+ * Draws i formatted text string.
+ *  rct2: 0x006C1B2F
+ * dpi (edi)
+ * format (bx)
+ * args (esi)
+ * colour (al)
+ * x (cx)
+ * y (dx)
+ */
+void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+{
+	char* buffer;
+
+	buffer = (char*)0x0141ED68;
+	format_string(buffer, format, args);
+	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
 /**

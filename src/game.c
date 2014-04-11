@@ -26,8 +26,8 @@
 #include "window.h"
 
 void window_main_open();
-void window_top_toolbar_open();
-void window_bottom_toolbar_open();
+void window_game_top_toolbar_open();
+void window_game_bottom_toolbar_open();
 
 /**
  * 
@@ -36,8 +36,8 @@ void window_bottom_toolbar_open();
 void game_create_windows()
 {
 	window_main_open();
-	window_top_toolbar_open();
-	window_bottom_toolbar_open();
+	window_game_top_toolbar_open();
+	window_game_bottom_toolbar_open();
 	RCT2_CALLPROC_EBPSAFE(0x0066B905);
 }
 

@@ -146,7 +146,6 @@
 #define RCT2_ADDRESS_OS_TIME_YEAR					0x01424320
 #define RCT2_ADDRESS_OS_TIME_DAYOFWEEK				0x01423B20
 
-
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
 	__asm push ebp

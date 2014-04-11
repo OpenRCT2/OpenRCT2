@@ -22,6 +22,11 @@
 #include "date.h"
 #include "rct2.h"
 
+int climate_celcius_to_fahrenheit(int celcius)
+{
+	return (celcius * 29) / 16 + 32;
+}
+
 /**
  *
  *  rct2: 0x006C45ED

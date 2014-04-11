@@ -24,6 +24,7 @@
 #include "rct2.h"
 #include "window.h"
 
+void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
 /**
@@ -40,7 +41,7 @@ void news_item_init_queue()
 	for (i = 0; i < 16; i++)
 		RCT2_ADDRESS(0x01358750, uint8)[i] = 0;
 
-	RCT2_CALLPROC_EBPSAFE(0x0066BB79); // window_game_bottom_toolbar_invalidate_news_item();
+	window_game_bottom_toolbar_invalidate_news_item();
 }
 
 /**
@@ -85,7 +86,7 @@ void news_item_update_current()
 	if (newsItems[0].type == 0)
 		return;
 
-	RCT2_CALLPROC_EBPSAFE(0x0066BB79); // window_game_bottom_toolbar_invalidate_news_item();
+	window_game_bottom_toolbar_invalidate_news_item();
 
 	// Update the current news item
 	newsItems[0].ticks++;
@@ -138,7 +139,7 @@ void news_item_close_current()
 	newsItems[10].type = NEWS_ITEM_NULL;
 
 	// Invalidate current news item bar
-	RCT2_CALLPROC_EBPSAFE(0x0066BB79); // window_game_bottom_toolbar_invalidate_news_item();
+	window_game_bottom_toolbar_invalidate_news_item();
 }
 
 /**
