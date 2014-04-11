@@ -29,7 +29,9 @@
  */
 typedef struct {
 	uint8 type;						// 0x000
-	uint8 pad_001[0xEF];
+	uint8 pad_001[0x4F];
+	uint16 var_050;					// 0x050
+	uint8 pad_052[0x9E];
 	sint16 excitement;				// 0x0F0
 	sint16 intensity;				// 0x0F2
 	sint16 nausea;					// 0x0F4

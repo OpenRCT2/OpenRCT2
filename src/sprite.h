@@ -33,9 +33,9 @@ typedef struct {
 	uint16 pad_02;
 	uint16 next;					// 0x04
 	uint8 pad_06[0x08];
-	sint16 var_0E;
-	sint16 var_10;
-	sint16 var_12;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 } rct_unk_sprite;
 
 typedef struct {

@@ -22,6 +22,8 @@
 #include "audio.h"
 #include "news_item.h"
 #include "rct2.h"
+#include "ride.h"
+#include "sprite.h"
 #include "window.h"
 
 void window_game_bottom_toolbar_invalidate_news_item();
@@ -160,4 +162,53 @@ static int news_item_get_new_history_slot()
 	for (i = 11; i < 60; i++)
 		newsItems[i] = newsItems[i + 1];
 	return 60;
+}
+
+void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z)
+{
+	rct_ride *ride;
+	rct_sprite *sprite;
+
+	switch (type) {
+	case NEWS_ITEM_RIDE:
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[subject]);
+		if (ride->var_050 == 0xFFFF) {
+			*x = 0x8000;
+			break;
+		}
+		{
+			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+			eax = (ride->var_050 & 0xFF) * 32 + 16;
+			ecx = (ride->var_050 >> 8) * 32 + 16;
+			RCT2_CALLFUNC_X(0x00662783, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			if (edx & 0xFFFF0000)
+				edx >>= 16;
+			*x = eax;
+			*y = ecx;
+			*z = edx;
+		}
+		break;
+	case NEWS_ITEM_PEEP_1:
+		break;
+	case NEWS_ITEM_PEEP_2:
+		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		*x = sprite->unknown.x;
+		*y = sprite->unknown.y;
+		*z = sprite->unknown.z;
+		break;
+	case NEWS_ITEM_BLANK:
+		{
+			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+			eax = subject;
+			ecx = subject >> 16;
+			RCT2_CALLFUNC_X(0x00662783, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			*x = eax;
+			*y = ecx;
+			*z = edx;
+		}
+		break;
+	default:
+		*x = 0x8000;
+		break;
+	}
 }
