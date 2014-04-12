@@ -164,10 +164,15 @@ static int news_item_get_new_history_slot()
 	return 60;
 }
 
+/**
+ * 
+ *  rct2: 0x0066BA74
+ */
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z)
 {
+	int i;
 	rct_ride *ride;
-	rct_sprite *sprite;
+	rct_sprite *sprite, *sprite_2;
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
@@ -189,6 +194,30 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 		break;
 	case NEWS_ITEM_PEEP_1:
+		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		*x = sprite->unknown.x;
+		*y = sprite->unknown.y;
+		*z = sprite->unknown.z;
+		if (*x != 0x8000)
+			break;
+
+		if (sprite->peep.state != 3 && sprite->peep.state != 7) {
+			*x = 0x8000;
+			break;
+		}
+
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[sprite->peep.current_ride]);
+		if (ride->var_1D0 & 1) {
+			*x = 0x8000;
+			break;
+		}
+
+		sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->var_086[sprite->peep.var_6A]]);
+		for (i = 0; i < sprite->peep.var_6B; i++)
+			sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[*((uint16*)&sprite_2->pad_00[0x3E])]);
+		*x = sprite_2->unknown.x;
+		*y = sprite_2->unknown.y;
+		*z = sprite_2->unknown.z;
 		break;
 	case NEWS_ITEM_PEEP_2:
 		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);

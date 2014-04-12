@@ -70,7 +70,11 @@ typedef struct {
 	uint8 var_31;
 	uint8 pad_32[0x08];
 	uint8 happiness;				// 0x3A
-	uint8 pad_3B[0x61];
+	uint8 pad_03B[0x2D];
+	uint8 current_ride;				// 0x68
+	uint8 var_6A;
+	uint8 var_6B;
+	uint8 pad_6C[0x30];
 	uint32 id;						// 0x9C
 	uint8 pad_A0[0x10];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
