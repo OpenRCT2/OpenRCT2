@@ -25,10 +25,6 @@
 #include "peep.h"
 #include "window.h"
 
-void window_main_open();
-void window_game_top_toolbar_open();
-void window_game_bottom_toolbar_open();
-
 /**
  * 
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
@@ -100,7 +96,7 @@ void game_update()
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Input
-	RCT2_CALLPROC_X(0x00667919, 1, 0, 0, 0, 0, 0, 0); // read_input(1)
+	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
 
 	RCT2_CALLPROC_EBPSAFE(0x006838BD);

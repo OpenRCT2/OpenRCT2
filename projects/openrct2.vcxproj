@@ -72,6 +72,7 @@
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_game_bottom_toolbar.c" />
     <ClCompile Include="..\src\window_dropdown.c" />
+    <ClCompile Include="..\src\window_land.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />

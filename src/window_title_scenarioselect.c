@@ -105,7 +105,7 @@ void window_scenarioselect_open()
 {
 	rct_window* window;
 
-	if (window_bring_to_front_by_id(WC_LEVEL_SELECT, 0) != NULL)
+	if (window_bring_to_front_by_id(WC_SCENARIO_SELECT, 0) != NULL)
 		return;
 
 	// Load scenario list
@@ -117,7 +117,7 @@ void window_scenarioselect_open()
 		610,
 		334,
 		window_scenarioselect_events,
-		WC_LEVEL_SELECT,
+		WC_SCENARIO_SELECT,
 		0x400 | 0x02
 	);
 	window->widgets = window_scenarioselect_widgets;

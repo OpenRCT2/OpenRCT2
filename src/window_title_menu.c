@@ -27,8 +27,6 @@
 #include "window.h"
 #include "window_dropdown.h"
 
-void window_scenarioselect_open();
-
 enum {
 	WIDX_START_NEW_GAME,
 	WIDX_CONTINUE_SAVED_GAME,

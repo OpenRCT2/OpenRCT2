@@ -31,12 +31,6 @@
 #include "scenario.h"
 #include "viewport.h"
 
-// External functions
-void window_main_open();
-void window_title_menu_open();
-void window_title_exit_open();
-void window_title_logo_open();
-
 #pragma region Showcase script
 
 enum {

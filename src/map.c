@@ -28,6 +28,32 @@
 
 static void tiles_init();
 
+void map_element_set_terrain(rct_map_element *element, int terrain)
+{
+	// Bit 3 for terrain is stored in element.type bit 0
+	if (terrain & 8)
+		element->type |= 1;
+	else
+		element->type &= ~1;
+
+	// Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
+	element->properties.surface.terrain &= ~0xE0;
+	element->properties.surface.terrain = (terrain & 7) << 5;
+}
+
+void map_element_set_terrain_edge(rct_map_element *element, int terrain)
+{
+	// Bit 3 for terrain is stored in element.type bit 0
+	if (terrain & 8)
+		element->type |= 128;
+	else
+		element->type &= ~128;
+
+	// Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
+	element->properties.surface.slope &= ~0xE0;
+	element->properties.surface.slope = (terrain & 7) << 5;
+}
+
 /**
  * 
  *  rct2: 0x0068AB4C
@@ -43,14 +69,15 @@ void map_init()
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
 		map_element = GET_MAP_ELEMENT(i);
-		map_element->type = 0;
+		map_element->type = (MAP_ELEMENT_TYPE_SURFACE << 2) | 1;
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 14;
 		map_element->clearance_height = 14;
-		map_element->properties.surface.slope = 0;
-		map_element->properties.surface.terrain = 0;
+		map_element->properties.surface.slope = 1 << 5;
 		map_element->properties.surface.grass_length = 1;
 		map_element->properties.surface.ownership = 0;
+
+		map_element_set_terrain(map_element, TERRAIN_GRASS);
 	}
 
 	RCT2_GLOBAL(0x013B0E70, sint16) = 0;

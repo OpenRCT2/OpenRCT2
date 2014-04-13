@@ -251,7 +251,7 @@ enum {
 	WC_TITLE_MENU = 29,
 	WC_TITLE_EXIT = 30,
 	WC_RECENT_NEWS = 31,
-	WC_LEVEL_SELECT = 32,
+	WC_SCENARIO_SELECT = 32,
 	WC_TRACK_DESIGN_LIST = 33,
 	WC_NEW_CAMPAIGN = 35,
 	WC_KEYBOARD_SHORTCUT_LIST = 36,
@@ -281,6 +281,8 @@ int window_get_scroll_data_index(rct_window *w, int widget_index);
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
 
+void window_push_others_below(rct_window *w1);
+
 rct_window *window_get_main();
 
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
@@ -288,5 +290,15 @@ void window_rotate_camera(rct_window *w);
 
 void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
+
+// Open window functions
+void window_main_open();
+void window_game_top_toolbar_open();
+void window_game_bottom_toolbar_open();
+void window_title_menu_open();
+void window_title_exit_open();
+void window_title_logo_open();
+void window_scenarioselect_open();
+void window_land_open();
 
 #endif

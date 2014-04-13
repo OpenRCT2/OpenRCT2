@@ -426,6 +426,49 @@ rct_window *window_bring_to_front(rct_window *w)
 
 /**
  * 
+ *  rct2: 0x006EE6EA
+ */
+void window_push_others_below(rct_window *w1)
+{
+	int push_amount;
+	rct_window* w2;
+
+	// Enumerate through all other windows
+	for (w2 = RCT2_FIRST_WINDOW; w2 < RCT2_NEW_WINDOW; w2++) {
+		if (w1 == w2)
+			continue;
+
+		// ?
+		if (w2->flags & 3)
+			continue;
+
+		// Check if w2 intersects with w1
+		if (w2->x > (w1->x + w1->width) || w2->x + w2->width < w1->x)
+			continue;
+		if (w2->y > (w1->y + w1->height) || w2->y + w2->height < w1->y)
+			continue;
+
+		// Check if there is room to push it down
+		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
+			continue;
+
+		// Invalidate the window's current area
+		window_invalidate(w2);
+
+		push_amount = w1->y + w1->height - w2->y + 3;
+		w2->y += push_amount;
+
+		// Invalidate the window's new area
+		window_invalidate(w2);
+
+		// Update viewport position if necessary
+		if (w2->viewport != NULL)
+			w2->viewport->y += push_amount;
+	}
+}
+
+/**
+ * 
  *  rct2: 0x006EE2E4
  */
 rct_window *window_get_main()
