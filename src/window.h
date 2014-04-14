@@ -305,5 +305,6 @@ void window_scenarioselect_open();
 void window_land_open();
 void window_water_open();
 void window_park_objective_open();
+void window_cheats_open();
 
 #endif

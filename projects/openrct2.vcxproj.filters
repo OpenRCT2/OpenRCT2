@@ -212,6 +212,9 @@
     <ClCompile Include="..\src\window_park.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_cheats.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

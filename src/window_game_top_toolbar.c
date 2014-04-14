@@ -148,6 +148,7 @@ static void window_game_top_toolbar_mouseup()
 		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 2, 0, 0);
 		break;
 	case WIDX_FASTFORWARD:
+		window_cheats_open();
 		break;
 
 	case WIDX_ZOOM_OUT:

@@ -42,6 +42,8 @@
 #include "title.h"
 #include "viewport.h"
 
+#define GAME_PATH "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2"
+
 void rct2_init_directories();
 void rct2_startup_checks();
 
@@ -143,7 +145,7 @@ void rct2_init()
 // rct2: 0x00683499
 void rct2_init_directories()
 {
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2");
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), GAME_PATH);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");

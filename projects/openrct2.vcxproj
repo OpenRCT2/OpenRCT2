@@ -70,6 +70,7 @@
     <ClCompile Include="..\src\viewport.c" />
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
+    <ClCompile Include="..\src\window_cheats.c" />
     <ClCompile Include="..\src\window_game_bottom_toolbar.c" />
     <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_land.c" />
