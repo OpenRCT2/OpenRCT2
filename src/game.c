@@ -347,11 +347,49 @@ static void game_handle_input_mouse(int x, int y, int state)
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 			if (RCT2_GLOBAL(0x009DE540, sint16) < 500) {
 				// Right click
+				{
+					int eax, ebx, ecx, edx, esi, edi, ebp;
+					eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
+					ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
+					RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					switch (ebx & 0xFF) {
+					case 2:
+						if (*((uint8*)edx) == 0)
+							RCT2_CALLPROC_X(0x006B4857, 0, 0, 0, 0, 0, 0, 0);
+						break;
+					case 3:
+						RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 5:
+						RCT2_CALLPROC_X(0x006E08D2, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 6:
+						RCT2_CALLPROC_X(0x006A614A, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 7:
+						RCT2_CALLPROC_X(0x006A61AB, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 8:
+						RCT2_CALLPROC_X(0x00666C0E, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 9:
+						RCT2_CALLPROC_X(0x006E57A9, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 10:
+						RCT2_CALLPROC_X(0x006B88DC, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					case 12:
+						RCT2_CALLPROC_X(0x006BA233, 0, 0, 0, edx, 0, 0, 0);
+						break;
+					default:
+						break;
+					}
+				}
 			}
 		}
 
-		//RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
-		//RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
+		//
+		//
 		SetCursorPos(_dragPosition.x, _dragPosition.y);
 		// RCT2_CALLPROC_X(0x006E89C6, x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16), y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16), state, widgetIndex, w, widget, 0);
 		break;
