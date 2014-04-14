@@ -277,6 +277,7 @@ rct_window *window_find_from_point(int x, int y);
 int window_find_widget_from_point(rct_window *w, int x, int y);
 void window_invalidate(rct_window *window);
 void window_invalidate_by_id(uint16 cls, rct_windownumber number);
+void widget_invalidate(rct_windowclass cls, rct_windownumber number, int widgetIndex);
 void window_init_scroll_widgets(rct_window *w);
 int window_get_scroll_data_index(rct_window *w, int widget_index);
 
@@ -303,5 +304,6 @@ void window_title_logo_open();
 void window_scenarioselect_open();
 void window_land_open();
 void window_water_open();
+void window_park_objective_open();
 
 #endif

@@ -383,6 +383,11 @@ void window_invalidate_by_id(uint16 cls, rct_windownumber number)
 	}
 }
 
+void widget_invalidate(rct_windowclass cls, rct_windownumber number, int widgetIndex)
+{
+	window_invalidate_by_id((widgetIndex << 8) | 0x80 | cls, number);
+}
+
 /**
  * Initialises scroll widgets to their virtual size.
  *  rct2: 0x006EAEB8

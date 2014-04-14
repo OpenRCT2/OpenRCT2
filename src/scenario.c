@@ -451,7 +451,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	news_item_init_queue();
 	if (RCT2_ADDRESS(0x013580F8, uint8) != OBJECTIVE_NONE)
-		RCT2_CALLPROC_EBPSAFE(0x00667E57); // window_park_page_6_open();
+		window_park_objective_open();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint16) = calculate_park_value();
