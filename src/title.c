@@ -221,7 +221,7 @@ static void title_update_showcase()
 
 	_scriptWaitCounter--;
 }
-
+void game_handle_input();
 void title_update()
 {
 	int tmp;
@@ -251,8 +251,9 @@ void title_update()
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Input
-	RCT2_CALLPROC_X(0x00667919, 1, 0, 0, 0, 0, 0, 0); // read_input(1)
-	RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
+	// RCT2_CALLPROC_X(0x00667919, 1, 0, 0, 0, 0, 0, 0); // read_input(1)
+	// RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
+	game_handle_input();
 
 	RCT2_CALLPROC_EBPSAFE(0x006838BD);
 	RCT2_CALLPROC_EBPSAFE(0x00684218);

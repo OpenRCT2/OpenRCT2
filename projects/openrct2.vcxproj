@@ -79,6 +79,7 @@
     <ClCompile Include="..\src\window_title_menu.c" />
     <ClCompile Include="..\src\window_title_scenarioselect.c" />
     <ClCompile Include="..\src\window_game_top_toolbar.c" />
+    <ClCompile Include="..\src\window_water.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />

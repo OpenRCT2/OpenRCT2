@@ -262,6 +262,79 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
+ * 
+ *  rct2: 0x006EA845
+ */
+rct_window *window_find_from_point(int x, int y)
+{
+	rct_window *w, *w2;
+	rct_widget *widget;
+	int widget_index;
+
+	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--) {
+		if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
+			continue;
+
+		if (w->flags & 0x20) {
+			widget_index = window_find_widget_from_point(w, x, y);
+			if (widget_index == -1)
+				continue;
+
+			widget = &w->widgets[widget_index];
+		}
+		
+		return w;
+	}
+
+	return NULL;
+}
+
+/**
+ * 
+ *  rct2: 0x006EA594
+ * x (ax)
+ * y (bx)
+ * returns widget_index (edx)
+ * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
+ */
+int window_find_widget_from_point(rct_window *w, int x, int y)
+{
+	rct_widget *widget;
+	int i, widget_index;
+
+	// Invalidate the window
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+
+	// Find the widget at point x, y
+	widget_index = -1;
+	RCT2_GLOBAL(0x01420074, uint8) = -1;
+	for (i = 0;; i++) {
+		widget = &w->widgets[i];
+		if (widget->type == WWT_LAST) {
+			break;
+		} else if (widget->type != WWT_EMPTY) {
+			if (widget->type == WWT_SCROLL)
+				RCT2_GLOBAL(0x01420074, uint8)++;
+
+			if (x >= w->x + widget->left && x <= w->x + widget->right &&
+				y >= w->y + widget->top && y <= w->y + widget->bottom
+			) {
+				widget_index = i;
+				RCT2_GLOBAL(0x01420075, uint8) = RCT2_GLOBAL(0x01420074, uint8);
+			}
+		}
+	}
+
+	// Return next widget if a dropdown
+	if (widget_index != -1)
+		if (w->widgets[widget_index].type == WWT_DROPDOWN)
+			widget_index++;
+
+	// Return the widget index
+	return widget_index;
+}
+
+/**
  * Invalidates the specified window.
  *  rct2: 0x006EB31A
  *

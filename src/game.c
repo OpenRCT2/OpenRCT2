@@ -25,6 +25,8 @@
 #include "peep.h"
 #include "window.h"
 
+void game_handle_input();
+
 /**
  * 
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
@@ -97,7 +99,7 @@ void game_update()
 
 	// Input
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
-	RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
+	game_handle_input();
 
 	RCT2_CALLPROC_EBPSAFE(0x006838BD);
 	RCT2_CALLPROC_EBPSAFE(0x00684218);
@@ -154,5 +156,101 @@ void game_logic_update()
 		RCT2_GLOBAL(0x009AC31B, uint8) = 0;
 
 		RCT2_CALLPROC_X(0x0066792F, 0, _bx, 0, _dx, 0, 0, 0);
+	}
+}
+
+static void game_handle_input_mouse();
+
+/**
+ * 
+ *  rct2: 0x006EA627
+ */
+void game_handle_input()
+{
+	rct_window *w;
+
+	if (RCT2_GLOBAL(0x009DEA64, uint16) & 2) {
+		RCT2_GLOBAL(0x009DEA64, uint16) &= ~2;
+		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 2, 0);
+	}
+
+	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
+		for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
+			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, w, 0, 0);
+
+		RCT2_CALLPROC_EBPSAFE(0x006EA73F);
+		RCT2_CALLPROC_EBPSAFE(0x006E8346); // update_cursor_position
+
+		{
+			int eax, ebx, ecx, edx, esi, edi, ebp;
+
+			for (;;) {
+				RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				if (ecx == 0)
+					break;
+
+				RCT2_CALLPROC_X(0x006E8655, eax, ebx, ecx, 0, 0, 0, 0); // window_process_mouse_input
+			}
+
+			if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
+				RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
+			} else if (eax != 0x80000000) {
+				eax = clamp(0, eax, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 1);
+				ebx = clamp(0, ebx, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 1);
+
+				RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
+				RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
+				RCT2_CALLPROC_EBPSAFE(0x006ED801);
+			}
+		}
+	}
+
+	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0, w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006E8655
+ */
+static void game_handle_input_mouse(int x, int y, int state)
+{
+	rct_window *w;
+
+	w = window_find_from_point(x, y);
+	if (w != NULL)
+		window_find_widget_from_point(w, x, y);
+
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8)) {
+	case INPUT_STATE_RESET:
+		RCT2_CALLPROC_X(0x006E9203, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_NORMAL:
+		RCT2_CALLPROC_X(0x006E9203, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_WIDGET_PRESSED:
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_DRAGGING:
+		RCT2_CALLPROC_X(0x006E8C5C, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_VIEWPORT_LEFT:
+		RCT2_CALLPROC_X(0x006E89C6, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_DROPDOWN_ACTIVE:
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_VIEWPORT_RIGHT:
+		RCT2_CALLPROC_X(0x006E87B4, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_SCROLL_LEFT:
+		RCT2_CALLPROC_X(0x006E8676, x, y, state, -1, w, 0, 0);
+		break;
+	case INPUT_STATE_RESIZING:
+		RCT2_CALLPROC_X(0x006E8B46, x, y, state, -1, w, 0, 0);
+		break;
+	case 9:
+		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, -1, w, 0, 0);
+		break;
 	}
 }

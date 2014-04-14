@@ -196,7 +196,7 @@ static void window_game_top_toolbar_mouseup()
 			RCT2_CALLPROC_X(0x006EE212, 19, 0, 0, WIDX_WATER, w, 0, 0);
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
-			RCT2_CALLPROC_EBPSAFE(0x006E6A40);
+			window_water_open();
 		}
 		break;
 	case WIDX_SCENERY:

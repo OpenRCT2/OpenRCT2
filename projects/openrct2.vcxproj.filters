@@ -206,6 +206,9 @@
     <ClCompile Include="..\src\window_land.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_water.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
