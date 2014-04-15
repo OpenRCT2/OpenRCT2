@@ -34,10 +34,12 @@ static enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_MONEY,
 	WIDX_GUESTS,
 	WIDX_PARK_RATING,
+
 	WIDX_MIDDLE_OUTSET,
 	WIDX_MIDDLE_INSET,
 	WIDX_NEWS_SUBJECT,
 	WIDX_NEWS_LOCATE,
+
 	WIDX_RIGHT_OUTSET,
 	WIDX_RIGHT_INSET,
 	WIDX_DATE
@@ -227,10 +229,33 @@ static void window_game_bottom_toolbar_tooltip()
  */
 static void window_game_bottom_toolbar_invalidate()
 {
+	int x;
 	rct_window *w;
 	rct_news_item *newsItem;
 
 	__asm mov w, esi
+
+	// Anchor the middle and right panel to the right
+	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	w->width = x;
+	x--;
+	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
+	x -= 2;
+	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].right = x;
+	x -= 115;
+	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].left = x;
+	x -= 2;
+	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left = x;
+	x--;
+	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right = x;
+	x -= 2;
+	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].right = x;
+	x -= 3;
+	window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].right = x;
+	x -= 23;
+	window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].left = x;
+	window_game_bottom_toolbar_widgets[WIDX_DATE].left = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 2;
+	window_game_bottom_toolbar_widgets[WIDX_DATE].right = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 2;
 
 	window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;

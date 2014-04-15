@@ -142,7 +142,7 @@ static void osinterface_resize(int width, int height)
 	RCT2_GLOBAL(0x009ABDEC, sint32) = (height >> 3) + 1;
 
 	RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
-	RCT2_CALLPROC_EBPSAFE(0x006ED7E5); // gfx_invalidate_screen()
+	gfx_invalidate_screen();
 }
 
 static void osinterface_update_palette(char* colours, int start_index, int num_colours)

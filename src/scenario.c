@@ -299,6 +299,7 @@ static int scenario_load_basic(char *path)
 			loc_67628F :
 				return _eax;
 			}
+			return 1;
 		}
 		CloseHandle(hFile);
 	}
