@@ -24,6 +24,11 @@
 #include "ride.h"
 #include "sprite.h"
 
+int park_is_open()
+{
+	return (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_PARK_OPEN) != 0;
+}
+
 /**
  * 
  *  rct2: 0x00667132

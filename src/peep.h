@@ -88,6 +88,7 @@ typedef struct {
 	uint8 hat_colour;				// 0xF8
 } rct_peep;
 
+int peep_get_staff_count();
 void peep_update_all();
 
 #endif

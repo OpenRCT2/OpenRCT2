@@ -18,44 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _PARK_H_
-#define _PARK_H_
+#ifndef _UTIL_H_
+#define _UTIL_H_
 
-#include "rct2.h"
-
-#define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
-#define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
-
-typedef struct {
-	uint16 time;
-	uint16 type;
-} rct_award;
-
-enum {
-	PARK_AWARD_MOST_UNTIDY,
-	PARK_AWARD_MOST_TIDY,
-	PARK_AWARD_BEST_ROLLERCOASTERS,
-	PARK_AWARD_BEST_VALUE,
-	PARK_AWARD_MOST_BEAUTIFUL,
-	PARK_AWARD_WORST_VALUE,
-	PARK_AWARD_SAFEST,
-	PARK_AWARD_BEST_STAFF,
-	PARK_AWARD_BEST_FOOD,
-	PARK_AWARD_WORST_FOOD,
-	PARK_AWARD_BEST_RESTROOMS,
-	PARK_AWARD_MOST_DISAPPOINTING,
-	PARK_AWARD_BEST_WATER_RIDES,
-	PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES,
-	PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS,
-	PARK_AWARD_MOST_CONFUSING_LAYOUT,
-	PARK_AWARD_BEST_GENTLE_RIDES,
-};
-
-int park_is_open();
-void park_init();
-
-int calculate_park_rating();
-int calculate_park_value();
-int calculate_company_value();
+int squaredmetres_to_squaredfeet(int squaredMetres);
 
 #endif

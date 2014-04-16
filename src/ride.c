@@ -24,6 +24,20 @@
 #define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
 
+int ride_get_count()
+{
+	rct_ride *ride;
+	int i, count = 0;
+
+	for (i = 0; i < MAX_RIDES; i++) {
+		ride = GET_RIDE(i);
+		if (ride->type != RIDE_TYPE_NULL)
+			count++;
+	}
+
+	return count;
+}
+
 /**
  *
  *  rct2: 0x006ACA89

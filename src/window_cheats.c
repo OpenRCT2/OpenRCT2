@@ -108,7 +108,7 @@ void window_cheats_open()
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY);
 	window_init_scroll_widgets(window);
 
-	window->var_48A = WINDOW_CHEATS_PAGE_MONEY;
+	window->page = WINDOW_CHEATS_PAGE_MONEY;
 	window->colours[0] = 1;
 	window->colours[1] = 19;
 	window->colours[2] = 19;
@@ -159,7 +159,7 @@ static void window_cheats_invalidate()
 	// Set correct active tab
 	for (i = 0; i < 7; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-	w->pressed_widgets |= 1 << (WIDX_TAB_1 + w->var_48A);
+	w->pressed_widgets |= 1 << (WIDX_TAB_1 + w->page);
 }
 
 static void window_cheats_paint()
@@ -181,7 +181,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	// Money tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_1))) {
 		sprite_idx = 5261;
-		if (w->var_48A == WINDOW_CHEATS_PAGE_MONEY)
+		if (w->page == WINDOW_CHEATS_PAGE_MONEY)
 			sprite_idx += (w->var_48E / 2) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);
 	}
@@ -189,7 +189,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	// Guests tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = 5568;
-		if (w->var_48A == WINDOW_CHEATS_PAGE_GUESTS)
+		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
 			sprite_idx += w->var_48E / 4;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
 	}

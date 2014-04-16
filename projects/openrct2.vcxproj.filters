@@ -105,6 +105,9 @@
     <ClInclude Include="..\src\object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_cheats.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

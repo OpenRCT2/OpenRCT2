@@ -163,9 +163,10 @@ enum {
 	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
-#define MAX_RIDES 256
+#define MAX_RIDES 255
 #define MAX_RIDE_MEASUREMENTS 8
 
+int ride_get_count();
 void ride_init_all();
 
 #endif

@@ -50,7 +50,7 @@ rct_widget window_game_bottom_toolbar_widgets[] = {
 	{ WWT_IMGBTN,	0,	0x0002,	0x0075,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Left inset panel
 	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	1,		12,		0xFFFFFFFF,	STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },	// Money window
 	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	11,		22,		0xFFFFFFFF,	STR_NONE },	// Guests window
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	21,		31,		0xFFFFFFFF,	STR_PARK_rating_TIP },	// Park rating window
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	21,		31,		0xFFFFFFFF,	STR_PARK_RATING_TIP },	// Park rating window
 
 	{ WWT_IMGBTN,	2,	0x0078,	0x0207,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Middle outset panel
 	{ WWT_25,		2,	0x007A,	0x0205,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Middle inset panel

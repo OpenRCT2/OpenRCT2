@@ -23,6 +23,24 @@
 #include "rct2.h"
 #include "sprite.h"
 
+int peep_get_staff_count()
+{
+	uint16 sprite_index;
+	rct_peep *peep;
+	int count = 0;
+
+	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	while (sprite_index != SPRITE_INDEX_NULL) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
+		sprite_index = peep->next;
+
+		if (peep->type == PEEP_TYPE_STAFF)
+			count++;
+	}
+
+	return count;
+}
+
 /**
  *
  *  rct2: 0x0068F0A9

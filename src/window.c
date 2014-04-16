@@ -162,7 +162,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->var_484 = 0;
 	w->var_486 = 0;
 	w->var_488 = 0;
-	w->var_48A = 0;
+	w->page = 0;
 	w->var_48C = 0;
 	w->var_48E = 0;
 	w->var_490 = 0;

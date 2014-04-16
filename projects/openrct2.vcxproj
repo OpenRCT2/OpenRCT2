@@ -39,6 +39,7 @@
     <ClInclude Include="..\src\strings.h" />
     <ClInclude Include="..\src\title.h" />
     <ClInclude Include="..\src\tutorial.h" />
+    <ClInclude Include="..\src\util.h" />
     <ClInclude Include="..\src\viewport.h" />
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
@@ -67,6 +68,7 @@
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\tutorial.c" />
+    <ClCompile Include="..\src\util.c" />
     <ClCompile Include="..\src\viewport.c" />
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />

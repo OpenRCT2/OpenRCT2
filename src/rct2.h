@@ -120,6 +120,11 @@ enum {
 
 };
 
+enum {
+	GAME_FLAGS_PARK_OPEN = (1 << 0),
+	GAME_FLAGS_NO_MONEY = (1 << 11)
+};
+
 void rct2_endupdate();
 char *get_file_path(int pathId);
 void get_system_time();

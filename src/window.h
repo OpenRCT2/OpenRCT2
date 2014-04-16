@@ -116,7 +116,7 @@ typedef struct rct_window {
 	sint16 var_484;
 	sint16 var_486;
 	sint16 var_488;
-	sint16 var_48A;
+	sint16 page;
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
