@@ -566,7 +566,7 @@ rct_window *window_get_main()
  */
 void window_scroll_to_location(rct_window *w, int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z , w, 0, 0);
+	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z, w, 0, 0);
 }
 
 /**

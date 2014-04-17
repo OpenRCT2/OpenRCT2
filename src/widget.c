@@ -25,9 +25,13 @@
 #include "window.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -97,6 +101,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_frame_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_RESIZE:
+		widget_resize_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_IMGBTN:
 	case WWT_4:
@@ -114,10 +119,13 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	case WWT_DROPDOWN_BUTTON:
 	case WWT_11:
 	case WWT_13:
+		widget_text_button(dpi, w, widgetIndex);
 		break;
 	case WWT_12:
+		widget_text_unknown(dpi, w, widgetIndex);
 		break;
 	case WWT_14:
+		widget_text(dpi, w, widgetIndex);
 		break;
 	case WWT_15:
 	case WWT_DROPDOWN:
@@ -165,7 +173,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	b = w->y + widget->bottom;
 
 	// 
-	press = (w->flags & 0x0400 ? 0x80 : 0);
+	press = (w->flags & WF_10 ? 0x80 : 0);
 
 	// Get the colour
 	colour = w->colours[widget->colour];
@@ -174,7 +182,44 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
 	// Check if the window can be resized
-	if (!(w->flags & 0x100))
+	if (!(w->flags & WF_RESIZABLE))
+		return;
+	if (w->min_width == w->max_width && w->min_height == w->max_height)
+		return;
+
+	// Draw the resize sprite at the bottom right corner
+	l = w->x + widget->right - 18;
+	t = w->y + widget->bottom - 18;
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t);
+}
+
+/**
+ * 
+ *  rct2: 0x006EB765
+ */
+static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	// Draw the panel
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0);
+
+	// Check if the window can be resized
+	if (!(w->flags & WF_RESIZABLE))
 		return;
 	if (w->min_width == w->max_width && w->min_height == w->max_height)
 		return;
@@ -315,6 +360,122 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 
 /**
  * 
+ *  rct2: 0x006EBBEB
+ */
+static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, width, press, stringId;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	// Border
+	press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? 0x20 : 0;
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+
+	// Text
+	widget_text_unknown(dpi, w, widgetIndex);
+}
+
+/**
+ * 
+ *  rct2: 0x006EBC41
+ */
+static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, width, press, stringId;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	stringId = widget->image;
+	if (stringId == -1)
+		return;
+
+	if (widget->type == WWT_11 && (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)))
+		stringId++;
+
+	if (widget->type == WWT_13) {
+		if (widget_is_disabled(w, widgetIndex))
+			colour |= 0x40;
+		gfx_draw_string_left_clipped(
+			dpi,
+			stringId,
+			0x013CE952,
+			colour,
+			l + 1,
+			t,
+			widget->right - widget->left - 2
+		);
+	} else {
+		if (widget_is_disabled(w, widgetIndex))
+			colour |= 0x40;
+		gfx_draw_string_centred_clipped(
+			dpi,
+			stringId,
+			0x013CE952,
+			colour,
+			(w->x + w->x + widget->left + widget->right + 1) / 2 - 1,
+			t,
+			widget->right - widget->left - 2
+		);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006EBD52
+ */
+static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, width, press;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
+		return;
+
+	if (widget_is_disabled(w, widgetIndex))
+		colour |= 0x40;
+	gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l + 1, t);
+}
+
+/**
+ * 
  *  rct2: 0x006EBD1F
  */
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -336,14 +497,7 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	colour = w->colours[widget->colour];
 
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
-
-	// Text
-	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
-		return;
-
-	if (widget_is_disabled(w, widgetIndex))
-		colour |= 0x40;
-	gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
+	widget_text(dpi, w, widgetIndex);
 }
 
 /**

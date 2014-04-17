@@ -112,10 +112,10 @@ typedef struct rct_window {
 	rct_scroll scrolls[3];		// 0x040
 	uint8 pad_076[0x40A];
 	sint16 var_480;
-	sint16 var_482;
-	sint16 var_484;
-	sint16 var_486;
-	sint16 var_488;
+	sint16 var_482; // viewport target x
+	sint16 var_484; // viewport target y
+	sint16 var_486; // viewport target z
+	sint16 var_488; // viewport rotation << 8
 	sint16 page;
 	sint16 var_48C;
 	sint16 var_48E;
@@ -125,7 +125,7 @@ typedef struct rct_window {
 	uint8 var_498[0x14];
 	sint16 var_4AC;
 	sint16 var_4AE;
-	sint16 var_4B0;
+	sint16 var_4B0; // viewport target sprite?
 	sint16 var_4B2;
 	sint16 var_4B4;
 	rct_windowclass classification;	// 0x4B6
@@ -178,7 +178,8 @@ typedef enum {
 	*/
 
 	WF_TRANSPARENT = (1 << 4),
-
+	WF_RESIZABLE = (1 << 8),
+	WF_10,
 	WF_WHITE_BORDER_ONE = (1 << 12),
 	WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 } WINDOW_FLAGS;

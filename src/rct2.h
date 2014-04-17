@@ -122,7 +122,8 @@ enum {
 
 enum {
 	GAME_FLAGS_PARK_OPEN = (1 << 0),
-	GAME_FLAGS_NO_MONEY = (1 << 11)
+	GAME_FLAGS_NO_MONEY = (1 << 11),
+	GAME_FLAGS_PARK_FREE_ENTRY = (1 << 13)
 };
 
 void rct2_endupdate();

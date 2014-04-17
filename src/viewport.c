@@ -71,6 +71,15 @@ void viewport_init_all()
 }
 
 /**
+ * 
+ *  rct2: 0x006EB009
+ */
+void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx)
+{
+	RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, ecx, edx, w, 0, 0);
+}
+
+/**
  * UNTESTED
  *  rct2: 0x006EE510
  */
