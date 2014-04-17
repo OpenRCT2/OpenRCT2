@@ -138,36 +138,32 @@ typedef struct rct_window {
 typedef enum {
 	WE_CLOSE = 0,
 	WE_MOUSE_UP = 1,
-	WE_UNKNOWN_02 = 2,
+	WE_UNKNOWN_02 = 2, // tab switch?
 	WE_MOUSE_DOWN = 3,
 	WE_DROPDOWN = 4,
 	WE_UNKNOWN_05 = 5,
 	WE_UPDATE = 6,
 	WE_UNKNOWN_07 = 7,
 	WE_UNKNOWN_08 = 8,
-	WE_UNKNOWN_09 = 9,
-	WE_UNKNOWN_0A = 10,
-	WE_UNKNOWN_0B = 11,
+	WE_UNKNOWN_09 = 9, // tool update?
+	WE_UNKNOWN_0A = 10,	// tool mouse down?
+	WE_UNKNOWN_0B = 11,	// tool mouse down?
 	WE_UNKNOWN_0C = 12,
-	WE_UNKNOWN_0D = 13,
+	WE_UNKNOWN_0D = 13, // abort tool?
 	WE_UNKNOWN_0E = 14,
 	WE_SCROLL_GETSIZE = 15,
 	WE_SCROLL_MOUSEDOWN = 16,
 	WE_UNKNOWN_11 = 17,
 	WE_SCROLL_MOUSEOVER = 18,
-	WE_UNKNOWN_13 = 19,
+	WE_TEXT_INPUT = 19,
 	WE_UNKNOWN_14 = 20,
 	WE_UNKNOWN_15 = 21,
 	WE_TOOLTIP = 22,
-	WE_UNKNOWN_17 = 23,
+	WE_UNKNOWN_17 = 23, // tooltip related
 	WE_UNKNOWN_18 = 24,
 	WE_INVALIDATE = 25,
 	WE_PAINT = 26,
 	WE_SCROLL_PAINT = 27,
-
-	WE_MOUSE_ENTER,
-	WE_MOUSE_LEAVE,
-	WE_MOUSE_OVER,
 } WINDOW_EVENTS;
 
 typedef enum {
@@ -291,8 +287,11 @@ rct_window *window_get_main();
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w);
 
+void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
+
 void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
+void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
 // Open window functions
 void window_main_open();
@@ -304,6 +303,7 @@ void window_title_logo_open();
 void window_scenarioselect_open();
 void window_land_open();
 void window_water_open();
+void window_park_entrance_open();
 void window_park_objective_open();
 void window_cheats_open();
 

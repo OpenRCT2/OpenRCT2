@@ -28,6 +28,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -121,6 +122,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	case WWT_15:
 	case WWT_DROPDOWN:
 	case WWT_VIEWPORT:
+		widget_text_inset(dpi, w, widgetIndex);
 		break;
 	case WWT_18:
 		break;
@@ -309,6 +311,39 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 
 	// Draw image
 	widget_draw_image(dpi, w, widgetIndex);
+}
+
+/**
+ * 
+ *  rct2: 0x006EBD1F
+ */
+static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, width, press;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+
+	// Text
+	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
+		return;
+
+	if (widget_is_disabled(w, widgetIndex))
+		colour |= 0x40;
+	gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
 }
 
 /**

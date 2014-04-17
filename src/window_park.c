@@ -25,6 +25,7 @@
 #include "ride.h"
 #include "scenario.h"
 #include "strings.h"
+#include "sprite.h"
 #include "sprites.h"
 #include "util.h"
 #include "viewport.h"
@@ -86,7 +87,7 @@ static rct_widget window_park_entrance_widgets[] = {
 	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
 
 	{ WWT_VIEWPORT,			1,	3,		204,	46,		160,	0x0FFFFFFFF,					STR_NONE },							// viewport
-	{ WWT_12,				1,	3,		204,	161,	171,	0x0FFFFFFFF,					STR_NONE },							// 
+	{ WWT_12,				1,	3,		204,	161,	171,	0x0FFFFFFFF,					STR_NONE },							// status
 	{ WWT_FLATBTN,			1,	205,	228,	49,		72,		0x0FFFFFFFF,					STR_OPEN_OR_CLOSE_PARK_TIP },		// open / close
 	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			SPR_BUY_LAND_RIGHTS_TIP },			// buy land rights
 	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
@@ -212,6 +213,7 @@ static void window_park_emptysub() { }
 static void window_park_entrance_close();
 static void window_park_entrance_mouseup();
 static void window_park_entrance_update();
+static void window_park_entrance_textinput();
 static void window_park_entrance_invalidate();
 static void window_park_entrance_paint();
 
@@ -265,7 +267,7 @@ static uint32 window_park_entrance_events[] = {
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
-	window_park_emptysub,
+	window_park_entrance_textinput,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -573,8 +575,8 @@ rct_window *window_park_open()
 		RCT2_CALLFUNC_X(0x006EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 		w = esi;
 	}
-	w->widgets = 0x009A8E68;
-	w->enabled_widgets = 0x0003E7F4;
+	w->widgets = window_park_entrance_widgets;
+	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
 	w->page = WINDOW_PARK_PAGE_ENTRANCE;
 	w->var_482 = 0;
@@ -591,6 +593,31 @@ rct_window *window_park_open()
 }
 
 #pragma region Entrance page
+
+/**
+ * 
+ *  rct2: 0x00667C48
+ */
+void window_park_entrance_open()
+{
+	rct_window* window;
+
+	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	if (window == NULL) {
+		window = window_park_open();
+		window->var_482 = -1;
+		window->var_484 = -1;
+	}
+
+	window->page = WINDOW_PARK_PAGE_ENTRANCE;
+	window_invalidate(window);
+	window->widgets = window_park_entrance_widgets;
+	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
+	window->event_handlers = window_park_entrance_events;
+	window->pressed_widgets = 0;
+	window_init_scroll_widgets(window);
+	RCT2_CALLPROC_X(0x00669B55, 0, 0, 0, 0, window, 0, 0);
+}
 
 /**
  * 
@@ -639,10 +666,28 @@ static void window_park_entrance_mouseup()
 		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, 0, w, 0, 0);
 		break;
 	case WIDX_LOCATE:
-		RCT2_CALLPROC_X(0x0066842F, 0, 0, 0, 0, w, 0, 0);
+		if (w->viewport == NULL || *((sint32*)&w->var_482) == -1)
+			break;
+
+		int x, y, z;
+		if (*((uint32*)&w->var_486) & 0x80000000) {
+			rct_sprite *sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[w->var_482]);
+			x = sprite->unknown.x;
+			y = sprite->unknown.y;
+			z = sprite->unknown.z;
+		} else {
+			x = w->var_482;
+			y = w->var_484;
+			z = w->var_488;
+		}
+
+		rct_window *mainWindow = window_get_main();
+		if (mainWindow != NULL)
+			window_scroll_to_location(mainWindow, x, y & 0xFFF, z);
 		break;
 	case WIDX_RENAME:
-		RCT2_CALLPROC_X(0x0066857E, 0, 0, 0, 0, w, 0, 0);
+		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+		window_show_textinput(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, uint32));
 		break;
 	}
 }
@@ -659,6 +704,32 @@ static void window_park_entrance_update()
 
 	w->var_48E++;
 	window_invalidate_by_id(w->classification, 1179);
+}
+
+/**
+ * 
+ *  rct2: 0x0066848B
+ */
+static void window_park_entrance_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+
+	__asm mov result, cl
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+	__asm mov text, edi
+
+	if (widgetIndex == WIDX_RENAME) {
+		if (result) {
+			RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_RENAME_PARK;
+			RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(text + 0)), '!', *((int*)(text + 8)), *((int*)(text + 4)));
+			RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(text + 12)), '!', *((int*)(text + 20)), *((int*)(text + 16)));
+			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(text + 24)), '!', *((int*)(text + 32)), *((int*)(text + 28)));
+		}
+	}
 }
 
 /**
@@ -720,7 +791,7 @@ static void window_park_entrance_paint()
 
 	// Draw viewport
 	if (w->viewport != NULL) {
-		RCT2_CALLPROC_X(0x00685BE1, 0, 0, 0, 0, 0, w->viewport, 0);
+		window_draw_viewport(dpi, w);
 		if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
 			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2);
 	}
@@ -1371,9 +1442,11 @@ static void window_park_set_page(rct_window *w, int page)
 		if (w->classification == RCT2_GLOBAL(0x009DE544, rct_windowclass) && w->number == RCT2_GLOBAL(0x009DE542, rct_windownumber))
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 
+	// Set listen only to viewport
 	RCT2_GLOBAL(0x009E32E0, uint8) = 0;
 	if (page == WINDOW_PARK_PAGE_ENTRANCE && w->page == WINDOW_PARK_PAGE_ENTRANCE && w->viewport != NULL && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
 		RCT2_GLOBAL(0x009E32E0, uint8)++;
+
 	w->page = page;
 	w->var_48E = 0;
 	w->var_492 = 0;

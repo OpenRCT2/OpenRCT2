@@ -220,7 +220,7 @@ static void window_game_top_toolbar_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006B30BC);
 		break;
 	case WIDX_PARK:
-		RCT2_CALLPROC_EBPSAFE(0x00667C48);
+		window_park_entrance_open();
 		break;
 	case WIDX_STAFF:
 		RCT2_CALLPROC_EBPSAFE(0x006BD3CC);

@@ -45,7 +45,7 @@ void window_dispatch_update_all()
 	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
 		RCT2_CALLPROC_X(w->event_handlers[WE_UPDATE], 0, 0, 0, 0, w, 0, 0);
 
-	RCT2_CALLPROC_EBPSAFE(0x006EE411);
+	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
 
 /**
@@ -579,6 +579,15 @@ void window_rotate_camera(rct_window *w)
 }
 
 /**
+ * 
+ *  rct2: 0x006EE308
+ */
+void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value)
+{
+	RCT2_CALLPROC_X(0x006EE308, title, text, value, widgetIndex, w, 0, 0);
+}
+
+/**
  * Draws a window that is in the specified region.
  *  rct2: 0x006E756C
  * left (ax)
@@ -749,4 +758,16 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 
 		widgetIndex++;
 	}
+}
+
+/**
+ * 
+ *  rct2: 0x00685BE1
+ *
+ * @param dpi (edi)
+ * @param w (esi)
+ */
+void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w)
+{
+	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
