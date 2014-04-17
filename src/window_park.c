@@ -31,6 +31,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_ENTRANCE,
@@ -212,7 +213,13 @@ static void window_park_emptysub() { }
 
 static void window_park_entrance_close();
 static void window_park_entrance_mouseup();
+static void window_park_entrance_mousedown();
+static void window_park_entrance_dropdown();
 static void window_park_entrance_update();
+static void window_park_entrance_toolupdate();
+static void window_park_entrance_tooldown();
+static void window_park_entrance_tooldrag();
+static void window_park_entrance_toolabort();
 static void window_park_entrance_textinput();
 static void window_park_entrance_invalidate();
 static void window_park_entrance_paint();
@@ -251,17 +258,17 @@ static uint32 window_park_entrance_events[] = {
 	window_park_entrance_close,
 	window_park_entrance_mouseup,
 	window_park_emptysub,
-	window_park_emptysub,
-	window_park_emptysub,
+	window_park_entrance_mousedown,
+	window_park_entrance_dropdown,
 	window_park_emptysub,
 	window_park_entrance_update,
 	window_park_emptysub,
 	window_park_emptysub,
+	window_park_entrance_toolupdate,
+	window_park_entrance_tooldown,
+	window_park_entrance_tooldrag,
 	window_park_emptysub,
-	window_park_emptysub,
-	window_park_emptysub,
-	window_park_emptysub,
-	window_park_emptysub,
+	window_park_entrance_toolabort,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -660,10 +667,10 @@ static void window_park_entrance_mouseup()
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_BUY_LAND_RIGHTS:
-		RCT2_CALLPROC_X(0x006682F7, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006682F7, 0, 0, 0, widgetIndex, w, 0, 0);
 		break;
 	case WIDX_BUY_CONSTRUCTION_RIGHTS:
-		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, w, 0, 0);
 		break;
 	case WIDX_LOCATE:
 		if (w->viewport == NULL || *((sint32*)&w->var_482) == -1)
@@ -693,6 +700,70 @@ static void window_park_entrance_mouseup()
 }
 
 /**
+ *
+ *  rct2: 0x006681BF
+ */
+static void window_park_entrance_mousedown()
+{
+	short widgetIndex;
+	rct_window *w;
+	rct_widget *widget;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+	__asm mov widget, edi
+
+	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
+		gDropdownItemsFormat[0] = 1142;
+		gDropdownItemsFormat[1] = 1142;
+		gDropdownItemsArgs[0] = STR_CLOSE_PARK;
+		gDropdownItemsArgs[1] = STR_OPEN_PARK;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[1],
+			0,
+			2
+		);
+
+		if (park_is_open()) {
+			RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+			gDropdownItemsChecked |= (1 << 1);
+		} else {
+			RCT2_GLOBAL(0x009DEBA2, sint16) = 1;
+			gDropdownItemsChecked |= (1 << 0);
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006682B8
+ */
+static void window_park_entrance_dropdown()
+{
+	short widgetIndex, dropdownIndex;
+
+	__asm mov dropdownIndex, ax
+	__asm mov widgetIndex, dx
+
+	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+		if (dropdownIndex != 0) {
+			dropdownIndex &= 0x00FF;
+			dropdownIndex |= 0x0100;
+			RCT2_GLOBAL(0x0141E9AE, uint16) = 1724;
+		} else {
+			dropdownIndex &= 0x00FF;
+			RCT2_GLOBAL(0x0141E9AE, uint16) = 1723;
+		}
+		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, dropdownIndex, 34, 0, 0);
+	}
+}
+
+/**
  * 
  *  rct2: 0x006686B5
  */
@@ -704,6 +775,92 @@ static void window_park_entrance_update()
 
 	w->var_48E++;
 	window_invalidate_by_id(w->classification, 1179);
+}
+
+/**
+ * 
+ *  rct2: 0x006681D1
+ */
+static void window_park_entrance_toolupdate()
+{
+	int x, y;
+	short widgetIndex;
+	rct_window *w, *mainWindow;
+
+	__asm mov x, eax
+	__asm mov y, ebx
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
+		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
+		RCT2_GLOBAL(0x009DE58A, uint16) &= 0xFFFE;
+		screen_pos_to_map_pos(&x, &y);
+		if (x != 0x8000) {
+			RCT2_GLOBAL(0x009DE58A, uint16) |= 1;
+			RCT2_GLOBAL(0x009DE594, uint16) = 4;
+			RCT2_GLOBAL(0x009DE58C, uint16) = x;
+			RCT2_GLOBAL(0x009DE58E, uint16) = x;
+			RCT2_GLOBAL(0x009DE590, uint16) = y;
+			RCT2_GLOBAL(0x009DE592, uint16) = y;
+			RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006681E6
+ */
+static void window_park_entrance_tooldown()
+{
+	short x, y, widgetIndex;
+	rct_window *w, *mainWindow;
+
+	__asm mov x, ax
+	__asm mov y, bx
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	RCT2_CALLPROC_X(0x006681E6, x, y, 0, widgetIndex, w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006681FB
+ */
+static void window_park_entrance_tooldrag()
+{
+	short x, y, widgetIndex;
+	rct_window *w, *mainWindow;
+
+	__asm mov x, ax
+	__asm mov y, bx
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	RCT2_CALLPROC_X(0x006681FB, x, y, 0, widgetIndex, w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x0066822A
+ */
+static void window_park_entrance_toolabort()
+{
+	short widgetIndex;
+	rct_window *w, *mainWindow;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
+		hide_gridlines();
+		hide_land_rights();
+	} else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
+		hide_gridlines();
+		hide_construction_rights();
+	}
 }
 
 /**

@@ -60,5 +60,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 int widget_is_disabled(rct_window *w, int widgetIndex);
 int widget_is_pressed(rct_window *w, int widgetIndex);
 int widget_is_highlighted(rct_window *w, int widgetIndex);
+int widget_is_active_tool(rct_window *w, int widgetIndex);
 
 #endif

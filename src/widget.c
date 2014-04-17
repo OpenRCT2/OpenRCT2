@@ -206,7 +206,7 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	b = w->y + widget->bottom;
 
 	// Check if the button is pressed down
-	press = widget_is_pressed(w, widgetIndex) ? 0x20 : 0;
+	press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? 0x20 : 0;
 
 	// Get the colour
 	colour = w->colours[widget->colour];
@@ -298,7 +298,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 	colour = w->colours[widget->colour];
 
 	// Check if the button is pressed down
-	if (widget_is_pressed(w, widgetIndex)) {
+	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)) {
 		if (widget->image == -2) {
 			// Draw border with no fill
 			gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | 0x10);
@@ -432,7 +432,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	press = 0;
 	if (w->flags & 0x400)
 		press |= 0x80;
-	if (widget_is_pressed(w, widgetIndex))
+	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 		press |= 0x20;
 
 	// Get the colour
@@ -600,7 +600,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	colour = w->colours[widget->colour];
 
 	if (widget->type == WWT_4 || widget->type == WWT_6 || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
-		if (widget_is_pressed(w, widgetIndex))
+		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 			image++;
 
 	if (!widget_is_disabled(w, widgetIndex)) {
@@ -651,5 +651,19 @@ int widget_is_highlighted(rct_window *w, int widgetIndex)
 		return 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) != widgetIndex)
 		return 0;
+	return 1;
+}
+
+int widget_is_active_tool(rct_window *w, int widgetIndex)
+{
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) != w->number)
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint32) != widgetIndex)
+		return 0;
+
 	return 1;
 }

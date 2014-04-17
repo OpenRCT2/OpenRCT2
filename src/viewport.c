@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "gfx.h"
 #include "strings.h"
 #include "viewport.h"
@@ -101,4 +102,132 @@ void viewport_update_position(rct_window *window)
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom)
 {
 	RCT2_CALLPROC_X(0x00685C02, left , top, 0, right, viewport, dpi, bottom);
+}
+
+/**
+ * 
+ *  rct2: 0x0068958D
+ */
+void screen_pos_to_map_pos(int *x, int *y)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = *x;
+	ebx = *y;
+	RCT2_CALLFUNC_X(0x0068958D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*x = eax & 0xFFFF;
+	*y = ebx & 0xFFFF;
+}
+
+/**
+ * 
+ *  rct2: 0x00664689
+ */
+void show_gridlines()
+{
+	rct_window *mainWindow;
+
+	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
+				mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
+	RCT2_GLOBAL(0x009E32B0, uint8)++;
+}
+
+/**
+ * 
+ *  rct2: 0x006646B4
+ */
+void hide_gridlines()
+{
+	rct_window *mainWindow;
+
+	RCT2_GLOBAL(0x009E32B0, uint8)--;
+	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES)) {
+				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00664E8E
+ */
+void show_land_rights()
+{
+	rct_window *mainWindow;
+
+	if (RCT2_GLOBAL(0x009E32B2, uint8) != 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
+				mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
+	RCT2_GLOBAL(0x009E32B2, uint8)++;
+}
+
+/**
+ * 
+ *  rct2: 0x00664E8E
+ */
+void hide_land_rights()
+{
+	rct_window *mainWindow;
+
+	RCT2_GLOBAL(0x009E32B2, uint8)--;
+	if (RCT2_GLOBAL(0x009E32B2, uint8) == 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00664EDD
+ */
+void show_construction_rights()
+{
+	rct_window *mainWindow;
+
+	if (RCT2_GLOBAL(0x009E32B3, uint8) != 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
+				mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
+	RCT2_GLOBAL(0x009E32B3, uint8)++;
+}
+
+/**
+ * 
+ *  rct2: 0x00664F08
+ */
+void hide_construction_rights()
+{
+	rct_window *mainWindow;
+
+	RCT2_GLOBAL(0x009E32B3, uint8)--;
+	if (RCT2_GLOBAL(0x009E32B3, uint8) == 0) {
+		if ((mainWindow = window_get_main()) != NULL) {
+			if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
+				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+				window_invalidate(mainWindow);
+			}
+		}
+	}
 }

@@ -145,11 +145,11 @@ typedef enum {
 	WE_UPDATE = 6,
 	WE_UNKNOWN_07 = 7,
 	WE_UNKNOWN_08 = 8,
-	WE_UNKNOWN_09 = 9, // tool update?
-	WE_UNKNOWN_0A = 10,	// tool mouse down?
-	WE_UNKNOWN_0B = 11,	// tool mouse down?
-	WE_UNKNOWN_0C = 12,
-	WE_UNKNOWN_0D = 13, // abort tool?
+	WE_TOOL_UPDATE = 9,
+	WE_TOOL_DOWN = 10,
+	WE_TOOL_DRAG = 11,
+	WE_TOOL_UP = 12,
+	WE_TOOL_ABORT = 13,
 	WE_UNKNOWN_0E = 14,
 	WE_SCROLL_GETSIZE = 15,
 	WE_SCROLL_MOUSEDOWN = 16,

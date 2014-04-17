@@ -33,7 +33,7 @@ enum {
 	VIEWPORT_FLAG_PATH_HEIGHTS = (1 << 6),
 	VIEWPORT_FLAG_GRIDLINES = (1 << 7),
 	VIEWPORT_FLAG_LAND_OWNERSHIP = (1 << 8),
-	VIEWPORT_FLAG_9 = (1 << 9),
+	VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1 << 9),
 	VIEWPORT_FLAG_SOUND_ON = (1 << 10),
 	VIEWPORT_FLAG_INVISIBLE_PEEPS = (1 << 11),
 	VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
@@ -46,5 +46,14 @@ void viewport_init_all();
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
+
+void screen_pos_to_map_pos(int *x, int *y);
+
+void show_gridlines();
+void hide_gridlines();
+void show_land_rights();
+void hide_land_rights();
+void show_construction_rights();
+void hide_construction_rights();
 
 #endif

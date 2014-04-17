@@ -281,22 +281,3 @@ void rct2_free(void *block)
 {
 	RCT2_CALLPROC_1(0x004068DE, void*, block);
 }
-
-/**
- * 
- *  rct2: 0x00664689
- */
-void show_gridlines()
-{
-	rct_window *mainWindow;
-
-	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
-		if ((mainWindow = window_get_main()) != NULL) {
-			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
-				mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-				window_invalidate(mainWindow);
-			}
-		}
-	}
-	RCT2_GLOBAL(0x009E32B0, uint8)++;
-}
