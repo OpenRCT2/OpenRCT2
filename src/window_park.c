@@ -227,32 +227,38 @@ static void window_park_entrance_invalidate();
 static void window_park_entrance_paint();
 
 static void window_park_rating_mouseup();
+static void window_park_rating_resize();
 static void window_park_rating_update();
 static void window_park_rating_invalidate();
 static void window_park_rating_paint();
 
 static void window_park_guests_mouseup();
+static void window_park_guests_resize();
 static void window_park_guests_update();
 static void window_park_guests_invalidate();
 static void window_park_guests_paint();
 
 static void window_park_price_mouseup();
+static void window_park_price_resize();
 static void window_park_price_mousedown();
 static void window_park_price_update();
 static void window_park_price_invalidate();
 static void window_park_price_paint();
 
 static void window_park_stats_mouseup();
+static void window_park_stats_resize();
 static void window_park_stats_update();
 static void window_park_stats_invalidate();
 static void window_park_stats_paint();
 
 static void window_park_objective_mouseup();
+static void window_park_objective_resize();
 static void window_park_objective_update();
 static void window_park_objective_invalidate();
 static void window_park_objective_paint();
 
 static void window_park_awards_mouseup();
+static void window_park_awards_resize();
 static void window_park_awards_update();
 static void window_park_awards_invalidate();
 static void window_park_awards_paint();
@@ -291,7 +297,7 @@ static uint32 window_park_entrance_events[] = {
 static uint32 window_park_rating_events[] = {
 	window_park_emptysub,
 	window_park_rating_mouseup,
-	window_park_emptysub,
+	window_park_rating_resize,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -322,7 +328,7 @@ static uint32 window_park_rating_events[] = {
 static uint32 window_park_guests_events[] = {
 	window_park_emptysub,
 	window_park_guests_mouseup,
-	window_park_emptysub,
+	window_park_guests_resize,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -353,7 +359,7 @@ static uint32 window_park_guests_events[] = {
 static uint32 window_park_price_events[] = {
 	window_park_emptysub,
 	window_park_price_mouseup,
-	window_park_emptysub,
+	window_park_price_resize,
 	window_park_price_mousedown,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -384,7 +390,7 @@ static uint32 window_park_price_events[] = {
 static uint32 window_park_stats_events[] = {
 	window_park_emptysub,
 	window_park_stats_mouseup,
-	window_park_emptysub,
+	window_park_stats_resize,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -415,7 +421,7 @@ static uint32 window_park_stats_events[] = {
 static uint32 window_park_objective_events[] = {
 	window_park_emptysub,
 	window_park_objective_mouseup,
-	window_park_emptysub,
+	window_park_objective_resize,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -446,7 +452,7 @@ static uint32 window_park_objective_events[] = {
 static uint32 window_park_awards_events[] = {
 	window_park_emptysub,
 	window_park_awards_mouseup,
-	window_park_emptysub,
+	window_park_awards_resize,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -698,27 +704,7 @@ static void window_park_entrance_resize()
 	__asm mov w, esi
 
 	w->flags |= WF_RESIZABLE;
-	w->min_width = 230;
-	w->max_width = 230 * 2;
-	w->min_height = 174 + 9;
-	w->max_height = 174 * 2;
-	if (w->width < w->min_width) {
-		w->width = w->min_width;
-		window_invalidate(w);
-	}
-	if (w->height < w->min_height) {
-		w->height = w->min_height;
-		window_invalidate(w);
-	}
-	if (w->width > w->max_width) {
-		w->width = w->max_width;
-		window_invalidate(w);
-	}
-	if (w->height > w->max_height) {
-		w->height = w->max_height;
-		window_invalidate(w);
-	}
-
+	window_resize(w, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
 	window_park_init_viewport(w);
 }
 
@@ -1120,6 +1106,19 @@ static void window_park_rating_mouseup()
 
 /**
  *
+ *  rct2: 0x00668A36
+ */
+static void window_park_rating_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 182, 230, 182);
+}
+
+/**
+ *
  *  rct2: 0x00668A21
  */
 static void window_park_rating_update()
@@ -1195,6 +1194,19 @@ static void window_park_guests_mouseup()
 		window_close(w);
 	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ *
+ *  rct2: 0x00668E33
+ */
+static void window_park_guests_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 182, 230, 182);
 }
 
 /**
@@ -1275,6 +1287,19 @@ static void window_park_price_mouseup()
 		window_close(w);
 	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ *
+ *  rct2: 0x0066908C
+ */
+static void window_park_price_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 124, 230, 124);
 }
 
 /**
@@ -1412,6 +1437,19 @@ static void window_park_stats_mouseup()
 		window_close(w);
 	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ *
+ *  rct2: 0x00669338
+ */
+static void window_park_stats_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 109, 230, 109);
 }
 
 /**
@@ -1588,6 +1626,19 @@ static void window_park_objective_mouseup()
 }
 
 /**
+ *
+ *  rct2: 0x00669681
+ */
+static void window_park_objective_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 224, 230, 224);
+}
+
+/**
  * 
  *  rct2: 0x0066966C
  */
@@ -1697,6 +1748,19 @@ static void window_park_awards_mouseup()
 		window_close(w);
 	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ *
+ *  rct2: 0x00669882
+ */
+static void window_park_awards_resize()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	window_resize(w, 230, 182, 230, 182);
 }
 
 /**

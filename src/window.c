@@ -771,3 +771,29 @@ void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
+
+void window_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight)
+{
+	w->min_width = minWidth;
+	w->min_height = minHeight;
+	w->max_width = maxWidth;
+	w->max_height = maxHeight;
+
+	// Clamp width and height to minimum and maximum
+	if (w->width < minWidth) {
+		w->width = minWidth;
+		window_invalidate(w);
+	}
+	if (w->height < minHeight) {
+		w->height = minHeight;
+		window_invalidate(w);
+	}
+	if (w->width > maxWidth) {
+		w->width = maxWidth;
+		window_invalidate(w);
+	}
+	if (w->height > maxHeight) {
+		w->height = maxHeight;
+		window_invalidate(w);
+	}
+}

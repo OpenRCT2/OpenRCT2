@@ -294,6 +294,8 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
+void window_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight);
+
 // Open window functions
 void window_main_open();
 void window_game_top_toolbar_open();
