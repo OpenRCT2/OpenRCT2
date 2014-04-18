@@ -1869,7 +1869,7 @@ static void window_park_set_page(rct_window *w, int page)
 	RCT2_CALLPROC_X(0x00667F8B, 0, 0, 0, 0, w, 0, 0);
 	window_invalidate(w);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_02], 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, w, 0, 0);
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
 	if (RCT2_GLOBAL(0x009E32E0, uint8) != 0 && w->viewport != NULL)
 		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

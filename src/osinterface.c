@@ -49,7 +49,7 @@ void osinterface_init()
 {
 	osinterface_create_window();
 
-	RCT2_CALLPROC(0x00404584); // dinput_init()
+	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
 static void osinterface_create_window()
@@ -194,69 +194,70 @@ void osinterface_process_messages()
 	gCursorState.right &= ~CURSOR_CHANGED;
 	gCursorState.old = 0;
 
-	SDL_PollEvent(&e);
-	switch (e.type) {
-	case SDL_QUIT:
-		rct2_finish();
-		break;
-	case SDL_WINDOWEVENT:
-		if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-			osinterface_resize(e.window.data1, e.window.data2);
-		break;
-	case SDL_MOUSEMOTION:
-		RCT2_GLOBAL(0x0142406C, int) = e.motion.x;
-		RCT2_GLOBAL(0x01424070, int) = e.motion.y;
+	while (SDL_PollEvent(&e)) {
+		switch (e.type) {
+		case SDL_QUIT:
+			rct2_finish();
+			break;
+		case SDL_WINDOWEVENT:
+			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+				osinterface_resize(e.window.data1, e.window.data2);
+			break;
+		case SDL_MOUSEMOTION:
+			RCT2_GLOBAL(0x0142406C, int) = e.motion.x;
+			RCT2_GLOBAL(0x01424070, int) = e.motion.y;
 
-		gCursorState.x = e.motion.x;
-		gCursorState.y = e.motion.y;
-		break;
-	case SDL_MOUSEWHEEL:
-		RCT2_GLOBAL(0x009E2D80, int) += e.wheel.y * 128;
-		gCursorState.wheel = e.wheel.y;
-		break;
-	case SDL_MOUSEBUTTONDOWN:
-		RCT2_GLOBAL(0x01424318, int) = e.button.x;
-		RCT2_GLOBAL(0x0142431C, int) = e.button.y;
-		switch (e.button.button) {
-		case SDL_BUTTON_LEFT:
-			RCT2_CALLPROC_1(0x00406C96, int, 1);
-			gCursorState.left = CURSOR_PRESSED;
-			gCursorState.old = 1;
+			gCursorState.x = e.motion.x;
+			gCursorState.y = e.motion.y;
 			break;
-		case SDL_BUTTON_MIDDLE:
-			gCursorState.middle = CURSOR_PRESSED;
+		case SDL_MOUSEWHEEL:
+			RCT2_GLOBAL(0x009E2D80, int) += e.wheel.y * 128;
+			gCursorState.wheel = e.wheel.y;
 			break;
-		case SDL_BUTTON_RIGHT:
-			RCT2_CALLPROC_1(0x00406C96, int, 2);
-			gCursorState.right = CURSOR_PRESSED;
-			gCursorState.old = 2;
+		case SDL_MOUSEBUTTONDOWN:
+			RCT2_GLOBAL(0x01424318, int) = e.button.x;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
+			switch (e.button.button) {
+			case SDL_BUTTON_LEFT:
+				RCT2_CALLPROC_1(0x00406C96, int, 1);
+				gCursorState.left = CURSOR_PRESSED;
+				gCursorState.old = 1;
+				break;
+			case SDL_BUTTON_MIDDLE:
+				gCursorState.middle = CURSOR_PRESSED;
+				break;
+			case SDL_BUTTON_RIGHT:
+				RCT2_CALLPROC_1(0x00406C96, int, 3);
+				gCursorState.right = CURSOR_PRESSED;
+				gCursorState.old = 2;
+				break;
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			*((int*)0x01424318) = e.button.x;
+			*((int*)0x0142431C) = e.button.y;
+			switch (e.button.button) {
+			case SDL_BUTTON_LEFT:
+				RCT2_CALLPROC_1(0x00406C96, int, 2);
+				gCursorState.left = CURSOR_RELEASED;
+				gCursorState.old = 3;
+				break;
+			case SDL_BUTTON_MIDDLE:
+				gCursorState.middle = CURSOR_RELEASED;
+				break;
+			case SDL_BUTTON_RIGHT:
+				RCT2_CALLPROC_1(0x00406C96, int, 4);
+				gCursorState.right = CURSOR_RELEASED;
+				gCursorState.old = 4;
+				break;
+			}
+			break;
+		case SDL_KEYDOWN:
+			gLastKeyPressed = e.key.keysym.sym;
+			break;
+		default:
 			break;
 		}
-		break;
-	case SDL_MOUSEBUTTONUP:
-		*((int*)0x01424318) = e.button.x;
-		*((int*)0x0142431C) = e.button.y;
-		switch (e.button.button) {
-		case SDL_BUTTON_LEFT:
-			RCT2_CALLPROC_1(0x00406C96, int, 3);
-			gCursorState.left = CURSOR_RELEASED;
-			gCursorState.old = 3;
-			break;
-		case SDL_BUTTON_MIDDLE:
-			gCursorState.middle = CURSOR_RELEASED;
-			break;
-		case SDL_BUTTON_RIGHT:
-			RCT2_CALLPROC_1(0x00406C96, int, 4);
-			gCursorState.right = CURSOR_RELEASED;
-			gCursorState.old = 4;
-			break;
-		}
-		break;
-	case SDL_KEYDOWN:
-		gLastKeyPressed = e.key.keysym.sym;
-		break;
-	default:
-		break;
 	}
 
 	gCursorState.any = gCursorState.left | gCursorState.middle | gCursorState.right;
@@ -264,6 +265,13 @@ void osinterface_process_messages()
 	// Updates the state of the keys
 	int numKeys = 256;
 	gKeysState = SDL_GetKeyboardState(&numKeys);
+	// memcpy(0x01425C00, gKeysState, 256);
+
+	RCT2_GLOBAL(0x009DEA70, uint8) = 0;
+	if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+		RCT2_GLOBAL(0x009DEA70, uint8) |= 1;
+	if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+		RCT2_GLOBAL(0x009DEA70, uint8) |= 2;
 }
 
 static void osinterface_close_window()

@@ -22,6 +22,7 @@
 #include "rct2.h"
 #include "game.h"
 #include "news_item.h"
+#include "osinterface.h"
 #include "peep.h"
 #include "widget.h"
 #include "window.h"
@@ -45,7 +46,7 @@ void game_update()
 	int eax, tmp;
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
-	RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
+	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
 
 	// do game logic
 	eax = RCT2_GLOBAL(0x009DE588, uint16) / 31;
@@ -221,26 +222,39 @@ void game_handle_input()
 static void game_get_next_input(int *x, int *y, int *state)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = eax & 0xFFFF;
-	*y = ebx & 0xFFFF;
-	*state = ecx & 0xFF;
-	return;
-
-	int on_tutorial = RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8);
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
-		if (on_tutorial == 1) {
-
-		} else {
-			RCT2_CALLPROC_EBPSAFE(0x00407074);
-		}
-		if (on_tutorial == 2) {
-
-		}
-
-	} else {
-
+	RCT2_CALLFUNC_X(0x00407074, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax == 0) {
+		*x = gCursorState.x;
+		*y = gCursorState.y;
+		*state = 0;
+		return;
 	}
+
+	*x = RCT2_GLOBAL(eax + 0, sint32);
+	*y = RCT2_GLOBAL(eax + 4, sint32);
+	*state = RCT2_GLOBAL(eax + 8, sint32);
+
+	//int eax, ebx, ecx, edx, esi, edi, ebp;
+	//RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	//*x = eax & 0xFFFF;
+	//*y = ebx & 0xFFFF;
+	//*state = ecx & 0xFF;
+	//return;
+
+	//int on_tutorial = RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8);
+	//if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
+	//	if (on_tutorial == 1) {
+
+	//	} else {
+	//		RCT2_CALLPROC_EBPSAFE(0x00407074);
+	//	}
+	//	if (on_tutorial == 2) {
+
+	//	}
+
+	//} else {
+
+	//}
 }
 
 #include <windows.h>

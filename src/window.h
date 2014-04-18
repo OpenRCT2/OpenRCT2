@@ -138,7 +138,7 @@ typedef struct rct_window {
 typedef enum {
 	WE_CLOSE = 0,
 	WE_MOUSE_UP = 1,
-	WE_UNKNOWN_02 = 2, // tab switch?
+	WE_RESIZE = 2,
 	WE_MOUSE_DOWN = 3,
 	WE_DROPDOWN = 4,
 	WE_UNKNOWN_05 = 5,
