@@ -178,6 +178,7 @@ static void window_land_mouseup()
 
 		// FEATURE: minimum size is always 0
 		limit = 0;
+		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 0 : 1);
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;

@@ -304,6 +304,7 @@ void window_title_menu_open();
 void window_title_exit_open();
 void window_title_logo_open();
 void window_scenarioselect_open();
+void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
 void window_park_entrance_open();

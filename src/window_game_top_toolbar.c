@@ -175,7 +175,7 @@ static void window_game_top_toolbar_mouseup()
 			RCT2_CALLPROC_X(0x006EE212, 12, 0, 0, WIDX_CLEAR_SCENERY, w, 0, 0);
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
-			RCT2_CALLPROC_EBPSAFE(0x0068E0A7);
+			window_clear_scenery_open();
 		}
 		break;
 	case WIDX_LAND:
