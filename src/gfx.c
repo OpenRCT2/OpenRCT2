@@ -91,7 +91,23 @@ void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 
 /**
  *
+ *  rct2: 0x00684466
+ * dpi (edi)
+ * x1 (ax)
+ * y1 (bx)
+ * x2 (cx)
+ * y2 (dx)
+ * colour (ebp)
+ */
+void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
+{
+	RCT2_CALLPROC_X(0x00684466, x1, y1, x2, y2, 0, dpi, colour);
+}
+
+/**
+ *
  *  rct2: 0x00678AD4
+ * dpi (edi)
  * left (ax)
  * top (cx)
  * right (bx)
