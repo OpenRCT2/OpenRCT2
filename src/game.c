@@ -61,6 +61,7 @@ void game_update()
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		for (; eax > 0; eax--) {
 			game_logic_update();
+			RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
 
 			/*
 			if (rctmem->dword_009E2D74 == 1) {
@@ -141,7 +142,6 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);
 	RCT2_CALLPROC_EBPSAFE(0x006BD18A);
 	RCT2_CALLPROC_EBPSAFE(0x006BCB91);
-	RCT2_CALLPROC_EBPSAFE(0x006BD0F8);
 	news_item_update_current();
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);
 

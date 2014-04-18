@@ -18,6 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <string.h>
+#include <time.h>
 #include "addresses.h"
 #include "date.h"
 #include "game.h"
@@ -65,15 +67,18 @@ static int _scriptWaitCounter;
 
 static void title_init_showcase();
 static void title_update_showcase();
+static void title_play_music();
+
+static uint8 *generate_random_script();
 
 #pragma endregion
 
 static void title_create_windows();
 
 /**
-*
-*  rct2: 0x0068E8DA
-*/
+ *
+ *  rct2: 0x0068E8DA
+ */
 void title_load()
 {
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) & 1)
@@ -106,10 +111,10 @@ void title_load()
 }
 
 /**
-* Creates the windows shown on the title screen; New game, load game,
-* tutorial, toolbox and exit.
-*  rct2: 0x0066B5C0 (part of 0x0066B3E8)
-*/
+ * Creates the windows shown on the title screen; New game, load game,
+ * tutorial, toolbox and exit.
+ *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
+ */
 static void title_create_windows()
 {
 	// RCT2_CALLPROC_EBPSAFE(0x0066B3E8);
@@ -122,20 +127,21 @@ static void title_create_windows()
 }
 
 /**
-*
-*  rct2: 0x00678680
-*/
+ *
+ *  rct2: 0x00678680
+ */
 static void title_init_showcase()
 {
 	_currentScript = _magicMountainScript;
+	// _currentScript = generate_random_script();
 	_scriptWaitCounter = 0;
 	title_update_showcase();
 }
 
 /**
-*
-*  rct2: 0x00678761
-*/
+ *
+ *  rct2: 0x00678761
+ */
 static void title_update_showcase()
 {
 	rct_window* w;
@@ -229,6 +235,7 @@ void title_update()
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		title_update_showcase();
 		game_logic_update();
+		title_play_music();
 	}
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~0x80;
@@ -264,4 +271,61 @@ void title_update()
 			RCT2_CALLPROC_EBPSAFE(0x00675487);
 		}
 	}
+}
+
+/**
+ *
+ *  rct2: 0x00678761
+ */
+static void title_play_music()
+{
+	// RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
+
+	if (!(RCT2_GLOBAL(0x009AF284, uint32) & 1) || !(RCT2_GLOBAL(0x009AF59D, uint8) & 1)) {
+		if (RCT2_GLOBAL(0x009AF600, uint8) != 0)
+			RCT2_CALLPROC_EBPSAFE(0x006BD0BD); // stop music
+		return;
+	}
+
+	if (RCT2_GLOBAL(0x009AF600, uint8) != 0)
+		return;
+
+	// Play old title music
+	// char musicPath[_MAX_PATH];
+	// strcpy(musicPath, RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
+	// strcat(musicPath, "\\data\\css50.dat");
+
+	if (RCT2_CALLFUNC_3(0x0040194E, int, int, int, int, 3, get_file_path(PATH_ID_CSS17), 0)) // play music
+		RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 3, 1, 0, 0, 0);
+
+	RCT2_GLOBAL(0x009AF600, uint8) = 1;
+}
+
+static uint8 *generate_random_script()
+{
+	int i, j;
+	const int views = 16;
+
+	srand(time(NULL));
+
+	uint8 *script = malloc(views * 8 + 2);
+	i = 0;
+	script[i++] = TITLE_SCRIPT_LOAD;
+	for (j = 0; j < views; j++) {
+		script[i++] = TITLE_SCRIPT_LOCATION;
+		script[i++] = 64 + (rand() % 128);
+		script[i++] = 64 + (rand() % 128);
+
+		int rotationCount = rand() % 4;
+		if (rotationCount > 0) {
+			script[i++] = TITLE_SCRIPT_ROTATE;
+			script[i++] = rotationCount;
+		}
+
+		script[i++] = TITLE_SCRIPT_WAIT;
+		script[i++] = 8 + (rand() % 6);
+	}
+	script[i] = TITLE_SCRIPT_RESTART;
+
+	return script;
 }
