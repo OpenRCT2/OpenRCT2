@@ -24,6 +24,7 @@
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 
 static enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -48,6 +49,48 @@ static rct_widget window_land_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static void window_land_emptysub() { }
+static void window_land_close();
+static void window_land_mouseup();
+static void window_land_mousedown();
+static void window_land_dropdown();
+static void window_land_update();
+static void window_land_invalidate();
+static void window_land_paint();
+
+static uint32 window_land_events[] = {
+	window_land_close,
+	window_land_mouseup,
+	window_land_emptysub,
+	window_land_mousedown,
+	window_land_dropdown,
+	window_land_emptysub,
+	window_land_update,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_emptysub,
+	window_land_invalidate,
+	window_land_paint,
+	window_land_emptysub
+};
+
+static int window_land_should_close();
+
 static char window_land_floor_texture_order[] = {
 	TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
 	TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
@@ -58,6 +101,10 @@ static char window_land_wall_texture_order[] = {
 	TERRAIN_EDGE_ROCK,       TERRAIN_EDGE_WOOD_RED,
 	TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
 	0, 0
+};
+
+static int land_pricing[] = {
+	300, 100, 80, 120, 100, 100, 110, 130,  110, 110, 110, 110, 110, 110
 };
 
 int _selectedFloorTexture;
@@ -75,7 +122,7 @@ void window_land_open()
 	if (window_find_by_id(WC_LAND, 0) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, 0x0097B904, WC_LAND, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -95,4 +142,258 @@ void window_land_open()
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
+}
+
+/**
+ *
+ *  rct2: 0x006640A5
+ */
+static void window_land_close()
+{
+	// If the tool wasn't changed, turn tool off
+	if (!window_land_should_close())
+		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+}
+
+/**
+ *
+ *  rct2: 0x00664064
+ */
+static void window_land_mouseup()
+{
+	int limit;
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_DECREMENT:
+		// Decrement land tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
+
+		// FEATURE: minimum size is always 0
+		limit = 0;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+
+		// Invalidate the window
+		window_invalidate(w);
+		break;
+	case WIDX_INCREMENT:
+		// Increment land tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
+
+		// FEATURE: maximum size is always 7
+		limit = 7;
+		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
+		
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+
+		// Invalidate the window
+		window_invalidate(w);
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0066407B
+ */
+static void window_land_mousedown()
+{
+	int i;
+	short widgetIndex;
+	rct_window *w;
+	rct_widget *widget;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+	__asm mov widget, edi
+
+	switch (widgetIndex) {
+	case WIDX_FLOOR:
+		for (i = 0; i < 14; i++) {
+			gDropdownItemsFormat[i] = -1;
+			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
+			if (window_land_floor_texture_order[i] == _selectedFloorTexture)
+				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+		}
+		window_dropdown_show_image(
+			w->x + widget->left, w->y + widget->top,
+			widget->bottom - widget->top,
+			w->colours[2],
+			0,
+			14,
+			47, 36,
+			gAppropriateImageDropdownItemsPerRow[14]
+		);
+		break;
+	case WIDX_WALL:
+		for (i = 0; i < 4; i++) {
+			gDropdownItemsFormat[i] = -1;
+			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
+			if (window_land_wall_texture_order[i] == _selectedWallTexture)
+				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+		}
+		window_dropdown_show_image(
+			w->x + widget->left, w->y + widget->top,
+			widget->bottom - widget->top,
+			w->colours[2],
+			0,
+			4,
+			47, 36,
+			gAppropriateImageDropdownItemsPerRow[4]
+		);
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x00664090
+ */
+static void window_land_dropdown()
+{
+	int type;
+	short dropdownIndex, widgetIndex;
+	rct_window *w;
+
+	__asm mov dropdownIndex, ax
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	switch (widgetIndex) {
+	case WIDX_FLOOR:
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
+		type = (dropdownIndex == -1) ?
+			_selectedFloorTexture :
+			gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = type;
+			_selectedFloorTexture = type;
+		}
+		window_invalidate(w);
+		break;
+	case WIDX_WALL:
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
+		type = (dropdownIndex == -1) ?
+			_selectedWallTexture :
+			gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = type;
+			_selectedWallTexture = type;
+		}
+		window_invalidate(w);
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x00664272
+ */
+static void window_land_update()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	// Close window if another tool is open
+	if (window_land_should_close())
+		window_close(w);
+}
+
+/**
+ *
+ *  rct2: 0x00663F20
+ */
+static void window_land_invalidate()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	w->pressed_widgets = (1 << WIDX_PREVIEW);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) != 255)
+		w->pressed_widgets |= (1 << WIDX_FLOOR);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) != 255)
+		w->pressed_widgets |= (1 << WIDX_WALL);
+
+	window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
+	window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
+	window_land_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+}
+
+/**
+ *
+ *  rct2: 0x00663F7C
+ */
+static void window_land_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	int x, y, price, numTiles;
+
+	__asm mov w, esi
+	__asm mov dpi, edi
+
+	window_draw_widgets(w, dpi);
+
+	x = w->x + (window_land_widgets[WIDX_PREVIEW].left + window_land_widgets[WIDX_PREVIEW].right) / 2;
+	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
+
+	// Draw raise cost amount
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
+		gfx_draw_string_centred(dpi, 984, x, y, 0, RCT2_ADDRESS_LAND_RAISE_COST);
+	y += 10;
+
+	// Draw lower cost amount
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
+		gfx_draw_string_centred(dpi, 985, x, y, 0, RCT2_ADDRESS_LAND_LOWER_COST);
+	y += 50;
+
+	// Draw paint price
+	numTiles = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) * RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	price = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) != 255)
+		price += numTiles * land_pricing[RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8)];
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) != 255)
+		price += numTiles * 100;
+
+	if (price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY)) {
+		RCT2_GLOBAL(0x013CE952, sint32) = price;
+		gfx_draw_string_centred(dpi, 986, x, y, 0, 0x013CE952);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0066D104
+ */
+static int window_land_should_close()
+{
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+		return 1;
+	if (RCT2_GLOBAL(0x009DE544, rct_windowclass) != WC_TOP_TOOLBAR)
+		return 1;
+	if (RCT2_GLOBAL(0x009DE546, sint16) != 7)
+		return 1;
+	return 0;
 }

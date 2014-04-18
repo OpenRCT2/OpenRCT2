@@ -139,25 +139,25 @@ static void window_water_mouseup()
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8)--;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
 		limit = 1;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8) < limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8) = limit;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8)++;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
 
 		// FEATURE: maximum size is always 7
 		limit = 7;
 		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
 		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8) > limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8) = limit;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -165,6 +165,10 @@ static void window_water_mouseup()
 	}
 }
 
+/**
+ *
+ *  rct2: 0x006E6BCE
+ */
 static void window_water_update()
 {
 	rct_window *w;
@@ -190,7 +194,7 @@ static void window_water_invalidate()
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);
 
 	// Update the preview image
-	window_water_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint8);
+	window_water_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
 }
 
 /**
@@ -209,8 +213,8 @@ static void window_water_paint()
 	window_draw_widgets(w, dpi);
 
 	// Draw raise cost amount
-	x = (window_water_widgets[3].left + window_water_widgets[3].right) / 2 + w->x;
-	y = window_water_widgets[3].bottom + w->y + 5;
+	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
+	y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
 	if (RCT2_GLOBAL(0x0141F738, uint32) != 0x80000000 && RCT2_GLOBAL(0x0141F738, uint32) != 0)
 		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)0x0141F738);
 	y += 10;
@@ -226,11 +230,11 @@ static void window_water_paint()
  */
 static int window_water_should_close()
 {
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & 8))
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 		return 1;
-	if (RCT2_GLOBAL(0x009DE544, uint8) != 1)
+	if (RCT2_GLOBAL(0x009DE544, rct_windowclass) != WC_TOP_TOOLBAR)
 		return 1;
-	if (RCT2_GLOBAL(0x009DE546, sint16) != 8)
+	if (RCT2_GLOBAL(0x009DE546, uint16) != 8)
 		return 1;
 	return 0;
 }

@@ -27,6 +27,13 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+int gAppropriateImageDropdownItemsPerRow[] = {
+	1, 1, 1, 1, 2, 2, 3, 3, 4,
+	3, 5, 4, 4, 5, 5, 5, 4, 5,
+	6, 5, 5, 7, 4, 5, 6, 5, 6,
+	6, 6, 6, 6, 8, 8, 0
+};
+
 enum {
 	WIDX_BACKGROUND,
 };
@@ -158,6 +165,84 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
 }
 
+/**
+ * Shows am image dropdown menu.
+ *  rct2: 0x006ECFB9
+ *
+ * @param x (cx)
+ * @param y (dx)
+ * @param extray (di)
+ * @param flags (bh)
+ * @param numItems (bx)
+ * @param colour (al)
+ * @param itemWidth (bp)
+ * @param itemHeight (ah)
+ * @param numColumns (bl)
+ */
+void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 flags, int numItems, int itemWidth, int itemHeight, int numColumns)
+{
+	int i, width, height;
+	rct_window* w;
+
+	// Copy the formats and arguments until all use of it is decompiled
+	memcpy(0x009DEBA4, gDropdownItemsFormat, 37 * 2);
+	memcpy(0x009DEBF4, gDropdownItemsArgs, 80 * 4);
+
+	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
+	if (flags & 0x80)
+		RCT2_GLOBAL(0x009DE518, uint32) |= 0x02;
+
+	// Close existing dropdown
+	window_dropdown_close();
+
+	// Set and calculate num items, rows and columns
+	_dropdown_item_width = itemWidth;
+	_dropdown_item_height = itemHeight;
+	_dropdown_num_items = numItems;
+	_dropdown_num_columns = numColumns;
+	_dropdown_num_rows = _dropdown_num_items / _dropdown_num_columns;
+	if (_dropdown_num_items % _dropdown_num_columns != 0)
+		_dropdown_num_rows++;
+
+	// Calculate position and size
+	width = _dropdown_item_width * _dropdown_num_columns + 3;
+	height = _dropdown_item_height * _dropdown_num_rows + 3;
+	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16))
+		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - width);
+	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
+		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height);
+	window_dropdown_widgets[WIDX_BACKGROUND].right = width;
+	window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
+
+	// Create the window
+	w = window_create(
+		x, y + extray,
+		window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
+		window_dropdown_events,
+		WC_DROPDOWN,
+		0x02
+	);
+	w->widgets = window_dropdown_widgets;
+	if (colour & 0x80)
+		w->flags |= WF_TRANSPARENT;
+	w->colours[0] = colour;
+
+	// Input state
+	_dropdown_highlighted_index = -1;
+	RCT2_GLOBAL(0x009DED34, sint32) = 0;
+	gDropdownItemsChecked = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
+
+	// Copy the following properties until all use of it is decompiled
+	RCT2_GLOBAL(0x009DEBA0, sint16) = _dropdown_num_items;
+	RCT2_GLOBAL(0x009DED44, sint32) = _dropdown_num_columns;
+	RCT2_GLOBAL(0x009DED48, sint32) = _dropdown_num_rows;
+	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
+	RCT2_GLOBAL(0x009DED3C, sint32) = _dropdown_item_height;
+	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
+}
+
 void window_dropdown_close()
 {
 	window_close_by_id(WC_DROPDOWN, 0);
@@ -175,7 +260,7 @@ static void window_dropdown_paint()
 
 	_dropdown_highlighted_index = RCT2_GLOBAL(0x009DEBA2, sint16);
 	{
-		int i, cell_x, cell_y, l, t, r, b, item, colour;
+		int i, cell_x, cell_y, l, t, r, b, item, image, colour;
 		for (i = 0; i < _dropdown_num_items; i++) {
 			cell_x = i % _dropdown_num_columns;
 			cell_y = i / _dropdown_num_columns;
@@ -207,8 +292,18 @@ static void window_dropdown_paint()
 				}
 
 				item = gDropdownItemsFormat[i];
-				if (item == -1 || item == -2) {
+				if (item == (uint16)-1 || item == (uint16)-2) {
 					// Image item
+					image = gDropdownItemsArgs[i];
+					if (item == (uint16)-2 && _dropdown_highlighted_index == i)
+						image++;
+
+					gfx_draw_sprite(
+						dpi,
+						image,
+						w->x + 2 + (cell_x * _dropdown_item_width),
+						w->y + 2 + (cell_y * _dropdown_item_height)
+					);
 				} else {
 					// Text item
 					if (i < 32)
