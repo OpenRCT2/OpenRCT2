@@ -588,14 +588,7 @@ rct_window *window_park_open()
 {
 	rct_window* w;
 
-	{
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		ebx = 0xAE00E6;
-		ecx = 0x4001B;
-		edx = 0x0097BB6C;
-		RCT2_CALLFUNC_X(0x006EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		w = esi;
-	}
+	w = window_create_auto_pos(230, 174, window_park_entrance_events, WC_PARK_INFORMATION, 0x0400);
 	w->widgets = window_park_entrance_widgets;
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;

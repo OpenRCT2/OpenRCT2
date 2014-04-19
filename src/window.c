@@ -176,6 +176,27 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 }
 
 /**
+ * Opens a new window, supposedly automatically positioned
+ *  rct2: 0x006EA9B1
+ *
+ * @param width (bx)
+ * @param height (ebx >> 16)
+ * @param events (edx)
+ * @param flags (ch)
+ * @param class (cl)
+ */
+rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	ebx = (height << 16) | width;
+	ecx = (flags << 8) | cls;
+	edx = event_handlers;
+	RCT2_CALLFUNC_X(0x006EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return esi;
+}
+
+/**
  * Closes the specified window.
  *  rct2: 0x006ECD4C
  *

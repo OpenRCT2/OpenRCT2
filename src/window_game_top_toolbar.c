@@ -217,7 +217,7 @@ static void window_game_top_toolbar_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
 		break;
 	case WIDX_RIDES:
-		RCT2_CALLPROC_EBPSAFE(0x006B30BC);
+		window_ride_list_open();
 		break;
 	case WIDX_PARK:
 		window_park_entrance_open();

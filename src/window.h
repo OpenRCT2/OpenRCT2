@@ -110,7 +110,12 @@ typedef struct rct_window {
 	rct_windownumber number;	// 0x03C
 	uint16 flags;				// 0x03E
 	rct_scroll scrolls[3];		// 0x040
-	uint8 pad_076[0x40A];
+	uint8 pad_076[0x400];
+	sint16 var_476;
+	sint16 pad_478;
+	sint16 var_47A;
+	sint16 pad_47C;
+	sint16 pad_47E;
 	sint16 var_480;
 	sint16 var_482; // viewport target x
 	sint16 var_484; // viewport target y
@@ -267,6 +272,7 @@ enum {
 void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
 void window_close_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
@@ -309,6 +315,7 @@ void window_land_open();
 void window_water_open();
 void window_park_entrance_open();
 void window_park_objective_open();
+void window_ride_list_open();
 void window_cheats_open();
 
 #endif

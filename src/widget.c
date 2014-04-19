@@ -551,6 +551,9 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	}
 
 	// Draw text
+	if (widget->image == (uint32)-1)
+		return;
+
 	l = widget->left + w->x + 2;
 	t = widget->top + w->y + 1;
 	width = widget->right - widget->left - 4;

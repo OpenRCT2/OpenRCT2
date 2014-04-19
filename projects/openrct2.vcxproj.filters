@@ -224,6 +224,9 @@
     <ClCompile Include="..\src\window_clear_scenery.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_ride_list.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
