@@ -101,6 +101,34 @@ static uint32 window_dropdown_events[] = {
  */
 void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 flags, int num_items)
 {
+	int i, string_width, max_string_width;
+	char buffer[256];
+
+	// Calculate the longest string width
+	max_string_width = 0;
+	for (i = 0; i < num_items; i++) {
+		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
+		RCT2_GLOBAL(0x013CE950, sint16) = 224;
+		string_width = gfx_get_string_width(buffer);
+		max_string_width = max(string_width, max_string_width);
+	}
+
+	window_dropdown_show_text_custom_width(x, y, extray, colour, flags, num_items, max_string_width + 3);
+}
+
+/**
+ * Shows a text dropdown menu.
+ *  rct2: 0x006ECFB9, although 0x006ECE50 is real version
+ *
+ * @param x (cx)
+ * @param y (dx)
+ * @param extray (di)
+ * @param flags (bh)
+ * @param num_items (bx)
+ * @param colour (al)
+ */
+void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colour, uint8 flags, int num_items, int width)
+{
 	rct_window* w;
 	int i, string_width, max_string_width;
 	char buffer[256];
@@ -115,22 +143,12 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
-	_dropdown_item_width = 0;
+	_dropdown_item_width = width;
 	_dropdown_item_height = 10;
 	if (flags & 0x40)
 		_dropdown_item_height = flags & 0x3F;
-
-	// Calculate the longest string width
-	max_string_width = 0;
-	for (i = 0; i < num_items; i++) {
-		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
-		RCT2_GLOBAL(0x013CE950, sint16) = 224;
-		string_width = gfx_get_string_width(buffer);
-		max_string_width = max(string_width, max_string_width);
-	}
 	
 	// Set the widgets
-	_dropdown_item_width = max_string_width + 3;
 	_dropdown_num_items = num_items;
 	_dropdown_num_rows = num_items;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
@@ -166,7 +184,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 }
 
 /**
- * Shows am image dropdown menu.
+ * Shows an image dropdown menu.
  *  rct2: 0x006ECFB9
  *
  * @param x (cx)

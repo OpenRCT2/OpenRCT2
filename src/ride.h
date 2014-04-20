@@ -29,9 +29,15 @@
  */
 typedef struct {
 	uint8 type;						// 0x000
-	uint8 pad_001[0x4F];
+	uint32 var_001;
+	uint8 pad_005[0x44];
+	uint8 status;					// 0x049
+	uint16 var_04A;
+	uint32 pad_04C;
 	uint16 var_050;					// 0x050
-	uint8 pad_052[0x34];
+	uint8 pad_052[0x18];
+	uint16 var_06A[4];				// probably entrance map coordinates
+	uint8 pad_072[0x14];
 	uint16 var_086[1];
 	uint8 pad_088[0x68];
 	sint16 excitement;				// 0x0F0
@@ -53,11 +59,25 @@ typedef struct {
 	sint16 var_142;
 	uint16 pad_144;
 	uint16 reliability;				// 0x146
-	uint8 pad_148[0x51];
+	uint16 pad_148;
+	uint16 var_14A;
+	uint8 pad_14C;
+	uint8 var_14D;
+	uint8 pad_14E[0x0A];
+	uint16 var_158;
+	uint8 pad_15A[0x3C];
+	uint16 var_196;
+	uint8 pad_198;
 	uint8 var_199;
-	uint8 pad_19A[0x36];
+	uint8 pad_19A[0x1A];
+	sint32 profit;					// 0x1B4
+	uint8 queue_time[4];			// 0x1B8
+	uint8 pad_1BC[0x12];
+	uint16 guests_favourite;		// 0x1CE
 	uint32 var_1D0;
-	uint8 pad_1D4[0x8C];
+	uint8 pad_1D4[0x2C];
+	uint16 queue_length[4];			// 0x200
+	uint8 pad_208[0x58];
 } rct_ride;
 
 /**
@@ -68,6 +88,12 @@ typedef struct {
 	uint8 var_00;
 	uint8 pad_01[0x4B0B];
 } rct_ride_measurement;
+
+enum {
+	RIDE_CLASS_RIDE,
+	RIDE_CLASS_SHOP_OR_STALL,
+	RIDE_CLASS_KIOSK_OR_FACILITY
+};
 
 enum {
 	RIDE_TYPE_NULL = 255,
@@ -163,10 +189,20 @@ enum {
 	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
+enum {
+	RIDE_STATUS_CLOSED,
+	RIDE_STATUS_OPEN,
+	RIDE_STATUS_TESTING
+};
+
 #define MAX_RIDES 255
 #define MAX_RIDE_MEASUREMENTS 8
 
+extern const uint8 gRideClassifications[255];
+
 int ride_get_count();
+int ride_get_total_queue_length(rct_ride *ride);
+int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
 
 #endif

@@ -29,5 +29,6 @@ extern sint32 gDropdownItemsArgs[64];
 extern uint32 gDropdownItemsChecked;
 
 void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 flags, int num_items);
+void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colour, uint8 flags, int num_items, int width);
 void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 flags, int numItems, int itemWidth, int itemHeight, int numColumns);
 void window_dropdown_close();

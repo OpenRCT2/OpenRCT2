@@ -369,31 +369,31 @@ static void game_handle_input_mouse(int x, int y, int state)
 					switch (ebx & 0xFF) {
 					case 2:
 						if (*((uint8*)edx) == 0)
-							RCT2_CALLPROC_X(0x006B4857, 0, 0, 0, 0, 0, 0, 0);
+							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, 0, 0, 0, 0);
 						break;
 					case 3:
-						RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 5:
-						RCT2_CALLPROC_X(0x006E08D2, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006E08D2, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 6:
-						RCT2_CALLPROC_X(0x006A614A, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006A614A, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 7:
-						RCT2_CALLPROC_X(0x006A61AB, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006A61AB, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 8:
-						RCT2_CALLPROC_X(0x00666C0E, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x00666C0E, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 9:
-						RCT2_CALLPROC_X(0x006E57A9, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006E57A9, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 10:
-						RCT2_CALLPROC_X(0x006B88DC, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006B88DC, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 12:
-						RCT2_CALLPROC_X(0x006BA233, 0, 0, 0, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006BA233, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					default:
 						break;

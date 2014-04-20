@@ -110,7 +110,7 @@ typedef struct rct_window {
 	rct_windownumber number;	// 0x03C
 	uint16 flags;				// 0x03E
 	rct_scroll scrolls[3];		// 0x040
-	uint8 pad_076[0x400];
+	uint8 var_076[0x400];
 	sint16 var_476;
 	sint16 pad_478;
 	sint16 var_47A;
