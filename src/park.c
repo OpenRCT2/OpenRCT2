@@ -54,7 +54,7 @@ int calculate_park_rating()
 	int result;
 
 	result = 1150;
-	if (RCT2_GLOBAL(0x013573E4, uint32) & 0x4000)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & 0x4000)
 		result = 1050;
 	
 	// Guests

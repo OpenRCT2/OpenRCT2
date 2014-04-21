@@ -1710,7 +1710,7 @@ static void window_park_objective_invalidate()
 	*((short*)0x013CE954) = RCT2_GLOBAL(0x013573D8, uint32);
 
 	// 
-	if (RCT2_GLOBAL(0x013573E4, uint32) & 0x02)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & 0x02)
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
 	else
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
