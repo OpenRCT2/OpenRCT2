@@ -108,6 +108,9 @@
     <ClInclude Include="..\src\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\track.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -226,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_ride_list.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\track.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

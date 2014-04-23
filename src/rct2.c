@@ -40,6 +40,7 @@
 #include "ride.h"
 #include "scenario.h"
 #include "title.h"
+#include "track.h"
 #include "viewport.h"
 
 #define GAME_PATH "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2"
@@ -111,7 +112,7 @@ void rct2_init()
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	object_load_list();
 	scenario_load_list();
-	RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, 253, 0, 0, 0); // track_load_list(253)
+	track_load_list(253);
 	gfx_load_g1();
 	RCT2_CALLPROC_EBPSAFE(0x006C19AC);
 	osinterface_init();
