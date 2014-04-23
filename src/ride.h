@@ -33,7 +33,7 @@ typedef struct {
 	uint8 pad_005[0x44];
 	uint8 status;					// 0x049
 	uint16 var_04A;
-	uint32 pad_04C;
+	uint32 var_04C;
 	uint16 var_050;					// 0x050
 	uint8 pad_052[0x18];
 	uint16 var_06A[4];				// probably entrance map coordinates

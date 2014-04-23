@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "ride.h"
 #include "strings.h"
@@ -70,6 +71,8 @@ static void window_ride_list_mousedown();
 static void window_ride_list_dropdown();
 static void window_ride_list_update();
 static void window_ride_list_scrollgetsize();
+static void window_ride_list_scrollmousedown();
+static void window_ride_list_scrollmouseover();
 static void window_ride_list_tooltip();
 static void window_ride_list_invalidate();
 static void window_ride_list_paint();
@@ -92,9 +95,9 @@ static uint32 window_ride_list_events[] = {
 	window_ride_list_emptysub,
 	window_ride_list_emptysub,
 	window_ride_list_scrollgetsize,
+	window_ride_list_scrollmousedown,
 	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
+	window_ride_list_scrollmouseover,
 	window_ride_list_emptysub,
 	window_ride_list_emptysub,
 	window_ride_list_emptysub,
@@ -339,6 +342,48 @@ static void window_ride_list_scrollgetsize()
 
 /**
  * 
+ *  rct2: 0x006B361F
+ */
+static void window_ride_list_scrollmousedown()
+{
+	int index;
+	short y;
+	rct_window *w;
+
+	__asm mov y, dx
+	__asm mov w, esi
+
+	index = y / 10;
+	if (index >= w->var_476)
+		return;
+
+	// Open ride window
+	RCT2_CALLPROC_X(0x006ACC28, w->var_076[index], 0, 0, 0, 0, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006B35EF
+ */
+static void window_ride_list_scrollmouseover()
+{
+	int index;
+	short y;
+	rct_window *w;
+
+	__asm mov y, dx
+	__asm mov w, esi
+
+	index = y / 10;
+	if (index >= w->var_476)
+		return;
+
+	w->var_47A = index;
+	window_invalidate(w);
+}
+
+/**
+ * 
  *  rct2: 0x006B3861
  */
 static void window_ride_list_tooltip()
@@ -427,14 +472,21 @@ static void window_ride_list_scrollpaint()
 	y = 0;
 	for (i = 0; i < w->var_476; i++) {
 		format = 1191;
+
+		// Background highlight
 		if (i == w->var_47A) {
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
 			format = 1193;
 		}
-		formatSecondary = 0;
-
+		
+		// Get ride
 		ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[i]];
+
+		// Ride name
 		gfx_draw_string_left_clipped(dpi, format, &ride->var_04A, 0, 0, y - 1, 159);
+
+		// Ride information
+		formatSecondary = 0;
 		switch (_window_ride_list_information_type) {
 		case INFORMATION_TYPE_STATUS:
 			ride_get_status(i, &formatSecondary, &argument);
@@ -539,8 +591,9 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
  */
 static void window_ride_list_refresh_list(rct_window *w)
 {
-	int i, j, countA, countB;
-	rct_ride *ride;
+	int i, j, k, countA, countB;
+	sint16 swapper;
+	rct_ride *ride, *otherRide;
 
 	countA = countB = 0;
 	for (i = 0; i < MAX_RIDES; i++) {
@@ -573,8 +626,111 @@ static void window_ride_list_refresh_list(rct_window *w)
 			continue;
 
 		w->var_076[j] = i;
+		k = j;
 		switch (w->var_490) {
+		case INFORMATION_TYPE_STATUS:
+			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
+			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, 0x0141ED68, 0);
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
+				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
+				if (strcmp(0x0141ED68, 0x0141EF68) >= 0)
+					break;
 
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_POPULARITY:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if ((ride->var_158 * 4) & 0xFF <= (otherRide->var_158 * 4) & 0xFF)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_SATISFACTION:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if ((ride->var_14A * 5) & 0xFF <= (otherRide->var_14A * 5) & 0xFF)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_PROFIT:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride->profit <= otherRide->profit)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_QUEUE_LENGTH:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_QUEUE_TIME:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_RELIABILITY:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_DOWN_TIME:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride->var_199 <= otherRide->var_199)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
+		case INFORMATION_TYPE_GUESTS_FAVOURITE:
+			while (--k >= 0) {
+				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				if (ride->guests_favourite <= otherRide->guests_favourite)
+					break;
+
+				swapper = w->var_076[k];
+				w->var_076[k] = w->var_076[k + 1];
+				w->var_076[k + 1] = swapper;
+			}
+			break;
 		}
 
 		j++;
