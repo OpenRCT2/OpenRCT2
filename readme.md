@@ -3,19 +3,20 @@ An open source clone of Roller Coaster Tycoon 2 built by decompiling the origina
 - [Screenshot 1](http://dev.intelorca.co.uk/2014/openrct2/cheats.png)
 
 # Contents
-- 1 Introduction
-  - 1.1 Background
-  - 1.2 Decompiling the game
-  - 1.3 Progress
-- 2 Building the source code
-  - 2.1 Prerequisites
-  - 2.2 Compiling and running
-- 3 Contributing
-  - 3.1 Decompiling
-  - 3.2 Naming of procedures and variables
-  - 3.3 Cleaning and documenting the source code
-  - 3.4 Implementing new featues / fixing bugs
-- 4 Licence
+- 1 - [Introduction](#1-introduction)
+  - 1.1 - [Background](#11-background)
+  - 1.2 - [Decompiling the game](#12-decompiling-the-game)
+  - 1.3 - [Progress](#13-progress)
+  - 1.4 - [Aim](#14-aim) 
+- 2 - [Building the source code](#2-building-the-source-code)
+  - 2.1 - [Prerequisites](#21-prerequisites)
+  - 2.2 - [Compiling and running](#22-compiling-and-running)
+- 3 - [Contributing](#3-contributing)
+  - 3.1 - [Decompiling](#31-decompiling)
+  - 3.2 - [Naming of procedures and variables](#32-naming-of-procedures-and-variables)
+  - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
+  - 3.4 - [Implementing new featues / fixing bugs](#34-implementing-new-featues--fixing-bugs)
+- 4 - [Licence](#4-license)
 
 # 1 Introduction
 
