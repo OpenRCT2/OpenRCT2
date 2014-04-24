@@ -20,6 +20,7 @@
  
 #include "addresses.h"
 #include "audio.h"
+#include "config.h"
 #include "rct2.h"
 #include "game.h"
 #include "news_item.h"
@@ -111,9 +112,8 @@ void game_update()
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
-		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255) {
-			RCT2_CALLPROC_EBPSAFE(0x00675487);
-		}
+		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
+			config_save();
 	}
 }
 

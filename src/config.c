@@ -23,19 +23,25 @@
 #include "config.h"
 #include "rct2.h"
 
+static const int MagicNumber = 0x0003113A;
+
+/**
+ * 
+ *  rct2: 0x006752D5
+ */
 void config_load()
 {
 	HANDLE hFile;
-	DWORD bytes_read;
+	DWORD bytesRead;
 
 	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		// Read and check magic number
-		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytes_read, NULL);
-		if (RCT2_GLOBAL(0x013CE928, int) == 0x0003113A) {
+		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytesRead, NULL);
+		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
 			// Read options
-			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytes_read, NULL);
+			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
 			CloseHandle(hFile);
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
@@ -63,4 +69,21 @@ void config_load()
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 		RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
+}
+
+/**
+ * 
+ *  rct2: 0x00675487
+ */
+void config_save()
+{
+	HANDLE hFile;
+	DWORD bytesWritten;
+
+	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) {
+		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
+		WriteFile(hFile, 0x009AAC5C, 2155, &bytesWritten, NULL);
+		CloseHandle(hFile);
+	}
 }

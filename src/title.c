@@ -21,6 +21,7 @@
 #include <string.h>
 #include <time.h>
 #include "addresses.h"
+#include "config.h"
 #include "date.h"
 #include "game.h"
 #include "gfx.h"
@@ -267,9 +268,8 @@ void title_update()
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
-		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255) {
-			RCT2_CALLPROC_EBPSAFE(0x00675487);
-		}
+		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
+			config_save();
 	}
 }
 
