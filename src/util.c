@@ -23,6 +23,6 @@
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
 	// 1 metre squared = 10.7639104 feet squared
-	// how its done in RCT2
+	// how it is done in RCT2
 	return squaredMetres * 11;
 }
