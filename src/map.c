@@ -69,15 +69,16 @@ void map_init()
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
 		map_element = GET_MAP_ELEMENT(i);
-		map_element->type = (MAP_ELEMENT_TYPE_SURFACE << 2) | 1;
+		map_element->type = (MAP_ELEMENT_TYPE_SURFACE << 2);
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 14;
 		map_element->clearance_height = 14;
-		map_element->properties.surface.slope = 1 << 5;
+		map_element->properties.surface.slope = 0;
 		map_element->properties.surface.grass_length = 1;
 		map_element->properties.surface.ownership = 0;
 
 		map_element_set_terrain(map_element, TERRAIN_GRASS);
+		map_element_set_terrain_edge(map_element, TERRAIN_EDGE_ROCK);
 	}
 
 	RCT2_GLOBAL(0x013B0E70, sint16) = 0;

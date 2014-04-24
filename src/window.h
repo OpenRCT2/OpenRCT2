@@ -29,8 +29,8 @@ union rct_window_event;
 
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 
-typedef sint8 rct_windowclass;
-typedef sint16 rct_windownumber;
+typedef uint8 rct_windowclass;
+typedef uint16 rct_windownumber;
 
 typedef struct {
 	rct_windowclass classification;
@@ -75,6 +75,10 @@ typedef struct {
 	uint16 flags;					// 0x12
 } rct_viewport;
 
+/**
+ * Scroll structure
+ * size: 0x12
+ */
 typedef struct {
 	uint16 flags;				// 0x00
 	sint16 h_left;				// 0x02
@@ -110,7 +114,7 @@ typedef struct rct_window {
 	rct_windownumber number;	// 0x03C
 	uint16 flags;				// 0x03E
 	rct_scroll scrolls[3];		// 0x040
-	uint8 var_076[0x400];
+	uint8 var_076[1024];
 	sint16 var_476;
 	sint16 pad_478;
 	sint16 var_47A;
@@ -182,9 +186,13 @@ typedef enum {
 	WF_DISABLE_VP_SCROLL = 1 << 9,
 	*/
 
+	WF_0 = (1 << 0),
+	WF_1 = (1 << 1),
 	WF_TRANSPARENT = (1 << 4),
+	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
-	WF_10,
+	WF_9 = (1 << 9),
+	WF_10 = (1 << 10),
 	WF_WHITE_BORDER_ONE = (1 << 12),
 	WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 } WINDOW_FLAGS;
@@ -222,9 +230,9 @@ enum {
 	INPUT_STATE_NORMAL = 1,
 	INPUT_STATE_WIDGET_PRESSED = 2,
 	INPUT_STATE_DRAGGING = 3,
-	INPUT_STATE_VIEWPORT_LEFT = 4,
+	INPUT_STATE_VIEWPORT_DRAG = 4,
 	INPUT_STATE_DROPDOWN_ACTIVE = 5,
-	INPUT_STATE_VIEWPORT_RIGHT = 6,
+	INPUT_STATE_VIEWPORT_LEFT = 6,
 	INPUT_STATE_SCROLL_LEFT = 7,
 	INPUT_STATE_RESIZING = 8,
 };
@@ -236,6 +244,7 @@ enum {
 	WC_TOOLTIP = 5,
 	WC_DROPDOWN = 6,
 	WC_ABOUT = 8,
+	WC_ERROR = 11,
 	WC_RIDE = 12,
 	WC_RIDE_CONSTRUCTION = 13,
 	WC_RIDE_LIST = 15,

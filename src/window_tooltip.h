@@ -18,22 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _WINDOW_DROPDOWN_H_
-#define _WINDOW_DROPDOWN_H_
+#ifndef _WINDOW_TOOLTIP_H_
+#define _WINDOW_TOOLTIP_H_
 
 #include "rct2.h"
+#include "window.h"
 
-#define DROPDOWN_SEPARATOR 0
-
-extern int gAppropriateImageDropdownItemsPerRow[];
-
-extern uint16 gDropdownItemsFormat[64];
-extern sint32 gDropdownItemsArgs[64];
-extern uint32 gDropdownItemsChecked;
-
-void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 flags, int num_items);
-void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colour, uint8 flags, int num_items, int width);
-void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 flags, int numItems, int itemWidth, int itemHeight, int numColumns);
-void window_dropdown_close();
+void window_tooltip_reset(int x, int y);
+void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y);
+void window_tooltip_close();
 
 #endif

@@ -111,6 +111,9 @@
     <ClInclude Include="..\src\track.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\window_tooltip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -232,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="..\src\track.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_tooltip.c">
+      <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,11 @@ void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 	}
 }
 
+void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
+{
+	gfx_fill_rect(dpi, x, y, x, y, colour);
+}
+
 /**
  *
  *  rct2: 0x00684466

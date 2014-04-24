@@ -45,6 +45,7 @@
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
     <ClInclude Include="..\src\window_dropdown.h" />
+    <ClInclude Include="..\src\window_tooltip.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +88,7 @@
     <ClCompile Include="..\src\window_title_menu.c" />
     <ClCompile Include="..\src\window_title_scenarioselect.c" />
     <ClCompile Include="..\src\window_game_top_toolbar.c" />
+    <ClCompile Include="..\src\window_tooltip.c" />
     <ClCompile Include="..\src\window_water.c" />
   </ItemGroup>
   <ItemGroup>
