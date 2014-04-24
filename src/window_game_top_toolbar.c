@@ -120,7 +120,13 @@ void window_game_top_toolbar_open()
 {
 	rct_window* window;
 
-	window = window_create(0, 0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28, window_game_top_toolbar_events, WC_TOP_TOOLBAR, 0x32);
+	window = window_create(
+		0, 0,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
+		window_game_top_toolbar_events,
+		WC_TOP_TOOLBAR,
+		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+	);
 	window->widgets = window_game_top_toolbar_widgets;
 	window->enabled_widgets |= (1 | 2 | 4 | 8 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100 | 0x200 | 0x400 | 0x800 |
 		0x1000 | 0x2000 | 0x4000 | 0x8000 | 0x10000 | 0x20000);

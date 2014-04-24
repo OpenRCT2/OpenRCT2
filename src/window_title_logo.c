@@ -44,7 +44,7 @@ void window_title_logo_open()
 			packs++;
 
 	// Create the window
-	window = window_create(0, 0, 200, 106 + (10 * packs), 0x0097BF6C, WC_TITLE_LOGO, 0x02);
+	window = window_create(0, 0, 200, 106 + (10 * packs), 0x0097BF6C, WC_TITLE_LOGO, WF_STICK_TO_FRONT);
 	window->widgets = 0x009A9658; // mouse move bug in original game, keep this address and no crash happens
 	window_init_scroll_widgets(window);
 	window->flags |= 16;

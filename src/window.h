@@ -186,8 +186,8 @@ typedef enum {
 	WF_DISABLE_VP_SCROLL = 1 << 9,
 	*/
 
-	WF_0 = (1 << 0),
-	WF_1 = (1 << 1),
+	WF_STICK_TO_BACK = (1 << 0),
+	WF_STICK_TO_FRONT = (1 << 1),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),

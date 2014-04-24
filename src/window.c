@@ -109,7 +109,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	if (RCT2_NEW_WINDOW == &(RCT2_FIRST_WINDOW[12])) {
 		// Close least recently used window
 		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
-			if (!(w->flags & (WF_0 | WF_1 | WF_9)))
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_9)))
 				break;
 
 		window_close(w);
@@ -118,16 +118,16 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w = RCT2_NEW_WINDOW;
 
 	// Flags
-	if (flags & WF_0) {
+	if (flags & WF_STICK_TO_BACK) {
 		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
-			if ((w - 1)->flags & WF_1)
+			if ((w - 1)->flags & WF_STICK_TO_FRONT)
 				continue;
-			if ((w - 1)->flags & WF_0)
+			if ((w - 1)->flags & WF_STICK_TO_BACK)
 				break;
 		}
-	} else if (!(flags & WF_1)) {
+	} else if (!(flags & WF_STICK_TO_FRONT)) {
 		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
-			if (!((w - 1)->flags & WF_1))
+			if (!((w - 1)->flags & WF_STICK_TO_FRONT))
 				break;
 		}
 	}
@@ -143,7 +143,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->flags = flags;
 
 	// Play sound
-	if (!(flags & (WF_0 | WF_1)))
+	if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
 		sound_play_panned(40, x + (width / 2));
 
 	w->number = 0;

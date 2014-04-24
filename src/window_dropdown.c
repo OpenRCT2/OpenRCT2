@@ -239,7 +239,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
 		window_dropdown_events,
 		WC_DROPDOWN,
-		0x02
+		WF_STICK_TO_FRONT
 	);
 	w->widgets = window_dropdown_widgets;
 	if (colour & 0x80)

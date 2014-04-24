@@ -38,9 +38,11 @@ void window_title_exit_open()
 	rct_window* window;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 40,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 64,
-		40, 64, 0x0097BEFC, WC_TITLE_EXIT, 0x02
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 40, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 64,
+		40, 64,
+		0x0097BEFC,
+		WC_TITLE_EXIT,
+		WF_STICK_TO_FRONT
 	);
 	window->widgets = window_title_exit_widgets;
 	window->enabled_widgets |= 1;

@@ -89,9 +89,11 @@ void window_title_menu_open()
 	rct_window* window;
 
 	window = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 328) / 2,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 142,
-		328, 82, window_title_menu_events, WC_TITLE_MENU, 0x02
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 142,
+		328, 82,
+		window_title_menu_events,
+		WC_TITLE_MENU,
+		WF_STICK_TO_FRONT
 	);
 	window->widgets = window_title_menu_widgets;
 	window->enabled_widgets |= (8 | 4 | 2 | 1);

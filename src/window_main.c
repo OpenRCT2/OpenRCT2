@@ -38,7 +38,13 @@ void window_main_open()
 
 	main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
 	main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	window = window_create(0, 0, window_main_widgets[0].right, window_main_widgets[0].bottom, 0x0097C0BC, WC_MAIN_WINDOW, 0x01);
+	window = window_create(
+		0, 0,
+		window_main_widgets[0].right, window_main_widgets[0].bottom,
+		0x0097C0BC,
+		WC_MAIN_WINDOW,
+		WF_STICK_TO_BACK
+	);
 	window->widgets = main_widgets;
 
 	// RCT2_CALLPROC_X(0x006EB009, window->x, window->y, 0x4000000, 0x0FFF0FFF, window, 0, 0);

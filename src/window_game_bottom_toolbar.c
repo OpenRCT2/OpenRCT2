@@ -114,7 +114,13 @@ void window_game_bottom_toolbar_open()
 {
 	rct_window* window;
 
-	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 32, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 32, window_game_bottom_toolbar_events, WC_BOTTOM_TOOLBAR, 0x32);
+	window = window_create(
+		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 32,
+		window_game_bottom_toolbar_events,
+		WC_BOTTOM_TOOLBAR,
+		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+	);
 	window->widgets = window_game_bottom_toolbar_widgets;
 	window->enabled_widgets |=
 		(1 << WIDX_LEFT_OUTSET) |
