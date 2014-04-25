@@ -114,6 +114,12 @@
     <ClInclude Include="..\src\window_tooltip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\window_error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\screenshot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -238,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="..\src\window_tooltip.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_error.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\screenshot.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

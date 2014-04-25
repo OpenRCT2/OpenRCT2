@@ -34,6 +34,7 @@
     <ClInclude Include="..\src\ride.h" />
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
+    <ClInclude Include="..\src\screenshot.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\strings.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
     <ClInclude Include="..\src\window_dropdown.h" />
+    <ClInclude Include="..\src\window_error.h" />
     <ClInclude Include="..\src\window_tooltip.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -67,6 +69,7 @@
     <ClCompile Include="..\src\ride.c" />
     <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
+    <ClCompile Include="..\src\screenshot.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\track.c" />
@@ -77,6 +80,7 @@
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_cheats.c" />
     <ClCompile Include="..\src\window_clear_scenery.c" />
+    <ClCompile Include="..\src\window_error.c" />
     <ClCompile Include="..\src\window_game_bottom_toolbar.c" />
     <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_land.c" />

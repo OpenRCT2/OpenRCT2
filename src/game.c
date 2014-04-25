@@ -26,11 +26,15 @@
 #include "news_item.h"
 #include "osinterface.h"
 #include "peep.h"
+#include "screenshot.h"
+#include "strings.h"
 #include "widget.h"
 #include "window.h"
+#include "window_error.h"
 #include "window_tooltip.h"
 
 void game_handle_input();
+void game_handle_keyboard_input();
 
 /**
  * 
@@ -50,6 +54,8 @@ void game_update()
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
+	screenshot_check();
+	game_handle_keyboard_input();
 
 	// do game logic
 	eax = RCT2_GLOBAL(0x009DE588, uint16) / 31;
@@ -119,7 +125,7 @@ void game_update()
 
 void game_logic_update()
 {
-	short _bx, _dx;
+	short stringId, _dx;
 
 	RCT2_GLOBAL(0x013628F4, sint32)++;
 	RCT2_GLOBAL(0x00F663AC, sint32)++;
@@ -151,15 +157,15 @@ void game_logic_update()
 	window_dispatch_update_all();
 
 	if (RCT2_GLOBAL(0x009AC31B, uint8) != 0) {
-		_bx = 3010;
+		stringId = STR_UNABLE_TO_LOAD_FILE;
 		_dx = RCT2_GLOBAL(0x009AC31C, uint16);
 		if (RCT2_GLOBAL(0x009AC31B, uint8) != 254) {
-			_bx = RCT2_GLOBAL(0x009AC31C, uint16);
+			stringId = RCT2_GLOBAL(0x009AC31C, uint16);
 			_dx = 0xFFFF;
 		}
 		RCT2_GLOBAL(0x009AC31B, uint8) = 0;
 
-		RCT2_CALLPROC_X(0x0066792F, 0, _bx, 0, _dx, 0, 0, 0);
+		window_error_open(stringId, _dx);
 	}
 }
 
@@ -753,4 +759,15 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_DOWN], 0, 0, 0, widgetIndex, w, widget, 0);
 		break;
 	}
+}
+
+
+
+/**
+ * 
+ *  rct2: 0x006E3B43
+ */
+void game_handle_keyboard_input()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006E3B43);
 }
