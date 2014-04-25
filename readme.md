@@ -39,16 +39,17 @@ The aim is to decompile RollerCoaster Tycoon 2 fully into C so that it can remai
 ## 2.1 Prerequisites
 - Windows XP / Vista / 7 / 8
 - RollerCoaster Tycoon 2
-- Visual Studio 2013 / Visual Studio Express 2013
-- SDL2 development library for Visual C++.
+- Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
+- [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
 ## 2.2 Compiling and running
-1. Checkout the repository.
-2. Download SDL2 development library for Visual C++ and copy it to a directory called "sdl" in the repository. This directory should contain "include".
-3. Open the solution in projects directory.
-4. In *rct2.c*, ```GAME_PATH``` can be edited to reflect your RollerCoaster Tycoon 2 installation. (Registry keys and original executable are not required)
-5. Select the 'Release' configuration and click Build -> Rebuild Solution.
-6. Start debugging. If warned about *openrct2.exe* not having debug information, just continue.
+1. Checkout the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
+2. Download [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should be something like ```\GitHub\OpenRCT2\sdl\include\```.
+3. Open the solution in the projects directory (**openrct2.vcxproj**) with Visual C++.
+4. In *rct2.c*, ```GAME_PATH``` can be edited to reflect your RollerCoaster Tycoon 2 installation. Each slash needs to be marked twice, like this: ```C:\\Program Files (x86)\\GOGcom\\RollerCoaster Tycoon 2\\RollerCoaster Tycoon 2 Triple Thrill Pack```. Existing registry keys and the original RCT2 executable are not required.
+5. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
+6. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If warned about *openrct2.exe* not having debug information, just continue.
+7. If the game crashes, you may need to press the red, square button along the top of VS Express (for "stop") to stop the program.
 
 # 3 Contributing
 
