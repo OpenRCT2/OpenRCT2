@@ -291,6 +291,7 @@ void window_invalidate(rct_window *window);
 void window_invalidate_by_id(uint16 cls, rct_windownumber number);
 void widget_invalidate(rct_windowclass cls, rct_windownumber number, int widgetIndex);
 void window_init_scroll_widgets(rct_window *w);
+void window_update_scroll_widgets(rct_window *w);
 int window_get_scroll_data_index(rct_window *w, int widget_index);
 
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
@@ -309,7 +310,9 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
-void window_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight);
+void window_move_position(rct_window *w, int dx, int dy);
+void window_resize(rct_window *w, int dw, int dh);
+void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight);
 
 // Open window functions
 void window_main_open();

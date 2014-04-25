@@ -700,7 +700,7 @@ static void window_park_entrance_resize()
 	__asm mov w, esi
 
 	w->flags |= WF_RESIZABLE;
-	window_resize(w, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+	window_set_resize(w, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
 	window_park_init_viewport(w);
 }
 
@@ -1110,7 +1110,7 @@ static void window_park_rating_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 182, 230, 182);
+	window_set_resize(w, 230, 182, 230, 182);
 }
 
 /**
@@ -1224,7 +1224,7 @@ static void window_park_guests_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 182, 230, 182);
+	window_set_resize(w, 230, 182, 230, 182);
 }
 
 /**
@@ -1339,7 +1339,7 @@ static void window_park_price_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 124, 230, 124);
+	window_set_resize(w, 230, 124, 230, 124);
 }
 
 /**
@@ -1489,7 +1489,7 @@ static void window_park_stats_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 109, 230, 109);
+	window_set_resize(w, 230, 109, 230, 109);
 }
 
 /**
@@ -1675,7 +1675,7 @@ static void window_park_objective_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 224, 230, 224);
+	window_set_resize(w, 230, 224, 230, 224);
 }
 
 /**
@@ -1800,7 +1800,7 @@ static void window_park_awards_resize()
 
 	__asm mov w, esi
 
-	window_resize(w, 230, 182, 230, 182);
+	window_set_resize(w, 230, 182, 230, 182);
 }
 
 /**

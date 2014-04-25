@@ -453,6 +453,17 @@ void window_init_scroll_widgets(rct_window *w)
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x006EAE4E
+ *
+ * @param w The window (esi).
+ */
+void window_update_scroll_widgets(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, w, 0, 0);
+}
+
 int window_get_scroll_data_index(rct_window *w, int widget_index)
 {
 	int i, result;
@@ -793,7 +804,54 @@ void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w)
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
 
-void window_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight)
+void window_move_position(rct_window *w, int dx, int dy)
+{
+	if (dx == 0 && dy == 0)
+		return;
+
+	// Invalidate old region
+	window_invalidate(w);
+
+	// Translate window and viewport
+	w->x += dx;
+	w->y += dy;
+	if (w->viewport != NULL) {
+		w->viewport->x += dx;
+		w->viewport->y += dy;
+	}
+
+	// Invalidate new region
+	window_invalidate(w);
+}
+
+void window_resize(rct_window *w, int dw, int dh)
+{
+	int i;
+	if (dw == 0 && dh == 0)
+		return;
+
+	// Invalidate old region
+	window_invalidate(w);
+
+	// Clamp new size to minimum and maximum
+	w->width = clamp(w->min_width, w->width + dw, w->max_width);
+	w->height = clamp(w->min_height, w->height + dh, w->max_height);
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], w->width, w->height, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+
+	// Update scroll widgets
+	for (i = 0; i < 3; i++) {
+		w->scrolls[i].h_right = -1;
+		w->scrolls[i].v_bottom = -1;
+	}
+	window_update_scroll_widgets(w);
+
+	// Invalidate new region
+	window_invalidate(w);
+}
+
+void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight)
 {
 	w->min_width = minWidth;
 	w->min_height = minHeight;
