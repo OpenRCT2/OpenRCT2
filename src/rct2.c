@@ -43,6 +43,7 @@
 #include "track.h"
 #include "viewport.h"
 
+//Path to load data files from. Temporary solution.
 #define GAME_PATH "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2"
 
 void rct2_init_directories();
