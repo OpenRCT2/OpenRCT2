@@ -190,8 +190,8 @@ static void window_land_mouseup()
 		// Increment land tool size
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
 
-		// FEATURE: maximum size is always 7
-		limit = 7;
+		// FEATURE: maximum size is 64
+		limit = 64;
 		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
 		
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
@@ -339,7 +339,9 @@ static void window_land_invalidate()
 
 	window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
 	window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
-	window_land_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	window_land_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
+		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) :
+		0xFFFFFFFF;
 }
 
 /**
@@ -358,6 +360,17 @@ static void window_land_paint()
 	window_draw_widgets(w, dpi);
 
 	x = w->x + (window_land_widgets[WIDX_PREVIEW].left + window_land_widgets[WIDX_PREVIEW].right) / 2;
+	y = w->y + (window_land_widgets[WIDX_PREVIEW].top + window_land_widgets[WIDX_PREVIEW].bottom) / 2;
+
+	// FEATURE larger land tool size support
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
+		RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
+		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
+		RCT2_GLOBAL(0x009BC679, char) = 0;
+		RCT2_GLOBAL(0x013CE952, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, 0x013CE952);
+	}
+
 	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw raise cost amount
