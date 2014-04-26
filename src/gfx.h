@@ -30,7 +30,7 @@ typedef struct {
 	short y;			// 0x06
 	short width;		// 0x08
 	short height;		// 0x0A
-	short pitch;		// 0x0C
+	short pitch;		// 0x0C			note: this is actually (pitch - width)
 	char pad_0E;		// 0x0E
 	char var_0F;		// 0x0F
 } rct_drawpixelinfo;
