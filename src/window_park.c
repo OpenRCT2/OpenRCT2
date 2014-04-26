@@ -1885,22 +1885,28 @@ static void window_park_awards_paint()
 
 #pragma region Common
 
+/**
+ *
+ *  rct2: 0x00668496
+ */
 static void window_park_set_page(rct_window *w, int page)
 {
+	int listen;
+
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (w->classification == RCT2_GLOBAL(0x009DE544, rct_windowclass) && w->number == RCT2_GLOBAL(0x009DE542, rct_windownumber))
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 
 	// Set listen only to viewport
-	RCT2_GLOBAL(0x009E32E0, uint8) = 0;
+	listen = 0;
 	if (page == WINDOW_PARK_PAGE_ENTRANCE && w->page == WINDOW_PARK_PAGE_ENTRANCE && w->viewport != NULL && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-		RCT2_GLOBAL(0x009E32E0, uint8)++;
+		listen++;
 
 	w->page = page;
 	w->var_48E = 0;
 	w->var_492 = 0;
 	if (w->viewport != NULL) {
-		w->viewport->x = 0;
+		w->viewport->width = 0;
 		w->viewport = NULL;
 	}
 
@@ -1913,7 +1919,7 @@ static void window_park_set_page(rct_window *w, int page)
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, w, 0, 0);
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
-	if (RCT2_GLOBAL(0x009E32E0, uint8) != 0 && w->viewport != NULL)
+	if (listen != 0 && w->viewport != NULL)
 		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
