@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "tutorial.h"
+#include "window_error.h"
 
 /**
  *
@@ -27,7 +28,10 @@
  */
 void tutorial_start(int type)
 {
-	RCT2_CALLPROC_X(0x0066ECC1, type, 0, 0, 0, 0, 0, 0);
+	strcpy((char*)0x009BC677, "Tutorial not implemented.");
+	window_error_open(3165, -1);
+
+	// RCT2_CALLPROC_X(0x0066ECC1, type, 0, 0, 0, 0, 0, 0);
 }
 
 /**

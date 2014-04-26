@@ -34,6 +34,9 @@
 #include "scenario.h"
 #include "viewport.h"
 
+static const int gOldMusic = 0;
+static const int gRandomShowcase = 0;
+
 #pragma region Showcase script
 
 enum {
@@ -134,7 +137,8 @@ static void title_create_windows()
 static void title_init_showcase()
 {
 	_currentScript = _magicMountainScript;
-	// _currentScript = generate_random_script();
+	if (gRandomShowcase)
+		_currentScript = generate_random_script();
 	_scriptWaitCounter = 0;
 	title_update_showcase();
 }
@@ -221,6 +225,11 @@ static void title_update_showcase()
 				break;
 			case TITLE_SCRIPT_RESTART:
 				_currentScript = _magicMountainScript;
+				if (gRandomShowcase) {
+					if (_currentScript != NULL)
+						free(_currentScript);
+					_currentScript = generate_random_script();
+				}
 				break;
 			}
 		} while (_scriptWaitCounter == 0);
@@ -291,11 +300,14 @@ static void title_play_music()
 		return;
 
 	// Play old title music
-	// char musicPath[_MAX_PATH];
-	// strcpy(musicPath, RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	// strcat(musicPath, "\\data\\css50.dat");
+	char musicPath[_MAX_PATH];
+	strcpy(musicPath, get_file_path(PATH_ID_CSS17));
+	if (gOldMusic) {
+		strcpy(musicPath, RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
+		strcat(musicPath, "\\data\\css50.dat");
+	}
 
-	if (RCT2_CALLFUNC_3(0x0040194E, int, int, int, int, 3, get_file_path(PATH_ID_CSS17), 0)) // play music
+	if (RCT2_CALLFUNC_3(0x0040194E, int, int, int, int, 3, musicPath, 0)) // play music
 		RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 3, 1, 0, 0, 0);
 
 	RCT2_GLOBAL(0x009AF600, uint8) = 1;
