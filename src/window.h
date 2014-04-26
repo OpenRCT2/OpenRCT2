@@ -304,6 +304,8 @@ rct_window *window_get_main();
 
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w);
+void window_zoom_in(rct_window *w);
+void window_zoom_out(rct_window *w);
 
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
 

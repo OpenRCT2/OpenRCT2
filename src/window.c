@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "audio.h"
 #include "gfx.h"
+#include "osinterface.h"
 #include "rct2.h"
 #include "widget.h"
 #include "window.h"
@@ -30,7 +31,74 @@
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
 #define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
 
+static void window_all_wheel_input();
 static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
+
+int window_get_widget_index(rct_window *w, rct_widget *widget)
+{
+	rct_widget *widget2;
+
+	int i = 0;
+	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+		if (widget == widget2)
+			return i;
+	return -1;
+}
+
+int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
+{
+	int widgetIndex, scrollIndex;
+	rct_widget *widget;
+
+	if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
+		return -1;
+
+	scrollIndex = 0;
+	widgetIndex = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+		if (widgetIndex == targetWidgetIndex)
+			break;
+		if (widget->type == WWT_SCROLL)
+			scrollIndex++;
+	}
+
+	return scrollIndex;
+}
+
+int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
+{
+	int scrollIndex;
+	rct_widget *widget2;
+
+	if (widget->type != WWT_SCROLL)
+		return -1;
+
+	scrollIndex = 0;
+	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
+		if (widget2 == widget)
+			break;
+		if (widget2->type == WWT_SCROLL)
+			scrollIndex++;
+	}
+
+	return scrollIndex;
+}
+
+rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
+{
+	rct_widget *widget;
+
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+		if (widget->type != WWT_SCROLL)
+			continue;
+
+		if (scrollIndex == 0)
+			return widget;
+		scrollIndex--;
+	}
+
+	return NULL;
+}
 
 /**
  * 
@@ -86,7 +154,150 @@ void window_update_all()
 		}
 	}
 
-	RCT2_CALLPROC_X(0x006E7868, 0, 0, 0, 0, 0, RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 0); // process_mouse_wheel_input();
+	// RCT2_CALLPROC_X(0x006E7868, 0, 0, 0, 0, 0, RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 0); // process_mouse_wheel_input();
+	window_all_wheel_input();
+}
+
+/**
+ * 
+ *  rct2: 0x006E78E3
+ */
+static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
+{
+	int widgetIndex, newValue, size;
+	rct_scroll *scroll;
+	rct_widget *widget;
+	
+	scroll = &w->scrolls[scrollIndex];
+	widget = window_get_scroll_widget(w, scrollIndex);
+	widgetIndex = window_get_widget_index(w, widget);
+
+	if (scroll->flags & VSCROLLBAR_VISIBLE) {
+		size = widget->bottom - widget->top - 1;
+		if (scroll->flags & HSCROLLBAR_VISIBLE)
+			size -= 11;
+		size = max(0, scroll->v_bottom - size);
+		scroll->v_top = min(max(0, scroll->v_top + wheel), size);
+	} else {
+		size = widget->right - widget->left - 1;
+		if (scroll->flags & VSCROLLBAR_VISIBLE)
+			size -= 11;
+		size = max(0, scroll->h_right - size);
+		scroll->h_left = min(max(0, scroll->h_left + wheel), size);
+	}
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+	widget_invalidate(w->classification, w->number, widgetIndex);
+}
+
+/**
+ * 
+ *  rct2: 0x006E793B
+ */
+static int window_wheel_input(rct_window *w, int wheel)
+{
+	int i;
+	rct_widget *widget;
+	rct_scroll *scroll;
+
+	i = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+		if (widget->type != WWT_SCROLL)
+			continue;
+
+		// Originally always checked first scroll view, bug maybe?
+		scroll = &w->scrolls[i * sizeof(rct_scroll)];
+		if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
+			window_scroll_wheel_input(w, i, wheel);
+			return 1;
+		}
+		i++;
+	}
+
+	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006E79FB
+ */
+static void window_viewport_wheel_input(rct_window *w, int wheel)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9)
+		return;
+
+	if (wheel < 0)
+		window_zoom_in(w);
+	else if (wheel > 0)
+		window_zoom_out(w);
+}
+
+/**
+ * 
+ *  rct2: 0x006E7868
+ */
+static void window_all_wheel_input()
+{
+	int i, raw, wheel, widgetIndex;
+	rct_window *w;
+	rct_widget *widget;
+	rct_scroll *scroll;
+
+	// Get wheel value
+	raw = gCursorState.wheel;
+	wheel = 0;
+	while (1) {
+		raw -= 120;
+		if (raw < 0)
+			break;
+		wheel -= 17;
+	}
+	raw += 120;
+	while (1) {
+		raw += 120;
+		if (raw > 0)
+			break;
+		wheel += 17;
+	}
+	raw -= 120;
+	gCursorState.wheel = raw;
+
+	if (wheel == 0)
+		return;
+
+	// Check window cursor is over
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5))) {
+		w = window_find_from_point(gCursorState.x, gCursorState.y);
+		if (w != NULL) {
+			// Check if main window
+			if (w->classification == WC_MAIN_WINDOW) {
+				window_viewport_wheel_input(w, wheel);
+				return;
+			}
+
+			// Check scroll view, cursor is over
+			widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			if (widgetIndex != -1) {
+				widget = &w->widgets[widgetIndex];
+				if (widget->type == WWT_SCROLL) {
+					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8) * sizeof(rct_scroll)];
+					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
+						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
+						return;
+					}
+				}
+				
+				// Check other scroll views on window
+				if (window_wheel_input(w, wheel))
+					return;
+			}
+		}
+	}
+
+	// Check windows, front to back
+	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
+		if (window_wheel_input(w, wheel))
+			return;
 }
 
 /**
@@ -608,6 +819,24 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 void window_rotate_camera(rct_window *w)
 {
 	RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006887A6
+ */
+void window_zoom_in(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006887A6, 0, 0, 0, 0, w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006887E0
+ */
+void window_zoom_out(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006887E0, 0, 0, 0, 0, w, 0, 0);
 }
 
 /**

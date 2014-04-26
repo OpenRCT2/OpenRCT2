@@ -159,11 +159,11 @@ static void window_game_top_toolbar_mouseup()
 
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
-			RCT2_CALLPROC_X(0x006887E0, 0, 0, 0, 0, mainWindow, 0, 0);
+			window_zoom_out(mainWindow);
 		break;
 	case WIDX_ZOOM_IN:
 		if ((mainWindow = window_get_main()) != NULL)
-			RCT2_CALLPROC_X(0x006887A6, 0, 0, 0, 0, mainWindow, 0, 0);
+			window_zoom_in(mainWindow);
 		break;
 	case WIDX_ROTATE:
 		if ((mainWindow = window_get_main()) != NULL)

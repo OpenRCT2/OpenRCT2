@@ -188,7 +188,7 @@ void osinterface_process_messages()
 	SDL_Event e;
 
 	gLastKeyPressed = 0;
-	gCursorState.wheel = 0;
+	// gCursorState.wheel = 0;
 	gCursorState.left &= ~CURSOR_CHANGED;
 	gCursorState.middle &= ~CURSOR_CHANGED;
 	gCursorState.right &= ~CURSOR_CHANGED;
@@ -211,8 +211,7 @@ void osinterface_process_messages()
 			gCursorState.y = e.motion.y;
 			break;
 		case SDL_MOUSEWHEEL:
-			RCT2_GLOBAL(0x009E2D80, int) += e.wheel.y * 128;
-			gCursorState.wheel = e.wheel.y;
+			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			RCT2_GLOBAL(0x01424318, int) = e.button.x;
