@@ -29,3 +29,12 @@ void tutorial_start(int type)
 {
 	RCT2_CALLPROC_X(0x0066ECC1, type, 0, 0, 0, 0, 0, 0);
 }
+
+/**
+ *
+ *  rct2: 0x0066EE25
+ */
+void tutorial_stop()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0066EE25);
+}

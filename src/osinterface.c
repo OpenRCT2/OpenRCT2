@@ -30,7 +30,7 @@
 typedef void(*update_palette_func)(char*, int, int);
 
 openrct2_cursor gCursorState;
-const unsigned char* gKeysState;
+unsigned char* gKeysState;
 unsigned int gLastKeyPressed;
 
 static void osinterface_create_window();
@@ -265,13 +265,6 @@ void osinterface_process_messages()
 	// Updates the state of the keys
 	int numKeys = 256;
 	gKeysState = SDL_GetKeyboardState(&numKeys);
-	// memcpy(0x01425C00, gKeysState, 256);
-
-	RCT2_GLOBAL(0x009DEA70, uint8) = 0;
-	if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
-		RCT2_GLOBAL(0x009DEA70, uint8) |= 1;
-	if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
-		RCT2_GLOBAL(0x009DEA70, uint8) |= 2;
 }
 
 static void osinterface_close_window()

@@ -28,6 +28,7 @@
 #include "peep.h"
 #include "screenshot.h"
 #include "strings.h"
+#include "tutorial.h"
 #include "widget.h"
 #include "window.h"
 #include "window_error.h"
@@ -761,7 +762,140 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	}
 }
 
+void game_handle_edge_scroll()
+{
+	rct_window *mainWindow;
+	int scrollX, scrollY;
 
+	mainWindow = window_get_main();
+	if (mainWindow == NULL)
+		return;
+	if ((mainWindow->flags & WF_2) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+		return;
+	if (mainWindow->viewport == NULL)
+		return;
+
+	scrollX = 0;
+	scrollY = 0;
+
+	// Scroll left / right
+	if (gCursorState.x == 0)
+		scrollX = -1;
+	else if (gCursorState.x == RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 1)
+		scrollX = 1;
+
+	// Scroll up / down
+	if (gCursorState.y == 0)
+		scrollY = -1;
+	else if (gCursorState.y == RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 1)
+		scrollY = 1;
+
+	// Scroll viewport
+	if (scrollX != 0) {
+		mainWindow->var_4B2 += scrollX * (12 << mainWindow->viewport->zoom);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
+	}
+	if (scrollY != 0) {
+		mainWindow->var_4B4 += scrollY * (12 << mainWindow->viewport->zoom);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
+	}
+}
+
+#include <SDL_keycode.h>
+
+void game_handle_key_scroll()
+{
+	rct_window *mainWindow;
+	int scrollX, scrollY;
+
+	mainWindow = window_get_main();
+	if (mainWindow == NULL)
+		return;
+	if ((mainWindow->flags & WF_2) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+		return;
+	if (mainWindow->viewport == NULL)
+		return;
+
+	scrollX = 0;
+	scrollY = 0;
+
+	// Scroll left / right
+	if (gKeysState[SDL_SCANCODE_LEFT])
+		scrollX = -1;
+	else if (gKeysState[SDL_SCANCODE_RIGHT])
+		scrollX = 1;
+
+	// Scroll up / down
+	if (gKeysState[SDL_SCANCODE_UP])
+		scrollY = -1;
+	else if (gKeysState[SDL_SCANCODE_DOWN])
+		scrollY = 1;
+
+	// Scroll viewport
+	if (scrollX != 0) {
+		mainWindow->var_4B2 += scrollX * (12 << mainWindow->viewport->zoom);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
+	}
+	if (scrollY != 0) {
+		mainWindow->var_4B4 += scrollY * (12 << mainWindow->viewport->zoom);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00406CD2
+ */
+int get_next_key()
+{
+	int i;
+	for (i = 0; i < 221; i++) {
+		if (gKeysState[i]) {
+			gKeysState[i] = 0;
+			return i;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006E3E68
+ */
+void handle_shortcut(int key)
+{
+	int i;
+	for (i = 0; i < 32; i++) {
+		if (key == gShortcutKeys[i]) {
+			RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x006E3FB4, uint32)[i]);
+			break;
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006E3E91
+ */
+void set_shortcut(int key)
+{
+	int i;
+
+	// Unmap shortcut that already uses this key
+	for (i = 0; i < 32; i++) {
+		if (key == gShortcutKeys[i]) {
+			gShortcutKeys[i] = 0xFFFF;
+			break;
+		}
+	}
+
+	// Map shortcut to this key
+	gShortcutKeys[RCT2_GLOBAL(0x009DE511, uint8)] = key;
+	window_close_by_id(WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+	window_invalidate_by_id(WC_KEYBOARD_SHORTCUT_LIST, 0);
+	config_save();
+}
 
 /**
  * 
@@ -769,5 +903,70 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
  */
 void game_handle_keyboard_input()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E3B43);
+	rct_window *w;
+	int key, i;
+
+	// Handle mouse scrolling
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
+		if (RCT2_GLOBAL(0x009AACBA, uint8) != 0)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 1)
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
+					game_handle_edge_scroll();
+
+	// Handle modifier keys and key scrolling
+	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+	if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
+		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
+		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
+			game_handle_key_scroll();
+	}
+
+
+	// Handle key input
+	while ((key = get_next_key()) != 0) {
+		if (key == 255 || key == 0x10 || key == 0x11)
+			continue;
+
+		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
+
+		w = window_find_by_id(WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+		if (w != NULL)
+			set_shortcut(key);
+		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1)
+			tutorial_stop();
+		else
+			handle_shortcut(key);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
+		return;
+
+	// Tutorial and the modifier key
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
+		int eax, ebx, ecx, edx, esi, edi, ebp;
+		RCT2_CALLFUNC_X(0x0066EEB4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		eax &= 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = eax;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4) {
+			window_tooltip_close();
+			if ((w = window_get_main()) != NULL) {
+				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+				RCT2_GLOBAL(0x009DEA72, uint16)++;
+			}
+		}
+	} else {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4)) {
+			window_tooltip_close();
+			if ((w = window_get_main()) != NULL) {
+				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+				RCT2_GLOBAL(0x009DEA72, uint16)++;
+			}
+		}
+
+		// Write tutorial input
+		RCT2_CALLPROC_X(0x0066EEE1, RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8), 0, 0, 0, 0, 0, 0);
+	}
 }

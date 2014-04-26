@@ -107,7 +107,7 @@ void rct2_init()
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(0x01424304, short);
 	rct2_init_directories();
 	rct2_startup_checks();
-	RCT2_CALLPROC_EBPSAFE(0x06E3604); // reset_keyboard_shortcuts()
+	config_reset_shortcut_keys();
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap

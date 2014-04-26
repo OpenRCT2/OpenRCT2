@@ -37,7 +37,7 @@ typedef struct {
 } openrct2_cursor;
 
 extern openrct2_cursor gCursorState;
-const extern unsigned char* gKeysState;
+extern unsigned char* gKeysState;
 extern unsigned int gLastKeyPressed;
 
 void osinterface_init();

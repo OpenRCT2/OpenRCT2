@@ -22,5 +22,6 @@
 #define _TUTORIAL_H_
 
 void tutorial_start(int type);
+void tutorial_stop();
 
 #endif
