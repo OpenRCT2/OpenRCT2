@@ -179,15 +179,16 @@ static void window_game_bottom_toolbar_mouseup()
 			break;
 
 		{
-			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-			ecx = newsItem->assoc;
-			edx = newsItem->type;
-			RCT2_CALLFUNC_X(0x0066BA74, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			if ((eax & 0xFFFF) == 0x8000)
+			int x, y, z;
+			int subject = newsItem->assoc;
+
+			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
+
+			if (x == 0x8000)
 				break;
 
 			if ((mainWindow = window_get_main()) != NULL)
-				window_scroll_to_location(mainWindow, eax & 0xFFFF, ecx & 0xFFFF, edx & 0xFFFF);
+				window_scroll_to_location(mainWindow, x, y, z);
 		}
 		break;
 	case WIDX_RIGHT_OUTSET:
@@ -278,12 +279,12 @@ static void window_game_bottom_toolbar_invalidate()
 		w->disabled_widgets &= ~(1 << WIDX_NEWS_SUBJECT);
 		w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		ecx = newsItem->assoc;
-		edx = newsItem->type;
-		RCT2_CALLFUNC_X(0x0066BA74, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		// Find out if the news item is no longer valid
+		int x, y, z;
+		int subject = newsItem->assoc;
+		news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
-		if ((eax & 0xFFFF) == 0x8000)
+		if (x == 0x8000)
 			w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
 		if (!(((char*)0x0097BE7C)[newsItem->type] & 2)) {
