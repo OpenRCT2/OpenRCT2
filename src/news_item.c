@@ -165,7 +165,9 @@ static int news_item_get_new_history_slot()
 }
 
 /**
- * 
+ * Get the (x,y,z) coordinates of the subject of a news item.
+ * If the new item is no longer valid, return 0x8000 in the x-coordinate
+ *
  *  rct2: 0x0066BA74
  */
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z)

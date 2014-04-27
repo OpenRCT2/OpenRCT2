@@ -56,5 +56,5 @@ typedef struct {
 void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
-
+void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
 #endif
