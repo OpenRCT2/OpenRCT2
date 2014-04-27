@@ -26,7 +26,7 @@
 #define RCT2_ADDRESS(address, type)				((type*)(address))
 #define RCT2_GLOBAL(address, type)				(*((type*)(address)))
 #define RCT2_CALLPROC(address)					(((void(*)())(address))())
-#define RCT2_CALLFUNC(address, returnType)		((((returnType)(*)())(address))())
+#define RCT2_CALLFUNC(address, returnType)		(((returnType(*)())(address))())
 
 #define RCT2_CALLFUNC_1(address, returnType, a1, v1)							(((returnType(*)(a1))(address))(v1))
 #define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)					(((returnType(*)(a1, a2))(address))(v1, v2))
