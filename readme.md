@@ -1,6 +1,9 @@
 # OpenRCT2
 An open source clone of Roller Coaster Tycoon 2 built by decompiling the original game one bit at a time.
-- [Screenshot 1](http://dev.intelorca.co.uk/2014/openrct2/cheats.png)
+- [Screenshot 1, cheats window](http://dev.intelorca.co.uk/2014/openrct2/cheats.png)
+- [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png)
+- [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
+- [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
 # Contents
 - 1 - [Introduction](#1-introduction)
