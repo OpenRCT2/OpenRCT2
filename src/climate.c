@@ -44,15 +44,15 @@ void climate_reset(int climate)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = eax & 0xFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = ebx & 0xFF;
 
-	RCT2_GLOBAL(0x013CA74E, sint8) = (ebx >> 8) & 0xFF;
-	RCT2_GLOBAL(0x013CA750, sint8) = ecx & 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = (ebx >> 8) & 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = ecx & 0xFF;
 	RCT2_GLOBAL(0x013CA752, sint8) = (ecx >> 8) & 0xFF;
 	RCT2_CALLPROC_X(0x6C461C, 0, 0, 0, 0, 0, 0, 0);
 }
 
 
 /**
- *
+ * Weather & climate update iteration.
  * rct2: 0x006C46B1
  **/
 void update_climate()
@@ -61,26 +61,28 @@ void update_climate()
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;
 
+	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
+	sint8 target_temperature = RCT2_GLOBAL(0x013CA74D, sint8);
+	sint8 cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8);
+	sint8 next_gloom = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8);
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16))	{
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) == 960)
-			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // XXX climate dirty flag?
+			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
 
 	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32) & 0x7F)) {
-		sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
-		sint8 target_temperature = RCT2_GLOBAL(0x013CA74D, sint8);
-
+		
 		if (temperature == target_temperature) {
-			if (RCT2_GLOBAL(0x013CA750, sint8) == RCT2_GLOBAL(0x013CA751, sint8)) {
-
-				RCT2_GLOBAL(0x013CA74E, sint8) = RCT2_GLOBAL(0x013CA74F, sint8);
+			if (cur_gloom == next_gloom) {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8);
 
 				if (RCT2_GLOBAL(0x013CA752, sint8) == RCT2_GLOBAL(0x013CA753, sint8)) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8);
-					RCT2_CALLPROC(0x006C461C);
-					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // XXX climate dirty flag?
+					RCT2_CALLPROC(0x006C461C); // determine_future_weather()
+					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 				}
 				else {
 					if (RCT2_GLOBAL(0x013CA753, sint8) == 3)
@@ -94,11 +96,11 @@ void update_climate()
 					}
 				}
 			} else {
-				sint8 next = RCT2_GLOBAL(0x013CA750, sint8) + 1;
+				sint8 next_gloom_step = cur_gloom + 1;
+				if (cur_gloom > next_gloom)
+					next_gloom_step = cur_gloom - 1;
 
-				if (RCT2_GLOBAL(0x013CA750, sint8) > RCT2_GLOBAL(0x013CA751, sint8))
-					next = RCT2_GLOBAL(0x013CA750, sint8) - 1;
-				RCT2_GLOBAL(0x013CA750, sint8) = next;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = next_gloom_step;
 				gfx_invalidate_screen();
 			}
 
@@ -108,7 +110,7 @@ void update_climate()
 				newtemp = temperature - 1;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = newtemp;
-			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // XXX climate dirty flag?
+			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 		}
 	}
 }
