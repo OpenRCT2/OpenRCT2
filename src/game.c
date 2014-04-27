@@ -20,6 +20,7 @@
  
 #include "addresses.h"
 #include "audio.h"
+#include "climate.h"
 #include "config.h"
 #include "rct2.h"
 #include "game.h"
@@ -136,7 +137,8 @@ void game_logic_update()
 
 	RCT2_CALLPROC_EBPSAFE(0x0068B089);
 	RCT2_CALLPROC_EBPSAFE(0x006C44B1);	// update_objective
-	RCT2_CALLPROC_EBPSAFE(0x006C46B1);	// update_climate
+	//RCT2_CALLPROC_EBPSAFE(0x006C46B1);	// update_climate
+	update_climate();
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
 	RCT2_CALLPROC_EBPSAFE(0x006A876D);
 	peep_update_all();

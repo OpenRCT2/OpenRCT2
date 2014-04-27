@@ -484,7 +484,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 
 	// Next weather
 	if (((int*)0x00993C98)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) * 2] != ((int*)0x00993C98)[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) * 2]) {
-		if (RCT2_GLOBAL(0x013CA748, sint16) < 960) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5);
 			gfx_draw_sprite(dpi, ((int*)0x00993C98)[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) * 2], x + 40, y);
 		}

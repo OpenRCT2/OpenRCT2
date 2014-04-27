@@ -30,5 +30,6 @@ enum {
 
 int climate_celcius_to_fahrenheit(int celcius);
 void climate_reset(int climate);
+void update_climate();
 
 #endif
