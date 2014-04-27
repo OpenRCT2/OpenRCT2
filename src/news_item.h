@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -57,4 +57,5 @@ void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
+
 #endif
