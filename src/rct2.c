@@ -66,7 +66,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 {
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
-	RCT2_CALLPROC(0x004076B1); // get_system_info()
+	get_system_info();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
 
 	rct2_init();
@@ -239,6 +239,72 @@ char *get_file_path(int pathId)
 	RCT2_CALLFUNC_X(0x00674E6C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return (char*)ebx;
 }
+
+/**
+ *  Obtains basic system versions and capabilities.
+ *  rct2: 0x004076B1
+ */
+void get_system_info()
+{
+	OSVERSIONINFO versionInfo;
+	SYSTEM_INFO sysInfo;
+	MEMORYSTATUS memInfo;
+
+	versionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	if (GetVersionEx(&versionInfo)){
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = versionInfo.dwPlatformId;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = versionInfo.dwMajorVersion;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = versionInfo.dwMinorVersion;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = versionInfo.dwBuildNumber;
+	}
+	else{
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = -1;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = 0;
+	}
+
+	GetSystemInfo(&sysInfo);
+	// RCT2 only has 2 bytes reserved for OEM_ID even though it should be a DWORD
+	RCT2_GLOBAL(RCT2_ADDRESS_SYS_OEM_ID, uint16) = sysInfo.dwOemId;
+	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_LEVEL, uint16) = sysInfo.wProcessorLevel;
+	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_REVISION, uint16) = sysInfo.wProcessorRevision;
+	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_NUMBER, uint32) = sysInfo.dwNumberOfProcessors;
+
+	GlobalMemoryStatus(&memInfo);
+	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) = memInfo.dwTotalPhys;
+	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
+	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
+
+	uint32 size = 80;
+	GetUserName(RCT2_ADDRESS_OS_USER_NAME, &size);
+	size = 80;
+	GetComputerName(RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
+
+	// Screen Display Width/Height but RCT_ADDRESS_SCREEN_HEIGHT/WIDTH already taken?
+	RCT2_GLOBAL(0x01423C08, sint32) = GetSystemMetrics(SM_CXSCREEN);
+	RCT2_GLOBAL(0x01423C0C, sint32) = GetSystemMetrics(SM_CYSCREEN);
+
+	HDC screenHandle = GetDC(NULL);
+	if (screenHandle){
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = GetDeviceCaps(screenHandle, BITSPIXEL);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = GetDeviceCaps(screenHandle, RASTERCAPS) >> 8; 
+		ReleaseDC(NULL, screenHandle);
+	}
+	else{
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = 0;
+	}
+
+	RCT2_GLOBAL(0x01423C1C, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) >= 8);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) < 4 || RCT2_GLOBAL(0x1423C10, sint32) < 4)
+		RCT2_GLOBAL(0x1423C18, sint32) = 0;
+	else
+		RCT2_GLOBAL(0x1423C18, sint32) = 1;
+
+	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+}
+
 
 /**
  * Obtains os system time (day, month, year and day of the week).
