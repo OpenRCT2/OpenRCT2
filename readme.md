@@ -18,7 +18,7 @@ An open source clone of Roller Coaster Tycoon 2 built by decompiling the origina
   - 3.1 - [Decompiling](#31-decompiling)
   - 3.2 - [Naming of procedures and variables](#32-naming-of-procedures-and-variables)
   - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
-  - 3.4 - [Implementing new featues / fixing bugs](#34-implementing-new-featues--fixing-bugs)
+  - 3.4 - [Implementing new features / fixing bugs](#34-implementing-new-features--fixing-bugs)
 - 4 - [Licence](#4-license)
 
 # 1 Introduction
@@ -65,7 +65,7 @@ Many variables and procedures are referenced in OpenRCT2 only by address. This m
 ## 3.3 Cleaning and documenting the source code
 A lot of the source code is undocumented and messy. Whilst the structure of the code should be kept the same so that it closely resembles the original game. Various blocks of code can be moved into smaller functions and macros can be created for common operations.
 
-## 3.4 Implementing new featues / fixing bugs
+## 3.4 Implementing new features / fixing bugs
 If enough of the game has been decompiled to implement a certain feature or fix a certain bug. This can be written. Comments should be added to clearly identify where code has been changed on purpose causing it to differ from the original game assembly.
 
 # 4 License
