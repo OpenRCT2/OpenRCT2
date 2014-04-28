@@ -372,7 +372,7 @@ static void window_game_top_toolbar_dropdown()
 			}
 			break;
 		case 3:		// about
-			RCT2_CALLPROC_EBPSAFE(0x0066D2AC);
+			window_about_open();
 			break;
 		case 4:		// options
 			RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
