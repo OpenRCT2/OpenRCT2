@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include "rct2.h"
+
 #ifndef _CLIMATE_H_
 #define _CLIMATE_H_
 
@@ -27,6 +29,12 @@ enum {
 	CLIMATE_HOT_AND_DRY,
 	CLIMATE_COLD
 };
+
+typedef struct {
+	sint8 base_temperature;
+	sint8 distribution_size;
+	sint8 distribution[24];
+} rct_weather_table;
 
 int climate_celcius_to_fahrenheit(int celcius);
 void climate_reset(int climate);

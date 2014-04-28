@@ -19,9 +19,20 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "climate.h"
 #include "date.h"
 #include "gfx.h"
 #include "rct2.h"
+
+const sint8 weather_table[48] = {
+	10, 0, 0, 0, 0x96, 0x5a, 0, 0, // Sunny
+	5, 0, 0, 0, 0x97, 0x5A, 0, 0, // Partially cloudy
+	0, 0, 0, 0, 0x98, 0x5A, 0, 0, // Cloudy
+	-2, 1, 1, 1, 0x99, 0x5A, 0, 0, // Rain
+	-4, 1, 2, 2, 0x9A, 0x5A, 0, 0, // Heavy rain
+	2, 2, 2, 2, 0x9B, 0x5A, 0, 0  // Thunderstorm
+};
+
 
 void determine_future_weather();
 
@@ -121,21 +132,27 @@ void update_climate()
 
 
 /**
-* Calculates future weather development
+* Calculates future weather development.
+* RCT2 implements this as discrete probability distributions dependant on month and climate 
+* for next_weather. The other weather parameters are then looked up depending only on the
+* next weather.
+*
 * rct2: 0x006C461C
 **/
 void determine_future_weather()
 {
 	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
-	uint8** climate_table = ((uint8***)0x00993998)[climate];
+	rct_weather_table** climate_data = ((rct_weather_table***)0x00993998)[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-	uint8* month_table = climate_table[month];
+	// don't do this at home. Temporary measure until we rewrite the tables.
+	rct_weather_table* month_table = climate_data[month]; 
 	
-	sint8 next_weather = month_table[ 2 + (uint8)((rand() * month_table[1]) >> 8) ];
+	// generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
+	sint8 next_weather = month_table->distribution[ ((rand() & 0xFF) * month_table->distribution_size) >> 8 ];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
 
-	sint8* weather_table = (sint8*)0x00993C94;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table[0] + weather_table[next_weather * 8];
+	//sint8* weather_table = (sint8*)0x00993C94;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table->base_temperature + weather_table[next_weather * 8];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather * 8 + 1];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather * 8 + 2];
 	RCT2_GLOBAL(0x013CA753, sint8) = weather_table[next_weather * 8 + 3];
