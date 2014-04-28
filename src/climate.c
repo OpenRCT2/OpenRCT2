@@ -24,17 +24,21 @@
 #include "gfx.h"
 #include "rct2.h"
 
-const sint8 weather_table[48] = {
-	10, 0, 0, 0, 0x96, 0x5a, 0, 0, // Sunny
-	5, 0, 0, 0, 0x97, 0x5A, 0, 0, // Partially cloudy
-	0, 0, 0, 0, 0x98, 0x5A, 0, 0, // Cloudy
-	-2, 1, 1, 1, 0x99, 0x5A, 0, 0, // Rain
-	-4, 1, 2, 2, 0x9A, 0x5A, 0, 0, // Heavy rain
-	2, 2, 2, 2, 0x9B, 0x5A, 0, 0  // Thunderstorm
-};
-
 
 void determine_future_weather();
+
+
+// rct2: 0x00993C94
+// There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
+const rct_weather weather_table[6] = {
+	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96	}, // Sunny
+	{ .temp_delta =  5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
+	{ .temp_delta =  0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
+	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
+	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9A }, // Heavy Rain
+	{ .temp_delta =  2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9B }, // Thunderstorm
+};
+
 
 int climate_celcius_to_fahrenheit(int celcius)
 {
@@ -59,26 +63,29 @@ void climate_reset(int climate)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = (ebx >> 8) & 0xFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = ecx & 0xFF;
-	RCT2_GLOBAL(0x013CA752, sint8) = (ecx >> 8) & 0xFF;
-	RCT2_CALLPROC_X(0x6C461C, 0, 0, 0, 0, 0, 0, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = (ecx >> 8) & 0xFF;
+	determine_future_weather();
 }
 
 
 /**
  * Weather & climate update iteration.
+ * Gradually changes the weather parameters towards their determined next values.
  * rct2: 0x006C46B1
  **/
 void update_climate()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
-	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
-	sint8 target_temperature = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8);
-	sint8 cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8);
-	sint8 next_gloom = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8);
+	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8),
+		target_temperature = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8),
+		cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8),
+		next_gloom = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8),
+		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
+		next_rain = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8);
+	
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;
-	// 0x013CA752 and 0x013CA753 are possibly for rain particles. Can't be sure as rain rendering seems broken atm for me.
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16))	{
 
@@ -93,21 +100,19 @@ void update_climate()
 			if (cur_gloom == next_gloom) {
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8);
 
-				if (RCT2_GLOBAL(0x013CA752, sint8) == RCT2_GLOBAL(0x013CA753, sint8)) {
+				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8);
-					//RCT2_CALLPROC(0x006C461C); // determine_future_weather()
 					determine_future_weather();
 					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 				}
 				else {
-					if (RCT2_GLOBAL(0x013CA753, sint8) == 3)
-						RCT2_GLOBAL(0x013CA752, sint8) = 3;
+					if (next_rain == 3)
+						cur_rain = 3;
 					else {
-						sint8 next = RCT2_GLOBAL(0x013CA752, sint8) + 1;
-
-						if (RCT2_GLOBAL(0x013CA752, sint8) > RCT2_GLOBAL(0x013CA753, sint8))
-							next = RCT2_GLOBAL(0x013CA752, sint8) - 1;
-						RCT2_GLOBAL(0x013CA752, sint8) = next;
+						sint8 next_rain_step = cur_rain + 1;
+						if (cur_rain > next_rain)
+							next_rain_step = cur_rain - 1;
+						RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = next_rain_step;
 					}
 				}
 			} else {
@@ -151,11 +156,11 @@ void determine_future_weather()
 	sint8 next_weather = month_table->distribution[ ((rand() & 0xFF) * month_table->distribution_size) >> 8 ];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
 
-	//sint8* weather_table = (sint8*)0x00993C94;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table->base_temperature + weather_table[next_weather * 8];
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather * 8 + 1];
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather * 8 + 2];
-	RCT2_GLOBAL(0x013CA753, sint8) = weather_table[next_weather * 8 + 3];
-	
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table->base_temperature + weather_table[next_weather].temp_delta;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather].effect_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather].gloom_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = weather_table[next_weather].rain_level;
+
+
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }

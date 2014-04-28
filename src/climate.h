@@ -36,6 +36,16 @@ typedef struct {
 	sint8 distribution[24];
 } rct_weather_table;
 
+typedef struct {
+	sint8 temp_delta;
+	sint8 effect_level;
+	sint8 gloom_level;
+	sint8 rain_level;
+	uint32 sprite_id;
+} rct_weather;
+
+extern const rct_weather weather_table[6];
+
 int climate_celcius_to_fahrenheit(int celcius);
 void climate_reset(int climate);
 void update_climate();
