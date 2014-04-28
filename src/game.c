@@ -311,7 +311,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			window_close_by_id(5, 0);
 			
 			if (w != NULL)
-				window_bring_to_front(w);
+				w = window_bring_to_front(w);
 			
 			if (widgetIndex == -1)
 				break;
@@ -637,7 +637,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	if (w == NULL)
 		return;
 
-	window_bring_to_front(w);
+	w = window_bring_to_front(w);
 	if (widgetIndex == -1)
 		return;
 
@@ -686,7 +686,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_SCROLL_LEFT;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windowclass) = windowNumber;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = windowNumber;
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
 
@@ -852,8 +852,8 @@ int get_next_key()
 {
 	int i;
 	for (i = 0; i < 221; i++) {
-		if (gKeysState[i]) {
-			gKeysState[i] = 0;
+		if (gKeysPressed[i]) {
+			gKeysPressed[i] = 0;
 			return i;
 		}
 	}
