@@ -31,7 +31,7 @@ void determine_future_weather();
 // rct2: 0x00993C94
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const rct_weather weather_table[6] = {
-	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96	}, // Sunny
+	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
 	{ .temp_delta =  5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
 	{ .temp_delta =  0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
 	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
@@ -46,24 +46,12 @@ int climate_celcius_to_fahrenheit(int celcius)
 }
 
 /**
- *
+ *  Set climate and determine start weather.
  *  rct2: 0x006C45ED
  */
 void climate_reset(int climate)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = climate;
-
-	eax = 1;
-	RCT2_CALLFUNC_X(0x006C4672, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = eax & 0xFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = ebx & 0xFF;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = (ebx >> 8) & 0xFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = ecx & 0xFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = (ecx >> 8) & 0xFF;
 	determine_future_weather();
 }
 
@@ -160,7 +148,6 @@ void determine_future_weather()
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = weather_table[next_weather].rain_level;
-
-
+	
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
