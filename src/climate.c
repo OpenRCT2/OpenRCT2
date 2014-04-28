@@ -23,6 +23,8 @@
 #include "gfx.h"
 #include "rct2.h"
 
+void determine_future_weather();
+
 int climate_celcius_to_fahrenheit(int celcius)
 {
 	return (celcius * 29) / 16 + 32;
@@ -58,13 +60,14 @@ void climate_reset(int climate)
 void update_climate()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
-	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
-		return;
-
 	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
-	sint8 target_temperature = RCT2_GLOBAL(0x013CA74D, sint8);
+	sint8 target_temperature = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8);
 	sint8 cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8);
 	sint8 next_gloom = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8);
+
+	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
+		return;
+	// 0x013CA752 and 0x013CA753 are possibly for rain particles. Can't be sure as rain rendering seems broken atm for me.
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16))	{
 
@@ -81,7 +84,8 @@ void update_climate()
 
 				if (RCT2_GLOBAL(0x013CA752, sint8) == RCT2_GLOBAL(0x013CA753, sint8)) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8);
-					RCT2_CALLPROC(0x006C461C); // determine_future_weather()
+					//RCT2_CALLPROC(0x006C461C); // determine_future_weather()
+					determine_future_weather();
 					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 				}
 				else {
@@ -113,4 +117,28 @@ void update_climate()
 			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 		}
 	}
+}
+
+
+/**
+* Calculates future weather development
+* rct2: 0x006C461C
+**/
+void determine_future_weather()
+{
+	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
+	uint8** climate_table = ((uint8***)0x00993998)[climate];
+	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	uint8* month_table = climate_table[month];
+	
+	sint8 next_weather = month_table[ 2 + (uint8)((rand() * month_table[1]) >> 8) ];
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
+
+	sint8* weather_table = (sint8*)0x00993C94;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table[0] + weather_table[next_weather * 8];
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather * 8 + 1];
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather * 8 + 2];
+	RCT2_GLOBAL(0x013CA753, sint8) = weather_table[next_weather * 8 + 3];
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
