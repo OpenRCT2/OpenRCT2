@@ -30,7 +30,7 @@ void determine_future_weather();
 
 // rct2: 0x00993C94
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const rct_weather weather_table[6] = {
+const rct_weather weather_data[6] = {
 	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
 	{ .temp_delta =  5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
 	{ .temp_delta =  0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
@@ -135,19 +135,19 @@ void update_climate()
 void determine_future_weather()
 {
 	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
-	rct_weather_table** climate_data = ((rct_weather_table***)0x00993998)[climate];
+	rct_weather_transition** climate_table = ((rct_weather_transition***)0x00993998)[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 	// don't do this at home. Temporary measure until we rewrite the tables.
-	rct_weather_table* month_table = climate_data[month]; 
+	rct_weather_transition* transition = climate_table[month];
 	
 	// generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
-	sint8 next_weather = month_table->distribution[ ((rand() & 0xFF) * month_table->distribution_size) >> 8 ];
+	sint8 next_weather = transition->distribution[ ((rand() & 0xFF) * transition->distribution_size) >> 8 ];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = month_table->base_temperature + weather_table[next_weather].temp_delta;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_table[next_weather].effect_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_table[next_weather].gloom_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = weather_table[next_weather].rain_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = transition->base_temperature + weather_data[next_weather].temp_delta;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_data[next_weather].effect_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_data[next_weather].gloom_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = weather_data[next_weather].rain_level;
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
