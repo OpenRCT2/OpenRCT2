@@ -31,6 +31,7 @@ typedef void(*update_palette_func)(char*, int, int);
 
 openrct2_cursor gCursorState;
 unsigned char* gKeysState;
+unsigned char* gKeysPressed;
 unsigned int gLastKeyPressed;
 
 static void osinterface_create_window();
@@ -48,6 +49,9 @@ static void *_screenBuffer;
 void osinterface_init()
 {
 	osinterface_create_window();
+
+	gKeysPressed = malloc(sizeof(unsigned char) * 256);
+	memset(gKeysPressed, 0, sizeof(unsigned char) * 256);
 
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
@@ -253,6 +257,7 @@ void osinterface_process_messages()
 			break;
 		case SDL_KEYDOWN:
 			gLastKeyPressed = e.key.keysym.sym;
+			gKeysPressed[e.key.keysym.scancode] = 1;
 			break;
 		default:
 			break;
@@ -278,6 +283,8 @@ static void osinterface_close_window()
 
 void osinterface_free()
 {
+	free(gKeysPressed);
+
 	osinterface_close_window();
 	SDL_Quit();
 }

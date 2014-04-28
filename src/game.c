@@ -850,8 +850,8 @@ int get_next_key()
 {
 	int i;
 	for (i = 0; i < 221; i++) {
-		if (gKeysState[i]) {
-			gKeysState[i] = 0;
+		if (gKeysPressed[i]) {
+			gKeysPressed[i] = 0;
 			return i;
 		}
 	}
