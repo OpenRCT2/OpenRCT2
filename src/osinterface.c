@@ -68,8 +68,8 @@ static void osinterface_create_window()
 		RCT2_CALLPROC_EBPSAFE(0x0068352C);
 		RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
-		width = RCT2_GLOBAL(0x009AB4C2, sint16);
-		height = RCT2_GLOBAL(0x009AB4C4, sint16);
+		width = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, sint16);
+		height = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, sint16);
 
 		width = 640;
 		height = 480;
@@ -136,10 +136,10 @@ static void osinterface_resize(int width, int height)
 	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
 	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(0x009ABDE4, sint16) = 64;
-	RCT2_GLOBAL(0x009ABDE6, sint16) = 8;
-	RCT2_GLOBAL(0x009ABDE8, sint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(0x009ABDEC, sint32) = (height >> 3) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16) = 64;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
 	RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
 	gfx_invalidate_screen();

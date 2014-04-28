@@ -103,8 +103,8 @@ void rct2_init()
 	RCT2_GLOBAL(0x00F663AC, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
-	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(0x01424304, short);
-	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(0x01424304, short);
+	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
+	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
 	rct2_init_directories();
 	rct2_startup_checks();
 	config_reset_shortcut_keys();

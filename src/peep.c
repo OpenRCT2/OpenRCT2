@@ -60,7 +60,7 @@ void peep_update_all()
 		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
 		sprite_index = peep->next;
 
-		if ((i & 0x7F) != (RCT2_GLOBAL(0x013628F4, uint32) & 0x7F)) {
+		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
 			RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, peep, 0, 0);
 		} else {
 			RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, i, peep, 0, 0);

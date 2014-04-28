@@ -172,7 +172,7 @@ static void title_update_showcase()
 				{
 					char _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - w->viewport->zoom;
 					w->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
-					*((char*)(&RCT2_GLOBAL(0x0141E9E0, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+					*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
 					if (_cl != 0) {
 						if (_cl < 0) {
 							_cl = -_cl;
