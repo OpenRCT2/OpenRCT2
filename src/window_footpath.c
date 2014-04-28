@@ -26,6 +26,14 @@
 #include "widget.h"
 #include "window.h"
 
+typedef struct {
+	uint16 pad_00;
+	uint32 image;		// 0x02
+	uint32 pad_06;
+	uint8 pad_0A;
+	uint8 pad_0B;
+} rct_path_type;
+
 static enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -86,11 +94,13 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void window_footpath_emptysub() { }
+static void window_footpath_close();
 static void window_footpath_mouseup();
+static void window_footpath_invalidate();
 static void window_footpath_paint();
 
 static uint32 window_footpath_events[] = {
-	window_footpath_emptysub,
+	window_footpath_close,
 	window_footpath_mouseup,
 	window_footpath_emptysub,
 	window_footpath_emptysub,
@@ -115,10 +125,12 @@ static uint32 window_footpath_events[] = {
 	window_footpath_emptysub,
 	window_footpath_emptysub,
 	window_footpath_emptysub,
-	window_footpath_emptysub,
+	window_footpath_invalidate,
 	window_footpath_paint,
 	window_footpath_emptysub
 };
+
+sint32 _window_footpath_cost;
 
 /**
  * 
@@ -176,6 +188,24 @@ void window_footpath_open()
 
 /**
  * 
+ *  rct2: 0x006A852F
+ */
+static void window_footpath_close()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
+	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	RCT2_GLOBAL(0x009DE58A, uint16) &= ~2;
+	window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
+	hide_gridlines();
+}
+
+/**
+ * 
  *  rct2: 0x006A7E92
  */
 static void window_footpath_mouseup()
@@ -195,11 +225,48 @@ static void window_footpath_mouseup()
 
 /**
  * 
+ *  rct2: 0x006A7D1C
+ */
+static void window_footpath_invalidate()
+{
+	int selectedPath;
+	rct_path_type *pathType;
+	rct_window *w;
+
+	__asm mov w, esi
+	
+	// Press / unpress footpath and queue type buttons
+	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
+	w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
+	w->pressed_widgets |= RCT2_GLOBAL(0x00F3EFA2, uint8) == 0 ?
+		(1 << WIDX_FOOTPATH_TYPE) :
+		(1 << WIDX_QUEUELINE_TYPE);
+
+	// Enable / disable construct button
+	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(0x00F3EF99, uint8) == 0 ? WWT_EMPTY : WWT_IMGBTN;
+
+	// Set footpath and queue type button images
+	selectedPath = RCT2_GLOBAL(0x00F3EFA0, uint16);
+	pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[selectedPath];
+
+	int pathImage = 71 + pathType->image;
+	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
+	window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = pathImage + 1;
+	window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
+
+	// Disable queue in if in editor
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
+}
+
+/**
+ * 
  *  rct2: 0x006A7D8B
  */
 static void window_footpath_paint()
 {
-	int x, y;
+	int x, y, image, selectedPath;
+	rct_path_type *pathType;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
@@ -207,4 +274,37 @@ static void window_footpath_paint()
 	__asm mov dpi, edi
 
 	window_draw_widgets(w, dpi);
+
+	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
+		// Get construction image
+		image = (RCT2_GLOBAL(0x00F3EF90, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) % 4;
+		if (RCT2_GLOBAL(0x00F3EF91, uint8) == 2)
+			image += 4;
+		else if (RCT2_GLOBAL(0x00F3EF91, uint8) == 6)
+			image += 8;
+		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
+
+		selectedPath = RCT2_GLOBAL(0x00F3EFA0, uint16);
+		pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[selectedPath];
+		image += pathType->image;
+		if (RCT2_GLOBAL(0x00F3EFA2, uint8) != 0)
+			image += 51;
+
+		// Draw construction image
+		x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+		y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
+		gfx_draw_sprite(dpi, image, x, y);
+
+		// Draw build this... label
+		x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+		y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
+		gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, 0, 0);
+	}
+
+	// Draw cost
+	x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+	y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
+	if (_window_footpath_cost != 0x80000000)
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY))
+			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
 }
