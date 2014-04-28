@@ -28,18 +28,6 @@
 void determine_future_weather();
 
 
-// rct2: 0x00993C94
-// There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const rct_weather weather_data[6] = {
-	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
-	{ .temp_delta =  5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
-	{ .temp_delta =  0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
-	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
-	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9A }, // Heavy Rain
-	{ .temp_delta =  2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9B }, // Thunderstorm
-};
-
-
 int climate_celcius_to_fahrenheit(int celcius)
 {
 	return (celcius * 29) / 16 + 32;
@@ -135,19 +123,116 @@ void update_climate()
 void determine_future_weather()
 {
 	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
-	rct_weather_transition** climate_table = ((rct_weather_transition***)0x00993998)[climate];
+	const rct_weather_transition* climate_table = climate_transitions[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-	// don't do this at home. Temporary measure until we rewrite the tables.
-	rct_weather_transition* transition = climate_table[month];
+	rct_weather_transition transition = climate_table[month];
 	
 	// generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
-	sint8 next_weather = transition->distribution[ ((rand() & 0xFF) * transition->distribution_size) >> 8 ];
+	sint8 next_weather = transition.distribution[ ((rand() & 0xFF) * transition.distribution_size) >> 8 ];
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = transition->base_temperature + weather_data[next_weather].temp_delta;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = transition.base_temperature + weather_data[next_weather].temp_delta;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = weather_data[next_weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = weather_data[next_weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = weather_data[next_weather].rain_level;
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
+
+
+
+#pragma region Climate/Weather data tables
+// rct2: 0x00993C94
+// There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
+const rct_weather weather_data[6] = {
+	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
+	{ .temp_delta = 5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
+	{ .temp_delta = 0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
+	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
+	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9A }, // Heavy Rain
+	{ .temp_delta = 2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9B }, // Thunderstorm
+};
+
+
+// rct2: 00993998
+const rct_weather_transition cool_and_wet_climate_transitions[] = {
+	{ .base_temperature = 8, .distribution_size = 18,
+	.distribution = { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 10, .distribution_size = 21,
+	.distribution = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
+	{ .base_temperature = 14, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 17, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 19, .distribution_size = 23,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
+	{ .base_temperature = 20, .distribution_size = 23,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5 } },
+	{ .base_temperature = 16, .distribution_size = 19,
+	.distribution = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
+	{ .base_temperature = 13, .distribution_size = 16,
+	.distribution = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } }
+};
+const rct_weather_transition warm_climate_transitions[] = {
+	{ .base_temperature = 12, .distribution_size = 21,
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0 } },
+	{ .base_temperature = 13, .distribution_size = 22,
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 0 } },
+	{ .base_temperature = 16, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 19, .distribution_size = 18,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 21, .distribution_size = 22,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 0 } },
+	{ .base_temperature = 22, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 5, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 19, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 16, .distribution_size = 17,
+	.distribution = { 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0, 0, 0, 0, 0 } }
+};
+const rct_weather_transition hot_and_dry_climate_transitions[] = {
+	{ .base_temperature = 12, .distribution_size = 15,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 14, .distribution_size = 12,
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 16, .distribution_size = 11,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 19, .distribution_size = 9,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 21, .distribution_size = 13,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 22, .distribution_size = 11,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 21, .distribution_size = 12,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 16, .distribution_size = 13,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } }
+};
+const rct_weather_transition cold_climate_transitions[] = {
+	{ .base_temperature = 4, .distribution_size = 18,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 5, .distribution_size = 21,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
+	{ .base_temperature = 7, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 9, .distribution_size = 17,
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
+	{ .base_temperature = 10, .distribution_size = 23,
+	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
+	{ .base_temperature = 11, .distribution_size = 23,
+	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
+	{ .base_temperature = 9, .distribution_size = 19,
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
+	{ .base_temperature = 6, .distribution_size = 16,
+	.distribution = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } }
+};
+
+const rct_weather_transition* climate_transitions[] = {
+	cool_and_wet_climate_transitions,
+	warm_climate_transitions,
+	hot_and_dry_climate_transitions,
+	cold_climate_transitions
+};
+
+#pragma endregion
