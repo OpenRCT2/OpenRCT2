@@ -212,11 +212,11 @@ static void window_game_top_toolbar_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
 		break;
 	case WIDX_PATH:
-		if (window_find_by_id(20, 0) == NULL) {
-			RCT2_CALLPROC_EBPSAFE(0x00006A7C43);
+		if (window_find_by_id(WC_FOOTPATH, 0) == NULL) {
+			window_footpath_open();
 		} else {
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
-			window_close_by_id(0x80 | 20, 0);
+			window_close_by_id(0x80 | WC_FOOTPATH, 0);
 		}
 		break;
 	case WIDX_CONSTRUCT_RIDE:

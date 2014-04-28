@@ -86,6 +86,7 @@
     <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_land.c" />
     <ClCompile Include="..\src\window_park.c" />
+    <ClCompile Include="..\src\window_footpath.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />

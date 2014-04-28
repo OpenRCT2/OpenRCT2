@@ -33,6 +33,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -94,6 +95,10 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x006EB2A8
+ */
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	switch (w->widgets[widgetIndex].type) {
@@ -134,7 +139,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		break;
 	case WWT_18:
 		break;
-	case WWT_19:
+	case WWT_GROUPBOX:
+		widget_groupbox_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CAPTION:
 		widget_caption_draw(dpi, w, widgetIndex);
@@ -498,6 +504,66 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
 	widget_text(dpi, w, widgetIndex);
+}
+
+/**
+ * 
+ *  rct2: 0x006EB535
+ */
+static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, textRight;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left + 5;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+	textRight = l;
+
+	// Text
+	if (widget->image != (uint32)-1) {
+		colour = w->colours[widget->colour] & 0x7F;
+		if (colour & 1)
+			colour |= 0x40;
+		gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
+		textRight = gLastDrawStringX + 1;
+	}
+
+	// Border
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top + 4;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour] & 0x7F;
+
+	// Border left of text
+	gfx_fill_rect(dpi, l, t, l + 4, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border right of text
+	gfx_fill_rect(dpi, textRight, t, r - 1, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border right
+	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, r, t, r, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border bottom
+	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, b, r - 1, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border left
+	gfx_fill_rect(dpi, l, t + 1, l, b - 2, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
 }
 
 /**

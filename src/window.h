@@ -324,6 +324,7 @@ void window_main_open();
 void window_game_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
+void window_footpath_open();
 void window_title_menu_open();
 void window_title_exit_open();
 void window_title_logo_open();
