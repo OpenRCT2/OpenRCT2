@@ -166,7 +166,7 @@ static int news_item_get_new_history_slot()
 
 /**
  * Get the (x,y,z) coordinates of the subject of a news item.
- * If the new item is no longer valid, return 0x8000 in the x-coordinate
+ * If the new item is no longer valid, return SPRITE_LOCATION_NULL in the x-coordinate
  *
  *  rct2: 0x0066BA74
  */
@@ -180,7 +180,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 	case NEWS_ITEM_RIDE:
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[subject]);
 		if (ride->var_050 == 0xFFFF) {
-			*x = 0x8000;
+			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 		{
@@ -200,17 +200,17 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*x = sprite->unknown.x;
 		*y = sprite->unknown.y;
 		*z = sprite->unknown.z;
-		if (*x != 0x8000)
+		if (*x != SPRITE_LOCATION_NULL)
 			break;
 
 		if (sprite->peep.state != 3 && sprite->peep.state != 7) {
-			*x = 0x8000;
+			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[sprite->peep.current_ride]);
 		if (ride->var_1D0 & 1) {
-			*x = 0x8000;
+			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 
@@ -239,7 +239,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 		break;
 	default:
-		*x = 0x8000;
+		*x = SPRITE_LOCATION_NULL;
 		break;
 	}
 }

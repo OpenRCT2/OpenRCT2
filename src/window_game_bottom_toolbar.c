@@ -23,6 +23,7 @@
 #include "news_item.h"
 #include "park.h"
 #include "peep.h"
+#include "sprite.h"
 #include "sprites.h"
 #include "strings.h"
 #include "widget.h"
@@ -184,7 +185,7 @@ static void window_game_bottom_toolbar_mouseup()
 
 			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
-			if (x == 0x8000)
+			if (x == SPRITE_LOCATION_NULL)
 				break;
 
 			if ((mainWindow = window_get_main()) != NULL)
@@ -284,7 +285,7 @@ static void window_game_bottom_toolbar_invalidate()
 		int subject = newsItem->assoc;
 		news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
-		if (x == 0x8000)
+		if (x == SPRITE_LOCATION_NULL)
 			w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
 		if (!(((char*)0x0097BE7C)[newsItem->type] & 2)) {
