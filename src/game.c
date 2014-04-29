@@ -128,7 +128,7 @@ void game_logic_update()
 {
 	short stringId, _dx;
 
-	RCT2_GLOBAL(0x013628F4, sint32)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32)++;
 	RCT2_GLOBAL(0x00F663AC, sint32)++;
 	RCT2_GLOBAL(0x009DEA66, sint16)++;
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
@@ -321,8 +321,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_DRAG;
 				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
 				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
-				RCT2_GLOBAL(0x009DE530, rct_windowclass) = w->classification;
-				RCT2_GLOBAL(0x009DE52E, rct_windownumber) = w->number;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = w->classification;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = w->number;
 				RCT2_GLOBAL(0x009DE540, sint16) = 0;
 				// hide cursor
 				// RCT2_CALLPROC_X(0x00407045, 0, 0, 0, 0, 0, 0, 0);
@@ -384,7 +384,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		
 		dx = x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
 		dy = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
-		w = window_find_by_id(RCT2_GLOBAL(0x009DE530, rct_windowclass), RCT2_GLOBAL(0x009DE52E, rct_windownumber));
+		w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber));
 		if (state == 0) {
 			rct_viewport *viewport = w->viewport;
 			RCT2_GLOBAL(0x009DE540, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
@@ -908,7 +908,7 @@ void game_handle_keyboard_input()
 
 	// Handle mouse scrolling
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-		if (RCT2_GLOBAL(0x009AACBA, uint8) != 0)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
 			if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 1)
 				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
 					game_handle_edge_scroll();
