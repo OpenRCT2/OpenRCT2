@@ -114,10 +114,10 @@ static void window_title_logo_paint()
 
 	while (packs != 0) {
 		if (packs & 1) {
-			// Prefix for expansion name, not sure what 0x93 is
+			// Prefix for expansion name
 			buffer[0] = '\n';
 			buffer[1] = '\v';
-			buffer[2] = 0x93;
+			buffer[2] = 0x93; // Colour of the text
 			buffer[3] = '+';
 			buffer[4] = ' ';
 
