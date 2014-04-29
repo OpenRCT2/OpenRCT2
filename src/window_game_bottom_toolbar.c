@@ -390,7 +390,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 			dpi,
 			(*((int*)0x013CE952) < 0 ? 1391 : 1390),
 			x, y - 3,
-			(RCT2_GLOBAL(0x009DE55C, rct_windowclass) == 2 && RCT2_GLOBAL(0x009DE560, sint32) == WIDX_MONEY ? 2 : w->colours[0] & 0x7F),
+			(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_MONEY ? 2 : w->colours[0] & 0x7F),
 			(void*)0x013CE952
 			);
 		y += 7;
@@ -401,7 +401,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		dpi,
 		STR_NUM_GUESTS + RCT2_GLOBAL(0x013573FE, uint8),
 		x, y,
-		(RCT2_GLOBAL(0x009DE55C, rct_windowclass) == 2 && RCT2_GLOBAL(0x009DE560, sint32) == WIDX_GUESTS ? 2 : w->colours[0] & 0x7F),
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_GUESTS ? 2 : w->colours[0] & 0x7F),
 		(void*)0x01357844
 	);
 
@@ -426,7 +426,7 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 	bar_width = (factor * 90) / 256;
 	gfx_fill_rect_inset(dpi, x, y + 1, x + 93, y + 9, w->colours[1], 48);
-	if (!(colour & 0x80000000) || RCT2_GLOBAL(0x009DEA6E, uint8) != 0 || (RCT2_GLOBAL(0x013628F4, uint8) & 8)) {
+	if (!(colour & 0x80000000) || RCT2_GLOBAL(0x009DEA6E, uint8) != 0 || (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint8) & 8)) {
 		if (bar_width > 2)
 			gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
 	}
@@ -461,7 +461,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		1845,
 		x,
 		y,
-		(RCT2_GLOBAL(0x009DE55C, rct_windowclass) == 2 && RCT2_GLOBAL(0x009DE560, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
 		(void*)0x013CE952
 	);
 

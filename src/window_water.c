@@ -232,9 +232,9 @@ static int window_water_should_close()
 {
 	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 		return 1;
-	if (RCT2_GLOBAL(0x009DE544, rct_windowclass) != WC_TOP_TOOLBAR)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return 1;
-	if (RCT2_GLOBAL(0x009DE546, uint16) != 8)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 8)
 		return 1;
 	return 0;
 }

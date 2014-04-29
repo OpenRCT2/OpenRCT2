@@ -239,7 +239,7 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 
 	for (y = top; y <= bottom; y++)
 		for (x = left; x <= right; x++)
-			screenDirtyBlocks[y * RCT2_GLOBAL(0x009ABDE8, sint32) + x] = 0xFF;
+			screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] = 0xFF;
 }
 
 /**
