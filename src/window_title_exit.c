@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Ben Pye
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -29,6 +29,41 @@ static rct_widget window_title_exit_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static void window_title_exit_emptysub() {}
+static void window_title_exit_paint();
+static void window_title_exit_mouseup();
+
+static uint32 window_title_exit_events[] = {
+	window_title_exit_emptysub,
+	window_title_exit_mouseup,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_emptysub,
+	window_title_exit_paint,
+	window_title_exit_emptysub
+};
+
 /**
  * Creates the window containing the exit button on the title screen.
  *  rct2: 0x0066B624 (part of 0x0066B3E8)
@@ -40,7 +75,7 @@ void window_title_exit_open()
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 40, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 64,
 		40, 64,
-		0x0097BEFC,
+		window_title_exit_events,
 		WC_TITLE_EXIT,
 		WF_STICK_TO_FRONT
 	);
@@ -51,4 +86,38 @@ void window_title_exit_open()
 	window->colours[0] = 140;
 	window->colours[1] = 140;
 	window->colours[2] = 140;
+}
+
+/**
+*
+*  rct2: 0x0066B83C
+*/
+static void window_title_exit_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) != 0)
+		return;
+
+	if (widgetIndex == 0)
+		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 2, 0);
+}
+
+/**
+* 
+*  rct2: 0x0066B836
+*/
+static void window_title_exit_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	__asm mov w, esi
+	__asm mov dpi, edi
+
+	window_draw_widgets(w, dpi);
 }
