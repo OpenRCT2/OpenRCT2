@@ -30,6 +30,13 @@ enum PEEP_TYPE {
 	PEEP_TYPE_STAFF
 };
 
+enum STAFF_TYPE {
+	STAFF_TYPE_HANDYMAN,
+	STAFF_TYPE_MECHANIC,
+	STAFF_TYPE_SECURITY,
+	STAFF_TYPE_ENTERTAINER
+};
+
 enum {
 	PEEP_FLAGS_TRACKING = 8
 };
@@ -65,7 +72,7 @@ typedef struct {
 	uint8 pad_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	uint8 var_2F;
+	uint8 staff_type;				// 0x2F
 	uint8 var_30;
 	uint8 var_31;
 	uint8 pad_32[0x08];
