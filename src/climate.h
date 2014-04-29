@@ -31,12 +31,6 @@ enum {
 };
 
 typedef struct {
-	sint8 base_temperature;
-	sint8 distribution_size;
-	sint8 distribution[24];
-} rct_weather_transition;
-
-typedef struct {
 	sint8 temp_delta;
 	sint8 effect_level;
 	sint8 gloom_level;
@@ -44,11 +38,10 @@ typedef struct {
 	uint32 sprite_id;
 } rct_weather;
 
-extern const rct_weather weather_data[6];
-extern const rct_weather_transition* climate_transitions[4];
+extern const rct_weather climate_weather_data[6];
 
 int climate_celcius_to_fahrenheit(int celcius);
 void climate_reset(int climate);
-void update_climate();
+void climate_update();
 
 #endif

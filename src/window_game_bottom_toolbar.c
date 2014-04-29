@@ -480,13 +480,13 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y);
+	gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y);
 
 	// Next weather
-	if (weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id != weather_data[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8)].sprite_id) {
+	if (climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id != climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8)].sprite_id) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5);
-			gfx_draw_sprite(dpi, weather_data[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8)].sprite_id, x + 40, y);
+			gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8)].sprite_id, x + 40, y);
 		}
 	}
 }
