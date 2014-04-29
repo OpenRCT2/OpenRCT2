@@ -117,7 +117,7 @@ static void window_title_logo_paint()
 			// Prefix for expansion name
 			buffer[0] = '\n';
 			buffer[1] = '\v';
-			buffer[2] = 0x93; // Colour of the text
+			buffer[2] = FORMAT_YELLOW; // Colour of the text
 			buffer[3] = '+';
 			buffer[4] = ' ';
 
