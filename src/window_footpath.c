@@ -96,6 +96,13 @@ static rct_widget window_footpath_widgets[] = {
 static void window_footpath_emptysub() { }
 static void window_footpath_close();
 static void window_footpath_mouseup();
+static void window_footpath_mousedown();
+static void window_footpath_dropdown();
+static void window_footpath_update();
+static void window_footpath_toolupdate();
+static void window_footpath_tooldown();
+static void window_footpath_tooldrag();
+static void window_footpath_toolup();
 static void window_footpath_invalidate();
 static void window_footpath_paint();
 
@@ -103,16 +110,16 @@ static uint32 window_footpath_events[] = {
 	window_footpath_close,
 	window_footpath_mouseup,
 	window_footpath_emptysub,
+	window_footpath_mousedown,
+	window_footpath_dropdown,
+	window_footpath_emptysub,
+	window_footpath_update,
 	window_footpath_emptysub,
 	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
+	window_footpath_toolupdate,
+	window_footpath_tooldown,
+	window_footpath_tooldrag,
+	window_footpath_toolup,
 	window_footpath_emptysub,
 	window_footpath_emptysub,
 	window_footpath_emptysub,
@@ -220,6 +227,187 @@ static void window_footpath_mouseup()
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
+	case WIDX_CONSTRUCT:
+		RCT2_CALLPROC_X(0x006A79B7, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_REMOVE:
+		RCT2_CALLPROC_X(0x006A7863, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_CONSTRUCT_ON_LAND:
+		RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
+		RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, 0, w, 0, 0);
+		break;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A7EC5
+ */
+static void window_footpath_mousedown()
+{
+	short widgetIndex;
+	rct_window *w;
+	rct_widget *widget;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+	__asm mov widget, edi
+
+	switch (widgetIndex) {
+	case WIDX_FOOTPATH_TYPE:
+		RCT2_CALLPROC_X(0x006A7F88, 0, 0, 0, widgetIndex, w, widget, 0);
+		break;
+	case WIDX_QUEUELINE_TYPE:
+		RCT2_CALLPROC_X(0x006A7F88, 0, 0, 0, widgetIndex, w, widget, 0);
+		break;
+	case WIDX_DIRECTION_NW:
+		RCT2_CALLPROC_X(0x006A8111, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_DIRECTION_NE:
+		RCT2_CALLPROC_X(0x006A8135, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_DIRECTION_SW:
+		RCT2_CALLPROC_X(0x006A815C, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_DIRECTION_SE:
+		RCT2_CALLPROC_X(0x006A8183, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_SLOPEDOWN:
+		RCT2_CALLPROC_X(0x006A81AA, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_LEVEL:
+		RCT2_CALLPROC_X(0x006A81C5, 0, 0, 0, 0, w, 0, 0);
+		break;
+	case WIDX_SLOPEUP:
+		RCT2_CALLPROC_X(0x006A81E0, 0, 0, 0, 0, w, 0, 0);
+		break;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A7F18
+ */
+static void window_footpath_dropdown()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_FOOTPATH_TYPE) {
+		RCT2_CALLPROC_X(0x006A7F25, 0, 0, 0, 0, w, 0, 0);
+	} else if (widgetIndex == WIDX_QUEUELINE_TYPE) {
+		RCT2_CALLPROC_X(0x006A7F2E, 0, 0, 0, 0, w, 0, 0);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A8032
+ */
+static void window_footpath_toolupdate()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+		RCT2_CALLPROC_X(0x006A81FB, 0, 0, 0, 0, w, 0, 0);
+	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
+		RCT2_CALLPROC_X(0x006A8388, 0, 0, 0, 0, w, 0, 0);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A8047
+ */
+static void window_footpath_tooldown()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+		RCT2_CALLPROC_X(0x006A82C5, 0, 0, 0, 0, w, 0, 0);
+	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
+		RCT2_CALLPROC_X(0x006A840F, 0, 0, 0, 0, w, 0, 0);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A8067
+ */
+static void window_footpath_tooldrag()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+		RCT2_CALLPROC_X(0x006A82C5, 0, 0, 0, 0, w, 0, 0);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A8066
+ */
+static void window_footpath_toolup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+		RCT2_CALLPROC_X(0x006A8380, 0, 0, 0, 0, w, 0, 0);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A84BB
+ */
+static void window_footpath_update()
+{
+	rct_window *w;
+
+	__asm mov w, esi
+
+	// Invalidate construct button
+	widget_invalidate(WC_FOOTPATH, 0, WIDX_CONSTRUCT);
+
+	RCT2_CALLPROC_EBPSAFE(0x006A7760);
+
+	// Check tool
+	if (RCT2_GLOBAL(0x00F3EF99, uint8) == 0) {
+		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+			window_close(w);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+			window_close(w);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
+			window_close(w);
+	} else if (RCT2_GLOBAL(0x00F3EF99, uint8) == 1) {
+		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+			window_close(w);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+			window_close(w);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+			window_close(w);
 	}
 }
 
