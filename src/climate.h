@@ -38,6 +38,7 @@ typedef struct {
 	uint32 sprite_id;
 } rct_weather;
 
+extern int gClimateNextWeather;
 extern const rct_weather climate_weather_data[6];
 
 int climate_celcius_to_fahrenheit(int celcius);

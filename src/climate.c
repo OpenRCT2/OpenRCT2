@@ -30,10 +30,16 @@ typedef struct {
 	sint8 distribution[24];
 } rct_weather_transition;
 
+int gClimateNextWeather;
+
+static int _climateNextTemperature;
+static int _climateNextWeatherEffect;
+static int _climateNextWeatherGloom;
+static int _climateNextRainLevel;
+
 static const rct_weather_transition* climate_transitions[4];
 
 static void climate_determine_future_weather();
-
 
 int climate_celcius_to_fahrenheit(int celcius)
 {
@@ -61,11 +67,11 @@ void climate_update()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
 	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8),
-		target_temperature = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8),
+		target_temperature = _climateNextTemperature,
 		cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8),
-		next_gloom = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8),
+		next_gloom = _climateNextWeatherGloom,
 		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
-		next_rain = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8);
+		next_rain = _climateNextRainLevel;
 	
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
@@ -82,10 +88,10 @@ void climate_update()
 		
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8);
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = _climateNextWeatherEffect;
 
 				if (cur_rain == next_rain) {
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8);
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
 					climate_determine_future_weather();
 					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 				} else {
@@ -136,12 +142,12 @@ static void climate_determine_future_weather()
 	
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
 	sint8 next_weather = transition.distribution[ ((rand() & 0xFF) * transition.distribution_size) >> 8 ];
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, sint8) = next_weather;
+	gClimateNextWeather = next_weather;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8) = transition.base_temperature + climate_weather_data[next_weather].temp_delta;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, sint8) = climate_weather_data[next_weather].effect_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, sint8) = climate_weather_data[next_weather].gloom_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, sint8) = climate_weather_data[next_weather].rain_level;
+	_climateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;
+	_climateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
+	_climateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
+	_climateNextRainLevel = climate_weather_data[next_weather].rain_level;
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
