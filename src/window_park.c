@@ -644,7 +644,7 @@ static void window_park_entrance_close()
 	__asm mov w, esi
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (w->classification == RCT2_GLOBAL(0x009DE544, rct_windowclass) && w->number == RCT2_GLOBAL(0x009DE542, rct_windownumber))
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 }
 
@@ -1617,7 +1617,7 @@ void window_park_objective_open()
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (window->classification == RCT2_GLOBAL(0x009DE544, rct_windowclass) && window->number == RCT2_GLOBAL(0x009DE542, rct_windownumber))
+		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 
 	window->viewport = NULL;

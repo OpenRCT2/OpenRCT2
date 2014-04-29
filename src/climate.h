@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -21,6 +21,8 @@
 #ifndef _CLIMATE_H_
 #define _CLIMATE_H_
 
+#include "rct2.h"
+
 enum {
 	CLIMATE_COOL_AND_WET,
 	CLIMATE_WARM,
@@ -28,7 +30,19 @@ enum {
 	CLIMATE_COLD
 };
 
+typedef struct {
+	sint8 temp_delta;
+	sint8 effect_level;
+	sint8 gloom_level;
+	sint8 rain_level;
+	uint32 sprite_id;
+} rct_weather;
+
+extern int gClimateNextWeather;
+extern const rct_weather climate_weather_data[6];
+
 int climate_celcius_to_fahrenheit(int celcius);
 void climate_reset(int climate);
+void climate_update();
 
 #endif

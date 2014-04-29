@@ -108,7 +108,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	max_string_width = 0;
 	for (i = 0; i < num_items; i++) {
 		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
-		RCT2_GLOBAL(0x013CE950, sint16) = 224;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
 		string_width = gfx_get_string_width(buffer);
 		max_string_width = max(string_width, max_string_width);
 	}
