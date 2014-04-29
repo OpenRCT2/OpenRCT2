@@ -174,7 +174,7 @@ static void window_game_top_toolbar_mouseup()
 		break;
 
 	case WIDX_CLEAR_SCENERY:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(0x009DE544, uint8) == 1 && RCT2_GLOBAL(0x009DE546, uint16) == 16) {
+		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 		} else {
 			show_gridlines();
@@ -185,7 +185,7 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_LAND:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(0x009DE544, uint8) == 1 && RCT2_GLOBAL(0x009DE546, uint16) == 7) {
+		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 		} else {
 			show_gridlines();
@@ -196,7 +196,7 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_WATER:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(0x009DE544, uint8) == 1 && RCT2_GLOBAL(0x009DE546, uint16) == 8) {
+		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
 			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 		} else {
 			show_gridlines();
@@ -372,13 +372,13 @@ static void window_game_top_toolbar_dropdown()
 			}
 			break;
 		case 3:		// about
-			RCT2_CALLPROC_EBPSAFE(0x0066D2AC);
+			window_about_open();
 			break;
 		case 4:		// options
 			RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
 			break;
 		case 5:		// screenshot
-			RCT2_GLOBAL(0x009DEA6D, sint8) = 10;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
 		case 7:		// quit game
 			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 1, 0);

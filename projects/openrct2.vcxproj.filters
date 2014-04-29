@@ -251,6 +251,9 @@
     <ClCompile Include="..\src\screenshot.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_about.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

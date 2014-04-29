@@ -245,6 +245,8 @@ enum {
 	WC_TOOLTIP = 5,
 	WC_DROPDOWN = 6,
 	WC_ABOUT = 8,
+	WC_MUSIC_CREDITS = 9,
+	WC_PUBLISHER_CREDITS = 10,
 	WC_ERROR = 11,
 	WC_RIDE = 12,
 	WC_RIDE_CONSTRUCTION = 13,
@@ -321,6 +323,7 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 void window_main_open();
 void window_game_top_toolbar_open();
 void window_game_bottom_toolbar_open();
+void window_about_open();
 void window_title_menu_open();
 void window_title_exit_open();
 void window_title_logo_open();

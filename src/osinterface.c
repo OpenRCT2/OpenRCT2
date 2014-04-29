@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Alexander Overvoorde
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  * 
  * This file is part of OpenRCT2.
@@ -31,6 +31,7 @@ typedef void(*update_palette_func)(char*, int, int);
 
 openrct2_cursor gCursorState;
 unsigned char* gKeysState;
+unsigned char* gKeysPressed;
 unsigned int gLastKeyPressed;
 
 static void osinterface_create_window();
@@ -48,6 +49,9 @@ static void *_screenBuffer;
 void osinterface_init()
 {
 	osinterface_create_window();
+
+	gKeysPressed = malloc(sizeof(unsigned char) * 256);
+	memset(gKeysPressed, 0, sizeof(unsigned char) * 256);
 
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
@@ -68,8 +72,8 @@ static void osinterface_create_window()
 		RCT2_CALLPROC_EBPSAFE(0x0068352C);
 		RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
-		width = RCT2_GLOBAL(0x009AB4C2, sint16);
-		height = RCT2_GLOBAL(0x009AB4C4, sint16);
+		width = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, sint16);
+		height = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, sint16);
 
 		width = 640;
 		height = 480;
@@ -136,10 +140,10 @@ static void osinterface_resize(int width, int height)
 	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
 	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(0x009ABDE4, sint16) = 64;
-	RCT2_GLOBAL(0x009ABDE6, sint16) = 8;
-	RCT2_GLOBAL(0x009ABDE8, sint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(0x009ABDEC, sint32) = (height >> 3) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16) = 64;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
 	RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
 	gfx_invalidate_screen();
@@ -253,6 +257,7 @@ void osinterface_process_messages()
 			break;
 		case SDL_KEYDOWN:
 			gLastKeyPressed = e.key.keysym.sym;
+			gKeysPressed[e.key.keysym.scancode] = 1;
 			break;
 		default:
 			break;
@@ -278,6 +283,8 @@ static void osinterface_close_window()
 
 void osinterface_free()
 {
+	free(gKeysPressed);
+
 	osinterface_close_window();
 	SDL_Quit();
 }

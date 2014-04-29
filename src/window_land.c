@@ -137,8 +137,8 @@ void window_land_open()
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
 	_selectedFloorTexture = 0;
 	_selectedWallTexture = 0;
-	RCT2_GLOBAL(0x009E2E1C, sint32) = 0x80000000;
-	RCT2_GLOBAL(0x009E2E20, sint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, sint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, sint32) = 0x80000000;
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
@@ -405,9 +405,9 @@ static int window_land_should_close()
 {
 	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 		return 1;
-	if (RCT2_GLOBAL(0x009DE544, rct_windowclass) != WC_TOP_TOOLBAR)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return 1;
-	if (RCT2_GLOBAL(0x009DE546, sint16) != 7)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != 7)
 		return 1;
 	return 0;
 }

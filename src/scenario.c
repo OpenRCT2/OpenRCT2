@@ -424,7 +424,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 
 	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
 	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(0x0141E9E0, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
 	if (_cl != 0) {
 		if (_cl < 0) {
 			_cl = -_cl;
@@ -451,7 +451,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_CALLPROC_EBPSAFE(0x00684AC3);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	news_item_init_queue();
-	if (RCT2_ADDRESS(0x013580F8, uint8) != OBJECTIVE_NONE)
+	if (RCT2_ADDRESS(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
 		window_park_objective_open();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
