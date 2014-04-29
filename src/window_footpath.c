@@ -25,13 +25,14 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 
 typedef struct {
 	uint16 pad_00;
 	uint32 image;		// 0x02
 	uint32 pad_06;
 	uint8 pad_0A;
-	uint8 pad_0B;
+	uint8 flags;		// 0x0B
 } rct_path_type;
 
 static enum WINDOW_FOOTPATH_WIDGET_IDX {
@@ -138,6 +139,8 @@ static uint32 window_footpath_events[] = {
 };
 
 sint32 _window_footpath_cost;
+
+static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 
 /**
  * 
@@ -258,10 +261,10 @@ static void window_footpath_mousedown()
 
 	switch (widgetIndex) {
 	case WIDX_FOOTPATH_TYPE:
-		RCT2_CALLPROC_X(0x006A7F88, 0, 0, 0, widgetIndex, w, widget, 0);
+		window_footpath_show_footpath_types_dialog(w, widget, 0);
 		break;
 	case WIDX_QUEUELINE_TYPE:
-		RCT2_CALLPROC_X(0x006A7F88, 0, 0, 0, widgetIndex, w, widget, 0);
+		window_footpath_show_footpath_types_dialog(w, widget, 1);
 		break;
 	case WIDX_DIRECTION_NW:
 		RCT2_CALLPROC_X(0x006A8111, 0, 0, 0, 0, w, 0, 0);
@@ -293,17 +296,47 @@ static void window_footpath_mousedown()
  */
 static void window_footpath_dropdown()
 {
+	int i, pathId;
+	short dropdownIndex;
 	short widgetIndex;
 	rct_window *w;
+	rct_path_type *pathType;
 
+	__asm mov dropdownIndex, ax
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
-	if (widgetIndex == WIDX_FOOTPATH_TYPE) {
-		RCT2_CALLPROC_X(0x006A7F25, 0, 0, 0, 0, w, 0, 0);
-	} else if (widgetIndex == WIDX_QUEUELINE_TYPE) {
-		RCT2_CALLPROC_X(0x006A7F2E, 0, 0, 0, 0, w, 0, 0);
+	if (widgetIndex == WIDX_FOOTPATH_TYPE)
+		RCT2_GLOBAL(0x00F3EFA2, uint8) = 0;
+	else if (widgetIndex == WIDX_QUEUELINE_TYPE)
+		RCT2_GLOBAL(0x00F3EFA2, uint8) = 1;
+	else
+		return;
+	
+	pathId = dropdownIndex;
+	if (pathId == -1) {
+		pathId = RCT2_GLOBAL(0x00F3EFA0, sint16);
+	} else {
+		int flags = 4;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+			flags = 0;
+
+		i = -1;
+		do {
+			i++;
+			pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[i];
+			if (pathType == (rct_path_type*)-1)
+				continue;
+			if (pathType->flags & flags)
+				continue;
+		} while (--pathId >= 0);
+		pathId = i;
 	}
+
+	RCT2_GLOBAL(0x00F3EFA0, sint16) = pathId;
+	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	_window_footpath_cost = 0x80000000;
+	window_invalidate(w);
 }
 
 /**
@@ -495,4 +528,45 @@ static void window_footpath_paint()
 	if (_window_footpath_cost != 0x80000000)
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
+}
+
+/**
+ * 
+ *  rct2: 0x006A7F88
+ */
+static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues)
+{
+	int i, flags, numPathTypes, image;
+	rct_path_type *pathType;
+
+	numPathTypes = 0;
+	flags = 4;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		flags = 0;
+
+	for (i = 0; i < 16; i++) {
+		pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[i];
+		if (pathType == (rct_path_type*)-1)
+			continue;
+		if (pathType->flags & flags)
+			continue;
+
+		image = pathType->image + 71;
+		if (showQueues)
+			image++;
+
+		gDropdownItemsFormat[numPathTypes] = -1;
+		gDropdownItemsArgs[numPathTypes] = image;
+		numPathTypes++;
+	}
+
+	window_dropdown_show_image(
+		w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1,
+		w->colours[1],
+		0,
+		numPathTypes,
+		47,
+		36,
+		gAppropriateImageDropdownItemsPerRow[numPathTypes]
+	);
 }

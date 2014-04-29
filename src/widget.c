@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <memory.h>
 #include <stdlib.h>
 #include "addresses.h"
 #include "sprites.h"
@@ -800,6 +801,10 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
 }
 
+/**
+ * 
+ *  rct2: 0x006EB951
+ */
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	int l, t, r, b, colour, image;
@@ -826,7 +831,26 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 			image++;
 
-	if (!widget_is_disabled(w, widgetIndex)) {
+	if (widget_is_disabled(w, widgetIndex)) {
+		// Draw greyed out (light border bottom right shadow)
+		colour = w->colours[widget->colour];
+		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
+		memset(0x009DED74, colour, 256);
+		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		image &= 0x7FFFF;
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l + 1, t + 1, 0, dpi, 0);
+
+		// Draw greyed out (dark)
+		colour = w->colours[widget->colour];
+		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
+		memset(0x009DED74, colour, 256);
+		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l, t, 0, dpi, 0);
+	} else {
 		if (image & 0x80000000) {
 			// ?
 		}
@@ -837,8 +861,6 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 			image |= colour << 19;
 
 		gfx_draw_sprite(dpi, image, l, t);
-	} else {
-		// ?
 	}
 }
 
