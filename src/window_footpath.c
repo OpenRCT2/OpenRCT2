@@ -152,6 +152,8 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 static void window_footpath_set_provisional_path_at_point(int x, int y);
 static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope);
 static void window_footpath_place_path_at_point(int x, int y);
+static void window_footpath_construct();
+static void window_footpath_remove();
 
 /**
  * 
@@ -242,16 +244,15 @@ static void window_footpath_mouseup()
 		window_close(w);
 		break;
 	case WIDX_CONSTRUCT:
-		RCT2_CALLPROC_X(0x006A79B7, 0, 0, 0, 0, w, 0, 0);
+		window_footpath_construct();
 		break;
 	case WIDX_REMOVE:
-		RCT2_CALLPROC_X(0x006A7863, 0, 0, 0, 0, w, 0, 0);
+		window_footpath_remove();
 		break;
 	case WIDX_CONSTRUCT_ON_LAND:
-		// RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, widgetIndex, w, 0, 0);
-
 		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND)
 			break;
+
 		_window_footpath_cost = 0x80000000;
 		tool_cancel();
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
@@ -264,10 +265,9 @@ static void window_footpath_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006A855C);
 		break;
 	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-		// RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, widgetIndex, w, 0, 0);
-
 		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
 			break;
+
 		_window_footpath_cost = 0x80000000;
 		RCT2_CALLPROC_EBPSAFE(0x006EE281);
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
@@ -751,7 +751,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	type = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
 
 	// Prepare error text
-	RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
 
 	// Try and place path
 	eax = x;
@@ -771,4 +771,97 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// cx = 0x009DEA5E
 		sound_play_panned(6, 0x8001);
 	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A79B7
+ */
+static void window_footpath_construct()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006A79B7);
+}
+
+/**
+ * 
+ *  rct2: 0x006A7863
+ */
+static void window_footpath_remove()
+{
+	int x, y, z, lastTile;
+	rct_map_element *mapElement;
+
+	// RCT2_CALLPROC_EBPSAFE(0x006A7863);
+
+	_window_footpath_cost = 0x80000000;
+	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+
+	x = RCT2_GLOBAL(0x00F3EF8A, uint16) / 32;
+	y = RCT2_GLOBAL(0x00F3EF8C, uint16) / 32;
+	int dl = (RCT2_GLOBAL(0x00F3EF8E, uint16) >> 3) & 0xFF;
+	int dh = dl - 2;
+
+	if (x >= 256 || y >= 256)
+		goto loc_6A79B0;
+
+	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
+	do {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
+			if (mapElement->base_height == dl) {
+				if (mapElement->properties.path.type & 4)
+					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(0x00F3EF90, uint8))
+						continue;
+				goto loc_6A78EF;
+			} else if (mapElement->base_height == dh) {
+				if (!(mapElement->properties.path.type & 4))
+					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(0x00F3EF90, uint8))
+						continue;
+				goto loc_6A78EF;
+			}
+		}
+		lastTile = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
+		mapElement++;
+	} while (!lastTile);
+	goto loc_6A79B0;
+
+loc_6A78EF:
+	dl = mapElement->base_height;
+	int pathType = mapElement->properties.path.type;
+	if (pathType & 4) {
+		pathType &= 3;
+		pathType ^= 2;
+		if (pathType == RCT2_GLOBAL(0x00F3EF90, uint8))
+			dl += 2;
+	}
+	
+	// Find a connected edge
+	int edge = RCT2_GLOBAL(0x00F3EF90, uint8) ^ 2;
+	if (!(mapElement->properties.path.edges & (1 << edge))) {
+		edge = (edge + 1) % 4;
+		if (!(mapElement->properties.path.edges & (1 << edge))) {
+			edge = (edge + 2) % 4;
+			if (!(mapElement->properties.path.edges & (1 << edge))) {
+				edge = (edge - 1) % 4;
+				if (!(mapElement->properties.path.edges & (1 << edge)))
+					edge ^= 2;
+			}
+		}
+	}
+	
+	// Remove path
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
+	RCT2_CALLPROC_X(0x006677F2, RCT2_GLOBAL(0x00F3EF8A, uint16), 1, RCT2_GLOBAL(0x00F3EF8C, uint16), mapElement->base_height, 19, 0, 0);
+
+	// Move selection
+	edge ^= 2;
+	x = RCT2_GLOBAL(0x00F3EF8A, uint16) - RCT2_GLOBAL(0x00993CCC + (edge * 4), sint16);
+	y = RCT2_GLOBAL(0x00F3EF8C, uint16) - RCT2_GLOBAL(0x00993CCE + (edge * 4), sint16);
+	RCT2_GLOBAL(0x00F3EF8A, uint16) = x;
+	RCT2_GLOBAL(0x00F3EF8C, uint16) = y;
+	RCT2_GLOBAL(0x00F3EF8E, uint16) = dl << 3;
+	RCT2_GLOBAL(0x00F3EF90, uint8) = edge;
+	RCT2_GLOBAL(0x00F3EF9E, uint8) = 255;
+
+loc_6A79B0:
+	RCT2_CALLPROC_EBPSAFE(0x006A855C);
 }

@@ -759,10 +759,10 @@ static void window_park_entrance_dropdown()
 		if (dropdownIndex != 0) {
 			dropdownIndex &= 0x00FF;
 			dropdownIndex |= 0x0100;
-			RCT2_GLOBAL(0x0141E9AE, uint16) = 1724;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_CLOSE_PARK;
 		} else {
 			dropdownIndex &= 0x00FF;
-			RCT2_GLOBAL(0x0141E9AE, uint16) = 1723;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_OPEN_PARK;
 		}
 		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, dropdownIndex, 34, 0, 0);
 	}
@@ -886,7 +886,7 @@ static void window_park_entrance_textinput()
 
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {
-			RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_RENAME_PARK;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_RENAME_PARK;
 			RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(text + 0)), '!', *((int*)(text + 8)), *((int*)(text + 4)));
 			RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(text + 12)), '!', *((int*)(text + 20)), *((int*)(text + 16)));
 			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(text + 24)), '!', *((int*)(text + 32)), *((int*)(text + 28)));
