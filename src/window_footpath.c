@@ -143,8 +143,9 @@ static uint32 window_footpath_events[] = {
 sint32 _window_footpath_cost;
 
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
-static void window_footpath_set_provisional_path(int x, int y);
-static void window_footpath_place_path(int x, int y);
+static void window_footpath_set_provisional_path_at_point(int x, int y);
+static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope);
+static void window_footpath_place_path_at_point(int x, int y);
 
 /**
  * 
@@ -365,7 +366,7 @@ static void window_footpath_toolupdate()
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		window_footpath_set_provisional_path(x, y);
+		window_footpath_set_provisional_path_at_point(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
 		RCT2_CALLPROC_X(0x006A8388, 0, 0, 0, 0, w, 0, 0);
 	}
@@ -388,7 +389,7 @@ static void window_footpath_tooldown()
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		window_footpath_place_path(x, y);
+		window_footpath_place_path_at_point(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
 		RCT2_CALLPROC_X(0x006A840F, x, y, 0, 0, w, 0, 0);
 	}
@@ -598,14 +599,15 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
  * 
  *  rct2: 0x006A81FB
  */
-static void window_footpath_set_provisional_path(int x, int y)
+static void window_footpath_set_provisional_path_at_point(int x, int y)
 {
-	int z;
+	int z, slope, pathType;
 	rct_map_element *mapElement;
 
 	RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
 
+	// Get map coordinates from point
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
 	ebx = y;
@@ -635,31 +637,59 @@ static void window_footpath_set_provisional_path(int x, int y)
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
 
 		// Set provisional path
-		edx = mapElement->properties.surface.slope & 0x1F;
-		int bh = RCT2_ADDRESS(0x0098D8B4, uint8)[edx];
-		int dl = mapElement->base_height;
+		slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
 		if (z == 6)
-			bh = mapElement->properties.surface.slope & 7;
-		int dh = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+			slope = mapElement->properties.surface.slope & 7;
+		pathType = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
 
-		ebx = (bh << 8) | z;
-		edx = (dh << 8) | dl;
-		edi = 0;
-		RCT2_CALLFUNC_X(0x006A76FF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-		// 
-		_window_footpath_cost = ebx;
+		_window_footpath_cost = window_footpath_set_provisional_path(pathType, x, y, mapElement->base_height, slope);
 		// window_invalidate_by_id(eax, ebx);
 	}
 }
 
 /**
  * 
+ *  rct2: 0x006A76FF
+ */
+static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope)
+{
+	int cost;
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	RCT2_CALLPROC_EBPSAFE(0x006A77FF);
+
+	// Try and show provisional path
+	eax = x;
+	ebx = (slope << 8) | 121;
+	ecx = y;
+	edx = (type << 8) | z;
+	esi = 17;
+	edi = 0;
+	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	cost = ebx;
+
+	if (cost != 0x80000000) {
+		RCT2_GLOBAL(0x00F3EF94, uint16) = x;
+		RCT2_GLOBAL(0x00F3EF96, uint16) = y;
+		RCT2_GLOBAL(0x00F3EF98, uint8) = z & 0xFF;
+		RCT2_GLOBAL(0x00F3EF92, uint8) |= 2;
+
+		eax = 3;
+		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
+			eax = 1;
+		RCT2_CALLPROC_X(0x006CB70A, eax, 0, 0, 0, 0, 0, 0);
+	}
+
+	return cost;
+}
+
+/**
+ * 
  *  rct2: 0x006A82C5
  */
-static void window_footpath_place_path(int x, int y)
+static void window_footpath_place_path_at_point(int x, int y)
 {
-	int z;
+	int z, slope, type, cost;
 	rct_map_element *mapElement;
 
 	if (RCT2_GLOBAL(0x00F3EF9F, uint8) != 0)
@@ -667,6 +697,7 @@ static void window_footpath_place_path(int x, int y)
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 
+	// Get map coordinates from point
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
 	ebx = y;
@@ -681,20 +712,26 @@ static void window_footpath_place_path(int x, int y)
 		return;
 
 	// Set path
-	edx = mapElement->properties.surface.slope & 0x1F;
-	int bh = RCT2_ADDRESS(0x0098D8B4, uint8)[edx];
-	int dl = mapElement->base_height;
+	slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
+	z = mapElement->base_height;
 	if (z == 6)
-		bh = mapElement->properties.surface.slope & 7;
-	RCT2_GLOBAL(0x0141E9AE, uint16) = 1176;
-	int dh = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+		slope = mapElement->properties.surface.slope & 7;
+	type = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
 
-	ebx = (bh << 8) | 1;
-	edx = (dh << 8) | dl;
-	edi = 0;
+	// Prepare error text
+	RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
+
+	// Try and place path
+	eax = x;
+	ebx = (slope << 8) | 1;
+	ecx = y;
+	edx = (type << 8) | z;
 	esi = 17;
+	edi = 0;
 	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (ebx == 0x80000000) {
+	cost = ebx;
+
+	if (cost == 0x80000000) {
 		RCT2_GLOBAL(0x00F3EF9F, uint8) = 1;
 	} else if (RCT2_GLOBAL(0x00F3EFD9, uint32) != 0) {
 		// bp = 0x009DEA62
