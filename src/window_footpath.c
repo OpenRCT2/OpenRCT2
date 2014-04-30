@@ -20,6 +20,8 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "audio.h"
+#include "map.h"
 #include "strings.h"
 #include "sprites.h"
 #include "viewport.h"
@@ -141,6 +143,8 @@ static uint32 window_footpath_events[] = {
 sint32 _window_footpath_cost;
 
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
+static void window_footpath_set_provisional_path(int x, int y);
+static void window_footpath_place_path(int x, int y);
 
 /**
  * 
@@ -296,7 +300,7 @@ static void window_footpath_mousedown()
  */
 static void window_footpath_dropdown()
 {
-	int i, pathId;
+	int i, j, pathId;
 	short dropdownIndex;
 	short widgetIndex;
 	rct_window *w;
@@ -313,6 +317,7 @@ static void window_footpath_dropdown()
 	else
 		return;
 	
+	// Get path id
 	pathId = dropdownIndex;
 	if (pathId == -1) {
 		pathId = RCT2_GLOBAL(0x00F3EFA0, sint16);
@@ -321,18 +326,22 @@ static void window_footpath_dropdown()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 			flags = 0;
 
-		i = -1;
-		do {
-			i++;
+		j = 0;
+		for (i = 0; i < 16; i++) {
 			pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[i];
 			if (pathType == (rct_path_type*)-1)
 				continue;
 			if (pathType->flags & flags)
 				continue;
-		} while (--pathId >= 0);
+
+			if (j == pathId)
+				break;
+			j++;
+		}
 		pathId = i;
 	}
 
+	// Set selected path id
 	RCT2_GLOBAL(0x00F3EFA0, sint16) = pathId;
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 	_window_footpath_cost = 0x80000000;
@@ -345,14 +354,18 @@ static void window_footpath_dropdown()
  */
 static void window_footpath_toolupdate()
 {
+	int x, y, z;
 	short widgetIndex;
 	rct_window *w;
+	rct_map_element *mapElement;
 
+	__asm mov x, eax
+	__asm mov y, ebx
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A81FB, 0, 0, 0, 0, w, 0, 0);
+		window_footpath_set_provisional_path(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
 		RCT2_CALLPROC_X(0x006A8388, 0, 0, 0, 0, w, 0, 0);
 	}
@@ -364,16 +377,20 @@ static void window_footpath_toolupdate()
  */
 static void window_footpath_tooldown()
 {
+	int x, y, z;
 	short widgetIndex;
 	rct_window *w;
+	rct_map_element *mapElement;
 
+	__asm mov x, eax
+	__asm mov y, ebx
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A82C5, 0, 0, 0, 0, w, 0, 0);
+		window_footpath_place_path(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
-		RCT2_CALLPROC_X(0x006A840F, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A840F, x, y, 0, 0, w, 0, 0);
 	}
 }
 
@@ -383,14 +400,17 @@ static void window_footpath_tooldown()
  */
 static void window_footpath_tooldrag()
 {
+	int x, y;
 	short widgetIndex;
 	rct_window *w;
 
+	__asm mov x, eax
+	__asm mov y, ebx
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A82C5, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A82C5, x, y, 0, 0, w, 0, 0);
 	}
 }
 
@@ -400,14 +420,17 @@ static void window_footpath_tooldrag()
  */
 static void window_footpath_toolup()
 {
+	int x, y;
 	short widgetIndex;
 	rct_window *w;
 
+	__asm mov x, eax
+	__asm mov y, ebx
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A8380, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8380, x, y, 0, 0, w, 0, 0);
 	}
 }
 
@@ -569,4 +592,114 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 		36,
 		gAppropriateImageDropdownItemsPerRow[numPathTypes]
 	);
+}
+
+/**
+ * 
+ *  rct2: 0x006A81FB
+ */
+static void window_footpath_set_provisional_path(int x, int y)
+{
+	int z;
+	rct_map_element *mapElement;
+
+	RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	edx = -34;
+	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	x = eax & 0xFFFF;
+	z = ebx & 0xFF;
+	y = ecx & 0xFFFF;
+	mapElement = edx;
+
+	if (z == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
+		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	} else {
+		// Check for change
+		if ((RCT2_GLOBAL(0x00F3EF92, uint8) & 2) && RCT2_GLOBAL(0x00F3EF94, uint16) == x && RCT2_GLOBAL(0x00F3EF96, uint16) == y && RCT2_GLOBAL(0x00F3EF98, uint8) == mapElement->base_height)
+			return;
+
+		// Set map selection
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
+
+		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+
+		// Set provisional path
+		edx = mapElement->properties.surface.slope & 0x1F;
+		int bh = RCT2_ADDRESS(0x0098D8B4, uint8)[edx];
+		int dl = mapElement->base_height;
+		if (z == 6)
+			bh = mapElement->properties.surface.slope & 7;
+		int dh = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+
+		ebx = (bh << 8) | z;
+		edx = (dh << 8) | dl;
+		edi = 0;
+		RCT2_CALLFUNC_X(0x006A76FF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+		// 
+		_window_footpath_cost = ebx;
+		// window_invalidate_by_id(eax, ebx);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006A82C5
+ */
+static void window_footpath_place_path(int x, int y)
+{
+	int z;
+	rct_map_element *mapElement;
+
+	if (RCT2_GLOBAL(0x00F3EF9F, uint8) != 0)
+		return;
+
+	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	edx = -34;
+	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	x = eax & 0xFFFF;
+	z = ebx & 0xFF;
+	y = ecx & 0xFFFF;
+	mapElement = edx;
+
+	if (z == 0)
+		return;
+
+	// Set path
+	edx = mapElement->properties.surface.slope & 0x1F;
+	int bh = RCT2_ADDRESS(0x0098D8B4, uint8)[edx];
+	int dl = mapElement->base_height;
+	if (z == 6)
+		bh = mapElement->properties.surface.slope & 7;
+	RCT2_GLOBAL(0x0141E9AE, uint16) = 1176;
+	int dh = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+
+	ebx = (bh << 8) | 1;
+	edx = (dh << 8) | dl;
+	edi = 0;
+	esi = 17;
+	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (ebx == 0x80000000) {
+		RCT2_GLOBAL(0x00F3EF9F, uint8) = 1;
+	} else if (RCT2_GLOBAL(0x00F3EFD9, uint32) != 0) {
+		// bp = 0x009DEA62
+		// dx = 0x009DEA60
+		// cx = 0x009DEA5E
+		sound_play_panned(6, 0x8001);
+	}
 }

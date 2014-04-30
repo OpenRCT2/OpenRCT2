@@ -797,17 +797,17 @@ static void window_park_entrance_toolupdate()
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
-	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
+	if (widgetIndex == WIDX_BUY_LAND_RIGHTS || widgetIndex == SPR_BUY_CONSTRUCTION_RIGHTS) {
 		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
-		RCT2_GLOBAL(0x009DE58A, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
 		screen_pos_to_map_pos(&x, &y);
 		if (x != SPRITE_LOCATION_NULL) {
-			RCT2_GLOBAL(0x009DE58A, uint16) |= 1;
-			RCT2_GLOBAL(0x009DE594, uint16) = 4;
-			RCT2_GLOBAL(0x009DE58C, uint16) = x;
-			RCT2_GLOBAL(0x009DE58E, uint16) = x;
-			RCT2_GLOBAL(0x009DE590, uint16) = y;
-			RCT2_GLOBAL(0x009DE592, uint16) = y;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
 			RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
 		}
 	}
