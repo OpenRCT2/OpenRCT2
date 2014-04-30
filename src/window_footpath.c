@@ -241,10 +241,10 @@ static void window_footpath_mouseup()
 		RCT2_CALLPROC_X(0x006A7863, 0, 0, 0, 0, w, 0, 0);
 		break;
 	case WIDX_CONSTRUCT_ON_LAND:
-		RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, widgetIndex, w, 0, 0);
 		break;
 	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-		RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, widgetIndex, w, 0, 0);
 		break;
 	}
 }
