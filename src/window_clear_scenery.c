@@ -116,7 +116,7 @@ static void window_clear_scenery_close()
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_clear_scenery_should_close())
-		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+		tool_cancel();
 }
 
 /**

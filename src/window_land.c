@@ -152,7 +152,7 @@ static void window_land_close()
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_land_should_close())
-		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+		tool_cancel();
 }
 
 /**

@@ -29,6 +29,12 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+enum {
+	PATH_CONSTRUCTION_MODE_LAND,
+	PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL,
+	PATH_CONSTRUCTION_MODE_2
+};
+
 typedef struct {
 	uint16 pad_00;
 	uint32 image;		// 0x02
@@ -193,9 +199,9 @@ void window_footpath_open()
 	window->colours[1] = 24;
 	window->colours[2] = 24;
 
-	RCT2_CALLPROC_EBPSAFE(0x006EE281);
-	RCT2_GLOBAL(0x00F3EF99, uint8) = 0;
-	RCT2_CALLPROC_X(0x006EE212, 17, 0, 0, 18, window, 0, 0);
+	tool_cancel();
+	RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_LAND;
+	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
 	RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 	RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
@@ -242,10 +248,36 @@ static void window_footpath_mouseup()
 		RCT2_CALLPROC_X(0x006A7863, 0, 0, 0, 0, w, 0, 0);
 		break;
 	case WIDX_CONSTRUCT_ON_LAND:
-		RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, widgetIndex, w, 0, 0);
+		// RCT2_CALLPROC_X(0x006A8072, 0, 0, 0, widgetIndex, w, 0, 0);
+
+		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND)
+			break;
+		_window_footpath_cost = 0x80000000;
+		tool_cancel();
+		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+		RCT2_GLOBAL(0x009DE58A, uint16) &= ~2;
+		RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_LAND;
+		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+		RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
+		RCT2_CALLPROC_EBPSAFE(0x006A855C);
 		break;
 	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-		RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, widgetIndex, w, 0, 0);
+		// RCT2_CALLPROC_X(0x006A80C5, 0, 0, 0, widgetIndex, w, 0, 0);
+
+		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+			break;
+		_window_footpath_cost = 0x80000000;
+		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+		RCT2_GLOBAL(0x009DE58A, uint16) &= ~2;
+		RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+		RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
+		RCT2_CALLPROC_EBPSAFE(0x006A855C);
 		break;
 	}
 }
@@ -451,14 +483,14 @@ static void window_footpath_update()
 	RCT2_CALLPROC_EBPSAFE(0x006A7760);
 
 	// Check tool
-	if (RCT2_GLOBAL(0x00F3EF99, uint8) == 0) {
+	if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
 		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
-	} else if (RCT2_GLOBAL(0x00F3EF99, uint8) == 1) {
+	} else if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
 		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
@@ -488,7 +520,7 @@ static void window_footpath_invalidate()
 		(1 << WIDX_QUEUELINE_TYPE);
 
 	// Enable / disable construct button
-	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(0x00F3EF99, uint8) == 0 ? WWT_EMPTY : WWT_IMGBTN;
+	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND ? WWT_EMPTY : WWT_IMGBTN;
 
 	// Set footpath and queue type button images
 	selectedPath = RCT2_GLOBAL(0x00F3EFA0, uint16);

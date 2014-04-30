@@ -645,7 +645,7 @@ static void window_park_entrance_close()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 }
 
 /**
@@ -1618,7 +1618,7 @@ void window_park_objective_open()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 
 	window->viewport = NULL;
 	window->page = WINDOW_PARK_PAGE_OBJECTIVE;
@@ -1895,7 +1895,7 @@ static void window_park_set_page(rct_window *w, int page)
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 
 	// Set listen only to viewport
 	listen = 0;

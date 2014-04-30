@@ -319,6 +319,9 @@ void window_move_position(rct_window *w, int dx, int dy);
 void window_resize(rct_window *w, int dw, int dh);
 void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight);
 
+int tool_set(rct_window *w, int widgetIndex, int tool);
+void tool_cancel();
+
 // Open window functions
 void window_main_open();
 void window_game_top_toolbar_open();
