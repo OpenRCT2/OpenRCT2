@@ -801,7 +801,7 @@ static void window_park_entrance_toolupdate()
 		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
 		RCT2_GLOBAL(0x009DE58A, uint16) &= 0xFFFE;
 		screen_pos_to_map_pos(&x, &y);
-		if (x != 0x8000) {
+		if (x != SPRITE_LOCATION_NULL) {
 			RCT2_GLOBAL(0x009DE58A, uint16) |= 1;
 			RCT2_GLOBAL(0x009DE594, uint16) = 4;
 			RCT2_GLOBAL(0x009DE58C, uint16) = x;
@@ -998,7 +998,7 @@ static void window_park_init_viewport(rct_window *w)
 		return;
 
 	for (i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) {
 			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
 			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
 			z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] + 32;
