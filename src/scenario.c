@@ -420,8 +420,8 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	mainWindow = window_get_main();
 
 	mainWindow->var_4B0 = -1;
-	mainWindow->var_4B2 = RCT2_GLOBAL(0x0138869A, sint16);
-	mainWindow->var_4B4 = RCT2_GLOBAL(0x0138869C, sint16);
+	mainWindow->var_4B2 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	mainWindow->var_4B4 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
 	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
 	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
@@ -460,33 +460,37 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint16) = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, sint16) = RCT2_GLOBAL(0x013573DC, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint16);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint16) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related)
 
 	strcpy(0x0135924A, s6Info->details);
 	strcpy(0x0135920A, s6Info->name);
 
-	// RCT2_CALLPROC_EBPSAFE(0x00678461);
-
 	if (RCT2_GLOBAL(0x009ADAE4, sint32) != -1) {
 		char *ebp = RCT2_GLOBAL(0x009ADAE4, char*);
 
+		// 
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 2, uint16), 0);
+		
+		// Set park name
 		RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_RENAME_PARK;
-
 		RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(0x0141ED68 + 0)), 33, *((int*)(0x0141ED68 + 8)), *((int*)(0x0141ED68 + 4)));
 		RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(0x0141ED68 + 12)), 33, *((int*)(0x0141ED68 + 20)), *((int*)(0x0141ED68 + 16)));
 		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(0x0141ED68 + 24)), 33, *((int*)(0x0141ED68 + 32)), *((int*)(0x0141ED68 + 28)));
 
+		// 
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 0, uint16), 0);
 		strcpy_s(0x0135920A, 32, 0x0141ED68);
 
+		// Set scenario details
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 4, uint16), 0);
 		strcpy_s(RCT2_ADDRESS_SCENARIO_DETAILS, 256, 0x0141ED68);
 	}
 
+	// Set the last saved game path
 	strcpy(0x009ABB37, 0x009AB5DA);
 	format_string(0x009ABB37 + strlen(0x009ABB37), RCT2_GLOBAL(0x0013573D4, uint16), 0x0013573D8);
 	strcat(0x009ABB37, ".SV6");
+
 	memset(0x001357848, 0, 56);
 	RCT2_GLOBAL(0x0135832C, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32) = 0;
@@ -496,9 +500,9 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
-	RCT2_CALLPROC_EBPSAFE(0x0066729F);
-	RCT2_CALLPROC_EBPSAFE(0x006B7A38);
+	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related, called above already)
+	RCT2_CALLPROC_EBPSAFE(0x0066729F); // reset history / finance / awards
+	RCT2_CALLPROC_EBPSAFE(0x006B7A38); // reset_all_ride_build_dates
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x00674576);
 	park_calculate_size();
@@ -506,13 +510,18 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(0x01358840, uint8) = 0;
 	memset(0x001358102, 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
+
+	// Open park with free entry when there is no money
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) |= GAME_FLAGS_PARK_OPEN;
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = 0;
 	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) |= GAME_FLAGS_18;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+
+	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000;
+	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 }
