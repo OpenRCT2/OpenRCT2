@@ -21,6 +21,8 @@
 #ifndef _SCREENSHOT_H_
 #define _SCREENSHOT_H_
 
+extern int gScreenshotFormat;
+
 void screenshot_check();
 int screenshot_dump();
 
