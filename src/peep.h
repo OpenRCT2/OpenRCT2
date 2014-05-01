@@ -55,7 +55,10 @@ typedef struct {
 	uint8 pad_09;
 	sint16 var_0A;
 	uint16 var_0C;
-	uint8 var_0E[0x14];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x0E];
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
