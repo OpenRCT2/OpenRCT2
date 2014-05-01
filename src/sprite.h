@@ -23,7 +23,8 @@
 
 #include "rct2.h"
 
-#define SPRITE_INDEX_NULL 0xFFFF
+#define SPRITE_INDEX_NULL    0xFFFF
+#define SPRITE_LOCATION_NULL 0x8000
 
 #include "peep.h"
 

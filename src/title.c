@@ -32,6 +32,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
+#include "strings.h"
 #include "viewport.h"
 
 static const int gOldMusic = 0;
@@ -237,6 +238,24 @@ static void title_update_showcase()
 
 	_scriptWaitCounter--;
 }
+
+static void DrawOpenRCT2(int x, int y)
+{
+	char buffer[] = "  OpenRCT2, v0.0.1";
+	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	
+	// Background
+	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
+
+	// Text
+	buffer[0] = FORMAT_MEDIUMFONT;
+	buffer[1] = FORMAT_BLACK;
+	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
+	buffer[1] = FORMAT_WHITE;
+	gfx_draw_string(dpi, buffer, 0, x + 4, y + 4);
+}
+
+
 void game_handle_input();
 void title_update()
 {
@@ -264,6 +283,7 @@ void title_update()
 	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
 
 	window_update_all();
+	DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
