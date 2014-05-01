@@ -29,6 +29,7 @@
 #include "object.h"
 #include "park.h"
 #include "rct2.h"
+#include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "strings.h"
@@ -582,6 +583,38 @@ void scenario_success()
 	scenario_end();
 }
 
+
+void objective_check_10_rollercoasters()
+{
+	int i, rcs = 0;
+	uint8 type_already_counted[256];
+	rct_ride* ride;
+
+	memset(type_already_counted, 0, 256);
+
+	for (i = 0; i < 255; i++) {
+		uint8 rc_type;
+		uint32 rollercoaster_p;
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+		rc_type = ride->var_001;
+		rollercoaster_p = RCT2_GLOBAL(0x009ACFA4 + rc_type*4, uint32);
+
+		if ((RCT2_GLOBAL(rollercoaster_p + 0x1BE, sint8) == 2 ||
+			 RCT2_GLOBAL(rollercoaster_p + 0x1BF, sint8) == 2 )&&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->var_140 >= 600 && type_already_counted[rc_type] == 0){
+			type_already_counted[rc_type]++;
+			rcs++;
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
+
 /*
  * rct2: 0x0066A4B2
  **/
@@ -623,7 +656,10 @@ void check_objectives()
 		break;
 
 	case OBJECTIVE_10_ROLLERCOASTERS://5
+
+		objective_check_10_rollercoasters();
 		break;
+
 	case OBJECTIVE_GUESTS_AND_RATING://6
 
 		if (park_rating >= 700 && guests_in_park > objective_guests)
