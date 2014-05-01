@@ -195,7 +195,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			*z = edx;
 		}
 		break;
-	case NEWS_ITEM_PEEP_1:
+	case NEWS_ITEM_PEEP_ON_RIDE:
 		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
 		*x = sprite->unknown.x;
 		*y = sprite->unknown.y;
@@ -225,7 +225,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*y = sprite_2->unknown.y;
 		*z = sprite_2->unknown.z;
 		break;
-	case NEWS_ITEM_PEEP_2:
+	case NEWS_ITEM_PEEP:
 		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
 		*x = sprite->unknown.x;
 		*y = sprite->unknown.y;
