@@ -82,11 +82,11 @@ typedef struct {
 	uint8 thirst;					// 0x3F
 	uint8 pad_040[0x28];
 	uint8 current_ride;				// 0x68
-	uint8 pad_6a;					// 0x6A Part of current_ride?
+	uint8 pad_6A;					// 0x6A Part of current_ride?
 	uint8 current_train;   	        // 0x6B
 	uint8 current_car;				// 0x6C
-	uint8 current_seat;				// 0x6d
-	uint8 pad_6C[0x2e];
+	uint8 current_seat;				// 0x6D
+	uint8 pad_6E[0x2E];
 	uint32 id;						// 0x9C
 	uint8 pad_A0[0x10];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
