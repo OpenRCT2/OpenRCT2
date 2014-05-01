@@ -635,7 +635,7 @@ void check_objectives()
 		return;
 
 	switch (objective_type) {
-	case OBJECTIVE_GUESTS_BY:
+	case OBJECTIVE_GUESTS_BY://1
 
 		if (cur_month_year == 8 * objective_year){
 			if (park_rating < 600 || guests_in_park < objective_guests)
@@ -676,7 +676,18 @@ void check_objectives()
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
+	{
+		rct_ride* ride;
+		int rcs = 0;
+		for (int i = 0; i < 255; i++) {
+			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+			if (ride->status && ride->intensity > objective_currency)
+				rcs++;
+		}
+		if (rcs >= 5)
+			scenario_success();
 		break;
+	}
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE://A
 	{
 		sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
@@ -697,7 +708,9 @@ void check_objectives()
 	}
 }
 
-
+/*
+* rct2: 0x006C44B1
+**/
 void scenario_update()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
