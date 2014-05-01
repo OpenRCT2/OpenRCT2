@@ -527,3 +527,73 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 }
+
+
+
+void scenario_update()
+{
+	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
+	uint32 current_day = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	uint8 current_days_in_month = days_in_month[month];
+	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+
+	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
+		return;
+
+	if ((current_days_in_month * (current_day + 4)) >> 16 != (current_days_in_month * current_day) >> 16) {
+		// daily checks
+
+		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // objective_finance_mystery1
+		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps update loop
+		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
+		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
+		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
+			objective_type == 6 || objective_type == 5) {
+			RCT2_CALLPROC_EBPSAFE(0x0066A4B2); // objective daily checks
+		}
+	}
+
+	
+	if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
+		// weekly checks
+		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
+		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
+		RCT2_CALLPROC_EBPSAFE(0x0069E092);
+		RCT2_CALLPROC_EBPSAFE(0x0069E0C1);
+		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
+		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
+		RCT2_CALLPROC_EBPSAFE(0x006AC916);
+
+		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
+			for (int i = 0; i < 100; ++i) {
+				int carry;
+				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
+				__asm mov carry, 0;
+				__asm adc carry, 0;
+				if (!carry)
+					break;
+			}
+		}
+		RCT2_CALLPROC_EBPSAFE(0x0066A231);
+		RCT2_CALLPROC_EBPSAFE(0x0066A348);
+	}
+
+	if ( (unsigned int)((2 * current_day) & 0xFFFF) + 8 >= 0x10000) {
+		// biweekly checks
+		RCT2_CALLPROC_EBPSAFE(0x006AC885);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = current_day + 4;
+	if (current_day + 4 > 0x10000) {
+		// month ends actions
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
+		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
+		RCT2_CALLPROC_EBPSAFE(0x0066A4B2); // objective daily checks
+		RCT2_CALLPROC_EBPSAFE(0x0066A80E);
+		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
+	}
+	
+}
+
