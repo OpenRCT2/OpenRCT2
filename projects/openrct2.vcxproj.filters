@@ -254,6 +254,9 @@
     <ClCompile Include="..\src\window_about.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\lodepng\lodepng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
