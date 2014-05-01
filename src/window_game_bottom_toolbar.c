@@ -186,7 +186,7 @@ static void window_game_bottom_toolbar_mouseup()
 
 			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
-			if (x == SPRITE_LOCATION_NULL)
+			if ((uint16)x == SPRITE_LOCATION_NULL)
 				break;
 
 			if ((mainWindow = window_get_main()) != NULL)
@@ -222,7 +222,8 @@ static void window_game_bottom_toolbar_tooltip()
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_DAY, sint16) * days_in_month[month]) >> 16) & 0xFF;
+		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) * days_in_month[month]) >> 16) & 0xFF;
+
 		*((short*)0x013CE952) = STR_DATE_DAY_1 + day;
 		*((short*)0x013CE954) = STR_MONTH_MARCH + month;
 		widgetIndex = 0;
@@ -534,8 +535,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	case NEWS_ITEM_RIDE:
 		gfx_draw_sprite(dpi, SPR_RIDE, x, y);
 		break;
-	case NEWS_ITEM_PEEP_1:
-	case NEWS_ITEM_PEEP_2:
+	case NEWS_ITEM_PEEP_ON_RIDE:
+	case NEWS_ITEM_PEEP:
 		if (newsItem->flags & 1)
 			break;
 

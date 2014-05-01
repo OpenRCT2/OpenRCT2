@@ -53,6 +53,7 @@ enum {
 
 int park_is_open();
 void park_init();
+int park_calculate_size();
 
 int calculate_park_rating();
 int calculate_park_value();
