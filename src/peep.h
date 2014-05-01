@@ -74,7 +74,7 @@ typedef struct {
 	uint8 pad_32[0x08];
 	uint8 happiness;				// 0x3A
 	uint8 var_03B;
-	uint8 nausea;
+	uint8 nausea;					// 0x3C
 	uint8 pad_03D[0x2B];
 	uint8 current_ride;				// 0x68
 	uint8 pad_6a;					// 0x6A Part of current_ride?
