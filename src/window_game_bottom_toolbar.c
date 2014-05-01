@@ -221,7 +221,8 @@ static void window_game_bottom_toolbar_tooltip()
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) * ((short*)0x00993988)[month]) >> 16) & 0xFF;
+		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) * days_in_month[month]) >> 16) & 0xFF;
+
 		*((short*)0x013CE952) = STR_DATE_DAY_1 + day;
 		*((short*)0x013CE954) = STR_MONTH_MARCH + month;
 		widgetIndex = 0;

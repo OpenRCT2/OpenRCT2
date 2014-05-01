@@ -22,7 +22,7 @@
 #include "date.h"
 #include "rct2.h"
 
-// rtc2: 0x00993988
+// rct2: 0x00993988
 const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
 
