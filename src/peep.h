@@ -72,8 +72,8 @@ typedef struct {
 	uint8 happiness;				// 0x3A
 	uint8 pad_03B[0x2D];
 	uint8 current_ride;				// 0x68
-	uint8 var_6A;
-	uint8 var_6B;
+	uint8 current_train;			// 0x6A
+	uint8 current_car;   	        // 0x6B
 	uint8 pad_6C[0x30];
 	uint32 id;						// 0x9C
 	uint8 pad_A0[0x10];

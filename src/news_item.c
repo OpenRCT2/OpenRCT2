@@ -214,9 +214,11 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			break;
 		}
 
-		sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->var_086[sprite->peep.var_6A]]);
-		for (i = 0; i < sprite->peep.var_6B; i++)
-			sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[*((uint16*)&sprite_2->pad_00[0x3E])]);
+		// Find the train peep is on
+		sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[sprite->peep.current_train]]);
+		// Find the car peep is on
+		for (i = 0; i < sprite->peep.current_car; i++)
+			sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[*((uint16*)&sprite_2->pad_00[0x3e])]);
 		*x = sprite_2->unknown.x;
 		*y = sprite_2->unknown.y;
 		*z = sprite_2->unknown.z;

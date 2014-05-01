@@ -38,7 +38,7 @@ typedef struct {
 	uint8 pad_052[0x18];
 	uint16 var_06A[4];				// probably entrance map coordinates
 	uint8 pad_072[0x14];
-	uint16 var_086[1];
+	uint16 train_car_map[1];		// 0x86 Points to the first car in the train
 	uint8 pad_088[0x68];
 	sint16 excitement;				// 0x0F0
 	sint16 intensity;				// 0x0F2
