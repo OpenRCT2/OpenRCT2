@@ -473,15 +473,16 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 void scenario_update()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
-	uint32 current_day = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
-	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-	uint8 current_days_in_month = days_in_month[month];
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	uint32 month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16),
+		next_month_tick = month_tick + 4;
+	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7,
+		current_days_in_month = days_in_month[month],
+		objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
 		return;
 
-	if ((current_days_in_month * (current_day + 4)) >> 16 != (current_days_in_month * current_day) >> 16) {
+	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
 
 		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // objective_finance_mystery1
@@ -495,7 +496,8 @@ void scenario_update()
 	}
 
 	
-	if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
+	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
+	if ( next_month_tick % 0x4000 == 0) {
 		// weekly checks
 		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
 		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
@@ -519,13 +521,14 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0066A348);
 	}
 
-	if ( (unsigned int)((2 * current_day) & 0xFFFF) + 8 >= 0x10000) {
+	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
+	if (next_month_tick % 0x8000 == 0) {
 		// biweekly checks
 		RCT2_CALLPROC_EBPSAFE(0x006AC885);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = current_day + 4;
-	if (current_day + 4 > 0x10000) {
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
+	if (next_month_tick > 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
 		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
