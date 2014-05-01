@@ -174,7 +174,8 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 {
 	int i;
 	rct_ride *ride;
-	rct_sprite *sprite, *sprite_2;
+	rct_peep *peep;
+	rct_car *car;
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
@@ -195,37 +196,41 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			*z = edx;
 		}
 		break;
-	case NEWS_ITEM_PEEP_1:
-		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
-		*x = sprite->unknown.x;
-		*y = sprite->unknown.y;
-		*z = sprite->unknown.z;
-		if (*x != SPRITE_LOCATION_NULL)
+	case NEWS_ITEM_PEEP_ON_RIDE:
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		*x = peep->x;
+		*y = peep->y;
+		*z = peep->z;
+		if (*((uint16*)x) != SPRITE_LOCATION_NULL)
 			break;
 
-		if (sprite->peep.state != 3 && sprite->peep.state != 7) {
+		if (peep->state != 3 && peep->state != 7) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[sprite->peep.current_ride]);
-		if (ride->var_1D0 & 1) {
+		// Find which ride peep is on
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+		// Check if there are trains on the track (first bit of var_1D0)
+		if (!(ride->var_1D0 & 1)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 
-		sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->var_086[sprite->peep.var_6A]]);
-		for (i = 0; i < sprite->peep.var_6B; i++)
-			sprite_2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[*((uint16*)&sprite_2->pad_00[0x3E])]);
-		*x = sprite_2->unknown.x;
-		*y = sprite_2->unknown.y;
-		*z = sprite_2->unknown.z;
+		// Find the first car of the train peep is on
+		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]);
+		// Find the actual car peep is on
+		for (i = 0; i < peep->current_car; i++)
+			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]);
+		*x = car->x;
+		*y = car->y;
+		*z = car->z;
 		break;
-	case NEWS_ITEM_PEEP_2:
-		sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
-		*x = sprite->unknown.x;
-		*y = sprite->unknown.y;
-		*z = sprite->unknown.z;
+	case NEWS_ITEM_PEEP:
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		*x = peep->x;
+		*y = peep->y;
+		*z = peep->z;
 		break;
 	case NEWS_ITEM_BLANK:
 		{

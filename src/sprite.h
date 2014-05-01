@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -46,6 +46,16 @@ typedef struct {
 	sint32 var_24;
 } rct_litter;
 
+typedef struct {
+	uint8 sprite_idetifier;			// 0x00
+	uint8 pad_01[0x0D];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x2a];
+	uint16 next_car;				// 0x3E
+} rct_car;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -55,6 +65,7 @@ typedef union {
 	rct_unk_sprite unknown;
 	rct_peep peep;
 	rct_litter litter;
+	rct_car car;
 } rct_sprite;
 
 #endif

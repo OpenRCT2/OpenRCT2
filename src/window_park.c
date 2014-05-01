@@ -2029,7 +2029,7 @@ static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history
 	int i, x, y, yearOver32, currentMonth, currentDay;
 
 	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_DAY, uint16);
+	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
 	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
 	x = baseX;
 	y = baseY;
