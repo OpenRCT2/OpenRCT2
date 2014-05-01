@@ -185,7 +185,7 @@ static void window_game_bottom_toolbar_mouseup()
 
 			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
-			if (x == SPRITE_LOCATION_NULL)
+			if ((uint16)x == SPRITE_LOCATION_NULL)
 				break;
 
 			if ((mainWindow = window_get_main()) != NULL)
