@@ -200,7 +200,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*x = sprite->unknown.x;
 		*y = sprite->unknown.y;
 		*z = sprite->unknown.z;
-		if (*x != SPRITE_LOCATION_NULL)
+		if (*((uint16*)x) != SPRITE_LOCATION_NULL)
 			break;
 
 		if (sprite->peep.state != 3 && sprite->peep.state != 7) {
@@ -208,8 +208,10 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			break;
 		}
 
+		// Find which ride peep is on
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[sprite->peep.current_ride]);
-		if (ride->var_1D0 & 1) {
+		// Check if there are trains on the track (first bit of var_1D0)
+		if (!(ride->var_1D0 & 1)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
