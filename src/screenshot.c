@@ -33,7 +33,7 @@ enum {
 	SCREENSHOT_FORMAT_PNG
 };
 
-int gScreenshotFormat = SCREENSHOT_FORMAT_BMP;
+int gScreenshotFormat = SCREENSHOT_FORMAT_PNG;
 
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
