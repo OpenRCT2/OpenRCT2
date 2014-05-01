@@ -217,9 +217,9 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			break;
 		}
 
-		// Find the train peep is on
+		// Find the first car of the train peep is on
 		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]);
-		// Find the car peep is on
+		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
 			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]);
 		*x = car->x;
