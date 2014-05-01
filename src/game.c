@@ -27,6 +27,7 @@
 #include "news_item.h"
 #include "osinterface.h"
 #include "peep.h"
+#include "scenario.h"
 #include "screenshot.h"
 #include "strings.h"
 #include "tutorial.h"
@@ -137,6 +138,7 @@ void game_logic_update()
 
 	RCT2_CALLPROC_EBPSAFE(0x0068B089);
 	RCT2_CALLPROC_EBPSAFE(0x006C44B1);	// update_objective
+	scenario_update();
 	climate_update();
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
 	RCT2_CALLPROC_EBPSAFE(0x006A876D);
