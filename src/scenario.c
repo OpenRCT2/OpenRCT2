@@ -518,6 +518,92 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 }
 
 
+void scenario_failure()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0066A752);
+}
+
+
+void scenario_success()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0066A75E);
+}
+
+
+void check_objectives()
+{
+	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
+		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
+		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
+		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
+		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
+	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
+		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+
+
+	if ( scenario_completed_company_value != 0x80000000)
+		return;
+
+	switch (objective_type) {
+	case OBJECTIVE_GUESTS_BY:
+
+		if (cur_month_year == 8 * objective_year){
+			if (park_rating < 600 || guests_in_park < objective_guests)
+				scenario_failure();
+			scenario_success();
+		}
+		break;
+
+	case OBJECTIVE_PARK_VALUE_BY://2
+
+		if (cur_month_year == 8 * objective_year) {
+			if (park_value < objective_currency)
+				scenario_failure();
+			scenario_success();
+		}
+		break;
+
+	case OBJECTIVE_10_ROLLERCOASTERS://5
+		break;
+	case OBJECTIVE_GUESTS_AND_RATING://6
+
+		if (park_rating >= 700 && guests_in_park > objective_guests)
+			scenario_success();
+		break;
+
+	case OBJECTIVE_MONTHLY_RIDE_INCOME://7
+	{
+		sint32 monthly_ride_income = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, sint32);
+		if (monthly_ride_income > objective_currency)
+			scenario_success();
+		break;
+	}
+	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
+		break;
+	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
+		break;
+	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE://A
+	{
+		sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
+		if (current_loan <= 0 && park_value > objective_currency)
+			scenario_success();
+		break;
+	}
+	case OBJECTIVE_MONTHLY_FOOD_INCOME://B
+	{
+		sint32 income_sum = RCT2_GLOBAL(0x013578A4, sint32) + RCT2_GLOBAL(0x013578A0, sint32) +
+						   RCT2_GLOBAL(0x0135789C, sint32) + RCT2_GLOBAL(0x01357898, sint32);
+		if (income_sum > objective_currency)
+			scenario_success();
+		break;
+	}
+	default:
+		return;
+	}
+}
+
 
 void scenario_update()
 {
@@ -540,7 +626,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
-			RCT2_CALLPROC_EBPSAFE(0x0066A4B2); // objective daily checks
+			check_objectives();
 		}
 	}
 
@@ -582,7 +668,7 @@ void scenario_update()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
 		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
-		RCT2_CALLPROC_EBPSAFE(0x0066A4B2); // objective daily checks
+		check_objectives();
 		RCT2_CALLPROC_EBPSAFE(0x0066A80E);
 		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
 	}

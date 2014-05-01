@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "climate.h"
+#include "date.h"
 #include "news_item.h"
 #include "park.h"
 #include "peep.h"
