@@ -518,18 +518,62 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 }
 
 
+void scenario_end()
+{
+	rct_window* w;
+	window_close_by_id(6, 0);
+	
+	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+			window_close(w);
+	}
+	window_park_objective_open();
+}
+
+/*
+* rct2: 0x0066A752
+**/
 void scenario_failure()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0066A752);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
+	scenario_end();
 }
 
-
+/*
+ * rct2: 0x0066A75E
+ **/
 void scenario_success()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0066A75E);
+	int i;
+	rct_scenario_basic* scenario;
+	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
+	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
+
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		char* cur_scenario_name = RCT2_ADDRESS(0x135936C, char*);
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+
+		if (0 == strncmp(cur_scenario_name, scenario->path, 256)){
+			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
+				break; // not a new high score -> no glory
+
+			// bts game_flags, 1 happens here but I don't know what for
+			scenario->company_value = current_val;
+			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
+			scenario->completed_by[0] = 0;
+			RCT2_GLOBAL(0x013587C0, uint32) = current_val; // value used in window for score?
+			scenario_scores_save();
+			break;
+		}
+	}
+	scenario_end();
 }
 
-
+/*
+ * rct2: 0x0066A4B2
+ **/
 void check_objectives()
 {
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
@@ -552,7 +596,8 @@ void check_objectives()
 		if (cur_month_year == 8 * objective_year){
 			if (park_rating < 600 || guests_in_park < objective_guests)
 				scenario_failure();
-			scenario_success();
+			else
+				scenario_success();
 		}
 		break;
 
@@ -561,7 +606,8 @@ void check_objectives()
 		if (cur_month_year == 8 * objective_year) {
 			if (park_value < objective_currency)
 				scenario_failure();
-			scenario_success();
+			else
+				scenario_success();
 		}
 		break;
 
