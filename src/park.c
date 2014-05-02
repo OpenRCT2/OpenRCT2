@@ -19,10 +19,12 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "map.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
 #include "sprite.h"
+#include "window.h"
 
 int park_is_open()
 {
@@ -36,6 +38,36 @@ int park_is_open()
 void park_init()
 {
 	RCT2_CALLPROC_EBPSAFE(0x00667132);
+}
+
+/**
+ * 
+ *  rct2: 0x0066A348
+ */
+int park_calculate_size()
+{
+	int tiles, x, y;
+	rct_map_element *mapElement;
+
+	tiles = 0;
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+			mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
+			while (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
+				mapElement++;
+			}
+
+			if (mapElement->properties.surface.ownership & 0x30)
+				tiles++;
+		}
+	}
+
+	if (tiles != RCT2_GLOBAL(0x013580EA, sint16)) {
+		RCT2_GLOBAL(0x013580EA, sint16) = tiles;
+		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+	}
+	
+	return tiles;
 }
 
 /**

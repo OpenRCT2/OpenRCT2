@@ -30,6 +30,13 @@ enum PEEP_TYPE {
 	PEEP_TYPE_STAFF
 };
 
+enum STAFF_TYPE {
+	STAFF_TYPE_HANDYMAN,
+	STAFF_TYPE_MECHANIC,
+	STAFF_TYPE_SECURITY,
+	STAFF_TYPE_ENTERTAINER
+};
+
 enum {
 	PEEP_FLAGS_TRACKING = 8
 };
@@ -94,18 +101,26 @@ typedef struct {
 	uint8 pad_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	uint8 var_2F;
+	uint8 staff_type;				// 0x2F
 	uint8 var_30;
 	uint8 var_31;
-	uint8 pad_32[0x08];
+	uint8 pad_32[0x06];
+	uint8 energy;					// 0x38
+	uint8 var_39;
 	uint8 happiness;				// 0x3A
-	uint8 pad_03B[0x2D];
+	uint8 var_03B;
+	uint8 nausea;					// 0x3C
+	uint8 var_03D;
+	uint8 hunger;					// 0x3E
+	uint8 thirst;					// 0x3F
+	uint8 bathroom;					// 0x40
+	uint8 pad_041[0x27];
 	uint8 current_ride;				// 0x68
-	uint8 pad_6a;					// 0x6A Part of current_ride?
+	uint8 pad_6A;					// 0x6A Part of current_ride?
 	uint8 current_train;   	        // 0x6B
 	uint8 current_car;				// 0x6C
-	uint8 current_seat;				// 0x6d
-	uint8 pad_6C[0x2e];
+	uint8 current_seat;				// 0x6D
+	uint8 pad_6E[0x2E];
 	uint32 id;						// 0x9C
 	uint8 pad_A0[0x10];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
