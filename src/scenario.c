@@ -739,7 +739,7 @@ void scneario_entrance_fee_too_high_check()
 /*
 * rct2: 0x0069E0C1
 **/
-void scenario_marketing_finished()
+void scenario_marketing_update()
 {
 	int base_str = STR_MARKETING_FINISHED_BASE;
 	
@@ -812,7 +812,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
 		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
 		RCT2_CALLPROC_EBPSAFE(0x0069E092);
-		scenario_marketing_finished();
+		scenario_marketing_update();
 		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
 		RCT2_CALLPROC_EBPSAFE(0x006AC916);
