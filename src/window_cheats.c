@@ -28,6 +28,7 @@
 
 #define WW 200
 #define WH 128
+#define CHEATS_MONEY_INCREMENT 10000
 
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
@@ -129,7 +130,13 @@ static void window_cheats_mouseup()
 		break;
 	case WIDX_HIGH_MONEY:
 		i = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
-		i += 100000;
+
+		if (i < INT_MAX - CHEATS_MONEY_INCREMENT) {
+			i += CHEATS_MONEY_INCREMENT;
+		}
+		else {
+			i = INT_MAX;
+		}
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(i);
 
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
