@@ -138,7 +138,6 @@ void game_logic_update()
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
 
 	RCT2_CALLPROC_EBPSAFE(0x0068B089);
-	RCT2_CALLPROC_EBPSAFE(0x006C44B1);	// update_objective
 	scenario_update();
 	climate_update();
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
