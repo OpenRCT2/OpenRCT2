@@ -127,8 +127,17 @@ typedef struct {
 	uint16 pad_C4;
 	uint8 var_C6;
 	uint8 pad_C7;
-	uint32 var_C8;
-	uint8 pad_CC[0x2A];
+	uint32 var_C8;	//Bit 11 tracking, Bit 8 leaving the park
+	uint8 var_CC;	//Bit 0 mad, bit 1 Ice Cream
+	uint8 pad_CD[0x18];
+	uint16 paid_to_enter;			//0xE5 Number is /10 when displayed
+	uint16 paid_on_rides;			//0xE7 Number is /10 when displayed
+	uint16 paid_on_food;			//0xE9 Number is /10 when displayed
+	uint16 paid_on_souvenirs;		//0xEB Number is /10 when displayed
+	uint8 no_of_food;				//0xEC
+	uint8 no_of_drinks;				//0xED
+	uint8 no_of_souvenirs;			//0xEE
+	uint8 pad_EF[0x07];
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
