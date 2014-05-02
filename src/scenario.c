@@ -33,6 +33,7 @@
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "strings.h"
+#include "sprite.h"
 #include "viewport.h"
 
 #define UNINITIALISED_SCENARIO_LIST ((rct_scenario_basic*)-1)
@@ -607,7 +608,7 @@ void objective_check_10_rollercoasters()
 /*
  * rct2: 0x0066A4B2
  **/
-void check_objectives()
+void scenario_objectives_check()
 {
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
 		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
@@ -663,7 +664,10 @@ void check_objectives()
 		break;
 	}
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
+
+		RCT2_CALLPROC_EBPSAFE(0x0066A6B5);
 		break;
+
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
 	{
 		rct_ride* ride;
@@ -697,9 +701,32 @@ void check_objectives()
 	}
 }
 
+
 /*
 * rct2: 0x006C44B1
 **/
+void scneario_entrance_fee_too_high_check()
+{
+	uint16 x, y;
+	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
+		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	int max_fee = magic + (magic / 2);
+	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32), packed_xy;
+
+	if (game_flags & GAME_FLAGS_PARK_OPEN && park_entrance_fee > max_fee) {
+		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL; ++i) {
+			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
+			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
+		}
+	}
+
+	packed_xy = (y << 16) | x;
+	RCT2_CALLPROC_X(0x0066DF55, 5, STR_ENTRANCE_FEE_TOO_HI, packed_xy, 0, 0, 0, 0);
+}
+
+/*
+ * rct2: 0x006C44B1
+ **/
 void scenario_update()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
@@ -714,9 +741,8 @@ void scenario_update()
 
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
-
-		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // objective_finance_mystery1
-		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps update loop
+		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // finance update
+		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
@@ -758,13 +784,14 @@ void scenario_update()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
+	next_month_tick = next_month_tick * 8;
 	if (next_month_tick > 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
 		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
-		check_objectives();
-		RCT2_CALLPROC_EBPSAFE(0x0066A80E);
+		scenario_objectives_check();
+		scneario_entrance_fee_too_high_check();
 		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
 	}
 	
