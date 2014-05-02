@@ -532,7 +532,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 void scenario_end()
 {
 	rct_window* w;
-	window_close_by_id(6, 0);
+	window_close_by_id(WC_DROPDOWN, 0);
 	
 	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
@@ -730,8 +730,50 @@ void scneario_entrance_fee_too_high_check()
 	}
 
 	packed_xy = (y << 16) | x;
-	RCT2_CALLPROC_X(0x0066DF55, 5, STR_ENTRANCE_FEE_TOO_HI, packed_xy, 0, 0, 0, 0);
+	RCT2_CALLPROC_X(0x0066DF55, 5, STR_ENTRANCE_FEE_TOO_HI, packed_xy, 0, 0, 0, 0); // dispatch news
 }
+
+
+/*
+* rct2: 0x0069E0C1
+**/
+void scenario_marketing_finished()
+{
+	int base_str = STR_MARKETING_FINISHED_BASE;
+	
+	for (int i = 0; i < 6; ++i) {
+		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
+		int campaign_item = 0;
+
+		if (!campaign_weeks_left)
+			continue;
+
+		window_invalidate_by_id(WC_FINANCES, 0);
+		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
+		if (campaign_weeks_left & (1 << 7))
+			continue;
+		
+		RCT2_ADDRESS(0x01358102, uint8)[i]--;
+		if (campaign_weeks_left - 1 != 0)
+			continue;
+
+		campaign_item = RCT2_ADDRESS(0x01358116, uint8)[i];
+
+		// this sets the string parameters for the marketing types that have an argument.
+		if (i == 1 || i == 5) { // free RIDES oh yea
+			RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x01362942 + 304 * campaign_item, uint16);;
+			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
+		} else if (i == 3) { // free food/merch
+			campaign_item += 2016;
+			if (campaign_item < 2048)
+				campaign_item += 96;
+			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
+		}
+
+		RCT2_CALLPROC_X(0x0066DF55, 4, base_str + i, 0, 0, 0, 0, 0); // dispatch news
+	}
+}
+
 
 /*
  * rct2: 0x006C44B1
@@ -754,9 +796,10 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
+		scenario_marketing_finished();
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
-			check_objectives();
+			scenario_objectives_check();
 		}
 	}
 
@@ -767,7 +810,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
 		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
 		RCT2_CALLPROC_EBPSAFE(0x0069E092);
-		RCT2_CALLPROC_EBPSAFE(0x0069E0C1);
+		scenario_marketing_finished();
 		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
 		RCT2_CALLPROC_EBPSAFE(0x006AC916);
@@ -793,7 +836,6 @@ void scenario_update()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
-	next_month_tick = next_month_tick * 8;
 	if (next_month_tick > 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
