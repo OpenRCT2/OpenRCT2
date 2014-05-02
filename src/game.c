@@ -995,7 +995,7 @@ static int game_check_affordability(int cost)
  */
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	int cost, flags;
+	int cost, flags, insufficientFunds;
 	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
 	original_ebx = ebx;
@@ -1004,8 +1004,8 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 	original_edi = edi;
 	original_ebp = ebp;
 
-	// RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	// return ebx;
+	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
 
 	flags = ebx;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
@@ -1020,10 +1020,12 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 	cost = ebx;
 
 	if (cost != 0x80000000) {
-		// Check if payment is needed
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && (flags & 4) && (flags & 0x20) && cost != 0)
-			cost = game_check_affordability(cost);
-		if (cost != 0x80000000) {
+		// Check funds
+		insufficientFunds = 0;
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
+			insufficientFunds = game_check_affordability(cost);
+
+		if (insufficientFunds != 0x80000000) {
 			ebx = original_ebx;
 			edx = original_edx;
 			esi = original_esi;
@@ -1040,7 +1042,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 			RCT2_CALLFUNC_X(RCT2_ADDRESS(0x0097B9A4, uint32)[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 			edx = ebx;
 
-			if (edx != 0x80000000 && edx > cost)
+			if (edx != 0x80000000 && edx < cost)
 				cost = edx;
 
 			// Decrement nest count
@@ -1049,7 +1051,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 				return cost;
 
 			// 
-			if (flags & 0x20) {
+			if (!(flags & 0x20)) {
 				// Update money balance
 				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
@@ -1069,7 +1071,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 	RCT2_GLOBAL(0x009A8C28, uint8)--;
 
 	// Show error window
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && (flags & 8))
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
 		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 
 	return 0x80000000;
