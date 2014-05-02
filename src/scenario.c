@@ -472,10 +472,10 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 2, uint16), 0);
 		
 		// Set park name
-		RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_RENAME_PARK;
-		RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(0x0141ED68 + 0)), 33, *((int*)(0x0141ED68 + 8)), *((int*)(0x0141ED68 + 4)));
-		RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(0x0141ED68 + 12)), 33, *((int*)(0x0141ED68 + 20)), *((int*)(0x0141ED68 + 16)));
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(0x0141ED68 + 24)), 33, *((int*)(0x0141ED68 + 32)), *((int*)(0x0141ED68 + 28)));
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
+		game_do_command(1, 1, 0, *((int*)(0x0141ED68 + 0)), 33, *((int*)(0x0141ED68 + 8)), *((int*)(0x0141ED68 + 4)));
+		game_do_command(2, 1, 0, *((int*)(0x0141ED68 + 12)), 33, *((int*)(0x0141ED68 + 20)), *((int*)(0x0141ED68 + 16)));
+		game_do_command(0, 1, 0, *((int*)(0x0141ED68 + 24)), 33, *((int*)(0x0141ED68 + 32)), *((int*)(0x0141ED68 + 28)));
 
 		// 
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 0, uint16), 0);

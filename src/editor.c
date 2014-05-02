@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "date.h"
 #include "editor.h"
+#include "game.h"
 #include "gfx.h"
 #include "map.h"
 #include "news_item.h"
@@ -165,5 +166,5 @@ static void set_all_land_owned()
 {
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
-	RCT2_CALLPROC_X(0x006677F2, 64, 1, 64, 2, 56, (mapSize - 2) * 32, (mapSize - 2) * 32);
+	game_do_command(64, 1, 64, 2, 56, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }
