@@ -87,7 +87,8 @@ typedef struct {
 	uint8 var_03D;
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
-	uint8 pad_040[0x28];
+	uint8 bathroom;					// 0x40
+	uint8 pad_041[0x27];
 	uint8 current_ride;				// 0x68
 	uint8 pad_6A;					// 0x6A Part of current_ride?
 	uint8 current_train;   	        // 0x6B
