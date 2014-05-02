@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "game.h"
 #include "ride.h"
 #include "strings.h"
 #include "sprites.h"
@@ -756,7 +757,7 @@ static void window_ride_list_close_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, i, 8, 0, 0);
+		game_do_command(0, 1, 0, i, 8, 0, 0);
 	}
 }
 
@@ -776,6 +777,6 @@ static void window_ride_list_open_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, (1 << 8) | i, 8, 0, 0);
+		game_do_command(0, 1, 0, (1 << 8) | i, 8, 0, 0);
 	}
 }
