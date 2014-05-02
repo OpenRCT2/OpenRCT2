@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "date.h"
+#include "game.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
@@ -759,12 +760,12 @@ static void window_park_entrance_dropdown()
 		if (dropdownIndex != 0) {
 			dropdownIndex &= 0x00FF;
 			dropdownIndex |= 0x0100;
-			RCT2_GLOBAL(0x0141E9AE, uint16) = 1724;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
 		} else {
 			dropdownIndex &= 0x00FF;
-			RCT2_GLOBAL(0x0141E9AE, uint16) = 1723;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
 		}
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, dropdownIndex, 34, 0, 0);
+		game_do_command(0, 1, 0, dropdownIndex, 34, 0, 0);
 	}
 }
 
@@ -886,10 +887,10 @@ static void window_park_entrance_textinput()
 
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {
-			RCT2_GLOBAL(0x0141E9AE, uint16) = STR_CANT_RENAME_PARK;
-			RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(text + 0)), '!', *((int*)(text + 8)), *((int*)(text + 4)));
-			RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(text + 12)), '!', *((int*)(text + 20)), *((int*)(text + 16)));
-			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(text + 24)), '!', *((int*)(text + 32)), *((int*)(text + 28)));
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
+			game_do_command(1, 1, 0, *((int*)(text + 0)), 33, *((int*)(text + 8)), *((int*)(text + 4)));
+			game_do_command(2, 1, 0, *((int*)(text + 12)), 33, *((int*)(text + 20)), *((int*)(text + 16)));
+			game_do_command(0, 1, 0, *((int*)(text + 24)), 33, *((int*)(text + 32)), *((int*)(text + 28)));
 		}
 	}
 }
@@ -1370,11 +1371,11 @@ static void window_park_price_mousedown()
 		break;
 	case WIDX_INCREASE_PRICE:
 		newFee = min(1000, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) + 10);
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, 39, newFee, 0);
 		break;
 	case WIDX_DECREASE_PRICE:
 		newFee = max(0, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) - 10);
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, 39, newFee, 0);
 		break;
 	}
 }
@@ -2029,7 +2030,7 @@ static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history
 	int i, x, y, yearOver32, currentMonth, currentDay;
 
 	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_DAY, uint16);
+	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
 	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
 	x = baseX;
 	y = baseY;

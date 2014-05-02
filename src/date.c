@@ -22,6 +22,10 @@
 #include "date.h"
 #include "rct2.h"
 
+// rct2: 0x00993988
+const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
+
+
 int date_get_month(int months)
 {
 	return months % MONTH_COUNT;
@@ -44,6 +48,6 @@ int date_get_total_months(int month, int year)
 void date_reset()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) = MONTH_MARCH;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_DAY, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32) = 0;
 }
