@@ -732,7 +732,7 @@ void scneario_entrance_fee_too_high_check()
 	}
 
 	packed_xy = (y << 16) | x;
-	RCT2_CALLPROC_X(0x0066DF55, 5, STR_ENTRANCE_FEE_TOO_HI, packed_xy, 0, 0, 0, 0); // dispatch news
+	news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
 }
 
 
@@ -741,16 +741,16 @@ void scneario_entrance_fee_too_high_check()
 **/
 void scenario_marketing_update()
 {
-	int base_str = STR_MARKETING_FINISHED_BASE;
-	
 	for (int i = 0; i < 6; ++i) {
 		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
 		int campaign_item = 0;
 
 		if (!campaign_weeks_left)
 			continue;
-
 		window_invalidate_by_id(WC_FINANCES, 0);
+
+		// high bit marks the campaign as inactive, on first check the campaign is set actice
+		// this makes campaigns run a full x weeks even when started in the middle of a week
 		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
 		if (campaign_weeks_left & (1 << 7))
 			continue;
@@ -767,12 +767,12 @@ void scenario_marketing_update()
 			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
 		} else if (i == 3) { // free food/merch
 			campaign_item += 2016;
-			if (campaign_item < 2048)
+			if (campaign_item >= 2048)
 				campaign_item += 96;
 			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
 		}
 
-		RCT2_CALLPROC_X(0x0066DF55, 4, base_str + i, 0, 0, 0, 0, 0); // dispatch news
+		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + i, 0);
 	}
 }
 
