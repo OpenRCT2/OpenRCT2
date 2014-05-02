@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "game.h"
 #include "sprites.h"
 #include "strings.h"
 #include "widget.h"
@@ -151,7 +152,7 @@ static void window_game_top_toolbar_mouseup()
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 2, 0, 0);
+		game_do_command(0, 1, 0, 0, 2, 0, 0);
 		break;
 	case WIDX_FASTFORWARD:
 		window_cheats_open();
@@ -342,7 +343,7 @@ static void window_game_top_toolbar_dropdown()
 	if (widgetIndex == WIDX_FILE_MENU) {
 		switch (dropdownIndex) {
 		case 0:		// load game
-			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 0, 0);
+			game_do_command(0, 1, 0, 0, 5, 0, 0);
 			break;
 		case 1:		// save game
 			tool_cancel();
@@ -367,7 +368,7 @@ static void window_game_top_toolbar_dropdown()
 				RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
 				// check success?
 
-				RCT2_CALLPROC_X(0x006677F2, 0, 1047, 0, -1, 0, 0, 0);
+				game_do_command(0, 1047, 0, -1, 0, 0, 0);
 				gfx_invalidate_screen();
 			}
 			break;
@@ -381,7 +382,7 @@ static void window_game_top_toolbar_dropdown()
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
 		case 7:		// quit game
-			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 1, 0);
+			game_do_command(0, 1, 0, 0, 5, 1, 0);
 			break;
 		}
 	} else if (widgetIndex == WIDX_VIEW_MENU) {

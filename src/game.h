@@ -25,4 +25,6 @@ void game_create_windows();
 void game_update();
 void game_logic_update();
 
+int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+
 #endif

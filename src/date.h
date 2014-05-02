@@ -21,6 +21,8 @@
 #ifndef _DATE_H_
 #define _DATE_H_
 
+#include "rct2.h"
+
 enum {
 	MONTH_MARCH,
 	MONTH_APRIL,
@@ -33,6 +35,8 @@ enum {
 
 	MONTH_COUNT
 };
+
+extern const sint16 days_in_month[MONTH_COUNT];
 
 int date_get_month(int months);
 int date_get_total_months(int month, int year);

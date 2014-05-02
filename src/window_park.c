@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "date.h"
+#include "game.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
@@ -645,7 +646,7 @@ static void window_park_entrance_close()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			tool_cancel();
+			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 }
 
 /**
@@ -759,12 +760,12 @@ static void window_park_entrance_dropdown()
 		if (dropdownIndex != 0) {
 			dropdownIndex &= 0x00FF;
 			dropdownIndex |= 0x0100;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_CLOSE_PARK;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
 		} else {
 			dropdownIndex &= 0x00FF;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_OPEN_PARK;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
 		}
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, dropdownIndex, 34, 0, 0);
+		game_do_command(0, 1, 0, dropdownIndex, 34, 0, 0);
 	}
 }
 
@@ -797,17 +798,17 @@ static void window_park_entrance_toolupdate()
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
-	if (widgetIndex == WIDX_BUY_LAND_RIGHTS || widgetIndex == SPR_BUY_CONSTRUCTION_RIGHTS) {
+	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
+		RCT2_GLOBAL(0x009DE58A, uint16) &= 0xFFFE;
 		screen_pos_to_map_pos(&x, &y);
 		if (x != SPRITE_LOCATION_NULL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
+			RCT2_GLOBAL(0x009DE58A, uint16) |= 1;
+			RCT2_GLOBAL(0x009DE594, uint16) = 4;
+			RCT2_GLOBAL(0x009DE58C, uint16) = x;
+			RCT2_GLOBAL(0x009DE58E, uint16) = x;
+			RCT2_GLOBAL(0x009DE590, uint16) = y;
+			RCT2_GLOBAL(0x009DE592, uint16) = y;
 			RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, w, 0, 0);
 		}
 	}
@@ -886,10 +887,10 @@ static void window_park_entrance_textinput()
 
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_RENAME_PARK;
-			RCT2_CALLPROC_X(0x006677F2, 1, 1, 0, *((int*)(text + 0)), '!', *((int*)(text + 8)), *((int*)(text + 4)));
-			RCT2_CALLPROC_X(0x006677F2, 2, 1, 0, *((int*)(text + 12)), '!', *((int*)(text + 20)), *((int*)(text + 16)));
-			RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, *((int*)(text + 24)), '!', *((int*)(text + 32)), *((int*)(text + 28)));
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
+			game_do_command(1, 1, 0, *((int*)(text + 0)), 33, *((int*)(text + 8)), *((int*)(text + 4)));
+			game_do_command(2, 1, 0, *((int*)(text + 12)), 33, *((int*)(text + 20)), *((int*)(text + 16)));
+			game_do_command(0, 1, 0, *((int*)(text + 24)), 33, *((int*)(text + 32)), *((int*)(text + 28)));
 		}
 	}
 }
@@ -1370,11 +1371,11 @@ static void window_park_price_mousedown()
 		break;
 	case WIDX_INCREASE_PRICE:
 		newFee = min(1000, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) + 10);
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, 39, newFee, 0);
 		break;
 	case WIDX_DECREASE_PRICE:
 		newFee = max(0, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) - 10);
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, 39, newFee, 0);
 		break;
 	}
 }
@@ -1618,7 +1619,7 @@ void window_park_objective_open()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			tool_cancel();
+			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 
 	window->viewport = NULL;
 	window->page = WINDOW_PARK_PAGE_OBJECTIVE;
@@ -1895,7 +1896,7 @@ static void window_park_set_page(rct_window *w, int page)
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			tool_cancel();
+			RCT2_CALLPROC_EBPSAFE(0x006EE281);
 
 	// Set listen only to viewport
 	listen = 0;
