@@ -20,9 +20,11 @@
 
 #include "addresses.h"
 #include "audio.h"
+#include "date.h"
 #include "news_item.h"
 #include "rct2.h"
 #include "ride.h"
+#include "strings.h"
 #include "sprite.h"
 #include "window.h"
 
@@ -247,4 +249,44 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*x = SPRITE_LOCATION_NULL;
 		break;
 	}
+}
+
+
+/**
+ * rct2: 0x0066DF55
+ *
+ * @param  a (al)
+ * @param string_id (ebx)
+ * @param c (ecx)
+ **/
+void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
+{
+	int i = 0;
+	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+
+	// find first open slot
+	while (newsItem->type != NEWS_ITEM_NULL) {
+		if (newsItem + sizeof(newsItem) >= 0x13CB1CC)
+			news_item_close_current();
+		else
+			newsItem++;
+	}
+
+	//now we have found an item slot to place the new news in
+	newsItem->type = type;
+	newsItem->flags = 0;
+	newsItem->assoc = assoc;
+	newsItem->ticks = 0;
+	newsItem->month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	newsItem->day = (days_in_month[(newsItem->month & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
+
+	format_string(0x0141EF68, string_id, 0x013CE952); // overflows possible?
+	newsItem->colour = ((char*)0x0141EF68)[0];
+	strncpy(newsItem->text, 0x0141EF68, 255);
+	newsItem->text[254] = 0;
+
+	// blatant disregard for what happens on the last element.
+	// Change this when we implement the queue ourselves.
+	newsItem++;
+	newsItem->type = 0;
 }
