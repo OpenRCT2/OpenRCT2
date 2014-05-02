@@ -184,17 +184,9 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
-		{
-			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-			eax = (ride->var_050 & 0xFF) * 32 + 16;
-			ecx = (ride->var_050 >> 8) * 32 + 16;
-			RCT2_CALLFUNC_X(0x00662783, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			if (edx & 0xFFFF0000)
-				edx >>= 16;
-			*x = eax;
-			*y = ecx;
-			*z = edx;
-		}
+		*x = (ride->var_050 & 0xFF) * 32 + 16;
+		*y = (ride->var_050 >> 8) * 32 + 16;
+		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
@@ -233,16 +225,10 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = peep->z;
 		break;
 	case NEWS_ITEM_BLANK:
-		{
-			uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-			eax = subject;
-			ecx = subject >> 16;
-			RCT2_CALLFUNC_X(0x00662783, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			*x = eax;
-			*y = ecx;
-			*z = edx;
-		}
-		break;
+	   *x = subject;
+	   *y = subject >> 16;
+	   *z = map_element_height(x, y);
+	   break;
 	default:
 		*x = SPRITE_LOCATION_NULL;
 		break;
