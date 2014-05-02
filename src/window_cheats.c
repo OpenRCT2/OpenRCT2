@@ -45,7 +45,7 @@ static enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_1,
 	WIDX_TAB_2,
 	WIDX_HIGH_MONEY,
-	WIDX_HAPPY_GUESTS
+	WIDX_HAPPY_GUESTS = 6 //Same as HIGH_MONEY as it is also the 6th widget but on a different page
 };
 
 static rct_widget window_cheats_money_widgets[] = {
@@ -66,7 +66,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },				// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },					// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },					// tab 2
-	{ WWT_CLOSEBOX,			1, 4,			74,		47, 63,			2375,			2375 },					// happy guests
+	{ WWT_CLOSEBOX,			1, 4,			74,		47, 63,			2376,			2376 },					// happy guests
 	{ WIDGETS_END },
 };
 
@@ -76,7 +76,8 @@ static rct_widget *window_cheats_page_widgets[] = {
 };
 
 static void window_cheats_emptysub() { }
-static void window_cheats_mouseup();
+static void window_cheats_money_mouseup();
+static void window_cheats_guests_mouseup();
 static void window_cheats_update();
 static void window_cheats_invalidate();
 static void window_cheats_paint();
@@ -84,7 +85,7 @@ static void window_cheats_set_page(rct_window *w, int page);
 
 static uint32 window_cheats_money_events[] = {
 	window_cheats_emptysub,
-	window_cheats_mouseup,
+	window_cheats_money_mouseup,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
@@ -115,7 +116,7 @@ static uint32 window_cheats_money_events[] = {
 
 static uint32 window_cheats_guests_events[] = {
 	window_cheats_emptysub,
-	window_cheats_mouseup,
+	window_cheats_guests_mouseup,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
@@ -151,7 +152,7 @@ static uint32 *window_cheats_page_events[] = {
 
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY) //Change to WIDX_HAPPY_GUESTSs when enabled widgets is figured out.
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HAPPY_GUESTS) 
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -175,7 +176,33 @@ void window_cheats_open()
 	window->colours[2] = 19;
 }
 
-static void window_cheats_mouseup()
+static void window_cheats_money_mouseup()
+{
+	int i;
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_HIGH_MONEY:
+		i = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+		i += 100000;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(i);
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	}
+}
+
+static void window_cheats_guests_mouseup()
 {
 	int i;
 	short widgetIndex;
@@ -194,26 +221,15 @@ static void window_cheats_mouseup()
 	case WIDX_TAB_2:
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_HIGH_MONEY:
-		if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-			i = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
-			i += 100000;
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(i);
-		}
-		else{
-			for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-				peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-				if (peep->type != PEEP_TYPE_GUEST)
-					continue;
-				if (peep->var_2A != 0)
-					continue;
-				peep->happiness = 255;
-			}
-		}
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
-		break;
 	case WIDX_HAPPY_GUESTS:
-		//At present HAPPY_GUESTS does not activate
+		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
+			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
+			if (peep->type != PEEP_TYPE_GUEST)
+				continue;
+			if (peep->var_2A != 0)
+				continue;
+			peep->happiness = 255;
+		}
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	}
