@@ -714,7 +714,7 @@ void scenario_objectives_check()
 
 
 /*
-* rct2: 0x006C44B1
+* rct2: 0x0066A80E
 **/
 void scneario_entrance_fee_too_high_check()
 {
@@ -798,7 +798,6 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
-		scenario_marketing_finished();
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
 			scenario_objectives_check();
