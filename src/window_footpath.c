@@ -21,6 +21,7 @@
 #include <string.h>
 #include "addresses.h"
 #include "audio.h"
+#include "game.h"
 #include "map.h"
 #include "strings.h"
 #include "sprites.h"
@@ -691,14 +692,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 	RCT2_CALLPROC_EBPSAFE(0x006A77FF);
 
 	// Try and show provisional path
-	eax = x;
-	ebx = (slope << 8) | 121;
-	ecx = y;
-	edx = (type << 8) | z;
-	esi = 17;
-	edi = 0;
-	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	cost = ebx;
+	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, 17, 0, 0);
 
 	if (cost != 0x80000000) {
 		RCT2_GLOBAL(0x00F3EF94, uint16) = x;
@@ -721,7 +715,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
  */
 static void window_footpath_place_path_at_point(int x, int y)
 {
-	int z, slope, type, cost;
+	int z, presentType, selectedType, cost;
 	rct_map_element *mapElement;
 
 	if (RCT2_GLOBAL(0x00F3EF9F, uint8) != 0)
@@ -744,24 +738,17 @@ static void window_footpath_place_path_at_point(int x, int y)
 		return;
 
 	// Set path
-	slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
-	z = mapElement->base_height;
+	presentType = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.path.type & 0x1F];
 	if (z == 6)
-		slope = mapElement->properties.surface.slope & 7;
-	type = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+		presentType = mapElement->properties.path.type & 7;
+	z = mapElement->base_height;
+	selectedType = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
 
 	// Prepare error text
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
 
 	// Try and place path
-	eax = x;
-	ebx = (slope << 8) | 1;
-	ecx = y;
-	edx = (type << 8) | z;
-	esi = 17;
-	edi = 0;
-	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	cost = ebx;
+	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, 17, 0, 0);
 
 	if (cost == 0x80000000) {
 		RCT2_GLOBAL(0x00F3EF9F, uint8) = 1;
@@ -850,7 +837,7 @@ loc_6A78EF:
 	
 	// Remove path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
-	RCT2_CALLPROC_X(0x006677F2, RCT2_GLOBAL(0x00F3EF8A, uint16), 1, RCT2_GLOBAL(0x00F3EF8C, uint16), mapElement->base_height, 19, 0, 0);
+	game_do_command(RCT2_GLOBAL(0x00F3EF8A, uint16), 1, RCT2_GLOBAL(0x00F3EF8C, uint16), mapElement->base_height, 19, 0, 0);
 
 	// Move selection
 	edge ^= 2;
