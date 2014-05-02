@@ -972,3 +972,108 @@ void game_handle_keyboard_input()
 		RCT2_CALLPROC_X(0x0066EEE1, RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8), 0, 0, 0, 0, 0, 0);
 	}
 }
+
+/**
+ * 
+ *  rct2: 0x006677F2
+ *
+ * @param cost (ebp)
+ */
+static int game_check_affordability(int cost)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	ebp = cost;
+	RCT2_CALLFUNC_X(0x0069C62C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebp;
+}
+
+/**
+ * 
+ *  rct2: 0x006677F2
+ *
+ * @param flags (ebx)
+ * @param command (esi)
+ */
+int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int cost, flags, insufficientFunds;
+	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
+
+	original_ebx = ebx;
+	original_edx = edx;
+	original_esi = esi;
+	original_edi = edi;
+	original_ebp = ebp;
+
+	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+
+	flags = ebx;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
+
+	// Increment nest count
+	RCT2_GLOBAL(0x009A8C28, uint8)++;
+
+	ebx &= ~1;
+
+	// Primary command
+	RCT2_CALLFUNC_X(RCT2_ADDRESS(0x0097B9A4, uint32)[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	cost = ebx;
+
+	if (cost != 0x80000000) {
+		// Check funds
+		insufficientFunds = 0;
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
+			insufficientFunds = game_check_affordability(cost);
+
+		if (insufficientFunds != 0x80000000) {
+			ebx = original_ebx;
+			edx = original_edx;
+			esi = original_esi;
+			edi = original_edi;
+			ebp = original_ebp;
+
+			if (!(flags & 1)) {
+				// Decrement nest count
+				RCT2_GLOBAL(0x009A8C28, uint8)--;
+				return cost;
+			}
+
+			// Secondary command
+			RCT2_CALLFUNC_X(RCT2_ADDRESS(0x0097B9A4, uint32)[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			edx = ebx;
+
+			if (edx != 0x80000000 && edx < cost)
+				cost = edx;
+
+			// Decrement nest count
+			RCT2_GLOBAL(0x009A8C28, uint8)--;
+			if (RCT2_GLOBAL(0x009A8C28, uint8) != 0)
+				return cost;
+
+			// 
+			if (!(flags & 0x20)) {
+				// Update money balance
+				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
+				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
+					// Create a +/- money text effect
+					if (cost != 0)
+						RCT2_CALLPROC_X(0x0069C5D0, 0, cost, 0, 0, 0, 0, 0);
+				}
+			}
+
+			return cost;
+		}
+	}
+
+	// Error occured
+
+	// Decrement nest count
+	RCT2_GLOBAL(0x009A8C28, uint8)--;
+
+	// Show error window
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
+		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+
+	return 0x80000000;
+}

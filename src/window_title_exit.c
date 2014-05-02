@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "game.h"
 #include "sprites.h"
 #include "strings.h"
 #include "widget.h"
@@ -104,7 +105,7 @@ static void window_title_exit_mouseup()
 		return;
 
 	if (widgetIndex == 0)
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 2, 0);
+		game_do_command(0, 1, 0, 0, 5, 2, 0);
 }
 
 /**
