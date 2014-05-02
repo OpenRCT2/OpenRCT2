@@ -257,6 +257,9 @@
     <ClCompile Include="..\lodepng\lodepng.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_save_prompt.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

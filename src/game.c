@@ -29,6 +29,7 @@
 #include "peep.h"
 #include "screenshot.h"
 #include "strings.h"
+#include "title.h"
 #include "tutorial.h"
 #include "widget.h"
 #include "window.h"
@@ -986,6 +987,8 @@ static int game_check_affordability(int cost)
 	return ebp;
 }
 
+static uint32 game_do_command_table[58];
+
 /**
  * 
  *  rct2: 0x006677F2
@@ -1004,9 +1007,6 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 	original_edi = edi;
 	original_ebp = ebp;
 
-	RCT2_CALLFUNC_X(0x006677F2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
-
 	flags = ebx;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
 
@@ -1016,7 +1016,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 	ebx &= ~1;
 
 	// Primary command
-	RCT2_CALLFUNC_X(RCT2_ADDRESS(0x0097B9A4, uint32)[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	RCT2_CALLFUNC_X(game_do_command_table[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	cost = ebx;
 
 	if (cost != 0x80000000) {
@@ -1039,7 +1039,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 			}
 
 			// Secondary command
-			RCT2_CALLFUNC_X(RCT2_ADDRESS(0x0097B9A4, uint32)[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			RCT2_CALLFUNC_X(game_do_command_table[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 			edx = ebx;
 
 			if (edx != 0x80000000 && edx < cost)
@@ -1076,3 +1076,202 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 
 	return 0x80000000;
 }
+
+/**
+ * 
+ *  rct2: 0x0066DB5F
+ */
+static void game_load_or_quit()
+{
+	rct_window *w;
+	char input_bl, input_dl;
+	short input_di;
+
+	__asm mov input_bl, bl
+	__asm mov input_dl, dl
+	__asm mov input_di, di
+
+	if (!(input_bl & 1))
+		return 0;
+	
+	switch (input_dl) {
+	case 0:
+		RCT2_GLOBAL(0x009A9802, uint16) = input_di;
+		window_save_prompt_open();
+		break;
+	case 1:
+		window_close_by_id(WC_SAVE_PROMPT, 0);
+		break;
+	default:
+		game_load_or_quit_no_save_prompt();
+		break;
+	}
+
+	__asm mov ebx, 0
+}
+
+/**
+ * 
+ *  rct2: 0x00674F40
+ */
+static int open_landscape_file_dialog()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x00674F40, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
+}
+
+/**
+ * 
+ *  rct2: 0x00674EB6
+ */
+static int open_load_game_dialog()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x00674EB6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
+}
+
+/**
+ * 
+ *  rct2: 0x0066DC0F
+ */
+static void load_landscape()
+{
+	if (open_landscape_file_dialog() == 0) {
+		gfx_invalidate_screen();
+	} else {
+		// string stuff
+
+		RCT2_CALLPROC_EBPSAFE(0x006758C0);
+		if (1) {
+			gfx_invalidate_screen();
+			// game_loop_iteration
+		} else {
+			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+			// game_loop_iteration
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0066DBB7
+ */
+static void load_game()
+{
+	if (open_load_game_dialog() == 0) {
+		gfx_invalidate_screen();
+	} else {
+		// string stuff
+
+		RCT2_CALLPROC_EBPSAFE(0x00675E1B);
+		if (1) {
+			gfx_invalidate_screen();
+			// game_loop_iteration
+		} else {
+			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+			// game_loop_iteration
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006E3879
+ */
+static void rct2_exit()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+}
+
+/**
+ * 
+ *  rct2: 0x0066DB79
+ */
+void game_load_or_quit_no_save_prompt()
+{
+	if (RCT2_GLOBAL(0x009A9802, uint16) < 1) {
+		game_do_command(0, 1, 0, 1, 5, 0, 0);
+		RCT2_CALLPROC_EBPSAFE(0x006EE281); // tool_cancel
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+			load_landscape();
+		else
+			load_game();
+	} else if (RCT2_GLOBAL(0x009A9802, uint16) == 1) {
+		game_do_command(0, 1, 0, 1, 5, 0, 0);
+		if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
+			RCT2_CALLPROC_EBPSAFE(0x0040705E);
+			RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 5);
+		}
+		title_load();
+		// game_loop_iteration
+	} else {
+		rct2_exit();
+	}
+}
+
+#pragma region Game command function table
+
+static uint32 game_do_command_table[58] = {
+	0x006B2FC5,
+	0x0066397F,
+	0x00667C15,
+	0x006C511D,
+	0x006C5B69,
+	0x0066DB5F, // game_load_or_quit,
+	0x006B3F0F,
+	0x006B49D9,
+	0x006B4EA6,
+	0x006B52D4,
+	0x006B578B,
+	0x006B5559,
+	0x006660A8,
+	0x0066640B,
+	0x006E0E01,
+	0x006E08F4,
+	0x006E650F,
+	0x006A61DE,
+	0x006A68AE,
+	0x006A67C0,
+	0x00663CCD,
+	0x006B53E9,
+	0x00698D6C,
+	0x0068C542,
+	0x0068C6D1,
+	0x0068BC01,
+	0x006E66A0,
+	0x006E6878,
+	0x006C5AE9,
+	0x006BEFA1,
+	0x006C09D1,
+	0x006C0B83,
+	0x006C0BB5,
+	0x00669C6D,
+	0x00669D4A,
+	0x006649BD,
+	0x006666E7,
+	0x00666A63,
+	0x006CD8CE,
+	0x00669E30,
+	0x00669E55,
+	0x006E519A,
+	0x006E5597,
+	0x006B893C,
+	0x006B8E1B,
+	0x0069DFB3,
+	0x00684A7F,
+	0x006D13FE,
+	0x0069E73C,
+	0x006CDEE4,
+	0x006B9E6D,
+	0x006BA058,
+	0x006E0F26,
+	0x006E56B5,
+	0x006B909A,
+	0x006BA16A,
+	0x006648E3,
+	0x0068DF91
+};
+
+#pragma endregion
