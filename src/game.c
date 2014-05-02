@@ -1193,7 +1193,7 @@ void game_load_or_quit_no_save_prompt()
 {
 	if (RCT2_GLOBAL(0x009A9802, uint16) < 1) {
 		game_do_command(0, 1, 0, 1, 5, 0, 0);
-		RCT2_CALLPROC_EBPSAFE(0x006EE281); // tool_cancel
+		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 			load_landscape();
 		else
