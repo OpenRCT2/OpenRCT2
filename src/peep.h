@@ -91,7 +91,9 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x0E];
+	uint8 pad_14[0x09];
+	uint8 direction;				// 0x1D
+	uint32 pad_1E;
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
@@ -102,15 +104,15 @@ typedef struct {
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	uint8 staff_type;				// 0x2F
-	uint8 var_30;
-	uint8 var_31;
+	uint8 tshirt_colour;			// 0x30
+	uint8 trousers_colour;			// 0x31
 	uint8 pad_32[0x06];
 	uint8 energy;					// 0x38
-	uint8 var_39;
+	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	uint8 var_03B;
+	uint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
-	uint8 var_03D;
+	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
 	uint8 bathroom;					// 0x40
