@@ -120,27 +120,31 @@ typedef struct {
 	uint8 current_train;   	        // 0x6B
 	uint8 current_car;				// 0x6C
 	uint8 current_seat;				// 0x6D
-	uint8 pad_6E[0x2E];
+	uint8 pad_6E[0x0E];
+	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
-	uint8 pad_A0[0x10];
+	sint32 cash_in_pocket;			// 0xA0
+	sint32 cash_spent;				// 0xA4
+	uint8 pad_A8[8];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint16 pad_C4;
 	uint8 var_C6;
 	uint8 pad_C7;
-	uint32 var_C8;	//Bit 11 tracking, Bit 8 leaving the park
-	uint8 var_CC;	//Bit 0 mad, bit 1 Ice Cream
+	uint32 var_C8;					// Bit 11 tracking, Bit 8 leaving the park
+	uint8 var_CC;					// Bit 0 mad, bit 1 Ice Cream
 	uint8 pad_CD[0x18];
-	uint16 paid_to_enter;			//0xE5 Number is /10 when displayed
-	uint16 paid_on_rides;			//0xE7 Number is /10 when displayed
-	uint16 paid_on_food;			//0xE9 Number is /10 when displayed
-	uint16 paid_on_souvenirs;		//0xEB Number is /10 when displayed
-	uint8 no_of_food;				//0xEC
-	uint8 no_of_drinks;				//0xED
-	uint8 no_of_souvenirs;			//0xEE
+	uint16 paid_to_enter;			// 0xE5
+	uint16 paid_on_rides;			// 0xE7
+	uint16 paid_on_food;			// 0xE9
+	uint16 paid_on_souvenirs;		// 0xEB
+	uint8 no_of_food;				// 0xEC
+	uint8 no_of_drinks;				// 0xED
+	uint8 no_of_souvenirs;			// 0xEE
 	uint8 pad_EF[0x07];
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
+	uint8 favourite_ride;			// 0xF9
 } rct_peep;
 
 int peep_get_staff_count();
