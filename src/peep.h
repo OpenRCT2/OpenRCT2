@@ -45,6 +45,32 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_NONE = 255
 };
 
+enum PEEP_STATE {
+
+	PEEP_STATE_QUEUING_FRONT = 2,
+	PEEP_STATE_ON_RIDE = 3,
+	PEEP_STATE_LEAVING_RIDE = 4,
+	PEEP_STATE_WALKING = 5,
+	PEEP_STATE_QUEUING = 6,
+	PEEP_STATE_ENTERING_RIDE = 7,
+	PEEP_STATE_SITTING = 8,
+	PEEP_STATE_PICKED = 9,
+	PEEP_STATE_PATROLLING = 10, // Not sure
+	PEEP_STATE_MOPING = 11,
+	PEEP_STATE_SWEEPING = 12,
+	PEEP_STATE_ENTERING_PARK = 13,
+	PEEP_STATE_LEAVING_PARK = 14,
+	PEEP_STATE_ANSWERING = 15,
+	PEEP_STATE_FIXING = 16,
+	PEEP_STATE_BUYING = 17,
+	PEEP_STATE_WATCHING = 18,
+	PEEP_STATE_EMPTYING_BIN = 19,
+	
+	PEEP_STATE_WATERING = 21,
+	PEEP_STATE_HEADING_TO_INSPECTION = 22,
+	PEEP_STATE_INSPECTING = 23
+};
+
 typedef struct {
 	uint8 type;
 	uint8 item;
@@ -87,24 +113,38 @@ typedef struct {
 	uint8 var_03D;
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
-	uint8 pad_040[0x28];
+	uint8 bathroom;					// 0x40
+	uint8 pad_041[0x27];
 	uint8 current_ride;				// 0x68
 	uint8 pad_6A;					// 0x6A Part of current_ride?
 	uint8 current_train;   	        // 0x6B
 	uint8 current_car;				// 0x6C
 	uint8 current_seat;				// 0x6D
-	uint8 pad_6E[0x2E];
+	uint8 pad_6E[0x0E];
+	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
-	uint8 pad_A0[0x10];
+	sint32 cash_in_pocket;			// 0xA0
+	sint32 cash_spent;				// 0xA4
+	uint8 pad_A8[8];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint16 pad_C4;
 	uint8 var_C6;
 	uint8 pad_C7;
-	uint32 var_C8;
-	uint8 pad_CC[0x2A];
+	uint32 var_C8;					// Bit 11 tracking, Bit 8 leaving the park
+	uint8 var_CC;					// Bit 0 mad, bit 1 Ice Cream
+	uint8 pad_CD[0x18];
+	uint16 paid_to_enter;			// 0xE5
+	uint16 paid_on_rides;			// 0xE7
+	uint16 paid_on_food;			// 0xE9
+	uint16 paid_on_souvenirs;		// 0xEB
+	uint8 no_of_food;				// 0xEC
+	uint8 no_of_drinks;				// 0xED
+	uint8 no_of_souvenirs;			// 0xEE
+	uint8 pad_EF[0x07];
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
+	uint8 favourite_ride;			// 0xF9
 } rct_peep;
 
 int peep_get_staff_count();

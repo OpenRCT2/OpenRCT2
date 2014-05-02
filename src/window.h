@@ -250,6 +250,7 @@ enum {
 	WC_ERROR = 11,
 	WC_RIDE = 12,
 	WC_RIDE_CONSTRUCTION = 13,
+	WC_SAVE_PROMPT = 14,
 	WC_RIDE_LIST = 15,
 	WC_CONSTRUCT_RIDE = 16,
 	WC_SCENERY = 18,
@@ -328,6 +329,7 @@ void window_game_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
 void window_footpath_open();
+void window_save_prompt_open();
 void window_title_menu_open();
 void window_title_exit_open();
 void window_title_logo_open();
