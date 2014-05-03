@@ -22,6 +22,7 @@
 #define _NEWS_ITEM_H_
 
 #include "rct2.h"
+#include "map.h"
 #include "strings.h"
 
 

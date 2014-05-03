@@ -584,7 +584,11 @@ void scenario_success()
 	scenario_end();
 }
 
-
+/**
+* Checks if there are 10 rollercoasters of different subtype with
+* excitement >= 600 .
+* rct2:
+**/
 void scenario_objective5_check()
 {
 	int rcs = 0;
@@ -599,13 +603,13 @@ void scenario_objective5_check()
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
-		subtype_id = (uint8)ride->var_001;
+		subtype_id = (uint8)ride->subtype;
 		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
 			ride->status == RIDE_STATUS_OPEN &&
-			ride->var_140 >= 600 && type_already_counted[subtype_id] == 0){
+			ride->excitement >= 600 && type_already_counted[subtype_id] == 0){
 			type_already_counted[subtype_id]++;
 			rcs++;
 		}
@@ -615,7 +619,11 @@ void scenario_objective5_check()
 		scenario_success();
 }
 
-
+/**
+ * Checks if there are 10 rollercoasters of different subtype with
+ * excitement > 700 and a minimum length;
+ * rct2: 0x0066A6B5
+ **/
 void scenario_objective8_check()
 {
 	int rcs = 0;
@@ -631,14 +639,15 @@ void scenario_objective8_check()
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
-		subtype_id = (uint8)ride->var_001;
+		subtype_id = (uint8)ride->subtype;
 		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
 			ride->status == RIDE_STATUS_OPEN &&
-			ride->var_140 >= 600 && type_already_counted[subtype_id] == 0){
+			ride->excitement >= 600 && type_already_counted[subtype_id] == 0){
 
+			// this calculates the length, no idea why it's done so complicated though.
 			uint8 limit = ride->pad_088[63];
 			uint32 sum = 0;
 			for (int j = 0; j < limit; ++j) {
@@ -718,7 +727,6 @@ void scenario_objectives_check()
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
 
 		scenario_objective8_check();
-		//RCT2_CALLPROC_EBPSAFE(0x0066A6B5);
 		break;
 
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
@@ -727,7 +735,7 @@ void scenario_objectives_check()
 		int rcs = 0;
 		for (int i = 0; i < 255; i++) {
 			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-			if (ride->status && ride->var_140 > objective_currency)
+			if (ride->status && ride->excitement > objective_currency)
 				rcs++;
 		}
 		if (rcs >= 5)
@@ -764,9 +772,9 @@ void scneario_entrance_fee_too_high_check()
 	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
 		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	int max_fee = magic + (magic / 2);
-	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32), packed_xy;
+	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
-	if (game_flags & GAME_FLAGS_PARK_OPEN && park_entrance_fee > max_fee) {
+	if (game_flags & PARK_FLAGS_PARK_OPEN && park_entrance_fee > max_fee) {
 		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL; ++i) {
 			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
 			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
