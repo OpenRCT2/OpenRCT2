@@ -23,6 +23,7 @@
 #include <string.h>
 #include <setjmp.h>
 #include <windows.h>
+#include <ShlObj.h>
 #include <SDL.h>
 #include "addresses.h"
 #include "climate.h"
@@ -42,12 +43,12 @@
 #include "title.h"
 #include "track.h"
 #include "viewport.h"
+#include "settings.h"
 
-//Path to load data files from. Temporary solution.
-#define GAME_PATH "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2"
 
 void rct2_init_directories();
 void rct2_startup_checks();
+
 
 static void rct2_init();
 static void rct2_loop();
@@ -68,7 +69,8 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
-
+	
+	settings_init();
 	rct2_init();
 	rct2_loop();
 	osinterface_free();
@@ -147,7 +149,8 @@ void rct2_init()
 // rct2: 0x00683499
 void rct2_init_directories()
 {
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), GAME_PATH);
+
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), settings.GAME_PATH);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
