@@ -479,11 +479,13 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 
 		// 
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 0, uint16), 0);
-		strcpy_s(0x0135920A, 32, 0x0141ED68);
+		strncpy(RCT2_ADDRESS_SCENARIO_NAME, 0x0141ED68, 31);
+		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
 
 		// Set scenario details
 		format_string(0x0141ED68, RCT2_GLOBAL(ebp + 4, uint16), 0);
-		strcpy_s(RCT2_ADDRESS_SCENARIO_DETAILS, 256, 0x0141ED68);
+		strncpy(RCT2_ADDRESS_SCENARIO_DETAILS, 0x0141ED68, 255);
+		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
 	}
 
 	// Set the last saved game path
