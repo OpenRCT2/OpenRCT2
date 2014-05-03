@@ -152,7 +152,7 @@ static void window_land_close()
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_land_should_close())
-		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+		tool_cancel();
 }
 
 /**
@@ -391,7 +391,7 @@ static void window_land_paint()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) != 255)
 		price += numTiles * 100;
 
-	if (price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY)) {
+	if (price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		RCT2_GLOBAL(0x013CE952, sint32) = price;
 		gfx_draw_string_centred(dpi, 986, x, y, 0, 0x013CE952);
 	}

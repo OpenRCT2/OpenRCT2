@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <memory.h>
 #include <stdlib.h>
 #include "addresses.h"
 #include "sprites.h"
@@ -33,6 +34,8 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -94,6 +97,10 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x006EB2A8
+ */
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	switch (w->widgets[widgetIndex].type) {
@@ -134,7 +141,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		break;
 	case WWT_18:
 		break;
-	case WWT_19:
+	case WWT_GROUPBOX:
+		widget_groupbox_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CAPTION:
 		widget_caption_draw(dpi, w, widgetIndex);
@@ -502,6 +510,99 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 /**
  * 
+ *  rct2: 0x006EC1A6
+ */
+static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, press;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left + 5;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	press = 0;
+	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+		press |= 0x20;
+
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+
+	// TODO
+	
+	gfx_fill_rect(dpi, l, t, r, b, colour);
+}
+
+/**
+ * 
+ *  rct2: 0x006EB535
+ */
+static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, textRight;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left + 5;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+	textRight = l;
+
+	// Text
+	if (widget->image != (uint32)-1) {
+		colour = w->colours[widget->colour] & 0x7F;
+		if (colour & 1)
+			colour |= 0x40;
+		gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
+		textRight = gLastDrawStringX + 1;
+	}
+
+	// Border
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top + 4;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour] & 0x7F;
+
+	// Border left of text
+	gfx_fill_rect(dpi, l, t, l + 4, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border right of text
+	gfx_fill_rect(dpi, textRight, t, r - 1, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border right
+	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, r, t, r, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border bottom
+	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, b, r - 1, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+
+	// Border left
+	gfx_fill_rect(dpi, l, t + 1, l, b - 2, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+}
+
+/**
+ * 
  *  rct2: 0x006EB2F9
  */
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -734,6 +835,10 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
 }
 
+/**
+ * 
+ *  rct2: 0x006EB951
+ */
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	int l, t, r, b, colour, image;
@@ -760,7 +865,26 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 			image++;
 
-	if (!widget_is_disabled(w, widgetIndex)) {
+	if (widget_is_disabled(w, widgetIndex)) {
+		// Draw greyed out (light border bottom right shadow)
+		colour = w->colours[widget->colour];
+		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
+		memset(0x009DED74, colour, 256);
+		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		image &= 0x7FFFF;
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l + 1, t + 1, 0, dpi, 0);
+
+		// Draw greyed out (dark)
+		colour = w->colours[widget->colour];
+		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
+		memset(0x009DED74, colour, 256);
+		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l, t, 0, dpi, 0);
+	} else {
 		if (image & 0x80000000) {
 			// ?
 		}
@@ -771,8 +895,6 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 			image |= colour << 19;
 
 		gfx_draw_sprite(dpi, image, l, t);
-	} else {
-		// ?
 	}
 }
 

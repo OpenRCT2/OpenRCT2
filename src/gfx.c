@@ -27,6 +27,10 @@
 #include "strings.h"
 #include "window.h"
 
+// HACK These were originally passed back through registers
+int gLastDrawStringX;
+int gLastDrawStringY;
+
 uint8 _screenDirtyBlocks[5120];
 
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
@@ -486,5 +490,17 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
  */
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y)
 {
-	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, format, dpi, 0);
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	eax = colour;
+	ebx = 0;
+	ecx = x;
+	edx = y;
+	esi = format;
+	edi = dpi;
+	ebp = 0;
+	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	gLastDrawStringX = ecx;
+	gLastDrawStringY = edx;
 }

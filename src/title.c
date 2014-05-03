@@ -152,7 +152,7 @@ static void title_update_showcase()
 {
 	rct_window* w;
 	uint8 script_opcode, script_operand;
-	short x, y;
+	short x, y, z;
 	int i, _edx;
 
 	if (_scriptWaitCounter <= 0) {
@@ -201,18 +201,12 @@ static void title_update_showcase()
 			case TITLE_SCRIPT_LOCATION:
 				x = (*_currentScript++) * 32 + 16;
 				y = (*_currentScript++) * 32 + 16;
-
-				// Set location
-				int eax, ebx, ecx, edx, esi, edi, ebp;
-				eax = x;
-				ecx = y;
-				RCT2_CALLFUNC_X(0x00662783, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				_edx = edx;
+				z = map_element_height(x, y);
 
 				// Update viewport
 				w = window_get_main();
 				if (w != NULL) {
-					window_scroll_to_location(w, x, y, _edx);
+					window_scroll_to_location(w, x, y, z);
 					w->flags &= ~0x08;
 					viewport_update_position(w);
 				}

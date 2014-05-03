@@ -176,10 +176,10 @@ static void window_game_top_toolbar_mouseup()
 
 	case WIDX_CLEAR_SCENERY:
 		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 		} else {
 			show_gridlines();
-			RCT2_CALLPROC_X(0x006EE212, 12, 0, 0, WIDX_CLEAR_SCENERY, w, 0, 0);
+			tool_set(w, WIDX_CLEAR_SCENERY, 12);
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
 			window_clear_scenery_open();
@@ -187,10 +187,10 @@ static void window_game_top_toolbar_mouseup()
 		break;
 	case WIDX_LAND:
 		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 		} else {
 			show_gridlines();
-			RCT2_CALLPROC_X(0x006EE212, 18, 0, 0, WIDX_LAND, w, 0, 0);
+			tool_set(w, WIDX_LAND, 18);
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 			window_land_open();
@@ -198,26 +198,26 @@ static void window_game_top_toolbar_mouseup()
 		break;
 	case WIDX_WATER:
 		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 		} else {
 			show_gridlines();
-			RCT2_CALLPROC_X(0x006EE212, 19, 0, 0, WIDX_WATER, w, 0, 0);
+			tool_set(w, WIDX_WATER, 19);
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 			window_water_open();
 		}
 		break;
 	case WIDX_SCENERY:
-		RCT2_CALLPROC_X(0x006EE212, 0, 0, 0, WIDX_SCENERY, w, 0, 0);
+		tool_set(w, WIDX_SCENERY, 0);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 		RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
 		break;
 	case WIDX_PATH:
-		if (window_find_by_id(20, 0) == NULL) {
-			RCT2_CALLPROC_EBPSAFE(0x00006A7C43);
+		if (window_find_by_id(WC_FOOTPATH, 0) == NULL) {
+			window_footpath_open();
 		} else {
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
-			window_close_by_id(0x80 | 20, 0);
+			tool_cancel();
+			window_close_by_id(0x80 | WC_FOOTPATH, 0);
 		}
 		break;
 	case WIDX_CONSTRUCT_RIDE:
@@ -346,7 +346,7 @@ static void window_game_top_toolbar_dropdown()
 			game_do_command(0, 1, 0, 0, 5, 0, 0);
 			break;
 		case 1:		// save game
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 			{
 				int eax, ebx, ecx, edx, esi, edi, ebp;
 				RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);

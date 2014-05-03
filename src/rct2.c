@@ -194,6 +194,53 @@ void rct2_update()
 		rct2_update_2();
 }
 
+void check_cmdline_arg()
+{
+	if(RCT2_GLOBAL(0x009AC310, uint32) == 0xFFFFFFFF)
+		return;
+
+	char *arg = RCT2_GLOBAL(0x009AC310, char *);
+	char processed_arg[255];
+	int len, i, j;
+	int quote = 0;
+	int last_period = 0;
+
+	RCT2_GLOBAL(0x009AC310, uint32) = 0xFFFFFFFF;
+	len = strlen(arg);
+
+	for(i = 0, j = 0; i < len; i ++)
+	{
+		if(arg[i] == '\"')
+		{
+			if(quote)
+				quote = 0;
+			else
+				quote = 1;
+			continue;
+		}
+		if(arg[i] == ' ' && !quote)
+			break;
+		if(arg[i] == '.')
+			last_period = i;
+		processed_arg[j ++] = arg[i];
+	}
+	processed_arg[j ++] = 0;
+
+	if(!stricmp(processed_arg + last_period, "sv6"))
+	{
+		strcpy(0x00141EF68, processed_arg);
+		RCT2_CALLPROC_EBPSAFE(0x00675E1B); //load_saved_game
+	}
+	else if(!stricmp(processed_arg + last_period, "sc6"))
+	{
+		//TODO: scenario install
+	}
+	else if(!stricmp(processed_arg + last_period, "td6") || !stricmp(processed_arg + last_period, "td4"))
+	{
+		//TODO: track design install
+	}
+}
+
 void rct2_update_2()
 {
 	int tick, tick2;
@@ -216,6 +263,7 @@ void rct2_update_2()
 
 	// TODO: screenshot countdown process
 
+	check_cmdline_arg();
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();

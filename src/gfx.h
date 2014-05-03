@@ -46,6 +46,9 @@ typedef struct {
 	sint16 unused;			// 0x0E
 } rct_g1_element;
 
+extern int gLastDrawStringX;
+extern int gLastDrawStringY;
+
 void gfx_load_g1();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
