@@ -1079,6 +1079,30 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 
 /**
  * 
+ *  rct2: 0x00667C15
+ */
+static void game_pause_toggle()
+{
+	rct_window *w;
+	char input_bl, input_dl;
+	short input_di;
+
+	__asm mov input_bl, bl
+
+	if (input_bl & 1) {
+		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
+		window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
+		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
+			RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+		else
+			RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+	}
+
+	__asm mov ebx, 0
+}
+
+/**
+ * 
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit()
@@ -1238,7 +1262,7 @@ void game_load_or_quit_no_save_prompt()
 static uint32 game_do_command_table[58] = {
 	0x006B2FC5,
 	0x0066397F,
-	0x00667C15,
+	game_pause_toggle,
 	0x006C511D,
 	0x006C5B69,
 	game_load_or_quit,
