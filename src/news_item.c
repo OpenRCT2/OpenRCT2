@@ -225,10 +225,10 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = peep->z;
 		break;
 	case NEWS_ITEM_BLANK:
-	   *x = subject;
-	   *y = subject >> 16;
-	   *z = map_element_height(x, y);
-	   break;
+		*x = subject;
+		*y = subject >> 16;
+		*z = map_element_height(*x, *y);
+		 break;
 	default:
 		*x = SPRITE_LOCATION_NULL;
 		break;

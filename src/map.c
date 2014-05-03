@@ -154,110 +154,116 @@ int map_element_height(int x, int y)
 
 	uint32 slope = (mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK);
 	uint8 extra_height = (slope & 0x10) >> 4; // 0x10 is the 5th bit - sets slope to double height
+	// Remove the extra height bit
 	slope &= 0xF;
 
 	uint8 quad, quad_extra; // which quadrant the element is in?
 	                        // quad_extra is for extra height tiles
 
-	uint8 xl, yl;
+	uint8 xl, yl;	    // coordinates across this tile
 
 	uint8 TILE_SIZE = 31;
 
 	xl = x & 0x1f;
 	yl = y & 0x1f;
 
-	// slope logic
-	// slope == 0 is flat, and slope == 15 is not used
+	// Slope logic:
+	// Each of the four bits in slope represents that corner being raised
+	// slope == 15 (all four bits) is not used and slope == 0 is flat
+	// If the extra_height bit is set, then the slope goes up two z-levels
+
+	// We arbitrarily take the SW corner to be closest to the viewer
 
 	// One corner up
 	if ((slope == 1) || (slope == 2) || (slope == 4) || (slope == 8)) {
-	  switch(slope) {
-	  case 1:    // NE corner up
-	    quad = xl + yl - TILE_SIZE;
-	    break;
-	  case 2:    // SE corner up
-	    quad = xl - yl;
-	    break;
-	  case 4:   // SW corner up
-	    quad = TILE_SIZE - yl - xl;
-	    break;
-	  case 8:   // NW corner up
-	    quad = xl - yl;
-	    break;
-	  }
-	  if (quad > 0) {
-	    height += quad / 2;
-	  }
+		switch (slope) {
+		case 1:    // NE corner up
+			quad = xl + yl - TILE_SIZE;
+			break;
+		case 2:    // SE corner up
+			quad = xl - yl;
+			break;
+		case 4:   // SW corner up
+			quad = TILE_SIZE - yl - xl;
+			break;
+		case 8:   // NW corner up
+			quad = xl - yl;
+			break;
+		}
+		// If the element is in the quadrant with the slope, raise its height
+		if (quad > 0) {
+			height += quad / 2;
+		}
 	}
 
 	// One side up
-	switch(slope) {
+	switch (slope) {
 	case 3:   // E side up
-	  height += xl / 2;
-	  break;
+		height += xl / 2;
+		break;
 	case 6:   // S side up
-	  height += (TILE_SIZE - yl) / 2;
-	  break;
+		height += (TILE_SIZE - yl) / 2;
+		break;
 	case 9:    // N side up
-	  height += yl / 2;
-	  height++;
-	  break;
+		height += yl / 2;
+		height++;
+		break;
 	case 12:  // W side up
-	  height += (TILE_SIZE - xl) / 2;
-	  break;
+		height += (TILE_SIZE - xl) / 2;
+		break;
 	}
 
 	// One corner down
 	if ((slope == 7) || (slope == 11) || (slope == 13) || (slope == 14)) {
-	  switch (slope) {
-	  case 7:   // NW corner down
-	    quad_extra = xl + TILE_SIZE - yl;
-	    quad = xl - yl;
-	    break;
-	  case 11:  // SW corner down
-	    quad_extra = xl + yl;
-	    quad = xl + yl - TILE_SIZE;
-	    break;
-	  case 13:  // SE corner down
-	    quad_extra = TILE_SIZE - xl + yl;
-	    quad = xl - yl;
-	    break;
-	  case 14:  // NE corner down
-	    quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-	    quad = TILE_SIZE - yl - xl;
-	    break;
-	  }
+		switch (slope) {
+		case 7:   // NW corner down
+			quad_extra = xl + TILE_SIZE - yl;
+			quad = xl - yl;
+			break;
+		case 11:  // SW corner down
+			quad_extra = xl + yl;
+			quad = xl + yl - TILE_SIZE;
+			break;
+		case 13:  // SE corner down
+			quad_extra = TILE_SIZE - xl + yl;
+			quad = xl - yl;
+			break;
+		case 14:  // NE corner down
+			quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
+			quad = TILE_SIZE - yl - xl;
+			break;
+		}
 
-	  if (extra_height) {
-	    height += quad_extra / 2;
-	    height++;
-	    return height;
-	  }
-	  // This tile is essentially at the next height level
-	  height += 0x10;
-	  // so we move *down* the slope
-	  if (quad < 0) {
-	    height += quad / 2;
-	    height += 0xFF00;
-	  }
+		if (extra_height) {
+			height += quad_extra / 2;
+			height++;
+			return height;
+		}
+		// This tile is essentially at the next height level
+		height += 0x10;
+		// so we move *down* the slope
+		if (quad < 0) {
+			height += quad / 2;
+			height += 0xFF00;
+		}
 	}
 
 	// Valleys
 	if ((slope == 5) || (slope == 10)) {
-	  switch (slope) {
-	  case 5:  // NW-SE valley
-	    if (xl + yl <= TILE_SIZE + 1) {
-	      return height;
-	    }
-	    quad = TILE_SIZE - xl - yl;
-	    break;
-	  case 10: // NE-SW valley
-	    quad = xl - yl;
-	    break;
-	  }
-	  if (quad > 0) {
-	    height += quad / 2;
-	  }
+		switch (slope) {
+		case 5:  // NW-SE valley
+			if (xl + yl <= TILE_SIZE + 1) {
+				return height;
+			}
+			quad = TILE_SIZE - xl - yl;
+			break;
+		case 10: // NE-SW valley
+			quad = xl - yl;
+			break;
+		}
+		if (quad > 0) {
+			height += quad / 2;
+		}
 	}
 
 	return height;
