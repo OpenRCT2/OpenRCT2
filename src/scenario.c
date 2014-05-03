@@ -667,6 +667,7 @@ void scenario_objective8_check()
 
 
 /*
+ * Checks the win/lose conditions of the current objective.
  * rct2: 0x0066A4B2
  **/
 void scenario_objectives_check()
@@ -764,8 +765,9 @@ void scenario_objectives_check()
 
 
 /*
-* rct2: 0x0066A80E
-**/
+ * Send a warning when entrance price is too high.
+ * rct2: 0x0066A80E
+ **/
 void scneario_entrance_fee_too_high_check()
 {
 	uint16 x, y;
@@ -787,8 +789,9 @@ void scneario_entrance_fee_too_high_check()
 
 
 /*
-* rct2: 0x0069E0C1
-**/
+ * Update status of marketing campaigns and send a message when they are done.
+ * rct2: 0x0069E0C1
+ **/
 void scenario_marketing_update()
 {
 	for (int i = 0; i < 6; ++i) {
@@ -828,6 +831,7 @@ void scenario_marketing_update()
 
 
 /*
+ * Scenario and finance related update iteration.
  * rct2: 0x006C44B1
  **/
 void scenario_update()
@@ -847,7 +851,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // finance update
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
-		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // check_objective_6
+		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
 			scenario_objectives_check();
