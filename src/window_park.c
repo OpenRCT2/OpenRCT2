@@ -935,7 +935,7 @@ static void window_park_entrance_invalidate()
 	}
 
 	// Only allow closing of park and purchase of land when there is money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
 		window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_EMPTY;
@@ -1417,7 +1417,7 @@ static void window_park_price_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_PARK_FREE_ENTRY) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
@@ -1711,7 +1711,7 @@ static void window_park_objective_invalidate()
 	*((short*)0x013CE954) = RCT2_GLOBAL(0x013573D8, uint32);
 
 	// 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & 0x02)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x02)
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
 	else
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;

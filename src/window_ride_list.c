@@ -255,7 +255,7 @@ static void window_ride_list_mousedown()
 		numItems = 9;
 		if (w->page != PAGE_RIDES)
 			numItems -= 5;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_FLAGS, uint32) & GAME_FLAGS_NO_MONEY)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 			numItems--;
 
 		for (i = 0; i < numItems; i++) {
