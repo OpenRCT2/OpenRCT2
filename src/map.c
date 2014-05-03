@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -126,7 +126,6 @@ void map_update_tile_pointers()
  * Return the absolute height of an element, given its (x,y) coordinates
  *
  *  rct2: 0x00662783
- * UNFINISHED
  */
 int map_element_height(int x, int y)
 {
