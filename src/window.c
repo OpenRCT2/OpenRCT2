@@ -1105,3 +1105,70 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 		window_invalidate(w);
 	}
 }
+
+/**
+ * 
+ *  rct2: 0x006EE212
+ *
+ * @param tool (al)
+ * @param widgetIndex (dx)
+ * @param w (esi)
+ */
+int tool_set(rct_window *w, int widgetIndex, int tool)
+{
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
+		if (
+			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+			widgetIndex == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+		) {
+			tool_cancel();
+			return 1;
+		}
+	}
+
+	RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 3);
+	RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 6);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = widgetIndex;
+	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006EE281
+ */
+void tool_cancel()
+{
+	rct_window *w;
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
+		RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 3);
+
+		// 
+		RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
+		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+
+		// Reset map selection
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) >= 0) {
+			// Invalidate tool widget
+			widget_invalidate(
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber),
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+			);
+
+			// Abort tool event
+			w = window_find_by_id(
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+			);
+			if (w != NULL)
+				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_ABORT], 0, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), w, 0, 0);
+		}
+	}
+}

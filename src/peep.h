@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -91,7 +91,9 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x0E];
+	uint8 pad_14[0x09];
+	uint8 direction;				// 0x1D
+	uint32 pad_1E;
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
@@ -102,36 +104,49 @@ typedef struct {
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	uint8 staff_type;				// 0x2F
-	uint8 var_30;
-	uint8 var_31;
+	uint8 tshirt_colour;			// 0x30
+	uint8 trousers_colour;			// 0x31
 	uint8 pad_32[0x06];
 	uint8 energy;					// 0x38
-	uint8 var_39;
+	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	uint8 var_03B;
+	uint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
-	uint8 var_03D;
+	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
 	uint8 bathroom;					// 0x40
 	uint8 pad_041[0x27];
 	uint8 current_ride;				// 0x68
-	uint8 pad_6A;					// 0x6A Part of current_ride?
-	uint8 current_train;   	        // 0x6B
-	uint8 current_car;				// 0x6C
-	uint8 current_seat;				// 0x6D
-	uint8 pad_6E[0x2E];
+	uint8 pad_69;
+	uint8 current_train;   	        // 0x6A
+	uint8 current_car;				// 0x6B
+	uint8 current_seat;				// 0x6C
+	uint8 pad_6D[0x0F];
+	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
-	uint8 pad_A0[0x10];
+	sint32 cash_in_pocket;			// 0xA0
+	sint32 cash_spent;				// 0xA4
+	uint8 pad_A8[8];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint16 pad_C4;
 	uint8 var_C6;
 	uint8 pad_C7;
-	uint32 var_C8;
-	uint8 pad_CC[0x2A];
+	uint32 var_C8;					// Bit 25 Ice Cream, Bit 24 mad, Bit 3 tracking, Bit 0 leaving the park
+	uint8 var_CC;					
+	uint8 pad_CD[0x17];
+	uint16 paid_to_enter;			// 0xE4
+	uint16 paid_on_rides;			// 0xE6
+	uint16 paid_on_food;			// 0xE8
+	uint16 paid_on_souvenirs;		// 0xEA
+	uint8 no_of_food;				// 0xEC
+	uint8 no_of_drinks;				// 0xED
+	uint8 no_of_souvenirs;			// 0xEE
+	uint8 pad_EF[0x07];
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
+	uint8 favourite_ride;			// 0xF9
 } rct_peep;
 
 int peep_get_staff_count();
