@@ -74,6 +74,7 @@ void config_save();
 
 
 // New config format
+#define MAX_CONFIG_LENGTH 256
 
 typedef struct configuration {
 	uint8 screenshot_format;

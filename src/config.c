@@ -176,6 +176,8 @@ void config_init()
 		}
 
 		config_parse_settings(fp);
+
+		fclose(fp);
 	}
 }
 
@@ -236,14 +238,12 @@ static void config_parse_settings(FILE *fp)
 	int c = NULL, pos = 0;
 	char *setting;
 	char *value;
-	setting = (char *)malloc(128);
-	value = (char *)malloc(128);
-	
-	int size = 256;
+	setting = (char *)malloc(MAX_CONFIG_LENGTH);
+	value = (char *)malloc(MAX_CONFIG_LENGTH);
 	
 	while (config_get_line(fp, setting, value) > 0) {
 		if (strcmp(setting, "game_path") == 0){
-			strcpy(gConfig.game_path, value); // TODO: change to copy correct amount of bytes
+			strcpy(gConfig.game_path, value); 
 		} else if(strcmp(setting, "screenshot_format") == 0) {
 			if (strcmp(value, "1") == 0) {
 				gConfig.screenshot_format = 1;
@@ -252,6 +252,8 @@ static void config_parse_settings(FILE *fp)
 			}
 		}
 	}
+	free(setting);
+	free(value);
 }
 
 /**
@@ -264,15 +266,14 @@ static void config_parse_settings(FILE *fp)
 static int config_get_line(FILE *fp, char *setting, char *value)
 {
 	long start = ftell(fp);
-	long end;
-	int c;
-	int pos = 0;
-	long size;
+	long end, size;
+	int c, pos = 0;
+
 	c = fgetc(fp);
 	if (c == EOF)
 		return -1;
 	while (isalpha(c) || c == '_'){
-		c = fgetc(fp); // find size of setting
+		c = fgetc(fp);
 		if (c == EOF)
 			return -1;
 	}
@@ -293,6 +294,8 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 
 		return 1;
 	}
+
+
 	while (isalpha(c) || c == '_'){
 		setting[pos] = (char)c;
 		pos++;
