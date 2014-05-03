@@ -118,11 +118,11 @@ typedef struct {
 	uint8 bathroom;					// 0x40
 	uint8 pad_041[0x27];
 	uint8 current_ride;				// 0x68
-	uint8 pad_6A;					// 0x6A Part of current_ride?
-	uint8 current_train;   	        // 0x6B
-	uint8 current_car;				// 0x6C
-	uint8 current_seat;				// 0x6D
-	uint8 pad_6E[0x0E];
+	uint8 pad_69;
+	uint8 current_train;   	        // 0x6A
+	uint8 current_car;				// 0x6B
+	uint8 current_seat;				// 0x6C
+	uint8 pad_6D[0x0F];
 	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
 	sint32 cash_in_pocket;			// 0xA0
@@ -132,13 +132,13 @@ typedef struct {
 	uint16 pad_C4;
 	uint8 var_C6;
 	uint8 pad_C7;
-	uint32 var_C8;					// Bit 11 tracking, Bit 8 leaving the park
-	uint8 var_CC;					// Bit 0 mad, bit 1 Ice Cream
-	uint8 pad_CD[0x18];
-	uint16 paid_to_enter;			// 0xE5
-	uint16 paid_on_rides;			// 0xE7
-	uint16 paid_on_food;			// 0xE9
-	uint16 paid_on_souvenirs;		// 0xEB
+	uint32 var_C8;					// Bit 25 Ice Cream, Bit 24 mad, Bit 3 tracking, Bit 0 leaving the park
+	uint8 var_CC;					
+	uint8 pad_CD[0x17];
+	uint16 paid_to_enter;			// 0xE4
+	uint16 paid_on_rides;			// 0xE6
+	uint16 paid_on_food;			// 0xE8
+	uint16 paid_on_souvenirs;		// 0xEA
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
