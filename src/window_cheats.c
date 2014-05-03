@@ -300,7 +300,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = 5568;
 		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
-			sprite_idx += (w->var_48E / 2) % 8;
+			sprite_idx += (w->var_48E / 3) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
 	}
 }
