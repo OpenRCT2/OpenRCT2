@@ -192,6 +192,10 @@ static int config_find_rct2_path(char *resultPath)
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
+		"C:\\Program Files\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
 	};
 
