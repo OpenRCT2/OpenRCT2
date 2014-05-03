@@ -1141,9 +1141,20 @@ static void load_landscape()
 	if (open_landscape_file_dialog() == 0) {
 		gfx_invalidate_screen();
 	} else {
-		// string stuff
+		// Set default filename
+		char *esi = 0x0141EF67;
+		while (1) {
+			esi++;
+			if (*esi == '.')
+				break;
+			if (*esi != 0)
+				continue;
+			strcpy(esi, ".SC6");
+			break;
+		}
+		strcpy(0x009ABB37, 0x0141EF68);
 
-		RCT2_CALLPROC_EBPSAFE(0x006758C0);
+		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
 		if (1) {
 			gfx_invalidate_screen();
 			// game_loop_iteration
@@ -1163,9 +1174,20 @@ static void load_game()
 	if (open_load_game_dialog() == 0) {
 		gfx_invalidate_screen();
 	} else {
-		// string stuff
+		// Set default filename
+		char *esi = 0x0141EF67;
+		while (1) {
+			esi++;
+			if (*esi == '.')
+				break;
+			if (*esi != 0)
+				continue;
+			strcpy(esi, ".SV6");
+			break;
+		}
+		strcpy(0x009ABB37, 0x0141EF68);
 
-		RCT2_CALLPROC_EBPSAFE(0x00675E1B);
+		RCT2_CALLPROC_EBPSAFE(0x00675E1B); // game_load
 		if (1) {
 			gfx_invalidate_screen();
 			// game_loop_iteration
@@ -1219,7 +1241,7 @@ static uint32 game_do_command_table[58] = {
 	0x00667C15,
 	0x006C511D,
 	0x006C5B69,
-	0x0066DB5F, // game_load_or_quit,
+	game_load_or_quit,
 	0x006B3F0F,
 	0x006B49D9,
 	0x006B4EA6,

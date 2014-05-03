@@ -34,6 +34,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -505,6 +506,39 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
 	widget_text(dpi, w, widgetIndex);
+}
+
+/**
+ * 
+ *  rct2: 0x006EC1A6
+ */
+static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b, press;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left + 5;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	press = 0;
+	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+		press |= 0x20;
+
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+
+	// TODO
+	
+	gfx_fill_rect(dpi, l, t, r, b, colour);
 }
 
 /**
