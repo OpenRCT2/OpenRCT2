@@ -768,7 +768,7 @@ void scenario_objectives_check()
  * Send a warning when entrance price is too high.
  * rct2: 0x0066A80E
  **/
-void scneario_entrance_fee_too_high_check()
+void scenario_entrance_fee_too_high_check()
 {
 	uint16 x, y;
 	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
@@ -776,15 +776,15 @@ void scneario_entrance_fee_too_high_check()
 	int max_fee = magic + (magic / 2);
 	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
-	if (game_flags & PARK_FLAGS_PARK_OPEN && park_entrance_fee > max_fee) {
+	if ((game_flags & PARK_FLAGS_PARK_OPEN) && park_entrance_fee > max_fee) {
 		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL; ++i) {
 			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
 			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
 		}
-	}
 
-	packed_xy = (y << 16) | x;
-	news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+		packed_xy = (y << 16) | x;
+		news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+	}
 }
 
 
