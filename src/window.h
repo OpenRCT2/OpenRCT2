@@ -22,6 +22,7 @@
 #define _WINDOW_H_
 
 #include "gfx.h"
+#include "park.h"
 #include "rct2.h"
 
 struct rct_window;
