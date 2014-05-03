@@ -585,21 +585,21 @@ void scenario_success()
 }
 
 
-void objective_check_10_rollercoasters()
+void scenario_objective5_check()
 {
-	int i, rcs = 0;
+	int rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
 
-	for (i = 0; i < 255; i++) {
+	for (int i = 0; i < 255; i++) {
 		uint8 subtype_id;
 		uint32 subtype_p;
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
-		subtype_id = ride->var_001;
+		subtype_id = (uint8)ride->var_001;
 		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
@@ -614,6 +614,47 @@ void objective_check_10_rollercoasters()
 	if (rcs >= 10)
 		scenario_success();
 }
+
+
+void scenario_objective8_check()
+{
+	int rcs = 0;
+	uint8 type_already_counted[256];
+	rct_ride* ride;
+	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+
+	memset(type_already_counted, 0, 256);
+
+	for (int i = 0; i < 255; i++) {
+		uint8 subtype_id;
+		uint32 subtype_p;
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+		subtype_id = (uint8)ride->var_001;
+		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+
+		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
+			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->var_140 >= 600 && type_already_counted[subtype_id] == 0){
+
+			uint8 limit = ride->pad_088[63];
+			uint32 sum = 0;
+			for (int j = 0; j < limit; ++j) {
+				sum += ((uint32*)&ride->pad_088[92])[j];
+			}
+			if ((sum >> 16) > objective_length) {
+				type_already_counted[subtype_id]++;
+				rcs++;
+			}
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
 
 
 /*
@@ -658,7 +699,7 @@ void scenario_objectives_check()
 
 	case OBJECTIVE_10_ROLLERCOASTERS://5
 
-		objective_check_10_rollercoasters();
+		scenario_objective5_check();
 		break;
 
 	case OBJECTIVE_GUESTS_AND_RATING://6
@@ -676,7 +717,8 @@ void scenario_objectives_check()
 	}
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
 
-		RCT2_CALLPROC_EBPSAFE(0x0066A6B5);
+		scenario_objective8_check();
+		//RCT2_CALLPROC_EBPSAFE(0x0066A6B5);
 		break;
 
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
@@ -685,7 +727,7 @@ void scenario_objectives_check()
 		int rcs = 0;
 		for (int i = 0; i < 255; i++) {
 			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-			if (ride->status && ride->intensity > objective_currency)
+			if (ride->status && ride->var_140 > objective_currency)
 				rcs++;
 		}
 		if (rcs >= 5)
