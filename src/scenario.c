@@ -594,19 +594,19 @@ void objective_check_10_rollercoasters()
 	memset(type_already_counted, 0, 256);
 
 	for (i = 0; i < 255; i++) {
-		uint8 rc_type;
-		uint32 rollercoaster_p;
+		uint8 subtype_id;
+		uint32 subtype_p;
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
-		rc_type = ride->var_001;
-		rollercoaster_p = RCT2_GLOBAL(0x009ACFA4 + rc_type*4, uint32);
+		subtype_id = ride->var_001;
+		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
-		if ((RCT2_GLOBAL(rollercoaster_p + 0x1BE, sint8) == 2 ||
-			 RCT2_GLOBAL(rollercoaster_p + 0x1BF, sint8) == 2 )&&
+		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
+			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
 			ride->status == RIDE_STATUS_OPEN &&
-			ride->var_140 >= 600 && type_already_counted[rc_type] == 0){
-			type_already_counted[rc_type]++;
+			ride->var_140 >= 600 && type_already_counted[subtype_id] == 0){
+			type_already_counted[subtype_id]++;
 			rcs++;
 		}
 	}
