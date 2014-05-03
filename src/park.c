@@ -110,7 +110,7 @@ int calculate_park_rating()
 				continue;
 			if (peep->happiness > 128)
 				num_happy_peeps++;
-			if (!(peep->var_C8 & 0x01))
+			if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))
 				continue;
 			if (peep->var_C6 <= 89)
 				_bp++;
