@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include "addresses.h"
+#include "config.h"
 #include "gfx.h"
 #include "rct2.h"
 #include "screenshot.h"
@@ -32,8 +33,6 @@ enum {
 	SCREENSHOT_FORMAT_BMP,
 	SCREENSHOT_FORMAT_PNG
 };
-
-int gScreenshotFormat = SCREENSHOT_FORMAT_PNG;
 
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
@@ -80,7 +79,7 @@ static int screenshot_get_next_path(char *path, char *extension)
 
 int screenshot_dump()
 {
-	switch (gScreenshotFormat) {
+	switch (gConfig.screenshot_format) {
 	case SCREENSHOT_FORMAT_BMP:
 		return screenshot_dump_bmp();
 	case SCREENSHOT_FORMAT_PNG:

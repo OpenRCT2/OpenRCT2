@@ -21,6 +21,7 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#include <windows.h>
 #include "rct2.h"
 
 enum {
@@ -70,5 +71,17 @@ extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 void config_reset_shortcut_keys();
 void config_load();
 void config_save();
+
+
+// New config format
+
+typedef struct configuration {
+	uint8 screenshot_format;
+	char game_path[MAX_PATH];
+} configuration_t;
+
+extern configuration_t gConfig;
+
+void config_init();
 
 #endif

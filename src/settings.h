@@ -26,21 +26,7 @@
 #include "rct2.h"
 
 
-void settings_parse_settings(FILE *fp);
-int settings_get_line(FILE *fp, char *setting, char *value);
 
-
-void settings_init();
-void settings_create_default(char *path);
-
-
-typedef struct settings{
-	uint8 SCREENSHOT_AS_PNG;
-	char GAME_PATH[MAX_PATH];
-
-} settings_t;
-
-extern settings_t settings;
 
 
 

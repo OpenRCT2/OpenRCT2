@@ -18,8 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <SDL_keycode.h>
+#include <stdio.h>
+#include <shlobj.h>
 #include <windows.h>
+#include <SDL_keycode.h>
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
@@ -136,4 +138,192 @@ void config_save()
 		WriteFile(hFile, 0x009AAC5C, 2155, &bytesWritten, NULL);
 		CloseHandle(hFile);
 	}
+}
+
+// New config format
+
+configuration_t gConfig;
+
+static void config_parse_settings(FILE *fp);
+static int config_get_line(FILE *fp, char *setting, char *value);
+static void config_create_default(char *path);
+
+/**
+ * Initilise the settings.
+ * It checks if the OpenRCT2 folder exists and creates it if it does not
+ * parsing of the config file is done in config_parse_settings
+ */
+void config_init()
+{	
+	TCHAR path[MAX_PATH];
+	FILE* fp;
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
+		strcat(path, "\\OpenRCT2");
+		DWORD dwAttrib = GetFileAttributes(path);
+		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
+			if (!CreateDirectory(path, NULL)) {
+				return NULL; // error creating path
+			}
+		}
+		strcat(path, "\\config.ini");
+		fp = fopen(path, "r");
+		if (!fp) {
+			config_create_default(path);
+			fp = fopen(path, "r");
+			if (!fp)
+				return NULL;
+		}
+
+		config_parse_settings(fp);
+	}
+}
+
+/**
+ * Attempts to find the RCT2 installation directory.
+ * This should be created from some other resource when OpenRCT2 grows.
+ * @param resultPath Pointer to where the absolute path of the RCT2 installation directory will be copied to.
+ * @returns 1 if successful, otherwise 0.
+ */
+static int config_find_rct2_path(char *resultPath)
+{
+	int i;
+	DWORD dwAttrib;
+	const char *searchLocations[] = {
+		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
+		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
+	};
+
+	for (i = 0; i < countof(searchLocations); i++) {
+		dwAttrib = GetFileAttributes(searchLocations[i]);
+		if (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+			strcpy(resultPath, searchLocations[i]);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Create a new default settings file.
+ * This should be created from some other resource when openRCT2 grows
+ * @param path The aboslute path of the config file
+ */
+static void config_create_default(char *path)
+{
+	FILE* fp;
+
+	if (!config_find_rct2_path(gConfig.game_path)) {
+		MessageBox(NULL, "Unable to find RCT2 installation directory. Please correct in config.ini.", "OpenRCT2", MB_OK);
+		strcpy(gConfig.game_path, "C:\\");
+	}
+
+	fp = fopen(path, "w");
+	fprintf(fp, "[general]\n");
+	fprintf(fp, "game_path = %s\n", gConfig.game_path);
+	fprintf(fp, "screenshot_format = 1\n");
+	fclose(fp);
+}
+
+/**
+ * Parse settings and set the game veriables
+ * @param fp file pointer to the settings file
+ */
+static void config_parse_settings(FILE *fp)
+{
+	int c = NULL, pos = 0;
+	char *setting;
+	char *value;
+	setting = (char *)malloc(128);
+	value = (char *)malloc(128);
+	
+	int size = 256;
+	
+	while (config_get_line(fp, setting, value) > 0) {
+		if (strcmp(setting, "game_path") == 0){
+			strcpy(gConfig.game_path, value); // TODO: change to copy correct amount of bytes
+		} else if(strcmp(setting, "screenshot_format") == 0) {
+			if (strcmp(value, "1") == 0) {
+				gConfig.screenshot_format = 1;
+			} else {
+				gConfig.screenshot_format = 0;
+			}
+		}
+	}
+}
+
+/**
+ * Read one line in the settings file
+ * @param fp filepointer to the settings file
+ * @param setting pointer where to to store the setting
+ * @param value pointer to where to store the value 
+ * @return < 0 on error
+ */
+static int config_get_line(FILE *fp, char *setting, char *value)
+{
+	long start = ftell(fp);
+	long end;
+	int c;
+	int pos = 0;
+	long size;
+	c = fgetc(fp);
+	if (c == EOF)
+		return -1;
+	while (isalpha(c) || c == '_'){
+		c = fgetc(fp); // find size of setting
+		if (c == EOF)
+			return -1;
+	}
+
+	end = ftell(fp);
+	size = end - start;
+	realloc(setting, size);
+	fseek(fp, start, SEEK_SET);
+	c = fgetc(fp);
+	if (c == '[') {
+		// TODO support categories
+		setting[0] = '\0';
+		value[0] = '\0';
+		while (c != '\n' && c != EOF) {
+			pos++;
+			c = fgetc(fp);
+		}
+
+		return 1;
+	}
+	while (isalpha(c) || c == '_'){
+		setting[pos] = (char)c;
+		pos++;
+		c = fgetc(fp);
+	}
+	setting[pos] = '\0';
+	while (c != '=') {
+		if (c == EOF || c == '\n') { // this is not a valid setting
+			return -1;
+		}
+		c = fgetc(fp);
+	}
+	c = fgetc(fp);
+	while (isspace(c)) {
+		c = fgetc(fp);
+	}
+
+	start = ftell(fp);
+	while (c != '\n' && c!= EOF) {
+		c = fgetc(fp);
+	}
+	end = ftell(fp);
+	size = end - start;
+	realloc(value, size);
+	fseek(fp, start - 1, SEEK_SET);
+	pos = 0;
+	c = fgetc(fp);
+	while (c != '\n' && c != EOF) {
+		value[pos] = (char)c;
+		pos++;
+		c = fgetc(fp);
+	}
+	value[pos] = '\0';
 }
