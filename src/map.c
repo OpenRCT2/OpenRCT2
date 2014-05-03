@@ -54,6 +54,23 @@ void map_element_set_terrain_edge(rct_map_element *element, int terrain)
 	element->properties.surface.slope = (terrain & 7) << 5;
 }
 
+rct_map_element *map_get_surface_element_at(int x, int y)
+{
+	// Get first element of the tile
+	rct_map_element *mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+
+	// Find the first surface element
+	while ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) {
+		// Check if last element on tile
+		if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+			return NULL;
+
+		mapElement++;
+	}
+
+	return mapElement;
+}
+
 /**
  * 
  *  rct2: 0x0068AB4C
@@ -136,16 +153,12 @@ int map_element_height(int x, int y)
 	if (x >= 8192 || y >= 8192)
 		return 16;
 
-	// Find the tile the element is on
+	// Truncate subtile coordinates
 	int x_tile = x & 0xFFFFFFE0;
 	int y_tile = y & 0xFFFFFFE0;
 
-	i = ((y_tile * 256) + x_tile) / 32;
-
-	mapElement = TILE_MAP_ELEMENT_POINTER(i);
-	while (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
-		mapElement++;
-	}
+	// Get the surface element for the tile
+	mapElement = map_get_surface_element_at(x_tile / 32, y_tile / 32);
 
 	uint32 height =
 		((mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 20) |
