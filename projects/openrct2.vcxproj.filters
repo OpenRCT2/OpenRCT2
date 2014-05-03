@@ -120,6 +120,9 @@
     <ClInclude Include="..\src\screenshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_save_prompt.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\settings.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

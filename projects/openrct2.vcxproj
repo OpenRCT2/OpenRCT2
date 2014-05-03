@@ -35,6 +35,7 @@
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\screenshot.h" />
+    <ClInclude Include="..\src\settings.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\strings.h" />
@@ -71,6 +72,7 @@
     <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\screenshot.c" />
+    <ClCompile Include="..\src\settings.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\track.c" />
