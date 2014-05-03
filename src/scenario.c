@@ -29,9 +29,11 @@
 #include "object.h"
 #include "park.h"
 #include "rct2.h"
+#include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "strings.h"
+#include "sprite.h"
 #include "viewport.h"
 
 #define UNINITIALISED_SCENARIO_LIST ((rct_scenario_basic*)-1)
@@ -527,3 +529,377 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 }
+
+
+void scenario_end()
+{
+	rct_window* w;
+	window_close_by_id(WC_DROPDOWN, 0);
+	
+	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+			window_close(w);
+	}
+	window_park_objective_open();
+}
+
+/*
+* rct2: 0x0066A752
+**/
+void scenario_failure()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
+	scenario_end();
+}
+
+/*
+ * rct2: 0x0066A75E
+ **/
+void scenario_success()
+{
+	int i;
+	rct_scenario_basic* scenario;
+	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
+	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
+
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+		char* cur_scenario_name = RCT2_ADDRESS(0x135936C, char*);
+		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+
+		if (0 == strncmp(cur_scenario_name, scenario->path, 256)){
+			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
+				break; // not a new high score -> no glory
+
+			// bts game_flags, 1 happens here but I don't know what for
+			scenario->company_value = current_val;
+			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
+			scenario->completed_by[0] = 0;
+			RCT2_GLOBAL(0x013587C0, uint32) = current_val; // value used in window for score?
+			scenario_scores_save();
+			break;
+		}
+	}
+	scenario_end();
+}
+
+/**
+* Checks if there are 10 rollercoasters of different subtype with
+* excitement >= 600 .
+* rct2:
+**/
+void scenario_objective5_check()
+{
+	int rcs = 0;
+	uint8 type_already_counted[256];
+	rct_ride* ride;
+
+	memset(type_already_counted, 0, 256);
+
+	for (int i = 0; i < 255; i++) {
+		uint8 subtype_id;
+		uint32 subtype_p;
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+		subtype_id = (uint8)ride->subtype;
+		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+
+		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
+			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->excitement >= 600 && type_already_counted[subtype_id] == 0){
+			type_already_counted[subtype_id]++;
+			rcs++;
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
+/**
+ * Checks if there are 10 rollercoasters of different subtype with
+ * excitement > 700 and a minimum length;
+ * rct2: 0x0066A6B5
+ **/
+void scenario_objective8_check()
+{
+	int rcs = 0;
+	uint8 type_already_counted[256];
+	rct_ride* ride;
+	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+
+	memset(type_already_counted, 0, 256);
+
+	for (int i = 0; i < 255; i++) {
+		uint8 subtype_id;
+		uint32 subtype_p;
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+		subtype_id = (uint8)ride->subtype;
+		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+
+		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
+			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->excitement >= 600 && type_already_counted[subtype_id] == 0){
+
+			// this calculates the length, no idea why it's done so complicated though.
+			uint8 limit = ride->pad_088[63];
+			uint32 sum = 0;
+			for (int j = 0; j < limit; ++j) {
+				sum += ((uint32*)&ride->pad_088[92])[j];
+			}
+			if ((sum >> 16) > objective_length) {
+				type_already_counted[subtype_id]++;
+				rcs++;
+			}
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
+
+
+/*
+ * Checks the win/lose conditions of the current objective.
+ * rct2: 0x0066A4B2
+ **/
+void scenario_objectives_check()
+{
+	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
+		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
+		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
+		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
+		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
+	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
+		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+
+
+	if ( scenario_completed_company_value != 0x80000000)
+		return;
+
+	switch (objective_type) {
+	case OBJECTIVE_GUESTS_BY://1
+
+		if (cur_month_year == 8 * objective_year){
+			if (park_rating < 600 || guests_in_park < objective_guests)
+				scenario_failure();
+			else
+				scenario_success();
+		}
+		break;
+
+	case OBJECTIVE_PARK_VALUE_BY://2
+
+		if (cur_month_year == 8 * objective_year) {
+			if (park_value < objective_currency)
+				scenario_failure();
+			else
+				scenario_success();
+		}
+		break;
+
+	case OBJECTIVE_10_ROLLERCOASTERS://5
+
+		scenario_objective5_check();
+		break;
+
+	case OBJECTIVE_GUESTS_AND_RATING://6
+
+		if (park_rating >= 700 && guests_in_park > objective_guests)
+			scenario_success();
+		break;
+
+	case OBJECTIVE_MONTHLY_RIDE_INCOME://7
+	{
+		sint32 monthly_ride_income = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, sint32);
+		if (monthly_ride_income > objective_currency)
+			scenario_success();
+		break;
+	}
+	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
+
+		scenario_objective8_check();
+		break;
+
+	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
+	{
+		rct_ride* ride;
+		int rcs = 0;
+		for (int i = 0; i < 255; i++) {
+			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+			if (ride->status && ride->excitement > objective_currency)
+				rcs++;
+		}
+		if (rcs >= 5)
+			scenario_success();
+		break;
+	}
+	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE://A
+	{
+		sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
+		if (current_loan <= 0 && park_value > objective_currency)
+			scenario_success();
+		break;
+	}
+	case OBJECTIVE_MONTHLY_FOOD_INCOME://B
+	{
+		sint32 income_sum = RCT2_GLOBAL(0x013578A4, sint32) + RCT2_GLOBAL(0x013578A0, sint32) +
+						   RCT2_GLOBAL(0x0135789C, sint32) + RCT2_GLOBAL(0x01357898, sint32);
+		if (income_sum > objective_currency)
+			scenario_success();
+		break;
+	}
+	default:
+		return;
+	}
+}
+
+
+/*
+ * Send a warning when entrance price is too high.
+ * rct2: 0x0066A80E
+ **/
+void scneario_entrance_fee_too_high_check()
+{
+	uint16 x, y;
+	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
+		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	int max_fee = magic + (magic / 2);
+	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
+
+	if (game_flags & PARK_FLAGS_PARK_OPEN && park_entrance_fee > max_fee) {
+		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL; ++i) {
+			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
+			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
+		}
+	}
+
+	packed_xy = (y << 16) | x;
+	news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+}
+
+
+/*
+ * Update status of marketing campaigns and send a message when they are done.
+ * rct2: 0x0069E0C1
+ **/
+void scenario_marketing_update()
+{
+	for (int i = 0; i < 6; ++i) {
+		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
+		int campaign_item = 0;
+
+		if (!campaign_weeks_left)
+			continue;
+		window_invalidate_by_id(WC_FINANCES, 0);
+
+		// high bit marks the campaign as inactive, on first check the campaign is set actice
+		// this makes campaigns run a full x weeks even when started in the middle of a week
+		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
+		if (campaign_weeks_left & (1 << 7))
+			continue;
+		
+		RCT2_ADDRESS(0x01358102, uint8)[i]--;
+		if (campaign_weeks_left - 1 != 0)
+			continue;
+
+		campaign_item = RCT2_ADDRESS(0x01358116, uint8)[i];
+
+		// this sets the string parameters for the marketing types that have an argument.
+		if (i == 1 || i == 5) { // free RIDES oh yea
+			RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x01362942 + 304 * campaign_item, uint16);;
+			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
+		} else if (i == 3) { // free food/merch
+			campaign_item += 2016;
+			if (campaign_item >= 2048)
+				campaign_item += 96;
+			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
+		}
+
+		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + i, 0);
+	}
+}
+
+
+/*
+ * Scenario and finance related update iteration.
+ * rct2: 0x006C44B1
+ **/
+void scenario_update()
+{
+	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
+	uint32 month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16),
+		next_month_tick = month_tick + 4;
+	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7,
+		current_days_in_month = days_in_month[month],
+		objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+
+	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
+		return;
+
+	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
+		// daily checks
+		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // finance update
+		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
+		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
+		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
+		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
+			objective_type == 6 || objective_type == 5) {
+			scenario_objectives_check();
+		}
+	}
+
+	
+	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
+	if ( next_month_tick % 0x4000 == 0) {
+		// weekly checks
+		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
+		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
+		RCT2_CALLPROC_EBPSAFE(0x0069E092);
+		scenario_marketing_update();
+		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
+		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
+		RCT2_CALLPROC_EBPSAFE(0x006AC916);
+
+		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
+			for (int i = 0; i < 100; ++i) {
+				int carry;
+				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
+				__asm mov carry, 0;
+				__asm adc carry, 0;
+				if (!carry)
+					break;
+			}
+		}
+		RCT2_CALLPROC_EBPSAFE(0x0066A231);
+		RCT2_CALLPROC_EBPSAFE(0x0066A348);
+	}
+
+	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
+	if (next_month_tick % 0x8000 == 0) {
+		// biweekly checks
+		RCT2_CALLPROC_EBPSAFE(0x006AC885);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
+	if (next_month_tick > 0x10000) {
+		// month ends actions
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
+		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
+		scenario_objectives_check();
+		scneario_entrance_fee_too_high_check();
+		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
+	}
+	
+}
+

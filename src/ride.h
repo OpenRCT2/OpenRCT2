@@ -29,7 +29,9 @@
  */
 typedef struct {
 	uint8 type;						// 0x000
-	uint32 var_001;
+	uint8 subtype;					// 0x001
+	uint16 pad_002;
+	uint8 var_004;
 	uint8 pad_005[0x44];
 	uint8 status;					// 0x049
 	uint16 var_04A;
@@ -40,9 +42,9 @@ typedef struct {
 	uint8 pad_072[0x14];
 	uint16 train_car_map[1];		// 0x86 Points to the first car in the train
 	uint8 pad_088[0x68];
-	sint16 excitement;				// 0x0F0
-	sint16 intensity;				// 0x0F2
-	sint16 nausea;					// 0x0F4
+	sint16 var_0F0;
+	sint16 var_0F2;
+	sint16 var_0F4;
 	uint8 pad_0F6[0x2E];
 	sint16 var_124;
 	sint16 var_126;
@@ -55,9 +57,9 @@ typedef struct {
 	sint16 var_134;
 	sint16 var_136;
 	uint8 pad_138[0x08];
-	sint16 var_140;
-	sint16 var_142;
-	uint16 pad_144;
+	sint16 excitement;				// 0x140
+	sint16 intensity;				// 0x142
+	uint16 nausea;					// 0x144
 	uint16 reliability;				// 0x146
 	uint16 pad_148;
 	uint16 var_14A;
