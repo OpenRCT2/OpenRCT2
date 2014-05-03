@@ -1190,10 +1190,10 @@ static void load_landscape()
 		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
 		if (1) {
 			gfx_invalidate_screen();
-			// game_loop_iteration
+			rct2_endupdate();
 		} else {
 			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
-			// game_loop_iteration
+			rct2_endupdate();
 		}
 	}
 }
@@ -1223,10 +1223,10 @@ static void load_game()
 		RCT2_CALLPROC_EBPSAFE(0x00675E1B); // game_load
 		if (1) {
 			gfx_invalidate_screen();
-			// game_loop_iteration
+			rct2_endupdate();
 		} else {
 			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
-			// game_loop_iteration
+			rct2_endupdate();
 		}
 	}
 }
@@ -1260,7 +1260,7 @@ void game_load_or_quit_no_save_prompt()
 			RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 5);
 		}
 		title_load();
-		// game_loop_iteration
+		rct2_endupdate();
 	} else {
 		rct2_exit();
 	}
