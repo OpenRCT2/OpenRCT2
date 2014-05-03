@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
 
@@ -287,4 +288,64 @@ void osinterface_free()
 
 	osinterface_close_window();
 	SDL_Quit();
+}
+
+/**
+ * 
+ *  rct2: 0x004080EA
+ */
+int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName)
+{
+	char initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
+	OPENFILENAME openFileName;
+	BOOL result;
+	int tmp;
+
+	// Get directory path from given filename
+	strcpy(initialDirectory, filename);
+	dotAddress = strrchr(filename, '.');
+	if (dotAddress != NULL) {
+		slashAddress = strrchr(filename, '\\');
+		if (slashAddress < dotAddress)
+			*(slashAddress + 1) = 0;
+	}
+
+	// Clear filename
+	*filename = 0;
+
+	// Set open file name options
+	memset(&openFileName, 0, sizeof(OPENFILENAME));
+	openFileName.lStructSize = sizeof(OPENFILENAME);
+	openFileName.hwndOwner = RCT2_GLOBAL(0x009E2D70, HWND);
+	openFileName.lpstrFile = filename;
+	openFileName.nMaxFile = MAX_PATH;
+	openFileName.lpstrInitialDir = initialDirectory;
+	openFileName.lpstrTitle = title;
+
+	// Copy filter name
+	strcpy(0x01423800, filterName);
+
+	// Copy filter pattern
+	strcpy(0x01423800 + strlen(filterName) + 1, filterPattern);
+	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
+	openFileName.lpstrFilter = 0x01423800;
+
+	// 
+	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
+	if (RCT2_GLOBAL(0x009E2BB8, uint32) == 2 && RCT2_GLOBAL(0x009E1AF8, uint32) == 1)
+		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
+
+	// Open dialog
+	if (type == 0) {
+		openFileName.Flags = OFN_EXPLORER | OFN_CREATEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+		result = GetSaveFileName(&openFileName);
+	} else if (type == 1) {
+		openFileName.Flags = OFN_EXPLORER | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+		result = GetOpenFileName(&openFileName);
+	}
+
+	// 
+	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
+
+	return result;
 }
