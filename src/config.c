@@ -223,7 +223,7 @@ static void config_create_default(char *path)
 	fp = fopen(path, "w");
 	fprintf(fp, "[general]\n");
 	fprintf(fp, "game_path = %s\n", gConfig.game_path);
-	fprintf(fp, "screenshot_format = 1\n");
+	fprintf(fp, "screenshot_format = PNG\n");
 	fclose(fp);
 }
 
@@ -245,10 +245,12 @@ static void config_parse_settings(FILE *fp)
 		if (strcmp(setting, "game_path") == 0){
 			strcpy(gConfig.game_path, value); // TODO: change to copy correct amount of bytes
 		} else if(strcmp(setting, "screenshot_format") == 0) {
-			if (strcmp(value, "1") == 0) {
-				gConfig.screenshot_format = 1;
+			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
+				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
+			} else if (strcmp(value, "1") == 0) { // Maybe remove that? WARNING: Breaks existing config files
+				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
 			} else {
-				gConfig.screenshot_format = 0;
+				gConfig.screenshot_format = SCREENSHOT_FORMAT_BMP;
 			}
 		}
 	}
