@@ -126,6 +126,7 @@ void rct2_endupdate();
 char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
+void get_local_time();
 void *rct2_malloc(size_t numBytes);
 void *rct2_realloc(void *block, size_t numBytes);
 void rct2_free(void *block);
