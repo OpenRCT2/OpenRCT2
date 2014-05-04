@@ -99,7 +99,7 @@ void window_news_open()
 			400,
 			300,
 			window_news_events,
-			WC_ABOUT,
+			WC_RECENT_NEWS,
 			0
 		);
 		window->widgets = window_news_widgets;
