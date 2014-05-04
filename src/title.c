@@ -167,8 +167,8 @@ static void title_update_showcase()
 
 				w = window_get_main();
 				w->var_4B0 = -1;
-				w->var_4B2 = RCT2_GLOBAL(0x0138869A, sint16);
-				w->var_4B4 = RCT2_GLOBAL(0x0138869C, sint16);
+				w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+				w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
 				{
 					char _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - w->viewport->zoom;
@@ -184,8 +184,8 @@ static void title_update_showcase()
 							w->viewport->view_height <<= _cl;
 						}
 					}
-					w->var_4B2 -= w->viewport->view_width >> 1;
-					w->var_4B4 -= w->viewport->view_height >> 1;
+					w->saved_view_x -= w->viewport->view_width >> 1;
+					w->saved_view_y -= w->viewport->view_height >> 1;
 				}
 
 				window_invalidate(w);
