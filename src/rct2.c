@@ -123,7 +123,6 @@ void rct2_init()
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
-	OutputDebugString(s);
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
