@@ -66,6 +66,11 @@ enum {
 	SHORTCUT_COUNT
 };
 
+enum {
+	SCREENSHOT_FORMAT_BMP,
+	SCREENSHOT_FORMAT_PNG
+};
+
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_reset_shortcut_keys();

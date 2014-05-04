@@ -29,10 +29,6 @@
 #include "strings.h"
 #include "window_error.h"
 
-enum {
-	SCREENSHOT_FORMAT_BMP,
-	SCREENSHOT_FORMAT_PNG
-};
 
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
