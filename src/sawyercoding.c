@@ -29,6 +29,48 @@ static void decode_chunk_rotate(char *buffer, int length);
 
 /**
  * 
+ *  rct2: 0x00676FD2
+ */
+int sawyercoding_validate_checksum(HFILE hFile)
+{
+	int i;
+	uint32 checksum, fileChecksum;
+	DWORD dataSize, bufferSize, numBytesRead;
+	uint8 buffer[1024];
+
+	// Get data size
+	if ((dataSize = SetFilePointer(hFile, 0, NULL, FILE_END)) < 8)
+		return;
+	dataSize -= 4;
+	
+	// Calculate checksum
+	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	checksum = 0;
+	do {
+		bufferSize = min(dataSize, 1024);
+		ReadFile(hFile, buffer, bufferSize, &numBytesRead, NULL);
+		if (numBytesRead != bufferSize)
+			return 0;
+
+		for (i = 0; i < bufferSize; i++)
+			checksum += buffer[i];
+		dataSize -= bufferSize;
+	} while (dataSize != 0);
+
+	// Read file checksum
+	ReadFile(hFile, &fileChecksum, sizeof(fileChecksum), &numBytesRead, NULL);
+	if (numBytesRead != sizeof(fileChecksum))
+		return 0;
+
+	// Reset file position
+	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+
+	// Validate
+	return checksum == fileChecksum;
+}
+
+/**
+ * 
  *  rct2: 0x0067685F
  * buffer (esi)
  */

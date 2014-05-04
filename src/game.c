@@ -1223,7 +1223,12 @@ int game_load_save()
 	}
 
 	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
-	// RCT2_CALLPROC_EBPSAFE(0x00676FD2); // check file checksum
+	if (!sawyercoding_validate_checksum(hFile)) {
+		CloseHandle(hFile);
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	}
 
 	rct_s6_header *s6Header = 0x009E34E4;
 	rct_s6_info *s6Info = 0x0141F570;
