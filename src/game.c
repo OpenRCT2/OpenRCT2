@@ -878,9 +878,6 @@ void handle_shortcut(int key)
 			break;
 		}
 	}
-	if (key == SDL_SCANCODE_M) {
-		key = key;
-	}
 }
 
 /**
