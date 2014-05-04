@@ -228,6 +228,7 @@ static void config_create_default(char *path)
 	fprintf(fp, "[general]\n");
 	fprintf(fp, "game_path = %s\n", gConfig.game_path);
 	fprintf(fp, "screenshot_format = PNG\n");
+	fprintf(fp, "play_intro = false\n");
 	fclose(fp);
 }
 
@@ -256,6 +257,8 @@ static void config_parse_settings(FILE *fp)
 			} else {
 				gConfig.screenshot_format = SCREENSHOT_FORMAT_BMP;
 			}
+		} else if (strcmp(setting, "play_intro") == 0) {
+			gConfig.play_intro = (strcmp(value, "true") == 0);
 		}
 	}
 }
