@@ -122,7 +122,8 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();
-	RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
+	get_local_time();
+	OutputDebugString(s);
 	RCT2_CALLPROC_EBPSAFE(0x00667104);
 	RCT2_CALLPROC_EBPSAFE(0x006C4209);
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
@@ -374,6 +375,19 @@ void get_system_time()
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+}
+
+/**
+ * Obtains os local time (hour and minute)
+ *  rct2: 0x006C45E7;
+ */
+void get_local_time()
+{
+	SYSTEMTIME systime;
+	GetLocalTime(&systime);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
 }
 
 /**
