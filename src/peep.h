@@ -275,7 +275,12 @@ typedef struct {
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
 	uint8 bathroom;					// 0x40
-	uint8 pad_041[0x27];
+	uint8 pad_41[0x2];
+	uint8 intensity;				// 0x43
+	uint8 nausea_tolerance;			// 0x44
+	uint8 pad_45;
+	uint16 paid_on_drink;			// 0x46
+	uint8 pad_48[0x20];
 	uint8 current_ride;				// 0x68
 	uint8 pad_69;
 	uint8 current_train;   	        // 0x6A
