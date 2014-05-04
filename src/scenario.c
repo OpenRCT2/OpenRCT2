@@ -422,8 +422,8 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	mainWindow = window_get_main();
 
 	mainWindow->var_4B0 = -1;
-	mainWindow->var_4B2 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	mainWindow->var_4B4 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
 	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
 	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
@@ -438,8 +438,8 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 			mainWindow->viewport->view_height <<= _cl;
 		}
 	}
-	mainWindow->var_4B2 -= mainWindow->viewport->view_width >> 1;
-	mainWindow->var_4B4 -= mainWindow->viewport->view_height >> 1;
+	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
