@@ -25,13 +25,16 @@
 #include "rct2.h"
 #include "game.h"
 #include "news_item.h"
+#include "object.h"
 #include "osinterface.h"
 #include "peep.h"
+#include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
 #include "strings.h"
 #include "title.h"
 #include "tutorial.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_error.h"
@@ -1203,6 +1206,104 @@ static void load_landscape()
 
 /**
  * 
+ *  rct2: 0x00675E1B
+ */
+int game_load_save()
+{
+	rct_window *mainWindow;
+	HANDLE hFile;
+	char *path;
+	int i, j;
+
+	path = (char*)0x0141EF68;
+	hFile = CreateFile(
+		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
+	);
+	if (hFile == NULL) {
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	}
+
+	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
+	// RCT2_CALLPROC_EBPSAFE(0x00676FD2); // check file checksum
+
+	rct_s6_header *s6Header = 0x009E34E4;
+	rct_s6_info *s6Info = 0x0141F570;
+
+	// Read first chunk
+	sawyercoding_read_chunk(hFile, s6Header);
+	if (s6Header->type == S6_TYPE_SAVEDGAME) {
+		// Read packed objects
+		if (s6Header->num_packed_objects > 0) {
+			j = 0;
+			for (i = 0; i < s6Header->num_packed_objects; i++)
+				j += object_load_packed();
+			if (j > 0)
+				object_load_list();
+		}
+	}
+
+	object_read_and_load_entries(hFile);
+
+	// Read flags (16 bytes)
+	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+
+	// Read map elements
+	memset(RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_MAP_ELEMENTS);
+
+	// Read game data, including sprites
+	sawyercoding_read_chunk(hFile, 0x010E63B8);
+
+	CloseHandle(hFile);
+
+	// Check expansion pack
+	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
+
+	// The rest is the same as in scenario load and play
+	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	map_update_tile_pointers();
+	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	viewport_init_all();
+	game_create_windows();
+	mainWindow = window_get_main();
+
+	mainWindow->var_4B0 = -1;
+	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
+	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	if (_cl != 0) {
+		if (_cl < 0) {
+			_cl = -_cl;
+			mainWindow->viewport->view_width >>= _cl;
+			mainWindow->viewport->view_height >>= _cl;
+		} else {
+			mainWindow->viewport->view_width <<= _cl;
+			mainWindow->viewport->view_height <<= _cl;
+		}
+	}
+	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
+	window_invalidate(mainWindow);
+
+	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
+		RCT2_CALLPROC_EBPSAFE(0x0069E869);
+
+	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	gfx_invalidate_screen();
+	return 1;
+}
+
+/**
+ * 
  *  rct2: 0x0066DBB7
  */
 static void load_game()
@@ -1223,8 +1324,7 @@ static void load_game()
 		}
 		strcpy(0x009ABB37, 0x0141EF68);
 
-		RCT2_CALLPROC_EBPSAFE(0x00675E1B); // game_load
-		if (1) {
+		if (game_load_save()) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
 		} else {

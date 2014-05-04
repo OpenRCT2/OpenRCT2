@@ -235,7 +235,7 @@ void check_cmdline_arg()
 	if(!stricmp(processed_arg + last_period, "sv6"))
 	{
 		strcpy(0x00141EF68, processed_arg);
-		RCT2_CALLPROC_EBPSAFE(0x00675E1B); //load_saved_game
+		game_load_save();
 	}
 	else if(!stricmp(processed_arg + last_period, "sc6"))
 	{

@@ -329,6 +329,7 @@ void scenario_load(char *path)
 	);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
+		// RCT2_CALLPROC_EBPSAFE(0x00676FD2); // check file checksum
 
 		// Read first chunk
 		sawyercoding_read_chunk(hFile, s6Header);
@@ -393,7 +394,7 @@ void scenario_load(char *path)
 	}
 
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 }
 
 /**
