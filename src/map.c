@@ -280,3 +280,53 @@ int map_element_height(int x, int y)
 
 	return height;
 }
+
+/**
+ *
+ *  rct2: 0x0068B089
+ */
+void sub_68B089()
+{
+	int i;
+	rct_map_element *mapElementFirst, *mapElement;
+
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
+		return;
+
+	i = RCT2_GLOBAL(0x0010E63B8, uint32);
+	do {
+		i++;
+		if (i >= MAX_TILE_MAP_ELEMENT_POINTERS)
+			i = 0;
+	} while (TILE_MAP_ELEMENT_POINTER(i) == 0xFFFFFFFF);
+	RCT2_GLOBAL(0x0010E63B8, uint32) = i;
+
+	mapElementFirst = mapElement = TILE_MAP_ELEMENT_POINTER(i);
+	do {
+		mapElement--;
+		if (mapElement < RCT2_ADDRESS_MAP_ELEMENTS)
+			break;
+	} while (mapElement->base_height == 255);
+	mapElement++;
+
+	if (mapElement == mapElementFirst)
+		return;
+
+	// 
+	TILE_MAP_ELEMENT_POINTER(i) = mapElement;
+	do {
+		*mapElement = *mapElementFirst;
+		mapElementFirst->base_height = 255;
+
+		mapElement++;
+		mapElementFirst++;
+	} while (!((mapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+
+	// Update next free element?
+	mapElement = RCT2_GLOBAL(0x0140E9A4, rct_map_element*);
+	do {
+		mapElement--;
+	} while (mapElement->base_height == 255);
+	mapElement++;
+	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
+}
