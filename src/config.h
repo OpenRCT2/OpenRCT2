@@ -76,11 +76,14 @@ void config_save();
 // New config format
 #define MAX_CONFIG_LENGTH 256
 
-typedef struct configuration {
+typedef struct general_configuration {
 	uint8 screenshot_format;
 	char game_path[MAX_PATH];
 } configuration_t;
 
+//typedef struct hotkey_configuration{
+
+//};
 extern configuration_t gConfig;
 
 void config_init();

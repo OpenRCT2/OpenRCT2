@@ -78,7 +78,7 @@ void config_reset_shortcut_keys()
 }
 
 /**
- * 
+ *  Reads the config file data/config.cfg
  *  rct2: 0x006752D5
  */
 void config_load()
@@ -86,6 +86,7 @@ void config_load()
 	HANDLE hFile;
 	DWORD bytesRead;
 
+	char* path = get_file_path(PATH_ID_GAMECFG);
 	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
@@ -98,14 +99,15 @@ void config_load()
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
 			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBB, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBB, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
 		}
+	
 	}
 
 	RCT2_GLOBAL(0x009AAC77, sint8) = 0;
@@ -124,7 +126,7 @@ void config_load()
 }
 
 /**
- * 
+ *  Save configuration to the data/config.cfg file
  *  rct2: 0x00675487
  */
 void config_save()
@@ -238,10 +240,16 @@ static void config_parse_settings(FILE *fp)
 	int c = NULL, pos = 0;
 	char *setting;
 	char *value;
+	char *section;
 	setting = (char *)malloc(MAX_CONFIG_LENGTH);
 	value = (char *)malloc(MAX_CONFIG_LENGTH);
 	
 	while (config_get_line(fp, setting, value) > 0) {
+		if (strcmp(value, "\0")){ //if value is a null string, we assume new section
+			strcpy(section, setting);
+			continue;
+		}
+		
 		if (strcmp(setting, "game_path") == 0){
 			strcpy(gConfig.game_path, value); 
 		} else if(strcmp(setting, "screenshot_format") == 0) {
@@ -283,16 +291,19 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 	realloc(setting, size);
 	fseek(fp, start, SEEK_SET);
 	c = fgetc(fp);
-	if (c == '[') {
-		// TODO support categories
-		setting[0] = '\0';
-		value[0] = '\0';
-		while (c != '\n' && c != EOF) {
-			pos++;
-			c = fgetc(fp);
+	if (c == '[' ) { 
+		
+		while (c != ']' && c != EOF){
+			 c = fgetc(fp);
+			 setting[pos] = (char)c;
+			 pos++;
 		}
 
-		return 1;
+		realloc(value, 1);
+		value[0] = '\0';
+		c = fgetc(fp);
+
+		return
 	}
 
 
