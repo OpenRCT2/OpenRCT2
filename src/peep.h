@@ -167,14 +167,14 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_SUB_SANDWICH_MUCH = 151,
 	PEEP_THOUGHT_TYPE_COOKIE_MUCH = 152,
 
-	PEEP_THOUGH_ROAST_SAUSAGE_MUCH = 156,
+	PEEP_THOUGHT_ROAST_SAUSAGE_MUCH = 156,
 
-	PEEP_THOUGH_HELP = 168, // "Help! Put me down!"
-	PEEP_THOUGH_RUNNING_OUT = 169, // I'm running out of cash!"
-	PEEP_THOUGH_NEW_RIDE = 170, // "Wow! A new ride being built!"
-	PEEP_THOUGH_NICE_RIDE = 171, // "Nice ride! But not as good as the Phoenix..."
-	PEEP_THOUGH_EXCITED = 172, // "I'm so excited - It's an Intamin ride!"
-	PEEP_THOUGH_HERE_WE_ARE = 173, // "...and here we are on X!"
+	PEEP_THOUGHT_HELP = 168, // "Help! Put me down!"
+	PEEP_THOUGHT_RUNNING_OUT = 169, // I'm running out of cash!"
+	PEEP_THOUGHT_NEW_RIDE = 170, // "Wow! A new ride being built!"
+	PEEP_THOUGHT_NICE_RIDE = 171, // "Nice ride! But not as good as the Phoenix..."
+	PEEP_THOUGHT_EXCITED = 172, // "I'm so excited - It's an Intamin ride!"
+	PEEP_THOUGHT_HERE_WE_ARE = 173, // "...and here we are on X!"
 
 	PEEP_THOUGHT_TYPE_NONE = 255
 };
