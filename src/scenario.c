@@ -854,7 +854,7 @@ void scenario_update()
 
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
-		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // finance update
+		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // daily profit update
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
@@ -868,13 +868,13 @@ void scenario_update()
 	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
 	if ( next_month_tick % 0x4000 == 0) {
 		// weekly checks
-		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
-		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
-		RCT2_CALLPROC_EBPSAFE(0x0069E092);
+		RCT2_CALLPROC_EBPSAFE(0x006C18A9); // pay wages
+		RCT2_CALLPROC_EBPSAFE(0x00684DA5); // pay for research
+		RCT2_CALLPROC_EBPSAFE(0x0069E092); // pay loan interest
 		scenario_marketing_update();
-		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
-		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
-		RCT2_CALLPROC_EBPSAFE(0x006AC916);
+		RCT2_CALLPROC_EBPSAFE(0x0069BF41); // peep needs update and warnings
+		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
+		RCT2_CALLPROC_EBPSAFE(0x006AC916); // ride update favourited
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
 			for (int i = 0; i < 100; ++i) {
@@ -886,8 +886,8 @@ void scenario_update()
 					break;
 			}
 		}
-		RCT2_CALLPROC_EBPSAFE(0x0066A231);
-		RCT2_CALLPROC_EBPSAFE(0x0066A348);
+		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
+		RCT2_CALLPROC_EBPSAFE(0x0066A348); // update parksize
 	}
 
 	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
@@ -904,7 +904,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
+		RCT2_CALLPROC_EBPSAFE(0x0066A86C); // award checks
 	}
 	
 }
