@@ -40,25 +40,25 @@ void editor_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_CALLPROC_EBPSAFE(0x006BABB4);
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8);
+	RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+	RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
 	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
 	map_init();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	RCT2_CALLPROC_EBPSAFE(0x00667104); // reset_park_entrances
+	RCT2_CALLPROC_EBPSAFE(0x006C4209); // reset_saved_strings
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // sprites_init
 	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	park_init();
-	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB); // finance_init
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
 	viewport_init_all();
@@ -66,7 +66,7 @@ void editor_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~0x08;
+	mainWindow->flags &= ~WF_3;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
@@ -94,14 +94,14 @@ void trackdesigner_load()
 	map_init();
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	RCT2_CALLPROC_EBPSAFE(0x00667104); // reset_park_entrances
+	RCT2_CALLPROC_EBPSAFE(0x006C4209); // reset_saved_strings
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
 	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	park_init();
-	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB); // finance_init
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
@@ -113,7 +113,7 @@ void trackdesigner_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~0x08;
+	mainWindow->flags &= ~WF_3;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
@@ -132,14 +132,14 @@ void trackmanager_load()
 	map_init();
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	RCT2_CALLPROC_EBPSAFE(0x00667104); // reset_park_entrances
+	RCT2_CALLPROC_EBPSAFE(0x006C4209); // reset_saved_strings
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
 	ride_init_all();
 	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	park_init();
-	RCT2_CALLPROC_EBPSAFE(0x0069DEFB);
+	RCT2_CALLPROC_EBPSAFE(0x0069DEFB); // finance_init
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
@@ -151,7 +151,7 @@ void trackmanager_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~0x08;
+	mainWindow->flags &= ~WF_3;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
