@@ -136,8 +136,8 @@ typedef struct rct_window {
 	sint16 var_4AC;
 	sint16 var_4AE;
 	sint16 var_4B0; // viewport target sprite?
-	sint16 var_4B2; // viewport target x?
-	sint16 var_4B4; // viewport target y?
+	sint16 saved_view_x;			// 0x4B2
+	sint16 saved_view_y; 			// 0x4B4
 	rct_windowclass classification;	// 0x4B6
 	uint8 pad_4B7;
 	sint8 var_4B8;

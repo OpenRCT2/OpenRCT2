@@ -102,8 +102,8 @@ void window_water_open()
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
-	RCT2_GLOBAL(0x0141F738, uint32) = 0x80000000;
-	RCT2_GLOBAL(0x0141F73C, uint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
@@ -215,12 +215,12 @@ static void window_water_paint()
 	// Draw raise cost amount
 	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
-	if (RCT2_GLOBAL(0x0141F738, uint32) != 0x80000000 && RCT2_GLOBAL(0x0141F738, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)0x0141F738);
 	y += 10;
 
 	// Draw lower cost amount
-	if (RCT2_GLOBAL(0x0141F73C, uint32) != 0x80000000 && RCT2_GLOBAL(0x0141F73C, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)0x0141F73C);
 }
 
