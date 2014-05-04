@@ -875,6 +875,9 @@ void handle_shortcut(int key)
 			break;
 		}
 	}
+	if (key == SDL_SCANCODE_M) {
+		key = key;
+	}
 }
 
 /**
@@ -930,7 +933,7 @@ void game_handle_keyboard_input()
 
 	// Handle key input
 	while ((key = get_next_key()) != 0) {
-		if (key == 255 || key == 0x10 || key == 0x11)
+		if (key == 255)
 			continue;
 
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;

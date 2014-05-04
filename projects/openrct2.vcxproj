@@ -88,6 +88,7 @@
     <ClCompile Include="..\src\window_game_bottom_toolbar.c" />
     <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_land.c" />
+    <ClCompile Include="..\src\window_news.c" />
     <ClCompile Include="..\src\window_park.c" />
     <ClCompile Include="..\src\window_footpath.c" />
     <ClCompile Include="..\src\window_ride_list.c" />

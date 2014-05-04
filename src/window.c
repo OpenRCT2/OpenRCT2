@@ -631,6 +631,7 @@ void window_init_scroll_widgets(rct_window *w)
 	rct_widget* widget;
 	rct_scroll* scroll;
 	int widget_index, scroll_index;
+	int width, height;
 
 	widget_index = 0;
 	scroll_index = 0;
@@ -641,16 +642,11 @@ void window_init_scroll_widgets(rct_window *w)
 		}
 
 		scroll = &w->scrolls[scroll_index];
-
-		{
-			int _eax = 0, _ebx = scroll_index * sizeof(rct_scroll), _ecx = 0, _edx = 0, _esi = w, _edi = widget_index * sizeof(rct_widget), _ebp = 0;
-			RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & _eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
-
-			scroll->h_left = 0;
-			scroll->h_right = _ecx + 1;
-			scroll->v_top = 0;
-			scroll->v_bottom = _edx + 1;
-		}
+		window_get_scroll_size(w, scroll_index, &width, &height);
+		scroll->h_left = 0;
+		scroll->h_right = width + 1;
+		scroll->v_top = 0;
+		scroll->v_bottom = height + 1;
 
 		if (widget->image & 0x01)
 			scroll->flags |= HSCROLLBAR_VISIBLE;
@@ -673,6 +669,18 @@ void window_init_scroll_widgets(rct_window *w)
 void window_update_scroll_widgets(rct_window *w)
 {
 	RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, w, 0, 0);
+}
+
+int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
+{
+	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+	int widgetIndex = window_get_widget_index(w, widget);
+
+	int eax = 0, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
+	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*width = ecx;
+	*height = edx;
+	return 1;
 }
 
 int window_get_scroll_data_index(rct_window *w, int widget_index)

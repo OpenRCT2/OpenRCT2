@@ -195,7 +195,7 @@ static void window_game_bottom_toolbar_mouseup()
 		break;
 	case WIDX_RIGHT_OUTSET:
 	case WIDX_DATE:
-		RCT2_CALLPROC_EBPSAFE(0x0066E464);
+		window_news_open();
 		break;
 	}
 }
