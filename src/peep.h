@@ -296,7 +296,8 @@ enum PEEP_ITEM {
 typedef struct {
 	uint8 type;
 	uint8 item;
-	uint16 time;
+	uint8 pad_3;
+	uint8 pad_4;
 } rct_peep_thought;
 
 typedef struct {
