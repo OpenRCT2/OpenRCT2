@@ -348,10 +348,7 @@ typedef struct {
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D
 	uint8 photo4_ride_ref;			// 0x5E
-	uint8 pad_5F[0x09];
-	uint8 pad_48[0x10];
-	uint32 item_extra_flags;	// 0x58
-	uint8 pad_5C[0x0C];				// 0x5C
+	uint8 pad_5F[0x09];				// 0x5C
 	uint8 current_ride;				// 0x68
 	uint8 pad_69;
 	uint8 current_train;   	        // 0x6A
