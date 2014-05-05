@@ -31,16 +31,20 @@ typedef struct {
 	uint8 type;						// 0x000
 	uint8 subtype;					// 0x001
 	uint16 pad_002;
-	uint8 var_004;
-	uint8 pad_005[0x44];
+	uint8 mode;						// 0x004
+	uint8 colour_scheme_type;		// 0x005
+	uint16 car_colours[32];			// 0x006
+	uint8 pad_046[0x03];
 	uint8 status;					// 0x049
 	uint16 var_04A;
 	uint32 var_04C;
-	uint16 var_050;					// 0x050
-	uint8 pad_052[0x18];
-	uint16 var_06A[4];				// probably entrance map coordinates
-	uint8 pad_072[0x14];
-	uint16 train_car_map[1];		// 0x86 Points to the first car in the train
+	uint16 overall_view;			// 0x050
+	uint16 station_starts[4];		// 0x052
+	uint8 pad_05A[0x10];
+	uint16 entrances[4];			// 0x06A
+	uint16 exits[4];				// 0x072
+	uint8 pad_07A[0x0C];
+	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
 	uint8 pad_088[0x68];
 	sint16 var_0F0;
 	sint16 var_0F2;
@@ -56,7 +60,8 @@ typedef struct {
 	sint16 running_cost;			// 0x132
 	sint16 var_134;
 	sint16 var_136;
-	uint8 pad_138[0x08];
+	sint16 price;					// 0x138
+	uint8 pad_13A[0x06];
 	sint16 excitement;				// 0x140
 	sint16 intensity;				// 0x142
 	uint16 nausea;					// 0x144
@@ -195,6 +200,52 @@ enum {
 	RIDE_STATUS_CLOSED,
 	RIDE_STATUS_OPEN,
 	RIDE_STATUS_TESTING
+};
+
+enum {
+	RIDE_MODE_NORMAL = 0,
+	RIDE_MODE_CONTINUOUS_CIRCUIT,
+	RIDE_MODE_REVERSE_INCLINED_SHUTTLE,
+	RIDE_MODE_POWERED_LAUNCH,						// RCT1 style?
+	RIDE_MODE_SHUTTLE,
+	RIDE_MODE_BOAT_HIRE,
+	RIDE_MODE_UPWARD_LAUNCH,
+	RIDE_MODE_ROTATING_LIFT,
+	RIDE_MODE_STATION_TO_STATION,
+	RIDE_MODE_SINGLE_RIDE_PER_ADMISSION,
+	RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION,
+	RIDE_MODE_MAZE,
+	RIDE_MODE_RACE,
+	RIDE_MODE_BUMPERCAR,
+	RIDE_MODE_SWING,
+	RIDE_MODE_SHOP_STALL,
+	RIDE_MODE_ROTATION,
+	RIDE_MODE_FORWARD_ROTATION,
+	RIDE_MODE_BACKWARD_ROTATION,
+	RIDE_MODE_FILM_AVENGING_AVIATORS,
+	RIDE_MODE_3D_FILM_MOUSE_TAILS,
+	RIDE_MODE_SPACE_RINGS,
+	RIDE_MODE_BEGINNERS,
+	RIDE_MODE_LIM_POWERED_LAUNCH,
+	RIDE_MODE_FILM_THRILL_RIDERS,
+	RIDE_MODE_3D_FILM_STORM_CHASERS,
+	RIDE_MODE_3D_FILM_SPACE_RAIDERS,
+	RIDE_MODE_INTENSE,
+	RIDE_MODE_BERSERK,
+	RIDE_MODE_HAUNTED_HOUSE,
+	RIDE_MODE_CIRCUS_SHOW,
+	RIDE_MODE_DOWNWARD_LAUNCH,
+	RIDE_MODE_CROOKED_HOUSE,
+	RIDE_MODE_FREEFALL_DROP,
+	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
+	RIDE_MODE_POWERED_LAUNCH2,						// RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+};
+
+enum {
+	RIDE_COLOUR_SCHEME_ALL_SAME,
+	RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN,
+	RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR
 };
 
 #define MAX_RIDES 255
