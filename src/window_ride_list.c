@@ -497,14 +497,14 @@ static void window_ride_list_scrollpaint()
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
 			if ((ride->var_158 & 0xFF) != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_158 * 4) & 0xFF;
-			}			
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_158 & 0xFF) * 4;
+			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
 			if ((ride->var_14A & 0xFF) != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_14A * 5) & 0xFF;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_14A & 0xFF) * 5;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
@@ -647,7 +647,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_POPULARITY:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if ((ride->var_158 * 4) & 0xFF <= (otherRide->var_158 * 4) & 0xFF)
+				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
 					break;
 
 				swapper = w->var_076[k];
@@ -658,7 +658,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if ((ride->var_14A * 5) & 0xFF <= (otherRide->var_14A * 5) & 0xFF)
+				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
 					break;
 
 				swapper = w->var_076[k];

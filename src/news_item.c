@@ -182,12 +182,12 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 	switch (type) {
 	case NEWS_ITEM_RIDE:
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[subject]);
-		if (ride->var_050 == 0xFFFF) {
+		if (ride->overall_view == 0xFFFF) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
-		*x = (ride->var_050 & 0xFF) * 32 + 16;
-		*y = (ride->var_050 >> 8) * 32 + 16;
+		*x = (ride->overall_view & 0xFF) * 32 + 16;
+		*y = (ride->overall_view >> 8) * 32 + 16;
 		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
