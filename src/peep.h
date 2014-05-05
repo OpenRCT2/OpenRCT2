@@ -287,7 +287,12 @@ typedef struct {
 	uint8 nausea_tolerance;			// 0x44
 	uint8 pad_45;
 	uint16 paid_on_drink;			// 0x46
-	uint8 pad_48[0x20];
+	uint8 pad_48[0x10];
+	uint32 item_extra_flags;		// 0x58
+	uint8 photo2_ride_ref;			// 0x5C
+	uint8 photo3_ride_ref;			// 0x5D
+	uint8 photo4_ride_ref;			// 0x5E
+	uint8 pad_5F[0x09];
 	uint8 current_ride;				// 0x68
 	uint8 pad_69;
 	uint8 current_train;   	        // 0x6A
@@ -298,11 +303,13 @@ typedef struct {
 	uint32 id;						// 0x9C
 	sint32 cash_in_pocket;			// 0xA0
 	sint32 cash_spent;				// 0xA4
-	uint8 pad_A8[8];
+	uint8 pad_A8;
+	sint32 time_in_park;			// 0xA9
+	uint8 pad_AD[0x3];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint16 pad_C4;
 	uint8 var_C6;
-	uint8 pad_C7;
+	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
 	uint8 var_CC;					
 	uint8 pad_CD[0x17];
@@ -318,6 +325,8 @@ typedef struct {
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
+	uint16 pad_FA;
+	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
 int peep_get_staff_count();
