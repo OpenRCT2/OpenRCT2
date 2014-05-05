@@ -62,8 +62,8 @@ int park_calculate_size()
 		}
 	}
 
-	if (tiles != RCT2_GLOBAL(0x013580EA, sint16)) {
-		RCT2_GLOBAL(0x013580EA, sint16) = tiles;
+	if (tiles != RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) = tiles;
 		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
 	}
 	
