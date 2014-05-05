@@ -406,6 +406,33 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 	//gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
+
+/**
+ * Draws i formatted text string right aligned.
+ *  rct2: 0x006C1BFC
+ * dpi (edi)
+ * format (bx)
+ * args (esi)
+ * colour (al)
+ * x (cx)
+ * y (dx)
+ */
+void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y)
+{
+	char* buffer;
+	short text_width;
+
+	buffer = (char*)0x0141ED68;
+	format_string(buffer, format, args);
+
+	// Measure text width
+	text_width = gfx_get_string_width(buffer);
+
+	// Draw the text right aligned
+	x -= text_width;
+	gfx_draw_string(dpi, buffer, colour, x, y);
+}
+
 /**
  * 
  *  rct2: 0x006C1E53

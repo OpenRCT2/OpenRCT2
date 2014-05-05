@@ -126,7 +126,7 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;
+	sint16 page;				// 0x49A
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
@@ -341,6 +341,7 @@ void window_scenarioselect_open();
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
+void window_guest_list_open();
 void window_park_entrance_open();
 void window_park_objective_open();
 void window_ride_list_open();

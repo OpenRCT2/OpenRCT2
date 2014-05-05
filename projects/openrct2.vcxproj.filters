@@ -272,6 +272,9 @@
     <ClCompile Include="..\src\window_news.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_guest_list.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

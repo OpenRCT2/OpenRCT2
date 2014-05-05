@@ -302,7 +302,10 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 
 		// Put output ebp into ebp parameter
 		mov eax, [esp]
-		mov [_ebp], eax
+		push ebx
+		mov ebx, [_ebp]
+		mov [ebx], eax
+		pop ebx
 		add esp, 4
 
 		// Get resulting ebx, ecx, edx, esi, edi registers
