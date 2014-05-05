@@ -113,7 +113,7 @@ int ride_get_total_queue_length(rct_ride *ride)
 {
 	int i, queueLength = 0;
 	for (i = 0; i < 4; i++)
-		if (ride->var_06A[i] != 0xFFFF)
+		if (ride->entrances[i] != 0xFFFF)
 			queueLength += ride->queue_length[i];
 	return queueLength;
 }
@@ -122,7 +122,7 @@ int ride_get_max_queue_time(rct_ride *ride)
 {
 	int i, queueTime = 0;
 	for (i = 0; i < 4; i++)
-		if (ride->var_06A[i] != 0xFFFF)
+		if (ride->entrances[i] != 0xFFFF)
 			queueTime = max(queueTime, ride->queue_time[i]);
 	return queueTime;
 }
