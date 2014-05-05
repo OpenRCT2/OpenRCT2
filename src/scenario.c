@@ -23,6 +23,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "date.h"
+#include "finance.h"
 #include "game.h"
 #include "map.h"
 #include "news_item.h"
@@ -856,7 +857,7 @@ void scenario_update()
 		// daily checks
 		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // daily profit update
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
-		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
+		get_local_time();
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
@@ -868,9 +869,9 @@ void scenario_update()
 	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
 	if ( next_month_tick % 0x4000 == 0) {
 		// weekly checks
-		RCT2_CALLPROC_EBPSAFE(0x006C18A9); // pay wages
-		RCT2_CALLPROC_EBPSAFE(0x00684DA5); // pay for research
-		RCT2_CALLPROC_EBPSAFE(0x0069E092); // pay loan interest
+		finance_pay_wages();
+		finance_pay_research();
+		finance_pay_interest();
 		scenario_marketing_update();
 		RCT2_CALLPROC_EBPSAFE(0x0069BF41); // peep needs update and warnings
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
@@ -887,7 +888,7 @@ void scenario_update()
 			}
 		}
 		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
-		RCT2_CALLPROC_EBPSAFE(0x0066A348); // update parksize
+		park_calculate_size();
 	}
 
 	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
