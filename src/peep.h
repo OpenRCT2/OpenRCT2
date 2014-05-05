@@ -230,11 +230,67 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_ICE_CREAM = (1 << 25) // Unconfirmed
 };
 
-enum PEEP_NAUSEA_TOLERANCE{
+enum PEEP_NAUSEA_TOLERANCE {
 	PEEP_NAUSEA_TOLERANCE_NONE,
 	PEEP_NAUSEA_TOLERANCE_LOW,
 	PEEP_NAUSEA_TOLERANCE_AVERAGE,
 	PEEP_NAUSEA_TOLERANCE_HIGH
+};
+
+enum PEEP_ITEM {
+	// item_standard_flags
+	PEEP_ITEM_BALLOON = (1 << 0),
+	PEEP_ITEM_TOY = (1 << 1),
+	PEEP_ITEM_MAP = (1 << 2),
+	PEEP_ITEM_PHOTO = (1 << 3),
+	PEEP_ITEM_UMBRELLA = (1 << 4),
+	PEEP_ITEM_DRINK = (1 << 5),
+	PEEP_ITEM_BURGER = (1 << 6),
+	PEEP_ITEM_FRIES = (1 << 7),
+	PEEP_ITEM_ICE_CREAM = (1 << 8),
+	PEEP_ITEM_COTTON_CANDY = (1 << 9),
+	PEEP_ITEM_EMPTY_CAN = (1 << 10),
+	PEEP_ITEM_RUBBISH = (1 << 11),
+	PEEP_ITEM_EMPTY_BURGER_BOX = (1 << 12),
+	PEEP_ITEM_PIZZA = (1 << 13),
+	PEEP_ITEM_VOUCHER = (1 << 14),
+	PEEP_ITEM_POPCORN = (1 << 15),
+	PEEP_ITEM_HOT_DOG = (1 << 16),
+	PEEP_ITEM_TENTACLE = (1 << 17),
+	PEEP_ITEM_HAT = (1 << 18),
+	PEEP_ITEM_CANDY_APPLE = (1 << 19),
+	PEEP_ITEM_TSHIRT = (1 << 20),
+	PEEP_ITEM_DONUT = (1 << 21),
+	PEEP_ITEM_COFFEE = (1 << 22),
+	PEEP_ITEM_EMPTY_CUP = (1 << 23),
+	PEEP_ITEM_CHICKEN = (1 << 24),
+	PEEP_ITEM_LEMONADE = (1 << 25),
+	PEEP_ITEM_EMPTY_BOX = (1 << 26),
+	PEEP_ITEM_EMPTY_BOTTLE = (1 << 27),
+
+	// item_extra_flags
+	PEEP_ITEM_PHOTO2 = (1 << 0),
+	PEEP_ITEM_PHOTO3 = (1 << 1),
+	PEEP_ITEM_PHOTO4 = (1 << 2),
+	PEEP_ITEM_PRETZEL = (1 << 3),
+	PEEP_ITEM_CHOCOLATE = (1 << 4),
+	PEEP_ITEM_ICED_TEA = (1 << 5),
+	PEEP_ITEM_FUNNEL_CAKE = (1 << 6),
+	PEEP_ITEM_SUNGLASSES = (1 << 7),
+	PEEP_ITEM_BEEF_NOODLES = (1 << 8),
+	PEEP_ITEM_FRIED_RICE_NOODLES = (1 << 9),
+	PEEP_ITEM_WONTON_SOUP = (1 << 10),
+	PEEP_ITEM_MEATBALL_SOUP = (1 << 11),
+	PEEP_ITEM_FRUIT_JUICE = (1 << 12),
+	PEEP_ITEM_SOYBEAN_MILK = (1 << 13),
+	PEEP_ITEM_SU_JONGKWA = (1 << 14),
+	PEEP_ITEM_SUB_SANDWICH = (1 << 15),
+	PEEP_ITEM_COOKIE = (1 << 16),
+	PEEP_ITEM_EMPTY_BOWL_RED = (1 << 17),
+	PEEP_ITEM_EMPTY_DRINK_CARTON = (1 << 18),
+	PEEP_ITEM_EMPTY_JUICE_CUP = (1 << 19),
+	PEEP_ITEM_ROAST_SAUSAGE = (1 << 20),
+	PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21)
 };
 
 typedef struct {
@@ -287,7 +343,9 @@ typedef struct {
 	uint8 nausea_tolerance;			// 0x44
 	uint8 pad_45;
 	uint16 paid_on_drink;			// 0x46
-	uint8 pad_48[0x20];
+	uint8 pad_48[0x10];
+	uint32 item_extra_flags;	// 0x58
+	uint8 pad_5C[0x0C];				// 0x5C
 	uint8 current_ride;				// 0x68
 	uint8 pad_69;
 	uint8 current_train;   	        // 0x6A
@@ -318,6 +376,8 @@ typedef struct {
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
+	uint16 pad_FA;
+	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
 int peep_get_staff_count();
