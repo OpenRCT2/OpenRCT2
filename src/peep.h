@@ -239,7 +239,7 @@ enum PEEP_NAUSEA_TOLERANCE {
 
 enum PEEP_ITEM {
 	// item_standard_flags
-	PEEP_ITEM_BALOON = (1 << 0),
+	PEEP_ITEM_BALLOON = (1 << 0),
 	PEEP_ITEM_TOY = (1 << 1),
 	PEEP_ITEM_MAP = (1 << 2),
 	PEEP_ITEM_PHOTO = (1 << 3),
