@@ -115,21 +115,22 @@ static uint32 window_guest_list_events[] = {
 	window_guest_list_scrollpaint
 };
 
-static int window_guest_list_highlighted_index;
-static int window_guest_list_selected_tab;
-static int window_guest_list_selected_filter;
-static int window_guest_list_selected_page;
-static int window_guest_list_selected_view;
-static int window_guest_list_num_pages;
-static int window_guest_list_num_groups;
+static int _window_guest_list_highlighted_index;
+static int _window_guest_list_selected_tab;
+static int _window_guest_list_selected_filter;
+static int _window_guest_list_selected_page;
+static int _window_guest_list_selected_view;
+static int _window_guest_list_num_pages;
+static int _window_guest_list_num_groups;
 
-static uint16 window_guest_list_groups_num_guests[240];
-static uint8 window_guest_list_groups_guest_faces[13440];
+static uint16 _window_guest_list_groups_num_guests[240];
+static uint32 _window_guest_list_groups_argument_1[240];
+static uint32 _window_guest_list_groups_argument_2[240];
+static uint8 _window_guest_list_groups_guest_faces[240 * 58];
 
-static void window_guest_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_guest_list_refresh_list(rct_window *w);
-static void window_guest_list_close_all(rct_window *w);
-static void window_guest_list_open_all(rct_window *w);
+static int window_guest_list_is_peep_in_filter(rct_peep* peep);
+static void window_guest_list_find_groups();
+static int get_guest_face_sprite(rct_peep *peep);
 
 /**
  * 
@@ -138,9 +139,6 @@ static void window_guest_list_open_all(rct_window *w);
 void window_guest_list_open()
 {
 	rct_window* window;
-
-	RCT2_CALLPROC_EBPSAFE(0x006992E3);
-	return;
 
 	// Check if window is already open
 	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
@@ -160,12 +158,12 @@ void window_guest_list_open()
 		(1 << WIDX_TAB_2);
 
 	window_init_scroll_widgets(window);
-	window_guest_list_highlighted_index = -1;
+	_window_guest_list_highlighted_index = -1;
 	window->var_490 = 0;
-	window_guest_list_selected_tab = 0;
-	window_guest_list_selected_filter = -1;
-	window_guest_list_selected_page = 0;
-	window_guest_list_num_pages = 1;
+	_window_guest_list_selected_tab = 1;
+	_window_guest_list_selected_filter = -1;
+	_window_guest_list_selected_page = 0;
+	_window_guest_list_num_pages = 1;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	window->var_492 = 0;
@@ -242,16 +240,16 @@ static void window_guest_list_mousedown()
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
-		if (window_guest_list_selected_filter == -1)
-			if (window_guest_list_selected_tab == widgetIndex - WIDX_TAB_1)
+		if (_window_guest_list_selected_filter == -1)
+			if (_window_guest_list_selected_tab == widgetIndex - WIDX_TAB_1)
 				break;
-		window_guest_list_selected_tab = widgetIndex - WIDX_TAB_1;
-		window_guest_list_selected_page = 0;
-		window_guest_list_num_pages = 1;
+		_window_guest_list_selected_tab = widgetIndex - WIDX_TAB_1;
+		_window_guest_list_selected_page = 0;
+		_window_guest_list_num_pages = 1;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 		w->var_490 = 0;
-		window_guest_list_selected_filter = -1;
+		_window_guest_list_selected_filter = -1;
 		window_invalidate(w);
 		w->scrolls[0].v_top = 0;
 		break;
@@ -264,7 +262,7 @@ static void window_guest_list_mousedown()
 			widget->bottom - widget->top + 1,
 			w->colours[1],
 			0x80,
-			window_guest_list_num_pages,
+			_window_guest_list_num_pages,
 			widget->right - widget->left - 3
 		);
 
@@ -272,7 +270,7 @@ static void window_guest_list_mousedown()
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
 		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << window_guest_list_selected_view);
+		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
@@ -291,7 +289,7 @@ static void window_guest_list_mousedown()
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_ACTIONS + i;
 		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << window_guest_list_selected_view);
+		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
 		break;
 	}
 }
@@ -313,13 +311,13 @@ static void window_guest_list_dropdown()
 	case WIDX_PAGE_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
 			break;
-		window_guest_list_selected_page = dropdownIndex;
+		_window_guest_list_selected_page = dropdownIndex;
 		window_invalidate(w);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
 			break;
-		window_guest_list_selected_view = dropdownIndex;
+		_window_guest_list_selected_view = dropdownIndex;
 		window_invalidate(w);
 		break;
 	}
@@ -338,36 +336,9 @@ static void window_guest_list_update()
 	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
 		RCT2_GLOBAL(0x00F1AF20, uint16)--;
 	w->var_490++;
-	if (w->var_490 >= (window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
+	if (w->var_490 >= (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
 		w->var_490 = 0;
-	widget_invalidate(WC_GUEST_LIST, 0, WIDX_TAB_1 + window_guest_list_selected_tab);
-}
-
-/**
- * 
- *  rct2: 0x0069B865
- */
-int window_guest_list_is_peep_in_filter(rct_peep* peep)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	char temp;
-
-	temp = window_guest_list_selected_view;
-	window_guest_list_selected_view = window_guest_list_selected_filter;
-		
-	esi = peep;
-	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	ebx &= 0xFFFF;
-
-	window_guest_list_selected_view = temp;
-	eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | ebx;
-
-	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && window_guest_list_selected_filter == 1)
-		eax |= 0xFFFF;
-
-	if (eax == RCT2_GLOBAL(0x00F1EDF6, uint32) && RCT2_GLOBAL(0x013CE954, uint32) == RCT2_GLOBAL(0x00F1EDFA, uint32))
-		return 0;
-	return 1;
+	widget_invalidate(WC_GUEST_LIST, 0, WIDX_TAB_1 + _window_guest_list_selected_tab);
 }
 
 /**
@@ -382,7 +353,7 @@ static void window_guest_list_scrollgetsize()
 
 	__asm mov w, esi
 
-	switch (window_guest_list_selected_tab) {
+	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
 		// Count the number of guests
 		numGuests = 0;
@@ -396,7 +367,7 @@ static void window_guest_list_scrollgetsize()
 				continue;
 			if (peep->var_2A != 0)
 				continue;
-			if (window_guest_list_selected_filter != -1)
+			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
 			numGuests++;
@@ -406,22 +377,22 @@ static void window_guest_list_scrollgetsize()
 		break;
 	case PAGE_SUMMARISED:
 		// Find the groups
-		RCT2_CALLPROC_EBPSAFE(0x0069B5AE);
-		w->var_492 = window_guest_list_num_groups;
-		y = window_guest_list_num_groups * 21;
+		window_guest_list_find_groups();
+		w->var_492 = _window_guest_list_num_groups;
+		y = _window_guest_list_num_groups * 21;
 		break;
 	}
 
 	RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
-	i = window_guest_list_selected_page;
-	for (i = window_guest_list_selected_page - 1; i >= 0; i--)
+	i = _window_guest_list_selected_page;
+	for (i = _window_guest_list_selected_page - 1; i >= 0; i--)
 		y -= 0x7BF2;
 	if (y < 0)
 		y = 0;
 	if (y > 0x7BF2)
 		y = 0x7BF2;
-	if (window_guest_list_highlighted_index != -1) {
-		window_guest_list_highlighted_index = -1;
+	if (_window_guest_list_highlighted_index != -1) {
+		_window_guest_list_highlighted_index = -1;
 		window_invalidate(w);
 	}
 
@@ -451,10 +422,10 @@ static void window_guest_list_scrollmousedown()
 	__asm mov y, dx
 	__asm mov w, esi
 
-	switch (window_guest_list_selected_tab) {
+	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
 		i = y / 10;
-		i += window_guest_list_selected_page * 3173;
+		i += _window_guest_list_selected_page * 3173;
 		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
 		while (spriteIdx != SPRITE_INDEX_NULL) {
 			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
@@ -464,7 +435,7 @@ static void window_guest_list_scrollmousedown()
 				continue;
 			if (peep->var_2A != 0)
 				continue;
-			if (window_guest_list_selected_filter != -1)
+			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
 
@@ -479,11 +450,11 @@ static void window_guest_list_scrollmousedown()
 		break;
 	case PAGE_SUMMARISED:
 		i = y / 21;
-		if (i < window_guest_list_num_groups) {
-			RCT2_GLOBAL(0x00F1EDF6, uint32) = ((int*)0x00F1B016)[i * 2];
-			RCT2_GLOBAL(0x00F1EDFA, uint32) = ((int*)0x00F1B01A)[i * 2];
-			window_guest_list_selected_filter = window_guest_list_selected_view;
-			window_guest_list_selected_tab = PAGE_INDIVIDUAL;
+		if (i < _window_guest_list_num_groups) {
+			RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[i];
+			RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[i];
+			_window_guest_list_selected_filter = _window_guest_list_selected_view;
+			_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 			window_invalidate(w);
 			w->scrolls[0].v_top = 0;
 		}
@@ -504,10 +475,10 @@ static void window_guest_list_scrollmouseover()
 	__asm mov y, dx
 	__asm mov w, esi
 
-	i = y / (window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
-	i += window_guest_list_selected_page * 3173;
-	if (i != window_guest_list_highlighted_index) {
-		window_guest_list_highlighted_index = i;
+	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
+	i += _window_guest_list_selected_page * 3173;
+	if (i != _window_guest_list_highlighted_index) {
+		_window_guest_list_highlighted_index = i;
 		window_invalidate(w);
 	}
 }
@@ -533,11 +504,11 @@ static void window_guest_list_invalidate()
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
-	w->pressed_widgets |= (1 << (window_guest_list_selected_tab + WIDX_TAB_1));
+	w->pressed_widgets |= (1 << (_window_guest_list_selected_tab + WIDX_TAB_1));
 
-	window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].image = STR_ACTIONS + window_guest_list_selected_view;
+	window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].image = STR_ACTIONS + _window_guest_list_selected_view;
 	window_guest_list_widgets[WIDX_MAP].type = WWT_EMPTY;
-	if (window_guest_list_selected_tab == PAGE_INDIVIDUAL && window_guest_list_selected_filter != -1)
+	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL && _window_guest_list_selected_filter != -1)
 		window_guest_list_widgets[WIDX_MAP].type = WWT_FLATBTN;
 
 	window_guest_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -550,7 +521,7 @@ static void window_guest_list_invalidate()
 
 	window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
 	window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
-	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = window_guest_list_selected_page + 3440;
+	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = _window_guest_list_selected_page + 3440;
 }
 
 /**
@@ -570,7 +541,7 @@ static void window_guest_list_paint()
 	window_draw_widgets(w, dpi);
 
 	// Tab 1 image
-	i = (window_guest_list_selected_tab == 0 ? w->var_490 & 0x0FFFFFFFC : 0);
+	i = (_window_guest_list_selected_tab == 0 ? w->var_490 & 0x0FFFFFFFC : 0);
 	i += ((int*)*((int*)0x00982708))[0] + 1;
 	i |= 0xA1600000;
 	gfx_draw_sprite(
@@ -581,7 +552,7 @@ static void window_guest_list_paint()
 	);
 
 	// Tab 2 image
-	i = (window_guest_list_selected_tab == 1 ? w->var_490 / 4 : 0);
+	i = (_window_guest_list_selected_tab == 1 ? w->var_490 / 4 : 0);
 	gfx_draw_sprite(
 		dpi,
 		5568 + i,
@@ -592,10 +563,10 @@ static void window_guest_list_paint()
 	// Filter description
 	x = w->x + 6;
 	y = w->y + window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3;
-	if (window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
-		if (window_guest_list_selected_filter != -1) {
+	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
+		if (_window_guest_list_selected_filter != -1) {
 			if (RCT2_GLOBAL(0x00F1EDF6, sint16) != -1)
-				format = STR_GUESTS_FILTER + window_guest_list_selected_filter;
+				format = STR_GUESTS_FILTER + _window_guest_list_selected_filter;
 			else
 				format = STR_GUESTS_FILTER_THINKING_ABOUT;
 		} else {
@@ -607,25 +578,12 @@ static void window_guest_list_paint()
 	gfx_draw_string_left_clipped(dpi, format, 0x00F1EDF6, 0, x, y, 310);
 
 	// Number of guests (list items)
-	if (window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
+	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		RCT2_GLOBAL(0x013CE952, sint16) = w->var_492;
 		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), 0x013CE952, 0, x, y);
 	}
-}
-
-/**
- * 
- *  rct2: 0x00698721
- */
-static int get_guest_face_sprite(rct_peep *peep)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	esi = peep;
-	ebp = 999;
-	RCT2_CALLFUNC_X(0x00698721, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebp;
 }
 
 /**
@@ -647,10 +605,10 @@ static void window_guest_list_scrollpaint()
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
 
-	switch (window_guest_list_selected_tab) {
+	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
 		i = 0;
-		y = window_guest_list_selected_page * -0x7BF2;
+		y = _window_guest_list_selected_page * -0x7BF2;
 
 		// For each guest
 		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
@@ -663,7 +621,7 @@ static void window_guest_list_scrollpaint()
 			peep->var_0C &= ~0x200;
 			if (peep->var_2A != 0)
 				continue;
-			if (window_guest_list_selected_filter != -1) {
+			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
 				RCT2_GLOBAL(0x009AC861, uint16) |= 1;
@@ -678,7 +636,7 @@ static void window_guest_list_scrollpaint()
 
 				// Highlight backcolour and text colour (format)
 				format = 1191;
-				if (i == window_guest_list_highlighted_index) {
+				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
 					format = 1193;
 				}
@@ -688,7 +646,7 @@ static void window_guest_list_scrollpaint()
 				RCT2_GLOBAL(0x013CE954, uint32) = peep->id;
 				gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 0, y - 1, 113);
 
-				switch (window_guest_list_selected_view) {
+				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
 					// Guest face
 					gfx_draw_sprite(dpi, get_guest_face_sprite(peep), 118, y);
@@ -743,7 +701,7 @@ static void window_guest_list_scrollpaint()
 		y = 0;
 
 		// For each group of guests
-		for (i = 0; i < window_guest_list_num_groups; i++) {
+		for (i = 0; i < _window_guest_list_num_groups; i++) {
 			// Check if y is beyond the scroll control
 			if (y + 22 >= dpi->y) {
 				// Check if y is beyond the scroll control
@@ -752,20 +710,20 @@ static void window_guest_list_scrollpaint()
 
 				// Highlight backcolour and text colour (format)
 				format = 1191;
-				if (i == window_guest_list_highlighted_index) {
+				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 20, 0x02000031);
 					format = 1193;
 				}
 
 				// Draw guest faces
-				numGuests = window_guest_list_groups_num_guests[i];
+				numGuests = _window_guest_list_groups_num_guests[i];
 				for (j = 0; j < 56 && j < numGuests; j++)
-					gfx_draw_sprite(dpi, window_guest_list_groups_guest_faces[numGuests * 56 + j] + 5486, j * 8, y + 9);
+					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[numGuests * 56 + j] + 5486, j * 8, y + 9);
 
 				// Draw action
-				RCT2_GLOBAL(0x013CE952, uint16) = ((uint32*)0x00F1B016)[i * 2] & 0xFFFF;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ((uint32*)0x00F1B016)[i * 2] >> 16;
-				RCT2_GLOBAL(0x013CE952 + 4, uint32) = ((int*)0x00F1B01A)[i * 2];
+				RCT2_GLOBAL(0x013CE952, uint16) = _window_guest_list_groups_argument_1[i] & 0xFFFF;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = _window_guest_list_groups_argument_1[i] >> 16;
+				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
 				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
 				gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 0, y - 1, 414);
 
@@ -777,4 +735,206 @@ static void window_guest_list_scrollpaint()
 		}
 		break;
 	}
+}
+
+/**
+ * 
+ *  rct2: 0x0069B865
+ */
+static int window_guest_list_is_peep_in_filter(rct_peep* peep)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	char temp;
+
+	temp = _window_guest_list_selected_view;
+	_window_guest_list_selected_view = _window_guest_list_selected_filter;
+		
+	esi = peep;
+	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ebx &= 0xFFFF;
+
+	_window_guest_list_selected_view = temp;
+	eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | ebx;
+
+	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && _window_guest_list_selected_filter == 1)
+		eax |= 0xFFFF;
+
+	if (eax == RCT2_GLOBAL(0x00F1EDF6, uint32) && RCT2_GLOBAL(0x013CE954, uint32) == RCT2_GLOBAL(0x00F1EDFA, uint32))
+		return 0;
+	return 1;
+}
+
+static int sub_69B7EA(rct_peep *peep, int *outEAX)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	switch (_window_guest_list_selected_view) {
+	case VIEW_ACTIONS:
+		eax = peep->var_0A;
+		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		RCT2_GLOBAL(0x013CE952, uint16) = ecx & 0xFFFF;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = edx;
+
+		*outEAX = eax;
+		return ebx & 0xFFFF;
+	case VIEW_THOUGHTS:
+		if (peep->thoughts[0].pad_3 <= 5) {
+			eax = peep->thoughts[0].item;
+			ebx = peep->thoughts[0].type;
+			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
+				RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				RCT2_GLOBAL(0x013CE952, uint16) = *((uint16*)esi);
+				RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)(esi + 2));
+
+				*outEAX = eax;
+				return ebx & 0xFFFF;
+			}
+		}
+
+		RCT2_GLOBAL(0x013CE952, uint16) = 0;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = 0;
+
+		*outEAX = 0;
+		return 0;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0069B5AE
+ */
+static void window_guest_list_find_groups()
+{
+	int spriteIdx, spriteIdx2, groupIndex, faceIndex;
+	rct_peep *peep, *peep2;
+
+	int eax = RCT2_GLOBAL(0x00F663AC, uint32) & 0xFFFFFF00;
+	if (_window_guest_list_selected_view == RCT2_GLOBAL(0x00F1EE02, uint32))
+		if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0 || eax == RCT2_GLOBAL(0x00F1AF1C, uint32))
+			return;
+
+	RCT2_GLOBAL(0x00F1AF1C, uint32) = eax;
+	RCT2_GLOBAL(0x00F1EE02, uint32) = _window_guest_list_selected_view;
+	RCT2_GLOBAL(0x00F1AF20, uint16) = 320;
+	_window_guest_list_num_groups = 0;
+
+	// Set all guests to unassigned
+	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	while (spriteIdx != SPRITE_INDEX_NULL) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
+		spriteIdx = peep->next;
+
+		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0)
+			continue;
+
+		peep->var_0C |= (1 << 8);
+	}
+
+	// For each guest / group
+	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	while (spriteIdx != SPRITE_INDEX_NULL) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
+		spriteIdx = peep->next;
+
+		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
+			continue;
+
+		// New group, cap at 240 though
+		groupIndex = _window_guest_list_num_groups;
+		if (groupIndex >= 240)
+			break;
+
+		int ax = peep->var_0A;
+		_window_guest_list_num_groups++;
+		_window_guest_list_groups_num_guests[groupIndex] = 1;
+		peep->var_0C &= ~(1 << 8);
+		int bx = sub_69B7EA(peep, &eax);
+		eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | bx;
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		_window_guest_list_groups_argument_1[groupIndex] = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = RCT2_GLOBAL(0x013CE952 + 2, uint32);
+		_window_guest_list_groups_argument_2[groupIndex] = RCT2_GLOBAL(0x013CE952 + 2, uint32);
+		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
+		faceIndex = groupIndex * 56;
+		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep) - 5486;
+
+		// Find more peeps that belong to same group
+		spriteIdx2 = peep->next;
+		while (spriteIdx2 != SPRITE_INDEX_NULL) {
+			peep2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx2].peep);
+			spriteIdx2 = peep2->next;
+
+			if (peep2->type != PEEP_TYPE_GUEST || peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
+				continue;
+
+			// Get and check if in same group
+			// BUG this doesn't work!
+			bx = sub_69B7EA(peep2, &eax);
+			if (bx != RCT2_GLOBAL(0x00F1EDF6, uint32) || (eax & 0xFFFF) != RCT2_GLOBAL(0x013CE952, uint16) || eax != RCT2_GLOBAL(0x013CE952 + 2, uint32))
+				continue;
+
+			// Assign guest
+			_window_guest_list_groups_num_guests[groupIndex]++;
+			peep2->var_0C &= ~(1 << 8);
+
+			// Add face sprite, cap at 56 though
+			if (_window_guest_list_groups_num_guests[groupIndex] < 56)
+				continue;
+			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep2) - 5486;
+		}
+
+		if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0) {
+			_window_guest_list_num_groups--;
+			continue;
+		}
+
+		ax = _window_guest_list_groups_num_guests[groupIndex];
+		int edi = 0;
+
+		while (1) {
+			if (edi >= groupIndex)
+				goto nextPeep;
+			if (ax > _window_guest_list_groups_num_guests[edi])
+				break;
+			edi++;
+		}
+
+		int ecx = _window_guest_list_groups_argument_1[groupIndex];
+		int edx = _window_guest_list_groups_argument_2[groupIndex];
+		int bl = RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex];
+		int temp;
+
+		do {
+			temp = ax;
+			ax = _window_guest_list_groups_num_guests[edi];
+			_window_guest_list_groups_num_guests[edi] = temp;
+
+			temp = ecx;
+			ecx = _window_guest_list_groups_argument_1[edi];
+			_window_guest_list_groups_argument_1[edi] = temp;
+
+			temp = edx;
+			edx = _window_guest_list_groups_argument_2[edi];
+			_window_guest_list_groups_argument_2[edi] = temp;
+
+			RCT2_ADDRESS(0x00F1AF26, uint8)[edi] = bl;
+			bl = RCT2_ADDRESS(0x00F1AF26, uint8)[edi];
+		} while (++edi <= groupIndex);
+
+	nextPeep:
+		;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00698721
+ */
+static int get_guest_face_sprite(rct_peep *peep)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	esi = peep;
+	ebp = 999;
+	RCT2_CALLFUNC_X(0x00698721, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebp;
 }
