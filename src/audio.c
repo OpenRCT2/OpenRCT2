@@ -20,6 +20,7 @@
 
 #include "audio.h"
 #include "addresses.h"
+#include "rct2.h"
 
 void get_dsound_devices()
 {
@@ -44,4 +45,25 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 void sound_stop(rct_sound* sound)
 {
 	RCT2_CALLPROC_1(0x00404DD8, rct_sound*, sound);
+}
+
+/**
+*
+*  rct2: 0x006BABB4
+*/
+void pause_sounds() {
+	if (++RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
+		RCT2_CALLPROC_EBPSAFE(0x006BCAE5);
+		RCT2_CALLPROC_EBPSAFE(0x006BABDF);
+		RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
+		RCT2_CALLPROC_EBPSAFE(0x006BD07F);
+	}
+}
+
+/**
+*
+*  rct2: 0x006BABD8
+*/
+void unpause_sounds() {
+	RCT2_GLOBAL(0x009AF59C, uint8)--;
 }

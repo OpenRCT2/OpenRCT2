@@ -124,3 +124,13 @@ void generate_string_file()
 
 	fclose(f);
 }
+
+/**
+*
+*  rct2: 0x006C4209
+*/
+void reset_saved_strings() {
+	for (int i = 0; i < 1024; i++) {
+		RCT2_ADDRESS(0x135A8F4, uint8)[i * 32] = 0;
+	}
+}

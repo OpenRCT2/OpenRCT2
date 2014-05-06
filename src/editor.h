@@ -25,10 +25,5 @@ void editor_load();
 void editor_convert_save_to_scenario();
 void trackdesigner_load();
 void trackmanager_load();
-void reset_park_entrances();
-void reset_saved_strings();
-void pause_sounds();
-void unpause_sounds();
-void finance_init();
 
 #endif

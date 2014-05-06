@@ -26,6 +26,7 @@
 #include "tutorial.h"
 #include "widget.h"
 #include "window.h"
+#include "audio.h"
 
 static enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -118,7 +119,7 @@ void window_save_prompt_open()
 
 		// Pause the game
 		RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
-		RCT2_CALLPROC_EBPSAFE(0x006BABB4);
+		pause_sounds();
 		window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 	}
 
@@ -161,7 +162,7 @@ static void window_save_prompt_close()
 {
 	// Unpause the game
 	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8);
+	unpause_sounds();
 	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 }
 

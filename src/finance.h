@@ -36,5 +36,6 @@ void finance_payment(int amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();
 void finance_pay_interest();
+void finance_init();
 
 #endif
