@@ -78,8 +78,8 @@ int calculate_park_rating()
 {
 	{
 		int eax, ebx, ecx, edx, esi, edi, ebp;
-		RCT2_CALLFUNC_X(0x00669EAA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		return eax & 0xFFFF;
+		//RCT2_CALLFUNC_X(0x00669EAA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		//return eax & 0xFFFF;
 	}
 
 
@@ -98,7 +98,7 @@ int calculate_park_rating()
 		
 		// -150 to +3 based on a range of guests from 0 to 2000
 		result -= 150 - (min(2000, RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)) / 13);
-		return result;
+		//return result;
 		//1016 good
 
 		// Guests, happiness, ?
@@ -117,19 +117,21 @@ int calculate_park_rating()
 			if (peep->var_C6 <= 89)
 				_bp++;
 		}
-
+		
 		// Peep happiness -500 to +0
 		result -= 500;
-		if (num_happy_peeps > 0)
-			result += 2 * min(250, (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) * 300) / num_happy_peeps);
+		//516 good
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) > 0)
+			result += 2 * min(250, (num_happy_peeps * 300) / RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16));
 
 		// ?
 		_bp -= 25;
 		if (_bp >= 0)
 			result -= _bp * 7;
 	}
-	return result;
-	//998 980
+
+	//998  good
 
 	// Rides
 	{
