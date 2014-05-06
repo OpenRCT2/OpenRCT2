@@ -123,6 +123,9 @@
     <ClInclude Include="..\src\settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\finance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -274,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_guest_list.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\finance.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
