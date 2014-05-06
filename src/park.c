@@ -98,6 +98,8 @@ int calculate_park_rating()
 		
 		// -150 to +3 based on a range of guests from 0 to 2000
 		result -= 150 - (min(2000, RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)) / 13);
+		return result;
+		//1016 good
 
 		// Guests, happiness, ?
 		num_happy_peeps = 0;
@@ -126,6 +128,8 @@ int calculate_park_rating()
 		if (_bp >= 0)
 			result -= _bp * 7;
 	}
+	return result;
+	//998 980
 
 	// Rides
 	{
@@ -166,6 +170,7 @@ int calculate_park_rating()
 		_bx = min(1000, _bx);
 		result -= 200 - ((_ax + _bx) / 10);
 	}
+	//826
 
 	// Litter
 	{
@@ -183,6 +188,7 @@ int calculate_park_rating()
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
 	}
+	//826
 
 	// Rides
 	{
@@ -222,10 +228,10 @@ int calculate_park_rating()
 			result += 100 - _ax - _bx;
 		}
 	}
-
+	//809
 	result -= RCT2_GLOBAL(0x0135882E, sint16);
 	result = clamp(0, result, 999);
-	
+	//809
 	return result;
 }
 
