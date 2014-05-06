@@ -1097,9 +1097,9 @@ static void game_pause_toggle()
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
 		window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
 		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
-			RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+			pause_sounds();
 		else
-			RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+			unpause_sounds();
 	}
 
 	__asm mov ebx, 0
@@ -1147,9 +1147,9 @@ static int open_landscape_file_dialog()
 	format_string(0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string(0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
-	RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+	pause_sounds();
 	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6;*.SV4;*.SC6", 0x0141EE68);
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+	unpause_sounds();
 	// window_proc
 }
 
@@ -1162,9 +1162,9 @@ static int open_load_game_dialog()
 	format_string(0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string(0x0141EE68, STR_RCT2_SAVED_GAME, 0);
-	RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+	pause_sounds();
 	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+	unpause_sounds();
 	// window_proc
 }
 

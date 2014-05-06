@@ -123,11 +123,11 @@ void rct2_init()
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	reset_park_entrances();
+	reset_saved_strings();
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
 	ride_init_all();
-	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window guest list init vars a
+	window_guest_list_init_vars_a();
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
 	park_init();
@@ -136,7 +136,7 @@ void rct2_init()
 	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
-	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window guest list init vars b
+	window_guest_list_init_vars_b();
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
 
 	title_load();
