@@ -34,6 +34,7 @@
 #include "scenario.h"
 #include "strings.h"
 #include "viewport.h"
+#include "editor.h"
 
 static const int gOldMusic = 0;
 static const int gRandomShowcase = 0;
@@ -91,11 +92,11 @@ void title_load()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
 
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	reset_park_entrances();
+	reset_saved_strings();
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
 	ride_init_all();
-	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window_guest_list_init_vars_a
+	window_guest_list_init_vars_a();
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
 	park_init();
@@ -103,7 +104,7 @@ void title_load()
 	RCT2_CALLPROC_X(0x006C45ED, 0, 0, 0, 0, 0, 0, 0);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
-	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window_guest_list_init_vars_b
+	window_guest_list_init_vars_b();
 	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
 	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
 	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);

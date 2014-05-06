@@ -74,5 +74,6 @@ int park_calculate_size();
 int calculate_park_rating();
 int calculate_park_value();
 int calculate_company_value();
+void reset_park_entrances();
 
 #endif

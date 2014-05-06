@@ -347,4 +347,7 @@ void window_park_objective_open();
 void window_ride_list_open();
 void window_cheats_open();
 
+void window_guest_list_init_vars_a();
+void window_guest_list_init_vars_b();
+
 #endif
