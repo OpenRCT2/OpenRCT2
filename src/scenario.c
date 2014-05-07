@@ -873,7 +873,7 @@ void scenario_update()
 		finance_pay_research();
 		finance_pay_interest();
 		scenario_marketing_update();
-		RCT2_CALLPROC_EBPSAFE(0x0069BF41); // peep needs update and warnings
+		peep_problem_warnings_update();
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
 		RCT2_CALLPROC_EBPSAFE(0x006AC916); // ride update favourited
 
