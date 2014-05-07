@@ -76,13 +76,6 @@ int park_calculate_size()
  */
 int calculate_park_rating()
 {
-	{
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		//RCT2_CALLFUNC_X(0x00669EAA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		//return eax & 0xFFFF;
-	}
-
-
 	int result;
 
 	result = 1150;
@@ -98,7 +91,6 @@ int calculate_park_rating()
 		
 		// -150 to +3 based on a range of guests from 0 to 2000
 		result -= 150 - (min(2000, RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)) / 13);
-		//1016 good
 
 		// Guests, happiness, ?
 		num_happy_peeps = 0;
@@ -119,7 +111,6 @@ int calculate_park_rating()
 		
 		// Peep happiness -500 to +0
 		result -= 500;
-		//516 good
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) > 0)
 			result += 2 * min(250, (num_happy_peeps * 300) / RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16));
@@ -130,13 +121,11 @@ int calculate_park_rating()
 			result -= _bp * 7;
 	}
 
-	//998  good
-
 	// Rides
 	{
 		int i;
-		short _ax, _bx;
-		int num_rides;
+		short _ax, total_ride_intensity = 0, total_ride_excitement = 0, average_intensity, average_excitement;
+		int num_rides, num_exciting_rides = 0;
 		rct_ride* ride;
 
 		// 
@@ -148,31 +137,44 @@ int calculate_park_rating()
 			if (ride->type == RIDE_TYPE_NULL)
 				continue;
 			_ax += 100 - ride->var_199;
+
+			if (ride->excitement != -1){
+				total_ride_excitement += ride->excitement / 8;
+				total_ride_intensity += ride->intensity / 8;
+				num_exciting_rides++;
+			}
 			num_rides++;
 		}
 		result -= 200;
 		if (num_rides > 0)
 			result += (_ax / num_rides) * 2;
 
-		// 
-		_ax = 0;
-		_bx = 0;
-		for (i = 0; i < 255; i++) {
-			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		result -= 100;
 
-			if (ride->type == RIDE_TYPE_NULL)
-				continue;
-			if (ride->excitement == -1)
-				continue;
-			_ax += ride->excitement / 8;
-			_bx += ride->intensity / 8;
+		if (num_exciting_rides>0){
+			average_excitement = total_ride_excitement / num_exciting_rides;
+			average_intensity = total_ride_intensity / num_exciting_rides;
+
+			average_excitement -= 46;
+			if (average_excitement < 0){
+				average_excitement = -average_excitement;
+			}
+
+			average_intensity -= 65;
+			if (average_intensity < 0){
+				average_intensity = -average_intensity;
+			}
+
+			average_excitement = min(average_excitement / 2, 50);
+			average_intensity = min(average_intensity / 2, 50);
+			result += 100 - average_excitement - average_intensity;
 		}
-		_ax = min(1000, _ax);
-		_bx = min(1000, _bx);
-		result -= 200 - ((_ax + _bx) / 10);
+
+		total_ride_excitement = min(1000, total_ride_excitement);
+		total_ride_intensity = min(1000, total_ride_intensity);
+		result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
 	}
-	//826
-	
+
 	// Litter
 	{
 		rct_litter* litter;
@@ -184,57 +186,15 @@ int calculate_park_rating()
 			litter = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].litter);
 
 			// Guessing this eliminates recently dropped litter
-			if (litter->var_24 - RCT2_GLOBAL(0x00F663AC, sint32) >= 7680)
+			if ((uint32)(litter->var_24 - RCT2_GLOBAL(0x00F663AC, sint32)) >= 7680)
 				num_litter++;
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
 	}
-	//826
-
-	// Rides
-	{
-		int i, num_rides;
-		short _ax, _bx;
-		rct_ride* ride;
-
-		num_rides = 0;
-		_ax = 0;
-		_bx = 0;
-		for (i = 0; i < 255; i++) {
-			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-
-			if (ride->type == RIDE_TYPE_NULL)
-				continue;
-			if (ride->excitement == -1)
-				continue;
-			_ax += ride->excitement / 8;
-			_bx += ride->intensity / 8;
-			num_rides++;
-		}
-
-		result -= 100;
-		if (num_rides > 0) {
-			short temp_bx;
-			temp_bx = _bx;
-			_bx = _ax / num_rides;
-			_ax = temp_bx / num_rides;
-			_bx -= 46;
-			if (_bx < 0)
-				_bx = -_bx;
-			_ax -= 65;
-			if (_ax < 0)
-				_ax = -_ax;
-			_bx /= 2;
-			_ax /= 2;
-			_bx = min(50, _bx);
-			_ax = min(50, _ax);
-			result += 100 - _ax - _bx;
-		}
-	}
-	//809
+	
 	result -= RCT2_GLOBAL(0x0135882E, sint16);
 	result = clamp(0, result, 999);
-	//809
+	//934
 	return result;
 }
 
