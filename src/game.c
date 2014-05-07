@@ -1159,13 +1159,15 @@ static int open_landscape_file_dialog()
  */
 static int open_load_game_dialog()
 {
+	int result;
 	format_string(0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string(0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
 	unpause_sounds();
 	// window_proc
+	return result;
 }
 
 /**
