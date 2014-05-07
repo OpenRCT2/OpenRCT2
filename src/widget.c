@@ -115,7 +115,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_button_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_5:
-	case WWT_6:
+	case WWT_COLORBTN:
 	case WWT_TRNBTN:
 	case WWT_TAB:
 		widget_tab_draw(dpi, w, widgetIndex);
@@ -861,7 +861,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	if (widget->type == WWT_4 || widget->type == WWT_6 || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
+	if (widget->type == WWT_4 || widget->type == WWT_COLORBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 			image++;
 
