@@ -24,6 +24,7 @@
 #include "config.h"
 #include "rct2.h"
 #include "game.h"
+#include "finance.h"
 #include "news_item.h"
 #include "object.h"
 #include "osinterface.h"
@@ -1057,6 +1058,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
+				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
 				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
