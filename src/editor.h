@@ -26,4 +26,6 @@ void editor_convert_save_to_scenario();
 void trackdesigner_load();
 void trackmanager_load();
 
+void sub_6BD3A4();
+
 #endif

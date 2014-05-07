@@ -109,7 +109,7 @@ void finance_pay_interest()
 void finance_init() {
 
 	for (short i = 0; i < 56; i++) {
-		RCT2_ADDRESS(0x01357848, uint32)[i] = 0;
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, uint32)[i] = 0;
 	}
 
 	RCT2_GLOBAL(0x0135832C, uint32) = 0;
@@ -119,7 +119,7 @@ void finance_init() {
 	RCT2_GLOBAL(0x01358334, uint32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(0x013573DC, uint32) = 100000;
+	RCT2_GLOBAL(0x013573DC, uint32) = 100000; // Cheat detection
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(100000);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32) = 100000;

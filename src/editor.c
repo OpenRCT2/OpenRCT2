@@ -53,16 +53,16 @@ void editor_load()
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // sprites_init
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	sub_6BD3A4();
 	park_init();
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	window_ride_list_init_vars();
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
 	viewport_init_all();
 	news_item_init_queue();
@@ -102,15 +102,15 @@ void trackdesigner_load()
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	sub_6BD3A4();
 	park_init();
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	window_ride_list_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
@@ -140,15 +140,15 @@ void trackmanager_load()
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	sub_6BD3A4();
 	park_init();
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	window_ride_list_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
@@ -170,4 +170,18 @@ static void set_all_land_owned()
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
 	game_do_command(64, 1, 64, 2, 56, (mapSize - 2) * 32, (mapSize - 2) * 32);
+}
+
+/**
+*
+*  rct2: 0x006BD3A4
+*/
+void sub_6BD3A4() {
+	for (short i = 0; i < 200; i++) {
+		RCT2_ADDRESS(0x013CA672, uint8)[i] = 0;
+	}
+	for (short i = 200; i < 204; i++) {
+		RCT2_ADDRESS(0x013CA672, uint8)[i] = 1;
+	}
+	RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
 }
