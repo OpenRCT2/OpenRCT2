@@ -43,7 +43,7 @@ typedef struct {
 	uint32 pad_00;
 	uint16 next;					// 0x04
 	uint8 pad_06[0x1E];
-	sint32 var_24;
+	uint32 var_24;
 } rct_litter;
 
 typedef struct {
