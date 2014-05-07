@@ -241,3 +241,18 @@ int calculate_company_value()
 
 	return result;
 }
+
+/**
+*
+*  rct2: 0x00667104
+*/
+void reset_park_entrances() {
+	RCT2_GLOBAL(0x013573D4, uint16) = 0;
+
+	for (short i = 0; i < 4; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
+	}
+
+	RCT2_GLOBAL(0x013573F2, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x013573F8, uint16) = 0xFFFF;
+}
