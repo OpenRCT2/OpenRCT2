@@ -284,6 +284,23 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
+enum {
+	WINDOW_RIDE_LIST_TAB_TRANSPORT,
+	WINDOW_RIDE_LIST_TAB_GENTLE,
+	WINDOW_RIDE_LIST_TAB_ROLLER_COASTER,
+	WINDOW_RIDE_LIST_TAB_THRILL,
+	WINDOW_RIDE_LIST_TAB_WATER,
+	WINDOW_RIDE_LIST_TAB_SHOP,
+	WINDOW_RIDE_LIST_TAB_RESEARCH
+} WINDOW_RIDE_LIST_TAB;
+
+enum {
+	WINDOW_STAFF_LIST_TAB_HANDYMEN,
+	WINDOW_STAFF_LIST_TAB_MECHANICS,
+	WINDOW_STAFF_LIST_TAB_SECURITY,
+	WINDOW_STAFF_LIST_TAB_ENTERTAINERS
+} WINDOW_STAFF_LIST_TAB;
+
 void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
@@ -349,5 +366,6 @@ void window_cheats_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
+void window_ride_list_init_vars();
 
 #endif
