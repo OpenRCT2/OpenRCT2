@@ -898,7 +898,7 @@ void scenario_update()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
-	if (next_month_tick > 0x10000) {
+	if (next_month_tick >= 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
 		RCT2_GLOBAL(0x009A9804, uint32) |= 2;

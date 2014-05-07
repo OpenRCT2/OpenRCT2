@@ -25,9 +25,9 @@
 #include "peep.h"
 #include "window.h"
 
-
+// monthly cost
 const int wage_table[4] = { 500, 800, 600, 550 };
-const int research_cost_table[4] = { 0, 1000, 2000, 4000 }; // monthly cost
+const int research_cost_table[4] = { 0, 1000, 2000, 4000 };
 
 /**
  * 
@@ -67,7 +67,7 @@ void finance_pay_wages()
 	for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
 		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
 		if (peep->type == PEEP_TYPE_STAFF) 
-			finance_payment(wage_table[peep->staff_type], RCT_EXPENDITURE_TYPE_WAGES);
+			finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
 	}
 }
 
