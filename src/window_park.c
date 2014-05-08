@@ -1227,6 +1227,35 @@ static void window_park_rating_paint()
 #pragma region Guests page
 
 /**
+*
+*  rct2: 0x00667D35
+*/
+void window_park_guests_open()
+{
+	rct_window* window;
+
+	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	if (window == NULL) {
+		window = window_park_open();
+		window->var_482 = -1;
+		window->var_484 = -1;
+	}
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		tool_cancel();
+
+	window->viewport = NULL;
+	window->page = WINDOW_PARK_PAGE_GUESTS;
+	window_invalidate(window);
+	window->widgets = window_park_guests_widgets;
+	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
+	window->var_020 = 0;
+	window->event_handlers = window_park_guests_events;
+	window_init_scroll_widgets(window);
+}
+
+/**
  *
  *  rct2: 0x00668DEB
  */

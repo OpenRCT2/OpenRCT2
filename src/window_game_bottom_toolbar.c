@@ -163,7 +163,7 @@ static void window_game_bottom_toolbar_mouseup()
 			RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
 		break;
 	case WIDX_GUESTS:
-		RCT2_CALLPROC_EBPSAFE(0x00667D35);
+		window_park_guests_open();
 		break;
 	case WIDX_PARK_RATING:
 		window_park_rating_open();
