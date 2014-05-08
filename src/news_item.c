@@ -276,3 +276,71 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	newsItem++;
 	newsItem->type = 0;
 }
+
+/**
+ * Opens the window/tab for the subject of the news item
+ *
+ * rct2: 0x0066EBE6
+ *
+ **/
+void news_item_open_subject(int type, int subject) {
+
+	int eax;
+	rct_peep* peep;
+	rct_window* window;
+
+	switch (type) {
+	case NEWS_ITEM_RIDE:
+		RCT2_CALLPROC_X(0x006ACC28, subject, 0, 0, 0, 0, 0, 0);
+		break;
+	case NEWS_ITEM_PEEP_ON_RIDE:
+	case NEWS_ITEM_PEEP:
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, peep, 0, 0, 0);
+		break;
+	case NEWS_ITEM_MONEY:
+		// Open finances window
+		RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		break;
+	case NEWS_ITEM_SCENERY:
+
+		if (subject >= 0x10000) {
+			// Open ride list window
+			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+			eax = (subject & 0xFF00) >> 8;
+			eax += (subject & 0xFF) << 8;
+			// Switch to right tab and scroll to ride location
+			RCT2_CALLPROC_X(0x006B3EBA, eax, 0, subject, 0, 0, 0, 0);
+			break;
+		}
+
+		// Check if window is already open
+		window = window_bring_to_front_by_id(WC_SCENERY, 0);
+		if (window == NULL) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				if (tool_set(window, 9, 0)){
+					RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+				}
+				RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+				// Open scenery window
+				RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+			}
+		}
+		// Switch to new scenery tab
+		RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+
+		break;
+	case NEWS_ITEM_PEEPS:
+		// Open guest list to right tab
+		RCT2_CALLPROC_X(0x006993BA, 3, subject, 0, 0, 0, 0, 0);
+		break;
+	case NEWS_ITEM_AWARD:
+		window_park_awards_open();
+		break;
+	case NEWS_ITEM_GRAPH:
+		window_park_rating_open();
+		break;
+	}
+}

@@ -173,7 +173,7 @@ static void window_game_bottom_toolbar_mouseup()
 		break;
 	case WIDX_NEWS_SUBJECT:
 		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
-		RCT2_CALLPROC_X(0x0066EBE6, 0, newsItem->type, newsItem->assoc, 0, 0, 0, 0);
+		news_item_open_subject(newsItem->type, newsItem->assoc);
 		break;
 	case WIDX_NEWS_LOCATE:
 		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);

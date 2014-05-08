@@ -169,7 +169,7 @@ static void window_news_update()
 			if (newsItems[i].flags & 1)
 				return;
 			if (w->var_482 == 1) {
-				RCT2_CALLPROC_X(0x0066EBE6, 0, newsItems[i].type, newsItems[i].assoc, 0, 0, 0, 0);
+				news_item_open_subject(newsItems[i].type, newsItems[i].assoc);
 				return;
 			} else if (w->var_482 > 1) {
 				news_item_get_subject_location(newsItems[i].type, newsItems[i].assoc, &x, &y, &z);
