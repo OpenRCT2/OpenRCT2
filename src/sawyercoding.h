@@ -36,6 +36,7 @@ enum {
 	CHUNK_ENCODING_ROTATE
 };
 
+int sawyercoding_validate_checksum(HFILE hFile);
 int sawyercoding_read_chunk(HFILE hFile, uint8 *buffer);
 
 #endif

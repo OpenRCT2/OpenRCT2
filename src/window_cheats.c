@@ -56,7 +56,7 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	65535},					// tab content panel
 	{ WWT_TAB,				1,	3,			33,		17,		43,		0x2000144E,		2462},					// tab 1
 	{ WWT_TAB,				1,	34,			64,		17,		43,		0x2000144E,		2462},					// tab 2
-	{ WWT_CLOSEBOX,			1,	4,			74,		47,		63,		2375,			2375 },					// high money
+	{ WWT_CLOSEBOX,			1,	4,			74,		47,		63,		STR_VERY_HIGH,	STR_VERY_HIGH},					// high money
 	{ WIDGETS_END },
 };
 
@@ -67,7 +67,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },				// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },					// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },					// tab 2
-	{ WWT_CLOSEBOX,			1, 4,			74,		47, 63,			2376,			2376 },					// happy guests
+	{ WWT_CLOSEBOX,			1, 4,			74,		47, 63,			STR_EXTREME,	STR_EXTREME},					// happy guests
 	{ WIDGETS_END },
 };
 

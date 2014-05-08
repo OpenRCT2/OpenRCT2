@@ -185,5 +185,6 @@ enum {
 void map_init();
 void map_update_tile_pointers();
 int map_element_height(int x, int y);
+void sub_68B089();
 
 #endif

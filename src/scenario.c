@@ -23,6 +23,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "date.h"
+#include "finance.h"
 #include "game.h"
 #include "map.h"
 #include "news_item.h"
@@ -329,6 +330,12 @@ void scenario_load(char *path)
 	);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
+		if (!sawyercoding_validate_checksum(hFile)) {
+			CloseHandle(hFile);
+			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			return;
+		}
 
 		// Read first chunk
 		sawyercoding_read_chunk(hFile, s6Header);
@@ -393,7 +400,7 @@ void scenario_load(char *path)
 	}
 
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 }
 
 /**
@@ -422,8 +429,8 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	mainWindow = window_get_main();
 
 	mainWindow->var_4B0 = -1;
-	mainWindow->var_4B2 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	mainWindow->var_4B4 = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
 	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
 	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
@@ -438,12 +445,12 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 			mainWindow->viewport->view_height <<= _cl;
 		}
 	}
-	mainWindow->var_4B2 -= mainWindow->viewport->view_width >> 1;
-	mainWindow->var_4B4 -= mainWindow->viewport->view_height >> 1;
+	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	window_ride_list_init_vars();
 
 	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
 	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
@@ -848,9 +855,9 @@ void scenario_update()
 
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
-		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // finance update
+		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // daily profit update
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
-		RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
+		get_local_time();
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
@@ -862,13 +869,13 @@ void scenario_update()
 	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
 	if ( next_month_tick % 0x4000 == 0) {
 		// weekly checks
-		RCT2_CALLPROC_EBPSAFE(0x006C18A9);
-		RCT2_CALLPROC_EBPSAFE(0x00684DA5);
-		RCT2_CALLPROC_EBPSAFE(0x0069E092);
+		finance_pay_wages();
+		finance_pay_research();
+		finance_pay_interest();
 		scenario_marketing_update();
-		RCT2_CALLPROC_EBPSAFE(0x0069BF41);
-		RCT2_CALLPROC_EBPSAFE(0x006B7A5E);
-		RCT2_CALLPROC_EBPSAFE(0x006AC916);
+		peep_problem_warnings_update();
+		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
+		RCT2_CALLPROC_EBPSAFE(0x006AC916); // ride update favourited
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
 			for (int i = 0; i < 100; ++i) {
@@ -880,8 +887,8 @@ void scenario_update()
 					break;
 			}
 		}
-		RCT2_CALLPROC_EBPSAFE(0x0066A231);
-		RCT2_CALLPROC_EBPSAFE(0x0066A348);
+		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
+		park_calculate_size();
 	}
 
 	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
@@ -891,14 +898,14 @@ void scenario_update()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
-	if (next_month_tick > 0x10000) {
+	if (next_month_tick >= 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
 		RCT2_GLOBAL(0x009A9804, uint32) |= 2;
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		RCT2_CALLPROC_EBPSAFE(0x0066A86C);
+		RCT2_CALLPROC_EBPSAFE(0x0066A86C); // award checks
 	}
 	
 }

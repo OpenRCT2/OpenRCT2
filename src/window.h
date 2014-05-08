@@ -126,7 +126,7 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;
+	sint16 page;				// 0x49A
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
@@ -136,8 +136,8 @@ typedef struct rct_window {
 	sint16 var_4AC;
 	sint16 var_4AE;
 	sint16 var_4B0; // viewport target sprite?
-	sint16 var_4B2; // viewport target x?
-	sint16 var_4B4; // viewport target y?
+	sint16 saved_view_x;			// 0x4B2
+	sint16 saved_view_y; 			// 0x4B4
 	rct_windowclass classification;	// 0x4B6
 	uint8 pad_4B7;
 	sint8 var_4B8;
@@ -190,6 +190,7 @@ typedef enum {
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
 	WF_2 = (1 << 2),
+	WF_3 = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
@@ -283,6 +284,23 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
+enum {
+	WINDOW_RIDE_LIST_TAB_TRANSPORT,
+	WINDOW_RIDE_LIST_TAB_GENTLE,
+	WINDOW_RIDE_LIST_TAB_ROLLER_COASTER,
+	WINDOW_RIDE_LIST_TAB_THRILL,
+	WINDOW_RIDE_LIST_TAB_WATER,
+	WINDOW_RIDE_LIST_TAB_SHOP,
+	WINDOW_RIDE_LIST_TAB_RESEARCH
+} WINDOW_RIDE_LIST_TAB;
+
+enum {
+	WINDOW_STAFF_LIST_TAB_HANDYMEN,
+	WINDOW_STAFF_LIST_TAB_MECHANICS,
+	WINDOW_STAFF_LIST_TAB_SECURITY,
+	WINDOW_STAFF_LIST_TAB_ENTERTAINERS
+} WINDOW_STAFF_LIST_TAB;
+
 void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
@@ -298,6 +316,7 @@ void widget_invalidate(rct_windowclass cls, rct_windownumber number, int widgetI
 void window_init_scroll_widgets(rct_window *w);
 void window_update_scroll_widgets(rct_window *w);
 int window_get_scroll_data_index(rct_window *w, int widget_index);
+int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
 
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
@@ -334,13 +353,19 @@ void window_save_prompt_open();
 void window_title_menu_open();
 void window_title_exit_open();
 void window_title_logo_open();
+void window_news_open();
 void window_scenarioselect_open();
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
+void window_guest_list_open();
 void window_park_entrance_open();
 void window_park_objective_open();
 void window_ride_list_open();
 void window_cheats_open();
+
+void window_guest_list_init_vars_a();
+void window_guest_list_init_vars_b();
+void window_ride_list_init_vars();
 
 #endif

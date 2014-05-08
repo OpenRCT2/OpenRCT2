@@ -122,12 +122,12 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();
-	RCT2_CALLPROC_EBPSAFE(0x006C45E7); // get local time
-	RCT2_CALLPROC_EBPSAFE(0x00667104);
-	RCT2_CALLPROC_EBPSAFE(0x006C4209);
+	get_local_time();
+	reset_park_entrances();
+	reset_saved_strings();
 	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
 	ride_init_all();
-	RCT2_CALLPROC_EBPSAFE(0x0068F083); // window guest list init vars a
+	window_guest_list_init_vars_a();
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
 	park_init();
@@ -135,15 +135,14 @@ void rct2_init()
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
-	RCT2_CALLPROC_EBPSAFE(0x0068F050); // window guest list init vars b
-	RCT2_CALLPROC_EBPSAFE(0x006BD39C);
+	window_ride_list_init_vars();
+	window_guest_list_init_vars_b();
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	// RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = gConfig.play_intro ? 8 : 0;
 }
 
 // rct2: 0x00683499
@@ -235,7 +234,7 @@ void check_cmdline_arg()
 	if(!stricmp(processed_arg + last_period, "sv6"))
 	{
 		strcpy(0x00141EF68, processed_arg);
-		RCT2_CALLPROC_EBPSAFE(0x00675E1B); //load_saved_game
+		game_load_save();
 	}
 	else if(!stricmp(processed_arg + last_period, "sc6"))
 	{
@@ -374,6 +373,19 @@ void get_system_time()
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+}
+
+/**
+ * Obtains os local time (hour and minute)
+ *  rct2: 0x006C45E7;
+ */
+void get_local_time()
+{
+	SYSTEMTIME systime;
+	GetLocalTime(&systime);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
 }
 
 /**

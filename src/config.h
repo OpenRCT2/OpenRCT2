@@ -86,7 +86,10 @@ void config_save();
 // New config format
 #define MAX_CONFIG_LENGTH 256
 
-typedef struct general_configuration {
+
+
+typedef struct configuration {
+	uint8 play_intro;
 	uint8 screenshot_format;
 	char game_path[MAX_PATH];
 } configuration_t;

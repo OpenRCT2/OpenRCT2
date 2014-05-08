@@ -233,7 +233,7 @@ static void window_game_top_toolbar_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006BD3CC);
 		break;
 	case WIDX_GUESTS:
-		RCT2_CALLPROC_EBPSAFE(0x006992E3);
+		window_guest_list_open();
 		break;
 	}
 }

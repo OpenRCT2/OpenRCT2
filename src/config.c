@@ -111,9 +111,9 @@ void config_load()
 	}
 
 	RCT2_GLOBAL(0x009AAC77, sint8) = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OS_TOTALPHYS, uint32) > 0x4000000) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x4000000) {
 		RCT2_GLOBAL(0x009AAC77, sint8) = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OS_TOTALPHYS, uint32) > 0x8000000)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x8000000)
 			RCT2_GLOBAL(0x009AAC77, sint8) = 2;
 	}
 
@@ -200,6 +200,10 @@ static int config_find_rct2_path(char *resultPath)
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
+		"C:\\Program Files\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
+		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
 	};
 
@@ -232,7 +236,7 @@ static void config_create_default(char *path)
 	fprintf(fp, "[general]\n");
 	fprintf(fp, "game_path = %s\n", gConfig.game_path);
 	fprintf(fp, "screenshot_format = PNG\n");
-	fprintf(fp, "temperature_format = C\n");
+	fprintf(fp, "play_intro = false\n");
 	fclose(fp);
 }
 
@@ -268,6 +272,8 @@ static void config_parse_settings(FILE *fp)
 			} else {
 				gConfig.screenshot_format = SCREENSHOT_FORMAT_BMP;
 			}
+		} else if (strcmp(setting, "play_intro") == 0) {
+			gConfig.play_intro = (strcmp(value, "true") == 0);
 		}
 	}
 	free(setting);

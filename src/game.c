@@ -24,14 +24,18 @@
 #include "config.h"
 #include "rct2.h"
 #include "game.h"
+#include "finance.h"
 #include "news_item.h"
+#include "object.h"
 #include "osinterface.h"
 #include "peep.h"
+#include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
 #include "strings.h"
 #include "title.h"
 #include "tutorial.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_error.h"
@@ -137,7 +141,7 @@ void game_logic_update()
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
 
-	RCT2_CALLPROC_EBPSAFE(0x0068B089);
+	sub_68B089();
 	scenario_update();
 	climate_update();
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
@@ -399,8 +403,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 					RCT2_GLOBAL(0x009DE540, sint16) = 1000;
 					dx <<= viewport->zoom + 1;
 					dy <<= viewport->zoom + 1;
-					w->var_4B2 += dx;
-					w->var_4B4 += dy;
+					w->saved_view_x += dx;
+					w->saved_view_y += dy;
 				}
 			}
 		} else if (state == 4) {
@@ -795,11 +799,11 @@ void game_handle_edge_scroll()
 
 	// Scroll viewport
 	if (scrollX != 0) {
-		mainWindow->var_4B2 += scrollX * (12 << mainWindow->viewport->zoom);
+		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
 	}
 	if (scrollY != 0) {
-		mainWindow->var_4B4 += scrollY * (12 << mainWindow->viewport->zoom);
+		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
 	}
 }
@@ -836,11 +840,11 @@ void game_handle_key_scroll()
 
 	// Scroll viewport
 	if (scrollX != 0) {
-		mainWindow->var_4B2 += scrollX * (12 << mainWindow->viewport->zoom);
+		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
 	}
 	if (scrollY != 0) {
-		mainWindow->var_4B4 += scrollY * (12 << mainWindow->viewport->zoom);
+		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 7);
 	}
 }
@@ -930,7 +934,7 @@ void game_handle_keyboard_input()
 
 	// Handle key input
 	while ((key = get_next_key()) != 0) {
-		if (key == 255 || key == 0x10 || key == 0x11)
+		if (key == 255)
 			continue;
 
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
@@ -1054,6 +1058,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
+				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
 				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
@@ -1094,9 +1099,9 @@ static void game_pause_toggle()
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
 		window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
 		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
-			RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+			pause_sounds();
 		else
-			RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+			unpause_sounds();
 	}
 
 	__asm mov ebx, 0
@@ -1144,9 +1149,9 @@ static int open_landscape_file_dialog()
 	format_string(0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string(0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
-	RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
+	pause_sounds();
 	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6;*.SV4;*.SC6", 0x0141EE68);
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+	unpause_sounds();
 	// window_proc
 }
 
@@ -1156,13 +1161,15 @@ static int open_landscape_file_dialog()
  */
 static int open_load_game_dialog()
 {
+	int result;
 	format_string(0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string(0x0141EE68, STR_RCT2_SAVED_GAME, 0);
-	RCT2_CALLPROC_EBPSAFE(0x006BABB4); // pause_sounds
-	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
-	RCT2_CALLPROC_EBPSAFE(0x006BABD8); // unpause_sounds
+	pause_sounds();
+	result = osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
+	unpause_sounds();
 	// window_proc
+	return result;
 }
 
 /**
@@ -1200,6 +1207,109 @@ static void load_landscape()
 
 /**
  * 
+ *  rct2: 0x00675E1B
+ */
+int game_load_save()
+{
+	rct_window *mainWindow;
+	HANDLE hFile;
+	char *path;
+	int i, j;
+
+	path = (char*)0x0141EF68;
+	hFile = CreateFile(
+		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
+	);
+	if (hFile == NULL) {
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	}
+
+	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
+	if (!sawyercoding_validate_checksum(hFile)) {
+		CloseHandle(hFile);
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	}
+
+	rct_s6_header *s6Header = 0x009E34E4;
+	rct_s6_info *s6Info = 0x0141F570;
+
+	// Read first chunk
+	sawyercoding_read_chunk(hFile, s6Header);
+	if (s6Header->type == S6_TYPE_SAVEDGAME) {
+		// Read packed objects
+		if (s6Header->num_packed_objects > 0) {
+			j = 0;
+			for (i = 0; i < s6Header->num_packed_objects; i++)
+				j += object_load_packed();
+			if (j > 0)
+				object_load_list();
+		}
+	}
+
+	object_read_and_load_entries(hFile);
+
+	// Read flags (16 bytes)
+	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+
+	// Read map elements
+	memset(RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_MAP_ELEMENTS);
+
+	// Read game data, including sprites
+	sawyercoding_read_chunk(hFile, 0x010E63B8);
+
+	CloseHandle(hFile);
+
+	// Check expansion pack
+	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
+
+	// The rest is the same as in scenario load and play
+	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	map_update_tile_pointers();
+	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	viewport_init_all();
+	game_create_windows();
+	mainWindow = window_get_main();
+
+	mainWindow->var_4B0 = -1;
+	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
+	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	if (_cl != 0) {
+		if (_cl < 0) {
+			_cl = -_cl;
+			mainWindow->viewport->view_width >>= _cl;
+			mainWindow->viewport->view_height >>= _cl;
+		} else {
+			mainWindow->viewport->view_width <<= _cl;
+			mainWindow->viewport->view_height <<= _cl;
+		}
+	}
+	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
+	window_invalidate(mainWindow);
+
+	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	window_ride_list_init_vars();
+	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
+		RCT2_CALLPROC_EBPSAFE(0x0069E869);
+
+	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	gfx_invalidate_screen();
+	return 1;
+}
+
+/**
+ * 
  *  rct2: 0x0066DBB7
  */
 static void load_game()
@@ -1220,8 +1330,7 @@ static void load_game()
 		}
 		strcpy(0x009ABB37, 0x0141EF68);
 
-		RCT2_CALLPROC_EBPSAFE(0x00675E1B); // game_load
-		if (1) {
+		if (game_load_save()) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
 		} else {
