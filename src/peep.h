@@ -25,6 +25,17 @@
 
 #define PEEP_MAX_THOUGHTS 5
 
+#define PEEP_HUNGER_WARNING_THRESHOLD 25
+#define PEEP_THIRST_WARNING_THRESHOLD 25
+#define PEEP_BATHROOM_WARNING_THRESHOLD 28
+#define PEEP_LITTER_WARNING_THRESHOLD 23
+#define PEEP_DISGUST_WARNING_THRESHOLD 22
+#define PEEP_VANDALISM_WARNING_THRESHOLD 15
+#define PEEP_NOEXIT_WARNING_THRESHOLD 8
+#define PEEP_LOST_WARNING_THRESHOLD 8
+
+
+
 enum PEEP_TYPE {
 	PEEP_TYPE_GUEST,
 	PEEP_TYPE_STAFF
@@ -363,7 +374,8 @@ typedef struct {
 	sint32 time_in_park;			// 0xA9
 	uint8 pad_AD[0x3];
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
-	uint16 pad_C4;
+	uint8 pad_C4;
+	uint8 var_C5;
 	uint8 var_C6;
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
@@ -387,5 +399,6 @@ typedef struct {
 
 int peep_get_staff_count();
 void peep_update_all();
+void peep_problem_warnings_update();
 
 #endif

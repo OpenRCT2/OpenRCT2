@@ -24,6 +24,7 @@
 #include "config.h"
 #include "rct2.h"
 #include "game.h"
+#include "finance.h"
 #include "news_item.h"
 #include "object.h"
 #include "osinterface.h"
@@ -1057,6 +1058,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
+				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
 				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
@@ -1159,13 +1161,15 @@ static int open_landscape_file_dialog()
  */
 static int open_load_game_dialog()
 {
+	int result;
 	format_string(0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	strcpy(0x0141EF68, RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string(0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
 	unpause_sounds();
 	// window_proc
+	return result;
 }
 
 /**
@@ -1294,7 +1298,7 @@ int game_load_save()
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	RCT2_CALLPROC_EBPSAFE(0x006ACA58);
+	window_ride_list_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
 		RCT2_CALLPROC_EBPSAFE(0x0069E869);

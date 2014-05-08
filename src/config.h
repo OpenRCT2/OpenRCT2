@@ -71,6 +71,11 @@ enum {
 	SCREENSHOT_FORMAT_PNG
 };
 
+enum {
+	TEMPERATURE_FORMAT_C,
+	TEMPERATURE_FORMAT_F
+};
+
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_reset_shortcut_keys();
@@ -79,6 +84,9 @@ void config_save();
 
 
 // New config format
+#define MAX_CONFIG_LENGTH 256
+
+
 
 typedef struct configuration {
 	uint8 play_intro;
@@ -86,6 +94,9 @@ typedef struct configuration {
 	char game_path[MAX_PATH];
 } configuration_t;
 
+//typedef struct hotkey_configuration{
+
+//};
 extern configuration_t gConfig;
 
 void config_init();
