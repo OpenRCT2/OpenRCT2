@@ -163,17 +163,17 @@ static void window_game_bottom_toolbar_mouseup()
 			RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
 		break;
 	case WIDX_GUESTS:
-		RCT2_CALLPROC_EBPSAFE(0x00667D35);
+		window_park_guests_open();
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_CALLPROC_EBPSAFE(0x00667CA4);
+		window_park_rating_open();
 		break;
 	case WIDX_MIDDLE_INSET:
 		news_item_close_current();
 		break;
 	case WIDX_NEWS_SUBJECT:
 		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
-		RCT2_CALLPROC_X(0x0066EBE6, 0, newsItem->type, newsItem->assoc, 0, 0, 0, 0);
+		news_item_open_subject(newsItem->type, newsItem->assoc);
 		break;
 	case WIDX_NEWS_LOCATE:
 		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
@@ -615,7 +615,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		break;
 	case NEWS_ITEM_MONEY:
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y);
-	case NEWS_ITEM_SCENERY:
+	case NEWS_ITEM_RESEARCH:
 		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y);
 		break;
 	case NEWS_ITEM_PEEPS:

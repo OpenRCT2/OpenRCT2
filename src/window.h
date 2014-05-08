@@ -359,8 +359,11 @@ void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
 void window_guest_list_open();
+void window_park_awards_open();
 void window_park_entrance_open();
+void window_park_guests_open();
 void window_park_objective_open();
+void window_park_rating_open();
 void window_ride_list_open();
 void window_cheats_open();
 
