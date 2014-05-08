@@ -450,7 +450,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	window_invalidate(mainWindow);
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
-	window_ride_list_init_vars();
+	window_ride_construction_init_vars();
 
 	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
 	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
