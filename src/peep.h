@@ -388,7 +388,9 @@ typedef struct {
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
-	uint8 pad_EF[0x07];
+	uint8 pad_EF[0x04];
+	uint8 var_F3;
+	uint8 pad_F4[0x02];
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
