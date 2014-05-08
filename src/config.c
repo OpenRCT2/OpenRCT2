@@ -147,6 +147,7 @@ void config_save()
 
 configuration_t gConfig;
 
+static char *config_show_directory_browser();
 static void config_parse_settings(FILE *fp);
 static int config_get_line(FILE *fp, char *setting, char *value);
 static int config_parse_setting(FILE *fp, char *setting);
@@ -170,7 +171,7 @@ void config_init()
 		DWORD dwAttrib = GetFileAttributes(path);
 		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
 			if (!CreateDirectory(path, NULL)) {
-				config_error("Could not create config file (do you have write acces to you documents folder?)");
+				config_error("Could not create config file (do you have write access to your documents folder?)");
 			}
 		}
 		strcat(path, "\\config.ini");
@@ -230,7 +231,7 @@ static void config_create_default(char *path)
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
 		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directoy where you installed RCT2!", "OpenRCT2", MB_OK);
-		char *res = directory_browser();
+		char *res = config_show_directory_browser();
 		strcpy(gConfig.game_path, res);
 	}
 
@@ -242,8 +243,10 @@ static void config_create_default(char *path)
 	fclose(fp);
 }
 
-//A directory browser allowing for semi-automatic config.ini for non standard installs
-char* directory_browser()
+/**
+ * A directory browser allowing for semi-automatic config.ini for non standard installs.
+ */
+static char *config_show_directory_browser()
 {
 	BROWSEINFO      bi;
 	char            pszBuffer[MAX_PATH];
@@ -251,16 +254,14 @@ char* directory_browser()
 	LPMALLOC        lpMalloc;
 
 	// Initialize COM
-	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK)
-	{
+	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
 	}
 
 	// Get a pointer to the shell memory allocator
-	if (SHGetMalloc(&lpMalloc) != S_OK)
-	{
+	if (SHGetMalloc(&lpMalloc) != S_OK) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
@@ -276,16 +277,12 @@ char* directory_browser()
 
 	char *outPath = "C:\\";
 
-	if (pidl = SHBrowseForFolder(&bi))
-	{
+	if (pidl = SHBrowseForFolder(&bi)) {
 		// Copy the path directory to the buffer
-		if (SHGetPathFromIDList(pidl, pszBuffer))
-		{
-			// store pszBuffer (and the path) in the outPath
+		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+			// Store pszBuffer (and the path) in the outPath
 			outPath = strcat("", pszBuffer);
-
 		}
-
 	}
 	CoUninitialize();
 	return outPath;
