@@ -33,7 +33,7 @@ enum {
 	NEWS_ITEM_PEEP,
 	NEWS_ITEM_MONEY,
 	NEWS_ITEM_BLANK,
-	NEWS_ITEM_SCENERY,
+	NEWS_ITEM_RESEARCH,
 	NEWS_ITEM_PEEPS,
 	NEWS_ITEM_AWARD,
 	NEWS_ITEM_GRAPH
@@ -61,5 +61,6 @@ void news_item_update_current();
 void news_item_close_current();
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
+void news_item_open_subject(int type, int subject);
 
 #endif

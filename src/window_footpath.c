@@ -270,7 +270,7 @@ static void window_footpath_mouseup()
 			break;
 
 		_window_footpath_cost = 0x80000000;
-		RCT2_CALLPROC_EBPSAFE(0x006EE281);
+		tool_cancel();
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
