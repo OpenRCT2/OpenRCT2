@@ -130,7 +130,8 @@ static uint8 _window_guest_list_groups_guest_faces[240 * 58];
 
 static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
-static int get_guest_face_sprite(rct_peep *peep);
+static int get_guest_face_sprite_small(rct_peep *peep);
+static int get_guest_face_sprite_large(rct_peep *peep);
 
 /**
  * 
@@ -649,7 +650,7 @@ static void window_guest_list_scrollpaint()
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
 					// Guest face
-					gfx_draw_sprite(dpi, get_guest_face_sprite(peep), 118, y);
+					gfx_draw_sprite(dpi, get_guest_face_sprite_small(peep), 118, y);
 
 					// Tracking icon
 					if (peep->flags & PEEP_FLAGS_TRACKING)
@@ -856,7 +857,7 @@ static void window_guest_list_find_groups()
 		_window_guest_list_groups_argument_2[groupIndex] = RCT2_GLOBAL(0x013CE952 + 2, uint32);
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
-		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep) - 5486;
+		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
 
 		// Find more peeps that belong to same group
 		spriteIdx2 = peep->next;
@@ -880,7 +881,7 @@ static void window_guest_list_find_groups()
 			// Add face sprite, cap at 56 though
 			if (_window_guest_list_groups_num_guests[groupIndex] < 56)
 				continue;
-			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep2) - 5486;
+			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep2) - 5486;
 		}
 
 		if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0) {
@@ -927,14 +928,70 @@ static void window_guest_list_find_groups()
 }
 
 /**
- * 
+ *  Function split into large and small sprite
  *  rct2: 0x00698721
  */
-static int get_guest_face_sprite(rct_peep *peep)
+static int get_guest_face_sprite_small(rct_peep *peep)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	esi = peep;
-	ebp = 999;
-	RCT2_CALLFUNC_X(0x00698721, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebp;
+	int sprite;
+	sprite = 0x157A;
+
+	if (peep->var_F3) return sprite;
+
+	sprite = 0x1579;
+	if (peep->nausea > 200) return sprite;
+	sprite--;
+
+	if (peep->nausea > 170) return sprite;
+	sprite--;
+
+	if (peep->nausea > 140) return sprite;
+	sprite = 0x1576;
+
+	if (peep->energy < 46) return sprite;
+	sprite--;
+
+	if (peep->energy < 70) return sprite;
+	sprite = 0x156E;
+
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
+}
+
+/**
+*  Function split into large and small sprite
+*  rct2: 0x00698721
+*/
+static int get_guest_face_sprite_large(rct_peep* peep){
+	int sprite;
+	sprite = 5314;
+
+	if (peep->var_F3) return sprite;
+
+	sprite = 5298;
+	if (peep->nausea > 200) return sprite;
+	sprite = 0x14AE;
+
+	if (peep->nausea > 170) return sprite;
+	sprite = 0x14AD;
+
+	if (peep->nausea > 140) return sprite;
+	sprite = 0x14AC;
+
+	if (peep->energy < 46) return sprite;
+	sprite--;
+
+	if (peep->energy < 70) return sprite;
+	sprite = 0x14A4;
+
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
 }
