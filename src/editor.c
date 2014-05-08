@@ -58,11 +58,11 @@ void editor_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+	window_staff_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-	window_ride_list_init_vars();
+	window_ride_construction_init_vars();
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
 	viewport_init_all();
 	news_item_init_queue();
@@ -107,10 +107,10 @@ void trackdesigner_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+	window_staff_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	window_ride_list_init_vars();
+	window_ride_construction_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
@@ -145,10 +145,10 @@ void trackmanager_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+	window_staff_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	window_ride_list_init_vars();
+	window_ride_construction_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
