@@ -26,6 +26,7 @@
 #include "rct2.h"
 #include "strings.h"
 #include "window.h"
+#include "osinterface.h"
 
 // HACK These were originally passed back through registers
 int gLastDrawStringX;
@@ -154,30 +155,32 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
 	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = dpi, ebp = 0;
 	eax = image_id;
 	eax >>= 26;
-	RCT2_GLOBAL(0x00EDF81C, uint32) = ebx;
+	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax &= 0x7;
 	eax = RCT2_GLOBAL(0x009E3CE4 + 4 * eax, uint32);
 	RCT2_GLOBAL(0x009E3CDC, uint32) = eax;
-	if (!(RCT2_GLOBAL(0x00EDF81C, uint32) & 0xE0000000)){
-		if (!(ebx & 0x80000000))
+	if (!(image_id & 0xE0000000)){
+		if (!(image_id & (1<<31)))
 		{
-			if (!(ebx & 0x20000000)){
-				eax = ebx;
+			if (!(image_id & (1<<29))){
+				eax = image_id;
 				RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 				eax >>= 13;
 				eax &= 0x1f;
 				eax = RCT2_GLOBAL(eax * 4 + 0x91FCBC, uint32);
 				eax <<= 4;
-				eax = RCT2_GLOBAL(eax + 0x9EBD28, uint32);
+				eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 				ebp = *((uint32*)eax + 0xF3);
 				esi = *((uint32*)eax + 0xF7);
 				RCT2_GLOBAL(0x9ABEFF, uint32) = ebp;
 				RCT2_GLOBAL(0x9ABF03, uint32) = esi;
 				ebp = *((uint32*)eax + 0xFB);
+				eax = ebx;//0x67a310
 			}//0x67a361
 		}//0x67a445
 	}//0x67a46e
@@ -195,7 +198,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 	uint8* esi, *edi;
 
 	ebx = pal * 16;
-	esi = (uint8*)(*((int*)(0x009EBD28 + ebx)));
+	esi = (uint8*)(*((int*)(RCT2_ADDRESS_G1_ELEMENTS + ebx)));
 	ebp = *((short*)(0x009EBD2C + ebx));
 	eax = *((short*)(0x009EBD30 + ebx)) * 4;
 	edi = (uint8*)0x01424680 + eax;
@@ -207,8 +210,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		esi += 3;
 		edi += 4;
 	}
-
-	RCT2_CALLPROC_3(0x00405595, int, int, int, 0x01424680, 10, 236);
+	osinterface_update_palette((char*)0x01424680, 10, 236);
 }
 
 /**
