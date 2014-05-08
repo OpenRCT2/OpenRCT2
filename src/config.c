@@ -78,7 +78,7 @@ void config_reset_shortcut_keys()
 }
 
 /**
- * 
+ *  Reads the config file data/config.cfg
  *  rct2: 0x006752D5
  */
 void config_load()
@@ -86,6 +86,7 @@ void config_load()
 	HANDLE hFile;
 	DWORD bytesRead;
 
+	char* path = get_file_path(PATH_ID_GAMECFG);
 	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
@@ -98,14 +99,15 @@ void config_load()
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
 			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBB, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBB, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
 		}
+	
 	}
 
 	RCT2_GLOBAL(0x009AAC77, sint8) = 0;
@@ -124,7 +126,7 @@ void config_load()
 }
 
 /**
- * 
+ *  Save configuration to the data/config.cfg file
  *  rct2: 0x00675487
  */
 void config_save()
@@ -146,7 +148,11 @@ configuration_t gConfig;
 
 static void config_parse_settings(FILE *fp);
 static int config_get_line(FILE *fp, char *setting, char *value);
+static int config_parse_setting(FILE *fp, char *setting);
+static int config_parse_value(FILE *fp, char *value);
+static int config_parse_section(FILE *fp, char *setting, char *value);
 static void config_create_default(char *path);
+static void config_error(char *msg);
 
 /**
  * Initilise the settings.
@@ -163,7 +169,7 @@ void config_init()
 		DWORD dwAttrib = GetFileAttributes(path);
 		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
 			if (!CreateDirectory(path, NULL)) {
-				return NULL; // error creating path
+				config_error("Could not create config file (do you have write acces to you documents folder?)");
 			}
 		}
 		strcat(path, "\\config.ini");
@@ -172,10 +178,12 @@ void config_init()
 			config_create_default(path);
 			fp = fopen(path, "r");
 			if (!fp)
-				return NULL;
+				config_error("Could not create config file");
 		}
 
 		config_parse_settings(fp);
+
+		fclose(fp);
 	}
 }
 
@@ -241,18 +249,25 @@ static void config_parse_settings(FILE *fp)
 	int c = NULL, pos = 0;
 	char *setting;
 	char *value;
-	setting = (char *)malloc(128);
-	value = (char *)malloc(128);
-	
-	int size = 256;
+	char *section;
+	setting = (char *)malloc(MAX_CONFIG_LENGTH);
+	value = (char *)malloc(MAX_CONFIG_LENGTH);
+	section = (char*)malloc(MAX_CONFIG_LENGTH);
 	
 	while (config_get_line(fp, setting, value) > 0) {
-		if (strcmp(setting, "game_path") == 0){
-			strcpy(gConfig.game_path, value); // TODO: change to copy correct amount of bytes
+		if (strcmp(setting, "section") == 0){ 
+			strcpy(section, value);
+			continue;
+		}
+		
+		
+		
+		if (strcmp(setting, "game_path") == 0){	
+			strcpy(gConfig.game_path, value); 
 		} else if(strcmp(setting, "screenshot_format") == 0) {
 			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
 				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
-			} else if (strcmp(value, "1") == 0) { // Maybe remove that? WARNING: Breaks existing config files
+			} else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
 				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
 			} else {
 				gConfig.screenshot_format = SCREENSHOT_FORMAT_BMP;
@@ -261,78 +276,189 @@ static void config_parse_settings(FILE *fp)
 			gConfig.play_intro = (strcmp(value, "true") == 0);
 		}
 	}
+	free(setting);
+	free(value);
+	free(section);
 }
 
 /**
  * Read one line in the settings file
- * @param fp filepointer to the settings file
+ * @param fp filepointer to the config file
  * @param setting pointer where to to store the setting
  * @param value pointer to where to store the value 
- * @return < 0 on error
+ * @return < 0 if EOF file is reached or other error
  */
 static int config_get_line(FILE *fp, char *setting, char *value)
 {
-	long start = ftell(fp);
-	long end;
 	int c;
-	int pos = 0;
-	long size;
+	
 	c = fgetc(fp);
-	if (c == EOF)
-		return -1;
-	while (isalpha(c) || c == '_'){
-		c = fgetc(fp); // find size of setting
-		if (c == EOF)
-			return -1;
+	while (isspace(c)){
+		c = getc(fp);
 	}
 
-	end = ftell(fp);
-	size = end - start;
-	realloc(setting, size);
-	fseek(fp, start, SEEK_SET);
-	c = fgetc(fp);
-	if (c == '[') {
-		// TODO support categories
-		setting[0] = '\0';
-		value[0] = '\0';
-		while (c != '\n' && c != EOF) {
-			pos++;
+	if (c == '['){
+		return config_parse_section(fp, setting, value);
+	}
+	else if(c == '#'){
+		while (c != '\n'){
 			c = fgetc(fp);
 		}
-
 		return 1;
 	}
-	while (isalpha(c) || c == '_'){
-		setting[pos] = (char)c;
-		pos++;
+	if (c == EOF){
+		return -1;
+	}
+	
+	while (!isalpha(c)){
 		c = fgetc(fp);
 	}
-	setting[pos] = '\0';
-	while (c != '=') {
-		if (c == EOF || c == '\n') { // this is not a valid setting
-			return -1;
-		}
-		c = fgetc(fp);
-	}
+	
+	//if the first char is not the '[' char, it belongs to the setting name. We want to leave that for the next fn
+	fseek(fp, -1, SEEK_CUR);
+	
+	config_parse_setting(fp, setting);
+
 	c = fgetc(fp);
-	while (isspace(c)) {
+	while (isspace(c)){
+		c = getc(fp);
+	}
+	
+	if (c != '='){
+		config_error("There is an error in your configuration file");
+		return -1;
+	}
+
+	config_parse_value(fp, value);
+	return 1;
+
+	
+}
+
+/**
+* Parse the value of a setting
+* @param fp a filepointer to the config file
+* @param value a pointer to where to store the setting
+* @return < 0 if EOF is reached
+*/
+static int config_parse_setting(FILE *fp, char *setting){
+	long start, end;
+	int size, c, pos = 0;
+	
+	
+	start = ftell(fp);
+	c = fgetc(fp);
+	
+	while (isspace(c)){
+		start = ftell(fp);
+		c = fgetc(fp);
+
+	}
+	if (c == EOF){
+		return -1;
+	}
+
+	while (isalpha(c) || c == '_'){
 		c = fgetc(fp);
 	}
 
+	end = ftell(fp);
+	size = end - start;
+	
+	
+	fseek(fp, start, SEEK_SET);
+	c = fgetc(fp);
+	while (isalpha(c) || c == '_'){
+		setting[pos] = (char)c;
+		c = fgetc(fp);
+		pos++;
+	}
+	setting[pos] = '\0';
+	return 1;
+}
+
+/**
+ * Parse the value of a setting
+ * @param fp a filepointer to the config file
+ * @param value a pointer to where to store the value
+ * @return < 0 if EOF is reached
+ */
+static int config_parse_value(FILE *fp, char *value){
+	long start, end;
+	int size, c, pos = 0;
+
 	start = ftell(fp);
-	while (c != '\n' && c!= EOF) {
+	c = fgetc(fp);
+	while (isspace(c)){
+		start = ftell(fp);
+		c = fgetc(fp);
+		
+	}
+	
+	while (c != EOF && c != '\n'){
+		c = fgetc(fp);		
+	}
+	end = ftell(fp);
+	size = end - start;
+	if (size > MAX_CONFIG_LENGTH){
+		config_error("One of your settings is too long");
+	}
+	fseek(fp, start, SEEK_SET);
+	c = fgetc(fp);
+	while (c != EOF && c != '\n'){
+		
+		value[pos] = (char)c;
+		c = fgetc(fp);
+		pos++;
+	}
+	value[pos] = '\0';
+	return;
+}
+
+/**
+ * Parse the current section
+ * @param fp Filepointer to the config file
+ * @param setting This is set to contain the string "section"
+ * @param value Pointer to where the section name should be put
+ * @return < 0 if EOF is reached
+ */
+static int config_parse_section(FILE *fp, char *setting, char *value){
+	int size, c, pos = 0;
+	long start, end;
+		
+	strcpy(setting, "section\0");
+	c = fgetc(fp);
+	start = ftell(fp);
+	while (c != ']' && c != EOF){
 		c = fgetc(fp);
 	}
 	end = ftell(fp);
 	size = end - start;
-	realloc(value, size);
 	fseek(fp, start - 1, SEEK_SET);
-	pos = 0;
 	c = fgetc(fp);
-	while (c != '\n' && c != EOF) {
+	while (c != ']' && c != EOF){
 		value[pos] = (char)c;
-		pos++;
 		c = fgetc(fp);
+		pos++;
 	}
+	
 	value[pos] = '\0';
+	if (c != ']'){
+		config_error("There is an error with the section headers");
+	}
+	c = fgetc(fp); //devour ']'	
+	
+	return 1;
 }
+
+
+/**
+ * Error with config file. Print error message an quit the game
+ * @param msg Message to print in message box
+ */
+static void config_error(char *msg){
+	MessageBox(NULL, msg, "OpenRCT2", MB_OK);
+	//TODO:SHUT DOWN EVERYTHING!
+}
+
+
