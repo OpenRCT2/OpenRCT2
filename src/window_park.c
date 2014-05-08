@@ -646,7 +646,7 @@ static void window_park_entrance_close()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 }
 
 /**
@@ -1084,6 +1084,35 @@ static void window_park_scroll_to_viewport(rct_window *w)
 #pragma region Rating page
 
 /**
+*
+*  rct2: 0x00667CA4
+*/
+void window_park_rating_open()
+{
+	rct_window* window;
+
+	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	if (window == NULL) {
+		window = window_park_open();
+		window->var_482 = -1;
+		window->var_484 = -1;
+	}
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		tool_cancel();
+
+	window->viewport = NULL;
+	window->page = WINDOW_PARK_PAGE_RATING;
+	window_invalidate(window);
+	window->widgets = window_park_rating_widgets;
+	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
+	window->var_020 = 0;
+	window->event_handlers = window_park_rating_events;
+	window_init_scroll_widgets(window);
+}
+
+/**
  *
  *  rct2: 0x00668A06
  */
@@ -1196,6 +1225,35 @@ static void window_park_rating_paint()
 #pragma endregion
 
 #pragma region Guests page
+
+/**
+*
+*  rct2: 0x00667D35
+*/
+void window_park_guests_open()
+{
+	rct_window* window;
+
+	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	if (window == NULL) {
+		window = window_park_open();
+		window->var_482 = -1;
+		window->var_484 = -1;
+	}
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		tool_cancel();
+
+	window->viewport = NULL;
+	window->page = WINDOW_PARK_PAGE_GUESTS;
+	window_invalidate(window);
+	window->widgets = window_park_guests_widgets;
+	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
+	window->var_020 = 0;
+	window->event_handlers = window_park_guests_events;
+	window_init_scroll_widgets(window);
+}
 
 /**
  *
@@ -1570,7 +1628,7 @@ static void window_park_stats_paint()
 	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Draw park size
-	parkSize = RCT2_GLOBAL(0x013580EA, sint16) * 10;
+	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
 	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
@@ -1619,7 +1677,7 @@ void window_park_objective_open()
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 
 	window->viewport = NULL;
 	window->page = WINDOW_PARK_PAGE_OBJECTIVE;
@@ -1774,6 +1832,35 @@ static void window_park_objective_paint()
 #pragma region Awards page
 
 /**
+*
+*  rct2: 0x00667DC6
+*/
+void window_park_awards_open()
+{
+	rct_window* window;
+
+	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	if (window == NULL) {
+		window = window_park_open();
+		window->var_482 = -1;
+		window->var_484 = -1;
+	}
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+			tool_cancel();
+
+	window->viewport = NULL;
+	window->page = WINDOW_PARK_PAGE_AWARDS;
+	window_invalidate(window);
+	window->widgets = window_park_awards_widgets;
+	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
+	window->var_020 = 0;
+	window->event_handlers = window_park_awards_events;
+	window_init_scroll_widgets(window);
+}
+
+/**
  *
  *  rct2: 0x00669851
  */
@@ -1896,7 +1983,7 @@ static void window_park_set_page(rct_window *w, int page)
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			RCT2_CALLPROC_EBPSAFE(0x006EE281);
+			tool_cancel();
 
 	// Set listen only to viewport
 	listen = 0;
