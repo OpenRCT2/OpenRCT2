@@ -615,7 +615,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		break;
 	case NEWS_ITEM_MONEY:
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y);
-	case NEWS_ITEM_SCENERY:
+	case NEWS_ITEM_RESEARCH:
 		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y);
 		break;
 	case NEWS_ITEM_PEEPS:

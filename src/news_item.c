@@ -302,7 +302,7 @@ void news_item_open_subject(int type, int subject) {
 		// Open finances window
 		RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
 		break;
-	case NEWS_ITEM_SCENERY:
+	case NEWS_ITEM_RESEARCH:
 
 		if (subject >= 0x10000) {
 			// Open ride list window
