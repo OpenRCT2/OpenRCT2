@@ -25,6 +25,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
+#include <tchar.h>
 
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
@@ -228,8 +229,9 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please correct in config.ini.", "OpenRCT2", MB_OK);
-		strcpy(gConfig.game_path, "C:\\");
+		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directoy where you installed RCT2!", "OpenRCT2", MB_OK);
+		char *res = directory_browser();
+		strcpy(gConfig.game_path, res);
 	}
 
 	fp = fopen(path, "w");
@@ -238,6 +240,55 @@ static void config_create_default(char *path)
 	fprintf(fp, "screenshot_format = PNG\n");
 	fprintf(fp, "play_intro = false\n");
 	fclose(fp);
+}
+
+//A directory browser allowing for semi-automatic config.ini for non standard installs
+char* directory_browser()
+{
+	BROWSEINFO      bi;
+	char            pszBuffer[MAX_PATH];
+	LPITEMIDLIST    pidl;
+	LPMALLOC        lpMalloc;
+
+	// Initialize COM
+	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK)
+	{
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	// Get a pointer to the shell memory allocator
+	if (SHGetMalloc(&lpMalloc) != S_OK)
+	{
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	bi.hwndOwner = NULL;
+	bi.pidlRoot = NULL;
+	bi.pszDisplayName = pszBuffer;
+	bi.lpszTitle = _T("Select your RCT2 installation directory");
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+
+	char *outPath = "C:\\";
+
+	if (pidl = SHBrowseForFolder(&bi))
+	{
+		// Copy the path directory to the buffer
+		if (SHGetPathFromIDList(pidl, pszBuffer))
+		{
+			// store pszBuffer (and the path) in the outPath
+			outPath = strcat("", pszBuffer);
+
+		}
+
+	}
+	CoUninitialize();
+	return outPath;
 }
 
 /**
