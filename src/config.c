@@ -221,7 +221,7 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directoy where you installed RCT2!", "OpenRCT2", MB_OK);
+		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!", "OpenRCT2", MB_OK);
 		char *res = directory_browser();
 		strcpy(gConfig.game_path, res);
 	}
