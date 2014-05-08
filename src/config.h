@@ -71,6 +71,11 @@ enum {
 	SCREENSHOT_FORMAT_PNG
 };
 
+enum {
+	TEMPERATURE_FORMAT_C,
+	TEMPERATURE_FORMAT_F
+};
+
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_reset_shortcut_keys();
