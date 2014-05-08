@@ -166,7 +166,7 @@ static void window_game_bottom_toolbar_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x00667D35);
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_CALLPROC_EBPSAFE(0x00667CA4);
+		window_park_rating_open();
 		break;
 	case WIDX_MIDDLE_INSET:
 		news_item_close_current();
