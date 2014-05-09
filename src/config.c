@@ -100,10 +100,10 @@ void config_load()
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
 			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1; 
-			RCT2_GLOBAL(0x009AACBB, sint8) = 1; 
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1;
+			RCT2_GLOBAL(0x009AACBB, sint8) = 1;
+			RCT2_GLOBAL(0x009AACBD, sint16) = 0;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
@@ -230,7 +230,7 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directoy where you installed RCT2!", "OpenRCT2", MB_OK);
+		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!", "OpenRCT2", MB_OK);
 		char *res = config_show_directory_browser();
 		strcpy(gConfig.game_path, res);
 	}
@@ -310,7 +310,7 @@ static void config_parse_settings(FILE *fp)
 		
 		
 		
-		if (strcmp(setting, "game_path") == 0){	
+		if (strcmp(setting, "game_path") == 0){
 			strcpy(gConfig.game_path, value); 
 		} else if(strcmp(setting, "screenshot_format") == 0) {
 			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
@@ -350,7 +350,7 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 	}
 	else if(c == '#'){
 		while (c != '\n'){
-			c = fgetc(fp);
+	c = fgetc(fp);
 		}
 		return 1;
 	}
@@ -374,7 +374,7 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 	
 	if (c != '='){
 		config_error("There is an error in your configuration file");
-		return -1;
+			return -1;
 	}
 
 	config_parse_value(fp, value);
@@ -399,9 +399,9 @@ static int config_parse_setting(FILE *fp, char *setting){
 	
 	while (isspace(c)){
 		start = ftell(fp);
-		c = fgetc(fp);
+			c = fgetc(fp);
 
-	}
+		}
 	if (c == EOF){
 		return -1;
 	}
@@ -441,10 +441,10 @@ static int config_parse_value(FILE *fp, char *value){
 		start = ftell(fp);
 		c = fgetc(fp);
 		
-	}
+		}
 	
 	while (c != EOF && c != '\n'){
-		c = fgetc(fp);		
+		c = fgetc(fp);
 	}
 	end = ftell(fp);
 	size = end - start;
@@ -461,7 +461,7 @@ static int config_parse_value(FILE *fp, char *value){
 	}
 	value[pos] = '\0';
 	return;
-}
+	}
 
 /**
  * Parse the current section
