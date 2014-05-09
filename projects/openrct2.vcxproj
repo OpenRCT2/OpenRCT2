@@ -84,6 +84,7 @@
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_about.c" />
+    <ClCompile Include="..\src\window_banner.c" />
     <ClCompile Include="..\src\window_cheats.c" />
     <ClCompile Include="..\src\window_clear_scenery.c" />
     <ClCompile Include="..\src\window_error.c" />
