@@ -161,7 +161,7 @@ void window_guest_list_open()
 	window_init_scroll_widgets(window);
 	_window_guest_list_highlighted_index = -1;
 	window->var_490 = 0;
-	_window_guest_list_selected_tab = 1;
+	_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 	_window_guest_list_selected_filter = -1;
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
