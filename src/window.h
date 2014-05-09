@@ -360,4 +360,6 @@ void window_ride_construction_init_vars();
 
 void window_staff_init_vars();
 
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
+
 #endif

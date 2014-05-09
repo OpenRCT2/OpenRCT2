@@ -1245,3 +1245,12 @@ void window_guest_list_init_vars_b() {
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
 	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
 }
+
+/**
+ *  Wrapper for window events so C functions can call them
+ */ 
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event) {
+
+  RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, w, 0, 0);
+
+}
