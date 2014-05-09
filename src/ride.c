@@ -150,3 +150,20 @@ void ride_init_all()
 		ride_measurement->var_00 = 0xFF;
 	}
 }
+
+/**
+*
+*  rct2: 0x006B7A38
+*/
+void reset_all_ride_build_dates() {
+	int i;
+	rct_ride *ride;
+	for (i = 0; i < MAX_RIDES; i++) {
+		ride = GET_RIDE(i);
+		if (ride->type != RIDE_TYPE_NULL) {
+			//mov	ax, current_month_year
+			//sub	[esi + 180h], ax
+			ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		}
+	}
+}
