@@ -103,7 +103,7 @@ void title_load()
 	date_reset();
 	RCT2_CALLPROC_X(0x006C45ED, 0, 0, 0, 0, 0, 0, 0);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_construction_init_vars();
+	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_init_vars();
 	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
@@ -191,7 +191,7 @@ static void title_update_showcase()
 
 				window_invalidate(w);
 				RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
-				window_ride_construction_init_vars();
+				window_new_ride_init_vars();
 				RCT2_CALLPROC_EBPSAFE(0x00684AC3);
 				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 				news_item_init_queue();

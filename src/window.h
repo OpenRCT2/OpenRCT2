@@ -358,7 +358,7 @@ void window_cheats_open();
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
 
-void window_ride_construction_init_vars();
+void window_new_ride_init_vars();
 
 void window_staff_init_vars();
 
