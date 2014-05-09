@@ -135,7 +135,7 @@ void rct2_init()
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_construction_init_vars();
+	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_init_vars();
 
