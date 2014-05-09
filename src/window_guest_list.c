@@ -142,7 +142,7 @@ void window_guest_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
+	window = window_bring_to_front_by_id(WC_GUEST_LIST, 0);
 	if (window != NULL)
 		return;
 

@@ -208,9 +208,10 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_SCENERY:
-		tool_set(w, WIDX_SCENERY, 0);
-		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-		RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+		if (!tool_set(w, WIDX_SCENERY, 0)) {
+			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+		}
 		break;
 	case WIDX_PATH:
 		if (window_find_by_id(WC_FOOTPATH, 0) == NULL) {
