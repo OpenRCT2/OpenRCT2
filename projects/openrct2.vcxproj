@@ -98,7 +98,11 @@
     <ClCompile Include="..\src\window_ride_construction.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
+<<<<<<< HEAD
     <ClCompile Include="..\src\window_staff.c" />
+=======
+    <ClCompile Include="..\src\window_banner.c" />
+>>>>>>> 1eda151c704278e17de7b0ee88849342706b2bbc
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />
