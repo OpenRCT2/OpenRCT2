@@ -292,6 +292,8 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
 void window_close_by_id(rct_windowclass cls, rct_windownumber number);
+void window_close_top();
+void window_close_all();
 rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(int x, int y);
 int window_find_widget_from_point(rct_window *w, int x, int y);
@@ -359,5 +361,7 @@ void window_guest_list_init_vars_b();
 void window_ride_construction_init_vars();
 
 void window_staff_init_vars();
+
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 
 #endif
