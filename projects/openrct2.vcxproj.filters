@@ -281,7 +281,6 @@
     <ClCompile Include="..\src\finance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\src\window_ride_construction.c">
       <Filter>Windows</Filter>
     </ClCompile>
@@ -289,9 +288,6 @@
       <Filter>Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\window_staff.c">
-=======
-    <ClCompile Include="..\src\window_banner.c">
->>>>>>> 1eda151c704278e17de7b0ee88849342706b2bbc
       <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
