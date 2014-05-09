@@ -27,6 +27,8 @@
 #include "rct2.h"
 #include <tchar.h>
 
+#include "osinterface.h"
+
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
 
@@ -100,10 +102,10 @@ void config_load()
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
 			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBB, sint8) = 1;
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBB, sint8) = 1; 
+			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
@@ -230,8 +232,8 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!", "OpenRCT2", MB_OK);
-		char *res = config_show_directory_browser();
+		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
 		strcpy(gConfig.game_path, res);
 	}
 
@@ -243,50 +245,6 @@ static void config_create_default(char *path)
 	fclose(fp);
 }
 
-/**
- * A directory browser allowing for semi-automatic config.ini for non standard installs.
- */
-static char *config_show_directory_browser()
-{
-	BROWSEINFO      bi;
-	char            pszBuffer[MAX_PATH];
-	LPITEMIDLIST    pidl;
-	LPMALLOC        lpMalloc;
-
-	// Initialize COM
-	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
-		CoUninitialize();
-		return 0;
-	}
-
-	// Get a pointer to the shell memory allocator
-	if (SHGetMalloc(&lpMalloc) != S_OK) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
-		CoUninitialize();
-		return 0;
-	}
-
-	bi.hwndOwner = NULL;
-	bi.pidlRoot = NULL;
-	bi.pszDisplayName = pszBuffer;
-	bi.lpszTitle = _T("Select your RCT2 installation directory");
-	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-	bi.lpfn = NULL;
-	bi.lParam = 0;
-
-	char *outPath = "C:\\";
-
-	if (pidl = SHBrowseForFolder(&bi)) {
-		// Copy the path directory to the buffer
-		if (SHGetPathFromIDList(pidl, pszBuffer)) {
-			// Store pszBuffer (and the path) in the outPath
-			outPath = strcat("", pszBuffer);
-		}
-	}
-	CoUninitialize();
-	return outPath;
-}
 
 /**
  * Parse settings and set the game veriables
@@ -310,7 +268,7 @@ static void config_parse_settings(FILE *fp)
 		
 		
 		
-		if (strcmp(setting, "game_path") == 0){
+		if (strcmp(setting, "game_path") == 0){	
 			strcpy(gConfig.game_path, value); 
 		} else if(strcmp(setting, "screenshot_format") == 0) {
 			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
@@ -350,7 +308,7 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 	}
 	else if(c == '#'){
 		while (c != '\n'){
-	c = fgetc(fp);
+			c = fgetc(fp);
 		}
 		return 1;
 	}
@@ -374,7 +332,7 @@ static int config_get_line(FILE *fp, char *setting, char *value)
 	
 	if (c != '='){
 		config_error("There is an error in your configuration file");
-			return -1;
+		return -1;
 	}
 
 	config_parse_value(fp, value);
@@ -399,9 +357,9 @@ static int config_parse_setting(FILE *fp, char *setting){
 	
 	while (isspace(c)){
 		start = ftell(fp);
-			c = fgetc(fp);
+		c = fgetc(fp);
 
-		}
+	}
 	if (c == EOF){
 		return -1;
 	}
@@ -441,10 +399,10 @@ static int config_parse_value(FILE *fp, char *value){
 		start = ftell(fp);
 		c = fgetc(fp);
 		
-		}
+	}
 	
 	while (c != EOF && c != '\n'){
-		c = fgetc(fp);
+		c = fgetc(fp);		
 	}
 	end = ftell(fp);
 	size = end - start;
@@ -461,7 +419,7 @@ static int config_parse_value(FILE *fp, char *value){
 	}
 	value[pos] = '\0';
 	return;
-	}
+}
 
 /**
  * Parse the current section
@@ -505,7 +463,7 @@ static int config_parse_section(FILE *fp, char *setting, char *value){
  * @param msg Message to print in message box
  */
 static void config_error(char *msg){
-	MessageBox(NULL, msg, "OpenRCT2", MB_OK);
+	osinterface_show_messagebox(msg);
 	//TODO:SHUT DOWN EVERYTHING!
 }
 
