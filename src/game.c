@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  * 
  * This file is part of OpenRCT2.
@@ -870,15 +870,264 @@ int get_next_key()
  * 
  *  rct2: 0x006E3E68
  */
-void handle_shortcut(int key)
-{
-	int i;
-	for (i = 0; i < 32; i++) {
-		if (key == gShortcutKeys[i]) {
-			RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x006E3FB4, uint32)[i]);
-			break;
+void handle_shortcut(int key) {
+
+	rct_window* window;
+
+	if (key == gShortcutKeys[0]) {
+		// Close top most window
+		window_close_top();
+
+	} else if (key == gShortcutKeys[1]) {
+		// Close all windows
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
+			window_close_all();
+			return;
 		}
+		if (RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			window_close_top();
+		}
+	} else if (key == gShortcutKeys[2]) {
+		// Cancel construction mode
+		window = window_find_by_id(WC_ERROR, 0);
+		if (window != NULL) {
+			window_close(window);
+			return;
+		}
+		if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
+			tool_cancel();
+		}
+	} else if (key == gShortcutKeys[3]) {
+		// Pause
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 10)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 0, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[4]) {
+	  	// Zoom out
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 2, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[5]) {
+		// Zoom in
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 3, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[6]) {
+		// Rotate view
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 4, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[7]) {
+		// Rotate object
+		RCT2_CALLPROC_EBPSAFE(0x006E4182);
+	} else if (key == gShortcutKeys[8]) {
+		// Underground view toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 0, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[9]) {
+		// Remove base land toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 1, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[10]) {
+		// Remove vertical land toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 2, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[11]) {
+		// See through rides toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 4, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[12]) {
+		// See through scenery toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 5, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[13]) {
+		// Invisible supports toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 6, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[14]) {
+		// Invisible people toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 7, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[15]) {
+		// Height marks on land toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 9, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[16]) {
+		// Height marks on ride tracks toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 10, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[17]) {
+		// Height marks on paths toggle
+		RCT2_CALLPROC_X(0x0066CF8A, 11, 0, 0, 0, 0, 0, 0);
+	} else if (key == gShortcutKeys[18]) {
+		// Adjust land
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 7, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[19]) {
+		// Adjust water
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 8, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[20]) {
+		// Build scenery
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 9, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[21]) {
+		// Build paths
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 10, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[22]) {
+	  // Build new ride
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 11, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[23]) {
+	  // Show financial information
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+		  if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)) {
+		    RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		  }
+		}
+	} else if (key == gShortcutKeys[24]) {
+	  // Show research information
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  // Open new ride window
+		  RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+		  window = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
+			if (window != NULL) {
+				window_event_helper(window, 10, WE_MOUSE_DOWN);
+			}
+		}
+	} else if (key == gShortcutKeys[25]) {
+	  // Show rides list
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 12, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[26]) {
+	  // Show park information
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 13, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[27]) {
+	  // Show guest list
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 15, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[28]) {
+	  // Show staff information
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 14, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[29]) {
+	  // Show recent messages
+	  	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window_news_open();
+		}
+	} else if (key == gShortcutKeys[30]) {
+	  // Show map
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+			if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+				return;
+			}
+		}
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 6, WE_MOUSE_UP);
+			}
+		}
+	} else if (key == gShortcutKeys[31]) {
+	  // Screenshot
+		RCT2_CALLPROC_EBPSAFE(0x006E4034);
 	}
+
 }
 
 /**
