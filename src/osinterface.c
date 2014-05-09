@@ -19,6 +19,8 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include <shlobj.h>
+#include <tchar.h>
 #include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
@@ -348,4 +350,49 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
 
 	return result;
+}
+
+void osinterface_show_messagebox(char* message){
+	MessageBox(NULL, message, "OpenRCT2", MB_OK);
+}
+
+char* osinterface_open_directory_browser(char *title) {
+	BROWSEINFO      bi;
+	char            pszBuffer[MAX_PATH];
+	LPITEMIDLIST    pidl;
+	LPMALLOC        lpMalloc;
+
+	// Initialize COM
+	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	// Get a pointer to the shell memory allocator
+	if (SHGetMalloc(&lpMalloc) != S_OK) {
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	bi.hwndOwner = NULL;
+	bi.pidlRoot = NULL;
+	bi.pszDisplayName = pszBuffer;
+	bi.lpszTitle = _T(title);
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+
+	char *outPath = "C:\\";
+
+	if (pidl = SHBrowseForFolder(&bi)) {
+		// Copy the path directory to the buffer
+		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+			// Store pszBuffer (and the path) in the outPath
+			outPath = strcat("", pszBuffer);
+		}
+	}
+	CoUninitialize();
+	return outPath;
 }
