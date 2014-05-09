@@ -47,5 +47,7 @@ void osinterface_draw();
 void osinterface_free();
 
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
+void osinterface_show_messagebox(char* message);
+char* osinterface_open_directory_browser(char *title);
 
 #endif
