@@ -20,7 +20,9 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "config.h"
 #include "strings.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 
@@ -80,7 +82,7 @@ static uint32 window_banner_events[] = {
 	window_banner_emptysub,
 	window_banner_emptysub,
 	window_banner_textinput,
-	0x006BA7B5, //sub_6BA7B5
+	0x006BA7B5,
 	window_banner_emptysub,
 	window_banner_emptysub,
 	window_banner_emptysub,
@@ -96,10 +98,16 @@ static uint32 window_banner_events[] = {
 */
 void window_banner_open()
 {
+	rct_windownumber windownumber;
 	rct_window* w;
+	rct_viewport *viewport;
+	rct_widget *viewportWidget;
+
+	//__asm mov windownumber, ax // not quite right I think
+	windownumber = 0;
 
 	// Check if window is already open
-	w = window_bring_to_front_by_id(WC_BANNER, 0);
+	w = window_bring_to_front_by_id(WC_BANNER, windownumber);
 	if (w != NULL)
 		return;
 
@@ -114,13 +122,30 @@ void window_banner_open()
 		(1 << WIDX_TEXT_COLOR_DROPDOWN) |
 		(1 << WIDX_TEXT_COLOR_DROPDOWN_BUTTON);
 
+	w->number = windownumber;
 	window_init_scroll_widgets(w);
 	w->colours[0] = 24;
 	w->colours[1] = 24;
 	w->colours[2] = 24;
 
-	// loc_6BA43E
-	w->flags |= WF_TRANSPARENT;
+	/*
+		TODO: MISSING CODE 006BA377 -> 006BA3F6, need the banner map element 
+	*/
+
+	// Create viewport
+	viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+	viewport_create(
+		w,
+		w->x + viewportWidget->left + 1,
+		w->y + viewportWidget->top + 1,
+		(viewportWidget->right - viewportWidget->left) - 2,
+		(viewportWidget->bottom - viewportWidget->top) - 2,
+		100,	// TODO: needs banner map position
+		100		// TODO: needs banner map position
+	);
+
+	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->flags |= WF_2 | WF_TRANSPARENT;
 	window_invalidate(w);
 }
 
@@ -151,10 +176,8 @@ static void window_banner_mouseup()
 static void window_banner_mousedown()
 {
 	short widgetIndex;
-	rct_window *w;
 
 	__asm mov widgetIndex, dx
-	__asm mov w, esi
 
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOR:
