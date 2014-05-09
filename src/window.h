@@ -275,6 +275,7 @@ enum {
 	WC_CHANGE_KEYBOARD_SHORTCUT = 37,
 	WC_MAP = 38,
 	WC_TITLE_LOGO = 39,
+	WC_BANNER = 40,
 	WC_EDITOR_OBJECT_SELECTION = 42,
 	WC_EDITOR_INVENTION_LIST = 43,
 	WC_EDITOR_SCENARIO_OPTIONS = 45,
@@ -345,6 +346,7 @@ void window_guest_list_open();
 void window_park_entrance_open();
 void window_park_objective_open();
 void window_ride_list_open();
+void window_banner_open();
 void window_cheats_open();
 
 void window_guest_list_init_vars_a();

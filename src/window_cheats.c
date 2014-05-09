@@ -28,7 +28,6 @@
 #include "widget.h"
 #include "window.h"
 
-
 #define WW 200
 #define WH 128
 #define CHEATS_MONEY_INCREMENT 10000
@@ -207,6 +206,9 @@ static void window_cheats_money_mouseup()
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	}
+
+	window_park_entrance_open();
+	window_banner_open();
 }
 
 static void window_cheats_guests_mouseup()
