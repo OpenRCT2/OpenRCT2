@@ -450,7 +450,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	window_invalidate(mainWindow);
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
-	window_ride_construction_init_vars();
+	window_new_ride_init_vars();
 
 	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
 	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
@@ -513,7 +513,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related, called above already)
 	RCT2_CALLPROC_EBPSAFE(0x0066729F); // reset history / finance / awards
-	RCT2_CALLPROC_EBPSAFE(0x006B7A38); // reset_all_ride_build_dates
+	reset_all_ride_build_dates();
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x00674576);
 	park_calculate_size();
