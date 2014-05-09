@@ -27,6 +27,8 @@
 #include "rct2.h"
 #include <tchar.h>
 
+#include "osinterface.h"
+
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
 
@@ -230,8 +232,8 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 	if (!config_find_rct2_path(gConfig.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please select the directoy where you installed RCT2!", "OpenRCT2", MB_OK);
-		char *res = config_show_directory_browser();
+		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
 		strcpy(gConfig.game_path, res);
 	}
 
@@ -243,50 +245,6 @@ static void config_create_default(char *path)
 	fclose(fp);
 }
 
-/**
- * A directory browser allowing for semi-automatic config.ini for non standard installs.
- */
-static char *config_show_directory_browser()
-{
-	BROWSEINFO      bi;
-	char            pszBuffer[MAX_PATH];
-	LPITEMIDLIST    pidl;
-	LPMALLOC        lpMalloc;
-
-	// Initialize COM
-	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
-		CoUninitialize();
-		return 0;
-	}
-
-	// Get a pointer to the shell memory allocator
-	if (SHGetMalloc(&lpMalloc) != S_OK) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
-		CoUninitialize();
-		return 0;
-	}
-
-	bi.hwndOwner = NULL;
-	bi.pidlRoot = NULL;
-	bi.pszDisplayName = pszBuffer;
-	bi.lpszTitle = _T("Select your RCT2 installation directory");
-	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-	bi.lpfn = NULL;
-	bi.lParam = 0;
-
-	char *outPath = "C:\\";
-
-	if (pidl = SHBrowseForFolder(&bi)) {
-		// Copy the path directory to the buffer
-		if (SHGetPathFromIDList(pidl, pszBuffer)) {
-			// Store pszBuffer (and the path) in the outPath
-			outPath = strcat("", pszBuffer);
-		}
-	}
-	CoUninitialize();
-	return outPath;
-}
 
 /**
  * Parse settings and set the game veriables
@@ -505,7 +463,7 @@ static int config_parse_section(FILE *fp, char *setting, char *value){
  * @param msg Message to print in message box
  */
 static void config_error(char *msg){
-	MessageBox(NULL, msg, "OpenRCT2", MB_OK);
+	osinterface_show_messagebox(msg);
 	//TODO:SHUT DOWN EVERYTHING!
 }
 

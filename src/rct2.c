@@ -135,9 +135,9 @@ void rct2_init()
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_list_init_vars();
+	window_ride_construction_init_vars();
 	window_guest_list_init_vars_b();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+	window_staff_init_vars();
 
 	title_load();
 
@@ -151,7 +151,7 @@ void rct2_init_directories()
 	// check install directory
 	DWORD dwAttrib = GetFileAttributes(gConfig.game_path);
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
-		MessageBox(NULL, "Invalid RCT2 installation path. Please correct in config.ini.", "OpenRCT2", MB_OK);
+		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
 
