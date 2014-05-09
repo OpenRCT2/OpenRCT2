@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
+* Copyright (c) 2014 Ted John, Peter Hill
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -491,6 +491,47 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
 	}
 
 	return NULL;
+}
+
+/**
+ *  Closes the top-most window
+ *
+ *  rct2: 0x006E403C
+ */
+void window_close_top() {
+  rct_window* w;
+
+    window_close_by_id(WC_DROPDOWN, 0);
+
+    if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
+      if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
+	return;
+      }
+    }
+    for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++){
+      if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
+	window_close(w);
+	return;
+      }
+    }
+}
+
+/**
+ *  Closes all open windows
+ *
+ *  rct2: 0x006EE927
+ */
+void window_close_all() {
+  rct_window* w;
+
+    window_close_by_id(WC_DROPDOWN, 0);
+
+    for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++){
+      if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
+		window_close(w);
+		w = RCT2_FIRST_WINDOW;
+      }
+    }
 }
 
 /**
@@ -1203,4 +1244,13 @@ void window_guest_list_init_vars_b() {
 	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
 	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
+}
+
+/**
+ *  Wrapper for window events so C functions can call them
+ */ 
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event) {
+
+  RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, w, 0, 0);
+
 }
