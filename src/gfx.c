@@ -162,9 +162,9 @@ void sub_0x67A934(int _eax, int _ebp, int _ebx, int _esi, rct_drawpixelinfo *dpi
 	dx -= dpi->y;
 	if (dx < 0)
 	{
-		RCT2_GLOBAL(0x9ABDAC, uint16) += dx;
-		if (RCT2_GLOBAL(0x9ABDAC, uint16) <= 0)return;
-		RCT2_GLOBAL(0xEDF808, uint16) -= dx;
+		RCT2_GLOBAL(0x9ABDAC, sint16) += dx;
+		if (RCT2_GLOBAL(0x9ABDAC, sint16) <= 0)return;
+		RCT2_GLOBAL(0xEDF808, sint16) -= dx;
 		_edx = 0;
 		dx = 0;
 	}
@@ -180,22 +180,22 @@ void sub_0x67A934(int _eax, int _ebp, int _ebx, int _esi, rct_drawpixelinfo *dpi
 		dx = bx;
 		_edi += _eax;
 	}
-	dx += RCT2_GLOBAL(0x9ABDAC, uint16);
+	dx += RCT2_GLOBAL(0x9ABDAC, sint16);
 	dx -= dpi->height;
 	if (dx > 0){
-		RCT2_GLOBAL(0x9ABDAC, uint16) -= dx;
-		if (RCT2_GLOBAL(0x9ABDAC, uint16) <= 0)return;
+		RCT2_GLOBAL(0x9ABDAC, sint16) -= dx;
+		if (RCT2_GLOBAL(0x9ABDAC, sint16) <= 0)return;
 	}
 	ax = RCT2_GLOBAL(0x9E3D0C, uint16);
 	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
 	cx += RCT2_GLOBAL(0x9E3D10, uint16);
 
-	RCT2_GLOBAL(0x9ABDA8, uint16) = ax;
+	RCT2_GLOBAL(0x9ABDA8, sint16) = ax;
 	cx -= dpi->x;
 	if (cx < 0){
-		RCT2_GLOBAL(0x9ABDA8, uint16) += cx;
-		if (RCT2_GLOBAL(0x9ABDA8, uint16) <= 0)return;
-		RCT2_GLOBAL(0xEDF80C, uint16) -= cx;
+		RCT2_GLOBAL(0x9ABDA8, sint16) += cx;
+		if (RCT2_GLOBAL(0x9ABDA8, sint16) <= 0)return;
+		RCT2_GLOBAL(0xEDF80C, sint16) -= cx;
 		_ecx = 0;
 		cx = 0;
 	}
@@ -203,11 +203,11 @@ void sub_0x67A934(int _eax, int _ebp, int _ebx, int _esi, rct_drawpixelinfo *dpi
 		_ecx = cx;
 		_edi += _ecx;
 	}
-	cx += RCT2_GLOBAL(0x9ABDA8, uint16);
+	cx += RCT2_GLOBAL(0x9ABDA8, sint16);
 	cx -= dpi->width;
 	if (cx > 0){
-		RCT2_GLOBAL(0x9ABDA8, uint16) -= cx;
-		if (RCT2_GLOBAL(0x9ABDA8, uint16) <= 0)return;
+		RCT2_GLOBAL(0x9ABDA8, sint16) -= cx;
+		if (RCT2_GLOBAL(0x9ABDA8, sint16) <= 0)return;
 	}
 	ax = dpi->width;
 	ax += dpi->pitch;
