@@ -149,6 +149,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * rct2: 0x67A934
 */
 void sub_0x67A934(int eax, int ebp, int ebx, int esi, rct_drawpixelinfo *dpi, int x, int y){
+	//eax = 3000A, ecx = 9C, edx = 152, ebx = A46798, esp = CFCC8, ebp = DC10005, esi = 0, edi = 9DEA74
 	int ecx = x, edx = y, edi = dpi;
 	ebp = dpi;
 	esi = RCT2_GLOBAL(0x9E3D08, uint32);
@@ -205,6 +206,8 @@ void sub_0x67A934(int eax, int ebp, int ebx, int esi, rct_drawpixelinfo *dpi, in
 	eax += dpi->pitch;
 	RCT2_GLOBAL(0x9ABDB0, uint16) = eax;
 	//ebx esi edi
+	char* FindThis = "FINDTHISSTRING";
+	//eax 280,ecx FEFC,edx FFFF,ebx A40003,esp CFCC4,ebp 9DEA74,esi 3E1DF13,edi 322076
 	RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
 }
 
@@ -217,6 +220,7 @@ void sub_0x67A934(int eax, int ebp, int ebx, int esi, rct_drawpixelinfo *dpi, in
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
+	char* FindMe = "FINDTHISOTHERSTRING";
 	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	//return;
 
