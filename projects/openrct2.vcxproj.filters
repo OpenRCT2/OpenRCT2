@@ -281,13 +281,16 @@
     <ClCompile Include="..\src\finance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\window_ride_construction.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\window_finances.c">
       <Filter>Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\window_staff.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_banner.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_new_ride.c">
       <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>

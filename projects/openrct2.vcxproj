@@ -84,6 +84,7 @@
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_about.c" />
+    <ClCompile Include="..\src\window_banner.c" />
     <ClCompile Include="..\src\window_cheats.c" />
     <ClCompile Include="..\src\window_clear_scenery.c" />
     <ClCompile Include="..\src\window_error.c" />
@@ -95,7 +96,7 @@
     <ClCompile Include="..\src\window_park.c" />
     <ClCompile Include="..\src\window_finances.c" />
     <ClCompile Include="..\src\window_footpath.c" />
-    <ClCompile Include="..\src\window_ride_construction.c" />
+    <ClCompile Include="..\src\window_new_ride.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
     <ClCompile Include="..\src\window_staff.c" />

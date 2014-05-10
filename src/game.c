@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  * 
  * This file is part of OpenRCT2.
@@ -866,6 +866,228 @@ int get_next_key()
 	return 0;
 }
 
+void handle_shortcut_command(int shortcutIndex)
+{
+	rct_window *window;
+
+	switch (shortcutIndex) {
+	case SHORTCUT_CLOSE_TOP_MOST_WINDOW:
+		window_close_top();
+		break;
+	case SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2))
+			window_close_all();
+		else if (RCT2_ADDRESS(0x0141F570, uint8) == 1)
+			window_close_top();
+		break;
+	case SHORTCUT_CANCEL_CONSTRUCTION_MODE:
+		window = window_find_by_id(WC_ERROR, 0);
+		if (window != NULL)
+			window_close(window);
+		else if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+			tool_cancel();
+		break;
+	case SHORTCUT_PAUSE_GAME:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 10)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 0, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_ZOOM_VIEW_OUT:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 2, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ZOOM_VIEW_IN:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 3, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ROTATE_VIEW:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 4, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ROTATE_CONSTRUCTION_OBJECT:
+		RCT2_CALLPROC_EBPSAFE(0x006E4182);
+		break;
+	case SHORTCUT_UNDERGROUND_VIEW_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 0, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_REMOVE_BASE_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 1, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 2, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_SEE_THROUGH_RIDES_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 4, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 5, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 6, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_INVISIBLE_PEOPLE_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 7, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 9, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 10, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 11, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_ADJUST_LAND:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 7, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ADJUST_WATER:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 8, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_SCENERY:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 9, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_PATHS:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 10, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_NEW_RIDE:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 11, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
+				RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		break;
+	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			// Open new ride window
+			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+			window = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
+			if (window != NULL)
+				window_event_helper(window, 10, WE_MOUSE_DOWN);
+		}
+		break;
+	case SHORTCUT_SHOW_RIDES_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 12, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_PARK_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 13, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_GUEST_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 15, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_STAFF_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 14, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_RECENT_MESSAGES:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E))
+			window_news_open();
+		break;
+	case SHORTCUT_SHOW_MAP:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_ADDRESS(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 6, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_SCREENSHOT:
+		RCT2_CALLPROC_EBPSAFE(0x006E4034); // set screenshot countdown to 2
+		break;
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E3E68
@@ -873,9 +1095,9 @@ int get_next_key()
 void handle_shortcut(int key)
 {
 	int i;
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < SHORTCUT_COUNT; i++) {
 		if (key == gShortcutKeys[i]) {
-			RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x006E3FB4, uint32)[i]);
+			handle_shortcut_command(i);
 			break;
 		}
 	}
@@ -1298,7 +1520,7 @@ int game_load_save()
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_construction_init_vars();
+	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
 		RCT2_CALLPROC_EBPSAFE(0x0069E869);

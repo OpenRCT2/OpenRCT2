@@ -142,7 +142,7 @@ void window_guest_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
+	window = window_bring_to_front_by_id(WC_GUEST_LIST, 0);
 	if (window != NULL)
 		return;
 
@@ -161,7 +161,7 @@ void window_guest_list_open()
 	window_init_scroll_widgets(window);
 	_window_guest_list_highlighted_index = -1;
 	window->var_490 = 0;
-	_window_guest_list_selected_tab = 1;
+	_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 	_window_guest_list_selected_filter = -1;
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
