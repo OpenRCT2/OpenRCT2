@@ -144,7 +144,7 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 
 
 /**
- *
+ * Draws a line on dpi if within dpi boundaries
  *  rct2: 0x00684466
  * dpi (edi)
  * x1 (ax)
@@ -155,106 +155,78 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
  */
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
 {
-	//RCT2_CALLPROC_X(0x00684466, x1, y1, x2, y2, 0, dpi, colour);
-	//return;
-
+	// Check to make sure the line is within the drawing area
 	if ((x1 < dpi->x) && (x2 < dpi->x)){
-		return;//jump to 0x68474B
+		return;
 	}
 
 	if ((y1 < dpi->y) && (y2 < dpi->y)){
-		return;//jump to 0x68474B
+		return;
 	}
 
-	if ((x1 > (dpi->x + dpi->width)) && (x2 > (dpi->x + dpi->width))){
-		return;//jump to 0x68474B
+	if ((x1 >(dpi->x + dpi->width)) && (x2 >(dpi->x + dpi->width))){
+		return;
 	}
 
 	if ((y1 > (dpi->y + dpi->height)) && (y2 > (dpi->y + dpi->height))){
-		return;//jump to 0x68474B
+		return;
 	}
 
-	RCT2_GLOBAL(0xEDF84A, uint16) = (uint16)(0xFFFF & colour);
+	//Bresenhams algorithm
 
-	int bits_pointer;
-	bits_pointer = dpi->bits;
-	RCT2_GLOBAL(0x9ABDB8, uint32) = bits_pointer;
-	RCT2_GLOBAL(0x9ABDBC, uint16) = dpi->x;
-	RCT2_GLOBAL(0x9ABDBE, uint16) = dpi->y;
-	RCT2_GLOBAL(0x9ABDC0, uint16) = dpi->width;
-	RCT2_GLOBAL(0x9ABDC2, uint16) = dpi->height;
-	RCT2_GLOBAL(0x9ABDC4, uint16) = dpi->pitch;
+	//If vertical plot points upwards
+	int steep = abs(y2 - y1) > abs(x2 - x1);
+	if (steep){
+		int temp_y2 = y2;
+		int temp_x2 = x2;
+		y2 = x1;
+		x2 = y1;
+		y1 = temp_x2;
+		x1 = temp_y2;
+	}
 
-	int edi = y1;
-	int esi = x1;
-	int ebp = colour & 0xFFFF;
-	int x_diff, y_diff;
-	x_diff = x2 - x1;
-
+	//If line is right to left swap direction
 	if (x1 > x2){
-		x_diff = -x_diff;
-		int ax = x_diff;
-		int dx = y2 - y1;
-		if (dx < 0){
-			RCT2_CALLPROC_X(0x6846C5, ax, x2, x_diff, dx, esi, edi, ebp);
-			return;
-			//jump 0x6846C5
-		}
-		RCT2_GLOBAL(0xEDF846, uint16) = x_diff;
-		RCT2_GLOBAL(0xEDF848, uint16) = y2 - y1;
-		if (dx > x_diff){
-			RCT2_CALLPROC_X(0x684691, ax, x2, x_diff, dx, esi, edi, ebp);
-			return;
-			//jump 0x684691
-		}
-		ax--;
-		if (ax < 0)return;
-		x_diff /= 2;
-		x_diff = -x_diff;
-		ebp = 0;
-		return;//not finished
+		int temp_y2 = y2;
+		int temp_x2 = x2;
+		y2 = y1;
+		x2 = x1;
+		y1 = temp_y2;
+		x1 = temp_x2;
 	}
-	int ax = x_diff;
-	y_diff = y2 - y1;
-	if (y1 > y2){
-		RCT2_CALLPROC_X(0x6845AB, ax, x2, x_diff, y_diff, esi, edi, ebp);
-		return;
-		//jump 0x6845AB
-	}
-	RCT2_GLOBAL(0xEDF846, uint16) = x_diff;
-	RCT2_GLOBAL(0xEDF848, uint16) = y_diff;
-	if ((y2 - y1) > (x2 - x1)){
-		RCT2_CALLPROC_X(0x68456A, ax, x2, x_diff, y_diff, esi, edi, ebp);
-		return;
-		//jump 0x68456A
-	}
-	ax--;
-	if (ax < 0){
-		RCT2_CALLPROC_X(0x684568, ax, x2, x_diff, y_diff, esi, edi, ebp);
-		return;//jump 0x684568
-	}
-	x_diff /= 2;
-	x_diff = -x_diff;
-	ebp = 0;
 
-	for (int i = ax; i >= 0; i--){
-		ebp++;
-		x_diff += y_diff;
-		if (x_diff <= 0){
-			if (i-1 < 0){
-				gfx_draw_line_on_buffer(dpi, (uint16)(0xFFFF & colour), edi, ebp, esi);
-				return;
-			}
-			continue;
+	int delta_x = x2 - x1;
+	int delta_y = abs(y2 - y1);
+	int error = delta_x / 2;
+	int y_step;
+	int y = y1;
+
+	//Direction of step
+	if (y1 < y2)y_step = 1;
+	else y_step = -1;
+
+	for (int x = x1, x_start = x1, no_pixels = 1; x < x2; ++x,++no_pixels){
+		//Vertical lines are drawn 1 pixel at a time
+		if (steep)gfx_draw_line_on_buffer(dpi, colour, x, y, 1);
+
+		error -= delta_y;
+		if (error < 0){
+			//Non vertical lines are drawn with as many pixels in a horizontal line as possible
+			if (!steep)gfx_draw_line_on_buffer(dpi, colour, y, x_start, no_pixels);
+
+			//Reset non vertical line vars
+			x_start = x + 1;
+			no_pixels = 1;
+			y += y_step;
+			error += delta_x;
 		}
-		x_diff -= x2 - x1;
-		gfx_draw_line_on_buffer(dpi, (uint16)(0xFFFF & colour), edi, ebp, esi);
-		esi += ebp;
-		edi++;
-		ebp = 0;
+
+		//Catch the case of the last line
+		if (x + 1 == x2 && !steep){
+			gfx_draw_line_on_buffer(dpi, colour, y, x_start, no_pixels);
+		}
 	}
 	return;
-
 }
 
 /**
