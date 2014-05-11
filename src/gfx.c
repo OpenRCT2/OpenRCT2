@@ -177,24 +177,8 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 					length = dpi->width + dpi->pitch - right_;
 
 					for (int i = 0; i < bottom_; ++i) {
-						uint32 ecx;
-						ecx = right_;
-						ecx = ecx / 2;
-						if (ecx % 2 != 0) {
-							*edi = col;
-							edi++;
-						}
-						ecx = ecx / 2;
-						if (ecx % 2 != 0) {
-							*edi = col;
-							edi++;
-							*edi = col;
-							edi++;
-							// *((uint16*)edi) = ax & 0xffff;
-							// edi += 2;
-						}
-						memset(edi, col, ecx*4);
-						edi += length;
+						memset(edi, col, right_);
+						edi += length + right_;
 					}
 				} else {
 					// 00678B8A   00678E38
