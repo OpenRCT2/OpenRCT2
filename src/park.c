@@ -87,11 +87,37 @@ void park_init()
 	RCT2_GLOBAL(0x01358772, uint16) = 400;
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-	RCT2_CALLPROC_EBPSAFE(0x0066729F); // reset history / finance / awards
+	park_reset_awards_and_history();
 
 	rct_s6_info *info = 0x0141F570;
 	info->name[0] = '\0';
 	format_string(info->details, STR_NO_DETAILS_YET, NULL);
+}
+
+/**
+ * 
+ *  rct2: 0x0066729F
+ */
+void park_reset_awards_and_history()
+{
+	int i;
+
+	// Reset park rating and guests in park history
+	for (i = 0; i < 32; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8)[i] = 255;
+		RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8)[i] = 255;
+	}
+
+	// Reset finance history
+	for (i = 0; i < 128; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, uint32)[i] = 0x80000000;
+		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, uint32)[i] = 0x80000000;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, uint32)[i] = 0x80000000;
+	}
+
+	// Reset awards
+	for (i = 0; i < 4; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i].time = 0;
 }
 
 /**
