@@ -261,5 +261,6 @@ int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
 void reset_all_ride_build_dates();
+void ride_update_favourited_stat();
 
 #endif

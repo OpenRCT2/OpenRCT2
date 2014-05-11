@@ -110,7 +110,7 @@ void finance_pay_interest()
 void finance_pay_ride_upkeep()
 {
 	rct_ride* ride;
-	for (int i = 0; i < 255; i++) {
+	for (int i = 0; i < MAX_RIDES; i++) {
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
