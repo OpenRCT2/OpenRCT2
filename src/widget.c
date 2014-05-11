@@ -564,7 +564,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	// Text
 	if (widget->image != (uint32)-1) {
 		colour = w->colours[widget->colour] & 0x7F;
-		if (colour & 1)
+		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
 		gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
 		textRight = gLastDrawStringX + 1;
