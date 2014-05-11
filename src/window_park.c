@@ -2139,7 +2139,6 @@ static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history
 static void window_park_graph_draw_line_a(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
 {
 	int i, x, y, lastX, lastY;
-
 	lastX = -1;
 	x = baseX;
 	for (i = 31; i >= 0; i--) {

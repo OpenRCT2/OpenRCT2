@@ -158,6 +158,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_24:
+		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_25:
 		break;
@@ -715,7 +716,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
-*
+ * 
 *  rct2: 0x006EBAD9
 */
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
