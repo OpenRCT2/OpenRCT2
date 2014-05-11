@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -119,9 +119,9 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  *  rct2: 0x00678AD4
  * dpi (edi)
  * left (ax)
- * top (cx)    ?
+ * top (cx)
  * right (bx)
- * bottom (dx) ?
+ * bottom (dx)
  * colour (ebp)
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
@@ -293,8 +293,9 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 		int length = dpi->width + dpi->pitch - right_;
 
+		uint32 ecx;
 		for (int i = 0; i < bottom_; ++i) {
-			uint32 ecx = pattern;
+			ecx = pattern;
 			// Rotate right
 			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
 			ecx = (ecx & 0xFFFF0000) | right_; 
