@@ -127,157 +127,158 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
 
-  int left_, right_, top_, bottom_;
-  rct_drawpixelinfo* dpi_;
-  left_ = left;
-  right_ = right;
-  top_ = top;
-  bottom_ = bottom;
-  dpi_ = dpi;
+	int left_, right_, top_, bottom_;
+	rct_drawpixelinfo* dpi_;
+	left_ = left;
+	right_ = right;
+	top_ = top;
+	bottom_ = bottom;
+	dpi_ = dpi;
   
-  if ((left > right) || (top > bottom) || (dpi->x > right) || (left >= (dpi->x + dpi->width)) ||
-      (bottom < dpi->y) || (top >= (dpi->y + dpi->height)))
-    return;
+	if ((left > right) || (top > bottom) || (dpi->x > right) || (left >= (dpi->x + dpi->width)) ||
+		(bottom < dpi->y) || (top >= (dpi->y + dpi->height)))
+		return;
 
-  colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
+	colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
 
-  if (!(colour & 0x1000000)) {
-      if (!(colour & 0x8000000)) {
-	left_ = left - dpi->x;
-	if (left_ < 0)
-	  left_ = 0;
+	if (!(colour & 0x1000000)) {
+		if (!(colour & 0x8000000)) {
+			left_ = left - dpi->x;
+			if (left_ < 0)
+				left_ = 0;
 
-	right_ = right - dpi->x;
-	right_++;
-	if (right_ > dpi->width)
-	  right_ = dpi->width;
+			right_ = right - dpi->x;
+			right_++;
+			if (right_ > dpi->width)
+				right_ = dpi->width;
 
-	right_ -= left_;
+			right_ -= left_;
 	
-	top_ = top - dpi->y;
-	if (top_ < 0)
-	  top_ = 0;
+			top_ = top - dpi->y;
+			if (top_ < 0)
+				top_ = 0;
 
-	bottom_ = bottom - dpi->y;
-	bottom_++;
+			bottom_ = bottom - dpi->y;
+			bottom_++;
 
-	if (bottom_ > dpi->height)
-	  bottom_ = dpi->height;
+			if (bottom_ > dpi->height)
+				bottom_ = dpi->height;
 
-	bottom_ -= top_;
+			bottom_ -= top_;
 
-	if (!(colour & 0x2000000)) {
-	  if (!(colour & 0x4000000)) {
-	    uint8* edi;
-	    edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+			if (!(colour & 0x2000000)) {
+				if (!(colour & 0x4000000)) {
+					uint8* edi;
+					edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
 
-	    uint8 col = colour & 0xFF;
+					uint8 col = colour & 0xFF;
 
-	    int length;
-	    length = dpi->width + dpi->pitch - right_;
+					int length;
+					length = dpi->width + dpi->pitch - right_;
 
-		for (int i = 0; i < bottom_; ++i) {
-			uint32 ecx;
-			ecx = right_;
-			ecx = ecx / 2;
-			if (ecx % 2 != 0) {
-				*edi = col;
-				edi++;
-			}
-			ecx = ecx / 2;
-			if (ecx % 2 != 0) {
-				*edi = col;
-				edi++;
-				*edi = col;
-				edi++;
-				// *((uint16*)edi) = ax & 0xffff;
-				// edi += 2;
-			}
-			memset(edi, col, ecx*4);
-			edi += length;
-		}
-	  } else {
-	    // 00678B8A   00678E38
-	    char* esi;
-	    esi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
+					for (int i = 0; i < bottom_; ++i) {
+						uint32 ecx;
+						ecx = right_;
+						ecx = ecx / 2;
+						if (ecx % 2 != 0) {
+							*edi = col;
+							edi++;
+						}
+						ecx = ecx / 2;
+						if (ecx % 2 != 0) {
+							*edi = col;
+							edi++;
+							*edi = col;
+							edi++;
+							// *((uint16*)edi) = ax & 0xffff;
+							// edi += 2;
+						}
+						memset(edi, col, ecx*4);
+						edi += length;
+					}
+				} else {
+					// 00678B8A   00678E38
+					char* esi;
+					esi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
 
-	    int eax, ebp;
-	    eax = colour;
-	    ebp = dpi->width + dpi->pitch - right_;
+					int eax, ebp;
+					eax = colour;
+					ebp = dpi->width + dpi->pitch - right_;
 
-	    RCT2_GLOBAL(0x00EDF810, uint32) = ebp;
-	    RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
-	    RCT2_GLOBAL(0x00EDF814, uint32) = right_;
+					RCT2_GLOBAL(0x00EDF810, uint32) = ebp;
+					RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
+					RCT2_GLOBAL(0x00EDF814, uint32) = right_;
 
-	    top_ = (top + dpi_->y) & 0xf;
-	    right_ = (right + dpi_->x) &0xf;
+					top_ = (top + dpi_->y) & 0xf;
+					right_ = (right + dpi_->x) &0xf;
 
-	    dpi_ = esi;
+					dpi_ = esi;
 
-	    esi = eax >> 0x1C;
-	    esi = RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
+					esi = eax >> 0x1C;
+					esi = RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
 
-	    for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
-                 // push    ebx
-                 // push    ecx
-	      ebp = *(esi + top_*2);
+					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
+						// push    ebx
+						// push    ecx
+						ebp = *(esi + top_*2);
 					     
-	      // mov     bp, [esi+top_*2];
-	      int ecx;
-	      ecx = RCT2_GLOBAL(0x00EDF814, uint32);
+						// mov     bp, [esi+top_*2];
+						int ecx;
+						ecx = RCT2_GLOBAL(0x00EDF814, uint32);
 
-	      for (int i = ecx; i >=0; --i) {
-	    	if (!(ebp & (1 << right_)))
-	    	  dpi_->bits = left_ & 0xFF;
+						for (int i = ecx; i >=0; --i) {
+							if (!(ebp & (1 << right_)))
+								dpi_->bits = left_ & 0xFF;
 		
-	    	right_++;
-	    	right_ = right_ & 0xF;
-	    	dpi_++;
-	      }
-                 // pop     ecx
-                 // pop     ebx
-	      top_++;
-	      top_ = top_ &0xf;
-	      dpi_ += RCT2_GLOBAL(0x00EDF810, uint32);
-	    }
-	    return;
-	  }
+							right_++;
+							right_ = right_ & 0xF;
+							dpi_++;
+						}
+						// pop     ecx
+						// pop     ebx
+						top_++;
+						top_ = top_ &0xf;
+						dpi_ += RCT2_GLOBAL(0x00EDF810, uint32);
+					}
+					return;
+				}
 
-	} else {
-	  // 00678B7E   00678C83
-	  if (dpi_->pad_0E < 1) {
-	    // Location in screen buffer?
-	    uint8* edi = top_ * (dpi_->width + dpi_->pitch) + left_ + dpi_->bits;
+			} else {
+				// 00678B7E   00678C83
+				if (dpi_->pad_0E < 1) {
+					// Location in screen buffer?
+					uint8* edi = top_ * (dpi_->width + dpi_->pitch) + left_ + dpi_->bits;
 
-	    // Find colour in colour table?
-	    uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
-	    rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+					// Find colour in colour table?
+					uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
+					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 
-	    int length = (dpi_->width + dpi_->pitch) - right_;
+					int length = (dpi_->width + dpi_->pitch) - right_;
 
-	    // Fill the rectangle with the colours from the colour table
-	    for (int i = 0; i < bottom_; ++i) {
-			for (int j = 0; j < right_; ++j) {
-				*edi = *((uint8*)(&g1_element->offset[*edi]));
-				edi++;
-			}
-			edi += length;
-		}
-	  } else if (dpi_->pad_0E > 1) {
-	    // 00678C8A    00678D57
-	  } else if (dpi_->pad_0E == 1) {
-	    // 00678C88   00678CEE
-
-	  }
+					// Fill the rectangle with the colours from the colour table
+					for (int i = 0; i < bottom_; ++i) {
+						for (int j = 0; j < right_; ++j) {
+							*edi = *((uint8*)(&g1_element->offset[*edi]));
+							edi++;
+						}
+						edi += length;
+					}
+				} else if (dpi_->pad_0E > 1) {
+					// 00678C8A    00678D57
+					right_ = right;
+				} else if (dpi_->pad_0E == 1) {
+					// 00678C88   00678CEE
+					right = right;
+				}
 	
-	}
-      } else {
-	// 00678B3A    00678EC9
-
+			}
+		} else {
+			// 00678B3A    00678EC9
+			right_ = right;
       }
   } else {
     // 00678B2E    00678BE5
-  }
+	}
 
 	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
