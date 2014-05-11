@@ -168,41 +168,34 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 	if (!(colour & 0x2000000)) {
 	  if (!(colour & 0x4000000)) {
-	    char* edi;
+	    uint8* edi;
 	    edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
 
-	    // Take the last byte of colour and repeat it 4 times?
-	    uint32 ax;
-	    ax = colour & 0xffff;
-	    ax = (ax & 0xff) << 8;
-	    ax = ax << 8;
-	    ax = (ax & 0xff00) >> 8;
-	    ax = ax << 8;
-	    ax = (ax & 0xff00) >> 8;
+	    uint8 col = colour & 0xFF;
 
 	    int length;
 	    length = dpi->width + dpi->pitch - right_;
 
-	    for (int dx = bottom_; dx > 0; --dx) {
-	      uint32 ecx;
-	      ecx = right_;
-	      ecx = ecx/2;
-	      if (ecx % 2 != 0) {
-		*edi = ax & 0xff;
-		edi++;
-	      }
-	      ecx = ecx/2;
-	      if (ecx % 2 != 0) {
-		*edi = ax & 0xffff;
-		edi += 2;
-	      }
-	      memset(edi, ax, ecx);
-
-	      edi += length;
-
-	    }
-	    return;
-
+		for (int i = 0; i < bottom_; ++i) {
+			uint32 ecx;
+			ecx = right_;
+			ecx = ecx / 2;
+			if (ecx % 2 != 0) {
+				*edi = col;
+				edi++;
+			}
+			ecx = ecx / 2;
+			if (ecx % 2 != 0) {
+				*edi = col;
+				edi++;
+				*edi = col;
+				edi++;
+				// *((uint16*)edi) = ax & 0xffff;
+				// edi += 2;
+			}
+			memset(edi, col, ecx*4);
+			edi += length;
+		}
 	  } else {
 	    // 00678B8A   00678E38
 	    char* esi;
@@ -264,11 +257,8 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 	    // Fill the rectangle with the colours from the colour table
 	    for (int i = 0; i < bottom_; ++i) {
-			uint8 al;
-			al = 0;
 			for (int j = 0; j < right_; ++j) {
-				al = *edi;
-				*edi = *((uint8*)(&g1_element->offset[al]));
+				*edi = *((uint8*)(&g1_element->offset[*edi]));
 				edi++;
 			}
 			edi += length;
