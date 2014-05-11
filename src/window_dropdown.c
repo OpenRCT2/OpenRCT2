@@ -51,7 +51,7 @@ int _dropdown_item_height;
 int _dropdown_highlighted_index;
 
 uint16 gDropdownItemsFormat[64];
-sint32 gDropdownItemsArgs[64];
+sint64 gDropdownItemsArgs[64];
 uint32 gDropdownItemsChecked;
 
 static void window_dropdown_emptysub() { }
@@ -134,8 +134,8 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	char buffer[256];
 
 	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(0x009DEBA4, gDropdownItemsFormat, 37 * 2);
-	memcpy(0x009DEBF4, gDropdownItemsArgs, 80 * 4);
+	memcpy(0x009DEBA4, gDropdownItemsFormat, 40 * 2);
+	memcpy(0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
 	if (flags & 0x80)
@@ -203,8 +203,8 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	rct_window* w;
 
 	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(0x009DEBA4, gDropdownItemsFormat, 37 * 2);
-	memcpy(0x009DEBF4, gDropdownItemsArgs, 80 * 4);
+	memcpy(0x009DEBA4, gDropdownItemsFormat, 40 * 2);
+	memcpy(0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
 	if (flags & 0x80)
