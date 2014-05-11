@@ -147,23 +147,24 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
 #define RCT2_Y_RELATED_GLOBAL_2 0x9ABDAC //sint16
-
+#define RCT2_X_RELATED_GLOBAL_1 0x9E3D10 //uint16
+#define RCT2_X_RELATED_GLOBAL_2 0x9ABDA8 //sint16
 /*
 * rct2: 0x67A934 title screen bitmaps on buttons
 * This function readies all the global vars for copying the sprite data onto the screen
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
 void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
-	//_eax = 3000A, _ecx = 9C, _edx = 152, _ebx = A46798, esp = CFCC8, ebp = DC10005, _esi = 0, _edi = 9DEA74
+
 	int _edi = dpi, _esi;
 	sint16 translated_x = x, translated_y = y;
 	char* bits_pointer;
 	bits_pointer = dpi->bits;
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16);
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
 	RCT2_GLOBAL(0xEDF808, uint32) = 0;
-	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint16) = RCT2_GLOBAL(0x9E3D0E, uint16);
-	translated_y -= dpi->y;
+	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+
 	if (translated_y < 0)
 	{
 		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
@@ -175,38 +176,35 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 		bits_pointer += (dpi->width + dpi->pitch)*translated_y;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16);
-	translated_y -= dpi->height;
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;
 	if (translated_y > 0){
 		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
 		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
 
 	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
-	translated_x += RCT2_GLOBAL(0x9E3D10, uint16);
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
 
-	RCT2_GLOBAL(0x9ABDA8, sint16) = RCT2_GLOBAL(0x9E3D0C, uint16);
-	translated_x -= dpi->x;
+	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
 	if (translated_x < 0){
-		RCT2_GLOBAL(0x9ABDA8, sint16) += translated_x;
-		if (RCT2_GLOBAL(0x9ABDA8, sint16) <= 0)return;
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
 		RCT2_GLOBAL(0xEDF80C, sint16) -= translated_x;
 		translated_x = 0;
 	}
 	else{
 		bits_pointer += translated_x;
 	}
-	translated_x += RCT2_GLOBAL(0x9ABDA8, sint16);
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16);
 	translated_x -= dpi->width;
 	if (translated_x > 0){
-		RCT2_GLOBAL(0x9ABDA8, sint16) -= translated_x;
-		if (RCT2_GLOBAL(0x9ABDA8, sint16) <= 0)return;
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
 
 	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
 	
 	// I dont think it uses ecx, edx but just in case
-	//This is a G1 Loaded sprite address 0x9E3D08
 	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
 }
 
@@ -227,11 +225,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	eax >>= 26;
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax &= 0x7;
-	
-	eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);//3D91F13 3F71F13 * 2
+	eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
 	RCT2_GLOBAL(0x009E3CDC, uint32) = eax;
 
 	if ((image_id & (1 << 31)) && (image_id & (1 << 29))){
+		/*
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		eax >>= 19;
@@ -259,130 +257,134 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebp = *((uint32*)eax + 0xFB);
 
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
-		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
+		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;*/
+		return;
 	} else if ((image_id & (1 << 31))){
-		//0x67a361
+		return;
+		//jump into 0x67a361
 	} else if ((image_id & (1 << 30))){
-		//0x67a445
+		return;
+		//jump into 0x67a445
 	}
-	//0x67A46E
+
 	ebx &= 0x7FFFF;
 	ebx <<= 4;
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
 	if (dpi->pad_0E >= 1){
 		if (dpi->pad_0E == 1){
-			//long jump into 0x67bd81
+			return;
+			//jump into 0x67bd81
 		}
 		if (dpi->pad_0E >= 3){
-			//long jump into 0x67DADA
+			return;//jump into 0x67FAAE
 		}
-		//long jump into 0x67FAAE
+		//jump into 0x67DADA
 		return;
 	}
 	eax = *((uint32*)ebx + 2);
 	ebp = *((uint32*)ebx + 3);
-	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx);
+	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx); //offset to g1 bits?
 	RCT2_GLOBAL(0x9E3D0C, uint32) = *((uint32*)ebx + 1);
-	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //Y related
+	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //X-Y related unsigned? sets RCT2_X_RELATED_GLOBAL_1 and Y
 	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
 		sub_0x67A934(dpi, x, y);
 		return;
 	}
+	
+	
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	return;
+	//There is a mistake in the code below this point calling the above to skip it.
+
+	//dpi on stack
+	int translated_x, translated_y;
+	char* bits_pointer;
+
 	ebp = dpi;
 	esi = RCT2_GLOBAL(0x9E3D08, uint32);
 	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
-	edi = *((uint32*)dpi);
-	edx = edx & 0xFFFF + RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16);
-	eax = eax & 0xFFFF + RCT2_GLOBAL(0x9E3D0E, uint16);
-	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = eax;
-	edx -= dpi->y;
-	if (edx < 0){
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += edx;
+	bits_pointer = dpi->bits;	
+
+	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+
+	translated_y = y + RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
+
+
+	if (translated_y < 0){
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
 		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0){
-			//jump 0x67A607
 			return;
 		}
-		edx = -edx;
-		eax = RCT2_GLOBAL(0x9E3D0C, uint16);
-		eax *= edx;
-		edx = 0;
-		esi += eax;
-		RCT2_GLOBAL(0x9E3CE0, uint32) += eax;
+		translated_y = -translated_y;
+		esi += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
+		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
+		translated_y = 0;
 	} else {
-		ebx = edx;
-		eax = dpi->width;
-		
-		eax += dpi->pitch;
-		eax *= edx;
-		edx = ebx;
-		edi += eax;
+		eax = (dpi->width + dpi->pitch) * translated_y;
+		bits_pointer += eax;
 	}
-	edx += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16);
-	if (edx > dpi->height){
-		edx -= dpi->height;
-		//RCT2_Y_RELATED_GLOBAL_2 is normaly 16 bit signed???
-		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint32) > edx)
+
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;;
+
+	if (translated_y > 0){
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
+		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <=0)
 		{
-			RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint32) -= edx;
-			return;//jump to 0x67A607
+			return;
 		}
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint32) -= edx;
 	}
-	else{
-		edx -= dpi->height;
-	}
-	eax = RCT2_GLOBAL(0x9E3D0C, uint16);
-	RCT2_GLOBAL(0x9ABDA8, uint16) = eax;
-	ebx = dpi->width;
-	eax = -eax;
-	eax += ebx;
-	eax += dpi->pitch;
+
+	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
+	eax = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
+
 	RCT2_GLOBAL(0x9ABDAE, uint16) = 0;
-	RCT2_GLOBAL(0x9ABDB0, uint16) = eax;
-	ecx += RCT2_GLOBAL(0x9E3D10, uint16);
-	if (ecx > dpi->x){
-		ecx -= dpi->x;
-		if (RCT2_GLOBAL(0x9ABDA8, uint16) > ecx ){//missing jz 0x67a596
-			RCT2_GLOBAL(0x9ABDA8, uint16) += ecx;
+	RCT2_GLOBAL(0x9ABDB0, sint16) = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
+	translated_x = x + RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
+
+	if (translated_x < 0){
+
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
 			return;
 		}
-		RCT2_GLOBAL(0x9ABDA8, uint16) += ecx;
-		ecx -= RCT2_GLOBAL(0x9ABDAE, uint16);
-		esi -= ecx;
-		RCT2_GLOBAL(0x9E3CE0, uint32) -= ecx;
-		RCT2_GLOBAL(0x9ABDB0, uint16) -= ecx;
-		ecx = 0;
+
+		translated_x -= RCT2_GLOBAL(0x9ABDAE, sint16);
+		esi -= translated_x;
+		RCT2_GLOBAL(0x9E3CE0, sint32) -= translated_x;
+		RCT2_GLOBAL(0x9ABDB0, sint16) -= translated_x;
+		translated_x = 0;
 	}
-	else{
-		ecx -= dpi->x;
-	}
-	edi += ecx;
-	ecx += RCT2_GLOBAL(0x9ABDA8, uint16);
-	if (ecx > dpi->width){
-		ecx -= dpi->width;
-		if (RCT2_GLOBAL(0x9ABDA8, uint16) > ecx){
-			RCT2_GLOBAL(0x9ABDA8, uint16) -= ecx;
+
+	bits_pointer += translated_x;
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) - dpi->width;
+
+	if (translated_x > 0){
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
 			return;
 		}
-		RCT2_GLOBAL(0x9ABDA8, uint16) -= ecx;
-		RCT2_GLOBAL(0x9ABDAE, uint16) += ecx;
-		RCT2_GLOBAL(0x9ABDB0, uint16) += ecx;
+		RCT2_GLOBAL(0x9ABDAE, sint16) += translated_x;
+		RCT2_GLOBAL(0x9ABDB0, sint16) += translated_x;
 	}
-	else{
-		ecx -= dpi->width;
-	}
+
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		//RCT2_Y_RELATED_GLOBAL_2 is normally 16 bit signed???
-		eax = RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint8);
-		edx = RCT2_GLOBAL(0x9ABDAE, uint16);
-		ebp = RCT2_GLOBAL(0x9ABDB0, uint16);
+		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) & 0xFF) << 8;
+		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
+		ebp = RCT2_GLOBAL(0x9ABDB0, sint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		ecx = 0xFFFF&translated_x;
+		//ebx, esi, edi, ah used in 0x67a690
+		//Calling is wrong
+		//esi or bits is most likely wrong
+		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
+	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
+	return;
+	
 
 }
 
