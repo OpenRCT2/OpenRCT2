@@ -20,6 +20,9 @@
 
 #include "addresses.h"
 #include "ride.h"
+#include "sprite.h"
+#include "peep.h"
+#include "window.h"
 
 #define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
@@ -167,3 +170,33 @@ void reset_all_ride_build_dates() {
 		}
 	}
 }
+
+/**
+  * rct2: 0x006AC916
+  */
+void ride_update_favourited_stat()
+{
+	rct_ride *ride;
+	rct_peep* peep;
+
+	for (int i = 0; i < MAX_RIDES; i++) {
+		ride = GET_RIDE(i);
+		if (ride->type != RIDE_TYPE_NULL)
+			ride->guests_favourite = 0;
+
+	}
+	for (int sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
+		if (peep->var_08 != 4)
+			return;
+		if (peep->favourite_ride != 0xff) {
+			ride = GET_RIDE(peep->favourite_ride);
+			ride->guests_favourite++;
+			ride->var_14D |= 1;
+
+		}
+
+	}
+	window_invalidate_by_id(WC_RIDE_LIST, 0);
+}
+
