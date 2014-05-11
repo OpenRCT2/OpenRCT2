@@ -98,6 +98,48 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
 	gfx_fill_rect(dpi, x, y, x, y, colour);
 }
 
+/*
+* rct2: 0x68474C
+*/
+void gfx_draw_line_on_buffer(int edi, int ebp, int esi)
+{
+	//edi ebp
+	//int edi, ebp, esi;
+	edi -= RCT2_GLOBAL(0x9ABDBE, sint16);
+
+	if (edi < 0)return;
+	if (edi >= RCT2_GLOBAL(0x9ABDC2, sint16))return;
+
+	if (!ebp) return;
+
+	ebp++;
+	esi -= RCT2_GLOBAL(0x9ABDBC, sint16);
+	if (esi < 0){
+		ebp += esi;
+		if (ebp <= 0)return;
+		esi = 0;
+	}
+
+	int eax = esi;
+	eax += ebp;
+	eax -= RCT2_GLOBAL(0x9ABDC0, sint16);
+	if (eax > 0){
+		ebp -= eax;
+		return;
+	}
+	eax = RCT2_GLOBAL(0x9ABDC4, sint16);
+	eax += RCT2_GLOBAL(0x9ABDC0, sint16);
+	edi *= eax;
+	edi += esi;
+	edi += RCT2_GLOBAL(0x9ABDB8, sint32);
+	eax = RCT2_GLOBAL(0xEDF84A,uint16);
+	for (int i = 0; i < ebp; ++i){
+		*((uint8*)edi) = eax;
+		edi++;
+	}
+}
+
+
 /**
  *
  *  rct2: 0x00684466
@@ -110,7 +152,79 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
  */
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
 {
-	RCT2_CALLPROC_X(0x00684466, x1, y1, x2, y2, 0, dpi, colour);
+	//RCT2_CALLPROC_X(0x00684466, x1, y1, x2, y2, 0, dpi, colour);
+
+	if ((x1 < dpi->x) && (x2 < dpi->x)){
+		return;//jump to 0x68474B
+	}
+
+	if ((y1 < dpi->y) && (y2 < dpi->y)){
+		return;//jump to 0x68474B
+	}
+
+	if ((x1 <= (dpi->x + dpi->width)) && (x2 <= (dpi->x + dpi->width))){
+		return;//jump to 0x68474B
+	}
+
+	if ((y1 <= (dpi->y + dpi->height)) && (y2 <= (dpi->y + dpi->height))){
+		return;//jump to 0x68474B
+	}
+
+	RCT2_GLOBAL(0xEDF84A, uint16) = (uint16)(0xFFFF & colour);
+
+	int bits_pointer;
+	bits_pointer = dpi->bits;
+	RCT2_GLOBAL(0x9ABDB8, uint32) = bits_pointer;
+	RCT2_GLOBAL(0x9ABDBC, uint16) = dpi->x;
+	RCT2_GLOBAL(0x9ABDBE, uint16) = dpi->y;
+	RCT2_GLOBAL(0x9ABDC0, uint16) = dpi->width;
+	RCT2_GLOBAL(0x9ABDC2, uint16) = dpi->height;
+	RCT2_GLOBAL(0x9ABDC4, uint16) = dpi->pitch;
+
+	int edi = y1;
+	int esi = x1;
+	int ebp = colour & 0xFFFF;
+	int cx = x2 - x1;
+	if (cx < 0){
+		//jump 0x684633
+	}
+	int ax = cx;
+	int dx = y2 - y1;
+	if (dx < 0){
+		//jump 0x6845AB
+	}
+	RCT2_GLOBAL(0xEDF846, uint16) = cx;
+	RCT2_GLOBAL(0xEDF848, uint16) = dx;
+	if (dx > cx){
+		//jump 0x68456A
+	}
+	ax--;
+	if (ax < 0){
+		return;//jump 0x684568
+	}
+	cx /= 2;
+	cx = -cx;
+	ebp = 0;
+
+	for (int i = ax; i >= 0; i--){
+		ebp++;
+		cx += RCT2_GLOBAL(0xEDF848, sint16);
+		if (cx <= 0){
+			i--;
+			if (i < 0){
+				gfx_draw_line_on_buffer(edi, ebp, esi);
+				return;
+			}
+			continue;
+		}
+		cx -= RCT2_GLOBAL(0xEDF846, sint16);
+		gfx_draw_line_on_buffer(edi, ebp, esi);
+		esi += ebp;
+		edi++;
+		ebp = 0;
+	}
+	return;
+
 }
 
 /**
