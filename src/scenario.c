@@ -604,7 +604,7 @@ void scenario_objective5_check()
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < 255; i++) {
+	for (int i = 0; i < MAX_RIDES; i++) {
 		uint8 subtype_id;
 		uint32 subtype_p;
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
@@ -640,7 +640,7 @@ void scenario_objective8_check()
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < 255; i++) {
+	for (int i = 0; i < MAX_RIDES; i++) {
 		uint8 subtype_id;
 		uint32 subtype_p;
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
@@ -741,7 +741,7 @@ void scenario_objectives_check()
 	{
 		rct_ride* ride;
 		int rcs = 0;
-		for (int i = 0; i < 255; i++) {
+		for (int i = 0; i < MAX_RIDES; i++) {
 			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
 			if (ride->status && ride->excitement > objective_currency)
 				rcs++;
@@ -875,7 +875,7 @@ void scenario_update()
 		scenario_marketing_update();
 		peep_problem_warnings_update();
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
-		RCT2_CALLPROC_EBPSAFE(0x006AC916); // ride update favourited
+		ride_update_favourited_stat();
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
 			for (int i = 0; i < 100; ++i) {
@@ -893,8 +893,8 @@ void scenario_update()
 
 	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
 	if (next_month_tick % 0x8000 == 0) {
-		// biweekly checks
-		RCT2_CALLPROC_EBPSAFE(0x006AC885);
+		// fortnightly 
+		finance_pay_ride_upkeep();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;

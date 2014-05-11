@@ -28,6 +28,7 @@
 typedef int rct_expenditure_type;
 
 enum {
+	RCT2_EXPENDITURE_TYPE_RIDE_UPKEEP = 1,
 	RCT_EXPENDITURE_TYPE_WAGES = 10,
 	RCT_EXPENDITURE_TYPE_RESEARCH = 12,
 	RCT_EXPENDITURE_TYPE_INTEREST = 13
@@ -38,6 +39,7 @@ void finance_payment(int amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();
 void finance_pay_interest();
+void finance_pay_ride_upkeep();
 void finance_init();
 
 #endif
