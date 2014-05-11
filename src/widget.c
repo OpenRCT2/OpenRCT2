@@ -153,7 +153,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	case WWT_SCROLL:
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
-	case WWT_23:
+	case WWT_CHECKBOX:
 	case WWT_24:
 		break;
 	case WWT_25:
