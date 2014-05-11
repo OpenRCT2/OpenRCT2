@@ -37,6 +37,7 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour);
@@ -154,6 +155,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CHECKBOX:
+		widget_checkbox_draw(dpi, w, widgetIndex);
+		break;
 	case WWT_24:
 		break;
 	case WWT_25:
@@ -709,6 +712,46 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		colour |= 0x40;
 
 	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)0x013CE952, colour, l, t, widget->right - widget->left - 2);
+}
+
+/**
+*
+*  rct2: 0x006EBAD9
+*/
+static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, b;
+	uint8 colour;
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+	// checkbox
+	gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+
+	// fill it when checkbox is pressed
+	if (widget_is_pressed(w, widgetIndex)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
+	}
+
+	// draw the text
+	if (widget->image == -1)
+		return;
+
+	if (widget_is_disabled(w, widgetIndex)) {
+		colour |= 0x40;
+	}
+	gfx_draw_string_left(dpi, widget->image, (char*)0x013CE952, colour, l + 14, t);
 }
 
 /**
