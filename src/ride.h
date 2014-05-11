@@ -74,7 +74,8 @@ typedef struct {
 	uint16 var_158;
 	uint8 pad_15A[0x26];
 	uint16 build_date;				
-	uint8 pad_182[0x14];
+	sint16 upkeep_cost;				// 0x182
+	uint8 pad_184[0x12];
 	uint16 var_196;
 	uint8 pad_198;
 	uint8 var_199;

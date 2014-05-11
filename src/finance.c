@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "park.h"
 #include "peep.h"
+#include "ride.h"
 #include "window.h"
 
 // monthly cost
@@ -101,6 +102,35 @@ void finance_pay_interest()
 
 	finance_payment((sint32)tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
 }
+
+/**
+ *
+ * rct2: 0x006AC885
+ */
+void finance_pay_ride_upkeep()
+{
+	rct_ride* ride;
+	for (int i = 0; i < 255; i++) {
+		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+
+		if (!(ride->var_1D0 & 0x1000)) {
+			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+			ride->var_196 = 25855; // durability?
+
+		}
+		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)) {
+			sint16 upkeep = ride->upkeep_cost;
+			if (upkeep != -1) {
+				ride->var_158 -= upkeep;
+				ride->var_14D |= 2;
+				finance_payment(upkeep, RCT2_EXPENDITURE_TYPE_RIDE_UPKEEP);
+			}
+		}
+	}
+}
+
 
 /**
 *

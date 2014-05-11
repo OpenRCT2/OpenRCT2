@@ -893,8 +893,8 @@ void scenario_update()
 
 	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
 	if (next_month_tick % 0x8000 == 0) {
-		// biweekly checks
-		RCT2_CALLPROC_EBPSAFE(0x006AC885);
+		// fortnightly 
+		finance_pay_ride_upkeep();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
