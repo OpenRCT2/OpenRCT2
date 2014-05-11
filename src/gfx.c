@@ -278,6 +278,63 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
       }
   } else {
     // 00678B2E    00678BE5
+		// Cross hatching
+		uint16 si;
+		si = 0;
+
+		left_ = left_ - dpi->x;
+		if (left_ < 0) {
+			si = si ^ left_;
+			left_ = 0;
+		}
+
+		right_ = right_ - dpi->x;
+		right_++;
+
+		if (right_ > dpi->width)
+			right_ = dpi-> width;
+		
+		right_ = right_ - left_;
+
+		top_ = top - dpi->y;
+		if (top_ < 0) {
+			si = si ^ top_;
+			top_ = 0;
+		}
+
+		bottom_ = bottom - dpi->y;
+		bottom_++;
+
+		if (bottom_ > dpi->height)
+			bottom_ = dpi->height;
+
+		bottom_ -= top_;
+
+		uint8* edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+
+		uint8 col = colour & 0xFF;
+
+		int length = dpi->width + dpi->pitch - right_;
+
+		for (int i = 0; i < bottom_; ++i) {
+			uint32 ecx;
+			ecx = si;
+			// Rotate right
+			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
+			ecx = (ecx & 0xFFFF0000) | right_; 
+
+			while (ecx > 0 && ecx != 0xFFFFFFFF) {
+				ecx = ecx ^ 0x80000000;
+				if ((int)ecx < 0) {
+					*edi = col;
+				}
+				edi++;
+				ecx--;
+			}
+			si = si ^ 1;
+			edi += length;
+			
+		}
 	}
 
 	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
