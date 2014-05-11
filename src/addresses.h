@@ -285,6 +285,24 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 	}
 }
 
+static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+{
+	__asm {
+		push ebp
+		push address
+		mov eax, _eax
+		mov ebx, _ebx
+		mov ecx, _ecx
+		mov edx, _edx
+		mov esi, _esi
+		mov edi, _edi
+		mov ebp, _ebp
+		call[esp]
+		add esp, 4
+		pop ebp
+	}
+}
+
 static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	__asm {
