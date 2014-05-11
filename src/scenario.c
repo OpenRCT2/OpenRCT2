@@ -512,7 +512,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related, called above already)
-	RCT2_CALLPROC_EBPSAFE(0x0066729F); // reset history / finance / awards
+	park_reset_awards_and_history();
 	reset_all_ride_build_dates();
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x00674576);
