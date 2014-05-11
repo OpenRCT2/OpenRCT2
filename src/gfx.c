@@ -168,17 +168,13 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 			if (!(colour & 0x2000000)) {
 				if (!(colour & 0x4000000)) {
-					uint8* edi;
-					edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+					uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
 
-					uint8 col = colour & 0xFF;
-
-					int length;
-					length = dpi->width + dpi->pitch - right_;
+					int length = dpi->width + dpi->pitch - right_;
 
 					for (int i = 0; i < bottom_; ++i) {
-						memset(edi, col, right_);
-						edi += length + right_;
+						memset(pixel, (colour & 0xFF), right_);
+						pixel += length + right_;
 					}
 				} else {
 					// 00678B8A   00678E38
@@ -193,7 +189,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 					RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
 					RCT2_GLOBAL(0x00EDF814, uint32) = right_;
 
-					top_ = (top + dpi_->y) & 0xf;
+					top_ = (top + dpi->y) & 0xf;
 					right_ = (right + dpi_->x) &0xf;
 
 					dpi_ = esi;
@@ -229,28 +225,28 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 			} else {
 				// 00678B7E   00678C83
-				if (dpi_->pad_0E < 1) {
+				if (dpi->pad_0E < 1) {
 					// Location in screen buffer?
-					uint8* edi = top_ * (dpi_->width + dpi_->pitch) + left_ + dpi_->bits;
+					uint8* pixel = top_ * (dpi->width + dpi->pitch) + left_ + dpi->bits;
 
 					// Find colour in colour table?
 					uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
 					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 
-					int length = (dpi_->width + dpi_->pitch) - right_;
+					int length = (dpi->width + dpi->pitch) - right_;
 
 					// Fill the rectangle with the colours from the colour table
 					for (int i = 0; i < bottom_; ++i) {
 						for (int j = 0; j < right_; ++j) {
-							*edi = *((uint8*)(&g1_element->offset[*edi]));
-							edi++;
+							*pixel = *((uint8*)(&g1_element->offset[*pixel]));
+							pixel++;
 						}
-						edi += length;
+						pixel += length;
 					}
-				} else if (dpi_->pad_0E > 1) {
+				} else if (dpi->pad_0E > 1) {
 					// 00678C8A    00678D57
 					right_ = right;
-				} else if (dpi_->pad_0E == 1) {
+				} else if (dpi->pad_0E == 1) {
 					// 00678C88   00678CEE
 					right = right;
 				}
@@ -263,12 +259,11 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
   } else {
     // 00678B2E    00678BE5
 		// Cross hatching
-		uint16 si;
-		si = 0;
+		uint16 pattern = 0;
 
 		left_ = left_ - dpi->x;
 		if (left_ < 0) {
-			si = si ^ left_;
+			pattern = pattern ^ left_;
 			left_ = 0;
 		}
 
@@ -282,7 +277,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 		top_ = top - dpi->y;
 		if (top_ < 0) {
-			si = si ^ top_;
+			pattern = pattern ^ top_;
 			top_ = 0;
 		}
 
@@ -294,29 +289,25 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 		bottom_ -= top_;
 
-		uint8* edi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
-
-		uint8 col = colour & 0xFF;
+		uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
 
 		int length = dpi->width + dpi->pitch - right_;
 
 		for (int i = 0; i < bottom_; ++i) {
-			uint32 ecx;
-			ecx = si;
+			uint32 ecx = pattern;
 			// Rotate right
 			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
 			ecx = (ecx & 0xFFFF0000) | right_; 
-
-			while (ecx > 0 && ecx != 0xFFFFFFFF) {
+			// Fill every other pixel with the colour
+			for (; (ecx & 0xFFFF) > 0; ecx--) {
 				ecx = ecx ^ 0x80000000;
 				if ((int)ecx < 0) {
-					*edi = col;
+					*pixel = colour & 0xFF;
 				}
-				edi++;
-				ecx--;
+				pixel++;
 			}
-			si = si ^ 1;
-			edi += length;
+			pattern = pattern ^ 1;
+			pixel += length;
 			
 		}
 	}
