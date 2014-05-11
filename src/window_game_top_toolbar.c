@@ -377,6 +377,7 @@ static void window_game_top_toolbar_dropdown()
 			window_about_open();
 			break;
 		case 4:		// options
+			//window_options_open();
 			RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
 			break;
 		case 5:		// screenshot

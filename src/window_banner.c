@@ -26,7 +26,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
+static enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,

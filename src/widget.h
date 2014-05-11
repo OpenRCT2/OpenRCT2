@@ -47,7 +47,7 @@ typedef enum {
 	WWT_CAPTION = 20,
 	WWT_CLOSEBOX = 21,
 	WWT_SCROLL = 22,
-	WWT_23,
+	WWT_CHECKBOX,
 	WWT_24,
 	WWT_25,
 	WWT_LAST = 26,
