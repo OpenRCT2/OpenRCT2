@@ -149,6 +149,77 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 #define RCT2_Y_RELATED_GLOBAL_2 0x9ABDAC //sint16
 #define RCT2_X_RELATED_GLOBAL_1 0x9E3D10 //uint16
 #define RCT2_X_RELATED_GLOBAL_2 0x9ABDA8 //sint16
+
+void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixelinfo *dpi){
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
+		return; //0x67AAB3
+	}
+
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x4000000){
+		return; //0x67AFD8
+	}
+
+	int ebx = RCT2_GLOBAL(0xEDF808, uint32);
+	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer,uint16);
+	int ebp = dest_bits_pointer;
+	ebx += (int)source_bits_pointer;
+
+StartLoop:
+	ebx = ebx;
+	int cx = RCT2_GLOBAL(ebx, uint16);
+	RCT2_GLOBAL(0x9ABDB4, uint8) = cx & 0xFF;
+	ebx += 2;
+	cx &= 0xFF7F;
+	int esi = ebx;
+	int edx = (cx & 0xFF00) >> 8;
+	ebx += cx;
+	edx -= RCT2_GLOBAL(0xEDF80C, sint32);
+	int edi = ebp;
+	if (edx > 0){
+		edi += edx;
+	}
+	else{
+		esi -= edx;
+		cx += edx & 0xFFFF;
+		if (cx <= 0){
+			goto TestLoop;
+			//jump to 0x67AA97
+		}
+		edx &= 0xFFFF0000;
+	}
+	edx += cx;
+	edx -= RCT2_GLOBAL(0x9ABDA8, sint16);
+	if (edx > 0){
+		cx -= edx;
+		if (cx <= 0){
+			goto TestLoop;
+			//jump to 0x67AA97
+		}
+	}
+	if (cx & 1){
+		cx >>= 1;
+		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
+	}
+	else cx >>= 1;
+
+	if (cx & 1){
+		cx >>= 1;
+		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
+	}
+	else cx >>= 1;
+
+	for (int i = cx; i > 0; --i, edi++, esi++){
+		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
+	}
+TestLoop:
+	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
+	edx = RCT2_GLOBAL(0x9ABDB0, sint16);
+	ebp += edx;
+	RCT2_GLOBAL(0x9ABDAC, sint16)--;
+	if (RCT2_GLOBAL(0x9ABDAC, sint16))goto StartLoop;
+
+}
+
 /*
 * rct2: 0x67A934 title screen bitmaps on buttons
 * This function readies all the global vars for copying the sprite data onto the screen
@@ -205,7 +276,10 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
 	
 	// I dont think it uses ecx, edx but just in case
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
+	//esi is the source and bits_pointer is the destination
+	sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+
+	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
 }
 
 /**
