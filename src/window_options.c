@@ -351,13 +351,13 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_MUSIC_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = dropdownIndex;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = (uint8)dropdownIndex;
 		config_save();
 		RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
 		window_invalidate(w);
 		break;
 	case WIDX_SOUND_QUALITY_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8) = dropdownIndex;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8) = (uint8)dropdownIndex;
 
 		// TODO: no clue what this does (and if it's correct)
 		RCT2_GLOBAL(0x009AAC75, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
@@ -372,7 +372,7 @@ static void window_options_dropdown()
 		gfx_invalidate_screen();
 		break;
 	case WIDX_DISTANCE_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8) = dropdownIndex;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8) = (uint8)dropdownIndex;
 		window_options_update_height_markers();
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
@@ -381,14 +381,14 @@ static void window_options_dropdown()
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = dropdownIndex;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = (uint8)dropdownIndex;
 			config_save();
 			gfx_invalidate_screen();
 		}
 		break;
 	case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = dropdownIndex;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = (uint8)dropdownIndex;
 			config_save();
 			gfx_invalidate_screen();
 		}
