@@ -935,26 +935,27 @@ static void window_guest_list_find_groups()
 static int get_guest_face_sprite_small(rct_peep *peep)
 {
 	int sprite;
-	sprite = 0x157A;
+	sprite = SPR_PEEP_SMALL_FACE_ANGRY;
 
 	if (peep->var_F3) return sprite;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_SICK;
 
-	sprite = 0x1579;
 	if (peep->nausea > 200) return sprite;
-	sprite--;
+	sprite--; //VERY_SICK
 
 	if (peep->nausea > 170) return sprite;
-	sprite--;
+	sprite--; //SICK
 
 	if (peep->nausea > 140) return sprite;
-	sprite = 0x1576;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_TIRED;
 
 	if (peep->energy < 46) return sprite;
-	sprite--;
+	sprite--; //TIRED
 
 	if (peep->energy < 70) return sprite;
-	sprite = 0x156E;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
+	//There are 7 different happiness based faces
 	for (int i = 37; peep->happiness >= i; i += 37)
 	{
 		sprite++;
@@ -969,26 +970,27 @@ static int get_guest_face_sprite_small(rct_peep *peep)
 */
 static int get_guest_face_sprite_large(rct_peep* peep){
 	int sprite;
-	sprite = 5314;
+	sprite = SPR_PEEP_LARGE_FACE_ANGRY;
 
 	if (peep->var_F3) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_SICK;
 
-	sprite = 5298;
 	if (peep->nausea > 200) return sprite;
-	sprite = 0x14AE;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_SICK;
 
 	if (peep->nausea > 170) return sprite;
-	sprite = 0x14AD;
+	sprite = SPR_PEEP_LARGE_FACE_SICK;
 
 	if (peep->nausea > 140) return sprite;
-	sprite = 0x14AC;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_TIRED;
 
 	if (peep->energy < 46) return sprite;
-	sprite--;
+	sprite--; //TIRED
 
 	if (peep->energy < 70) return sprite;
-	sprite = 0x14A4;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_UNHAPPY;
 
+	//There are 7 different happiness based faces
 	for (int i = 37; peep->happiness >= i; i += 37)
 	{
 		sprite++;
