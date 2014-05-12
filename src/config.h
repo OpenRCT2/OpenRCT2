@@ -76,6 +76,25 @@ enum {
 	TEMPERATURE_FORMAT_F
 };
 
+enum {
+	MEASUREMENT_FORMAT_METRIC,
+	MEASUREMENT_FORMAT_IMPRIAL
+};
+
+enum{
+	CURRENCY_POUNDS,
+	CURRENCY_DOLLARS,
+	CURRENCY_FRANC,
+	CURRENCY_DEUTSCHMARK,
+	CURRENCY_YEN,
+	CURRENCY_PESETA,
+	CURRENCY_LIRA,
+	CURRENCY_GUILDERS,
+	CURRENCY_KRONA,
+	CURRENCY_EUROS
+
+};
+
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_reset_shortcut_keys();
@@ -86,18 +105,31 @@ void config_save();
 // New config format
 #define MAX_CONFIG_LENGTH 256
 
+typedef struct sound_configuration {
+
+	uint8 sound_quality_lower;
+	uint16 sound_quality_upper;
+	uint8 forced_software_buffering;
+} sound_configuration_t;
 
 
-typedef struct configuration {
+
+typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 screenshot_format;
 	char game_path[MAX_PATH];
-} configuration_t;
+	sint8 measurement_format;
+	sint8 temperature_format;
+	sint8 currency_format;
+	sint8 consturction_marker_colour;
+	sint8 edge_scrolling;
+
+} general_configuration_t;
 
 //typedef struct hotkey_configuration{
 
 //};
-extern configuration_t gConfig;
+extern general_configuration_t gGeneral_config;
 
 void config_init();
 
