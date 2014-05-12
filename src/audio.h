@@ -21,7 +21,14 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#ifdef _WIN32
 #include <dsound.h>
+#else
+#define CHAR char
+// TODO
+#define GUID long
+#define LPDIRECTSOUNDBUFFER long
+#endif
 
 /**
  * Represents a single directsound device.

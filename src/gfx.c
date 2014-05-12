@@ -47,9 +47,9 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
  */
 void gfx_load_g1()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
-	DWORD header[2];
+	FILE *hFile;
+	size_t bytes_read;
+	uint32_t header[2];
 
 	int i;
 	int g1BufferSize;
@@ -57,16 +57,15 @@ void gfx_load_g1()
 
 	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 
-	hFile = CreateFile(get_file_path(PATH_ID_G1), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, header, 8, &bytesRead, NULL);
-		if (bytesRead == 8) {
+	hFile = fopen(get_file_path(PATH_ID_G1), "r");
+	if (hFile) {
+		bytes_read = fread(header, 1, 8, hFile);
+		if (bytes_read == 8) {
 			g1BufferSize = header[1];
 			g1Buffer = rct2_malloc(g1BufferSize);
-			ReadFile(hFile, g1Elements, 29294 * sizeof(rct_g1_element), &bytesRead, NULL);
-			ReadFile(hFile, g1Buffer, g1BufferSize, &bytesRead, NULL);
-			CloseHandle(hFile);
+			bytes_read = fread(g1Elements, 1, 29294 * sizeof(rct_g1_element), hFile);
+			bytes_read = fread(g1Buffer, 1, g1BufferSize, hFile);
+			fclose(hFile);
 
 			for (i = 0; i < 29294; i++)
 				g1Elements[i].offset += (int)g1Buffer;

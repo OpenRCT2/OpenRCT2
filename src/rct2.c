@@ -22,8 +22,13 @@
 
 #include <string.h>
 #include <setjmp.h>
+#ifdef _WIN32
 #include <windows.h>
-#include <ShlObj.h>
+#include <shlobj.h>
+#else
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
 #include <SDL.h>
 #include "addresses.h"
 #include "climate.h"
@@ -57,17 +62,25 @@ static void rct2_update_2();
 static int _finished;
 static jmp_buf _end_update_jump;
 
+#ifdef _WIN32
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	return TRUE;
 }
+#endif
 
+#ifdef _WIN32
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+#else
+int main(int argc, char **argv)
+#endif
 {
+	#ifdef _WIN32
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
+	#endif
 	
 	config_init();
 	rct2_init();
@@ -147,12 +160,25 @@ void rct2_init()
 // rct2: 0x00683499
 void rct2_init_directories()
 {
+	#ifdef _WIN32
 	// check install directory
 	DWORD dwAttrib = GetFileAttributes(gGeneral_config.game_path);
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
 		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
+	#else
+	struct stat s;
+	int err;
+	
+	err = stat(gGeneral_config.game_path, &s);
+	if (err == -1 || !S_ISDIR(s.st_mode)) {
+		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
+		exit(-1);
+	}
+	
+	fprintf(stderr, "TODO %s %s:%d change paths\n", __FILE__, __func__, __LINE__);
+	#endif
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
 
@@ -249,7 +275,11 @@ void rct2_update_2()
 {
 	int tick, tick2;
 
+	#ifdef _WIN32
 	tick = timeGetTime();
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 
 	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
 	if (RCT2_GLOBAL(0x009DE588, sint16) > 500)
@@ -301,6 +331,7 @@ char *get_file_path(int pathId)
  */
 void get_system_info()
 {
+	#ifdef _WIN32
 	OSVERSIONINFO versionInfo;
 	SYSTEM_INFO sysInfo;
 	MEMORYSTATUS memInfo;
@@ -330,7 +361,7 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
-	uint32 size = 80;
+	DWORD size = 80;
 	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
 	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
@@ -356,6 +387,9 @@ void get_system_info()
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
 	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 
@@ -365,6 +399,7 @@ void get_system_info()
  */
 void get_system_time()
 {
+	#ifdef _WIN32
 	SYSTEMTIME systime;
 
 	GetSystemTime(&systime);
@@ -372,6 +407,9 @@ void get_system_time()
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 /**
@@ -380,11 +418,15 @@ void get_system_time()
  */
 void get_local_time()
 {
+	#ifdef _WIN32
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 /**

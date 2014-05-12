@@ -18,6 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <string.h>
 #include "addresses.h"
 #include "climate.h"
@@ -25,6 +28,7 @@
 #include "news_item.h"
 #include "park.h"
 #include "peep.h"
+#include "rct2.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "string_ids.h"

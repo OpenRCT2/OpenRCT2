@@ -25,6 +25,7 @@
 #include "game.h"
 #include "park.h"
 #include "peep.h"
+#include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
 #include "string_ids.h"

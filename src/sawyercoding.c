@@ -35,12 +35,13 @@ static void decode_chunk_rotate(char *buffer, int length);
  * 
  *  rct2: 0x00676FD2
  */
+#ifdef _WIN32
 int sawyercoding_validate_checksum(HANDLE hFile)
 {
 	uint32 i, checksum, fileChecksum;
 	DWORD dataSize, bufferSize, numBytesRead;
 	uint8 buffer[1024];
-
+	
 	// Get data size
 	if ((dataSize = SetFilePointer(hFile, 0, NULL, FILE_END)) < 8)
 		return 0;
@@ -54,6 +55,46 @@ int sawyercoding_validate_checksum(HANDLE hFile)
 		ReadFile(hFile, buffer, bufferSize, &numBytesRead, NULL);
 		if (numBytesRead != bufferSize)
 			return 0;
+		
+		for (i = 0; i < bufferSize; i++)
+			checksum += buffer[i];
+		dataSize -= bufferSize;
+	} while (dataSize != 0);
+	
+	// Read file checksum
+	ReadFile(hFile, &fileChecksum, sizeof(fileChecksum), &numBytesRead, NULL);
+	if (numBytesRead != sizeof(fileChecksum))
+		return 0;
+	
+	// Reset file position
+	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	
+	// Validate
+	return checksum == fileChecksum;
+}
+#else
+int sawyercoding_validate_checksum(FILE *hFile)
+{
+	uint32 i, checksum, fileChecksum;
+	int dataSize, bufferSize;
+	size_t numBytesRead;
+	uint8 buffer[1024];
+
+	// Get data size
+	fseek(hFile, 0L, SEEK_END);
+	dataSize = ftell(hFile);
+	if (dataSize < 8)
+		return 0;
+	dataSize -= 4;
+	
+	// Calculate checksum
+	fseek(hFile, 0L, SEEK_SET);
+	checksum = 0;
+	do {
+		bufferSize = min(dataSize, 1024);
+		numBytesRead = fread(buffer, 1, bufferSize, hFile);
+		if (numBytesRead != bufferSize)
+			return 0;
 
 		for (i = 0; i < bufferSize; i++)
 			checksum += buffer[i];
@@ -61,22 +102,24 @@ int sawyercoding_validate_checksum(HANDLE hFile)
 	} while (dataSize != 0);
 
 	// Read file checksum
-	ReadFile(hFile, &fileChecksum, sizeof(fileChecksum), &numBytesRead, NULL);
+	numBytesRead = fread(&fileChecksum, 1, sizeof(fileChecksum), hFile);
 	if (numBytesRead != sizeof(fileChecksum))
 		return 0;
 
 	// Reset file position
-	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	fseek(hFile, 0L, SEEK_SET);
 
 	// Validate
 	return checksum == fileChecksum;
 }
+#endif
 
 /**
  * 
  *  rct2: 0x0067685F
  * buffer (esi)
  */
+#ifdef _WIN32
 int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 {
 	DWORD numBytesRead;
@@ -106,6 +149,37 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 	RCT2_GLOBAL(0x009E3828, uint32) = chunkHeader.length;
 	return chunkHeader.length;
 }
+#else
+int sawyercoding_read_chunk(FILE *hFile, uint8 *buffer)
+{
+	size_t numBytesRead;
+	sawyercoding_chunk_header chunkHeader;
+	
+	// Read chunk header
+	numBytesRead = fread(&chunkHeader, 1, sizeof(sawyercoding_chunk_header), hFile);
+	
+	// Read chunk data
+	numBytesRead = fread(buffer, 1, chunkHeader.length, hFile);
+	
+	// Decode chunk data
+	switch (chunkHeader.encoding) {
+		case CHUNK_ENCODING_RLE:
+			chunkHeader.length = decode_chunk_rle(buffer, chunkHeader.length);
+			break;
+		case CHUNK_ENCODING_RLECOMPRESSED:
+			chunkHeader.length = decode_chunk_rle(buffer, chunkHeader.length);
+			chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+			break;
+		case CHUNK_ENCODING_ROTATE:
+			decode_chunk_rotate(buffer, chunkHeader.length);
+			break;
+	}
+	
+	// Set length
+	RCT2_GLOBAL(0x009E3828, uint32) = chunkHeader.length;
+	return chunkHeader.length;
+}
+#endif
 
 /**
  * 
@@ -114,7 +188,7 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 static int decode_chunk_rle(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, rleCodeByte;
+	char *src, *dst, rleCodeByte;
 
 	// Backup buffer
 	src = malloc(length);
@@ -148,7 +222,7 @@ static int decode_chunk_rle(char *buffer, int length)
 static int decode_chunk_repeat(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, *copyOffset;
+	char *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);

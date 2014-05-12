@@ -22,6 +22,7 @@
 #include "addresses.h"
 #include "audio.h"
 #include "date.h"
+#include "rct2.h"
 #include "scenario.h"
 #include "string_ids.h"
 #include "sprites.h"

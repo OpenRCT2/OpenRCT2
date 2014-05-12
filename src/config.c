@@ -19,16 +19,20 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include <strings.h>
 #ifdef _WIN32
 #include <shlobj.h>
 #include <windows.h>
 #include <tchar.h>
+#else
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
 #endif
 #include <SDL_keycode.h>
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
-#include <tchar.h>
 
 #include "osinterface.h"
 
@@ -89,19 +93,17 @@ void config_reset_shortcut_keys()
  */
 void config_load()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
+	FILE *hFile;
+	size_t bytes_read;
 
-	char* path = get_file_path(PATH_ID_GAMECFG);
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
+	hFile = fopen(get_file_path(PATH_ID_GAMECFG), "r");
+	if (hFile) {
 		// Read and check magic number
-		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytesRead, NULL);
+		bytes_read = fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, hFile);
 		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
 			// Read options
-			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
-			CloseHandle(hFile);
+			bytes_read = fread((void*)0x009AAC5C, 1, 2155, hFile);
+			fclose(hFile);
 
 
 			//general configuration
@@ -169,14 +171,14 @@ void config_load()
  */
 void config_save()
 {
-	HANDLE hFile;
-	DWORD bytesWritten;
+	FILE *hFile;
+	size_t bytes_written;
 
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
-		CloseHandle(hFile);
+	hFile = fopen(get_file_path(PATH_ID_GAMECFG), "r");
+	if (hFile) {
+		bytes_written = fwrite(&MagicNumber, 1, 4, hFile);
+		bytes_written = fwrite((void*)0x009AAC5C, 1, 2155, hFile);
+		fclose(hFile);
 	}
 }
 
@@ -203,10 +205,16 @@ static void config_error(char *msg);
  * parsing of the config file is done in config_parse_settings
  */
 void config_init()
-{	
+{
+	#ifdef _WIN32
 	TCHAR path[MAX_PATH];
+	#else
+	char *home, *xdg_config, *path;
+	#endif
+	char *cfile;
 	FILE* fp;
 
+	#ifdef _WIN32
 	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
 		strcat(path, "\\OpenRCT2");
 		DWORD dwAttrib = GetFileAttributes(path);
@@ -216,18 +224,39 @@ void config_init()
 			}
 		}
 		strcat(path, "\\config.ini");
-		fp = fopen(path, "r");
-		if (!fp) {
-			config_create_default(path);
-			fp = fopen(path, "r");
-			if (!fp)
-				config_error("Could not create config file");
-		}
-
-		config_parse_settings(fp);
-
-		fclose(fp);
+		cfile = path;
+	} else
+		return;
+	#else
+	xdg_config = getenv("XDG_CONFIG_HOME");
+	if (!xdg_config) {
+		home = getenv("HOME");
+		
+		path = (char*) malloc(strlen(home)+strlen("/.config/")+strlen("openrct2/")+1);
+		sprintf(path, "%s/.config/openrct2/", home);
+	} else {
+		path = (char*) malloc(strlen(home)+strlen(xdg_config)+strlen("openrct2/")+3);
+		sprintf(path, "%s/%s/openrct2/", home, xdg_config);
 	}
+	
+	if (mkdir(path, 0777) && errno != EEXIST)
+		config_error("Could not create config file (do you have write access to your documents folder?)");
+	
+	cfile = (char*) malloc(strlen(path)+strlen("/config.ini")+1);
+	sprintf(cfile, "%s/config.ini", path);
+	#endif
+	
+	fp = fopen(cfile, "r");
+	if (!fp) {
+		config_create_default(cfile);
+		fp = fopen(cfile, "r");
+		if (!fp)
+			config_error("Could not create config file");
+	}
+	
+	config_parse_settings(fp);
+	
+	fclose(fp);
 }
 
 /**
@@ -238,6 +267,7 @@ void config_init()
  */
 static int config_find_rct2_path(char *resultPath)
 {
+	#ifdef _WIN32
 	int i;
 	DWORD dwAttrib;
 	const char *searchLocations[] = {
@@ -250,15 +280,19 @@ static int config_find_rct2_path(char *resultPath)
 		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
 	};
 
-	for (i = 0; i < countof(searchLocations); i++) {
+	for (i = 0; i < COUNT_OF(searchLocations); i++) {
 		dwAttrib = GetFileAttributes(searchLocations[i]);
 		if (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
 			strcpy(resultPath, searchLocations[i]);
 			return 1;
 		}
 	}
-
 	return 0;
+	
+	#else
+	sprintf(resultPath, "%s", ORCT2_RESOURCE_DIR);
+	return 1;
+	#endif
 }
 
 /**
@@ -269,7 +303,6 @@ static int config_find_rct2_path(char *resultPath)
 static void config_create_default(char *path)
 {
 	FILE* fp;
-
 
 	if (!config_find_rct2_path(gGeneral_config.game_path)) {
 		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
@@ -596,7 +629,7 @@ static const struct { char *key; int value; } _currencyLookupTable[] = {
 static int config_parse_currency(char *currency)
 {
 	int i;
-	for (i = 0; i < countof(_currencyLookupTable); i++) {
+	for (i = 0; i < COUNT_OF(_currencyLookupTable); i++) {
 		if (_strcmpi(currency, _currencyLookupTable[i].key) == 0) {
 			gGeneral_config.currency_format = _currencyLookupTable[i].value;
 			return 1;

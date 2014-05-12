@@ -27,6 +27,7 @@
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
+#include "rct2.h"
 
 enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,

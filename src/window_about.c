@@ -18,8 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <string.h>
 #include "addresses.h"
+#include "rct2.h"
 #include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"

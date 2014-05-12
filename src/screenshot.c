@@ -20,7 +20,20 @@
 
 #include <lodepng.h>
 #include <stdio.h>
-#include <windows.h>
+
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <sys/stat.h>
+	#include <errno.h>
+
+	#ifdef __gnu_linux__
+	#include <linux/limits.h>
+	#else
+	#include <limits.h>
+	#endif
+#endif
+
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
@@ -66,8 +79,14 @@ static int screenshot_get_next_path(char *path, char *extension)
 		// Glue together path and filename
 		sprintf(path, "%sSCR%d%s", RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), i, extension);
 
+		#ifdef _WIN32
 		if (GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND)
 			return i;
+		#else
+		struct stat buffer;
+		if (stat(path, &buffer) && errno == ENOENT)
+			return i;
+		#endif
 	}
 
 	return -1;
@@ -119,22 +138,22 @@ int screenshot_dump_bmp()
 
 	int i, y, index, width, height, stride;
 	char *buffer, path[MAX_PATH], *row;
-	HANDLE hFile;
-	DWORD bytesWritten;
+	FILE * hFile;
+	size_t bytes_written;
 
 	// Get a free screenshot path
 	if ((index = screenshot_get_next_path(path, ".bmp")) == -1)
 		return -1;
 
 	// Open file for writing
-	hFile = CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE)
+	hFile = fopen(path, "w");
+	if (hFile)
 		return -1;
 
 	// Allocate buffer
 	buffer = malloc(0xFFFF);
 	if (buffer == NULL) {
-		CloseHandle(hFile);
+		fclose(hFile);
 		return -1;
 	}
 
@@ -149,9 +168,9 @@ int screenshot_dump_bmp()
 	header.bfSize = height * stride + 1038;
 	header.bfOffBits = 1038;
 
-	WriteFile(hFile, &header, sizeof(header), &bytesWritten, NULL);
-	if (bytesWritten != sizeof(header)) {
-		CloseHandle(hFile);
+	bytes_written = fwrite(&header, 1, sizeof(header), hFile);
+	if (bytes_written != sizeof(header)) {
+		fclose(hFile);
 		free(buffer);
 	}
 
@@ -166,9 +185,9 @@ int screenshot_dump_bmp()
 	info.biYPelsPerMeter = 2520;
 	info.biClrUsed = 246;
 
-	WriteFile(hFile, &info, sizeof(info), &bytesWritten, NULL);
-	if (bytesWritten != sizeof(info)) {
-		CloseHandle(hFile);
+	bytes_written = fwrite(&info, 1, sizeof(info), hFile);
+	if (bytes_written != sizeof(info)) {
+		fclose(hFile);
 		free(buffer);
 	}
 
@@ -180,9 +199,9 @@ int screenshot_dump_bmp()
 		buffer[i * 4 + 2] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
 	}
 
-	WriteFile(hFile, buffer, 246 * 4, &bytesWritten, NULL);
-	if (bytesWritten != 246 * 4) {
-		CloseHandle(hFile);
+	bytes_written = fwrite(buffer, 1, 246 * 4, hFile);
+	if (bytes_written != 246 * 4) {
+		fclose(hFile);
 		free(buffer);
 	}
 
@@ -194,14 +213,14 @@ int screenshot_dump_bmp()
 		memset(buffer, 0, stride);
 		memcpy(buffer, row, dpi->width);
 
-		WriteFile(hFile, buffer, stride, &bytesWritten, NULL);
-		if (bytesWritten != stride) {
-			CloseHandle(hFile);
+		bytes_written = fwrite(buffer, 1, stride, hFile);
+		if (bytes_written != stride) {
+			fclose(hFile);
 			free(buffer);
 		}
 	}
 
-	CloseHandle(hFile);
+	fclose(hFile);
 	free(buffer);
 
 	return index;

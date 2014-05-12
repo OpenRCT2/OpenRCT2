@@ -18,6 +18,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#ifndef _WIN32
+	#ifdef __gnu_linux__
+	#include <linux/limits.h>
+	#else
+	#include <limits.h>
+	#endif
+
+	#define _MAX_PATH PATH_MAX
+#endif
 #include <string.h>
 #include <time.h>
 #include "addresses.h"

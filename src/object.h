@@ -21,7 +21,12 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include <stdio.h>
+#define HANDLE FILE*
+#endif
 #include "rct2.h"
 
 /**

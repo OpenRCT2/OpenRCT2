@@ -19,9 +19,17 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include <shlobj.h>
-#include <tchar.h>
-#include <windows.h>
+#ifdef _WIN32
+	#include <shlobj.h>
+	#include <tchar.h>
+	#include <windows.h>
+#else
+	#ifdef __gnu_linux__
+	#include <linux/limits.h>
+	#else
+	#include <limits.h>
+	#endif
+#endif
 #include <SDL.h>
 #include <SDL_syswm.h>
 
@@ -62,8 +70,12 @@ void osinterface_init()
 static void osinterface_create_window()
 {
 	SDL_SysWMinfo wmInfo;
-	HWND hWnd;
 	int width, height;
+	#ifdef _WIN32
+	HWND hWnd;
+	#elif __gnu_linux__
+	Window hWnd;
+	#endif
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Error: SDL_Init\n");
@@ -89,8 +101,13 @@ static void osinterface_create_window()
 	
 	// Get the HWND context
 	SDL_GetWindowWMInfo(_window, &wmInfo);
+	#if _MSC_VER
 	hWnd = wmInfo.info.win.window;
 	RCT2_GLOBAL(0x009E2D70, HWND) = hWnd;
+	#elif __gnu_linux__
+	hWnd = wmInfo.info.x11.window;
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 
 	// Set the update palette function pointer
 	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = osinterface_update_palette;
@@ -298,6 +315,7 @@ void osinterface_free()
  */
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName)
 {
+	#ifdef _WIN32
 	char initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
 	OPENFILENAME openFileName;
 	BOOL result;
@@ -348,15 +366,26 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 
 	// 
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
-
+	
 	return result;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	
+	return 0;
+	#endif
 }
 
 void osinterface_show_messagebox(char* message){
+	#ifdef _WIN32
 	MessageBox(NULL, message, "OpenRCT2", MB_OK);
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	printf("%s\n", message);
+	#endif
 }
 
 char* osinterface_open_directory_browser(char *title) {
+	#ifdef _WIN32
 	BROWSEINFO      bi;
 	char            pszBuffer[MAX_PATH];
 	LPITEMIDLIST    pidl;
@@ -395,4 +424,8 @@ char* osinterface_open_directory_browser(char *title) {
 	}
 	CoUninitialize();
 	return outPath;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	return "";
+	#endif
 }
