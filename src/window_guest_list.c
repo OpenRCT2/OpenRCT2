@@ -539,10 +539,9 @@ static void window_guest_list_paint()
 
 	// Widgets
 	window_draw_widgets(w, dpi);
-
 	// Tab 1 image
 	i = (_window_guest_list_selected_tab == 0 ? w->var_490 & 0x0FFFFFFFC : 0);
-	i += ((int*)*((int*)0x00982708))[0] + 1;
+	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982708, int), int)[0] + 1;
 	i |= 0xA1600000;
 	gfx_draw_sprite(
 		dpi,
