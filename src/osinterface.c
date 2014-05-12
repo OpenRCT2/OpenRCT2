@@ -240,8 +240,8 @@ void osinterface_process_messages()
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
-			*((int*)0x01424318) = e.button.x;
-			*((int*)0x0142431C) = e.button.y;
+			RCT2_GLOBAL(0x01424318, int) = e.button.x;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				RCT2_CALLPROC_1(0x00406C96, int, 2);
