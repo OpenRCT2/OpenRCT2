@@ -471,9 +471,9 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y += 11;
 
 	temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
-	format = STR_CELCIUS_VALUE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, uint8)) {
-		temperature = climate_celcius_to_fahrenheit(temperature);
+	format = STR_CELSIUS_VALUE;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
+		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}
 	*((short*)0x013CE952) = temperature;
