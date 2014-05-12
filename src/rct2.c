@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
- 
-#define _CRT_SECURE_NO_WARNINGS
+
+#pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <string.h>
 #include <setjmp.h>
@@ -43,7 +43,6 @@
 #include "title.h"
 #include "track.h"
 #include "viewport.h"
-#include "settings.h"
 
 
 void rct2_init_directories();
@@ -135,9 +134,9 @@ void rct2_init()
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_list_init_vars();
+	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+	window_staff_init_vars();
 
 	title_load();
 
@@ -151,7 +150,7 @@ void rct2_init_directories()
 	// check install directory
 	DWORD dwAttrib = GetFileAttributes(gGeneral_config.game_path);
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
-		MessageBox(NULL, "Invalid RCT2 installation path. Please correct in config.ini.", "OpenRCT2", MB_OK);
+		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
 
@@ -231,16 +230,16 @@ void check_cmdline_arg()
 	}
 	processed_arg[j ++] = 0;
 
-	if(!stricmp(processed_arg + last_period, "sv6"))
+	if (!_stricmp(processed_arg + last_period, "sv6"))
 	{
-		strcpy(0x00141EF68, processed_arg);
+		strcpy((char*)0x00141EF68, processed_arg);
 		game_load_save();
 	}
-	else if(!stricmp(processed_arg + last_period, "sc6"))
+	else if (!_stricmp(processed_arg + last_period, "sc6"))
 	{
 		//TODO: scenario install
 	}
-	else if(!stricmp(processed_arg + last_period, "td6") || !stricmp(processed_arg + last_period, "td4"))
+	else if (!_stricmp(processed_arg + last_period, "td6") || !_stricmp(processed_arg + last_period, "td4"))
 	{
 		//TODO: track design install
 	}
@@ -321,7 +320,7 @@ void get_system_info()
 
 	GetSystemInfo(&sysInfo);
 	// RCT2 only has 2 bytes reserved for OEM_ID even though it should be a DWORD
-	RCT2_GLOBAL(RCT2_ADDRESS_SYS_OEM_ID, uint16) = sysInfo.dwOemId;
+	RCT2_GLOBAL(RCT2_ADDRESS_SYS_OEM_ID, uint16) = (uint16)sysInfo.dwOemId;
 	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_LEVEL, uint16) = sysInfo.wProcessorLevel;
 	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_REVISION, uint16) = sysInfo.wProcessorRevision;
 	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_NUMBER, uint32) = sysInfo.dwNumberOfProcessors;
@@ -332,9 +331,9 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
 	uint32 size = 80;
-	GetUserName(RCT2_ADDRESS_OS_USER_NAME, &size);
+	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
-	GetComputerName(RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
+	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
 
 	// Screen Display Width/Height but RCT_ADDRESS_SCREEN_HEIGHT/WIDTH already taken?
 	RCT2_GLOBAL(0x01423C08, sint32) = GetSystemMetrics(SM_CXSCREEN);

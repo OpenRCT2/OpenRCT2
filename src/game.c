@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  * 
  * This file is part of OpenRCT2.
@@ -195,13 +195,14 @@ void game_handle_input()
 
 	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
 		for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int)w, 0, 0);
 
 		RCT2_CALLPROC_EBPSAFE(0x006EA73F);
 		RCT2_CALLPROC_EBPSAFE(0x006E8346); // update_cursor_position
 
 		{
-			int eax, ebx, ecx, edx, esi, edi, ebp;
+			// int eax, ebx, ecx, edx, esi, edi, ebp;
+			int eax, ebx, ecx;
 
 			for (;;) {
 				game_get_next_input(&eax, &ebx, &ecx);
@@ -228,7 +229,7 @@ void game_handle_input()
 	}
 
 	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -288,11 +289,9 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex);
  */
 static void game_handle_input_mouse(int x, int y, int state)
 {
-	rct_window *w, *w2;
+	rct_window *w;
 	rct_widget *widget;
 	int widgetIndex;
-	rct_windowclass windowClass;
-	rct_windownumber windowNumber;
 
 	// Get window and widget under cursor position
 	w = window_find_from_point(x, y);
@@ -347,7 +346,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 		break;
 	case INPUT_STATE_WIDGET_PRESSED:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_DRAGGING:
 		// RCT2_CALLPROC_X(0x006E8C5C, x, y, state, widgetIndex, w, widget, 0);
@@ -370,7 +369,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		} else if (state == 2) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 			y = clamp(29, y, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 34);
@@ -382,7 +381,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
 
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_18], 0, 0, x, y, w, 0, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_18], 0, 0, x, y, (int)w, 0, 0);
 		}
 		break;
 	case INPUT_STATE_VIEWPORT_DRAG:
@@ -460,13 +459,13 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	}
 	case INPUT_STATE_DROPDOWN_ACTIVE:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
-		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_SCROLL_LEFT:
-		RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_RESIZING:
 		// RCT2_CALLPROC_X(0x006E8B46, x, y, state, widgetIndex, w, widget, 0);
@@ -482,7 +481,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		if (state == 2) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 		}
@@ -498,7 +497,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
 		break;
 	case 9:
-		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	}
 }
@@ -527,8 +526,8 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
 		int eax, ebx, ecx, edx, esi, edi, ebp;
 		eax = x;
 		ebx = y;
-		esi = w;
-		edi = widget;
+		esi = (int)w;
+		edi = (int)widget;
 		RCT2_CALLFUNC_X(0x006E9F92, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp); // widget_scoll_get_part
 		eax &= 0xFFFF;
 		ebx &= 0xFFFF;
@@ -537,7 +536,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
 		if (ecx < 0)
 			goto showTooltip;
 		if (ecx == 0) {
-			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEOVER], edx, 0, eax, ebx, w, 0, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEOVER], edx, 0, eax, ebx, (int)w, 0, 0);
 			goto showTooltip;
 		} else {
 
@@ -585,8 +584,6 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
  */
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex)
 {
-	rct_window *w;
-
 	// Check if widget cursor was over has changed
 	if (windowClass != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) ||
 		windowNumber != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) ||
@@ -597,8 +594,8 @@ static void input_mouseover_widget_check(rct_windowclass windowClass, rct_window
 
 		// Set new cursor over widget
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windowclass) = windowNumber;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windowclass) = widgetIndex;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) = windowNumber;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, uint16) = widgetIndex;
 
 		// Invalidate new widget cursor is on if widget is a flat button
 		if (windowClass != 255)
@@ -612,7 +609,7 @@ static void input_mouseover_widget_flatbutton_invalidate()
 	if (w == NULL)
 		return;
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 	if (w->widgets[RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber)].type == WWT_FLATBTN)
 		widget_invalidate(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber));
 }
@@ -676,7 +673,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		if (w == NULL)
 			break;
 
-		RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DOWN], x, y, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DOWN], x, y, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 4);
 		break;
 	case WWT_CAPTION:
@@ -698,8 +695,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		int eax, ebx, ecx, edx, esi, edi, ebp;
 		eax = x;
 		ebx = y;
-		esi = w;
-		edi = widget;
+		esi = (int)w;
+		edi = (int)widget;
 		RCT2_CALLFUNC_X(0x006E9F92, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp); // widget_scoll_get_part
 		eax &= 0xFFFF;
 		ebx &= 0xFFFF;
@@ -708,42 +705,42 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 
 		RCT2_GLOBAL(0x009DE548, uint16) = ecx;
 		RCT2_GLOBAL(0x009DE54C, uint32) = edx;
-		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_15], RCT2_GLOBAL(0x009DE54C, uint32), ebx, ecx, edx, w, widget, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_15], RCT2_GLOBAL(0x009DE54C, uint32), ebx, ecx, edx, (int)w, (int)widget, 0);
 		switch (ecx) {
 		case SCROLL_PART_VIEW:
-			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], edx / sizeof(rct_scroll), ebx, eax, ebx, w, widget, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], edx / sizeof(rct_scroll), ebx, eax, ebx, (int)w, (int)widget, 0);
 			break;
 		case SCROLL_PART_HSCROLLBAR_LEFT:
 			// 0x006E9A60
-			RCT2_CALLPROC_X(0x006E9A60, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9A60, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_HSCROLLBAR_RIGHT:
 			// 0x006E9ABF
-			RCT2_CALLPROC_X(0x006E9ABF, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9ABF, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
 			// 0x006E9B47
-			RCT2_CALLPROC_X(0x006E9B47, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9B47, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
 			// 0x006E9BB7
-			RCT2_CALLPROC_X(0x006E9BB7, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9BB7, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_VSCROLLBAR_TOP:
 			// 0x006E9C37
-			RCT2_CALLPROC_X(0x006E9C37, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9C37, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_VSCROLLBAR_BOTTOM:
 			// 0x006E9C96
-			RCT2_CALLPROC_X(0x006E9C96, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9C96, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
 			// 0x006E9D1E
-			RCT2_CALLPROC_X(0x006E9D1E, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9D1E, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
 			// 0x006E9D8E
-			RCT2_CALLPROC_X(0x006E9D8E, 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(0x006E9D8E, 0, 0, 0, 0, (int)w, 0, 0);
 			break;
 		}
 		break;
@@ -757,14 +754,14 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		
 		// Set new cursor down widget
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windowclass) = windowNumber;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, rct_windowclass) = widgetIndex;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = windowNumber;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 0);
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_WIDGET_PRESSED;
 		RCT2_GLOBAL(0x009DE528, uint16) = 1;
 
 		widget_invalidate(windowClass, windowNumber, widgetIndex);
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_DOWN], 0, 0, 0, widgetIndex, w, widget, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_DOWN], 0, 0, 0, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	}
 }
@@ -866,6 +863,228 @@ int get_next_key()
 	return 0;
 }
 
+void handle_shortcut_command(int shortcutIndex)
+{
+	rct_window *window;
+
+	switch (shortcutIndex) {
+	case SHORTCUT_CLOSE_TOP_MOST_WINDOW:
+		window_close_top();
+		break;
+	case SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2))
+			window_close_all();
+		else if (RCT2_GLOBAL(0x0141F570, uint8) == 1)
+			window_close_top();
+		break;
+	case SHORTCUT_CANCEL_CONSTRUCTION_MODE:
+		window = window_find_by_id(WC_ERROR, 0);
+		if (window != NULL)
+			window_close(window);
+		else if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+			tool_cancel();
+		break;
+	case SHORTCUT_PAUSE_GAME:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 10)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 0, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_ZOOM_VIEW_OUT:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 2, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ZOOM_VIEW_IN:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 3, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ROTATE_VIEW:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 8)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 4, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ROTATE_CONSTRUCTION_OBJECT:
+		RCT2_CALLPROC_EBPSAFE(0x006E4182);
+		break;
+	case SHORTCUT_UNDERGROUND_VIEW_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 0, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_REMOVE_BASE_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 1, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 2, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_SEE_THROUGH_RIDES_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 4, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 5, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 6, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_INVISIBLE_PEOPLE_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 7, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 9, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 10, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE:
+		RCT2_CALLPROC_X(0x0066CF8A, 11, 0, 0, 0, 0, 0, 0);
+		break;
+	case SHORTCUT_ADJUST_LAND:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 7, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_ADJUST_WATER:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 8, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_SCENERY:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 9, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_PATHS:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 10, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_BUILD_NEW_RIDE:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 11, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
+				RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		break;
+	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			// Open new ride window
+			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+			window = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
+			if (window != NULL)
+				window_event_helper(window, 10, WE_MOUSE_DOWN);
+		}
+		break;
+	case SHORTCUT_SHOW_RIDES_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 12, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_PARK_INFORMATION:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 13, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_GUEST_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 15, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_STAFF_LIST:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
+		  window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				window_event_helper(window, 14, WE_MOUSE_UP);
+			}
+		}
+		break;
+	case SHORTCUT_SHOW_RECENT_MESSAGES:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E))
+			window_news_open();
+		break;
+	case SHORTCUT_SHOW_MAP:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C)) {
+				window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+				if (window != NULL) {
+					window_invalidate(window);
+					window_event_helper(window, 6, WE_MOUSE_UP);
+				}
+			}
+		}
+		break;
+	case SHORTCUT_SCREENSHOT:
+		RCT2_CALLPROC_EBPSAFE(0x006E4034); // set screenshot countdown to 2
+		break;
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E3E68
@@ -873,9 +1092,9 @@ int get_next_key()
 void handle_shortcut(int key)
 {
 	int i;
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < SHORTCUT_COUNT; i++) {
 		if (key == gShortcutKeys[i]) {
-			RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x006E3FB4, uint32)[i]);
+			handle_shortcut_command(i);
 			break;
 		}
 	}
@@ -911,7 +1130,7 @@ void set_shortcut(int key)
 void game_handle_keyboard_input()
 {
 	rct_window *w;
-	int key, i;
+	int key;
 
 	// Handle mouse scrolling
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
@@ -960,7 +1179,7 @@ void game_handle_keyboard_input()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4) {
 			window_tooltip_close();
 			if ((w = window_get_main()) != NULL) {
-				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
 				RCT2_GLOBAL(0x009DEA72, uint16)++;
 			}
 		}
@@ -968,7 +1187,7 @@ void game_handle_keyboard_input()
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4)) {
 			window_tooltip_close();
 			if ((w = window_get_main()) != NULL) {
-				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
 				RCT2_GLOBAL(0x009DEA72, uint16)++;
 			}
 		}
@@ -1089,9 +1308,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
  */
 static void game_pause_toggle()
 {
-	rct_window *w;
-	char input_bl, input_dl;
-	short input_di;
+	char input_bl;
 
 	__asm mov input_bl, bl
 
@@ -1113,7 +1330,6 @@ static void game_pause_toggle()
  */
 static void game_load_or_quit()
 {
-	rct_window *w;
 	char input_bl, input_dl;
 	short input_di;
 
@@ -1122,7 +1338,7 @@ static void game_load_or_quit()
 	__asm mov input_di, di
 
 	if (!(input_bl & 1))
-		return 0;
+		return; // 0;
 	
 	switch (input_dl) {
 	case 0:
@@ -1146,13 +1362,15 @@ static void game_load_or_quit()
  */
 static int open_landscape_file_dialog()
 {
-	format_string(0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
-	strcpy(0x0141EF68, RCT2_ADDRESS_LANDSCAPES_PATH);
-	format_string(0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
+	int result;
+	format_string((char*)0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
+	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
+	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
-	osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6;*.SV4;*.SC6", 0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
+	return result;
 }
 
 /**
@@ -1162,11 +1380,11 @@ static int open_landscape_file_dialog()
 static int open_load_game_dialog()
 {
 	int result;
-	format_string(0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
-	strcpy(0x0141EF68, RCT2_ADDRESS_SAVED_GAMES_PATH);
-	format_string(0x0141EE68, STR_RCT2_SAVED_GAME, 0);
+	format_string((char*)0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
+	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
+	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, 0x0141ED68, 0x0141EF68, "*.SV6", 0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -1182,7 +1400,7 @@ static void load_landscape()
 		gfx_invalidate_screen();
 	} else {
 		// Set default filename
-		char *esi = 0x0141EF67;
+		char *esi = (char*)0x0141EF67;
 		while (1) {
 			esi++;
 			if (*esi == '.')
@@ -1192,7 +1410,7 @@ static void load_landscape()
 			strcpy(esi, ".SC6");
 			break;
 		}
-		strcpy(0x009ABB37, 0x0141EF68);
+		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
 
 		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
 		if (1) {
@@ -1234,11 +1452,11 @@ int game_load_save()
 		return 0;
 	}
 
-	rct_s6_header *s6Header = 0x009E34E4;
-	rct_s6_info *s6Info = 0x0141F570;
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	// Read first chunk
-	sawyercoding_read_chunk(hFile, s6Header);
+	sawyercoding_read_chunk(hFile, (uint8*)s6Header);
 	if (s6Header->type == S6_TYPE_SAVEDGAME) {
 		// Read packed objects
 		if (s6Header->num_packed_objects > 0) {
@@ -1253,14 +1471,14 @@ int game_load_save()
 	object_read_and_load_entries(hFile);
 
 	// Read flags (16 bytes)
-	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 	// Read map elements
-	memset(RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-	sawyercoding_read_chunk(hFile, RCT2_ADDRESS_MAP_ELEMENTS);
+	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 	// Read game data, including sprites
-	sawyercoding_read_chunk(hFile, 0x010E63B8);
+	sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
 
 	CloseHandle(hFile);
 
@@ -1298,7 +1516,7 @@ int game_load_save()
 
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
-	window_ride_list_init_vars();
+	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
 		RCT2_CALLPROC_EBPSAFE(0x0069E869);
@@ -1318,7 +1536,7 @@ static void load_game()
 		gfx_invalidate_screen();
 	} else {
 		// Set default filename
-		char *esi = 0x0141EF67;
+		char *esi = (char*)0x0141EF67;
 		while (1) {
 			esi++;
 			if (*esi == '.')
@@ -1328,7 +1546,7 @@ static void load_game()
 			strcpy(esi, ".SV6");
 			break;
 		}
-		strcpy(0x009ABB37, 0x0141EF68);
+		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
 
 		if (game_load_save()) {
 			gfx_invalidate_screen();
@@ -1380,10 +1598,10 @@ void game_load_or_quit_no_save_prompt()
 static uint32 game_do_command_table[58] = {
 	0x006B2FC5,
 	0x0066397F,
-	game_pause_toggle,
+	(uint32)game_pause_toggle,
 	0x006C511D,
 	0x006C5B69,
-	game_load_or_quit,
+	(uint32)game_load_or_quit,
 	0x006B3F0F,
 	0x006B49D9,
 	0x006B4EA6,

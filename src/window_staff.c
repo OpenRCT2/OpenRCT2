@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
+* Copyright (c) 2014 Maciek Baron
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -18,11 +18,22 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <windows.h>
-#include <ShlObj.h>
-#include <stdio.h>
-#include <ctype.h>
 #include <string.h>
-#include "settings.h"
-#include "screenshot.h"
+#include "addresses.h"
+#include "game.h"
+#include "window.h"
 
+enum {
+	WINDOW_STAFF_LIST_TAB_HANDYMEN,
+	WINDOW_STAFF_LIST_TAB_MECHANICS,
+	WINDOW_STAFF_LIST_TAB_SECURITY,
+	WINDOW_STAFF_LIST_TAB_ENTERTAINERS
+} WINDOW_STAFF_LIST_TAB;
+
+
+/*
+* rct2: 0x006BD39C
+**/
+void window_staff_init_vars() {
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+}

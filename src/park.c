@@ -19,11 +19,14 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "finance.h"
 #include "map.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
+#include "scenario.h"
 #include "sprite.h"
+#include "strings.h"
 #include "window.h"
 
 int park_is_open()
@@ -37,7 +40,84 @@ int park_is_open()
  */
 void park_init()
 {
-	RCT2_CALLPROC_EBPSAFE(0x00667132);
+	int i;
+
+	RCT2_GLOBAL(0x013CA740, uint8) = 0;
+	RCT2_GLOBAL(0x013573D4, uint16) = 777;
+	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = 28;
+	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = 28;
+	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = 28;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
+	RCT2_GLOBAL(0x01357BC8, uint16) = 0;
+	RCT2_GLOBAL(0x01357846, uint16) = 0;
+	RCT2_GLOBAL(0x013573FE, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
+	RCT2_GLOBAL(0x013580EC, uint16) = 0;
+	RCT2_GLOBAL(0x013580EE, uint16) = 0;
+	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
+
+	for (i = 0; i < 20; i++)
+		RCT2_ADDRESS(0x01358102, uint8)[i] = 0;
+
+	RCT2_GLOBAL(0x01358844, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x01358849, uint32) = 0xFFFFFFFE;
+	RCT2_GLOBAL(0x0135884E, uint32) = 0xFFFFFFFD;
+	finance_init();
+
+	for (i = 0; i < 2; i++)
+		RCT2_ADDRESS(0x01357404, uint32)[i] = 0;
+
+	for (i = 0; i < 56; i++)
+		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = CURRENCY(10, 00);
+	RCT2_GLOBAL(0x013573F2, sint16) = -1;
+	RCT2_GLOBAL(0x013573F8, sint16) = -1;
+	RCT2_GLOBAL(0x01357CF2, uint16) = 127;
+	RCT2_GLOBAL(0x013573FF, uint8) = 2;
+
+	RCT2_GLOBAL(0x013580F4, uint16) = 500;
+	RCT2_GLOBAL(0x013580E9, uint8) = 128;
+	RCT2_GLOBAL(0x013580F6, uint8) = 200;
+	RCT2_GLOBAL(0x013580F7, uint8) = 200;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1000;
+	RCT2_GLOBAL(0x01358770, uint16) = 900;
+	RCT2_GLOBAL(0x01358772, uint16) = 400;
+	RCT2_GLOBAL(0x01358774, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	park_reset_awards_and_history();
+
+	rct_s6_info *info = (rct_s6_info*)0x0141F570;
+	info->name[0] = '\0';
+	format_string(info->details, STR_NO_DETAILS_YET, NULL);
+}
+
+/**
+ * 
+ *  rct2: 0x0066729F
+ */
+void park_reset_awards_and_history()
+{
+	int i;
+
+	// Reset park rating and guests in park history
+	for (i = 0; i < 32; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8)[i] = 255;
+		RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8)[i] = 255;
+	}
+
+	// Reset finance history
+	for (i = 0; i < 128; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, uint32)[i] = 0x80000000;
+		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, uint32)[i] = 0x80000000;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, uint32)[i] = 0x80000000;
+	}
+
+	// Reset awards
+	for (i = 0; i < 4; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i].time = 0;
 }
 
 /**

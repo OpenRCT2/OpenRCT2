@@ -33,7 +33,7 @@ enum {
 	NEWS_ITEM_PEEP,
 	NEWS_ITEM_MONEY,
 	NEWS_ITEM_BLANK,
-	NEWS_ITEM_SCENERY,
+	NEWS_ITEM_RESEARCH,
 	NEWS_ITEM_PEEPS,
 	NEWS_ITEM_AWARD,
 	NEWS_ITEM_GRAPH
@@ -48,8 +48,7 @@ typedef struct {
 	uint8 flags;				// 0x01
 	uint32 assoc;				// 0x02
 	uint16 ticks;				// 0x06
-	uint8 month;				// 0x08
-	uint8 pad_09;				// 0x09
+	uint16 month_year;			// 0x08
 	uint8 day;					// 0x0A
 	uint8 pad_0B;				// 0x0B
 	uint8 colour;				// 0x0C
@@ -61,5 +60,6 @@ void news_item_update_current();
 void news_item_close_current();
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
+void news_item_open_subject(int type, int subject);
 
 #endif

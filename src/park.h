@@ -59,7 +59,8 @@ enum {
 	PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
 	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
 	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
-	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 11),
+	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 8),
+	PARK_FLAGS_11 = (1 << 11),
 	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
 	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
@@ -69,6 +70,7 @@ enum {
 
 int park_is_open();
 void park_init();
+void park_reset_awards_and_history();
 int park_calculate_size();
 
 int calculate_park_rating();

@@ -98,8 +98,53 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
 	gfx_fill_rect(dpi, x, y, x, y, colour);
 }
 
+/*
+* Draws a horizontal line of specified colour to a buffer.
+* rct2: 0x68474C
+*/
+void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, int no_pixels)
+{
+	y -= dpi->y;
+
+	//Check to make sure point is in the y range
+	if (y < 0)return;
+	if (y >= dpi->height)return;
+	//Check to make sure we are drawing at least a pixel
+	if (!no_pixels) return;
+
+	no_pixels++;
+	x -= dpi->x;
+
+	//If x coord outside range leave
+	if (x < 0){
+		//Unless the number of pixels is enough to be in range
+		no_pixels += x;
+		if (no_pixels <= 0)return;
+		//Resets starting point to 0 as we don't draw outside the range
+		x = 0;
+	}
+
+	//Ensure that the end point of the line is within range
+	if (x + no_pixels - dpi->width > 0){
+		//If the end point has any pixels outside range
+		//cut them off. If there are now no pixels return.
+		no_pixels -= x + no_pixels - dpi->width;
+		if (no_pixels <= 0)return;
+	}
+
+	char* bits_pointer;
+	//Get the buffer we are drawing to and move to the first coordinate.
+	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
+
+	//Draw the line to the specified colour
+	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
+		*((uint8*)bits_pointer) = colour;
+	}
+}
+
+
 /**
- *
+ * Draws a line on dpi if within dpi boundaries
  *  rct2: 0x00684466
  * dpi (edi)
  * x1 (ax)
@@ -110,7 +155,78 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
  */
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
 {
-	RCT2_CALLPROC_X(0x00684466, x1, y1, x2, y2, 0, dpi, colour);
+	// Check to make sure the line is within the drawing area
+	if ((x1 < dpi->x) && (x2 < dpi->x)){
+		return;
+	}
+
+	if ((y1 < dpi->y) && (y2 < dpi->y)){
+		return;
+	}
+
+	if ((x1 >(dpi->x + dpi->width)) && (x2 >(dpi->x + dpi->width))){
+		return;
+	}
+
+	if ((y1 > (dpi->y + dpi->height)) && (y2 > (dpi->y + dpi->height))){
+		return;
+	}
+
+	//Bresenhams algorithm
+
+	//If vertical plot points upwards
+	int steep = abs(y2 - y1) > abs(x2 - x1);
+	if (steep){
+		int temp_y2 = y2;
+		int temp_x2 = x2;
+		y2 = x1;
+		x2 = y1;
+		y1 = temp_x2;
+		x1 = temp_y2;
+	}
+
+	//If line is right to left swap direction
+	if (x1 > x2){
+		int temp_y2 = y2;
+		int temp_x2 = x2;
+		y2 = y1;
+		x2 = x1;
+		y1 = temp_y2;
+		x1 = temp_x2;
+	}
+
+	int delta_x = x2 - x1;
+	int delta_y = abs(y2 - y1);
+	int error = delta_x / 2;
+	int y_step;
+	int y = y1;
+
+	//Direction of step
+	if (y1 < y2)y_step = 1;
+	else y_step = -1;
+
+	for (int x = x1, x_start = x1, no_pixels = 1; x < x2; ++x,++no_pixels){
+		//Vertical lines are drawn 1 pixel at a time
+		if (steep)gfx_draw_line_on_buffer(dpi, colour, x, y, 1);
+
+		error -= delta_y;
+		if (error < 0){
+			//Non vertical lines are drawn with as many pixels in a horizontal line as possible
+			if (!steep)gfx_draw_line_on_buffer(dpi, colour, y, x_start, no_pixels);
+
+			//Reset non vertical line vars
+			x_start = x + 1;
+			no_pixels = 1;
+			y += y_step;
+			error += delta_x;
+		}
+
+		//Catch the case of the last line
+		if (x + 1 == x2 && !steep){
+			gfx_draw_line_on_buffer(dpi, colour, y, x_start, no_pixels);
+		}
+	}
+	return;
 }
 
 /**
@@ -125,7 +241,7 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
-	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
+	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, (int)dpi, colour);
 }
 
 /**
@@ -141,7 +257,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  */
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
 {
-	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, dpi, colour);
+	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, (int)dpi, colour);
 }
 
 /**
@@ -153,7 +269,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 }
 
 /**
@@ -196,7 +312,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
  */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
-	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, args, dpi, 0);
+	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, (int)args, (int)dpi, 0);
 }
 
 /**
@@ -253,7 +369,6 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 void gfx_draw_all_dirty_blocks()
 {
 	int x, y, xx, yy, columns, rows;
-	short left, top, right, bottom;
 	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
 
 	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
@@ -346,7 +461,7 @@ int gfx_get_string_width(char *buffer)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	esi = buffer;
+	esi = (int)buffer;
 	RCT2_CALLFUNC_X(0x006C2321, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	return ecx & 0xFFFF;
@@ -366,7 +481,7 @@ int gfx_get_string_width(char *buffer)
  */
 void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 
@@ -391,7 +506,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  */
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 	//short text_width;
@@ -452,8 +567,8 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = args;
-	edi = dpi;
+	esi = (int)args;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C1E53, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -479,8 +594,8 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, in
 	ebx = colour;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -523,8 +638,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	ebx = 0;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = 0;
 	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 

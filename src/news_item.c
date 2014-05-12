@@ -191,7 +191,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -212,16 +212,16 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find the first car of the train peep is on
-		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]);
+		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).car;
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
-			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]);
+			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]).car;
 		*x = car->x;
 		*y = car->y;
 		*z = car->z;
 		break;
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -252,7 +252,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + sizeof(newsItem) >= 0x13CB1CC)
+		if (newsItem + sizeof(newsItem) >= (rct_news_item*)0x13CB1CC)
 			news_item_close_current();
 		else
 			newsItem++;
@@ -263,16 +263,84 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	newsItem->flags = 0;
 	newsItem->assoc = assoc;
 	newsItem->ticks = 0;
-	newsItem->month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem->day = (days_in_month[(newsItem->month & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
+	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	newsItem->day = (days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
 
-	format_string(0x0141EF68, string_id, 0x013CE952); // overflows possible?
+	format_string((char*)0x0141EF68, string_id, (void*)0x013CE952); // overflows possible?
 	newsItem->colour = ((char*)0x0141EF68)[0];
-	strncpy(newsItem->text, 0x0141EF68, 255);
+	strncpy(newsItem->text, (char*)0x0141EF68, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.
 	// Change this when we implement the queue ourselves.
 	newsItem++;
 	newsItem->type = 0;
+}
+
+/**
+ * Opens the window/tab for the subject of the news item
+ *
+ * rct2: 0x0066EBE6
+ *
+ **/
+void news_item_open_subject(int type, int subject) {
+
+	int eax;
+	rct_peep* peep;
+	rct_window* window;
+
+	switch (type) {
+	case NEWS_ITEM_RIDE:
+		RCT2_CALLPROC_X(0x006ACC28, subject, 0, 0, 0, 0, 0, 0);
+		break;
+	case NEWS_ITEM_PEEP_ON_RIDE:
+	case NEWS_ITEM_PEEP:
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
+		break;
+	case NEWS_ITEM_MONEY:
+		// Open finances window
+		RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		break;
+	case NEWS_ITEM_RESEARCH:
+
+		if (subject >= 0x10000) {
+			// Open ride list window
+			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+			eax = (subject & 0xFF00) >> 8;
+			eax += (subject & 0xFF) << 8;
+			// Switch to right tab and scroll to ride location
+			RCT2_CALLPROC_X(0x006B3EBA, eax, 0, subject, 0, 0, 0, 0);
+			break;
+		}
+
+		// Check if window is already open
+		window = window_bring_to_front_by_id(WC_SCENERY, 0);
+		if (window == NULL) {
+			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			if (window != NULL) {
+				window_invalidate(window);
+				if (tool_set(window, 9, 0)){
+					RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+				}
+				RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+				// Open scenery window
+				RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+			}
+		}
+		// Switch to new scenery tab
+		RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+
+		break;
+	case NEWS_ITEM_PEEPS:
+		// Open guest list to right tab
+		RCT2_CALLPROC_X(0x006993BA, 3, subject, 0, 0, 0, 0, 0);
+		break;
+	case NEWS_ITEM_AWARD:
+		window_park_awards_open();
+		break;
+	case NEWS_ITEM_GRAPH:
+		window_park_rating_open();
+		break;
+	}
 }

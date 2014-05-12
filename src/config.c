@@ -25,6 +25,9 @@
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
+#include <tchar.h>
+
+#include "osinterface.h"
 
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
@@ -142,10 +145,10 @@ void config_save()
 	HANDLE hFile;
 	DWORD bytesWritten;
 
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, 0x009AAC5C, 2155, &bytesWritten, NULL);
+		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
 		CloseHandle(hFile);
 	}
 }
@@ -154,6 +157,7 @@ void config_save()
 
 general_configuration_t gGeneral_config;
 
+static char *config_show_directory_browser();
 static void config_parse_settings(FILE *fp);
 static int config_get_line(FILE *fp, char *setting, char *value);
 static int config_parse_setting(FILE *fp, char *setting);
@@ -178,7 +182,7 @@ void config_init()
 		DWORD dwAttrib = GetFileAttributes(path);
 		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
 			if (!CreateDirectory(path, NULL)) {
-				config_error("Could not create config file (do you have write acces to you documents folder?)");
+				config_error("Could not create config file (do you have write access to your documents folder?)");
 			}
 		}
 		strcat(path, "\\config.ini");
@@ -236,9 +240,11 @@ static void config_create_default(char *path)
 {
 	FILE* fp;
 
-	if (!config_find_rct2_path(gGeneral_config.game_path)) {
-		MessageBox(NULL, "Unable to find RCT2 installation directory. Please correct in config.ini.", "OpenRCT2", MB_OK);
-		strcpy(gGeneral_config.game_path, "C:\\");
+
+	if (!config_find_rct2_path(gConfig.game_path)) {
+		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
+		strcpy(gConfig.game_path, res);
 	}
 
 	fp = fopen(path, "w");
@@ -253,13 +259,14 @@ static void config_create_default(char *path)
 	fclose(fp);
 }
 
+
 /**
  * Parse settings and set the game veriables
  * @param fp file pointer to the settings file
  */
 static void config_parse_settings(FILE *fp)
 {
-	int c = NULL, pos = 0;
+	int pos = 0;
 	char *setting;
 	char *value;
 	char *section;
@@ -428,36 +435,36 @@ static int config_parse_setting(FILE *fp, char *setting){
  * @param value a pointer to where to store the value
  * @return < 0 if EOF is reached
  */
-static int config_parse_value(FILE *fp, char *value){
+static int config_parse_value(FILE *fp, char *value)
+{
 	long start, end;
 	int size, c, pos = 0;
 
 	start = ftell(fp);
 	c = fgetc(fp);
-	while (isspace(c)){
+	while (isspace(c)) {
 		start = ftell(fp);
 		c = fgetc(fp);
-		
 	}
 	
-	while (c != EOF && c != '\n'){
+	while (c != EOF && c != '\n') {
 		c = fgetc(fp);		
 	}
+
 	end = ftell(fp);
 	size = end - start;
-	if (size > MAX_CONFIG_LENGTH){
+	if (size > MAX_CONFIG_LENGTH)
 		config_error("One of your settings is too long");
-	}
+	
 	fseek(fp, start, SEEK_SET);
 	c = fgetc(fp);
-	while (c != EOF && c != '\n'){
-		
+	while (c != EOF && c != '\n') {
 		value[pos] = (char)c;
 		c = fgetc(fp);
 		pos++;
 	}
 	value[pos] = '\0';
-	return;
+	return 0;
 }
 
 /**
@@ -540,8 +547,10 @@ static int config_parse_currency(char* currency){
  * @param msg Message to print in message box
  */
 static void config_error(char *msg){
-	MessageBox(NULL, msg, "OpenRCT2", MB_OK);
-	exit(-1);
+
+	osinterface_show_messagebox(msg);
+	//TODO:SHUT DOWN EVERYTHING!
+
 }
 
 

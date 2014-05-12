@@ -84,7 +84,7 @@ static void window_guest_list_invalidate();
 static void window_guest_list_paint();
 static void window_guest_list_scrollpaint();
 
-static uint32 window_guest_list_events[] = {
+static void* window_guest_list_events[] = {
 	window_guest_list_emptysub,
 	window_guest_list_mouseup,
 	window_guest_list_resize,
@@ -130,7 +130,8 @@ static uint8 _window_guest_list_groups_guest_faces[240 * 58];
 
 static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
-static int get_guest_face_sprite(rct_peep *peep);
+static int get_guest_face_sprite_small(rct_peep *peep);
+static int get_guest_face_sprite_large(rct_peep *peep);
 
 /**
  * 
@@ -141,11 +142,11 @@ void window_guest_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
+	window = window_bring_to_front_by_id(WC_GUEST_LIST, 0);
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(350, 330, window_guest_list_events, WC_GUEST_LIST, 0x0400);
+	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, 0x0400);
 	window->widgets = window_guest_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -160,7 +161,7 @@ void window_guest_list_open()
 	window_init_scroll_widgets(window);
 	_window_guest_list_highlighted_index = -1;
 	window->var_490 = 0;
-	_window_guest_list_selected_tab = 1;
+	_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 	_window_guest_list_selected_filter = -1;
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
@@ -183,7 +184,6 @@ void window_guest_list_open()
  */
 static void window_guest_list_mouseup()
 {
-	int i;
 	short widgetIndex;
 	rct_window *w;
 
@@ -441,7 +441,7 @@ static void window_guest_list_scrollmousedown()
 
 			if (i == 0) {
 				// Open guest window
-				RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, peep, 0, 0, 0);
+				RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
 				break;
 			} else {
 				i--;
@@ -504,7 +504,7 @@ static void window_guest_list_invalidate()
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
-	w->pressed_widgets |= (1 << (_window_guest_list_selected_tab + WIDX_TAB_1));
+	w->pressed_widgets |= (1LL << (_window_guest_list_selected_tab + WIDX_TAB_1));
 
 	window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].image = STR_ACTIONS + _window_guest_list_selected_view;
 	window_guest_list_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -575,14 +575,14 @@ static void window_guest_list_paint()
 	} else {
 		format = STR_ALL_GUESTS_SUMMARISED;
 	}
-	gfx_draw_string_left_clipped(dpi, format, 0x00F1EDF6, 0, x, y, 310);
+	gfx_draw_string_left_clipped(dpi, format, (void*)0x00F1EDF6, 0, x, y, 310);
 
 	// Number of guests (list items)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		RCT2_GLOBAL(0x013CE952, sint16) = w->var_492;
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), 0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)0x013CE952, 0, x, y);
 	}
 }
 
@@ -593,7 +593,7 @@ static void window_guest_list_paint()
 static void window_guest_list_scrollpaint()
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	int spriteIdx, format, numGuests, i, j, x, y;
+	int spriteIdx, format, numGuests, i, j, y;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
@@ -644,12 +644,12 @@ static void window_guest_list_scrollpaint()
 				// Guest name
 				RCT2_GLOBAL(0x013CE952, uint16) = peep->name_string_idx;
 				RCT2_GLOBAL(0x013CE954, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 0, y - 1, 113);
+				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 113);
 
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
 					// Guest face
-					gfx_draw_sprite(dpi, get_guest_face_sprite(peep), 118, y);
+					gfx_draw_sprite(dpi, get_guest_face_sprite_small(peep), 118, y);
 
 					// Tracking icon
 					if (peep->flags & PEEP_FLAGS_TRACKING)
@@ -664,7 +664,7 @@ static void window_guest_list_scrollpaint()
 					RCT2_GLOBAL(0x013CE952, uint16) = ebx;
 					RCT2_GLOBAL(0x013CE952 + 2, uint16) = ecx;
 					RCT2_GLOBAL(0x013CE952 + 4, uint32) = edx;
-					gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 133, y - 1, 314);
+					gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
 					// For each thought
@@ -685,7 +685,7 @@ static void window_guest_list_scrollpaint()
 						RCT2_GLOBAL(0x013CE952, uint16) = ebx;
 						RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)esi);
 						RCT2_GLOBAL(0x013CE952 + 6, uint16) = *((uint16*)(esi + 4));
-						gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 118, y - 1, 329);
+						gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 118, y - 1, 329);
 						break;
 					}
 					break;
@@ -725,11 +725,11 @@ static void window_guest_list_scrollpaint()
 				RCT2_GLOBAL(0x013CE952 + 2, uint16) = _window_guest_list_groups_argument_1[i] >> 16;
 				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
 				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
-				gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 0, y - 1, 414);
+				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 414);
 
 				// Draw guest count
 				RCT2_GLOBAL(0x013CE95A, uint16) = STR_GUESTS_COUNT_COMMA_SEP;
-				gfx_draw_string_right(dpi, format, 0x0013CE95A, 0, 326, y - 1);
+				gfx_draw_string_right(dpi, format, (void*)0x0013CE95A, 0, 326, y - 1);
 			}
 			y += 21;
 		}
@@ -749,7 +749,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
 		
-	esi = peep;
+	esi = (int)peep;
 	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ebx &= 0xFFFF;
 
@@ -797,6 +797,8 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
 		*outEAX = 0;
 		return 0;
 	}
+
+	return 0;
 }
 
 /**
@@ -856,7 +858,7 @@ static void window_guest_list_find_groups()
 		_window_guest_list_groups_argument_2[groupIndex] = RCT2_GLOBAL(0x013CE952 + 2, uint32);
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
-		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep) - 5486;
+		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
 
 		// Find more peeps that belong to same group
 		spriteIdx2 = peep->next;
@@ -880,7 +882,7 @@ static void window_guest_list_find_groups()
 			// Add face sprite, cap at 56 though
 			if (_window_guest_list_groups_num_guests[groupIndex] < 56)
 				continue;
-			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite(peep2) - 5486;
+			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep2) - 5486;
 		}
 
 		if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0) {
@@ -927,14 +929,70 @@ static void window_guest_list_find_groups()
 }
 
 /**
- * 
+ *  Function split into large and small sprite
  *  rct2: 0x00698721
  */
-static int get_guest_face_sprite(rct_peep *peep)
+static int get_guest_face_sprite_small(rct_peep *peep)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	esi = peep;
-	ebp = 999;
-	RCT2_CALLFUNC_X(0x00698721, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebp;
+	int sprite;
+	sprite = 0x157A;
+
+	if (peep->var_F3) return sprite;
+
+	sprite = 0x1579;
+	if (peep->nausea > 200) return sprite;
+	sprite--;
+
+	if (peep->nausea > 170) return sprite;
+	sprite--;
+
+	if (peep->nausea > 140) return sprite;
+	sprite = 0x1576;
+
+	if (peep->energy < 46) return sprite;
+	sprite--;
+
+	if (peep->energy < 70) return sprite;
+	sprite = 0x156E;
+
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
+}
+
+/**
+*  Function split into large and small sprite
+*  rct2: 0x00698721
+*/
+static int get_guest_face_sprite_large(rct_peep* peep){
+	int sprite;
+	sprite = 5314;
+
+	if (peep->var_F3) return sprite;
+
+	sprite = 5298;
+	if (peep->nausea > 200) return sprite;
+	sprite = 0x14AE;
+
+	if (peep->nausea > 170) return sprite;
+	sprite = 0x14AD;
+
+	if (peep->nausea > 140) return sprite;
+	sprite = 0x14AC;
+
+	if (peep->energy < 46) return sprite;
+	sprite--;
+
+	if (peep->energy < 70) return sprite;
+	sprite = 0x14A4;
+
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
 }

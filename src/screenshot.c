@@ -117,9 +117,9 @@ int screenshot_dump_bmp()
 	BitmapFileHeader header;
 	BitmapInfoHeader info;
 
-	int i, x, y, index, width, height, stride;
-	char *buffer, path[MAX_PATH], *row, *dst;
-	HFILE hFile;
+	int i, y, index, width, height, stride;
+	char *buffer, path[MAX_PATH], *row;
+	HANDLE hFile;
 	DWORD bytesWritten;
 
 	// Get a free screenshot path
@@ -127,7 +127,7 @@ int screenshot_dump_bmp()
 		return -1;
 
 	// Open file for writing
-	hFile = CreateFile(path, GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
 		return -1;
 

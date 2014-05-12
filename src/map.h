@@ -180,7 +180,7 @@ enum {
 #define MAX_MAP_ELEMENTS 196608
 #define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
 
-#define TILE_UNDEFINED_MAP_ELEMENT -1
+#define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
 void map_init();
 void map_update_tile_pointers();

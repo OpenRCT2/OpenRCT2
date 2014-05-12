@@ -74,7 +74,6 @@
     <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\screenshot.c" />
-    <ClCompile Include="..\src\settings.c" />
     <ClCompile Include="..\src\strings.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\track.c" />
@@ -84,6 +83,7 @@
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
     <ClCompile Include="..\src\window_about.c" />
+    <ClCompile Include="..\src\window_banner.c" />
     <ClCompile Include="..\src\window_cheats.c" />
     <ClCompile Include="..\src\window_clear_scenery.c" />
     <ClCompile Include="..\src\window_error.c" />
@@ -93,9 +93,13 @@
     <ClCompile Include="..\src\window_land.c" />
     <ClCompile Include="..\src\window_news.c" />
     <ClCompile Include="..\src\window_park.c" />
+    <ClCompile Include="..\src\window_finances.c" />
     <ClCompile Include="..\src\window_footpath.c" />
+    <ClCompile Include="..\src\window_new_ride.c" />
+    <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
+    <ClCompile Include="..\src\window_staff.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />
@@ -155,6 +159,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -167,13 +172,15 @@
       <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>
+      </SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers>
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
