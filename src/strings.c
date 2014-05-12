@@ -32,7 +32,7 @@
  */
 void format_string(char *dest, rct_string_id format, void *args)
 {
-	RCT2_CALLPROC_X(0x006C2555, format, 0, args, 0, 0, dest, 0);
+	RCT2_CALLPROC_X(0x006C2555, format, 0, (int)args, 0, 0, (int)dest, 0);
 }
 
 void generate_string_file()

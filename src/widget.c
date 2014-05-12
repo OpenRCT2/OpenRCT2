@@ -248,7 +248,6 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 {
 	rct_widget* widget;
 	int l, t, r, b, press;
-	uint32 image;
 	uint8 colour;
 
 	// Get the widget
@@ -331,8 +330,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, press;
-	uint32 image;
+	int l, t, r, b;
 	uint8 colour;
 
 	if (!widget_is_disabled(w, widgetIndex) && widget_is_highlighted(w, widgetIndex)) {
@@ -375,7 +373,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, width, press, stringId;
+	int l, t, r, b, press;
 	uint8 colour;
 
 	// Get the widget
@@ -405,7 +403,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, width, press, stringId;
+	int l, t, r, b, stringId;
 	uint8 colour;
 
 	// Get the widget
@@ -433,7 +431,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 		gfx_draw_string_left_clipped(
 			dpi,
 			stringId,
-			0x013CE952,
+			(void*)0x013CE952,
 			colour,
 			l + 1,
 			t,
@@ -445,7 +443,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 		gfx_draw_string_centred_clipped(
 			dpi,
 			stringId,
-			0x013CE952,
+			(void*)0x013CE952,
 			colour,
 			(w->x + w->x + widget->left + widget->right + 1) / 2 - 1,
 			t,
@@ -461,7 +459,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, width, press;
+	int l, t, r, b;
 	uint8 colour;
 
 	// Get the widget
@@ -481,7 +479,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
-	gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l + 1, t);
+	gfx_draw_string_left(dpi, widget->image, (void*)0x013CE952, colour, l + 1, t);
 }
 
 /**
@@ -491,7 +489,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, r, b, width, press;
+	int l, t, r, b;
 	uint8 colour;
 
 	// Get the widget
@@ -568,7 +566,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		colour = w->colours[widget->colour] & 0x7F;
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
-		gfx_draw_string_left(dpi, widget->image, 0x013CE952, colour, l, t);
+		gfx_draw_string_left(dpi, widget->image, (void*)0x013CE952, colour, l, t);
 		textRight = gLastDrawStringX + 1;
 	}
 
@@ -764,7 +762,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	rct_widget* widget;
 	rct_scroll* scroll;
 	int scrollIndex;
-	int l, t, r, b, press, ebp;
+	int l, t, r, b;
 	int cl, ct, cr, cb;
 	uint8 colour;
 	rct_drawpixelinfo scroll_dpi;
@@ -826,7 +824,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 
 	// Draw the scroll contents
 	if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], 0, 0, 0, 0, w, &scroll_dpi, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], 0, 0, 0, 0, (int)w, (int)&scroll_dpi, 0);
 }
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
@@ -914,20 +912,20 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		colour = w->colours[widget->colour];
 		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
 		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
-		memset(0x009DED74, colour, 256);
+		memset((void*)0x009DED74, colour, 256);
 		RCT2_GLOBAL(0x009DED74, uint8) = 0;
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 		image &= 0x7FFFF;
-		RCT2_CALLPROC_X(0x0067A46E, 0, image, l + 1, t + 1, 0, dpi, 0);
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l + 1, t + 1, 0, (int)dpi, 0);
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
 		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
 		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
-		memset(0x009DED74, colour, 256);
+		memset((void*)0x009DED74, colour, 256);
 		RCT2_GLOBAL(0x009DED74, uint8) = 0;
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-		RCT2_CALLPROC_X(0x0067A46E, 0, image, l, t, 0, dpi, 0);
+		RCT2_CALLPROC_X(0x0067A46E, 0, image, l, t, 0, (int)dpi, 0);
 	} else {
 		if (image & 0x80000000) {
 			// ?

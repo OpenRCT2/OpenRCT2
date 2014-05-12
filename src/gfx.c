@@ -241,7 +241,7 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
-	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
+	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, (int)dpi, colour);
 }
 
 /**
@@ -257,7 +257,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  */
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
 {
-	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, dpi, colour);
+	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, (int)dpi, colour);
 }
 
 /**
@@ -269,7 +269,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 }
 
 /**
@@ -312,7 +312,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
  */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
-	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, args, dpi, 0);
+	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, (int)args, (int)dpi, 0);
 }
 
 /**
@@ -369,7 +369,6 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 void gfx_draw_all_dirty_blocks()
 {
 	int x, y, xx, yy, columns, rows;
-	short left, top, right, bottom;
 	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
 
 	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
@@ -462,7 +461,7 @@ int gfx_get_string_width(char *buffer)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	esi = buffer;
+	esi = (int)buffer;
 	RCT2_CALLFUNC_X(0x006C2321, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	return ecx & 0xFFFF;
@@ -482,7 +481,7 @@ int gfx_get_string_width(char *buffer)
  */
 void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 
@@ -507,7 +506,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  */
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 	//short text_width;
@@ -568,8 +567,8 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = args;
-	edi = dpi;
+	esi = (int)args;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C1E53, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -595,8 +594,8 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, in
 	ebx = colour;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -639,8 +638,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	ebx = 0;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = 0;
 	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 

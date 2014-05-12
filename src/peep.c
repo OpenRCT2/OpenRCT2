@@ -63,11 +63,11 @@ void peep_update_all()
 		sprite_index = peep->next;
 
 		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
-			RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, peep, 0, 0);
+			RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0);
 		} else {
-			RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, i, peep, 0, 0);
+			RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, i, (int)peep, 0, 0);
 			if (peep->var_08 == 4)
-				RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, peep, 0, 0);
+				RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0);
 		}
 
 		i++;

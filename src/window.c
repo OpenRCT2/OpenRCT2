@@ -111,7 +111,7 @@ void window_dispatch_update_all()
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
 	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UPDATE], 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_UPDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
@@ -142,7 +142,7 @@ void window_update_all()
 	if (RCT2_GLOBAL(0x009DEB7C, sint16) >= 1000) {
 		RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 		for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, w, 0, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int)w, 0, 0);
 	}
 
 	// Border flash invalidation
@@ -164,7 +164,7 @@ void window_update_all()
  */
 static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 {
-	int widgetIndex, newValue, size;
+	int widgetIndex, size;
 	rct_scroll *scroll;
 	rct_widget *widget;
 	
@@ -238,7 +238,7 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
  */
 static void window_all_wheel_input()
 {
-	int i, raw, wheel, widgetIndex;
+	int raw, wheel, widgetIndex;
 	rct_window *w;
 	rct_widget *widget;
 	rct_scroll *scroll;
@@ -402,9 +402,9 @@ rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers
 
 	ebx = (height << 16) | width;
 	ecx = (flags << 8) | cls;
-	edx = event_handlers;
+	edx = (int)event_handlers;
 	RCT2_CALLFUNC_X(0x006EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return esi;
+	return (rct_window*)esi;
 }
 
 /**
@@ -421,7 +421,7 @@ void window_close(rct_window* window)
 		return;
 
 	// Call close event of window
-	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, window, 0, 0);
+	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, (int)window, 0, 0);
 
 	window = window_find_by_id(window->classification, window->number);
 
@@ -498,22 +498,22 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
  *
  *  rct2: 0x006E403C
  */
-void window_close_top() {
-  rct_window* w;
+void window_close_top()
+{
+	rct_window* w;
 
-    window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_id(WC_DROPDOWN, 0);
 
-    if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) {
-      if (RCT2_ADDRESS(0x0141F570, uint8) != 1) {
-	return;
-      }
-    }
-    for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++){
-      if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
-	window_close(w);
-	return;
-      }
-    }
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
+			return;
+
+	for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++) {
+		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
+			window_close(w);
+			return;
+		}
+	}
 }
 
 /**
@@ -540,7 +540,7 @@ void window_close_all() {
  */
 rct_window *window_find_from_point(int x, int y)
 {
-	rct_window *w, *w2;
+	rct_window *w;
 	rct_widget *widget;
 	int widget_index;
 
@@ -576,7 +576,7 @@ int window_find_widget_from_point(rct_window *w, int x, int y)
 	int i, widget_index;
 
 	// Invalidate the window
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
 	// Find the widget at point x, y
 	widget_index = -1;
@@ -709,7 +709,7 @@ void window_init_scroll_widgets(rct_window *w)
  */
 void window_update_scroll_widgets(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
@@ -717,7 +717,7 @@ int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *heig
 	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
 	int widgetIndex = window_get_widget_index(w, widget);
 
-	int eax = 0, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
+	int eax = 0, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = (int)w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
 	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	*width = ecx;
 	*height = edx;
@@ -858,7 +858,7 @@ rct_window *window_get_main()
  */
 void window_scroll_to_location(rct_window *w, int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z, w, 0, 0);
+	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z, (int)w, 0, 0);
 }
 
 /**
@@ -867,7 +867,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
  */
 void window_rotate_camera(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -876,7 +876,7 @@ void window_rotate_camera(rct_window *w)
  */
 void window_zoom_in(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006887A6, 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(0x006887A6, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -885,7 +885,7 @@ void window_zoom_in(rct_window *w)
  */
 void window_zoom_out(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006887E0, 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(0x006887E0, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -894,7 +894,7 @@ void window_zoom_out(rct_window *w)
  */
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value)
 {
-	RCT2_CALLPROC_X(0x006EE308, title, text, value, widgetIndex, w, 0, 0);
+	RCT2_CALLPROC_X(0x006EE308, title, text, value, widgetIndex, (int)w, 0, 0);
 }
 
 /**
@@ -910,11 +910,6 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 	rct_window* v;
 	rct_drawpixelinfo *dpi, copy;
 	int overflow;
-
-	char *copyBits;
-	int copyLeft;
-	int copyWidth;
-	int copyPitch;
 
 	// RCT2_CALLPROC_X(0x006E756C, left, top, 0, right, w, 0, bottom);
 	// return;
@@ -989,10 +984,10 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		RCT2_GLOBAL(0x0141F743, uint8) = v->colours[3] & 0x7F;
 
 		// Invalidate the window
-		RCT2_CALLPROC_X(v->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, v, 0, 0);
+		RCT2_CALLPROC_X(v->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)v, 0, 0);
 
 		// Paint the window
-		RCT2_CALLPROC_X(v->event_handlers[WE_PAINT], 0, 0, 0, 0, v, dpi, 0);
+		RCT2_CALLPROC_X(v->event_handlers[WE_PAINT], 0, 0, 0, 0, (int)v, (int)dpi, 0);
 	}
 }
 
@@ -1115,8 +1110,8 @@ void window_resize(rct_window *w, int dw, int dh)
 	w->width = clamp(w->min_width, w->width + dw, w->max_width);
 	w->height = clamp(w->min_height, w->height + dh, w->max_height);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], w->width, w->height, 0, 0, w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], w->width, w->height, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
 	// Update scroll widgets
 	for (i = 0; i < 3; i++) {
@@ -1217,7 +1212,7 @@ void tool_cancel()
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
 			);
 			if (w != NULL)
-				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_ABORT], 0, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), w, 0, 0);
+				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_ABORT], 0, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
 		}
 	}
 }
@@ -1226,7 +1221,8 @@ void tool_cancel()
 *
 *  rct2: 0x0068F083
 */
-void window_guest_list_init_vars_a() {
+void window_guest_list_init_vars_a()
+{
 	RCT2_GLOBAL(0x013B0E6C, uint32) = 1;
 	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
@@ -1237,7 +1233,8 @@ void window_guest_list_init_vars_a() {
 *
 *  rct2: 0x0068F050
 */
-void window_guest_list_init_vars_b() {
+void window_guest_list_init_vars_b()
+{
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_TAB, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_VIEW, uint8) = 0;
 	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
@@ -1249,8 +1246,7 @@ void window_guest_list_init_vars_b() {
 /**
  *  Wrapper for window events so C functions can call them
  */ 
-void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event) {
-
-  RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, w, 0, 0);
-
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event)
+{
+	RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, (int)w, 0, 0);
 }

@@ -154,7 +154,7 @@ static void title_update_showcase()
 	rct_window* w;
 	uint8 script_opcode, script_operand;
 	short x, y, z;
-	int i, _edx;
+	int i;
 
 	if (_scriptWaitCounter <= 0) {
 		do {
@@ -223,7 +223,7 @@ static void title_update_showcase()
 				_currentScript = _magicMountainScript;
 				if (gRandomShowcase) {
 					if (_currentScript != NULL)
-						free(_currentScript);
+						free((uint8*)_currentScript);
 					_currentScript = generate_random_script();
 				}
 				break;
@@ -322,7 +322,7 @@ static void title_play_music()
 		strcat(musicPath, "\\data\\css50.dat");
 	}
 
-	if (RCT2_CALLFUNC_3(0x0040194E, int, int, int, int, 3, musicPath, 0)) // play music
+	if (RCT2_CALLFUNC_3(0x0040194E, int, int, char*, int, 3, musicPath, 0)) // play music
 		RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 3, 1, 0, 0, 0);
 
 	RCT2_GLOBAL(0x009AF600, uint8) = 1;
@@ -333,7 +333,7 @@ static uint8 *generate_random_script()
 	int i, j;
 	const int views = 16;
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	uint8 *script = malloc(views * 8 + 2);
 	i = 0;

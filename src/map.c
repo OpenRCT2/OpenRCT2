@@ -146,7 +146,6 @@ void map_update_tile_pointers()
  */
 int map_element_height(int x, int y)
 {
-	int i;
 	rct_map_element *mapElement;
 
 	// Off the map
@@ -298,13 +297,13 @@ void sub_68B089()
 		i++;
 		if (i >= MAX_TILE_MAP_ELEMENT_POINTERS)
 			i = 0;
-	} while (TILE_MAP_ELEMENT_POINTER(i) == 0xFFFFFFFF);
+	} while (TILE_MAP_ELEMENT_POINTER(i) == TILE_UNDEFINED_MAP_ELEMENT);
 	RCT2_GLOBAL(0x0010E63B8, uint32) = i;
 
 	mapElementFirst = mapElement = TILE_MAP_ELEMENT_POINTER(i);
 	do {
 		mapElement--;
-		if (mapElement < RCT2_ADDRESS_MAP_ELEMENTS)
+		if (mapElement < (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS)
 			break;
 	} while (mapElement->base_height == 255);
 	mapElement++;

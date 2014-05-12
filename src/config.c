@@ -137,10 +137,10 @@ void config_save()
 	HANDLE hFile;
 	DWORD bytesWritten;
 
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) {
 		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, 0x009AAC5C, 2155, &bytesWritten, NULL);
+		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
 		CloseHandle(hFile);
 	}
 }
@@ -252,7 +252,7 @@ static void config_create_default(char *path)
  */
 static void config_parse_settings(FILE *fp)
 {
-	int c = NULL, pos = 0;
+	int pos = 0;
 	char *setting;
 	char *value;
 	char *section;
@@ -389,36 +389,36 @@ static int config_parse_setting(FILE *fp, char *setting){
  * @param value a pointer to where to store the value
  * @return < 0 if EOF is reached
  */
-static int config_parse_value(FILE *fp, char *value){
+static int config_parse_value(FILE *fp, char *value)
+{
 	long start, end;
 	int size, c, pos = 0;
 
 	start = ftell(fp);
 	c = fgetc(fp);
-	while (isspace(c)){
+	while (isspace(c)) {
 		start = ftell(fp);
 		c = fgetc(fp);
-		
 	}
 	
-	while (c != EOF && c != '\n'){
+	while (c != EOF && c != '\n') {
 		c = fgetc(fp);		
 	}
+
 	end = ftell(fp);
 	size = end - start;
-	if (size > MAX_CONFIG_LENGTH){
+	if (size > MAX_CONFIG_LENGTH)
 		config_error("One of your settings is too long");
-	}
+	
 	fseek(fp, start, SEEK_SET);
 	c = fgetc(fp);
-	while (c != EOF && c != '\n'){
-		
+	while (c != EOF && c != '\n') {
 		value[pos] = (char)c;
 		c = fgetc(fp);
 		pos++;
 	}
 	value[pos] = '\0';
-	return;
+	return 0;
 }
 
 /**

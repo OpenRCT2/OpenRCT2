@@ -318,7 +318,7 @@ static void window_news_scrollpaint()
 
 		// Date text
 		RCT2_GLOBAL(0x013CE952, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month % 8);
+		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
 		gfx_draw_string_left(dpi, 2235, 0x013CE952, 2, 4, y);
 
 		// Item text
