@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "gfx.h"
 #include "strings.h"
 #include "widget.h"
 #include "window.h"
@@ -105,6 +106,7 @@ static void window_options_dropdown();
 static void window_options_update();
 static void window_options_paint();
 static void window_options_draw_dropdown_box(w, widget, num_items);
+static void window_options_update_height_markers();
 
 static void* window_options_events[] = {
 	window_options_emptysub,
@@ -321,18 +323,77 @@ static void window_options_mousedown()
 */
 static void window_options_dropdown()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006BB076);
-	/*short widgetIndex;
+	//RCT2_CALLPROC_EBPSAFE(0x006BB076);
+	short dropdownIndex;
+	short widgetIndex;
 	rct_window *w;
 
+	__asm mov dropdownIndex, ax
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
 
+	if (dropdownIndex == -1)
+		return;
+
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		RCT2_CALLPROC_EBPSAFE(0x006BB757);
+		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio
+		window_invalidate(w);
 		break;
-	}*/
+	case WIDX_HEIGHT_LABELS_DROPDOWN:
+		// reset flag and set it to 1 if height as units is selected
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= ~CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+
+		if (dropdownIndex == 0)
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;	
+
+		window_options_update_height_markers();
+		break;
+	case WIDX_MUSIC_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = (uint8)dropdownIndex;
+		config_save();
+		RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
+		window_invalidate(w);
+		break;
+	case WIDX_SOUND_QUALITY_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8) = (uint8)dropdownIndex;
+
+		// TODO: no clue what this does (and if it's correct)
+		RCT2_GLOBAL(0x009AAC75, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
+		RCT2_GLOBAL(0x009AAC76, uint8) = RCT2_GLOBAL(0x009AF604 + dropdownIndex, uint8);
+
+		config_save();
+		window_invalidate(w);
+		break;
+	case WIDX_CURRENCY_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) = dropdownIndex | 0xC0;
+		config_save();
+		gfx_invalidate_screen();
+		break;
+	case WIDX_DISTANCE_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8) = (uint8)dropdownIndex;
+		window_options_update_height_markers();
+		break;
+	case WIDX_RESOLUTION_DROPDOWN:
+		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
+		break;
+	case WIDX_TEMPERATURE_DROPDOWN:
+		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = (uint8)dropdownIndex;
+			config_save();
+			gfx_invalidate_screen();
+		}
+		break;
+	case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
+		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = (uint8)dropdownIndex;
+			config_save();
+			gfx_invalidate_screen();
+		}
+		break;
+	}
 }
 
 /**
@@ -393,4 +454,17 @@ static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, 
 		num_items,
 		widget->right - widget->left - 3
 		);
+}
+
+static void window_options_update_height_markers() 
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) = 0;
+	} else { // use real values (metric or imperial)
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) =
+			(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint16) + 1) * 256;
+	}
+
+	config_save();
+	gfx_invalidate_screen();
 }
