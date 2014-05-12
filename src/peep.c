@@ -87,7 +87,7 @@ void peep_problem_warnings_update()
 	uint16 guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
 	int hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0,
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
-	static int warning_throttle[6] = { 0, 0, 0, 0, 0, 0 };
+	static int warning_throttle[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
 
