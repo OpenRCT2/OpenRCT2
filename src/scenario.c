@@ -657,7 +657,7 @@ void scenario_objective8_check()
 			for (int j = 0; j < limit; ++j) {
 				sum += ((uint32*)&ride->pad_088[92])[j];
 			}
-			if ((sum >> 16) > objective_length) {
+			if ((sum >> 16) > (uint32)objective_length) {
 				type_already_counted[subtype_id]++;
 				rcs++;
 			}
@@ -844,7 +844,7 @@ void scenario_update()
 	uint32 month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16),
 		next_month_tick = month_tick + 4;
 	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7,
-		current_days_in_month = days_in_month[month],
+		current_days_in_month = (uint8)days_in_month[month],
 		objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
@@ -894,7 +894,7 @@ void scenario_update()
 		finance_pay_ride_upkeep();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = next_month_tick;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)next_month_tick;
 	if (next_month_tick >= 0x10000) {
 		// month ends actions
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;

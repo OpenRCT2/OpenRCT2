@@ -77,7 +77,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
-static uint32 window_game_bottom_toolbar_events[] = {
+static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_mouseup,
 	window_game_bottom_toolbar_emptysub,
@@ -119,7 +119,7 @@ void window_game_bottom_toolbar_open()
 	window = window_create(
 		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 32,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 32,
-		window_game_bottom_toolbar_events,
+		(uint32*)window_game_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 	);
@@ -204,8 +204,7 @@ static void window_game_bottom_toolbar_tooltip()
 {
 	int month, day;
 	short widgetIndex;
-	rct_window *w, *mainWindow;
-	rct_news_item *newsItem;
+	rct_window *w;
 
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
@@ -332,7 +331,6 @@ void window_game_bottom_toolbar_invalidate_news_item()
  */
 static void window_game_bottom_toolbar_paint()
 {
-	int x, y, imgId;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
@@ -525,7 +523,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		(window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right) / 2 + w->x,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + 11,
 		0,
-		dpi,
+		(int)dpi,
 		(newsItem->ticks << 16) | (window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right - window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left - 62)
 	);
 

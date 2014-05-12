@@ -61,7 +61,7 @@ static void window_banner_textinput();
 static void window_banner_invalidate();
 static void window_banner_paint();
 
-static uint32 window_banner_events[] = {
+static void* window_banner_events[] = {
 	window_banner_emptysub,
 	window_banner_mouseup,
 	window_banner_emptysub,
@@ -82,7 +82,7 @@ static uint32 window_banner_events[] = {
 	window_banner_emptysub,
 	window_banner_emptysub,
 	window_banner_textinput,
-	0x006BA7B5,
+	(void*)0x006BA7B5,
 	window_banner_emptysub,
 	window_banner_emptysub,
 	window_banner_emptysub,
@@ -100,7 +100,6 @@ void window_banner_open()
 {
 	rct_windownumber windownumber;
 	rct_window* w;
-	rct_viewport *viewport;
 	rct_widget *viewportWidget;
 
 	//__asm mov windownumber, ax // not quite right I think
@@ -111,7 +110,7 @@ void window_banner_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(113, 96, window_banner_events, WC_BANNER, 0);
+	w = window_create_auto_pos(113, 96, (uint32*)window_banner_events, WC_BANNER, 0);
 	w->widgets = window_banner_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |

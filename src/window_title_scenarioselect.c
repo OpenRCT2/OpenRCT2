@@ -66,7 +66,7 @@ static void window_scenarioselect_invalidate();
 static void window_scenarioselect_paint();
 static void window_scenarioselect_scrollpaint();
 
-static uint32 window_scenarioselect_events[] = {
+static void* window_scenarioselect_events[] = {
 	window_scenarioselect_emptysub,
 	window_scenarioselect_mouseup,
 	window_scenarioselect_emptysub,
@@ -116,7 +116,7 @@ void window_scenarioselect_open()
 		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167),
 		610,
 		334,
-		window_scenarioselect_events,
+		(uint32*)window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
 		WF_STICK_TO_FRONT | WF_10
 	);
@@ -128,7 +128,7 @@ void window_scenarioselect_open()
 	window->colours[1] = 26;
 	window->colours[2] = 26;
 	window->var_480 = -1;
-	window->var_494 = NULL;
+	window->var_494 = 0;
 
 	window_scenarioselect_init_tabs();
 
@@ -189,10 +189,10 @@ static void window_scenarioselect_mousedown()
 
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
 		w->var_4AC = widgetIndex - 4;
-		w->var_494 = NULL;
+		w->var_494 = 0;
 		window_invalidate(w);
-		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, w, 0, 0);
-		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 		window_init_scroll_widgets(w);
 		window_invalidate(w);
 	}
@@ -273,8 +273,8 @@ static void window_scenarioselect_scrollmouseover()
 		selected = scenario;
 		break;
 	}
-	if (w->var_494 != selected) {
-		w->var_494 = selected;
+	if (w->var_494 != (uint32)selected) {
+		w->var_494 = (uint32)selected;
 		window_invalidate(w);
 	}
 }
@@ -286,7 +286,7 @@ static void window_scenarioselect_invalidate()
 	__asm mov w, esi
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
-	w->pressed_widgets |= 1 << (w->var_4AC + 4);
+	w->pressed_widgets |= 1LL << (w->var_4AC + 4);
 }
 
 static void window_scenarioselect_paint()
@@ -326,13 +326,13 @@ static void window_scenarioselect_paint()
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	strcpy(0x009BC677, scenario->name);
+	strcpy((char*)0x009BC677, scenario->name);
 	*((short*)(0x0013CE952 + 0)) = 3165;
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	strcpy(0x009BC677, scenario->details);
+	strcpy((char*)0x009BC677, scenario->details);
 	*((short*)(0x0013CE952 + 0)) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
 
@@ -345,7 +345,7 @@ static void window_scenarioselect_paint()
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
-		strcpy(0x009BC677, scenario->completed_by);
+		strcpy((char*)0x009BC677, scenario->completed_by);
 		*((short*)(0x0013CE952 + 0)) = 3165;
 		*((int*)(0x0013CE952 + 2)) = scenario->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);

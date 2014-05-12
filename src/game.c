@@ -201,7 +201,8 @@ void game_handle_input()
 		RCT2_CALLPROC_EBPSAFE(0x006E8346); // update_cursor_position
 
 		{
-			int eax, ebx, ecx, edx, esi, edi, ebp;
+			// int eax, ebx, ecx, edx, esi, edi, ebp;
+			int eax, ebx, ecx;
 
 			for (;;) {
 				game_get_next_input(&eax, &ebx, &ecx);
@@ -1337,7 +1338,7 @@ static void game_load_or_quit()
 	__asm mov input_di, di
 
 	if (!(input_bl & 1))
-		return 0;
+		return; // 0;
 	
 	switch (input_dl) {
 	case 0:
@@ -1361,13 +1362,15 @@ static void game_load_or_quit()
  */
 static int open_landscape_file_dialog()
 {
+	int result;
 	format_string((char*)0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
-	osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
+	return result;
 }
 
 /**

@@ -104,7 +104,7 @@ static void window_options_dropdown();
 static void window_options_update();
 static void window_options_paint();
 
-static uint32 window_options_events[] = {
+static void* window_options_events[] = {
 	window_options_emptysub,
 	window_options_mouseup,
 	window_options_emptysub,
@@ -148,7 +148,7 @@ void window_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(310, 372, window_options_events, WC_OPTIONS, 0);
+	w = window_create_auto_pos(310, 372, (uint32*)window_options_events, WC_OPTIONS, 0);
 	w->widgets = window_options_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |

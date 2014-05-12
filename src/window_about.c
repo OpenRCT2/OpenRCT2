@@ -46,7 +46,7 @@ static void window_about_emptysub() { }
 static void window_about_mouseup();
 static void window_about_paint();
 
-static uint32 window_about_events[] = {
+static void* window_about_events[] = {
 	window_about_emptysub,
 	window_about_mouseup,
 	window_about_emptysub,
@@ -83,7 +83,6 @@ static uint32 window_about_events[] = {
  */
 void window_about_open()
 {
-	int x, y;
 	rct_window* window;
 
 	// Check if window is already open
@@ -96,7 +95,7 @@ void window_about_open()
 		max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 165),
 		400,
 		330,
-		window_about_events,
+		(uint32*)window_about_events,
 		WC_ABOUT,
 		0
 	);
@@ -115,7 +114,6 @@ void window_about_open()
  */
 static void window_about_mouseup()
 {
-	int i;
 	short widgetIndex;
 	rct_window *w;
 
@@ -155,40 +153,40 @@ static void window_about_paint()
 
 	// Version
 	RCT2_GLOBAL(0x009C383C, uint8) = 49;
-	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, (void*)0x009E2D28);
 	
 	// Credits
 	RCT2_GLOBAL(0x009C383C, uint8) = 48;
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, (void*)0x009E2D28);
 	y += 79;
-	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, 0, (void*)0x009E2D28);
 	y += 13;
-	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, 0, (void*)0x009E2D28);
 	y += 25;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, 0, (void*)0x009E2D28);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, 0x009E2D28);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, (void*)0x009E2D28);
 
 	// Images
 	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, w->y + 40);
