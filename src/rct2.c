@@ -142,20 +142,20 @@ void rct2_init()
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = gConfig.play_intro ? 8 : 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = gGeneral_config.play_intro ? 8 : 0;
 }
 
 // rct2: 0x00683499
 void rct2_init_directories()
 {
 	// check install directory
-	DWORD dwAttrib = GetFileAttributes(gConfig.game_path);
+	DWORD dwAttrib = GetFileAttributes(gGeneral_config.game_path);
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
 		MessageBox(NULL, "Invalid RCT2 installation path. Please correct in config.ini.", "OpenRCT2", MB_OK);
 		exit(-1);
 	}
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfig.game_path);
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
