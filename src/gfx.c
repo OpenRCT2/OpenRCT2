@@ -277,9 +277,9 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 	
 	// I dont think it uses ecx, edx but just in case
 	//esi is the source and bits_pointer is the destination
-	sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
 
-	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
+	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
 }
 
 /**
@@ -303,6 +303,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = eax;
 
 	if ((image_id & (1 << 31)) && (image_id & (1 << 29))){
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		/*
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -334,9 +335,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;*/
 		return;
 	} else if ((image_id & (1 << 31))){
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		return;
 		//jump into 0x67a361
 	} else if ((image_id & (1 << 30))){
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		return;
 		//jump into 0x67a445
 	}
@@ -368,8 +371,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 	
 	
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	return;
+	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	//return;
 	//There is a mistake in the code below this point calling the above to skip it.
 
 	//dpi on stack
@@ -444,7 +447,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) & 0xFF) << 8;
+		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint8)) << 8;
 		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
 		ebp = RCT2_GLOBAL(0x9ABDB0, sint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
@@ -452,10 +455,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		//ebx, esi, edi, ah used in 0x67a690
 		//Calling is wrong
 		//esi or bits is most likely wrong
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
+		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
 	
