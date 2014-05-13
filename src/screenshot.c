@@ -41,19 +41,18 @@ void screenshot_check()
 {
 	int screenshotIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
-			RCT2_CALLPROC_EBPSAFE(0x00684218);
-			screenshotIndex = screenshot_dump();
-			RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+		
+		RCT2_CALLPROC_EBPSAFE(0x00684218);
+		screenshotIndex = screenshot_dump();
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
+		RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
+		RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			window_error_open(screenshotIndex == -1 ? STR_SCREENSHOT_FAILED : STR_SCREENSHOT_SAVED_AS, -1);
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-			RCT2_CALLPROC_EBPSAFE(0x006843DC);
-		}
+		window_error_open(screenshotIndex == -1 ? STR_SCREENSHOT_FAILED : STR_SCREENSHOT_SAVED_AS, -1);
+		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+		RCT2_CALLPROC_EBPSAFE(0x006843DC);
 	}
 }
 
