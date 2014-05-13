@@ -291,18 +291,19 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	//return;
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = dpi, ebp = 0;
 	eax = image_id;
 	eax >>= 26;
-	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
+	RCT2_GLOBAL(0x00EDF81C, uint32) = ebx;
 	eax &= 0x7;
 	eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
+	RCT2_GLOBAL(0x00EDF81C, uint32) &= 0xE0000000;
 	RCT2_GLOBAL(0x009E3CDC, uint32) = eax;
 
-	if ((image_id & (1 << 31)) && (image_id & (1 << 29))){
+	if (ebx&0xE0000000){
 		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		/*
 		eax = image_id;
@@ -334,11 +335,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;*/
 		return;
-	} else if ((image_id & (1 << 31))){
+	} else if (ebx & 0x80000000){
 		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		return;
 		//jump into 0x67a361
-	} else if ((image_id & (1 << 30))){
+	} else if (ebx & 0x20000000){
 		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 		return;
 		//jump into 0x67a445
@@ -366,12 +367,14 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
+		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
 		sub_0x67A934(dpi, x, y);
 		return;
 	}
 	
 	
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	//RCT2_CALLPROC_X(0x0067A4CA, eax,ebx, x, y, 0, dpi, ebp);
+	//return;
 	//return;
 	//There is a mistake in the code below this point calling the above to skip it.
 
