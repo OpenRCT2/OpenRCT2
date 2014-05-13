@@ -1410,7 +1410,7 @@ static void load_landscape()
 			strcpy(esi, ".SC6");
 			break;
 		}
-		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
+		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
 		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
 		if (1) {
@@ -1546,7 +1546,7 @@ static void load_game()
 			strcpy(esi, ".SV6");
 			break;
 		}
-		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
+		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
 		if (game_load_save()) {
 			gfx_invalidate_screen();
