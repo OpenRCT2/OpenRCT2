@@ -407,7 +407,6 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-<<<<<<< HEAD
 	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	return;
 
@@ -582,11 +581,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
-	
-
-=======
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
->>>>>>> master
 }
 
 /**
