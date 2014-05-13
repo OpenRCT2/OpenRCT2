@@ -19,9 +19,11 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
 #include "config.h"
 #include "gfx.h"
 #include "strings.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -194,7 +196,59 @@ void window_options_open()
 */
 static void window_options_mouseup()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006BAFCA);
+	short widgetIndex;
+	rct_window *w;
+
+	__asm mov widgetIndex, dx
+	__asm mov w, esi
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_HOTKEY_DROPDOWN:
+		RCT2_CALLPROC_EBPSAFE(0x006E3884);
+		break;
+	case WIDX_SCREEN_EDGE_SCROLLING:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) ^= 1;
+		config_save();
+		window_invalidate(w);
+		break;
+	case WIDX_REAL_NAME_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+			__asm xor al, al
+		else
+			__asm mov al, 1
+
+		RCT2_CALLPROC_EBPSAFE(0x0069C52F);
+		break;
+	case WIDX_TILE_SMOOTHING_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+		config_save();
+		gfx_invalidate_screen();
+		break;
+	case WIDX_GRIDLINES_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+		config_save();
+		gfx_invalidate_screen();
+
+		if ((w = window_get_main()) != NULL) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES)
+				w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+			else 
+				w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+		}
+		break;
+	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
+		pause_sounds();
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8) ^= 1;
+		config_save();
+		unpause_sounds();
+		window_invalidate(w);
+		break;
+	}
 }
 
 /**
@@ -323,7 +377,6 @@ static void window_options_mousedown()
 */
 static void window_options_dropdown()
 {
-	//RCT2_CALLPROC_EBPSAFE(0x006BB076);
 	short dropdownIndex;
 	short widgetIndex;
 	rct_window *w;
