@@ -284,7 +284,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 	uint8* esi, *edi;
 
 	ebx = pal * 16;
-	esi = (uint8*)(*((int*)(0x009EBD28 + ebx)));
+	esi = (uint8*)(*((int*)(RCT2_ADDRESS_G1_ELEMENTS + ebx)));
 	ebp = *((short*)(0x009EBD2C + ebx));
 	eax = *((short*)(0x009EBD30 + ebx)) * 4;
 	edi = (uint8*)0x01424680 + eax;

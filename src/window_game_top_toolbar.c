@@ -361,7 +361,7 @@ static void window_game_top_toolbar_dropdown()
 					src++;
 				} while (*src != '.' && *src != '\0');
 				strcpy(src, ".SV6");
-				strcpy(0x009ABB37, 0x0141EF68);
+				strcpy(RCT2_ADDRESS_SAVED_GAMES_PATH_2, 0x0141EF68);
 
 				eax = 0;
 				if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
@@ -482,6 +482,6 @@ static void window_game_top_toolbar_paint()
 	imgId = 5627;
 	if (widget_is_pressed(w, WIDX_STAFF))
 		imgId++;
-	imgId |= (RCT2_GLOBAL(0x01357BCD, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(0x01357BCE, uint8) << 24);
+	imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
 	gfx_draw_sprite(dpi, imgId, x, y);
 }

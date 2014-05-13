@@ -380,7 +380,7 @@ void scenario_load(char *path)
 			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(hFile, (uint8*)0x01358740);
+			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
 			CloseHandle(hFile);
 
@@ -468,8 +468,8 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
 	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related)
 
-	strcpy((char*)0x0135924A, s6Info->details);
-	strcpy((char*)0x0135920A, s6Info->name);
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
 
 	if (RCT2_GLOBAL(0x009ADAE4, sint32) != -1) {
 		char *ebp = RCT2_GLOBAL(0x009ADAE4, char*);
@@ -495,9 +495,9 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	}
 
 	// Set the last saved game path
-	strcpy((char*)0x009ABB37, (char*)0x009AB5DA);
-	format_string((char*)0x009ABB37 + strlen((char*)0x009ABB37), RCT2_GLOBAL(0x0013573D4, uint16), (void*)0x0013573D8);
-	strcat((char*)0x009ABB37, ".SV6");
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
+	format_string((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), RCT2_GLOBAL(0x0013573D4, uint16), (void*)0x0013573D8);
+	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
 	RCT2_GLOBAL(0x0135832C, uint32) = 0;
