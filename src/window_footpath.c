@@ -116,7 +116,7 @@ static void window_footpath_toolup();
 static void window_footpath_invalidate();
 static void window_footpath_paint();
 
-static uint32 window_footpath_events[] = {
+static void* window_footpath_events[] = {
 	window_footpath_close,
 	window_footpath_mouseup,
 	window_footpath_emptysub,
@@ -174,7 +174,7 @@ void window_footpath_open()
 		29,
 		106,
 		381,
-		window_footpath_events,
+		(uint32*)window_footpath_events,
 		WC_FOOTPATH,
 		0
 	);
@@ -305,25 +305,25 @@ static void window_footpath_mousedown()
 		window_footpath_show_footpath_types_dialog(w, widget, 1);
 		break;
 	case WIDX_DIRECTION_NW:
-		RCT2_CALLPROC_X(0x006A8111, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8111, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_DIRECTION_NE:
-		RCT2_CALLPROC_X(0x006A8135, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8135, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_DIRECTION_SW:
-		RCT2_CALLPROC_X(0x006A815C, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A815C, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_DIRECTION_SE:
-		RCT2_CALLPROC_X(0x006A8183, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8183, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_SLOPEDOWN:
-		RCT2_CALLPROC_X(0x006A81AA, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A81AA, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_LEVEL:
-		RCT2_CALLPROC_X(0x006A81C5, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A81C5, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	case WIDX_SLOPEUP:
-		RCT2_CALLPROC_X(0x006A81E0, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A81E0, 0, 0, 0, 0, (int)w, 0, 0);
 		break;
 	}
 }
@@ -388,10 +388,9 @@ static void window_footpath_dropdown()
  */
 static void window_footpath_toolupdate()
 {
-	int x, y, z;
+	int x, y;
 	short widgetIndex;
 	rct_window *w;
-	rct_map_element *mapElement;
 
 	__asm mov x, eax
 	__asm mov y, ebx
@@ -401,7 +400,7 @@ static void window_footpath_toolupdate()
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_set_provisional_path_at_point(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
-		RCT2_CALLPROC_X(0x006A8388, 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8388, 0, 0, 0, 0, (int)w, 0, 0);
 	}
 }
 
@@ -411,10 +410,9 @@ static void window_footpath_toolupdate()
  */
 static void window_footpath_tooldown()
 {
-	int x, y, z;
+	int x, y;
 	short widgetIndex;
 	rct_window *w;
-	rct_map_element *mapElement;
 
 	__asm mov x, eax
 	__asm mov y, ebx
@@ -424,7 +422,7 @@ static void window_footpath_tooldown()
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_place_path_at_point(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
-		RCT2_CALLPROC_X(0x006A840F, x, y, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A840F, x, y, 0, 0, (int)w, 0, 0);
 	}
 }
 
@@ -444,7 +442,7 @@ static void window_footpath_tooldrag()
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A82C5, x, y, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A82C5, x, y, 0, 0, (int)w, 0, 0);
 	}
 }
 
@@ -464,7 +462,7 @@ static void window_footpath_toolup()
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A8380, x, y, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(0x006A8380, x, y, 0, 0, (int)w, 0, 0);
 	}
 }
 
@@ -649,7 +647,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	x = eax & 0xFFFF;
 	z = ebx & 0xFF;
 	y = ecx & 0xFFFF;
-	mapElement = edx;
+	mapElement = (rct_map_element*)edx;
 
 	if (z == 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
@@ -686,8 +684,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
  */
 static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope)
 {
-	int cost;
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax, cost;
 
 	RCT2_CALLPROC_EBPSAFE(0x006A77FF);
 
@@ -732,7 +729,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	x = eax & 0xFFFF;
 	z = ebx & 0xFF;
 	y = ecx & 0xFFFF;
-	mapElement = edx;
+	mapElement = (rct_map_element*)edx;
 
 	if (z == 0)
 		return;
@@ -775,7 +772,7 @@ static void window_footpath_construct()
  */
 static void window_footpath_remove()
 {
-	int x, y, z, lastTile;
+	int x, y, lastTile;
 	rct_map_element *mapElement;
 
 	// RCT2_CALLPROC_EBPSAFE(0x006A7863);

@@ -53,7 +53,7 @@ static void window_water_update();
 static void window_water_invalidate();
 static void window_water_paint();
 
-static uint32 window_water_events[] = {
+static void* window_water_events[] = {
 	window_water_close,
 	window_water_mouseup,
 	window_water_emptysub,
@@ -96,7 +96,7 @@ void window_water_open()
 	if (window_find_by_id(WC_WATER, 0) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76, 29, 76, 77, window_water_events, WC_WATER, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76, 29, 76, 77, (uint32*)window_water_events, WC_WATER, 0);
 	window->widgets = window_water_widgets;
 	window->enabled_widgets = 0x04 | 0x10 | 0x20;
 	window_init_scroll_widgets(window);

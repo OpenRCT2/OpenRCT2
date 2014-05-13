@@ -31,16 +31,15 @@ static void decode_chunk_rotate(char *buffer, int length);
  * 
  *  rct2: 0x00676FD2
  */
-int sawyercoding_validate_checksum(HFILE hFile)
+int sawyercoding_validate_checksum(HANDLE hFile)
 {
-	int i;
-	uint32 checksum, fileChecksum;
+	uint32 i, checksum, fileChecksum;
 	DWORD dataSize, bufferSize, numBytesRead;
 	uint8 buffer[1024];
 
 	// Get data size
 	if ((dataSize = SetFilePointer(hFile, 0, NULL, FILE_END)) < 8)
-		return;
+		return 0;
 	dataSize -= 4;
 	
 	// Calculate checksum
@@ -74,7 +73,7 @@ int sawyercoding_validate_checksum(HFILE hFile)
  *  rct2: 0x0067685F
  * buffer (esi)
  */
-int sawyercoding_read_chunk(HFILE hFile, uint8 *buffer)
+int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 {
 	DWORD numBytesRead;
 	sawyercoding_chunk_header chunkHeader;
@@ -145,7 +144,7 @@ static int decode_chunk_rle(char *buffer, int length)
 static int decode_chunk_repeat(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, *copyOffset, rleCodeByte;
+	uint8 *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);

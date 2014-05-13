@@ -50,7 +50,7 @@ static void window_title_menu_dropdown();
 static void window_title_menu_unknown17();
 static void window_title_menu_paint();
 
-static uint32 window_title_menu_events[] = {
+static void* window_title_menu_events[] = {
 	window_title_menu_emptysub,
 	window_title_menu_mouseup,
 	window_title_menu_emptysub,
@@ -92,7 +92,7 @@ void window_title_menu_open()
 	window = window_create(
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 142,
 		328, 82,
-		window_title_menu_events,
+		(uint32*)window_title_menu_events,
 		WC_TITLE_MENU,
 		WF_STICK_TO_FRONT
 	);

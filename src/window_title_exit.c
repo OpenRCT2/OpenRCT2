@@ -34,7 +34,7 @@ static void window_title_exit_emptysub() {}
 static void window_title_exit_paint();
 static void window_title_exit_mouseup();
 
-static uint32 window_title_exit_events[] = {
+static void* window_title_exit_events[] = {
 	window_title_exit_emptysub,
 	window_title_exit_mouseup,
 	window_title_exit_emptysub,
@@ -76,7 +76,7 @@ void window_title_exit_open()
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 40, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 64,
 		40, 64,
-		window_title_exit_events,
+		(uint32*)window_title_exit_events,
 		WC_TITLE_EXIT,
 		WF_STICK_TO_FRONT
 	);

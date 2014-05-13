@@ -19,6 +19,8 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include <shlobj.h>
+#include <tchar.h>
 #include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
@@ -31,8 +33,8 @@
 typedef void(*update_palette_func)(char*, int, int);
 
 openrct2_cursor gCursorState;
-unsigned char* gKeysState;
-unsigned char* gKeysPressed;
+const unsigned char *gKeysState;
+unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
 
 static void osinterface_create_window();
@@ -238,8 +240,8 @@ void osinterface_process_messages()
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
-			*((int*)0x01424318) = e.button.x;
-			*((int*)0x0142431C) = e.button.y;
+			RCT2_GLOBAL(0x01424318, int) = e.button.x;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				RCT2_CALLPROC_1(0x00406C96, int, 2);
@@ -323,12 +325,12 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	openFileName.lpstrTitle = title;
 
 	// Copy filter name
-	strcpy(0x01423800, filterName);
+	strcpy((char*)0x01423800, filterName);
 
 	// Copy filter pattern
-	strcpy(0x01423800 + strlen(filterName) + 1, filterPattern);
+	strcpy((char*)0x01423800 + strlen(filterName) + 1, filterPattern);
 	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
-	openFileName.lpstrFilter = 0x01423800;
+	openFileName.lpstrFilter = (char*)0x01423800;
 
 	// 
 	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
@@ -348,4 +350,49 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
 
 	return result;
+}
+
+void osinterface_show_messagebox(char* message){
+	MessageBox(NULL, message, "OpenRCT2", MB_OK);
+}
+
+char* osinterface_open_directory_browser(char *title) {
+	BROWSEINFO      bi;
+	char            pszBuffer[MAX_PATH];
+	LPITEMIDLIST    pidl;
+	LPMALLOC        lpMalloc;
+
+	// Initialize COM
+	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	// Get a pointer to the shell memory allocator
+	if (SHGetMalloc(&lpMalloc) != S_OK) {
+		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
+		CoUninitialize();
+		return 0;
+	}
+
+	bi.hwndOwner = NULL;
+	bi.pidlRoot = NULL;
+	bi.pszDisplayName = pszBuffer;
+	bi.lpszTitle = _T(title);
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+
+	char *outPath = "C:\\";
+
+	if (pidl = SHBrowseForFolder(&bi)) {
+		// Copy the path directory to the buffer
+		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+			// Store pszBuffer (and the path) in the outPath
+			outPath = strcat("", pszBuffer);
+		}
+	}
+	CoUninitialize();
+	return outPath;
 }

@@ -275,6 +275,7 @@ enum {
 	WC_CHANGE_KEYBOARD_SHORTCUT = 37,
 	WC_MAP = 38,
 	WC_TITLE_LOGO = 39,
+	WC_BANNER = 40,
 	WC_EDITOR_OBJECT_SELECTION = 42,
 	WC_EDITOR_INVENTION_LIST = 43,
 	WC_EDITOR_SCENARIO_OPTIONS = 45,
@@ -284,22 +285,6 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
-enum {
-	WINDOW_RIDE_LIST_TAB_TRANSPORT,
-	WINDOW_RIDE_LIST_TAB_GENTLE,
-	WINDOW_RIDE_LIST_TAB_ROLLER_COASTER,
-	WINDOW_RIDE_LIST_TAB_THRILL,
-	WINDOW_RIDE_LIST_TAB_WATER,
-	WINDOW_RIDE_LIST_TAB_SHOP,
-	WINDOW_RIDE_LIST_TAB_RESEARCH
-} WINDOW_RIDE_LIST_TAB;
-
-enum {
-	WINDOW_STAFF_LIST_TAB_HANDYMEN,
-	WINDOW_STAFF_LIST_TAB_MECHANICS,
-	WINDOW_STAFF_LIST_TAB_SECURITY,
-	WINDOW_STAFF_LIST_TAB_ENTERTAINERS
-} WINDOW_STAFF_LIST_TAB;
 
 void window_dispatch_update_all();
 void window_update_all();
@@ -307,6 +292,8 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
 void window_close_by_id(rct_windowclass cls, rct_windownumber number);
+void window_close_top();
+void window_close_all();
 rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(int x, int y);
 int window_find_widget_from_point(rct_window *w, int x, int y);
@@ -359,16 +346,23 @@ void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
 void window_guest_list_open();
+void window_options_open();
 void window_park_awards_open();
 void window_park_entrance_open();
 void window_park_guests_open();
 void window_park_objective_open();
 void window_park_rating_open();
 void window_ride_list_open();
+void window_banner_open();
 void window_cheats_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
-void window_ride_list_init_vars();
+
+void window_new_ride_init_vars();
+
+void window_staff_init_vars();
+
+void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 
 #endif

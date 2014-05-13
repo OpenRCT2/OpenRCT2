@@ -48,8 +48,7 @@ typedef struct {
 	uint8 flags;				// 0x01
 	uint32 assoc;				// 0x02
 	uint16 ticks;				// 0x06
-	uint8 month;				// 0x08
-	uint8 pad_09;				// 0x09
+	uint16 month_year;			// 0x08
 	uint8 day;					// 0x0A
 	uint8 pad_0B;				// 0x0B
 	uint8 colour;				// 0x0C

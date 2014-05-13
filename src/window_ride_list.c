@@ -79,7 +79,7 @@ static void window_ride_list_invalidate();
 static void window_ride_list_paint();
 static void window_ride_list_scrollpaint();
 
-static uint32 window_ride_list_events[] = {
+static void* window_ride_list_events[] = {
 	window_ride_list_emptysub,
 	window_ride_list_mouseup,
 	window_ride_list_resize,
@@ -140,7 +140,7 @@ void window_ride_list_open()
 	// Check if window is already open
 	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
 	if (window == NULL) {
-		window = window_create_auto_pos(340, 240, window_ride_list_events, WC_RIDE_LIST, 0x0400);
+		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, 0x0400);
 		window->widgets = window_ride_list_widgets;
 		window->enabled_widgets =
 			(1 << WIDX_CLOSE) |
@@ -175,7 +175,6 @@ void window_ride_list_open()
  */
 static void window_ride_list_mouseup()
 {
-	int i;
 	short widgetIndex;
 	rct_window *w;
 
@@ -273,10 +272,8 @@ static void window_ride_list_mousedown()
  */
 static void window_ride_list_dropdown()
 {
-	int i;
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
-	rct_ride *ride;
 
 	__asm mov dropdownIndex, ax
 	__asm mov widgetIndex, dx
@@ -291,7 +288,7 @@ static void window_ride_list_dropdown()
 		if (dropdownIndex == -1)
 			return;
 
-		_window_ride_list_information_type = gDropdownItemsArgs[dropdownIndex] - STR_STATUS;
+		_window_ride_list_information_type = *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - STR_STATUS;
 		window_invalidate(w);
 	}
 }
@@ -398,7 +395,7 @@ static void window_ride_list_tooltip()
  */
 static void window_ride_list_invalidate()
 {
-	int i, x, y;
+	int i;
 	rct_window *w;
 
 	__asm mov w, esi
@@ -408,7 +405,7 @@ static void window_ride_list_invalidate()
 	// Set correct active tab
 	for (i = 0; i < 3; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-	w->pressed_widgets |= 1 << (WIDX_TAB_1 + w->page);
+	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 
 	window_ride_list_widgets[WIDX_TITLE].image = STR_RIDES + w->page;
 
@@ -554,7 +551,7 @@ static void window_ride_list_scrollpaint()
 			format = 1192;
 
 		RCT2_GLOBAL(0x013CE952, uint16) = formatSecondary;
-		gfx_draw_string_left_clipped(dpi, format, 0x013CE952, 0, 160, y - 1, 157);
+		gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 160, y - 1, 157);
 		y += 10;
 	}
 }
@@ -593,7 +590,7 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 static void window_ride_list_refresh_list(rct_window *w)
 {
 	int i, j, k, countA, countB;
-	sint16 swapper;
+	uint8 swapper;
 	rct_ride *ride, *otherRide;
 
 	countA = countB = 0;
@@ -636,7 +633,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
 				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
 				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
-				if (strcmp(0x0141ED68, 0x0141EF68) >= 0)
+				if (strcmp((char*)0x0141ED68, (char*)0x0141EF68) >= 0)
 					break;
 
 				swapper = w->var_076[k];

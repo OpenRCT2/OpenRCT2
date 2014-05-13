@@ -32,7 +32,7 @@ static rct_widget window_title_logo_widgets[] = {
 static void window_title_logo_emptysub() {}
 static void window_title_logo_paint();
 
-static uint32 window_title_logo_events[] = {
+static void* window_title_logo_events[] = {
 	window_title_logo_emptysub,
 	window_title_logo_emptysub,
 	window_title_logo_emptysub,
@@ -79,8 +79,8 @@ void window_title_logo_open()
 			packs++;
 
 	// Create the window
-	window = window_create(0, 0, 200, 106 + (10 * packs), window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_FRONT);
-	window->widgets = 0x009A9658; // mouse move bug in original game, keep this address and no crash happens
+	window = window_create(0, 0, 200, 106 + (10 * packs), (uint32*)window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_FRONT);
+	window->widgets = (rct_widget*)0x009A9658; // mouse move bug in original game, keep this address and no crash happens
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
 	window->colours[0] = 129;

@@ -191,7 +191,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -212,16 +212,16 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find the first car of the train peep is on
-		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]);
+		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).car;
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
-			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]);
+			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]).car;
 		*x = car->x;
 		*y = car->y;
 		*z = car->z;
 		break;
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -252,7 +252,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + sizeof(newsItem) >= 0x13CB1CC)
+		if (newsItem + sizeof(newsItem) >= (rct_news_item*)0x13CB1CC)
 			news_item_close_current();
 		else
 			newsItem++;
@@ -263,12 +263,12 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	newsItem->flags = 0;
 	newsItem->assoc = assoc;
 	newsItem->ticks = 0;
-	newsItem->month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem->day = (days_in_month[(newsItem->month & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
+	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	newsItem->day = (days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
 
-	format_string(0x0141EF68, string_id, 0x013CE952); // overflows possible?
+	format_string((char*)0x0141EF68, string_id, (void*)0x013CE952); // overflows possible?
 	newsItem->colour = ((char*)0x0141EF68)[0];
-	strncpy(newsItem->text, 0x0141EF68, 255);
+	strncpy(newsItem->text, (char*)0x0141EF68, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.
@@ -295,8 +295,8 @@ void news_item_open_subject(int type, int subject) {
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]);
-		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, peep, 0, 0, 0);
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
 		break;
 	case NEWS_ITEM_MONEY:
 		// Open finances window

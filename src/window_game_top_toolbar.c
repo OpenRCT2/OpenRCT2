@@ -82,7 +82,7 @@ static void window_game_top_toolbar_dropdown();
 static void window_game_top_toolbar_invalidate();
 static void window_game_top_toolbar_paint();
 
-static uint32 window_game_top_toolbar_events[] = {
+static void* window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_mouseup,
 	window_game_top_toolbar_emptysub,
@@ -92,11 +92,11 @@ static uint32 window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
-	0x0066CB25,
-	0x0066CB73,
-	0x0066CB4E,
-	0x0066CC5B,
-	0x0066CA58,
+	(void*)0x0066CB25,
+	(void*)0x0066CB73,
+	(void*)0x0066CB4E,
+	(void*)0x0066CC5B,
+	(void*)0x0066CA58,
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
@@ -124,7 +124,7 @@ void window_game_top_toolbar_open()
 	window = window_create(
 		0, 0,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
-		window_game_top_toolbar_events,
+		(uint32*)window_game_top_toolbar_events,
 		WC_TOP_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 	);
@@ -208,9 +208,10 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_SCENERY:
-		tool_set(w, WIDX_SCENERY, 0);
-		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-		RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+		if (!tool_set(w, WIDX_SCENERY, 0)) {
+			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+		}
 		break;
 	case WIDX_PATH:
 		if (window_find_by_id(WC_FOOTPATH, 0) == NULL) {
@@ -355,7 +356,7 @@ static void window_game_top_toolbar_dropdown()
 					break;
 				}
 
-				char *src = 0x0141EF67;
+				char *src = (char*)0x0141EF67;
 				do {
 					src++;
 				} while (*src != '.' && *src != '\0');
@@ -376,7 +377,8 @@ static void window_game_top_toolbar_dropdown()
 			window_about_open();
 			break;
 		case 4:		// options
-			RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
+			window_options_open();
+			//RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
 			break;
 		case 5:		// screenshot
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;

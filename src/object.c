@@ -34,7 +34,7 @@ void object_load_list()
  * 
  *  rct2: 0x006AA0C6
  */
-void object_read_and_load_entries(HFILE hFile)
+void object_read_and_load_entries(HANDLE hFile)
 {
 	RCT2_CALLPROC_EBPSAFE(0x006AA0C6);
 

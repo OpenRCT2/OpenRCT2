@@ -51,13 +51,13 @@ int _dropdown_item_height;
 int _dropdown_highlighted_index;
 
 uint16 gDropdownItemsFormat[64];
-sint32 gDropdownItemsArgs[64];
+sint64 gDropdownItemsArgs[64];
 uint32 gDropdownItemsChecked;
 
 static void window_dropdown_emptysub() { }
 static void window_dropdown_paint();
 
-static uint32 window_dropdown_events[] = {
+static void* window_dropdown_events[] = {
 	window_dropdown_emptysub,
 	window_dropdown_emptysub,
 	window_dropdown_emptysub,
@@ -130,12 +130,10 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colour, uint8 flags, int num_items, int width)
 {
 	rct_window* w;
-	int i, string_width, max_string_width;
-	char buffer[256];
 
 	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(0x009DEBA4, gDropdownItemsFormat, 37 * 2);
-	memcpy(0x009DEBF4, gDropdownItemsArgs, 80 * 4);
+	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
+	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
 	if (flags & 0x80)
@@ -159,7 +157,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 		x, y + extray,
 		window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-		window_dropdown_events,
+		(uint32*)window_dropdown_events,
 		WC_DROPDOWN,
 		0x02
 	);
@@ -199,12 +197,12 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
  */
 void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 flags, int numItems, int itemWidth, int itemHeight, int numColumns)
 {
-	int i, width, height;
+	int width, height;
 	rct_window* w;
 
 	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(0x009DEBA4, gDropdownItemsFormat, 37 * 2);
-	memcpy(0x009DEBF4, gDropdownItemsArgs, 80 * 4);
+	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
+	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
 	if (flags & 0x80)
@@ -237,7 +235,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 		x, y + extray,
 		window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-		window_dropdown_events,
+		(uint32*)window_dropdown_events,
 		WC_DROPDOWN,
 		WF_STICK_TO_FRONT
 	);
@@ -312,7 +310,7 @@ static void window_dropdown_paint()
 				item = gDropdownItemsFormat[i];
 				if (item == (uint16)-1 || item == (uint16)-2) {
 					// Image item
-					image = gDropdownItemsArgs[i];
+					image = *((uint32*)&gDropdownItemsArgs[i]);
 					if (item == (uint16)-2 && _dropdown_highlighted_index == i)
 						image++;
 

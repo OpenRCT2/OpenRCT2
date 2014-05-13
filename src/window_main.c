@@ -34,14 +34,14 @@ rct_widget window_main_widgets[] = {
 void window_main_open()
 {
 	rct_window* window;
-	rct_widget* main_widgets = 0x009A9414;
+	rct_widget* main_widgets = (rct_widget*)0x009A9414;
 
 	main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
 	main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
 	window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,
-		0x0097C0BC,
+		(uint32*)0x0097C0BC,
 		WC_MAIN_WINDOW,
 		WF_STICK_TO_BACK
 	);

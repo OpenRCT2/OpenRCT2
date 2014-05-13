@@ -37,8 +37,8 @@ typedef struct {
 } openrct2_cursor;
 
 extern openrct2_cursor gCursorState;
-extern unsigned char* gKeysState;
-extern unsigned char* gKeysPressed;
+extern const unsigned char *gKeysState;
+extern unsigned char *gKeysPressed;
 extern unsigned int gLastKeyPressed;
 
 void osinterface_init();
@@ -48,5 +48,7 @@ void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
+void osinterface_show_messagebox(char* message);
+char* osinterface_open_directory_browser(char *title);
 
 #endif
