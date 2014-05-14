@@ -66,7 +66,7 @@ static void window_scenarioselect_invalidate();
 static void window_scenarioselect_paint();
 static void window_scenarioselect_scrollpaint();
 
-static uint32 window_scenarioselect_events[] = {
+static void* window_scenarioselect_events[] = {
 	window_scenarioselect_emptysub,
 	window_scenarioselect_mouseup,
 	window_scenarioselect_emptysub,
@@ -116,7 +116,7 @@ void window_scenarioselect_open()
 		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167),
 		610,
 		334,
-		window_scenarioselect_events,
+		(uint32*)window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
 		WF_STICK_TO_FRONT | WF_10
 	);
@@ -128,7 +128,7 @@ void window_scenarioselect_open()
 	window->colours[1] = 26;
 	window->colours[2] = 26;
 	window->var_480 = -1;
-	window->var_494 = NULL;
+	window->var_494 = 0;
 
 	window_scenarioselect_init_tabs();
 
@@ -189,10 +189,10 @@ static void window_scenarioselect_mousedown()
 
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
 		w->var_4AC = widgetIndex - 4;
-		w->var_494 = NULL;
+		w->var_494 = 0;
 		window_invalidate(w);
-		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, w, 0, 0);
-		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 		window_init_scroll_widgets(w);
 		window_invalidate(w);
 	}
@@ -273,8 +273,8 @@ static void window_scenarioselect_scrollmouseover()
 		selected = scenario;
 		break;
 	}
-	if (w->var_494 != selected) {
-		w->var_494 = selected;
+	if (w->var_494 != (uint32)selected) {
+		w->var_494 = (uint32)selected;
 		window_invalidate(w);
 	}
 }
@@ -286,7 +286,7 @@ static void window_scenarioselect_invalidate()
 	__asm mov w, esi
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
-	w->pressed_widgets |= 1 << (w->var_4AC + 4);
+	w->pressed_widgets |= 1LL << (w->var_4AC + 4);
 }
 
 static void window_scenarioselect_paint()
@@ -310,7 +310,7 @@ static void window_scenarioselect_paint()
 
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
-		*((short*)(0x0013CE952 + 0)) = STR_BEGINNER_PARKS + i;
+		RCT2_GLOBAL(0x013CE952 + 0, short) = STR_BEGINNER_PARKS + i;
 		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, 1193, 10);
 	}
 
@@ -326,28 +326,28 @@ static void window_scenarioselect_paint()
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	strcpy(0x009BC677, scenario->name);
-	*((short*)(0x0013CE952 + 0)) = 3165;
+	strcpy((char*)0x009BC677, scenario->name);
+	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	strcpy(0x009BC677, scenario->details);
-	*((short*)(0x0013CE952 + 0)) = 3165;
+	strcpy((char*)0x009BC677, scenario->details);
+	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
-	*((short*)(0x0013CE952 + 0)) = scenario->objective_type + STR_OBJECTIVE_NONE;
-	*((short*)(0x0013CE952 + 2)) = scenario->objective_arg_3;
-	*((short*)(0x0013CE952 + 4)) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
-	*((int*)(0x0013CE952 + 6)) = scenario->objective_arg_2;
+	RCT2_GLOBAL(0x013CE952 + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
+	RCT2_GLOBAL(0x013CE952 + 2, short) = scenario->objective_arg_3;
+	RCT2_GLOBAL(0x013CE952 + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
+	RCT2_GLOBAL(0x013CE952 + 6, int) = scenario->objective_arg_2;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
-		strcpy(0x009BC677, scenario->completed_by);
-		*((short*)(0x0013CE952 + 0)) = 3165;
-		*((int*)(0x0013CE952 + 2)) = scenario->company_value;
+		strcpy((char*)0x009BC677, scenario->completed_by);
+		RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
+		RCT2_GLOBAL(0x013CE952 + 2, int) = scenario->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
@@ -385,7 +385,7 @@ static void window_scenarioselect_scrollpaint()
 
 		// Draw scenario name
 		strcpy((char*)0x009BC677, scenario->name);
-		*((short*)0x013CE952) = 3165;
+		RCT2_GLOBAL(0x013CE952, short) = 3165;
 		gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 1, 0, (void*)0x013CE952);
 
 		// Check if scenario is completed
@@ -395,8 +395,8 @@ static void window_scenarioselect_scrollpaint()
 
 			// Draw completion score
 			strcpy((char*)0x009BC677, scenario->completed_by);
-			*((short*)0x013CE952) = 2793;
-			*((short*)0x013CE954) = 3165;
+			RCT2_GLOBAL(0x013CE952, short) = 2793;
+			RCT2_GLOBAL(0x013CE954, short) = 3165;
 			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
 		}
 

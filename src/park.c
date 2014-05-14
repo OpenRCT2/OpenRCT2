@@ -89,7 +89,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_awards_and_history();
 
-	rct_s6_info *info = 0x0141F570;
+	rct_s6_info *info = (rct_s6_info*)0x0141F570;
 	info->name[0] = '\0';
 	format_string(info->details, STR_NO_DETAILS_YET, NULL);
 }

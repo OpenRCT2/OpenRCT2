@@ -445,13 +445,84 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  */
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
 {
-	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, dpi, colour);
+	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, (int)dpi, colour);
 }
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
 #define RCT2_Y_RELATED_GLOBAL_2 0x9ABDAC //sint16
 #define RCT2_X_RELATED_GLOBAL_1 0x9E3D10 //uint16
 #define RCT2_X_RELATED_GLOBAL_2 0x9ABDA8 //sint16
+
+void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixelinfo *dpi){
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
+		return; //0x67AAB3
+	}
+
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x4000000){
+		return; //0x67AFD8
+	}
+
+	int ebx = RCT2_GLOBAL(0xEDF808, uint32);
+	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer,uint16);
+	int ebp = dest_bits_pointer;
+	ebx += (int)source_bits_pointer;
+
+StartLoop:
+	ebx = ebx;
+	int cx = RCT2_GLOBAL(ebx, uint16);
+	RCT2_GLOBAL(0x9ABDB4, uint8) = cx & 0xFF;
+	ebx += 2;
+	cx &= 0xFF7F;
+	int esi = ebx;
+	int edx = (cx & 0xFF00) >> 8;
+	ebx += cx;
+	edx -= RCT2_GLOBAL(0xEDF80C, sint32);
+	int edi = ebp;
+	if (edx > 0){
+		edi += edx;
+	}
+	else{
+		esi -= edx;
+		cx += edx & 0xFFFF;
+		if (cx <= 0){
+			goto TestLoop;
+			//jump to 0x67AA97
+		}
+		edx &= 0xFFFF0000;
+	}
+	edx += cx;
+	edx -= RCT2_GLOBAL(0x9ABDA8, sint16);
+	if (edx > 0){
+		cx -= edx;
+		if (cx <= 0){
+			goto TestLoop;
+			//jump to 0x67AA97
+		}
+	}
+	if (cx & 1){
+		cx >>= 1;
+		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
+	}
+	else cx >>= 1;
+
+	if (cx & 1){
+		cx >>= 1;
+		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
+	}
+	else cx >>= 1;
+
+	for (int i = cx; i > 0; --i, edi++, esi++){
+		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
+	}
+TestLoop:
+	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
+	edx = RCT2_GLOBAL(0x9ABDB0, sint16);
+	ebp += edx;
+	RCT2_GLOBAL(0x9ABDAC, sint16)--;
+	if (RCT2_GLOBAL(0x9ABDAC, sint16))goto StartLoop;
+
+}
+
 /*
 * rct2: 0x67A934 title screen bitmaps on buttons
 * This function readies all the global vars for copying the sprite data onto the screen
@@ -508,6 +579,9 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
 	
 	// I dont think it uses ecx, edx but just in case
+	//esi is the source and bits_pointer is the destination
+	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+
 	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
 }
 
@@ -524,14 +598,24 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = dpi, ebp = 0;
-	eax = image_id;
-	eax >>= 26;
-	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
-	eax &= 0x7;
-	eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
-	RCT2_GLOBAL(0x009E3CDC, uint32) = eax;
 
-	if ((image_id & (1 << 31)) && (image_id & (1 << 29))){
+	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
+	eax = (image_id >> 26) & 0x7;
+	//eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
+	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
+
+	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		//
+		return;//jump into 0x67a445
+	}
+	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
+		char* find = "FINDMEDUNCAN";
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		return;//jump into 0x67a361
+	}
+	else if ((image_id)& 0xE0000000){
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);		
 		/*
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -562,12 +646,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;*/
 		return;
-	} else if ((image_id & (1 << 31))){
-		return;
-		//jump into 0x67a361
-	} else if ((image_id & (1 << 30))){
-		return;
-		//jump into 0x67a445
 	}
 
 	ebx &= 0x7FFFF;
@@ -592,15 +670,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
+		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
 		sub_0x67A934(dpi, x, y);
 		return;
 	}
 	
-	
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	return;
-	//There is a mistake in the code below this point calling the above to skip it.
-
 	//dpi on stack
 	int translated_x, translated_y;
 	char* bits_pointer;
@@ -673,22 +747,19 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) & 0xFF) << 8;
+		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint8)) << 8;
 		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
 		ebp = RCT2_GLOBAL(0x9ABDB0, sint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, esi, edi, ah used in 0x67a690
-		//Calling is wrong
-		//esi or bits is most likely wrong
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
+		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
-	
-
 }
 
 /**
@@ -730,7 +801,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
  */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
-	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, args, dpi, 0);
+	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, (int)args, (int)dpi, 0);
 }
 
 /**
@@ -787,7 +858,6 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 void gfx_draw_all_dirty_blocks()
 {
 	int x, y, xx, yy, columns, rows;
-	short left, top, right, bottom;
 	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
 
 	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
@@ -880,7 +950,7 @@ int gfx_get_string_width(char *buffer)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	esi = buffer;
+	esi = (int)buffer;
 	RCT2_CALLFUNC_X(0x006C2321, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	return ecx & 0xFFFF;
@@ -900,7 +970,7 @@ int gfx_get_string_width(char *buffer)
  */
 void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 
@@ -925,7 +995,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  */
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, args, dpi, width);
+	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, (int)args, (int)dpi, width);
 
 	//char* buffer;
 	//short text_width;
@@ -986,8 +1056,8 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = args;
-	edi = dpi;
+	esi = (int)args;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C1E53, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -1013,8 +1083,8 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, in
 	ebx = colour;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
@@ -1057,8 +1127,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	ebx = 0;
 	ecx = x;
 	edx = y;
-	esi = format;
-	edi = dpi;
+	esi = (int)format;
+	edi = (int)dpi;
 	ebp = 0;
 	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 

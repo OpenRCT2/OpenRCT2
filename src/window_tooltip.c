@@ -38,7 +38,7 @@ static void window_tooltip_onclose();
 static void window_tooltip_update();
 static void window_tooltip_paint();
 
-static uint32 window_tooltip_events[] = {
+static void* window_tooltip_events[] = {
 	window_tooltip_onclose,
 	window_tooltip_emptysub,
 	window_tooltip_emptysub,
@@ -93,7 +93,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		return;
 
 	widget = &widgetWindow->widgets[widgetIndex];
-	RCT2_CALLPROC_X(widgetWindow->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, widgetWindow, 0, 0);
+	RCT2_CALLPROC_X(widgetWindow->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)widgetWindow, 0, 0);
 	if (widget->tooltip == 0xFFFF)
 		return;
 
@@ -103,7 +103,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = widgetIndex;
-	esi = widgetWindow;
+	esi = (int)widgetWindow;
 	RCT2_CALLFUNC_X(widgetWindow->event_handlers[WE_TOOLTIP], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	if ((eax & 0xFFFF) == 0xFFFF)
 		return;
@@ -114,7 +114,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
 
-	format_string(0x0141ED68, widget->tooltip, 0x013CE952);
+	format_string((char*)0x0141ED68, widget->tooltip, (void*)0x013CE952);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 
 	esi = 0x0141ED68;
@@ -136,12 +136,12 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	window_tooltip_widgets[WIDX_BACKGROUND].right = width;
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-	memcpy(0x0141FE44, 0x0141ED68, 512);
+	memcpy((void*)0x0141FE44, (void*)0x0141ED68, 512);
 	
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
 	y = clamp(22, y + 26, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height - 40);
 
-	w = window_create(x, y, width, height, window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+	w = window_create(x, y, width, height, (uint32*)window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 	w->widgets = window_tooltip_widgets;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
@@ -213,5 +213,5 @@ static void window_tooltip_paint()
 	gfx_draw_pixel(dpi, right - 1, bottom - 1, 0x0200002F);
 	
 	// Text
-	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, w->x + ((w->width + 1) / 2) - 1, w->y + 1, 0x0141FE44, dpi, RCT2_GLOBAL(0x01420044, uint16));
+	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, w->x + ((w->width + 1) / 2) - 1, w->y + 1, 0x0141FE44, (int)dpi, RCT2_GLOBAL(0x01420044, uint16));
 }

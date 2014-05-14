@@ -54,7 +54,7 @@ static void window_save_prompt_close();
 static void window_save_prompt_mouseup();
 static void window_save_prompt_paint();
 
-static uint32 window_save_prompt_events[] = {
+static void* window_save_prompt_events[] = {
 	window_save_prompt_close,
 	window_save_prompt_mouseup,
 	window_save_prompt_emptysub,
@@ -102,7 +102,7 @@ void window_save_prompt_open()
 			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 25),
 			260,
 			50,
-			window_save_prompt_events,
+			(uint32*)window_save_prompt_events,
 			WC_SAVE_PROMPT,
 			0
 		);

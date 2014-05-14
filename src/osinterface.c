@@ -33,8 +33,8 @@
 typedef void(*update_palette_func)(char*, int, int);
 
 openrct2_cursor gCursorState;
-unsigned char* gKeysState;
-unsigned char* gKeysPressed;
+const unsigned char *gKeysState;
+unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
 
 static void osinterface_create_window();
@@ -240,8 +240,8 @@ void osinterface_process_messages()
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
-			*((int*)0x01424318) = e.button.x;
-			*((int*)0x0142431C) = e.button.y;
+			RCT2_GLOBAL(0x01424318, int) = e.button.x;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				RCT2_CALLPROC_1(0x00406C96, int, 2);
@@ -325,12 +325,12 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	openFileName.lpstrTitle = title;
 
 	// Copy filter name
-	strcpy(0x01423800, filterName);
+	strcpy((char*)0x01423800, filterName);
 
 	// Copy filter pattern
-	strcpy(0x01423800 + strlen(filterName) + 1, filterPattern);
+	strcpy((char*)0x01423800 + strlen(filterName) + 1, filterPattern);
 	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
-	openFileName.lpstrFilter = 0x01423800;
+	openFileName.lpstrFilter = (char*)0x01423800;
 
 	// 
 	tmp = RCT2_GLOBAL(0x009E2C74, uint32);

@@ -84,7 +84,7 @@ static void window_cheats_invalidate();
 static void window_cheats_paint();
 static void window_cheats_set_page(rct_window *w, int page);
 
-static uint32 window_cheats_money_events[] = {
+static void* window_cheats_money_events[] = {
 	window_cheats_emptysub,
 	window_cheats_money_mouseup,
 	window_cheats_emptysub,
@@ -115,7 +115,7 @@ static uint32 window_cheats_money_events[] = {
 	window_cheats_emptysub
 };
 
-static uint32 window_cheats_guests_events[] = {
+static void* window_cheats_guests_events[] = {
 	window_cheats_emptysub,
 	window_cheats_guests_mouseup,
 	window_cheats_emptysub,
@@ -146,7 +146,7 @@ static uint32 window_cheats_guests_events[] = {
 	window_cheats_emptysub
 };
 
-static uint32 *window_cheats_page_events[] = {
+static void* window_cheats_page_events[] = {
 	window_cheats_money_events,
 	window_cheats_guests_events,
 };
@@ -167,7 +167,7 @@ void window_cheats_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(32, 32, WW, WH, window_cheats_money_events, WC_CHEATS, 0);
+	window = window_create(32, 32, WW, WH, (uint32*)window_cheats_money_events, WC_CHEATS, 0);
 	window->widgets = window_cheats_money_widgets;
 	window->enabled_widgets = window_cheats_page_enabled_widgets[0];
 	window_init_scroll_widgets(window);
@@ -211,7 +211,6 @@ static void window_cheats_money_mouseup()
 
 static void window_cheats_guests_mouseup()
 {
-	int i;
 	short widgetIndex;
 	rct_window *w;
 
@@ -260,7 +259,7 @@ static void window_cheats_invalidate()
 	__asm mov w, esi
 	strcpy((char*)0x009BC677, "Cheats");
 
-	rct_widget **widgets = window_cheats_page_widgets[w->page];
+	rct_widget *widgets = window_cheats_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
 		window_init_scroll_widgets(w);
@@ -269,7 +268,7 @@ static void window_cheats_invalidate()
 	// Set correct active tab
 	for (i = 0; i < 7; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-	w->pressed_widgets |= 1 << (WIDX_TAB_1 + w->page);
+	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
 static void window_cheats_paint()
