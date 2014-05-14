@@ -29,7 +29,11 @@ static enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_TITLE,
 	WIDX_CLOSE,
 	WIDX_PEOPLE_TAB = 4,
-	WIDX_RIDES_TAB = 5
+	WIDX_RIDES_TAB = 5,
+	WIDX_MAP = 6,
+	WIDX_MAP_SIZE_SPINNER = 7,
+	WIDX_BUY_LAND = 10,
+	WIDX_PEOPLE_STARTING_POSITION = 12
 };
 
 static rct_widget window_map_widgets[] = {
@@ -39,7 +43,7 @@ static rct_widget window_map_widgets[] = {
 	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,		STR_NONE },
 	{ WWT_COLORBTN,			1,	3,		33,		17,		43,		0x02000144E,	STR_SHOW_PEOPLE_ON_MAP_TIP },
 	{ WWT_COLORBTN,			1,	34,		64,		17,		43,		0x02000144E,	STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
-	{ WWT_SCROLL,			1,	3,		241,	46,		225,	0x3,			STR_NONE },
+	{ WWT_SCROLL,			1,	3,		241,	46,		125,	0x3,			STR_NONE },
 	{ WWT_SPINNER,			1,	104,	198,	229,	240,	0xC8C,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	230,	234,	STR_NUMERIC_UP,	STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	235,	239,	STR_NUMERIC_DOWN, STR_NONE },
@@ -236,6 +240,7 @@ static void window_map_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	int image_id;
+	int i, x, y;
 
 	__asm mov w, esi
 	__asm mov dpi, edi
@@ -259,6 +264,37 @@ static void window_map_paint()
 	gfx_draw_sprite(dpi, image_id,
 		w->x + w->widgets[WIDX_RIDES_TAB].left,
 		w->y + w->widgets[WIDX_RIDES_TAB].top);
+
+	// people starting position (scenario editor only)
+	if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != 0) {
+		gfx_draw_sprite(dpi, 0x0B6E0190A,
+			w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
+			w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18);
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+		// render the map legend
+		if (w->selected_tab != 0) {
+			x = w->x + 4;
+			y = w->y + w->widgets[WIDX_MAP].bottom + 2;
+
+			for (i = 0; i < 8; i++) {
+				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RCT2_GLOBAL(0x00981BCC+ 2 * i, uint8));
+				gfx_draw_string_left(dpi, STR_MAP_RIDE + i, w, 0, x + 10, y);
+				y += 10;
+				if (i == 3) {
+					x += 118;
+					y -= 40;
+				}
+			}
+		}
+
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) != WC_MAP) &&
+			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) != WIDX_BUY_LAND))
+			return;
+	}
+
+	gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
 }
 
 /**
