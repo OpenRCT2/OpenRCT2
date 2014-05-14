@@ -75,7 +75,7 @@ static int screenshot_get_next_path(char *path, char *extension)
 
 int screenshot_dump()
 {
-	switch (gConfig.screenshot_format) {
+	switch (gGeneral_config.screenshot_format) {
 	case SCREENSHOT_FORMAT_BMP:
 		return screenshot_dump_bmp();
 	case SCREENSHOT_FORMAT_PNG:
