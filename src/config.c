@@ -19,8 +19,11 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#ifdef _WIN32
 #include <shlobj.h>
 #include <windows.h>
+#include <tchar.h>
+#endif
 #include <SDL_keycode.h>
 #include "addresses.h"
 #include "config.h"

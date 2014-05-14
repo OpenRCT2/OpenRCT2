@@ -26,7 +26,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_BANNER_WIDGET_IDX {
+enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -39,7 +39,7 @@ static enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_TEXT_COLOR_DROPDOWN_BUTTON
 };
 
-static rct_widget window_banner_widgets[] = {
+rct_widget window_banner_widgets[] = {
 	{ WWT_FRAME,			0,	0,		112,	0,		95,		0x0FFFFFFFF,	65535},								// panel / background
 	{ WWT_CAPTION,			0,	1,		111,	1,		14,		0xBA9,			STR_WINDOW_TITLE_TIP},				// title bar
 	{ WWT_CLOSEBOX,			0,	100,	110,	2,		13,		0x338,			STR_CLOSE_WINDOW_TIP},				// close x button

@@ -20,7 +20,13 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
+
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"

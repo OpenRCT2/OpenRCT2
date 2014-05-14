@@ -28,7 +28,7 @@
 #include "window.h"
 #include "audio.h"
 
-static enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
+enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,

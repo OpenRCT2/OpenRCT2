@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "climate.h"
 #include "date.h"
@@ -30,7 +31,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
+enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
 	WIDX_LEFT_INSET,
 	WIDX_MONEY,

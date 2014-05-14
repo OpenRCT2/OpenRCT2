@@ -28,7 +28,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_NEWS_WIDGET_IDX {
+enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
