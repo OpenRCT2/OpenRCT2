@@ -211,20 +211,20 @@ static void window_game_bottom_toolbar_tooltip()
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
-		*((int*)0x013CE952) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
-		*((int*)0x013CE956) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
+		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
 		widgetIndex = 0;
 		break;
 	case WIDX_PARK_RATING:
-		*((short*)0x013CE952) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
 		widgetIndex = 0;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) * days_in_month[month]) >> 16) & 0xFF;
-		 
-		*((short*)0x013CE952) = STR_DATE_DAY_1 + day;
-		*((short*)0x013CE954) = STR_MONTH_MARCH + month;
+		
+		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
 		widgetIndex = 0;
 		break;
 	}
@@ -386,10 +386,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 
 	// Draw money
 	if (!(RCT2_GLOBAL(0x0013573E4, uint32) & 0x800)) {
-		*((int*)0x013CE952) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+		RCT2_GLOBAL(0x013CE952, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
 		gfx_draw_string_centred(
 			dpi,
-			(*((int*)0x013CE952) < 0 ? 1391 : 1390),
+			(RCT2_GLOBAL(0x013CE952, int) < 0 ? 1391 : 1390),
 			x, y - 3,
 			(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_MONEY ? 2 : w->colours[0] & 0x7F),
 			(void*)0x013CE952
@@ -403,7 +403,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		STR_NUM_GUESTS + RCT2_GLOBAL(0x013573FE, uint8),
 		x, y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_GUESTS ? 2 : w->colours[0] & 0x7F),
-		(void*)0x01357844
+		(void*)RCT2_ADDRESS_GUESTS_IN_PARK
 	);
 
 	// Draw park rating
@@ -456,7 +456,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	*((short*)0x013CE952) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	gfx_draw_string_centred(
 		dpi,
 		1845,
@@ -471,12 +471,12 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y += 11;
 
 	temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
-	format = STR_CELCIUS_VALUE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, uint8)) {
-		temperature = climate_celcius_to_fahrenheit(temperature);
+	format = STR_CELSIUS_VALUE;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
+		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}
-	*((short*)0x013CE952) = temperature;
+	RCT2_GLOBAL(0x013CE952, short) = temperature;
 	gfx_draw_string_left(dpi, format, (void*)0x013CE952, 0, x, y + 6);
 	x += 30;
 
