@@ -181,8 +181,8 @@ void window_options_open()
 		(1 << WIDX_HEIGHT_LABELS_DROPDOWN) |
 		(1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1 << WIDX_GRIDLINES_CHECKBOX) |
-		(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
-	// TODO: missing .text:006BAD22                 or      dword ptr [esi+0Ch], 1
+		(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX) |
+		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);	// doesn't seem to work?
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = 7;
@@ -240,6 +240,11 @@ static void window_options_mouseup()
 			else 
 				w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
 		}
+		break;
+	case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+		config_save();
+		window_invalidate(w);
 		break;
 	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
 		pause_sounds();
@@ -455,7 +460,103 @@ static void window_options_dropdown()
 */
 static void window_options_update()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006BAD48);
+	sint32 format_args = RCT2_GLOBAL(0x009AF280, sint32);
+	rct_window *w;
+	
+	__asm mov w, esi
+
+	// sound devices
+	if (format_args == -1 || RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, sint32) == 0) {
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_SOUND_NONE;
+	} else {
+		format_args = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, uint32) + format_args * 0x210 + 16;
+		RCT2_GLOBAL(0x013CE952, uint16) = 1170;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = format_args;
+	}
+	
+	// height: units/real values
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
+		format_args = STR_UNITS;
+	else
+		format_args = STR_REAL_VALUES;
+
+	RCT2_GLOBAL(0x013CE952 + 6, uint16) = (uint16)format_args;
+	
+	// music: on/off
+	RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
+	
+	// sound quality: low/medium/high
+	RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8);
+
+	// currency: pounds, dollars, etc. (10 total)
+	RCT2_GLOBAL(0x013CE952 + 12, uint16) = STR_POUNDS +
+		(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) & 0x3F);
+
+	// distance: metric/imperial
+	RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8);
+
+	// resolution
+	RCT2_GLOBAL(0x013CE952 + 16, uint16) = 
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, uint16);
+	RCT2_GLOBAL(0x013CE952 + 18, uint16) =
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, uint16);
+
+	// temperature: celsius/fahrenheit
+	RCT2_GLOBAL(0x013CE952 + 20, uint16) = STR_CELSIUS +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8);
+
+	// construction marker: celsius/fahrenheit
+	window_options_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
+	
+	// sound software mixing buffer checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8))
+		w->pressed_widgets |= (1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
+	else 
+		w->pressed_widgets &= ~(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
+
+	// screen edge scrolling checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8))
+		w->pressed_widgets |= (1 << WIDX_SCREEN_EDGE_SCROLLING);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_SCREEN_EDGE_SCROLLING);
+
+	// real name checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+		w->pressed_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_REAL_NAME_CHECKBOX);
+	
+	// landscape tile smoothing checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
+		w->pressed_widgets &= ~(1 << WIDX_TILE_SMOOTHING_CHECKBOX);
+	else
+		w->pressed_widgets |= (1 << WIDX_TILE_SMOOTHING_CHECKBOX);
+
+	// show gridlines checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES))
+		w->pressed_widgets |= (1 << WIDX_GRIDLINES_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_GRIDLINES_CHECKBOX);
+
+	// save plugin data checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SAVE_PLUGIN_DATA))
+		w->pressed_widgets |= (1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);
+
+	// unknown park flag can disable real name checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x8000)
+		w->disabled_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+
+	// save plugin data checkbox: visible or not
+	if (RCT2_GLOBAL(0x00F42BDA, uint8) == 1)
+		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_EMPTY;
+	else
+		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 }
 
 /**
