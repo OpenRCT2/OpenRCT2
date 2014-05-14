@@ -135,7 +135,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	case WWT_14:
 		widget_text(dpi, w, widgetIndex);
 		break;
-	case WWT_15:
+	case WWT_SPINNER:
 	case WWT_DROPDOWN:
 	case WWT_VIEWPORT:
 		widget_text_inset(dpi, w, widgetIndex);

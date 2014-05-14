@@ -144,7 +144,7 @@ static rct_widget window_park_price_widgets[] = {
 
 
 	{ WWT_24,				1,	7,		146,	50,		61,		STR_ADMISSION_PRICE,			STR_NONE },							// 
-	{ WWT_15,				1,	147,	222,	50,		61,		0x595,							STR_NONE },							// price
+	{ WWT_SPINNER,			1,	147,	222,	50,		61,		0x595,							STR_NONE },							// price
 	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	51,		55,		STR_NUMERIC_UP,					STR_NONE },							// increase price
 	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	56,		60,		STR_NUMERIC_DOWN,				STR_NONE },							// decrease price
 	{ WIDGETS_END },
@@ -1476,7 +1476,7 @@ static void window_park_price_invalidate()
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
 	} else {
-		window_park_price_widgets[WIDX_PRICE].type = WWT_15;
+		window_park_price_widgets[WIDX_PRICE].type = WWT_SPINNER;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 	}
