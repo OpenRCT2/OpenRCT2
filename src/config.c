@@ -103,16 +103,16 @@ void config_load()
 
 			//general configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; //i think this is curency
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = gGeneral_config.temperature_format;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
 			
 
 			//sound configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOFTWARE_BUFFERING, sint8) = gSound_config.forced_software_buffering; //software buffering
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
 
-
+			// Line below is temporaraly disabled until all config is in the new format.
 			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
 			//	return;
 			
@@ -127,7 +127,7 @@ void config_load()
 	
 	}
 	
-	/*
+	/* TODO: CLEANUP
 
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
