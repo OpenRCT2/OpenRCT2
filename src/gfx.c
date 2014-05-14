@@ -138,9 +138,7 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
-	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
-		*((uint8*)bits_pointer) = colour;
-	}
+	memset(bits_pointer, colour, no_pixels);
 }
 
 
