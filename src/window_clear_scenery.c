@@ -53,7 +53,7 @@ static void window_clear_scenery_update();
 static void window_clear_scenery_invalidate();
 static void window_clear_scenery_paint();
 
-static uint32 window_clear_scenery_events[] = {
+static void* window_clear_scenery_events[] = {
 	window_clear_scenery_close,
 	window_clear_scenery_mouseup,
 	window_clear_scenery_emptysub,
@@ -96,7 +96,7 @@ void window_clear_scenery_open()
 	if (window_find_by_id(WC_CLEAR_SCENERY, 0) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 67, window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 67, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
 	window_init_scroll_widgets(window);

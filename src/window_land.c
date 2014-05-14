@@ -58,7 +58,7 @@ static void window_land_update();
 static void window_land_invalidate();
 static void window_land_paint();
 
-static uint32 window_land_events[] = {
+static void* window_land_events[] = {
 	window_land_close,
 	window_land_mouseup,
 	window_land_emptysub,
@@ -122,7 +122,7 @@ void window_land_open()
 	if (window_find_by_id(WC_LAND, 0) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, window_land_events, WC_LAND, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, (uint32*)window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -277,7 +277,7 @@ static void window_land_dropdown()
 
 		type = (dropdownIndex == -1) ?
 			_selectedFloorTexture :
-			gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_FLOOR_TEXTURE_GRASS;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
@@ -293,7 +293,7 @@ static void window_land_dropdown()
 
 		type = (dropdownIndex == -1) ?
 			_selectedWallTexture :
-			gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
+			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_WALL_TEXTURE_ROCK;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
@@ -368,19 +368,19 @@ static void window_land_paint()
 		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
 		RCT2_GLOBAL(0x009BC679, char) = 0;
 		RCT2_GLOBAL(0x013CE952, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
-		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, 0x013CE952);
+		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, (void*)0x013CE952);
 	}
 
 	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw raise cost amount
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 984, x, y, 0, RCT2_ADDRESS_LAND_RAISE_COST);
+		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)RCT2_ADDRESS_LAND_RAISE_COST);
 	y += 10;
 
 	// Draw lower cost amount
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 985, x, y, 0, RCT2_ADDRESS_LAND_LOWER_COST);
+		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)RCT2_ADDRESS_LAND_LOWER_COST);
 	y += 50;
 
 	// Draw paint price
@@ -393,7 +393,7 @@ static void window_land_paint()
 
 	if (price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		RCT2_GLOBAL(0x013CE952, sint32) = price;
-		gfx_draw_string_centred(dpi, 986, x, y, 0, 0x013CE952);
+		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)0x013CE952);
 	}
 }
 

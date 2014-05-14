@@ -52,7 +52,7 @@ static void window_news_tooltip();
 static void window_news_paint();
 static void window_news_scrollpaint();
 
-static uint32 window_news_events[] = {
+static void* window_news_events[] = {
 	window_news_emptysub,
 	window_news_mouseup,
 	window_news_emptysub,
@@ -89,7 +89,6 @@ static uint32 window_news_events[] = {
  */
 void window_news_open()
 {
-	int x, y;
 	rct_window* window;
 
 	// Check if window is already open
@@ -98,7 +97,7 @@ void window_news_open()
 		window = window_create_auto_pos(
 			400,
 			300,
-			window_news_events,
+			(uint32*)window_news_events,
 			WC_RECENT_NEWS,
 			0
 		);
@@ -127,7 +126,6 @@ void window_news_open()
  */
 static void window_news_mouseup()
 {
-	int i;
 	short widgetIndex;
 	rct_window *w;
 
@@ -276,7 +274,6 @@ static void window_news_tooltip()
  */
 static void window_news_paint()
 {
-	int x, y;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
@@ -318,12 +315,12 @@ static void window_news_scrollpaint()
 
 		// Date text
 		RCT2_GLOBAL(0x013CE952, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month % 8);
-		gfx_draw_string_left(dpi, 2235, 0x013CE952, 2, 4, y);
+		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
+		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
 
 		// Item text
 		RCT2_GLOBAL(0x009B5F2C, uint8) = newsItem->colour;
-		strcpy(0x009B5F2D, newsItem->text);
+		strcpy((char*)0x009B5F2D, newsItem->text);
 		gfx_draw_string_left_wrapped(dpi, 0, 2, y + 10, 325, 1926, 14);
 
 		// Subject button

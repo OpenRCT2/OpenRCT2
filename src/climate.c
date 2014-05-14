@@ -41,9 +41,9 @@ static const rct_weather_transition* climate_transitions[4];
 
 static void climate_determine_future_weather();
 
-int climate_celcius_to_fahrenheit(int celcius)
+int climate_celsius_to_fahrenheit(int celsius)
 {
-	return (celcius * 29) / 16 + 32;
+	return (celsius * 29) / 16 + 32;
 }
 
 /**

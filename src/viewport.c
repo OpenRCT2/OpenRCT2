@@ -78,7 +78,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx
 {
 	x &= 0xFFFF;
 	y &= 0xFFFF;
-	RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, ecx, edx, w, 0, 0);
+	RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, ecx, edx, (int)w, 0, 0);
 }
 
 /**
@@ -103,7 +103,7 @@ void viewport_update_pointers()
  */
 void viewport_update_position(rct_window *window)
 {
-	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, window, 0, 0);
+	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
 /**
@@ -112,7 +112,7 @@ void viewport_update_position(rct_window *window)
  */
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom)
 {
-	RCT2_CALLPROC_X(0x00685C02, left , top, 0, right, viewport, dpi, bottom);
+	RCT2_CALLPROC_X(0x00685C02, left , top, 0, right, (int)viewport, (int)dpi, bottom);
 }
 
 /**
