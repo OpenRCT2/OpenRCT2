@@ -341,16 +341,16 @@ TestLoop:
 * This function readies all the global vars for copying the sprite data onto the screen
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
-void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
+void sub_0x67A934(rct_drawpixelinfo *source_dpi, rct_drawpixelinfo *dest_dpi, int x, int y){
 
-	int _edi = dpi, _esi;
+	int _edi = dest_dpi, _esi;
 	sint16 translated_x = x, translated_y = y;
 	char* bits_pointer;
-	bits_pointer = dpi->bits;
+	bits_pointer = dest_dpi->bits;
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dest_dpi->y;
 	RCT2_GLOBAL(0xEDF808, uint32) = 0;
-	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = source_dpi->y;//RCT2_GLOBAL(0x9E3D0E, sint16);
 
 	if (translated_y < 0)
 	{
@@ -360,19 +360,19 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 		translated_y = 0;
 	}
 	else{
-		bits_pointer += (dpi->width + dpi->pitch)*translated_y;
+		bits_pointer += (dest_dpi->width + dest_dpi->pitch)*translated_y;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dest_dpi->height;
 	if (translated_y > 0){
 		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
 		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
 
 	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
-	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dest_dpi->x;
 
-	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
+	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = source_dpi->x;//RCT2_GLOBAL(0x9E3D0C, sint16);
 	if (translated_x < 0){
 		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
 		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
@@ -383,19 +383,19 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 		bits_pointer += translated_x;
 	}
 	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16);
-	translated_x -= dpi->width;
+	translated_x -= dest_dpi->width;
 	if (translated_x > 0){
 		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
 		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
 
-	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
+	RCT2_GLOBAL(0x9ABDB0, uint16) = dest_dpi->width + dest_dpi->pitch;
 	
 	// I dont think it uses ecx, edx but just in case
 	//esi is the source and bits_pointer is the destination
-	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dest_dpi);
 
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
+	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dest_dpi);
 }
 
 /**
@@ -477,6 +477,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 	eax = *((uint32*)ebx + 2);
 	ebp = *((uint32*)ebx + 3);
+	rct_drawpixelinfo* g1_source_dpi = (rct_drawpixelinfo*)ebx;
+	//This is a rct2_drawpixelinfo struct
 	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx); //offset to g1 bits?
 	RCT2_GLOBAL(0x9E3D0C, uint32) = *((uint32*)ebx + 1);
 	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //X-Y related unsigned? sets RCT2_X_RELATED_GLOBAL_1 and Y
@@ -484,7 +486,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
 		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
-		sub_0x67A934(dpi, x, y);
+		sub_0x67A934(g1_source_dpi, dpi, x, y);
 		return;
 	}
 	
