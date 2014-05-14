@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -138,7 +138,9 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
-	memset(bits_pointer, colour, no_pixels);
+	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
+		*((uint8*)bits_pointer) = colour;
+	}
 }
 
 
@@ -240,7 +242,194 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
-	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, (int)dpi, colour);
+
+	int left_, right_, top_, bottom_;
+	rct_drawpixelinfo* dpi_;
+	left_ = left;
+	right_ = right;
+	top_ = top;
+	bottom_ = bottom;
+	dpi_ = dpi;
+  
+	if ((left > right) || (top > bottom) || (dpi->x > right) || (left >= (dpi->x + dpi->width)) ||
+		(bottom < dpi->y) || (top >= (dpi->y + dpi->height)))
+		return;
+
+	colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
+
+	if (!(colour & 0x1000000)) {
+		if (!(colour & 0x8000000)) {
+			left_ = left - dpi->x;
+			if (left_ < 0)
+				left_ = 0;
+
+			right_ = right - dpi->x;
+			right_++;
+			if (right_ > dpi->width)
+				right_ = dpi->width;
+
+			right_ -= left_;
+	
+			top_ = top - dpi->y;
+			if (top_ < 0)
+				top_ = 0;
+
+			bottom_ = bottom - dpi->y;
+			bottom_++;
+
+			if (bottom_ > dpi->height)
+				bottom_ = dpi->height;
+
+			bottom_ -= top_;
+
+			if (!(colour & 0x2000000)) {
+				if (!(colour & 0x4000000)) {
+					uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+
+					int length = dpi->width + dpi->pitch - right_;
+
+					for (int i = 0; i < bottom_; ++i) {
+						memset(pixel, (colour & 0xFF), right_);
+						pixel += length + right_;
+					}
+				} else {
+					// 00678B8A   00678E38
+					char* esi;
+					esi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
+
+					int eax, ebp;
+					eax = colour;
+					ebp = dpi->width + dpi->pitch - right_;
+
+					RCT2_GLOBAL(0x00EDF810, uint32) = ebp;
+					RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
+					RCT2_GLOBAL(0x00EDF814, uint32) = right_;
+
+					top_ = (top + dpi->y) & 0xf;
+					right_ = (right + dpi_->x) &0xf;
+
+					dpi_ = (rct_drawpixelinfo*)esi;
+
+					esi = (char*)(eax >> 0x1C);
+					esi = (char*)RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
+
+					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
+						// push    ebx
+						// push    ecx
+						ebp = *(esi + top_*2);
+					     
+						// mov     bp, [esi+top_*2];
+						int ecx;
+						ecx = RCT2_GLOBAL(0x00EDF814, uint32);
+
+						for (int i = ecx; i >=0; --i) {
+							if (!(ebp & (1 << right_)))
+								dpi_->bits = (char*)(left_ & 0xFF);
+		
+							right_++;
+							right_ = right_ & 0xF;
+							dpi_++;
+						}
+						// pop     ecx
+						// pop     ebx
+						top_++;
+						top_ = top_ &0xf;
+						dpi_ += RCT2_GLOBAL(0x00EDF810, uint32);
+					}
+					return;
+				}
+
+			} else {
+				// 00678B7E   00678C83
+				if (dpi->pad_0E < 1) {
+					// Location in screen buffer?
+					uint8* pixel = top_ * (dpi->width + dpi->pitch) + left_ + dpi->bits;
+
+					// Find colour in colour table?
+					uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
+					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+
+					int length = (dpi->width + dpi->pitch) - right_;
+
+					// Fill the rectangle with the colours from the colour table
+					for (int i = 0; i < bottom_; ++i) {
+						for (int j = 0; j < right_; ++j) {
+							*pixel = *((uint8*)(&g1_element->offset[*pixel]));
+							pixel++;
+						}
+						pixel += length;
+					}
+				} else if (dpi->pad_0E > 1) {
+					// 00678C8A    00678D57
+					right_ = right;
+				} else if (dpi->pad_0E == 1) {
+					// 00678C88   00678CEE
+					right = right;
+				}
+	
+			}
+		} else {
+			// 00678B3A    00678EC9
+			right_ = right;
+      }
+  } else {
+    // 00678B2E    00678BE5
+		// Cross hatching
+		uint16 pattern = 0;
+
+		left_ = left_ - dpi->x;
+		if (left_ < 0) {
+			pattern = pattern ^ left_;
+			left_ = 0;
+		}
+
+		right_ = right_ - dpi->x;
+		right_++;
+
+		if (right_ > dpi->width)
+			right_ = dpi-> width;
+		
+		right_ = right_ - left_;
+
+		top_ = top - dpi->y;
+		if (top_ < 0) {
+			pattern = pattern ^ top_;
+			top_ = 0;
+		}
+
+		bottom_ = bottom - dpi->y;
+		bottom_++;
+
+		if (bottom_ > dpi->height)
+			bottom_ = dpi->height;
+
+		bottom_ -= top_;
+
+		uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+
+		int length = dpi->width + dpi->pitch - right_;
+
+		uint32 ecx;
+		for (int i = 0; i < bottom_; ++i) {
+			ecx = pattern;
+			// Rotate right
+			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
+			ecx = (ecx & 0xFFFF0000) | right_; 
+			// Fill every other pixel with the colour
+			for (; (ecx & 0xFFFF) > 0; ecx--) {
+				ecx = ecx ^ 0x80000000;
+				if ((int)ecx < 0) {
+					*pixel = colour & 0xFF;
+				}
+				pixel++;
+			}
+			pattern = pattern ^ 1;
+			pixel += length;
+			
+		}
+	}
+
+	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
 
 /**
@@ -260,10 +449,9 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 }
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
-#define RCT2_Y_END_POINT_GLOBAL 0x9ABDAC //sint16
+#define RCT2_Y_RELATED_GLOBAL_2 0x9ABDAC //sint16
 #define RCT2_X_RELATED_GLOBAL_1 0x9E3D10 //uint16
-#define RCT2_X_END_POINT_GLOBAL 0x9ABDA8 //sint16
-#define RCT2_DPI_LINE_LENGTH_GLOBAL 0x9ABDB0 //uint16 width+pitch
+#define RCT2_X_RELATED_GLOBAL_2 0x9ABDA8 //sint16
 
 void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixelinfo *dpi){
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
@@ -276,7 +464,7 @@ void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixe
 
 	int ebx = RCT2_GLOBAL(0xEDF808, uint32);
 	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer,uint16);
-	int ebp = dest_bits_pointer;
+	int ebp = (int)dest_bits_pointer;
 	ebx += (int)source_bits_pointer;
 
 StartLoop:
@@ -303,7 +491,7 @@ StartLoop:
 		edx &= 0xFFFF0000;
 	}
 	edx += cx;
-	edx -= RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16);
+	edx -= RCT2_GLOBAL(0x9ABDA8, sint16);
 	if (edx > 0){
 		cx -= edx;
 		if (cx <= 0){
@@ -328,10 +516,10 @@ StartLoop:
 	}
 TestLoop:
 	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
-	edx = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16);
+	edx = RCT2_GLOBAL(0x9ABDB0, sint16);
 	ebp += edx;
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16)--;
-	if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16))goto StartLoop;
+	RCT2_GLOBAL(0x9ABDAC, sint16)--;
+	if (RCT2_GLOBAL(0x9ABDAC, sint16))goto StartLoop;
 
 }
 
@@ -340,75 +528,61 @@ TestLoop:
 * This function readies all the global vars for copying the sprite data onto the screen
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
-void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y){
+void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 
+	int _edi = (int)dpi;
+	sint16 translated_x = x, translated_y = y;
 	char* bits_pointer;
-	bits_pointer = dest_dpi->bits;
+	bits_pointer = dpi->bits;
 
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
 	RCT2_GLOBAL(0xEDF808, uint32) = 0;
+	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
 
-	int start_y, end_y;
-	start_y = y + source_g1->y_offset - dest_dpi->y;
-	
-	//If the start position is negative reset to zero
-	if (start_y < 0){
-		//Create the end point within the drawing area
-		end_y = source_g1->height + start_y;
-		//If the end point is now <= 0 no need to draw
-		if (end_y <= 0)return;
-
-		RCT2_GLOBAL(0xEDF808, sint16) -= start_y;
-		start_y = 0;
+	if (translated_y < 0)
+	{
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
+		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
+		RCT2_GLOBAL(0xEDF808, sint16) -= translated_y;
+		translated_y = 0;
 	}
 	else{
-		end_y = source_g1->height;
-		//Move the pointer to the correct starting y location
-		bits_pointer += (dest_dpi->width + dest_dpi->pitch)*start_y;
+		bits_pointer += (dpi->width + dpi->pitch)*translated_y;
 	}
 
-	int height = start_y + end_y;
-	//If the image is taller than the drawing area
-	if (height > dest_dpi->height){
-		//Make the end within the drawing area
-		end_y -= height - dest_dpi->height;
-		//If the end is now <=0 then there is nothing to draw
-		if (end_y <= 0)return;
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;
+	if (translated_y > 0){
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
+		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
-	
+
 	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
-	int start_x, end_x;
-	start_x = x + source_g1->x_offset - dest_dpi->x;
-	
-	//If the start position is negative reset to zero
-	if (start_x < 0){
-		//Create the end point within the drawing area
-		end_x = source_g1->width + start_x;
-		//If the end point is now <= 0 no need to draw
-		if (end_x <= 0)return;
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
 
-		RCT2_GLOBAL(0xEDF80C, sint16) -= start_x;
-		start_x = 0;
+	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
+	if (translated_x < 0){
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
+		RCT2_GLOBAL(0xEDF80C, sint16) -= translated_x;
+		translated_x = 0;
 	}
 	else{
-		end_x = source_g1->width;
-		//Increment the pointer to our start location
-		bits_pointer += start_x;
+		bits_pointer += translated_x;
+	}
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16);
+	translated_x -= dpi->width;
+	if (translated_x > 0){
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
 	}
 
-	int width = start_x + end_x;
-	//If the image is wider than the drawing area
-	if (width > dest_dpi->width){
-		//Make the end within drawing area
-		end_x -= width - dest_dpi->width;
-		//If the end is now <=0 then there is nothing to draw
-		if (end_x <= 0)return;
-	}
+	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
 	
-	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dest_dpi->width + dest_dpi->pitch;
-	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = end_x;
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = end_y;
-	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dest_dpi);
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, source_g1->offset, bits_pointer, dest_dpi);
+	// I dont think it uses ecx, edx but just in case
+	//esi is the source and bits_pointer is the destination
+	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+
+	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), (int)bits_pointer, (int)dpi);
 }
 
 /**
@@ -423,7 +597,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	//return;
 
-	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = dpi, ebp = 0;
+	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
@@ -431,16 +605,17 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 		//
 		return;//jump into 0x67a445
 	}
 	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		char* find = "FINDMEDUNCAN";
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 		return;//jump into 0x67a361
 	}
 	else if ((image_id)& 0xE0000000){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);		
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);		
 		/*
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -489,38 +664,34 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 	eax = *((uint32*)ebx + 2);
 	ebp = *((uint32*)ebx + 3);
-	rct_g1_element* g1_source = (rct_g1_element*)ebx;
-	//This is a rct2_drawpixelinfo struct
 	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx); //offset to g1 bits?
 	RCT2_GLOBAL(0x9E3D0C, uint32) = *((uint32*)ebx + 1);
 	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //X-Y related unsigned? sets RCT2_X_RELATED_GLOBAL_1 and Y
 	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
-
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
 		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
-		sub_0x67A934(g1_source, dpi, x, y);
+		sub_0x67A934(dpi, x, y);
 		return;
 	}
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	return;
+	
 	//dpi on stack
 	int translated_x, translated_y;
 	char* bits_pointer;
 
-	ebp = dpi;
+	ebp = (int)dpi;
 	esi = RCT2_GLOBAL(0x9E3D08, uint32);
 	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
 	bits_pointer = dpi->bits;	
 
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
 
 	translated_y = y + RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
 
 
 	if (translated_y < 0){
-		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) += translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) <= 0){
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
+		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0){
 			return;
 		}
 		translated_y = -translated_y;
@@ -532,61 +703,61 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		bits_pointer += eax;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) - dpi->height;;
+	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;;
 
 	if (translated_y > 0){
-		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) -= translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) <= 0)
+		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
+		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <=0)
 		{
 			return;
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
+	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
 	eax = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
 
 	RCT2_GLOBAL(0x9ABDAE, uint16) = 0;
-	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
+	RCT2_GLOBAL(0x9ABDB0, sint16) = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
 	translated_x = x + RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
 
 	if (translated_x < 0){
 
-		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) += translated_x;
-		if (RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) <= 0){
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
 			return;
 		}
 
 		translated_x -= RCT2_GLOBAL(0x9ABDAE, sint16);
 		esi -= translated_x;
 		RCT2_GLOBAL(0x9E3CE0, sint32) -= translated_x;
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) -= translated_x;
+		RCT2_GLOBAL(0x9ABDB0, sint16) -= translated_x;
 		translated_x = 0;
 	}
 
 	bits_pointer += translated_x;
-	translated_x += RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) - dpi->width;
+	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) - dpi->width;
 
 	if (translated_x > 0){
-		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) -= translated_x;
-		if (RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) <= 0){
+		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
+		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
 			return;
 		}
 		RCT2_GLOBAL(0x9ABDAE, sint16) += translated_x;
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) += translated_x;
+		RCT2_GLOBAL(0x9ABDB0, sint16) += translated_x;
 	}
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		eax = (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8)) << 8;
+		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint8)) << 8;
 		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
-		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16);
+		ebp = RCT2_GLOBAL(0x9ABDB0, sint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, esi, edi, ah used in 0x67a690
-		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
+		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
 }
