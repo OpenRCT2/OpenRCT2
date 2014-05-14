@@ -28,6 +28,8 @@ static enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_PEOPLE_TAB = 4,
+	WIDX_RIDES_TAB = 5
 };
 
 static rct_widget window_map_widgets[] = {
@@ -103,13 +105,51 @@ static void* window_map_events[] = {
 */
 void window_map_open()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068C88A);
-	//rct_window* w;
+	rct_window* w;
+	int* var;
 
 	// Check if window is already open
-	//w = window_bring_to_front_by_id(WC_OPTIONS, 0);
-	//if (w != NULL)
-	//	return;
+	w = window_bring_to_front_by_id(WC_MAP, 0);
+	if (w != NULL) {
+		w->selected_tab = 0;
+		w->var_490 = 0;
+		return;
+	}
+
+	var = (int*)rct2_malloc(0x40000);
+	if (var == NULL)
+		return;
+
+	RCT2_GLOBAL(0x00F1AD68, uint32) = (uint32)var;
+	w = window_create_auto_pos(245, 259, (uint32*)window_map_events, WC_MAP, 0x0400);
+	w->widgets = window_map_widgets;
+	w->enabled_widgets =
+		(1 << 2) |
+		(1 << 4) |
+		(1 << 5) |
+		(1 << 8) |
+		(1 << 9) |
+		(1 << 14) |
+		(1 << 15) |
+		(1 << 10) |
+		(1 << 16) |
+		(1 << 17) |
+		(1 << 18) |
+		(1 << 19) |
+		(1 << 11) |
+		(1 << 20) |
+		(1 << 12);
+	//TODO: .text:0068C943                 or      dword ptr [esi+20h], 300h
+
+	window_init_scroll_widgets(w);
+	w->var_480 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
+
+	RCT2_CALLPROC_EBPSAFE(0x0068CA6C);
+	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x0068C990);
+
+	w->colours[0] = 12;
+	w->colours[1] = 24;
 }
 
 /**
@@ -192,14 +232,33 @@ static void window_map_invalidate()
 */
 static void window_map_paint()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068CDA9);
-	/*rct_window *w;
+	//RCT2_CALLPROC_EBPSAFE(0x0068CDA9);
+	rct_window *w;
 	rct_drawpixelinfo *dpi;
+	int image_id;
 
 	__asm mov w, esi
 	__asm mov dpi, edi
 
-	window_draw_widgets(w, dpi);*/
+	window_draw_widgets(w, dpi);
+
+	// guest tab image (animated)
+	image_id = SPR_TAB_GUESTS_0;
+	if (w->selected_tab == 0)
+		image_id += w->var_490 / 4;
+
+	gfx_draw_sprite(dpi, image_id, 
+		w->x + w->widgets[WIDX_PEOPLE_TAB].left, 
+		w->y + w->widgets[WIDX_PEOPLE_TAB].top);
+
+	// ride/stall tab image (animated)
+	image_id = SPR_TAB_RIDE_0;
+	if (w->selected_tab == 1)
+		image_id += w->var_490 / 4;
+
+	gfx_draw_sprite(dpi, image_id,
+		w->x + w->widgets[WIDX_RIDES_TAB].left,
+		w->y + w->widgets[WIDX_RIDES_TAB].top);
 }
 
 /**

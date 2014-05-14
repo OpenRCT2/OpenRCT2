@@ -133,7 +133,7 @@ typedef struct rct_window {
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
-	sint16 var_4AC;
+	sint16 selected_tab;			// 0x4AC
 	sint16 var_4AE;
 	sint16 var_4B0; // viewport target sprite?
 	sint16 saved_view_x;			// 0x4B2
