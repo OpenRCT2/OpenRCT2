@@ -132,7 +132,7 @@ void window_scenarioselect_open()
 
 	window_scenarioselect_init_tabs();
 
-	window->var_4AC = 0;
+	window->selected_tab = 0;
 }
 
 /**
@@ -188,7 +188,7 @@ static void window_scenarioselect_mousedown()
 	__asm mov w, esi
 
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
-		w->var_4AC = widgetIndex - 4;
+		w->selected_tab = widgetIndex - 4;
 		w->var_494 = 0;
 		window_invalidate(w);
 		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
@@ -209,7 +209,7 @@ static void window_scenarioselect_scrollgetsize()
 	height = 0;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			height += 24;
@@ -232,7 +232,7 @@ static void window_scenarioselect_scrollmousedown()
 
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
@@ -261,7 +261,7 @@ static void window_scenarioselect_scrollmouseover()
 	selected = NULL;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
@@ -286,7 +286,7 @@ static void window_scenarioselect_invalidate()
 	__asm mov w, esi
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
-	w->pressed_widgets |= 1LL << (w->var_4AC + 4);
+	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
 
 static void window_scenarioselect_paint()
@@ -369,7 +369,7 @@ static void window_scenarioselect_scrollpaint()
 	y = 0;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
