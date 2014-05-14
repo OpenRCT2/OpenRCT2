@@ -571,44 +571,37 @@ static int config_parse_section(FILE *fp, char *setting, char *value){
 	return 1;
 }
 
+static const struct { char *key; int value; } _currencyLookupTable[] = {
+	{ "GBP", CURRENCY_POUNDS },
+	{ "USD", CURRENCY_DOLLARS },
+	{ "FRF", CURRENCY_FRANC },
+	{ "DEM", CURRENCY_DEUTSCHMARK },
+	{ "YEN", CURRENCY_YEN },
+	{ "ESP", CURRENCY_PESETA },
+	{ "ITL", CURRENCY_LIRA },
+	{ "NLG", CURRENCY_GUILDERS },
+	{ "NOK", CURRENCY_KRONA },
+	{ "SEK", CURRENCY_KRONA },
+	{ "DEK", CURRENCY_KRONA },
+	{ "EUR", CURRENCY_EUROS },
 
+	{ "£", CURRENCY_POUNDS },
+	{ "$", CURRENCY_DOLLARS },
+	{ "€", CURRENCY_EUROS }
+};
 
-static int config_parse_currency(char* currency){
-	if (strcmp(currency, "GBP") == 0 || strcmp(currency, "£") == 0){
-		gGeneral_config.currency_format = CURRENCY_POUNDS;
+static int config_parse_currency(char *currency)
+{
+	int i;
+	for (i = 0; i < countof(_currencyLookupTable); i++) {
+		if (_strcmpi(currency, _currencyLookupTable[i].key) == 0) {
+			gGeneral_config.currency_format = _currencyLookupTable[i].value;
+			return 1;
+		}
 	}
-	else if(strcmp(currency, "USD") == 0 || strcmp(currency, "$") == 0){
-		gGeneral_config.currency_format = CURRENCY_DOLLARS;
-	}
-	else if(strcmp(currency, "FRF") == 0){
-		gGeneral_config.currency_format = CURRENCY_FRANC;
-	}
-	else if (strcmp(currency, "DEM") == 0){
-		gGeneral_config.currency_format = CURRENCY_DEUTSCHMARK;
-	}
-	else if(strcmp(currency, "YEN") == 0){
-		gGeneral_config.currency_format = CURRENCY_YEN;
-	}
-	else if (strcmp(currency, "ESP") == 0){
-		gGeneral_config.currency_format = CURRENCY_PESETA;
-	}
-	else if (strcmp(currency, "ITL") == 0){
-		gGeneral_config.currency_format = CURRENCY_LIRA;
-	}
-	else if (strcmp(currency, "NLG") == 0){
-		gGeneral_config.currency_format = CURRENCY_GUILDERS;
-	}
-	else if (strcmp(currency, "NOK") == 0 || strcmp(currency, "SEK") == 0 || strcmp(currency, "DEK") == 0){
-		gGeneral_config.currency_format = CURRENCY_KRONA;
-	}
-	else if (strcmp(currency, "EUR") == 0 || strcmp(currency, "€") == 0){
-		gGeneral_config.currency_format = CURRENCY_EUROS;
-	}
-	else{
-		config_error("Invalid currency set in config file");
-		return -1;
-	}
-	return 1;
+
+	config_error("Invalid currency set in config file");
+	return -1;
 }
 /**
  * Error with config file. Print error message an quit the game
