@@ -77,8 +77,8 @@ enum {
 };
 
 enum {
-	MEASUREMENT_FORMAT_METRIC,
-	MEASUREMENT_FORMAT_IMPRIAL
+	MEASUREMENT_FORMAT_IMPERIAL,
+	MEASUREMENT_FORMAT_METRIC
 };
 
 enum{
@@ -95,6 +95,13 @@ enum{
 
 };
 
+enum{
+	SOUND_QUALITY_LOW,
+	SOUND_QUALITY_MEDIUM,
+	SOUND_QUALITY_HIGH
+
+};
+
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_reset_shortcut_keys();
@@ -107,9 +114,8 @@ void config_save();
 
 typedef struct sound_configuration {
 
-	uint8 sound_quality_lower;
-	uint16 sound_quality_upper;
-	uint8 forced_software_buffering;
+	sint8 sound_quality;
+	sint8 forced_software_buffering;
 } sound_configuration_t;
 
 
@@ -130,6 +136,7 @@ typedef struct general_configuration {
 
 //};
 extern general_configuration_t gGeneral_config;
+extern sound_configuration_t gSound_config;
 
 void config_init();
 

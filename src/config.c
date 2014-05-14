@@ -100,33 +100,41 @@ void config_load()
 			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
 			CloseHandle(hFile);
 
-
+			//general configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; //i think this is curency
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FAHRENHEIT, sint8) = gGeneral_config.temperature_format;
-			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
-			//	return;
-			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-
-
-
 			
 
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
+			//sound configuration
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOFTWARE_BUFFERING, sint8) = gSound_config.forced_software_buffering; //software buffering
+
+
+			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
+			//	return;
+			
+			
+			RCT2_GLOBAL(0x009AB4C6, sint8) = 1; // no idea on what this does
+
+			RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 2) * 256;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 0;
 		}
 	
 	}
-
-	RCT2_GLOBAL(0x009AAC77, sint8) = 0;
+	
+	/*
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x4000000) {
-		RCT2_GLOBAL(0x009AAC77, sint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 1;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x8000000)
-			RCT2_GLOBAL(0x009AAC77, sint8) = 2;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
 	}
+	*/
+
 
 	RCT2_GLOBAL(0x009AAC75, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(0x009AAC77, sint8)];
 	RCT2_GLOBAL(0x009AAC76, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(0x009AAC77, sint8)];
@@ -156,9 +164,12 @@ void config_save()
 // New config format
 
 general_configuration_t gGeneral_config;
+sound_configuration_t gSound_config;
 
 static char *config_show_directory_browser();
 static void config_parse_settings(FILE *fp);
+static void config_general(char *setting, char *value);
+static void config_sound(char *setting, char *value);
 static int config_get_line(FILE *fp, char *setting, char *value);
 static int config_parse_setting(FILE *fp, char *setting);
 static int config_parse_value(FILE *fp, char *value);
@@ -241,10 +252,10 @@ static void config_create_default(char *path)
 	FILE* fp;
 
 
-	if (!config_find_rct2_path(gConfig.game_path)) {
+	if (!config_find_rct2_path(gGeneral_config.game_path)) {
 		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
 		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
-		strcpy(gConfig.game_path, res);
+		strcpy(gGeneral_config.game_path, res);
 	}
 
 	fp = fopen(path, "w");
@@ -253,9 +264,12 @@ static void config_create_default(char *path)
 	fprintf(fp, "screenshot_format = PNG\n");
 	fprintf(fp, "play_intro = false\n");
 	fprintf(fp, "edge_scrolling = true\n");
-	fprintf(fp, "currency = GBP");
+	fprintf(fp, "currency = GBP\n");
 	fprintf(fp, "use_imperial = false\n");
 	fprintf(fp, "use_farenheit = false\n");
+	fprintf(fp, "[sound]\n");
+	fprintf(fp, "sound_quality = high\n");
+	fprintf(fp, "forced_software_buffering = false\n");
 	fclose(fp);
 }
 
@@ -280,48 +294,14 @@ static void config_parse_settings(FILE *fp)
 			continue;
 		}
 		
+		if (strcmp(section, "sound") == 0){
+			config_sound(setting, value);
+		}
+		else if (strcmp(section, "general") == 0){
+			config_general(setting, value);
+		}
 		
-		
-		if (strcmp(setting, "game_path") == 0){	
-			strcpy(gGeneral_config.game_path, value);
-		} else if(strcmp(setting, "screenshot_format") == 0) {
-			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
-				gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
-			} else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
-				gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
-			} else {
-				gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_BMP;
-			}
-		} else if (strcmp(setting, "play_intro") == 0) {
-			gGeneral_config.play_intro = (strcmp(value, "true") == 0);
-		}
-		else if (strcmp(setting, "edge_scrolling") == 0){
-			if (strcmp(value, "true") == 0){
-				gGeneral_config.edge_scrolling = 1;
-			}
-			else {
-				gGeneral_config.edge_scrolling = 0;
-			}
-		}
-		else if (strcmp(setting, "use_imperial") == 0){
-			if (strcmp(value, "true") == 0){
-				gGeneral_config.measurement_format = MEASUREMENT_FORMAT_IMPRIAL;
-			}
-			else{
-				gGeneral_config.measurement_format = MEASUREMENT_FORMAT_METRIC;
-			}
-		}
-		else if (strcmp(setting, "use_farenheit") == 0){
-			if (strcmp(value, "true") == 0){
-				gGeneral_config.temperature_format = TEMPERATURE_FORMAT_F;
-			}
-			else{
-				gGeneral_config.temperature_format = TEMPERATURE_FORMAT_C;
-			}
-		}
-		else if (strcmp(setting, "currency") == 0){
-			config_parse_currency(value);
-		}
+	
 		
 	}
 	//RCT2_GLOBAL(0x009AACBC, sint8) = CURRENCY_KRONA;
@@ -331,6 +311,78 @@ static void config_parse_settings(FILE *fp)
 	free(setting);
 	free(value);
 	free(section);
+}
+
+
+static void config_sound(char *setting, char *value){
+	if (strcmp(setting, "sound_quality") == 0){
+		if (strcmp(value, "low") == 0){
+			gSound_config.sound_quality = SOUND_QUALITY_LOW;
+		}
+		else if (strcmp(value, "medium") == 0){
+			gSound_config.sound_quality = SOUND_QUALITY_MEDIUM;
+		}
+		else{
+			gSound_config.sound_quality = SOUND_QUALITY_HIGH;
+		}
+	}
+	else if (strcmp(setting, "forced_software_buffering") == 0){
+		if (strcmp(value, "true") == 0){
+			gSound_config.forced_software_buffering = 1;
+		}
+		else{
+			gSound_config.forced_software_buffering = 0;
+		}
+	}
+
+}
+
+static void config_general(char *setting, char *value){
+	if (strcmp(setting, "game_path") == 0){
+		strcpy(gGeneral_config.game_path, value);
+	}
+	else if (strcmp(setting, "screenshot_format") == 0) {
+		if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
+		}
+		else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
+		}
+		else {
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_BMP;
+		}
+	}
+	else if (strcmp(setting, "play_intro") == 0) {
+		gGeneral_config.play_intro = (strcmp(value, "true") == 0);
+	}
+	else if (strcmp(setting, "edge_scrolling") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.edge_scrolling = 1;
+		}
+		else {
+			gGeneral_config.edge_scrolling = 0;
+		}
+	}
+	else if (strcmp(setting, "use_imperial") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_IMPERIAL;
+		}
+		else{
+			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_METRIC;
+		}
+	}
+	else if (strcmp(setting, "use_farenheit") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_F;
+		}
+		else{
+			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_C;
+		}
+	}
+	else if (strcmp(setting, "currency") == 0){
+		config_parse_currency(value);
+	}
+
 }
 
 /**
