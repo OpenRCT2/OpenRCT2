@@ -57,11 +57,11 @@ static void* window_map_events[] = {
 	window_map_update,
 	window_map_emptysub,
 	window_map_emptysub,
-	0x0068D093,
-	0x0068D074,
-	0x0068D088,
+	(void*)0x0068D093,
+	(void*)0x0068D074,
+	(void*)0x0068D088,
 	window_map_emptysub,
-	0x0068D055,
+	(void*)0x0068D055,
 	window_map_emptysub,
 	window_map_scrollgetsize,
 	window_map_scrollmousedown,
@@ -70,7 +70,7 @@ static void* window_map_events[] = {
 	window_map_emptysub,
 	window_map_emptysub,
 	window_map_emptysub,
-	0x0068D140,
+	(void*)0x0068D140,
 	window_map_emptysub,
 	window_map_emptysub,
 	window_map_invalidate,
@@ -91,6 +91,15 @@ void window_map_open()
 	//w = window_bring_to_front_by_id(WC_OPTIONS, 0);
 	//if (w != NULL)
 	//	return;
+}
+
+/**
+*
+*  rct2: 0x0068D0F1
+*/
+static void window_map_close()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0068D0F1);
 }
 
 /**
