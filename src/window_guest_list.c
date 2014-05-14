@@ -195,7 +195,7 @@ static void window_guest_list_mouseup()
 		window_close(w);
 		break;
 	case WIDX_MAP:
-		RCT2_CALLPROC_EBPSAFE(0x0068C88A);
+		window_map_open();
 		break;
 	}
 }

@@ -95,6 +95,7 @@
     <ClCompile Include="..\src\window_park.c" />
     <ClCompile Include="..\src\window_finances.c" />
     <ClCompile Include="..\src\window_footpath.c" />
+    <ClCompile Include="..\src\window_map.c" />
     <ClCompile Include="..\src\window_new_ride.c" />
     <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_ride_list.c" />

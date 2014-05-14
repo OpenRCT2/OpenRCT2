@@ -378,7 +378,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->var_48E = 0;
 	w->var_490 = 0;
 	w->var_492 = 0;
-	w->var_4AC = 0;
+	w->selected_tab = 0;
 	w->var_4AE = 0;
 	RCT2_NEW_WINDOW++;
 
