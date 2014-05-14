@@ -308,10 +308,10 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 					top_ = (top + dpi->y) & 0xf;
 					right_ = (right + dpi_->x) &0xf;
 
-					dpi_ = esi;
+					dpi_ = (rct_drawpixelinfo*)esi;
 
-					esi = eax >> 0x1C;
-					esi = RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
+					esi = (char*)(eax >> 0x1C);
+					esi = (char*)RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
 
 					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
 						// push    ebx
@@ -324,7 +324,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 						for (int i = ecx; i >=0; --i) {
 							if (!(ebp & (1 << right_)))
-								dpi_->bits = left_ & 0xFF;
+								dpi_->bits = (char*)(left_ & 0xFF);
 		
 							right_++;
 							right_ = right_ & 0xF;
@@ -464,7 +464,7 @@ void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixe
 
 	int ebx = RCT2_GLOBAL(0xEDF808, uint32);
 	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer,uint16);
-	int ebp = dest_bits_pointer;
+	int ebp = (int)dest_bits_pointer;
 	ebx += (int)source_bits_pointer;
 
 StartLoop:
@@ -530,7 +530,7 @@ TestLoop:
 */
 void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 
-	int _edi = dpi, _esi;
+	int _edi = (int)dpi;
 	sint16 translated_x = x, translated_y = y;
 	char* bits_pointer;
 	bits_pointer = dpi->bits;
@@ -582,7 +582,7 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
 	//esi is the source and bits_pointer is the destination
 	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
 
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), bits_pointer, dpi);
+	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), (int)bits_pointer, (int)dpi);
 }
 
 /**
@@ -597,7 +597,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
 	//return;
 
-	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = dpi, ebp = 0;
+	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
@@ -605,17 +605,17 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 		//
 		return;//jump into 0x67a445
 	}
 	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
 		char* find = "FINDMEDUNCAN";
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 		return;//jump into 0x67a361
 	}
 	else if ((image_id)& 0xE0000000){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);		
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);		
 		/*
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -679,7 +679,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	int translated_x, translated_y;
 	char* bits_pointer;
 
-	ebp = dpi;
+	ebp = (int)dpi;
 	esi = RCT2_GLOBAL(0x9E3D08, uint32);
 	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
 	bits_pointer = dpi->bits;	
@@ -753,11 +753,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, esi, edi, ah used in 0x67a690
-		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, bits_pointer, ebp);
+		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
 }
