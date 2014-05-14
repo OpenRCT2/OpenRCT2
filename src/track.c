@@ -224,3 +224,43 @@ void track_load_list(int edx)
 {
     RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, edx, 0, 0, 0);
 }
+
+/**
+ * rct2: 0x006C9627
+ */
+void sub_6C9627()
+{
+    int val = RCT2_GLOBAL(0x00F44A06, uint8);
+    int ax = RCT2_GLOBAL(0x00F440A8, uint16);
+    int cx = RCT2_GLOBAL(0x00F440AA, uint16);
+    if (val <= 8 || val >= 6) {
+
+        if (RCT2_GLOBAL(0x00F440B0, uint8) == 1) {
+            // Clear the lowest five bits
+            ax &= ~31;
+            cx &= ~31;
+
+            RCT2_CALLPROC_X(0x006EC6D7, ax, 0, cx, 0, 0, 0, 0);
+
+            // Unset third bit in map selection flags
+            RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+        }
+    } else if (val != 0) {
+        if (val == 3) {
+            int dx = RCT2_GLOBAL(0x00F440AC, uint16);
+            int bh = RCT2_GLOBAL(0x00F440AE, uint8);
+            bh &= 3;
+            int bl = RCT2_GLOBAL(0x00F440AF, uint8);
+            int bp = 1;
+            RCT2_CALLPROC_X(0x006C683D, ax, bh<<8+bl, cx, 0, 0, 0, bp);
+        } else {
+            if (RCT2_GLOBAL(0x00F440B0, uint8) == 1) {
+                RCT2_CALLPROC_X(0x006EC6D7, ax, 0, cx, 0, 0, 0, 0);
+
+                RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+                RCT2_GLOBAL(0x00F440B0, uint8) &= ~1;
+            }
+        }
+        RCT2_CALLPROC(0x006C96C0);
+    }
+}

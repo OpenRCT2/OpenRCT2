@@ -91,5 +91,6 @@ enum {
 };
 
 void track_load_list(int edx);
+void sub_6C9627();
 
 #endif
