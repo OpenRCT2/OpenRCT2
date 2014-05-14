@@ -502,7 +502,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		sub_0x67A934(g1_source, dpi, x, y);
 		return;
 	}
-	
+	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
+	return;
 	//dpi on stack
 	int translated_x, translated_y;
 	char* bits_pointer;
