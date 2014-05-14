@@ -233,7 +233,7 @@ void sub_6C9627()
     int val = RCT2_GLOBAL(0x00F44A06, uint8);
     int ax = RCT2_GLOBAL(0x00F440A8, uint16);
     int cx = RCT2_GLOBAL(0x00F440AA, uint16);
-    if (val <= 8 || val >= 6) {
+    if (val >= 6 && val <= 8) {
 
         if (RCT2_GLOBAL(0x00F440B0, uint8) == 1) {
             // Clear the lowest five bits
