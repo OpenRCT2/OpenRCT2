@@ -445,7 +445,106 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  */
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
 {
-	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, (int)dpi, colour);
+	int colour_, colour1, colour2, colour3;
+	uint16 ax, bx, si2;
+	uint8 cl;
+
+	if ((colour & 0x180)) {
+		// jnz     loc_6E719A
+		if (!(colour & 0x100)) {
+			colour = colour & 0x7F;
+		} else {
+			colour = RCT2_ADDRESS(0x009DEDF4,uint8)[colour];
+		}
+
+		colour = colour & 0x2000000;
+
+		if (_si, 8) {
+			gfx_fill_rect(dpi, left, top, bottom, right, colour);
+			return;
+		} else if (_si & 0x20) {
+			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
+			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
+			gfx_fill_rect(dpi, right, top, right, bottom, colour + 2);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 2);
+
+			if (!(_si & 0x10)) {
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+			}
+		} else {
+			gfx_fill_rect(dpi, left, top, left, bottom, colour + 2);
+			gfx_fill_rect(dpi, left, top, right, top, colour + 2);
+			gfx_fill_rect(dpi, right, top, right, bottom, colour + 1);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 1);
+
+			if (!(_si & 0x10)) {
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+			}
+		}
+	} else {
+		if (_si & 0x80) {
+			ax = RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
+			bx = RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
+			cl = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+		} else {
+			ax = RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
+			bx = RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
+			cl = RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8];
+		}
+		colour_ = ((ax & 0xFF) << 12) | (cl << 8) | bx;
+
+		colour2 = ax & 0xFF;
+		colour1 = cl;
+		si2 = (ax & 0xFF00) >> 8;
+
+		if (!(_si & 8)) {
+			if (!(_si & 0x20)) {
+
+				// Draw outline of box, with top and left in one colour
+				// and bottom and right in the other
+				gfx_fill_rect(dpi, left, top, left, bottom - 1, colour1);
+				gfx_fill_rect(dpi, left + 1, top, right - 1, top, colour1);
+				gfx_fill_rect(dpi, right, top, right, bottom - 1, colour2);
+				gfx_fill_rect(dpi, left, bottom, right, bottom, colour2);
+
+				if (!(_si & 0x10)) {
+					if (_si & 0x04) {
+						colour3 = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+					} else {
+						colour3 = colour_ & 0xFF;
+					}
+					gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour3);
+				}
+
+			} else {
+				// jnz     loc_6E70AC
+ // movzx   ebp, [esp+10h+var_10]
+ // movzx   ebp, [esp+10h+var_10]
+				gfx_fill_rect(dpi, left, top, left, bottom, colour2);
+				gfx_fill_rect(dpi, left + 1, top, right, top, colour2);
+
+ // movzx   ebp, byte ptr [esp+10h+var_E+2]
+				gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, colour1);
+				gfx_fill_rect(dpi, left + 1, bottom, right, bottom, colour1);
+
+				if (!(_si & 0x10)) {
+					if (_si & 0x40) {
+						colour3 = colour_ & 0x00FF;
+					} else {
+						if (_si & 0x04) {
+							colour3 = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+						} else {
+							colour3 = colour_ & 0xFF;
+						}
+						colour3 = colour_ & 0xFF00;
+					}
+					gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour3);
+				}
+			}
+		} else {
+			gfx_fill_rect(dpi, left, top, right, bottom, colour);
+		}
+	}
 }
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
