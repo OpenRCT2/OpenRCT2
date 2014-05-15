@@ -26,7 +26,7 @@
 #include "gfx.h"
 #include "rct2.h"
 #include "screenshot.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window_error.h"
 
 

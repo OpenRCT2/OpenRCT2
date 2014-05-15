@@ -22,7 +22,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "peep.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"

@@ -22,7 +22,7 @@
 #include "addresses.h"
 #include "audio.h"
 #include "news_item.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"

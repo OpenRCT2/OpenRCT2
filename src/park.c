@@ -26,7 +26,7 @@
 #include "ride.h"
 #include "scenario.h"
 #include "sprite.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window.h"
 
 int park_is_open()

@@ -20,7 +20,7 @@
 
 #include <memory.h>
 #include "addresses.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "widget.h"
 #include "window.h"
 

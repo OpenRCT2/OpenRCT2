@@ -24,7 +24,7 @@
 #include "news_item.h"
 #include "rct2.h"
 #include "ride.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "window.h"
 

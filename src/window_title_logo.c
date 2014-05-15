@@ -19,7 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
