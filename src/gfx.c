@@ -451,17 +451,16 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 
 	if ((colour & 0x180)) {
 		// jnz     loc_6E719A
-		if (!(colour & 0x100)) {
+		if (colour & 0x100) {
 			colour = colour & 0x7F;
 		} else {
 			colour = RCT2_ADDRESS(0x009DEDF4,uint8)[colour];
 		}
 
-		colour = colour & 0x2000000;
+		colour = colour | 0x2000000;
 
-		if (_si, 8) {
+		if (_si & 8) {
 			gfx_fill_rect(dpi, left, top, bottom, right, colour);
-			return;
 		} else if (_si & 0x20) {
 			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
 			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
