@@ -305,6 +305,7 @@ static int scenario_load_basic(char *path)
 			#endif
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 			if (s6Info->flags != 255) {
+				#ifdef _MSC_VER
 				__asm {
 					push ebp
 					mov ebp, 0141F6F8h
@@ -314,14 +315,34 @@ static int scenario_load_basic(char *path)
 					mov _eax, eax
 					jb loc_67628F
 				}
+				#else
+				__asm__ ( ".intel_syntax noprefix\n \
+						push ebp 	\n\
+						mov ebp, 0x0141F6F8 	\n\
+						mov eax, 0x006A9428 	\n\
+						call eax 	\n\
+						pop ebp 	\n\
+						mov %[_eax], eax 	\n\
+						jb loc_67628F 	\n\
+					" : [_eax] "+m" (_eax) : : "eax" );
+				#endif
 
 				int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
 				format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
 				format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
 				RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
 				RCT2_CALLPROC(0x006A982D);
+				#ifdef _MSC_VER
 				__asm mov _eax, eax
+				#else
+				__asm__ ( ".intel_syntax noprefix\n mov %[_eax], eax " : [_eax] "+m" (_eax) );
+				#endif
+
+				#ifdef _MSC_VER
 			loc_67628F :
+				#else
+				__asm__ ( "loc_67628F :");
+				#endif
 				return _eax;
 			}
 			return 1;
@@ -936,8 +957,14 @@ void scenario_update()
 			for (int i = 0; i < 100; ++i) {
 				int carry;
 				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
+				#ifdef _MSC_VER
 				__asm mov carry, 0;
 				__asm adc carry, 0;
+				#else
+				__asm__ ( ".intel_syntax noprefix\n mov %[carry], 0; " : [carry] "+m" (carry) );
+				__asm__ ( ".intel_syntax noprefix\n adc %[carry], 0; " : [carry] "+m" (carry) );
+				#endif
+
 				if (!carry)
 					break;
 			}

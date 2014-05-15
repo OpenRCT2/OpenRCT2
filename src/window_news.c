@@ -130,8 +130,18 @@ static void window_news_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -147,7 +157,12 @@ static void window_news_update()
 	rct_window *w;
 	rct_news_item *newsItems;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (w->var_480 == -1)
 		return;
@@ -199,7 +214,12 @@ static void window_news_scrollgetsize()
 		height += 42;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov edx, height
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov edx, %[height] " : [height] "+m" (height) );
+	#endif
+
 }
 
 /**
@@ -213,9 +233,24 @@ static void window_news_scrollmousedown()
 	rct_window *w;
 	rct_news_item *newsItems;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[x], cx " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -278,8 +313,18 @@ static void window_news_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }
@@ -295,8 +340,18 @@ static void window_news_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_news_item *newsItems, *newsItem, *newsItem2;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	y = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);

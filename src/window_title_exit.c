@@ -98,8 +98,18 @@ static void window_title_exit_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) != 0)
 		return;
@@ -117,8 +127,18 @@ static void window_title_exit_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }

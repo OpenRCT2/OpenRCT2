@@ -129,8 +129,18 @@ static void window_clear_scenery_mouseup()
 	int limit;
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -172,7 +182,12 @@ static void window_clear_scenery_update()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Close window if another tool is open
 	if (window_clear_scenery_should_close())
@@ -187,7 +202,12 @@ static void window_clear_scenery_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);
@@ -206,8 +226,18 @@ static void window_clear_scenery_paint()
 	rct_drawpixelinfo *dpi;
 	int x, y;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

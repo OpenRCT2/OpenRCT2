@@ -174,8 +174,18 @@ static void window_scenarioselect_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -186,8 +196,18 @@ static void window_scenarioselect_mousedown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
 		w->selected_tab = widgetIndex - 4;
@@ -206,7 +226,12 @@ static void window_scenarioselect_scrollgetsize()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	height = 0;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
@@ -217,8 +242,18 @@ static void window_scenarioselect_scrollgetsize()
 			height += 24;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ecx, 0
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ecx, 0 "  );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov edx, height
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov edx, %[height] " : [height] "+m" (height) );
+	#endif
+
 }
 
 static void window_scenarioselect_scrollmousedown()
@@ -228,9 +263,24 @@ static void window_scenarioselect_scrollmousedown()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[x], cx " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
 		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
@@ -256,9 +306,24 @@ static void window_scenarioselect_scrollmouseover()
 	rct_window *w;
 	rct_scenario_basic *scenario, *selected;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[x], cx " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	selected = NULL;
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
@@ -285,7 +350,12 @@ static void window_scenarioselect_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
@@ -299,8 +369,18 @@ static void window_scenarioselect_paint()
 	rct_widget *widget;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 
@@ -361,8 +441,18 @@ static void window_scenarioselect_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;

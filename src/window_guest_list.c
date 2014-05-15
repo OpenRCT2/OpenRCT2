@@ -187,8 +187,18 @@ static void window_guest_list_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -208,7 +218,12 @@ static void window_guest_list_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->min_width = 350;
 	w->min_height = 330;
@@ -233,9 +248,24 @@ static void window_guest_list_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
@@ -303,9 +333,24 @@ static void window_guest_list_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -331,7 +376,12 @@ static void window_guest_list_update()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
 		RCT2_GLOBAL(0x00F1AF20, uint16)--;
@@ -351,7 +401,12 @@ static void window_guest_list_scrollgetsize()
 	rct_window *w;
 	rct_peep *peep;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -404,8 +459,18 @@ static void window_guest_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ecx, 447
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ecx, 447 "  );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov edx, y
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov edx, %[y] " : [y] "+m" (y) );
+	#endif
+
 }
 
 /**
@@ -419,8 +484,18 @@ static void window_guest_list_scrollmousedown()
 	rct_window *w;
 	rct_peep *peep;
 
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -472,8 +547,18 @@ static void window_guest_list_scrollmouseover()
 	short y;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -500,7 +585,12 @@ static void window_guest_list_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
@@ -534,8 +624,18 @@ static void window_guest_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -598,8 +698,18 @@ static void window_guest_list_scrollpaint()
 	rct_peep *peep;
 	rct_peep_thought *thought;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);

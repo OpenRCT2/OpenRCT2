@@ -199,8 +199,18 @@ static void window_options_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -218,9 +228,19 @@ static void window_options_mouseup()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-			__asm xor al, al
+			#ifdef _MSC_VER
+	__asm xor al, al
+	#else
+	__asm__ ( ".intel_syntax noprefix\n xor al, al "  );
+	#endif
+
 		else
-			__asm mov al, 1
+			#ifdef _MSC_VER
+	__asm mov al, 1
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov al, 1 "  );
+	#endif
+
 
 		RCT2_CALLPROC_EBPSAFE(0x0069C52F);
 		break;
@@ -268,8 +288,18 @@ static void window_options_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -386,16 +416,36 @@ static void window_options_dropdown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (dropdownIndex == -1)
 		return;
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		#ifdef _MSC_VER
+		__asm movzx ax, dropdownIndex		
+		#else
+		__asm__ ( ".intel_syntax noprefix\n movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
+		#endif
+		// the switch replaces ax value
 		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio
 		window_invalidate(w);
 		break;
@@ -434,7 +484,12 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		#ifdef _MSC_VER
+		__asm movzx ax, dropdownIndex		
+		#else
+		__asm__ ( ".intel_syntax noprefix\n movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
+		#endif
+		// the switch replaces ax value
 		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
@@ -463,7 +518,12 @@ static void window_options_update()
 	sint32 format_args = RCT2_GLOBAL(0x009AF280, sint32);
 	rct_window *w;
 	
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// sound devices
 	if (format_args == -1 || RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, sint32) == 0) {
@@ -568,8 +628,18 @@ static void window_options_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

@@ -1316,7 +1316,12 @@ static void game_pause_toggle()
 {
 	char input_bl;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
 
 	if (input_bl & 1) {
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
@@ -1327,7 +1332,12 @@ static void game_pause_toggle()
 			unpause_sounds();
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ebx, 0 "  );
+	#endif
+
 }
 
 /**
@@ -1339,9 +1349,24 @@ static void game_load_or_quit()
 	char input_bl, input_dl;
 	short input_di;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_dl, dl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_dl], dl " : [input_dl] "+m" (input_dl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_di, di
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_di], di " : [input_di] "+m" (input_di) );
+	#endif
+
 
 	if (!(input_bl & 1))
 		return; // 0;
@@ -1359,7 +1384,12 @@ static void game_load_or_quit()
 		break;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ebx, 0 "  );
+	#endif
+
 }
 
 /**

@@ -158,8 +158,18 @@ static void window_game_bottom_toolbar_mouseup()
 	rct_window *w, *mainWindow;
 	rct_news_item *newsItem;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
@@ -211,8 +221,18 @@ static void window_game_bottom_toolbar_tooltip()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
@@ -234,7 +254,12 @@ static void window_game_bottom_toolbar_tooltip()
 		break;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov dx, widgetIndex
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov dx, %[widgetIndex] " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 }
 
 /**
@@ -247,7 +272,12 @@ static void window_game_bottom_toolbar_invalidate()
 	rct_window *w;
 	rct_news_item *newsItem;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Anchor the middle and right panel to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -339,8 +369,18 @@ static void window_game_bottom_toolbar_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Draw panel grey backgrounds
 	gfx_fill_rect(
@@ -547,7 +587,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		_edi = (int)e->paint.dpi;
 		_cx = x;
 		_dx = y;
-		__asm {
+		#ifdef _MSC_VER
+	__asm {
 		mov cx, _cx
 		mov dx, _dx
 		mov esi, w
@@ -560,6 +601,22 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		after:
 		pop ebp
 		}
+	#else
+	__asm__ ( ".intel_syntax noprefix\n \
+	\n\
+		mov cx, %[_cx] 	\n\
+		mov dx, %[_dx] 	\n\
+		mov esi, %[w] 	\n\
+		mov edi, %[_edi] 	\n\
+		push ebp 	\n\
+		mov ebp, 0x0066C3B8 	\n\
+		push %[after] 	\n\
+		push esi 	\n\
+		jmp ebp 	\n\
+		%[after]: 	\n\
+		pop ebp 	\n\
+		 " : [_cx] "+m" (_cx), [_dx] "+m" (_dx), [w] "+m" (w), [_edi] "+m" (_edi), [after] "+m" (after) );
+	#endif
 		break;
 		*/
 
