@@ -245,7 +245,7 @@ void config_init()
 	cfile = (char*) malloc(strlen(path)+strlen("/config.ini")+1);
 	sprintf(cfile, "%s/config.ini", path);
 	#endif
-	
+
 	fp = fopen(cfile, "r");
 	if (!fp) {
 		config_create_default(cfile);
