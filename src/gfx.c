@@ -533,15 +533,14 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 						if (_si & 0x04) {
 							colour3 = RCT2_ADDRESS(0x0141FC49, uint8)[0];
 						} else {
-							colour3 = colour_ & 0xFF;
+							colour3 = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
 						}
-						colour3 = colour_ & 0xFF00;
 					}
 					gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour3);
 				}
 			}
 		} else {
-			gfx_fill_rect(dpi, left, top, right, bottom, colour);
+			gfx_fill_rect(dpi, left, top, right, bottom, colour_);
 		}
 	}
 }
