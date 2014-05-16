@@ -433,7 +433,8 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 }
 
 /**
- * 
+ *  Draw a rectangle, with optional border or fill
+ *
  *  rct2: 0x006E6F81
  * dpi (edi)
  * left (ax)
@@ -441,106 +442,94 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  * right (bx)
  * bottom (dx)
  * colour (ebp)
- * _si (si)
+ * flags (si)
  */
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short flags)
 {
-	int colour_, colour1, colour2, colour3;
-	uint16 ax, bx, si2;
-	uint8 cl;
+	uint8 shadow, fill, hilight;
 
-	if ((colour & 0x180)) {
-		// jnz     loc_6E719A
+	// Flags
+	int no_border, no_fill, pressed;
+
+	no_border = 8;
+	no_fill = 0x10;
+	pressed = 0x20;
+
+	if (colour & 0x180) {
 		if (colour & 0x100) {
 			colour = colour & 0x7F;
 		} else {
 			colour = RCT2_ADDRESS(0x009DEDF4,uint8)[colour];
 		}
 
-		colour = colour | 0x2000000;
+		colour = colour | 0x2000000; //Transparent
 
-		if (_si & 8) {
+		if (flags & no_border) {
 			gfx_fill_rect(dpi, left, top, bottom, right, colour);
-		} else if (_si & 0x20) {
+		} else if (flags & pressed) {
+			// Draw outline of box
 			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
 			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
 			gfx_fill_rect(dpi, right, top, right, bottom, colour + 2);
 			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 2);
 
-			if (!(_si & 0x10)) {
+			if (!(flags & no_fill)) {
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
 			}
 		} else {
+			// Draw outline of box
 			gfx_fill_rect(dpi, left, top, left, bottom, colour + 2);
 			gfx_fill_rect(dpi, left, top, right, top, colour + 2);
 			gfx_fill_rect(dpi, right, top, right, bottom, colour + 1);
 			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 1);
 
-			if (!(_si & 0x10)) {
+			if (!(flags & no_fill)) {
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
 			}
 		}
 	} else {
-		if (_si & 0x80) {
-			ax = RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
-			bx = RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
-			cl = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+		if (flags & 0x80) {
+			shadow	= RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
+			fill	= RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
+			hilight	= RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
 		} else {
-			ax = RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
-			bx = RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
-			cl = RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8];
+			shadow	= RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
+			fill	= RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
+			hilight	= RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8];
 		}
-		colour_ = ((ax & 0xFF) << 12) | (cl << 8) | bx;
 
-		colour2 = ax & 0xFF;
-		colour1 = cl;
-		si2 = (ax & 0xFF00) >> 8;
+		if (flags & no_border) {
+			gfx_fill_rect(dpi, left, top, right, bottom, fill);
+		} else if (flags & pressed) {
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom, shadow);
+			gfx_fill_rect(dpi, left + 1, top, right, top, shadow);
+			gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, hilight);
+			gfx_fill_rect(dpi, left + 1, bottom, right, bottom, hilight);
 
-		if (!(_si & 8)) {
-			if (!(_si & 0x20)) {
-
-				// Draw outline of box, with top and left in one colour
-				// and bottom and right in the other
-				gfx_fill_rect(dpi, left, top, left, bottom - 1, colour1);
-				gfx_fill_rect(dpi, left + 1, top, right - 1, top, colour1);
-				gfx_fill_rect(dpi, right, top, right, bottom - 1, colour2);
-				gfx_fill_rect(dpi, left, bottom, right, bottom, colour2);
-
-				if (!(_si & 0x10)) {
-					if (_si & 0x04) {
-						colour3 = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+			if (!(flags & no_fill)) {
+				if (!(flags & 0x40)) {
+					if (flags & 0x04) {
+						fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
 					} else {
-						colour3 = colour_ & 0xFF;
+						fill = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
 					}
-					gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour3);
 				}
-
-			} else {
-				// jnz     loc_6E70AC
- // movzx   ebp, [esp+10h+var_10]
- // movzx   ebp, [esp+10h+var_10]
-				gfx_fill_rect(dpi, left, top, left, bottom, colour2);
-				gfx_fill_rect(dpi, left + 1, top, right, top, colour2);
-
- // movzx   ebp, byte ptr [esp+10h+var_E+2]
-				gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, colour1);
-				gfx_fill_rect(dpi, left + 1, bottom, right, bottom, colour1);
-
-				if (!(_si & 0x10)) {
-					if (_si & 0x40) {
-						colour3 = colour_ & 0x00FF;
-					} else {
-						if (_si & 0x04) {
-							colour3 = RCT2_ADDRESS(0x0141FC49, uint8)[0];
-						} else {
-							colour3 = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
-						}
-					}
-					gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour3);
-				}
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
 			}
 		} else {
-			gfx_fill_rect(dpi, left, top, right, bottom, colour_);
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom - 1, hilight);
+			gfx_fill_rect(dpi, left + 1, top, right - 1, top, hilight);
+			gfx_fill_rect(dpi, right, top, right, bottom - 1, shadow);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, shadow);
+
+			if (!(flags & no_fill)) {
+				if (flags & 0x04) {
+					fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+				}
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
+			}
 		}
 	}
 }
