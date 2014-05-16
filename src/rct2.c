@@ -325,6 +325,33 @@ char *get_file_path(int pathId)
 	return (char*)ebx;
 }
 
+static void cpuinfo(int * cpuinfo, int _eax) {
+	#ifdef _MSC_VER
+	__asm {
+		mov eax, _eax
+		cpuid
+		mov cpuinfo[0], eax
+		mov cpuinfo[1], ebx
+		mov cpuinfo[2], ecx
+		mov cpuinfo[3], edx
+	}
+	#else
+	cpuinfo[0] = _eax;
+	__asm__ __volatile__ (
+		".intel_syntax noprefix\n\
+		push ebx\n\
+		cpuid\n\
+		mov edi, ebx\n\
+		pop ebx\n\
+		":
+		"+a" (cpuinfo[0]),
+		"=D" (cpuinfo[1]),
+		"=c" (cpuinfo[2]),
+		"=d" (cpuinfo[3])
+	);
+	#endif
+}
+
 /**
  *  Obtains basic system versions and capabilities.
  *  rct2: 0x004076B1
@@ -386,7 +413,11 @@ void get_system_info()
 	else
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
-	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+	// RCT2_CALLFUNC(0x406993, uint32) does not preserve ebx, use own code
+	int reg_abcd[4];
+	cpuinfo(reg_abcd, 1);
+	RCT2_GLOBAL(0x01423C20, uint32) = reg_abcd[3] && 1 << 23;
+
 	#else
 	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
 	#endif
