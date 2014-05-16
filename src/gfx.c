@@ -265,7 +265,8 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 #define RCT2_X_END_POINT_GLOBAL 0x9ABDA8 //sint16
 #define RCT2_DPI_LINE_LENGTH_GLOBAL 0x9ABDB0 //uint16 width+pitch
 
-void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixelinfo *dpi){
+void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, uint16 g1_y_start, uint16 g1_y_end, uint16 g1_x_start, uint16 g1_x_end){
+	//Image_id
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
 		return; //0x67AAB3
 	}
@@ -273,21 +274,60 @@ void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixe
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x4000000){
 		return; //0x67AFD8
 	}
+	
+	uint16 offset_to_first_line = *(uint16*)(RCT2_GLOBAL(0xEDF808, uint32) * 2 + (uint32)source_bits_pointer);
+	//This will now point to the first line
+	char* source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
+	char* dest_pointer = dest_bits_pointer;
+	char* next_dest_pointer = dest_pointer;
 
 	int ebx = RCT2_GLOBAL(0xEDF808, uint32); //G1 y start location
-	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer, uint16);//? x2?? would have though move to width*ebx
+	ebx = RCT2_GLOBAL(ebx * 2 + (uint32)source_bits_pointer, uint16);//? x2?? would have though move to width*ebx
 	//Possibly more information is stored about each horizontal line
 	//maybe an x offset with each one?
-	int ebp = (int)dest_bits_pointer;
-	ebx += (int)source_bits_pointer; //Move to the correct y location?
+	int ebp = (uint32)dest_bits_pointer;
+	ebx += (uint32)source_bits_pointer; //Move to the correct y location?
 	int ecx = 0;
 	int edx = 0;
 StartLoop:
 	edx = 0;
+	uint8 gap_size = *source_pointer++;
+	uint8 no_pixels = *source_pointer++;
+	uint8 last_data_line = gap_size & 0x80;
+	//Clear the last data line bit
+	gap_size &= 0x7f;
+	//Move this to the end
+	char* next_source_pointer = source_pointer + gap_size;
+	
+
+	int x_start = (int)no_pixels - (int)g1_x_start;
+
+	if (x_start > 0){
+		dest_pointer += x_start;
+	}
+	else{
+		source_pointer -= x_start;
+		no_pixels += x_start;
+		if (no_pixels <= 0) goto TestLoop;
+		x_start = 0;
+	}
+	
+	int x_end = x_start + no_pixels - g1_x_end;
+
+	if (x_end > 0){
+		no_pixels -= x_end;
+		if (no_pixels <= 0) goto TestLoop;
+	}
+
+	for (; no_pixels > 0; no_pixels--, dest_pointer++, source_pointer++){
+		*dest_pointer = *source_pointer;
+	}
+	goto TestLoop;
+
 	int cx = RCT2_GLOBAL(ebx, uint16); //Maybe X start stop offsets
 	int cl = cx & 0xff;
 	RCT2_GLOBAL(0x9ABDB4, uint8) = cl; //start offset
-
+	
 	ebx += 2;//skip the extra offset info
 	cx &= 0xFF7F;
 	cl &= 0x7F; //??
@@ -345,6 +385,14 @@ StartLoop:
 		RCT2_GLOBAL(edi, uint32) = RCT2_GLOBAL(esi, uint32);
 	}*/
 TestLoop:
+	source_pointer = next_source_pointer;
+	if (!last_data_line)goto StartLoop;
+	next_dest_pointer += dpi->width + dpi->pitch;
+	dest_pointer = next_dest_pointer;
+	g1_y_end--;
+	if (g1_y_end)goto StartLoop;
+	return;
+
 	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
 	edx = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 	ebp += edx;
@@ -360,11 +408,11 @@ TestLoop:
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
 void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y){
-
+	uint16 g1_y_start, g1_x_start;
 	char* bits_pointer;
-	bits_pointer = dest_dpi->bits;
 
-	RCT2_GLOBAL(0xEDF808, uint32) = 0;
+	bits_pointer = dest_dpi->bits;
+	g1_y_start = 0;
 
 	int start_y, end_y;
 	start_y = y + source_g1->y_offset - dest_dpi->y;
@@ -376,7 +424,7 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 		//If the end point is now <= 0 no need to draw
 		if (end_y <= 0)return;
 
-		RCT2_GLOBAL(0xEDF808, sint16) -= start_y;
+		g1_y_start -= start_y;
 		start_y = 0;
 	}
 	else{
@@ -394,8 +442,9 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 		if (end_y <= 0)return;
 	}
 	
-	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
+	
 	int start_x, end_x;
+	g1_x_start = 0;
 	start_x = x + source_g1->x_offset - dest_dpi->x;
 	
 	//If the start position is negative reset to zero
@@ -405,7 +454,7 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 		//If the end point is now <= 0 no need to draw
 		if (end_x <= 0)return;
 
-		RCT2_GLOBAL(0xEDF80C, sint16) -= start_x;
+		g1_x_start -= start_x;
 		start_x = 0;
 	}
 	else{
@@ -426,8 +475,10 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dest_dpi->width + dest_dpi->pitch;
 	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = end_x;
 	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = end_y;
-	char* find = "FINDMEDUNCAN";
-	sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dest_dpi);
+	RCT2_GLOBAL(0xEDF808, uint16) = g1_y_start;
+	RCT2_GLOBAL(0xEDF80C, uint16) = g1_x_start;
+
+	sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
 	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, source_g1->offset, bits_pointer, dest_dpi);
 }
 
