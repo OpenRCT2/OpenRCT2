@@ -1041,18 +1041,70 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006C2321
  * buffer (esi)
  */
 int gfx_get_string_width(char *buffer)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int base;
+	int width;
 
-	esi = (int)buffer;
-	RCT2_CALLFUNC_X(0x006C2321, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	char curr_char;
 
-	return ecx & 0xFFFF;
+	curr_char = 0;
+	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	width = 0;
+
+	for (curr_char = *buffer; curr_char > 0; buffer++, curr_char = *buffer) {
+
+		if (curr_char >= 0x20) {
+			width += RCT2_ADDRESS(0x0141E9E8, uint8)[base + (curr_char-0x20)];
+			continue;
+		}
+		switch(curr_char) {
+		case 1:
+			width = *buffer;
+			buffer++;
+			break;
+		case 2:
+		case 3:
+		case 4:
+			buffer++;
+			break;
+		case 7:
+			base = 0x1C0;
+			break;
+		case 8:
+			base = 0x2A0;
+			break;
+		case 9:
+			base = 0x0E0;
+			break;
+		case 0x0A:
+			base = 0;
+			break;
+		case 0x17:
+			curr_char = *buffer;
+			curr_char &= 0x7FFFF;
+			buffer += 4;
+			curr_char <<= 4;
+			width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[curr_char];
+			curr_char = 0;
+			break;
+		default:
+			if (curr_char <= 0x10) {
+				continue;
+			}
+			buffer += 2;
+			if (curr_char <= 0x16) {
+				continue;
+			}
+			buffer += 2;
+			break;
+		}
+	}
+	return width;
 }
 
 /**
