@@ -275,11 +275,11 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 		return; //0x67AFD8
 	}
 	
-	uint16 offset_to_first_line = *(uint16*)(RCT2_GLOBAL(0xEDF808, uint32) * 2 + (uint32)source_bits_pointer);
+	uint16 offset_to_first_line = *(uint16*)(g1_y_start*2 + (uint32)source_bits_pointer);
 	//This will now point to the first line
 	char* source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
 	char* dest_pointer = dest_bits_pointer;
-	char* next_dest_pointer = dest_pointer;
+	char* next_dest_pointer = dest_bits_pointer;
 
 	int ebx = RCT2_GLOBAL(0xEDF808, uint32); //G1 y start location
 	ebx = RCT2_GLOBAL(ebx * 2 + (uint32)source_bits_pointer, uint16);//? x2?? would have though move to width*ebx
@@ -291,43 +291,18 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 	int edx = 0;
 StartLoop:
 	edx = 0;
-	uint8 gap_size = *source_pointer++;
 	uint8 no_pixels = *source_pointer++;
-	uint8 last_data_line = gap_size & 0x80;
+	uint8 gap_size = *source_pointer++;
+	uint8 last_data_line = no_pixels & 0x80;
 	//Clear the last data line bit
-	gap_size &= 0x7f;
+	no_pixels &= 0x7f;
 	//Move this to the end
-	char* next_source_pointer = source_pointer + gap_size;
+	char* next_source_pointer = source_pointer + no_pixels;
 	
-
-	int x_start = (int)no_pixels - (int)g1_x_start;
-
-	if (x_start > 0){
-		dest_pointer += x_start;
-	}
-	else{
-		source_pointer -= x_start;
-		no_pixels += x_start;
-		if (no_pixels <= 0) goto TestLoop;
-		x_start = 0;
-	}
-	
-	int x_end = x_start + no_pixels - g1_x_end;
-
-	if (x_end > 0){
-		no_pixels -= x_end;
-		if (no_pixels <= 0) goto TestLoop;
-	}
-
-	for (; no_pixels > 0; no_pixels--, dest_pointer++, source_pointer++){
-		*dest_pointer = *source_pointer;
-	}
-	goto TestLoop;
-
 	int cx = RCT2_GLOBAL(ebx, uint16); //Maybe X start stop offsets
 	int cl = cx & 0xff;
 	RCT2_GLOBAL(0x9ABDB4, uint8) = cl; //start offset
-	
+
 	ebx += 2;//skip the extra offset info
 	cx &= 0xFF7F;
 	cl &= 0x7F; //??
@@ -339,29 +314,40 @@ StartLoop:
 	edx = dl;
 	edx -= RCT2_GLOBAL(0xEDF80C, sint32);//g1 x start location
 	int edi = ebp;
-	//Looks like checking line is with vision
-	if (edx > 0){
+
+	int x_start = (int)gap_size - (int)g1_x_start;
+
+	if (edx > 0){ //edx x_start
 		edi += edx;
+		dest_pointer += x_start;
 	}
 	else{
+		source_pointer -= x_start;
+		no_pixels += x_start;
+
 		esi -= edx;
 		cx += edx & 0xFFFF;
-		if (cx <= 0){
-			goto TestLoop;
-			//jump to 0x67AA97
-		}
+
+		if (cx <= 0) goto TestLoop;//cx
+		x_start = 0;
 		edx &= 0xFFFF0000;
 	}
+	
+	int x_end = x_start + (int)no_pixels - (int)g1_x_end;
 	int dx = edx&0xFFFF;
 	dx += cx;
 	dx -= RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16);
-	if (dx > 0){
+
+	if (dx > 0){ //dx x_end
+		no_pixels -= x_end;
 		cx -= dx;
-		if (cx <= 0){
-			goto TestLoop;
-			//jump to 0x67AA97
-		}
+		if (cx <= 0) goto TestLoop;//cx
 	}
+
+	for (; no_pixels > 0; no_pixels--, dest_pointer++, source_pointer++){
+		*dest_pointer = *source_pointer;
+	}
+	goto TestLoop;
 
 	for (; cx > 0; cx--, edi++, esi++){
 		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
@@ -386,18 +372,22 @@ StartLoop:
 	}*/
 TestLoop:
 	source_pointer = next_source_pointer;
-	if (!last_data_line)goto StartLoop;
-	next_dest_pointer += dpi->width + dpi->pitch;
+	int test = (RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80);
+	if (!test) goto StartLoop;
+	//if (!last_data_line)goto StartLoop;
+	next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
 	dest_pointer = next_dest_pointer;
-	g1_y_end--;
-	if (g1_y_end)goto StartLoop;
-	return;
 
-	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
 	edx = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 	ebp += edx;
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16)--;
-	if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16))goto StartLoop;
+	
+	test = --RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16);
+	g1_y_end--;
+	if (g1_y_end)goto StartLoop;//test
+	return;
+
+//	
+//	if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16))goto StartLoop;
 
 }
 
