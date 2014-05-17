@@ -18,10 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <memory.h>
 #include "addresses.h"
+#include "rct2.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -269,8 +273,18 @@ static void window_dropdown_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

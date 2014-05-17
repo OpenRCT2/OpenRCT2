@@ -18,7 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#define _CRT_SECURE_NO_WARNINGS
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
+#include <dirent.h>
+#include <stdio.h>
+
+#include <string.h>
 #include "addresses.h"
 #include "date.h"
 #include "finance.h"
@@ -31,7 +39,7 @@
 #include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "viewport.h"
 
@@ -73,8 +81,8 @@ static rct_scenario_basic *get_scenario_by_filename(char *filename)
 void scenario_load_list()
 {
 	int i;
-	HANDLE hFindFile;
-	WIN32_FIND_DATAA findFileData;
+	DIR *dhandle;
+	struct dirent *ent;
 
 	// Load scores
 	scenario_scores_load();
@@ -83,13 +91,12 @@ void scenario_load_list()
 	for (i = 0; i < RCT2_NUM_SCENARIOS; i++)
 		RCT2_SCENARIO_LIST[i].flags &= ~SCENARIO_FLAGS_VISIBLE;
 
-	// Enumerate through each scenario in the directory
-	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), &findFileData);
-	if (hFindFile != INVALID_HANDLE_VALUE) {
-		do {
-			scenario_list_add(findFileData.cFileName);
-		} while (FindNextFile(hFindFile, &findFileData));
-		FindClose(hFindFile);
+	dhandle = opendir(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char));
+	if (dhandle) {
+		while (ent = readdir(dhandle))
+			scenario_list_add(ent->d_name);
+
+		closedir(dhandle);
 	}
 
 	// Sort alphabetically
@@ -205,8 +212,8 @@ static int scenario_list_sort_compare(const void* a, const void* b)
  */
 static void scenario_scores_load()
 {
-	HANDLE hFile;
-	DWORD bytes_read;
+	FILE * hFile;
+	size_t bytes_read;
 
 	// Free scenario list if already allocated
 	if (RCT2_SCENARIO_LIST != UNINITIALISED_SCENARIO_LIST) {
@@ -215,21 +222,21 @@ static void scenario_scores_load()
 	}
 
 	// Try and load the scores
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, (void*)0x009A9FFC, 16, &bytes_read, NULL);
+	hFile = fopen(get_file_path(PATH_ID_SCORES), "r");
+	if (hFile) {
+		bytes_read = fread((void*)0x009A9FFC, 1, 16, hFile);
 		if (bytes_read == 16) {
 			_scenarioListSize = RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic);
 			RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_malloc(_scenarioListSize);
-			ReadFile(hFile, RCT2_SCENARIO_LIST, _scenarioListSize, &bytes_read, NULL);
-			CloseHandle(hFile);
+			bytes_read = fread(RCT2_SCENARIO_LIST, 1, _scenarioListSize, hFile);
+			fclose(hFile);
 			if (bytes_read == _scenarioListSize)
 				return;
 		} else {
-			CloseHandle(hFile);
+			fclose(hFile);
 		}
-	}
+	} else
+		printf("error, cannot open \"%s\"\n", get_file_path(PATH_ID_SCORES));
 
 	// Unable to load scores, allocate some space for a reload
 	RCT2_NUM_SCENARIOS = 0;
@@ -243,16 +250,15 @@ static void scenario_scores_load()
  */
 static void scenario_scores_save()
 {
-	HANDLE hFile;
-	DWORD bytes_written;
+	FILE * hFile;
+	size_t bytes_written;
 
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, (void*)0x009A9FFC, 16, &bytes_written, NULL);
+	hFile = fopen(get_file_path(PATH_ID_SCORES), "w");
+	if (hFile) {
+		bytes_written = fwrite((void*)0x009A9FFC, 1, 16, hFile);
 		if (RCT2_NUM_SCENARIOS > 0)
-			WriteFile(hFile, RCT2_SCENARIO_LIST, RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic), &bytes_written, NULL);
-		CloseHandle(hFile);
+			bytes_written = fwrite(RCT2_SCENARIO_LIST, 1, RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic), hFile);
+		fclose(hFile);
 	}
 }
 
@@ -262,25 +268,44 @@ static void scenario_scores_save()
  */
 static int scenario_load_basic(char *path)
 {
+	#ifdef _WIN32
 	HANDLE hFile;
+	#else
+	FILE * hFile;
+	#endif
 	int _eax;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
+	#ifdef _WIN32
+	#define hFILE_OK hFile != INVALID_HANDLE_VALUE
 	hFile = CreateFile(
 		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
 	);
-	if (hFile != INVALID_HANDLE_VALUE) {
+	#else
+	#define hFILE_OK hFile
+	hFile = fopen(path, "r");
+	#endif
+	if (hFILE_OK) {
+		#ifdef _WIN32
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
+		#else
+		RCT2_GLOBAL(0x009E382C, FILE*) = hFile;
+		#endif
 
 		// Read first chunk
 		sawyercoding_read_chunk(hFile, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
 			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
+			#ifdef _WIN32
 			CloseHandle(hFile);
+			#else
+			fclose(hFile);
+			#endif
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 			if (s6Info->flags != 255) {
+				#ifdef _MSC_VER
 				__asm {
 					push ebp
 					mov ebp, 0141F6F8h
@@ -290,19 +315,43 @@ static int scenario_load_basic(char *path)
 					mov _eax, eax
 					jb loc_67628F
 				}
+				#else
+				__asm__ ( ".intel_syntax noprefix\n \
+						push ebp 	\n\
+						mov ebp, 0x0141F6F8 	\n\
+						mov eax, 0x006A9428 	\n\
+						call eax 	\n\
+						pop ebp 	\n\
+						mov %[_eax], eax 	\n\
+						jb loc_67628F 	\n\
+					" : [_eax] "+m" (_eax) : : "eax" );
+				#endif
 
 				int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
 				format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
 				format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
 				RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
 				RCT2_CALLPROC(0x006A982D);
+				#ifdef _MSC_VER
 				__asm mov _eax, eax
+				#else
+				__asm__ ( ".intel_syntax noprefix\n mov %[_eax], eax " : [_eax] "+m" (_eax) );
+				#endif
+
+				#ifdef _MSC_VER
 			loc_67628F :
+				#else
+				__asm__ ( "loc_67628F :");
+				#endif
 				return _eax;
 			}
 			return 1;
 		}
+		#ifdef _WIN32
 		CloseHandle(hFile);
+		#else
+		fclose(hFile);
+		#endif
 	}
 
 	RCT2_GLOBAL(0x009AC31B, sint8) = -1;
@@ -317,18 +366,36 @@ static int scenario_load_basic(char *path)
  */
 void scenario_load(char *path)
 {
+	#ifdef _WIN32
 	HANDLE hFile;
+	#else
+	FILE * hFile;
+	#endif
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
+	#ifdef _WIN32
+	#define hFILE_OK hFile != INVALID_HANDLE_VALUE
 	hFile = CreateFile(
 		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
 	);
-	if (hFile != INVALID_HANDLE_VALUE) {
+	#else
+	#define hFILE_OK hFile
+	hFile = fopen(path, "r");
+	#endif
+	if (hFILE_OK) {
+		#ifdef _WIN32
 		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
+		#else
+		RCT2_GLOBAL(0x009E382C, FILE*) = hFile;
+		#endif
 		if (!sawyercoding_validate_checksum(hFile)) {
+			#ifdef _WIN32
 			CloseHandle(hFile);
+			#else
+			fclose(hFile);
+			#endif
 			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 			return;
@@ -382,7 +449,11 @@ void scenario_load(char *path)
 			// Read more game data, including research items and rides
 			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
+			#ifdef _WIN32
 			CloseHandle(hFile);
+			#else
+			fclose(hFile);
+			#endif
 
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
@@ -393,7 +464,11 @@ void scenario_load(char *path)
 			return;
 		}
 
+		#ifdef _WIN32
 		CloseHandle(hFile);
+		#else
+		fclose(hFile);
+		#endif
 	}
 
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
@@ -410,8 +485,12 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	rct_window *mainWindow;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
+	#ifdef _WIN32
 	RCT2_GLOBAL(0x009AA0F0, uint32) = RCT2_GLOBAL(0x00F663B0, uint32) ^ timeGetTime();
 	RCT2_GLOBAL(0x009AA0F4, uint32) = RCT2_GLOBAL(0x00F663B4, uint32) ^ timeGetTime();
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
 
 	subsitute_path(
@@ -878,8 +957,14 @@ void scenario_update()
 			for (int i = 0; i < 100; ++i) {
 				int carry;
 				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
+				#ifdef _MSC_VER
 				__asm mov carry, 0;
 				__asm adc carry, 0;
+				#else
+				__asm__ ( ".intel_syntax noprefix\n mov %[carry], 0; " : [carry] "+m" (carry) );
+				__asm__ ( ".intel_syntax noprefix\n adc %[carry], 0; " : [carry] "+m" (carry) );
+				#endif
+
 				if (!carry)
 					break;
 			}

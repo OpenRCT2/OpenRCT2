@@ -21,7 +21,7 @@
 #include "addresses.h"
 #include "editor.h"
 #include "game.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "tutorial.h"
 #include "widget.h"
@@ -109,7 +109,12 @@ static void window_title_menu_mouseup()
 {
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 	if (widgetIndex == WIDX_START_NEW_GAME) {
 		window_scenarioselect_open();
 	} else if (widgetIndex == WIDX_CONTINUE_SAVED_GAME) {
@@ -123,9 +128,24 @@ static void window_title_menu_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
 		gDropdownItemsFormat[0] = STR_TUTORIAL_BEGINNERS;
@@ -159,8 +179,18 @@ static void window_title_menu_dropdown()
 {
 	short widgetIndex, dropdownIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
 
 	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
 		tutorial_start(dropdownIndex);
@@ -192,8 +222,18 @@ static void window_title_menu_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }

@@ -46,6 +46,19 @@ typedef unsigned long long uint64;
 
 #define countof(x)			_countof(x)
 
+#ifndef _WIN32
+#define min(x,y) ((x)>(y)?(y):(x))
+#define max(x,y) ((x)<(y)?(y):(x))
+#endif
+
+#ifndef _WIN32
+#define MAX_PATH 4096 // TODO dynamically allocate
+#define _stricmp strcasecmp
+#define _strcmpi strcasecmp
+#endif
+
+#define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
 void rct2_finish();
 
 enum {

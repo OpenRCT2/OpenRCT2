@@ -22,8 +22,13 @@
 
 #include <string.h>
 #include <setjmp.h>
+#ifdef _WIN32
 #include <windows.h>
-#include <ShlObj.h>
+#include <shlobj.h>
+#else
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
 #include <SDL.h>
 #include "addresses.h"
 #include "climate.h"
@@ -57,17 +62,25 @@ static void rct2_update_2();
 static int _finished;
 static jmp_buf _end_update_jump;
 
+#ifdef _WIN32
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	return TRUE;
 }
+#endif
 
+#ifdef _WIN32
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+#else
+int main(int argc, char **argv)
+#endif
 {
+	#ifdef _WIN32
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
+	#endif
 	
 	config_init();
 	rct2_init();
@@ -147,12 +160,25 @@ void rct2_init()
 // rct2: 0x00683499
 void rct2_init_directories()
 {
+	#ifdef _WIN32
 	// check install directory
 	DWORD dwAttrib = GetFileAttributes(gGeneral_config.game_path);
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
 		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
+	#else
+	struct stat s;
+	int err;
+	
+	err = stat(gGeneral_config.game_path, &s);
+	if (err == -1 || !S_ISDIR(s.st_mode)) {
+		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
+		exit(-1);
+	}
+	
+	fprintf(stderr, "TODO %s %s:%d change paths\n", __FILE__, __func__, __LINE__);
+	#endif
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
 
@@ -182,17 +208,25 @@ void rct2_startup_checks()
 {
 	// check if game is already running
 
-	RCT2_CALLPROC(0x00674C0B);
+	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
 }
 
 void rct2_update()
 {
 	// Set 0x009DE564 to the value of esp
 	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
+	#ifdef _MSC_VER
 	__asm {
 		mov eax, 009DE564h
 		mov [eax], esp
 	}
+	#else
+	__asm__ ( ".intel_syntax noprefix\n \
+	\n\
+		mov eax, 0x009DE564 	\n\
+		mov [eax], esp 	\n\
+	 " : : : "eax" );
+	#endif
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();
@@ -249,7 +283,11 @@ void rct2_update_2()
 {
 	int tick, tick2;
 
+	#ifdef _WIN32
 	tick = timeGetTime();
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 
 	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
 	if (RCT2_GLOBAL(0x009DE588, sint16) > 500)
@@ -295,12 +333,40 @@ char *get_file_path(int pathId)
 	return (char*)ebx;
 }
 
+static void cpuinfo(int * cpuinfo, int _eax) {
+	#ifdef _MSC_VER
+	__asm {
+		mov eax, _eax
+		cpuid
+		mov cpuinfo[0], eax
+		mov cpuinfo[1], ebx
+		mov cpuinfo[2], ecx
+		mov cpuinfo[3], edx
+	}
+	#else
+	cpuinfo[0] = _eax;
+	__asm__ __volatile__ (
+		".intel_syntax noprefix\n\
+		push ebx\n\
+		cpuid\n\
+		mov edi, ebx\n\
+		pop ebx\n\
+		":
+		"+a" (cpuinfo[0]),
+		"=D" (cpuinfo[1]),
+		"=c" (cpuinfo[2]),
+		"=d" (cpuinfo[3])
+	);
+	#endif
+}
+
 /**
  *  Obtains basic system versions and capabilities.
  *  rct2: 0x004076B1
  */
 void get_system_info()
 {
+	#ifdef _WIN32
 	OSVERSIONINFO versionInfo;
 	SYSTEM_INFO sysInfo;
 	MEMORYSTATUS memInfo;
@@ -330,7 +396,7 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
-	uint32 size = 80;
+	DWORD size = 80;
 	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
 	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
@@ -355,7 +421,14 @@ void get_system_info()
 	else
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
-	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+	// RCT2_CALLFUNC(0x406993, uint32) does not preserve ebx, use own code
+	int reg_abcd[4];
+	cpuinfo(reg_abcd, 1);
+	RCT2_GLOBAL(0x01423C20, uint32) = reg_abcd[3] && 1 << 23;
+
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 
@@ -365,6 +438,7 @@ void get_system_info()
  */
 void get_system_time()
 {
+	#ifdef _WIN32
 	SYSTEMTIME systime;
 
 	GetSystemTime(&systime);
@@ -372,6 +446,9 @@ void get_system_time()
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 /**
@@ -380,11 +457,15 @@ void get_system_time()
  */
 void get_local_time()
 {
+	#ifdef _WIN32
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 /**

@@ -18,11 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <limits.h>
 #include <string.h>
 #include "addresses.h"
 #include "park.h"
 #include "peep.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
@@ -38,7 +39,7 @@ enum {
 	WINDOW_CHEATS_PAGE_GUESTS
 };
 
-static enum WINDOW_CHEATS_WIDGET_IDX {
+enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -183,8 +184,18 @@ static void window_cheats_money_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -214,8 +225,18 @@ static void window_cheats_guests_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	rct_peep* peep;
 	uint16 sprite_idx;
 
@@ -245,7 +266,12 @@ static void window_cheats_update()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->var_48E++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
@@ -256,7 +282,12 @@ static void window_cheats_invalidate()
 	int i;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	strcpy((char*)0x009BC677, "Cheats");
 
 	rct_widget *widgets = window_cheats_page_widgets[w->page];
@@ -276,8 +307,18 @@ static void window_cheats_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_cheats_draw_tab_images(dpi, w);

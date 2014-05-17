@@ -32,7 +32,7 @@
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
 #include "viewport.h"
@@ -274,8 +274,10 @@ static void game_get_next_input(int *x, int *y, int *state)
 	//}
 }
 
+#ifdef _WIN32
 #include <windows.h>
 POINT _dragPosition;
+#endif
 
 static void input_mouseover(int x, int y, rct_window *w, int widgetIndex);
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
@@ -289,6 +291,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex);
  */
 static void game_handle_input_mouse(int x, int y, int state)
 {
+	#ifdef _WIN32
 	rct_window *w;
 	rct_widget *widget;
 	int widgetIndex;
@@ -500,6 +503,9 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	}
+	#else
+	fprintf(stderr, "TODO %s %s:%d\n", __FILE__, __func__, __LINE__);
+	#endif
 }
 
 /**
@@ -1310,7 +1316,12 @@ static void game_pause_toggle()
 {
 	char input_bl;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
 
 	if (input_bl & 1) {
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
@@ -1321,7 +1332,12 @@ static void game_pause_toggle()
 			unpause_sounds();
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ebx, 0 "  );
+	#endif
+
 }
 
 /**
@@ -1333,9 +1349,24 @@ static void game_load_or_quit()
 	char input_bl, input_dl;
 	short input_di;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_dl, dl
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_dl], dl " : [input_dl] "+m" (input_dl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_di, di
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov %[input_di], di " : [input_di] "+m" (input_di) );
+	#endif
+
 
 	if (!(input_bl & 1))
 		return; // 0;
@@ -1353,7 +1384,12 @@ static void game_load_or_quit()
 		break;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( ".intel_syntax noprefix\n mov ebx, 0 "  );
+	#endif
+
 }
 
 /**
@@ -1430,14 +1466,22 @@ static void load_landscape()
 int game_load_save()
 {
 	rct_window *mainWindow;
+	#ifdef _WIN32
 	HANDLE hFile;
+	#else
+	FILE *hFile;
+	#endif
 	char *path;
 	int i, j;
 
 	path = (char*)0x0141EF68;
+	#ifdef _WIN32
 	hFile = CreateFile(
 		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
 	);
+	#else
+	hFile = fopen(path, "r");
+	#endif
 	if (hFile == NULL) {
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
@@ -1446,7 +1490,11 @@ int game_load_save()
 
 	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
 	if (!sawyercoding_validate_checksum(hFile)) {
+		#ifdef _WIN32
 		CloseHandle(hFile);
+		#else
+		fclose(hFile);
+		#endif
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
@@ -1480,7 +1528,11 @@ int game_load_save()
 	// Read game data, including sprites
 	sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
 
+	#ifdef _WIN32
 	CloseHandle(hFile);
+	#else
+	fclose(hFile);
+	#endif
 
 	// Check expansion pack
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);

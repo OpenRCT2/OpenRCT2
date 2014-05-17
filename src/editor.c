@@ -31,7 +31,7 @@
 #include "viewport.h"
 #include "finance.h"
 #include "audio.h"
-#include "strings.h"
+#include "string_ids.h"
 
 static void set_all_land_owned();
 

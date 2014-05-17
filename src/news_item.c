@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "audio.h"
 #include "date.h"
 #include "news_item.h"
 #include "rct2.h"
 #include "ride.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "window.h"
 

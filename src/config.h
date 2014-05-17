@@ -21,7 +21,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include "rct2.h"
 
 enum {
