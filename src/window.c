@@ -99,7 +99,22 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 
 	return NULL;
 }
-
+static void RCT2_CALLPROC_EVENT_HANDLER(int address, rct_window* w)
+{
+	__asm {
+		push address
+			push w
+			mov eax, 0
+			mov ebx, 0
+			mov ecx, 0
+			mov edx, 0
+			mov esi, w
+			mov edi, 0
+			mov ebp, 0
+			call[esp + 4]
+			add esp, 8
+	}
+}
 /**
  * 
  *  rct2: 0x006ED7B0
@@ -111,7 +126,7 @@ void window_dispatch_update_all()
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
 	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UPDATE], 0, 0, 0, 0, (int)w, 0, 0);
+		RCT2_CALLPROC_EVENT_HANDLER(w->event_handlers[WE_UPDATE], w);
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
@@ -142,7 +157,7 @@ void window_update_all()
 	if (RCT2_GLOBAL(0x009DEB7C, sint16) >= 1000) {
 		RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 		for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int)w, 0, 0);
+			RCT2_CALLPROC_EVENT_HANDLER(w->event_handlers[WE_UNKNOWN_07],w);
 	}
 
 	// Border flash invalidation

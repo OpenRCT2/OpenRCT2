@@ -241,11 +241,11 @@ static void window_cheats_guests_mouseup()
 	}
 }
 
-static void window_cheats_update()
+static void window_cheats_update(rct_window *w)
 {
-	rct_window *w;
+	rct_window *w2;
 
-	__asm mov w, esi
+	__asm mov w2, esi
 
 	w->var_48E++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);

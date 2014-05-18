@@ -180,6 +180,22 @@ void game_logic_update()
 static void game_handle_input_mouse();
 static void game_get_next_input(int *x, int *y, int *state);
 
+static void RCT2_CALLPROC_EVENT_HANDLER(int address, rct_window* w)
+{
+	__asm {
+		push address
+			push w
+			mov eax, 0
+			mov ebx, 0
+			mov ecx, 0
+			mov edx, 0
+			mov esi, w
+			mov edi, 0
+			mov ebp, 0
+			call[esp+4]
+			add esp, 8
+	}
+}
 /**
  * 
  *  rct2: 0x006EA627
@@ -195,7 +211,7 @@ void game_handle_input()
 
 	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
 		for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int)w, 0, 0);
+			RCT2_CALLPROC_EVENT_HANDLER(w->event_handlers[WE_UNKNOWN_07], w);
 
 		RCT2_CALLPROC_EBPSAFE(0x006EA73F);
 		RCT2_CALLPROC_EBPSAFE(0x006E8346); // update_cursor_position
@@ -229,7 +245,7 @@ void game_handle_input()
 	}
 
 	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0, (int)w, 0, 0);
+		RCT2_CALLPROC_EVENT_HANDLER(w->event_handlers[WE_UNKNOWN_08],w);
 }
 
 /**
