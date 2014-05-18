@@ -1261,358 +1261,443 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
+
+void colour_char(int al, uint16* current_font_flags) {
+
+	int eax;
+	uint32* ebp;
+
+	 // colour_char
+	eax = al & 0xFF;
+	// mov     ebp, g1_elements+13320h
+	ebp = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 0x13320, uint32);
+	// mov     eax, [ebp+eax*4+0]
+	eax = ebp[eax*4];
+
+	if (!(*current_font_flags & 2)) {
+		eax = eax & 0x0FF0000FF;
+	}
+	// Store current colour? 
+	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
+	
+}
+
+
+void sub_682AC7(int ebp, int* eax, uint16* current_font_flags) {
+
+	 // loc_682AC7
+	*eax = RCT2_ADDRESS(0x0141FD45, uint8)[ebp * 8];
+	if (*current_font_flags & 2) {
+		*eax |= 0x0A0A00;
+	}
+	// Store current colour? 
+	RCT2_GLOBAL(0x009ABE05, uint32) = *eax;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
+	*eax = 0;
+	// jmp     loc_682842
+
+}
+
+
 /**
  * 
  *  rct2: 0x00682702
  * dpi (edi)
- * format (esi)
+ * buffer (esi)
  * colour (al)
  * x (cx)
  * y (dx)
  */
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y)
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	eax = colour;
-	ebx = 0;
-	ecx = x;
-	edx = y;
-	esi = (int)format;
-	edi = (int)dpi;
-	ebp = 0;
-	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	// eax = colour;
+	// ebx = 0;
+	// ecx = x;
+	// edx = y;
+	// esi = (int)buffer;
+	// edi = (int)dpi;
+	// ebp = 0;
+	// RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
-	gLastDrawStringX = ecx;
-	gLastDrawStringY = edx;
-
+	int max_x = x;
+	int max_y = y;
 
 	RCT2_GLOBAL(0x00EDF840, uint16) = x;
 	RCT2_GLOBAL(0x00EDF842, uint16) = y;
 
 	if (colour & 0xFE) {
-                 // jz      loc_682853
+		// jz      loc_682853
 	}
 
 	if ((x >= dpi->x + dpi->width)  || (x <= dpi->x) ||
 		(y >= dpi->y + dpi->height) || (y <= dpi->y)) {
 		return;
 	}
-	if (colour == 0xFF) {
-		// jz      loc_682853
-	}
-
 	uint16* current_font_flags = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
 	uint16* current_font_sprite_base = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
- // switch_colour:
-	*current_font_flags = 0;
-	if (*current_font_sprite_base < 0) {
-		*current_font_flags |= 4;
-		if (*current_font_sprite_base != 0xFFFF) {
-			*current_font_flags |= 8;
+	if (!(colour == 0xFF)) {
+
+		// switch_colour:
+		*current_font_flags = 0;
+		if (*current_font_sprite_base < 0) {
+			*current_font_flags |= 4;
+			if (*current_font_sprite_base != 0xFFFF) {
+				*current_font_flags |= 8;
+			}
+			*current_font_sprite_base = 0xE0;
 		}
-		*current_font_sprite_base = 0xE0;
-	}
-	// loc_6827A5
-	if (!(ax & (1 << 5))) {
-		*current_font_flags |= 2;
-	}
+		// loc_6827A5
+		if (!(colour & (1 << 5))) {
+			*current_font_flags |= 2;
+		}
 
-	// loc_6827B4
-	if (!(colour & 0x40)) {
-		ebp = al;
-		// jmp     short loc_682AC7
-	}
-
-	*current_font_flags |= 1;
-	colour &= 0x1F;
-
-	ebp = colour;
-
-	if (*current_font_flags & 4) {
-		if (*current_font_flags & 8) {
-			// loc_682805
-			eax = RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
-			eax = eax << 10;
-			eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[ebp * 8];
+		// loc_6827B4
+		if (!(colour & 0x40)) {
+			ebp = colour;
+			sub_682AC7(ebp, &colour, current_font_flags);
+			// jmp     short loc_682AC7
 		} else {
-			// loc_6827E7
-			eax = RCT2_ADDRESS(0x0141FC49, uint8)[ebp * 8];
-			eax = eax << 10;
-			eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[ebp * 8];
+			*current_font_flags |= 1;
+			colour &= 0x1F;
+
+			ebp = colour;
+
+			if (*current_font_flags & 4) {
+				if (*current_font_flags & 8) {
+					// loc_682805
+					eax = RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
+					eax = eax << 10;
+					eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[ebp * 8];
+				} else {
+					// loc_6827E7
+					eax = RCT2_ADDRESS(0x0141FC49, uint8)[ebp * 8];
+					eax = eax << 10;
+					eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[ebp * 8];
+				}
+			} else {
+				eax = RCT2_ADDRESS(0x0141FC4A, uint8)[ebp * 8];
+				eax = eax << 10;
+				eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
+			}
+			// loc_682842
+			// Store current colour? ;
+			RCT2_GLOBAL(0x009ABE05, uint32) = eax;
+			RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
+			eax = 0;
+
 		}
-	} else {
-		eax = RCT2_ADDRESS(0x0141FC4A, uint8)[ebp * 8];
-		eax = eax << 10;
-		eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
-	}
-	// jmp     short loc_682842
-
-
- // ; ---------------------------------------------------------------------------
-
-
- // ; ---------------------------------------------------------------------------
- // loc_682842
-	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
-	eax = 0;
-
- // loc_682853
-	if (y + 0x13 <= dpi->y) {
-		skip_char;
-	}
-	if (dpi->y + dpi->height <= y) {
-		skip_char;
+		// jmp     short loc_682842
+		// jz      loc_682853
 	}
 
- // loc_682875
-	al = *format;
-	format++;
+	int skip_char = 0;
 	
- // skip_cont
-	if (al == 0) {
-		return;
-	}
-	if (al >= 0x9C) {
-		// jnb     short loc_682888
-	}
-	if (al >= 0x8E) {
-		// jnb     colour_char
+	// loc_682853
+	if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+		skip_char = 1;
 	}
 
- // loc_682888
-	al -= 0x20;
-	if (al < 0) {
-		// jb      short loc_6828F5
-	}
-	bx = dpi->x + dpi->width;
-	if (x >= bx) {
-		// jge     skip_char
-	}
-	bx = x + 0x1A;
-	if (bx < dpi->x) {
-		// jl      short loc_6828E0
-	}
-	ebx = al + *current_font_sprite_base;
-	cl = cl + (RCT2_ADDRESS(0x0141E9E8, uint32)[ebx] & 0xFF)
-	// push    dword_141E9E8[ebx]
-	// push    ecx
-	// push    edx
-	// push    edi
-	// push    esi
+	// loc_682875
+	// al = *buffer;
+	// buffer++;
 
-	eax = (int)al;
-	ebx += 0xF15;
-	esi = (int)format;
-	edi = (int)dpi;
-
-	RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+	for (uint8 al = *buffer; al > 0; al= *buffer, ++buffer) {
+		// skip_char
+		// al = *buffer;
+		// buffer++;
+		if (skip_char) {
+			if (al < 0x20) {
+				skip_char = 0;
+				// jb      skip_cont
+			} else if (al >= 0x9C) {
+				continue;
+				// jnb     short skip_char
+			} else if (al >= 0x8E) {
+				al -= 0x8E;
+				if (*current_font_flags == 1) {
+					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+						skip_char = 1;
+					} else {
+						skip_char = 0;
+					}
+					continue;
+					// jnz     short loc_682853
+				}
+				colour_char(al, current_font_flags);
+				continue;
+				// jnb     colour_char
+			} else {
+				continue;
+				// jmp     short skip_char
+			}
+		}
 	
-	RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
+		// skip_cont
+		if (al >= 0x9C) {
+			// jnb     short loc_682888
+			// loc_682888
+			al -= 0x20;
+			if (al < 0) {
+				// jb      short loc_6828F5
+				// loc_6828F5
+				switch (al) {
+				case 0x0E5:
+					// jz      loc_6829E3
+					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_y += 0x0A;
+					if (*current_font_sprite_base <= 0x0E) {
+						// jbe     loc_682875
+						break;
+					}
+					max_y -= 4;
+					if (*current_font_sprite_base == 0x1C0) {
+						// jz      loc_682875
+						break;
+					}
+					max_y -= 0xFFF4;
+					// jmp     loc_682875
+					break;
+				case 0x0E6:
+					// jz      loc_6829AD
+					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_y += 5;
+					if (*current_font_sprite_base <= 0x0E) {
+						// jbe     loc_682875
+						break;
+					}
+					max_y -= 2;
+					if (*current_font_sprite_base == 0x1C0) {
+						// jz      loc_682875
+						break;
+					}
+					max_y -= 0xFFFA;
+					// jmp     loc_682875
+					break;
+				case 0x0E1:
+					// jz      loc_682A19
+					al = *buffer;
+					buffer++;
+					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x += al;
+					// jmp     loc_682875
+					break;
 
-	// pop     esi
-	// pop     edi
-	// pop     edx
-	// pop     ecx
-	// pop     eax
-
-	// jmp     short loc_682875
-
- // loc_6828E0
-	ebx = al;
-	ebx += *current_font_sprite_base;
-	cl = cl + (RCT2_ADDRESS(0x0141E9E8, uint32)[ebx] & 0xFF);
-	// jmp     short loc_682875
-
- // loc_6828F5
-	switch (al) {
-	case 0x0E5:
-		// jz      loc_6829E3
-		cx = RCT2_GLOBAL(0x0EDF840, uint16);
-		dx += 0x0A;
-		if (*current_font_sprite_base <= 0x0E) {
-			// jbe     loc_682875
-		}
-		dx -= 4;
-		if (*current_font_sprite_base == 0x1C0) {
-                 // jz      loc_682875
-		}
-		dx -= 0xFFF4;
-                 // jmp     loc_682875
-	case 0x0E6:
-		// jz      loc_6829AD
-		cx = RCT2_GLOBAL(0x0EDF840, uint16);
-		dx += 5;
-		if (*current_font_sprite_base <= 0x0E) {
-			// jbe     loc_682875
-		}
-		dx -= 2;
-		if (*current_font_sprite_base == 0x1C0) {
-                 // jz      loc_682875
-		}
-		dx -= 0xFFFA;
-                 // jmp     loc_682875
-	case 0x0E1:
-		// jz      loc_682A19
-		al = *buffer;
-		buffer++;
-		cx = RCT2_GLOBAL(0x0EDF840, uint16);
-		cx += al;
-                 // jmp     loc_682875
-
-	case 0x0F1:
-		// jz      loc_682A34
-		ax = *buffer;
-		buffer += 2;
-		cx = RCT2_GLOBAL(0x0EDF840, uint16);
-		cx += (ax & 0xFF);
-		dx = RCT2_GLOBAL(0x0EDF842, uint16);
-		dx += (ax & 0xFF00) >> 8;
-		// jmp     loc_682875
+				case 0x0F1:
+					// jz      loc_682A34
+					eax = *((uint16*)buffer);
+					buffer += 2;
+					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x += (eax & 0xFF);
+					max_y = RCT2_GLOBAL(0x0EDF842, uint16);
+					max_y += (eax & 0xFF00) >> 8;
+					// jmp     loc_682875
+					break;
 		
 
-	case 0x0E7:
-		// jz      loc_682A57
-		*current_font_sprite_base = 0x1C0;
-		// jmp     loc_682875
+				case 0x0E7:
+					// jz      loc_682A57
+					*current_font_sprite_base = 0x1C0;
+					// jmp     loc_682875
+					break;
 
-	case 0x0E8:
-		// jz      loc_682A65
-		*current_font_sprite_base = 0x2A0;
-		// jmp     loc_682875
+				case 0x0E8:
+					// jz      loc_682A65
+					*current_font_sprite_base = 0x2A0;
+					// jmp     loc_682875
+					break;
 
-	case 0x0E9:
-		// jz      loc_682A81
-		*current_font_sprite_base = 0xE0;
-		// jmp     loc_682875
+				case 0x0E9:
+					// jz      loc_682A81
+					*current_font_sprite_base = 0xE0;
+					// jmp     loc_682875
+					break;
 
-	case 0x0EA:
-		// jz      loc_682A73
-		*current_font_sprite_base = 0;
-		// jmp     loc_682875
+				case 0x0EA:
+					// jz      loc_682A73
+					*current_font_sprite_base = 0;
+					// jmp     loc_682875
+					break;
 
-	case 0x0EB:
-		// jz      loc_682A8F
-		*current_font_flags |= 2;
-		// jmp     loc_682875
+				case 0x0EB:
+					// jz      loc_682A8F
+					*current_font_flags |= 2;
+					// jmp     loc_682875
+					break;
 
-	case 0x0EC:
-		// jz      loc_682A9C
-		*current_font_flags &= 0x0FFFD;
-		// jmp     loc_682875
+				case 0x0EC:
+					// jz      loc_682A9C
+					*current_font_flags &= 0x0FFFD;
+					// jmp     loc_682875
+					break;
 
-	case 0x0ED:
-		// jz      loc_682AAE
-		ebp = RCT2_GLOBAL(0x0141F740, uint8);
-
-		// jmp     short loc_682AC7
-
-	case 0x0EE:
-		// jz      loc_682AC0
-		ebp = RCT2_GLOBAL(0x0141F741, uint8);
+				case 0x0ED:
+					// jz      loc_682AAE
+					ebp = RCT2_GLOBAL(0x0141F740, uint8);
+					if (*current_font_flags & 1) {
+						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+							skip_char = 1;
+						} else {
+							skip_char = 0;
+						}
+						continue;
+						// jnz     loc_682853
+					}
+					sub_682AC7(ebp, &al, current_font_flags);
+					// jmp     short loc_682AC7
+					break;
+				case 0x0EE:
+					// jz      loc_682AC0
+					ebp = RCT2_GLOBAL(0x0141F741, uint8);	
+					if (*current_font_flags & 1) {
+						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+							skip_char = 1;
+						} else {
+							skip_char = 0;
+						}
+						continue;
+						// jnz     loc_682853
+					}
+					sub_682AC7(ebp, &al, current_font_flags);
+					// jmp     short loc_682AC7
+					break;
+				case 0x0EF:
+					// jz      loc_682AB7
+					ebp = RCT2_GLOBAL(0x0141F742, uint8);
+					if (*current_font_flags & 1) {
+						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+							skip_char = 1;
+						} else {
+							skip_char = 0;
+						}
+						continue;
+						// jnz     loc_682853
+					}
+					sub_682AC7(ebp, &al, current_font_flags);
+					// jmp     short loc_682AC7
+					break;													   
+				case 0x0E2:
+					// jz      loc_682AF7
+					eax = *buffer;
+					buffer++;
+					if (*current_font_flags & 1) {
+						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+							skip_char = 1;
+							break;
+						}
+					}
 		
-		// jmp     short loc_682AC7
+					// push    ebx
+					// mov     eax, ds:dword_97FCBC[eax*4]
+					// shl     eax, 4
+					// mov     eax, g1_elements[eax]
+					// mov     bl, [eax+0F9h]
+					// mov     bh, 1
 
-	case 0x0EF:
-		// jz      loc_682AB7
-		ebp = RCT2_GLOBAL(0x0141F742, uint8);
+					eax = RCT2_ADDRESS(0x097FCBC, uint32)[eax*4];
+					uint32* g1_element_poss = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, uint32)[eax*16]);
+					// What on earth is going on here?
+					g1_element_poss += 0xF9;
+					ebx = *g1_element_poss + (1 << 8);
 
-		// jmp     short loc_682AC7
-													   
-	case 0x0E2:
-		// jz      loc_682AF7
-		eax = *buffer;
-		buffer++;
-		if (*current_font_flags & 1) {
-                 // jnz     loc_682853
-		}
+					if (!(*current_font_flags & 2)) {
+						ebx = ebx & 0xFF;
+					}
+					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
+					ebx = *(g1_element_poss + 0xF7);
+					RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
+					ebx = *(g1_element_poss + 0xFA);
+					RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
+
+					// pop     ebx
+					RCT2_GLOBAL(0x09ABDA4, uint32) = RCT2_GLOBAL(0x09ABE04, uint32);
+					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+						skip_char = 1;
+					}
+					break;
+					// jmp     loc_682853
+
+				case 0x0F7:
+					// jz      short loc_68296E
+					buffer += 4;
+					if (max_x >= dpi->x + dpi->width) {
+						skip_char = 1;
+						break;
+					}
+					ebx = *(buffer - 4);
+					eax = ebx & 0x7FFFF;
+					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
 		
-		// push    ebx
-		// mov     eax, ds:dword_97FCBC[eax*4]
-		// shl     eax, 4
-		// mov     eax, g1_elements[eax]
-		// mov     bl, [eax+0F9h]
-		// mov     bh, 1
+					gfx_draw_sprite(dpi, ebx, max_x, max_y);
 
-		eax = RCT2_ADDRESS(0x097FCBC, uint32)[eax*4];
-		rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
-		// What on earth is going on here?
-		bx = *(g1_element + 0xF9) + (1 << 8);
+					max_x = max_x + g1_element->offset;
+					// jmp     loc_682875
+					break;
+				}
 
-		if (!(*current_font_flags & 2)) {
-			bx = bx & 0xFF;
-		}
-		RCT2_GLOBAL(0x09ABE05, uint16) = bx;
-		bx = *(g1_element + 0xF7);
-		RCT2_GLOBAL(0x09ABE07, uint16) = bx;
-		bx = *(g1_element + 0xFA);
-		RCT2_GLOBAL(0x09ABE09, uint16) = bx;
+			}
+			if (x >= dpi->x + dpi->width) {
+				skip_char = 1;
+			}
+			if (x + 0x1A < dpi->x) {
+				// jl      short loc_6828E0
+				// loc_6828E0
+				ebx = al;
+				ebx += *current_font_sprite_base;
+				max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
+				continue;
+				// jmp     short loc_682875
+			}
+			ebx = al + *current_font_sprite_base;
+			max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint32)[ebx] & 0xFF);
+			// push    dword_141E9E8[ebx]
+			// push    ecx
+			// push    edx
+			// push    edi
+			// push    esi
 
-		// pop     ebx
-		RCT2_GLOBAL(0x09ABDA4, uint32) = RCT2_GLOBAL(0x09ABE04, uint32);
+			eax = (int)al;
+			ebx += 0xF15;
+			ecx = max_x;
+			edx = max_y;
+			esi = (int)buffer;
+			edi = (int)dpi;
 
-		// jmp     loc_682853
-
-	case 0x0F7:
-		// jz      short loc_68296E
-		buffer += 4;
-		if (cx >= dpi->x + dpi->width) {
-			skip_char;
-		}
-		ebx = *(format - 4);
-		eax = ebx & 0x7FFFF;
-		rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
-		
-		gfx_draw_sprite(dpi, ebx, cx, dx);
-
-		cx += g1_element->offset;
-		// jmp     loc_682875
-
-	}
-	// jmp     loc_682875
-
- // colour_char
-	al -= 0x8E;
-	if (*current_font_flags == 1) {
-		// jnz     short loc_682853
-	}
-	eax = eax & 0xFF;
-	// mov     ebp, g1_elements+13320h
-	ebp = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 0x13320, uint32));
-	// mov     eax, [ebp+eax*4+0]
-	eax = *(ebp + eax*4);
-
-	if (!(*current_font_flags & 2)) {
-		eax = eax & 0x0FF0000FF;
-	}
-	// jump 6842
-
-
- // loc_682AC7
-	if (*current_font_flags & 1) {
-		// jnz     loc_682853
-	}
-	eax = RCT2_ADDRESS(0x0141FD45, uint8)[ebp * 8];
-	if (*current_font_flags & 2) {
-		eax |= 0x0A0A00;
-	}
-	// jmp     loc_682842
-
- // skip_char
-	al = *buffer;
-	buffer++;
-	if (al < 0x20) {
-		// jb      skip_cont
-	}
-	if (al >= 0x9C) {
-		// jnb     short skip_char
-	}
-	if (al >= 0x8E) {
-		// jnb     colour_char
-	}
-	// jmp     short skip_char
-
+			RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 	
+			RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
+
+			// pop     esi
+			// pop     edi
+			// pop     edx
+			// pop     ecx
+			// pop     eax
+
+			continue;
+			// jmp     short loc_682875
+
+		} else if (al >= 0x8E) {
+			al -= 0x8E;
+			if (*current_font_flags == 1) {
+				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+					skip_char = 1;
+				} else {
+					skip_char = 0;
+				}
+				continue;
+				// jnz     short loc_682853
+			}
+			colour_char(al, current_font_flags);
+			continue;
+			// jnb     colour_char
+		}
+
+	}
+
+	gLastDrawStringX = max_x;
+	gLastDrawStringY = max_y;
+
 }
