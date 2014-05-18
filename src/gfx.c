@@ -277,118 +277,63 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 	
 	uint16 offset_to_first_line = *(uint16*)(g1_y_start*2 + (uint32)source_bits_pointer);
 	//This will now point to the first line
-	char* source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
-	char* dest_pointer = dest_bits_pointer;
+	char* next_source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
 	char* next_dest_pointer = dest_bits_pointer;
-
-	int ebx = RCT2_GLOBAL(0xEDF808, uint32); //G1 y start location
-	ebx = RCT2_GLOBAL(ebx * 2 + (uint32)source_bits_pointer, uint16);//? x2?? would have though move to width*ebx
-	//Possibly more information is stored about each horizontal line
-	//maybe an x offset with each one?
-	int ebp = (uint32)dest_bits_pointer;
-	ebx += (uint32)source_bits_pointer; //Move to the correct y location?
-	int ecx = 0;
-	int edx = 0;
-StartLoop:
-	edx = 0;
-	uint8 no_pixels = *source_pointer++;
-	uint8 gap_size = *source_pointer++;
-	uint8 last_data_line = no_pixels & 0x80;
-	//Clear the last data line bit
-	no_pixels &= 0x7f;
-	//Move this to the end
-	char* next_source_pointer = source_pointer + no_pixels;
 	
-	int cx = RCT2_GLOBAL(ebx, uint16); //Maybe X start stop offsets
-	int cl = cx & 0xff;
-	RCT2_GLOBAL(0x9ABDB4, uint8) = cl; //start offset
+	//For every line in the image
+	for (; g1_y_end; g1_y_end--){
 
-	ebx += 2;//skip the extra offset info
-	cx &= 0xFF7F;
-	cl &= 0x7F; //??
-	int esi = ebx;
-	int dl = (cx & 0xFF00) >> 8;
-	int ch = 0;
-	cx = cl;
-	ebx += cx;//??
-	edx = dl;
-	edx -= RCT2_GLOBAL(0xEDF80C, sint32);//g1 x start location
-	int edi = ebp;
+		uint8 last_data_line = 0;
+		//For every data section in the line
+		while (!last_data_line){
+			char* source_pointer = next_source_pointer;
+			char* dest_pointer = next_dest_pointer;
 
-	int x_start = (int)gap_size - (int)g1_x_start;
+			sint8 no_pixels = *source_pointer++;
+			uint8 gap_size = *source_pointer++;
+			//The last bit in no_pixels tells you if you have reached the end of a line
+			last_data_line = no_pixels & 0x80;
+			//Clear the last data line bit so we have just the no_pixels
+			no_pixels &= 0x7f;
+			//Have our next source pointer point to the next data section
+			next_source_pointer = source_pointer + (int)no_pixels;
 
-	if (edx > 0){ //edx x_start
-		edi += edx;
-		dest_pointer += x_start;
+			//Calculates the start point of the image
+			int x_start = (int)gap_size - (int)g1_x_start;
+
+			if (x_start > 0){
+				//Since the start is positive
+				//We need to move the drawing surface to the correct position
+				dest_pointer += x_start;
+			}
+			else{
+				//If the start is negative we require to remove part of the image.
+				//This is done by moving the image pointer to the correct position.
+				source_pointer -= x_start;
+				//The no_pixels will be reduced in this operation
+				no_pixels += x_start;
+				//If there are no pixels there is nothing to draw this line
+				if (no_pixels <= 0) continue;
+				//Reset the start position to zero as we have taken into account all moves
+				x_start = 0;
+			}
+
+			int x_end = x_start + (int)no_pixels;
+			//If the end position is further out than the whole image
+			//end position then we need to shorten the line again
+			if (x_end > (int)g1_x_end){
+				//Shorten the line
+				no_pixels -= x_end - (int)g1_x_end;
+				//If there are no pixels there is nothing to draw.
+				if (no_pixels <= 0) continue;
+			}
+
+			//Finally after all those checks copy the image onto the drawing surface
+			memcpy(dest_pointer, source_pointer, no_pixels);
+		}
+		//Add a line to the drawing surface pointer
+		next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
 	}
-	else{
-		source_pointer -= x_start;
-		no_pixels += x_start;
-
-		esi -= edx;
-		cx += edx & 0xFFFF;
-
-		if (cx <= 0) goto TestLoop;//cx
-		x_start = 0;
-		edx &= 0xFFFF0000;
-	}
-	
-	int x_end = x_start + (int)no_pixels - (int)g1_x_end;
-	int dx = edx&0xFFFF;
-	dx += cx;
-	dx -= RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16);
-
-	if (dx > 0){ //dx x_end
-		no_pixels -= x_end;
-		cx -= dx;
-		if (cx <= 0) goto TestLoop;//cx
-	}
-
-	for (; no_pixels > 0; no_pixels--, dest_pointer++, source_pointer++){
-		*dest_pointer = *source_pointer;
-	}
-	goto TestLoop;
-
-	for (; cx > 0; cx--, edi++, esi++){
-		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
-	}
-
-	/*if (cx & 1){
-		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
-		edi+=1;
-		esi+=1;
-	}
-	cx >>= 1;
-
-	if (cx & 1){
-		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
-		edi+=2;
-		esi+=2;
-	}
-	cx >>= 1;
-
-	for (int i = cx; i > 0; i-=4, edi+=4, esi+=4){
-		RCT2_GLOBAL(edi, uint32) = RCT2_GLOBAL(esi, uint32);
-	}*/
-TestLoop:
-	source_pointer = next_source_pointer;
-	int test = (RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80);
-	if (!test) goto StartLoop;
-	//if (!last_data_line)goto StartLoop;
-	next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
-	dest_pointer = next_dest_pointer;
-
-	edx = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
-	ebp += edx;
-	
-	test = --RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16);
-	g1_y_end--;
-	if (g1_y_end)goto StartLoop;//test
-	return;
-
-//	
-//	if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16))goto StartLoop;
-
 }
 
 
