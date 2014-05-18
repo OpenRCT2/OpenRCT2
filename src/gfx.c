@@ -434,8 +434,8 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 	RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
 	RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
 
-	sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
-	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, source_g1->offset, bits_pointer, dest_dpi);
+	//sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
+	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_g1->offset, (int)bits_pointer, (int)dest_dpi);
 }
 
 /**
@@ -458,9 +458,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
 		//
-		//return;//jump into 0x67a445
+		return;//jump into 0x67a445
 		if ((image_id)& 0x40000000){
 			eax = image_id;
 			eax >>= 13;
@@ -479,8 +479,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	}
 	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
-		//return;//jump into 0x67a361
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
+		return;//jump into 0x67a361
 
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -493,16 +493,16 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax <<= 4;
 		ebp = RCT2_GLOBAL(ebp + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		edx = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
+		edx = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
 		RCT2_GLOBAL(0x9ABFFF, uint32) = edx;
 		RCT2_GLOBAL(0x9AC003, uint32) = esi;
-		edx = *((uint32*)ebp + 0xF3);
-		esi = *((uint32*)ebp + 0xF7);
-		esi = *((uint32*)eax + 0xF7);
+		edx = *((uint32*)(ebp + 0xF3));
+		esi = *((uint32*)(ebp + 0xF7));
+		esi = *((uint32*)(eax + 0xF7));
 
-		edx = *((uint32*)eax + 0xFB);
-		esi = *((uint32*)ebp + 0xFB);
+		edx = *((uint32*)(eax + 0xFB));
+		esi = *((uint32*)(ebp + 0xFB));
 
 		eax = image_id;
 		RCT2_GLOBAL(0x9AC007, uint32) = edx;
@@ -516,19 +516,19 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		edx = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
+		edx = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
 		RCT2_GLOBAL(0x9ABFD6, uint32) = edx;
 		RCT2_GLOBAL(0x9ABFDA, uint32) = esi;
-		edx = *((uint32*)eax + 0xFB);
+		edx = *((uint32*)(eax + 0xFB));
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
 		RCT2_GLOBAL(0x9ABFDE, uint32) = edx;
 		edx = y;
 
 	}
 	else if ((image_id)& 0xE0000000){
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);		
-		//return;
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);		
+		return;
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		eax >>= 19;
@@ -537,11 +537,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 
-		ebp = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
+		ebp = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
 		RCT2_GLOBAL(0x9ABEFF, uint32) = ebp;
 		RCT2_GLOBAL(0x9ABF03, uint32) = esi;
-		ebp = *((uint32*)eax + 0xFB);
+		ebp = *((uint32*)(eax + 0xFB));
 		eax = ebx;
 
 		RCT2_GLOBAL(0x9ABF07, uint32) = ebp;
@@ -550,11 +550,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		ebp = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
+		ebp = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
 		RCT2_GLOBAL(0x9ABED6, uint32) = ebp;
 		RCT2_GLOBAL(0x9ABEDA, uint32) = esi;
-		ebp = *((uint32*)eax + 0xFB);
+		ebp = *((uint32*)(eax + 0xFB));
 
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
@@ -597,13 +597,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	char* bits_pointer;
 
 	ebp = (int)dpi;
-	esi = RCT2_GLOBAL(0x9E3D08, uint32);
+	esi = (int)g1_source->offset;//RCT2_GLOBAL(0x9E3D08, uint32);
 	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
 	bits_pointer = dpi->bits;	
 
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_source->height;// RCT2_GLOBAL(0x9E3D0E, sint16);
 
-	translated_y = y + RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
+	translated_y = y - dpi->y + g1_source->y_offset;//RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16);
 
 
 	if (translated_y < 0){
@@ -612,30 +612,27 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			return;
 		}
 		translated_y = -translated_y;
-		esi += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
-		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
+		esi += translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
+		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
 		translated_y = 0;
 	} else {
-		eax = (dpi->width + dpi->pitch) * translated_y;
-		bits_pointer += eax;
+		//eax = ;
+		bits_pointer += (dpi->width + dpi->pitch) * translated_y;//eax;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) - dpi->height;;
+	translated_y += RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) - dpi->height;
 
 	if (translated_y > 0){
 		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) -= translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) <= 0)
-		{
-			return;
-		}
+		if (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) <= 0)return;
 	}
 
-	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
-	eax = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
+	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_source->width;// RCT2_GLOBAL(0x9E3D0C, sint16);
+	eax = dpi->width + dpi->pitch - g1_source->width; //RCT2_GLOBAL(0x9E3D0C, sint16);
 
 	RCT2_GLOBAL(0x9ABDAE, uint16) = 0;
-	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
-	translated_x = x + RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
+	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) = dpi->width + dpi->pitch - g1_source->width;// RCT2_GLOBAL(0x9E3D0C, sint16);
+	translated_x = x - dpi->x + g1_source->x_offset;//RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16);
 
 	if (translated_x < 0){
 
@@ -644,7 +641,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			return;
 		}
 
-		translated_x -= RCT2_GLOBAL(0x9ABDAE, sint16);
+		RCT2_GLOBAL(0x9ABDAE, sint16) -= translated_x;
 		esi -= translated_x;
 		RCT2_GLOBAL(0x9E3CE0, sint32) -= translated_x;
 		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) -= translated_x;
@@ -656,21 +653,20 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	if (translated_x > 0){
 		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) -= translated_x;
-		if (RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) <= 0){
-			return;
-		}
+		if (RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) <= 0)return;
+
 		RCT2_GLOBAL(0x9ABDAE, sint16) += translated_x;
 		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) += translated_x;
 	}
 
-	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		eax = (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8)) << 8;
+	if (!(g1_source->flags & 0x02)){
+		eax = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) & 0xFF + (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8)) << 8;
 		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
 		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
-		//ebx, esi, edi, ah used in 0x67a690
-		sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
+		//ebx, edx, esi, edi, ah, ebp used in 0x67a690  eax=1966, ecx=ff39, edx=ebx=0, esp = cfca4, ebp = 266, esi =368823e, edi = 16c79b2
+		sub_0x67A690(eax, ebx, 0, edx, esi, (int)bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
