@@ -458,18 +458,16 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
-		//
-		//return;//jump into 0x67a445
-		if ((image_id)& 0x40000000){
+
+		if (!((image_id)& 0x40000000)){
 			eax = image_id;
-			eax >>= 13;
+			eax >>= 19;
 			eax &= 0xFF;
 			RCT2_GLOBAL(0x009E3CDC, uint32) = 0;
 		}
 		else{
 			eax = image_id;
-			eax >>= 13;
+			eax >>= 19;
 			eax &= 0x7F;
 		}
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
@@ -484,13 +482,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
-		eax >>= 13;
+		eax >>= 19;
 		//push edx/y
 		eax &= 0x1F;
 		ebp = RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32);
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
-		ebp <<= 4;
-		eax <<= 4;
+		ebp <<= 0x4;
+		eax <<= 0x4;
 		ebp = RCT2_GLOBAL(ebp + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		edx = *((uint32*)(eax + 0xF3));
@@ -506,7 +504,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 		eax = image_id;
 		RCT2_GLOBAL(0x9AC007, uint32) = edx;
-		eax >>= 18;
+		eax >>= 24;
 		RCT2_GLOBAL(0x9ABF42, uint32) = esi;
 		eax &= 0x1F;
 
@@ -677,8 +675,16 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		return;
 	}
 	//0x67A60A
+	
+	esi -= (uint32)g1_source->offset;
+	ebp = esi;
+	eax = g1_source->width*g1_source->height;
+	esi = g1_source->offset;
+	edx = eax;
+	edi = 0x9E3D28;
+	eax = 0;
+
 	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
 	return;
 }
 
