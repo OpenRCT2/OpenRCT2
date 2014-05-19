@@ -460,6 +460,9 @@ static void window_options_dropdown()
 */
 static void window_options_update(rct_window *w)
 {
+	//Has use asm verison incase called by WM_INVALIDATE
+	__asm mov w, esi
+
 	sint32 format_args = RCT2_GLOBAL(0x009AF280, sint32);
 
 	// sound devices
