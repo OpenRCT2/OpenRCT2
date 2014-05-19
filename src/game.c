@@ -32,7 +32,7 @@
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
 #include "viewport.h"

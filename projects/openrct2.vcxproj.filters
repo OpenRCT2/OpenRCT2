@@ -48,7 +48,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\strings.h">
+    <ClInclude Include="..\src\string_ids.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\peep.h">
@@ -182,7 +182,7 @@
     <ClCompile Include="..\src\scenario.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\strings.c">
+    <ClCompile Include="..\src\string_ids.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\config.c">

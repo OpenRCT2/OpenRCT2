@@ -32,7 +32,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "editor.h"
 

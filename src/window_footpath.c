@@ -23,7 +23,7 @@
 #include "audio.h"
 #include "game.h"
 #include "map.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "viewport.h"
 #include "widget.h"

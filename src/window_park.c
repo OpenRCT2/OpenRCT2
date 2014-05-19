@@ -26,7 +26,7 @@
 #include "peep.h"
 #include "ride.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "util.h"

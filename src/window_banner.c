@@ -21,7 +21,7 @@
 #include <string.h>
 #include "addresses.h"
 #include "config.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"

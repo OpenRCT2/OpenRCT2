@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _STRINGS_H_
-#define _STRINGS_H_
+#ifndef _STRING_IDS_H_
+#define _STRING_IDS_H_
 
 typedef unsigned short rct_string_id;
 

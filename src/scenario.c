@@ -31,7 +31,7 @@
 #include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "viewport.h"
 

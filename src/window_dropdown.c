@@ -21,7 +21,7 @@
 #include <memory.h>
 #include "addresses.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"

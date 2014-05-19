@@ -21,7 +21,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "tutorial.h"
 #include "widget.h"
