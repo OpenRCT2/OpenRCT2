@@ -272,7 +272,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * buffers
 */
 void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp){
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, eax, ebx, ecx, edx, esi, edi, ebp);
+	RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
 	return;
 }
 
@@ -458,9 +458,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
+		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
 		//
-		return;//jump into 0x67a445
+		//return;//jump into 0x67a445
 		if ((image_id)& 0x40000000){
 			eax = image_id;
 			eax >>= 13;
@@ -479,8 +479,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	}
 	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
-		return;//jump into 0x67a361
+		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
+		//return;//jump into 0x67a361
 
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -527,8 +527,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	}
 	else if ((image_id)& 0xE0000000){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);		
-		return;
+		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);		
+		//return;
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		eax >>= 19;
@@ -605,6 +605,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	translated_y = y - dpi->y + g1_source->y_offset;//RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16);
 
+	if (image_id == 5200){
+		image_id = image_id;
+	}
 
 	if (translated_y < 0){
 		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) += translated_y;
@@ -612,7 +615,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			return;
 		}
 		translated_y = -translated_y;
-		esi += translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
+		esi += (uint32)translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
 		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
 		translated_y = 0;
 	} else {
@@ -649,24 +652,28 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 
 	bits_pointer += translated_x;
-	translated_x += RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) - dpi->width;
+	translated_x += RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16);
+	
+
+	translated_x -= dpi->width;
 
 	if (translated_x > 0){
 		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) -= translated_x;
 		if (RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) <= 0)return;
 
-		RCT2_GLOBAL(0x9ABDAE, sint16) += translated_x;
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) += translated_x;
+		RCT2_GLOBAL(0x9ABDAE, uint16) += translated_x;
+		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) += translated_x;
 	}
-
+	
 	if (!(g1_source->flags & 0x02)){
-		eax = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) & 0xFF + (RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8)) << 8;
-		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
-		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16);
+		eax = RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8);
+		eax <<= 8;
+		edx = RCT2_GLOBAL(0x9ABDAE, uint16);
+		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, edx, esi, edi, ah, ebp used in 0x67a690  eax=1966, ecx=ff39, edx=ebx=0, esp = cfca4, ebp = 266, esi =368823e, edi = 16c79b2
-		sub_0x67A690(eax, ebx, 0, edx, esi, (int)bits_pointer, ebp);
+		sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
 		return;
 	}
 	//0x67A60A
