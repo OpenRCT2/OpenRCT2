@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <windows.h>
+#include <string.h>
 #include "addresses.h"
 #include "rct2.h"
 #include "sawyercoding.h"

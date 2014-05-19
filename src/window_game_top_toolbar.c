@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "game.h"
 #include "sprites.h"
@@ -361,7 +362,7 @@ static void window_game_top_toolbar_dropdown()
 					src++;
 				} while (*src != '.' && *src != '\0');
 				strcpy(src, ".SV6");
-				strcpy(RCT2_ADDRESS_SAVED_GAMES_PATH_2, 0x0141EF68);
+				strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
 
 				eax = 0;
 				if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)

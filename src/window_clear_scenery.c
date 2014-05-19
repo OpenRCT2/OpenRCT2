@@ -25,7 +25,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
+enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -34,7 +34,7 @@ static enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_INCREMENT
 };
 
-static rct_widget window_clear_scenery_widgets[] = {
+rct_widget window_clear_scenery_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	66,	-1,										STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_CLEAR_SCENERY,						STR_WINDOW_TITLE_TIP },				// title bar
 	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },				// close x button

@@ -26,7 +26,7 @@
 #include "window.h"
 #include "window_dropdown.h"
 
-static enum WINDOW_LAND_WIDGET_IDX {
+enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,

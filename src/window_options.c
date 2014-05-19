@@ -28,7 +28,7 @@
 #include "window.h"
 #include "window_dropdown.h"
 
-static enum WINDOW_OPTIONS_WIDGET_IDX {
+enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -107,7 +107,7 @@ static void window_options_mousedown();
 static void window_options_dropdown();
 static void window_options_update(rct_window *w);
 static void window_options_paint();
-static void window_options_draw_dropdown_box(w, widget, num_items);
+static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, int num_items);
 static void window_options_update_height_markers();
 
 static void* window_options_events[] = {

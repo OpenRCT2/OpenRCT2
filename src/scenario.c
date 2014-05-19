@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <windows.h>
+#include <string.h>
 #include "addresses.h"
 #include "date.h"
 #include "finance.h"

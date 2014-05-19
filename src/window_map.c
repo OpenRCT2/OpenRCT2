@@ -24,7 +24,7 @@
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_MAP_WIDGET_IDX {
+enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,

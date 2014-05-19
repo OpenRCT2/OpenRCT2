@@ -20,6 +20,8 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include <windows.h>
 #include "addresses.h"
 #include "gfx.h"

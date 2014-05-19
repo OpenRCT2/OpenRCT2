@@ -49,7 +49,7 @@ typedef struct {
 	uint8 flags;		// 0x0B
 } rct_path_type;
 
-static enum WINDOW_FOOTPATH_WIDGET_IDX {
+enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
