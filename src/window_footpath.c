@@ -223,7 +223,12 @@ static void window_footpath_close()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
@@ -242,8 +247,18 @@ static void window_footpath_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -298,9 +313,24 @@ static void window_footpath_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_FOOTPATH_TYPE:
@@ -345,9 +375,24 @@ static void window_footpath_dropdown()
 	rct_window *w;
 	rct_path_type *pathType;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
 		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = SELECTED_PATH_TYPE_NORMAL;
@@ -397,10 +442,30 @@ static void window_footpath_toolupdate()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, eax
+	#else
+	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, ebx
+	#else
+	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_set_provisional_path_at_point(x, y);
@@ -419,10 +484,30 @@ static void window_footpath_tooldown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, eax
+	#else
+	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, ebx
+	#else
+	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_place_path_at_point(x, y);
@@ -441,10 +526,30 @@ static void window_footpath_tooldrag()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, eax
+	#else
+	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, ebx
+	#else
+	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		RCT2_CALLPROC_X(0x006A82C5, x, y, 0, 0, (int)w, 0, 0);
@@ -461,10 +566,30 @@ static void window_footpath_toolup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, eax
+	#else
+	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, ebx
+	#else
+	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		RCT2_CALLPROC_X(0x006A8380, x, y, 0, 0, (int)w, 0, 0);
@@ -510,7 +635,12 @@ static void window_footpath_invalidate()
 	rct_path_type *pathType;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	
 	// Press / unpress footpath and queue type buttons
 	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
@@ -547,8 +677,18 @@ static void window_footpath_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

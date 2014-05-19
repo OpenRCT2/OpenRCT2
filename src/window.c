@@ -102,6 +102,7 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 }
 static void RCT2_CALLPROC_WE_UPDATE(int address, rct_window* w)
 {
+	#ifdef _MSC_VER
 	__asm {
 			push address
 			push w
@@ -109,6 +110,16 @@ static void RCT2_CALLPROC_WE_UPDATE(int address, rct_window* w)
 			call[esp + 4]
 			add esp, 8
 	}
+	#else
+	__asm__ ( "\
+				push %[address]\n\
+				mov eax, %[w]  \n\
+				push eax		\n\
+				mov esi, %[w]	\n\
+				call [esp+4]	\n\
+				add esp, 8	\n\
+			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
+	#endif
 }
 /**
  * 

@@ -189,10 +189,18 @@ void rct2_update()
 {
 	// Set 0x009DE564 to the value of esp
 	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
+	#ifdef _MSC_VER
 	__asm {
 		mov eax, 009DE564h
 		mov [eax], esp
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		mov eax, 0x009DE564 	\n\
+		mov [eax], esp 	\n\
+	 " : : : "eax" );
+	#endif
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();

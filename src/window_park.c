@@ -643,7 +643,12 @@ static void window_park_entrance_close()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
@@ -659,8 +664,18 @@ static void window_park_entrance_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -699,7 +714,12 @@ static void window_park_entrance_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->flags |= WF_RESIZABLE;
 	window_set_resize(w, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
@@ -716,9 +736,24 @@ static void window_park_entrance_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		gDropdownItemsFormat[0] = 1142;
@@ -752,8 +787,18 @@ static void window_park_entrance_dropdown()
 {
 	short widgetIndex, dropdownIndex;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		if (dropdownIndex == -1)
@@ -790,10 +835,30 @@ static void window_park_entrance_toolupdate()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, eax
+	#else
+	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, ebx
+	#else
+	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
@@ -820,10 +885,30 @@ static void window_park_entrance_tooldown()
 	short x, y, widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, ax
+	#else
+	__asm__ ( "mov %[x], ax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, bx
+	#else
+	__asm__ ( "mov %[y], bx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	RCT2_CALLPROC_X(0x006681E6, x, y, 0, widgetIndex, (int)w, 0, 0);
 }
@@ -837,10 +922,30 @@ static void window_park_entrance_tooldrag()
 	short x, y, widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov x, ax
+	#else
+	__asm__ ( "mov %[x], ax " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, bx
+	#else
+	__asm__ ( "mov %[y], bx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	RCT2_CALLPROC_X(0x006681FB, x, y, 0, widgetIndex, (int)w, 0, 0);
 }
@@ -854,8 +959,18 @@ static void window_park_entrance_toolabort()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		hide_gridlines();
@@ -877,10 +992,30 @@ static void window_park_entrance_textinput()
 	rct_window *w;
 	char *text;
 
+	#ifdef _MSC_VER
 	__asm mov result, cl
+	#else
+	__asm__ ( "mov %[result], cl " : [result] "+m" (result) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov text, edi
+	#else
+	__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
+	#endif
+
 
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {
@@ -901,7 +1036,12 @@ static void window_park_entrance_invalidate()
 	int i;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->widgets = window_park_page_widgets[w->page];
 	window_init_scroll_widgets(w);
@@ -953,8 +1093,18 @@ static void window_park_entrance_paint()
 	rct_drawpixelinfo *dpi;
 	rct_widget *labelWidget;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1117,8 +1267,18 @@ static void window_park_rating_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1134,7 +1294,12 @@ static void window_park_rating_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -1158,7 +1323,12 @@ static void window_park_rating_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1187,8 +1357,18 @@ static void window_park_rating_paint()
 	rct_widget *widget;
 	uint8 *history;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1255,8 +1435,18 @@ static void window_park_guests_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1272,7 +1462,12 @@ static void window_park_guests_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -1297,7 +1492,12 @@ static void window_park_guests_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1326,8 +1526,18 @@ static void window_park_guests_paint()
 	rct_widget *widget;
 	uint8 *history;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1365,8 +1575,18 @@ static void window_park_price_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1382,7 +1602,12 @@ static void window_park_price_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 124, 230, 124);
 }
@@ -1397,8 +1622,18 @@ static void window_park_price_mousedown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1443,7 +1678,12 @@ static void window_park_price_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1483,8 +1723,18 @@ static void window_park_price_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1510,8 +1760,18 @@ static void window_park_stats_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1527,7 +1787,12 @@ static void window_park_stats_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 109, 230, 109);
 }
@@ -1567,7 +1832,12 @@ static void window_park_stats_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1594,8 +1864,18 @@ static void window_park_stats_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1677,8 +1957,18 @@ static void window_park_objective_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1707,7 +1997,12 @@ static void window_park_objective_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 224, 230, 224);
 }
@@ -1730,7 +2025,12 @@ static void window_park_objective_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_park_set_pressed_tab(w);
 
@@ -1758,8 +2058,18 @@ static void window_park_objective_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1839,8 +2149,18 @@ static void window_park_awards_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1856,7 +2176,12 @@ static void window_park_awards_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -1880,7 +2205,12 @@ static void window_park_awards_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1908,8 +2238,18 @@ static void window_park_awards_paint()
 	rct_drawpixelinfo *dpi;
 	rct_award *award;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
