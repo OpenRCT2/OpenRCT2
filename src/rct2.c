@@ -182,7 +182,7 @@ void rct2_startup_checks()
 {
 	// check if game is already running
 
-	RCT2_CALLPROC(0x00674C0B);
+	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
 }
 
 void rct2_update()

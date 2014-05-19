@@ -390,7 +390,8 @@ char* osinterface_open_directory_browser(char *title) {
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDList(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
-			outPath = strcat("", pszBuffer);
+			outPath = (char*) malloc(strlen(pszBuffer)+1);
+			strcpy(outPath, pszBuffer);
 		}
 	}
 	CoUninitialize();
