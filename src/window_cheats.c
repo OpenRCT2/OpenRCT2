@@ -79,7 +79,7 @@ static rct_widget *window_cheats_page_widgets[] = {
 static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
-static void window_cheats_update();
+static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
 static void window_cheats_set_page(rct_window *w, int page);

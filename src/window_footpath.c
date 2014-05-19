@@ -108,7 +108,7 @@ static void window_footpath_close();
 static void window_footpath_mouseup();
 static void window_footpath_mousedown();
 static void window_footpath_dropdown();
-static void window_footpath_update();
+static void window_footpath_update(rct_window *w);
 static void window_footpath_toolupdate();
 static void window_footpath_tooldown();
 static void window_footpath_tooldrag();
@@ -470,12 +470,8 @@ static void window_footpath_toolup()
  * 
  *  rct2: 0x006A84BB
  */
-static void window_footpath_update()
+static void window_footpath_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Invalidate construct button
 	widget_invalidate(WC_FOOTPATH, 0, WIDX_CONSTRUCT);
 

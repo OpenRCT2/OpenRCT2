@@ -105,7 +105,7 @@ static void window_options_emptysub() { }
 static void window_options_mouseup();
 static void window_options_mousedown();
 static void window_options_dropdown();
-static void window_options_update();
+static void window_options_update(rct_window *w);
 static void window_options_paint();
 static void window_options_draw_dropdown_box(w, widget, num_items);
 static void window_options_update_height_markers();
@@ -458,12 +458,9 @@ static void window_options_dropdown()
 *
 *  rct2: 0x006BAD48
 */
-static void window_options_update()
+static void window_options_update(rct_window *w)
 {
 	sint32 format_args = RCT2_GLOBAL(0x009AF280, sint32);
-	rct_window *w;
-	
-	__asm mov w, esi
 
 	// sound devices
 	if (format_args == -1 || RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, sint32) == 0) {

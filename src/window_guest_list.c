@@ -75,7 +75,7 @@ static void window_guest_list_mouseup();
 static void window_guest_list_resize();
 static void window_guest_list_mousedown();
 static void window_guest_list_dropdown();
-static void window_guest_list_update();
+static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize();
 static void window_guest_list_scrollmousedown();
 static void window_guest_list_scrollmouseover();
@@ -327,12 +327,8 @@ static void window_guest_list_dropdown()
  * 
  *  rct2: 0x00699E54
  */
-static void window_guest_list_update()
+static void window_guest_list_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
 		RCT2_GLOBAL(0x00F1AF20, uint16)--;
 	w->var_490++;
