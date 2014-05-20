@@ -44,7 +44,7 @@ typedef unsigned long long uint64;
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
-#define countof(x)			_countof(x)
+#define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 void rct2_finish();
 

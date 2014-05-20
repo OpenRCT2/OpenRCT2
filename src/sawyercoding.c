@@ -111,7 +111,7 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 static int decode_chunk_rle(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, rleCodeByte;
+	char *src, *dst, rleCodeByte;
 
 	// Backup buffer
 	src = malloc(length);
@@ -145,7 +145,7 @@ static int decode_chunk_rle(char *buffer, int length)
 static int decode_chunk_repeat(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, *copyOffset;
+	char *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);

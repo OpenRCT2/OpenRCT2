@@ -23,7 +23,7 @@
 #include <string.h>
 #include <setjmp.h>
 #include <windows.h>
-#include <ShlObj.h>
+#include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
 #include "climate.h"
@@ -338,7 +338,7 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
-	uint32 size = 80;
+	DWORD size = 80;
 	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
 	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);

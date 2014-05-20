@@ -18,7 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include <string.h>
+#include <limits.h>
 #include "addresses.h"
 #include "park.h"
 #include "peep.h"
