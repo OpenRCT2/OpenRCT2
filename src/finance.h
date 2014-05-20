@@ -41,5 +41,6 @@ void finance_pay_research();
 void finance_pay_interest();
 void finance_pay_ride_upkeep();
 void finance_init();
+void sub_69E869();
 
 #endif

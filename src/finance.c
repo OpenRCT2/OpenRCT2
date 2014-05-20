@@ -149,11 +149,11 @@ void finance_init() {
 	RCT2_GLOBAL(0x01358334, uint32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(0x013573DC, uint32) = 100000; // Cheat detection
+	RCT2_GLOBAL(0x013573DC, sint32) = 100000; // Cheat detection
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(100000);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32) = 100000;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, uint32) = 200000;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, sint32) = 200000;
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
 
@@ -166,5 +166,17 @@ void finance_init() {
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	sub_69E869();
+}
+
+void sub_69E869() {
+	// This subroutine is loan related and is used for cheat detection
+	sint32 value = 0x70093A;
+	value -= RCT2_GLOBAL(0x013573DC, sint32); // Cheat detection
+	value = ror32(value, 5);
+	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
+	value = ror32(value, 7);
+	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, sint32);
+	value = ror32(value, 3);
+	RCT2_GLOBAL(0x013587C4, sint32) = value;
 }
