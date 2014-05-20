@@ -466,7 +466,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint16) = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, sint16) = RCT2_GLOBAL(0x013573DC, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint16);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
-	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related)
+	sub_69E869(); // (loan related)
 
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
@@ -508,7 +508,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
-	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related, called above already)
+	sub_69E869(); // (loan related, called above already)
 	park_reset_awards_and_history();
 	reset_all_ride_build_dates();
 	date_reset();

@@ -1519,7 +1519,7 @@ int game_load_save()
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
-		RCT2_CALLPROC_EBPSAFE(0x0069E869);
+		sub_69E869();
 
 	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
 	gfx_invalidate_screen();
