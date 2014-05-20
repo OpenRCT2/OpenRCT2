@@ -45,7 +45,7 @@ static rct_widget window_news_widgets[] = {
 
 static void window_news_emptysub() { }
 static void window_news_mouseup();
-static void window_news_update();
+static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize();
 static void window_news_scrollmousedown();
 static void window_news_tooltip();
@@ -140,13 +140,10 @@ static void window_news_mouseup()
  * 
  *  rct2: 0x0066EAB8
  */
-static void window_news_update()
+static void window_news_update(rct_window *w)
 {
 	int i, j, x, y, z;
-	rct_window *w;
 	rct_news_item *newsItems;
-
-	__asm mov w, esi
 
 	if (w->var_480 == -1)
 		return;

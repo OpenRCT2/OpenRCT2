@@ -77,7 +77,7 @@ static void window_map_emptysub() { }
 static void window_map_close();
 static void window_map_mouseup();
 static void window_map_mousedown();
-static void window_map_update();
+static void window_map_update(rct_window *w);
 static void window_map_scrollgetsize();
 static void window_map_scrollmousedown();
 static void window_map_invalidate();
@@ -210,7 +210,7 @@ static void window_map_mousedown()
 *
 *  rct2: 0x0068D7FB
 */
-static void window_map_update()
+static void window_map_update(rct_window *w)
 {
 	RCT2_CALLPROC_EBPSAFE(0x0068D7FB);
 }

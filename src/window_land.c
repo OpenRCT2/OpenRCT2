@@ -54,7 +54,7 @@ static void window_land_close();
 static void window_land_mouseup();
 static void window_land_mousedown();
 static void window_land_dropdown();
-static void window_land_update();
+static void window_land_update(rct_window *w);
 static void window_land_invalidate();
 static void window_land_paint();
 
@@ -310,12 +310,8 @@ static void window_land_dropdown()
  *
  *  rct2: 0x00664272
  */
-static void window_land_update()
+static void window_land_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Close window if another tool is open
 	if (window_land_should_close())
 		window_close(w);
