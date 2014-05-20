@@ -35,7 +35,7 @@ static rct_widget window_tooltip_widgets[] = {
 
 static void window_tooltip_emptysub() { }
 static void window_tooltip_onclose();
-static void window_tooltip_update();
+static void window_tooltip_update(rct_window *w);
 static void window_tooltip_paint();
 
 static void* window_tooltip_events[] = {
@@ -173,7 +173,7 @@ static void window_tooltip_onclose()
  * 
  *  rct2: 0x006EA580
  */
-static void window_tooltip_update()
+static void window_tooltip_update(rct_window *w)
 {
 	if (RCT2_GLOBAL(0x009DE51E, uint8) == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
