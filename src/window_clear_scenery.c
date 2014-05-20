@@ -49,7 +49,7 @@ static int window_clear_scenery_should_close();
 static void window_clear_scenery_emptysub() { }
 static void window_clear_scenery_close();
 static void window_clear_scenery_mouseup();
-static void window_clear_scenery_update();
+static void window_clear_scenery_update(rct_window *w);
 static void window_clear_scenery_invalidate();
 static void window_clear_scenery_paint();
 
@@ -168,12 +168,8 @@ static void window_clear_scenery_mouseup()
  *
  *  rct2: 0x0068E205
  */
-static void window_clear_scenery_update()
+static void window_clear_scenery_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Close window if another tool is open
 	if (window_clear_scenery_should_close())
 		window_close(w);

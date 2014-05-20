@@ -169,12 +169,8 @@ static void window_water_mouseup()
  *
  *  rct2: 0x006E6BCE
  */
-static void window_water_update()
+static void window_water_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Close window if another tool is open
 	if (window_water_should_close())
 		window_close(w);

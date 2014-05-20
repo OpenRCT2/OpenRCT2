@@ -79,7 +79,7 @@ static rct_widget *window_cheats_page_widgets[] = {
 static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
-static void window_cheats_update();
+static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
 static void window_cheats_set_page(rct_window *w, int page);
@@ -241,11 +241,11 @@ static void window_cheats_guests_mouseup()
 	}
 }
 
-static void window_cheats_update()
+static void window_cheats_update(rct_window *w)
 {
-	rct_window *w;
+	rct_window *w2;
 
-	__asm mov w, esi
+	__asm mov w2, esi
 
 	w->var_48E++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);

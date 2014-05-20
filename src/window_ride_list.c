@@ -70,7 +70,7 @@ static void window_ride_list_mouseup();
 static void window_ride_list_resize();
 static void window_ride_list_mousedown();
 static void window_ride_list_dropdown();
-static void window_ride_list_update();
+static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize();
 static void window_ride_list_scrollmousedown();
 static void window_ride_list_scrollmouseover();
@@ -297,12 +297,8 @@ static void window_ride_list_dropdown()
  * 
  *  rct2: 0x006B386B
  */
-static void window_ride_list_update()
+static void window_ride_list_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	w->var_48E = (w->var_48E + 1) % 64;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + w->page);
 	if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
