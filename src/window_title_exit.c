@@ -110,8 +110,7 @@ static void window_title_exit_mouseup()
 	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 	#endif
 
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		return;
 
 	if (widgetIndex == 0)

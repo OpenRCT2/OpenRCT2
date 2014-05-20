@@ -7,6 +7,9 @@ SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
 SET(CMAKE_PKGCONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
 SET(PKG_CONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
 
+# potential flags to make code more similar to MSVC:
+#   -fshort-wchar -fshort-enums -mms-bitfields -fpack-struct=1
+#
 set(CMAKE_C_FLAGS "-masm=intel -std=gnu99" CACHE STRING "" FORCE)
 set(CMAKE_SHARED_LINKER_FLAGS "-static-libgcc" CACHE STRING "" FORCE)
 

@@ -23,6 +23,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef signed char sint8;
 typedef signed short sint16;
@@ -50,6 +51,11 @@ typedef unsigned long long uint64;
 #define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__);
 #else
 #define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __func__, __LINE__, __VA_ARGS__);
+#endif
+
+#ifndef _MSC_VER
+// use similar struct packing as MSVC for our structs
+#pragma pack(1)
 #endif
 
 void rct2_finish();

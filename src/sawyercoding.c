@@ -81,9 +81,15 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 
 	// Read chunk header
 	ReadFile(hFile, &chunkHeader, sizeof(sawyercoding_chunk_header), &numBytesRead, NULL);
+	if (sizeof(sawyercoding_chunk_header) != numBytesRead) {
+		RCT2_ERROR("read error %d != %d\n", sizeof(sawyercoding_chunk_header), numBytesRead);
+	}
 
 	// Read chunk data
 	ReadFile(hFile, buffer, chunkHeader.length, &numBytesRead, NULL);
+	if (chunkHeader.length != numBytesRead) {
+		RCT2_ERROR("read error %d != %d\n", chunkHeader.length, numBytesRead);
+	}
 
 	// Decode chunk data
 	switch (chunkHeader.encoding) {
@@ -111,7 +117,7 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 static int decode_chunk_rle(char *buffer, int length)
 {
 	int i, j, count;
-	char *src, *dst, rleCodeByte;
+	unsigned char *src, *dst, rleCodeByte;
 
 	// Backup buffer
 	src = malloc(length);
@@ -135,7 +141,7 @@ static int decode_chunk_rle(char *buffer, int length)
 	free(src);
 
 	// Return final size
-	return dst - buffer;
+	return (char*)dst - buffer;
 }
 
 /**
@@ -145,7 +151,7 @@ static int decode_chunk_rle(char *buffer, int length)
 static int decode_chunk_repeat(char *buffer, int length)
 {
 	int i, j, count;
-	char *src, *dst, *copyOffset;
+	unsigned char *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);
@@ -167,7 +173,7 @@ static int decode_chunk_repeat(char *buffer, int length)
 	free(src);
 
 	// Return final size
-	return dst - buffer;
+	return (char*)dst - buffer;
 }
 
 /**
