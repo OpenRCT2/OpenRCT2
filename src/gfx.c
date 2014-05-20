@@ -340,7 +340,7 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 			int x_end = x_start + no_pixels;
 			//If the end position is further out than the whole image
 			//end position then we need to shorten the line again
-			if (x_end > g1_x_end){
+			if (x_end > (int)g1_x_end){
 				//Shorten the line
 				no_pixels -= x_end - g1_x_end;
 				//If there are no pixels there is nothing to draw.
@@ -433,9 +433,9 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = end_y;
 	RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
 	RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
-
-	//sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_g1->offset, (int)bits_pointer, (int)dest_dpi);
+	
+	sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
+	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_g1->offset, (int)bits_pointer, (int)dest_dpi);
 }
 
 /**
