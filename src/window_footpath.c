@@ -36,6 +36,11 @@ enum {
 	PATH_CONSTRUCTION_MODE_2
 };
 
+enum {
+	SELECTED_PATH_TYPE_NORMAL,
+	SELECTED_PATH_TYPE_QUEUE
+};
+
 typedef struct {
 	uint16 pad_00;
 	uint32 image;		// 0x02
@@ -203,10 +208,10 @@ void window_footpath_open()
 	window->colours[2] = 24;
 
 	tool_cancel();
-	RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_LAND;
+	RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
 	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
 	RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-	RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
 }
 
@@ -251,7 +256,7 @@ static void window_footpath_mouseup()
 		window_footpath_remove();
 		break;
 	case WIDX_CONSTRUCT_ON_LAND:
-		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND)
 			break;
 
 		_window_footpath_cost = 0x80000000;
@@ -259,14 +264,14 @@ static void window_footpath_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
-		RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_LAND;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
 		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-		RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 		RCT2_CALLPROC_EBPSAFE(0x006A855C);
 		break;
 	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-		if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
 			break;
 
 		_window_footpath_cost = 0x80000000;
@@ -274,10 +279,10 @@ static void window_footpath_mouseup()
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
-		RCT2_GLOBAL(0x00F3EF99, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
 		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
 		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-		RCT2_GLOBAL(0x00F3EF9F, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 		RCT2_CALLPROC_EBPSAFE(0x006A855C);
 		break;
 	}
@@ -345,16 +350,16 @@ static void window_footpath_dropdown()
 	__asm mov w, esi
 
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
-		RCT2_GLOBAL(0x00F3EFA2, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = SELECTED_PATH_TYPE_NORMAL;
 	else if (widgetIndex == WIDX_QUEUELINE_TYPE)
-		RCT2_GLOBAL(0x00F3EFA2, uint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = SELECTED_PATH_TYPE_QUEUE;
 	else
 		return;
 	
 	// Get path id
 	pathId = dropdownIndex;
 	if (pathId == -1) {
-		pathId = RCT2_GLOBAL(0x00F3EFA0, sint16);
+		pathId = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16);
 	} else {
 		int flags = 4;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
@@ -362,7 +367,7 @@ static void window_footpath_dropdown()
 
 		j = 0;
 		for (i = 0; i < 16; i++) {
-			pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[i];
+			pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[i];
 			if (pathType == (rct_path_type*)-1)
 				continue;
 			if (pathType->flags & flags)
@@ -376,7 +381,7 @@ static void window_footpath_dropdown()
 	}
 
 	// Set selected path id
-	RCT2_GLOBAL(0x00F3EFA0, sint16) = pathId;
+	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = pathId;
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 	_window_footpath_cost = 0x80000000;
 	window_invalidate(w);
@@ -482,14 +487,14 @@ static void window_footpath_update()
 	RCT2_CALLPROC_EBPSAFE(0x006A7760);
 
 	// Check tool
-	if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
 		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
-	} else if (RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
 		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
 			window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
@@ -514,16 +519,16 @@ static void window_footpath_invalidate()
 	// Press / unpress footpath and queue type buttons
 	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
 	w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
-	w->pressed_widgets |= RCT2_GLOBAL(0x00F3EFA2, uint8) == 0 ?
+	w->pressed_widgets |= RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) == SELECTED_PATH_TYPE_NORMAL ?
 		(1 << WIDX_FOOTPATH_TYPE) :
 		(1 << WIDX_QUEUELINE_TYPE);
 
 	// Enable / disable construct button
-	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(0x00F3EF99, uint8) == PATH_CONSTRUCTION_MODE_LAND ? WWT_EMPTY : WWT_IMGBTN;
+	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND ? WWT_EMPTY : WWT_IMGBTN;
 
 	// Set footpath and queue type button images
-	selectedPath = RCT2_GLOBAL(0x00F3EFA0, uint16);
-	pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[selectedPath];
+	selectedPath = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16);
+	pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[selectedPath];
 
 	int pathImage = 71 + pathType->image;
 	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
@@ -553,17 +558,17 @@ static void window_footpath_paint()
 
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
 		// Get construction image
-		image = (RCT2_GLOBAL(0x00F3EF90, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) % 4;
+		image = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) % 4;
 		if (RCT2_GLOBAL(0x00F3EF91, uint8) == 2)
 			image += 4;
 		else if (RCT2_GLOBAL(0x00F3EF91, uint8) == 6)
 			image += 8;
 		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
 
-		selectedPath = RCT2_GLOBAL(0x00F3EFA0, uint16);
-		pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[selectedPath];
+		selectedPath = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16);
+		pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[selectedPath];
 		image += pathType->image;
-		if (RCT2_GLOBAL(0x00F3EFA2, uint8) != 0)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) != SELECTED_PATH_TYPE_NORMAL)
 			image += 51;
 
 		// Draw construction image
@@ -600,7 +605,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {
-		pathType = RCT2_ADDRESS(0x009ADA14, rct_path_type*)[i];
+		pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[i];
 		if (pathType == (rct_path_type*)-1)
 			continue;
 		if (pathType->flags & flags)
@@ -654,7 +659,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		RCT2_CALLPROC_EBPSAFE(0x006A7831);
 	} else {
 		// Check for change
-		if ((RCT2_GLOBAL(0x00F3EF92, uint8) & 2) && RCT2_GLOBAL(0x00F3EF94, uint16) == x && RCT2_GLOBAL(0x00F3EF96, uint16) == y && RCT2_GLOBAL(0x00F3EF98, uint8) == mapElement->base_height)
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & 2) && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) == x && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) == y && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) == mapElement->base_height)
 			return;
 
 		// Set map selection
@@ -671,7 +676,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
 		if (z == 6)
 			slope = mapElement->properties.surface.slope & 7;
-		pathType = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+		pathType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
 		_window_footpath_cost = window_footpath_set_provisional_path(pathType, x, y, mapElement->base_height, slope);
 		// window_invalidate_by_id(eax, ebx);
@@ -692,10 +697,10 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, 17, 0, 0);
 
 	if (cost != 0x80000000) {
-		RCT2_GLOBAL(0x00F3EF94, uint16) = x;
-		RCT2_GLOBAL(0x00F3EF96, uint16) = y;
-		RCT2_GLOBAL(0x00F3EF98, uint8) = z & 0xFF;
-		RCT2_GLOBAL(0x00F3EF92, uint8) |= 2;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= 2;
 
 		eax = 3;
 		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
@@ -715,7 +720,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	int z, presentType, selectedType, cost;
 	rct_map_element *mapElement;
 
-	if (RCT2_GLOBAL(0x00F3EF9F, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) != 0)
 		return;
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
@@ -739,7 +744,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	if (z == 6)
 		presentType = mapElement->properties.path.type & 7;
 	z = mapElement->base_height;
-	selectedType = (RCT2_GLOBAL(0x00F3EFA2, uint8) << 7) + RCT2_GLOBAL(0x00F3EFA0, uint8);
+	selectedType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
 	// Prepare error text
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -748,7 +753,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, 17, 0, 0);
 
 	if (cost == 0x80000000) {
-		RCT2_GLOBAL(0x00F3EF9F, uint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 1;
 	} else if (RCT2_GLOBAL(0x00F3EFD9, uint32) != 0) {
 		// bp = 0x009DEA62
 		// dx = 0x009DEA60
@@ -780,9 +785,9 @@ static void window_footpath_remove()
 	_window_footpath_cost = 0x80000000;
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 
-	x = RCT2_GLOBAL(0x00F3EF8A, uint16) / 32;
-	y = RCT2_GLOBAL(0x00F3EF8C, uint16) / 32;
-	int dl = (RCT2_GLOBAL(0x00F3EF8E, uint16) >> 3) & 0xFF;
+	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) / 32;
+	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) / 32;
+	int dl = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) >> 3) & 0xFF;
 	int dh = dl - 2;
 
 	if (x >= 256 || y >= 256)
@@ -793,12 +798,12 @@ static void window_footpath_remove()
 		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
 			if (mapElement->base_height == dl) {
 				if (mapElement->properties.path.type & 4)
-					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(0x00F3EF90, uint8))
+					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
 						continue;
 				goto loc_6A78EF;
 			} else if (mapElement->base_height == dh) {
 				if (!(mapElement->properties.path.type & 4))
-					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(0x00F3EF90, uint8))
+					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
 						continue;
 				goto loc_6A78EF;
 			}
@@ -814,12 +819,12 @@ loc_6A78EF:
 	if (pathType & 4) {
 		pathType &= 3;
 		pathType ^= 2;
-		if (pathType == RCT2_GLOBAL(0x00F3EF90, uint8))
+		if (pathType == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
 			dl += 2;
 	}
 	
 	// Find a connected edge
-	int edge = RCT2_GLOBAL(0x00F3EF90, uint8) ^ 2;
+	int edge = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) ^ 2;
 	if (!(mapElement->properties.path.edges & (1 << edge))) {
 		edge = (edge + 1) % 4;
 		if (!(mapElement->properties.path.edges & (1 << edge))) {
@@ -834,16 +839,16 @@ loc_6A78EF:
 	
 	// Remove path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
-	game_do_command(RCT2_GLOBAL(0x00F3EF8A, uint16), 1, RCT2_GLOBAL(0x00F3EF8C, uint16), mapElement->base_height, 19, 0, 0);
+	game_do_command(RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16), 1, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16), mapElement->base_height, 19, 0, 0);
 
 	// Move selection
 	edge ^= 2;
-	x = RCT2_GLOBAL(0x00F3EF8A, uint16) - RCT2_GLOBAL(0x00993CCC + (edge * 4), sint16);
-	y = RCT2_GLOBAL(0x00F3EF8C, uint16) - RCT2_GLOBAL(0x00993CCE + (edge * 4), sint16);
-	RCT2_GLOBAL(0x00F3EF8A, uint16) = x;
-	RCT2_GLOBAL(0x00F3EF8C, uint16) = y;
-	RCT2_GLOBAL(0x00F3EF8E, uint16) = dl << 3;
-	RCT2_GLOBAL(0x00F3EF90, uint8) = edge;
+	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) - RCT2_GLOBAL(0x00993CCC + (edge * 4), sint16);
+	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) - RCT2_GLOBAL(0x00993CCE + (edge * 4), sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) = dl << 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = edge;
 	RCT2_GLOBAL(0x00F3EF9E, uint8) = 255;
 
 loc_6A79B0:
