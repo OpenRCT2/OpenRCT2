@@ -47,6 +47,102 @@ void crooked_house_excitement(rct_ride *ride)
 	ride->excitement = excitement;
 	ride->intensity = intensity;
 	ride->nausea = nausea;
+
+	sub_65E621(ride, intensity);
+
+	// clear all bits except lowest 5
+	ride->var_114 &= 0x1f;
+
+	// set 6th,7th,8th bits
+	ride->var_114 |= 7 << 5;
+}
+
+/**
+ * rct2: sub_65E621
+ *
+ * I think this function computes ride upkeep? Though it is weird that the
+ * starting input is the ride's intensity
+ *
+ * inputs
+ * - bx: excitement
+ * - cx: intensity
+ * - bp: nausea
+ * - edi: ride ptr
+ */
+void sub_65E621(rct_ride *ride, sint16 intensity)
+{
+	// data values here: https://gist.github.com/kevinburke/456fe478b1822580a449
+	intensity += RCT2_GLOBAL(0x0097E3A8 + ride->type*12, uint16);
+
+	uint16 eax = RCT2_GLOBAL(0x0097E3AA + ride->type*12, uint16);
+	// max speed? lateral G's?
+	uint8 dl = ride->var_115;
+	dl = dl >> 6;
+	dl = dl & 3;
+	eax = eax * dl;
+	intensity += dl;
+
+	uint32 cuml = ride->var_0E4;
+	cuml += ride->var_0E8;
+	cuml += ride->var_0EC;
+	cuml += ride->var_0F0;
+	cuml = cuml >> 0x10;
+
+	cuml = cuml * RCT2_GLOBAL(0x0097E3AC + ride->type*12, uint16);
+	cuml = cuml >> 0x0A;
+	intensity += cuml;
+
+	// on ride photo adds to intensity ? 
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
+		// this value seems to be 40 for every ride. also, I tried measuring
+		// intensity on a dummy ride with/without on ride photo, and no change. 
+		intensity += RCT2_GLOBAL(0x0097E3AE, ride->type*12, uint16);
+	}
+
+	eax = RCT2_GLOBAL(0x0097E3B0+ride->type*12, uint16);
+
+	// not sure what this value is; it's only written to in one place, where
+	// it's incremented.
+	sint16 dx = RCT2_GLOBAL(0x0138B5CC, sint16);
+	intensity += eax * dx;
+
+	eax = RCT2_GLOBAL(0x0097E3B2 + ride->type*12, uint16);
+	dx = RCT2_GLOBAL(0x0138B5CA, sint16);
+	intensity += eax * dx;
+
+	// these seem to be adhoc adjustments to a ride's intensity/cost, times
+	// various variables set on the ride itself.
+
+	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
+	eax = RCT2_GLOBAL(0x0097E3B4 + ride->type*12, uint16);
+	intensity += eax * ride->var_0C8;
+
+	// either set to 3 or 0, extra boosts for some rides including mini golf
+	eax = RCT2_GLOBAL(0x0097E3B6 + ride->type*12, uint16);
+	intensity += eax * ride->var_0C9;
+
+	// slight intensity boosts for some rides - 5 for mini railroad, 10 for log
+	// flume/rapids, 10 for roller coaster, 28 for giga coaster
+	eax = RCT2_GLOBAL(0x0097E3B8 + ride->type*12, uint16);
+	intensity += eax * ride->var_0C7;
+
+	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
+		intensity += 30;
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH) {
+		intensity += 160;
+	} else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH) {
+		intensity += 320;
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH2 || 
+			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
+		intensity += 220;
+	}
+
+	intensity = intensity * 10;
+	intensity = intensity >> 4;
+	ride->upkeep_cost = intensity; // Which var here is named correctly?
+
+	// Upkeep flag? or a dirtiness flag
+	ride->var_14D |= 2;
 }
 
 /**

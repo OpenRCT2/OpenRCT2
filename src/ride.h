@@ -47,11 +47,23 @@ typedef struct {
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
 	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
-	uint8 pad_088[0x68];
-	sint16 var_0F0;
-	sint16 var_0F2;
-	sint16 var_0F4;
-	uint8 pad_0F6[0x2E];
+	uint8 pad_088[0x3F];
+
+	// Not sure if these should be uint or sint.
+	uint8 var_0C7;
+	uint8 var_0C8;
+	uint8 var_0C9;
+
+	uint8 pad_0CA[0x1B];
+
+	sint32 var_0E4;
+	sint32 var_0E8;
+	sint32 var_0EC;
+	sint32 var_0F0;
+	uint8 pad_0F4[0x20];
+	uint8 var_114;
+	uint8 var_115;
+	uint8 pad_116[0x0F];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -259,7 +271,7 @@ enum {
 	RIDE_MODE_3D_FILM_MOUSE_TAILS,
 	RIDE_MODE_SPACE_RINGS,
 	RIDE_MODE_BEGINNERS,
-	RIDE_MODE_LIM_POWERED_LAUNCH,
+	RIDE_MODE_LIM_POWERED_LAUNCH,                  // 0x17
 	RIDE_MODE_FILM_THRILL_RIDERS,
 	RIDE_MODE_3D_FILM_STORM_CHASERS,
 	RIDE_MODE_3D_FILM_SPACE_RAIDERS,
@@ -271,7 +283,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH2,						// RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH2,						// 0x23. RCT2 style?
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 
