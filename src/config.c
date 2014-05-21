@@ -19,7 +19,7 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include <shlobj.h>
+#include "shlobj.h"
 #include <windows.h>
 #include <SDL_keycode.h>
 #include "addresses.h"
@@ -613,5 +613,4 @@ static void config_error(char *msg){
 	//TODO:SHUT DOWN EVERYTHING!
 
 }
-
 
