@@ -35,6 +35,7 @@ typedef struct {
 	uint8 colour_scheme_type;		// 0x005
 	uint16 car_colours[32];			// 0x006
 	uint8 pad_046[0x03];
+	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
 	uint16 var_04A;
 	uint32 var_04C;
