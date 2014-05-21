@@ -874,7 +874,7 @@ void scenario_update()
 		finance_pay_interest();
 		scenario_marketing_update();
 		peep_problem_warnings_update();
-		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
+		ride_check_all_reachable();
 		ride_update_favourited_stat();
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
