@@ -683,8 +683,47 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	edx = eax;
 	edi = 0x9E3D28;
 	eax = 0;
+	while (edx>0){
+		eax = *((sint8*)esi);
+		if (eax >= 0){
+			esi++;
+			ecx = eax;
+			edx -= eax;
+			memcpy((char*)edi, (char*)esi, ecx);
+			edi += ecx;
+			esi += ecx;
+			continue;
+		}
+		ecx = eax;
+		ebx = edi;
+		eax &= 0x7;
+		ecx >>= 3;
+		eax <<= 8;
+		ecx = -ecx;
+		eax = eax & 0xFF00 + *((sint8*)esi);
+		edx -= ecx;
+		esi += 2;
+		ebx -= eax;
+		eax = esi;
+		esi = ebx;
+		ebx = eax;
+		eax = 0;
+		memcpy((char*)edi, (char*)esi, ecx);
+		edi += ecx;
+		esi += ecx;
+		esi = ebx;
+	}
+	//edi poped off stack
+	esi = ebp;
+	esi += 0x9E3D28;
+	eax = RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8);
+	eax <<= 8;
+	edx = RCT2_GLOBAL(0x9ABDAE, uint16);
+	ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
+	ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
+	sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
+	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 	return;
 }
 
