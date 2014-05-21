@@ -111,8 +111,9 @@ typedef struct {
 	uint8 var_199;
 	uint8 pad_19A[0x14];
 	uint8 var_1AE;
-	uint8 pad_1AF[0x05];
-	money32 profit;					// 0x1B4
+	uint8 var_1AF;
+	uint32 pad_1B0;
+	sint32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 var_1BC;
 	uint8 pad_1BD[0x10];
@@ -343,5 +344,6 @@ int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
+void ride_check_all_reachable();
 
 #endif
