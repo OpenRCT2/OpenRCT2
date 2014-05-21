@@ -115,7 +115,7 @@ void finance_pay_ride_upkeep()
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
 
-		if (!(ride->var_1D0 & 0x1000)) {
+		if (!(ride->lifecycle_flags & 0x1000)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 			ride->var_196 = 25855; // durability?
 

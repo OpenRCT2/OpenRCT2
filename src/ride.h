@@ -29,6 +29,8 @@
  */
 typedef struct {
 	uint8 type;						// 0x000
+	// pointer to static info. for example, wild mouse type is 0x36, subtype is
+	// 0x4c.
 	uint8 subtype;					// 0x001
 	uint16 pad_002;
 	uint8 mode;						// 0x004
@@ -77,15 +79,22 @@ typedef struct {
 	sint16 upkeep_cost;				// 0x182
 	uint8 pad_184[0x12];
 	uint16 var_196;
-	uint8 pad_198;
+	// used in computing excitement, nausea, etc
+	uint8 var_198;
 	uint8 var_199;
 	uint8 pad_19A[0x1A];
 	sint32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 pad_1BC[0x12];
+	uint8 pad_1BC[0x11];
+	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
-	uint32 var_1D0;
-	uint8 pad_1D4[0x2C];
+	uint32 lifecycle_flags;
+	uint8 pad_1D4[0x20];
+	// Example value for wild mouse ride is d5 (before it's been constructed)
+	// I tried searching the IDA file for "1F4" but couldn't find places where
+	// this is written to.
+	uint16 var_1F4;
+	uint8 pad_1F6[0x0a];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
@@ -104,6 +113,27 @@ enum {
 	RIDE_CLASS_SHOP_OR_STALL,
 	RIDE_CLASS_KIOSK_OR_FACILITY
 };
+
+// Constants used by the lifecycle_flags property at 0x1D0
+enum {
+	RIDE_LIFECYCLE_ON_TRACK = 1,
+	RIDE_LIFECYCLE_TESTED = 1 << 1,
+	RIDE_LIFECYCLE_TEST_IN_PROGRESS = 1 << 2,
+	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
+	RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
+	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
+
+	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
+
+	RIDE_LIFECYCLE_CRASHED = 1 << 10,
+
+	RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
+	RIDE_LIFECYCLE_MUSIC = 1 << 13,
+	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
+	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
+
+	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
+}
 
 enum {
 	RIDE_TYPE_NULL = 255,
