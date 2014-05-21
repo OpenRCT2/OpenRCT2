@@ -284,12 +284,12 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 */
 void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, uint16 g1_y_start, uint16 g1_y_end, uint16 g1_x_start, uint16 g1_x_end){
 	//Image_id
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x20000000){
 		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
 		return; //0x67AAB3
 	}
 
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x4000000){
+	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x40000000){
 		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
 		return; //0x67AFD8
 	}
@@ -679,7 +679,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	esi -= (uint32)g1_source->offset;
 	ebp = esi;
 	eax = g1_source->width*g1_source->height;
-	esi = g1_source->offset;
+	esi = (int)g1_source->offset;
 	edx = eax;
 	edi = 0x9E3D28;
 	eax = 0;
