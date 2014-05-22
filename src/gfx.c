@@ -20,11 +20,13 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include <windows.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window.h"
 
 // HACK These were originally passed back through registers

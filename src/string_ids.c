@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include "addresses.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 
 /**
  * Writes a formatted string to a buffer.

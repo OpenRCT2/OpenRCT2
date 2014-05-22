@@ -48,6 +48,7 @@ void window_main_open()
 	window->widgets = main_widgets;
 
 	// RCT2_CALLPROC_X(0x006EB009, window->x, window->y, 0x4000000, 0x0FFF0FFF, window, 0, 0);
+	#ifdef _MSC_VER
 	__asm {
 		mov esi, window
 		mov edx, 0FFF0FFFh
@@ -62,6 +63,24 @@ void window_main_open()
 		pop ebp
 		or word ptr [edi+12h], 400h
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		push ebx \n\
+		mov esi, %[window] 	\n\
+		mov edx, 0x0FFF0FFF 	\n\
+		mov eax, [esi+0x2C] 	\n\
+		mov ebx, [esi+0x30] 	\n\
+		mov ecx, 0x4000000 	\n\
+		push ebp 	\n\
+		mov ebp, 0x6EB009 	\n\
+		call ebp 	\n\
+	\n\
+		pop ebp 	\n\
+		or word ptr [edi+0x12], 0x400 	\n\
+		pop ebx \n\
+		" : [window] "+m" (window) : : "esi","edx","eax","ecx" );
+	#endif
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;

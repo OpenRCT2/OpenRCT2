@@ -18,10 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "game.h"
 #include "sprites.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -147,8 +148,18 @@ static void window_game_top_toolbar_mouseup()
 	short widgetIndex;
 	rct_window *w, *mainWindow;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
@@ -250,9 +261,24 @@ static void window_game_top_toolbar_mousedown()
 	rct_widget *widget;
 	rct_viewport *mainViewport;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		gDropdownItemsFormat[0] = 882;
@@ -338,8 +364,18 @@ static void window_game_top_toolbar_dropdown()
 {
 	short widgetIndex, dropdownIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		switch (dropdownIndex) {
@@ -361,7 +397,7 @@ static void window_game_top_toolbar_dropdown()
 					src++;
 				} while (*src != '.' && *src != '\0');
 				strcpy(src, ".SV6");
-				strcpy(RCT2_ADDRESS_SAVED_GAMES_PATH_2, 0x0141EF68);
+				strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
 
 				eax = 0;
 				if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
@@ -401,7 +437,12 @@ static void window_game_top_toolbar_invalidate()
 	int x;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Anchor the right half of the buttons to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -471,8 +512,18 @@ static void window_game_top_toolbar_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

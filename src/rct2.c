@@ -23,7 +23,7 @@
 #include <string.h>
 #include <setjmp.h>
 #include <windows.h>
-#include <ShlObj.h>
+#include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
 #include "climate.h"
@@ -141,7 +141,7 @@ void rct2_init()
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = gGeneral_config.play_intro ? 8 : 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
 }
 
 // rct2: 0x00683499
@@ -182,17 +182,25 @@ void rct2_startup_checks()
 {
 	// check if game is already running
 
-	RCT2_CALLPROC(0x00674C0B);
+	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
 }
 
 void rct2_update()
 {
 	// Set 0x009DE564 to the value of esp
 	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
+	#ifdef _MSC_VER
 	__asm {
 		mov eax, 009DE564h
 		mov [eax], esp
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		mov eax, 0x009DE564 	\n\
+		mov [eax], esp 	\n\
+	 " : : : "eax" );
+	#endif
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();
@@ -330,7 +338,7 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
-	uint32 size = 80;
+	DWORD size = 80;
 	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
 	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
@@ -355,7 +363,7 @@ void get_system_info()
 	else
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
-	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
 }
 
 
