@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <windows.h>
 #include <string.h>
 #include <time.h>
 #include "addresses.h"
@@ -32,7 +33,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "editor.h"
 

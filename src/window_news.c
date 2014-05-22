@@ -22,13 +22,13 @@
 #include "addresses.h"
 #include "audio.h"
 #include "news_item.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_NEWS_WIDGET_IDX {
+enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -129,8 +129,18 @@ static void window_news_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -195,7 +205,12 @@ static void window_news_scrollgetsize()
 		height += 42;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov edx, height
+	#else
+	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
+	#endif
+
 }
 
 /**
@@ -209,9 +224,24 @@ static void window_news_scrollmousedown()
 	rct_window *w;
 	rct_news_item *newsItems;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
+	#else
+	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -274,8 +304,18 @@ static void window_news_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }
@@ -291,8 +331,18 @@ static void window_news_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_news_item *newsItems, *newsItem, *newsItem2;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	y = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);

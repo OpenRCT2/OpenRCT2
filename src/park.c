@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include "addresses.h"
 #include "finance.h"
 #include "map.h"
@@ -26,7 +27,7 @@
 #include "ride.h"
 #include "scenario.h"
 #include "sprite.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window.h"
 
 int park_is_open()

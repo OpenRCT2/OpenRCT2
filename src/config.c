@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <shlobj.h>
 #include <windows.h>
+#include <tchar.h>
 #include <SDL_keycode.h>
 #include "addresses.h"
 #include "config.h"

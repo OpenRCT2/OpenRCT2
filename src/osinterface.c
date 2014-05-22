@@ -66,7 +66,7 @@ static void osinterface_create_window()
 	int width, height;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		fprintf(stderr, "Error: SDL_Init\n");
+		RCT2_ERROR("SDL_Init %s", SDL_GetError());
 		exit(-1);
 	}
 
@@ -86,9 +86,16 @@ static void osinterface_create_window()
 
 
 	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
-	
+	if (!_window) {
+		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
+		exit(-1);
+	}
+
 	// Get the HWND context
-	SDL_GetWindowWMInfo(_window, &wmInfo);
+	if (SDL_GetWindowWMInfo(_window, &wmInfo) != SDL_TRUE) {
+		RCT2_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
+		exit(-1);
+	}
 	hWnd = wmInfo.info.win.window;
 	RCT2_GLOBAL(0x009E2D70, HWND) = hWnd;
 
@@ -113,7 +120,15 @@ static void osinterface_resize(int width, int height)
 	_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
 	_palette = SDL_AllocPalette(256);
 
-	SDL_SetSurfacePalette(_surface, _palette);
+	if (!_surface || !_palette) {
+		RCT2_ERROR("%p || %p == NULL %s", _surface, _palette, SDL_GetError());
+		exit(-1);
+	}
+
+	if (SDL_SetSurfacePalette(_surface, _palette)) {
+		RCT2_ERROR("SDL_SetSurfacePalette failed %s", SDL_GetError());
+		exit(-1);
+	}
 
 	newScreenBufferSize = _surface->pitch * _surface->h;
 	newScreenBuffer = malloc(newScreenBufferSize);
@@ -159,6 +174,10 @@ static void osinterface_update_palette(char* colours, int start_index, int num_c
 	int i;
 
 	surface = SDL_GetWindowSurface(_window);
+	if (!surface) {
+		RCT2_ERROR("SDL_GetWindowSurface failed %s", SDL_GetError());
+		exit(1);
+	}
 
 	for (i = 0; i < 256; i++) {
 		base[i].r = colours[2];
@@ -168,15 +187,20 @@ static void osinterface_update_palette(char* colours, int start_index, int num_c
 		colours += 4;
 	}
 
-	SDL_SetPaletteColors(_palette, base, 0, 256);
+	if (SDL_SetPaletteColors(_palette, base, 0, 256)) {
+		RCT2_ERROR("SDL_SetPaletteColors failed %s", SDL_GetError());
+		exit(1);
+	}
 }
 
 void osinterface_draw()
 {
 	// Lock the surface before setting its pixels
 	if (SDL_MUSTLOCK(_surface))
-		if (SDL_LockSurface(_surface) < 0)
+		if (SDL_LockSurface(_surface) < 0) {
+			RCT2_ERROR("locking failed %s", SDL_GetError());
 			return;
+		}
 
 	// Copy pixels from the virtual screen buffer to the surface
 	memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
@@ -186,8 +210,14 @@ void osinterface_draw()
 		SDL_UnlockSurface(_surface);
 
 	// Copy the surface to the window
-	SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(_window), NULL);
-	SDL_UpdateWindowSurface(_window);
+	if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(_window), NULL)) {
+		RCT2_ERROR("SDL_BlitSurface %s", SDL_GetError());
+		exit(1);
+	}
+	if (SDL_UpdateWindowSurface(_window)) {
+		RCT2_ERROR("SDL_UpdateWindowSurface %s", SDL_GetError());
+		exit(1);
+	}
 }
 
 void osinterface_process_messages()
@@ -390,7 +420,8 @@ char* osinterface_open_directory_browser(char *title) {
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDList(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
-			outPath = strcat("", pszBuffer);
+			outPath = (char*) malloc(strlen(pszBuffer)+1);
+			strcpy(outPath, pszBuffer);
 		}
 	}
 	CoUninitialize();

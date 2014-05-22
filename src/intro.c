@@ -25,7 +25,7 @@
 #include "rct2.h"
 #include "osinterface.h"
 #include "sprites.h"
-#include "strings.h"
+#include "string_ids.h"
 
 static void screen_intro_process_mouse_input();
 static void screen_intro_process_keyboard_input();
