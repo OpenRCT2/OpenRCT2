@@ -55,7 +55,7 @@ void crooked_house_excitement(rct_ride *ride)
 	// clear all bits except lowest 5
 	ride->var_114 &= 0x1f;
 	// set 6th,7th,8th bits
-	ride->var_114 |= 7 << 5;
+	ride->var_114 |= 0xE0;
 }
 
 /**
@@ -68,10 +68,12 @@ void crooked_house_excitement(rct_ride *ride)
  */
 uint16 compute_upkeep(rct_ride *ride)
 {
-	// data values here: https://gist.github.com/kevinburke/456fe478b1822580a449
-	uint16 upkeep += RCT2_GLOBAL(0x0097E3A8 + ride->type*12, uint16);
+	uint8 type_idx = ride->type * 0x12;
 
-	uint16 eax = RCT2_GLOBAL(0x0097E3AA + ride->type*12, uint16);
+	// data values here: https://gist.github.com/kevinburke/456fe478b1822580a449
+	uint16 upkeep = RCT2_GLOBAL(0x0097E3A8 + type_idx, uint16);
+
+	uint16 eax = RCT2_GLOBAL(0x0097E3AA + type_idx, uint16);
 	uint8 dl = ride->var_115;
 	dl = dl >> 6;
 	dl = dl & 3;
@@ -84,23 +86,23 @@ uint16 compute_upkeep(rct_ride *ride)
 	cuml += ride->var_0F0;
 	cuml = cuml >> 0x10;
 
-	cuml = cuml * RCT2_GLOBAL(0x0097E3AC + ride->type*12, uint16);
+	cuml = cuml * RCT2_GLOBAL(0x0097E3AC + type_idx, uint16);
 	cuml = cuml >> 0x0A;
 	upkeep += cuml;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
 		// this value seems to be 40 for every ride
-		upkeep += RCT2_GLOBAL(0x0097E3AE, ride->type*12, uint16);
+		upkeep += RCT2_GLOBAL(0x0097E3AE, type_idx, uint16);
 	}
 
-	eax = RCT2_GLOBAL(0x0097E3B0+ride->type*12, uint16);
+	eax = RCT2_GLOBAL(0x0097E3B0 + type_idx, uint16);
 
 	// not sure what this value is; it's only written to in one place, where
 	// it's incremented.
 	sint16 dx = RCT2_GLOBAL(0x0138B5CC, sint16);
 	upkeep += eax * dx;
 
-	eax = RCT2_GLOBAL(0x0097E3B2 + ride->type*12, uint16);
+	eax = RCT2_GLOBAL(0x0097E3B2 + type_idx, uint16);
 	dx = RCT2_GLOBAL(0x0138B5CA, sint16);
 	upkeep += eax * dx;
 
@@ -108,16 +110,16 @@ uint16 compute_upkeep(rct_ride *ride)
 	// various variables set on the ride itself.
 
 	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
-	eax = RCT2_GLOBAL(0x0097E3B4 + ride->type*12, uint16);
+	eax = RCT2_GLOBAL(0x0097E3B4 + type_idx, uint16);
 	upkeep += eax * ride->var_0C8;
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
-	eax = RCT2_GLOBAL(0x0097E3B6 + ride->type*12, uint16);
+	eax = RCT2_GLOBAL(0x0097E3B6 + type_idx, uint16);
 	upkeep += eax * ride->var_0C9;
 
 	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
-	eax = RCT2_GLOBAL(0x0097E3B8 + ride->type*12, uint16);
+	eax = RCT2_GLOBAL(0x0097E3B8 + type_idx, uint16);
 	upkeep += eax * ride->var_0C7;
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
@@ -131,6 +133,7 @@ uint16 compute_upkeep(rct_ride *ride)
 		upkeep += 220;
 	}
 
+	// multiply by 5/8
 	upkeep = upkeep * 10;
 	upkeep = upkeep >> 4;
     return upkeep;
