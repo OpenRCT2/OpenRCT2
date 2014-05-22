@@ -27,18 +27,18 @@
  */
 void crooked_house_excitement(rct_ride *ride)
 {
-    // Set lifecycle bits
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-    ride->var_198 = 5;
-    sub_655FD6(ride);
+	// Set lifecycle bits
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 5;
+	sub_655FD6(ride);
 
-    excitement = 215;
-    intensity = 62;
-    nausea = 34;
+	excitement = 215;
+	intensity = 62;
+	nausea = 34;
 
-    // NB this should get marked out by the compiler, if it's smart.
-    excitement = apply_intensity_penalty(excitement, intensity);
+	// NB this should get marked out by the compiler, if it's smart.
+	excitement = apply_intensity_penalty(excitement, intensity);
 	rating_tuple tup = per_ride_rating_adjustments(ride, excitement, intensity, nausea);
 	excitement = tup.excitement;
 	intensity = tup.intensity;
