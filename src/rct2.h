@@ -58,6 +58,12 @@ typedef unsigned long long uint64;
 #pragma pack(1)
 #endif
 
+#define OPENRCT2_NAME				"OpenRCT2"
+#define OPENRCT2_VERSION			"0.0.1"
+#define OPENRCT2_ARCHITECTURE		"x86"
+#define OPENRCT2_PLATFORM			"Windows"
+#define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+
 void rct2_finish();
 
 enum {

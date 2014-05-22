@@ -22,6 +22,7 @@
 
 #include <string.h>
 #include <setjmp.h>
+#include <time.h>
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL.h>
@@ -44,6 +45,7 @@
 #include "track.h"
 #include "viewport.h"
 
+void print_launch_information();
 
 void rct2_init_directories();
 void rct2_startup_checks();
@@ -64,6 +66,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	print_launch_information();
+
+	// Begin RCT2
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
@@ -76,6 +81,26 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	exit(0);
 
 	return 0;
+}
+
+void print_launch_information()
+{
+	// Print version information
+	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
+	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
+
+	// Print current time
+    time_t timer;
+    char buffer[32];
+    struct tm* tm_info;
+
+    time(&timer);
+    tm_info = localtime(&timer);
+    strftime(buffer, 25, "%Y/%m/%d %H:%M:%S", tm_info);
+	printf("Time: %s\n", buffer);
+
+	// TODO Print other potential information (e.g. user, hardware)
 }
 
 void rct2_loop()
