@@ -48,11 +48,12 @@ void crooked_house_excitement(rct_ride *ride)
 	ride->intensity = intensity;
 	ride->nausea = nausea;
 
-	sub_65E621(ride, intensity);
+	ride->upkeep_cost = compute_upkeep(ride);
+	// Upkeep flag? or a dirtiness flag
+	ride->var_14D |= 2;
 
 	// clear all bits except lowest 5
 	ride->var_114 &= 0x1f;
-
 	// set 6th,7th,8th bits
 	ride->var_114 |= 7 << 5;
 }
@@ -61,26 +62,21 @@ void crooked_house_excitement(rct_ride *ride)
  * rct2: sub_65E621
  *
  * I think this function computes ride upkeep? Though it is weird that the
- * starting input is the ride's intensity
  *
  * inputs
- * - bx: excitement
- * - cx: intensity
- * - bp: nausea
  * - edi: ride ptr
  */
-void sub_65E621(rct_ride *ride, sint16 intensity)
+uint16 compute_upkeep(rct_ride *ride)
 {
 	// data values here: https://gist.github.com/kevinburke/456fe478b1822580a449
-	intensity += RCT2_GLOBAL(0x0097E3A8 + ride->type*12, uint16);
+	uint16 upkeep += RCT2_GLOBAL(0x0097E3A8 + ride->type*12, uint16);
 
 	uint16 eax = RCT2_GLOBAL(0x0097E3AA + ride->type*12, uint16);
-	// max speed? lateral G's?
 	uint8 dl = ride->var_115;
 	dl = dl >> 6;
 	dl = dl & 3;
 	eax = eax * dl;
-	intensity += dl;
+	upkeep += dl;
 
 	uint32 cuml = ride->var_0E4;
 	cuml += ride->var_0E8;
@@ -90,13 +86,11 @@ void sub_65E621(rct_ride *ride, sint16 intensity)
 
 	cuml = cuml * RCT2_GLOBAL(0x0097E3AC + ride->type*12, uint16);
 	cuml = cuml >> 0x0A;
-	intensity += cuml;
+	upkeep += cuml;
 
-	// on ride photo adds to intensity ? 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
-		// this value seems to be 40 for every ride. also, I tried measuring
-		// intensity on a dummy ride with/without on ride photo, and no change. 
-		intensity += RCT2_GLOBAL(0x0097E3AE, ride->type*12, uint16);
+		// this value seems to be 40 for every ride
+		upkeep += RCT2_GLOBAL(0x0097E3AE, ride->type*12, uint16);
 	}
 
 	eax = RCT2_GLOBAL(0x0097E3B0+ride->type*12, uint16);
@@ -104,45 +98,42 @@ void sub_65E621(rct_ride *ride, sint16 intensity)
 	// not sure what this value is; it's only written to in one place, where
 	// it's incremented.
 	sint16 dx = RCT2_GLOBAL(0x0138B5CC, sint16);
-	intensity += eax * dx;
+	upkeep += eax * dx;
 
 	eax = RCT2_GLOBAL(0x0097E3B2 + ride->type*12, uint16);
 	dx = RCT2_GLOBAL(0x0138B5CA, sint16);
-	intensity += eax * dx;
+	upkeep += eax * dx;
 
-	// these seem to be adhoc adjustments to a ride's intensity/cost, times
+	// these seem to be adhoc adjustments to a ride's upkeep/cost, times
 	// various variables set on the ride itself.
 
 	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
 	eax = RCT2_GLOBAL(0x0097E3B4 + ride->type*12, uint16);
-	intensity += eax * ride->var_0C8;
+	upkeep += eax * ride->var_0C8;
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
 	eax = RCT2_GLOBAL(0x0097E3B6 + ride->type*12, uint16);
-	intensity += eax * ride->var_0C9;
+	upkeep += eax * ride->var_0C9;
 
-	// slight intensity boosts for some rides - 5 for mini railroad, 10 for log
+	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
 	eax = RCT2_GLOBAL(0x0097E3B8 + ride->type*12, uint16);
-	intensity += eax * ride->var_0C7;
+	upkeep += eax * ride->var_0C7;
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
-		intensity += 30;
+		upkeep += 30;
 	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH) {
-		intensity += 160;
+		upkeep += 160;
 	} else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH) {
-		intensity += 320;
+		upkeep += 320;
 	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH2 || 
 			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
-		intensity += 220;
+		upkeep += 220;
 	}
 
-	intensity = intensity * 10;
-	intensity = intensity >> 4;
-	ride->upkeep_cost = intensity; // Which var here is named correctly?
-
-	// Upkeep flag? or a dirtiness flag
-	ride->var_14D |= 2;
+	upkeep = upkeep * 10;
+	upkeep = upkeep >> 4;
+    return upkeep;
 }
 
 /**
@@ -174,7 +165,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
 	// As far as I can tell, this flag detects whether the ride is a roller
 	// coaster, or a log flume or rapids. Everything else it's not set.
 	// more detail: https://gist.github.com/kevinburke/d951e74e678b235eef3e
-	uint16 ridetype_var = RCT2_GLOBAL(ride->type * 8, uint16);
+	uint16 ridetype_var = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
 	if (ridetype_var & 0x80) {
 		uint16 ax = ride->var_1F4;
 		if (RCT2_GLOBAL(subtype_p + 8, uint32) & 0x800) {
