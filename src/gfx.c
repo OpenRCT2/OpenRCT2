@@ -282,7 +282,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 * I think its only used for bitmaps onto buttons but i am not sure.
 * There is still a small bug with this code when it is in the choose park view.
 */
-void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, uint16 g1_y_start, uint16 g1_y_end, uint16 g1_x_start, uint16 g1_x_end){
+void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
 	//Image_id
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x20000000){
 		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
@@ -308,7 +308,7 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 			char* source_pointer = next_source_pointer;
 			char* dest_pointer = next_dest_pointer;
 
-			sint8 no_pixels = *source_pointer++;
+			int no_pixels = *source_pointer++;
 			uint8 gap_size = *source_pointer++;
 			//The last bit in no_pixels tells you if you have reached the end of a line
 			last_data_line = no_pixels & 0x80;
@@ -362,7 +362,7 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
 void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y){
-	uint16 g1_y_start, g1_x_start;
+	int g1_y_start, g1_x_start;
 	char* bits_pointer;
 
 	bits_pointer = dest_dpi->bits;
@@ -426,16 +426,7 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 		if (end_x <= 0)return;
 	}
 	
-	//Can be removed when i work out the bug in the second function and we don't need to
-	//test the old version.
-	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dest_dpi->width + dest_dpi->pitch;
-	RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = end_x;
-	RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = end_y;
-	RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
-	RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
-	
-	sub_0x67AA18(source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
-	//RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_g1->offset, (int)bits_pointer, (int)dest_dpi);
+	sub_0x67AA18((char*)source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
 }
 
 /**
