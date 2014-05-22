@@ -272,6 +272,31 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * buffers
 */
 void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp){
+	if (ebx & 0x20000000){
+		//0x67a7f7
+		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		return;
+	}
+	if (ebx & 0x40000000){
+		//0x67a786
+		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		return;
+	}
+
+	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){
+		//0x67a707
+		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		return;
+	}
+
+	int _ebx = RCT2_GLOBAL(0x9ABDA8, uint16);
+	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){
+		//0x67A722
+		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		return;
+	}
+
+	int _ecx = ebx;
 	RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
 	return;
 }
@@ -285,11 +310,22 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
 	//Image_id
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x20000000){
+
+		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
+		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
+		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_y_end;
+		RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
+		RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
 		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
 		return; //0x67AAB3
 	}
 
 	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x40000000){
+		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
+		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
+		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_y_end;
+		RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
+		RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
 		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
 		return; //0x67AFD8
 	}
@@ -555,13 +591,14 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
 	if (dpi->pad_0E >= 1){
 		if (dpi->pad_0E == 1){
+			RCT2_CALLPROC_X(0x0067BD81, eax, ebx, x, y, 0, dpi, ebp);
 			return;
-			//jump into 0x67bd81
 		}
 		if (dpi->pad_0E >= 3){
-			return;//jump into 0x67FAAE
+			RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, dpi, ebp);
+			return;
 		}
-		//jump into 0x67DADA
+		RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, dpi, ebp);
 		return;
 	}
 	eax = *((uint32*)ebx + 2);
@@ -575,12 +612,10 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
-		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
 		sub_0x67A934(g1_source, dpi, x, y);
 		return;
 	}
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-	//return;
+
 	//dpi on stack
 	int translated_x, translated_y;
 	char* bits_pointer;
