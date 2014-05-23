@@ -19,11 +19,12 @@
  *****************************************************************************/
 
 #include <stdbool.h>
+#include "rct2.h"
 
-extern const uint8 hasRunningTrack[0x59];
-extern const uint8 initialUpkeepCosts[0x59];
-extern const uint8 costPerTrackPiece[0x59];
+extern const uint8 hasRunningTrack[0x60];
+extern const uint8 initialUpkeepCosts[0x60];
+extern const uint8 costPerTrackPiece[0x60];
 
-extern const uint8 rideUnknownData1[0x59];
-extern const bool rideUnknownData2[0x59];
-extern const uint8 rideUnknownData3[0x59];
+extern const uint8 rideUnknownData1[0x60];
+extern const bool rideUnknownData2[0x60];
+extern const uint8 rideUnknownData3[0x60];

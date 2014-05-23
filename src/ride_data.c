@@ -7,7 +7,12 @@
  * Generating function is here 
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
-const bool hasRunningTrack[0x59] = {
+
+#include <stdbool.h>
+#include "ride_data.h"
+#include "rct2.h"
+
+const bool hasRunningTrack[0x60] = {
 	true,	// 0 Spiral Roller coaster
 	true,	// 1 Stand Up Coaster
 	true,	// 2 Suspended Swinging
@@ -98,7 +103,7 @@ const bool hasRunningTrack[0x59] = {
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
 	true,	// 59 LIM Launched Roller Coaster
-}
+};
 
 /**
  * Data about ride running costs. This is widely adjusted by the upkeep
@@ -107,7 +112,7 @@ const bool hasRunningTrack[0x59] = {
  *
  * data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
  */
-const uint8 initialUpkeepCosts[0x59] = {
+const uint8 initialUpkeepCosts[0x60] = {
 	41,	// 00 Spiral Roller coaster
 	40,	// 01 Stand Up Coaster
 	40,	// 02 Suspended Swinging
@@ -198,9 +203,9 @@ const uint8 initialUpkeepCosts[0x59] = {
 	35,	// 57 Mini Roller Coaster
 	50,	// 58 Mine Ride
 	42,	// 59 LIM Launched Roller Coaster
-}
+};
 
-const uint8 costPerTrackPiece[0x59] = {
+const uint8 costPerTrackPiece[0x60] = {
 	80,	// 00 Spiral Roller coaster
 	80,	// 01 Stand Up Coaster
 	80,	// 02 Suspended Swinging
@@ -291,12 +296,12 @@ const uint8 costPerTrackPiece[0x59] = {
 	80,	// 57 Mini Roller Coaster
 	80,	// 58 Mine Ride
 	80,	// 59 LIM Launched Roller Coaster
-}
+};
 
 /**
  * Data initially at 0x0097E3B4
  */
-const uint8 rideUnknownData1[0x59] = {
+const uint8 rideUnknownData1[0x60] = {
 	10,	// 00 Spiral Roller coaster
 	10,	// 01 Stand Up Coaster
 	20,	// 02 Suspended Swinging
@@ -387,13 +392,13 @@ const uint8 rideUnknownData1[0x59] = {
 	8,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
 	9,	// 59 LIM Launched Roller Coaster
-}
+};
 
 /**
  * Data at 0x0097E3B6, originally set to either be 3 or 0 and replaced here by
  * a boolean table. This may be exactly the same as hasRunningTrack above.
  */
-const bool rideUnknownData2[0x59] = {
+const bool rideUnknownData2[0x60] = {
 	true,	// 00 Spiral Roller coaster
 	true,	// 01 Stand Up Coaster
 	true,	// 02 Suspended Swinging
@@ -484,9 +489,9 @@ const bool rideUnknownData2[0x59] = {
 	true,	// 57 Mini Roller Coaster
 	true,	// 58 Mine Ride
 	true,	// 59 LIM Launched Roller Coaster
-}
+};
 
-const uint8 rideUnknownData3[0x59] = {
+const uint8 rideUnknownData3[0x60] = {
 	10,	// 00 Spiral Roller coaster
 	10,	// 01 Stand Up Coaster
 	10,	// 02 Suspended Swinging
@@ -577,4 +582,4 @@ const uint8 rideUnknownData3[0x59] = {
 	10,	// 57 Mini Roller Coaster
 	10,	// 58 Mine Ride
 	10,	// 59 LIM Launched Roller Coaster
-}
+};
