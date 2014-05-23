@@ -132,6 +132,11 @@ void rct2_finish()
 	_finished = 1;
 }
 
+void rct2_quit() {
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	window_save_prompt_open();
+}
+
 void rct2_init()
 {
 	RCT2_GLOBAL(0x00F663AC, int) = 0;

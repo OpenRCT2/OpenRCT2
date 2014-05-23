@@ -114,7 +114,7 @@ static void window_title_exit_mouseup()
 		return;
 
 	if (widgetIndex == 0)
-		game_do_command(0, 1, 0, 0, 5, 2, 0);
+		game_do_command(0, 1, 0, 0, 5, 3, 0);
 }
 
 /**

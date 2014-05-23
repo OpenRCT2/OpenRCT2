@@ -285,6 +285,12 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
+enum PROMPT_MODE {
+	PM_SAVE_BEFORE_LOAD,
+	PM_SAVE_BEFORE_QUIT,
+	PM_SAVE_BEFORE_QUIT2,
+	PM_QUIT
+};
 
 void window_dispatch_update_all();
 void window_update_all();
