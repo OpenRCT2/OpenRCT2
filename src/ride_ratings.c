@@ -19,7 +19,9 @@
  *****************************************************************************/
 
 #include "ride.h"
+#include "ride_ratings.h"
 #include "ride_data.h"
+#include "addresses.h"
 
 /**
  * rct2: 0x0065C4D4
@@ -34,9 +36,9 @@ void crooked_house_excitement(rct_ride *ride)
 	ride->var_198 = 5;
 	sub_655FD6(ride);
 
-	excitement = 215;
-	intensity = 62;
-	nausea = 34;
+	sint16 excitement = 215;
+	sint16 intensity = 62;
+	sint16 nausea = 34;
 
 	// NB this should get marked out by the compiler, if it's smart.
 	excitement = apply_intensity_penalty(excitement, intensity);
@@ -170,16 +172,16 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
 {
 	// NB: The table here is allocated dynamically. Reading the exe will tell
 	// you nothing
-	subtype_p = RCT2_GLOBAL(0x009ACFA4 + ride->subtype * 4, uint32);
+	uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + ride->subtype * 4, uint32);
 
 	// example value here: 12 (?)
-	sint16 ctr = RCT2_GLOBAL(subtype_p + 0x1b2);
+	sint16 ctr = RCT2_GLOBAL(subtype_p + 0x1b2, sint16);
 	excitement = excitement + ((excitement * ctr) >> 7);
 
-	sint16 ctr = RCT2_GLOBAL(subtype_p + 0x1b3);
+	ctr = RCT2_GLOBAL(subtype_p + 0x1b3, sint16);
 	intensity = intensity + ((intensity * ctr) >> 7);
 
-	sint16 ctr = RCT2_GLOBAL(subtype_p + 0x1b4);
+	ctr = RCT2_GLOBAL(subtype_p + 0x1b4, sint16);
 	nausea = nausea + ((nausea * ctr) >> 7);
 
 	// As far as I can tell, this flag detects whether the ride is a roller
@@ -254,5 +256,5 @@ void sub_655FD6(rct_ride *ride)
     // https://gist.github.com/kevinburke/5eebcda14d94e6ee99c0
     al -= RCT2_ADDRESS(0x0097D7C9, uint8)[4 * ride->type];
     al = al << 1;
-    ride->var198 += al;
+    ride->var_198 += al;
 }

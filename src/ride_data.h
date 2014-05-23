@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <stdbool.h>
+
 extern const uint8 hasRunningTrack[0x59];
 extern const uint8 initialUpkeepCosts[0x59];
 extern const uint8 costPerTrackPiece[0x59];

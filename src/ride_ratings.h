@@ -26,3 +26,8 @@ typedef struct {
 } rating_tuple;
 
 void crooked_house_excitement(rct_ride *ride);
+void sub_655FD6(rct_ride *ride);
+sint16 apply_intensity_penalty(sint16 excitement, sint16 intensity);
+rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
+	sint16 intensity, sint16 nausea);
+uint16 compute_upkeep(rct_ride *ride);
