@@ -1362,13 +1362,12 @@ static void game_load_or_quit()
 	__asm__ ( "mov %[input_di], di " : [input_di] "+m" (input_di) );
 	#endif
 
-
 	if (!(input_bl & 1))
 		return; // 0;
-	
+
 	switch (input_dl) {
 	case 0:
-		RCT2_GLOBAL(0x009A9802, uint16) = input_di;
+		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = input_di;
 		window_save_prompt_open();
 		break;
 	case 1:
@@ -1604,14 +1603,14 @@ static void rct2_exit()
  */
 void game_load_or_quit_no_save_prompt()
 {
-	if (RCT2_GLOBAL(0x009A9802, uint16) < 1) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) < 1) {
 		game_do_command(0, 1, 0, 1, 5, 0, 0);
 		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 			load_landscape();
 		else
 			load_game();
-	} else if (RCT2_GLOBAL(0x009A9802, uint16) == 1) {
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, 5, 0, 0);
 		if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
 			RCT2_CALLPROC_EBPSAFE(0x0040705E);

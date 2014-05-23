@@ -36,7 +36,7 @@ typedef enum {
 	WWT_FLATBTN = 9,
 	WWT_DROPDOWN_BUTTON = 10,
 	WWT_11,
-	WWT_12,
+	WWT_12, // looks like a normal label to me
 	WWT_13,
 	WWT_14,
 	WWT_SPINNER = 15,

@@ -22,7 +22,9 @@
 
 #include <string.h>
 #include <setjmp.h>
+#ifdef _MSC_VER
 #include <time.h>
+#endif
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL.h>
