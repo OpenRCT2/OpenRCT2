@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -240,7 +240,193 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
-	RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, (int)dpi, colour);
+	int left_, right_, top_, bottom_;
+	rct_drawpixelinfo* dpi_;
+	left_ = left;
+	right_ = right;
+	top_ = top;
+	bottom_ = bottom;
+	dpi_ = dpi;
+  
+	if ((left > right) || (top > bottom) || (dpi->x > right) || (left >= (dpi->x + dpi->width)) ||
+		(bottom < dpi->y) || (top >= (dpi->y + dpi->height)))
+		return;
+
+	colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
+
+	if (!(colour & 0x1000000)) {
+		if (!(colour & 0x8000000)) {
+			left_ = left - dpi->x;
+			if (left_ < 0)
+				left_ = 0;
+
+			right_ = right - dpi->x;
+			right_++;
+			if (right_ > dpi->width)
+				right_ = dpi->width;
+
+			right_ -= left_;
+	
+			top_ = top - dpi->y;
+			if (top_ < 0)
+				top_ = 0;
+
+			bottom_ = bottom - dpi->y;
+			bottom_++;
+
+			if (bottom_ > dpi->height)
+				bottom_ = dpi->height;
+
+			bottom_ -= top_;
+
+			if (!(colour & 0x2000000)) {
+				if (!(colour & 0x4000000)) {
+					uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+
+					int length = dpi->width + dpi->pitch - right_;
+
+					for (int i = 0; i < bottom_; ++i) {
+						memset(pixel, (colour & 0xFF), right_);
+						pixel += length + right_;
+					}
+				} else {
+					// 00678B8A   00678E38
+					char* esi;
+					esi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
+
+					int eax, ebp;
+					eax = colour;
+					ebp = dpi->width + dpi->pitch - right_;
+
+					RCT2_GLOBAL(0x00EDF810, uint32) = ebp;
+					RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
+					RCT2_GLOBAL(0x00EDF814, uint32) = right_;
+
+					top_ = (top + dpi->y) & 0xf;
+					right_ = (right + dpi_->x) &0xf;
+
+					dpi_ = esi;
+
+					esi = eax >> 0x1C;
+					esi = RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
+
+					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
+						// push    ebx
+						// push    ecx
+						ebp = *(esi + top_*2);
+					     
+						// mov     bp, [esi+top_*2];
+						int ecx;
+						ecx = RCT2_GLOBAL(0x00EDF814, uint32);
+
+						for (int i = ecx; i >=0; --i) {
+							if (!(ebp & (1 << right_)))
+								dpi_->bits = left_ & 0xFF;
+		
+							right_++;
+							right_ = right_ & 0xF;
+							dpi_++;
+						}
+						// pop     ecx
+						// pop     ebx
+						top_++;
+						top_ = top_ &0xf;
+						dpi_ += RCT2_GLOBAL(0x00EDF810, uint32);
+					}
+					return;
+				}
+
+			} else {
+				// 00678B7E   00678C83
+				if (dpi->pad_0E < 1) {
+					// Location in screen buffer?
+					uint8* pixel = top_ * (dpi->width + dpi->pitch) + left_ + dpi->bits;
+
+					// Find colour in colour table?
+					uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
+					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+
+					int length = (dpi->width + dpi->pitch) - right_;
+
+					// Fill the rectangle with the colours from the colour table
+					for (int i = 0; i < bottom_; ++i) {
+						for (int j = 0; j < right_; ++j) {
+							*pixel = *((uint8*)(&g1_element->offset[*pixel]));
+							pixel++;
+						}
+						pixel += length;
+					}
+				} else if (dpi->pad_0E > 1) {
+					// 00678C8A    00678D57
+					right_ = right;
+				} else if (dpi->pad_0E == 1) {
+					// 00678C88   00678CEE
+					right = right;
+				}
+	
+			}
+		} else {
+			// 00678B3A    00678EC9
+			right_ = right;
+      }
+  } else {
+    // 00678B2E    00678BE5
+		// Cross hatching
+		uint16 pattern = 0;
+
+		left_ = left_ - dpi->x;
+		if (left_ < 0) {
+			pattern = pattern ^ left_;
+			left_ = 0;
+		}
+
+		right_ = right_ - dpi->x;
+		right_++;
+
+		if (right_ > dpi->width)
+			right_ = dpi-> width;
+		
+		right_ = right_ - left_;
+
+		top_ = top - dpi->y;
+		if (top_ < 0) {
+			pattern = pattern ^ top_;
+			top_ = 0;
+		}
+
+		bottom_ = bottom - dpi->y;
+		bottom_++;
+
+		if (bottom_ > dpi->height)
+			bottom_ = dpi->height;
+
+		bottom_ -= top_;
+
+		uint8* pixel = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;
+
+		int length = dpi->width + dpi->pitch - right_;
+
+		uint32 ecx;
+		for (int i = 0; i < bottom_; ++i) {
+			ecx = pattern;
+			// Rotate right
+			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
+			ecx = (ecx & 0xFFFF0000) | right_; 
+			// Fill every other pixel with the colour
+			for (; (ecx & 0xFFFF) > 0; ecx--) {
+				ecx = ecx ^ 0x80000000;
+				if ((int)ecx < 0) {
+					*pixel = colour & 0xFF;
+				}
+				pixel++;
+			}
+			pattern = pattern ^ 1;
+			pixel += length;
+			
+		}
+	}
+
+	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
 
 /**
