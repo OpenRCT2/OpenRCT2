@@ -282,8 +282,8 @@ static void config_create_default(char *path)
 	fprintf(fp, "play_intro = false\n");
 	fprintf(fp, "edge_scrolling = true\n");
 	fprintf(fp, "currency = GBP\n");
-	fprintf(fp, "use_imperial = false\n");
-	fprintf(fp, "use_farenheit = false\n");
+	fprintf(fp, "measurement_format = imperial\n");
+	fprintf(fp, "temperature_format = fahrenheit\n");
 	fprintf(fp, "[sound]\n");
 	fprintf(fp, "sound_quality = high\n");
 	fprintf(fp, "forced_software_buffering = false\n");
@@ -359,7 +359,7 @@ static void config_general(char *setting, char *value){
 		strcpy(gGeneral_config.game_path, value);
 	}
 	else if (strcmp(setting, "screenshot_format") == 0) {
-		if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
+		if (strcmp(value, "png") == 0) {
 			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
 		}
 		else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
@@ -380,16 +380,16 @@ static void config_general(char *setting, char *value){
 			gGeneral_config.edge_scrolling = 0;
 		}
 	}
-	else if (strcmp(setting, "use_imperial") == 0){
-		if (strcmp(value, "true") == 0){
+	else if (strcmp(setting, "measurement_format") == 0){
+		if (strcmp(value, "imperial") == 0){
 			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_IMPERIAL;
 		}
 		else{
 			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_METRIC;
 		}
 	}
-	else if (strcmp(setting, "use_farenheit") == 0){
-		if (strcmp(value, "true") == 0){
+	else if (strcmp(setting, "temperature_format") == 0){
+		if (strcmp(value, "fahrenheit") == 0){
 			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_F;
 		}
 		else{
@@ -528,7 +528,7 @@ static int config_parse_value(FILE *fp, char *value)
 	fseek(fp, start, SEEK_SET);
 	c = fgetc(fp);
 	while (c != EOF && c != '\n') {
-		value[pos] = (char)c;
+		value[pos] = (char)tolower(c);
 		c = fgetc(fp);
 		pos++;
 	}
