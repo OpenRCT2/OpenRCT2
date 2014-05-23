@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "ride.h"
+#include "ride_data.h"
 
 /**
  * rct2: 0x0065C4D4
@@ -86,7 +87,13 @@ uint16 compute_upkeep(rct_ride *ride)
 	cuml += ride->var_0F0;
 	cuml = cuml >> 0x10;
 
-	cuml = cuml * RCT2_GLOBAL(0x0097E3AC + type_idx, uint16);
+	// The data originally here was 20's and 0's. The 20's all represented
+	// rides that had tracks. The 0's were fixed rides like crooked house or
+	// bumper cars.
+	// Data source is 0x0097E3AC
+	if (hasRunningTrack[ride->type]) {
+		cuml = cuml * 20;
+	}
 	cuml = cuml >> 0x0A;
 	upkeep += cuml;
 
