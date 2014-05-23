@@ -32,7 +32,7 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
-	WIDX_3,
+	WIDX_LABEL,
 	WIDX_SAVE,
 	WIDX_DONT_SAVE,
 	WIDX_CANCEL
@@ -42,10 +42,10 @@ static rct_widget window_save_prompt_widgets[] = {
 	{ WWT_FRAME,			0,	0,		259,	0,	49,	-1,							STR_NONE },					// panel / background
 	{ WWT_CAPTION,			0,	1,		258,	1,	14,	0,							STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	824,						STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// 
-	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	STR_SAVE_PROMPT_SAVE,		STR_NONE },					// save
-	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	STR_SAVE_PROMPT_DONT_SAVE,	STR_NONE },					// don't save
-	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	STR_SAVE_PROMPT_CANCEL,		STR_NONE },					// cancel
+	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// question/label
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	0,							STR_SAVE_PROMPT_SAVE },		// save
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	0,							STR_SAVE_PROMPT_DONT_SAVE },// don't save
+	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	0,							STR_SAVE_PROMPT_CANCEL },	// cancel
 	{ WIDGETS_END },
 };
 
@@ -123,13 +123,14 @@ void window_save_prompt_open()
 		window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 	}
 
-	stringId = RCT2_GLOBAL(0x009A9802, uint16) + STR_LOAD_GAME;
+	stringId = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) + STR_LOAD_GAME;
 	if (stringId == STR_LOAD_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		stringId = STR_LOAD_LANDSCAPE;
 	if (stringId == STR_QUIT_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
-	window_save_prompt_widgets[WIDX_3].image = RCT2_GLOBAL(0x009A9802, uint16) + STR_SAVE_BEFORE_LOADING;
+	window_save_prompt_widgets[WIDX_LABEL].image =
+		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) + STR_SAVE_BEFORE_LOADING;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
 		game_load_or_quit_no_save_prompt();
@@ -189,6 +190,20 @@ static void window_save_prompt_mouseup()
 
 
 	// TODO
+	switch (widgetIndex) {
+		case WIDX_CLOSE:
+			window_close(w);
+			window_save_prompt_close();
+			break;
+		case WIDX_SAVE:
+			break;
+		case WIDX_DONT_SAVE:
+			break;
+		case WIDX_CANCEL:
+			window_close(w);
+			window_save_prompt_close();
+			break;
+	}
 }
 
 static void window_save_prompt_paint()
@@ -210,4 +225,18 @@ static void window_save_prompt_paint()
 
 
 	window_draw_widgets(w, dpi);
+
+	gfx_draw_string_centred(dpi, window_save_prompt_widgets[WIDX_LABEL].image,
+							w->x + window_save_prompt_widgets[WIDX_LABEL].left + 125,
+							w->y + window_save_prompt_widgets[WIDX_LABEL].top + 1, 2, w);
+
+	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_SAVE,
+							w->x + window_save_prompt_widgets[WIDX_SAVE].left + 38,
+							w->y + window_save_prompt_widgets[WIDX_SAVE].top + 1, 2, w);
+	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_DONT_SAVE,
+							w->x + window_save_prompt_widgets[WIDX_DONT_SAVE].left + 38,
+							w->y + window_save_prompt_widgets[WIDX_DONT_SAVE].top + 1, 2, w);
+	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_CANCEL,
+							w->x + window_save_prompt_widgets[WIDX_CANCEL].left + 38,
+							w->y + window_save_prompt_widgets[WIDX_CANCEL].top + 1, 2, w);
 }
