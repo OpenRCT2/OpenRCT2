@@ -419,28 +419,6 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp,
 * There is still a small bug with this code when it is in the choose park view.
 */
 void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int image_type, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
-	//Image_id
-	if (image_type & 0x2){
-
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
-		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
-		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_y_end;
-		RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
-		RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
-		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
-		return; //0x67AAB3
-	}
-
-	if (image_type & 0x4){
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
-		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
-		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_y_end;
-		RCT2_GLOBAL(RCT2_Y_START_POINT_GLOBAL, uint16) = g1_y_start;
-		RCT2_GLOBAL(RCT2_X_START_POINT_GLOBAL, uint16) = g1_x_start;
-		RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, 0, 0, (int)source_bits_pointer, (int)dest_bits_pointer, (int)dpi);
-		return; //0x67AFD8
-	}
-	
 	uint16 offset_to_first_line = *(uint16*)(g1_y_start*2 + (uint32)source_bits_pointer);
 	//This will now point to the first line
 	char* next_source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
@@ -495,7 +473,31 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 			}
 
 			//Finally after all those checks, copy the image onto the drawing surface
-			memcpy(dest_pointer, source_pointer, no_pixels);
+			//If the image type is not a basic one we require to mix the pixels
+			if (image_type & 0x2){
+				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
+					uint8 al = *source_pointer;
+					uint8 ah = *dest_pointer;
+					if (image_type & 0x4)//Mix with background and image
+						al = *((uint8*)(((al | ((int)ah)<<8) - 0x100) + RCT2_GLOBAL(0x9ABDA4, uint32)));
+					else //Adjust colours?
+						al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
+					*dest_pointer = al;
+				}
+			}
+			else if (image_type & 0x4){
+				//Doesnt use source pointer ??? mix with background only?
+				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
+					uint8 al = *dest_pointer;
+					al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
+					*dest_pointer = al;
+				}
+			}
+			else
+			{
+				memcpy(dest_pointer, source_pointer, no_pixels);
+			}
+			
 		}
 		//Add a line to the drawing surface pointer
 		next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
