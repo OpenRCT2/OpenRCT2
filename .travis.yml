@@ -1,5 +1,5 @@
 language: c
-install:
+script:
     - echo "Hello World"
-notifications:
-  irc: "irc.freenode.net#openrct2"
+#notifications:
+  #irc: "irc.freenode.net#openrct2"
