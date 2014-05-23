@@ -271,15 +271,17 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * rct2: 0x67A690 very similar in function to 0x67AA18 readied images are copied onto
 * buffers
 */
-void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp){
-	if (ebx & 0x20000000){
+void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp, int image_type){
+
+	//Has a background image?
+	if (image_type & 0x2){
 		int _ecx = eax >> 8;
 		uint32 _ebx = RCT2_GLOBAL(0x9ABDA4, uint32);
 		_ecx--;
 		_ecx <<= 0x10;
 
+		//Mix with background image and colour adjusted
 		if (RCT2_GLOBAL(0x9E3CDC, uint32)){
-
 			RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
 			uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 			_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
@@ -303,6 +305,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 			return;
 		}
 
+		//Quicker?
 		if ((RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16)) == 4){
 			
 			ebp += 4;
@@ -321,6 +324,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 			return;
 		}
 
+		//image colour adjusted?
 		for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
 			for (int _cx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16); _cx > 0; --_cx){
 				uint8 al = *((char*)esi);
@@ -336,28 +340,65 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 		}
 		return;
 	}
-	if (ebx & 0x40000000){
-		//0x67a786
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+
+	//image_type mix with background?
+	if (image_type & 0x4){
+		int _ebx = RCT2_GLOBAL(0x9ABDA4, uint16);
+		for (int ah = eax >> 8; ah > 0; --ah){
+			
+			for (int cx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16); cx > 0; --ecx){
+				uint8 al = *((char*)esi);
+				esi++;
+				if (al){
+					al = *((char*)edi);
+					al = *((char*)_ebx + al);
+					*((char*)edi) = al;
+				}
+				edi++;
+			}
+			esi += edx;
+			edi += ebp;
+		}
 		return;
 	}
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){
-		//0x67a707
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		int bx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
+		for (int ax = RCT2_GLOBAL(0x9ABDAC, uint16); ax > 0; --ax){
+			memcpy((char*)edi, (char*)esi, bx);
+			edi += bx;
+			esi += bx;
+			edi += ebp;
+			esi += edx;
+		}
 		return;
 	}
 
 	int _ebx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
 	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){
-		//0x67A722
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
-		return;
+		RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
+		uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
+		_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
+
+		for (int ah = eax >> 8; ah > 0; --ah){
+			for (int _ecx = _ebx; _ecx > 0; --_ecx){
+				char al = *((char*)esi);
+				esi++;
+				al &= *((char*)_ebp);
+				if (al){
+					*((char*)edi) = al;
+				}
+				edi++;
+				_ebp++;
+			}
+			esi += edx;
+			edi += RCT2_GLOBAL(0x9E3D04, uint32);
+			_ebp += edx;
+		}
 	}
 
 	for (int ah = eax >> 8; ah > 0; --ah){
-		int _ecx = _ebx;
-		for (; _ecx > 0; --_ecx){
+		for (int _ecx = _ebx; _ecx > 0; --_ecx){
 			char al = *((char*)esi);
 			esi++;
 			if (al){
@@ -377,9 +418,9 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 * I think its only used for bitmaps onto buttons but i am not sure.
 * There is still a small bug with this code when it is in the choose park view.
 */
-void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
+void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int image_type, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
 	//Image_id
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x20000000){
+	if (image_type & 0x2){
 
 		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
 		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
@@ -390,7 +431,7 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 		return; //0x67AAB3
 	}
 
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x40000000){
+	if (image_type & 0x4){
 		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) = dpi->width + dpi->pitch;
 		RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16) = g1_x_end;
 		RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) = g1_y_end;
@@ -467,7 +508,7 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 * This function readies all the global vars for copying the sprite data onto the screen
 * I think its only used for bitmaps onto buttons but i am not sure.
 */
-void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y){
+void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y, int image_type){
 	int g1_y_start, g1_x_start;
 	char* bits_pointer;
 
@@ -532,7 +573,7 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
 		if (end_x <= 0)return;
 	}
 	
-	sub_0x67AA18((char*)source_g1->offset, bits_pointer, dest_dpi, g1_y_start, end_y, g1_x_start, end_x);
+	sub_0x67AA18((char*)source_g1->offset, bits_pointer, dest_dpi, image_type, g1_y_start, end_y, g1_x_start, end_x);
 }
 
 /**
@@ -548,6 +589,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
+	int image_type = (image_id & 0xE0000000) >> 28;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
@@ -607,6 +649,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 		//image_id
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
+		image_type |= 0x2;
 
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
@@ -682,7 +725,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
 		//Title screen bitmaps
-		sub_0x67A934(g1_source, dpi, x, y);
+		sub_0x67A934(g1_source, dpi, x, y, image_type);
 		return;
 	}
 
@@ -767,7 +810,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, edx, esi, edi, ah, ebp used in 0x67a690  eax=1966, ecx=ff39, edx=ebx=0, esp = cfca4, ebp = 266, esi =368823e, edi = 16c79b2
-		sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
+		sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
 		return;
 	}
 	//0x67A60A
@@ -818,7 +861,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 	ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 
-	sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
+	sub_0x67A690(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
 	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
 	return;
 }
