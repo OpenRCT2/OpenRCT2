@@ -69,8 +69,6 @@ void crooked_house_excitement(rct_ride *ride)
  */
 uint16 compute_upkeep(rct_ride *ride)
 {
-	uint8 type_idx = ride->type * 0x12;
-
 	// data stored at 0x0057E3A8, incrementing 18 bytes at a time
 	uint16 upkeep = initialUpkeepCosts[ride->type];
 
@@ -79,7 +77,6 @@ uint16 compute_upkeep(rct_ride *ride)
 
 	dl = dl >> 6;
 	dl = dl & 3;
-	eax = eax * dl;
 	upkeep += trackCost * dl;
 
 	uint32 cuml = ride->var_0E4;
@@ -131,17 +128,16 @@ uint16 compute_upkeep(rct_ride *ride)
 	// various variables set on the ride itself.
 
 	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
-	eax = RCT2_GLOBAL(0x0097E3B4 + type_idx, uint16);
-	upkeep += eax * ride->var_0C8;
+	upkeep += rideUnknownData1[ride->type] * ride->var_0C8;
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
-	eax = RCT2_GLOBAL(0x0097E3B6 + type_idx, uint16);
-	upkeep += eax * ride->var_0C9;
+	if (rideUnknownData2[ride->type]) {
+		upkeep += 3 * ride->var_0C9;
+	}
 
 	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
-	eax = RCT2_GLOBAL(0x0097E3B8 + type_idx, uint16);
-	upkeep += eax * ride->var_0C7;
+	upkeep += rideUnknownData3[ride->type] * ride->var_0C7;
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
 		upkeep += 30;
