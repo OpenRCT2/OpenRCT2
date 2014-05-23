@@ -210,6 +210,14 @@ void rct2_init_directories()
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
 }
 
+void subsitute_path(char *dest, const char *path, const char *filename)
+{
+	while (*path != '*') {
+		*dest++ = *path++;
+	}
+	strcpy(dest, filename);
+}
+
 // rct2: 0x00674B42
 void rct2_startup_checks()
 {

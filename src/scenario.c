@@ -36,232 +36,11 @@
 #include "sprite.h"
 #include "viewport.h"
 
-#define UNINITIALISED_SCENARIO_LIST ((rct_scenario_basic*)-1)
-
-#define RCT2_SCENARIO_LIST RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)
-#define RCT2_NUM_SCENARIOS RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32)
-int _scenarioListSize;
-
-static void scenario_list_add(char *path);
-static void scenario_list_sort();
-static int scenario_list_sort_compare(const void* a, const void* b);
-static void scenario_scores_load();
-static void scenario_scores_save();
-static int scenario_load_basic(char *path);
-
-static void subsitute_path(char *dest, char *path, char *filename)
-{
-	while (*path != '*') {
-		*dest++ = *path++;
-	}
-	strcpy(dest, filename);
-}
-
-static rct_scenario_basic *get_scenario_by_filename(char *filename)
-{
-	int i;
-	for (i = 0; i < RCT2_NUM_SCENARIOS; i++)
-		if (strcmp(RCT2_SCENARIO_LIST[i].path, filename) == 0)
-			return &(RCT2_SCENARIO_LIST[i]);
-
-	return NULL;
-}
-
-/**
- * 
- *  rct2: 0x006775A8
- */
-void scenario_load_list()
-{
-	int i;
-	HANDLE hFindFile;
-	WIN32_FIND_DATAA findFileData;
-
-	// Load scores
-	scenario_scores_load();
-
-	// Set all scenarios to be invisible
-	for (i = 0; i < RCT2_NUM_SCENARIOS; i++)
-		RCT2_SCENARIO_LIST[i].flags &= ~SCENARIO_FLAGS_VISIBLE;
-
-	// Enumerate through each scenario in the directory
-	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), &findFileData);
-	if (hFindFile != INVALID_HANDLE_VALUE) {
-		do {
-			scenario_list_add(findFileData.cFileName);
-		} while (FindNextFile(hFindFile, &findFileData));
-		FindClose(hFindFile);
-	}
-
-	// Sort alphabetically
-	scenario_list_sort();
-
-	// Save the scores
-	scenario_scores_save();
-}
-
-static void scenario_list_add(char *path)
-{
-	rct_scenario_basic *scenario;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	// Check if scenario already exists in list, likely if in scores
-	scenario = get_scenario_by_filename(path);
-	if (scenario != NULL) {
-		// Set 0141EF68 to the scenario path
-		subsitute_path(
-			RCT2_ADDRESS(0x0141EF68, char),
-			RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char),
-			path
-		);
-
-		// Load the basic scenario information
-		if (!scenario_load_basic(RCT2_ADDRESS(0x0141EF68, char)))
-			return;
-
-		// 
-		if (s6Info->var_000 != 255)
-			return;
-
-		// Update the scenario information
-		scenario->flags |= SCENARIO_FLAGS_VISIBLE;
-		scenario->category = s6Info->category;
-		scenario->objective_type = s6Info->objective_type;
-		scenario->objective_arg_1 = s6Info->objective_arg_1;
-		scenario->objective_arg_2 = s6Info->objective_arg_2;
-		scenario->objective_arg_3 = s6Info->objective_arg_3;
-		strcpy(scenario->name, s6Info->name);
-		strcpy(scenario->details, s6Info->details);
-		return;
-	}
-
-	// Check if the scenario list buffer has room for another scenario
-	if ((RCT2_NUM_SCENARIOS + 1) * (int)sizeof(rct_scenario_basic) > _scenarioListSize) {
-		// Allocate more room
-		_scenarioListSize += 16 * sizeof(rct_scenario_basic);
-		RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_realloc(RCT2_SCENARIO_LIST, _scenarioListSize);
-	}
-
-	// Set 0141EF68 to the scenario path
-	subsitute_path(
-		RCT2_ADDRESS(0x0141EF68, char),
-		RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char),
-		path
-	);
-
-	// Load the scenario information
-	if (!scenario_load_basic(RCT2_ADDRESS(0x0141EF68, char)))
-		return;
-
-	// 
-	if (s6Info->var_000 != 255)
-		return;
-
-	// Increment the number of scenarios
-	scenario = &RCT2_SCENARIO_LIST[RCT2_NUM_SCENARIOS];
-	RCT2_NUM_SCENARIOS++;
-
-	// Add this new scenario to the list
-	strcpy(scenario->path, path);
-	scenario->flags = SCENARIO_FLAGS_VISIBLE;
-	if (RCT2_GLOBAL(0x009AA00C, uint8) & 1)
-		scenario->flags |= SCENARIO_FLAGS_SIXFLAGS;
-	scenario->category = s6Info->category;
-	scenario->objective_type = s6Info->objective_type;
-	scenario->objective_arg_1 = s6Info->objective_arg_1;
-	scenario->objective_arg_2 = s6Info->objective_arg_2;
-	scenario->objective_arg_3 = s6Info->objective_arg_3;
-	strcpy(scenario->name, s6Info->name);
-	strcpy(scenario->details, s6Info->details);
-}
-
-/**
-* Sort the list of scenarios. This used to be an insertion sort which took
-* place as each scenario loaded. It has now been changed to a quicksort which
-* takes place after all the scenarios have been loaded in.
-*  rct2: 0x00677C3B
-*/
-static void scenario_list_sort()
-{
-	qsort(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*),
-		RCT2_NUM_SCENARIOS,
-		sizeof(rct_scenario_basic),
-		scenario_list_sort_compare
-	);
-}
-
-/**
-* Basic scenario information compare function for sorting.
-*  rct2: 0x00677C08
-*/
-static int scenario_list_sort_compare(const void* a, const void* b)
-{
-	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
-}
-
-/**
- * 
- *  rct2: 0x006775A8
- */
-static void scenario_scores_load()
-{
-	HANDLE hFile;
-	DWORD bytes_read;
-
-	// Free scenario list if already allocated
-	if (RCT2_SCENARIO_LIST != UNINITIALISED_SCENARIO_LIST) {
-		rct2_free(RCT2_SCENARIO_LIST);
-		RCT2_SCENARIO_LIST = UNINITIALISED_SCENARIO_LIST;
-	}
-
-	// Try and load the scores
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, (void*)0x009A9FFC, 16, &bytes_read, NULL);
-		if (bytes_read == 16) {
-			_scenarioListSize = RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic);
-			RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_malloc(_scenarioListSize);
-			ReadFile(hFile, RCT2_SCENARIO_LIST, _scenarioListSize, &bytes_read, NULL);
-			CloseHandle(hFile);
-			if (bytes_read == _scenarioListSize)
-				return;
-		} else {
-			CloseHandle(hFile);
-		}
-	}
-
-	// Unable to load scores, allocate some space for a reload
-	RCT2_NUM_SCENARIOS = 0;
-	_scenarioListSize = 0x4000;
-	RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_malloc(_scenarioListSize);
-}
-
-/**
- * 
- *  rct2: 0x00677B50
- */
-static void scenario_scores_save()
-{
-	HANDLE hFile;
-	DWORD bytes_written;
-
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, (void*)0x009A9FFC, 16, &bytes_written, NULL);
-		if (RCT2_NUM_SCENARIOS > 0)
-			WriteFile(hFile, RCT2_SCENARIO_LIST, RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic), &bytes_written, NULL);
-		CloseHandle(hFile);
-	}
-}
-
 /**
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-static int scenario_load_basic(char *path)
+int scenario_load_basic(const char *path)
 {
 	HANDLE hFile;
 	int _eax;
@@ -281,7 +60,7 @@ static int scenario_load_basic(char *path)
 			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
 			CloseHandle(hFile);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-			if (s6Info->flags != 255) {
+			if ((s6Info->flags & 0xFF) != 255) {
 				#ifdef _MSC_VER
 				__asm {
 					push ebp
@@ -337,7 +116,7 @@ static int scenario_load_basic(char *path)
  *  rct2: 0x00676053
  * scenario (ebx)
  */
-void scenario_load(char *path)
+void scenario_load(const char *path)
 {
 	HANDLE hFile;
 	int i, j;
@@ -427,7 +206,7 @@ void scenario_load(char *path)
  *  rct2: 0x00678282
  * scenario (ebx)
  */
-void scenario_load_and_play(rct_scenario_basic *scenario)
+void scenario_load_and_play(const rct_scenario_basic *scenario)
 {
 	rct_window *mainWindow;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
@@ -590,9 +369,9 @@ void scenario_success()
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
 	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
 
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+	for (i = 0; i < gScenarioListCount; i++) {
 		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		scenario = &gScenarioList[i];
 
 		if (0 == strncmp(cur_scenario_name, scenario->path, 256)){
 			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)

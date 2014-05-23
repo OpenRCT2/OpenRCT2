@@ -147,8 +147,8 @@ static void window_scenarioselect_init_tabs()
 	rct_scenario_basic* scenario;
 
 	show_pages = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			show_pages |= 1 << scenario->category;
 	}
@@ -233,8 +233,8 @@ static void window_scenarioselect_scrollgetsize()
 
 
 	height = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
@@ -281,8 +281,8 @@ static void window_scenarioselect_scrollmousedown()
 	#endif
 
 
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
@@ -325,8 +325,8 @@ static void window_scenarioselect_scrollmouseover()
 
 
 	selected = NULL;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
@@ -458,8 +458,8 @@ static void window_scenarioselect_scrollpaint()
 	gfx_clear(dpi, colour);
 
 	y = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
