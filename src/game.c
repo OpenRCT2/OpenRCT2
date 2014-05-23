@@ -629,7 +629,6 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	if (w != NULL) {
 		windowClass = w->classification;
 		windowNumber = w->number;
-		widget = &w->widgets[widgetIndex];
 	}
 
 	window_close_by_id(WC_ERROR, 0);
@@ -642,6 +641,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	w = window_bring_to_front(w);
 	if (widgetIndex == -1)
 		return;
+
+	widget = &w->widgets[widgetIndex];
 
 	switch (widget->type) {
 	case WWT_FRAME:
