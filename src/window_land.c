@@ -137,8 +137,8 @@ void window_land_open()
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
 	_selectedFloorTexture = 0;
 	_selectedWallTexture = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, sint32) = 0x80000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, sint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = MONEY32_UNDEFINED;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = MONEY32_UNDEFINED;
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
@@ -393,7 +393,8 @@ static void window_land_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int x, y, price, numTiles;
+	int x, y, numTiles;
+	money32 price;
 
 	#ifdef _MSC_VER
 	__asm mov w, esi
@@ -425,12 +426,12 @@ static void window_land_paint()
 	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw raise cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)RCT2_ADDRESS_LAND_RAISE_COST);
 	y += 10;
 
 	// Draw lower cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)RCT2_ADDRESS_LAND_LOWER_COST);
 	y += 50;
 

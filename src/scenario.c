@@ -484,9 +484,9 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 		window_park_objective_open();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint16) = calculate_park_value();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint16) = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, sint16) = RCT2_GLOBAL(0x013573DC, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
+	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(0x013573DC, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
 	sub_69E869(); // (loan related)
 

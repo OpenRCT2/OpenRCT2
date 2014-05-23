@@ -71,7 +71,7 @@ void park_init()
 	for (i = 0; i < 56; i++)
 		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = CURRENCY(10, 00);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
 	RCT2_GLOBAL(0x013573F2, sint16) = -1;
 	RCT2_GLOBAL(0x013573F8, sint16) = -1;
 	RCT2_GLOBAL(0x01357CF2, uint16) = 127;
@@ -111,9 +111,9 @@ void park_reset_awards_and_history()
 
 	// Reset finance history
 	for (i = 0; i < 128; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, uint32)[i] = 0x80000000;
-		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, uint32)[i] = 0x80000000;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, uint32)[i] = 0x80000000;
+		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
 	}
 
 	// Reset awards
@@ -278,56 +278,65 @@ int calculate_park_rating()
 	return result;
 }
 
+money32 calculate_ride_value(rct_ride *ride)
+{
+	if (ride->type == RIDE_TYPE_NULL)
+		return 0;
+	if (ride->reliability == 0xFFFF)
+		return 0;
+
+	// Reliability * (...)
+	return (ride->reliability * 10) * (
+		ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A +
+		ride->var_12C + ride->var_12E + ride->age + ride->running_cost +
+		ride->var_134 + ride->var_136 +
+		*((uint8*)(0x0097D21E + (ride->type * 8))) * 4
+	);
+}
+
 /**
  * 
  *  rct2: 0x0066A3F6
  */
-int calculate_park_value()
+money32 calculate_park_value()
 {
-	int result, value, i;
+	int i;
+	money32 result;
 	rct_ride* ride;
 
+	// Sum ride values
 	result = 0;
 	for (i = 0; i < 255; i++) {
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		if (ride->reliability == 0xFFFF)
-			continue;
-		value = 0;
-		value += ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A;
-		value += ride->var_12C + ride->var_12E + ride->age + ride->running_cost;
-		value += ride->var_134 + ride->var_136;
-		value += *((uint8*)(0x0097D21E + (ride->type * 8))) * 4;
-		value *= ride->reliability * 10;
-		result += value;
+		result += calculate_ride_value(ride);
 	}
 
-	result += RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) * 70;
+	// +7.00 per guest
+	result += RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) * MONEY(7, 00);
 
 	return result;
 }
 
 /**
- * 
+ * Calculate the company value.
+ * Cash + Park Value - Loan
+ *
  *  rct2: 0x0066A498
  */
-int calculate_company_value()
+money32 calculate_company_value()
 {
-	int result;
-
-	result = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
-	result += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-	result -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
-
-	return result;
+	return
+		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32)) +
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) -
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 }
 
 /**
 *
 *  rct2: 0x00667104
 */
-void reset_park_entrances() {
+void reset_park_entrances()
+{
 	RCT2_GLOBAL(0x013573D4, uint16) = 0;
 
 	for (short i = 0; i < 4; i++) {

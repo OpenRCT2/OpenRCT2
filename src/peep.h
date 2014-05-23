@@ -353,7 +353,7 @@ typedef struct {
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
 	uint8 pad_45;
-	uint16 paid_on_drink;			// 0x46
+	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
@@ -368,8 +368,8 @@ typedef struct {
 	uint8 pad_6D[0x0F];
 	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
-	sint32 cash_in_pocket;			// 0xA0
-	sint32 cash_spent;				// 0xA4
+	money32 cash_in_pocket;			// 0xA0
+	money32 cash_spent;				// 0xA4
 	uint8 pad_A8;
 	sint32 time_in_park;			// 0xA9
 	uint8 pad_AD[0x3];
@@ -381,10 +381,10 @@ typedef struct {
 	uint32 flags;					// 0xC8
 	uint8 var_CC;					
 	uint8 pad_CD[0x17];
-	uint16 paid_to_enter;			// 0xE4
-	uint16 paid_on_rides;			// 0xE6
-	uint16 paid_on_food;			// 0xE8
-	uint16 paid_on_souvenirs;		// 0xEA
+	money16 paid_to_enter;			// 0xE4
+	money16 paid_on_rides;			// 0xE6
+	money16 paid_on_food;			// 0xE8
+	money16 paid_on_souvenirs;		// 0xEA
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE

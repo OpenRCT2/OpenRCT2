@@ -64,6 +64,26 @@ typedef unsigned long long uint64;
 #define OPENRCT2_PLATFORM			"Windows"
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
+// Represent fixed point numbers
+typedef sint16 fixed16_1dp;
+typedef sint16 fixed16_2dp;
+typedef sint32 fixed32_1dp;
+typedef sint32 fixed32_2dp;
+
+// Money is stored as a multiple of 0.10.
+typedef fixed16_1dp money16;
+typedef fixed32_1dp money32;
+
+// Construct a fixed point number.
+#define FIXED_XDP(x, whole, fraction)	((whole) * (10 * x) + (fraction))
+#define FIXED_1DP(whole, fraction)		FIXED_XDP(1, whole, fraction)
+#define FIXED_2DP(whole, fraction)		FIXED_XDP(2, whole, fraction)
+
+// Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
+#define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
+
+#define MONEY32_UNDEFINED				((money32)0x80000000)
+
 void rct2_finish();
 
 enum {

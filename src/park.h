@@ -74,8 +74,8 @@ void park_reset_awards_and_history();
 int park_calculate_size();
 
 int calculate_park_rating();
-int calculate_park_value();
-int calculate_company_value();
+money32 calculate_park_value();
+money32 calculate_company_value();
 void reset_park_entrances();
 
 #endif

@@ -152,7 +152,7 @@ static void* window_footpath_events[] = {
 	window_footpath_emptysub
 };
 
-sint32 _window_footpath_cost;
+money32 _window_footpath_cost;
 
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 static void window_footpath_set_provisional_path_at_point(int x, int y);
@@ -832,7 +832,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 	// Try and show provisional path
 	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, 17, 0, 0);
 
-	if (cost != 0x80000000) {
+	if (cost != MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
@@ -888,7 +888,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	// Try and place path
 	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, 17, 0, 0);
 
-	if (cost == 0x80000000) {
+	if (cost == MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 1;
 	} else if (RCT2_GLOBAL(0x00F3EFD9, uint32) != 0) {
 		// bp = 0x009DEA62
@@ -918,7 +918,7 @@ static void window_footpath_remove()
 
 	// RCT2_CALLPROC_EBPSAFE(0x006A7863);
 
-	_window_footpath_cost = 0x80000000;
+	_window_footpath_cost = MONEY32_UNDEFINED;
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) / 32;

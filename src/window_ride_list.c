@@ -607,7 +607,7 @@ static void window_ride_list_scrollpaint()
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			formatSecondary = 0;
-			if (ride->profit != 0x80000000) {
+			if (ride->profit != MONEY32_UNDEFINED) {
 				formatSecondary = STR_PROFIT_LABEL;
 				RCT2_GLOBAL(0x013CE952 + 2, sint32) = ride->profit;
 			}

@@ -45,6 +45,8 @@
 #include "track.h"
 #include "viewport.h"
 
+typedef struct tm tm_t;
+
 void print_launch_information();
 
 void rct2_init_directories();
@@ -85,19 +87,19 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 void print_launch_information()
 {
+	char buffer[32];
+	time_t timer;
+	tm_t* tmInfo;
+
 	// Print version information
 	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
 	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
 	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
 
 	// Print current time
-    time_t timer;
-    char buffer[32];
-    struct tm* tm_info;
-
-    time(&timer);
-    tm_info = localtime(&timer);
-    strftime(buffer, 25, "%Y/%m/%d %H:%M:%S", tm_info);
+	time(&timer);
+	tmInfo = localtime(&timer);
+	strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
 	printf("Time: %s\n", buffer);
 
 	// TODO Print other potential information (e.g. user, hardware)

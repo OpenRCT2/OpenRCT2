@@ -61,7 +61,7 @@ typedef struct {
 	sint16 running_cost;			// 0x132
 	sint16 var_134;
 	sint16 var_136;
-	sint16 price;					// 0x138
+	money16 price;					// 0x138
 	uint8 pad_13A[0x06];
 	sint16 excitement;				// 0x140
 	sint16 intensity;				// 0x142
@@ -81,7 +81,7 @@ typedef struct {
 	uint8 pad_198;
 	uint8 var_199;
 	uint8 pad_19A[0x1A];
-	sint32 profit;					// 0x1B4
+	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 pad_1BC[0x12];
 	uint16 guests_favourite;		// 0x1CE
