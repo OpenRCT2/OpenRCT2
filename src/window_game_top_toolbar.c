@@ -171,8 +171,8 @@ static void window_game_top_toolbar_mouseup()
 			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_MAP:
-		RCT2_CALLPROC_EBPSAFE(0x0068C88A);
-		//window_map_open();
+		//RCT2_CALLPROC_EBPSAFE(0x0068C88A);
+		window_map_open();
 		break;
 	case WIDX_CLEAR_SCENERY:
 		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {

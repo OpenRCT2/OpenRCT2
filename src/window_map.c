@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "sprites.h"
 #include "strings.h"
@@ -84,6 +85,9 @@ static void window_map_invalidate();
 static void window_map_paint();
 static void window_map_scrollpaint();
 
+static void window_map_init_map();
+static void sub_68C990();
+
 static void* window_map_events[] = {
 	window_map_close,
 	window_map_mouseup,
@@ -122,7 +126,7 @@ static void* window_map_events[] = {
 void window_map_open()
 {
 	rct_window* w;
-	int* var;
+	uint32* map_image_data;
 
 	// Check if window is already open
 	w = window_bring_to_front_by_id(WC_MAP, 0);
@@ -132,37 +136,37 @@ void window_map_open()
 		return;
 	}
 
-	var = (int*)rct2_malloc(0x40000);
-	if (var == NULL)
+	map_image_data = rct2_malloc(256 * 256 * sizeof(uint32));
+	if (map_image_data == NULL)
 		return;
 
-	RCT2_GLOBAL(0x00F1AD68, uint32) = (uint32)var;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*) = map_image_data;
 	w = window_create_auto_pos(245, 259, (uint32*)window_map_events, WC_MAP, 0x0400);
 	w->widgets = window_map_widgets;
 	w->enabled_widgets =
-		(1 << 2) |
-		(1 << 4) |
-		(1 << 5) |
-		(1 << 8) |
-		(1 << 9) |
-		(1 << 14) |
-		(1 << 15) |
-		(1 << 10) |
-		(1 << 16) |
-		(1 << 17) |
-		(1 << 18) |
-		(1 << 19) |
-		(1 << 11) |
-		(1 << 20) |
-		(1 << 12);
-	//TODO: .text:0068C943                 or      dword ptr [esi+20h], 300h
+		(1 << WIDX_CLOSE) |
+		(1 << WIDX_PEOPLE_TAB) |
+		(1 << WIDX_RIDES_TAB) |
+		(1 << WIDX_MAP_SIZE_SPINNER_UP) |
+		(1 << WIDX_MAP_SIZE_SPINNER_DOWN) |
+		(1 << WIDX_LAND_TOOL_SMALLER) |
+		(1 << WIDX_LAND_TOOL_LARGER) |
+		(1 << WIDX_SET_LAND_RIGHTS) |
+		(1 << WIDX_LAND_OWNED_CHECKBOX) |
+		(1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) |
+		(1 << WIDX_LAND_SALE_CHECKBOX) |
+		(1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) |
+		(1 << WIDX_BUILD_PARK_ENTRANCE) |
+		(1 << WIDX_ROTATE_90) |
+		(1 << WIDX_PEOPLE_STARTING_POSITION);
+	w->var_020 |= 0x300;
 
 	window_init_scroll_widgets(w);
 	w->var_480 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 
-	RCT2_CALLPROC_EBPSAFE(0x0068CA6C);
+	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x0068C990);
+	sub_68C990();
 
 	w->colours[0] = 12;
 	w->colours[1] = 24;
@@ -174,7 +178,16 @@ void window_map_open()
 */
 static void window_map_close()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068D0F1);
+	rct_window *w;
+
+	__asm mov w, esi
+
+	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
+	if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == w->number) {
+		tool_cancel();
+	}
 }
 
 /**
@@ -429,4 +442,63 @@ static void window_map_paint()
 static void window_map_scrollpaint()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0068CF23);
+}
+
+/**
+*
+*  rct2: 0x0068CA6C
+*/
+static void window_map_init_map() 
+{
+	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A0A0A0A, 256 * 256 * sizeof(uint32));
+	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+}
+
+/**
+*
+*  rct2: 0x0068C990
+*/
+static void sub_68C990()
+{
+	rct_window *w = window_get_main();
+	rct_window *w_map;
+	sint16 ax, bx, cx, dx;
+	sint16 bp, di;
+
+	if (w == NULL || w->viewport == NULL)
+		return;
+
+	w_map = window_find_by_id(WC_MAP, 0);
+	if (w_map == NULL)
+		return;
+
+	cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
+	dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
+	cx += RCT2_GLOBAL(0x00981BBC + (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) * 4), uint16);
+	dx += RCT2_GLOBAL(0x00981BBE + (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) * 4), uint16);
+	
+	ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
+	bx = w_map->widgets[WIDX_MAP].bottom - w_map->widgets[WIDX_MAP].top - 11;
+	bp = ax;
+	di = bx;
+
+	ax >>= 1;
+	bx >>= 1;
+	cx = (cx - ax) > 0 ? cx - ax : 0;
+	dx = (dx - bx) > 0 ? dx - bx : 0;
+
+	bp = -bp;	// asm: neg bp
+	di = -di;
+	bp += w_map->scrolls[0].h_right;
+	di += w_map->scrolls[0].v_bottom;
+
+	if (bp < 0 && (bp - cx) < 0)
+		cx = 0;
+
+	if (di < 0 && (di - dx) < 0)
+		dx = 0;
+
+	w_map->scrolls[0].h_left = cx;
+	w_map->scrolls[0].v_top = dx;
+	widget_scroll_update_thumbs(w, WIDX_MAP);
 }
