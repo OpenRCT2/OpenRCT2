@@ -1,4 +1,6 @@
 language: c
+before_install:
+    - sudo apt-get install  mingw32
 script:
     - echo "Hello World"
 #notifications:
