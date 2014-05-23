@@ -458,12 +458,12 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * copies a sprite onto the buffer. There is no compression used on the sprite
 * image.
 */
-void gfx_bmp_sprite_to_buffer(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp, int image_type){
+void gfx_bmp_sprite_to_buffer(char* palette_pointer, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp, int image_type){
 
 	//Has a background image?
-	if (image_type & IMAGE_TYPE_USE_PALATE){
+	if (image_type & IMAGE_TYPE_USE_PALETTE){
 		int _ecx = eax >> 8;
-		uint32 _ebx = RCT2_GLOBAL(0x9ABDA4, uint32);
+		uint32 _ebx = (uint32)palette_pointer;
 		_ecx--;
 		_ecx <<= 0x10;
 
@@ -530,7 +530,7 @@ void gfx_bmp_sprite_to_buffer(int eax, int ebx, int ecx, int edx, int esi, int e
 
 	//image_type mix with background?
 	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
-		int _ebx = RCT2_GLOBAL(0x9ABDA4, uint16);
+		int _ebx = (uint32)palette_pointer;
 		for (int ah = eax >> 8; ah > 0; --ah){
 			
 			for (int cx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16); cx > 0; --ecx){
@@ -551,7 +551,7 @@ void gfx_bmp_sprite_to_buffer(int eax, int ebx, int ecx, int edx, int esi, int e
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){//Not tested
 		int bx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
-		for (int ax = RCT2_GLOBAL(0x9ABDAC, uint16); ax > 0; --ax){
+		for (int ax = RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint16); ax > 0; --ax){
 			memcpy((char*)edi, (char*)esi, bx);
 			edi += bx;
 			esi += bx;
@@ -605,7 +605,7 @@ void gfx_bmp_sprite_to_buffer(int eax, int ebx, int ecx, int edx, int esi, int e
 * I think its only used for bitmaps onto buttons but i am not sure.
 * There is still a small bug with this code when it is in the choose park view.
 */
-void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpixelinfo *dpi, int image_type, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
+void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer, char* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
 	uint16 offset_to_first_line = *(uint16*)(g1_y_start*2 + (uint32)source_bits_pointer);
 	//This will now point to the first line
 	char* next_source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
@@ -661,14 +661,14 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 
 			//Finally after all those checks, copy the image onto the drawing surface
 			//If the image type is not a basic one we require to mix the pixels
-			if (image_type & IMAGE_TYPE_USE_PALATE){//In the .exe these are all unraveled loops
+			if (image_type & IMAGE_TYPE_USE_PALETTE){//In the .exe these are all unraveled loops
 				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
 					uint8 al = *source_pointer;
 					uint8 ah = *dest_pointer;
 					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
-						al = *((uint8*)(((al | ((int)ah)<<8) - 0x100) + RCT2_GLOBAL(0x9ABDA4, uint32)));
+						al = palette_pointer[(al | ((int)ah) << 8) - 0x100];
 					else //Adjust colours?
-						al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
+						al = palette_pointer[al];
 					*dest_pointer = al;
 				}
 			}
@@ -677,7 +677,7 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 				//Not Tested
 				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
 					uint8 al = *dest_pointer;
-					al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
+					al = palette_pointer[al];
 					*dest_pointer = al;
 				}
 			}
@@ -698,7 +698,7 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 * Draws a run length encoded sprite
 * This function readies all the vars for copying the sprite data onto the screen
 */
-void gfx_draw_rle_sprite(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y, int image_type){
+void gfx_draw_rle_sprite(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y, int image_type, char* palette_pointer){
 	int g1_y_start, g1_x_start;
 	char* bits_pointer;
 
@@ -763,7 +763,7 @@ void gfx_draw_rle_sprite(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi,
 		if (end_x <= 0)return;
 	}
 	
-	gfx_rle_sprite_to_buffer((char*)source_g1->offset, bits_pointer, dest_dpi, image_type, g1_y_start, end_y, g1_x_start, end_x);
+	gfx_rle_sprite_to_buffer((char*)source_g1->offset, bits_pointer, palette_pointer, dest_dpi, image_type, g1_y_start, end_y, g1_x_start, end_x);
 }
 
 /**
@@ -778,6 +778,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 	int image_type = (image_id & 0xE0000000) >> 28;
+
+	char* palette_pointer = NULL;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
@@ -801,9 +803,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		RCT2_GLOBAL(0x9ABDA4, uint32) = eax;
-
+		palette_pointer = (char*)eax;
 	}
-	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALATE)){
+	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		//Has not been tested
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -835,7 +837,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 		//image_id
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
-		image_type |= IMAGE_TYPE_USE_PALATE;
+		image_type |= IMAGE_TYPE_USE_PALETTE;
 
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
@@ -846,6 +848,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABFDA, uint32) = esi;
 		edx = *((uint32*)(eax + 0xFB));
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
+		palette_pointer = (char*)0x9ABF0C;
 		RCT2_GLOBAL(0x9ABFDE, uint32) = edx;
 		edx = y;
 
@@ -879,6 +882,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebp = *((uint32*)(eax + 0xFB));
 
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
+		palette_pointer = (char*)0x9ABE0C;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
 		
 	}
@@ -909,7 +913,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
 
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
-		gfx_draw_rle_sprite(g1_source, dpi, x, y, image_type);
+		gfx_draw_rle_sprite(g1_source, dpi, x, y, image_type, palette_pointer);
 		return;
 	}
 
@@ -994,7 +998,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		ecx = 0xFFFF&translated_x;
 		//ebx, edx, esi, edi, ah, ebp used in 0x67a690  eax=1966, ecx=ff39, edx=ebx=0, esp = cfca4, ebp = 266, esi =368823e, edi = 16c79b2
-		gfx_bmp_sprite_to_buffer(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
+		gfx_bmp_sprite_to_buffer(palette_pointer,eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
 		return;
 	}
 	//0x67A60A
@@ -1045,7 +1049,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 	ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 
-	gfx_bmp_sprite_to_buffer(eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
+	gfx_bmp_sprite_to_buffer(palette_pointer, eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp, image_type);
 	return;
 }
 
