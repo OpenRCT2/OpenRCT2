@@ -273,8 +273,67 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 */
 void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp){
 	if (ebx & 0x20000000){
-		//0x67a7f7
-		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+		int _ecx = eax >> 8;
+		uint32 _ebx = RCT2_GLOBAL(0x9ABDA4, uint32);
+		_ecx--;
+		_ecx <<= 0x10;
+
+		if (RCT2_GLOBAL(0x9E3CDC, uint32)){
+
+			RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
+			uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
+			_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
+
+			for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+				for (int _cx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16); _cx > 0; --_cx){
+					uint8 al = *((char*)esi);
+					esi++;
+					al = *((char*)_ebx + al);
+					al &= *((char*)_ebp);
+					if (al){
+						*((char*)edi) = al;
+					}
+					edi++;
+					_ebp++;
+				}
+				esi += edx;
+				edi += RCT2_GLOBAL(0x9E3D04, uint32);
+				_ebp += edx;
+			}
+			return;
+		}
+
+		if ((RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16)) == 4){
+			
+			ebp += 4;
+			edx += 4;
+			for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+				for (int i = 0; i < 4; ++i){
+					uint8 al = *((char*)esi+i);
+					al = *((char*)_ebx + al);
+					if (al){
+						*((char*)edi+i) = al;
+					}
+				}
+				edi += ebp;
+				esi += edx;
+			}
+			return;
+		}
+
+		for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+			for (int _cx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16); _cx > 0; --_cx){
+				uint8 al = *((char*)esi);
+				esi++;
+				al = *((char*)_ebx + al);
+				if (al){
+					*((char*)edi) = al;
+				}
+				edi++;
+			}
+			esi += edx;
+			edi += ebp;
+		}
 		return;
 	}
 	if (ebx & 0x40000000){
@@ -289,15 +348,26 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 		return;
 	}
 
-	int _ebx = RCT2_GLOBAL(0x9ABDA8, uint16);
+	int _ebx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
 	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){
 		//0x67A722
 		RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
 		return;
 	}
 
-	int _ecx = ebx;
-	RCT2_CALLPROC_X(0x67A690, eax, ebx, ecx, edx, esi, edi, ebp);
+	for (int ah = eax >> 8; ah > 0; --ah){
+		int _ecx = _ebx;
+		for (; _ecx > 0; --_ecx){
+			char al = *((char*)esi);
+			esi++;
+			if (al){
+				*((char*)edi) = al;
+			}
+			edi++;
+		}
+		esi += edx;
+		edi += ebp;
+	}
 	return;
 }
 
@@ -591,14 +661,14 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
 	if (dpi->pad_0E >= 1){
 		if (dpi->pad_0E == 1){
-			RCT2_CALLPROC_X(0x0067BD81, eax, ebx, x, y, 0, dpi, ebp);
+			RCT2_CALLPROC_X(0x0067BD81, eax, ebx, x, y, 0,(int) dpi, ebp);
 			return;
 		}
 		if (dpi->pad_0E >= 3){
-			RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, dpi, ebp);
+			RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, (int)dpi, ebp);
 			return;
 		}
-		RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, dpi, ebp);
+		RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, (int)dpi, ebp);
 		return;
 	}
 	eax = *((uint32*)ebx + 2);
