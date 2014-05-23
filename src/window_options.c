@@ -283,7 +283,6 @@ static void window_options_mouseup()
 static void window_options_mousedown()
 {
 	int num_items, i;
-	sint64 device;
 	short widgetIndex;
 	rct_window *w;
 	rct_widget *widget;
@@ -305,22 +304,14 @@ static void window_options_mousedown()
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		num_items = RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, uint32);
-		if (num_items == 0)
-			break;
-
-		window_options_draw_dropdown_box(w, widget, num_items);
+		window_options_draw_dropdown_box(w, widget, gAudioDeviceCount);
 
 		// populate the list with the sound devices
-		device = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, sint32) + 0x10;
-
-		for (i = 0; i < num_items; i++) {
+		for (i = 0; i < gAudioDeviceCount; i++) {
 			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 1170 | (device << 16);
-			device += 0x210;
+			gDropdownItemsArgs[i] = 1170 | ((uint64)gAudioDevices[i].name << 16);
 		}
 		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(0x9AF280, uint32));
-
 		break;
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
@@ -380,7 +371,7 @@ static void window_options_mousedown()
 
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
+		// RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
@@ -522,25 +513,19 @@ static void window_options_update(rct_window *w)
 	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 	#endif
 
-
-	sint32 format_args = RCT2_GLOBAL(0x009AF280, sint32);
+	sint32 currentSoundDevice = RCT2_GLOBAL(0x009AF280, sint32);
 
 	// sound devices
-	if (format_args == -1 || RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, sint32) == 0) {
+	if (currentSoundDevice == -1 || gAudioDeviceCount == 0) {
 		RCT2_GLOBAL(0x013CE952, uint16) = STR_SOUND_NONE;
 	} else {
-		format_args = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, uint32) + format_args * 0x210 + 16;
 		RCT2_GLOBAL(0x013CE952, uint16) = 1170;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = format_args;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
 	}
 	
 	// height: units/real values
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-		format_args = STR_UNITS;
-	else
-		format_args = STR_REAL_VALUES;
-
-	RCT2_GLOBAL(0x013CE952 + 6, uint16) = (uint16)format_args;
+	RCT2_GLOBAL(0x013CE952 + 6, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS)) ?
+		STR_UNITS : STR_REAL_VALUES;
 	
 	// music: on/off
 	RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF +

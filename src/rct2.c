@@ -29,6 +29,7 @@
 #include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
+#include "audio.h"
 #include "climate.h"
 #include "config.h"
 #include "date.h"
@@ -76,6 +77,9 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
+
+	audio_init();
+	audio_get_devices();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
 	
 	config_init();

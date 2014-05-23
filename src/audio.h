@@ -21,6 +21,18 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+typedef struct {
+	char name[256];
+} audio_device;
+
+extern int gAudioDeviceCount;
+extern audio_device *gAudioDevices;
+
+void audio_init();
+void audio_quit();
+void audio_get_devices();
+
+
 #include <dsound.h>
 
 /**
