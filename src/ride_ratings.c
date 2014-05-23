@@ -91,8 +91,11 @@ uint16 compute_upkeep(rct_ride *ride)
 	upkeep += cuml;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
-		// this value seems to be 40 for every ride
-		upkeep += RCT2_GLOBAL(0x0097E3AE, type_idx, uint16);
+		// The original code read from a table starting at 0x0097E3AE and
+		// incrementing by 0x12 bytes between values. However, all of these
+		// values were 40. I have replaced the table lookup with the constant
+		// 40 in this case.
+		upkeep += 40;
 	}
 
 	eax = RCT2_GLOBAL(0x0097E3B0 + type_idx, uint16);
