@@ -281,7 +281,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp,
 		_ecx <<= 0x10;
 
 		//Mix with background image and colour adjusted
-		if (RCT2_GLOBAL(0x9E3CDC, uint32)){
+		if (RCT2_GLOBAL(0x9E3CDC, uint32)){ //Not tested
 			RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
 			uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 			_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
@@ -342,7 +342,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp,
 	}
 
 	//image_type mix with background?
-	if (image_type & 0x4){
+	if (image_type & 0x4){//Not tested
 		int _ebx = RCT2_GLOBAL(0x9ABDA4, uint16);
 		for (int ah = eax >> 8; ah > 0; --ah){
 			
@@ -362,7 +362,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp,
 		return;
 	}
 
-	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){
+	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){//Not tested
 		int bx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
 		for (int ax = RCT2_GLOBAL(0x9ABDAC, uint16); ax > 0; --ax){
 			memcpy((char*)edi, (char*)esi, bx);
@@ -375,7 +375,7 @@ void sub_0x67A690(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp,
 	}
 
 	int _ebx = RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, uint16);
-	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){
+	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){//Not tested
 		RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
 		uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 		_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
@@ -474,19 +474,20 @@ void sub_0x67AA18(char* source_bits_pointer, char* dest_bits_pointer, rct_drawpi
 
 			//Finally after all those checks, copy the image onto the drawing surface
 			//If the image type is not a basic one we require to mix the pixels
-			if (image_type & 0x2){
+			if (image_type & 0x2){//In the .exe these are all unraveled loops
 				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
 					uint8 al = *source_pointer;
 					uint8 ah = *dest_pointer;
-					if (image_type & 0x4)//Mix with background and image
+					if (image_type & 0x4)//Mix with background and image Not Tested
 						al = *((uint8*)(((al | ((int)ah)<<8) - 0x100) + RCT2_GLOBAL(0x9ABDA4, uint32)));
 					else //Adjust colours?
 						al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
 					*dest_pointer = al;
 				}
 			}
-			else if (image_type & 0x4){
+			else if (image_type & 0x4){//In the .exe these are all unraveled loops
 				//Doesnt use source pointer ??? mix with background only?
+				//Not Tested
 				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
 					uint8 al = *dest_pointer;
 					al = *((uint8*)(al + RCT2_GLOBAL(0x9ABDA4, uint32)));
@@ -587,15 +588,13 @@ void sub_0x67A934(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x,
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	//return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 	int image_type = (image_id & 0xE0000000) >> 28;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
-	//eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
+
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
@@ -618,9 +617,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	}
 	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);
-		//return;//jump into 0x67a361
-
+		//Has not been tested
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		eax >>= 19;
@@ -667,8 +664,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	}
 	else if ((image_id)& 0xE0000000){
-		//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0,(int) dpi, 0);		
-		//return;
 		eax = image_id;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		eax >>= 19;
@@ -704,16 +699,17 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebx &= 0x7FFFF;
 	ebx <<= 4;
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
-	if (dpi->pad_0E >= 1){
+	if (dpi->pad_0E >= 1){ //These have not been tested
+		//something to do with zooming
 		if (dpi->pad_0E == 1){
 			RCT2_CALLPROC_X(0x0067BD81, eax, ebx, x, y, 0,(int) dpi, ebp);
 			return;
 		}
-		if (dpi->pad_0E >= 3){
-			RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, (int)dpi, ebp);
+		if (dpi->pad_0E == 2){
+			RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, (int)dpi, ebp);
 			return;
 		}
-		RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, (int)dpi, ebp);
+		RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, (int)dpi, ebp);
 		return;
 	}
 	eax = *((uint32*)ebx + 2);
