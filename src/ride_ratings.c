@@ -71,15 +71,16 @@ uint16 compute_upkeep(rct_ride *ride)
 {
 	uint8 type_idx = ride->type * 0x12;
 
-	// data values here: https://gist.github.com/kevinburke/456fe478b1822580a449
-	uint16 upkeep = RCT2_GLOBAL(0x0097E3A8 + type_idx, uint16);
+	// data stored at 0x0057E3A8, incrementing 18 bytes at a time
+	uint16 upkeep = initialUpkeepCosts[ride->type];
 
-	uint16 eax = RCT2_GLOBAL(0x0097E3AA + type_idx, uint16);
+	uint16 trackCost = costPerTrackPiece[ride->type];
 	uint8 dl = ride->var_115;
+
 	dl = dl >> 6;
 	dl = dl & 3;
 	eax = eax * dl;
-	upkeep += dl;
+	upkeep += trackCost * dl;
 
 	uint32 cuml = ride->var_0E4;
 	cuml += ride->var_0E8;
@@ -105,16 +106,26 @@ uint16 compute_upkeep(rct_ride *ride)
 		upkeep += 40;
 	}
 
-	eax = RCT2_GLOBAL(0x0097E3B0 + type_idx, uint16);
+	// Originally this data was at 0x0097E3B0 and incrementing in 18 byte
+	// offsets. The value here for every ride is 80, except for the reverser,
+	// which is 10
+	uint16 eax;
+	if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
+		eax = 10;
+	} else {
+		eax = 80;
+	}
 
 	// not sure what this value is; it's only written to in one place, where
 	// it's incremented.
 	sint16 dx = RCT2_GLOBAL(0x0138B5CC, sint16);
 	upkeep += eax * dx;
 
-	eax = RCT2_GLOBAL(0x0097E3B2 + type_idx, uint16);
 	dx = RCT2_GLOBAL(0x0138B5CA, sint16);
-	upkeep += eax * dx;
+	// Originally there was a lookup into a table at 0x0097E3B0 and
+	// incrementing in 18 byte offsets. The value here for every ride was 20,
+	// so it's been replaced here by the constant.
+	upkeep += 20 * dx;
 
 	// these seem to be adhoc adjustments to a ride's upkeep/cost, times
 	// various variables set on the ride itself.

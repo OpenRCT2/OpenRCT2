@@ -18,4 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-extern const uint8 runningTrack[100];
+extern const uint8 hasRunningTrack[0x59];
+extern const uint8 initialUpkeepCosts[0x59];
+extern const uint8 costPerTrackPiece[0x59];

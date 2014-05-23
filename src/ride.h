@@ -62,6 +62,7 @@ typedef struct {
 	sint32 var_0F0;
 	uint8 pad_0F4[0x20];
 	uint8 var_114;
+	// Track length? Number of track segments?
 	uint8 var_115;
 	uint8 pad_116[0x0F];
 	sint16 var_124;
