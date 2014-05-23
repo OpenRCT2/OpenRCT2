@@ -411,7 +411,9 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	widget = &w->widgets[widgetIndex];
 
 	// Get the colour
-	colour = w->colours[widget->colour];
+// 	colour = w->colours[widget->colour];
+	// do not use widget color as this is already used as background for the text_button
+	colour = 2;
 
 	// Resolve the absolute ltrb
 	l = w->x + widget->left;

@@ -43,9 +43,9 @@ static rct_widget window_save_prompt_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		258,	1,	14,	0,							STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	824,						STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// question/label
-	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	0,							STR_SAVE_PROMPT_SAVE },		// save
-	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	0,							STR_SAVE_PROMPT_DONT_SAVE },// don't save
-	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	0,							STR_SAVE_PROMPT_CANCEL },	// cancel
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	STR_SAVE_PROMPT_SAVE,		STR_NONE },		// save
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	STR_SAVE_PROMPT_DONT_SAVE,	STR_NONE },		// don't save
+	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	STR_SAVE_PROMPT_CANCEL,		STR_NONE },		// cancel
 	{ WIDGETS_END },
 };
 
@@ -225,18 +225,4 @@ static void window_save_prompt_paint()
 
 
 	window_draw_widgets(w, dpi);
-
-	gfx_draw_string_centred(dpi, window_save_prompt_widgets[WIDX_LABEL].image,
-							w->x + window_save_prompt_widgets[WIDX_LABEL].left + 125,
-							w->y + window_save_prompt_widgets[WIDX_LABEL].top + 1, 2, w);
-
-	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_SAVE,
-							w->x + window_save_prompt_widgets[WIDX_SAVE].left + 38,
-							w->y + window_save_prompt_widgets[WIDX_SAVE].top + 1, 2, w);
-	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_DONT_SAVE,
-							w->x + window_save_prompt_widgets[WIDX_DONT_SAVE].left + 38,
-							w->y + window_save_prompt_widgets[WIDX_DONT_SAVE].top + 1, 2, w);
-	gfx_draw_string_centred(dpi, STR_SAVE_PROMPT_CANCEL,
-							w->x + window_save_prompt_widgets[WIDX_CANCEL].left + 38,
-							w->y + window_save_prompt_widgets[WIDX_CANCEL].top + 1, 2, w);
 }
