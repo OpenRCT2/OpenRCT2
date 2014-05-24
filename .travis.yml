@@ -7,7 +7,7 @@ before_install:
     - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 libsdl2-static-dev
     - ls -al /usr/bin
     - ls -al /usr/include/SDL2
-    - mv /usr/include/SDL2 /usr/include/sdl2
+    - sudo mv /usr/include/SDL2 /usr/include/sdl2
     - find / -name SDL2
 script:
     - echo "Hello World"
