@@ -27,6 +27,7 @@
 #include "widget.h"
 #include "window.h"
 #include "audio.h"
+#include "config.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -168,31 +169,30 @@ void window_save_prompt_open()
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
 
-	/* the following doesn't make sense here,
-	 * game_load_or_quit_no_save_prompt() will close the window immediately
-	 * => moved to mouseup()
-	 */
-// 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
-// 		game_load_or_quit_no_save_prompt();
-// 		return;
-// 	}
-// 
-// 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
-// 		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
-// 			RCT2_CALLPROC_EBPSAFE(0x0066EE54);
-// 			game_load_or_quit_no_save_prompt();
-// 			return;
-// 		} else {
-// 			tutorial_stop();
-// 			game_load_or_quit_no_save_prompt();
-// 			return;
-// 		}
-// 	}
-// 
-// 	if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
-// 		game_load_or_quit_no_save_prompt();
-// 		return;
-// 	}
+	if (!gGeneral_config.confirmation_prompt) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
+			game_load_or_quit_no_save_prompt();
+			return;
+		}
+		
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
+				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
+				game_load_or_quit_no_save_prompt();
+				return;
+			} else {
+				tutorial_stop();
+				game_load_or_quit_no_save_prompt();
+				return;
+			}
+		}
+		
+		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+			game_load_or_quit_no_save_prompt();
+			return;
+		}
+	}
+	
 }
 
 /**
@@ -233,13 +233,10 @@ static void window_save_prompt_mouseup()
 
 	if (prompt_mode == PM_QUIT) {
 		switch (widgetIndex) {
-			case WQIDX_CLOSE:
-				window_close(w);
-				window_save_prompt_close();
-				break;
 			case WQIDX_OK:
 				rct2_finish();
 				break;
+			case WQIDX_CLOSE:
 			case WQIDX_CANCEL:
 				window_close(w);
 				window_save_prompt_close();

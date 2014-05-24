@@ -24,6 +24,7 @@
 #include "string_ids.h"
 #include "widget.h"
 #include "window.h"
+#include "rct2.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
@@ -114,7 +115,8 @@ static void window_title_exit_mouseup()
 		return;
 
 	if (widgetIndex == 0)
-		game_do_command(0, 1, 0, 0, 5, 3, 0);
+		rct2_quit();
+// 		game_do_command(0, 1, 0, 0, 5, 3, 0);
 }
 
 /**
