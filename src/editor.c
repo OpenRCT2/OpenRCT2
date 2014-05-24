@@ -35,7 +35,7 @@
 
 static void set_all_land_owned();
 
-Syntax error blah blah blat *&2)
+/*Syntax error blah blah blat *&2)*/
 
 /**
  *
