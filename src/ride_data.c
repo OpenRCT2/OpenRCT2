@@ -9,8 +9,8 @@
  */
 
 #include <stdbool.h>
-#include "ride_data.h"
 #include "rct2.h"
+#include "ride_data.h"
 
 const bool hasRunningTrack[0x60] = {
 	true,	// 0 Spiral Roller coaster

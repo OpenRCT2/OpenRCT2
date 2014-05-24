@@ -18,10 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "ride.h"
-#include "ride_ratings.h"
-#include "ride_data.h"
 #include "addresses.h"
+#include "ride.h"
+#include "ride_data.h"
+#include "ride_ratings.h"
 
 /**
  * rct2: 0x0065C4D4
@@ -36,9 +36,9 @@ void crooked_house_excitement(rct_ride *ride)
 	ride->var_198 = 5;
 	sub_655FD6(ride);
 
-	sint16 excitement = 215;
-	sint16 intensity = 62;
-	sint16 nausea = 34;
+	ride_rating excitement	= RIDE_RATING(2,15);
+	ride_rating intensity	= RIDE_RATING(0,62);
+	ride_rating nausea		= RIDE_RATING(0,34);
 
 	// NB this should get marked out by the compiler, if it's smart.
 	excitement = apply_intensity_penalty(excitement, intensity);
@@ -95,7 +95,7 @@ uint16 compute_upkeep(rct_ride *ride)
 		cuml = cuml * 20;
 	}
 	cuml = cuml >> 0x0A;
-	upkeep += cuml;
+	upkeep += (uint16)cuml;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
 		// The original code read from a table starting at 0x0097E3AE and
@@ -167,8 +167,8 @@ uint16 compute_upkeep(rct_ride *ride)
  * - bp: nausea
  * - edi: ride ptr
  */
-rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement, 
-		sint16 intensity, sint16 nausea)
+rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement, 
+		ride_rating intensity, ride_rating nausea)
 {
 	// NB: The table here is allocated dynamically. Reading the exe will tell
 	// you nothing
@@ -206,7 +206,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
 			nausea += ax;
 		}
 	}
-	rating_tuple tup = {excitement, intensity, nausea};
+	rating_tuple tup = { excitement, intensity, nausea };
 	return tup;
 }
 
@@ -220,7 +220,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
  *
  * returns: the excitement level, with intensity penalties applied
  */
-sint16 apply_intensity_penalty(sint16 excitement, sint16 intensity)
+ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity)
 {
     // intensity penalty
     if (intensity >= 1000) {

@@ -18,16 +18,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifndef _RIDE_RATINGS_H_
+#define _RIDE_RATINGS_H_
+
+#include "rct2.h"
+
+typedef fixed16_2dp ride_rating;
+
+#define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
+
 // Used for return values, for functions that modify all three.
 typedef struct {
-	sint16 excitement;
-	sint16 intensity;
-	sint16 nausea;
+	ride_rating excitement;
+	ride_rating intensity;
+	ride_rating nausea;
 } rating_tuple;
 
 void crooked_house_excitement(rct_ride *ride);
 void sub_655FD6(rct_ride *ride);
-sint16 apply_intensity_penalty(sint16 excitement, sint16 intensity);
-rating_tuple per_ride_rating_adjustments(rct_ride *ride, sint16 excitement,
-	sint16 intensity, sint16 nausea);
+ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity);
+rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
+	ride_rating intensity, ride_rating nausea);
 uint16 compute_upkeep(rct_ride *ride);
+
+#endif
