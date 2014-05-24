@@ -88,8 +88,8 @@ static void title_create_windows();
  */
 void title_load()
 {
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) & 1)
-		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0);
+	if (RCT2_GLOBAL(0x009DEA6E, uint8) & GAME_FLAGS_PAUSED)
+		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0); //game_pause_toggle()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
 
@@ -260,7 +260,7 @@ void title_update()
 {
 	int tmp;
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (!GAME_IS_PAUSED())
 		title_update_showcase();
 		game_logic_update();
 		title_play_music();
