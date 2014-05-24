@@ -12,6 +12,7 @@ script:
     - sudo find / -name SDL2 2>>/dev/null || true
     - mkdir build
     - pushd build && SDL_INCLUDE_DIRS=/usr/include/SDL2 cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  .. && popd
-    - pushd build && make
+    - sudo find / -name iconv.h 2>>/dev/null || true
+    - pushd build && make && popd
 #notifications:
   #irc: "irc.freenode.net#openrct2"
