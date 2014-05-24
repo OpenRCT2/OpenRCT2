@@ -458,67 +458,65 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * copies a sprite onto the buffer. There is no compression used on the sprite
 * image.
 */
-void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char* dest_pointer, int end_y, int end_x, int edx, int ebp, int image_type){
+void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 
 	//Has a background image?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
 		//Mix with background image and colour adjusted
 		if (RCT2_GLOBAL(0x9E3CDC, uint32)){ //Not tested
-			RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
+
 			uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 			_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
 
-			for (; end_y > 0; --end_y){
-				for (int _cx = end_x; _cx > 0; --_cx){
-					uint8 al = *source_pointer;
+			for (; height > 0; --height){
+				for (int no_pixels = width; no_pixels > 0; --no_pixels){
+					uint8 pixel = *source_pointer;
 					source_pointer++;
-					al = palette_pointer[al];
-					al &= *((char*)_ebp);
-					if (al){
-						*dest_pointer = al;
+					pixel = palette_pointer[pixel];
+					pixel &= *((char*)_ebp);
+					if (pixel){
+						*dest_pointer = pixel;
 					}
 					dest_pointer++;
 					_ebp++;
 				}
-				source_pointer += edx;
-				dest_pointer += RCT2_GLOBAL(0x9E3D04, uint32);
-				_ebp += edx;
+				source_pointer += source_image->width - width;
+				dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
+				_ebp += source_image->width - width;
 			}
 			return;
 		}
 
 		//Quicker?
-		if (end_x == 4){
+		if (width == 4){
 			
-			ebp += 4;
-			edx += 4;
-			for (; end_y > 0; --end_y){
-				for (int i = 0; i < 4; ++i){
-					uint8 al = *(source_pointer + i);
-					al = palette_pointer[al];
-					if (al){
-						*(dest_pointer + i) = al;
+			for (; height > 0; --height){
+				for (int no_pixels = 0; no_pixels < 4; ++no_pixels){
+					uint8 pixel = source_pointer[no_pixels];
+					pixel = palette_pointer[pixel];
+					if (pixel){
+						dest_pointer[no_pixels] = pixel;
 					}
 				}
-				dest_pointer += ebp;
-				source_pointer += edx;
+				dest_pointer += dest_dpi->width + dest_dpi->pitch - width + 4;
+				source_pointer += source_image->width - width + 4;
 			}
 			return;
 		}
 
 		//image colour adjusted?
-		for (; end_y > 0; --end_y){
-			for (int _cx = end_x; _cx > 0; --_cx){
-				uint8 al = *source_pointer;
+		for (; height > 0; --height){
+			for (int no_pixels = width; no_pixels > 0; --no_pixels){
+				uint8 pixel = *source_pointer;
 				source_pointer++;
-				al = palette_pointer[al];
-				if (al){
-					*dest_pointer = al;
+				pixel = palette_pointer[pixel];
+				if (pixel){
+					*dest_pointer = pixel;
 				}
 				dest_pointer++;
 			}
-			source_pointer += edx;
-			dest_pointer += ebp;
+			source_pointer += source_image->width - width;
+			dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
 		}
 		return;
 	}
@@ -526,9 +524,10 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 	//image_type mix with background?
 	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
 		int _ebx = (uint32)palette_pointer;
-		for (int ah = end_y; ah > 0; --ah){
+		for (int ah = height; ah > 0; --ah){
 			
-			for (int cx = end_x; cx > 0; --cx){
+			for (int no_pixels = width; no_pixels > 0; --no_pixels){
+				//Check this 
 				uint8 al = *source_pointer;
 				source_pointer++;
 				if (al){
@@ -538,58 +537,57 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 				}
 				dest_pointer++;
 			}
-			source_pointer += edx;
-			dest_pointer += ebp;
+			source_pointer += source_image->width - width;
+			dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
 		}
 		return;
 	}
 
 	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 1)){//Not tested
-		int bx = end_x;
-		for (int ax = end_y; ax > 0; --ax){
+		int bx = width;
+		for (int ax = height; ax > 0; --ax){
 			memcpy(dest_pointer, source_pointer, bx);
 			dest_pointer += bx;
 			source_pointer += bx;
-			dest_pointer += ebp;
-			source_pointer += edx;
+			dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
+			source_pointer += source_image->width - width;
 		}
 		return;
 	}
 
-	int _ebx = end_x;
+	int _ebx = width;
 	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){//Not tested
-		RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
 		uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 		_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
 
-		for (int ah = end_y; ah > 0; --ah){
+		for (int ah = height; ah > 0; --ah){
 			for (int _ecx = _ebx; _ecx > 0; --_ecx){
-				char al = *source_pointer;
+				char pixel = *source_pointer;
 				source_pointer++;
-				al &= *((char*)_ebp);
-				if (al){
-					*dest_pointer = al;
+				pixel &= *((char*)_ebp);
+				if (pixel){
+					*dest_pointer = pixel;
 				}
 				dest_pointer++;
 				_ebp++;
 			}
-			source_pointer += edx;
-			dest_pointer += RCT2_GLOBAL(0x9E3D04, uint32);
-			_ebp += edx;
+			source_pointer += source_image->width - width;
+			dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
+			_ebp += source_image->width - width;
 		}
 	}
 
-	for (int no_lines = end_y; no_lines > 0; --no_lines){
+	for (int no_lines = height; no_lines > 0; --no_lines){
 		for (int _ecx = _ebx; _ecx > 0; --_ecx){
-			char al = *source_pointer;
+			char pixel = *source_pointer;
 			source_pointer++;
-			if (al){
-				*dest_pointer = al;
+			if (pixel){
+				*dest_pointer = pixel;
 			}
 			dest_pointer++;
 		}
-		source_pointer += edx;
-		dest_pointer += ebp;
+		source_pointer += source_image->width - width;
+		dest_pointer += dest_dpi->width + dest_dpi->pitch - width;
 	}
 	return;
 }
@@ -671,9 +669,9 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 				//Doesnt use source pointer ??? mix with background only?
 				//Not Tested
 				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
-					uint8 al = *dest_pointer;
-					al = palette_pointer[al];
-					*dest_pointer = al;
+					uint8 pixel = *dest_pointer;
+					pixel = palette_pointer[pixel];
+					*dest_pointer = pixel;
 				}
 			}
 			else
@@ -987,11 +985,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	
 	if (!(g1_source->flags & 0x02)){
 		eax = RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8);
-		edx = RCT2_GLOBAL(0x9ABDAE, uint16);
-		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
-		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
-		
-		gfx_bmp_sprite_to_buffer(palette_pointer,  (char*)esi, bits_pointer, eax, RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16), edx, ebp, image_type);
+				
+		gfx_bmp_sprite_to_buffer(palette_pointer,  (char*)esi, bits_pointer, g1_source, dpi, eax, RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16), image_type);
 		return;
 	}
 	//0x67A60A
@@ -1037,11 +1032,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	esi = ebp;
 	esi += 0x9E3D28;
 	eax = RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, uint8);
-	edx = RCT2_GLOBAL(0x9ABDAE, uint16);
-	ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
-	ebx = RCT2_GLOBAL(0xEDF81C, uint32);
-
-	gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, bits_pointer, eax, RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16), edx, ebp, image_type);
+	gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, bits_pointer, g1_source, dpi, eax, RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16), image_type);
 	return;
 }
 
