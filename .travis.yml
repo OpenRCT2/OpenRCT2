@@ -4,7 +4,7 @@ before_install:
     - echo "yes" | sudo apt-add-repository ppa:openmw/deps
     - sudo apt-key update -qq
     - sudo apt-get update -qq
-    - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 libsdl2-static-dev
+    - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 libsdl2-static-dev libc6-dev-i386
     - ls -al /usr/bin
     - ls -al /usr/include/SDL2
     - sudo mv /usr/include/SDL2 /usr/include/sdl2
