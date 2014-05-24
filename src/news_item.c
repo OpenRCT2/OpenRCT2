@@ -206,8 +206,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 		// Find which ride peep is on
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
-		// Check if there are trains on the track (first bit of var_1D0)
-		if (!(ride->var_1D0 & 1)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}

@@ -33,6 +33,8 @@
     <ClInclude Include="..\src\peep.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\ride.h" />
+    <ClInclude Include="..\src\ride_data.h" />
+    <ClInclude Include="..\src\ride_ratings.h" />
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\screenshot.h" />
@@ -72,6 +74,8 @@
     <ClCompile Include="..\src\peep.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride.c" />
+    <ClCompile Include="..\src\ride_data.c" />
+    <ClCompile Include="..\src\ride_ratings.c" />
     <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />

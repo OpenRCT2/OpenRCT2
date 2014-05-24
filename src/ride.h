@@ -29,6 +29,8 @@
  */
 typedef struct {
 	uint8 type;						// 0x000
+	// pointer to static info. for example, wild mouse type is 0x36, subtype is
+	// 0x4c.
 	uint8 subtype;					// 0x001
 	uint16 pad_002;
 	uint8 mode;						// 0x004
@@ -46,11 +48,24 @@ typedef struct {
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
 	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
-	uint8 pad_088[0x68];
-	sint16 var_0F0;
-	sint16 var_0F2;
-	sint16 var_0F4;
-	uint8 pad_0F6[0x2E];
+	uint8 pad_088[0x3F];
+
+	// Not sure if these should be uint or sint.
+	uint8 var_0C7;
+	uint8 var_0C8;
+	uint8 var_0C9;
+
+	uint8 pad_0CA[0x1B];
+
+	sint32 var_0E4;
+	sint32 var_0E8;
+	sint32 var_0EC;
+	sint32 var_0F0;
+	uint8 pad_0F4[0x20];
+	uint8 var_114;
+	// Track length? Number of track segments?
+	uint8 var_115;
+	uint8 pad_116[0x0F];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -78,15 +93,22 @@ typedef struct {
 	sint16 upkeep_cost;				// 0x182
 	uint8 pad_184[0x12];
 	uint16 var_196;
-	uint8 pad_198;
+	// used in computing excitement, nausea, etc
+	uint8 var_198;
 	uint8 var_199;
 	uint8 pad_19A[0x1A];
 	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 pad_1BC[0x12];
+	uint8 pad_1BC[0x11];
+	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
-	uint32 var_1D0;
-	uint8 pad_1D4[0x2C];
+	uint32 lifecycle_flags;
+	uint8 pad_1D4[0x20];
+	// Example value for wild mouse ride is d5 (before it's been constructed)
+	// I tried searching the IDA file for "1F4" but couldn't find places where
+	// this is written to.
+	uint16 var_1F4;
+	uint8 pad_1F6[0x0a];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
@@ -104,6 +126,27 @@ enum {
 	RIDE_CLASS_RIDE,
 	RIDE_CLASS_SHOP_OR_STALL,
 	RIDE_CLASS_KIOSK_OR_FACILITY
+};
+
+// Constants used by the lifecycle_flags property at 0x1D0
+enum {
+	RIDE_LIFECYCLE_ON_TRACK = 1,
+	RIDE_LIFECYCLE_TESTED = 1 << 1,
+	RIDE_LIFECYCLE_TEST_IN_PROGRESS = 1 << 2,
+	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
+	RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
+	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
+
+	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
+
+	RIDE_LIFECYCLE_CRASHED = 1 << 10,
+
+	RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
+	RIDE_LIFECYCLE_MUSIC = 1 << 13,
+	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
+	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
+
+	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17
 };
 
 enum {
@@ -230,7 +273,7 @@ enum {
 	RIDE_MODE_3D_FILM_MOUSE_TAILS,
 	RIDE_MODE_SPACE_RINGS,
 	RIDE_MODE_BEGINNERS,
-	RIDE_MODE_LIM_POWERED_LAUNCH,
+	RIDE_MODE_LIM_POWERED_LAUNCH,                  // 0x17
 	RIDE_MODE_FILM_THRILL_RIDERS,
 	RIDE_MODE_3D_FILM_STORM_CHASERS,
 	RIDE_MODE_3D_FILM_SPACE_RAIDERS,
@@ -242,7 +285,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH2,						// RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH2,						// 0x23. RCT2 style?
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 

@@ -615,4 +615,3 @@ static void config_error(char *msg){
 
 }
 
-
