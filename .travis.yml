@@ -6,8 +6,6 @@ before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 libsdl2-static-dev
     - ls -al /usr/bin
-    - cp /usr/bin/i586-mingw32msvc-gcc /usr/bin/i686-mingw32msvc-gcc
-      i586-mingw32msvc-c++
     - ls -al /usr/include/SDL2
 script:
     - which crossdev
