@@ -28,7 +28,11 @@
 int object_load(int groupIndex, rct_object_entry *entry)
 {
 	RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry);
+	#ifdef _MSC_VER
 	__asm jb fail
+	#else
+	__asm__ goto ( "jb %l0" : : : : fail );
+	#endif
 	return 1;
 fail:
 	return 0;
