@@ -462,22 +462,17 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 
 	//Has a background image?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
-		int _ecx = end_y;
-		uint32 _ebx = (uint32)palette_pointer;
-		_ecx--;
-		_ecx <<= 0x10;
-
 		//Mix with background image and colour adjusted
 		if (RCT2_GLOBAL(0x9E3CDC, uint32)){ //Not tested
 			RCT2_GLOBAL(0x9E3D04, uint32) = ebp;
 			uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
 			_ebp += RCT2_GLOBAL(0x9E3CE0, uint32);
 
-			for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+			for (; end_y > 0; --end_y){
 				for (int _cx = end_x; _cx > 0; --_cx){
 					uint8 al = *source_pointer;
 					source_pointer++;
-					al = *((char*)_ebx + al);
+					al = palette_pointer[al];
 					al &= *((char*)_ebp);
 					if (al){
 						*dest_pointer = al;
@@ -497,10 +492,10 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 			
 			ebp += 4;
 			edx += 4;
-			for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+			for (; end_y > 0; --end_y){
 				for (int i = 0; i < 4; ++i){
 					uint8 al = *(source_pointer + i);
-					al = *((char*)_ebx + al);
+					al = palette_pointer[al];
 					if (al){
 						*(dest_pointer + i) = al;
 					}
@@ -512,11 +507,11 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 		}
 
 		//image colour adjusted?
-		for (_ecx >>= 0x10; _ecx >= 0; --_ecx){
+		for (; end_y > 0; --end_y){
 			for (int _cx = end_x; _cx > 0; --_cx){
 				uint8 al = *source_pointer;
 				source_pointer++;
-				al = *((char*)_ebx + al);
+				al = palette_pointer[al];
 				if (al){
 					*dest_pointer = al;
 				}
@@ -788,7 +783,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
 
-		if (!(image_type & (1 << 2))){
+		if (!(image_type & IMAGE_TYPE_MIX_BACKGROUND)){
 			eax = image_id;
 			eax >>= 19;
 			eax &= 0xFF;
@@ -996,7 +991,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebp = RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16);
 		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
 		
-		//ebx, edx, esi, edi, ah, ebp used in 0x67a690  eax=1966, ecx=ff39, edx=ebx=0, esp = cfca4, ebp = 266, esi =368823e, edi = 16c79b2
 		gfx_bmp_sprite_to_buffer(palette_pointer,  (char*)esi, bits_pointer, eax, RCT2_GLOBAL(RCT2_X_END_POINT_GLOBAL, sint16), edx, ebp, image_type);
 		return;
 	}
