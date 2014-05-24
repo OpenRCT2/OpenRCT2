@@ -52,6 +52,7 @@ typedef unsigned long long uint64;
 #else
 #define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __func__, __LINE__, __VA_ARGS__);
 #endif
+#define RCT2_ERR(msg) RCT2_ERROR("%s",msg)
 
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs

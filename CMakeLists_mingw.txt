@@ -16,14 +16,12 @@ set(CMAKE_SHARED_LINKER_FLAGS "-static-libgcc" CACHE STRING "" FORCE)
 include_directories("/usr/include/wine/windows/")
 
 # find and include SDL2
-# INCLUDE(FindPkgConfig)
-# PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-INCLUDE_DIRECTORIES("/usr/include")
-INCLUDE_DIRECTORIES("/usr/include/x86_64-linux-gnu")
-INCLUDE_DIRECTORIES("/usr/include/sdl2")
+INCLUDE(FindPkgConfig)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 
 # here is the target environment located
-SET(CMAKE_FIND_ROOT_PATH /usr/${COMPILER_PREFIX})
+#SET(CMAKE_FIND_ROOT_PATH /usr/${COMPILER_PREFIX})
 
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search
