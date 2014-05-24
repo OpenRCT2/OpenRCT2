@@ -3,7 +3,7 @@ before_install:
     - echo "yes" | sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
     - echo "yes" | sudo apt-add-repository ppa:openmw/deps
     - sudo apt-get update -qq
-    - sudo apt-get install mingw32 libsdl2-static-dev
+    - sudo apt-get install -qq mingw32 libsdl2-static-dev
 script:
     - which crossdev
     - echo "Hello World"
