@@ -147,7 +147,7 @@ void scenario_load(const char *path)
 				for (i = 0; i < s6Header->num_packed_objects; i++)
 					j += object_load_packed();
 				if (j > 0)
-					object_load_list();
+					object_list_load();
 			}
 
 			object_read_and_load_entries(hFile);

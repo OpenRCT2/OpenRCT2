@@ -66,6 +66,7 @@
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\news_item.c" />
     <ClCompile Include="..\src\object.c" />
+    <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\osinterface.c" />
     <ClCompile Include="..\src\park.c" />
     <ClCompile Include="..\src\peep.c" />

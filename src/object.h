@@ -34,7 +34,7 @@ typedef struct {
 	uint32 var_0C;
 } rct_object_entry;
 
-void object_load_list();
+void object_list_load();
 void object_read_and_load_entries(HANDLE hFile);
 int object_load_packed();
 
