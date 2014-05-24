@@ -8,8 +8,8 @@ before_install:
     - ls -al /usr/bin
     - ls -al /usr/include/SDL2
     - sudo mv /usr/include/SDL2 /usr/include/sdl2
-    - find / -name SDL2
 script:
+    - sudo find / -name SDL2 2>>/dev/null || true
     - echo "Hello World"
     - mkdir build
     - pushd build; SDL_INCLUDE_DIRS=/usr/include/SDL2 cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  .. ; popd
