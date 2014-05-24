@@ -49,7 +49,7 @@ typedef struct {
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
-void gfx_load_g1();
+int gfx_load_g1();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);

@@ -44,7 +44,7 @@ int object_entry_group_counts[] = {
 	19,		// scenery sets
 	1,		// park entrance
 	1,		// water
-	1		// stex
+	1		// scenario text
 };
 
 struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[] = {
@@ -58,7 +58,7 @@ struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[
 	(void**)(0x009ACFA4 + ( 15 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 15 * 20)),	// scenery sets
 	(void**)(0x009ACFA4 + ( 19 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 19 * 20)),	// park entrance
 	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20)),	// water
-	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20))		// stex
+	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20))		// scenario text
 };
 
 /**
