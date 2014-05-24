@@ -47,6 +47,7 @@ typedef struct {
 } rct_g1_element;
 
 enum{
+	G1_FLAG_BMP = (1 << 0), //No invisible sections
 	G1_FLAG_RLE_COMPRESSION = (1<<2),
 };
 
