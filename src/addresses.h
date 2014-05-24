@@ -284,6 +284,8 @@
 #define RCT2_ADDRESS_SCREEN_CAP_BPP					0x01423C10
 #define RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH		0x01423C14
 
+#define RTC2_ADDRESS_PAUSE_FLAGS                  0x009DEA6E  //uint8 
+
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
 	#ifdef _MSC_VER

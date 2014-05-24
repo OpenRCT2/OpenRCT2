@@ -118,7 +118,7 @@ void window_save_prompt_open()
 		window->flags |= WF_TRANSPARENT;
 
 		// Pause the game
-		RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
+		RCT2_GLOBAL(RTC2_ADDRESS_PAUSE_FLAGS, uint8) |= GAME_FLAGS_PAUSE_FOR_SAVE;
 		pause_sounds();
 		window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 	}
@@ -161,7 +161,7 @@ void window_save_prompt_open()
 static void window_save_prompt_close()
 {
 	// Unpause the game
-	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
+	RCT2_GLOBAL(RTC2_ADDRESS_PAUSE_FLAGS, uint8) &= ~GAME_FLAGS_PAUSE_FOR_SAVE;
 	unpause_sounds();
 	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 }

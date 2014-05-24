@@ -75,7 +75,7 @@ void game_update()
 	// if (ted_fastforwarding)
 	//	eax += 8 - 1;
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (!GAME_IS_PAUSED()) {
 		for (; eax > 0; eax--) {
 			game_logic_update();
 			RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
@@ -1319,9 +1319,9 @@ static void game_pause_toggle()
 
 
 	if (input_bl & 1) {
-		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
+		RCT2_GLOBAL(RTC2_ADDRESS_PAUSE_FLAGS, uint8) ^= GAME_FLAGS_PAUSED;
 		window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
-		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
+		if (RCT2_GLOBAL(RTC2_ADDRESS_PAUSE_FLAGS, uint32) & GAME_FLAGS_PAUSED)
 			pause_sounds();
 		else
 			unpause_sounds();
