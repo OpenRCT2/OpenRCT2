@@ -906,17 +906,16 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		return;
 	}
 
-	//dpi on stack
 	int translated_x, translated_y;
-	char* bits_pointer;
+	char* dest_pointer;
+	char* source_pointer;
 
-	ebp = (int)dpi;
-	esi = (int)g1_source->offset;//RCT2_GLOBAL(0x9E3D08, uint32);
-	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
-	bits_pointer = dpi->bits;	
+	source_pointer = g1_source->offset;
+	
+	dest_pointer = dpi->bits;
 	int height = g1_source->height;
 
-	translated_y = y - dpi->y + g1_source->y_offset;//RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16);
+	translated_y = y - dpi->y + g1_source->y_offset;
 
 	if (translated_y < 0){
 		height += translated_y;
@@ -924,15 +923,14 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			return;
 		}
 		translated_y = -translated_y;
-		esi += (uint32)translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
-		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * g1_source->width;//RCT2_GLOBAL(0x9E3D0C, sint16);
+		source_pointer += (uint32)translated_y * g1_source->width;
+		
 		translated_y = 0;
 	} else {
-		//eax = ;
-		bits_pointer += (dpi->width + dpi->pitch) * translated_y;//eax;
+		dest_pointer += (dpi->width + dpi->pitch) * translated_y;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_END_POINT_GLOBAL, sint16) - dpi->height;
+	translated_y += height - dpi->height;
 
 	if (translated_y > 0){
 		height -= translated_y;
@@ -940,26 +938,19 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 	
 	int width = g1_source->width;
-	eax = dpi->width + dpi->pitch - g1_source->width; //RCT2_GLOBAL(0x9E3D0C, sint16);
 
-	RCT2_GLOBAL(0x9ABDAE, uint16) = 0;
-	RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) = dpi->width + dpi->pitch - g1_source->width;// RCT2_GLOBAL(0x9E3D0C, sint16);
-	translated_x = x - dpi->x + g1_source->x_offset;//RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16);
+	translated_x = x - dpi->x + g1_source->x_offset;
 	
 	if (translated_x < 0){
 		width += translated_x;
 		if (width <= 0){
 			return;
 		}
-
-		RCT2_GLOBAL(0x9ABDAE, sint16) -= translated_x;
-		esi -= translated_x;
-		RCT2_GLOBAL(0x9E3CE0, sint32) -= translated_x;
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, sint16) -= translated_x;
+		source_pointer -= translated_x;
 		translated_x = 0;
 	}
 
-	bits_pointer += translated_x;
+	dest_pointer += translated_x;
 	translated_x += width;
 	
 
@@ -968,19 +959,16 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	if (translated_x > 0){
 		width -= translated_x;
 		if (width <= 0)return;
-
-		RCT2_GLOBAL(0x9ABDAE, uint16) += translated_x;
-		RCT2_GLOBAL(RCT2_DPI_LINE_LENGTH_GLOBAL, uint16) += translated_x;
 	}
 	
 	if (!(g1_source->flags & 0x02)){
-		gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, bits_pointer, g1_source, dpi, height, width, image_type);
+		gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 		return;
 	}
 	//0x67A60A
 	
 	esi -= (uint32)g1_source->offset;
-	ebp = esi;
+	ebp = (int)source_pointer;
 	eax = g1_source->width*g1_source->height;
 	esi = (int)g1_source->offset;
 	edx = eax;
@@ -1019,7 +1007,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//edi poped off stack
 	esi = ebp;
 	esi += 0x9E3D28;
-	gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, bits_pointer, g1_source, dpi, height, width, image_type);
+	gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, dest_pointer, g1_source, dpi, height, width, image_type);
 	return;
 }
 
