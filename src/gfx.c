@@ -83,7 +83,7 @@ int gfx_load_g1()
 	}
 
 	// Unsuccessful
-	RCT2_ERROR("Unable to load g1.dat");
+	RCT2_ERR("Unable to load g1.dat");
 	return 0;
 }
 

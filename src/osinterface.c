@@ -234,7 +234,8 @@ void osinterface_process_messages()
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
 		case SDL_QUIT:
-			rct2_finish();
+// 			rct2_finish();
+			rct2_quit();
 			break;
 		case SDL_WINDOWEVENT:
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)

@@ -132,6 +132,14 @@ void rct2_finish()
 	_finished = 1;
 }
 
+void rct2_quit() {
+	if (gGeneral_config.confirmation_prompt) {
+		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+		window_save_prompt_open();
+	} else
+		rct2_finish();
+}
+
 void rct2_init()
 {
 	RCT2_GLOBAL(0x00F663AC, int) = 0;

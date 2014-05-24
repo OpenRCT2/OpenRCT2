@@ -72,6 +72,32 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 	0x0200 | SDL_SCANCODE_S				// SHORTCUT_SCREENSHOT
 };
 
+general_configuration_t gGeneral_config;
+general_configuration_t gGeneral_config_default = {
+	1,
+	1,
+	SCREENSHOT_FORMAT_PNG,
+	"",
+	MEASUREMENT_FORMAT_IMPERIAL,
+	TEMPERATURE_FORMAT_F,
+	0,
+	0,
+	1,
+};
+sound_configuration_t gSound_config;
+
+static char *config_show_directory_browser();
+static void config_parse_settings(FILE *fp);
+static void config_general(char *setting, char *value);
+static void config_sound(char *setting, char *value);
+static int config_get_line(FILE *fp, char *setting, char *value);
+static int config_parse_setting(FILE *fp, char *setting);
+static int config_parse_value(FILE *fp, char *value);
+static int config_parse_section(FILE *fp, char *setting, char *value);
+static void config_create_default(char *path);
+static int config_parse_currency(char* currency);
+static void config_error(char *msg);
+
 /**
  * 
  *  rct2: 0x006E3604
@@ -178,22 +204,6 @@ void config_save()
 	}
 }
 
-// New config format
-
-general_configuration_t gGeneral_config;
-sound_configuration_t gSound_config;
-
-static char *config_show_directory_browser();
-static void config_parse_settings(FILE *fp);
-static void config_general(char *setting, char *value);
-static void config_sound(char *setting, char *value);
-static int config_get_line(FILE *fp, char *setting, char *value);
-static int config_parse_setting(FILE *fp, char *setting);
-static int config_parse_value(FILE *fp, char *value);
-static int config_parse_section(FILE *fp, char *setting, char *value);
-static void config_create_default(char *path);
-static int config_parse_currency(char* currency);
-static void config_error(char *msg);
 
 /**
  * Initilise the settings.
@@ -204,6 +214,8 @@ void config_init()
 {	
 	TCHAR path[MAX_PATH];
 	FILE* fp;
+
+	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
 
 	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
 		strcat(path, "\\OpenRCT2");
@@ -280,6 +292,7 @@ static void config_create_default(char *path)
 	fprintf(fp, "game_path = %s\n", gGeneral_config.game_path);
 	fprintf(fp, "screenshot_format = PNG\n");
 	fprintf(fp, "play_intro = false\n");
+	fprintf(fp, "confirmation_prompt = true\n");
 	fprintf(fp, "edge_scrolling = true\n");
 	fprintf(fp, "currency = GBP\n");
 	fprintf(fp, "measurement_format = imperial\n");
@@ -371,6 +384,9 @@ static void config_general(char *setting, char *value){
 	}
 	else if (strcmp(setting, "play_intro") == 0) {
 		gGeneral_config.play_intro = (strcmp(value, "true") == 0);
+	}
+	else if (strcmp(setting, "confirmation_prompt") == 0) {
+		gGeneral_config.confirmation_prompt = (strcmp(value, "true") == 0);
 	}
 	else if (strcmp(setting, "edge_scrolling") == 0){
 		if (strcmp(value, "true") == 0){

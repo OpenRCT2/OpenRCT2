@@ -123,12 +123,13 @@ typedef struct sound_configuration {
 
 typedef struct general_configuration {
 	uint8 play_intro;
+	uint8 confirmation_prompt;
 	uint8 screenshot_format;
 	char game_path[MAX_PATH];
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
-	sint8 consturction_marker_colour;
+	sint8 construction_marker_colour;
 	sint8 edge_scrolling;
 
 } general_configuration_t;
