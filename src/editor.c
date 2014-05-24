@@ -35,6 +35,8 @@
 
 static void set_all_land_owned();
 
+/*Syntax error blah blah blat *&2)*/
+
 /**
  *
  *  rct2: 0x0066FFE1
