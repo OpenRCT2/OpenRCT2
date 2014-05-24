@@ -1,18 +1,33 @@
 language: c
+
 before_install:
-    - echo "yes" | sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
-    - echo "yes" | sudo apt-add-repository ppa:openmw/deps
-    - sudo apt-key update -qq
     - sudo apt-get update -qq
-    - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 libsdl2-static-dev libc6-dev-i386
-    - ls -al /usr/bin
-    - ls -al /usr/include/SDL2
-    - sudo mv /usr/include/SDL2 /usr/include/sdl2
+    - sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686
+
+    # fetch precompiled SDL2 + headers for MinGW and push it into the expected directory
+    - export SDL2_PV=2.0.3
+    - wget http://libsdl.org/release/SDL2-devel-${SDL2_PV}-mingw.tar.gz
+    - tar -xzvf SDL2-devel-${SDL2_PV}-mingw.tar.gz
+
+    # but first fix SDL2 bug
+    - wget "https://github.com/anyc/anyc-overlay/raw/master/media-libs/libsdl2-mingw/files/libsdl2-mingw-2.0.3-fix-platform-detection-for-mingw.patch"
+    - pushd SDL2-${SDL2_PV}/i686-w64-mingw32/include/SDL2/ && patch -p2 < ../../../../libsdl2-mingw-2.0.3-fix-platform-detection-for-mingw.patch && popd
+
+    - sudo mkdir -p /usr/local/cross-tools/
+    - sudo mv SDL2-${SDL2_PV}/i686-w64-mingw32 /usr/local/cross-tools/
+
+    # build a wrapper that looks for the sdl2.pc file in the new directory
+    - echo -e "#! /bin/sh\\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\\npkg-config \$@" > i686-w64-mingw32-pkg-config
+    - chmod +x i686-w64-mingw32-pkg-config
+    - sudo mv i686-w64-mingw32-pkg-config /usr/local/bin/
+
 script:
-    - sudo find / -name SDL2 2>>/dev/null || true
     - mkdir build
-    - pushd build && cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  .. && popd
-    - sudo find / -name stubs-32.h 2>>/dev/null || true
-    - pushd build && C_INCLUDE_PATH=/usr/include/x86_64-linux-gnu/bits:/usr/include/sdl2:$C_INCLUDE_PATH make && popd
+    - pushd build
+    - cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  ..
+    - make
+    #- make VERBOSE=1
+    - popd
+
 #notifications:
   #irc: "irc.freenode.net#openrct2"
