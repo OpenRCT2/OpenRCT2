@@ -5,7 +5,7 @@ before_install:
     - sudo apt-key update -qq
     - sudo apt-get update -qq
     - sudo apt-get install -y --force-yes gcc-mingw32 binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686
-    - sudo apt-get install -y --force-yes mingw32 libsdl2-static-dev
+    - sudo apt-get install -y --force-yes mingw32-binutils mingw32 libsdl2-static-dev
     - ls -al /usr/bin
     - ls -al /usr/include/SDL2
 script:
