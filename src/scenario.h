@@ -22,6 +22,7 @@
 #define _SCENARIO_H_
 
 #include "rct2.h"
+#include "object.h"
 
 /**
  * SV6/SC6 header chunk
@@ -49,10 +50,7 @@ typedef struct {
 	uint8 pad_00A[0x3E];
 	char name[64];				// 0x48
 	char details[256];			// 0x88
-	uint32 flags;				// 0x188
-	uint32 pad_18C;
-	uint32 pad_190;
-	uint32 pad_194;
+	rct_object_entry entry;		// 0x188
 } rct_s6_info;
 
 /*

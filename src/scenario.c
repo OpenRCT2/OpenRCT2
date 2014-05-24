@@ -42,68 +42,35 @@
  */
 int scenario_load_basic(const char *path)
 {
-	HANDLE hFile;
-	int _eax;
+	FILE *file;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
-
+	file = fopen(path, "rb");
+	if (file != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+		sawyercoding_read_chunk(file, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
-			CloseHandle(hFile);
+			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			fclose(file);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-			if ((s6Info->flags & 0xFF) != 255) {
-				#ifdef _MSC_VER
-				__asm {
-					push ebp
-					mov ebp, 0141F6F8h
-					mov eax, 006A9428h
-					call eax
-					pop ebp
-					mov _eax, eax
-					jb loc_67628F
+
+			// Checks for a scenario string object (possibly for localisation)
+			if ((s6Info->entry.flags & 0xFF) != 255) {
+				if (sub_6A9428(&s6Info->entry)) {
+					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
+					format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
+					format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
+					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
+
+					// Disposes the scenario string object (0x009ADAF8)
+					RCT2_CALLPROC_EBPSAFE(0x006A982D);
 				}
-				#else
-				__asm__ ( "\
-						push ebp 	\n\
-						mov ebp, 0x0141F6F8 	\n\
-						mov eax, 0x006A9428 	\n\
-						call eax 	\n\
-						pop ebp 	\n\
-						mov %[_eax], eax 	\n\
-						jb loc_67628F 	\n\
-					" : [_eax] "+m" (_eax) : : "eax" );
-				#endif
-
-				int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
-				format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
-				format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
-				RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
-				RCT2_CALLPROC(0x006A982D);
-				#ifdef _MSC_VER
-				__asm mov _eax, eax
-				#else
-				__asm__ ( "mov %[_eax], eax " : [_eax] "+m" (_eax) );
-				#endif
-
-				#ifdef _MSC_VER
-			loc_67628F :
-				#else
-				__asm__ ( "loc_67628F :");
-				#endif
-				return _eax;
 			}
 			return 1;
 		}
-		CloseHandle(hFile);
+		fclose(file);
 	}
 
 	RCT2_GLOBAL(0x009AC31B, sint8) = -1;
@@ -118,28 +85,25 @@ int scenario_load_basic(const char *path)
  */
 void scenario_load(const char *path)
 {
-	HANDLE hFile;
+	FILE *file;
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
-		if (!sawyercoding_validate_checksum(hFile)) {
-			CloseHandle(hFile);
+	file = fopen(path, "rb");
+	if (file != NULL) {
+		if (!sawyercoding_validate_checksum(file)) {
+			fclose(file);
 			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 			return;
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+		sawyercoding_read_chunk(file, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
+			sawyercoding_read_chunk(file, (uint8*)s6Info);
 
 			// Read packed objects
 			if (s6Header->num_packed_objects > 0) {
@@ -150,40 +114,40 @@ void scenario_load(const char *path)
 					object_list_load();
 			}
 
-			object_read_and_load_entries(hFile);
+			object_read_and_load_entries(file);
 
 			// Read flags (16 bytes)
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 			// Read map elements
 			memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 			// Read game data, including sprites
-			sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
+			sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
 
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x01357BC8);
+			sawyercoding_read_chunk(file, (uint8*)0x01357BC8);
 
 			// Read park rating
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x01357CF2);
+			sawyercoding_read_chunk(file, (uint8*)0x01357CF2);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x0135832C);
+			sawyercoding_read_chunk(file, (uint8*)0x0135832C);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
-			CloseHandle(hFile);
+			fclose(file);
 
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
@@ -194,7 +158,7 @@ void scenario_load(const char *path)
 			return;
 		}
 
-		CloseHandle(hFile);
+		fclose(file);
 	}
 
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;

@@ -24,6 +24,7 @@
 #include "sawyercoding.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
+#define OBJECT_ENTRY_COUNT 721
 
 typedef struct {
 	uint32 total_files;
@@ -184,19 +185,19 @@ static int check_object_entry(rct_object_entry *entry)
  * 
  *  rct2: 0x006AA0C6
  */
-void object_read_and_load_entries(HANDLE hFile)
+void object_read_and_load_entries(FILE *file)
 {
 	object_unload_all();
 
 	int i, j;
 	rct_object_entry *entries;
 
-	// Maximum of 721 object entries in a scenario / saved game
-	entries = malloc(721 * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(hFile, (uint8*)entries);
+	// Read all the object entries
+	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
+	sawyercoding_read_chunk(file, (uint8*)entries);
 
 	// Load each object
-	for (i = 0; i < 721; i++) {
+	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		if (!check_object_entry(&entries[i]))
 			continue;
 

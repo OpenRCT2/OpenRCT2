@@ -1461,23 +1461,20 @@ static void load_landscape()
 int game_load_save()
 {
 	rct_window *mainWindow;
-	HANDLE hFile;
+	FILE *file;
 	char *path;
 	int i, j;
 
 	path = (char*)0x0141EF68;
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile == NULL) {
+	file = fopen(path, "rb");
+	if (file == NULL) {
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
-	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
-	if (!sawyercoding_validate_checksum(hFile)) {
-		CloseHandle(hFile);
+	if (!sawyercoding_validate_checksum(file)) {
+		fclose(file);
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
@@ -1487,7 +1484,7 @@ int game_load_save()
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	// Read first chunk
-	sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+	sawyercoding_read_chunk(file, (uint8*)s6Header);
 	if (s6Header->type == S6_TYPE_SAVEDGAME) {
 		// Read packed objects
 		if (s6Header->num_packed_objects > 0) {
@@ -1499,19 +1496,19 @@ int game_load_save()
 		}
 	}
 
-	object_read_and_load_entries(hFile);
+	object_read_and_load_entries(file);
 
 	// Read flags (16 bytes)
-	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 	// Read map elements
 	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 	// Read game data, including sprites
-	sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
+	sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
 
-	CloseHandle(hFile);
+	fclose(file);
 
 	// Check expansion pack
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);

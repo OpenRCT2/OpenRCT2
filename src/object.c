@@ -46,3 +46,20 @@ void object_unload(int groupIndex, rct_object_entry_extended *entry)
 {
 	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
 }
+
+/**
+ * 
+ *  rct2: 0x006A9428
+ */
+int sub_6A9428(rct_object_entry* entry)
+{
+	RCT2_CALLPROC_X(0x006A9428, 0, 0, 0, 0, 0, 0, (int)entry);
+	#ifdef _MSC_VER
+	__asm jb fail
+	#else
+	__asm__ goto ( "jb %l0" : : : : fail );
+	#endif
+	return 1;
+fail:
+	return 0;
+}

@@ -21,7 +21,7 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
-#include <windows.h>
+#include <stdio.h>
 #include "rct2.h"
 
 /**
@@ -46,11 +46,12 @@ typedef struct {
 } rct_object_entry_extended;
 
 void object_list_load();
-void object_read_and_load_entries(HANDLE hFile);
+void object_read_and_load_entries(FILE *file);
 int object_load_packed();
 void object_unload_all();
 
 int object_load(int groupIndex, rct_object_entry *entry);
 void object_unload(int groupIndex, rct_object_entry_extended *entry);
+int sub_6A9428(rct_object_entry* entry);
 
 #endif
