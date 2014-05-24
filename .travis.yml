@@ -13,6 +13,7 @@ script:
     - mkdir build
     - pushd build && cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  .. && popd
     - sudo find / -name iconv.h 2>>/dev/null || true
+    - sudo find / -name predefs.h 2>>/dev/null || true
     - pushd build && make && popd
 #notifications:
   #irc: "irc.freenode.net#openrct2"
