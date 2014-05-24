@@ -1,7 +1,10 @@
 language: c
 before_install:
-    - sudo apt-get install  mingw32
+    - sudo apt-get install mingw32
 script:
+    - which crossdev
     - echo "Hello World"
+    - mkdir build
+    - pushd build; cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug .. ; popd
 #notifications:
   #irc: "irc.freenode.net#openrct2"
