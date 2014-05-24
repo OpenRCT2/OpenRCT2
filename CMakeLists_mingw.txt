@@ -19,6 +19,7 @@ include_directories("/usr/include/wine/windows/")
 # INCLUDE(FindPkgConfig)
 # PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 INCLUDE_DIRECTORIES("/usr/include")
+INCLUDE_DIRECTORIES("/usr/include/x86_64-linux-gnu/bits")
 INCLUDE_DIRECTORIES("/usr/include/sdl2")
 
 # here is the target environment located
