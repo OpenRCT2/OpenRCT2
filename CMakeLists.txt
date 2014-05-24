@@ -25,30 +25,32 @@ project(${PROJECT})
 
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 
-# include lodepng
+# include lodepng header
 include_directories("lodepng/")
+# add source files
 file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "lodepng/*.c")
-
-# build as library for now, replace with add_executable
-add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
-
-# install into ${CMAKE_INSTALL_PREFIX}/bin/
-install (TARGETS ${PROJECT} DESTINATION bin)
-
-# libopenrct2.dll -> openrct2.dll
-set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
-	set(CMAKE_C_FLAGS "-m32 -masm=intel -std=c99")
+	set(CMAKE_C_FLAGS "-m32 -masm=intel -std=gnu99")
 	set(CMAKE_LDFLAGS_FLAGS "-m32")
 
 	# find and include SDL2
 	INCLUDE(FindPkgConfig)
 	PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 	INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
-	TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES})
 endif (UNIX)
+
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS})
+
+# build as library for now, replace with add_executable
+add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
+
+# install into ${CMAKE_INSTALL_PREFIX}/bin/
+#install (TARGETS ${PROJECT} DESTINATION bin)
+
+# libopenrct2.dll -> openrct2.dll
+set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES})
 
