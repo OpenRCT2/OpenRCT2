@@ -21,6 +21,13 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+enum {
+	GAME_FLAGS_PAUSED = (1 << 0),
+	GAME_FLAGS_PAUSE_FOR_SAVE = (1 << 1)
+};
+
+#define GAME_IS_PAUSED() (RCT2_GLOBAL(RTC2_ADDRESS_PAUSE_FLAGS, uint8) != 0)
+
 void game_create_windows();
 void game_update();
 void game_logic_update();
