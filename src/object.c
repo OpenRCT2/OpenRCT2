@@ -25,11 +25,20 @@
  * 
  *  rct2: 0x006A985D
  */
-int object_load(int ecx, rct_object_entry *ebp)
+int object_load(int groupIndex, rct_object_entry *entry)
 {
-	RCT2_CALLPROC_X(0x006A985D, 0, 0, ecx, 0, 0, 0, (int)ebp);
+	RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry);
 	__asm jb fail
 	return 1;
 fail:
 	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006A9CAF
+ */
+void object_unload(int groupIndex, rct_object_entry_extended *entry)
+{
+	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
 }

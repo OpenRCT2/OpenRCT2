@@ -23,6 +23,8 @@
 #include "object.h"
 #include "sawyercoding.h"
 
+#define OBJECT_ENTRY_GROUP_COUNT 11
+
 typedef struct {
 	uint32 total_files;
 	uint32 total_file_size;
@@ -30,6 +32,34 @@ typedef struct {
 	uint32 object_list_size;
 	uint32 var_10;
 } rct_plugin_header;
+
+int object_entry_group_counts[] = {
+	128,	// rides
+	252,	// small scenery
+	128,	// large scenery
+	128,	// walls
+	32,		// banners
+	16,		// paths
+	15,		// path bits
+	19,		// scenery sets
+	1,		// park entrance
+	1,		// water
+	1		// stex
+};
+
+struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[] = {
+	(void**)(0x009ACFA4            ), (rct_object_entry_extended*)(0x00F3F03C             ),	// rides
+	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	
+	(void**)(0x009ACFA4 + (252 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (252 * 20)),	// large scenery
+	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// walls
+	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// banners
+	(void**)(0x009ACFA4 + ( 32 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 32 * 20)),	// paths
+	(void**)(0x009ACFA4 + ( 16 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 16 * 20)),	// path bits
+	(void**)(0x009ACFA4 + ( 15 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 15 * 20)),	// scenery sets
+	(void**)(0x009ACFA4 + ( 19 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 19 * 20)),	// park entrance
+	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20)),	// water
+	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20))		// stex
+};
 
 /**
  * 
@@ -156,10 +186,9 @@ static int check_object_entry(rct_object_entry *entry)
  */
 void object_read_and_load_entries(HANDLE hFile)
 {
-	//
-	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	object_unload_all();
 
-	int i;
+	int i, j;
 	rct_object_entry *entries;
 
 	// Maximum of 721 object entries in a scenario / saved game
@@ -171,22 +200,20 @@ void object_read_and_load_entries(HANDLE hFile)
 		if (!check_object_entry(&entries[i]))
 			continue;
 
-		// 
-		int eax;
-		int ecx = i;
-		int ebx = 0;
-		while (ecx >= (eax = RCT2_ADDRESS(0x0098DA00, uint16)[ebx])) {
-			ecx -= eax;
-			ebx++;
-		};
+		// Get entry group index
+		int entryGroupIndex = i;
+		for (j = 0; j < countof(object_entry_group_counts); j++) {
+			if (entryGroupIndex < object_entry_group_counts[j])
+				break;
+			entryGroupIndex -= object_entry_group_counts[j];
+		}
 
 		// Load the obect
-		if (!object_load(ecx, &entries[i])) {
+		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
 			free(entries);
 
-			//
-			RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+			object_unload_all();
 			return;
 		}
 	}
@@ -203,4 +230,18 @@ int object_load_packed()
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return eax;
+}
+
+/**
+ * 
+ *  rct2: 0x006A9CE8
+ */
+void object_unload_all()
+{
+	int i, j;
+
+	for (i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
+		for (j = 0; j < object_entry_group_counts[i]; j++)
+			if (object_entry_groups[i].data[j] != (void**)0xFFFFFFFF)
+				object_unload(j, &object_entry_groups[i].entries[j]);
 }

@@ -29,15 +29,28 @@
  * size: 0x10
  */
 typedef struct {
-	uint32 var_00;
-	char name[8];		// 0x04
-	uint32 var_0C;
+	uint32 flags;
+	char name[8];
+	uint32 checksum;
 } rct_object_entry;
+
+/**
+ * Object entry structure extended.
+ * size: 0x14
+ */
+typedef struct {
+	uint32 flags;
+	char name[8];
+	uint32 checksum;
+	uint32 extended;
+} rct_object_entry_extended;
 
 void object_list_load();
 void object_read_and_load_entries(HANDLE hFile);
 int object_load_packed();
+void object_unload_all();
 
-int object_load(int ecx, rct_object_entry *ebp);
+int object_load(int groupIndex, rct_object_entry *entry);
+void object_unload(int groupIndex, rct_object_entry_extended *entry);
 
 #endif
