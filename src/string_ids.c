@@ -1106,7 +1106,7 @@ void format_integer(char **dest, int value)
 	*dest = finish;
 }
 
-void format_comma_seperated_integer(char **dest, int value)
+void format_comma_separated_integer(char **dest, int value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -1160,7 +1160,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint32*)*args);
 		*args += 4;
 
-		format_comma_seperated_integer(dest, value);
+		format_comma_separated_integer(dest, value);
 		break;
 	case FORMAT_INT32:
 		// Pop argument
@@ -1182,7 +1182,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint16*)*args);
 		*args += 2;
 
-		format_comma_seperated_integer(dest, value);
+		format_comma_separated_integer(dest, value);
 		break;
 	case FORMAT_UINT16:
 		// Pop argument
@@ -1248,11 +1248,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		*args += 2;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_seperated_integer(dest, mph_to_kmph(value));
+			format_comma_separated_integer(dest, mph_to_kmph(value));
 			strcat(*dest, "kmh");
 			*dest += strlen(*dest);
 		} else {
-			format_comma_seperated_integer(dest, value);
+			format_comma_separated_integer(dest, value);
 			strcat(*dest, "mph");
 			*dest += strlen(*dest);
 		}
@@ -1299,11 +1299,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		*args += 2;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_seperated_integer(dest, value);
+			format_comma_separated_integer(dest, value);
 			strcat(*dest, "m");
 			*dest += strlen(*dest);
 		} else {
-			format_comma_seperated_integer(dest, metres_to_feet(value));
+			format_comma_separated_integer(dest, metres_to_feet(value));
 			strcat(*dest, "ft");
 			*dest += strlen(*dest);
 		}
