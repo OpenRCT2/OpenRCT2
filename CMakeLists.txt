@@ -46,7 +46,9 @@ if (UNIX)
 	# find and include SDL2
 	INCLUDE(FindPkgConfig)
 	PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+    INCLUDE_DIRECTORIES("/usr/include")
 	INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
+    INCLUDE_DIRECTORIES("/usr/include/x86_64-linux-gnu/bits")
 	TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES})
 endif (UNIX)
 
