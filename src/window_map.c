@@ -180,7 +180,11 @@ static void window_map_close()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
 
 	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
