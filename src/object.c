@@ -17,3 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+
+#include "addresses.h"
+#include "object.h"
+
+/**
+ * 
+ *  rct2: 0x006A985D
+ */
+int object_load(int ecx, rct_object_entry *ebp)
+{
+	RCT2_CALLPROC_X(0x006A985D, 0, 0, ecx, 0, 0, 0, (int)ebp);
+	__asm jb fail
+	return 1;
+fail:
+	return 0;
+}

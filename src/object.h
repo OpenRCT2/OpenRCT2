@@ -26,7 +26,7 @@
 
 /**
  * Object entry structure.
- * size: 0x0100
+ * size: 0x10
  */
 typedef struct {
 	uint32 var_00;
@@ -37,5 +37,7 @@ typedef struct {
 void object_list_load();
 void object_read_and_load_entries(HANDLE hFile);
 int object_load_packed();
+
+int object_load(int ecx, rct_object_entry *ebp);
 
 #endif

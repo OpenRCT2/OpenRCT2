@@ -21,6 +21,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "object.h"
+#include "sawyercoding.h"
 
 typedef struct {
 	uint32 total_files;
@@ -43,6 +44,8 @@ static void object_list_examine()
 	for (i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
 		if (*object & 0xF0)
 			RCT2_GLOBAL(0x00F42BDA, uint8) |= 1;
+
+		// Skip 
 		object += 16;
 
 		// Skip filename
@@ -50,6 +53,8 @@ static void object_list_examine()
 		do {
 			object++;
 		} while (*(object - 1) != 0);
+
+		// Skip 
 		object += 4;
 
 		// Skip name
@@ -57,10 +62,17 @@ static void object_list_examine()
 		do {
 			object++;
 		} while (*(object - 1) != 0);
+
+		// Skip 
 		object += 4;
 
+		// Skip 
 		object += *object++ * 16;
+
+		// Skip theme objects
 		object += *object++ * 16;
+
+		// Skip 
 		object += 4;
 	}
 }
@@ -132,22 +144,54 @@ void object_list_load()
 	RCT2_CALLPROC_EBPSAFE(0x006A8D8F);
 }
 
+static int check_object_entry(rct_object_entry *entry)
+{
+	uint32 *dwords = (uint32*)entry;
+	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
+}
+
 /**
  * 
  *  rct2: 0x006AA0C6
  */
 void object_read_and_load_entries(HANDLE hFile)
 {
-	RCT2_CALLPROC_EBPSAFE(0x006AA0C6);
+	//
+	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
 
-	// int i;
-	// rct_object_entry *entries;
-	// entries = malloc(721 * sizeof(rct_object_entry));
-	// sawyercoding_read_chunk(hFile, entries);
-	// for (i = 0; i < 721; i++) {
-	// 	RCT2_CALLPROC_X(0x006A985D, 0, 0, i, 0, 0, 0, 0);
-	// }
-	// free(entries);
+	int i;
+	rct_object_entry *entries;
+
+	// Maximum of 721 object entries in a scenario / saved game
+	entries = malloc(721 * sizeof(rct_object_entry));
+	sawyercoding_read_chunk(hFile, (uint8*)entries);
+
+	// Load each object
+	for (i = 0; i < 721; i++) {
+		if (!check_object_entry(&entries[i]))
+			continue;
+
+		// 
+		int eax;
+		int ecx = i;
+		int ebx = 0;
+		while (ecx >= (eax = RCT2_ADDRESS(0x0098DA00, uint16)[ebx])) {
+			ecx -= eax;
+			ebx++;
+		};
+
+		// Load the obect
+		if (!object_load(ecx, &entries[i])) {
+			// Failed to load the object
+			free(entries);
+
+			//
+			RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+			return;
+		}
+	}
+
+	free(entries);
 }
 
 /**
