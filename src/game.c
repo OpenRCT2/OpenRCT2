@@ -156,7 +156,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
 	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);
-	RCT2_CALLPROC_EBPSAFE(0x006BD18A);
+	peep_update_crowd_noise();
 	RCT2_CALLPROC_EBPSAFE(0x006BCB91);
 	news_item_update_current();
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);

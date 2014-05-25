@@ -24,6 +24,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "sprite.h"
+#include "window.h"
 
 int peep_get_staff_count()
 {
@@ -200,5 +201,91 @@ void peep_problem_warnings_update()
 	} else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD) {
 		warning_throttle[6] = 4;
 		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006BD18A
+ */
+void peep_update_crowd_noise()
+{
+	if (!(RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)))
+		return;
+
+	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
+		return;
+
+	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & (1 << 0)))
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		return;
+
+	rct_viewport *viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
+	if (viewport == (rct_viewport*)-1)
+		return;
+
+	uint16 sprite_index;
+	rct_peep *peep;
+	int visiblePeeps = 0;
+
+	// Count the number of peeps visible
+	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	while (sprite_index != SPRITE_INDEX_NULL) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
+		sprite_index = peep->next;
+
+		if (peep->var_16 == 0x8000)
+			continue;
+		if (peep->type != PEEP_TYPE_GUEST)
+			continue;
+		if (viewport->view_x > peep->var_1A)
+			continue;
+		if (viewport->view_x + viewport->view_width < peep->var_16)
+			continue;
+		if (viewport->view_y > peep->var_1C)
+			continue;
+		if (viewport->view_y + viewport->view_height < peep->var_18)
+			continue;
+
+		visiblePeeps += peep->state == PEEP_STATE_QUEUING ? 1 : 2;
+	}
+
+	// This function doesn't account for the fact that the screen might be so big that 100 peeps could potentially be very
+	// spread out and therefore not produce any crowd noise. Perhaps a more sophisticated solution would check how many peeps
+	// were in close proximity to each other.
+
+	// Allows queuing peeps to make half as much noise, and at least 6 peeps must be visible for any crowd noise
+	visiblePeeps = (visiblePeeps / 2) - 6;
+	if (visiblePeeps < 0) {
+		// Mute crowd noise
+		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
+			RCT2_CALLPROC_1(0x00401A05, int, 2);
+			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
+		}
+	} else {
+		sint32 volume;
+
+		// Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
+		// 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
+		volume = 120 - min(visiblePeeps, 120);
+		volume = volume * volume * volume * volume;
+		volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
+
+		// Check if crowd noise is already playing
+		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
+			// Load and play crowd noise
+			if (RCT2_CALLFUNC_3(0x0040194E, int, int, char*, int, 2, get_file_path(PATH_ID_CSS2), 0)) {
+				RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 2, 1, volume, 0, 0);
+				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
+			}
+		} else {
+			// Alter crowd noise volume
+			if (RCT2_GLOBAL(0x009AF5FC, uint32) != volume) {
+				RCT2_CALLPROC_2(0x00401AD3, int, int, 2, volume);
+				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
+			}
+		}
 	}
 }

@@ -324,8 +324,11 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x09];
-	uint8 direction;				// 0x1D
+	sint16 pad_14;
+	sint16 var_16;
+	sint16 var_18;
+	sint16 var_1A;
+	sint16 var_1C;
 	uint32 pad_1E;
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
@@ -402,5 +405,6 @@ typedef struct {
 int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
+void peep_update_crowd_noise();
 
 #endif
