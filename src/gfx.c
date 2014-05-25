@@ -458,7 +458,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 * copies a sprite onto the buffer. There is no compression used on the sprite
 * image.
 */
-void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
+void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 	//Requires use of palette?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
 
@@ -473,7 +473,7 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 					uint8 pixel = *source_pointer;
 					source_pointer++;
 					pixel = palette_pointer[pixel];
-					pixel &= *((char*)_ebp);
+					pixel &= *((uint8*)_ebp);
 					if (pixel){
 						*dest_pointer = pixel;
 					}
@@ -594,22 +594,24 @@ void gfx_bmp_sprite_to_buffer(char* palette_pointer, char* source_pointer, char*
 * I think its only used for bitmaps onto buttons but i am not sure.
 * There is still a small bug with this code when it is in the choose park view.
 */
-void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer, char* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int g1_y_start, int g1_y_end, int g1_x_start, int g1_x_end){
-	uint16 offset_to_first_line = *(uint16*)(g1_y_start*2 + (uint32)source_bits_pointer);
+void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
+	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start];
 	//This will now point to the first line
-	char* next_source_pointer = (char*)((uint32)source_bits_pointer + offset_to_first_line);
-	char* next_dest_pointer = dest_bits_pointer;
+	uint8* next_source_pointer = source_bits_pointer + offset_to_first_line;
+	uint8* next_dest_pointer = dest_bits_pointer;
 	
 	//For every line in the image
-	for (; g1_y_end; g1_y_end--){
+	for (; height; height--){
 
 		uint8 last_data_line = 0;
 		//For every data section in the line
 		while (!last_data_line){
-			char* source_pointer = next_source_pointer;
-			char* dest_pointer = next_dest_pointer;
+			uint8* source_pointer = next_source_pointer;
+			uint8* dest_pointer = next_dest_pointer;
 
 			int no_pixels = *source_pointer++;
+			//gap_size is the number of non drawn pixels you require to
+			//jump over on your destination
 			uint8 gap_size = *source_pointer++;
 			//The last bit in no_pixels tells you if you have reached the end of a line
 			last_data_line = no_pixels & 0x80;
@@ -619,7 +621,7 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 			next_source_pointer = source_pointer + no_pixels;
 
 			//Calculates the start point of the image
-			int x_start = gap_size - g1_x_start;
+			int x_start = gap_size - source_x_start;
 
 			if (x_start > 0){
 				//Since the start is positive
@@ -641,9 +643,9 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 			int x_end = x_start + no_pixels;
 			//If the end position is further out than the whole image
 			//end position then we need to shorten the line again
-			if (x_end > (int)g1_x_end){
+			if (x_end > width){
 				//Shorten the line
-				no_pixels -= x_end - g1_x_end;
+				no_pixels -= x_end - width;
 				//If there are no pixels there is nothing to draw.
 				if (no_pixels <= 0) continue;
 			}
@@ -682,79 +684,6 @@ void gfx_rle_sprite_to_buffer(char* source_bits_pointer, char* dest_bits_pointer
 }
 
 
-/*
-* rct2: 0x67A934 
-* Draws a run length encoded sprite
-* This function readies all the vars for copying the sprite data onto the screen
-*/
-void gfx_draw_rle_sprite(rct_g1_element *source_g1, rct_drawpixelinfo *dest_dpi, int x, int y, int image_type, char* palette_pointer){
-	int g1_y_start, g1_x_start;
-	char* bits_pointer;
-
-	bits_pointer = dest_dpi->bits;
-	g1_y_start = 0;
-
-	int start_y, end_y;
-	start_y = y + source_g1->y_offset - dest_dpi->y;
-	
-	//If the start position is negative reset to zero
-	if (start_y < 0){
-		//Create the end point within the drawing area
-		end_y = source_g1->height + start_y;
-		//If the end point is now <= 0 no need to draw
-		if (end_y <= 0)return;
-
-		g1_y_start -= start_y;
-		start_y = 0;
-	}
-	else{
-		end_y = source_g1->height;
-		//Move the pointer to the correct starting y location
-		bits_pointer += (dest_dpi->width + dest_dpi->pitch)*start_y;
-	}
-
-	int height = start_y + end_y;
-	//If the image is taller than the drawing area
-	if (height > dest_dpi->height){
-		//Make the end within the drawing area
-		end_y -= height - dest_dpi->height;
-		//If the end is now <=0 then there is nothing to draw
-		if (end_y <= 0)return;
-	}
-	
-	
-	int start_x, end_x;
-	g1_x_start = 0;
-	start_x = x + source_g1->x_offset - dest_dpi->x;
-	
-	//If the start position is negative reset to zero
-	if (start_x < 0){
-		//Create the end point within the drawing area
-		end_x = source_g1->width + start_x;
-		//If the end point is now <= 0 no need to draw
-		if (end_x <= 0)return;
-
-		g1_x_start -= start_x;
-		start_x = 0;
-	}
-	else{
-		end_x = source_g1->width;
-		//Increment the pointer to our start location
-		bits_pointer += start_x;
-	}
-
-	int width = start_x + end_x;
-	//If the image is wider than the drawing area
-	if (width > dest_dpi->width){
-		//Make the end within drawing area
-		end_x -= width - dest_dpi->width;
-		//If the end is now <=0 then there is nothing to draw
-		if (end_x <= 0)return;
-	}
-	
-	gfx_rle_sprite_to_buffer((char*)source_g1->offset, bits_pointer, palette_pointer, dest_dpi, image_type, g1_y_start, end_y, g1_x_start, end_x);
-}
-
 /**
  *
  *  rct2: 0x0067A28E
@@ -768,7 +697,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 	int image_type = (image_id & 0xE0000000) >> 28;
 
-	char* palette_pointer = NULL;
+	uint8* palette_pointer = NULL;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
@@ -792,7 +721,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		RCT2_GLOBAL(0x9ABDA4, uint32) = eax;
-		palette_pointer = (char*)eax;
+		palette_pointer = (uint8*)eax;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		//Has not been tested
@@ -837,7 +766,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABFDA, uint32) = esi;
 		edx = *((uint32*)(eax + 0xFB));
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
-		palette_pointer = (char*)0x9ABF0C;
+		palette_pointer = (uint8*)0x9ABF0C;
 		RCT2_GLOBAL(0x9ABFDE, uint32) = edx;
 		edx = y;
 
@@ -871,12 +800,15 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		ebp = *((uint32*)(eax + 0xFB));
 
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
-		palette_pointer = (char*)0x9ABE0C;
+		palette_pointer = (uint8*)0x9ABE0C;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
 		
 	}
 
 	ebx &= 0x7FFFF;
+
+	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[ebx];
+
 	ebx <<= 4;
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
 	if (dpi->pad_0E >= 1){ //These have not been tested
@@ -892,75 +824,58 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, (int)dpi, ebp);
 		return;
 	}
-	eax = *((uint32*)ebx + 2);
-	ebp = *((uint32*)ebx + 3);
-	rct_g1_element* g1_source = (rct_g1_element*)ebx;
-	//This is a rct2_drawpixelinfo struct
-	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx); //offset to g1 bits?
-	RCT2_GLOBAL(0x9E3D0C, uint32) = *((uint32*)ebx + 1);
-	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //X-Y related unsigned? sets RCT2_X_RELATED_GLOBAL_1 and Y
-	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
 
-	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
-		gfx_draw_rle_sprite(g1_source, dpi, x, y, image_type, palette_pointer);
-		return;
-	}
-
-	int translated_x, translated_y;
-	char* dest_pointer;
-	char* source_pointer;
-
-	source_pointer = g1_source->offset;
-	
-	dest_pointer = dpi->bits;
 	int height = g1_source->height;
+	int dest_start_y = y - dpi->y + g1_source->y_offset;
+	int source_start_y = 0;
 
-	translated_y = y - dpi->y + g1_source->y_offset;
-
-	if (translated_y < 0){
-		height += translated_y;
+	if (dest_start_y < 0){
+		height += dest_start_y;
 		if (height <= 0){
 			return;
 		}
-		translated_y = -translated_y;
-		source_pointer += (uint32)translated_y * g1_source->width;
-		
-		translated_y = 0;
-	} else {
-		dest_pointer += (dpi->width + dpi->pitch) * translated_y;
+		source_start_y -= dest_start_y;
+		dest_start_y = 0;
 	}
 
-	translated_y += height - dpi->height;
+	int dest_end_y = dest_start_y + height;
 
-	if (translated_y > 0){
-		height -= translated_y;
+	if (dest_end_y > dpi->height){
+		height -= dest_end_y - dpi->height;
 		if (height <= 0)return;
 	}
 	
 	int width = g1_source->width;
-
-	translated_x = x - dpi->x + g1_source->x_offset;
+	int source_start_x = 0;
+	int dest_start_x = x - dpi->x + g1_source->x_offset;
 	
-	if (translated_x < 0){
-		width += translated_x;
+	if (dest_start_x < 0){
+		width += dest_start_x;
 		if (width <= 0){
 			return;
 		}
-		source_pointer -= translated_x;
-		translated_x = 0;
+		source_start_x -= dest_start_x;
+		dest_start_x = 0;
 	}
 
-	dest_pointer += translated_x;
-	translated_x += width;
-	
+	int end_x = dest_start_x + width;
 
-	translated_x -= dpi->width;
-
-	if (translated_x > 0){
-		width -= translated_x;
+	if (end_x > dpi->width){
+		width -= end_x - dpi->width;
 		if (width <= 0)return;
 	}
-	
+
+	uint8* dest_pointer = (uint8*)dpi->bits;
+	dest_pointer += (dpi->width + dpi->pitch)*dest_start_y + dest_start_x;
+
+	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
+		return;
+	}
+
+	uint8* source_pointer = g1_source->offset;
+	source_pointer += g1_source->width*source_start_y + source_start_x;
+
 	if (!(g1_source->flags & 0x02)){
 		gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 		return;
@@ -1007,7 +922,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	//edi poped off stack
 	esi = ebp;
 	esi += 0x9E3D28;
-	gfx_bmp_sprite_to_buffer(palette_pointer, (char*)esi, dest_pointer, g1_source, dpi, height, width, image_type);
+	gfx_bmp_sprite_to_buffer(palette_pointer, (uint8*)esi, dest_pointer, g1_source, dpi, height, width, image_type);
 	return;
 }
 
