@@ -1150,6 +1150,170 @@ void format_comma_separated_integer(char **dest, int value)
 	*dest = finish;
 }
 
+void format_comma_separated_fixed_2dp(char **dest, int value)
+{
+	int digit, groupIndex;
+	char *dst = *dest;
+	char *finish;
+	char tmp;
+
+	// Negative sign
+	if (value < 0) {
+		*dst++ = '-';
+		value = -value;
+	}
+
+	*dest = dst;
+
+	// Two decimal places
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+	*dst++ = '.';
+
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group seperator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+				*dst++ = ',';
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
+		}
+	}
+	finish = dst;
+
+	// Reverse string
+	dst--;
+	while (*dest < dst) {
+		tmp = **dest;
+		**dest = *dst;
+		*dst = tmp;
+		(*dest)++;
+		dst--;
+	}
+	*dest = finish;
+}
+
+void format_currency(char **dest, int value)
+{
+	int digit, groupIndex;
+	char *dst = *dest;
+	char *finish;
+	char tmp;
+
+	// Negative sign
+	if (value < 0) {
+		*dst++ = '-';
+		value = -value;
+	}
+
+	// Currency symbol
+	*dst++ = '£';
+
+	*dest = dst;
+
+	// Groups of three digits, right to left
+	groupIndex = 0;
+	while (value > 0) {
+		// Append group seperator
+		if (groupIndex == 3) {
+			groupIndex = 0;
+			*dst++ = ',';
+		}
+
+		digit = value % 10;
+		value /= 10;
+
+		*dst++ = '0' + digit;
+		groupIndex++;
+	}
+	finish = dst;
+
+	// Reverse string
+	dst--;
+	while (*dest < dst) {
+		tmp = **dest;
+		**dest = *dst;
+		*dst = tmp;
+		(*dest)++;
+		dst--;
+	}
+	*dest = finish;
+}
+
+void format_currency_2dp(char **dest, int value)
+{
+	int digit, groupIndex;
+	char *dst = *dest;
+	char *finish;
+	char tmp;
+
+	// Negative sign
+	if (value < 0) {
+		*dst++ = '-';
+		value = -value;
+	}
+
+	// Currency symbol
+	*dst++ = '£';
+
+	*dest = dst;
+
+	// Two decimal places
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+	*dst++ = '.';
+
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group seperator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+				*dst++ = ',';
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
+		}
+	}
+	finish = dst;
+
+	// Reverse string
+	dst--;
+	while (*dest < dst) {
+		tmp = **dest;
+		**dest = *dst;
+		*dst = tmp;
+		(*dest)++;
+		dst--;
+	}
+	*dest = finish;
+}
+
 void format_string_code(unsigned char format_code, char **dest, char **args)
 {
 	int value;
@@ -1174,8 +1338,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint32*)*args);
 		*args += 4;
 
-		// TODO
-		printf("TODO: FORMAT_COMMA2DP32\n");
+		format_comma_separated_fixed_2dp(dest, value);
 		break;
 	case FORMAT_COMMA16:
 		// Pop argument
@@ -1196,16 +1359,14 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint32*)*args);
 		*args += 4;
 
-		// TODO
-		printf("TODO: FORMAT_CURRENCY2DP\n");
+		format_currency_2dp(dest, value);
 		break;
 	case FORMAT_CURRENCY:
 		// Pop argument
 		value = *((sint32*)*args);
 		*args += 4;
 
-		// TODO
-		printf("TODO: FORMAT_CURRENCY\n");
+		format_currency(dest, value);
 		break;
 	case FORMAT_STRINGID:
 	case FORMAT_STRINGID2:
