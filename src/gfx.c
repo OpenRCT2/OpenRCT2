@@ -696,7 +696,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
 	int image_type = (image_id & 0xE0000000) >> 28;
-
+	int image_sub_type = (image_id & 0x1C000000) >> 26;
 	uint8* palette_pointer = NULL;
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
@@ -718,10 +718,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			eax &= 0x7F;
 		}
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
+		//To be fixed
+		palette_pointer = ((rct_g1_element**)RCT2_ADDRESS_G1_ELEMENTS)[eax];
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		RCT2_GLOBAL(0x9ABDA4, uint32) = eax;
-		palette_pointer = (uint8*)eax;
+		palette_pointer = eax;
+		assert(eax == palette_pointer);
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		//Has not been tested
