@@ -20,6 +20,7 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "audio.h"
 #include "news_item.h"
 #include "peep.h"
 #include "rct2.h"
@@ -291,6 +292,50 @@ void peep_update_crowd_noise()
 			}
 		}
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0069BE9B
+ */
+void peep_applause()
+{
+	uint16 sprite_index;
+	rct_peep* peep;	
+
+	// For each guest
+	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	while (sprite_index != 0xFFFF) {
+		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
+		sprite_index = peep->next;
+
+		if (peep->type != PEEP_TYPE_GUEST)
+			continue;
+		if (peep->var_2A != 0)
+			continue;
+
+		// Release balloon
+		if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
+			peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+			if (peep->x != 0x8000) {
+				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour);
+				peep->var_45 |= 8;
+				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+			}
+		}
+
+		// Clap
+		if ((peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_QUEUING) && peep->var_71 >= 254) {
+			peep->var_71 = 26;
+			peep->var_72 = 0;
+			peep->var_70 = 0;
+			RCT2_CALLPROC_X(0x00693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		}
+	}
+
+	// Play applause noise
+	sound_play_panned(44, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
 }
 
 /**

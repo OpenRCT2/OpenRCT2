@@ -81,6 +81,7 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\screenshot.c" />
+    <ClCompile Include="..\src\sprite.c" />
     <ClCompile Include="..\src\string_ids.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\track.c" />

@@ -336,7 +336,7 @@ void scenario_success()
 	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
-	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
+	peep_applause();
 
 	for (i = 0; i < gScenarioListCount; i++) {
 		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);

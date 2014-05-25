@@ -359,7 +359,7 @@ typedef struct {
 	uint8 pad_41[0x2];
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 pad_45;
+	uint8 var_45;
 	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58
@@ -372,8 +372,13 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C
-	uint8 pad_6D[0x09];
+	uint8 pad_6D[3];
+	uint8 var_70;
+	uint8 var_71;
+	uint8 var_72;
+	uint8 pad_73[3];
 	uint8 var_76;
+	uint8 pad_77;
 	uint8 var_78;
 	uint8 pad_79[0x03];
 	uint8 rides_been_on[32];		// 0x7C
@@ -416,6 +421,7 @@ int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
+void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 
 #endif
