@@ -126,9 +126,6 @@
     <ClInclude Include="..\src\screenshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\finance.h">
       <Filter>Header Files</Filter>
     </ClInclude>

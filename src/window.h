@@ -126,7 +126,7 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;				// 0x49A
+	sint16 page;				// 0x48A
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
