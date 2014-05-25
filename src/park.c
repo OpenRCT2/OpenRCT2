@@ -79,15 +79,15 @@ void park_init()
 	RCT2_GLOBAL(0x01357CF2, uint16) = 127;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = 2;
 
-	RCT2_GLOBAL(0x013580F4, uint16) = 500;
-	RCT2_GLOBAL(0x013580E9, uint8) = 128;
-	RCT2_GLOBAL(0x013580F6, uint8) = 200;
-	RCT2_GLOBAL(0x013580F7, uint8) = 200;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, uint16) = MONEY(50,00); // Cash per quest (avarage)
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness(50); // 50%
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = 200;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = 200;
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1000;
-	RCT2_GLOBAL(0x01358770, uint16) = 900;
-	RCT2_GLOBAL(0x01358772, uint16) = 400;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16) = MONEY(90, 00);
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16) = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_awards_and_history();
@@ -508,4 +508,28 @@ void park_update()
 
 	// Generate new guests
 	park_generate_new_guests();
+}
+
+static uint8 calculate_guest_initial_happiness(uint8 percentage) {
+	if (percentage < 15) {
+		// There is a minimum of 15% happiness
+		percentage = 15;
+	}
+	else if (percentage > 98) {
+		// There is a maximum of 98% happiness
+		percentage = 98;
+	}
+
+	/* The percentages follow this sequence:
+	 15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
+
+	 This sequence can be defined as PI*(9+n)/2 (the value is floored)
+	 */
+	uint8 n;
+	for (n = 1; n < 55; n++) {
+		if ((3.14159*(9 + n)) / 2 >= percentage) {
+			return (9 + n) * 4;
+		}
+	}
+	return 40; // This is the lowest possible value
 }
