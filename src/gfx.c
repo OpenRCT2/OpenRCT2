@@ -553,7 +553,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* source_pointer, uin
 
 	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){//Not tested. I can't actually work out when this code runs.
 		uint32 _ebp = RCT2_GLOBAL(0x9E3CDC, uint32);
-		_ebp += source_pointer - source_image->offset;// RCT2_GLOBAL(0x9E3CE0, uint32);
+		_ebp += source_pointer - source_image->offset;
 
 		for (; height > 0; --height){
 			for (int no_pixels = width; no_pixels > 0; --no_pixels){
@@ -825,55 +825,83 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		return;
 	}
 
+	//This will be the height of the drawn image
 	int height = g1_source->height;
+	//This is the start y coordinate on the destination
 	int dest_start_y = y - dpi->y + g1_source->y_offset;
+	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
+	
 	if (dest_start_y < 0){
+		//If the destination y is negative reduce the height of the
+		//image as we will cut off the bottom
 		height += dest_start_y;
+		//If the image is no longer visible nothing to draw
 		if (height <= 0){
 			return;
 		}
+		//The source image will start a further up the image
 		source_start_y -= dest_start_y;
+		//The destination start is now reset to 0
 		dest_start_y = 0;
 	}
 
 	int dest_end_y = dest_start_y + height;
 
 	if (dest_end_y > dpi->height){
+		//If the destination y is outside of the drawing
+		//image reduce the height of the image
 		height -= dest_end_y - dpi->height;
+		//If the image no longer has anything to draw
 		if (height <= 0)return;
 	}
 	
+	//This will be the width of the drawn image
 	int width = g1_source->width;
+	//This is the source start x coordinate
 	int source_start_x = 0;
+	//This is the destination start x coordinate
 	int dest_start_x = x - dpi->x + g1_source->x_offset;
 	
 	if (dest_start_x < 0){
+		//If the destination is negative reduce the width
+		//image will cut off the side
 		width += dest_start_x;
+		//If there is no image to draw
 		if (width <= 0){
 			return;
 		}
+		//The source start will also need to cut off the side
 		source_start_x -= dest_start_x;
+		//Reset the destination to 0
 		dest_start_x = 0;
 	}
 
-	int end_x = dest_start_x + width;
+	int dest_end_x = dest_start_x + width;
 
-	if (end_x > dpi->width){
-		width -= end_x - dpi->width;
+	if (dest_end_x > dpi->width){
+		//If the destination x is outside of the drawing area
+		//reduce the image width.
+		width -= dest_end_x - dpi->width;
+		//If there is no image to draw.
 		if (width <= 0)return;
 	}
 
+	
 	uint8* dest_pointer = (uint8*)dpi->bits;
+	//Move the pointer to the start point of the destination
 	dest_pointer += (dpi->width + dpi->pitch)*dest_start_y + dest_start_x;
 
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		//We have to use a different method to move the source pointer for
+		//rle encoded sprites so that will be handled within this function
 		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
 		return;
 	}
 
 	uint8* source_pointer = g1_source->offset;
+	//Move the pointer to the start point of the source
 	source_pointer += g1_source->width*source_start_y + source_start_x;
 
 	if (!(g1_source->flags & 0x02)){
