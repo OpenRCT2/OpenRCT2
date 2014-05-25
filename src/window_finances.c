@@ -18,9 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <string.h>
 #include "addresses.h"
-#include "game.h"
 #include "window.h"
 
 enum {
@@ -31,3 +29,12 @@ enum {
 	WINDOW_FINANCES_TAB_MARKETING,
 	WINDOW_FINANCES_TAB_RESEARCH
 } WINDOW_FINANCIAL_TAB;
+
+/**
+ *
+ *  rct2: 0x0069DDF1
+ */
+void window_finances_open()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+}

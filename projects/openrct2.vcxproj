@@ -26,6 +26,7 @@
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\map.h" />
+    <ClInclude Include="..\src\marketing.h" />
     <ClInclude Include="..\src\news_item.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\osinterface.h" />
@@ -67,6 +68,7 @@
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\map.c" />
+    <ClCompile Include="..\src\marketing.c" />
     <ClCompile Include="..\src\news_item.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />

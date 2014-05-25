@@ -172,7 +172,7 @@ static void window_game_bottom_toolbar_mouseup()
 	case WIDX_LEFT_OUTSET:
 	case WIDX_MONEY:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
-			RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+			window_finances_open();
 		break;
 	case WIDX_GUESTS:
 		window_park_guests_open();

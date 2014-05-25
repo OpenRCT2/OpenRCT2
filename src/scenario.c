@@ -25,6 +25,7 @@
 #include "finance.h"
 #include "game.h"
 #include "map.h"
+#include "marketing.h"
 #include "news_item.h"
 #include "object.h"
 #include "park.h"
@@ -561,49 +562,6 @@ void scenario_entrance_fee_too_high_check()
 	}
 }
 
-
-/*
- * Update status of marketing campaigns and send a message when they are done.
- * rct2: 0x0069E0C1
- **/
-void scenario_marketing_update()
-{
-	for (int i = 0; i < 6; ++i) {
-		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
-		int campaign_item = 0;
-
-		if (!campaign_weeks_left)
-			continue;
-		window_invalidate_by_id(WC_FINANCES, 0);
-
-		// high bit marks the campaign as inactive, on first check the campaign is set actice
-		// this makes campaigns run a full x weeks even when started in the middle of a week
-		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
-		if (campaign_weeks_left & (1 << 7))
-			continue;
-		
-		RCT2_ADDRESS(0x01358102, uint8)[i]--;
-		if (campaign_weeks_left - 1 != 0)
-			continue;
-
-		campaign_item = RCT2_ADDRESS(0x01358116, uint8)[i];
-
-		// this sets the string parameters for the marketing types that have an argument.
-		if (i == 1 || i == 5) { // free RIDES oh yea
-			RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x01362942 + 304 * campaign_item, uint16);;
-			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
-		} else if (i == 3) { // free food/merch
-			campaign_item += 2016;
-			if (campaign_item >= 2048)
-				campaign_item += 96;
-			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
-		}
-
-		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + i, 0);
-	}
-}
-
-
 /*
  * Scenario and finance related update iteration.
  * rct2: 0x006C44B1
@@ -639,7 +597,7 @@ void scenario_update()
 		finance_pay_wages();
 		finance_pay_research();
 		finance_pay_interest();
-		scenario_marketing_update();
+		marketing_update();
 		peep_problem_warnings_update();
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
 		ride_update_favourited_stat();

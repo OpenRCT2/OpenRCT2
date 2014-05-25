@@ -135,6 +135,9 @@
     <ClInclude Include="..\src\vehicle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\marketing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -321,6 +324,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\marketing.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

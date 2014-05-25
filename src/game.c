@@ -1022,7 +1022,7 @@ void handle_shortcut_command(int shortcutIndex)
 	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
-				RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+				window_finances_open();
 		break;
 	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {

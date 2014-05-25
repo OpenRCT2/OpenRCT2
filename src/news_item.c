@@ -299,8 +299,7 @@ void news_item_open_subject(int type, int subject) {
 		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
 		break;
 	case NEWS_ITEM_MONEY:
-		// Open finances window
-		RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		window_finances_open();
 		break;
 	case NEWS_ITEM_RESEARCH:
 
