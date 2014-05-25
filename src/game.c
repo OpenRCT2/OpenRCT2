@@ -755,7 +755,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		if (widget_is_disabled(w, widgetIndex))
 			break;
 
-		sound_play_panned(4, w->x + (widget->left + widget->right) / 2);
+		sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2);
 		
 		// Set new cursor down widget
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;

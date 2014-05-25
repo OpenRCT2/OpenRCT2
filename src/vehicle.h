@@ -24,7 +24,7 @@
 #include "rct2.h"
 
 typedef struct {
-	uint8 sprite_idetifier;			// 0x00
+	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01[0x03];
 	uint16 next;					// 0x04
 	uint8 pad_06[0x08];

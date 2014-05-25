@@ -161,7 +161,7 @@ static void window_news_update(rct_window *w)
 		return;
 
 	window_invalidate(w);
-	sound_play_panned(5, w->x + (w->width / 2));
+	sound_play_panned(SOUND_CLICK_2, w->x + (w->width / 2));
 
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 	j = w->var_480;
@@ -282,7 +282,7 @@ static void window_news_scrollmousedown()
 		w->var_482 = buttonIndex;
 		w->var_484 = 4;
 		window_invalidate(w);
-		sound_play_panned(4, w->x + (w->width / 2));
+		sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
 	}
 }
 
