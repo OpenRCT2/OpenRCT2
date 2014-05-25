@@ -329,7 +329,8 @@ typedef struct {
 	sint16 var_18;
 	sint16 var_1A;
 	sint16 var_1C;
-	uint32 pad_1E;
+	uint8 var_1E;
+	uint8 pad_1F[3];
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
@@ -342,7 +343,10 @@ typedef struct {
 	uint8 staff_type;				// 0x2F
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
-	uint8 pad_32[0x06];
+	uint16 var_32;
+	uint16 var_34;
+	uint8 var_36;
+	uint8 var_37;
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
@@ -368,7 +372,10 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C
-	uint8 pad_6D[0x0F];
+	uint8 pad_6D[0x09];
+	uint8 var_76;
+	uint8 var_78;
+	uint8 pad_79[0x03];
 	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
 	money32 cash_in_pocket;			// 0xA0
@@ -391,7 +398,10 @@ typedef struct {
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
-	uint8 pad_EF[0x04];
+	uint8 pad_EF;
+	uint8 var_F0;
+	uint8 var_F1;
+	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 pad_F4[0x02];
 	uint8 balloon_colour;			// 0xF6
@@ -406,5 +416,6 @@ int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
+rct_peep *peep_generate(int x, int y, int z);
 
 #endif

@@ -128,5 +128,6 @@ int scenario_load_basic(const char *path);
 void scenario_load(const char *path);
 void scenario_load_and_play(const rct_scenario_basic *scenario);
 void scenario_update();
+int scenario_rand();
 
 #endif

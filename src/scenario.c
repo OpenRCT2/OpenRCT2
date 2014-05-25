@@ -175,8 +175,11 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	rct_window *mainWindow;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	RCT2_GLOBAL(0x009AA0F0, uint32) = RCT2_GLOBAL(0x00F663B0, uint32) ^ timeGetTime();
-	RCT2_GLOBAL(0x009AA0F4, uint32) = RCT2_GLOBAL(0x00F663B4, uint32) ^ timeGetTime();
+	// Create the scenario pseduo-random seeds using the current time
+	uint32 srand0, srand1;
+	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
+	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
+
 	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
 
 	subsitute_path(
@@ -214,8 +217,10 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	window_new_ride_init_vars();
 
-	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
-	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
+	// Set the scenario pseduo-random seeds
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) = srand0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) = srand1;
+
 	RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & 0x20000)
@@ -678,3 +683,13 @@ void scenario_update()
 	
 }
 
+/**
+*
+*  rct2: 0x006E37D2
+*/
+int scenario_rand()
+{
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
+	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+}

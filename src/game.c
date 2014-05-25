@@ -152,7 +152,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006D4204);	// update vehicles
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
-	RCT2_CALLPROC_EBPSAFE(0x006674F7);	// update park
+	park_update();
 	RCT2_CALLPROC_EBPSAFE(0x00684C7A);
 	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
 	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements

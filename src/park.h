@@ -52,6 +52,16 @@ enum {
 };
 
 enum {
+	ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
+	ADVERTISING_CAMPAIGN_RIDE_FREE,
+	ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
+	ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
+	ADVERTISING_CAMPAIGN_PARK,
+	ADVERTISING_CAMPAIGN_RIDE,
+	ADVERTISING_CAMPAIGN_COUNT
+};
+
+enum {
 	PARK_FLAGS_PARK_OPEN = (1 << 0),
 	PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
 	PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
@@ -77,5 +87,7 @@ int calculate_park_rating();
 money32 calculate_park_value();
 money32 calculate_company_value();
 void reset_park_entrances();
+
+void park_update();
 
 #endif

@@ -289,3 +289,17 @@ void peep_update_crowd_noise()
 		}
 	}
 }
+
+/**
+ *
+ *  rct2: 0x0069A05D
+ */
+rct_peep *peep_generate(int x, int y, int z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ecx = y;
+	edx = z;
+	RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return (rct_peep*)esi;
+}
