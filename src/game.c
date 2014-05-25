@@ -41,6 +41,8 @@
 #include "window_error.h"
 #include "window_tooltip.h"
 
+int _gameSpeed = 1;
+
 void game_handle_input();
 void game_handle_keyboard_input();
 
@@ -72,8 +74,8 @@ void game_update()
 	if (eax > 4)
 		eax = 4;
 
-	// if (ted_fastforwarding)
-	//	eax += 8 - 1;
+	if (_gameSpeed > 1)
+		eax = 1 << (_gameSpeed - 1);
 
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		for (; eax > 0; eax--) {
@@ -155,11 +157,11 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
 	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);
+	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
 	peep_update_crowd_noise();
-	RCT2_CALLPROC_EBPSAFE(0x006BCB91);
+	RCT2_CALLPROC_EBPSAFE(0x006BCB91);	// weather sound effects
 	news_item_update_current();
-	RCT2_CALLPROC_EBPSAFE(0x0067009A);
+	RCT2_CALLPROC_EBPSAFE(0x0067009A);	// scenario editor opening of windows for a phase
 
 	// Update windows
 	window_dispatch_update_all();
@@ -1083,6 +1085,14 @@ void handle_shortcut_command(int shortcutIndex)
 		break;
 	case SHORTCUT_SCREENSHOT:
 		RCT2_CALLPROC_EBPSAFE(0x006E4034); // set screenshot countdown to 2
+		break;
+
+	// New
+	case SHORTCUT_REDUCE_GAME_SPEED:
+		_gameSpeed = max(1, _gameSpeed - 1);
+		break;
+	case SHORTCUT_INCREASE_GAME_SPEED:
+		_gameSpeed = min(8, _gameSpeed + 1);
 		break;
 	}
 }
