@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,45 +18,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
-
-#include "rct2.h"
-
-#define SPRITE_INDEX_NULL    0xFFFF
-#define SPRITE_LOCATION_NULL 0x8000
-
-#include "peep.h"
+#include "addresses.h"
+#include "sprite.h"
 #include "vehicle.h"
 
-typedef struct {
-	uint8 sprite_identifier;		// 0x00
-	uint8 pad_01;
-	uint16 pad_02;
-	uint16 next;					// 0x04
-	uint8 pad_06[0x08];
-	sint16 x;						// 0x0E
-	sint16 y;						// 0x10
-	sint16 z;						// 0x12
-} rct_unk_sprite;
-
-typedef struct {
-	uint32 pad_00;
-	uint16 next;					// 0x04
-	uint8 pad_06[0x1E];
-	uint32 var_24;
-} rct_litter;
+static void vehicle_update(rct_vehicle *vehicle);
 
 /**
- * Sprite structure.
- * size: 0x0100
+ * 
+ *  rct2: 0x006D4204
  */
-typedef union {
-	uint8 pad_00[0x100];
-	rct_unk_sprite unknown;
-	rct_peep peep;
-	rct_litter litter;
-	rct_vehicle vehicle;
-} rct_sprite;
+void vehicle_update_all()
+{
+	uint16 sprite_index;
+	rct_vehicle *vehicle;
 
-#endif
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		return;
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+		return;
+
+
+	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16);
+	while (sprite_index != SPRITE_INDEX_NULL) {
+		vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].vehicle);
+		sprite_index = vehicle->next;
+
+		vehicle_update(vehicle);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006D77F2
+ */
+static void vehicle_update(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006D77F2, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}

@@ -46,6 +46,7 @@
     <ClInclude Include="..\src\track.h" />
     <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\util.h" />
+    <ClInclude Include="..\src\vehicle.h" />
     <ClInclude Include="..\src\viewport.h" />
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
@@ -85,6 +86,7 @@
     <ClCompile Include="..\src\track.c" />
     <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\util.c" />
+    <ClCompile Include="..\src\vehicle.c" />
     <ClCompile Include="..\src\viewport.c" />
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />

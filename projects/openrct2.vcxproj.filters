@@ -132,6 +132,9 @@
     <ClInclude Include="..\src\finance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\vehicle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -312,6 +315,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\object_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\vehicle.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

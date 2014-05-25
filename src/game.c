@@ -35,6 +35,7 @@
 #include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
+#include "vehicle.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
@@ -149,7 +150,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
 	RCT2_CALLPROC_EBPSAFE(0x006A876D);
 	peep_update_all();
-	RCT2_CALLPROC_EBPSAFE(0x006D4204);	// update vehicles
+	vehicle_update_all();
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
 	park_update();

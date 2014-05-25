@@ -178,7 +178,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 	int i;
 	rct_ride *ride;
 	rct_peep *peep;
-	rct_car *car;
+	rct_vehicle *vehicle;
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
@@ -212,13 +212,13 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find the first car of the train peep is on
-		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).car;
+		vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).vehicle;
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
-			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]).car;
-		*x = car->x;
-		*y = car->y;
-		*z = car->z;
+			vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[vehicle->next_vehicle_on_train]).vehicle;
+		*x = vehicle->x;
+		*y = vehicle->y;
+		*z = vehicle->z;
 		break;
 	case NEWS_ITEM_PEEP:
 		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;

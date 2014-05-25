@@ -442,6 +442,7 @@ static rct_peep *park_generate_new_guest_due_to_campaign(int campaign)
 			break;
 		}
 	}
+	return peep;
 }
 
 static int park_get_campaign_guest_generation_probability(int campaign)
