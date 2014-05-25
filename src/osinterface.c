@@ -428,3 +428,19 @@ char* osinterface_open_directory_browser(char *title) {
 	CoUninitialize();
 	return outPath;
 }
+
+char* osinterface_get_orct2_homefolder()
+{
+	char path[260]="";
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
+		strcat(path, "\\OpenRCT2");
+	}
+
+	return path;
+}
+
+char osinterface_get_path_separator()
+{
+	return '\\';
+}

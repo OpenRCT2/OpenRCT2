@@ -50,4 +50,7 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 void osinterface_show_messagebox(char* message);
 char* osinterface_open_directory_browser(char *title);
 
+char* osinterface_get_orct2_homefolder();
+char osinterface_get_path_separator();
+
 #endif
