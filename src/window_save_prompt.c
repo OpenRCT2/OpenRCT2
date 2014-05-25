@@ -247,7 +247,7 @@ static void window_save_prompt_mouseup()
 		switch (widgetIndex) {
 			case WIDX_SAVE:
 				// TODO to avoid data loss, treat SAVE as CANCEL
-				RCT2_ERROR("%s", "TODO\n");
+				RCT2_ERROR("TODO");
 				window_close(w);
 				window_save_prompt_close();
 				return;
