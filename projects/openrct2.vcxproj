@@ -39,7 +39,6 @@
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\screenshot.h" />
-    <ClInclude Include="..\src\settings.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\string_ids.h" />
