@@ -210,6 +210,11 @@ void peep_problem_warnings_update()
  */
 void peep_update_crowd_noise()
 {
+	rct_viewport *viewport;
+	uint16 sprite_index;
+	rct_peep *peep;
+	int visiblePeeps;
+
 	if (!(RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)))
 		return;
 
@@ -222,15 +227,12 @@ void peep_update_crowd_noise()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		return;
 
-	rct_viewport *viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
+	viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
 	if (viewport == (rct_viewport*)-1)
 		return;
 
-	uint16 sprite_index;
-	rct_peep *peep;
-	int visiblePeeps = 0;
-
 	// Count the number of peeps visible
+	visiblePeeps = 0;
 	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
 	while (sprite_index != SPRITE_INDEX_NULL) {
 		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
