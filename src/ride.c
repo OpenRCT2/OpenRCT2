@@ -256,13 +256,17 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 
 void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
 {
-    uint16 coordinate = ride->station_starts[ride_idx];
+    uint16 coordinate = ride->station_starts[0];
+	if (coordinate == 0xFFFF)
+		return;
+
 	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
 		y = (coordinate & 0xFF) << 5;		 // ax	
     uint16 magic = 0;
 	int tile_idx = ((x << 8) | y) >> 5, count = 0;
 	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
 
+	
     while (1) {
         uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
         if(element_type == MAP_ELEMENT_TYPE_TRACK && tile->properties.track.ride_index == ride_idx)
