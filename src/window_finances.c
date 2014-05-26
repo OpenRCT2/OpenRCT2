@@ -24,12 +24,13 @@
 #include "window.h"
 
 enum {
-	WINDOW_FINANCES_TAB_SUMMARY,
-	WINDOW_FINANCES_TAB_FINANCIAL_GRAPH,
-	WINDOW_FINANCES_TAB_VALUE_GRAPH,
-	WINDOW_FINANCES_TAB_PROFIT_GRAPH,
-	WINDOW_FINANCES_TAB_MARKETING,
-	WINDOW_FINANCES_TAB_RESEARCH
+	WINDOW_FINANCES_PAGE_SUMMARY,
+	WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH,
+	WINDOW_FINANCES_PAGE_VALUE_GRAPH,
+	WINDOW_FINANCES_PAGE_PROFIT_GRAPH,
+	WINDOW_FINANCES_PAGE_MARKETING,
+	WINDOW_FINANCES_PAGE_RESEARCH,
+	WINDOW_FINANCES_PAGE_COUNT
 };
 
 enum {
@@ -270,6 +271,11 @@ static uint32 window_finances_page_enabled_widgets[] = {
 
 #pragma endregion
 
+const int window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
+
+static void window_finances_set_page(rct_window *w, int page);
+static void window_finances_set_pressed_tab(rct_window *w);
+
 /**
  *
  *  rct2: 0x0069DDF1
@@ -307,3 +313,114 @@ void window_finances_open()
 	w->disabled_widgets = 0;
 	window_init_scroll_widgets(w);
 }
+
+#pragma region Summary page
+
+/**
+ *
+ *  rct2: 0x0069CA99
+ */
+static void window_finances_summary_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	#ifdef _MSC_VER
+	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	if (widgetIndex == WIDX_CLOSE)
+		window_close(w);
+	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_6)
+		window_finances_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ *
+ *  rct2: 0x0069CBA6
+ */
+static void window_finances_summary_update(rct_window *w)
+{
+	// Tab animation
+	if (++w->var_48E >= window_finances_tab_animation_loops[w->page])
+		w->var_48E = 0;
+	widget_invalidate(w->classification, w->number, WIDX_TAB_1);
+}
+
+/**
+ * 
+ *  rct2: 0x0069C732
+ */
+static void window_finances_summary_invalidate()
+{
+	rct_window *w;
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	if (w->widgets != window_finances_page_widgets[0]) {
+		w->widgets = window_finances_page_widgets[0];
+		window_init_scroll_widgets(w);
+	}
+
+	window_finances_set_pressed_tab(w);
+	RCT2_GLOBAL(0x013CE952 + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+}
+
+#pragma endregion
+
+#pragma region Common
+
+/**
+ *
+ *  rct2: 0x0069CAC5
+ */
+static void window_finances_set_page(rct_window *w, int page)
+{
+	w->page = page;
+	w->var_48E = 0;
+	if (w->viewport != NULL) {
+		w->viewport->width = 0;
+		w->viewport = NULL;
+	}
+
+	w->enabled_widgets = window_finances_page_enabled_widgets[page];
+	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->widgets = window_finances_page_widgets[page];
+	w->disabled_widgets = 0;
+	
+	window_invalidate(w);
+	if (w->page == WINDOW_FINANCES_PAGE_RESEARCH) {
+		w->width = 320;
+		w->height = 207;
+	} else {
+		w->width = 530;
+		w->height = 257;
+	}
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	window_init_scroll_widgets(w);
+	window_invalidate(w);
+}
+
+static void window_finances_set_pressed_tab(rct_window *w)
+{
+	int i;
+	for (i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
+		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
+}
+
+#pragma endregion
