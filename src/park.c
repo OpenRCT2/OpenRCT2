@@ -31,7 +31,18 @@
 #include "string_ids.h"
 #include "window.h"
 
+/**
+ * In a difficult guest generation scenario, no guests will be generated if over this value.
+ */
 int _suggestedGuestMaximum;
+
+/**
+ * Probability out of 65535, of gaining a new guest per game tick.
+ * new guests per second = 40 * (probability / 65535)
+ * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive awards,
+ * approximately 1 guest per second can be generated (+60 guests in one minute).
+ */
+int _guestGenerationProbability;
 
 int park_is_award_positive(int type)
 {
@@ -530,7 +541,7 @@ static rct_peep *park_generate_new_guest_due_to_campaign(int campaign)
 static void park_generate_new_guests()
 {
 	// Generate a new guest for some probability
-	if ((scenario_rand() & 0xFFFF) < RCT2_GLOBAL(0x013580EC, uint16)) {
+	if ((scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
 		int difficultGeneration = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
 		if (!difficultGeneration || _suggestedGuestMaximum + 150 >= RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16))
 			park_generate_new_guest();
@@ -562,7 +573,7 @@ void park_update()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 		window_invalidate_by_id(WC_FINANCES, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_GENERATION_PROBABILITY, uint16) = park_calculate_guest_generation_probability();
+		_guestGenerationProbability = park_calculate_guest_generation_probability();
 		RCT2_GLOBAL(0x009A9804, uint16) |= 0x10;
 		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
 	}
