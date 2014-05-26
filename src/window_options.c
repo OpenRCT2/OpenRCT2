@@ -309,7 +309,7 @@ static void window_options_mousedown()
 		// populate the list with the sound devices
 		for (i = 0; i < gAudioDeviceCount; i++) {
 			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 1170 | ((uint64)gAudioDevices[i].name << 16);
+			gDropdownItemsArgs[i] = 1170 | ((uint64)(intptr_t)gAudioDevices[i].name << 16);
 		}
 		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(0x9AF280, uint32));
 		break;
