@@ -52,6 +52,9 @@ void object_unload_all();
 
 int object_load(int groupIndex, rct_object_entry *entry);
 void object_unload(int groupIndex, rct_object_entry_extended *entry);
-int sub_6A9428(rct_object_entry* entry);
+int object_get_scenario_text(rct_object_entry *entry);
+void object_free_scenario_text();
+int object_get_length(rct_object_entry *entry);
+rct_object_entry *object_get_next(rct_object_entry *entry);
 
 #endif

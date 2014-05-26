@@ -59,14 +59,12 @@ int scenario_load_basic(const char *path)
 
 			// Checks for a scenario string object (possibly for localisation)
 			if ((s6Info->entry.flags & 0xFF) != 255) {
-				if (sub_6A9428(&s6Info->entry)) {
+				if (object_get_scenario_text(&s6Info->entry)) {
 					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
 					format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
 					format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
 					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
-
-					// Disposes the scenario string object (0x009ADAF8)
-					RCT2_CALLPROC_EBPSAFE(0x006A982D);
+					object_free_scenario_text();
 				}
 			}
 			return 1;

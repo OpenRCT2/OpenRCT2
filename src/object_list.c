@@ -69,42 +69,14 @@ struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[
 static void object_list_examine()
 {
 	int i;
-	char *object;
+	rct_object_entry *object;
 
-	object = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, char*);
+	object = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	for (i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
-		if (*object & 0xF0)
+		if (object->flags & 0xF0)
 			RCT2_GLOBAL(0x00F42BDA, uint8) |= 1;
 
-		// Skip 
-		object += 16;
-
-		// Skip filename
-		// printf("%d %s : ", i, object);
-		do {
-			object++;
-		} while (*(object - 1) != 0);
-
-		// Skip 
-		object += 4;
-
-		// Skip name
-		// printf("%s\n", object);
-		do {
-			object++;
-		} while (*(object - 1) != 0);
-
-		// Skip 
-		object += 4;
-
-		// Skip 
-		object += *object++ * 16;
-
-		// Skip theme objects
-		object += *object++ * 16;
-
-		// Skip 
-		object += 4;
+		object = object_get_next(object);
 	}
 }
 
