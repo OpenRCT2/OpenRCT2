@@ -216,12 +216,10 @@ void config_save()
  */
 void config_init()
 {	
-	char path[MAX_PATH];
+	char *path = osinterface_get_orct2_homefolder();
 	FILE* fp;
 
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
-
-	strncpy(path, osinterface_get_orct2_homefolder(), MAX_PATH);
 
 	if (strcmp(path, "") != 0){
 		DWORD dwAttrib = GetFileAttributes(path);
@@ -245,6 +243,8 @@ void config_init()
 
 		fclose(fp);
 	}
+
+	free(path);
 }
 
 /**

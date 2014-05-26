@@ -60,16 +60,20 @@ void screenshot_check()
 
 static int screenshot_get_next_path(char *path, char *extension)
 {
+	char *homePath = osinterface_get_orct2_homefolder();
+
 	int i;
 	for (i = 1; i < 1000; i++) {
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%s%cSCR%d%s", osinterface_get_orct2_homefolder(), osinterface_get_path_separator(), i, extension);
+		sprintf(path, "%s%cSCR%d%s", homePath, osinterface_get_path_separator(), i, extension);
 
 		if (GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND)
 			return i;
 	}
+
+	free(homePath);
 
 	return -1;
 }

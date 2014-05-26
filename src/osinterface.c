@@ -431,7 +431,8 @@ char* osinterface_open_directory_browser(char *title) {
 
 char* osinterface_get_orct2_homefolder()
 {
-	char path[260]="";
+	char *path;
+	path = malloc(sizeof(char) * MAX_PATH);
 
 	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
 		strcat(path, "\\OpenRCT2");
