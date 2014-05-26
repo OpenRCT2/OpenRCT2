@@ -51,15 +51,15 @@ int object_entry_group_counts[] = {
 struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[] = {
 	(void**)(0x009ACFA4            ), (rct_object_entry_extended*)(0x00F3F03C             ),	// rides
 	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	
-	(void**)(0x009ACFA4 + (252 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (252 * 20)),	// large scenery
-	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// walls
-	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// banners
-	(void**)(0x009ACFA4 + ( 32 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 32 * 20)),	// paths
-	(void**)(0x009ACFA4 + ( 16 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 16 * 20)),	// path bits
-	(void**)(0x009ACFA4 + ( 15 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 15 * 20)),	// scenery sets
-	(void**)(0x009ACFA4 + ( 19 * 4)), (rct_object_entry_extended*)(0x00F3F03C + ( 19 * 20)),	// park entrance
-	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20)),	// water
-	(void**)(0x009ACFA4 + (  1 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (  1 * 20))		// scenario text
+	(void**)(0x009ACFA4 + (380 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (380 * 20)),	// large scenery
+	(void**)(0x009ACFA4 + (508 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (508 * 20)),	// walls
+	(void**)(0x009ACFA4 + (636 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (636 * 20)),	// banners
+	(void**)(0x009ACFA4 + (668 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (668 * 20)),	// paths
+	(void**)(0x009ACFA4 + (684 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (684 * 20)),	// path bits
+	(void**)(0x009ACFA4 + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets
+	(void**)(0x009ACFA4 + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance
+	(void**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water
+	(void**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))		// scenario text
 };
 
 /**
