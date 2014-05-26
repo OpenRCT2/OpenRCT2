@@ -275,10 +275,10 @@ void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
 
     uint8 track_type = tile->properties.track.type;
     ride = GET_RIDE(tile->properties.track.ride_index);
-    if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) { // buggy but why
-        magic = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
-    } else {
+    if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
         magic = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
+    } else {
+        magic = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
     }
 
     magic = magic << (tile->type & 3);
@@ -286,18 +286,19 @@ void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
 	if (magic == 0)
 		return;
 
-    for (int count = 0; magic != 0; ++count) {        
+    for (int count = 0; magic != 0; ++count) {		
         if (!(magic & 1)) {
-            magic >>= 1;
+			magic >>= 1;
             continue;
         }
+		magic >>= 1;
 
         uint8 face_direction = count ^ 2;
         y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
         x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
         tile_idx = ((x << 8) | y) >> 5;
 
-        if (map_coord_is_connected(tile, tile->base_height, face_direction))
+        if (map_coord_is_connected(tile_idx, tile->base_height, face_direction))
             return;
     }    
     
@@ -328,7 +329,6 @@ void ride_check_all_reachable()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000) {
 			//blue
             ride_is_shop_reachable(ride, i);
-			return;
 		}
 		else {
 			//pink
