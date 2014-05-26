@@ -80,5 +80,6 @@ money32 calculate_company_value();
 void reset_park_entrances();
 
 void park_update();
+void park_update_histories();
 
 #endif

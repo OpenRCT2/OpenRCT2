@@ -83,7 +83,7 @@ void park_init()
 	RCT2_GLOBAL(0x01357846, uint16) = 0;
 	RCT2_GLOBAL(0x013573FE, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_GENERATION_PROBABILITY, uint16) = 0;
+	_guestGenerationProbability = 0;
 	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
 	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
 
@@ -580,4 +580,13 @@ void park_update()
 
 	// Generate new guests
 	park_generate_new_guests();
+}
+
+/**
+ *
+ *  rct2: 0x0066A231
+ */
+void park_update_histories()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0066A231);
 }

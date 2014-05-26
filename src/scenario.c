@@ -616,7 +616,7 @@ void scenario_update()
 					break;
 			}
 		}
-		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
+		park_update_histories();
 		park_calculate_size();
 	}
 
