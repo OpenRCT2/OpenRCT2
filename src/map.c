@@ -336,16 +336,16 @@ void sub_68B089()
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwisei
  */
-int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction)
+int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
 {
-    rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[coordinate];
+    rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
 
     do {
         rct_map_element_path_properties props = tile->properties.path;
         uint8 path_type = props.type >> 2, path_dir = props.type & 3;
         uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
 
-        if (!(element_type & PATH_ROAD))
+        if (element_type != PATH_ROAD)
             continue;
 
         if (path_type & 1) {
