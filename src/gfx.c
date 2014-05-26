@@ -718,13 +718,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			eax &= 0x7F;
 		}
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
-		//To be fixed
-		palette_pointer = ((rct_g1_element**)RCT2_ADDRESS_G1_ELEMENTS)[eax];
-		eax <<= 4;
-		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		RCT2_GLOBAL(0x9ABDA4, uint32) = eax;
-		palette_pointer = eax;
-		assert(eax == palette_pointer);
+
+		palette_pointer = ((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[eax].offset;
+		RCT2_GLOBAL(0x9ABDA4, uint32) = palette_pointer;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		//Has not been tested
@@ -782,7 +778,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-
+		//G1_element bits?
 		ebp = *((uint32*)(eax + 0xF3));
 		esi = *((uint32*)(eax + 0xF7));
 		RCT2_GLOBAL(0x9ABEFF, uint32) = ebp;
@@ -912,48 +908,42 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		return;
 	}
 	//0x67A60A
-	
-	esi -= (uint32)g1_source->offset;
-	ebp = (int)source_pointer;
-	eax = g1_source->width*g1_source->height;
-	esi = (int)g1_source->offset;
-	edx = eax;
-	edi = 0x9E3D28;
-	eax = 0;
-	while (edx>0){
-		eax = *((sint8*)esi);
-		if (eax >= 0){
-			esi++;
-			ecx = eax;
-			edx -= eax;
-			memcpy((char*)edi, (char*)esi, ecx);
-			edi += ecx;
-			esi += ecx;
+	int total_no_pixels = g1_source->width*g1_source->height;
+	source_pointer = g1_source->offset;
+	uint8* new_source_pointer_start = malloc(total_no_pixels);
+	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
+
+	while (total_no_pixels>0){
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0){
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
 			continue;
 		}
-		ecx = eax;
-		ebx = edi;
-		eax &= 0x7;
-		ecx >>= 3;
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
 		eax <<= 8;
-		ecx = -ecx;
-		eax = eax & 0xFF00 + *((sint8*)esi);
-		edx -= ecx;
-		esi += 2;
-		ebx -= eax;
-		eax = esi;
-		esi = ebx;
+		ecx = -ecx;//Odd
+		eax = eax & 0xFF00 + *(source_pointer+1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx = new_source_pointer - eax;
+		eax = source_pointer;
+		source_pointer = ebx;
 		ebx = eax;
 		eax = 0;
-		memcpy((char*)edi, (char*)esi, ecx);
-		edi += ecx;
-		esi += ecx;
-		esi = ebx;
+		memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer += ecx;
+		source_pointer = ebx;
 	}
-	//edi poped off stack
-	esi = ebp;
-	esi += 0x9E3D28;
-	gfx_bmp_sprite_to_buffer(palette_pointer, (uint8*)esi, dest_pointer, g1_source, dpi, height, width, image_type);
+	source_pointer = new_source_pointer_start + g1_source->width*source_start_y + source_start_x;
+	gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+	free(new_source_pointer_start);
 	return;
 }
 
