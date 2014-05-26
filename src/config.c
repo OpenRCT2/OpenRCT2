@@ -222,11 +222,9 @@ void config_init()
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
 
 	if (strcmp(path, "") != 0){
-		DWORD dwAttrib = GetFileAttributes(path);
-		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
-			if (!CreateDirectory(path, NULL)) {
-				config_error("Could not create config file (do you have write access to your documents folder?)");
-			}
+		if (!osinterface_ensure_directory_exists(path)) {
+			config_error("Could not create config file (do you have write access to your documents folder?)");
+			return;
 		}
 		
 		sprintf(path, "%s%c%s", path, osinterface_get_path_separator(), "config.ini");
