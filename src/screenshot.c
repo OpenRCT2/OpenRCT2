@@ -62,6 +62,8 @@ static int screenshot_get_next_path(char *path, char *extension)
 {
 	char *screenshotPath = osinterface_get_orct2_homesubfolder("screenshot");
 	if (!osinterface_ensure_directory_exists(screenshotPath)) {
+		free(screenshotPath);
+
 		fprintf(stderr, "Unable to save screenshots in OpenRCT2 screenshot directory.\n");
 		return -1;
 	}
@@ -78,7 +80,6 @@ static int screenshot_get_next_path(char *path, char *extension)
 	}
 
 	free(screenshotPath);
-
 	return -1;
 }
 
