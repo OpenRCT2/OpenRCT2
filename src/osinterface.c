@@ -428,3 +428,47 @@ char* osinterface_open_directory_browser(char *title) {
 	CoUninitialize();
 	return outPath;
 }
+
+char* osinterface_get_orct2_homefolder()
+{
+	char *path=NULL;
+	path = malloc(sizeof(char) * MAX_PATH);
+	if (path == NULL){
+		osinterface_show_messagebox("Error allocating memory!");
+		exit(EXIT_FAILURE);
+	}
+
+	path[0] = '\0';
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path)))
+		strcat(path, "\\OpenRCT2");
+
+	return path;
+}
+
+char *osinterface_get_orct2_homesubfolder(const char *subFolder)
+{
+	char *path = osinterface_get_orct2_homefolder();
+	strcat(path, "\\");
+	strcat(path, subFolder);
+	return path;
+}
+
+int osinterface_directory_exists(const char *path)
+{
+	DWORD dwAttrib = GetFileAttributes(path);
+	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+int osinterface_ensure_directory_exists(const char *path)
+{
+	if (osinterface_directory_exists(path))
+		return 1;
+
+	return CreateDirectory(path, NULL);
+}
+
+char osinterface_get_path_separator()
+{
+	return '\\';
+}
