@@ -31,6 +31,24 @@
 #include "string_ids.h"
 #include "window.h"
 
+int _suggestedGuestMaximum;
+
+int park_is_award_positive(int type)
+{
+	// Check if award is negative
+	switch (type) {
+	case PARK_AWARD_MOST_UNTIDY:
+	case PARK_AWARD_WORST_VALUE:
+	case PARK_AWARD_WORST_FOOD:
+	case PARK_AWARD_MOST_DISAPPOINTING:
+	case PARK_AWARD_MOST_CONFUSING_LAYOUT:
+		return 0;
+	}
+
+	// Otherwise its positive
+	return 1;
+}
+
 int park_is_open()
 {
 	return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) != 0;
@@ -55,7 +73,7 @@ void park_init()
 	RCT2_GLOBAL(0x013573FE, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_GENERATION_PROBABILITY, uint16) = 0;
-	RCT2_GLOBAL(0x013580EE, uint16) = 0;
+	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
 	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
 
 	for (i = 0; i < 20; i++)
@@ -349,14 +367,118 @@ void reset_park_entrances()
 }
 
 /**
- *
+ * Calculates the probability of a new guest. Also sets total ride value and suggested guest maximum.
+ * Total ride value should probably be set else where, as its not just used for guest generation.
+ * Suggested guest maximum should probably be an output result, not a global.
+ * @returns A probability out of 65535
  *  rct2: 0x0066730A
  */
 static int park_calculate_guest_generation_probability()
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x0066730A, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax & 0xFFFF;
+	unsigned int probability;
+	int i, suggestedMaxGuests, totalRideValue;
+
+	// Calculate suggested guest maximum (based on ride type) and total ride value
+	suggestedMaxGuests = 0;
+	totalRideValue = 0;
+	for (i = 0; i < MAX_RIDES; i++) {
+		rct_ride *ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+		if (ride->status != RIDE_STATUS_OPEN)
+			continue;
+		if (ride->lifecycle_flags & 0x80)
+			continue;
+		if (ride->lifecycle_flags & 0x400)
+			continue;
+
+		// Add guest score for ride type
+		suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8);
+
+		// Add ride value
+		if (ride->reliability != RIDE_RELIABILITY_UNDEFINED) {
+			int rideValue = ride->reliability - ride->price;
+			if (rideValue > 0)
+				totalRideValue += rideValue * 2;
+		}
+	}
+
+	// If difficult guest generation, extra guests are available for good rides
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
+		suggestedMaxGuests = min(suggestedMaxGuests, 1000);
+		for (i = 0; i < MAX_RIDES; i++) {
+			rct_ride *ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
+			if (ride->type == RIDE_TYPE_NULL)
+				continue;
+			if (ride->lifecycle_flags & 0x80)
+				continue;
+			if (ride->lifecycle_flags & 0x400)
+				continue;
+
+			if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x10000000))
+				continue;
+			if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x200))
+				continue;
+			if (!(ride->lifecycle_flags & 0x02))
+				continue;
+			if (ride->var_0E4 < 0x2580000)
+				continue;
+			if (ride->excitement < RIDE_RATING(6,00))
+				continue;
+
+			// Bonus guests for good ride
+			suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8) * 2;
+		}
+	}
+
+	suggestedMaxGuests = min(suggestedMaxGuests, 65535);
+	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = totalRideValue;
+	_suggestedGuestMaximum = suggestedMaxGuests;
+
+	// Begin with 50 + park rating
+	probability = 50 + clamp(0, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) - 200, 650);
+
+	// The more guests, the lower the chance of a new one
+	int numGuests = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) + RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16);
+	if (numGuests > suggestedMaxGuests) {
+		probability /= 4;
+
+		// Even lower for difficult guest generation
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+			probability /= 4;
+	}
+
+	// Reduces chance for any more than 7000 guests
+	if (numGuests > 7000)
+		probability /= 4;
+
+	// Check if money is enabled
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)) {
+		// Penalty for overpriced entrance fee relative to total ride value
+		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
+		if (entranceFee > totalRideValue) {
+			probability /= 4;
+
+			// Extra penalty for very overpriced entrance fee
+			if (entranceFee / 2 > totalRideValue)
+				probability /= 4;
+		}
+	}
+
+	// Reward or penalties for park awards
+	for (i = 0; i < 4; i++) {
+		rct_award *award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
+		if (award->time == 0)
+			continue;
+
+		// +/- 0.25% of the probability
+		if (park_is_award_positive(award->type))
+			probability += probability / 4;
+		else
+			probability -= probability / 4;
+	}
+
+	return probability;
 }
 
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
@@ -410,7 +532,7 @@ static void park_generate_new_guests()
 	// Generate a new guest for some probability
 	if ((scenario_rand() & 0xFFFF) < RCT2_GLOBAL(0x013580EC, uint16)) {
 		int difficultGeneration = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-		if (!difficultGeneration || RCT2_GLOBAL(0x0135883C, uint16) + 150 < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16))
+		if (!difficultGeneration || _suggestedGuestMaximum + 150 >= RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16))
 			park_generate_new_guest();
 	}
 

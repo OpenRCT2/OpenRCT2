@@ -544,9 +544,9 @@ void scenario_objectives_check()
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x, y;
-	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
-		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
-	int max_fee = magic + (magic / 2);
+	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
+	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	int max_fee = totalRideValue + (totalRideValue / 2);
 	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && park_entrance_fee > max_fee) {
