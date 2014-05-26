@@ -428,3 +428,26 @@ char* osinterface_open_directory_browser(char *title) {
 	CoUninitialize();
 	return outPath;
 }
+
+char* osinterface_get_orct2_homefolder()
+{
+	char *path=NULL;
+	path = malloc(sizeof(char) * MAX_PATH);
+	if (path == NULL){
+		osinterface_show_messagebox("Error allocating memory!");
+		exit(EXIT_FAILURE);
+	}
+
+	path[0] = '\0';
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
+		strcat(path, "\\OpenRCT2");
+	}
+
+	return path;
+}
+
+char osinterface_get_path_separator()
+{
+	return '\\';
+}

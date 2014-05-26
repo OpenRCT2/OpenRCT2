@@ -21,6 +21,7 @@
 #include <lodepng.h>
 #include <stdio.h>
 #include <windows.h>
+#include "osinterface.h"
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
@@ -59,16 +60,20 @@ void screenshot_check()
 
 static int screenshot_get_next_path(char *path, char *extension)
 {
+	char *homePath = osinterface_get_orct2_homefolder();
+
 	int i;
 	for (i = 1; i < 1000; i++) {
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d%s", RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), i, extension);
+		sprintf(path, "%s%cSCR%d%s", homePath, osinterface_get_path_separator(), i, extension);
 
 		if (GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND)
 			return i;
 	}
+
+	free(homePath);
 
 	return -1;
 }

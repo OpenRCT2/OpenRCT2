@@ -216,20 +216,21 @@ void config_save()
  */
 void config_init()
 {	
-	TCHAR path[MAX_PATH];
+	char *path = osinterface_get_orct2_homefolder();
 	FILE* fp;
 
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
 
-	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
-		strcat(path, "\\OpenRCT2");
+	if (strcmp(path, "") != 0){
 		DWORD dwAttrib = GetFileAttributes(path);
 		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
 			if (!CreateDirectory(path, NULL)) {
 				config_error("Could not create config file (do you have write access to your documents folder?)");
 			}
 		}
-		strcat(path, "\\config.ini");
+		
+		sprintf(path, "%s%c%s", path, osinterface_get_path_separator(), "config.ini");
+		
 		fp = fopen(path, "r");
 		if (!fp) {
 			config_create_default(path);
@@ -242,6 +243,8 @@ void config_init()
 
 		fclose(fp);
 	}
+
+	free(path);
 }
 
 /**
