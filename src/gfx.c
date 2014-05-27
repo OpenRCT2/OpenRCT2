@@ -1308,25 +1308,21 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
+	rct_g1_element* g1_element;
 
-	// eax = colour;
-	// ebx = 0;
-	// ecx = x;
-	// edx = y;
-	// esi = (int)buffer;
-	// edi = (int)dpi;
-	// ebp = 0;
-	// RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
+	// Maximum length/height of string
 	int max_x = x;
 	int max_y = y;
 
+	// Store original x, y
 	RCT2_GLOBAL(0x00EDF840, uint16) = x;
 	RCT2_GLOBAL(0x00EDF842, uint16) = y;
 
+	// 
 	uint16* current_font_flags = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
 	uint16* current_font_sprite_base = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
+	// Flag for skipping non-printing characters
 	int skip_char = 0;
 
 	if (colour != 0xFE) {
@@ -1355,76 +1351,62 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				}
 				*current_font_sprite_base = 0xE0;
 			}
-			// loc_6827A5
-			// also reset bit 5
 			if (colour & (1 << 5)) {
 				*current_font_flags |= 2;
 			}
 			colour &= ~(1 << 5);
 
-			// loc_6827B4
 			if (!(colour & 0x40)) {
 				ebp = colour;
 				if (*current_font_flags & 1) {
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 						skip_char = 1;
-					}
-					else {
+					} else {
 						skip_char = 0;
 					}
 				} else {
 					sub_682AC7(ebp, current_font_flags);
 				}
-				// jmp     short loc_682AC7
 			} else {
 				*current_font_flags |= 1;
 				colour &= 0x1F;
 
-				ebp = colour;
-
 				if (*current_font_flags & 4) {
 					if (*current_font_flags & 8) {
-						// loc_682805
-						eax = RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
+						eax = RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 						eax = eax << 10;
-						eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[ebp * 8];
+						eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
 					} else {
-						// loc_6827E7
-						eax = RCT2_ADDRESS(0x0141FC49, uint8)[ebp * 8];
+						eax = RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
 						eax = eax << 10;
-						eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[ebp * 8];
+						eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
 					}
 				} else {
-					eax = RCT2_ADDRESS(0x0141FC4A, uint8)[ebp * 8];
+					eax = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
 					eax = eax << 10;
-					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[ebp * 8];
+					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
-				// loc_682842
 				// Store current colour? ;
 				RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 				RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 				eax = 0;
-
 			}
 		}
 	}
-	
-	// loc_682853
+
 	if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 		skip_char = 1;
 	}
 
-	// loc_682875
 	for (uint8 al = *buffer; al > 0; ++buffer, al = *buffer) {
-		// skip_char
-		// al = *buffer;
-		// buffer++;
+
+		// Skip to the next printing character
 		if (skip_char) {
 			if (al < 0x20) {
+				// Control codes
 				skip_char = 0;
-			} else if (al >= 0x9C) {
-				continue;
-			} else if (al >= 0x8E) {
+			} else if (al >= 0x8E && al < 0x9C) {
+				// Colour codes
 				al -= 0x8E;
 				if (*current_font_flags == 1) {
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
@@ -1440,9 +1422,9 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				continue;
 			}
 		}
-	
-		// skip_cont
+
 		if ((al >= 0x8E) && (al < 0x9C)){
+			// Colour codes
 			al -= 0x8E;
 			if (*current_font_flags == 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
@@ -1455,8 +1437,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			colour_char(al, current_font_flags);
 			continue;
 		} else  {
-			// loc_682888
 			if (al < 0x20) {
+				// Control codes
 				al -= 0x20;
 				switch (al) {
 				case 0x0E5:
@@ -1552,7 +1534,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					sub_682AC7(ebp, current_font_flags);
 					break;													   
 				case 0x0E2:
-					eax = *buffer;
+					al = *buffer;
 					buffer++;
 					if (*current_font_flags & 1) {
 						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
@@ -1561,29 +1543,19 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 						}
 					}
 		
-					// push    ebx
-					// mov     eax, ds:dword_97FCBC[eax*4]
-					// shl     eax, 4
-					// mov     eax, g1_elements[eax]
-					// mov     bl, [eax+0F9h]
-					// mov     bh, 1
-
-					eax = RCT2_ADDRESS(0x097FCBC, uint32)[eax*4];
-					uint32* g1_element_poss = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, uint32)[eax*16]);
-					// What on earth is going on here?
-					g1_element_poss += 0xF9;
-					ebx = *g1_element_poss + (1 << 8);
+					eax = RCT2_ADDRESS(0x097FCBC, uint32)[al*4];
+					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+					ebx = g1_element->offset[0xF9] + (1 << 8);
 
 					if (!(*current_font_flags & 2)) {
 						ebx = ebx & 0xFF;
 					}
 					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
-					ebx = *(g1_element_poss + 0xF7);
+					ebx = g1_element->offset[0xF7];
 					RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
-					ebx = *(g1_element_poss + 0xFA);
+					ebx = g1_element->offset[0xFA];
 					RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
 
-					// pop     ebx
 					RCT2_GLOBAL(0x09ABDA4, uint32) = RCT2_GLOBAL(0x09ABE04, uint32);
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 						skip_char = 1;
@@ -1597,7 +1569,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					ebx = *(buffer - 4);
 					eax = ebx & 0x7FFFF;
-					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
+					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
 		
 					gfx_draw_sprite(dpi, ebx, max_x, max_y);
 
@@ -1621,11 +1593,6 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				ecx = max_x;
 
 				max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
-				// push    dword_141E9E8[ebx]
-				// push    ecx
-				// push    edx
-				// push    edi
-				// push    esi
 
 				eax = (int)al;
 				ebx += 0xF15;
@@ -1638,12 +1605,6 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 	
 				RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
-
-				// pop     esi
-				// pop     edi
-				// pop     edx
-				// pop     ecx
-				// pop     eax
 
 				continue;
 			}
