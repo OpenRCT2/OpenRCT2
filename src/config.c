@@ -19,14 +19,12 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include <shlobj.h>
-#include <windows.h>
-#include <tchar.h>
 #include <SDL_keycode.h>
+#include <ctype.h>
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
-#include <tchar.h>
+
 
 #include "osinterface.h"
 
@@ -117,20 +115,20 @@ void config_reset_shortcut_keys()
  */
 void config_load()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
+	FILE *fp=NULL;
 
 	char* path = get_file_path(PATH_ID_GAMECFG);
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
+
+	fp = fopen(path, "rb");
+
+	if (fp != NULL) {
 		// Read and check magic number
-		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytesRead, NULL);
+		fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, fp);
+
 		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
 			// Read options
-			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
-			CloseHandle(hFile);
-
+			fread((void*)0x009AAC5C, 1, 2155, fp);
+			fclose(fp);
 
 			//general configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
@@ -197,14 +195,12 @@ void config_load()
  */
 void config_save()
 {
-	HANDLE hFile;
-	DWORD bytesWritten;
-
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
-		CloseHandle(hFile);
+	FILE *fp=NULL;
+	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
+	if (fp != NULL){
+		fwrite(&MagicNumber, 4, 1, fp);
+		fwrite((void*)0x009AAC5C, 2155, 1, fp);
+		fclose(fp);
 	}
 }
 
@@ -254,7 +250,7 @@ void config_init()
 static int config_find_rct2_path(char *resultPath)
 {
 	int i;
-	DWORD dwAttrib;
+
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
@@ -266,8 +262,7 @@ static int config_find_rct2_path(char *resultPath)
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
-		dwAttrib = GetFileAttributes(searchLocations[i]);
-		if (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+		if ( osinterface_directory_exists(searchLocations[i]) ) {
 			strcpy(resultPath, searchLocations[i]);
 			return 1;
 		}

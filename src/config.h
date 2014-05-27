@@ -21,8 +21,8 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include <windows.h>
 #include "rct2.h"
+#include <windows.h> // for MAX_PATH
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
