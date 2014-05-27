@@ -1597,6 +1597,35 @@ static void load_game()
 	}
 }
 
+char save_game()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax == 0) {
+		// user pressed "cancel"
+		gfx_invalidate_screen();
+		return 0;
+	}
+	
+	char *src = (char*)0x0141EF67;
+	do {
+		src++;
+	} while (*src != '.' && *src != '\0');
+	strcpy(src, ".SV6");
+	strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
+	
+	eax = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
+		eax |= 1;
+	RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
+	// check success?
+
+	game_do_command(0, 1047, 0, -1, 0, 0, 0);
+	gfx_invalidate_screen();
+	
+	return 1;
+}
+
 /**
  * 
  *  rct2: 0x006E3879
