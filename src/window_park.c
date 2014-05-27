@@ -2265,7 +2265,7 @@ static void window_park_awards_paint()
 			continue;
 
 		gfx_draw_sprite(dpi, SPR_AWARD_MOST_UNTIDY + award->type, x, y);
-		gfx_draw_string_left_wrapped(dpi, (void*)STR_AWARD_MOST_UNTIDY, x + 34, y + 6, 180, 0, 0);
+		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, STR_AWARD_MOST_UNTIDY, 0);
 
 		y += 32;
 		count++;

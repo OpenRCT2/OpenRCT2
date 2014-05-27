@@ -587,7 +587,7 @@ void award_update_all()
 		for (i = 0; i < MAX_AWARDS; i++) {
 			if (awards[i].time != 0)
 				activeAwardTypes |= (1 << awards[i].type);
-			else if (freeAwardEntryIndex != -1)
+			else if (freeAwardEntryIndex == -1)
 				freeAwardEntryIndex = i;
 		}
 

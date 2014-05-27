@@ -592,22 +592,22 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
  * 
  *  rct2: 0x006C2105
  * dpi (edi)
- * format (esi)
+ * args (esi)
  * x (cx)
  * y (dx)
  * width (bp)
- * colour (bx)
- * unknown (al)
+ * format (bx)
+ * colour (al)
  */
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown)
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	eax = unknown;
-	ebx = colour;
+	eax = colour;
+	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = (int)format;
+	esi = (int)args;
 	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
