@@ -39,6 +39,7 @@ enum {
 extern const sint16 days_in_month[MONTH_COUNT];
 
 int date_get_month(int months);
+int date_get_year(int months);
 int date_get_total_months(int month, int year);
 void date_reset();
 

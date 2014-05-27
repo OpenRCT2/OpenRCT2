@@ -324,9 +324,13 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x09];
-	uint8 direction;				// 0x1D
-	uint32 pad_1E;
+	sint16 pad_14;
+	sint16 var_16;
+	sint16 var_18;
+	sint16 var_1A;
+	sint16 var_1C;
+	uint8 var_1E;
+	uint8 pad_1F[3];
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
@@ -339,7 +343,10 @@ typedef struct {
 	uint8 staff_type;				// 0x2F
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
-	uint8 pad_32[0x06];
+	uint16 var_32;
+	uint16 var_34;
+	uint8 var_36;
+	uint8 var_37;
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
@@ -352,8 +359,8 @@ typedef struct {
 	uint8 pad_41[0x2];
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 pad_45;
-	uint16 paid_on_drink;			// 0x46
+	uint8 var_45;
+	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
@@ -365,11 +372,19 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C
-	uint8 pad_6D[0x0F];
+	uint8 pad_6D[3];
+	uint8 var_70;
+	uint8 var_71;
+	uint8 var_72;
+	uint8 pad_73[3];
+	uint8 var_76;
+	uint8 pad_77;
+	uint8 var_78;
+	uint8 pad_79[0x03];
 	uint8 rides_been_on[32];		// 0x7C
 	uint32 id;						// 0x9C
-	sint32 cash_in_pocket;			// 0xA0
-	sint32 cash_spent;				// 0xA4
+	money32 cash_in_pocket;			// 0xA0
+	money32 cash_spent;				// 0xA4
 	uint8 pad_A8;
 	sint32 time_in_park;			// 0xA9
 	uint8 pad_AD[0x3];
@@ -381,14 +396,17 @@ typedef struct {
 	uint32 flags;					// 0xC8
 	uint8 var_CC;					
 	uint8 pad_CD[0x17];
-	uint16 paid_to_enter;			// 0xE4
-	uint16 paid_on_rides;			// 0xE6
-	uint16 paid_on_food;			// 0xE8
-	uint16 paid_on_souvenirs;		// 0xEA
+	money16 paid_to_enter;			// 0xE4
+	money16 paid_on_rides;			// 0xE6
+	money16 paid_on_food;			// 0xE8
+	money16 paid_on_souvenirs;		// 0xEA
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
-	uint8 pad_EF[0x04];
+	uint8 pad_EF;
+	uint8 var_F0;
+	uint8 var_F1;
+	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 pad_F4[0x02];
 	uint8 balloon_colour;			// 0xF6
@@ -399,8 +417,30 @@ typedef struct {
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
+/** Helper macro until rides are stored in this module. */
+#define GET_PEEP(sprite_index) &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep)
+
+/**
+ * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are
+ * applied in tautology if statements.
+ */
+#define FOR_ALL_PEEPS(sprite_index, peep) \
+	for (sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next) \
+		if ((peep = GET_PEEP(sprite_index)) || 1)
+
+#define FOR_ALL_GUESTS(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_GUEST)
+
+#define FOR_ALL_STAFF(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_STAFF)
+
 int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
+void peep_update_crowd_noise();
+void peep_applause();
+rct_peep *peep_generate(int x, int y, int z);
 
 #endif

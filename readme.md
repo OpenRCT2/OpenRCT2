@@ -50,12 +50,20 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 # 2 Building the source code
 
 ## 2.1 Prerequisites
+### Windows:
 - Windows XP / Vista / 7 / 8
 - RollerCoaster Tycoon 2
 - Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
 - [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
+### Linux:
+- [MinGW-w64](mingw-w64.sourceforge.net)
+- [Wine](http://www.winehq.org/)
+- RollerCoaster Tycoon 2
+- libsdl2 compiled with MinGW-w64
+
 ## 2.2 Compiling and running
+### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Download the [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should resemble ```\OpenRCT2\sdl\include\```.
 3. Open the solution in the projects directory (**openrct2.vcxproj**) with Visual C++.
@@ -63,6 +71,10 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
 6. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
 7. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+
+### Linux:
+As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/IntelOrca/OpenRCT2/wiki).
+
 
 # 3 Contributing
 

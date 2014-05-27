@@ -21,12 +21,12 @@
 #include <string.h>
 #include "addresses.h"
 #include "config.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_BANNER_WIDGET_IDX {
+enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -39,7 +39,7 @@ static enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_TEXT_COLOR_DROPDOWN_BUTTON
 };
 
-static rct_widget window_banner_widgets[] = {
+rct_widget window_banner_widgets[] = {
 	{ WWT_FRAME,			0,	0,		112,	0,		95,		0x0FFFFFFFF,	65535},								// panel / background
 	{ WWT_CAPTION,			0,	1,		111,	1,		14,		0xBA9,			STR_WINDOW_TITLE_TIP},				// title bar
 	{ WWT_CLOSEBOX,			0,	100,	110,	2,		13,		0x338,			STR_CLOSE_WINDOW_TIP},				// close x button
@@ -153,8 +153,18 @@ static void window_banner_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -176,7 +186,12 @@ static void window_banner_mousedown()
 {
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOR:
@@ -192,7 +207,12 @@ static void window_banner_dropdown()
 {
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx;
+	#else
+	__asm__ ( "mov %[widgetIndex], dx; " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 
 	if (widgetIndex == WIDX_MAIN_COLOR)
 		RCT2_CALLPROC_EBPSAFE(0x006BA548);
@@ -204,7 +224,12 @@ static void window_banner_textinput()
 {
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx;
+	#else
+	__asm__ ( "mov %[widgetIndex], dx; " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 
 	if (widgetIndex == WIDX_BANNER_TEXT) {
 		RCT2_CALLPROC_EBPSAFE(0x006BA6D8);
@@ -221,8 +246,18 @@ static void window_banner_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

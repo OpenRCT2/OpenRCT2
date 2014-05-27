@@ -27,6 +27,7 @@
 #define SPRITE_LOCATION_NULL 0x8000
 
 #include "peep.h"
+#include "vehicle.h"
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
@@ -46,16 +47,6 @@ typedef struct {
 	uint32 var_24;
 } rct_litter;
 
-typedef struct {
-	uint8 sprite_idetifier;			// 0x00
-	uint8 pad_01[0x0D];
-	sint16 x;						// 0x0E
-	sint16 y;						// 0x10
-	sint16 z;						// 0x12
-	uint8 pad_14[0x2a];
-	uint16 next_car;				// 0x3E
-} rct_car;
-
 /**
  * Sprite structure.
  * size: 0x0100
@@ -65,7 +56,9 @@ typedef union {
 	rct_unk_sprite unknown;
 	rct_peep peep;
 	rct_litter litter;
-	rct_car car;
+	rct_vehicle vehicle;
 } rct_sprite;
+
+void create_balloon(int x, int y, int z, int colour);
 
 #endif

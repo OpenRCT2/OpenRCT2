@@ -18,9 +18,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <SDL.h>
 #include "audio.h"
 #include "addresses.h"
 #include "rct2.h"
+
+int gAudioDeviceCount;
+audio_device *gAudioDevices = NULL;
+
+void audio_init(int i)
+{
+	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+		RCT2_ERROR("SDL_Init %s", SDL_GetError());
+		exit(-1);
+	}
+}
+
+void audio_quit()
+{
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+}
+
+/**
+ * Populates audio devices.
+ */
+void audio_get_devices()
+{
+	int i;
+
+	if (gAudioDevices != NULL)
+		free(gAudioDevices);
+
+	gAudioDeviceCount = SDL_GetNumAudioDevices(SDL_FALSE);
+	if (gAudioDeviceCount > 0) {
+		gAudioDeviceCount++;
+		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+
+		strcpy(gAudioDevices[0].name, "Default sound device");
+		for (i = 1; i < gAudioDeviceCount; i++) {
+			const char *utf8_name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
+			if (utf8_name == NULL)
+				utf8_name = "(UNKNOWN)";
+
+			strcpy(gAudioDevices[i].name, utf8_name);
+		}
+	}
+}
 
 void get_dsound_devices()
 {

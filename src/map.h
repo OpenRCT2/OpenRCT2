@@ -182,6 +182,15 @@ enum {
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
+
+typedef struct {
+	uint16 x;
+	uint16 y;
+	uint8 z;
+	uint8 direction;
+} rct2_peep_spawn;
+
+
 void map_init();
 void map_update_tile_pointers();
 int map_element_height(int x, int y);

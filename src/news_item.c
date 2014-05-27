@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "audio.h"
 #include "date.h"
 #include "news_item.h"
 #include "rct2.h"
 #include "ride.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "window.h"
 
@@ -96,7 +97,7 @@ void news_item_update_current()
 	newsItems[0].ticks++;
 	if (newsItems[0].ticks == 1 && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
 		// Play sound
-		sound_play_panned(39, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2);
+		sound_play_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2);
 	}
 
 	// Removal of current news item
@@ -177,7 +178,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 	int i;
 	rct_ride *ride;
 	rct_peep *peep;
-	rct_car *car;
+	rct_vehicle *vehicle;
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
@@ -191,7 +192,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -205,23 +206,22 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 		// Find which ride peep is on
 		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
-		// Check if there are trains on the track (first bit of var_1D0)
-		if (!(ride->var_1D0 & 1)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
 		}
 
 		// Find the first car of the train peep is on
-		car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).car;
+		vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[ride->train_car_map[peep->current_train]]).vehicle;
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
-			car = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[car->next_car]).car;
-		*x = car->x;
-		*y = car->y;
-		*z = car->z;
+			vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[vehicle->next_vehicle_on_train]).vehicle;
+		*x = vehicle->x;
+		*y = vehicle->y;
+		*z = vehicle->z;
 		break;
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -295,12 +295,11 @@ void news_item_open_subject(int type, int subject) {
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
 		break;
 	case NEWS_ITEM_MONEY:
-		// Open finances window
-		RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+		window_finances_open();
 		break;
 	case NEWS_ITEM_RESEARCH:
 

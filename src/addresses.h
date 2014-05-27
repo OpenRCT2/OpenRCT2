@@ -42,14 +42,16 @@
 
 #define RCT2_ADDRESS_RIDE_PROPERTIES				0x00997C9D
 #define RCT2_ADDRESS_LAND_TOOL_SIZE					0x009A9800
+#define RCT2_ADDRESS_SAVE_PROMPT_MODE				0x009A9802
 
-#define RCT2_ADDRESS_SCENARIO_LIST					0x009A9FF4
-#define RCT2_ADDRESS_NUM_SCENARIOS					0x009AA008
+// #define RCT2_ADDRESS_SCENARIO_LIST				0x009A9FF4
+// #define RCT2_ADDRESS_NUM_SCENARIOS				0x009AA008
 
 #define RCT2_ADDRESS_APP_PATH						0x009AA214
 
 #define RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER			0x009AAC6E
 #define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
+
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74
 #define RCT2_ADDRESS_CONFIG_SOUND_QUALITY			0x009AAC77
 #define RCT2_ADDRESS_CONFIG_METRIC					0x009AAC78
@@ -83,6 +85,8 @@
 #define RCT2_ADDRESS_DIRTY_BLOCK_ROWS				0x009ABDEC
 
 #define RCT2_ADDRESS_RUN_INTRO_TICK_PART			0x009AC319
+
+#define RCT2_ADDRESS_INSTALLED_OBJECT_LIST			0x009ADAE8
 
 #define RCT2_ADDRESS_INPUT_STATE					0x009DE51D
 #define RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS		0x009DE51F
@@ -137,9 +141,27 @@
 
 #define RCT2_ADDRESS_G1_ELEMENTS					0x009EBD28
 
+#define RCT2_ADDRESS_PATH_TYPES						0x009ADA14
+#define RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS			0x00F3EF92
+#define RCT2_ADDRESS_PROVISIONAL_PATH_X				0x00F3EF94
+#define RCT2_ADDRESS_PROVISIONAL_PATH_Y				0x00F3EF96
+#define RCT2_ADDRESS_PROVISIONAL_PATH_Z				0x00F3EF98
+#define RCT2_ADDRESS_PATH_CONSTRUCTION_MODE			0x00F3EF99
+#define RCT2_ADDRESS_PATH_ERROR_OCCURED				0x00F3EF9F
+#define RCT2_ADDRESS_SELECTED_PATH_ID				0x00F3EFA0
+#define RCT2_ADDRESS_SELECTED_PATH_TYPE				0x00F3EFA2
+#define RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X			0x00F3EF8A
+#define RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y			0x00F3EF8C
+#define RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z			0x00F3EF8E
+#define RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION		0x00F3EF90
+
+#define RCT2_ADDRESS_MAP_IMAGE_DATA					0x00F1AD68
+
 #define RCT2_ADDRESS_CURRENT_MONTH_YEAR				0x00F663A8
 #define RCT2_ADDRESS_CURRENT_MONTH_TICKS			0x00F663AA
 
+#define RCT2_ADDRESS_SCENARIO_SRAND_0				0x00F663B0
+#define RCT2_ADDRESS_SCENARIO_SRAND_1				0x00F663B4
 #define RCT2_ADDRESS_MAP_ELEMENTS					0x00F663B8
 
 #define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
@@ -154,6 +176,7 @@
 #define RCT2_ADDRESS_PARK_FLAGS						0x013573E4
 #define RCT2_ADDRESS_PARK_ENTRANCE_FEE				0x013573E8
 #define RCT2_ADDRESS_GUESTS_IN_PARK					0x01357844
+#define RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK		0x01357846
 #define RCT2_ADDRESS_MONTHLY_RIDE_INCOME			0x01357894
 #define RCT2_ADDRESS_CURRENT_PARK_RATING			0x01357CB0
 #define RCT2_ADDRESS_PARK_RATING_HISTORY			0x01357CB2
@@ -174,17 +197,20 @@
 #define RCT2_ADDRESS_AWARD_LIST						0x01358760
 #define RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED		0x013587F8
 #define RCT2_ADDRESS_CURRENT_INTEREST_RATE			0x0135934A
-#define RCT2_ADDRESS_EXPENDITURE_TABLE				0x01357848
+
+#define RCT2_ADDRESS_PEEP_SPAWNS					0x013573F2
+
 #define RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL			0x013573FF
+#define RCT2_ADDRESS_EXPENDITURE_TABLE				0x01357848
 
 #define RCT2_ADDRESS_HANDYMAN_COLOUR				0x01357BCD
 #define RCT2_ADDRESS_MECHANIC_COLOUR				0x01357BCE
 #define RCT2_ADDRESS_SECURITY_COLOUR				0x01357BCF
 
-#define RCT2_ADDRESS_CURRENT_INTEREST_RATE			0x0135934A
-
 #define RCT2_ADDRESS_MAP_SIZE						0x01358834
 #define RCT2_ADDRESS_PARK_SIZE						0x013580EA
+
+#define RCT2_TOTAL_RIDE_VALUE						0x013580EE
 
 #define RCT2_ADDRESS_SCENARIO_NAME					0x0135920A
 #define RCT2_ADDRESS_SCENARIO_DETAILS				0x0135924A
@@ -273,13 +299,22 @@
 
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
+	#ifdef _MSC_VER
 	__asm push ebp
 	__asm call address
 	__asm pop ebp
+	#else
+	__asm__ ( "\
+		push ebp \n\
+		call %[address] \n\
+		pop ebp \n\
+		" : [address] "+m" (address) );
+	#endif
 }
 
 static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
+	#ifdef _MSC_VER
 	__asm {
 		push address
 		mov eax, _eax
@@ -292,6 +327,28 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 		call [esp]
 		add esp, 4
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		push ebx \n\
+		push ebp \n\
+		push %[address] 	\n\
+		mov eax, %[_eax] 	\n\
+		mov ebx, %[_ebx] 	\n\
+		mov ecx, %[_ecx] 	\n\
+		mov edx, %[_edx] 	\n\
+		mov esi, %[_esi] 	\n\
+		mov edi, %[_edi] 	\n\
+		mov ebp, %[_ebp] 	\n\
+		call [esp] 	\n\
+		add esp, 4 	\n\
+		pop ebp \n\
+		pop ebx \n\
+	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+		:
+		: "eax","ecx","edx","esi","edi"
+	);
+	#endif
 }
 
 static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
@@ -314,6 +371,7 @@ static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, i
 
 static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
+	#ifdef _MSC_VER
 	__asm {
 		// Store C's base pointer
 		push ebp
@@ -380,6 +438,80 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 
 		add esp, 4
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		/* Store C's base pointer*/ 	\n\
+		push ebx 	\n\
+		push ebp 	\n\
+	\n\
+		/* Store %[address] to call*/ 	\n\
+		push %[address] 	\n\
+	\n\
+		/* Set all registers to the input values*/ 	\n\
+		mov eax, [%[_eax]] 	\n\
+		mov eax, [eax] 	\n\
+		mov ebx, [%[_ebx]] 	\n\
+		mov ebx, [ebx] 	\n\
+		mov ecx, [%[_ecx]] 	\n\
+		mov ecx, [ecx] 	\n\
+		mov edx, [%[_edx]] 	\n\
+		mov edx, [edx] 	\n\
+		mov esi, [%[_esi]] 	\n\
+		mov esi, [esi] 	\n\
+		mov edi, [%[_edi]] 	\n\
+		mov edi, [edi] 	\n\
+		mov ebp, [%[_ebp]] 	\n\
+		mov ebp, [ebp] 	\n\
+	\n\
+		/* Call function*/ 	\n\
+		call [esp] 	\n\
+		add esp, 4 	\n\
+	\n\
+		/* Store output eax*/ 	\n\
+		push eax 	\n\
+			\n\
+		/* Put original C base pointer into eax*/ 	\n\
+		mov eax, [esp+4] 	\n\
+	\n\
+		/* Store output ebp*/ 	\n\
+		push ebp 	\n\
+	\n\
+		/* Set ebp to the original C base pointer*/ 	\n\
+		mov ebp, eax 	\n\
+	\n\
+		/* Put output ebp into ebp parameter*/ 	\n\
+		mov eax, [esp] 	\n\
+		push ebx 	\n\
+		mov ebx, [%[_ebp]] 	\n\
+		mov [ebx], eax 	\n\
+		pop ebx 	\n\
+		add esp, 4 	\n\
+	\n\
+		/* Get resulting ebx, ecx, edx, esi, edi registers*/ 	\n\
+		mov eax, [%[_edi]] 	\n\
+		mov [eax], edi 	\n\
+		mov eax, [%[_esi]] 	\n\
+		mov [eax], esi 	\n\
+		mov eax, [%[_edx]] 	\n\
+		mov [eax], edx 	\n\
+		mov eax, [%[_ecx]] 	\n\
+		mov [eax], ecx 	\n\
+		mov eax, [%[_ebx]] 	\n\
+		mov [eax], ebx 	\n\
+		pop eax 	\n\
+	\n\
+		/* Get resulting eax register*/ 	\n\
+		mov ebx, [%[_eax]] 	\n\
+		mov [ebx], eax 	\n\
+	\n\
+		add esp, 4 	\n\
+		pop ebx 	\n\
+	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+		:
+		: "eax","ecx","edx","esi","edi"
+	);
+	#endif
 }
 
 #endif

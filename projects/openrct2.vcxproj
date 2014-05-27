@@ -17,6 +17,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio.h" />
+    <ClInclude Include="..\src\award.h" />
     <ClInclude Include="..\src\climate.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\date.h" />
@@ -26,6 +27,7 @@
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\map.h" />
+    <ClInclude Include="..\src\marketing.h" />
     <ClInclude Include="..\src\news_item.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\osinterface.h" />
@@ -33,17 +35,19 @@
     <ClInclude Include="..\src\peep.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\ride.h" />
+    <ClInclude Include="..\src\ride_data.h" />
+    <ClInclude Include="..\src\ride_ratings.h" />
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\screenshot.h" />
-    <ClInclude Include="..\src\settings.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
-    <ClInclude Include="..\src\strings.h" />
+    <ClInclude Include="..\src\string_ids.h" />
     <ClInclude Include="..\src\title.h" />
     <ClInclude Include="..\src\track.h" />
     <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\util.h" />
+    <ClInclude Include="..\src\vehicle.h" />
     <ClInclude Include="..\src\viewport.h" />
     <ClInclude Include="..\src\widget.h" />
     <ClInclude Include="..\src\window.h" />
@@ -55,6 +59,7 @@
   <ItemGroup>
     <ClCompile Include="..\lodepng\lodepng.c" />
     <ClCompile Include="..\src\audio.c" />
+    <ClCompile Include="..\src\award.c" />
     <ClCompile Include="..\src\climate.c" />
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\date.c" />
@@ -64,21 +69,28 @@
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\map.c" />
+    <ClCompile Include="..\src\marketing.c" />
     <ClCompile Include="..\src\news_item.c" />
     <ClCompile Include="..\src\object.c" />
+    <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\osinterface.c" />
     <ClCompile Include="..\src\park.c" />
     <ClCompile Include="..\src\peep.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride.c" />
+    <ClCompile Include="..\src\ride_data.c" />
+    <ClCompile Include="..\src\ride_ratings.c" />
     <ClCompile Include="..\src\sawyercoding.c" />
     <ClCompile Include="..\src\scenario.c" />
+    <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\screenshot.c" />
-    <ClCompile Include="..\src\strings.c" />
+    <ClCompile Include="..\src\sprite.c" />
+    <ClCompile Include="..\src\string_ids.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\track.c" />
     <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\util.c" />
+    <ClCompile Include="..\src\vehicle.c" />
     <ClCompile Include="..\src\viewport.c" />
     <ClCompile Include="..\src\widget.c" />
     <ClCompile Include="..\src\window.c" />
@@ -95,6 +107,7 @@
     <ClCompile Include="..\src\window_park.c" />
     <ClCompile Include="..\src\window_finances.c" />
     <ClCompile Include="..\src\window_footpath.c" />
+    <ClCompile Include="..\src\window_map.c" />
     <ClCompile Include="..\src\window_new_ride.c" />
     <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_ride_list.c" />

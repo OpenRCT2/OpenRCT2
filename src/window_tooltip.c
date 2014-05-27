@@ -18,9 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include <memory.h>
 #include "addresses.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "widget.h"
 #include "window.h"
 
@@ -35,7 +36,7 @@ static rct_widget window_tooltip_widgets[] = {
 
 static void window_tooltip_emptysub() { }
 static void window_tooltip_onclose();
-static void window_tooltip_update();
+static void window_tooltip_update(rct_window *w);
 static void window_tooltip_paint();
 
 static void* window_tooltip_events[] = {
@@ -173,7 +174,7 @@ static void window_tooltip_onclose()
  * 
  *  rct2: 0x006EA580
  */
-static void window_tooltip_update()
+static void window_tooltip_update(rct_window *w)
 {
 	if (RCT2_GLOBAL(0x009DE51E, uint8) == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
@@ -188,8 +189,18 @@ static void window_tooltip_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	int left = w->x;
 	int top = w->y;

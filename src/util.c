@@ -23,6 +23,20 @@
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
 	// 1 metre squared = 10.7639104 feet squared
-	// how it is done in RCT2
+	// RCT2 approximates as 11
 	return squaredMetres * 11;
+}
+
+int metres_to_feet(int metres)
+{
+	// 1 metre = 3.2808399 feet
+	// RCT2 approximates as 3.28125
+	return (metres * 840) / 256;
+}
+
+int mph_to_kmph(int mph)
+{
+	// 1 mph = 1.60934 kmph
+	// RCT2 approximates as 1.609375
+	return (mph * 1648) / 1024;
 }

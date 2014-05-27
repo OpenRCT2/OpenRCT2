@@ -22,7 +22,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "peep.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
@@ -75,7 +75,7 @@ static void window_guest_list_mouseup();
 static void window_guest_list_resize();
 static void window_guest_list_mousedown();
 static void window_guest_list_dropdown();
-static void window_guest_list_update();
+static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize();
 static void window_guest_list_scrollmousedown();
 static void window_guest_list_scrollmouseover();
@@ -187,15 +187,25 @@ static void window_guest_list_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_MAP:
-		RCT2_CALLPROC_EBPSAFE(0x0068C88A);
+		window_map_open();
 		break;
 	}
 }
@@ -208,7 +218,12 @@ static void window_guest_list_resize()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->min_width = 350;
 	w->min_height = 330;
@@ -233,9 +248,24 @@ static void window_guest_list_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
@@ -303,9 +333,24 @@ static void window_guest_list_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -327,12 +372,8 @@ static void window_guest_list_dropdown()
  * 
  *  rct2: 0x00699E54
  */
-static void window_guest_list_update()
+static void window_guest_list_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
 		RCT2_GLOBAL(0x00F1AF20, uint16)--;
 	w->var_490++;
@@ -347,24 +388,23 @@ static void window_guest_list_update()
  */
 static void window_guest_list_scrollgetsize()
 {
-	int i, y, numGuests, spriteIdx;
+	int i, y, numGuests, spriteIndex;
 	rct_window *w;
 	rct_peep *peep;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
 		// Count the number of guests
 		numGuests = 0;
 
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->var_2A != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
@@ -404,8 +444,18 @@ static void window_guest_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ecx, 447
+	#else
+	__asm__ ( "mov ecx, 447 "  );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov edx, y
+	#else
+	__asm__ ( "mov edx, %[y] " : [y] "+m" (y) );
+	#endif
+
 }
 
 /**
@@ -414,25 +464,29 @@ static void window_guest_list_scrollgetsize()
  */
 static void window_guest_list_scrollmousedown()
 {
-	int i, spriteIdx;
+	int i, spriteIndex;
 	short y;
 	rct_window *w;
 	rct_peep *peep;
 
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
 		i = y / 10;
 		i += _window_guest_list_selected_page * 3173;
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->var_2A != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
@@ -472,8 +526,18 @@ static void window_guest_list_scrollmouseover()
 	short y;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -500,7 +564,12 @@ static void window_guest_list_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
@@ -534,8 +603,18 @@ static void window_guest_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -592,14 +671,24 @@ static void window_guest_list_paint()
 static void window_guest_list_scrollpaint()
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	int spriteIdx, format, numGuests, i, j, y;
+	int spriteIndex, format, numGuests, i, j, y;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
 	rct_peep_thought *thought;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
@@ -610,13 +699,7 @@ static void window_guest_list_scrollpaint()
 		y = _window_guest_list_selected_page * -0x7BF2;
 
 		// For each guest
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			peep->var_0C &= ~0x200;
 			if (peep->var_2A != 0)
 				continue;
@@ -806,7 +889,7 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
  */
 static void window_guest_list_find_groups()
 {
-	int spriteIdx, spriteIdx2, groupIndex, faceIndex;
+	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
 	int eax = RCT2_GLOBAL(0x00F663AC, uint32) & 0xFFFFFF00;
@@ -820,24 +903,13 @@ static void window_guest_list_find_groups()
 	_window_guest_list_num_groups = 0;
 
 	// Set all guests to unassigned
-	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (spriteIdx != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-		spriteIdx = peep->next;
-
-		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0)
-			continue;
-
-		peep->var_0C |= (1 << 8);
-	}
+	FOR_ALL_GUESTS(spriteIndex, peep)
+		if (peep->var_2A == 0)
+			peep->var_0C |= (1 << 8);
 
 	// For each guest / group
-	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (spriteIdx != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-		spriteIdx = peep->next;
-
-		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
 			continue;
 
 		// New group, cap at 240 though
@@ -860,12 +932,8 @@ static void window_guest_list_find_groups()
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
 
 		// Find more peeps that belong to same group
-		spriteIdx2 = peep->next;
-		while (spriteIdx2 != SPRITE_INDEX_NULL) {
-			peep2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx2].peep);
-			spriteIdx2 = peep2->next;
-
-			if (peep2->type != PEEP_TYPE_GUEST || peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
+		FOR_ALL_GUESTS(spriteIndex2, peep2) {
+			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
 			// Get and check if in same group

@@ -22,10 +22,14 @@
 
 #include <string.h>
 #include <setjmp.h>
+#ifdef _MSC_VER
+#include <time.h>
+#endif
 #include <windows.h>
-#include <ShlObj.h>
+#include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
+#include "audio.h"
 #include "climate.h"
 #include "config.h"
 #include "date.h"
@@ -44,6 +48,9 @@
 #include "track.h"
 #include "viewport.h"
 
+typedef struct tm tm_t;
+
+void print_launch_information();
 
 void rct2_init_directories();
 void rct2_startup_checks();
@@ -64,9 +71,15 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	print_launch_information();
+
+	// Begin RCT2
 	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
+
+	audio_init();
+	audio_get_devices();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
 	
 	config_init();
@@ -76,6 +89,26 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	exit(0);
 
 	return 0;
+}
+
+void print_launch_information()
+{
+	char buffer[32];
+	time_t timer;
+	tm_t* tmInfo;
+
+	// Print version information
+	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
+	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
+
+	// Print current time
+	time(&timer);
+	tmInfo = localtime(&timer);
+	strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
+	printf("Time: %s\n", buffer);
+
+	// TODO Print other potential information (e.g. user, hardware)
 }
 
 void rct2_loop()
@@ -99,6 +132,14 @@ void rct2_finish()
 	_finished = 1;
 }
 
+void rct2_quit() {
+	if (gGeneral_config.confirmation_prompt) {
+		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+		window_save_prompt_open();
+	} else
+		rct2_finish();
+}
+
 void rct2_init()
 {
 	RCT2_GLOBAL(0x00F663AC, int) = 0;
@@ -112,7 +153,7 @@ void rct2_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
-	object_load_list();
+	object_list_load();
 	scenario_load_list();
 	track_load_list(253);
 	gfx_load_g1();
@@ -141,20 +182,19 @@ void rct2_init()
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) = gConfig.play_intro ? 8 : 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
 }
 
 // rct2: 0x00683499
 void rct2_init_directories()
 {
 	// check install directory
-	DWORD dwAttrib = GetFileAttributes(gConfig.game_path);
-	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+	if ( !osinterface_directory_exists(gGeneral_config.game_path) ) {
 		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfig.game_path);
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
@@ -177,22 +217,38 @@ void rct2_init_directories()
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
 }
 
+void subsitute_path(char *dest, const char *path, const char *filename)
+{
+	while (*path != '*') {
+		*dest++ = *path++;
+	}
+	strcpy(dest, filename);
+}
+
 // rct2: 0x00674B42
 void rct2_startup_checks()
 {
 	// check if game is already running
 
-	RCT2_CALLPROC(0x00674C0B);
+	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
 }
 
 void rct2_update()
 {
 	// Set 0x009DE564 to the value of esp
 	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
+	#ifdef _MSC_VER
 	__asm {
 		mov eax, 009DE564h
 		mov [eax], esp
 	}
+	#else
+	__asm__ ( "\
+	\n\
+		mov eax, 0x009DE564 	\n\
+		mov [eax], esp 	\n\
+	 " : : : "eax" );
+	#endif
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();
@@ -330,7 +386,7 @@ void get_system_info()
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
 	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
 
-	uint32 size = 80;
+	DWORD size = 80;
 	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
 	size = 80;
 	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
@@ -355,7 +411,7 @@ void get_system_info()
 	else
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
-	RCT2_GLOBAL(0x01423C20, uint32) = RCT2_CALLFUNC(0x406993, uint32); // cpu_has_mmx()
+	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
 }
 
 

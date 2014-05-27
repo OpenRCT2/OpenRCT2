@@ -21,7 +21,7 @@
 #ifndef _SAWYERCODING_H_
 #define _SAWYERCODING_H_
 
-#include <windows.h>
+#include <stdio.h>
 #include "rct2.h"
 
 typedef struct {
@@ -36,7 +36,7 @@ enum {
 	CHUNK_ENCODING_ROTATE
 };
 
-int sawyercoding_validate_checksum(HANDLE hFile);
-int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer);
+int sawyercoding_validate_checksum(FILE *file);
+int sawyercoding_read_chunk(FILE *file, uint8 *buffer);
 
 #endif

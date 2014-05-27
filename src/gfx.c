@@ -20,13 +20,22 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include <windows.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window.h"
 #include "osinterface.h"
+
+typedef struct {
+	uint32 num_entries;
+	uint32 total_size;
+} rct_g1_header;
+
+void *_g1Buffer = NULL;
 
 // HACK These were originally passed back through registers
 int gLastDrawStringX;
@@ -40,39 +49,43 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
  * 
  *  rct2: 0x00678998
  */
-void gfx_load_g1()
+int gfx_load_g1()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
-	DWORD header[2];
-
-	int i;
-	int g1BufferSize;
-	void* g1Buffer;
+	FILE *file;
+	rct_g1_header header;
+	unsigned int i;
 
 	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 
-	hFile = CreateFile(get_file_path(PATH_ID_G1), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, header, 8, &bytesRead, NULL);
-		if (bytesRead == 8) {
-			g1BufferSize = header[1];
-			g1Buffer = rct2_malloc(g1BufferSize);
-			ReadFile(hFile, g1Elements, 29294 * sizeof(rct_g1_element), &bytesRead, NULL);
-			ReadFile(hFile, g1Buffer, g1BufferSize, &bytesRead, NULL);
-			CloseHandle(hFile);
+	file = fopen(get_file_path(PATH_ID_G1), "rb");
+	if (file != NULL) {
+		if (fread(&header, 8, 1, file) == 1) {
+			// number of elements is stored in g1.dat, but because the entry headers are static, this can't be variable until
+			// made into a dynamic array
+			header.num_entries = 29294;
 
-			for (i = 0; i < 29294; i++)
-				g1Elements[i].offset += (int)g1Buffer;
+			// Read element headers
+			fread(g1Elements, header.num_entries * sizeof(rct_g1_element), 1, file);
 
-			return;
+			// Read element data
+			_g1Buffer = rct2_malloc(header.total_size);
+			fread(_g1Buffer, header.total_size, 1, file);
+
+			fclose(file);
+
+			// Fix entry data offsets
+			for (i = 0; i < header.num_entries; i++)
+				g1Elements[i].offset += (int)_g1Buffer;
+
+			// Successful
+			return 1;
 		}
+		fclose(file);
 	}
 
-	// exit with error
-	fprintf(stderr, "Unable to load g1.dat");
-	assert(0);
+	// Unsuccessful
+	RCT2_ERROR("Unable to load g1.dat");
+	return 0;
 }
 
 /**
@@ -138,7 +151,9 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
-	memset(bits_pointer, colour, no_pixels);
+	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
+		*((uint8*)bits_pointer) = colour;
+	}
 }
 
 
@@ -305,10 +320,10 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 					top_ = (top + dpi->y) & 0xf;
 					right_ = (right + dpi_->x) &0xf;
 
-					dpi_ = esi;
+					dpi_ = (rct_drawpixelinfo*)esi;
 
-					esi = eax >> 0x1C;
-					esi = RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
+					esi = (char*)(eax >> 0x1C);
+					esi = (char*)RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
 
 					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
 						// push    ebx
@@ -321,7 +336,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 						for (int i = ecx; i >=0; --i) {
 							if (!(ebp & (1 << right_)))
-								dpi_->bits = left_ & 0xFF;
+								dpi_->bits = (char*)(left_ & 0xFF);
 		
 							right_++;
 							right_ = right_ & 0xF;
@@ -430,7 +445,8 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 }
 
 /**
- * 
+ *  Draw a rectangle, with optional border or fill
+ *
  *  rct2: 0x006E6F81
  * dpi (edi)
  * left (ax)
@@ -438,11 +454,96 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
  * right (bx)
  * bottom (dx)
  * colour (ebp)
- * _si (si)
+ * flags (si)
  */
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si)
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short flags)
 {
-	RCT2_CALLPROC_X(0x006E6F81, left, right, top, bottom, _si, (int)dpi, colour);
+	uint8 shadow, fill, hilight;
+
+	// Flags
+	int no_border, no_fill, pressed;
+
+	no_border = 8;
+	no_fill = 0x10;
+	pressed = 0x20;
+
+	if (colour & 0x180) {
+		if (colour & 0x100) {
+			colour = colour & 0x7F;
+		} else {
+			colour = RCT2_ADDRESS(0x009DEDF4,uint8)[colour];
+		}
+
+		colour = colour | 0x2000000; //Transparent
+
+		if (flags & no_border) {
+			gfx_fill_rect(dpi, left, top, bottom, right, colour);
+		} else if (flags & pressed) {
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
+			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
+			gfx_fill_rect(dpi, right, top, right, bottom, colour + 2);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 2);
+
+			if (!(flags & no_fill)) {
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+			}
+		} else {
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom, colour + 2);
+			gfx_fill_rect(dpi, left, top, right, top, colour + 2);
+			gfx_fill_rect(dpi, right, top, right, bottom, colour + 1);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 1);
+
+			if (!(flags & no_fill)) {
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+			}
+		}
+	} else {
+		if (flags & 0x80) {
+			shadow	= RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
+			fill	= RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
+			hilight	= RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+		} else {
+			shadow	= RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
+			fill	= RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
+			hilight	= RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8];
+		}
+
+		if (flags & no_border) {
+			gfx_fill_rect(dpi, left, top, right, bottom, fill);
+		} else if (flags & pressed) {
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom, shadow);
+			gfx_fill_rect(dpi, left + 1, top, right, top, shadow);
+			gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, hilight);
+			gfx_fill_rect(dpi, left + 1, bottom, right, bottom, hilight);
+
+			if (!(flags & no_fill)) {
+				if (!(flags & 0x40)) {
+					if (flags & 0x04) {
+						fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+					} else {
+						fill = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+					}
+				}
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
+			}
+		} else {
+			// Draw outline of box
+			gfx_fill_rect(dpi, left, top, left, bottom - 1, hilight);
+			gfx_fill_rect(dpi, left + 1, top, right - 1, top, hilight);
+			gfx_fill_rect(dpi, right, top, right, bottom - 1, shadow);
+			gfx_fill_rect(dpi, left, bottom, right, bottom, shadow);
+
+			if (!(flags & no_fill)) {
+				if (flags & 0x04) {
+					fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+				}
+				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
+			}
+		}
+	}
 }
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
@@ -1262,22 +1363,22 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
  * 
  *  rct2: 0x006C2105
  * dpi (edi)
- * format (esi)
+ * args (esi)
  * x (cx)
  * y (dx)
  * width (bp)
- * colour (bx)
- * unknown (al)
+ * format (bx)
+ * colour (al)
  */
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown)
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	eax = unknown;
-	ebx = colour;
+	eax = colour;
+	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = (int)format;
+	esi = (int)args;
 	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);

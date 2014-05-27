@@ -23,7 +23,7 @@
 
 #include "rct2.h"
 #include "map.h"
-#include "strings.h"
+#include "string_ids.h"
 
 
 enum {

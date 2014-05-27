@@ -21,9 +21,10 @@
 #include "addresses.h"
 #include "game.h"
 #include "sprites.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "widget.h"
 #include "window.h"
+#include "rct2.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
@@ -98,14 +99,24 @@ static void window_title_exit_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
-	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, int) != 0)
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		return;
 
 	if (widgetIndex == 0)
-		game_do_command(0, 1, 0, 0, 5, 2, 0);
+		rct2_quit();
+// 		game_do_command(0, 1, 0, 0, 5, 3, 0);
 }
 
 /**
@@ -117,8 +128,18 @@ static void window_title_exit_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }
