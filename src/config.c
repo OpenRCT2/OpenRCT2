@@ -117,20 +117,21 @@ void config_reset_shortcut_keys()
  */
 void config_load()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
+	unsigned int bytesRead;
+	FILE *fp=NULL;
 
 	char* path = get_file_path(PATH_ID_GAMECFG);
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
+
+	fp = fopen(path, "rb");
+
+	if (fp != NULL) {
 		// Read and check magic number
-		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytesRead, NULL);
+		fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, fp);
+
 		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
 			// Read options
-			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
-			CloseHandle(hFile);
-
+			fread((void*)0x009AAC5C, 1, 2155, fp);
+			fclose(fp);
 
 			//general configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
