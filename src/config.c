@@ -254,7 +254,7 @@ void config_init()
 static int config_find_rct2_path(char *resultPath)
 {
 	int i;
-	DWORD dwAttrib;
+
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
@@ -266,8 +266,7 @@ static int config_find_rct2_path(char *resultPath)
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
-		dwAttrib = GetFileAttributes(searchLocations[i]);
-		if (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+		if ( osinterface_directory_exists(searchLocations[i]) ) {
 			strcpy(resultPath, searchLocations[i]);
 			return 1;
 		}
