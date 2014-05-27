@@ -384,30 +384,7 @@ static void window_game_top_toolbar_dropdown()
 			break;
 		case 1:		// save game
 			tool_cancel();
-			{
-				int eax, ebx, ecx, edx, esi, edi, ebp;
-				RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				if (eax == 0) {
-					gfx_invalidate_screen();
-					break;
-				}
-
-				char *src = (char*)0x0141EF67;
-				do {
-					src++;
-				} while (*src != '.' && *src != '\0');
-				strcpy(src, ".SV6");
-				strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
-
-				eax = 0;
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
-					eax |= 1;
-				RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
-				// check success?
-
-				game_do_command(0, 1047, 0, -1, 0, 0, 0);
-				gfx_invalidate_screen();
-			}
+			save_game();
 			break;
 		case 3:		// about
 			window_about_open();
