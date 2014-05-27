@@ -809,6 +809,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		*(uint32*)(palette+0xD2) = ebp;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
 	}
+
 	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, ebp, eax);
 }
 
