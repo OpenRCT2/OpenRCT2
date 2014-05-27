@@ -21,8 +21,10 @@
 #include "addresses.h"
 #include "award.h"
 #include "news_item.h"
+#include "peep.h"
 #include "ride.h"
 #include "scenario.h"
+#include "sprite.h"
 #include "window.h"
 
 #define NEGATIVE 0
@@ -67,6 +69,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 	return 0;
 }
 
+/** At least 6 open roller coasters. */
 static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardTypes)
 {
 	int i, rollerCoasters;
@@ -79,7 +82,7 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_ROLLERCOASTER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_ROLLERCOASTER)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || ride->lifecycle_flags & 0x400)
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
 			continue;
 
 		rollerCoasters++;
@@ -123,10 +126,32 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 		return 0;
 	return 1;
 }
+
+/** No more than 2 people who think the vandalism is bad and no crashes. */
 static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	int i;
+	uint16 spriteIndex;
+	rct_peep *peep;
+	int peepsWhoDislikeVandalism = 0;
+	rct_ride *ride;
+
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+			peepsWhoDislikeVandalism++;
+	}
+
+	if (peepsWhoDislikeVandalism > 2)
+		return 0;
+
+	// Check for rides that have crashed maybe?
+	FOR_ALL_RIDES(i, ride)
+		if (ride->var_1AE != 0)
+			return 0;
+
+	return 1;
 }
 
 static int award_is_deserved_best_staff(int awardType, int activeAwardTypes)
@@ -147,10 +172,39 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	return 0;
 }
 
+/** At least 4 restrooms, 1 restroom per 128 guests and no more than 16 guests who think they need the restroom. */
 static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	unsigned int i, numRestrooms, guestsWhoNeedRestroom;
+	rct_ride *ride;
+	uint16 spriteIndex;
+	rct_peep *peep;
+
+	// Count open restrooms
+	numRestrooms = 0;
+	FOR_ALL_RIDES(i, ride)
+		if (ride->type == RIDE_TYPE_BATHROOM && ride->status == RIDE_STATUS_OPEN)
+			numRestrooms++;
+
+	// At least 4 open restrooms
+	if (numRestrooms < 4)
+		return 0;
+
+	// At least one open restroom for every 128 guests
+	if (numRestrooms < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128U)
+		return 0;
+
+	// Count number of guests who are thinking they need the restroom
+	guestsWhoNeedRestroom = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
+			guestsWhoNeedRestroom++;
+	}
+
+	return (guestsWhoNeedRestroom <= 16);
 }
 
 /** More than half of the rides have satisfication <= 6 and park rating <= 650. */
@@ -196,7 +250,7 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_WATER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_WATER)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || ride->lifecycle_flags & 0x400)
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
 			continue;
 
 		waterRides++;
@@ -205,22 +259,74 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 	return (waterRides >= 6);
 }
 
+/** At least 6 custom designed rides. */
 static int award_is_deserved_best_custom_designed_rides(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	int i, customDesignedRides;
+	rct_ride *ride;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
+		return 0;
+
+	customDesignedRides = 0;
+	FOR_ALL_RIDES(i, ride) {
+		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x10000000))
+			continue;
+		if (ride->lifecycle_flags & 0x40000)
+			continue;
+		if (ride->excitement < RIDE_RATING(5, 50))
+			continue;
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
+			continue;
+
+		customDesignedRides++;
+	}
+
+	return (customDesignedRides >= 6);
 }
 
+/** At least 5 colourful rides and more than half of the rides are colourful. */
 static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	int i, countedRides, colourfulRides;
+	rct_ride *ride;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
+		return 0;
+
+	countedRides = 0;
+	colourfulRides = 0;
+	FOR_ALL_RIDES(i, ride) {
+		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x10000000))
+			continue;
+
+		countedRides++;
+		if (ride->var_1BC == 5 || ride->var_1BC == 14 || ride->var_1BC == 20 || ride->var_1BC == 30)
+			colourfulRides++;
+	}
+
+	return (colourfulRides >= 5 && colourfulRides >= countedRides - colourfulRides);
 }
 
+/** At least 10 peeps and more than 1/64 of total guests are lost or can't find something. */
 static int award_is_deserved_most_confusing_layout(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	unsigned int peepsCounted, peepsLost;
+	uint16 spriteIndex;
+	rct_peep *peep;
+
+	peepsCounted = 0;
+	peepsLost = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		peepsCounted++;
+		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND)
+			peepsLost++;
+	}
+
+	return (peepsLost >= 10 && peepsLost >= peepsCounted / 64);
 }
 
 /** At least 10 open gentle rides. */
@@ -236,7 +342,7 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_GENTLE && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_GENTLE)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || ride->lifecycle_flags & 0x400)
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
 			continue;
 
 		gentleRides++;
@@ -282,6 +388,9 @@ void award_update_all()
 {
 	int i, activeAwardTypes, freeAwardEntryIndex;
 	rct_award *awards;
+
+	RCT2_CALLPROC_EBPSAFE(0x0066A86C);
+	return;
 
 	awards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
 

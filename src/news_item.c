@@ -192,7 +192,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = map_element_height(*x, *y);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -221,7 +221,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*z = vehicle->z;
 		break;
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
@@ -295,7 +295,7 @@ void news_item_open_subject(int type, int subject) {
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[subject]).peep;
+		peep = GET_PEEP(subject);
 		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
 		break;
 	case NEWS_ITEM_MONEY:

@@ -101,11 +101,8 @@ int ride_get_count()
 	rct_ride *ride;
 	int i, count = 0;
 
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL)
-			count++;
-	}
+	FOR_ALL_RIDES(i, ride)
+		count++;
 
 	return count;
 }
@@ -159,13 +156,10 @@ void ride_init_all()
 void reset_all_ride_build_dates() {
 	int i;
 	rct_ride *ride;
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL) {
-			//mov	ax, current_month_year
-			//sub	[esi + 180h], ax
-			ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-		}
+	FOR_ALL_RIDES(i, ride) {
+		//mov	ax, current_month_year
+		//sub	[esi + 180h], ax
+		ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	}
 }
 
@@ -174,17 +168,15 @@ void reset_all_ride_build_dates() {
   */
 void ride_update_favourited_stat()
 {
+	int i;
 	rct_ride *ride;
+	uint16 spriteIndex;
 	rct_peep* peep;
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL)
-			ride->guests_favourite = 0;
+	FOR_ALL_RIDES(i, ride)
+		ride->guests_favourite = 0;
 
-	}
-	for (int sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
+	FOR_ALL_PEEPS(spriteIndex, peep) {
 		if (peep->var_08 != 4)
 			return;
 		if (peep->favourite_ride != 0xff) {
@@ -195,6 +187,7 @@ void ride_update_favourited_stat()
 		}
 
 	}
+
 	window_invalidate_by_id(WC_RIDE_LIST, 0);
 }
 

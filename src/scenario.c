@@ -365,20 +365,15 @@ void scenario_success()
 **/
 void scenario_objective5_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
@@ -400,21 +395,16 @@ void scenario_objective5_check()
  **/
 void scenario_objective8_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&

@@ -182,7 +182,7 @@ int calculate_park_rating()
 	// Guests
 	{
 		rct_peep* peep;
-		uint16 sprite_idx;
+		uint16 spriteIndex;
 		int num_happy_peeps;
 		short _bp;
 		
@@ -192,10 +192,7 @@ int calculate_park_rating()
 		// Guests, happiness, ?
 		num_happy_peeps = 0;
 		_bp = 0;
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->var_2A != 0)
 				continue;
 			if (peep->happiness > 128)
@@ -228,11 +225,7 @@ int calculate_park_rating()
 		// 
 		_ax = 0;
 		num_rides = 0;
-		for (i = 0; i < 255; i++) {
-			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-
-			if (ride->type == RIDE_TYPE_NULL)
-				continue;
+		FOR_ALL_RIDES(i, ride) {
 			_ax += 100 - ride->var_199;
 
 			if (ride->excitement != -1){
@@ -374,14 +367,12 @@ static int park_calculate_guest_generation_probability()
 {
 	unsigned int probability;
 	int i, suggestedMaxGuests, totalRideValue;
+	rct_ride *ride;
 
 	// Calculate suggested guest maximum (based on ride type) and total ride value
 	suggestedMaxGuests = 0;
 	totalRideValue = 0;
-	for (i = 0; i < MAX_RIDES; i++) {
-		rct_ride *ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
 		if (ride->lifecycle_flags & 0x80)
@@ -403,10 +394,7 @@ static int park_calculate_guest_generation_probability()
 	// If difficult guest generation, extra guests are available for good rides
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
 		suggestedMaxGuests = min(suggestedMaxGuests, 1000);
-		for (i = 0; i < MAX_RIDES; i++) {
-			rct_ride *ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
-			if (ride->type == RIDE_TYPE_NULL)
-				continue;
+		FOR_ALL_RIDES(i, ride) {
 			if (ride->lifecycle_flags & 0x80)
 				continue;
 			if (ride->lifecycle_flags & 0x400)

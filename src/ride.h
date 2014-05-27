@@ -109,10 +109,13 @@ typedef struct {
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
 	uint8 var_199;
-	uint8 pad_19A[0x1A];
+	uint8 pad_19A[0x14];
+	uint8 var_1AE;
+	uint8 pad_1AF[0x05];
 	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 pad_1BC[0x11];
+	uint8 var_1BC;
+	uint8 pad_1BD[0x10];
 	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
@@ -330,7 +333,7 @@ enum {
  */
 #define FOR_ALL_RIDES(i, ride) \
 	for (i = 0; i < MAX_RIDES; i++) \
-		if ((ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]))->type != RIDE_TYPE_NULL)
+		if ((ride = GET_RIDE(i))->type != RIDE_TYPE_NULL)
 
 extern const uint8 gRideClassifications[255];
 

@@ -30,18 +30,12 @@
 
 int peep_get_staff_count()
 {
-	uint16 sprite_index;
+	uint16 spriteIndex;
 	rct_peep *peep;
 	int count = 0;
 
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (sprite_index != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
-		sprite_index = peep->next;
-
-		if (peep->type == PEEP_TYPE_STAFF)
-			count++;
-	}
+	FOR_ALL_STAFF(spriteIndex, peep)
+		count++;
 
 	return count;
 }
@@ -53,18 +47,14 @@ int peep_get_staff_count()
 void peep_update_all()
 {
 	int i;
-	uint16 sprite_index;
+	uint16 spriteIndex;
 	rct_peep* peep;	
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)
 		return;
 
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
 	i = 0;
-	while (sprite_index != 0xFFFF) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
-		sprite_index = peep->next;
-
+	FOR_ALL_PEEPS(spriteIndex, peep) {
 		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
 			RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0);
 		} else {
@@ -86,7 +76,7 @@ void peep_problem_warnings_update()
 {
 	rct_peep* peep;
 	rct_ride* ride;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 	uint16 guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
 	int hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0,
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
@@ -94,11 +84,8 @@ void peep_problem_warnings_update()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
 
-
-	for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-
-		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0 || peep->thoughts[0].pad_3 > 5)
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0 || peep->thoughts[0].pad_3 > 5)
 			continue;
 
 		switch (peep->thoughts[0].type) {
@@ -213,7 +200,7 @@ void peep_problem_warnings_update()
 void peep_update_crowd_noise()
 {
 	rct_viewport *viewport;
-	uint16 sprite_index;
+	uint16 spriteIndex;
 	rct_peep *peep;
 	int visiblePeeps;
 
@@ -235,14 +222,9 @@ void peep_update_crowd_noise()
 
 	// Count the number of peeps visible
 	visiblePeeps = 0;
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (sprite_index != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
-		sprite_index = peep->next;
 
+	FOR_ALL_GUESTS(spriteIndex, peep) {
 		if (peep->var_16 == 0x8000)
-			continue;
-		if (peep->type != PEEP_TYPE_GUEST)
 			continue;
 		if (viewport->view_x > peep->var_1A)
 			continue;
@@ -300,17 +282,10 @@ void peep_update_crowd_noise()
  */
 void peep_applause()
 {
-	uint16 sprite_index;
+	uint16 spriteIndex;
 	rct_peep* peep;	
 
-	// For each guest
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (sprite_index != 0xFFFF) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep);
-		sprite_index = peep->next;
-
-		if (peep->type != PEEP_TYPE_GUEST)
-			continue;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
 		if (peep->var_2A != 0)
 			continue;
 

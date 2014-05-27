@@ -417,6 +417,25 @@ typedef struct {
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
+/** Helper macro until rides are stored in this module. */
+#define GET_PEEP(sprite_index) &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep)
+
+/**
+ * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are
+ * applied in tautology if statements.
+ */
+#define FOR_ALL_PEEPS(sprite_index, peep) \
+	for (sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next) \
+		if ((peep = GET_PEEP(sprite_index)) || 1)
+
+#define FOR_ALL_GUESTS(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_GUEST)
+
+#define FOR_ALL_STAFF(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_STAFF)
+
 int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();

@@ -239,7 +239,7 @@ static void window_cheats_guests_mouseup()
 	#endif
 
 	rct_peep* peep;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -250,14 +250,9 @@ static void window_cheats_guests_mouseup()
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HAPPY_GUESTS:
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
-			if (peep->var_2A != 0)
-				continue;
-			peep->happiness = 255;
-		}
+		FOR_ALL_GUESTS(spriteIndex, peep)
+			if (peep->var_2A == 0)
+				peep->happiness = 255;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	}

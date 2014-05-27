@@ -388,7 +388,7 @@ static void window_guest_list_update(rct_window *w)
  */
 static void window_guest_list_scrollgetsize()
 {
-	int i, y, numGuests, spriteIdx;
+	int i, y, numGuests, spriteIndex;
 	rct_window *w;
 	rct_peep *peep;
 
@@ -404,13 +404,7 @@ static void window_guest_list_scrollgetsize()
 		// Count the number of guests
 		numGuests = 0;
 
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->var_2A != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
@@ -470,7 +464,7 @@ static void window_guest_list_scrollgetsize()
  */
 static void window_guest_list_scrollmousedown()
 {
-	int i, spriteIdx;
+	int i, spriteIndex;
 	short y;
 	rct_window *w;
 	rct_peep *peep;
@@ -492,13 +486,7 @@ static void window_guest_list_scrollmousedown()
 	case PAGE_INDIVIDUAL:
 		i = y / 10;
 		i += _window_guest_list_selected_page * 3173;
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->var_2A != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
@@ -683,7 +671,7 @@ static void window_guest_list_paint()
 static void window_guest_list_scrollpaint()
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	int spriteIdx, format, numGuests, i, j, y;
+	int spriteIndex, format, numGuests, i, j, y;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
@@ -711,13 +699,7 @@ static void window_guest_list_scrollpaint()
 		y = _window_guest_list_selected_page * -0x7BF2;
 
 		// For each guest
-		spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-		while (spriteIdx != SPRITE_INDEX_NULL) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-			spriteIdx = peep->next;
-
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
 			peep->var_0C &= ~0x200;
 			if (peep->var_2A != 0)
 				continue;
@@ -907,7 +889,7 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
  */
 static void window_guest_list_find_groups()
 {
-	int spriteIdx, spriteIdx2, groupIndex, faceIndex;
+	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
 	int eax = RCT2_GLOBAL(0x00F663AC, uint32) & 0xFFFFFF00;
@@ -921,24 +903,13 @@ static void window_guest_list_find_groups()
 	_window_guest_list_num_groups = 0;
 
 	// Set all guests to unassigned
-	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (spriteIdx != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-		spriteIdx = peep->next;
-
-		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0)
-			continue;
-
-		peep->var_0C |= (1 << 8);
-	}
+	FOR_ALL_GUESTS(spriteIndex, peep)
+		if (peep->var_2A == 0)
+			peep->var_0C |= (1 << 8);
 
 	// For each guest / group
-	spriteIdx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-	while (spriteIdx != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx].peep);
-		spriteIdx = peep->next;
-
-		if (peep->type != PEEP_TYPE_GUEST || peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
 			continue;
 
 		// New group, cap at 240 though
@@ -961,12 +932,8 @@ static void window_guest_list_find_groups()
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
 
 		// Find more peeps that belong to same group
-		spriteIdx2 = peep->next;
-		while (spriteIdx2 != SPRITE_INDEX_NULL) {
-			peep2 = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIdx2].peep);
-			spriteIdx2 = peep2->next;
-
-			if (peep2->type != PEEP_TYPE_GUEST || peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
+		FOR_ALL_GUESTS(spriteIndex2, peep2) {
+			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
 			// Get and check if in same group
