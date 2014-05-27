@@ -49,6 +49,7 @@ enum {
 	PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS,
 	PARK_AWARD_MOST_CONFUSING_LAYOUT,
 	PARK_AWARD_BEST_GENTLE_RIDES,
+	PARK_AWARD_COUNT
 };
 
 enum {
@@ -68,6 +69,8 @@ enum {
 	PARK_FLAGS_18 = (1 << 18)
 };
 
+#define MAX_AWARDS 4
+
 int park_is_award_positive(int type);
 int park_is_open();
 void park_init();
@@ -81,5 +84,6 @@ void reset_park_entrances();
 
 void park_update();
 void park_update_histories();
+void park_update_awards();
 
 #endif

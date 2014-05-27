@@ -634,7 +634,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		RCT2_CALLPROC_EBPSAFE(0x0066A86C); // award checks
+		park_update_awards();
 	}
 	
 }
