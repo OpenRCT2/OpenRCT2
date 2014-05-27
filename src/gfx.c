@@ -803,7 +803,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
 		
 	}
-
+	//Some parts of rct jump into the function here
+	//will require splitting the function in two. Inputs image_id, palette_pointer,dpi,x,y,0x9e3cdc pointer,image_type(0xEDF81C) 
 	ebx &= 0x7FFFF;
 
 	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[ebx];
