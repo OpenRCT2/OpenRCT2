@@ -683,7 +683,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 	}
 }
 
-
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, int ebp, int eax);
 /**
  *
  *  rct2: 0x0067A28E
@@ -698,7 +698,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	int image_type = (image_id & 0xE0000000) >> 28;
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
 	uint8* palette_pointer = NULL;
-
+	uint8 palette[0x100];
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
 
@@ -777,15 +777,19 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax &= 0x1f;
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
+		rct_g1_element g1_palette = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
+		memcpy(palette, g1_palette.offset, 0x100);
 		//G1_element bits?
 		ebp = *((uint32*)(eax + 0xF3));
 		esi = *((uint32*)(eax + 0xF7));
+		//*(uint32*)(palette+0xF3) = ebp;
+		//*(uint32*)(palette+0xF7) = esi;
 		RCT2_GLOBAL(0x9ABEFF, uint32) = ebp;
 		RCT2_GLOBAL(0x9ABF03, uint32) = esi;
 		ebp = *((uint32*)(eax + 0xFB));
 		eax = ebx;
-
+		//*(uint32*)(palette+0xFB) = ebp;
 		RCT2_GLOBAL(0x9ABF07, uint32) = ebp;
 		eax >>= 24;
 		eax &= 0x1f;
@@ -794,33 +798,37 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		ebp = *((uint32*)(eax + 0xF3));
 		esi = *((uint32*)(eax + 0xF7));
+		*(uint32*)(palette+0xCA) = ebp;
+		*(uint32*)(palette+0xCE) = esi;
 		RCT2_GLOBAL(0x9ABED6, uint32) = ebp;
 		RCT2_GLOBAL(0x9ABEDA, uint32) = esi;
 		ebp = *((uint32*)(eax + 0xFB));
 
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
-		palette_pointer = (uint8*)0x9ABE0C;
+		palette_pointer = palette;// (uint8*)0x9ABE0C;
+		*(uint32*)(palette+0xD2) = ebp;
 		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;
-		
 	}
+	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, ebp, eax);
+}
 
-	ebx &= 0x7FFFF;
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, int ebp, int eax){
+	int image_element = 0x7FFFF&image_id;
+	int image_type = (image_id & 0xE0000000) >> 28;
 
-	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[ebx];
+	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[image_element];
 
-	ebx <<= 4;
-	ebx += RCT2_ADDRESS_G1_ELEMENTS;
 	if (dpi->pad_0E >= 1){ //These have not been tested
 		//something to do with zooming
 		if (dpi->pad_0E == 1){
-			RCT2_CALLPROC_X(0x0067BD81, eax, ebx, x, y, 0,(int) dpi, ebp);
+			RCT2_CALLPROC_X(0x0067BD81, eax, (int)g1_source, x, y, 0,(int) dpi, ebp);
 			return;
 		}
 		if (dpi->pad_0E == 2){
-			RCT2_CALLPROC_X(0x0067DADA, eax, ebx, x, y, 0, (int)dpi, ebp);
+			RCT2_CALLPROC_X(0x0067DADA, eax, (int)g1_source, x, y, 0, (int)dpi, ebp);
 			return;
 		}
-		RCT2_CALLPROC_X(0x0067FAAE, eax, ebx, x, y, 0, (int)dpi, ebp);
+		RCT2_CALLPROC_X(0x0067FAAE, eax, (int)g1_source, x, y, 0, (int)dpi, ebp);
 		return;
 	}
 
@@ -912,7 +920,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	source_pointer = g1_source->offset;
 	uint8* new_source_pointer_start = malloc(total_no_pixels);
 	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-
+	int ebx, ecx;
 	while (total_no_pixels>0){
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0){
