@@ -139,6 +139,25 @@ typedef struct general_configuration {
 
 } general_configuration_t;
 
+static const struct { char *key; int value; } _currencyLookupTable[] = {
+	{ "GBP", CURRENCY_POUNDS },
+	{ "USD", CURRENCY_DOLLARS },
+	{ "FRF", CURRENCY_FRANC },
+	{ "DEM", CURRENCY_DEUTSCHMARK },
+	{ "YEN", CURRENCY_YEN },
+	{ "ESP", CURRENCY_PESETA },
+	{ "ITL", CURRENCY_LIRA },
+	{ "NLG", CURRENCY_GUILDERS },
+	{ "NOK", CURRENCY_KRONA },
+	{ "SEK", CURRENCY_KRONA },
+	{ "DEK", CURRENCY_KRONA },
+	{ "EUR", CURRENCY_EUROS },
+
+	{ "£", CURRENCY_POUNDS },
+	{ "$", CURRENCY_DOLLARS },
+	{ "€", CURRENCY_EUROS }
+};
+
 //typedef struct hotkey_configuration{
 
 //};

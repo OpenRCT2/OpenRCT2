@@ -76,7 +76,7 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 
 general_configuration_t gGeneral_config;
 general_configuration_t gGeneral_config_default = {
-	1,
+	0,
 	1,
 	SCREENSHOT_FORMAT_PNG,
 	"",
@@ -99,6 +99,10 @@ static int config_parse_section(FILE *fp, char *setting, char *value);
 static void config_create_default(char *path);
 static int config_parse_currency(char* currency);
 static void config_error(char *msg);
+
+void config_save_ini(char *path);
+void config_write_ini_general(FILE *fp);
+void config_write_ini_sound(FILE *fp);
 
 /**
  * 
@@ -189,6 +193,7 @@ void config_load()
 	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
 }
 
+
 /**
  *  Save configuration to the data/config.cfg file
  *  rct2: 0x00675487
@@ -196,14 +201,116 @@ void config_load()
 void config_save()
 {
 	FILE *fp=NULL;
+	char *configIniPath = osinterface_get_orct2_homefolder();;
+
 	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
 	if (fp != NULL){
 		fwrite(&MagicNumber, 4, 1, fp);
 		fwrite((void*)0x009AAC5C, 2155, 1, fp);
 		fclose(fp);
 	}
+
+	sprintf(configIniPath, "%s%c%s", configIniPath, osinterface_get_path_separator(), "config.ini");
+	config_save_ini(configIniPath);
 }
 
+void config_save_ini(char *path)
+{
+	FILE *fp = NULL;
+
+
+	fp = fopen(path, "wt+");
+
+	config_write_ini_general(fp);
+	config_write_ini_sound(fp);
+
+	fclose(fp);
+}
+
+void config_write_ini_sound(FILE *fp)
+{
+	fprintf(fp, "[sound]\n");
+	if (gSound_config.sound_quality == SOUND_QUALITY_LOW) {
+		fprintf(fp, "sound_quality = low\n");
+	}
+	else if (gSound_config.sound_quality == SOUND_QUALITY_MEDIUM) {
+		fprintf(fp, "sound_quality = medium\n");
+	}
+	else{
+		fprintf(fp, "sound_quality = high\n");
+	}
+	
+	if (gSound_config.forced_software_buffering){
+		fprintf(fp, "forced_software_buffering = true\n");
+	}
+	else {
+		fprintf(fp, "forced_software_buffering = false\n");
+	}
+}
+
+void config_write_ini_general(FILE *fp)
+{
+	int currencyIterator = 0;
+
+	fprintf(fp, "[general]\n");
+	fprintf(fp, "game_path = %s\n", gGeneral_config.game_path);
+
+	switch (gGeneral_config.screenshot_format)
+	{
+	case SCREENSHOT_FORMAT_BMP:
+		fprintf(fp, "screenshot_format = BMP\n");
+		break;
+	case SCREENSHOT_FORMAT_PNG:
+		fprintf(fp, "screenshot_format = PNG\n");
+		break;
+	default:
+		config_error("error saving config.ini: wrong screenshot_format");
+		break;
+	}
+
+	if (gGeneral_config.play_intro){
+		fprintf(fp, "play_intro = true\n");
+	}
+	else {
+		fprintf(fp, "play_intro = false\n");
+	}
+
+	if (gGeneral_config.confirmation_prompt){
+		fprintf(fp, "confirmation_prompt = true\n");
+	}
+	else {
+		fprintf(fp, "confirmation_prompt = false\n");
+	}
+
+	if (gGeneral_config.edge_scrolling){
+		fprintf(fp, "edge_scrolling = true\n");
+	}
+	else {
+		fprintf(fp, "edge_scrolling = false\n");
+	}
+
+	for (currencyIterator = 0; currencyIterator < countof(_currencyLookupTable); currencyIterator++) {
+		if (_currencyLookupTable[currencyIterator].value == gGeneral_config.currency_format) {
+			gGeneral_config.currency_format = _currencyLookupTable[currencyIterator].value;
+			fprintf(fp, "currency = %s\n", _currencyLookupTable[currencyIterator].key);
+			break; // There are more than one valid item for Pound, Euro and Dollar ...
+		}
+	}
+
+	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
+		fprintf(fp, "measurement_format = imperial\n");
+	}
+	else {
+		fprintf(fp, "measurement_format = metric\n");
+	}
+
+	if (gGeneral_config.temperature_format == TEMPERATURE_FORMAT_F) {
+		fprintf(fp, "temperature_format = fahrenheit\n");
+	}
+	else {
+		fprintf(fp, "temperature_format = celsius\n");
+	}
+}
 
 /**
  * Initilise the settings.
@@ -278,8 +385,7 @@ static int config_find_rct2_path(char *resultPath)
  */
 static void config_create_default(char *path)
 {
-	FILE* fp;
-
+	gGeneral_config = gGeneral_config_default;
 
 	if (!config_find_rct2_path(gGeneral_config.game_path)) {
 		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
@@ -287,20 +393,7 @@ static void config_create_default(char *path)
 		strcpy(gGeneral_config.game_path, res);
 	}
 
-	fp = fopen(path, "w");
-	fprintf(fp, "[general]\n");
-	fprintf(fp, "game_path = %s\n", gGeneral_config.game_path);
-	fprintf(fp, "screenshot_format = PNG\n");
-	fprintf(fp, "play_intro = false\n");
-	fprintf(fp, "confirmation_prompt = true\n");
-	fprintf(fp, "edge_scrolling = true\n");
-	fprintf(fp, "currency = GBP\n");
-	fprintf(fp, "measurement_format = imperial\n");
-	fprintf(fp, "temperature_format = fahrenheit\n");
-	fprintf(fp, "[sound]\n");
-	fprintf(fp, "sound_quality = high\n");
-	fprintf(fp, "forced_software_buffering = false\n");
-	fclose(fp);
+	config_save_ini(path);
 }
 
 
@@ -587,25 +680,6 @@ static int config_parse_section(FILE *fp, char *setting, char *value){
 	
 	return 1;
 }
-
-static const struct { char *key; int value; } _currencyLookupTable[] = {
-	{ "GBP", CURRENCY_POUNDS },
-	{ "USD", CURRENCY_DOLLARS },
-	{ "FRF", CURRENCY_FRANC },
-	{ "DEM", CURRENCY_DEUTSCHMARK },
-	{ "YEN", CURRENCY_YEN },
-	{ "ESP", CURRENCY_PESETA },
-	{ "ITL", CURRENCY_LIRA },
-	{ "NLG", CURRENCY_GUILDERS },
-	{ "NOK", CURRENCY_KRONA },
-	{ "SEK", CURRENCY_KRONA },
-	{ "DEK", CURRENCY_KRONA },
-	{ "EUR", CURRENCY_EUROS },
-
-	{ "£", CURRENCY_POUNDS },
-	{ "$", CURRENCY_DOLLARS },
-	{ "€", CURRENCY_EUROS }
-};
 
 static int config_parse_currency(char *currency)
 {
