@@ -12,8 +12,8 @@ pushd build
 popd
 
 if [[ -t 1 ]]; then
-    echo "\033[95mDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n\033[0m"
+    echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95mwine openrct2.exe\n\033[0m"
 else
-    echo "Done! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
+    echo -e "\nDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
 fi
  

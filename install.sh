@@ -65,12 +65,10 @@ if [[ ! -d /usr/local/cross-tools/i686-w64-mingw32 ]]; then
 fi
 
 if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then
-    if [[ `uname` == "Darwin" ]]; then
-        # BSD echo doesn't recognize the -e flag.
-        echo "#! /bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
-    else
-        echo -e "#! /bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
-    fi
+    # If this fails to work because of newlines, be sure you are running this
+    # script with Bash, and not sh. We should really move this to a separate
+    # file.
+    echo -e "#! /bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
 fi
 
 chmod +x $cachedir/i686-w64-mingw32-pkg-config

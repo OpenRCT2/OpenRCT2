@@ -25,6 +25,8 @@
 
 typedef fixed16_2dp ride_rating;
 
+// Convenience function for writing ride ratings. The result is a 16 bit signed
+// integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
 
 // Used for return values, for functions that modify all three.
