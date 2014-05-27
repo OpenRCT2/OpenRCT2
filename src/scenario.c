@@ -577,6 +577,8 @@ void scenario_update()
 			objective_type == 6 || objective_type == 5) {
 			scenario_objectives_check();
 		}
+
+		window_invalidate_by_id(WC_BOTTOM_TOOLBAR, 0);
 	}
 
 	
