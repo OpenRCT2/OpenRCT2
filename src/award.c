@@ -577,9 +577,6 @@ void award_update_all()
 	int i, activeAwardTypes, freeAwardEntryIndex;
 	rct_award *awards;
 
-	RCT2_CALLPROC_EBPSAFE(0x0066A86C);
-	return;
-
 	awards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
 
 	// Only add new awards if park is open
