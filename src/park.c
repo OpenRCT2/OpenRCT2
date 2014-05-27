@@ -20,9 +20,11 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "award.h"
 #include "finance.h"
 #include "map.h"
 #include "marketing.h"
+#include "news_item.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
@@ -43,22 +45,6 @@ int _suggestedGuestMaximum;
  * approximately 1 guest per second can be generated (+60 guests in one minute).
  */
 int _guestGenerationProbability;
-
-int park_is_award_positive(int type)
-{
-	// Check if award is negative
-	switch (type) {
-	case PARK_AWARD_MOST_UNTIDY:
-	case PARK_AWARD_WORST_VALUE:
-	case PARK_AWARD_WORST_FOOD:
-	case PARK_AWARD_MOST_DISAPPOINTING:
-	case PARK_AWARD_MOST_CONFUSING_LAYOUT:
-		return 0;
-	}
-
-	// Otherwise its positive
-	return 1;
-}
 
 int park_is_open()
 {
@@ -477,13 +463,13 @@ static int park_calculate_guest_generation_probability()
 	}
 
 	// Reward or penalties for park awards
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_AWARDS; i++) {
 		rct_award *award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
 		if (award->time == 0)
 			continue;
 
 		// +/- 0.25% of the probability
-		if (park_is_award_positive(award->type))
+		if (award_is_positive(award->type))
 			probability += probability / 4;
 		else
 			probability -= probability / 4;

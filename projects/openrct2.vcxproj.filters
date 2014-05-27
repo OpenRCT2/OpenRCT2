@@ -135,6 +135,9 @@
     <ClInclude Include="..\src\marketing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\award.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -324,6 +327,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\marketing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\award.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
