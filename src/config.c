@@ -19,14 +19,12 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include <shlobj.h>
-#include <windows.h>
-#include <tchar.h>
 #include <SDL_keycode.h>
+#include <ctype.h>
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
-#include <tchar.h>
+
 
 #include "osinterface.h"
 
@@ -201,7 +199,7 @@ void config_save()
 	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
 	if (fp != NULL){
 		fwrite(&MagicNumber, 4, 1, fp);
-		fwrite((LPCVOID)0x009AAC5C, 2155, 1, fp);
+		fwrite((void*)0x009AAC5C, 2155, 1, fp);
 		fclose(fp);
 	}
 }
