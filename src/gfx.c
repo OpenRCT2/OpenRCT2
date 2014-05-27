@@ -1041,6 +1041,7 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 }
 
 /**
+ *  Return the width of the string in buffer
  *
  *  rct2: 0x006C2321
  * buffer (esi)
@@ -1050,9 +1051,8 @@ int gfx_get_string_width(char *buffer)
 	int base;
 	int width;
 
-	char curr_char;
+	uint8 curr_char;
 
-	curr_char = 0;
 	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
