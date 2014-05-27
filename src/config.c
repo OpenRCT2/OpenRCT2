@@ -117,7 +117,6 @@ void config_reset_shortcut_keys()
  */
 void config_load()
 {
-	unsigned int bytesRead;
 	FILE *fp=NULL;
 
 	char* path = get_file_path(PATH_ID_GAMECFG);
@@ -198,14 +197,12 @@ void config_load()
  */
 void config_save()
 {
-	HANDLE hFile;
-	DWORD bytesWritten;
-
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
-		CloseHandle(hFile);
+	FILE *fp=NULL;
+	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
+	if (fp != NULL){
+		fwrite(&MagicNumber, 4, 1, fp);
+		fwrite((LPCVOID)0x009AAC5C, 2155, 1, fp);
+		fclose(fp);
 	}
 }
 
