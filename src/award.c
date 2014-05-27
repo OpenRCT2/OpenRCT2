@@ -57,16 +57,73 @@ int award_is_positive(int type)
 
 #pragma region Award checks
 
+/** More than 1/16 of the total guests must be thinking untidy thoughts. */
 static int award_is_deserved_most_untidy(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	uint16 spriteIndex;
+	rct_peep *peep;
+	int negativeCount;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
+		return 0;
+	if (activeAwardTypes & (1 << PARK_AWARD_BEST_STAFF))
+		return 0;
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_TIDY))
+		return 0;
+
+	negativeCount = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 > 5)
+			continue;
+
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM
+		) {
+			negativeCount++;
+		}
+	}
+
+	return (negativeCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 16);
 }
 
+/** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
 static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	uint16 spriteIndex;
+	rct_peep *peep;
+	int positiveCount;
+	int negativeCount;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
+		return 0;
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
+		return 0;
+
+	positiveCount = 0;
+	negativeCount = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 > 5)
+			continue;
+
+		if (peep->thoughts[0].type == PEEP_THOUGHT_VERY_CLEAN)
+			positiveCount++;
+
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM
+		) {
+			negativeCount++;
+		}
+	}
+
+	return (negativeCount <= 5 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -107,10 +164,40 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 	return 1;
 }
 
+/** More than 1/128 of the total guests must be thinking scenic thoughts and less than 16 untidy thoughts. */
 static int award_is_deserved_most_beautiful(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	uint16 spriteIndex;
+	rct_peep *peep;
+	int positiveCount;
+	int negativeCount;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
+		return 0;
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
+		return 0;
+
+	positiveCount = 0;
+	negativeCount = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 > 5)
+			continue;
+
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
+			positiveCount++;
+
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
+			peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM
+		) {
+			negativeCount++;
+		}
+	}
+
+	return (negativeCount <= 15 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -130,12 +217,12 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 /** No more than 2 people who think the vandalism is bad and no crashes. */
 static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 {
-	int i;
+	int i, peepsWhoDislikeVandalism;
 	uint16 spriteIndex;
 	rct_peep *peep;
-	int peepsWhoDislikeVandalism = 0;
 	rct_ride *ride;
 
+	peepsWhoDislikeVandalism = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
 		if (peep->var_2A != 0)
 			continue;
@@ -154,22 +241,123 @@ static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 	return 1;
 }
 
+/** All staff types, at least 20 staff, one staff per 32 peeps. */
 static int award_is_deserved_best_staff(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	uint16 spriteIndex;
+	rct_peep *peep;
+	int peepCount, staffCount;
+	int staffTypeFlags;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
+		return 0;
+
+	peepCount = 0;
+	staffCount = 0;
+	staffTypeFlags = 0;
+	FOR_ALL_PEEPS(spriteIndex, peep) {
+		if (peep->type == PEEP_TYPE_STAFF) {
+			staffCount++;
+			staffTypeFlags |= (1 << peep->staff_type);
+		} else {
+			peepCount++;
+		}
+	}
+
+	return ((staffTypeFlags & 0xF) && staffCount >= 20 && staffCount >= peepCount / 32);
+
 }
 
+/** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
 static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	int i, hungryPeeps, shops, uniqueShops;
+	uint64 shopTypes;
+	rct_ride *ride;
+	char *object;
+	uint16 spriteIndex;
+	rct_peep *peep;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_WORST_FOOD))
+		return 0;
+
+	shops = 0;
+	uniqueShops = 0;
+	shopTypes = 0;
+	FOR_ALL_RIDES(i, ride) {
+		if (ride->status != RIDE_STATUS_OPEN)
+			continue;
+		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800000))
+			continue;
+
+		shops++;
+		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
+		if (!(shopTypes & (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8)))) {
+			shopTypes |= (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8));
+			uniqueShops++;
+		}
+	}
+
+	if (shops < 7 || uniqueShops < 4 || shops < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128)
+		return 0;
+
+	// Count hungry peeps
+	hungryPeeps = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+			hungryPeeps++;
+	}
+
+	return (hungryPeeps <= 12);
 }
 
+/** No more than 2 unique shops, less than one shop per 256 guests and more than 15 hungry guests. */
 static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 {
-	// TODO
-	return 0;
+	int i, hungryPeeps, shops, uniqueShops;
+	uint64 shopTypes;
+	rct_ride *ride;
+	char *object;
+	uint16 spriteIndex;
+	rct_peep *peep;
+
+	if (activeAwardTypes & (1 << PARK_AWARD_BEST_FOOD))
+		return 0;
+
+	shops = 0;
+	uniqueShops = 0;
+	shopTypes = 0;
+	FOR_ALL_RIDES(i, ride) {
+		if (ride->status != RIDE_STATUS_OPEN)
+			continue;
+		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800000))
+			continue;
+
+		shops++;
+		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
+		if (!(shopTypes & (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8)))) {
+			shopTypes |= (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8));
+			uniqueShops++;
+		}
+	}
+
+	if (uniqueShops > 2 || shops > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 256)
+		return 0;
+
+	// Count hungry peeps
+	hungryPeeps = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (peep->var_2A != 0)
+			continue;
+
+		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+			hungryPeeps++;
+	}
+
+	return (hungryPeeps > 15);
 }
 
 /** At least 4 restrooms, 1 restroom per 128 guests and no more than 16 guests who think they need the restroom. */
