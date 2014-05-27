@@ -900,7 +900,18 @@ void gfx_transpose_palette(int pal, unsigned char product)
  */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
-	RCT2_CALLPROC_X(0x006C1D6C, colour, format, x, y, (int)args, (int)dpi, 0);
+	char* buffer;
+	buffer = (char*)0x0141ED68;
+	format_string(buffer, format, args);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+
+	int width = gfx_get_string_width(buffer);
+
+	if (width <= 0xFFF) {
+		x -= width / 2;
+		gfx_draw_string(dpi, buffer, colour, x, y);
+	}
 }
 
 /**
