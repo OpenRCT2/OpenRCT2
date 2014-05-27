@@ -25,9 +25,6 @@
 #include "peep.h"
 #include "window.h"
 
-#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
-#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
-
 #pragma region Ride classification table
 
 const uint8 gRideClassifications[255] = {
@@ -199,5 +196,71 @@ void ride_update_favourited_stat()
 
 	}
 	window_invalidate_by_id(WC_RIDE_LIST, 0);
+}
+
+/** 
+ * Print debugging information about a ride. 
+ * The output is purposely verbose and should contain information about all
+ * defined ride fields.
+ *
+ * The format could definitely be improved by eg turning data into a format
+ * that makes sense, converting type information into the actual ride type etc.
+ */
+void ride_debug_string(rct_ride *ride) 
+{
+	// XXX, figure out how to return this as a string, instead of printing it.
+	printf("type: %02X\n", ride->type);
+	printf("subtype: %02x\n", ride->subtype);
+	printf("mode: %x\n", ride->mode);						// 0x004
+	printf("colour_scheme_type: %x\n", ride->colour_scheme_type);		// 0x005
+	printf("car_colours: %x\n", ride->car_colours);			// 0x006
+	printf("status: %x\n", ride->status);					// 0x049
+	printf("var_04A: %x\n", ride->var_04A);
+	printf("var_04C: %x\n", ride->var_04C);
+	printf("overall_view: %x\n", ride->overall_view);			// 0x050
+	printf("station_starts: %x\n", ride->station_starts);		// 0x052
+	printf("station_starts: %x\n", ride->station_starts);
+	printf("entrances: %x\n", ride->entrances);
+	printf("exits: %x\n", ride->exits);
+	printf("train_car_map: %x\n", ride->train_car_map);
+	printf("var_0C7: %x\n", ride->var_0C7);
+	printf("var_0C8: %x\n", ride->var_0C8);
+	printf("var_0C9: %x\n", ride->var_0C9);
+	printf("var_0E4: %x\n", ride->var_0E4);
+	printf("var_0E8: %x\n", ride->var_0E8);
+	printf("var_0EC: %x\n", ride->var_0EC);
+	printf("var_0F0: %x\n", ride->var_0F0);
+	printf("var_114: %x\n", ride->var_114);
+	printf("var_115: %x\n", ride->var_115);
+	printf("var_124: %x\n", ride->var_124);
+	printf("var_126: %x\n", ride->var_126);
+	printf("var_128: %x\n", ride->var_128);
+	printf("var_12A: %x\n", ride->var_12A);
+	printf("var_12C: %x\n", ride->var_12C);
+	printf("var_12E: %x\n", ride->var_12E);
+	printf("age: %x\n", ride->age);
+	printf("running_cost: %x\n", ride->running_cost);
+	printf("var_134: %x\n", ride->var_134);
+	printf("var_136: %x\n", ride->var_136);
+	printf("price: %x\n", ride->price);
+	printf("excitement: %x\n", ride->excitement);
+	printf("intensity: %x\n", ride->intensity);
+	printf("nausea: %x\n", ride->nausea);
+	printf("reliability: %x\n", ride->reliability);
+	printf("var_14A: %x\n", ride->var_14A);
+	printf("var_14D: %x\n", ride->var_14D);
+	printf("var_158: %x\n", ride->var_158);
+	printf("build_date: %x\n", ride->build_date);
+	printf("upkeep_cost: %x\n", ride->upkeep_cost);
+	printf("var_196: %x\n", ride->var_196);
+	printf("var_198: %x\n", ride->var_198);
+	printf("var_199: %x\n", ride->var_199);
+	printf("profit: %x\n", ride->profit);
+	printf("queue_time: %x\n", ride->queue_time);
+	printf("var_1CD: %x\n", ride->var_1CD);
+	printf("guests_favourite: %x\n", ride->guests_favourite);
+	printf("lifecycle_flags: %x\n", ride->lifecycle_flags);
+	printf("var_1F4: %x\n", ride->var_1F4);
+	printf("queue_length: %x\n", ride->queue_length);
 }
 
