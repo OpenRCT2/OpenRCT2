@@ -17,6 +17,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio.h" />
+    <ClInclude Include="..\src\award.h" />
     <ClInclude Include="..\src\climate.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\date.h" />
@@ -58,6 +59,7 @@
   <ItemGroup>
     <ClCompile Include="..\lodepng\lodepng.c" />
     <ClCompile Include="..\src\audio.c" />
+    <ClCompile Include="..\src\award.c" />
     <ClCompile Include="..\src\climate.c" />
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\date.c" />

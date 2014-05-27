@@ -21,6 +21,7 @@
 #include <windows.h>
 #include <string.h>
 #include "addresses.h"
+#include "award.h"
 #include "date.h"
 #include "finance.h"
 #include "game.h"
@@ -634,7 +635,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		park_update_awards();
+		award_update_all();
 	}
 	
 }

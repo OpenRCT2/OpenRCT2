@@ -20,6 +20,7 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "award.h"
 #include "finance.h"
 #include "map.h"
 #include "marketing.h"
@@ -44,22 +45,6 @@ int _suggestedGuestMaximum;
  * approximately 1 guest per second can be generated (+60 guests in one minute).
  */
 int _guestGenerationProbability;
-
-int park_is_award_positive(int type)
-{
-	// Check if award is negative
-	switch (type) {
-	case PARK_AWARD_MOST_UNTIDY:
-	case PARK_AWARD_WORST_VALUE:
-	case PARK_AWARD_WORST_FOOD:
-	case PARK_AWARD_MOST_DISAPPOINTING:
-	case PARK_AWARD_MOST_CONFUSING_LAYOUT:
-		return 0;
-	}
-
-	// Otherwise its positive
-	return 1;
-}
 
 int park_is_open()
 {
@@ -484,7 +469,7 @@ static int park_calculate_guest_generation_probability()
 			continue;
 
 		// +/- 0.25% of the probability
-		if (park_is_award_positive(award->type))
+		if (award_is_positive(award->type))
 			probability += probability / 4;
 		else
 			probability -= probability / 4;
@@ -590,114 +575,4 @@ void park_update()
 void park_update_histories()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0066A231);
-}
-
-static int park_is_award_deserved(int awardType, int activeAwardTypes)
-{
-	switch (awardType) {
-	case PARK_AWARD_MOST_UNTIDY:
-		break;
-	case PARK_AWARD_MOST_TIDY:
-		break;
-	case PARK_AWARD_BEST_ROLLERCOASTERS:
-		break;
-	case PARK_AWARD_BEST_VALUE:
-		if (activeAwardTypes & (1 << PARK_AWARD_WORST_VALUE))
-			return 0;
-		if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & (PARK_FLAGS_11 | PARK_FLAGS_PARK_FREE_ENTRY))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) < MONEY(10, 00))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(0, 10) >= RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) / 2)
-			return 0;
-		return 1;
-	case PARK_AWARD_MOST_BEAUTIFUL:
-		break;
-	case PARK_AWARD_WORST_VALUE:
-		if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY(0, 00))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) >= RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16))
-			return 0;
-		return 1;
-		break;
-	case PARK_AWARD_SAFEST:
-		break;
-	case PARK_AWARD_BEST_STAFF:
-		break;
-	case PARK_AWARD_BEST_FOOD:
-		break;
-	case PARK_AWARD_WORST_FOOD:
-		break;
-	case PARK_AWARD_BEST_RESTROOMS:
-		break;
-	case PARK_AWARD_MOST_DISAPPOINTING:
-		break;
-	case PARK_AWARD_BEST_WATER_RIDES:
-		break;
-	case PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES:
-		break;
-	case PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS:
-		break;
-	case PARK_AWARD_MOST_CONFUSING_LAYOUT:
-		break;
-	case PARK_AWARD_BEST_GENTLE_RIDES:
-		break;
-	}
-
-	return 0;
-}
-
-/**
- *
- *  rct2: 0x0066A86C
- */
-void park_update_awards()
-{
-	int i, activeAwardTypes, freeAwardEntryIndex;
-	rct_award *awards;
-
-	awards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
-
-	// Only add new awards if park is open
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
-		// Set active award types as flags
-		activeAwardTypes = 0;
-		freeAwardEntryIndex = -1;
-		for (i = 0; i < MAX_AWARDS; i++) {
-			if (awards[i].time != 0)
-				activeAwardTypes |= (1 << awards[i].type);
-			else if (freeAwardEntryIndex != -1)
-				freeAwardEntryIndex = i;
-		}
-
-		// Check if there was a free award entry
-		if (freeAwardEntryIndex != -1) {
-			// Get a random award type not already active
-			int awardType;
-			do {
-				awardType = (((scenario_rand() & 0xFF) * 17) >> 8) & 0xFF;
-			} while (activeAwardTypes & (1 << awardType));
-
-			// Check if award is deserved
-			if (park_is_award_deserved(awardType, activeAwardTypes)) {
-				// Add award
-				awards[freeAwardEntryIndex].type = awardType;
-				awards[freeAwardEntryIndex].time = 5;
-				news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
-				window_invalidate_by_id(WC_PARK_INFORMATION, 0);
-			}
-		}
-	}
-
-	// Decrease award times
-	for (i = 0; i < MAX_AWARDS; i++)
-		if (awards[i].time != 0)
-			if (--awards[i].time == 0)
-				window_invalidate_by_id(WC_PARK_INFORMATION, 0);
 }

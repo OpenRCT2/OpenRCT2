@@ -25,9 +25,6 @@
 #include "peep.h"
 #include "window.h"
 
-#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
-#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
-
 #pragma region Ride classification table
 
 const uint8 gRideClassifications[255] = {

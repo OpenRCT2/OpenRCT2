@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "award.h"
 #include "config.h"
 #include "date.h"
 #include "game.h"
