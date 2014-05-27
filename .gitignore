@@ -2,6 +2,12 @@
 
 sdl
 
+# Compiled dll
+openrct2.dll
+
+# Build artifacts
+.cache
+
 #################
 ## Eclipse
 #################

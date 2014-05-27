@@ -28,6 +28,8 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+#include <stdint.h>
+
 enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
