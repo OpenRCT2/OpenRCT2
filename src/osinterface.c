@@ -454,6 +454,11 @@ char *osinterface_get_orct2_homesubfolder(const char *subFolder)
 	return path;
 }
 
+int osinterface_file_exists(const char *path)
+{
+	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+}
+
 int osinterface_directory_exists(const char *path)
 {
 	DWORD dwAttrib = GetFileAttributes(path);

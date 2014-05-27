@@ -189,8 +189,7 @@ void rct2_init()
 void rct2_init_directories()
 {
 	// check install directory
-	DWORD dwAttrib = GetFileAttributes(gGeneral_config.game_path);
-	if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+	if ( !osinterface_directory_exists(gGeneral_config.game_path) ) {
 		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}

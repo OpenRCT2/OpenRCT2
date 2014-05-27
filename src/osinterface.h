@@ -52,6 +52,7 @@ char* osinterface_open_directory_browser(char *title);
 
 char* osinterface_get_orct2_homefolder();
 char *osinterface_get_orct2_homesubfolder(const char *subFolder);
+int osinterface_file_exists(const char *path);
 int osinterface_directory_exists(const char *path);
 int osinterface_ensure_directory_exists(const char *path);
 
