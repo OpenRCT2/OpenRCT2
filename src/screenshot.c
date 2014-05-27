@@ -30,7 +30,7 @@
 #include "string_ids.h"
 #include "window_error.h"
 
-#include <Windows.h> // For MAX_PATH
+#include <windows.h> // For MAX_PATH
 
 
 static int screenshot_dump_bmp();

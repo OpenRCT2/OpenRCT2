@@ -22,7 +22,7 @@
 #define _CONFIG_H_
 
 #include "rct2.h"
-#include <Windows.h> // for MAX_PATH
+#include <windows.h> // for MAX_PATH
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
