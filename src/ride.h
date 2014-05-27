@@ -25,6 +25,9 @@
 
 typedef fixed16_2dp ride_rating;
 
+#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
+#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
+
 #define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
 
 // Used for return values, for functions that modify all three.
@@ -318,5 +321,6 @@ int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
+void ride_debug_string(rct_ride *ride);
 
 #endif
