@@ -25,15 +25,18 @@
 #include "gfx.h"
 #include "map.h"
 #include "news_item.h"
+#include "object.h"
 #include "park.h"
 #include "ride.h"
 #include "window.h"
 #include "viewport.h"
 #include "finance.h"
 #include "audio.h"
-#include "strings.h"
+#include "string_ids.h"
 
 static void set_all_land_owned();
+
+/*Syntax error blah blah blat *&2)*/
 
 /**
  *
@@ -45,7 +48,7 @@ void editor_load()
 
 	pause_sounds();
 	unpause_sounds();
-	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	object_unload_all();
 	map_init();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
@@ -93,7 +96,7 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	object_unload_all();
 	map_init();
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
@@ -131,7 +134,7 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_CALLPROC_EBPSAFE(0x006A9CE8);
+	object_unload_all();
 	map_init();
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);

@@ -22,6 +22,7 @@
 #define _SCENARIO_H_
 
 #include "rct2.h"
+#include "object.h"
 
 /**
  * SV6/SC6 header chunk
@@ -49,10 +50,19 @@ typedef struct {
 	uint8 pad_00A[0x3E];
 	char name[64];				// 0x48
 	char details[256];			// 0x88
-	uint8 flags;				// 0x188
-	uint8 pad_189[0x0F];
+	rct_object_entry entry;		// 0x188
 } rct_s6_info;
 
+/*
+ * Scenario scores file header.
+ * size: 0x10
+ */
+typedef struct {
+	uint32 var_0;
+	uint32 var_4;
+	uint32 var_8;
+	uint32 scenario_count;		// 0x0C
+} rct_scenario_scores_header;
 
 /**
  * Scenario basic structure, mainly for scenario select
@@ -107,9 +117,17 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+// Scenario list
+extern int gScenarioListCount;
+extern int gScenarioListCapacity;
+extern rct_scenario_basic *gScenarioList;
+
+int scenario_scores_save();
 void scenario_load_list();
-void scenario_load(char *path);
-void scenario_load_and_play(rct_scenario_basic *scenario);
+int scenario_load_basic(const char *path);
+void scenario_load(const char *path);
+void scenario_load_and_play(const rct_scenario_basic *scenario);
 void scenario_update();
+int scenario_rand();
 
 #endif

@@ -20,13 +20,13 @@
 
 #include "addresses.h"
 #include "map.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
 
-static enum WINDOW_LAND_WIDGET_IDX {
+enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -54,7 +54,7 @@ static void window_land_close();
 static void window_land_mouseup();
 static void window_land_mousedown();
 static void window_land_dropdown();
-static void window_land_update();
+static void window_land_update(rct_window *w);
 static void window_land_invalidate();
 static void window_land_paint();
 
@@ -137,8 +137,8 @@ void window_land_open()
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
 	_selectedFloorTexture = 0;
 	_selectedWallTexture = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, sint32) = 0x80000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, sint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = MONEY32_UNDEFINED;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = MONEY32_UNDEFINED;
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
@@ -165,8 +165,18 @@ static void window_land_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -214,9 +224,24 @@ static void window_land_mousedown()
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widget, edi
+	#else
+	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
@@ -266,9 +291,24 @@ static void window_land_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
@@ -310,12 +350,8 @@ static void window_land_dropdown()
  *
  *  rct2: 0x00664272
  */
-static void window_land_update()
+static void window_land_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Close window if another tool is open
 	if (window_land_should_close())
 		window_close(w);
@@ -329,7 +365,12 @@ static void window_land_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->pressed_widgets = (1 << WIDX_PREVIEW);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) != 255)
@@ -352,10 +393,21 @@ static void window_land_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int x, y, price, numTiles;
+	int x, y, numTiles;
+	money32 price;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 
@@ -374,12 +426,12 @@ static void window_land_paint()
 	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw raise cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)RCT2_ADDRESS_LAND_RAISE_COST);
 	y += 10;
 
 	// Draw lower cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) != 0)
 		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)RCT2_ADDRESS_LAND_LOWER_COST);
 	y += 50;
 

@@ -26,9 +26,21 @@
 #include "ride.h"
 #include "window.h"
 
-// monthly cost
-const int wage_table[4] = { 500, 800, 600, 550 };
-const int research_cost_table[4] = { 0, 1000, 2000, 4000 };
+// Monthly staff wages
+const money32 wage_table[4] = {
+	MONEY(50,00),		// Handyman
+	MONEY(80,00),		// Mechanic
+	MONEY(60,00),		// Security guard
+	MONEY(55,00)		// Entertainer
+};
+
+// Monthly research funding costs
+const money32 research_cost_table[4] = {
+	MONEY(  0,00),		// No funding
+	MONEY(100,00),		// Minimum funding
+	MONEY(200,00),		// Normal funding
+	MONEY(400,00)		// Maximum funding
+};
 
 /**
  * 
@@ -36,17 +48,16 @@ const int research_cost_table[4] = { 0, 1000, 2000, 4000 };
  * @param amount (eax)
  * @param type passed via global var 0x0141F56C, our type is that var/4.
  **/
-void finance_payment(int amount, rct_expenditure_type type)
+void finance_payment(money32 amount, rct_expenditure_type type)
 {
-	int test = RCT2_GLOBAL(0x13CA740, uint32);
-	sint32 cur_money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
-	sint32 new_money = cur_money - amount;
+	money32 cur_money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	money32 new_money = cur_money - amount;
 
 	//overflow check
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(new_money);
-	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, sint32)[type] -= amount;
+	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (RCT2_ADDRESS(0x00988E60, uint32)[type] & 1)
-		RCT2_GLOBAL(0x0135832C, sint32) -= amount;
+		RCT2_GLOBAL(0x0135832C, money32) -= amount;
 	
 
 	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money diry flag
@@ -60,16 +71,13 @@ void finance_payment(int amount, rct_expenditure_type type)
 void finance_pay_wages()
 {
 	rct_peep* peep;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
 		return;
 
-	for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-		if (peep->type == PEEP_TYPE_STAFF) 
-			finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
-	}
+	FOR_ALL_STAFF(spriteIndex, peep)
+		finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
 }
 
 /**
@@ -93,14 +101,14 @@ void finance_pay_research()
  **/
 void finance_pay_interest()
 {
-	sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
+	money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
 	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
-	sint64 tempcost = (current_loan * 5 * current_interest) >> 14; // (5*interest)/2^14 is pretty close to
+	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
 		return;
 
-	finance_payment((sint32)tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
+	finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
 }
 
 /**
@@ -109,13 +117,11 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
+	int i;
 	rct_ride* ride;
-	for (int i = 0; i < MAX_RIDES; i++) {
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
 
-		if (!(ride->var_1D0 & 0x1000)) {
+	FOR_ALL_RIDES(i, ride) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 			ride->var_196 = 25855; // durability?
 
@@ -139,32 +145,45 @@ void finance_pay_ride_upkeep()
 void finance_init() {
 
 	for (short i = 0; i < 56; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, uint32)[i] = 0;
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
 	}
 
 	RCT2_GLOBAL(0x0135832C, uint32) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, uint32) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
 
 	RCT2_GLOBAL(0x01358334, uint32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(0x013573DC, uint32) = 100000; // Cheat detection
+	RCT2_GLOBAL(0x013573DC, money32) = MONEY(10000,00); // Cheat detection
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(100000);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32) = 100000;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, uint32) = 200000;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(MONEY(10000,00));
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = MONEY(20000,00);
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, sint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	sub_69E869();
+}
+
+void sub_69E869()
+{
+	// This subroutine is loan related and is used for cheat detection
+	sint32 value = 0x70093A;
+	value -= RCT2_GLOBAL(0x013573DC, money32); // Cheat detection
+	value = ror32(value, 5);
+	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	value = ror32(value, 7);
+	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+	value = ror32(value, 3);
+	RCT2_GLOBAL(0x013587C4, sint32) = value;
 }

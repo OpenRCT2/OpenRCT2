@@ -23,8 +23,6 @@
 
 #include "rct2.h"
 
-#define CURRENCY(whole, fraction) ((whole) * 10 + ((fraction) / 10))
-
 typedef int rct_expenditure_type;
 
 enum {
@@ -35,11 +33,12 @@ enum {
 };
 
 
-void finance_payment(int amount, rct_expenditure_type type);
+void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();
 void finance_pay_interest();
 void finance_pay_ride_upkeep();
 void finance_init();
+void sub_69E869();
 
 #endif

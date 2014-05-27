@@ -18,11 +18,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
 #include "audio.h"
 #include "date.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -132,7 +133,7 @@ void window_scenarioselect_open()
 
 	window_scenarioselect_init_tabs();
 
-	window->var_4AC = 0;
+	window->selected_tab = 0;
 }
 
 /**
@@ -146,8 +147,8 @@ static void window_scenarioselect_init_tabs()
 	rct_scenario_basic* scenario;
 
 	show_pages = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			show_pages |= 1 << scenario->category;
 	}
@@ -172,8 +173,18 @@ static void window_scenarioselect_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -184,11 +195,21 @@ static void window_scenarioselect_mousedown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
-		w->var_4AC = widgetIndex - 4;
+		w->selected_tab = widgetIndex - 4;
 		w->var_494 = 0;
 		window_invalidate(w);
 		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
@@ -204,19 +225,34 @@ static void window_scenarioselect_scrollgetsize()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	height = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			height += 24;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ecx, 0
+	#else
+	__asm__ ( "mov ecx, 0 "  );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov edx, height
+	#else
+	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
+	#endif
+
 }
 
 static void window_scenarioselect_scrollmousedown()
@@ -226,13 +262,28 @@ static void window_scenarioselect_scrollmousedown()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
-	__asm mov y, dx
-	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
+	#endif
 
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+	#ifdef _MSC_VER
+	__asm mov y, dx
+	#else
+	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
@@ -241,7 +292,7 @@ static void window_scenarioselect_scrollmousedown()
 		if (y >= 0)
 			continue;
 
-		sound_play_panned(4, w->width / 2 + w->x);
+		sound_play_panned(SOUND_CLICK_1, w->width / 2 + w->x);
 		scenario_load_and_play(scenario);
 		break;
 	}
@@ -254,14 +305,29 @@ static void window_scenarioselect_scrollmouseover()
 	rct_window *w;
 	rct_scenario_basic *scenario, *selected;
 
+	#ifdef _MSC_VER
 	__asm mov x, cx
+	#else
+	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov y, dx
+	#else
+	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	selected = NULL;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
@@ -283,10 +349,15 @@ static void window_scenarioselect_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
-	w->pressed_widgets |= 1LL << (w->var_4AC + 4);
+	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
 
 static void window_scenarioselect_paint()
@@ -297,8 +368,18 @@ static void window_scenarioselect_paint()
 	rct_widget *widget;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 
@@ -359,17 +440,27 @@ static void window_scenarioselect_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_scenario_basic *scenario;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
 	y = 0;
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
-		if (scenario->category != w->var_4AC)
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
+		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;

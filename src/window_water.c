@@ -20,12 +20,12 @@
 
 #include "addresses.h"
 #include "map.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_WATER_WIDGET_IDX {
+enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -102,8 +102,8 @@ void window_water_open()
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
+	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
 	window->colours[0] = 24;
 	window->colours[1] = 24;
 	window->colours[2] = 24;
@@ -130,8 +130,18 @@ static void window_water_mouseup()
 	int limit;
 	short widgetIndex;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -169,12 +179,8 @@ static void window_water_mouseup()
  *
  *  rct2: 0x006E6BCE
  */
-static void window_water_update()
+static void window_water_update(rct_window *w)
 {
-	rct_window *w;
-
-	__asm mov w, esi
-
 	// Close window if another tool is open
 	if (window_water_should_close())
 		window_close(w);
@@ -188,7 +194,12 @@ static void window_water_invalidate()
 {
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);
@@ -207,21 +218,31 @@ static void window_water_paint()
 	rct_drawpixelinfo *dpi;
 	int x, y;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 
 	// Draw raise cost amount
 	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)0x0141F738);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0)
+		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)RCT2_ADDRESS_WATER_RAISE_COST);
 	y += 10;
 
 	// Draw lower cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0x80000000 && RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)0x0141F73C);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0)
+		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)RCT2_ADDRESS_WATER_LOWER_COST);
 }
 
 /**

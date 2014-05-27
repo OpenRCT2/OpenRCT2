@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <windows.h>
 #include <string.h>
 #include <time.h>
 #include "addresses.h"
@@ -32,7 +33,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "editor.h"
 
@@ -236,16 +237,19 @@ static void title_update_showcase()
 
 static void DrawOpenRCT2(int x, int y)
 {
-	char buffer[] = "  OpenRCT2, v0.0.1";
+	char buffer[256];
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	
-	// Background
+	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
 
-	// Text
-	buffer[0] = FORMAT_MEDIUMFONT;
-	buffer[1] = FORMAT_BLACK;
+	// Format text (name and version)
+	sprintf(buffer, "%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, OPENRCT2_NAME, OPENRCT2_VERSION);
+
+	// Draw shadow
 	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
+
+	// Draw text
 	buffer[1] = FORMAT_WHITE;
 	gfx_draw_string(dpi, buffer, 0, x + 4, y + 4);
 }

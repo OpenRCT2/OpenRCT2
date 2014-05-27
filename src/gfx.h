@@ -49,7 +49,7 @@ typedef struct {
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
-void gfx_load_g1();
+int gfx_load_g1();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
@@ -66,7 +66,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args);
 int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour);
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown);
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour);
 
 int gfx_get_string_width(char *buffer);
 int clip_text(char *buffer, int width);

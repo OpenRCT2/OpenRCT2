@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include <memory.h>
 #include <stdlib.h>
 #include "addresses.h"
@@ -135,7 +136,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	case WWT_14:
 		widget_text(dpi, w, widgetIndex);
 		break;
-	case WWT_15:
+	case WWT_SPINNER:
 	case WWT_DROPDOWN:
 	case WWT_VIEWPORT:
 		widget_text_inset(dpi, w, widgetIndex);
@@ -412,7 +413,9 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	widget = &w->widgets[widgetIndex];
 
 	// Get the colour
-	colour = w->colours[widget->colour];
+// 	colour = w->colours[widget->colour];
+	// do not use widget color as this is already used as background for the text_button
+	colour = 2;
 
 	// Resolve the absolute ltrb
 	l = w->x + widget->left;

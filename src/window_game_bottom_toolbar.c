@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
+#include <string.h>
 #include "addresses.h"
 #include "climate.h"
 #include "date.h"
@@ -26,11 +28,11 @@
 #include "peep.h"
 #include "sprite.h"
 #include "sprites.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
+enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
 	WIDX_LEFT_INSET,
 	WIDX_MONEY,
@@ -153,14 +155,24 @@ static void window_game_bottom_toolbar_mouseup()
 	rct_window *w, *mainWindow;
 	rct_news_item *newsItem;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
 	case WIDX_MONEY:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
-			RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+			window_finances_open();
 		break;
 	case WIDX_GUESTS:
 		window_park_guests_open();
@@ -206,8 +218,18 @@ static void window_game_bottom_toolbar_tooltip()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
@@ -229,7 +251,12 @@ static void window_game_bottom_toolbar_tooltip()
 		break;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov dx, widgetIndex
+	#else
+	__asm__ ( "mov dx, %[widgetIndex] " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
 }
 
 /**
@@ -242,7 +269,12 @@ static void window_game_bottom_toolbar_invalidate()
 	rct_window *w;
 	rct_news_item *newsItem;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	// Anchor the middle and right panel to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -334,8 +366,18 @@ static void window_game_bottom_toolbar_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	// Draw panel grey backgrounds
 	gfx_fill_rect(
@@ -403,7 +445,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		STR_NUM_GUESTS + RCT2_GLOBAL(0x013573FE, uint8),
 		x, y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_GUESTS ? 2 : w->colours[0] & 0x7F),
-		(void*)0x01357844
+		(void*)RCT2_ADDRESS_GUESTS_IN_PARK
 	);
 
 	// Draw park rating
@@ -456,10 +498,20 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	char *freeStr = (char*)0x009BC677;
+	freeStr[0] = FORMAT_STRINGID;
+	freeStr[1] = ' ';
+	freeStr[2] = FORMAT_MONTHYEAR;
+	freeStr[3] = 0;
+
+	int month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
+		
+	RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+	RCT2_GLOBAL(0x013CE954, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	gfx_draw_string_centred(
 		dpi,
-		1845,
+		3165,
 		x,
 		y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
@@ -542,7 +594,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		_edi = (int)e->paint.dpi;
 		_cx = x;
 		_dx = y;
-		__asm {
+		#ifdef _MSC_VER
+	__asm {
 		mov cx, _cx
 		mov dx, _dx
 		mov esi, w
@@ -555,6 +608,22 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		after:
 		pop ebp
 		}
+	#else
+	__asm__ ( "\
+	\n\
+		mov cx, %[_cx] 	\n\
+		mov dx, %[_dx] 	\n\
+		mov esi, %[w] 	\n\
+		mov edi, %[_edi] 	\n\
+		push ebp 	\n\
+		mov ebp, 0x0066C3B8 	\n\
+		push %[after] 	\n\
+		push esi 	\n\
+		jmp ebp 	\n\
+		%[after]: 	\n\
+		pop ebp 	\n\
+		 " : [_cx] "+m" (_cx), [_dx] "+m" (_dx), [w] "+m" (w), [_edi] "+m" (_edi), [after] "+m" (after) );
+	#endif
 		break;
 		*/
 

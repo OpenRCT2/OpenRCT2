@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <windows.h>
+#include <string.h>
 #include "addresses.h"
 #include "rct2.h"
 #include "sawyercoding.h"
@@ -31,24 +32,24 @@ static void decode_chunk_rotate(char *buffer, int length);
  * 
  *  rct2: 0x00676FD2
  */
-int sawyercoding_validate_checksum(HANDLE hFile)
+int sawyercoding_validate_checksum(FILE *file)
 {
-	uint32 i, checksum, fileChecksum;
-	DWORD dataSize, bufferSize, numBytesRead;
+	uint32 i, checksum, fileChecksum, dataSize, bufferSize;
 	uint8 buffer[1024];
 
 	// Get data size
-	if ((dataSize = SetFilePointer(hFile, 0, NULL, FILE_END)) < 8)
+	fseek(file, 0, SEEK_END);
+	dataSize = ftell(file);
+	if (dataSize < 8)
 		return 0;
 	dataSize -= 4;
 	
 	// Calculate checksum
-	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	fseek(file, 0, SEEK_SET);
 	checksum = 0;
 	do {
 		bufferSize = min(dataSize, 1024);
-		ReadFile(hFile, buffer, bufferSize, &numBytesRead, NULL);
-		if (numBytesRead != bufferSize)
+		if (fread(buffer, bufferSize, 1, file) != 1)
 			return 0;
 
 		for (i = 0; i < bufferSize; i++)
@@ -57,12 +58,11 @@ int sawyercoding_validate_checksum(HANDLE hFile)
 	} while (dataSize != 0);
 
 	// Read file checksum
-	ReadFile(hFile, &fileChecksum, sizeof(fileChecksum), &numBytesRead, NULL);
-	if (numBytesRead != sizeof(fileChecksum))
+	if (fread(&fileChecksum, sizeof(fileChecksum), 1, file) != 1)
 		return 0;
 
 	// Reset file position
-	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	fseek(file, 0, SEEK_SET);
 
 	// Validate
 	return checksum == fileChecksum;
@@ -73,16 +73,21 @@ int sawyercoding_validate_checksum(HANDLE hFile)
  *  rct2: 0x0067685F
  * buffer (esi)
  */
-int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
+int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 {
-	DWORD numBytesRead;
 	sawyercoding_chunk_header chunkHeader;
 
 	// Read chunk header
-	ReadFile(hFile, &chunkHeader, sizeof(sawyercoding_chunk_header), &numBytesRead, NULL);
+	if (fread(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file) != 1) {
+		RCT2_ERROR("Unable to read chunk header!");
+		return -1;
+	}
 
 	// Read chunk data
-	ReadFile(hFile, buffer, chunkHeader.length, &numBytesRead, NULL);
+	if (fread(buffer, chunkHeader.length, 1, file) != 1) {
+		RCT2_ERROR("Unable to read chunk data!");
+		return -1;
+	}
 
 	// Decode chunk data
 	switch (chunkHeader.encoding) {
@@ -110,7 +115,7 @@ int sawyercoding_read_chunk(HANDLE hFile, uint8 *buffer)
 static int decode_chunk_rle(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, rleCodeByte;
+	unsigned char *src, *dst, rleCodeByte;
 
 	// Backup buffer
 	src = malloc(length);
@@ -134,7 +139,7 @@ static int decode_chunk_rle(char *buffer, int length)
 	free(src);
 
 	// Return final size
-	return dst - buffer;
+	return (char*)dst - buffer;
 }
 
 /**
@@ -144,7 +149,7 @@ static int decode_chunk_rle(char *buffer, int length)
 static int decode_chunk_repeat(char *buffer, int length)
 {
 	int i, j, count;
-	uint8 *src, *dst, *copyOffset;
+	unsigned char *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);
@@ -166,7 +171,7 @@ static int decode_chunk_repeat(char *buffer, int length)
 	free(src);
 
 	// Return final size
-	return dst - buffer;
+	return (char*)dst - buffer;
 }
 
 /**

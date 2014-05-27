@@ -19,13 +19,12 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include <shlobj.h>
-#include <windows.h>
 #include <SDL_keycode.h>
+#include <ctype.h>
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
-#include <tchar.h>
+
 
 #include "osinterface.h"
 
@@ -68,8 +67,38 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 	SDL_SCANCODE_S,						// SHORTCUT_SHOW_STAFF_LIST
 	SDL_SCANCODE_M,						// SHORTCUT_SHOW_RECENT_MESSAGES
 	SDL_SCANCODE_TAB,					// SHORTCUT_SHOW_MAP
-	0x0200 | SDL_SCANCODE_S				// SHORTCUT_SCREENSHOT
+	0x0200 | SDL_SCANCODE_S,			// SHORTCUT_SCREENSHOT
+
+	// New
+	SDL_SCANCODE_MINUS,					// SHORTCUT_REDUCE_GAME_SPEED,
+	SDL_SCANCODE_EQUALS					// SHORTCUT_INCREASE_GAME_SPEED,
 };
+
+general_configuration_t gGeneral_config;
+general_configuration_t gGeneral_config_default = {
+	1,
+	1,
+	SCREENSHOT_FORMAT_PNG,
+	"",
+	MEASUREMENT_FORMAT_IMPERIAL,
+	TEMPERATURE_FORMAT_F,
+	0,
+	0,
+	1,
+};
+sound_configuration_t gSound_config;
+
+static char *config_show_directory_browser();
+static void config_parse_settings(FILE *fp);
+static void config_general(char *setting, char *value);
+static void config_sound(char *setting, char *value);
+static int config_get_line(FILE *fp, char *setting, char *value);
+static int config_parse_setting(FILE *fp, char *setting);
+static int config_parse_value(FILE *fp, char *value);
+static int config_parse_section(FILE *fp, char *setting, char *value);
+static void config_create_default(char *path);
+static int config_parse_currency(char* currency);
+static void config_error(char *msg);
 
 /**
  * 
@@ -86,45 +115,77 @@ void config_reset_shortcut_keys()
  */
 void config_load()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
+	FILE *fp=NULL;
 
 	char* path = get_file_path(PATH_ID_GAMECFG);
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
+
+	fp = fopen(path, "rb");
+
+	if (fp != NULL) {
 		// Read and check magic number
-		ReadFile(hFile, RCT2_ADDRESS(0x013CE928, void), 4, &bytesRead, NULL);
+		fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, fp);
+
 		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
 			// Read options
-			ReadFile(hFile, (void*)0x009AAC5C, 2155, &bytesRead, NULL);
-			CloseHandle(hFile);
+			fread((void*)0x009AAC5C, 1, 2155, fp);
+			fclose(fp);
+
+			//general configuration
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
+			
+
+			//sound configuration
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
+
+			// Line below is temporaraly disabled until all config is in the new format.
+			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
+			//	return;
+			
+			
+			RCT2_GLOBAL(0x009AB4C6, sint8) = 1; // no idea on what this does
+
+			RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 2) * 256;
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
+				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+			RCT2_GLOBAL(0x009AA00D, sint8) = 0;
+		}
+	
+	}
+	
+	/* TODO: CLEANUP
+
 			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 				return;
 			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = 1; 
-			RCT2_GLOBAL(0x009AACBB, sint8) = 1; 
-			RCT2_GLOBAL(0x009AACBD, sint16) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-				RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
 		}
 	
 	}
 
-	RCT2_GLOBAL(0x009AAC77, sint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x4000000) {
-		RCT2_GLOBAL(0x009AAC77, sint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 1;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x8000000)
-			RCT2_GLOBAL(0x009AAC77, sint8) = 2;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
 	}
+	*/
 
-	RCT2_GLOBAL(0x009AAC75, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(0x009AAC77, sint8)];
-	RCT2_GLOBAL(0x009AAC76, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(0x009AAC77, sint8)];
-	RCT2_GLOBAL(0x009AACBD, sint16) = 0;
+
+	RCT2_GLOBAL(0x009AAC75, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
+	RCT2_GLOBAL(0x009AAC76, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-		RCT2_GLOBAL(0x009AACBD, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
 }
 
@@ -134,29 +195,15 @@ void config_load()
  */
 void config_save()
 {
-	HANDLE hFile;
-	DWORD bytesWritten;
-
-	hFile = CreateFile(get_file_path(PATH_ID_GAMECFG), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, &MagicNumber, 4, &bytesWritten, NULL);
-		WriteFile(hFile, (LPCVOID)0x009AAC5C, 2155, &bytesWritten, NULL);
-		CloseHandle(hFile);
+	FILE *fp=NULL;
+	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
+	if (fp != NULL){
+		fwrite(&MagicNumber, 4, 1, fp);
+		fwrite((void*)0x009AAC5C, 2155, 1, fp);
+		fclose(fp);
 	}
 }
 
-// New config format
-
-configuration_t gConfig;
-
-static char *config_show_directory_browser();
-static void config_parse_settings(FILE *fp);
-static int config_get_line(FILE *fp, char *setting, char *value);
-static int config_parse_setting(FILE *fp, char *setting);
-static int config_parse_value(FILE *fp, char *value);
-static int config_parse_section(FILE *fp, char *setting, char *value);
-static void config_create_default(char *path);
-static void config_error(char *msg);
 
 /**
  * Initilise the settings.
@@ -165,18 +212,19 @@ static void config_error(char *msg);
  */
 void config_init()
 {	
-	TCHAR path[MAX_PATH];
+	char *path = osinterface_get_orct2_homefolder();
 	FILE* fp;
 
-	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path))) { // find home folder
-		strcat(path, "\\OpenRCT2");
-		DWORD dwAttrib = GetFileAttributes(path);
-		if (dwAttrib == INVALID_FILE_ATTRIBUTES || !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) { // folder does not exist
-			if (!CreateDirectory(path, NULL)) {
-				config_error("Could not create config file (do you have write access to your documents folder?)");
-			}
+	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
+
+	if (strcmp(path, "") != 0){
+		if (!osinterface_ensure_directory_exists(path)) {
+			config_error("Could not create config file (do you have write access to your documents folder?)");
+			return;
 		}
-		strcat(path, "\\config.ini");
+		
+		sprintf(path, "%s%c%s", path, osinterface_get_path_separator(), "config.ini");
+		
 		fp = fopen(path, "r");
 		if (!fp) {
 			config_create_default(path);
@@ -189,6 +237,8 @@ void config_init()
 
 		fclose(fp);
 	}
+
+	free(path);
 }
 
 /**
@@ -200,7 +250,7 @@ void config_init()
 static int config_find_rct2_path(char *resultPath)
 {
 	int i;
-	DWORD dwAttrib;
+
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
@@ -212,8 +262,7 @@ static int config_find_rct2_path(char *resultPath)
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
-		dwAttrib = GetFileAttributes(searchLocations[i]);
-		if (dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY)) {
+		if ( osinterface_directory_exists(searchLocations[i]) ) {
 			strcpy(resultPath, searchLocations[i]);
 			return 1;
 		}
@@ -231,17 +280,26 @@ static void config_create_default(char *path)
 {
 	FILE* fp;
 
-	if (!config_find_rct2_path(gConfig.game_path)) {
+
+	if (!config_find_rct2_path(gGeneral_config.game_path)) {
 		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
 		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
-		strcpy(gConfig.game_path, res);
+		strcpy(gGeneral_config.game_path, res);
 	}
 
 	fp = fopen(path, "w");
 	fprintf(fp, "[general]\n");
-	fprintf(fp, "game_path = %s\n", gConfig.game_path);
+	fprintf(fp, "game_path = %s\n", gGeneral_config.game_path);
 	fprintf(fp, "screenshot_format = PNG\n");
 	fprintf(fp, "play_intro = false\n");
+	fprintf(fp, "confirmation_prompt = true\n");
+	fprintf(fp, "edge_scrolling = true\n");
+	fprintf(fp, "currency = GBP\n");
+	fprintf(fp, "measurement_format = imperial\n");
+	fprintf(fp, "temperature_format = fahrenheit\n");
+	fprintf(fp, "[sound]\n");
+	fprintf(fp, "sound_quality = high\n");
+	fprintf(fp, "forced_software_buffering = false\n");
 	fclose(fp);
 }
 
@@ -266,25 +324,98 @@ static void config_parse_settings(FILE *fp)
 			continue;
 		}
 		
-		
-		
-		if (strcmp(setting, "game_path") == 0){	
-			strcpy(gConfig.game_path, value); 
-		} else if(strcmp(setting, "screenshot_format") == 0) {
-			if (strcmp(value, "png") == 0 || strcmp(value, "PNG") == 0) {
-				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
-			} else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
-				gConfig.screenshot_format = SCREENSHOT_FORMAT_PNG;
-			} else {
-				gConfig.screenshot_format = SCREENSHOT_FORMAT_BMP;
-			}
-		} else if (strcmp(setting, "play_intro") == 0) {
-			gConfig.play_intro = (strcmp(value, "true") == 0);
+		if (strcmp(section, "sound") == 0){
+			config_sound(setting, value);
 		}
+		else if (strcmp(section, "general") == 0){
+			config_general(setting, value);
+		}
+		
+	
+		
 	}
+	//RCT2_GLOBAL(0x009AACBC, sint8) = CURRENCY_KRONA;
+	
+	
+	
 	free(setting);
 	free(value);
 	free(section);
+}
+
+
+static void config_sound(char *setting, char *value){
+	if (strcmp(setting, "sound_quality") == 0){
+		if (strcmp(value, "low") == 0){
+			gSound_config.sound_quality = SOUND_QUALITY_LOW;
+		}
+		else if (strcmp(value, "medium") == 0){
+			gSound_config.sound_quality = SOUND_QUALITY_MEDIUM;
+		}
+		else{
+			gSound_config.sound_quality = SOUND_QUALITY_HIGH;
+		}
+	}
+	else if (strcmp(setting, "forced_software_buffering") == 0){
+		if (strcmp(value, "true") == 0){
+			gSound_config.forced_software_buffering = 1;
+		}
+		else{
+			gSound_config.forced_software_buffering = 0;
+		}
+	}
+
+}
+
+static void config_general(char *setting, char *value){
+	if (strcmp(setting, "game_path") == 0){
+		strcpy(gGeneral_config.game_path, value);
+	}
+	else if (strcmp(setting, "screenshot_format") == 0) {
+		if (strcmp(value, "png") == 0) {
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
+		}
+		else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
+		}
+		else {
+			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_BMP;
+		}
+	}
+	else if (strcmp(setting, "play_intro") == 0) {
+		gGeneral_config.play_intro = (strcmp(value, "true") == 0);
+	}
+	else if (strcmp(setting, "confirmation_prompt") == 0) {
+		gGeneral_config.confirmation_prompt = (strcmp(value, "true") == 0);
+	}
+	else if (strcmp(setting, "edge_scrolling") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.edge_scrolling = 1;
+		}
+		else {
+			gGeneral_config.edge_scrolling = 0;
+		}
+	}
+	else if (strcmp(setting, "measurement_format") == 0){
+		if (strcmp(value, "imperial") == 0){
+			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_IMPERIAL;
+		}
+		else{
+			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_METRIC;
+		}
+	}
+	else if (strcmp(setting, "temperature_format") == 0){
+		if (strcmp(value, "fahrenheit") == 0){
+			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_F;
+		}
+		else{
+			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_C;
+		}
+	}
+	else if (strcmp(setting, "currency") == 0){
+		config_parse_currency(value);
+	}
+
 }
 
 /**
@@ -413,7 +544,7 @@ static int config_parse_value(FILE *fp, char *value)
 	fseek(fp, start, SEEK_SET);
 	c = fgetc(fp);
 	while (c != EOF && c != '\n') {
-		value[pos] = (char)c;
+		value[pos] = (char)tolower(c);
 		c = fgetc(fp);
 		pos++;
 	}
@@ -457,14 +588,46 @@ static int config_parse_section(FILE *fp, char *setting, char *value){
 	return 1;
 }
 
+static const struct { char *key; int value; } _currencyLookupTable[] = {
+	{ "GBP", CURRENCY_POUNDS },
+	{ "USD", CURRENCY_DOLLARS },
+	{ "FRF", CURRENCY_FRANC },
+	{ "DEM", CURRENCY_DEUTSCHMARK },
+	{ "YEN", CURRENCY_YEN },
+	{ "ESP", CURRENCY_PESETA },
+	{ "ITL", CURRENCY_LIRA },
+	{ "NLG", CURRENCY_GUILDERS },
+	{ "NOK", CURRENCY_KRONA },
+	{ "SEK", CURRENCY_KRONA },
+	{ "DEK", CURRENCY_KRONA },
+	{ "EUR", CURRENCY_EUROS },
 
+	{ "£", CURRENCY_POUNDS },
+	{ "$", CURRENCY_DOLLARS },
+	{ "€", CURRENCY_EUROS }
+};
+
+static int config_parse_currency(char *currency)
+{
+	int i;
+	for (i = 0; i < countof(_currencyLookupTable); i++) {
+		if (_strcmpi(currency, _currencyLookupTable[i].key) == 0) {
+			gGeneral_config.currency_format = _currencyLookupTable[i].value;
+			return 1;
+		}
+	}
+
+	config_error("Invalid currency set in config file");
+	return -1;
+}
 /**
  * Error with config file. Print error message an quit the game
  * @param msg Message to print in message box
  */
 static void config_error(char *msg){
+
 	osinterface_show_messagebox(msg);
 	//TODO:SHUT DOWN EVERYTHING!
-}
 
+}
 

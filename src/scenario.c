@@ -19,11 +19,14 @@
  *****************************************************************************/
 
 #include <windows.h>
+#include <string.h>
 #include "addresses.h"
+#include "award.h"
 #include "date.h"
 #include "finance.h"
 #include "game.h"
 #include "map.h"
+#include "marketing.h"
 #include "news_item.h"
 #include "object.h"
 #include "park.h"
@@ -31,278 +34,43 @@
 #include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "viewport.h"
-
-#define UNINITIALISED_SCENARIO_LIST ((rct_scenario_basic*)-1)
-
-#define RCT2_SCENARIO_LIST RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)
-#define RCT2_NUM_SCENARIOS RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32)
-int _scenarioListSize;
-
-static void scenario_list_add(char *path);
-static void scenario_list_sort();
-static int scenario_list_sort_compare(const void* a, const void* b);
-static void scenario_scores_load();
-static void scenario_scores_save();
-static int scenario_load_basic(char *path);
-
-static void subsitute_path(char *dest, char *path, char *filename)
-{
-	while (*path != '*') {
-		*dest++ = *path++;
-	}
-	strcpy(dest, filename);
-}
-
-static rct_scenario_basic *get_scenario_by_filename(char *filename)
-{
-	int i;
-	for (i = 0; i < RCT2_NUM_SCENARIOS; i++)
-		if (strcmp(RCT2_SCENARIO_LIST[i].path, filename) == 0)
-			return &(RCT2_SCENARIO_LIST[i]);
-
-	return NULL;
-}
-
-/**
- * 
- *  rct2: 0x006775A8
- */
-void scenario_load_list()
-{
-	int i;
-	HANDLE hFindFile;
-	WIN32_FIND_DATAA findFileData;
-
-	// Load scores
-	scenario_scores_load();
-
-	// Set all scenarios to be invisible
-	for (i = 0; i < RCT2_NUM_SCENARIOS; i++)
-		RCT2_SCENARIO_LIST[i].flags &= ~SCENARIO_FLAGS_VISIBLE;
-
-	// Enumerate through each scenario in the directory
-	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), &findFileData);
-	if (hFindFile != INVALID_HANDLE_VALUE) {
-		do {
-			scenario_list_add(findFileData.cFileName);
-		} while (FindNextFile(hFindFile, &findFileData));
-		FindClose(hFindFile);
-	}
-
-	// Sort alphabetically
-	scenario_list_sort();
-
-	// Save the scores
-	scenario_scores_save();
-}
-
-static void scenario_list_add(char *path)
-{
-	rct_scenario_basic *scenario;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	// Check if scenario already exists in list, likely if in scores
-	scenario = get_scenario_by_filename(path);
-	if (scenario != NULL) {
-		// Set 0141EF68 to the scenario path
-		subsitute_path(
-			RCT2_ADDRESS(0x0141EF68, char),
-			RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char),
-			path
-		);
-
-		// Load the basic scenario information
-		if (!scenario_load_basic(RCT2_ADDRESS(0x0141EF68, char)))
-			return;
-
-		// 
-		if (s6Info->var_000 != 255)
-			return;
-
-		// Update the scenario information
-		scenario->flags |= SCENARIO_FLAGS_VISIBLE;
-		scenario->category = s6Info->category;
-		scenario->objective_type = s6Info->objective_type;
-		scenario->objective_arg_1 = s6Info->objective_arg_1;
-		scenario->objective_arg_2 = s6Info->objective_arg_2;
-		scenario->objective_arg_3 = s6Info->objective_arg_3;
-		strcpy(scenario->name, s6Info->name);
-		strcpy(scenario->details, s6Info->details);
-		return;
-	}
-
-	// Check if the scenario list buffer has room for another scenario
-	if ((RCT2_NUM_SCENARIOS + 1) * (int)sizeof(rct_scenario_basic) > _scenarioListSize) {
-		// Allocate more room
-		_scenarioListSize += 16 * sizeof(rct_scenario_basic);
-		RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_realloc(RCT2_SCENARIO_LIST, _scenarioListSize);
-	}
-
-	// Set 0141EF68 to the scenario path
-	subsitute_path(
-		RCT2_ADDRESS(0x0141EF68, char),
-		RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char),
-		path
-	);
-
-	// Load the scenario information
-	if (!scenario_load_basic(RCT2_ADDRESS(0x0141EF68, char)))
-		return;
-
-	// 
-	if (s6Info->var_000 != 255)
-		return;
-
-	// Increment the number of scenarios
-	scenario = &RCT2_SCENARIO_LIST[RCT2_NUM_SCENARIOS];
-	RCT2_NUM_SCENARIOS++;
-
-	// Add this new scenario to the list
-	strcpy(scenario->path, path);
-	scenario->flags = SCENARIO_FLAGS_VISIBLE;
-	if (RCT2_GLOBAL(0x009AA00C, uint8) & 1)
-		scenario->flags |= SCENARIO_FLAGS_SIXFLAGS;
-	scenario->category = s6Info->category;
-	scenario->objective_type = s6Info->objective_type;
-	scenario->objective_arg_1 = s6Info->objective_arg_1;
-	scenario->objective_arg_2 = s6Info->objective_arg_2;
-	scenario->objective_arg_3 = s6Info->objective_arg_3;
-	strcpy(scenario->name, s6Info->name);
-	strcpy(scenario->details, s6Info->details);
-}
-
-/**
-* Sort the list of scenarios. This used to be an insertion sort which took
-* place as each scenario loaded. It has now been changed to a quicksort which
-* takes place after all the scenarios have been loaded in.
-*  rct2: 0x00677C3B
-*/
-static void scenario_list_sort()
-{
-	qsort(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*),
-		RCT2_NUM_SCENARIOS,
-		sizeof(rct_scenario_basic),
-		scenario_list_sort_compare
-	);
-}
-
-/**
-* Basic scenario information compare function for sorting.
-*  rct2: 0x00677C08
-*/
-static int scenario_list_sort_compare(const void* a, const void* b)
-{
-	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
-}
-
-/**
- * 
- *  rct2: 0x006775A8
- */
-static void scenario_scores_load()
-{
-	HANDLE hFile;
-	DWORD bytes_read;
-
-	// Free scenario list if already allocated
-	if (RCT2_SCENARIO_LIST != UNINITIALISED_SCENARIO_LIST) {
-		rct2_free(RCT2_SCENARIO_LIST);
-		RCT2_SCENARIO_LIST = UNINITIALISED_SCENARIO_LIST;
-	}
-
-	// Try and load the scores
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, (void*)0x009A9FFC, 16, &bytes_read, NULL);
-		if (bytes_read == 16) {
-			_scenarioListSize = RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic);
-			RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_malloc(_scenarioListSize);
-			ReadFile(hFile, RCT2_SCENARIO_LIST, _scenarioListSize, &bytes_read, NULL);
-			CloseHandle(hFile);
-			if (bytes_read == _scenarioListSize)
-				return;
-		} else {
-			CloseHandle(hFile);
-		}
-	}
-
-	// Unable to load scores, allocate some space for a reload
-	RCT2_NUM_SCENARIOS = 0;
-	_scenarioListSize = 0x4000;
-	RCT2_SCENARIO_LIST = (rct_scenario_basic*)rct2_malloc(_scenarioListSize);
-}
-
-/**
- * 
- *  rct2: 0x00677B50
- */
-static void scenario_scores_save()
-{
-	HANDLE hFile;
-	DWORD bytes_written;
-
-	hFile = CreateFile(get_file_path(PATH_ID_SCORES), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		WriteFile(hFile, (void*)0x009A9FFC, 16, &bytes_written, NULL);
-		if (RCT2_NUM_SCENARIOS > 0)
-			WriteFile(hFile, RCT2_SCENARIO_LIST, RCT2_NUM_SCENARIOS * sizeof(rct_scenario_basic), &bytes_written, NULL);
-		CloseHandle(hFile);
-	}
-}
 
 /**
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-static int scenario_load_basic(char *path)
+int scenario_load_basic(const char *path)
 {
-	HANDLE hFile;
-	int _eax;
+	FILE *file;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
-
+	file = fopen(path, "rb");
+	if (file != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+		sawyercoding_read_chunk(file, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
-			CloseHandle(hFile);
+			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			fclose(file);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-			if (s6Info->flags != 255) {
-				__asm {
-					push ebp
-					mov ebp, 0141F6F8h
-					mov eax, 006A9428h
-					call eax
-					pop ebp
-					mov _eax, eax
-					jb loc_67628F
-				}
 
-				int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
-				format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
-				format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
-				RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
-				RCT2_CALLPROC(0x006A982D);
-				__asm mov _eax, eax
-			loc_67628F :
-				return _eax;
+			// Checks for a scenario string object (possibly for localisation)
+			if ((s6Info->entry.flags & 0xFF) != 255) {
+				if (object_get_scenario_text(&s6Info->entry)) {
+					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
+					format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
+					format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
+					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
+					object_free_scenario_text();
+				}
 			}
 			return 1;
 		}
-		CloseHandle(hFile);
+		fclose(file);
 	}
 
 	RCT2_GLOBAL(0x009AC31B, sint8) = -1;
@@ -315,30 +83,27 @@ static int scenario_load_basic(char *path)
  *  rct2: 0x00676053
  * scenario (ebx)
  */
-void scenario_load(char *path)
+void scenario_load(const char *path)
 {
-	HANDLE hFile;
+	FILE *file;
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		RCT2_GLOBAL(0x009E382C, HANDLE*) = hFile;
-		if (!sawyercoding_validate_checksum(hFile)) {
-			CloseHandle(hFile);
+	file = fopen(path, "rb");
+	if (file != NULL) {
+		if (!sawyercoding_validate_checksum(file)) {
+			fclose(file);
 			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 			return;
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+		sawyercoding_read_chunk(file, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(hFile, (uint8*)s6Info);
+			sawyercoding_read_chunk(file, (uint8*)s6Info);
 
 			// Read packed objects
 			if (s6Header->num_packed_objects > 0) {
@@ -346,43 +111,43 @@ void scenario_load(char *path)
 				for (i = 0; i < s6Header->num_packed_objects; i++)
 					j += object_load_packed();
 				if (j > 0)
-					object_load_list();
+					object_list_load();
 			}
 
-			object_read_and_load_entries(hFile);
+			object_read_and_load_entries(file);
 
 			// Read flags (16 bytes)
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 			// Read map elements
 			memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 			// Read game data, including sprites
-			sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
+			sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
 
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x01357BC8);
+			sawyercoding_read_chunk(file, (uint8*)0x01357BC8);
 
 			// Read park rating
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x01357CF2);
+			sawyercoding_read_chunk(file, (uint8*)0x01357CF2);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)0x0135832C);
+			sawyercoding_read_chunk(file, (uint8*)0x0135832C);
 
 			// Read ?
-			sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(hFile, (uint8*)0x01358740);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
-			CloseHandle(hFile);
+			fclose(file);
 
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
@@ -393,7 +158,7 @@ void scenario_load(char *path)
 			return;
 		}
 
-		CloseHandle(hFile);
+		fclose(file);
 	}
 
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
@@ -405,13 +170,16 @@ void scenario_load(char *path)
  *  rct2: 0x00678282
  * scenario (ebx)
  */
-void scenario_load_and_play(rct_scenario_basic *scenario)
+void scenario_load_and_play(const rct_scenario_basic *scenario)
 {
 	rct_window *mainWindow;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	RCT2_GLOBAL(0x009AA0F0, uint32) = RCT2_GLOBAL(0x00F663B0, uint32) ^ timeGetTime();
-	RCT2_GLOBAL(0x009AA0F4, uint32) = RCT2_GLOBAL(0x00F663B4, uint32) ^ timeGetTime();
+	// Create the scenario pseduo-random seeds using the current time
+	uint32 srand0, srand1;
+	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
+	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
+
 	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
 
 	subsitute_path(
@@ -449,8 +217,10 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	window_new_ride_init_vars();
 
-	RCT2_GLOBAL(0x00F663B0, sint32) = RCT2_GLOBAL(0x009AA0F0, sint32);
-	RCT2_GLOBAL(0x00F663B4, sint32) = RCT2_GLOBAL(0x009AA0F4, sint32);
+	// Set the scenario pseduo-random seeds
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) = srand0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) = srand1;
+
 	RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & 0x20000)
@@ -462,14 +232,14 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 		window_park_objective_open();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint16) = calculate_park_value();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, sint16) = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, sint16) = RCT2_GLOBAL(0x013573DC, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
+	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(0x013573DC, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
-	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related)
+	sub_69E869(); // (loan related)
 
-	strcpy((char*)0x0135924A, s6Info->details);
-	strcpy((char*)0x0135920A, s6Info->name);
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
 
 	if (RCT2_GLOBAL(0x009ADAE4, sint32) != -1) {
 		char *ebp = RCT2_GLOBAL(0x009ADAE4, char*);
@@ -495,9 +265,9 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	}
 
 	// Set the last saved game path
-	strcpy((char*)0x009ABB37, (char*)0x009AB5DA);
-	format_string((char*)0x009ABB37 + strlen((char*)0x009ABB37), RCT2_GLOBAL(0x0013573D4, uint16), (void*)0x0013573D8);
-	strcat((char*)0x009ABB37, ".SV6");
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
+	format_string((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), RCT2_GLOBAL(0x0013573D4, uint16), (void*)0x0013573D8);
+	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
 	RCT2_GLOBAL(0x0135832C, uint32) = 0;
@@ -508,7 +278,7 @@ void scenario_load_and_play(rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
-	RCT2_CALLPROC_EBPSAFE(0x0069E869); // (loan related, called above already)
+	sub_69E869(); // (loan related, called above already)
 	park_reset_awards_and_history();
 	reset_all_ride_build_dates();
 	date_reset();
@@ -566,11 +336,11 @@ void scenario_success()
 	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
-	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
+	peep_applause();
 
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_NUM_SCENARIOS, sint32); i++) {
+	for (i = 0; i < gScenarioListCount; i++) {
 		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
-		scenario = &(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_LIST, rct_scenario_basic*)[i]);
+		scenario = &gScenarioList[i];
 
 		if (0 == strncmp(cur_scenario_name, scenario->path, 256)){
 			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
@@ -595,20 +365,15 @@ void scenario_success()
 **/
 void scenario_objective5_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
@@ -630,21 +395,16 @@ void scenario_objective5_check()
  **/
 void scenario_objective8_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
@@ -775,9 +535,9 @@ void scenario_objectives_check()
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x, y;
-	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
-		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
-	int max_fee = magic + (magic / 2);
+	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
+	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	int max_fee = totalRideValue + (totalRideValue / 2);
 	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && park_entrance_fee > max_fee) {
@@ -790,49 +550,6 @@ void scenario_entrance_fee_too_high_check()
 		news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
 	}
 }
-
-
-/*
- * Update status of marketing campaigns and send a message when they are done.
- * rct2: 0x0069E0C1
- **/
-void scenario_marketing_update()
-{
-	for (int i = 0; i < 6; ++i) {
-		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
-		int campaign_item = 0;
-
-		if (!campaign_weeks_left)
-			continue;
-		window_invalidate_by_id(WC_FINANCES, 0);
-
-		// high bit marks the campaign as inactive, on first check the campaign is set actice
-		// this makes campaigns run a full x weeks even when started in the middle of a week
-		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
-		if (campaign_weeks_left & (1 << 7))
-			continue;
-		
-		RCT2_ADDRESS(0x01358102, uint8)[i]--;
-		if (campaign_weeks_left - 1 != 0)
-			continue;
-
-		campaign_item = RCT2_ADDRESS(0x01358116, uint8)[i];
-
-		// this sets the string parameters for the marketing types that have an argument.
-		if (i == 1 || i == 5) { // free RIDES oh yea
-			RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x01362942 + 304 * campaign_item, uint16);;
-			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
-		} else if (i == 3) { // free food/merch
-			campaign_item += 2016;
-			if (campaign_item >= 2048)
-				campaign_item += 96;
-			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
-		}
-
-		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + i, 0);
-	}
-}
-
 
 /*
  * Scenario and finance related update iteration.
@@ -860,6 +577,8 @@ void scenario_update()
 			objective_type == 6 || objective_type == 5) {
 			scenario_objectives_check();
 		}
+
+		window_invalidate_by_id(WC_BOTTOM_TOOLBAR, 0);
 	}
 
 	
@@ -869,7 +588,7 @@ void scenario_update()
 		finance_pay_wages();
 		finance_pay_research();
 		finance_pay_interest();
-		scenario_marketing_update();
+		marketing_update();
 		peep_problem_warnings_update();
 		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
 		ride_update_favourited_stat();
@@ -878,13 +597,19 @@ void scenario_update()
 			for (int i = 0; i < 100; ++i) {
 				int carry;
 				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
+				#ifdef _MSC_VER
 				__asm mov carry, 0;
 				__asm adc carry, 0;
+				#else
+				__asm__ ( "mov %[carry], 0; " : [carry] "+m" (carry) );
+				__asm__ ( "adc %[carry], 0; " : [carry] "+m" (carry) );
+				#endif
+
 				if (!carry)
 					break;
 			}
 		}
-		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
+		park_update_histories();
 		park_calculate_size();
 	}
 
@@ -902,8 +627,18 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		RCT2_CALLPROC_EBPSAFE(0x0066A86C); // award checks
+		award_update_all();
 	}
 	
 }
 
+/**
+*
+*  rct2: 0x006E37D2
+*/
+int scenario_rand()
+{
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
+	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+}

@@ -23,6 +23,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef signed char sint8;
 typedef signed short sint16;
@@ -44,7 +45,45 @@ typedef unsigned long long uint64;
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
-#define countof(x)			_countof(x)
+#define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
+#ifdef _MSC_VER
+#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__);
+#else
+#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __func__, __LINE__, ## __VA_ARGS__);
+#endif
+
+#ifndef _MSC_VER
+// use similar struct packing as MSVC for our structs
+#pragma pack(1)
+#endif
+
+#define OPENRCT2_NAME				"OpenRCT2"
+#define OPENRCT2_VERSION			"0.0.1"
+#define OPENRCT2_ARCHITECTURE		"x86"
+#define OPENRCT2_PLATFORM			"Windows"
+#define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+
+// Represent fixed point numbers. dp = decimal point
+typedef sint16 fixed16_1dp;
+typedef sint16 fixed16_2dp;
+typedef sint32 fixed32_1dp;
+typedef sint32 fixed32_2dp;
+
+// Money is stored as a multiple of 0.10.
+typedef fixed16_1dp money16;
+typedef fixed32_1dp money32;
+
+// Construct a fixed point number. For example, to create the value 3.65 you
+// would write FIXED_2DP(3,65)
+#define FIXED_XDP(x, whole, fraction)	((whole) * (10 * x) + (fraction))
+#define FIXED_1DP(whole, fraction)		FIXED_XDP(1, whole, fraction)
+#define FIXED_2DP(whole, fraction)		FIXED_XDP(2, whole, fraction)
+
+// Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
+#define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
+
+#define MONEY32_UNDEFINED				((money32)0x80000000)
 
 void rct2_finish();
 
@@ -123,6 +162,7 @@ enum {
 };
 
 void rct2_endupdate();
+void subsitute_path(char *dest, const char *path, const char *filename);
 char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
@@ -130,5 +170,6 @@ void get_local_time();
 void *rct2_malloc(size_t numBytes);
 void *rct2_realloc(void *block, size_t numBytes);
 void rct2_free(void *block);
+void rct2_quit();
 
 #endif

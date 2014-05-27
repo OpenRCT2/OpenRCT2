@@ -20,13 +20,22 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include <windows.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "window.h"
 #include "osinterface.h"
+
+typedef struct {
+	uint32 num_entries;
+	uint32 total_size;
+} rct_g1_header;
+
+void *_g1Buffer = NULL;
 
 // HACK These were originally passed back through registers
 int gLastDrawStringX;
@@ -40,39 +49,43 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
  * 
  *  rct2: 0x00678998
  */
-void gfx_load_g1()
+int gfx_load_g1()
 {
-	HANDLE hFile;
-	DWORD bytesRead;
-	DWORD header[2];
-
-	int i;
-	int g1BufferSize;
-	void* g1Buffer;
+	FILE *file;
+	rct_g1_header header;
+	unsigned int i;
 
 	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 
-	hFile = CreateFile(get_file_path(PATH_ID_G1), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-		FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) {
-		ReadFile(hFile, header, 8, &bytesRead, NULL);
-		if (bytesRead == 8) {
-			g1BufferSize = header[1];
-			g1Buffer = rct2_malloc(g1BufferSize);
-			ReadFile(hFile, g1Elements, 29294 * sizeof(rct_g1_element), &bytesRead, NULL);
-			ReadFile(hFile, g1Buffer, g1BufferSize, &bytesRead, NULL);
-			CloseHandle(hFile);
+	file = fopen(get_file_path(PATH_ID_G1), "rb");
+	if (file != NULL) {
+		if (fread(&header, 8, 1, file) == 1) {
+			// number of elements is stored in g1.dat, but because the entry headers are static, this can't be variable until
+			// made into a dynamic array
+			header.num_entries = 29294;
 
-			for (i = 0; i < 29294; i++)
-				g1Elements[i].offset += (int)g1Buffer;
+			// Read element headers
+			fread(g1Elements, header.num_entries * sizeof(rct_g1_element), 1, file);
 
-			return;
+			// Read element data
+			_g1Buffer = rct2_malloc(header.total_size);
+			fread(_g1Buffer, header.total_size, 1, file);
+
+			fclose(file);
+
+			// Fix entry data offsets
+			for (i = 0; i < header.num_entries; i++)
+				g1Elements[i].offset += (int)_g1Buffer;
+
+			// Successful
+			return 1;
 		}
+		fclose(file);
 	}
 
-	// exit with error
-	fprintf(stderr, "Unable to load g1.dat");
-	assert(0);
+	// Unsuccessful
+	RCT2_ERROR("Unable to load g1.dat");
+	return 0;
 }
 
 /**
@@ -1154,22 +1167,22 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
  * 
  *  rct2: 0x006C2105
  * dpi (edi)
- * format (esi)
+ * args (esi)
  * x (cx)
  * y (dx)
  * width (bp)
- * colour (bx)
- * unknown (al)
+ * format (bx)
+ * colour (al)
  */
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown)
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	eax = unknown;
-	ebx = colour;
+	eax = colour;
+	ebx = format;
 	ecx = x;
 	edx = y;
-	esi = (int)format;
+	esi = (int)args;
 	edi = (int)dpi;
 	ebp = width;
 	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);

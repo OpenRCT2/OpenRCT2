@@ -18,14 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include <string.h>
 #include "addresses.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
 
-static enum WINDOW_ABOUT_WIDGET_IDX {
+enum WINDOW_ABOUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -33,7 +34,7 @@ static enum WINDOW_ABOUT_WIDGET_IDX {
 	WIDX_PUBLISHER_CREDITS
 };
 
-static rct_widget window_about_widgets[] = {
+rct_widget window_about_widgets[] = {
 	{ WWT_FRAME,			0,	0,			399,	0,		329,	0x0FFFFFFFF,							STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_ROLLERCOASTER_TYCOON_2,				STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },	// close x button
@@ -117,8 +118,13 @@ static void window_about_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -143,8 +149,13 @@ static void window_about_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
 
 	window_draw_widgets(w, dpi);
 

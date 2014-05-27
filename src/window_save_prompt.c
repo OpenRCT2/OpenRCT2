@@ -21,31 +21,49 @@
 #include "addresses.h"
 #include "game.h"
 #include "rct2.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprites.h"
 #include "tutorial.h"
 #include "widget.h"
 #include "window.h"
 #include "audio.h"
+#include "config.h"
 
-static enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
+enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
-	WIDX_3,
+	WIDX_LABEL,
 	WIDX_SAVE,
 	WIDX_DONT_SAVE,
 	WIDX_CANCEL
 };
 
 static rct_widget window_save_prompt_widgets[] = {
-	{ WWT_FRAME,			0,	0,		259,	0,	49,	-1,							STR_NONE },					// panel / background
+	{ WWT_FRAME,			0,	0,		259,	0,	49,	STR_NONE,					STR_NONE },					// panel / background
 	{ WWT_CAPTION,			0,	1,		258,	1,	14,	0,							STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	824,						STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// 
-	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	STR_SAVE_PROMPT_SAVE,		STR_NONE },					// save
-	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	STR_SAVE_PROMPT_DONT_SAVE,	STR_NONE },					// don't save
-	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	STR_SAVE_PROMPT_CANCEL,		STR_NONE },					// cancel
+	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// question/label
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	STR_SAVE_PROMPT_SAVE,		STR_NONE },		// save
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	STR_SAVE_PROMPT_DONT_SAVE,	STR_NONE },		// don't save
+	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	STR_SAVE_PROMPT_CANCEL,		STR_NONE },		// cancel
+	{ WIDGETS_END },
+};
+
+enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
+	WQIDX_BACKGROUND,
+	WQIDX_TITLE,
+	WQIDX_CLOSE,
+	WQIDX_OK,
+	WQIDX_CANCEL
+};
+
+static rct_widget window_quit_prompt_widgets[] = {
+	{ WWT_FRAME,			0,	0,		176,	0,	33,	STR_NONE,					STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		175,	1,	14,	STR_QUIT_GAME,				STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	164,	174,	2,	13,	STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		19,	30,	STR_OK,						STR_NONE },		// ok
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	19,	30,	STR_CANCEL,					STR_NONE },		// cancel
 	{ WIDGETS_END },
 };
 
@@ -91,31 +109,56 @@ static void* window_save_prompt_events[] = {
  */
 void window_save_prompt_open()
 {
-	int stringId;
+	int stringId, x, y;
 	rct_window* window;
+	unsigned short prompt_mode;
+	rct_widget *widgets;
+	uint64 enabled_widgets;
+
+	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
+
+	// do not show save prompt if we're in the title demo and click on load game
+	if (prompt_mode != PM_QUIT && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		game_load_or_quit_no_save_prompt();
+		return;
+	}
 
 	// Check if window is already open
 	window = window_bring_to_front_by_id(WC_SAVE_PROMPT, 0);
 	if (window == NULL) {
+		if (prompt_mode == PM_QUIT) {
+			widgets = window_quit_prompt_widgets;
+			enabled_widgets =
+				(1 << WQIDX_CLOSE) |
+				(1 << WQIDX_OK) |
+				(1 << WQIDX_CANCEL);
+			x = 177;
+			y = 34;
+		} else {
+			widgets = window_save_prompt_widgets;
+			enabled_widgets =
+				(1 << WIDX_CLOSE) |
+				(1 << WIDX_SAVE) |
+				(1 << WIDX_DONT_SAVE) |
+				(1 << WIDX_CANCEL);
+			x = 260;
+			y = 50;
+		}
+
 		window = window_create(
-			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - 130,
-			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 25),
-			260,
-			50,
+			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - x/2,
+			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - y/2),
+			x,
+			y,
 			(uint32*)window_save_prompt_events,
 			WC_SAVE_PROMPT,
-			0
+			WF_TRANSPARENT | WF_STICK_TO_FRONT
 		);
 
-		window->widgets = window_save_prompt_widgets;
-		window->enabled_widgets =
-			(1 << WIDX_CLOSE) |
-			(1 << WIDX_SAVE) |
-			(1 << WIDX_DONT_SAVE) |
-			(1 << WIDX_CANCEL);
+		window->widgets = widgets;
+		window->enabled_widgets = enabled_widgets;
 		window_init_scroll_widgets(window);
 		window->colours[0] = 154;
-		window->flags |= WF_TRANSPARENT;
 
 		// Pause the game
 		RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
@@ -123,13 +166,113 @@ void window_save_prompt_open()
 		window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 	}
 
-	stringId = RCT2_GLOBAL(0x009A9802, uint16) + STR_LOAD_GAME;
+	stringId = prompt_mode + STR_LOAD_GAME;
 	if (stringId == STR_LOAD_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		stringId = STR_LOAD_LANDSCAPE;
 	if (stringId == STR_QUIT_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
-	window_save_prompt_widgets[WIDX_3].image = RCT2_GLOBAL(0x009A9802, uint16) + STR_SAVE_BEFORE_LOADING;
+	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
+
+	if (!gGeneral_config.confirmation_prompt) {
+		/* game_load_or_quit_no_save_prompt() will exec requested task and close this window
+		 * immediately again.
+		 * TODO restructure these functions when we're sure game_load_or_quit_no_save_prompt()
+		 * and game_load_or_quit() are not called by the original binary anymore.
+		 */
+		
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
+			game_load_or_quit_no_save_prompt();
+			return;
+		}
+		
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
+				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
+				game_load_or_quit_no_save_prompt();
+				return;
+			} else {
+				tutorial_stop();
+				game_load_or_quit_no_save_prompt();
+				return;
+			}
+		}
+		
+		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+			game_load_or_quit_no_save_prompt();
+			return;
+		}
+	}
+	
+}
+
+/**
+ *
+ *  rct2: 0x0066DF17
+ */
+static void window_save_prompt_close()
+{
+	// Unpause the game
+	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
+	unpause_sounds();
+	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
+}
+
+/**
+ *
+ *  rct2: 0x0066DDF2
+ */
+static void window_save_prompt_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+	short prompt_mode;
+
+	#ifdef _MSC_VER
+	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
+
+	if (prompt_mode == PM_QUIT) {
+		switch (widgetIndex) {
+			case WQIDX_OK:
+				rct2_finish();
+				break;
+			case WQIDX_CLOSE:
+			case WQIDX_CANCEL:
+				window_close(w);
+				window_save_prompt_close();
+				break;
+		}
+		return;
+	} else {
+		switch (widgetIndex) {
+			case WIDX_SAVE:
+				// TODO to avoid data loss, treat SAVE as CANCEL
+				RCT2_ERROR("TODO");
+				window_close(w);
+				window_save_prompt_close();
+				return;
+				break;
+			case WIDX_DONT_SAVE:
+				break;
+			case WIDX_CLOSE:
+			case WIDX_CANCEL:
+				window_close(w);
+				window_save_prompt_close();
+				return;
+		}
+	}
+	
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
 		game_load_or_quit_no_save_prompt();
@@ -154,40 +297,23 @@ void window_save_prompt_open()
 	}
 }
 
-/**
- *
- *  rct2: 0x0066DF17
- */
-static void window_save_prompt_close()
-{
-	// Unpause the game
-	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
-	unpause_sounds();
-	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
-}
-
-/**
- *
- *  rct2: 0x0066DDF2
- */
-static void window_save_prompt_mouseup()
-{
-	short widgetIndex;
-	rct_window *w;
-
-	__asm mov widgetIndex, dx
-	__asm mov w, esi
-
-	// TODO
-}
-
 static void window_save_prompt_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 }

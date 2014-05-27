@@ -126,14 +126,14 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;				// 0x49A
+	sint16 page;				// 0x48A
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
-	sint16 var_4AC;
+	sint16 selected_tab;			// 0x4AC
 	sint16 var_4AE;
 	sint16 var_4B0; // viewport target sprite?
 	sint16 saved_view_x;			// 0x4B2
@@ -285,6 +285,12 @@ enum {
 	WC_CHEATS = 110,
 } WINDOW_CLASS;
 
+enum PROMPT_MODE {
+	PM_SAVE_BEFORE_LOAD = 0,
+	PM_SAVE_BEFORE_QUIT,
+	PM_SAVE_BEFORE_QUIT2,
+	PM_QUIT
+};
 
 void window_dispatch_update_all();
 void window_update_all();
@@ -346,12 +352,14 @@ void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
 void window_guest_list_open();
+void window_map_open();
 void window_options_open();
 void window_park_awards_open();
 void window_park_entrance_open();
 void window_park_guests_open();
 void window_park_objective_open();
 void window_park_rating_open();
+void window_finances_open();
 void window_ride_list_open();
 void window_banner_open();
 void window_cheats_open();

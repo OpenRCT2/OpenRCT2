@@ -22,13 +22,15 @@
 #include "audio.h"
 #include "config.h"
 #include "gfx.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
 
-static enum WINDOW_OPTIONS_WIDGET_IDX {
+#include <stdint.h>
+
+enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -105,9 +107,9 @@ static void window_options_emptysub() { }
 static void window_options_mouseup();
 static void window_options_mousedown();
 static void window_options_dropdown();
-static void window_options_update();
+static void window_options_update(rct_window *w);
 static void window_options_paint();
-static void window_options_draw_dropdown_box(w, widget, num_items);
+static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, int num_items);
 static void window_options_update_height_markers();
 
 static void* window_options_events[] = {
@@ -181,8 +183,8 @@ void window_options_open()
 		(1 << WIDX_HEIGHT_LABELS_DROPDOWN) |
 		(1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1 << WIDX_GRIDLINES_CHECKBOX) |
-		(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
-	// TODO: missing .text:006BAD22                 or      dword ptr [esi+0Ch], 1
+		(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX) |
+		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);	// doesn't seem to work?
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = 7;
@@ -199,8 +201,18 @@ static void window_options_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -218,9 +230,19 @@ static void window_options_mouseup()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-			__asm xor al, al
+			#ifdef _MSC_VER
+	__asm xor al, al
+	#else
+	__asm__ ( "xor al, al "  );
+	#endif
+
 		else
-			__asm mov al, 1
+			#ifdef _MSC_VER
+	__asm mov al, 1
+	#else
+	__asm__ ( "mov al, 1 "  );
+	#endif
+
 
 		RCT2_CALLPROC_EBPSAFE(0x0069C52F);
 		break;
@@ -241,6 +263,11 @@ static void window_options_mouseup()
 				w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
 		}
 		break;
+	case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+		config_save();
+		window_invalidate(w);
+		break;
 	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
 		pause_sounds();
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8) ^= 1;
@@ -258,34 +285,35 @@ static void window_options_mouseup()
 static void window_options_mousedown()
 {
 	int num_items, i;
-	sint64 device;
 	short widgetIndex;
 	rct_window *w;
 	rct_widget *widget;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	
 	widget = &w->widgets[widgetIndex - 1];
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		num_items = RCT2_GLOBAL(RCT2_ADDRESS_NUM_DSOUND_DEVICES, uint32);
-		if (num_items == 0)
-			break;
-
-		window_options_draw_dropdown_box(w, widget, num_items);
+		window_options_draw_dropdown_box(w, widget, gAudioDeviceCount);
 
 		// populate the list with the sound devices
-		device = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, sint32) + 0x10;
-
-		for (i = 0; i < num_items; i++) {
+		for (i = 0; i < gAudioDeviceCount; i++) {
 			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 1170 | (device << 16);
-			device += 0x210;
+			gDropdownItemsArgs[i] = 1170 | ((uint64)(intptr_t)gAudioDevices[i].name << 16);
 		}
 		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(0x9AF280, uint32));
-
 		break;
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
@@ -345,7 +373,7 @@ static void window_options_mousedown()
 
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
+		// RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
@@ -381,16 +409,36 @@ static void window_options_dropdown()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov dropdownIndex, ax
+	#else
+	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	if (dropdownIndex == -1)
 		return;
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		#ifdef _MSC_VER
+		__asm movzx ax, dropdownIndex		
+		#else
+		__asm__ ( "movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
+		#endif
+		// the switch replaces ax value
 		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio
 		window_invalidate(w);
 		break;
@@ -429,7 +477,12 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		__asm movzx ax, dropdownIndex		// the switch replaces ax value
+		#ifdef _MSC_VER
+		__asm movzx ax, dropdownIndex		
+		#else
+		__asm__ ( "movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
+		#endif
+		// the switch replaces ax value
 		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
@@ -453,9 +506,104 @@ static void window_options_dropdown()
 *
 *  rct2: 0x006BAD48
 */
-static void window_options_update()
+static void window_options_update(rct_window *w)
 {
-	RCT2_CALLPROC_EBPSAFE(0x006BAD48);
+	//Has use asm verison incase called by WM_INVALIDATE
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	sint32 currentSoundDevice = RCT2_GLOBAL(0x009AF280, sint32);
+
+	// sound devices
+	if (currentSoundDevice == -1 || gAudioDeviceCount == 0) {
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_SOUND_NONE;
+	} else {
+		RCT2_GLOBAL(0x013CE952, uint16) = 1170;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
+	}
+	
+	// height: units/real values
+	RCT2_GLOBAL(0x013CE952 + 6, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS)) ?
+		STR_UNITS : STR_REAL_VALUES;
+	
+	// music: on/off
+	RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
+	
+	// sound quality: low/medium/high
+	RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8);
+
+	// currency: pounds, dollars, etc. (10 total)
+	RCT2_GLOBAL(0x013CE952 + 12, uint16) = STR_POUNDS +
+		(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) & 0x3F);
+
+	// distance: metric/imperial
+	RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8);
+
+	// resolution
+	RCT2_GLOBAL(0x013CE952 + 16, uint16) = 
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, uint16);
+	RCT2_GLOBAL(0x013CE952 + 18, uint16) =
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, uint16);
+
+	// temperature: celsius/fahrenheit
+	RCT2_GLOBAL(0x013CE952 + 20, uint16) = STR_CELSIUS +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8);
+
+	// construction marker: celsius/fahrenheit
+	window_options_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE +
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
+	
+	// sound software mixing buffer checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8))
+		w->pressed_widgets |= (1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
+	else 
+		w->pressed_widgets &= ~(1 << WIDX_SOUND_SW_BUFFER_CHECKBOX);
+
+	// screen edge scrolling checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8))
+		w->pressed_widgets |= (1 << WIDX_SCREEN_EDGE_SCROLLING);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_SCREEN_EDGE_SCROLLING);
+
+	// real name checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+		w->pressed_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_REAL_NAME_CHECKBOX);
+	
+	// landscape tile smoothing checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
+		w->pressed_widgets &= ~(1 << WIDX_TILE_SMOOTHING_CHECKBOX);
+	else
+		w->pressed_widgets |= (1 << WIDX_TILE_SMOOTHING_CHECKBOX);
+
+	// show gridlines checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES))
+		w->pressed_widgets |= (1 << WIDX_GRIDLINES_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_GRIDLINES_CHECKBOX);
+
+	// save plugin data checkbox
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SAVE_PLUGIN_DATA))
+		w->pressed_widgets |= (1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);
+	else
+		w->pressed_widgets &= ~(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);
+
+	// unknown park flag can disable real name checkbox
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x8000)
+		w->disabled_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+
+	// save plugin data checkbox: visible or not
+	if (RCT2_GLOBAL(0x00F42BDA, uint8) == 1)
+		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_EMPTY;
+	else
+		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 }
 
 /**
@@ -467,8 +615,18 @@ static void window_options_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 

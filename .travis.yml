@@ -1,0 +1,17 @@
+language: c
+
+before_install:
+    - bash install.sh
+
+script:
+    - bash build.sh
+
+notifications:
+    irc: "irc.freenode.net#openrct2-dev"
+    on_failure: always
+    on_success: change
+
+cache: 
+    directories:
+        - cache
+    apt: true

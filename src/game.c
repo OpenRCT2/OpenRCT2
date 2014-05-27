@@ -32,14 +32,17 @@
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
+#include "vehicle.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_error.h"
 #include "window_tooltip.h"
+
+int _gameSpeed = 1;
 
 void game_handle_input();
 void game_handle_keyboard_input();
@@ -72,8 +75,8 @@ void game_update()
 	if (eax > 4)
 		eax = 4;
 
-	// if (ted_fastforwarding)
-	//	eax += 8 - 1;
+	if (_gameSpeed > 1)
+		eax = 1 << (_gameSpeed - 1);
 
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		for (; eax > 0; eax--) {
@@ -147,19 +150,19 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006646E1);
 	RCT2_CALLPROC_EBPSAFE(0x006A876D);
 	peep_update_all();
-	RCT2_CALLPROC_EBPSAFE(0x006D4204);	// update vehicles
+	vehicle_update_all();
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
-	RCT2_CALLPROC_EBPSAFE(0x006674F7);	// update park
+	park_update();
 	RCT2_CALLPROC_EBPSAFE(0x00684C7A);
 	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
 	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);
-	RCT2_CALLPROC_EBPSAFE(0x006BD18A);
-	RCT2_CALLPROC_EBPSAFE(0x006BCB91);
+	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
+	peep_update_crowd_noise();
+	RCT2_CALLPROC_EBPSAFE(0x006BCB91);	// weather sound effects
 	news_item_update_current();
-	RCT2_CALLPROC_EBPSAFE(0x0067009A);
+	RCT2_CALLPROC_EBPSAFE(0x0067009A);	// scenario editor opening of windows for a phase
 
 	// Update windows
 	window_dispatch_update_all();
@@ -229,7 +232,7 @@ void game_handle_input()
 	}
 
 	for (w = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0, (int)w, 0, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_08], 0, 0, 0, 0,(int) w, 0, 0);
 }
 
 /**
@@ -629,7 +632,6 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	if (w != NULL) {
 		windowClass = w->classification;
 		windowNumber = w->number;
-		widget = &w->widgets[widgetIndex];
 	}
 
 	window_close_by_id(WC_ERROR, 0);
@@ -642,6 +644,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	w = window_bring_to_front(w);
 	if (widgetIndex == -1)
 		return;
+
+	widget = &w->widgets[widgetIndex];
 
 	switch (widget->type) {
 	case WWT_FRAME:
@@ -745,12 +749,13 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		}
 		break;
 	default:
-		if (!widget_is_enabled(w, widgetIndex))
-			break;
+		// comment check as it disables the rotate station/building button in construction window
+// 		if (!widget_is_enabled(w, widgetIndex))
+// 			break;
 		if (widget_is_disabled(w, widgetIndex))
 			break;
 
-		sound_play_panned(4, w->x + (widget->left + widget->right) / 2);
+		sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2);
 		
 		// Set new cursor down widget
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
@@ -1017,7 +1022,7 @@ void handle_shortcut_command(int shortcutIndex)
 	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
-				RCT2_CALLPROC_EBPSAFE(0x0069DDF1);
+				window_finances_open();
 		break;
 	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)) {
@@ -1081,6 +1086,14 @@ void handle_shortcut_command(int shortcutIndex)
 		break;
 	case SHORTCUT_SCREENSHOT:
 		RCT2_CALLPROC_EBPSAFE(0x006E4034); // set screenshot countdown to 2
+		break;
+
+	// New
+	case SHORTCUT_REDUCE_GAME_SPEED:
+		_gameSpeed = max(1, _gameSpeed - 1);
+		break;
+	case SHORTCUT_INCREASE_GAME_SPEED:
+		_gameSpeed = min(8, _gameSpeed + 1);
 		break;
 	}
 }
@@ -1310,7 +1323,12 @@ static void game_pause_toggle()
 {
 	char input_bl;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
 
 	if (input_bl & 1) {
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
@@ -1321,7 +1339,12 @@ static void game_pause_toggle()
 			unpause_sounds();
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( "mov ebx, 0 "  );
+	#endif
+
 }
 
 /**
@@ -1333,16 +1356,30 @@ static void game_load_or_quit()
 	char input_bl, input_dl;
 	short input_di;
 
+	#ifdef _MSC_VER
 	__asm mov input_bl, bl
+	#else
+	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_dl, dl
+	#else
+	__asm__ ( "mov %[input_dl], dl " : [input_dl] "+m" (input_dl) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov input_di, di
+	#else
+	__asm__ ( "mov %[input_di], di " : [input_di] "+m" (input_di) );
+	#endif
 
 	if (!(input_bl & 1))
 		return; // 0;
-	
+
 	switch (input_dl) {
 	case 0:
-		RCT2_GLOBAL(0x009A9802, uint16) = input_di;
+		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = input_di;
 		window_save_prompt_open();
 		break;
 	case 1:
@@ -1353,7 +1390,12 @@ static void game_load_or_quit()
 		break;
 	}
 
+	#ifdef _MSC_VER
 	__asm mov ebx, 0
+	#else
+	__asm__ ( "mov ebx, 0 "  );
+	#endif
+
 }
 
 /**
@@ -1410,7 +1452,7 @@ static void load_landscape()
 			strcpy(esi, ".SC6");
 			break;
 		}
-		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
+		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
 		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
 		if (1) {
@@ -1430,23 +1472,20 @@ static void load_landscape()
 int game_load_save()
 {
 	rct_window *mainWindow;
-	HANDLE hFile;
+	FILE *file;
 	char *path;
 	int i, j;
 
 	path = (char*)0x0141EF68;
-	hFile = CreateFile(
-		path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, NULL
-	);
-	if (hFile == NULL) {
+	file = fopen(path, "rb");
+	if (file == NULL) {
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
-	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
-	if (!sawyercoding_validate_checksum(hFile)) {
-		CloseHandle(hFile);
+	if (!sawyercoding_validate_checksum(file)) {
+		fclose(file);
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
@@ -1456,7 +1495,7 @@ int game_load_save()
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	// Read first chunk
-	sawyercoding_read_chunk(hFile, (uint8*)s6Header);
+	sawyercoding_read_chunk(file, (uint8*)s6Header);
 	if (s6Header->type == S6_TYPE_SAVEDGAME) {
 		// Read packed objects
 		if (s6Header->num_packed_objects > 0) {
@@ -1464,23 +1503,23 @@ int game_load_save()
 			for (i = 0; i < s6Header->num_packed_objects; i++)
 				j += object_load_packed();
 			if (j > 0)
-				object_load_list();
+				object_list_load();
 		}
 	}
 
-	object_read_and_load_entries(hFile);
+	object_read_and_load_entries(file);
 
 	// Read flags (16 bytes)
-	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 	// Read map elements
 	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-	sawyercoding_read_chunk(hFile, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 	// Read game data, including sprites
-	sawyercoding_read_chunk(hFile, (uint8*)0x010E63B8);
+	sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
 
-	CloseHandle(hFile);
+	fclose(file);
 
 	// Check expansion pack
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
@@ -1519,7 +1558,7 @@ int game_load_save()
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
-		RCT2_CALLPROC_EBPSAFE(0x0069E869);
+		sub_69E869();
 
 	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
 	gfx_invalidate_screen();
@@ -1546,7 +1585,7 @@ static void load_game()
 			strcpy(esi, ".SV6");
 			break;
 		}
-		strcpy((char*)0x009ABB37, (char*)0x0141EF68);
+		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
 		if (game_load_save()) {
 			gfx_invalidate_screen();
@@ -1573,14 +1612,14 @@ static void rct2_exit()
  */
 void game_load_or_quit_no_save_prompt()
 {
-	if (RCT2_GLOBAL(0x009A9802, uint16) < 1) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) < 1) {
 		game_do_command(0, 1, 0, 1, 5, 0, 0);
 		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 			load_landscape();
 		else
 			load_game();
-	} else if (RCT2_GLOBAL(0x009A9802, uint16) == 1) {
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, 5, 0, 0);
 		if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
 			RCT2_CALLPROC_EBPSAFE(0x0040705E);

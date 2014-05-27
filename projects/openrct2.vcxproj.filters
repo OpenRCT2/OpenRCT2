@@ -48,7 +48,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\strings.h">
+    <ClInclude Include="..\src\string_ids.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\peep.h">
@@ -76,6 +76,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ride.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride_ratings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\park.h">
@@ -120,10 +126,16 @@
     <ClInclude Include="..\src\screenshot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\settings.h">
+    <ClInclude Include="..\src\finance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\finance.h">
+    <ClInclude Include="..\src\vehicle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\marketing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\award.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,7 +194,7 @@
     <ClCompile Include="..\src\scenario.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\strings.c">
+    <ClCompile Include="..\src\string_ids.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\config.c">
@@ -192,6 +204,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ride.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride_data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride_ratings.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\map.c">
@@ -292,6 +310,27 @@
     </ClCompile>
     <ClCompile Include="..\src\window_options.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_map.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scenario_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\object_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\vehicle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\marketing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\award.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,11 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include <string.h>
+#include <limits.h>
 #include "addresses.h"
 #include "park.h"
 #include "peep.h"
-#include "strings.h"
+#include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
@@ -38,7 +40,7 @@ enum {
 	WINDOW_CHEATS_PAGE_GUESTS
 };
 
-static enum WINDOW_CHEATS_WIDGET_IDX {
+enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
@@ -79,7 +81,7 @@ static rct_widget *window_cheats_page_widgets[] = {
 static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
-static void window_cheats_update();
+static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
 static void window_cheats_set_page(rct_window *w, int page);
@@ -183,8 +185,18 @@ static void window_cheats_money_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -214,10 +226,20 @@ static void window_cheats_guests_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	rct_peep* peep;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -228,24 +250,23 @@ static void window_cheats_guests_mouseup()
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HAPPY_GUESTS:
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
-			if (peep->var_2A != 0)
-				continue;
-			peep->happiness = 255;
-		}
+		FOR_ALL_GUESTS(spriteIndex, peep)
+			if (peep->var_2A == 0)
+				peep->happiness = 255;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	}
 }
 
-static void window_cheats_update()
+static void window_cheats_update(rct_window *w)
 {
-	rct_window *w;
+	rct_window *w2;
 
-	__asm mov w, esi
+	#ifdef _MSC_VER
+	__asm mov w2, esi
+	#else
+	__asm__ ( "mov %[w2], esi " : [w2] "+m" (w2) );
+	#endif
 
 	w->var_48E++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
@@ -256,7 +277,12 @@ static void window_cheats_invalidate()
 	int i;
 	rct_window *w;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
 	strcpy((char*)0x009BC677, "Cheats");
 
 	rct_widget *widgets = window_cheats_page_widgets[w->page];
@@ -276,8 +302,18 @@ static void window_cheats_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
+	#ifdef _MSC_VER
 	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	#ifdef _MSC_VER
 	__asm mov dpi, edi
+	#else
+	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+	#endif
+
 
 	window_draw_widgets(w, dpi);
 	window_cheats_draw_tab_images(dpi, w);

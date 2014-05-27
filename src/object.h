@@ -21,21 +21,40 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
-#include <windows.h>
+#include <stdio.h>
 #include "rct2.h"
 
 /**
  * Object entry structure.
- * size: 0x0100
+ * size: 0x10
  */
 typedef struct {
-	uint32 var_00;
-	char name[8];		// 0x04
-	uint32 var_0C;
+	uint32 flags;
+	char name[8];
+	uint32 checksum;
 } rct_object_entry;
 
-void object_load_list();
-void object_read_and_load_entries(HANDLE hFile);
+/**
+ * Object entry structure extended.
+ * size: 0x14
+ */
+typedef struct {
+	uint32 flags;
+	char name[8];
+	uint32 checksum;
+	uint32 extended;
+} rct_object_entry_extended;
+
+void object_list_load();
+void object_read_and_load_entries(FILE *file);
 int object_load_packed();
+void object_unload_all();
+
+int object_load(int groupIndex, rct_object_entry *entry);
+void object_unload(int groupIndex, rct_object_entry_extended *entry);
+int object_get_scenario_text(rct_object_entry *entry);
+void object_free_scenario_text();
+int object_get_length(rct_object_entry *entry);
+rct_object_entry *object_get_next(rct_object_entry *entry);
 
 #endif
