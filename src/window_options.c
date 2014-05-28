@@ -223,6 +223,7 @@ static void window_options_mouseup()
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) ^= 1;
+		gGeneral_config.edge_scrolling ^= 1;
 		config_save();
 		window_invalidate(w);
 		break;
@@ -271,6 +272,7 @@ static void window_options_mouseup()
 	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
 		pause_sounds();
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8) ^= 1;
+		gSound_config.forced_software_buffering ^= 1;
 		config_save();
 		unpause_sounds();
 		window_invalidate(w);
