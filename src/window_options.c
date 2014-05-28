@@ -270,6 +270,8 @@ static void window_options_mouseup()
 		break;
 	case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+		gGeneral_config.save_plugin_data = !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8)
+												& CONFIG_FLAG_SAVE_PLUGIN_DATA);
 		config_save();
 		window_invalidate(w);
 		break;

@@ -88,6 +88,7 @@ general_configuration_t gGeneral_config_default = {
 	0,		// always_show_gridlines
 	1,		// landscape_smoothing
 	0,		// show_height_as_units
+	1,		// save_plugin_data
 };
 sound_configuration_t gSound_config;
 
@@ -165,6 +166,14 @@ void config_load()
 			}
 			else {
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			}
+
+			// save plugin data
+			if (gGeneral_config.save_plugin_data){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SAVE_PLUGIN_DATA;
 			}
 
 			//sound configuration
@@ -356,6 +365,13 @@ void config_write_ini_general(FILE *fp)
 	}
 	else {
 		fprintf(fp, "show_height_as_units = false\n");
+	}
+
+	if (gGeneral_config.save_plugin_data){
+		fprintf(fp, "save_plugin_data = true\n");
+	}
+	else {
+		fprintf(fp, "save_plugin_data = false\n");
 	}
 }
 
@@ -577,6 +593,14 @@ static void config_general(char *setting, char *value){
 		}
 		else {
 			gGeneral_config.show_height_as_units = 0;
+		}
+	}
+	else if (strcmp(setting, "save_plugin_data") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.save_plugin_data = 1;
+		}
+		else {
+			gGeneral_config.save_plugin_data = 0;
 		}
 	}
 }
