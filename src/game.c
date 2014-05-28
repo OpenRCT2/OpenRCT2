@@ -59,9 +59,46 @@ void game_create_windows()
 	RCT2_CALLPROC_EBPSAFE(0x0066B905);
 }
 
+/**
+ * 
+ *  rct2: 0x006838BD
+ */
+void update_water_animation()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006838BD);
+}
+
+/**
+ * 
+ *  rct2: 0x00684218
+ */
+void update_rain_animation()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
+		return;
+
+	// Draw picked-up peep
+	if (RCT2_GLOBAL(0x009DE550, uint32) != 0xFFFFFFFF) {
+		gfx_draw_sprite(
+			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16)
+		);
+	}
+
+	// Get rain draw function and draw rain
+	uint32 eax = RCT2_ADDRESS(0x009AC058, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8)];
+	if (eax != 0xFFFFFFFF && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
+		RCT2_CALLPROC_X(0x00684266, eax, 0, 0, 0, 0, 0, 0);
+}
+
 void game_update()
 {
 	int eax, tmp;
+
+	// Handles picked-up peep and rain redraw
+	RCT2_CALLPROC_EBPSAFE(0x006843DC);
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
@@ -124,8 +161,8 @@ void game_update()
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
 
-	RCT2_CALLPROC_EBPSAFE(0x006838BD);
-	RCT2_CALLPROC_EBPSAFE(0x00684218);
+	update_water_animation();
+	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
