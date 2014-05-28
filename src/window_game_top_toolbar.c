@@ -166,6 +166,11 @@ static void window_game_top_toolbar_mouseup()
 		game_do_command(0, 1, 0, 0, 2, 0, 0);
 		break;
 	case WIDX_FASTFORWARD:
+		// This is an excellent place to add in debugging statements and
+		// print routines, that will be triggered when you press the
+		// button in the game. Use "git update-index --skip-worktree
+		// src/window_game_top_toolbar" to avoid committing these changes to
+		// version control.
 		window_cheats_open();
 		break;
 
