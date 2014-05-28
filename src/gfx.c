@@ -1434,4 +1434,59 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 
 	gLastDrawStringX = ecx;
 	gLastDrawStringY = edx;
+
+	RCT2_GLOBAL(0xEDF840, uint16) = ecx;
+	RCT2_GLOBAL(0xEDF842, uint16) = edx;
+	RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
+
+	if (eax & 0xFF == 0xFE){
+		//jmp 0x682853
+	}
+
+	ebx = dpi->x;
+	ebx += dpi->width;
+	if (ecx >= ebx){
+		return;
+		//jmp 0x6828DF
+	}
+	ebx = ecx;
+	ebx += 0x280;
+	if (ebx <= dpi->x){
+		return;
+	}
+	ebx = dpi->y;
+	ebx += dpi->height;
+	if (edx >= ebx){
+		return;
+	}
+	ebx = edx;
+	ebx += 0x5A;
+	if (ebx <= dpi->y){
+		return;
+	}
+	if (eax & 0xff == 0xff){
+		//jmp 0x682853
+	}
+
+	RCT2_GLOBAL(0x13CE9A2, uint16) = 0;
+	if (RCT2_GLOBAL(0x13CE950, sint16) < 0){
+		RCT2_GLOBAL(0x13CE9A2, uint16) |= 0x4;
+		if (RCT2_GLOBAL(0x13CE950, uint16)!=0xFFFF){
+			RCT2_GLOBAL(0x13CE9A2, uint16) |= 0x8;
+		}
+		RCT2_GLOBAL(0x13CE950, uint16) = 0xE0;
+	}
+	if (eax&(1 << 5)){
+		RCT2_GLOBAL(0x13CE9A2, uint16) |= 0x2;
+	}
+	eax &= ~(1 << 5);
+	if (!(eax & 0x40)){
+		//jmp 0x682aa9
+	}
+	RCT2_GLOBAL(0x13CE9A2, uint16) |= 0x1;
+	eax &= 0x1F;
+
+	ebp = eax;
+	//0x6827c9
+
 }
