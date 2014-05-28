@@ -249,6 +249,8 @@ static void window_options_mouseup()
 		break;
 	case WIDX_TILE_SMOOTHING_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+		gGeneral_config.landscape_smoothing = !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8)
+												& CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE);
 		config_save();
 		gfx_invalidate_screen();
 		break;

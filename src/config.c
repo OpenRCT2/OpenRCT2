@@ -86,6 +86,7 @@ general_configuration_t gGeneral_config_default = {
 	0,		// construction_marker_colour
 	1,		// edge_scrolling
 	0,		// always_show_gridlines
+	1,		// landscape_smoothing
 };
 sound_configuration_t gSound_config;
 
@@ -147,6 +148,14 @@ void config_load()
 			}
 			else {
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+			}
+
+			// landscape smoothing
+			if (!gGeneral_config.landscape_smoothing){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
 			}
 			
 			
@@ -326,6 +335,13 @@ void config_write_ini_general(FILE *fp)
 	}
 	else {
 		fprintf(fp, "always_show_gridlines = false\n");
+	}
+
+	if (gGeneral_config.landscape_smoothing){
+		fprintf(fp, "landscape_smoothing = true\n");
+	}
+	else {
+		fprintf(fp, "landscape_smoothing = false\n");
 	}
 }
 
@@ -531,6 +547,14 @@ static void config_general(char *setting, char *value){
 		}
 		else {
 			gGeneral_config.always_show_gridlines = 0;
+		}
+	}
+	else if (strcmp(setting, "landscape_smoothing") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.landscape_smoothing = 1;
+		}
+		else {
+			gGeneral_config.landscape_smoothing = 0;
 		}
 	}
 }
