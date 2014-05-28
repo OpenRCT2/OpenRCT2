@@ -189,7 +189,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 	#ifdef _MSC_VER
 	//__asm mov widgetIndex, dx
 	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+// 	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
 	#endif
 
 

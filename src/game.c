@@ -671,16 +671,17 @@ static void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_windo
 #else
 	__asm__("\
 			push %[address]\n\
-			mov edx, widgetIndex \n\
-			mov edi, widget
+			mov edi, %[widget] \n\
 			mov eax, %[w]  \n\
-			push edx \n\
-			push eax		\n\
+			mov edx, %[widgetIndex] \n\
 			push edi \n\
+			push eax \n\
+			push edx \n\
 			mov esi, %[w]	\n\
 			call [esp+12]	\n\
 			add esp, 16	\n\
-			" :[address] "+m" (address), [w] "+m" (w) : : "eax", "esi");
+			" :[address] "+m" (address), [w] "+m" (w), [widget] "+m" (widget), [widgetIndex] "+m" (widgetIndex): : "eax", "esi", "edx", "edi"
+		);
 #endif
 }
 
