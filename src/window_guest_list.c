@@ -73,7 +73,7 @@ static rct_widget window_guest_list_widgets[] = {
 static void window_guest_list_emptysub() { }
 static void window_guest_list_mouseup();
 static void window_guest_list_resize();
-static void window_guest_list_mousedown();
+static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_guest_list_dropdown();
 static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize();
@@ -241,32 +241,9 @@ static void window_guest_list_resize()
  * 
  *  rct2: 0x00699AC4
  */
-static void window_guest_list_mousedown()
+static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int i;
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
-
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:

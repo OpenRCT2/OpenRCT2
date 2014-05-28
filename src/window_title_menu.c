@@ -45,7 +45,7 @@ static rct_widget window_title_menu_widgets[] = {
 
 static void window_title_menu_emptysub() { }
 static void window_title_menu_mouseup();
-static void window_title_menu_mousedown();
+static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_title_menu_dropdown();
 static void window_title_menu_unknown17();
 static void window_title_menu_paint();
@@ -122,31 +122,8 @@ static void window_title_menu_mouseup()
 	}
 }
 
-static void window_title_menu_mousedown()
+static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
-
 	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
 		gDropdownItemsFormat[0] = STR_TUTORIAL_BEGINNERS;
 		gDropdownItemsFormat[1] = STR_TUTORIAL_CUSTOM_RIDES;
