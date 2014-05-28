@@ -78,7 +78,7 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 
 static void window_game_top_toolbar_emptysub() { }
 static void window_game_top_toolbar_mouseup();
-static void window_game_top_toolbar_mousedown();
+static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_game_top_toolbar_dropdown();
 static void window_game_top_toolbar_invalidate();
 static void window_game_top_toolbar_paint();
@@ -259,31 +259,9 @@ static void window_game_top_toolbar_mouseup()
  * 
  *  rct2: 0x0066CA3B
  */
-static void window_game_top_toolbar_mousedown()
+static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
 	rct_viewport *mainViewport;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		gDropdownItemsFormat[0] = 882;

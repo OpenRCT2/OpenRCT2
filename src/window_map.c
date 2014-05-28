@@ -77,7 +77,7 @@ static rct_widget window_map_widgets[] = {
 static void window_map_emptysub() { }
 static void window_map_close();
 static void window_map_mouseup();
-static void window_map_mousedown();
+static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
 static void window_map_scrollgetsize();
 static void window_map_scrollmousedown();
@@ -228,7 +228,7 @@ static void window_map_mouseup()
 *
 *  rct2: 0x0068D040
 */
-static void window_map_mousedown()
+static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	RCT2_CALLPROC_EBPSAFE(0x0068D040);
 }

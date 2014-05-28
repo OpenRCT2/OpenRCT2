@@ -654,6 +654,36 @@ static void input_mouseover_widget_flatbutton_invalidate()
 		widget_invalidate(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber));
 }
 
+static void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_window*w, rct_widget* widget )
+{
+#ifdef _MSC_VER
+	__asm {
+		push address
+		push widget
+		push w
+		push widgetIndex
+		mov edi, widget
+		mov edx, widgetIndex
+		mov esi, w
+		call[esp + 12]
+		add esp, 16
+	}
+#else
+	__asm__("\
+			push %[address]\n\
+			mov edx, widgetIndex \n\
+			mov edi, widget
+			mov eax, %[w]  \n\
+			push edx \n\
+			push eax		\n\
+			push edi \n\
+			mov esi, %[w]	\n\
+			call [esp+12]	\n\
+			add esp, 16	\n\
+			" :[address] "+m" (address), [w] "+m" (w) : : "eax", "esi");
+#endif
+}
+
 /**
  * 
  *  rct2: 0x006E95F9
@@ -803,7 +833,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(0x009DE528, uint16) = 1;
 
 		widget_invalidate(windowClass, windowNumber, widgetIndex);
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_DOWN], 0, 0, 0, widgetIndex, (int)w, (int)widget, 0);
+		RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
 		break;
 	}
 }
