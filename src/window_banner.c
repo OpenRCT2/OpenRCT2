@@ -55,7 +55,7 @@ rct_widget window_banner_widgets[] = {
 
 static void window_banner_emptysub() { }
 static void window_banner_mouseup();
-static void window_banner_mousedown();
+static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_banner_dropdown();
 static void window_banner_textinput();
 static void window_banner_invalidate();
@@ -182,12 +182,12 @@ static void window_banner_mouseup()
 	}
 }
 
-static void window_banner_mousedown()
+static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
+	//short widgetIndex;
 
 	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
+	//__asm mov widgetIndex, dx
 	#else
 	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
 	#endif

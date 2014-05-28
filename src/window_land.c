@@ -52,7 +52,7 @@ static rct_widget window_land_widgets[] = {
 static void window_land_emptysub() { }
 static void window_land_close();
 static void window_land_mouseup();
-static void window_land_mousedown();
+static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_land_dropdown();
 static void window_land_update(rct_window *w);
 static void window_land_invalidate();
@@ -217,31 +217,9 @@ static void window_land_mouseup()
  *
  *  rct2: 0x0066407B
  */
-static void window_land_mousedown()
+static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int i;
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR:

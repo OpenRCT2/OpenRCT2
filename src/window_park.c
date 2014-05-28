@@ -218,7 +218,7 @@ static void window_park_emptysub() { }
 static void window_park_entrance_close();
 static void window_park_entrance_mouseup();
 static void window_park_entrance_resize();
-static void window_park_entrance_mousedown();
+static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_park_entrance_dropdown();
 static void window_park_entrance_update(rct_window *w);
 static void window_park_entrance_toolupdate();
@@ -243,7 +243,7 @@ static void window_park_guests_paint();
 
 static void window_park_price_mouseup();
 static void window_park_price_resize();
-static void window_park_price_mousedown();
+static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_park_price_update(rct_window *w);
 static void window_park_price_invalidate();
 static void window_park_price_paint();
@@ -731,31 +731,8 @@ static void window_park_entrance_resize()
  *
  *  rct2: 0x006681BF
  */
-static void window_park_entrance_mousedown()
+static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
-
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		gDropdownItemsFormat[0] = 1142;
 		gDropdownItemsFormat[1] = 1142;
@@ -1617,24 +1594,9 @@ static void window_park_price_resize()
  *
  *  rct2: 0x0066902C
  */
-static void window_park_price_mousedown()
+static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int newFee;
-	short widgetIndex;
-	rct_window *w;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

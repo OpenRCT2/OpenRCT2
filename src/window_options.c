@@ -105,7 +105,7 @@ static rct_widget window_options_widgets[] = {
 
 static void window_options_emptysub() { }
 static void window_options_mouseup();
-static void window_options_mousedown();
+static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_options_dropdown();
 static void window_options_update(rct_window *w);
 static void window_options_paint();
@@ -290,25 +290,9 @@ static void window_options_mouseup()
 *
 *  rct2: 0x006BB01B
 */
-static void window_options_mousedown()
+static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items, i;
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
 	
 	widget = &w->widgets[widgetIndex - 1];
 
