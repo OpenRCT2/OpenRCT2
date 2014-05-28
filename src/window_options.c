@@ -474,19 +474,19 @@ static void window_options_dropdown()
 		// TODO: no clue what this does (and if it's correct)
 		RCT2_GLOBAL(0x009AAC75, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
 		RCT2_GLOBAL(0x009AAC76, uint8) = RCT2_GLOBAL(0x009AF604 + dropdownIndex, uint8);
-		gSound_config.sound_quality = dropdownIndex;
+		gSound_config.sound_quality = (sint8)dropdownIndex;
 		config_save();
 		window_invalidate(w);
 		break;
 	case WIDX_CURRENCY_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) = dropdownIndex | 0xC0;
-		gGeneral_config.currency_format = dropdownIndex;
+		gGeneral_config.currency_format = (sint8)dropdownIndex;
 		config_save();
 		gfx_invalidate_screen();
 		break;
 	case WIDX_DISTANCE_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8) = (uint8)dropdownIndex;
-		gGeneral_config.measurement_format = dropdownIndex;
+		gGeneral_config.measurement_format = (sint8)dropdownIndex;
 		config_save();
 		window_options_update_height_markers();
 		break;
@@ -502,7 +502,7 @@ static void window_options_dropdown()
 	case WIDX_TEMPERATURE_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = (uint8)dropdownIndex;
-			gGeneral_config.temperature_format = dropdownIndex;
+			gGeneral_config.temperature_format = (sint8)dropdownIndex;
 			config_save();
 			gfx_invalidate_screen();
 		}
