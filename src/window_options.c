@@ -254,6 +254,8 @@ static void window_options_mouseup()
 		break;
 	case WIDX_GRIDLINES_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+		gGeneral_config.always_show_gridlines = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) 
+												 & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
 		config_save();
 		gfx_invalidate_screen();
 

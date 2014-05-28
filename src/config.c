@@ -76,15 +76,16 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 
 general_configuration_t gGeneral_config;
 general_configuration_t gGeneral_config_default = {
-	0,
-	1,
-	SCREENSHOT_FORMAT_PNG,
-	"",
-	MEASUREMENT_FORMAT_IMPERIAL,
-	TEMPERATURE_FORMAT_F,
-	0,
-	0,
-	1,
+	0,		// play_intro
+	1,		// confirmation_prompt
+	SCREENSHOT_FORMAT_PNG, // screenshot_format
+	"",		// game_path
+	MEASUREMENT_FORMAT_IMPERIAL, // measurement_format
+	TEMPERATURE_FORMAT_F,		 // temperature_format
+	CURRENCY_POUNDS,		// currency_format
+	0,		// construction_marker_colour
+	1,		// edge_scrolling
+	0,		// always_show_gridlines
 };
 sound_configuration_t gSound_config;
 
@@ -139,6 +140,15 @@ void config_load()
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
+			
+			// always show gridlines
+			if (gGeneral_config.always_show_gridlines){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+			}
+			
 			
 
 			//sound configuration
@@ -309,6 +319,13 @@ void config_write_ini_general(FILE *fp)
 	}
 	else {
 		fprintf(fp, "temperature_format = celsius\n");
+	}
+
+	if (gGeneral_config.always_show_gridlines){
+		fprintf(fp, "always_show_gridlines = true\n");
+	}
+	else {
+		fprintf(fp, "always_show_gridlines = false\n");
 	}
 }
 
@@ -508,7 +525,14 @@ static void config_general(char *setting, char *value){
 	else if (strcmp(setting, "currency") == 0){
 		config_parse_currency(value);
 	}
-
+	else if (strcmp(setting, "always_show_gridlines") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.always_show_gridlines = 1;
+		}
+		else {
+			gGeneral_config.always_show_gridlines = 0;
+		}
+	}
 }
 
 /**

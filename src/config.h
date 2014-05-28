@@ -136,7 +136,7 @@ typedef struct general_configuration {
 	sint8 currency_format;
 	sint8 construction_marker_colour;
 	sint8 edge_scrolling;
-
+	sint8 always_show_gridlines;
 } general_configuration_t;
 
 static const struct { char *key; int value; } _currencyLookupTable[] = {
