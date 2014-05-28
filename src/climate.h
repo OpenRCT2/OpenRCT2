@@ -44,5 +44,6 @@ extern const rct_weather climate_weather_data[6];
 int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);
 void climate_update();
+void climate_update_sound();
 
 #endif
