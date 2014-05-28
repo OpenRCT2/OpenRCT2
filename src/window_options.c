@@ -451,9 +451,12 @@ static void window_options_dropdown()
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
 		// reset flag and set it to 1 if height as units is selected
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= ~CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+		gGeneral_config.show_height_as_units = 0;
 
-		if (dropdownIndex == 0)
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;	
+		if (dropdownIndex == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			gGeneral_config.show_height_as_units = 1;
+		}
 
 		window_options_update_height_markers();
 		break;

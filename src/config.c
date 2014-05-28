@@ -87,6 +87,7 @@ general_configuration_t gGeneral_config_default = {
 	1,		// edge_scrolling
 	0,		// always_show_gridlines
 	1,		// landscape_smoothing
+	0,		// show_height_as_units
 };
 sound_configuration_t gSound_config;
 
@@ -158,7 +159,13 @@ void config_load()
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
 			}
 			
-			
+			// show height as units
+			if (gGeneral_config.show_height_as_units){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			}
 
 			//sound configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
@@ -342,6 +349,13 @@ void config_write_ini_general(FILE *fp)
 	}
 	else {
 		fprintf(fp, "landscape_smoothing = false\n");
+	}
+
+	if (gGeneral_config.show_height_as_units){
+		fprintf(fp, "show_height_as_units = true\n");
+	}
+	else {
+		fprintf(fp, "show_height_as_units = false\n");
 	}
 }
 
@@ -555,6 +569,14 @@ static void config_general(char *setting, char *value){
 		}
 		else {
 			gGeneral_config.landscape_smoothing = 0;
+		}
+	}
+	else if (strcmp(setting, "show_height_as_units") == 0){
+		if (strcmp(value, "true") == 0){
+			gGeneral_config.show_height_as_units = 1;
+		}
+		else {
+			gGeneral_config.show_height_as_units = 0;
 		}
 	}
 }
