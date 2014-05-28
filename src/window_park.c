@@ -2259,13 +2259,13 @@ static void window_park_awards_paint()
 	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	count = 0;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_AWARDS; i++) {
 		award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
 		if (award->time == 0)
 			continue;
 
 		gfx_draw_sprite(dpi, SPR_AWARD_MOST_UNTIDY + award->type, x, y);
-		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, STR_AWARD_MOST_UNTIDY, 0);
+		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, STR_AWARD_MOST_UNTIDY + award->type, 0);
 
 		y += 32;
 		count++;

@@ -137,6 +137,15 @@ void finance_pay_ride_upkeep()
 	}
 }
 
+void finance_reset_history()
+{
+	int i;
+	for (i = 0; i < 128; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+	}
+}
 
 /**
 *
