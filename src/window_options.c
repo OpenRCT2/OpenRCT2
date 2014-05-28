@@ -223,6 +223,7 @@ static void window_options_mouseup()
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) ^= 1;
+		gGeneral_config.edge_scrolling ^= 1;
 		config_save();
 		window_invalidate(w);
 		break;
@@ -248,11 +249,15 @@ static void window_options_mouseup()
 		break;
 	case WIDX_TILE_SMOOTHING_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+		gGeneral_config.landscape_smoothing = !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8)
+												& CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE);
 		config_save();
 		gfx_invalidate_screen();
 		break;
 	case WIDX_GRIDLINES_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+		gGeneral_config.always_show_gridlines = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) 
+												 & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
 		config_save();
 		gfx_invalidate_screen();
 
@@ -265,12 +270,15 @@ static void window_options_mouseup()
 		break;
 	case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) ^= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+		gGeneral_config.save_plugin_data = !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8)
+												& CONFIG_FLAG_SAVE_PLUGIN_DATA);
 		config_save();
 		window_invalidate(w);
 		break;
 	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
 		pause_sounds();
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint8) ^= 1;
+		gSound_config.forced_software_buffering ^= 1;
 		config_save();
 		unpause_sounds();
 		window_invalidate(w);
@@ -445,9 +453,12 @@ static void window_options_dropdown()
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
 		// reset flag and set it to 1 if height as units is selected
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= ~CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+		gGeneral_config.show_height_as_units = 0;
 
-		if (dropdownIndex == 0)
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;	
+		if (dropdownIndex == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			gGeneral_config.show_height_as_units = 1;
+		}
 
 		window_options_update_height_markers();
 		break;
@@ -463,17 +474,20 @@ static void window_options_dropdown()
 		// TODO: no clue what this does (and if it's correct)
 		RCT2_GLOBAL(0x009AAC75, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
 		RCT2_GLOBAL(0x009AAC76, uint8) = RCT2_GLOBAL(0x009AF604 + dropdownIndex, uint8);
-
+		gSound_config.sound_quality = dropdownIndex;
 		config_save();
 		window_invalidate(w);
 		break;
 	case WIDX_CURRENCY_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) = dropdownIndex | 0xC0;
+		gGeneral_config.currency_format = dropdownIndex;
 		config_save();
 		gfx_invalidate_screen();
 		break;
 	case WIDX_DISTANCE_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8) = (uint8)dropdownIndex;
+		gGeneral_config.measurement_format = dropdownIndex;
+		config_save();
 		window_options_update_height_markers();
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
@@ -488,6 +502,7 @@ static void window_options_dropdown()
 	case WIDX_TEMPERATURE_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = (uint8)dropdownIndex;
+			gGeneral_config.temperature_format = dropdownIndex;
 			config_save();
 			gfx_invalidate_screen();
 		}
