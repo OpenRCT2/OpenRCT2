@@ -574,7 +574,6 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069E79A); // daily profit update
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		get_local_time();
-		ride_check_all_reachable(); // XXX remove after debugging done
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
 		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
 			objective_type == 6 || objective_type == 5) {
