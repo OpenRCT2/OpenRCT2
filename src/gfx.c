@@ -1118,30 +1118,35 @@ int gfx_get_string_width(char *buffer)
 }
 
 /**
- *  Clip the text in buffer to width and return the new width of the clipped string
+ *  Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
  *
  *  rct2: 0x006C2460
  * buffer (esi)
  * width (edi)
  */
-int gfx_clip_string(char *buffer, int width)
+int gfx_clip_string(char* buffer, int width)
 {
-	uint16 base;
-	int edx, ebp;
-	int max_x;
+	// Location of font sprites
+	uint16 current_font_sprite_base;
+	// Width the string has to fit into
+	int max_width;
+	// Character to change to ellipsis
+	char* last_char;
+	// Width of the string, including ellipsis
+	int clipped_width;
 
 	if (width < 6) {
 		*buffer = 0;
 		return 0;
 	}
 	
-	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	edx = width - (3 * RCT2_ADDRESS(0x141E9F6, uint32)[base]);
+	current_font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
 
-	max_x = 0;
-	ebp = buffer;
+	clipped_width = 0;
+	last_char = buffer;
 
-	for (uint8* curr_char = buffer; *curr_char > 0; curr_char++) {
+	for (char* curr_char = buffer; *curr_char > 0; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
@@ -1154,19 +1159,19 @@ int gfx_clip_string(char *buffer, int width)
 				curr_char++;
 				continue;
 			case 7:
-				base = 0x1C0;
+				current_font_sprite_base = 0x1C0;
 				break;
 			case 8:
-				base = 0x2A0;
+				current_font_sprite_base = 0x2A0;
 				break;
 			case 9:
-				base = 0x0E0;
+				current_font_sprite_base = 0x0E0;
 				break;
 			case 0x0A:
-				base = 0;
+				current_font_sprite_base = 0;
 				break;
 			case 0x17:
-				max_x = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+				clipped_width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
 				curr_char += 4;
 				*curr_char = 0;
 				continue;
@@ -1181,25 +1186,22 @@ int gfx_clip_string(char *buffer, int width)
 				curr_char += 2;
 				continue;
 			}
-
-			edx = RCT2_ADDRESS(0x141E9F6, uint32)[base];
-			edx = width - (3 * RCT2_ADDRESS(0x141E9F6, uint32)[base]);
+			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
 		}
 
-		max_x += (RCT2_ADDRESS(0x0141E9E8, uint8)[base] & 0xFF);
+		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char-0x20)];
 
-		if (max_x > width) {
-			RCT2_GLOBAL(ebp + 0, uint32) = 0x2E2E2E;
-			max_x = width;
-			return;
+		if (clipped_width >= width) {
+			RCT2_GLOBAL(last_char, uint32) = 0x2E2E2E;
+			clipped_width = width;
+			return clipped_width;
 		}
-		if (max_x <= edx) {
-			ebp = curr_char;
+		if (clipped_width <= max_width) {
+			last_char = curr_char;
 		}
 	}
-	return max_x;
+	return clipped_width;
 }
-
 
 /**
  * Draws i formatted text string left aligned at i specified position but clips
@@ -1224,8 +1226,8 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
 
-	// Clip text
-	RCT2_CALLPROC_X(0x006C2460, 0, 0, 0, 0, (int)buffer, width, 0);
+	// Clip text - return value is not needed
+	gfx_clip_string(buffer, width);
 
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
