@@ -1123,6 +1123,116 @@ int gfx_get_string_width(char *buffer)
 }
 
 /**
+ *  Clip the text in buffer to width and return the new width of the clipped string
+ *
+ *  rct2: 0x006C2460
+ * buffer (esi)
+ * width (edi)
+ */
+int gfx_clip_string(char *buffer, int width)
+{
+	uint16 base; 
+
+	if (width < 6) {
+		*buffer = 0;
+		return 0;
+	}
+	
+	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	edx = rct2_address(0x141E9F6, uint32)[base];
+
+	edx = &(edx + edx*2);
+	// lea     edx, [edx+edx*2]
+	dx = -(edx & 0xFFFF);
+	dx += width;
+	eax = 0;
+	cx = 0;
+	max_x = 0;
+	ebp = buffer;
+
+
+ // loc_6C2485:                             ; CODE XREF: clip_text+42j
+	for (uint32 al = *buffer; al > 0; buffer++, al = *buffer) {
+
+		if (al < 0x20) {
+			switch(curr_char) {
+			case 1:
+				width = *buffer;
+				buffer++;
+				continue;
+			case 2:
+			case 3:
+			case 4:
+				buffer++;
+				continue;
+			case 7:
+				base = 0x1C0;
+                 // jmp     short loc_6C2523
+				break;
+			case 8:
+				base = 0x2A0;
+                 // jmp     short loc_6C2523
+				break;
+			case 9:
+				base = 0x0E0;
+				// jmp     short loc_6C2523
+				break;
+			case 0x0A:
+				base = 0;
+				// jmp     short loc_6C2523
+				break;
+			case 0x17:
+				curr_char = *buffer;
+				curr_char &= 0x7FFFF;
+				buffer += 4;
+				curr_char <<= 4;
+				width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[curr_char];
+				curr_char = 0;
+				break;
+			default:
+				if (curr_char <= 0x10) {
+					continue;
+				}
+				buffer += 2;
+				if (curr_char <= 0x16) {
+					continue;
+				}
+				buffer += 2;
+				break;
+			}
+
+
+ // loc_6C2523:                             ; CODE XREF: clip_text+AEj
+ //                                         ; clip_text+B5j ...
+ //                 movzx   edx, byte_141E9F6[ebx]
+ //                 lea     edx, [edx+edx*2]
+ //                 neg     dx
+ //                 add     dx, di
+ //                 jmp     loc_6C2485
+
+		} else {
+
+			max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
+
+			// loc_6C249A:                             ; CODE XREF: clip_text+AAj
+			if (max_x > width) {
+				rct2_global(ebp + 0, uint32) = 0x2E2E2E;
+				max_x = width;
+				// pop esi
+				return;
+			}
+			if (max_x > dx) {
+				continue;
+				// ja      short loc_6C2485
+			}
+			ebp = buffer;
+			continue;
+		}
+	}
+}
+
+
+/**
  * Draws i formatted text string left aligned at i specified position but clips
  * the text with an elipsis if the text width exceeds the specified width.
  *  rct2: 0x006C1B83
