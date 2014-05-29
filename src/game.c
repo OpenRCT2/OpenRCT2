@@ -1098,7 +1098,7 @@ void handle_shortcut_command(int shortcutIndex)
 			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
 			window = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
 			if (window != NULL)
-				window_event_helper(window, 10, WE_MOUSE_DOWN);
+				RCT2_CALLPROC_WE_MOUSE_DOWN(window->event_handlers[WE_MOUSE_DOWN], 10, window, NULL);
 		}
 		break;
 	case SHORTCUT_SHOW_RIDES_LIST:
