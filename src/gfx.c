@@ -901,15 +901,19 @@ void gfx_transpose_palette(int pal, unsigned char product)
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
 	char* buffer;
-	buffer = (char*)0x0141ED68;
+	short text_width;
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
 
-	int width = gfx_get_string_width(buffer);
+	// Measure text width
+	text_width = gfx_get_string_width(buffer);
 
-	if (width <= 0xFFF) {
-		x -= width / 2;
+	// Draw the text centred
+	if (text_width <= 0xFFF) {
+		x -= text_width / 2;
 		gfx_draw_string(dpi, buffer, colour, x, y);
 	}
 }
@@ -1132,15 +1136,19 @@ int gfx_get_string_width(char *buffer)
  */
 void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, (int)args, (int)dpi, width);
+	// RCT2_CALLPROC_X(0x006C1B83, colour, format, x, y, (int)args, (int)dpi, width);
 
-	//char* buffer;
+	char* buffer;
 
-	//buffer = (char*)0x0141ED68;
-	//format_string(buffer, format, args);
-	//rctmem->current_font_sprite_base = 224;
-	//clip_text(buffer, width);
-	//gfx_draw_string(dpi, buffer, colour, x, y);
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	format_string(buffer, format, args);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+
+	// Clip text
+	RCT2_CALLPROC_X(0x006C2460, 0, 0, 0, 0, (int)buffer, width, 0);
+
+	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
 /**
@@ -1157,19 +1165,24 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  */
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
-	RCT2_CALLPROC_X(0x006C1BBA, colour, format, x, y, (int)args, (int)dpi, width);
+	char* buffer;
+	short text_width;
 
-	//char* buffer;
-	//short text_width;
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	format_string(buffer, format, args);
 
-	//buffer = (char*)0x0141ED68;
-	//format_string(buffer, format, args);
-	//rctmem->current_font_sprite_base = 224;
-	//text_width = clip_text(buffer, width);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
 
-	//// Draw the text centred
-	//x -= (text_width - 1) / 2;
-	//gfx_draw_string(dpi, buffer, colour, x, y);
+	// Clip text
+	RCT2_CALLPROC_X(0x006C2460, 0, 0, 0, 0, (int)buffer, width, 0);
+	// // Measure text width
+	// text_width = gfx_get_string_width(buffer);
+
+	// Draw the text centred
+	if (text_width <= 0xFFF) {
+		x -= text_width / 2;
+		gfx_draw_string(dpi, buffer, colour, x, y);
+	}
 }
 
 
