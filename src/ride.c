@@ -204,7 +204,7 @@ void ride_update_favourited_stat()
 int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index) {
 	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
 		y = (coordinate & 0xFF) << 5;		 // ax	
-	uint8 station_height = ride->pad_05A[index]; // pad_05a is uint8 station_base_height[4]
+	uint8 station_height = ride->station_heights[index];
 	int tile_idx = ((x << 8) | y) >> 5;
 	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
 
@@ -241,7 +241,7 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;			
 			news_item_add_to_queue(1, 0xb26, ride_idx);
-			ride->var_1AF = 3;
+			ride->connected_message_throttle = 3;
 		}
 			
 		if (exit != -1 && !ride_entrance_exit_is_reachable(exit, ride, i)) {
@@ -249,7 +249,7 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
 			news_item_add_to_queue(1, 0xb27, ride_idx);
-			ride->var_1AF = 3;
+			ride->connected_message_throttle = 3;
 		}
 
 	} 
@@ -317,7 +317,7 @@ void ride_shop_connected(rct_ride* ride, int ride_idx)
 	RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
     news_item_add_to_queue(1, 0xb26, ride_idx);
 
-    ride->var_1AF = 3;
+    ride->connected_message_throttle = 3;
 }
 
 
@@ -333,9 +333,9 @@ void ride_check_all_reachable()
 		ride = GET_RIDE(i);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
-		if (ride->var_1AF != 0)
-			ride->var_1AF--;
-		if (ride->status != RIDE_STATUS_OPEN || ride->var_1AF != 0)
+		if (ride->connected_message_throttle != 0)
+			ride->connected_message_throttle--;
+		if (ride->status != RIDE_STATUS_OPEN || ride->connected_message_throttle != 0)
 			continue;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)

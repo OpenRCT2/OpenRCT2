@@ -56,7 +56,8 @@ typedef struct {
 	uint32 var_04C;
 	uint16 overall_view;			// 0x050
 	uint16 station_starts[4];		// 0x052
-	uint8 pad_05A[0x10];
+	uint16 station_heights[4];		// 0x05A
+	uint8 pad_062[8];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -111,7 +112,7 @@ typedef struct {
 	uint8 var_199;
 	uint8 pad_19A[0x14];
 	uint8 var_1AE;
-	uint8 var_1AF;
+	uint8 connected_message_throttle;
 	uint32 pad_1B0;
 	sint32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8

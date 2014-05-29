@@ -352,7 +352,7 @@ int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
 				if (height == tile->base_height + 2)
 					return 1;
 			}
-			else if (path_dir ^ 2 == face_direction && height == tile->base_height) {
+			else if ((path_dir ^ 2) == face_direction && height == tile->base_height) {
 				return 1;
 			}
         } else {
