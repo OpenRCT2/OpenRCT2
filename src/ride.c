@@ -237,6 +237,7 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 		if (station_start == -1 )
 			continue;
 		if (entrance != -1 && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
+			// name of ride is parameter of the format string
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;			
 			news_item_add_to_queue(1, 0xb26, ride_idx);
@@ -244,6 +245,7 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 		}
 			
 		if (exit != -1 && !ride_entrance_exit_is_reachable(exit, ride, i)) {
+			// name of ride is parameter of the format string
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
 			news_item_add_to_queue(1, 0xb27, ride_idx);
@@ -254,7 +256,7 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 }
 
 
-void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
+void ride_shop_connected(rct_ride* ride, int ride_idx)
 {
     uint16 coordinate = ride->station_starts[0];
 	if (coordinate == 0xFFFF)
@@ -262,7 +264,7 @@ void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
 
 	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
 		y = (coordinate & 0xFF) << 5;		 // ax	
-    uint16 magic = 0;
+	uint16 entrance_directions = 0;
 	int tile_idx = ((x << 8) | y) >> 5, count = 0;
 	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
 
@@ -280,24 +282,28 @@ void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
     uint8 track_type = tile->properties.track.type;
     ride = GET_RIDE(tile->properties.track.ride_index);
     if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
-        magic = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
+		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
     } else {
-        magic = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
+		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
     }
 
-    magic = magic << (tile->type & 3);
-    magic = ((magic >> 12) | magic) & 0xF;
-	if (magic == 0)
+	
+	uint8 tile_direction = tile->type & MAP_ELEMENT_DIRECTION_MASK;
+	entrance_directions <<= tile_direction;
+	entrance_directions = ((entrance_directions >> 12) | entrance_directions) & 0xF;
+
+	// now each bit in entrance_directions stands for an entrance direction to check
+	if (entrance_directions == 0)
 		return;
 
-    for (int count = 0; magic != 0; ++count) {		
-        if (!(magic & 1)) {
-			magic >>= 1;
+	for (int count = 0; entrance_directions != 0; ++count) {
+		if (!(entrance_directions & 1)) {
+			entrance_directions >>= 1;
             continue;
         }
-		magic >>= 1;
+		entrance_directions >>= 1;
 
-        uint8 face_direction = count ^ 2;
+        uint8 face_direction = count ^ 2; // flip direction north<->south, east<->west
         y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
         x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
         tile_idx = ((x << 8) | y) >> 5;
@@ -306,9 +312,11 @@ void ride_is_shop_reachable(rct_ride* ride, int ride_idx)
             return;
     }    
     
+	// name of ride is parameter of the format string
     RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
-    RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;			
+	RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
     news_item_add_to_queue(1, 0xb26, ride_idx);
+
     ride->var_1AF = 3;
 }
 
@@ -330,14 +338,10 @@ void ride_check_all_reachable()
 		if (ride->status != RIDE_STATUS_OPEN || ride->var_1AF != 0)
 			continue;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000) {
-			//blue
-            ride_is_shop_reachable(ride, i);
-		}
-		else {
-			//pink
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)
+            ride_shop_connected(ride, i);
+		else
 			ride_entrance_exit_connected(ride, i);
-		}
 
 	}
 }
