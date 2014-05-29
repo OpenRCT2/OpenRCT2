@@ -1525,6 +1525,7 @@ void format_string_part(char **dest, rct_string_id format, char **args)
 		// args += (format & 0xC00) >> 9;
 		format &= ~0xC00;
 		strcpy(*dest, RCT2_ADDRESS(0x135A8F4 + (format * 32), char));
+		*dest = strchr(*dest, 0);
 	} else if (format < 0xE000) {
 		// Real name
 		format -= -0xA000;
@@ -1532,6 +1533,7 @@ void format_string_part(char **dest, rct_string_id format, char **args)
 			real_names[format % countof(real_names)],
 			real_name_initials[(format >> 10) % countof(real_name_initials)]
 		);
+		*dest = strchr(*dest, 0);
 	} else {
 		// ?
 		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
