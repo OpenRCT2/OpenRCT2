@@ -1124,107 +1124,81 @@ int gfx_get_string_width(char *buffer)
  * buffer (esi)
  * width (edi)
  */
-// int gfx_clip_string(char *buffer, int width)
-// {
-// 	uint16 base; 
+int gfx_clip_string(char *buffer, int width)
+{
+	uint16 base;
+	int edx, ebp;
+	int max_x;
 
-// 	if (width < 6) {
-// 		*buffer = 0;
-// 		return 0;
-// 	}
+	if (width < 6) {
+		*buffer = 0;
+		return 0;
+	}
 	
-// 	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-// 	edx = rct2_address(0x141E9F6, uint32)[base];
+	base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	edx = width - (3 * RCT2_ADDRESS(0x141E9F6, uint32)[base]);
 
-// 	edx = &(edx + edx*2);
-// 	// lea     edx, [edx+edx*2]
-// 	dx = -(edx & 0xFFFF);
-// 	dx += width;
-// 	eax = 0;
-// 	cx = 0;
-// 	max_x = 0;
-// 	ebp = buffer;
+	max_x = 0;
+	ebp = buffer;
 
+	for (uint8* curr_char = buffer; *curr_char > 0; curr_char++) {
+		if (*curr_char < 0x20) {
+			switch(*curr_char) {
+			case 1:
+				width = *curr_char;
+				curr_char++;
+				continue;
+			case 2:
+			case 3:
+			case 4:
+				curr_char++;
+				continue;
+			case 7:
+				base = 0x1C0;
+				break;
+			case 8:
+				base = 0x2A0;
+				break;
+			case 9:
+				base = 0x0E0;
+				break;
+			case 0x0A:
+				base = 0;
+				break;
+			case 0x17:
+				max_x = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+				curr_char += 4;
+				*curr_char = 0;
+				continue;
+			default:
+				if (*curr_char <= 0x10) {
+					continue;
+				}
+				curr_char += 2;
+				if (*curr_char <= 0x16) {
+					continue;
+				}
+				curr_char += 2;
+				continue;
+			}
 
-//  // loc_6C2485:                             ; CODE XREF: clip_text+42j
-// 	for (uint32 al = *buffer; al > 0; buffer++, al = *buffer) {
+			edx = RCT2_ADDRESS(0x141E9F6, uint32)[base];
+			edx = width - (3 * RCT2_ADDRESS(0x141E9F6, uint32)[base]);
+		}
 
-// 		if (al < 0x20) {
-// 			switch(curr_char) {
-// 			case 1:
-// 				width = *buffer;
-// 				buffer++;
-// 				continue;
-// 			case 2:
-// 			case 3:
-// 			case 4:
-// 				buffer++;
-// 				continue;
-// 			case 7:
-// 				base = 0x1C0;
-//                  // jmp     short loc_6C2523
-// 				break;
-// 			case 8:
-// 				base = 0x2A0;
-//                  // jmp     short loc_6C2523
-// 				break;
-// 			case 9:
-// 				base = 0x0E0;
-// 				// jmp     short loc_6C2523
-// 				break;
-// 			case 0x0A:
-// 				base = 0;
-// 				// jmp     short loc_6C2523
-// 				break;
-// 			case 0x17:
-// 				curr_char = *buffer;
-// 				curr_char &= 0x7FFFF;
-// 				buffer += 4;
-// 				curr_char <<= 4;
-// 				width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[curr_char];
-// 				curr_char = 0;
-// 				break;
-// 			default:
-// 				if (curr_char <= 0x10) {
-// 					continue;
-// 				}
-// 				buffer += 2;
-// 				if (curr_char <= 0x16) {
-// 					continue;
-// 				}
-// 				buffer += 2;
-// 				break;
-// 			}
+		max_x += (RCT2_ADDRESS(0x0141E9E8, uint8)[base] & 0xFF);
 
-
-//  // loc_6C2523:                             ; CODE XREF: clip_text+AEj
-//  //                                         ; clip_text+B5j ...
-//  //                 movzx   edx, byte_141E9F6[ebx]
-//  //                 lea     edx, [edx+edx*2]
-//  //                 neg     dx
-//  //                 add     dx, di
-//  //                 jmp     loc_6C2485
-
-// 		} else {
-
-// 			max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
-
-// 			// loc_6C249A:                             ; CODE XREF: clip_text+AAj
-// 			if (max_x > width) {
-// 				rct2_global(ebp + 0, uint32) = 0x2E2E2E;
-// 				max_x = width;
-// 				// pop esi
-// 				return;
-// 			}
-// 			if (max_x > dx) {
-// 				continue;
-// 				// ja      short loc_6C2485
-// 			}
-// 			ebp = buffer;
-// 			continue;
-// 		}
-// 	}
-// }
+		if (max_x > width) {
+			RCT2_GLOBAL(ebp + 0, uint32) = 0x2E2E2E;
+			max_x = width;
+			return;
+		}
+		if (max_x <= edx) {
+			ebp = curr_char;
+		}
+	}
+	return max_x;
+}
 
 
 /**
@@ -1270,24 +1244,22 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  */
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
-	// char* buffer;
-	// short text_width;
+	char* buffer;
+	short text_width;
 
-	// buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-	// format_string(buffer, format, args);
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	format_string(buffer, format, args);
 
-	// RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
 
-	// // Clip text
-	// RCT2_CALLPROC_X(0x006C2460, 0, 0, 0, 0, (int)buffer, width, 0);
-	// // // Measure text width
-	// // text_width = gfx_get_string_width(buffer);
+	// Clip text
+	text_width = gfx_clip_string(buffer, width);
 
-	// // Draw the text centred
-	// if (text_width <= 0xFFF) {
-	// 	x -= text_width / 2;
-	// 	gfx_draw_string(dpi, buffer, colour, x, y);
-	// }
+	// Draw the text centred
+	if (text_width <= 0xFFF) {
+		x -= (text_width - 1) / 2;
+		gfx_draw_string(dpi, buffer, colour, x, y);
+	}
 }
 
 
