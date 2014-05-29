@@ -1027,7 +1027,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	source_pointer = g1_source->offset;
 	uint8* new_source_pointer_start = malloc(total_no_pixels);
 	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-	int ebx, ecx, eax;
+	int ebx, ecx;
 	while (total_no_pixels>0){
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0){
@@ -1430,7 +1430,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	esi = (int)format;
 	edi = (int)dpi;
 	ebp = 0;
-	RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	//RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	gLastDrawStringX = ecx;
 	gLastDrawStringY = edx;
@@ -1439,7 +1439,9 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	RCT2_GLOBAL(0xEDF842, uint16) = edx;
 	RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 
-	if (eax & 0xFF == 0xFE){
+	if ((eax & 0xFF) == 0xFE){
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
 		//jmp 0x682853
 	}
 
@@ -1447,7 +1449,6 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	ebx += dpi->width;
 	if (ecx >= ebx){
 		return;
-		//jmp 0x6828DF
 	}
 	ebx = ecx;
 	ebx += 0x280;
@@ -1464,7 +1465,9 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	if (ebx <= dpi->y){
 		return;
 	}
-	if (eax & 0xff == 0xff){
+	if ((eax & 0xff) == 0xff){
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
 		//jmp 0x682853
 	}
 
@@ -1481,12 +1484,51 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	}
 	eax &= ~(1 << 5);
 	if (!(eax & 0x40)){
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
 		//jmp 0x682aa9
 	}
 	RCT2_GLOBAL(0x13CE9A2, uint16) |= 0x1;
 	eax &= 0x1F;
 
 	ebp = eax;
-	//0x6827c9
+	if (!(RCT2_GLOBAL(0x13CE9A2, uint16) & 0x4)){
+		eax = RCT2_GLOBAL(0x141FC4A + ebp * 8,uint8);
+		eax <<= 0x10;
+		eax |= RCT2_GLOBAL(0x141FC48 + ebp * 8, uint8);
+	}
+	else if (!(RCT2_GLOBAL(0x13CE9A2, uint16) & 0x8)){
+		eax = RCT2_GLOBAL(0x141FC49 + ebp * 8, uint8);
+		eax <<= 0x10;
+		eax |= RCT2_GLOBAL(0x141FC47 + ebp * 8, uint8);
+
+	}
+	else{
+		eax = RCT2_GLOBAL(0x141FC48 + ebp * 8, uint8);
+		eax <<= 0x10;
+		eax |= RCT2_GLOBAL(0x141FC46 + ebp * 8, uint8);
+	}
+	RCT2_GLOBAL(0x9abe05, uint32) = eax;
+	RCT2_GLOBAL(0x9abda4, uint32) = 0x9abe04;
+	eax = 0;
+	if (0){
+		add0x682818:
+		if (!(RCT2_GLOBAL(0x13CE9A2, uint16) & 0x1)){
+			eax &= 0xFF;
+			ebp = RCT2_GLOBAL(0x9ff048, uint32);
+			eax = *((uint32*)(eax * 4 + ebp));
+			if (!(RCT2_GLOBAL(0x13CE9A2, uint16) & 0x2)){
+				eax &= 0xff0000ff;
+			}
+			RCT2_GLOBAL(0x9abe05, uint32) = eax;
+			RCT2_GLOBAL(0x9abda4, uint32) = 0x9abe04;
+			eax = 0;
+		}
+	}
+	eax = edx;
+	eax += 0x13;
+	//0x68285a
+	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+	return;
 
 }
