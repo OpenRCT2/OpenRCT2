@@ -56,8 +56,8 @@ typedef struct {
 	uint32 var_04C;
 	uint16 overall_view;			// 0x050
 	uint16 station_starts[4];		// 0x052
-	uint16 station_heights[4];		// 0x05A
-	uint8 pad_062[8];
+	uint8 station_heights[4];		// 0x05A
+	uint8 pad_05E[0xC];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];

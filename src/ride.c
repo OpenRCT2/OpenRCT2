@@ -328,11 +328,9 @@ void ride_shop_connected(rct_ride* ride, int ride_idx)
 void ride_check_all_reachable()
 {
 	rct_ride *ride;
-
-	for (int i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	int i;
+	
+	FOR_ALL_RIDES(i, ride) {		
 		if (ride->connected_message_throttle != 0)
 			ride->connected_message_throttle--;
 		if (ride->status != RIDE_STATUS_OPEN || ride->connected_message_throttle != 0)
@@ -342,7 +340,6 @@ void ride_check_all_reachable()
             ride_shop_connected(ride, i);
 		else
 			ride_entrance_exit_connected(ride, i);
-
 	}
 }
 
