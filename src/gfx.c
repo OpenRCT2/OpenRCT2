@@ -1188,7 +1188,7 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
 	char* buffer;
 	short text_width;
 
-	buffer = (char*)0x0141ED68;
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 
 	// Measure text width
@@ -1267,7 +1267,7 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 {
 	char* buffer;
 
-	buffer = (char*)0x0141ED68;
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
