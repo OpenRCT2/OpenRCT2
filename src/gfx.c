@@ -1440,8 +1440,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 
 	if ((eax & 0xFF) == 0xFE){
-		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
-		return;
+		goto mov0x682853;
 		//jmp 0x682853
 	}
 
@@ -1466,8 +1465,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 		return;
 	}
 	if ((eax & 0xff) == 0xff){
-		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
-		return;
+		goto mov0x682853;
 		//jmp 0x682853
 	}
 
@@ -1512,7 +1510,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	RCT2_GLOBAL(0x9abda4, uint32) = 0x9abe04;
 	eax = 0;
 	if (0){
-		add0x682818:
+add0x682818:
 		if (!(RCT2_GLOBAL(0x13CE9A2, uint16) & 0x1)){
 			eax &= 0xFF;
 			ebp = RCT2_GLOBAL(0x9ff048, uint32);
@@ -1525,6 +1523,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 			eax = 0;
 		}
 	}
+mov0x682853:
 	eax = edx;
 	eax += 0x13;
 	if ( eax <= dpi->y)){
@@ -1550,6 +1549,33 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 		}
 	}
 	eax -= 0x20;
+	if (eax<0){
+		//jmp 0x6828f5
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
+	}
+	ebx = dpi->x;
+	ebx += dpi->width;
+	if (ecx>=ebx){
+		//jmp 0x682b63
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;		
+	}
+	ebx = ecx;
+	ebx += 0x1a;
+	if (ebx<dpi->x){
+		//jmp 0x6828e0
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;		
+	}
+	
+	ebx = eax;
+	ebx += RCT2_GLOBAL(0x13CE950,uint16);
+	eax = *((uint32*)(ebx+0x141E9e8);
+	ebx += 0xf15;
+	RCT2_GLOBAL(0xEDF81C,uint32) = 0x20000000;
+	gfx_draw_sprite_palette_set(dpi,ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), RCT2_GLOBAL(0x9E3CDC, uint8*))
+	
 	//0x68288a
 	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
 	return;
