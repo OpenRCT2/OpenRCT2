@@ -1064,17 +1064,17 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 int gfx_get_string_width(char* buffer)
 {
 	// Current font sprites
-	uint16 current_font_sprite_base;
+	uint16* current_font_sprite_base;
 	// Width of string
 	int width;
 
-	current_font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (char* curr_char = buffer; *curr_char > 0; curr_char++) {
+	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
-			width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char-0x20)];
+			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 			continue;
 		}
 		switch(*curr_char) {
@@ -1088,16 +1088,16 @@ int gfx_get_string_width(char* buffer)
 			curr_char++;
 			break;
 		case 7:
-			current_font_sprite_base = 0x1C0;
+			*current_font_sprite_base = 0x1C0;
 			break;
 		case 8:
-			current_font_sprite_base = 0x2A0;
+			*current_font_sprite_base = 0x2A0;
 			break;
 		case 9:
-			current_font_sprite_base = 0x0E0;
+			*current_font_sprite_base = 0x0E0;
 			break;
 		case 0x0A:
-			current_font_sprite_base = 0;
+			*current_font_sprite_base = 0;
 			break;
 		case 0x17:
 			width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
@@ -1129,7 +1129,7 @@ int gfx_get_string_width(char* buffer)
 int gfx_clip_string(char* buffer, int width)
 {
 	// Location of font sprites
-	uint16 current_font_sprite_base;
+	uint16* current_font_sprite_base;
 	// Width the string has to fit into
 	int max_width;
 	// Character to change to ellipsis
@@ -1142,13 +1142,13 @@ int gfx_clip_string(char* buffer, int width)
 		return 0;
 	}
 	
-	current_font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
 
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (char* curr_char = buffer; *curr_char > 0; curr_char++) {
+	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
@@ -1161,16 +1161,16 @@ int gfx_clip_string(char* buffer, int width)
 				curr_char++;
 				continue;
 			case 7:
-				current_font_sprite_base = 0x1C0;
+				*current_font_sprite_base = 0x1C0;
 				break;
 			case 8:
-				current_font_sprite_base = 0x2A0;
+				*current_font_sprite_base = 0x2A0;
 				break;
 			case 9:
-				current_font_sprite_base = 0x0E0;
+				*current_font_sprite_base = 0x0E0;
 				break;
 			case 0x0A:
-				current_font_sprite_base = 0;
+				*current_font_sprite_base = 0;
 				break;
 			case 0x17:
 				clipped_width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
@@ -1188,10 +1188,10 @@ int gfx_clip_string(char* buffer, int width)
 				curr_char += 2;
 				continue;
 			}
-			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
+			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
 		}
 
-		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char-0x20)];
+		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 
 		if (clipped_width >= width) {
 			RCT2_GLOBAL(last_char, uint32) = 0x2E2E2E;
@@ -1424,8 +1424,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	RCT2_GLOBAL(0x00EDF842, uint16) = y;
 
 	// 
-	uint16* current_font_flags = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	uint16* current_font_sprite_base = &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	uint16* current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
 	// Flag for skipping non-printing characters
 	int skip_char = 0;
