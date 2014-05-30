@@ -731,9 +731,9 @@ static void window_guest_list_scrollpaint()
 						thought = &peep->thoughts[j];
 						if (thought->type == PEEP_THOUGHT_TYPE_NONE)
 							break;
-						if (thought->pad_3 == 0)
+						if (thought->var_2 == 0)
 							continue;
-						if (thought->pad_3 > 5)
+						if (thought->var_2 > 5)
 							break;
 
 						ebx = thought->type;
@@ -837,7 +837,7 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
 		*outEAX = eax;
 		return ebx & 0xFFFF;
 	case VIEW_THOUGHTS:
-		if (peep->thoughts[0].pad_3 <= 5) {
+		if (peep->thoughts[0].var_2 <= 5) {
 			eax = peep->thoughts[0].item;
 			ebx = peep->thoughts[0].type;
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
