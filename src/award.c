@@ -568,6 +568,13 @@ static int award_is_deserved(int awardType, int activeAwardTypes)
 
 #pragma endregion
 
+void award_reset()
+{
+	int i;
+	for (i = 0; i < MAX_AWARDS; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i].time = 0;
+}
+
 /**
  *
  *  rct2: 0x0066A86C

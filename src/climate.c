@@ -19,10 +19,19 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
 #include "climate.h"
 #include "date.h"
 #include "gfx.h"
 #include "rct2.h"
+#include "scenario.h"
+
+enum {
+	THUNDER_STATUS_NULL = 0,
+	THUNDER_STATUS_PLAYING = 1,
+
+	MAX_THUNDER_INSTANCES = 2
+};
 
 typedef struct {
 	sint8 base_temperature;
@@ -32,6 +41,8 @@ typedef struct {
 
 int gClimateNextWeather;
 
+static int _climateCurrentWeatherEffect;
+
 static int _climateNextTemperature;
 static int _climateNextWeatherEffect;
 static int _climateNextWeatherGloom;
@@ -39,7 +50,23 @@ static int _climateNextRainLevel;
 
 static const rct_weather_transition* climate_transitions[4];
 
+// Sound data
+static int _rainVolume = 1;
+static rct_sound _rainSoundInstance;
+static unsigned int _lightningTimer, _thunderTimer;
+static rct_sound _thunderSoundInstance[MAX_THUNDER_INSTANCES];
+static int _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
+static unsigned int _thunderSoundId;
+static int _thunderVolume;
+static int _thunderStereoEcho = 0;
+
 static void climate_determine_future_weather();
+
+static void climate_update_rain_sound();
+static void climate_update_thunder_sound();
+static void climate_update_lightning();
+static void climate_update_thunder();
+static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan);
 
 int climate_celsius_to_fahrenheit(int celsius)
 {
@@ -88,7 +115,7 @@ void climate_update()
 		
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = _climateNextWeatherEffect;
+				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
 
 				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
@@ -152,7 +179,127 @@ static void climate_determine_future_weather()
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
 
+/**
+ * 
+ * rct2: 0x006BCB91
+ */
+void climate_update_sound()
+{
+	if (RCT2_GLOBAL(0x009AF280, uint32) == 0xFFFFFFFF)
+		return;
+	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
+		return;
+	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
+		return;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)
+		return;
 
+	climate_update_rain_sound();
+	climate_update_thunder_sound();
+}
+
+static void climate_update_rain_sound()
+{
+	if (_climateCurrentWeatherEffect == 1 || _climateCurrentWeatherEffect == 2) {
+		if (_rainVolume == 1) {
+			// Start playing the rain sound
+			if (sound_prepare(SOUND_RAIN_1, &_rainSoundInstance, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32)))
+				sound_play(&_rainSoundInstance, 1, -4000, 0, 0);
+			_rainVolume = -4000;
+		} else {
+			// Increase rain sound
+			_rainVolume = min(-1400, _rainVolume + 80);
+			RCT2_CALLPROC_2(0x00404F0D, rct_sound*, int, &_rainSoundInstance, _rainVolume);
+		}
+	} else if (_rainVolume != 1) {
+		// Decrease rain sound
+		_rainVolume -= 80;
+		if (_rainVolume > -4000) {
+			RCT2_CALLPROC_2(0x00404F0D, rct_sound*, int, &_rainSoundInstance, _rainVolume);
+		} else {
+			sound_stop(&_rainSoundInstance);
+			_rainVolume = 1;
+		}
+	}
+}
+
+static void climate_update_thunder_sound()
+{
+	if (_thunderStereoEcho) {
+		// Play thunder on right side
+		_thunderStereoEcho = 0;
+		climate_play_thunder(1, _thunderSoundId, _thunderVolume, 10000);
+	} else if (_thunderTimer != 0) {
+		climate_update_lightning();
+		climate_update_thunder();
+	} else if (_climateCurrentWeatherEffect == 2) {
+		// Create new thunder and lightning
+		unsigned int randomNumber = scenario_rand();
+		if ((randomNumber & 0xFFFF) <= 0x1B4) {
+			randomNumber >>= 16;
+			_thunderTimer = 43 + (randomNumber % 64);
+			_lightningTimer = randomNumber % 32;
+		}
+	}
+
+	// Stop thunder sounds if they have finished
+	for (int i = 0; i < MAX_THUNDER_INSTANCES; i++) {
+		if (_thunderStatus[i] == THUNDER_STATUS_NULL)
+			continue;
+
+		if (!RCT2_CALLFUNC_1(0x00404E53, int, rct_sound*, &_thunderSoundInstance[i])) {
+			sound_stop(&_thunderSoundInstance[i]);
+			_thunderStatus[i] = THUNDER_STATUS_NULL;
+		}
+	}
+}
+
+static void climate_update_lightning()
+{
+	if (_lightningTimer == 0)
+		return;
+
+	_lightningTimer--;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
+		if ((scenario_rand() & 0xFFFF) <= 0x2000)
+			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+}
+
+static void climate_update_thunder()
+{
+	_thunderTimer--;
+	if (_thunderTimer != 0)
+		return;
+
+	unsigned int randomNumber = scenario_rand();
+	if (randomNumber & 0x10000) {
+		if (_thunderStatus[0] == THUNDER_STATUS_NULL && _thunderStatus[1] == THUNDER_STATUS_NULL) {
+			// Play thunder on left side
+			_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
+			_thunderVolume = (-((int)((randomNumber >> 18) & 0xFF))) << 3;
+			climate_play_thunder(0, _thunderSoundId, _thunderVolume, -10000);
+
+			// Let thunder play on right side
+			_thunderStereoEcho = 1;
+		}
+	} else {
+		_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
+		int pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
+		climate_play_thunder(0, _thunderSoundId, 0, pan);
+	}
+}
+
+static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan)
+{
+	if (sound_prepare(soundId, &_thunderSoundInstance[instanceIndex], 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32))) {
+		sound_play(&_thunderSoundInstance[instanceIndex], 0, volume, pan, 0);
+
+		_thunderStatus[instanceIndex] = THUNDER_STATUS_PLAYING;
+		return 1;
+	}
+
+	return 0;
+}
 
 #pragma region Climate / Weather data tables
 

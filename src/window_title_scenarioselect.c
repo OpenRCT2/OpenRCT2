@@ -59,7 +59,7 @@ static void window_scenarioselect_init_tabs();
 
 static void window_scenarioselect_emptysub() { }
 static void window_scenarioselect_mouseup();
-static void window_scenarioselect_mousedown();
+static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_scenarioselect_scrollgetsize();
 static void window_scenarioselect_scrollmousedown();
 static void window_scenarioselect_scrollmouseover();
@@ -190,24 +190,8 @@ static void window_scenarioselect_mouseup()
 		window_close(w);
 }
 
-static void window_scenarioselect_mousedown()
+static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
 		w->selected_tab = widgetIndex - 4;
 		w->var_494 = 0;
