@@ -706,6 +706,35 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 	return;
 }
 
+rct_g1_element gfx_sprite_zoom_image(rct_g1_element* source, int zoom_level){
+	rct_g1_element dest;
+	uint8* smaller_image;
+	dest.offset = NULL;
+	if (zoom_level == 0)return dest;
+	if (source->flags&G1_FLAG_RLE_COMPRESSION) return dest;
+	smaller_image = malloc(source->width*source->height);
+	dest.offset = smaller_image;
+	uint8* source_pointer = source->offset;
+	source_pointer += source->y_offset*source->width + source->x_offset;
+
+	for (int y = 0; y < source->height; y += zoom_level){
+		uint8* next_line = source_pointer + source->width*zoom_level;
+		for (int x = 0; x < source->width; x += zoom_level){
+			*smaller_image = *source_pointer;
+			source_pointer += zoom_level;
+			smaller_image++;
+		}
+		source_pointer = next_line;//source->width*zoom_level;
+	}
+
+	dest.x_offset = 0;
+	dest.y_offset = 0;
+	dest.width = source->width / zoom_level;
+	dest.height= source->height/ zoom_level;
+	dest.flags = source->flags;
+	return dest;
+	//remember to free the pointer
+}
 /*
 * rct2: 0x67AA18 transfers readied images onto buffers
 * This function copies the sprite data onto the screen
@@ -924,7 +953,8 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	int image_type = (image_id & 0xE0000000) >> 28;
 
 	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[image_element];
-
+	rct_g1_element zoomed = gfx_sprite_zoom_image(g1_source, dpi->pad_0E);
+	if (zoomed.offset != NULL)g1_source = &zoomed;
 	if (dpi->pad_0E >= 1){ //These have not been tested
 		//something to do with zooming
 		if (dpi->pad_0E == 1){
@@ -1526,7 +1556,7 @@ add0x682818:
 mov0x682853:
 	eax = edx;
 	eax += 0x13;
-	if ( eax <= dpi->y)){
+	if ( eax <= dpi->y){
 		//jmp 0x682B63
 		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
 		return;
@@ -1538,7 +1568,7 @@ mov0x682853:
 		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
 		return;
 	}
-	eax = *(*(uint8)esi);
+	eax = *((uint8*)esi);
 	esi++;
 	if (!eax)return;
 	if ((uint32)eax  < 0x9c){
@@ -1571,10 +1601,10 @@ mov0x682853:
 	
 	ebx = eax;
 	ebx += RCT2_GLOBAL(0x13CE950,uint16);
-	eax = *((uint32*)(ebx+0x141E9e8);
+	eax = *((uint32*)(ebx+0x141E9e8));
 	ebx += 0xf15;
 	RCT2_GLOBAL(0xEDF81C,uint32) = 0x20000000;
-	gfx_draw_sprite_palette_set(dpi,ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), RCT2_GLOBAL(0x9E3CDC, uint8*))
+	gfx_draw_sprite_palette_set(dpi, ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), RCT2_GLOBAL(0x9E3CDC, uint8*));
 	
 	//0x68288a
 	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
