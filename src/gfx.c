@@ -1527,7 +1527,30 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, in
 	}
 	eax = edx;
 	eax += 0x13;
-	//0x68285a
+	if ( eax <= dpi->y)){
+		//jmp 0x682B63
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
+	}
+	eax = dpi->y;
+	eax += dpi->height;
+	if (eax <= edx){
+		//jmp 0x682B63
+		RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+		return;
+	}
+	eax = *(*(uint8)esi);
+	esi++;
+	if (!eax)return;
+	if ((uint32)eax  < 0x9c){
+		if((uint32)eax >= 0x8e){
+			//jmp 0x682a2d
+			RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
+			return;
+		}
+	}
+	eax -= 0x20;
+	//0x68288a
 	RCT2_CALLPROC_X(0x00682702, colour, 0, x, y, (int)format, (int)dpi, 0);
 	return;
 
