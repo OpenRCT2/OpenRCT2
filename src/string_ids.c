@@ -1233,6 +1233,7 @@ void format_currency(char **dest, int value)
 
 	*dest = dst;
 
+	value /= 10;
 	if (value == 0) {
 		*dst++ = '0';
 	} else {
