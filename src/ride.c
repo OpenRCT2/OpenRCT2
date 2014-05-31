@@ -220,11 +220,21 @@ void ride_debug_string(rct_ride *ride)
 	printf("overall_view: %x\n", ride->overall_view);			// 0x050
 	printf("station_starts:");
 	for (int i = 0; i < 4; i++) {
-		printf("%d, ", ride->station_starts[i]);
+		printf("%d", ride->station_starts[i]);
+		if (i < 3) {
+			printf(", ");
+		} else {
+			printf("\n");
+		}
 	}
 	printf("station_heights:");
 	for (int i = 0; i < 4; i++) {
-		printf("%d, ", ride->station_heights[i]);
+		printf("%d", ride->station_heights[i]);
+		if (i < 3) {
+			printf(", ");
+		} else {
+			printf("\n");
+		}
 	}
 	printf("entrances: %x\n", ride->entrances);
 	printf("exits: %x\n", ride->exits);
