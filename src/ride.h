@@ -57,29 +57,48 @@ typedef struct {
 	uint32 var_04C;
 	uint16 overall_view;			// 0x050
 	uint16 station_starts[4];		// 0x052
-	uint8 pad_05A[0x10];
+	uint16 egress_array[4];			// 0x5A
+	uint8 pad_062[8];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
 	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
 	uint8 pad_088[0x3F];
 
-	// Not sure if these should be uint or sint.
-	uint8 var_0C7;
-	uint8 var_0C8;
-	uint8 var_0C9;
+	uint8 num_stations; // 0x0C7
+	uint8 num_trains;   // 0x0C8
+	uint8 cars_per_train; // 0x0C9
+	uint8 pad_0CA[6];
 
-	uint8 pad_0CA[0x1A];
+	// Laps?
+	uint8 laps;             // 0x0D0
 
-	sint32 var_0E4;
-	sint32 var_0E8;
-	sint32 var_0EC;
-	sint32 var_0F0;
-	uint8 pad_0F4[0x20];
+	uint8 pad_0D1[4];
+	uint8 var_0D5;
+	uint8 pad_0D6[0xE];
+
+	// Station to station runtimes. Not necessarily in order you'd expect.
+	//
+	// NB: The runtime is stored in the upper word. For example, a value of
+	// 2293760 corresponds to 35 seconds.
+	sint32 runtime_section1;  // 0E4
+	sint32 runtime_section2;  // 0E8
+	sint32 runtime_section3;  // 0EC
+	sint32 runtime_section4;  // 0F0
+
+	uint8 pad_0F4[0x1A];
+	uint16 var_10E;
+	uint16 var_110;
+	uint16 var_112;
 	uint8 var_114;
 	// Track length? Number of track segments?
 	uint8 var_115;
-	uint8 pad_116[0x0E];
+	uint8 var_116;
+	uint8 var_117;
+	uint32 var_118;
+	uint16 var_11C;
+	uint8 var_11E;
+	uint8 pad_11F[5];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -97,24 +116,34 @@ typedef struct {
 	uint16 nausea;					// 0x144
 	uint16 reliability;				// 0x146
 	uint16 pad_148;
-	uint16 var_14A;
-	uint8 pad_14C;
+	// Only lower 8 bits used for satisfaction. Multiply by 5 to get onscreen
+	// value
+	uint16 satisfaction;             // 0x14A
+	uint8 var_14C;
+	// Bit 3 = ride has updated data?
 	uint8 var_14D;
 	uint8 pad_14E[0x0A];
-	uint16 var_158;
+	// Only lower 8 bits used for popularity. Multiply by 4 to get onscreen
+	// value
+	uint16 popularity;              // 0x158
 	uint8 pad_15A[0x26];
-	uint16 build_date;				
+	uint16 build_date;				// 0x180
 	sint16 upkeep_cost;				// 0x182
 	uint8 pad_184[0x12];
-	uint16 var_196;
+
+	// In the game these two are often addressed together. Instead of right
+	// shifting reliability 8 bits, address them separately
+	uint8 reliability_countdown;
+	uint8 reliability_1;
+
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
-	uint8 var_199;
+	uint8 downtime;					// 0x199
 	uint8 pad_19A[0x1A];
 	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 pad_1BC[0x11];
-	uint8 var_1CD;
+	uint8 lift_hill_chain_speed;
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 pad_1D4[0x20];

@@ -208,6 +208,8 @@ void ride_update_favourited_stat()
  */
 void ride_debug_string(rct_ride *ride) 
 {
+void ride_debug_string(rct_ride *ride) 
+{
 	// XXX, figure out how to return this as a string, instead of printing it.
 	printf("type: %02X\n", ride->type);
 	printf("subtype: %02x\n", ride->subtype);
@@ -223,44 +225,58 @@ void ride_debug_string(rct_ride *ride)
 	printf("entrances: %x\n", ride->entrances);
 	printf("exits: %x\n", ride->exits);
 	printf("train_car_map: %x\n", ride->train_car_map);
-	printf("var_0C7: %x\n", ride->var_0C7);
-	printf("var_0C8: %x\n", ride->var_0C8);
-	printf("var_0C9: %x\n", ride->var_0C9);
-	printf("var_0E4: %x\n", ride->var_0E4);
-	printf("var_0E8: %x\n", ride->var_0E8);
-	printf("var_0EC: %x\n", ride->var_0EC);
-	printf("var_0F0: %x\n", ride->var_0F0);
+	printf("num_stations: %d\n", ride->num_stations);
+	printf("num_trains: %d\n", ride->num_trains);
+	printf("cars_per_train: %d\n", ride->cars_per_train);
+	printf("laps: %d\n", ride->laps);
+	printf("var_0D5: %x\n", ride->var_0D5);
+	printf("runtime_section1: %d\n", ride->runtime_section1 >> 16);
+	printf("runtime_section2: %d\n", ride->runtime_section2 >> 16);
+	printf("runtime_section3: %d\n", ride->runtime_section3 >> 16);
+	printf("runtime_section4: %d\n", ride->runtime_section4 >> 16);
+	printf("var_10E: %x\n", ride->var_10E);
+	printf("var_110: %x\n", ride->var_110);
+	printf("var_112: %x\n", ride->var_112);
 	printf("var_114: %x\n", ride->var_114);
 	printf("var_115: %x\n", ride->var_115);
+	printf("var_116: %x\n", ride->var_116);
+	printf("var_117: %x\n", ride->var_117);
+	printf("var_118: %x\n", ride->var_118);
+	printf("var_11C: %x\n", ride->var_11C);
+	printf("var_11E: %x\n", ride->var_11E);
 	printf("var_124: %x\n", ride->var_124);
 	printf("var_126: %x\n", ride->var_126);
 	printf("var_128: %x\n", ride->var_128);
 	printf("var_12A: %x\n", ride->var_12A);
 	printf("var_12C: %x\n", ride->var_12C);
 	printf("var_12E: %x\n", ride->var_12E);
-	printf("age: %x\n", ride->age);
-	printf("running_cost: %x\n", ride->running_cost);
+	printf("age: %d\n", ride->age);
+	printf("running_cost: %d\n", ride->running_cost);
 	printf("var_134: %x\n", ride->var_134);
 	printf("var_136: %x\n", ride->var_136);
 	printf("price: %x\n", ride->price);
-	printf("excitement: %x\n", ride->excitement);
-	printf("intensity: %x\n", ride->intensity);
-	printf("nausea: %x\n", ride->nausea);
-	printf("reliability: %x\n", ride->reliability);
-	printf("var_14A: %x\n", ride->var_14A);
+	printf("excitement: %d\n", ride->excitement);
+	printf("intensity: %d\n", ride->intensity);
+	printf("nausea: %d\n", ride->nausea);
+	printf("reliability ?: %d\n", ride->reliability);
+	printf("satisfaction: %d\n", (ride->satisfaction & 0xff) * 5);
+	printf("satisfaction high bits: %x\n", ride->satisfaction >> 8);
+	printf("var_14C: %x\n", ride->var_14C);
 	printf("var_14D: %x\n", ride->var_14D);
-	printf("var_158: %x\n", ride->var_158);
-	printf("build_date: %x\n", ride->build_date);
-	printf("upkeep_cost: %x\n", ride->upkeep_cost);
-	printf("var_196: %x\n", ride->var_196);
+	printf("popularity: %d\n", (ride->popularity & 0xff) * 4);
+	printf("popularity high bits: %x\n", ride->popularity >> 8);
+	printf("build_date: %d\n", ride->build_date);
+	printf("upkeep_cost: %d\n", ride->upkeep_cost);
+	printf("reliability_1: %d\n", ride->reliability_1);
+	printf("reliability_count_down: %d\n", ride->reliability_countdown);
 	printf("var_198: %x\n", ride->var_198);
-	printf("var_199: %x\n", ride->var_199);
+	printf("downtime: %d\n", ride->downtime);
 	printf("profit: %x\n", ride->profit);
-	printf("queue_time: %x\n", ride->queue_time);
-	printf("var_1CD: %x\n", ride->var_1CD);
-	printf("guests_favourite: %x\n", ride->guests_favourite);
+	printf("queue_time: %d\n", ride->queue_time);
+	printf("lift_hill_chain_speed: %x\n", ride->lift_hill_chain_speed);
+	printf("guests_favourite: %d\n", ride->guests_favourite);
 	printf("lifecycle_flags: %x\n", ride->lifecycle_flags);
 	printf("var_1F4: %x\n", ride->var_1F4);
-	printf("queue_length: %x\n", ride->queue_length);
+	printf("queue_length: %d\n", ride->queue_length);
 }
 
