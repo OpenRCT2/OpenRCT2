@@ -354,7 +354,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 			} else {
 				// 00678B7E   00678C83
-				if (dpi->pad_0E < 1) {
+				if (dpi->zoom_level < 1) {
 					// Location in screen buffer?
 					uint8* pixel = top_ * (dpi->width + dpi->pitch) + left_ + dpi->bits;
 
@@ -372,10 +372,10 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 						}
 						pixel += length;
 					}
-				} else if (dpi->pad_0E > 1) {
+				} else if (dpi->zoom_level > 1) {
 					// 00678C8A    00678D57
 					right_ = right;
-				} else if (dpi->pad_0E == 1) {
+				} else if (dpi->zoom_level == 1) {
 					// 00678C88   00678CEE
 					right = right;
 				}
@@ -750,12 +750,12 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	ebx &= 0x7FFFF;
 	ebx <<= 4;
 	ebx += RCT2_ADDRESS_G1_ELEMENTS;
-	if (dpi->pad_0E >= 1){
-		if (dpi->pad_0E == 1){
+	if (dpi->zoom_level >= 1){
+		if (dpi->zoom_level == 1){
 			return;
 			//jump into 0x67bd81
 		}
-		if (dpi->pad_0E >= 3){
+		if (dpi->zoom_level >= 3){
 			return;//jump into 0x67FAAE
 		}
 		//jump into 0x67DADA
