@@ -1285,9 +1285,7 @@ void format_currency_2dp(char **dest, int value)
 	*dest = dst;
 
 	// Two decimal places
-	digit = value % 10;
-	value /= 10;
-	*dst++ = '0' + digit;
+	*dst++ = '0';
 	digit = value % 10;
 	value /= 10;
 	*dst++ = '0' + digit;
