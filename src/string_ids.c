@@ -1085,12 +1085,16 @@ void format_integer(char **dest, int value)
 
 	*dest = dst;
 
-	// Right to left
-	while (value > 0) {
-		digit = value % 10;
-		value /= 10;
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Right to left
+		while (value > 0) {
+			digit = value % 10;
+			value /= 10;
 
-		*dst++ = '0' + digit;
+			*dst++ = '0' + digit;
+		}
 	}
 	finish = dst;
 
@@ -1121,20 +1125,24 @@ void format_comma_separated_integer(char **dest, int value)
 
 	*dest = dst;
 
-	// Groups of three digits, right to left
-	groupIndex = 0;
-	while (value > 0) {
-		// Append group seperator
-		if (groupIndex == 3) {
-			groupIndex = 0;
-			*dst++ = ',';
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group seperator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+				*dst++ = ',';
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
 		}
-
-		digit = value % 10;
-		value /= 10;
-
-		*dst++ = '0' + digit;
-		groupIndex++;
 	}
 	finish = dst;
 
@@ -1225,20 +1233,24 @@ void format_currency(char **dest, int value)
 
 	*dest = dst;
 
-	// Groups of three digits, right to left
-	groupIndex = 0;
-	while (value > 0) {
-		// Append group seperator
-		if (groupIndex == 3) {
-			groupIndex = 0;
-			*dst++ = ',';
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group seperator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+				*dst++ = ',';
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
 		}
-
-		digit = value % 10;
-		value /= 10;
-
-		*dst++ = '0' + digit;
-		groupIndex++;
 	}
 	finish = dst;
 
@@ -1389,11 +1401,12 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		uint16 dateArgs[] = { date_get_year(value), date_get_month(value) };
+		uint16 dateArgs[] = { date_get_month(value), date_get_year(value) + 1 };
+		uint16 *dateArgs2 = dateArgs;
 		char formatString[] = "?, Year ?";
 		formatString[0] = FORMAT_MONTH;
 		formatString[8] = FORMAT_COMMA16;
-		format_string_part_from_raw(dest, formatString, (char**)&dateArgs);
+		format_string_part_from_raw(dest, formatString, (char**)&dateArgs2);
 		break;
 	case FORMAT_MONTH:
 		// Pop argument
