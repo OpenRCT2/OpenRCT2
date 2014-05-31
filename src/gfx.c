@@ -1307,15 +1307,62 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
 int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
+	// Location of font sprites
+	uint16* current_font_sprite_base;
+	// Location of font flags
+	uint16 current_font_flags;
 
-	eax = colour;
-	ebx = format;
-	ecx = x;
-	edx = y;
-	esi = (int)args;
-	edi = (int)dpi;
-	ebp = width;
-	RCT2_CALLFUNC_X(0x006C1E53, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	*current_font_sprite_base = 0xE0;
+
+	char* buffer = RCT2_ADDRESS(0x009C383D, char);
+
+	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+
+	format_string(buffer, format, args);
+
+	*current_font_sprite_base = 0xE0;
+
+	esi = buffer;
+	edi = width;
+	RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ecx &= 0xFFFF;
+	edi &= 0xFFFF;
+
+	RCT2_GLOBAL(0x00F43938, uint16) = 0x0A;
+
+	if (ebx > 0xE0) {
+		RCT2_GLOBAL(0x00F43938, uint16) = 6;
+		if (ebx != 0x1C0) {
+			RCT2_GLOBAL(0x00F43938, uint16) = 0x12;
+		}
+	}
+
+	if (*buffer == 0x0B) {
+		RCT2_GLOBAL(0x00F43938, uint16) = RCT2_GLOBAL(0x00F43938, uint16) + 1;
+	}
+
+	ebx = (RCT2_GLOBAL(0x00F43938, uint16) / 2) * edi;
+	edx = y - ebx;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+
+	do {
+		int new_width = gfx_get_string_width(buffer);
+		new_width /= 2;
+		gfx_draw_string(dpi, buffer, 0xFE, x - new_width, edx);
+
+		buffer += strlen(buffer) + 1;
+
+        edx += RCT2_GLOBAL(0x00F43938, uint16);
+		eax = (RCT2_GLOBAL(0x00F43938, uint16) / 2) * edi;
+		ebx -= eax;
+
+	} while (ebx > 0);
 
 	return (sint16)(edx & 0xFFFF) - y;
 }
@@ -1334,17 +1381,78 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
+    
+	// eax = colour;
+	// ebx = format;
+	// ecx = x;
+	// edx = y;
+	// esi = (int)args;
+	// edi = (int)dpi;
+	// ebp = width;
+	// RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	// return (sint16)(edx & 0xFFFF) - y;
 
-	eax = colour;
-	ebx = format;
-	ecx = x;
-	edx = y;
-	esi = (int)args;
-	edi = (int)dpi;
-	ebp = width;
-	RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	// Location of font sprites
+	uint16* current_font_sprite_base;
+	// Location of font flags
+	uint16 current_font_flags;
+
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	*current_font_sprite_base = 0xE0;
+
+	char* buffer = RCT2_ADDRESS(0x009C383D, char);
+
+	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+
+	format_string(buffer, format, args);
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+
+	*current_font_sprite_base = 0xE0;
+
+    // Add line breaks? Adds \0 rather than \n
+    // not working for strings with colour code?
+	esi = buffer;
+	edi = width;
+	RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ecx &= 0xFFFF;
+	edi &= 0xFFFF;
+
+    // Font height?
+	RCT2_GLOBAL(0x00F43938, uint16) = 0x0A;
+
+	if (ebx > 0xE0) {
+		RCT2_GLOBAL(0x00F43938, uint16) = 6;
+		if (ebx != 0x1C0) {
+			RCT2_GLOBAL(0x00F43938, uint16) = 0x12;
+		}
+	}
+
+    // Number of lines?
+	ebx = (RCT2_GLOBAL(0x00F43938, uint16) / 2) * edi;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+    esi = buffer;
+
+    edx = y;
+
+	do {
+		gfx_draw_string(dpi, buffer, 0xFE, x, edx);
+
+		buffer += strlen(buffer) + 1;
+
+        edx += RCT2_GLOBAL(0x00F43938, uint16);
+		eax = (RCT2_GLOBAL(0x00F43938, uint16) / 2);
+		ebx -= eax;
+
+	} while (ebx >= 0);
 
 	return (sint16)(edx & 0xFFFF) - y;
+
 }
 
 /**
