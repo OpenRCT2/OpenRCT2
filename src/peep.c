@@ -28,6 +28,8 @@
 #include "sprite.h"
 #include "window.h"
 
+static void peep_update(rct_peep *peep);
+
 int peep_get_staff_count()
 {
 	uint16 spriteIndex;
@@ -60,14 +62,91 @@ void peep_update_all()
 		spriteIndex = peep->next;
 
 		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
-			RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update(peep);
 		} else {
 			RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, i, (int)peep, 0, 0);
 			if (peep->var_08 == 4)
-				RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep_update(peep);
 		}
 
 		i++;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0068FC1E
+ */
+static void peep_update(rct_peep *peep)
+{
+	// RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0); return;
+
+	int i, j;
+
+	if (peep->type == PEEP_TYPE_GUEST) {
+		if (peep->var_AD != 255)
+			if (++peep->var_AE < 720)
+				peep->var_AD = 255;
+
+		// Update thoughts
+		i = 0;
+		int ebp = 0;
+		int edi = -1;
+		for (i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+			if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+				break;
+
+			if (peep->thoughts[i].var_2 == 1) {
+				ebp++;
+				if (++peep->thoughts[i].var_3 >= 220) {
+					peep->thoughts[i].var_3 = 0;
+					peep->thoughts[i].var_2++;
+					ebp--;
+				}
+			} else if (peep->thoughts[i].var_2 >= 0) {
+				if (++peep->thoughts[i].var_3 > 255) {
+					if (++peep->thoughts[i].var_3 >= 28) {
+						peep->var_45 |= 1;
+
+						// Clear top thought, push others up
+						for (j = i; j < PEEP_MAX_THOUGHTS - 1; j++)
+							peep->thoughts[j].type = peep->thoughts[j + 1].type;
+						peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+					}
+				}
+			} else {
+				edi = i;
+			}
+		}
+		if (ebp == 0 && edi != -1) {
+			peep->thoughts[edi].var_2 = 1;
+			peep->var_45 |= 1;
+		}
+	}
+
+	// Walking speed logic
+	unsigned int stepsToTake = peep->energy;
+	if (stepsToTake < 95 && peep->state == PEEP_STATE_QUEUING)
+		stepsToTake = 95;
+	if ((peep->flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING)
+		stepsToTake /= 2;
+	if (peep->var_71 == 255 && (RCT2_GLOBAL((int)peep + 0x29, uint8) & 4)) {
+		stepsToTake /= 2;
+		if (peep->state == PEEP_STATE_QUEUING)
+			stepsToTake += stepsToTake / 2;
+	}
+
+	unsigned int carryCheck = peep->var_73 + stepsToTake;
+	peep->var_73 = carryCheck;
+	if (carryCheck <= 255) {
+		// loc_68FD3A
+		RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
+	} else {
+		// loc_68FD2F
+		RCT2_CALLPROC_X(0x0068FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
+		switch (peep->state) {
+
+		}
 	}
 }
 
@@ -89,7 +168,7 @@ void peep_problem_warnings_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0 || peep->thoughts[0].pad_3 > 5)
+		if (peep->var_2A != 0 || peep->thoughts[0].var_2 > 5)
 			continue;
 
 		switch (peep->thoughts[0].type) {

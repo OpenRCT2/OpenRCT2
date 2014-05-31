@@ -307,8 +307,8 @@ enum PEEP_ITEM {
 typedef struct {
 	uint8 type;
 	uint8 item;
-	uint8 pad_3;
-	uint8 pad_4;
+	uint8 var_2;
+	uint8 var_3;
 } rct_peep_thought;
 
 typedef struct {
@@ -376,7 +376,8 @@ typedef struct {
 	uint8 var_70;
 	uint8 var_71;
 	uint8 var_72;
-	uint8 pad_73[3];
+	uint8 var_73;
+	uint16 pad_74;
 	uint8 var_76;
 	uint8 pad_77;
 	uint8 var_78;
@@ -387,7 +388,8 @@ typedef struct {
 	money32 cash_spent;				// 0xA4
 	uint8 pad_A8;
 	sint32 time_in_park;			// 0xA9
-	uint8 pad_AD[0x3];
+	uint8 var_AD;
+	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 pad_C4;
 	uint8 var_C5;
