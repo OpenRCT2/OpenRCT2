@@ -593,16 +593,16 @@ static void window_ride_list_scrollpaint()
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-			if ((ride->var_158 & 0xFF) != 255) {
+			if ((ride->popularity & 0xFF) != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_158 & 0xFF) * 4;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->popularity & 0xFF) * 4;
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-			if ((ride->var_14A & 0xFF) != 255) {
+			if ((ride->satisfaction & 0xFF) != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_14A & 0xFF) * 5;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->satisfaction & 0xFF) * 5;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
@@ -629,13 +629,13 @@ static void window_ride_list_scrollpaint()
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_196 >> 8;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->reliability;
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_199;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->downtime;
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
@@ -745,7 +745,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_POPULARITY:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
+				if ((ride->popularity & 0xFF) * 4 <= (otherRide->popularity & 0xFF) * 4)
 					break;
 
 				swapper = w->var_076[k];
@@ -756,7 +756,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
+				if ((ride->satisfaction & 0xFF) * 5 <= (otherRide->satisfaction & 0xFF) * 5)
 					break;
 
 				swapper = w->var_076[k];
@@ -800,7 +800,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
+				if (ride->reliability <= otherRide->reliability)
 					break;
 
 				swapper = w->var_076[k];
@@ -811,7 +811,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--k >= 0) {
 				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
-				if (ride->var_199 <= otherRide->var_199)
+				if (ride->downtime <= otherRide->downtime)
 					break;
 
 				swapper = w->var_076[k];

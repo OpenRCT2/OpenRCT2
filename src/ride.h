@@ -57,7 +57,7 @@ typedef struct {
 	uint32 var_04C;
 	uint16 overall_view;			// 0x050
 	uint16 station_starts[4];		// 0x052
-	uint16 egress_array[4];			// 0x5A
+	uint16 station_heights[4];		// 0x5A
 	uint8 pad_062[8];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
@@ -133,17 +133,17 @@ typedef struct {
 
 	// In the game these two are often addressed together. Instead of right
 	// shifting reliability 8 bits, address them separately
-	uint8 reliability_countdown;
-	uint8 reliability_1;
+	uint8 reliability_countdown;	// 0x196
+	uint8 reliability_1;			// 0x197
 
 	// used in computing excitement, nausea, etc
-	uint8 var_198;
+	uint8 var_198;					// 0x198
 	uint8 downtime;					// 0x199
 	uint8 pad_19A[0x1A];
 	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 pad_1BC[0x11];
-	uint8 lift_hill_chain_speed;
+	uint8 lift_hill_chain_speed;	// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 pad_1D4[0x20];

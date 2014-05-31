@@ -208,8 +208,6 @@ void ride_update_favourited_stat()
  */
 void ride_debug_string(rct_ride *ride) 
 {
-void ride_debug_string(rct_ride *ride) 
-{
 	// XXX, figure out how to return this as a string, instead of printing it.
 	printf("type: %02X\n", ride->type);
 	printf("subtype: %02x\n", ride->subtype);
@@ -220,8 +218,14 @@ void ride_debug_string(rct_ride *ride)
 	printf("var_04A: %x\n", ride->var_04A);
 	printf("var_04C: %x\n", ride->var_04C);
 	printf("overall_view: %x\n", ride->overall_view);			// 0x050
-	printf("station_starts: %x\n", ride->station_starts);		// 0x052
-	printf("station_starts: %x\n", ride->station_starts);
+	printf("station_starts:");
+	for (int i = 0; i < 4; i++) {
+		printf("%d, ", ride->station_starts[i]);
+	}
+	printf("station_heights:");
+	for (int i = 0; i < 4; i++) {
+		printf("%d, ", ride->station_heights[i]);
+	}
 	printf("entrances: %x\n", ride->entrances);
 	printf("exits: %x\n", ride->exits);
 	printf("train_car_map: %x\n", ride->train_car_map);

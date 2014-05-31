@@ -81,10 +81,10 @@ uint16 compute_upkeep(rct_ride *ride)
 	dl = dl & 3;
 	upkeep += trackCost * dl;
 
-	uint32 cuml = ride->var_0E4;
-	cuml += ride->var_0E8;
-	cuml += ride->var_0EC;
-	cuml += ride->var_0F0;
+	uint32 cuml = ride->runtime_section1;
+	cuml += ride->runtime_section2;
+	cuml += ride->runtime_section3;
+	cuml += ride->runtime_section4;
 	cuml = cuml >> 0x10;
 
 	// The data originally here was 20's and 0's. The 20's all represented
@@ -130,16 +130,16 @@ uint16 compute_upkeep(rct_ride *ride)
 	// various variables set on the ride itself.
 
 	// https://gist.github.com/kevinburke/e19b803cd2769d96c540
-	upkeep += rideUnknownData1[ride->type] * ride->var_0C8;
+	upkeep += rideUnknownData1[ride->type] * ride->num_trains;
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
 	if (rideUnknownData2[ride->type]) {
-		upkeep += 3 * ride->var_0C9;
+		upkeep += 3 * ride->cars_per_train;
 	}
 
 	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
-	upkeep += rideUnknownData3[ride->type] * ride->var_0C7;
+	upkeep += rideUnknownData3[ride->type] * ride->num_stations;
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
 		upkeep += 30;
@@ -249,7 +249,7 @@ ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensit
  */
 void sub_655FD6(rct_ride *ride)
 {
-    uint8 al = ride->var_1CD;
+    uint8 al = ride->lift_hill_chain_speed;
     // No idea what this address is; maybe like compensation of some kind? The
     // maximum possible value?
     // List of ride names/values is here: 
