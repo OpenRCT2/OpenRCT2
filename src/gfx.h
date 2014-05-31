@@ -31,7 +31,7 @@ typedef struct {
 	short width;		// 0x08
 	short height;		// 0x0A
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
-	uint8 pad_0E;		// 0x0E
+	uint8 zoom_level;	// 0x0E
 	char var_0F;		// 0x0F
 } rct_drawpixelinfo;
 

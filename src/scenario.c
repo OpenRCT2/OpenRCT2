@@ -279,7 +279,9 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 	sub_69E869(); // (loan related, called above already)
-	park_reset_awards_and_history();
+	park_reset_history();
+	finance_reset_history();
+	award_reset();
 	reset_all_ride_build_dates();
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x00674576);
@@ -590,7 +592,7 @@ void scenario_update()
 		finance_pay_interest();
 		marketing_update();
 		peep_problem_warnings_update();
-		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
+		ride_check_all_reachable();
 		ride_update_favourited_stat();
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {

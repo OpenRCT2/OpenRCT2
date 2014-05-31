@@ -73,7 +73,7 @@ static rct_widget window_guest_list_widgets[] = {
 static void window_guest_list_emptysub() { }
 static void window_guest_list_mouseup();
 static void window_guest_list_resize();
-static void window_guest_list_mousedown();
+static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_guest_list_dropdown();
 static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize();
@@ -241,32 +241,9 @@ static void window_guest_list_resize()
  * 
  *  rct2: 0x00699AC4
  */
-static void window_guest_list_mousedown()
+static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int i;
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
-
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
@@ -754,9 +731,9 @@ static void window_guest_list_scrollpaint()
 						thought = &peep->thoughts[j];
 						if (thought->type == PEEP_THOUGHT_TYPE_NONE)
 							break;
-						if (thought->pad_3 == 0)
+						if (thought->var_2 == 0)
 							continue;
-						if (thought->pad_3 > 5)
+						if (thought->var_2 > 5)
 							break;
 
 						ebx = thought->type;
@@ -860,7 +837,7 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
 		*outEAX = eax;
 		return ebx & 0xFFFF;
 	case VIEW_THOUGHTS:
-		if (peep->thoughts[0].pad_3 <= 5) {
+		if (peep->thoughts[0].var_2 <= 5) {
 			eax = peep->thoughts[0].item;
 			ebx = peep->thoughts[0].type;
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {

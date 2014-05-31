@@ -76,7 +76,7 @@ static int award_is_deserved_most_untidy(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 > 5)
+		if (peep->thoughts[0].var_2 > 5)
 			continue;
 
 		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
@@ -109,7 +109,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 > 5)
+		if (peep->thoughts[0].var_2 > 5)
 			continue;
 
 		if (peep->thoughts[0].type == PEEP_THOUGHT_VERY_CLEAN)
@@ -183,7 +183,7 @@ static int award_is_deserved_most_beautiful(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 > 5)
+		if (peep->thoughts[0].var_2 > 5)
 			continue;
 
 		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
@@ -226,7 +226,7 @@ static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 	FOR_ALL_GUESTS(spriteIndex, peep) {
 		if (peep->var_2A != 0)
 			continue;
-		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
 			peepsWhoDislikeVandalism++;
 	}
 
@@ -307,7 +307,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
 			hungryPeeps++;
 	}
 
@@ -353,7 +353,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
 			hungryPeeps++;
 	}
 
@@ -388,7 +388,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 		if (peep->var_2A != 0)
 			continue;
 
-		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
+		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
 			guestsWhoNeedRestroom++;
 	}
 
@@ -510,7 +510,7 @@ static int award_is_deserved_most_confusing_layout(int awardType, int activeAwar
 			continue;
 
 		peepsCounted++;
-		if (peep->thoughts[0].pad_3 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND)
+		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND)
 			peepsLost++;
 	}
 
@@ -567,6 +567,13 @@ static int award_is_deserved(int awardType, int activeAwardTypes)
 }
 
 #pragma endregion
+
+void award_reset()
+{
+	int i;
+	for (i = 0; i < MAX_AWARDS; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i].time = 0;
+}
 
 /**
  *

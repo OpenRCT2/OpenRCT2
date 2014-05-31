@@ -59,9 +59,46 @@ void game_create_windows()
 	RCT2_CALLPROC_EBPSAFE(0x0066B905);
 }
 
+/**
+ * 
+ *  rct2: 0x006838BD
+ */
+void update_water_animation()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006838BD);
+}
+
+/**
+ * 
+ *  rct2: 0x00684218
+ */
+void update_rain_animation()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
+		return;
+
+	// Draw picked-up peep
+	if (RCT2_GLOBAL(0x009DE550, uint32) != 0xFFFFFFFF) {
+		gfx_draw_sprite(
+			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16)
+		);
+	}
+
+	// Get rain draw function and draw rain
+	uint32 eax = RCT2_ADDRESS(0x009AC058, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8)];
+	if (eax != 0xFFFFFFFF && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
+		RCT2_CALLPROC_X(0x00684266, eax, 0, 0, 0, 0, 0, 0);
+}
+
 void game_update()
 {
 	int eax, tmp;
+
+	// Handles picked-up peep and rain redraw
+	RCT2_CALLPROC_EBPSAFE(0x006843DC);
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
@@ -124,8 +161,8 @@ void game_update()
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
 
-	RCT2_CALLPROC_EBPSAFE(0x006838BD);
-	RCT2_CALLPROC_EBPSAFE(0x00684218);
+	update_water_animation();
+	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
@@ -160,7 +197,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
 	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
 	peep_update_crowd_noise();
-	RCT2_CALLPROC_EBPSAFE(0x006BCB91);	// weather sound effects
+	climate_update_sound();
 	news_item_update_current();
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);	// scenario editor opening of windows for a phase
 
@@ -617,6 +654,37 @@ static void input_mouseover_widget_flatbutton_invalidate()
 		widget_invalidate(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber));
 }
 
+static void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_window*w, rct_widget* widget )
+{
+#ifdef _MSC_VER
+	__asm {
+		push address
+		push widget
+		push w
+		push widgetIndex
+		mov edi, widget
+		mov edx, widgetIndex
+		mov esi, w
+		call[esp + 12]
+		add esp, 16
+	}
+#else
+	__asm__("\
+			push %[address]\n\
+			mov edi, %[widget] \n\
+			mov eax, %[w]  \n\
+			mov edx, %[widgetIndex] \n\
+			push edi \n\
+			push eax \n\
+			push edx \n\
+			mov esi, %[w]	\n\
+			call [esp+12]	\n\
+			add esp, 16	\n\
+			" :[address] "+m" (address), [w] "+m" (w), [widget] "+m" (widget), [widgetIndex] "+m" (widgetIndex): : "eax", "esi", "edx", "edi"
+		);
+#endif
+}
+
 /**
  * 
  *  rct2: 0x006E95F9
@@ -766,7 +834,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(0x009DE528, uint16) = 1;
 
 		widget_invalidate(windowClass, windowNumber, widgetIndex);
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_DOWN], 0, 0, 0, widgetIndex, (int)w, (int)widget, 0);
+		RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
 		break;
 	}
 }
@@ -1030,7 +1098,7 @@ void handle_shortcut_command(int shortcutIndex)
 			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
 			window = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
 			if (window != NULL)
-				window_event_helper(window, 10, WE_MOUSE_DOWN);
+				RCT2_CALLPROC_WE_MOUSE_DOWN(window->event_handlers[WE_MOUSE_DOWN], 10, window, NULL);
 		}
 		break;
 	case SHORTCUT_SHOW_RIDES_LIST:
@@ -1595,6 +1663,35 @@ static void load_game()
 			rct2_endupdate();
 		}
 	}
+}
+
+char save_game()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax == 0) {
+		// user pressed "cancel"
+		gfx_invalidate_screen();
+		return 0;
+	}
+	
+	char *src = (char*)0x0141EF67;
+	do {
+		src++;
+	} while (*src != '.' && *src != '\0');
+	strcpy(src, ".SV6");
+	strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
+	
+	eax = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
+		eax |= 1;
+	RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
+	// check success?
+
+	game_do_command(0, 1047, 0, -1, 0, 0, 0);
+	gfx_invalidate_screen();
+	
+	return 1;
 }
 
 /**
