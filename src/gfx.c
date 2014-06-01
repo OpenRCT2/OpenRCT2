@@ -1353,11 +1353,11 @@ int gfx_clip_string(char* buffer, int width)
 	// Location of font sprites
 	uint16* current_font_sprite_base;
 	// Width the string has to fit into
-	int max_width;
+	unsigned int max_width;
 	// Character to change to ellipsis
-	char* last_char;
+	unsigned char* last_char;
 	// Width of the string, including ellipsis
-	int clipped_width;
+	unsigned int clipped_width;
 
 	if (width < 6) {
 		*buffer = 0;
@@ -1365,12 +1365,12 @@ int gfx_clip_string(char* buffer, int width)
 	}
 	
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
+	max_width = (uint32)width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
 
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
@@ -1415,7 +1415,7 @@ int gfx_clip_string(char* buffer, int width)
 		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 
 		if (clipped_width >= width) {
-			RCT2_GLOBAL(last_char, uint32) = 0x2E2E2E;
+			*((uint32*)last_char) = '...';
 			clipped_width = width;
 			return clipped_width;
 		}
@@ -1486,9 +1486,8 @@ int gfx_wrap_string(char* buffer, int* width, int* ebx)
 					ebx = 0;
 					continue;
 				case 0x17:
-					ecx = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+					line_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF)];
 					curr_char += 4;
-					// *curr_char = 0;
 					break;
 				default:
 					if (*curr_char < 0x10) {
@@ -1734,16 +1733,6 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
     
-	// eax = colour;
-	// ebx = format;
-	// ecx = x;
-	// edx = y;
-	// esi = (int)args;
-	// edi = (int)dpi;
-	// ebp = width;
-	// RCT2_CALLFUNC_X(0x006C2105, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	// return (sint16)(edx & 0xFFFF) - y;
-
 	// Location of font sprites
 	uint16* current_font_sprite_base;
 	// Location of font flags
