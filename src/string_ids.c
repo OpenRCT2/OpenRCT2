@@ -1407,6 +1407,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		formatString[0] = FORMAT_MONTH;
 		formatString[8] = FORMAT_COMMA16;
 		format_string_part_from_raw(dest, formatString, (char**)&dateArgs2);
+		(*dest)--;
 		break;
 	case FORMAT_MONTH:
 		// Pop argument
