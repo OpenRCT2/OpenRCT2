@@ -948,6 +948,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }
 
+/*
+* 0x67A46E
+*/
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
 	int image_element = 0x7FFFF&image_id;
 	int image_type = (image_id & 0xE0000000) >> 28;
@@ -1050,6 +1053,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 
 	if (!(g1_source->flags & 0x02)){
 		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+		if (zoomed.offset)free(zoomed.offset);
 		return;
 	}
 	//0x67A60A Not tested
@@ -2048,7 +2052,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 				RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 				
-				RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
+				gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
+				//RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
 
 				continue;
 			}
