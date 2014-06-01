@@ -1427,6 +1427,157 @@ int gfx_clip_string(char* buffer, int width)
 }
 
 /**
+ *  Wrap the text in buffer to width
+ *
+ *  rct2: 0x006C21E2
+ * buffer (esi)
+ * width (edi)
+ */
+int gfx_wrap_string(char* buffer, int* width)
+{
+	int eax, ebx, ecx;
+
+    eax = 0;
+
+    uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+
+    RCT2_GLOBAL(0x00F4392E, uint16) = 0;
+
+    ecx = 0;
+
+    uint16* var_F43930 = RCT2_ADDRESS(0x00F43930, uint16);
+    *var_F43930 = 0;
+
+    uint32* var_F43928;
+
+	// loc_6C2200:                             ; CODE XREF: sub_6C21E2+8Fj
+    if (ecx > *var_F43930) {
+        *var_F43930 = ecx;
+    }
+    ecx = 0;
+
+    var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
+    *var_F43928 = 0;
+
+
+	// loc_6C221D:                             ; CODE XREF: sub_6C21E2+6Cj
+
+	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+
+        if (*curr_char == ' ') {
+			// jnz     short loc_6C2239
+            *var_F43928 = curr_char;
+            RCT2_GLOBAL(0x00F4392C, uint16) = ecx;
+        }
+
+        if (*curr_char != 5) {
+			if (*curr_char < ' ') {
+				switch(*curr_char) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					curr_char++;
+					continue;
+				case 7:
+					ebx = 0x1C0;
+					continue;
+				case 8:
+					ebx = 0x2A0;
+					continue;
+				case 9:
+					ebx = 0xE0;
+					continue;
+				case 0x0A:
+					ebx = 0;
+					continue;
+				case 0x17:
+					ecx = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+					curr_char += 4;
+					// *curr_char = 0;
+					break;
+				default:
+					if (*curr_char < 0x10) {
+						continue;
+					}
+					curr_char += 2;
+					if (*curr_char <= 0x16) {
+						continue;
+					}
+					curr_char += 2;
+					continue;
+				}
+			}
+
+			ecx += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
+
+			// do {
+			// loc_6C224B:                             ; CODE XREF: sub_6C21E2+FDj
+			if (ecx <= *width) {
+				continue;
+			}
+			if (*var_F43928 == 0) {
+				// jz      short loc_6C2273
+				// loc_6C2273:                             ; CODE XREF: sub_6C21E2+75j
+				curr_char--;
+				char* old_place = curr_char;
+
+				char swap_char = 0;
+				char temp;
+				// Insert NULL at current character
+				// Aboslutely no guarantee that this won't overrun!
+				do {
+					temp = swap_char;
+					swap_char = *curr_char;
+					*curr_char = temp;
+					curr_char++;
+				} while(swap_char != 0);
+
+				*curr_char = swap_char;
+				curr_char = old_place;
+				curr_char++;
+				RCT2_GLOBAL(0x00F4392E, uint16) += 1;
+
+				if (ecx > *var_F43930) {
+					*var_F43930 = ecx;
+				}
+				ecx = 0;
+
+				var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
+				*var_F43928 = 0;
+				continue;
+			}
+			curr_char = *var_F43928;
+			ecx = RCT2_GLOBAL(0x00F4392C, uint16);
+        }
+
+ // loc_6C2266:                             ; CODE XREF: sub_6C21E2+59j
+        RCT2_GLOBAL(0x00F4392E, uint16) += 1;
+        *(curr_char - 1) = 0;
+
+// jmp     short loc_6C2200
+		// loc_6C2200:                             ; CODE XREF: sub_6C21E2+8Fj
+		if (ecx > *var_F43930) {
+			*var_F43930 = ecx;
+		}
+		ecx = 0;
+
+		var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
+		*var_F43928 = 0;
+		continue;
+
+
+	}
+
+	*width = RCT2_GLOBAL(0x00F4392E, uint16);
+	if (ecx <= RCT2_GLOBAL(0x00F43930, uint16)) {
+		ecx = RCT2_GLOBAL(0x00F4392E, uint16);
+	}
+	return ecx;
+}
+
+
+/**
  * Draws i formatted text string left aligned at i specified position but clips
  * the text with an elipsis if the text width exceeds the specified width.
  *  rct2: 0x006C1B83
@@ -1548,7 +1699,8 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 
 	esi = buffer;
 	edi = width;
-	RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ecx = gfx_wrap_string(esi, &edi);
+	// RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ecx &= 0xFFFF;
 	edi &= 0xFFFF;
 
@@ -1637,7 +1789,8 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
     // not working for strings with colour code?
 	esi = buffer;
 	edi = width;
-	RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ecx = gfx_wrap_string(esi, &edi);
+	// RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ecx &= 0xFFFF;
 	edi &= 0xFFFF;
 
@@ -1657,9 +1810,9 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-    esi = buffer;
+	esi = buffer;
 
-    edx = y;
+	edx = y;
 
 	do {
 		gfx_draw_string(dpi, buffer, 0xFE, x, edx);
