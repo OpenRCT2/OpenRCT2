@@ -1432,44 +1432,38 @@ int gfx_clip_string(char* buffer, int width)
  *  rct2: 0x006C21E2
  * buffer (esi)
  * width (edi)
+ * line_height? (ebx)
  */
-int gfx_wrap_string(char* buffer, int* width)
+int gfx_wrap_string(char* buffer, int* width, int* ebx)
 {
-	int eax, ebx, ecx;
-
-    eax = 0;
+	unsigned int line_width = 0;
+	rct_g1_element* g1_element;
 
     uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
-    RCT2_GLOBAL(0x00F4392E, uint16) = 0;
+    unsigned int num_lines = 0;
+	// Unused?
+	unsigned int max_width = 0;
 
-    ecx = 0;
-
-    uint16* var_F43930 = RCT2_ADDRESS(0x00F43930, uint16);
-    *var_F43930 = 0;
-
-    uint32* var_F43928;
-
-	// loc_6C2200:                             ; CODE XREF: sub_6C21E2+8Fj
-    if (ecx > *var_F43930) {
-        *var_F43930 = ecx;
+    if (line_width > max_width) {
+        max_width = line_width;
     }
-    ecx = 0;
+    line_width = 0;
 
-    var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
-    *var_F43928 = 0;
+	// Pointer to the start of the current word
+	unsigned char* curr_word = NULL;
+	// Width of line up to current word
+	unsigned int curr_width;
 
+	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
-	// loc_6C221D:                             ; CODE XREF: sub_6C21E2+6Cj
-
-	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
-
+		// Remember start of current word and line width up to this word
         if (*curr_char == ' ') {
-			// jnz     short loc_6C2239
-            *var_F43928 = curr_char;
-            RCT2_GLOBAL(0x00F4392C, uint16) = ecx;
+            curr_word = curr_char;
+            curr_width = line_width;
         }
 
+		// 5 is RCT2 new line?
         if (*curr_char != 5) {
 			if (*curr_char < ' ') {
 				switch(*curr_char) {
@@ -1509,21 +1503,16 @@ int gfx_wrap_string(char* buffer, int* width)
 				}
 			}
 
-			ecx += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
+			line_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 
-			// do {
-			// loc_6C224B:                             ; CODE XREF: sub_6C21E2+FDj
-			if (ecx <= *width) {
+			if (line_width <= *width) {
 				continue;
 			}
-			if (*var_F43928 == 0) {
-				// jz      short loc_6C2273
-				// loc_6C2273:                             ; CODE XREF: sub_6C21E2+75j
+			if (curr_word == 0) {
 				curr_char--;
-				char* old_place = curr_char;
-
-				char swap_char = 0;
-				char temp;
+				unsigned char* old_char = curr_char;
+				unsigned char swap_char = 0;
+				unsigned char temp;
 				// Insert NULL at current character
 				// Aboslutely no guarantee that this won't overrun!
 				do {
@@ -1534,46 +1523,36 @@ int gfx_wrap_string(char* buffer, int* width)
 				} while(swap_char != 0);
 
 				*curr_char = swap_char;
-				curr_char = old_place;
+				curr_char = old_char;
 				curr_char++;
-				RCT2_GLOBAL(0x00F4392E, uint16) += 1;
+				num_lines += 1;
 
-				if (ecx > *var_F43930) {
-					*var_F43930 = ecx;
+				if (line_width > max_width) {
+					max_width = line_width;
 				}
-				ecx = 0;
-
-				var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
-				*var_F43928 = 0;
+				line_width = 0;
+				curr_word = 0;
 				continue;
 			}
-			curr_char = *var_F43928;
-			ecx = RCT2_GLOBAL(0x00F4392C, uint16);
+			curr_char = curr_word;
+			line_width = curr_width;
         }
 
- // loc_6C2266:                             ; CODE XREF: sub_6C21E2+59j
-        RCT2_GLOBAL(0x00F4392E, uint16) += 1;
-        *(curr_char - 1) = 0;
+        num_lines += 1;
+        *curr_char = 0;
 
-// jmp     short loc_6C2200
-		// loc_6C2200:                             ; CODE XREF: sub_6C21E2+8Fj
-		if (ecx > *var_F43930) {
-			*var_F43930 = ecx;
+		if (line_width > max_width) {
+			max_width = line_width;
 		}
-		ecx = 0;
-
-		var_F43928 = RCT2_ADDRESS(0x00F43928, uint32);
-		*var_F43928 = 0;
-		continue;
-
-
+		line_width = 0;
+		curr_word = 0;
 	}
 
-	*width = RCT2_GLOBAL(0x00F4392E, uint16);
-	if (ecx <= RCT2_GLOBAL(0x00F43930, uint16)) {
-		ecx = RCT2_GLOBAL(0x00F4392E, uint16);
+	*width = num_lines;
+	if (line_width <= max_width) {
+		line_width = max_width;
 	}
-	return ecx;
+	return line_width;
 }
 
 
@@ -1699,7 +1678,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 
 	esi = buffer;
 	edi = width;
-	ecx = gfx_wrap_string(esi, &edi);
+	ecx = gfx_wrap_string(esi, &edi, &ebx);
 	// RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ecx &= 0xFFFF;
 	edi &= 0xFFFF;
@@ -1732,10 +1711,10 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 		buffer += strlen(buffer) + 1;
 
         edx += RCT2_GLOBAL(0x00F43938, uint16);
-		eax = (RCT2_GLOBAL(0x00F43938, uint16) / 2) * edi;
+		eax = (RCT2_GLOBAL(0x00F43938, uint16) / 2);
 		ebx -= eax;
 
-	} while (ebx > 0);
+	} while (ebx >= 0);
 
 	return (sint16)(edx & 0xFFFF) - y;
 }
@@ -1789,7 +1768,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
     // not working for strings with colour code?
 	esi = buffer;
 	edi = width;
-	ecx = gfx_wrap_string(esi, &edi);
+	ecx = gfx_wrap_string(esi, &edi, &ebx);
 	// RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ecx &= 0xFFFF;
 	edi &= 0xFFFF;
