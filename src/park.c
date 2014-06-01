@@ -472,9 +472,8 @@ static rct_peep *park_generate_new_guest()
 	get_random_peep_spawn(&spawn);
 
 	if (spawn.x != 0xFFFF) {
-		spawn.z *= 16;
 		spawn.direction ^= 2;
-		peep = peep_generate(spawn.x, spawn.y, spawn.z);
+		peep = peep_generate(spawn.x, spawn.y, spawn.z * 16);
 		if (peep != NULL) {
 			peep->var_1E = spawn.direction << 3;
 						
