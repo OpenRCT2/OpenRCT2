@@ -2102,12 +2102,12 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					break;
 				case 0x0F7:
-					buffer += 4;
+					buffer += 5;
 					if (max_x >= dpi->x + dpi->width) {
 						skip_char = 1;
 						break;
 					}
-					ebx = *(buffer - 4);
+					ebx = *((uint32*)(buffer - 4));
 					eax = ebx & 0x7FFFF;
 					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 		
