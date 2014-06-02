@@ -1513,10 +1513,12 @@ void format_string_part_from_raw(char **dest, const char *src, char **args)
 				*(*dest)++ = code;
 				*(*dest)++ = *src++;
 				*(*dest)++ = *src++;
-				*(*dest)++ = *src++;
-				*(*dest)++ = *src++;
 			} else {
 				*(*dest)++ = code;
+				*(*dest)++ = *src++;
+				*(*dest)++ = *src++;
+				*(*dest)++ = *src++;
+				*(*dest)++ = *src++;
 			}
 		} else if (code <= 'z') {
 			*(*dest)++ = code;
