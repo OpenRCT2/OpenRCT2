@@ -63,6 +63,11 @@ uint8 peep_palette[0x100] = {
 	0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF
 };
 
+//Originally 0x9ABE04
+uint8 text_palette[0x8] = {
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 
 /**
@@ -1720,7 +1725,7 @@ void colour_char(int al, uint16* current_font_flags) {
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
 	}
-	// Store current colour? 
+	// Adjust text palette. Store current colour? 
 	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 }
@@ -1735,7 +1740,7 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
-	 //Store current colour? 
+	 //Adjust text palette. Store current colour? 
 	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 	eax = 0;
@@ -1834,7 +1839,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					eax = eax << 10;
 					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
-				// Store current colour? ;
+				// Adjust text palette. Store current colour? ;
 				RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 				RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 				eax = 0;
@@ -1998,13 +2003,14 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					if (!(*current_font_flags & 2)) {
 						ebx = ebx & 0xFF;
 					}
+					//Adjust the text palette
 					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
 					ebx = g1_element->offset[0xF7];
 					RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
 					ebx = g1_element->offset[0xFA];
 					RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
-
-					RCT2_GLOBAL(0x09ABDA4, uint32) = RCT2_GLOBAL(0x09ABE04, uint32);
+					//Set the palette pointer
+					RCT2_GLOBAL(0x09ABDA4, uint32) = 0x09ABE04;
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 						skip_char = 1;
 					}
