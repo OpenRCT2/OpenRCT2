@@ -1132,7 +1132,7 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
 	text_width = gfx_get_string_width(buffer);
 
 	// Draw the text centred
-	if (text_width <= 0xFFF) {
+	if (text_width <= 0xFFFF) {
 		x -= text_width / 2;
 		gfx_draw_string(dpi, buffer, colour, x, y);
 	}
@@ -1603,7 +1603,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 	text_width = gfx_clip_string(buffer, width);
 
 	// Draw the text centred
-	if (text_width <= 0xFFF) {
+	if (text_width <= 0xFFFF) {
 		x -= (text_width - 1) / 2;
 		gfx_draw_string(dpi, buffer, colour, x, y);
 	}
