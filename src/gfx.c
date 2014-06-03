@@ -1894,8 +1894,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				// Control codes
 				al -= 0x20;
 				switch (al) {
-				case 0x0E5:
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+				case 0x0E5://Start New Line at set y lower
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_y += 0x0A;
 					if (*current_font_sprite_base <= 0x0E) {
 						break;
@@ -1906,8 +1906,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					max_y -= 0xFFF4;
 					break;
-				case 0x0E6:
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+				case 0x0E6://Start New Line at set y lower
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_y += 5;
 					if (*current_font_sprite_base <= 0x0E) {
 						break;
@@ -1916,20 +1916,20 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					if (*current_font_sprite_base == 0x1C0) {
 						break;
 					}
-					max_y -= 0xFFFA;
+					max_y -= 0xFFFA;//This does not look correct probably should be an add
 					break;
-				case 0x0E1:
+				case 0x0E1://Start New Line at start+buffer x, same y. (Overwrite?)
 					al = *buffer;
 					buffer++;
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += al;
 					break;
-				case 0x0F1:
+				case 0x0F1: //Start new line at specified x,y
 					eax = *((uint16*)buffer);
 					buffer += 2;
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += (eax & 0xFF);
-					max_y = RCT2_GLOBAL(0x0EDF842, uint16);
+					max_y = y;//RCT2_GLOBAL(0x0EDF842, uint16);
 					max_y += (eax & 0xFF00) >> 8;
 					break;
 				case 0x0E7:
@@ -2023,11 +2023,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					ebx = *(buffer - 4);
 					eax = ebx & 0x7FFFF;
-					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
+					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 		
 					gfx_draw_sprite(dpi, ebx, max_x, max_y);
 
-					max_x = max_x + g1_element->offset;
+					max_x = max_x + g1_element->width;
 					break;
 				}
 
