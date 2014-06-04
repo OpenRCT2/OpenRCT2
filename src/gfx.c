@@ -1343,7 +1343,7 @@ int gfx_get_string_width(char* buffer)
 			break;
 		case 0x17:
 			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*curr_char&0x7FFFF]);
-			width += g1_element.width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+			width += g1_element->width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
 			curr_char += 4;
 			break;
 		default:
