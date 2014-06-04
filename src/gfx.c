@@ -1307,13 +1307,15 @@ int gfx_get_string_width(char* buffer)
 	uint16* current_font_sprite_base;
 	// Width of string
 	int width;
-
+	rct_g1_element* g1_element;
+	
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
 	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
+			//Maybe global not address??
 			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 			continue;
 		}
@@ -1340,7 +1342,8 @@ int gfx_get_string_width(char* buffer)
 			*current_font_sprite_base = 0;
 			break;
 		case 0x17:
-			width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*curr_char&0x7FFFF]);
+			width = g1_element.width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
 			curr_char += 4;
 			*curr_char = 0;
 			break;
