@@ -2006,10 +2006,12 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					//Adjust the text palette
 					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
-					ebx = g1_element->offset[0xF7];
-					RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
-					ebx = g1_element->offset[0xFA];
-					RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
+					memcpy((uint8*)0x09ABE07,&(g1_element->offset[0xF7]),2);
+					//ebx = g1_element->offset[0xF7];
+					//RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
+					memcpy((uint8*)0x09ABE09,&(g1_element->offset[0xFA]),2);
+					//ebx = g1_element->offset[0xFA];
+					//RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
 					//Set the palette pointer
 					RCT2_GLOBAL(0x09ABDA4, uint32) = 0x09ABE04;
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
