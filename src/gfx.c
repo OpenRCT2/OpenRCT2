@@ -1721,7 +1721,7 @@ void colour_char(int al, uint16* current_font_flags) {
 	int eax;
 
 	rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332]);
-	eax = g1_element->offset[(al & 0xFF) * 4];
+	eax = ((uint32*)g1_element->offset)[al & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
@@ -1761,6 +1761,20 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
  */
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
+	//int eax, ebx, ecx, edx, esi, edi, ebp;
+	//char* find = "FINDMEDRAWSTRING";
+	//eax = colour;
+	//ebx = 0;
+	//ecx = x;
+	//edx = y;
+	//esi = (int)buffer;
+	//edi = (int)dpi;
+	//ebp = 0;
+	//RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	//gLastDrawStringX = ecx;
+	//gLastDrawStringY = edx;
+	
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	rct_g1_element* g1_element;
 
