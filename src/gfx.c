@@ -1312,7 +1312,7 @@ int gfx_get_string_width(char* buffer)
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
 			//Maybe global not address??
@@ -1390,7 +1390,7 @@ int gfx_clip_string(char* buffer, int width)
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
@@ -1774,7 +1774,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 	//gLastDrawStringX = ecx;
 	//gLastDrawStringY = edx;
-	
+	//
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	rct_g1_element* g1_element;
 
