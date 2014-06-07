@@ -747,13 +747,15 @@ rct_g1_element gfx_sprite_zoom_image(rct_g1_element* source, int zoom_level){
 * There is still a small bug with this code when it is in the choose park view.
 */
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
-	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start];
+	int zoom_level = dpi->zoom_level + 1;
+
+	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start*zoom_level];
 	//This will now point to the first line
 	uint8* next_source_pointer = source_bits_pointer + offset_to_first_line;
 	uint8* next_dest_pointer = dest_bits_pointer;
 	
 	//For every line in the image
-	for (; height; height--){
+	for (; height; height-=zoom_level){
 
 		uint8 last_data_line = 0;
 		//For every data section in the line
@@ -773,7 +775,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			next_source_pointer = source_pointer + no_pixels;
 
 			//Calculates the start point of the image
-			int x_start = gap_size - source_x_start;
+			int x_start = gap_size - source_x_start*zoom_level;
 
 			if (x_start > 0){
 				//Since the start is positive
@@ -786,7 +788,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 				source_pointer -= x_start;
 				//The no_pixels will be reduced in this operation
 				no_pixels += x_start;
-				//If there are no pixels there is nothing to draw this line
+				//If there are no pixels there is nothing to draw this data section
 				if (no_pixels <= 0) continue;
 				//Reset the start position to zero as we have taken into account all moves
 				x_start = 0;
@@ -795,9 +797,9 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			int x_end = x_start + no_pixels;
 			//If the end position is further out than the whole image
 			//end position then we need to shorten the line again
-			if (x_end > width){
+			if (x_end > width/zoom_level){
 				//Shorten the line
-				no_pixels -= x_end - width;
+				no_pixels -= x_end - width/zoom_level;
 				//If there are no pixels there is nothing to draw.
 				if (no_pixels <= 0) continue;
 			}
@@ -805,7 +807,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			//Finally after all those checks, copy the image onto the drawing surface
 			//If the image type is not a basic one we require to mix the pixels
 			if (image_type & IMAGE_TYPE_USE_PALETTE){//In the .exe these are all unraveled loops
-				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
+				for (; no_pixels > 0; no_pixels-=zoom_level, source_pointer+=zoom_level, dest_pointer++){
 					uint8 al = *source_pointer;
 					uint8 ah = *dest_pointer;
 					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
@@ -818,7 +820,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
 				//Doesnt use source pointer ??? mix with background only?
 				//Not Tested
-				for (; no_pixels > 0; --no_pixels, source_pointer++, dest_pointer++){
+				for (; no_pixels > 0; no_pixels-=zoom_level, source_pointer+=zoom_level, dest_pointer++){
 					uint8 pixel = *dest_pointer;
 					pixel = palette_pointer[pixel];
 					*dest_pointer = pixel;
@@ -826,7 +828,9 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			}
 			else
 			{
-				memcpy(dest_pointer, source_pointer, no_pixels);
+				for (; no_pixels > 0; no_pixels -= zoom_level, source_pointer += zoom_level, dest_pointer++){
+					*dest_pointer = *source_pointer;
+				}
 			}
 			
 		}
@@ -959,10 +963,12 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
 	int image_element = 0x7FFFF&image_id;
 	int image_type = (image_id & 0xE0000000) >> 28;
-
-	rct_g1_element* g1_source = &((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[image_element];
-	rct_g1_element zoomed = gfx_sprite_zoom_image(g1_source, dpi->zoom_level);
-	if (zoomed.offset != NULL)g1_source = &zoomed;
+	dpi->zoom_level = 1;
+	//We add on one so that divides will create the correct number of pixels
+	int zoom_level = dpi->zoom_level + 1;
+	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+	//rct_g1_element zoomed = gfx_sprite_zoom_image(g1_source, dpi->zoom_level);
+	//if (zoomed.offset != NULL)g1_source = &zoomed;
 	if (dpi->zoom_level >= 1){ //These have not been tested
 		//something to do with zooming
 		if (dpi->zoom_level == 1){
@@ -978,9 +984,9 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	}
 
 	//This will be the height of the drawn image
-	int height = g1_source->height;
+	int height = g1_source->height / zoom_level;
 	//This is the start y coordinate on the destination
-	int dest_start_y = y - dpi->y + g1_source->y_offset;
+	int dest_start_y = y - dpi->y + g1_source->y_offset / zoom_level;
 	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
@@ -994,7 +1000,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 			return;
 		}
 		//The source image will start a further up the image
-		source_start_y -= dest_start_y;
+		source_start_y -= dest_start_y*zoom_level;
 		//The destination start is now reset to 0
 		dest_start_y = 0;
 	}
@@ -1010,11 +1016,11 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	}
 	
 	//This will be the width of the drawn image
-	int width = g1_source->width;
+	int width = g1_source->width / zoom_level;
 	//This is the source start x coordinate
 	int source_start_x = 0;
 	//This is the destination start x coordinate
-	int dest_start_x = x - dpi->x + g1_source->x_offset;
+	int dest_start_x = x - dpi->x + g1_source->x_offset / zoom_level;
 	
 	if (dest_start_x < 0){
 		//If the destination is negative reduce the width
@@ -1025,7 +1031,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 			return;
 		}
 		//The source start will also need to cut off the side
-		source_start_x -= dest_start_x;
+		source_start_x -= dest_start_x*zoom_level;
 		//Reset the destination to 0
 		dest_start_x = 0;
 	}
@@ -1048,7 +1054,9 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
 		//We have to use a different method to move the source pointer for
 		//rle encoded sprites so that will be handled within this function
+		dpi->zoom_level = 1;
 		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
+		dpi->zoom_level = 0;
 		return;
 	}
 
@@ -1058,7 +1066,6 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 
 	if (!(g1_source->flags & 0x02)){
 		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
-		if (zoomed.offset)free(zoomed.offset);
 		return;
 	}
 	//0x67A60A Not tested
