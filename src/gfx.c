@@ -749,7 +749,7 @@ rct_g1_element gfx_sprite_zoom_image(rct_g1_element* source, int zoom_level){
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level + 1;
 
-	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start*zoom_level];
+	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start];
 	//This will now point to the first line
 	uint8* next_source_pointer = source_bits_pointer + offset_to_first_line;
 	uint8* next_dest_pointer = dest_bits_pointer;
@@ -775,7 +775,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			next_source_pointer = source_pointer + no_pixels;
 
 			//Calculates the start point of the image
-			int x_start = gap_size - source_x_start*zoom_level;
+			int x_start = gap_size / zoom_level - source_x_start*zoom_level;
 
 			if (x_start > 0){
 				//Since the start is positive
