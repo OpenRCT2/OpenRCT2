@@ -199,7 +199,7 @@ void ride_update_favourited_stat()
 
 /**
  * rct2: 0x006B7C59
- * @return 1 if the coordinate is reachable or has no entrance, 0 otw
+ * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
 int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index) {
 	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
