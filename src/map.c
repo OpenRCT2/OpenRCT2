@@ -333,7 +333,7 @@ void sub_68B089()
 
 /**
  * Checks if the tile at coordinate at height counts as connected.
- * @return 1 if connected, 0 otherwisei
+ * @return 1 if connected, 0 otherwise
  */
 int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
 {
