@@ -749,91 +749,97 @@ rct_g1_element gfx_sprite_zoom_image(rct_g1_element* source, int zoom_level){
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level + 1;
 
-	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start*zoom_level];
+	uint16 offset_to_first_line = ((uint16*)source_bits_pointer)[source_y_start];
 	//This will now point to the first line
 	uint8* next_source_pointer = source_bits_pointer + offset_to_first_line;
 	uint8* next_dest_pointer = dest_bits_pointer;
 	
+	uint8 zoom_skip = 0;
 	//For every line in the image
-	for (; height; height-=zoom_level){
+	for (; height; height--){
+		do{
+			uint8 last_data_line = 0;
+			//For every data section in the line
+			while (!last_data_line){
+				uint8* source_pointer = next_source_pointer;
+				uint8* dest_pointer = next_dest_pointer;
 
-		uint8 last_data_line = 0;
-		//For every data section in the line
-		while (!last_data_line){
-			uint8* source_pointer = next_source_pointer;
-			uint8* dest_pointer = next_dest_pointer;
+				int no_pixels = *source_pointer++;
+				//gap_size is the number of non drawn pixels you require to
+				//jump over on your destination
+				uint8 gap_size = *source_pointer++;
+				//The last bit in no_pixels tells you if you have reached the end of a line
+				last_data_line = no_pixels & 0x80;
+				//Clear the last data line bit so we have just the no_pixels
+				no_pixels &= 0x7f;
+				//Have our next source pointer point to the next data section
+				next_source_pointer = source_pointer + no_pixels;
 
-			int no_pixels = *source_pointer++;
-			//gap_size is the number of non drawn pixels you require to
-			//jump over on your destination
-			uint8 gap_size = *source_pointer++;
-			//The last bit in no_pixels tells you if you have reached the end of a line
-			last_data_line = no_pixels & 0x80;
-			//Clear the last data line bit so we have just the no_pixels
-			no_pixels &= 0x7f;
-			//Have our next source pointer point to the next data section
-			next_source_pointer = source_pointer + no_pixels;
+				if (last_data_line && zoom_skip){
+					zoom_skip--;
+					continue;
+				}
+				if (last_data_line) zoom_skip = dpi->zoom_level;
+				//Calculates the start point of the image
+				int x_start = gap_size - source_x_start;
 
-			//Calculates the start point of the image
-			int x_start = gap_size - source_x_start*zoom_level;
+				if (x_start > 0){
+					//Since the start is positive
+					//We need to move the drawing surface to the correct position
+					dest_pointer += x_start;
+				}
+				else{
+					//If the start is negative we require to remove part of the image.
+					//This is done by moving the image pointer to the correct position.
+					source_pointer -= x_start;
+					//The no_pixels will be reduced in this operation
+					no_pixels += x_start;
+					//If there are no pixels there is nothing to draw this data section
+					if (no_pixels <= 0) continue;
+					//Reset the start position to zero as we have taken into account all moves
+					x_start = 0;
+				}
 
-			if (x_start > 0){
-				//Since the start is positive
-				//We need to move the drawing surface to the correct position
-				dest_pointer += x_start;
-			}
-			else{
-				//If the start is negative we require to remove part of the image.
-				//This is done by moving the image pointer to the correct position.
-				source_pointer -= x_start;
-				//The no_pixels will be reduced in this operation
-				no_pixels += x_start;
-				//If there are no pixels there is nothing to draw this data section
-				if (no_pixels <= 0) continue;
-				//Reset the start position to zero as we have taken into account all moves
-				x_start = 0;
-			}
+				int x_end = x_start + no_pixels;
+				//If the end position is further out than the whole image
+				//end position then we need to shorten the line again
+				if (x_end > width){
+					//Shorten the line
+					no_pixels -= x_end - width;
+					//If there are no pixels there is nothing to draw.
+					if (no_pixels <= 0) continue;
+				}
 
-			int x_end = x_start + no_pixels;
-			//If the end position is further out than the whole image
-			//end position then we need to shorten the line again
-			if (x_end > width/zoom_level){
-				//Shorten the line
-				no_pixels -= x_end - width/zoom_level;
-				//If there are no pixels there is nothing to draw.
-				if (no_pixels <= 0) continue;
-			}
-
-			//Finally after all those checks, copy the image onto the drawing surface
-			//If the image type is not a basic one we require to mix the pixels
-			if (image_type & IMAGE_TYPE_USE_PALETTE){//In the .exe these are all unraveled loops
-				for (; no_pixels > 0; no_pixels-=zoom_level, source_pointer+=zoom_level, dest_pointer++){
-					uint8 al = *source_pointer;
-					uint8 ah = *dest_pointer;
-					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
-						al = palette_pointer[(al | ((int)ah) << 8) - 0x100];
-					else //Adjust colours?
-						al = palette_pointer[al];
-					*dest_pointer = al;
+				//Finally after all those checks, copy the image onto the drawing surface
+				//If the image type is not a basic one we require to mix the pixels
+				if (image_type & IMAGE_TYPE_USE_PALETTE){//In the .exe these are all unraveled loops
+					for (; no_pixels > 0; no_pixels--, source_pointer++, dest_pointer++){
+						uint8 al = *source_pointer;
+						uint8 ah = *dest_pointer;
+						if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
+							al = palette_pointer[(al | ((int)ah) << 8) - 0x100];
+						else //Adjust colours?
+							al = palette_pointer[al];
+						*dest_pointer = al;
+					}
+				}
+				else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
+					//Doesnt use source pointer ??? mix with background only?
+					//Not Tested
+					for (; no_pixels > 0; no_pixels--, source_pointer++, dest_pointer++){
+						uint8 pixel = *dest_pointer;
+						pixel = palette_pointer[pixel];
+						*dest_pointer = pixel;
+					}
+				}
+				else
+				{
+					for (; no_pixels > 0; no_pixels--, source_pointer++, dest_pointer++){
+						*dest_pointer = *source_pointer;
+					}
 				}
 			}
-			else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
-				//Doesnt use source pointer ??? mix with background only?
-				//Not Tested
-				for (; no_pixels > 0; no_pixels-=zoom_level, source_pointer+=zoom_level, dest_pointer++){
-					uint8 pixel = *dest_pointer;
-					pixel = palette_pointer[pixel];
-					*dest_pointer = pixel;
-				}
-			}
-			else
-			{
-				for (; no_pixels > 0; no_pixels -= zoom_level, source_pointer += zoom_level, dest_pointer++){
-					*dest_pointer = *source_pointer;
-				}
-			}
-			
-		}
+		} while (zoom_skip);
 		//Add a line to the drawing surface pointer
 		next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
 	}
@@ -955,6 +961,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 
 	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
+	dpi->zoom_level = 0;
 }
 
 /*
@@ -963,9 +970,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
 	int image_element = 0x7FFFF&image_id;
 	int image_type = (image_id & 0xE0000000) >> 28;
-	dpi->zoom_level = 1;
-	//We add on one so that divides will create the correct number of pixels
-	int zoom_level = dpi->zoom_level + 1;
+	
 	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
 	//rct_g1_element zoomed = gfx_sprite_zoom_image(g1_source, dpi->zoom_level);
 	//if (zoomed.offset != NULL)g1_source = &zoomed;
@@ -982,11 +987,14 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
 		return;
 	}
-
+	//Zoom level testing code.
+	dpi->zoom_level = 1;
+	//We add on one so that divides will create the correct number of pixels
+	int zoom_level = dpi->zoom_level + 1;
 	//This will be the height of the drawn image
 	int height = g1_source->height / zoom_level;
 	//This is the start y coordinate on the destination
-	int dest_start_y = y - dpi->y + g1_source->y_offset / zoom_level;
+	int dest_start_y = y - dpi->y + g1_source->y_offset;
 	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
@@ -1000,7 +1008,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 			return;
 		}
 		//The source image will start a further up the image
-		source_start_y -= dest_start_y*zoom_level;
+		source_start_y -= dest_start_y;
 		//The destination start is now reset to 0
 		dest_start_y = 0;
 	}
@@ -1020,7 +1028,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//This is the source start x coordinate
 	int source_start_x = 0;
 	//This is the destination start x coordinate
-	int dest_start_x = x - dpi->x + g1_source->x_offset / zoom_level;
+	int dest_start_x = x - dpi->x + g1_source->x_offset;
 	
 	if (dest_start_x < 0){
 		//If the destination is negative reduce the width
@@ -1031,7 +1039,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 			return;
 		}
 		//The source start will also need to cut off the side
-		source_start_x -= dest_start_x*zoom_level;
+		source_start_x -= dest_start_x;
 		//Reset the destination to 0
 		dest_start_x = 0;
 	}
@@ -1054,18 +1062,15 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
 		//We have to use a different method to move the source pointer for
 		//rle encoded sprites so that will be handled within this function
-		dpi->zoom_level = 1;
 		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
-		dpi->zoom_level = 0;
 		return;
 	}
-
 	uint8* source_pointer = g1_source->offset;
 	//Move the pointer to the start point of the source
 	source_pointer += g1_source->width*source_start_y + source_start_x;
 
 	if (!(g1_source->flags & 0x02)){
-		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+		//gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 		return;
 	}
 	//0x67A60A Not tested
@@ -2083,6 +2088,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 				
 				gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
+				//Part of zoom testing code remove when done.
+				dpi->zoom_level = 0;
 				//RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
 
 				continue;
