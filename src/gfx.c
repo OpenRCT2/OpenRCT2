@@ -43,6 +43,31 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
+//Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
+uint8 peep_palette[0x100] = { 
+	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+	0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+	0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
+	0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F,
+	0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F,
+	0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+	0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
+	0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
+	0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
+	0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
+	0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF,
+	0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
+	0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
+	0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
+	0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
+	0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF
+};
+
+//Originally 0x9ABE04
+uint8 text_palette[0x8] = {
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 
 /**
@@ -255,7 +280,6 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
  */
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
 {
-
 	int left_, right_, top_, bottom_;
 	rct_drawpixelinfo* dpi_;
 	left_ = left;
@@ -548,142 +572,246 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 }
 
 #define RCT2_Y_RELATED_GLOBAL_1 0x9E3D12 //uint16
-#define RCT2_Y_RELATED_GLOBAL_2 0x9ABDAC //sint16
+#define RCT2_Y_END_POINT_GLOBAL 0x9ABDAC //sint16
+#define RCT2_Y_START_POINT_GLOBAL 0xEDF808 //sint16
 #define RCT2_X_RELATED_GLOBAL_1 0x9E3D10 //uint16
-#define RCT2_X_RELATED_GLOBAL_2 0x9ABDA8 //sint16
-
-void sub_0x67AA18(int* source_bits_pointer, int* dest_bits_pointer, rct_drawpixelinfo *dpi){
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x2000000){
-		return; //0x67AAB3
-	}
-
-	if (RCT2_GLOBAL(0xEDF81C, uint32) & 0x4000000){
-		return; //0x67AFD8
-	}
-
-	int ebx = RCT2_GLOBAL(0xEDF808, uint32);
-	ebx = RCT2_GLOBAL(ebx * 2 + source_bits_pointer,uint16);
-	int ebp = (int)dest_bits_pointer;
-	ebx += (int)source_bits_pointer;
-
-StartLoop:
-	ebx = ebx;
-	int cx = RCT2_GLOBAL(ebx, uint16);
-	RCT2_GLOBAL(0x9ABDB4, uint8) = cx & 0xFF;
-	ebx += 2;
-	cx &= 0xFF7F;
-	int esi = ebx;
-	int edx = (cx & 0xFF00) >> 8;
-	ebx += cx;
-	edx -= RCT2_GLOBAL(0xEDF80C, sint32);
-	int edi = ebp;
-	if (edx > 0){
-		edi += edx;
-	}
-	else{
-		esi -= edx;
-		cx += edx & 0xFFFF;
-		if (cx <= 0){
-			goto TestLoop;
-			//jump to 0x67AA97
-		}
-		edx &= 0xFFFF0000;
-	}
-	edx += cx;
-	edx -= RCT2_GLOBAL(0x9ABDA8, sint16);
-	if (edx > 0){
-		cx -= edx;
-		if (cx <= 0){
-			goto TestLoop;
-			//jump to 0x67AA97
-		}
-	}
-	if (cx & 1){
-		cx >>= 1;
-		RCT2_GLOBAL(edi, uint8) = RCT2_GLOBAL(esi, uint8);
-	}
-	else cx >>= 1;
-
-	if (cx & 1){
-		cx >>= 1;
-		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
-	}
-	else cx >>= 1;
-
-	for (int i = cx; i > 0; --i, edi++, esi++){
-		RCT2_GLOBAL(edi, uint16) = RCT2_GLOBAL(esi, uint16);
-	}
-TestLoop:
-	if (!(RCT2_GLOBAL(0x9ABDB4, uint8) & 0x80)) goto StartLoop;
-	edx = RCT2_GLOBAL(0x9ABDB0, sint16);
-	ebp += edx;
-	RCT2_GLOBAL(0x9ABDAC, sint16)--;
-	if (RCT2_GLOBAL(0x9ABDAC, sint16))goto StartLoop;
-
-}
+#define RCT2_X_END_POINT_GLOBAL 0x9ABDA8 //sint16
+#define RCT2_X_START_POINT_GLOBAL 0xEDF80C //sint16
+#define RCT2_DPI_LINE_LENGTH_GLOBAL 0x9ABDB0 //uint16 width+pitch
 
 /*
-* rct2: 0x67A934 title screen bitmaps on buttons
-* This function readies all the global vars for copying the sprite data onto the screen
-* I think its only used for bitmaps onto buttons but i am not sure.
+* rct2: 0x67A690
+* copies a sprite onto the buffer. There is no compression used on the sprite
+* image.
 */
-void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
+void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
+	uint8 zoom_level = dest_dpi->zoom_level + 1;
+	//Requires use of palette?
+	if (image_type & IMAGE_TYPE_USE_PALETTE){
 
-	int _edi = (int)dpi;
-	sint16 translated_x = x, translated_y = y;
-	char* bits_pointer;
-	bits_pointer = dpi->bits;
+		//Mix with another image?? and colour adjusted
+		if (unknown_pointer!= NULL){ //Not tested. I can't actually work out when this code runs.
+			unknown_pointer += source_pointer - source_image->offset;// RCT2_GLOBAL(0x9E3CE0, uint32);
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
-	RCT2_GLOBAL(0xEDF808, uint32) = 0;
-	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
+			for (; height > 0; height -= zoom_level){
+				uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+				uint8* next_unknown_pointer = unknown_pointer + source_image->width*zoom_level;
+				uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
 
-	if (translated_y < 0)
-	{
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
-		RCT2_GLOBAL(0xEDF808, sint16) -= translated_y;
-		translated_y = 0;
+				for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, source_pointer+=zoom_level,  unknown_pointer+=zoom_level, dest_pointer++){
+					uint8 pixel = *source_pointer;
+					pixel = palette_pointer[pixel];
+					pixel &= *unknown_pointer;
+					if (pixel){
+						*dest_pointer = pixel;
+					}
+				}
+				source_pointer = next_source_pointer;
+				dest_pointer = next_dest_pointer;
+				unknown_pointer = next_unknown_pointer;
+			}
+			return;
+		}
+
+		//image colour adjusted?
+		for (; height > 0; height -= zoom_level){
+			uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+			uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
+			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, source_pointer+= zoom_level, dest_pointer++){
+				uint8 pixel = *source_pointer;
+				pixel = palette_pointer[pixel];
+				if (pixel){
+					*dest_pointer = pixel;
+				}
+			}
+
+			source_pointer = next_source_pointer;
+			dest_pointer = next_dest_pointer;
+		}
+		return;
 	}
-	else{
-		bits_pointer += (dpi->width + dpi->pitch)*translated_y;
+
+	//Mix with background. It only uses source pointer for
+	//telling if it needs to be drawn not for colour.
+	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
+		for (; height > 0; height -= zoom_level){
+			uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+			uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
+
+			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, source_pointer += zoom_level, dest_pointer++){
+				uint8 pixel = *source_pointer;
+				if (pixel){
+					pixel = *dest_pointer;
+					pixel = palette_pointer[pixel];
+					*dest_pointer = pixel;
+				}
+			}
+
+			source_pointer = next_source_pointer;
+			dest_pointer = next_dest_pointer;
+		}
+		return;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;
-	if (translated_y > 0){
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0)return;
+	//Basic bitmap no fancy stuff
+	if (!(source_image->flags & G1_FLAG_BMP)){//Not tested
+		for (; height > 0; height-=zoom_level){
+			uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+			uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
+
+			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, dest_pointer++, source_pointer += zoom_level){
+				*dest_pointer = *source_pointer;
+			}
+
+			dest_pointer = next_dest_pointer;
+			source_pointer = next_source_pointer;
+		}
+		return;
 	}
 
-	RCT2_GLOBAL(0xEDF80C, uint32) = 0;
-	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
+	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){//Not tested. I can't actually work out when this code runs.
+		unknown_pointer += source_pointer - source_image->offset;
 
-	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
-	if (translated_x < 0){
-		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
-		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
-		RCT2_GLOBAL(0xEDF80C, sint16) -= translated_x;
-		translated_x = 0;
-	}
-	else{
-		bits_pointer += translated_x;
-	}
-	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16);
-	translated_x -= dpi->width;
-	if (translated_x > 0){
-		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
-		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0)return;
+		for (; height > 0; height -= zoom_level){
+			uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+			uint8* next_unknown_pointer = unknown_pointer + source_image->width*zoom_level;
+			uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
+
+			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, dest_pointer++, source_pointer += zoom_level, unknown_pointer += zoom_level){
+				uint8 pixel = *source_pointer;
+				pixel &= *unknown_pointer;
+				if (pixel){
+					*dest_pointer = pixel;
+				}
+			}
+			dest_pointer = next_dest_pointer;
+			source_pointer = next_source_pointer;
+			unknown_pointer = next_unknown_pointer;
+		}
 	}
 
-	RCT2_GLOBAL(0x9ABDB0, uint16) = dpi->width + dpi->pitch;
-	
-	// I dont think it uses ecx, edx but just in case
-	//esi is the source and bits_pointer is the destination
-	//sub_0x67AA18(RCT2_GLOBAL(0x9E3D08, int*), (int*)bits_pointer, dpi);
+	//Basic bitmap with no draw pixels
+	for (; height > 0; height -= zoom_level){
+		uint8* next_source_pointer = source_pointer + source_image->width*zoom_level;
+		uint8* next_dest_pointer = dest_pointer + dest_dpi->width + dest_dpi->pitch;
 
-	RCT2_CALLPROC_X_EBPSAFE(0x67AA18, 0, 0, translated_x, translated_y, RCT2_GLOBAL(0x9E3D08, uint32), (int)bits_pointer, (int)dpi);
+		for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_level, dest_pointer++, source_pointer += zoom_level){
+			uint8 pixel = *source_pointer;
+			if (pixel){
+				*dest_pointer = pixel;
+			}
+		}
+		dest_pointer = next_dest_pointer;
+		source_pointer = next_source_pointer;
+	}
+	return;
 }
 
+
+/*
+* rct2: 0x67AA18 transfers readied images onto buffers
+* This function copies the sprite data onto the screen
+* I think its only used for bitmaps onto buttons but i am not sure.
+* There is still a small bug with this code when it is in the choose park view.
+*/
+void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
+	int zoom_level = dpi->zoom_level + 1;
+
+	uint8* next_source_pointer;
+	uint8* next_dest_pointer = dest_bits_pointer;
+
+	//For every line in the image
+	for (int y = source_y_start; y < (height + source_y_start); y += zoom_level){
+
+		//The first part of the source pointer is a list of offsets to different lines
+		//This will move the pointer to the correct source line.
+		next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
+
+		uint8 last_data_line = 0;
+
+		//For every data section in the line
+		while (!last_data_line){
+			uint8* source_pointer = next_source_pointer;
+			uint8* dest_pointer = next_dest_pointer;
+
+			int no_pixels = *source_pointer++;
+			//gap_size is the number of non drawn pixels you require to
+			//jump over on your destination
+			uint8 gap_size = *source_pointer++;
+			//The last bit in no_pixels tells you if you have reached the end of a line
+			last_data_line = no_pixels & 0x80;
+			//Clear the last data line bit so we have just the no_pixels
+			no_pixels &= 0x7f;
+			//Have our next source pointer point to the next data section
+			next_source_pointer = source_pointer + no_pixels;
+
+			//Calculates the start point of the image
+			int x_start = gap_size - source_x_start;
+
+			if (x_start > 0){
+				//Since the start is positive
+				//We need to move the drawing surface to the correct position
+				dest_pointer += x_start / zoom_level;
+			}
+			else{
+				//If the start is negative we require to remove part of the image.
+				//This is done by moving the image pointer to the correct position.
+				source_pointer -= x_start;
+				//The no_pixels will be reduced in this operation
+				no_pixels += x_start;
+				//If there are no pixels there is nothing to draw this data section
+				if (no_pixels <= 0) continue;
+				//Reset the start position to zero as we have taken into account all moves
+				x_start = 0;
+			}
+
+			int x_end = x_start + no_pixels;
+			//If the end position is further out than the whole image
+			//end position then we need to shorten the line again
+			if (x_end > width){
+				//Shorten the line
+				no_pixels -= x_end - width;
+				//If there are no pixels there is nothing to draw.
+				if (no_pixels <= 0) continue;
+			}
+
+			//Finally after all those checks, copy the image onto the drawing surface
+			//If the image type is not a basic one we require to mix the pixels
+			if (image_type & IMAGE_TYPE_USE_PALETTE){//In the .exe these are all unraveled loops
+				for (; no_pixels > 0; no_pixels -= zoom_level, source_pointer += zoom_level, dest_pointer++){
+					uint8 al = *source_pointer;
+					uint8 ah = *dest_pointer;
+					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
+						al = palette_pointer[(al | ((int)ah) << 8) - 0x100];
+					else //Adjust colours?
+						al = palette_pointer[al];
+					*dest_pointer = al;
+				}
+			}
+			else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
+				//Doesnt use source pointer ??? mix with background only?
+				//Not Tested
+				for (; no_pixels > 0; no_pixels -= zoom_level, dest_pointer++){
+					uint8 pixel = *dest_pointer;
+					pixel = palette_pointer[pixel];
+					*dest_pointer = pixel;
+				}
+			}
+			else
+			{
+				for (; no_pixels > 0; no_pixels -= zoom_level, source_pointer += zoom_level, dest_pointer++){
+					*dest_pointer = *source_pointer;
+				}
+			}
+		}
+
+		//Add a line to the drawing surface pointer
+		next_dest_pointer += (int)dpi->width + (int)dpi->pitch;
+	}
+}
+
+
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 /**
  *
  *  rct2: 0x0067A28E
@@ -693,171 +821,263 @@ void sub_0x67A934(rct_drawpixelinfo *dpi, int x, int y){
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 {
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, dpi, 0);
-	//return;
 
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi, ebp = 0;
-
+	int image_type = (image_id & 0xE0000000) >> 28;
+	int image_sub_type = (image_id & 0x1C000000) >> 26;
+	uint8* palette_pointer = NULL;
+	uint8 palette[0x100];
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 	eax = (image_id >> 26) & 0x7;
-	//eax = RCT2_GLOBAL(0x009E3CE4 + eax*4, uint32);
+
+	uint8* unknown_pointer = (uint8*)(RCT2_ADDRESS(0x9E3CE4, uint32*)[image_sub_type]);
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
-	if (((image_id)& 0xE0000000) && !(image_id & (1 << 31))) {
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-		//
-		return;//jump into 0x67a445
+	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
+
+		if (!(image_type & IMAGE_TYPE_MIX_BACKGROUND)){
+			eax = image_id;
+			eax >>= 19;
+			eax &= 0xFF;
+			unknown_pointer = NULL;
+			RCT2_GLOBAL(0x009E3CDC, uint32) = 0;
+		}
+		else{
+			eax = image_id;
+			eax >>= 19;
+			eax &= 0x7F;
+		}
+		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
+
+		palette_pointer = ((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[eax].offset;
+		RCT2_GLOBAL(0x9ABDA4, uint32) = (uint32)palette_pointer;
 	}
-	else if (((image_id)& 0xE0000000) && !(image_id & (1 << 29))){
-		char* find = "FINDMEDUNCAN";
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-		return;//jump into 0x67a361
-	}
-	else if ((image_id)& 0xE0000000){
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);		
-		/*
-		eax = image_id;
+	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
+		//Has not been tested
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
+		unknown_pointer = NULL;
+
+		eax = image_id;
 		eax >>= 19;
-		eax &= 0x1f;
+		//push edx/y
+		eax &= 0x1F;
+		ebp = RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32);
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
-		eax <<= 4;
+		ebp <<= 0x4;
+		eax <<= 0x4;
+		ebp = RCT2_GLOBAL(ebp + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		ebp = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
-		RCT2_GLOBAL(0x9ABEFF, uint32) = ebp;
-		RCT2_GLOBAL(0x9ABF03, uint32) = esi;
-		ebp = *((uint32*)eax + 0xFB);
-		eax = ebx;
+		edx = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
+		RCT2_GLOBAL(0x9ABFFF, uint32) = edx;
+		RCT2_GLOBAL(0x9AC003, uint32) = esi;
+		edx = *((uint32*)(ebp + 0xF3));
+		esi = *((uint32*)(ebp + 0xF7));
+		esi = *((uint32*)(eax + 0xF7));
 
-		RCT2_GLOBAL(0x9ABF07, uint32) = ebp;
+		edx = *((uint32*)(eax + 0xFB));
+		esi = *((uint32*)(ebp + 0xFB));
+
+		eax = image_id;
+		RCT2_GLOBAL(0x9AC007, uint32) = edx;
 		eax >>= 24;
-		eax &= 0x1f;
+		RCT2_GLOBAL(0x9ABF42, uint32) = esi;
+		eax &= 0x1F;
+
+		//image_id
+		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
+		image_id |= IMAGE_TYPE_USE_PALETTE;
+
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		ebp = *((uint32*)eax + 0xF3);
-		esi = *((uint32*)eax + 0xF7);
-		RCT2_GLOBAL(0x9ABED6, uint32) = ebp;
-		RCT2_GLOBAL(0x9ABEDA, uint32) = esi;
-		ebp = *((uint32*)eax + 0xFB);
+		edx = *((uint32*)(eax + 0xF3));
+		esi = *((uint32*)(eax + 0xF7));
+		RCT2_GLOBAL(0x9ABFD6, uint32) = edx;
+		RCT2_GLOBAL(0x9ABFDA, uint32) = esi;
+		edx = *((uint32*)(eax + 0xFB));
+		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
+		palette_pointer = (uint8*)0x9ABF0C;
+		RCT2_GLOBAL(0x9ABFDE, uint32) = edx;
+		edx = y;
 
-		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x009ABE0C;
-		RCT2_GLOBAL(0x9ABEDE, uint32) = ebp;*/
-		return;
+	}
+	else if (image_type){
+		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
+		unknown_pointer = NULL;
+		//Copy the peep palette into a new palette. 
+		//Not really required but its nice to make a copy
+		memcpy(palette, peep_palette, 0x100);
+
+		//Top
+		int top_type = (image_id >> 19) & 0x1f;
+		uint32 top_offset = RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
+		rct_g1_element top_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[top_offset];
+		memcpy(palette + 0xF3, top_palette.offset + 0xF3, 12);
+		
+		//Trousers
+		int trouser_type = (image_id >> 24) & 0x1f;
+		uint32 trouser_offset = RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
+		rct_g1_element trouser_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[trouser_offset];
+		memcpy(palette + 0xCA, trouser_palette.offset + 0xF3, 12);
+
+		//For backwards compatibility until the zooming function is done
+		RCT2_GLOBAL(0x9ABDA4, uint8*) = palette;
+		palette_pointer = palette;
 	}
 
-	ebx &= 0x7FFFF;
-	ebx <<= 4;
-	ebx += RCT2_ADDRESS_G1_ELEMENTS;
-	if (dpi->zoom_level >= 1){
+	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
+}
+
+/*
+* 0x67A46E
+*/
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
+	int image_element = 0x7FFFF&image_id;
+	int image_type = (image_id & 0xE0000000) >> 28;
+	
+	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+
+	//Zooming code has been integrated into main code.
+	/*if (dpi->zoom_level >= 1){ //These have not been tested
+		//something to do with zooming
 		if (dpi->zoom_level == 1){
+			RCT2_CALLPROC_X(0x0067BD81, 0, (int)g1_source, x, y, 0,(int) dpi, 0);
 			return;
-			//jump into 0x67bd81
 		}
-		if (dpi->zoom_level >= 3){
-			return;//jump into 0x67FAAE
+		if (dpi->zoom_level == 2){
+			RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
+			return;
 		}
-		//jump into 0x67DADA
+		RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
 		return;
-	}
-	eax = *((uint32*)ebx + 2);
-	ebp = *((uint32*)ebx + 3);
-	RCT2_GLOBAL(0x9E3D08, uint32) = *((uint32*)ebx); //offset to g1 bits?
-	RCT2_GLOBAL(0x9E3D0C, uint32) = *((uint32*)ebx + 1);
-	RCT2_GLOBAL(0x9E3D10, uint32) = *((uint32*)ebx + 2); //X-Y related unsigned? sets RCT2_X_RELATED_GLOBAL_1 and Y
-	RCT2_GLOBAL(0x9E3D14, uint32) = *((uint32*)ebx + 3);
-	if (RCT2_GLOBAL(0x9E3D14, uint32) & (1 << 2)){
-		//Title screen bitmaps
-		//RCT2_CALLPROC_X(0x0067A934, eax, ebx, x, y, 0, dpi, ebp);
-		sub_0x67A934(dpi, x, y);
-		return;
+	}*/
+
+	//We add on one so that divides will create the correct number of pixels
+	int zoom_level = dpi->zoom_level + 1;
+	//This will be the height of the drawn image
+	int height = g1_source->height / zoom_level;
+	//This is the start y coordinate on the destination
+	int dest_start_y = y - dpi->y + g1_source->y_offset;
+	//This is the start y coordinate on the source
+	int source_start_y = 0;
+
+	
+	if (dest_start_y < 0){
+		//If the destination y is negative reduce the height of the
+		//image as we will cut off the bottom
+		height += dest_start_y;
+		//If the image is no longer visible nothing to draw
+		if (height <= 0){
+			return;
+		}
+		//The source image will start a further up the image
+		source_start_y -= dest_start_y*zoom_level;
+		//The destination start is now reset to 0
+		dest_start_y = 0;
 	}
 	
-	//dpi on stack
-	int translated_x, translated_y;
-	char* bits_pointer;
 
-	ebp = (int)dpi;
-	esi = RCT2_GLOBAL(0x9E3D08, uint32);
-	RCT2_GLOBAL(0x9E3CE0, uint32) = 0;
-	bits_pointer = dpi->bits;	
+	int dest_end_y = dest_start_y + height;
 
-	RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0E, sint16);
-
-	translated_y = y + RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_1, uint16) - dpi->y;
-
-
-	if (translated_y < 0){
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) += translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <= 0){
+	if (dest_end_y > dpi->height){
+		//If the destination y is outside of the drawing
+		//image reduce the height of the image
+		height -= dest_end_y - dpi->height;
+		//If the image no longer has anything to draw
+		if (height <= 0)return;
+	}
+	
+	//This will be the width of the drawn image
+	int width = g1_source->width / zoom_level;
+	//This is the source start x coordinate
+	int source_start_x = 0;
+	//This is the destination start x coordinate
+	int dest_start_x = x - dpi->x + g1_source->x_offset;
+	
+	if (dest_start_x < 0){
+		//If the destination is negative reduce the width
+		//image will cut off the side
+		width += dest_start_x;
+		//If there is no image to draw
+		if (width <= 0){
 			return;
 		}
-		translated_y = -translated_y;
-		esi += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
-		RCT2_GLOBAL(0x9E3CE0, sint32) += translated_y * RCT2_GLOBAL(0x9E3D0C, sint16);
-		translated_y = 0;
-	} else {
-		eax = (dpi->width + dpi->pitch) * translated_y;
-		bits_pointer += eax;
+		//The source start will also need to cut off the side
+		source_start_x -= dest_start_x*zoom_level;
+		//Reset the destination to 0
+		dest_start_x = 0;
 	}
 
-	translated_y += RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) - dpi->height;;
+	int dest_end_x = dest_start_x + width;
 
-	if (translated_y > 0){
-		RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) -= translated_y;
-		if (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, sint16) <=0)
-		{
-			return;
-		}
+	if (dest_end_x > dpi->width){
+		//If the destination x is outside of the drawing area
+		//reduce the image width.
+		width -= dest_end_x - dpi->width;
+		//If there is no image to draw.
+		if (width <= 0)return;
 	}
 
-	RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) = RCT2_GLOBAL(0x9E3D0C, sint16);
-	eax = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
+	
+	uint8* dest_pointer = (uint8*)dpi->bits;
+	//Move the pointer to the start point of the destination
+	dest_pointer += (dpi->width + dpi->pitch)*dest_start_y + dest_start_x;
 
-	RCT2_GLOBAL(0x9ABDAE, uint16) = 0;
-	RCT2_GLOBAL(0x9ABDB0, sint16) = dpi->width + dpi->pitch - RCT2_GLOBAL(0x9E3D0C, sint16);
-	translated_x = x + RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_1, uint16) - dpi->x;
+	height *= zoom_level;
+	width *= zoom_level;
 
-	if (translated_x < 0){
-
-		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) += translated_x;
-		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
-			return;
-		}
-
-		translated_x -= RCT2_GLOBAL(0x9ABDAE, sint16);
-		esi -= translated_x;
-		RCT2_GLOBAL(0x9E3CE0, sint32) -= translated_x;
-		RCT2_GLOBAL(0x9ABDB0, sint16) -= translated_x;
-		translated_x = 0;
-	}
-
-	bits_pointer += translated_x;
-	translated_x += RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) - dpi->width;
-
-	if (translated_x > 0){
-		RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) -= translated_x;
-		if (RCT2_GLOBAL(RCT2_X_RELATED_GLOBAL_2, sint16) <= 0){
-			return;
-		}
-		RCT2_GLOBAL(0x9ABDAE, sint16) += translated_x;
-		RCT2_GLOBAL(0x9ABDB0, sint16) += translated_x;
-	}
-
-	if (!(RCT2_GLOBAL(0x9E3D14, uint16) & 0x02)){
-		eax = (RCT2_GLOBAL(RCT2_Y_RELATED_GLOBAL_2, uint8)) << 8;
-		edx = RCT2_GLOBAL(0x9ABDAE, sint16);
-		ebp = RCT2_GLOBAL(0x9ABDB0, sint16);
-		ebx = RCT2_GLOBAL(0xEDF81C, uint32);
-		ecx = 0xFFFF&translated_x;
-		//ebx, esi, edi, ah used in 0x67a690
-		RCT2_CALLPROC_X_EBPSAFE(0x67A690, eax, ebx, ecx, edx, esi, (int)bits_pointer, ebp);
+	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		//We have to use a different method to move the source pointer for
+		//rle encoded sprites so that will be handled within this function
+		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
 		return;
 	}
-	//0x67A60A
-	RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-	esi -= RCT2_GLOBAL(0x9E3D08, sint32);
+	uint8* source_pointer = g1_source->offset;
+	//Move the pointer to the start point of the source
+	source_pointer += g1_source->width*source_start_y + source_start_x;
+
+	if (!(g1_source->flags & 0x02)){
+		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+		return;
+	}
+	//0x67A60A Not tested
+	int total_no_pixels = g1_source->width*g1_source->height;
+	source_pointer = g1_source->offset;
+	uint8* new_source_pointer_start = malloc(total_no_pixels);
+	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
+	int ebx, ecx;
+	while (total_no_pixels>0){
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0){
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
+			continue;
+		}
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
+		int eax = ((int)no_pixels)<<8;
+		ecx = -ecx;//Odd
+		eax = eax & 0xFF00 + *(source_pointer+1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx = (uint32)new_source_pointer - eax;
+		eax = (uint32)source_pointer;
+		source_pointer = (uint8*)ebx;
+		ebx = eax;
+		eax = 0;
+		memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer += ecx;
+		source_pointer = (uint8*)ebx;
+	}
+	source_pointer = new_source_pointer_start + g1_source->width*source_start_y + source_start_x;
+	gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+	free(new_source_pointer_start);
 	return;
 }
 
@@ -1067,13 +1287,15 @@ int gfx_get_string_width(char* buffer)
 	uint16* current_font_sprite_base;
 	// Width of string
 	int width;
-
+	rct_g1_element* g1_element;
+	
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
+			//Maybe global not address??
 			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 			continue;
 		}
@@ -1100,9 +1322,9 @@ int gfx_get_string_width(char* buffer)
 			*current_font_sprite_base = 0;
 			break;
 		case 0x17:
-			width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*curr_char&0x7FFFF]);
+			width += g1_element->width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
 			curr_char += 4;
-			*curr_char = 0;
 			break;
 		default:
 			if (*curr_char <= 0x10) {
@@ -1148,7 +1370,7 @@ int gfx_clip_string(char* buffer, int width)
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
@@ -1173,9 +1395,8 @@ int gfx_clip_string(char* buffer, int width)
 				*current_font_sprite_base = 0;
 				break;
 			case 0x17:
-				clipped_width = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+				clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
 				curr_char += 4;
-				*curr_char = 0;
 				continue;
 			default:
 				if (*curr_char <= 0x10) {
@@ -1480,12 +1701,12 @@ void colour_char(int al, uint16* current_font_flags) {
 	int eax;
 
 	rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332]);
-	eax = g1_element->offset[(al & 0xFF) * 4];
+	eax = ((uint32*)g1_element->offset)[al & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
 	}
-	// Store current colour? 
+	// Adjust text palette. Store current colour? 
 	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 }
@@ -1500,7 +1721,7 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
-	 //Store current colour? 
+	 //Adjust text palette. Store current colour? 
 	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 	eax = 0;
@@ -1520,6 +1741,20 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
  */
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
+	//int eax, ebx, ecx, edx, esi, edi, ebp;
+	//char* find = "FINDMEDRAWSTRING";
+	//eax = colour;
+	//ebx = 0;
+	//ecx = x;
+	//edx = y;
+	//esi = (int)buffer;
+	//edi = (int)dpi;
+	//ebp = 0;
+	//RCT2_CALLFUNC_X(0x00682702, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	//gLastDrawStringX = ecx;
+	//gLastDrawStringY = edx;
+	//
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	rct_g1_element* g1_element;
 
@@ -1599,7 +1834,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					eax = eax << 10;
 					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
-				// Store current colour? ;
+				// Adjust text palette. Store current colour? ;
 				RCT2_GLOBAL(0x009ABE05, uint32) = eax;
 				RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
 				eax = 0;
@@ -1654,8 +1889,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				// Control codes
 				al -= 0x20;
 				switch (al) {
-				case 0x0E5:
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+				case 0x0E5://Start New Line at set y lower
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_y += 0x0A;
 					if (*current_font_sprite_base <= 0x0E) {
 						break;
@@ -1666,8 +1901,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					max_y -= 0xFFF4;
 					break;
-				case 0x0E6:
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+				case 0x0E6://Start New Line at set y lower
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_y += 5;
 					if (*current_font_sprite_base <= 0x0E) {
 						break;
@@ -1676,20 +1911,20 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					if (*current_font_sprite_base == 0x1C0) {
 						break;
 					}
-					max_y -= 0xFFFA;
+					max_y -= 0xFFFA;//This does not look correct probably should be an add
 					break;
-				case 0x0E1:
+				case 0x0E1://Start New Line at start+buffer x, same y. (Overwrite?)
 					al = *buffer;
 					buffer++;
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += al;
 					break;
-				case 0x0F1:
+				case 0x0F1: //Start new line at specified x,y
 					eax = *((uint16*)buffer);
 					buffer += 2;
-					max_x = RCT2_GLOBAL(0x0EDF840, uint16);
+					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += (eax & 0xFF);
-					max_y = RCT2_GLOBAL(0x0EDF842, uint16);
+					max_y = y;//RCT2_GLOBAL(0x0EDF842, uint16);
 					max_y += (eax & 0xFF00) >> 8;
 					break;
 				case 0x0E7:
@@ -1763,13 +1998,16 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					if (!(*current_font_flags & 2)) {
 						ebx = ebx & 0xFF;
 					}
+					//Adjust the text palette
 					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
-					ebx = g1_element->offset[0xF7];
-					RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
-					ebx = g1_element->offset[0xFA];
-					RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
-
-					RCT2_GLOBAL(0x09ABDA4, uint32) = RCT2_GLOBAL(0x09ABE04, uint32);
+					memcpy((uint8*)0x09ABE07,&(g1_element->offset[0xF7]),2);
+					//ebx = g1_element->offset[0xF7];
+					//RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
+					memcpy((uint8*)0x09ABE09,&(g1_element->offset[0xFA]),2);
+					//ebx = g1_element->offset[0xFA];
+					//RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
+					//Set the palette pointer
+					RCT2_GLOBAL(0x09ABDA4, uint32) = 0x09ABE04;
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 						skip_char = 1;
 					}
@@ -1782,11 +2020,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					ebx = *(buffer - 4);
 					eax = ebx & 0x7FFFF;
-					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, rct_g1_element)[eax]);
+					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 		
 					gfx_draw_sprite(dpi, ebx, max_x, max_y);
 
-					max_x = max_x + g1_element->offset;
+					max_x = max_x + g1_element->width;
 					break;
 				}
 
@@ -1816,8 +2054,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				ebp = 0;
 
 				RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-	
-				RCT2_CALLPROC_X(0x067A46E, eax, ebx, ecx, edx, esi, edi, ebp);
+				
+				gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
 
 				continue;
 			}
@@ -1826,5 +2064,4 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 	gLastDrawStringX = max_x;
 	gLastDrawStringY = max_y;
-
 }
