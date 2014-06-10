@@ -156,6 +156,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CHECKBOX:
+		widget_checkbox_draw(dpi, w, widgetIndex);
+		break;
 	case WWT_24:
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
@@ -715,7 +717,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
-*
+ * 
 *  rct2: 0x006EBAD9
 */
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -736,14 +738,12 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	colour = w->colours[widget->colour];
 
 	// checkbox
-	if (widget->type != WWT_24) {
-		gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+	gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
 
-		// fill it when checkbox is pressed
-		if (widget_is_pressed(w, widgetIndex)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
-		}
+	// fill it when checkbox is pressed
+	if (widget_is_pressed(w, widgetIndex)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
 	}
 
 	// draw the text

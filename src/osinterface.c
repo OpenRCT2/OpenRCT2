@@ -40,7 +40,7 @@ unsigned int gLastKeyPressed;
 static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
-static void osinterface_update_palette(char* colours, int start_index, int num_colours);
+
 
 static SDL_Window *_window;
 static SDL_Surface *_surface;
@@ -167,7 +167,7 @@ static void osinterface_resize(int width, int height)
 	gfx_invalidate_screen();
 }
 
-static void osinterface_update_palette(char* colours, int start_index, int num_colours)
+void osinterface_update_palette(char* colours, int start_index, int num_colours)
 {
 	SDL_Color base[256];
 	SDL_Surface *surface;

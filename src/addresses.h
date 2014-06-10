@@ -249,6 +249,7 @@
 #define RCT2_ADDRESS_NEWS_ITEM_LIST					0x013CA754
 
 #define RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE		0x013CE950
+#define RCT2_ADDRESS_CURRENT_FONT_FLAGS				0x013CE9A2
 
 #define RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS		0x013CE9A4
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT		0x0141E9AC
@@ -256,6 +257,8 @@
 
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID	0x0141E9AE
 #define RCT2_ADDRESS_CURRENT_ROTATION				0x0141E9E0
+
+#define RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER	0x0141ED68
 
 #define RCT2_ADDRESS_WATER_RAISE_COST			0x0141F738
 #define RCT2_ADDRESS_WATER_LOWER_COST			0x0141F73C
@@ -355,6 +358,24 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 		: "eax","ecx","edx","esi","edi"
 	);
 	#endif
+}
+
+static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+{
+	__asm {
+		push ebp
+		push address
+		mov eax, _eax
+		mov ebx, _ebx
+		mov ecx, _ecx
+		mov edx, _edx
+		mov esi, _esi
+		mov edi, _edi
+		mov ebp, _ebp
+		call[esp]
+		add esp, 4
+		pop ebp
+	}
 }
 
 static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)

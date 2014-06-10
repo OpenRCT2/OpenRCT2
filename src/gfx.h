@@ -46,6 +46,18 @@ typedef struct {
 	sint16 unused;			// 0x0E
 } rct_g1_element;
 
+enum{
+	G1_FLAG_BMP = (1 << 0), //No invisible sections
+	G1_FLAG_RLE_COMPRESSION = (1<<2),
+};
+
+enum{
+	IMAGE_TYPE_NO_BACKGROUND = 0,
+	IMAGE_TYPE_USE_PALETTE= (1 << 1),
+	IMAGE_TYPE_MIX_BACKGROUND = (1<<2),
+	IMAGE_TYPE_UNKNOWN = (1<<3)
+};
+
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 

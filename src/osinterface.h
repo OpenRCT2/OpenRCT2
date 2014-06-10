@@ -45,6 +45,7 @@ void osinterface_init();
 void osinterface_process_messages();
 void osinterface_draw();
 void osinterface_free();
+void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
 void osinterface_show_messagebox(char* message);
