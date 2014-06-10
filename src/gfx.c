@@ -631,6 +631,7 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 
 	buffer = (char*)0x0141ED68;
 	format_string(buffer, format, args);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
