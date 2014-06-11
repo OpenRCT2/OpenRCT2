@@ -1374,7 +1374,7 @@ int gfx_clip_string(char* buffer, int width)
 		if (*curr_char < 0x20) {
 			switch(*curr_char) {
 			case 1:
-				width = *curr_char;
+				clipped_width = *curr_char;
 				curr_char++;
 				continue;
 			case 2:
@@ -1414,7 +1414,7 @@ int gfx_clip_string(char* buffer, int width)
 
 		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 
-		if (clipped_width >= width) {
+		if (clipped_width > width) {
 			*((uint32*)last_char) = '...';
 			clipped_width = width;
 			return clipped_width;
