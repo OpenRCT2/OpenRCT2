@@ -1342,16 +1342,16 @@ int gfx_get_string_width(char* buffer)
 }
 
 /**
- *  Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
- *
- *  rct2: 0x006C2460
- * buffer (esi)
- * width (edi)
- */
+*  Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
+*
+*  rct2: 0x006C2460
+* buffer (esi)
+* width (edi)
+*/
 int gfx_clip_string(char* buffer, int width)
 {
 	// Location of font sprites
-	uint16* current_font_sprite_base;
+	uint16 current_font_sprite_base;
 	// Width the string has to fit into
 	int max_width;
 	// Character to change to ellipsis
@@ -1363,19 +1363,19 @@ int gfx_clip_string(char* buffer, int width)
 		*buffer = 0;
 		return 0;
 	}
-	
-	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
+
+	current_font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
 
 	clipped_width = 0;
 	last_char = buffer;
 
 	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 		if (*curr_char < 0x20) {
-			switch(*curr_char) {
+			switch (*curr_char) {
 			case 1:
-				width = *curr_char;
 				curr_char++;
+				clipped_width = *curr_char;
 				continue;
 			case 2:
 			case 3:
@@ -1383,36 +1383,37 @@ int gfx_clip_string(char* buffer, int width)
 				curr_char++;
 				continue;
 			case 7:
-				*current_font_sprite_base = 0x1C0;
+				current_font_sprite_base = 0x1C0;
 				break;
 			case 8:
-				*current_font_sprite_base = 0x2A0;
+				current_font_sprite_base = 0x2A0;
 				break;
 			case 9:
-				*current_font_sprite_base = 0x0E0;
+				current_font_sprite_base = 0x0E0;
 				break;
 			case 0x0A:
-				*current_font_sprite_base = 0;
+				current_font_sprite_base = 0;
 				break;
 			case 0x17:
-				clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+				clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*(curr_char+1) & 0x7FFFF) << 4];
 				curr_char += 4;
 				continue;
 			default:
 				if (*curr_char <= 0x10) {
 					continue;
 				}
-				curr_char += 2;
+
 				if (*curr_char <= 0x16) {
+					curr_char += 2;
 					continue;
 				}
-				curr_char += 2;
+				curr_char += 4;
 				continue;
 			}
-			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[*current_font_sprite_base]);
+			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
 		}
 
-		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
+		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char - 0x20)];
 
 		if (clipped_width >= width) {
 			RCT2_GLOBAL(last_char, uint32) = 0x2E2E2E;
@@ -1420,11 +1421,12 @@ int gfx_clip_string(char* buffer, int width)
 			return clipped_width;
 		}
 		if (clipped_width <= max_width) {
-			last_char = curr_char;
+			last_char = curr_char+1;
 		}
 	}
 	return clipped_width;
 }
+
 
 /**
  * Draws i formatted text string left aligned at i specified position but clips
@@ -1755,6 +1757,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 	//gLastDrawStringX = ecx;
 	//gLastDrawStringY = edx;
+	//return;
 	//
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	rct_g1_element* g1_element;
@@ -1915,13 +1918,13 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					max_y -= 0xFFFA;//This does not look correct probably should be an add
 					break;
 				case 0x0E1://Start New Line at start+buffer x, same y. (Overwrite?)
-					al = *buffer;
+					al = *(buffer+1);
 					buffer++;
 					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += al;
 					break;
 				case 0x0F1: //Start new line at specified x,y
-					eax = *((uint16*)buffer);
+					eax = *((uint16*)(buffer+1));
 					buffer += 2;
 					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
 					max_x += (eax & 0xFF);
@@ -1983,7 +1986,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					sub_682AC7(ebp, current_font_flags);
 					break;													   
 				case 0x0E2:
-					al = *buffer;
+					al = *(buffer+1);
 					buffer++;
 					if (*current_font_flags & 1) {
 						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
@@ -2019,7 +2022,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 						skip_char = 1;
 						break;
 					}
-					ebx = *(buffer - 4);
+					ebx = *(buffer - 3);
 					eax = ebx & 0x7FFFF;
 					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 		
