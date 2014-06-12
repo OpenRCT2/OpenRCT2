@@ -117,9 +117,12 @@ int gfx_load_g1()
 * 0x6C19AC
 */
 void gfx_load_character_widths(){
+	//RCT2_CALLPROC_EBPSAFE(0x006C19AC);
+	//return;
+
 	uint8* char_width_pointer = RCT2_ADDRESS(0x141E9E8, uint8);
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
-		for (char c = 0; c < 0xE0; c++, char_width_pointer++){
+		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
 			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + 0xF15 + char_set_offset];
 			int width = g1.width - 1;
 			if (c >= 0x5B && c < 0x7F){
@@ -127,7 +130,9 @@ void gfx_load_character_widths(){
 			}
 			*char_width_pointer = (uint8)width;
 		}
+		
 	}
+	
 	uint8 drawing_surface[0x40];
 	rct_drawpixelinfo dpi;
 	dpi.bits = &drawing_surface;
@@ -139,17 +144,30 @@ void gfx_load_character_widths(){
 	dpi.zoom_level = 0;
 
 	for (int i = 0; i < 0xE0; ++i){
-		memset(drawing_surface, 0, 0x10);
+		memset(drawing_surface, 0, 0x40);
 		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0);
 
-		uint8* bits_pointer = dpi.bits;
-		bits_pointer += 0;
-		for (int y = 0; y < 8; ++y){
-			for (int x = 0; x < 8; ++x){
-
+		for (int x = 0; x < 8; ++x){
+			uint8 val = 0;
+			for (int y = 0; y < 8; ++y){
+				val >>= 1;
+				if (dpi.bits[x + y * 8]==1){
+					val |= 0x80;
+				}
 			}
+			RCT2_ADDRESS(0xF4393C, uint8)[i * 8 + x] = val;
 		}
 
+	}
+
+	for (int i = 0; i < 0x20; ++i){
+		rct_g1_element* g1 = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x606 + i]);
+		uint8* unknown_pointer = RCT2_ADDRESS(0x9C3852, uint8) + 0xa12 * i;
+		g1->offset = unknown_pointer;
+		g1->width = 0x40;
+		g1->height = 0x28;
+		*((uint16*)unknown_pointer) = 0xFFFF;
+		*((uint32*)(unknown_pointer + 0x0E)) = 0;
 	}
 }
 
