@@ -28,10 +28,10 @@
 
 // Monthly staff wages
 const money32 wage_table[4] = {
-	MONEY(50,00),		// Handyman
-	MONEY(80,00),		// Mechanic
-	MONEY(60,00),		// Security guard
-	MONEY(55,00)		// Entertainer
+	MONEY(67,00),		// Handyman
+	MONEY(105,00),		// Mechanic
+	MONEY(87,00),		// Security guard
+	MONEY(72,00)		// Entertainer
 };
 
 // Monthly research funding costs
