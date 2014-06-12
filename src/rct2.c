@@ -157,8 +157,9 @@ void rct2_init()
 	scenario_load_list();
 	track_load_list(253);
 	gfx_load_g1();
-	gfx_load_character_widths();
 	//RCT2_CALLPROC_EBPSAFE(0x006C19AC); //Load character widths
+	gfx_load_character_widths();
+	
 	osinterface_init();
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
