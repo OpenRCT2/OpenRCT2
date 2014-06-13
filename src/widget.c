@@ -997,38 +997,6 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 	return 1;
 }
 
-/*void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y)
-{
-int out_x, out_y;
-rct_widget* iterator = w->widgets;
-int scroll_id = 0;
-while (++iterator != widget)
-{
-if (iterator->type == WWT_SCROLL)
-{
-scroll_id++;
-break;
-}
-}
-
-if (!(w->scrolls[scroll_id].flags & 1) || x < (w->y + widget->bottom - 11))
-{
-if (!(w->scrolls[scroll_id].flags & 0x10) || y < (w->x + widget->right - 11))
-{
-out_y = y - widget->top - w->y - 1;
-out_x = x - widget->left - w->x - 1;
-if (out_x >= 0)
-{
-if (out_y - 1 >= 0)
-{
-out_y += w->scrolls[scroll_id].v_top;
-}
-}
-}
-}
-return returnCoordinate;
-}*/
-
 void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *output_dx)
 {
 	rct_widget* iterator = w->widgets;
