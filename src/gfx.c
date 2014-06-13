@@ -1350,7 +1350,7 @@ int gfx_get_string_width(char* buffer)
 	uint16* current_font_sprite_base;
 	// Width of string
 	int width;
-	rct_g1_element* g1_element;
+	rct_g1_element g1_element;
 	
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
@@ -1358,20 +1358,22 @@ int gfx_get_string_width(char* buffer)
 	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
-			//Maybe global not address??
 			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 			continue;
 		}
 		switch(*curr_char) {
 		case 1:
-			width = *curr_char;
 			curr_char++;
+			width = *curr_char;
 			break;
 		case 2:
 		case 3:
 		case 4:
 			curr_char++;
 			break;
+		case 5:
+		case 6:
+			continue;
 		case 7:
 			*current_font_sprite_base = 0x1C0;
 			break;
@@ -1384,20 +1386,24 @@ int gfx_get_string_width(char* buffer)
 		case 0x0A:
 			*current_font_sprite_base = 0;
 			break;
+		case 0x0B:
+		case 0x0C:
+		case 0x0D:
+		case 0x0E:
+		case 0x0F:
+		case 0x10:
+			continue;
 		case 0x17:
-			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*curr_char&0x7FFFF]);
-			width += g1_element->width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+			width += g1_element.width;
 			curr_char += 4;
 			break;
 		default:
-			if (*curr_char <= 0x10) {
+			if (*curr_char <= 0x16) { //case 0x11?
+				curr_char += 2;
 				continue;
 			}
-			curr_char += 2;
-			if (*curr_char <= 0x16) {
-				continue;
-			}
-			curr_char += 2;
+			curr_char += 4;//never happens?
 			break;
 		}
 	}
@@ -1420,7 +1426,9 @@ int gfx_clip_string(char* buffer, int width)
 	// Character to change to ellipsis
 	unsigned char* last_char;
 	// Width of the string, including ellipsis
+
 	unsigned int clipped_width;
+	rct_g1_element g1_element;
 
 	if (width < 6) {
 		*buffer = 0;
@@ -1445,6 +1453,9 @@ int gfx_clip_string(char* buffer, int width)
 			case 4:
 				curr_char++;
 				continue;
+			case 5:
+			case 6:
+				continue;
 			case 7:
 				current_font_sprite_base = 0x1C0;
 				break;
@@ -1457,20 +1468,24 @@ int gfx_clip_string(char* buffer, int width)
 			case 0x0A:
 				current_font_sprite_base = 0;
 				break;
+			case 0x0B:
+			case 0x0C:
+			case 0x0D:
+			case 0x0E:
+			case 0x0F:
+			case 0x10:
+				continue;
 			case 0x17:
-				clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*(curr_char+1) & 0x7FFFF) << 4];
+				g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+				clipped_width += g1_element.width;
 				curr_char += 4;
 				continue;
 			default:
-				if (*curr_char <= 0x10) {
-					continue;
-				}
-
-				if (*curr_char <= 0x16) {
+				if (*curr_char <= 0x16) { //case 0x11?
 					curr_char += 2;
 					continue;
 				}
-				curr_char += 4;
+				curr_char += 4;//never happens?
 				continue;
 			}
 			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
@@ -1489,7 +1504,6 @@ int gfx_clip_string(char* buffer, int width)
 	}
 	return clipped_width;
 }
-
 
 /**
  *  Wrap the text in buffer to width, returns width of longest line.
