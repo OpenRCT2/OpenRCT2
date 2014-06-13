@@ -81,7 +81,7 @@ typedef struct {
  * size: 0x12
  */
 typedef struct {
-	uint16 flags;				// 0x00
+	uint16 flags;				// 0x00 (0x10 == vertical scrollbar, 0x01 == horizontal scrollbar)
 	sint16 h_left;				// 0x02
 	sint16 h_right;				// 0x04
 	sint16 h_thumb_left;		// 0x06

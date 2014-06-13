@@ -958,18 +958,18 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 	int inputState = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8);
 
 	if (w->pressed_widgets & (1LL << widgetIndex))
+return 1;
+if (inputState == INPUT_STATE_WIDGET_PRESSED || inputState == INPUT_STATE_DROPDOWN_ACTIVE) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) != w->classification)
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
+		return 0;
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & 1))
+		return 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
 		return 1;
-	if (inputState == INPUT_STATE_WIDGET_PRESSED || inputState == INPUT_STATE_DROPDOWN_ACTIVE) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) != w->classification)
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
-			return 0;
-		if (!(RCT2_GLOBAL(0x009DE518, uint32) & 1))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
-			return 1;
-	}
-	return 0;
+}
+return 0;
 }
 
 int widget_is_highlighted(rct_window *w, int widgetIndex)
@@ -995,4 +995,139 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 		return 0;
 
 	return 1;
+}
+
+/*void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y)
+{
+int out_x, out_y;
+rct_widget* iterator = w->widgets;
+int scroll_id = 0;
+while (++iterator != widget)
+{
+if (iterator->type == WWT_SCROLL)
+{
+scroll_id++;
+break;
+}
+}
+
+if (!(w->scrolls[scroll_id].flags & 1) || x < (w->y + widget->bottom - 11))
+{
+if (!(w->scrolls[scroll_id].flags & 0x10) || y < (w->x + widget->right - 11))
+{
+out_y = y - widget->top - w->y - 1;
+out_x = x - widget->left - w->x - 1;
+if (out_x >= 0)
+{
+if (out_y - 1 >= 0)
+{
+out_y += w->scrolls[scroll_id].v_top;
+}
+}
+}
+}
+return returnCoordinate;
+}*/
+
+void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *output_dx)
+{
+	rct_widget* iterator = w->widgets;
+	int scroll_id = 0;
+	while (++iterator != widget)
+	{
+		if (iterator->type == WWT_SCROLL)
+		{
+			scroll_id++;
+			break;
+		}
+	}
+
+	if ((w->scrolls[scroll_id].flags & 0x01) && y >= (w->y + widget->bottom - 11))
+	{
+		//horizon scrollbar
+		int rightOffset = 0;
+		int iteratorLeft = widget->left + w->x;
+		int iteratorRight = widget->right + w->x;
+		if (w->scrolls[scroll_id].flags & 0x01)
+		{
+			rightOffset = 11;
+		}
+		if (x <= (iteratorLeft += 10))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT;
+		}
+		else if (x >= (iteratorRight -= rightOffset))
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else if (x >= (iteratorRight -= 10))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
+		}
+		else if (x < (widget->left + w->x + w->scrolls[scroll_id].h_thumb_left))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT_TROUGH;
+		}
+		else if (x >(widget->left + w->x + w->scrolls[scroll_id].h_thumb_right))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH;
+		}
+		else
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
+		}
+	}
+	else if ((w->scrolls[scroll_id].flags & 10) || (x >= w->x + widget->right - 11))
+	{
+		//vertical scrollbar
+		int bottomOffset = 0;
+		int iteratorTop = widget->top + w->y;
+		int iteratorBottom = widget->bottom + w->y;
+		if (w->scrolls[scroll_id].flags & 0x01)
+		{
+			bottomOffset = 11;
+		}
+		if (y <= (iteratorTop += 10))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP;
+		}
+		else if (y >= (iteratorBottom -= bottomOffset))
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else if (y >= (iteratorBottom -= 10))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
+		}
+		else if (y < (widget->top + w->y + w->scrolls[scroll_id].v_thumb_top))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP_TROUGH;
+		}
+		else if (y > (widget->top + w->y + w->scrolls[scroll_id].v_thumb_bottom))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH;
+		}
+		else
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_THUMB;
+		}
+	}
+	else
+	{
+		//view
+		*output_scroll_area = SCROLL_PART_VIEW;
+		*output_x = x - widget->left;
+		*output_y = y - widget->top;
+		*output_x -= w->x;
+		*output_y -= w->y;
+		if (--*output_x < 0 || --*output_y < 0)
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else
+		{
+			*output_x += w->scrolls[scroll_id].h_left;
+			*output_y += w->scrolls[scroll_id].v_top;
+		}
+	}
 }
