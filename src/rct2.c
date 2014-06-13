@@ -167,10 +167,10 @@ void rct2_init()
 	get_local_time();
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	RCT2_CALLPROC_EBPSAFE(0x0069EB13); //Sprite list reset/load
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
 	map_init();
 	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
