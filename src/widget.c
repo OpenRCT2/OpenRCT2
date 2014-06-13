@@ -958,18 +958,18 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 	int inputState = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8);
 
 	if (w->pressed_widgets & (1LL << widgetIndex))
-return 1;
-if (inputState == INPUT_STATE_WIDGET_PRESSED || inputState == INPUT_STATE_DROPDOWN_ACTIVE) {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) != w->classification)
-		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
-		return 0;
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & 1))
-		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
 		return 1;
-}
-return 0;
+	if (inputState == INPUT_STATE_WIDGET_PRESSED || inputState == INPUT_STATE_DROPDOWN_ACTIVE) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) != w->classification)
+			return 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
+			return 0;
+		if (!(RCT2_GLOBAL(0x009DE518, uint32) & 1))
+			return 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
+			return 1;
+	}
+	return 0;
 }
 
 int widget_is_highlighted(rct_window *w, int widgetIndex)
