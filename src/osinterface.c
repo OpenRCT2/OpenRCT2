@@ -394,14 +394,14 @@ char* osinterface_open_directory_browser(char *title) {
 	LPMALLOC        lpMalloc;
 
 	// Initialize COM
-	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
+	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
 	}
 
 	// Get a pointer to the shell memory allocator
-	if (SHGetMalloc(&lpMalloc) != S_OK) {
+	if (FAILED(SHGetMalloc(&lpMalloc))) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
