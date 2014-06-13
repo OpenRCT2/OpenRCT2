@@ -124,7 +124,11 @@ void gfx_load_character_widths(){
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
 		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
 			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + 0xF15 + char_set_offset];
-			int width = g1.width - 1;
+			int width;
+
+			if (char_set_offset == 0xE0*3) width = g1.width + 1;
+			else width = g1.width - 1;
+
 			if (c >= 0x5B && c < 0x7F){
 				width = 0;
 			}
@@ -134,17 +138,18 @@ void gfx_load_character_widths(){
 	}
 	
 	uint8 drawing_surface[0x40];
-	rct_drawpixelinfo dpi;
-	dpi.bits = &drawing_surface;
-	dpi.width = 8;
-	dpi.height = 8;
-	dpi.x = 0;
-	dpi.y = 0;
-	dpi.pitch = 0;
-	dpi.zoom_level = 0;
+	rct_drawpixelinfo dpi = { 
+		.bits = &drawing_surface, 
+		.width = 8, 
+		.height = 8, 
+		.x = 0, 
+		.y = 0, 
+		.pitch = 0, 
+		.zoom_level = 0};
+
 
 	for (int i = 0; i < 0xE0; ++i){
-		memset(drawing_surface, 0, 0x40);
+		memset(drawing_surface, 0, size_of(drawing_surface));
 		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0);
 
 		for (int x = 0; x < 8; ++x){
