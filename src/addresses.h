@@ -362,6 +362,7 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 
 static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
+	#ifdef _MSC_VER
 	__asm {
 		push ebp
 		push address
@@ -376,6 +377,28 @@ static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, i
 		add esp, 4
 		pop ebp
 	}
+	#else
+	__asm__ ( "\
+	\n\
+	push ebx \n\
+	push ebp \n\
+	push %[address] 	\n\
+	mov eax, %[_eax] 	\n\
+	mov ebx, %[_ebx] 	\n\
+	mov ecx, %[_ecx] 	\n\
+	mov edx, %[_edx] 	\n\
+	mov esi, %[_esi] 	\n\
+	mov edi, %[_edi] 	\n\
+	mov ebp, %[_ebp] 	\n\
+	call [esp] 	\n\
+	add esp, 4 	\n\
+	pop ebp \n\
+	pop ebx \n\
+	" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+	:
+	: "eax","ecx","edx","esi","edi"
+	);
+	#endif
 }
 
 static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
