@@ -562,17 +562,11 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
 
 	input_mouseover_widget_check(windowClass, windowNumber, widgetIndex);
 
-	if (w != NULL && widgetIndex != -1 && widget->type == WWT_SCROLL) {
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		eax = x;
-		ebx = y;
-		esi = (int)w;
-		edi = (int)widget;
-		RCT2_CALLFUNC_X(0x006E9F92, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp); // widget_scoll_get_part
-		eax &= 0xFFFF;
-		ebx &= 0xFFFF;
-		ecx &= 0xFFFF;
-		edx &= 0xFFFF;
+	if (w != NULL && widgetIndex != -1 && widget->type == WWT_SCROLL)
+	{
+		int eax, ebx, ecx, edx;
+		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &ecx, &edx);
+		
 		if (ecx < 0)
 			goto showTooltip;
 		if (ecx == 0) {
@@ -764,16 +758,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
 
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		eax = x;
-		ebx = y;
-		esi = (int)w;
-		edi = (int)widget;
-		RCT2_CALLFUNC_X(0x006E9F92, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp); // widget_scoll_get_part
-		eax &= 0xFFFF;
-		ebx &= 0xFFFF;
-		ecx &= 0xFFFF;
-		edx &= 0xFFFF;
+		int eax, ebx, ecx, edx;
+		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &ecx, &edx);
 
 		RCT2_GLOBAL(0x009DE548, uint16) = ecx;
 		RCT2_GLOBAL(0x009DE54C, uint32) = edx;
