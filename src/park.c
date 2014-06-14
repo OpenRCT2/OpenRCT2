@@ -544,7 +544,6 @@ void park_update()
 	park_generate_new_guests();
 }
 
-<<<<<<< HEAD
 static uint8 calculate_guest_initial_happiness(uint8 percentage) {
 	if (percentage < 15) {
 		// There is a minimum of 15% happiness
@@ -556,10 +555,10 @@ static uint8 calculate_guest_initial_happiness(uint8 percentage) {
 	}
 
 	/* The percentages follow this sequence:
-	 15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
+		15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
 
-	 This sequence can be defined as PI*(9+n)/2 (the value is floored)
-	 */
+		This sequence can be defined as PI*(9+n)/2 (the value is floored)
+		*/
 	uint8 n;
 	for (n = 1; n < 55; n++) {
 		if ((3.14159*(9 + n)) / 2 >= percentage) {
@@ -567,7 +566,8 @@ static uint8 calculate_guest_initial_happiness(uint8 percentage) {
 		}
 	}
 	return 40; // This is the lowest possible value
-=======
+}
+
 /**
  *
  *  rct2: 0x0066A231
@@ -575,5 +575,4 @@ static uint8 calculate_guest_initial_happiness(uint8 percentage) {
 void park_update_histories()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0066A231);
->>>>>>> upstream/master
 }
