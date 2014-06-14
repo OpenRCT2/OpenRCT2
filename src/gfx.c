@@ -43,6 +43,39 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
+enum{
+	//The next byte specifies the X coordinate
+	CHAR_CONTROL_CODE_MOVE_X = 1,
+
+	//The next byte specifies the palette
+	CHAR_CONTROL_CODE_ADJUST_PALETTE_1 = 2,
+
+	//Jumps a fixed amount of pixels down and
+	//starts a new line
+	CHAR_CONTROL_CODE_NEW_LINE_FIXED = 5,
+	//Jumps less than the above
+	CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER = 6,
+
+	CHAR_CONTROL_CODE_FONT_2 = 7,
+	CHAR_CONTROL_CODE_FONT_3 = 8,
+	CHAR_CONTROL_CODE_FONT_1 = 9,
+	CHAR_CONTROL_CODE_FONT_0 = 0xA,
+
+	CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1 = 0xB,
+	CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1 = 0xC,
+
+	//Adjusts the palette depending on a global var
+	CHAR_CONTROL_CODE_ADJUST_PALETTE_2 = 0xD,
+	CHAR_CONTROL_CODE_ADJUST_PALETTE_3 = 0xE,
+	CHAR_CONTROL_CODE_ADJUST_PALETTE_4 = 0xF,
+
+	//The next 2 bytes specify the X and Y coordinates
+	CHAR_CONTROL_CODE_NEW_LINE_X_Y = 0x11,
+
+	//The next 4 bytes specify the sprite
+	CHAR_CONTROL_CODE_SPRITE = 0x17
+};
+
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 uint8 peep_palette[0x100] = { 
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -111,6 +144,67 @@ int gfx_load_g1()
 	// Unsuccessful
 	RCT2_ERROR("Unable to load g1.dat");
 	return 0;
+}
+
+/*
+* 0x6C19AC
+*/
+void gfx_load_character_widths(){
+
+	uint8* char_width_pointer = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
+	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
+		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
+			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + 0xF15 + char_set_offset];
+			int width;
+
+			if (char_set_offset == 0xE0*3) width = g1.width + 1;
+			else width = g1.width - 1;
+
+			if (c >= 0x5B && c < 0x7F){
+				width = 0;
+			}
+			*char_width_pointer = (uint8)width;
+		}
+		
+	}
+	
+	uint8 drawing_surface[0x40];
+	rct_drawpixelinfo dpi = { 
+		.bits = (char*)&drawing_surface, 
+		.width = 8, 
+		.height = 8, 
+		.x = 0, 
+		.y = 0, 
+		.pitch = 0, 
+		.zoom_level = 0};
+
+	
+	for (int i = 0; i < 0xE0; ++i){
+		memset(drawing_surface, 0, sizeof(drawing_surface));
+		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0);
+
+		for (int x = 0; x < 8; ++x){
+			uint8 val = 0;
+			for (int y = 0; y < 8; ++y){
+				val >>= 1;
+				if (dpi.bits[x + y * 8]==1){
+					val |= 0x80;
+				}
+			}
+			RCT2_ADDRESS(0xF4393C, uint8)[i * 8 + x] = val;
+		}
+
+	}
+
+	for (int i = 0; i < 0x20; ++i){
+		rct_g1_element* g1 = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x606 + i]);
+		uint8* unknown_pointer = RCT2_ADDRESS(0x9C3852, uint8) + 0xa12 * i;
+		g1->offset = unknown_pointer;
+		g1->width = 0x40;
+		g1->height = 0x28;
+		*((uint16*)unknown_pointer) = 0xFFFF;
+		*((uint32*)(unknown_pointer + 0x0E)) = 0;
+	}
 }
 
 /**
@@ -1287,54 +1381,60 @@ int gfx_get_string_width(char* buffer)
 	uint16* current_font_sprite_base;
 	// Width of string
 	int width;
-	rct_g1_element* g1_element;
+	rct_g1_element g1_element;
 	
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
-			//Maybe global not address??
-			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
+			width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*current_font_sprite_base + (*curr_char - 0x20)];
 			continue;
 		}
 		switch(*curr_char) {
-		case 1:
-			width = *curr_char;
+		case CHAR_CONTROL_CODE_MOVE_X:
 			curr_char++;
+			width = *curr_char;
 			break;
-		case 2:
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
 		case 3:
 		case 4:
 			curr_char++;
 			break;
-		case 7:
+		case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
+		case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+			continue;
+		case CHAR_CONTROL_CODE_FONT_2:
 			*current_font_sprite_base = 0x1C0;
 			break;
-		case 8:
+		case CHAR_CONTROL_CODE_FONT_3:
 			*current_font_sprite_base = 0x2A0;
 			break;
-		case 9:
+		case CHAR_CONTROL_CODE_FONT_1:
 			*current_font_sprite_base = 0x0E0;
 			break;
-		case 0x0A:
+		case CHAR_CONTROL_CODE_FONT_0:
 			*current_font_sprite_base = 0;
 			break;
-		case 0x17:
-			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*curr_char&0x7FFFF]);
-			width += g1_element->width; //RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF) << 4];
+		case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+		case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+		case 0x10:
+			continue;
+		case CHAR_CONTROL_CODE_SPRITE:
+			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+			width += g1_element.width;
 			curr_char += 4;
 			break;
 		default:
-			if (*curr_char <= 0x10) {
+			if (*curr_char <= 0x16) { //case 0x11? CHAR_CONTROL_CODE_NEW_LINE_X_Y
+				curr_char += 2;
 				continue;
 			}
-			curr_char += 2;
-			if (*curr_char <= 0x16) {
-				continue;
-			}
-			curr_char += 2;
+			curr_char += 4;//never happens?
 			break;
 		}
 	}
@@ -1357,7 +1457,10 @@ int gfx_clip_string(char* buffer, int width)
 	// Character to change to ellipsis
 	unsigned char* last_char;
 	// Width of the string, including ellipsis
+
 	unsigned int clipped_width;
+
+	rct_g1_element g1_element;
 
 	if (width < 6) {
 		*buffer = 0;
@@ -1370,52 +1473,59 @@ int gfx_clip_string(char* buffer, int width)
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch (*curr_char) {
-			case 1:
+			case CHAR_CONTROL_CODE_MOVE_X:
 				curr_char++;
 				clipped_width = *curr_char;
 				continue;
-			case 2:
+			case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
 			case 3:
 			case 4:
 				curr_char++;
 				continue;
-			case 7:
+			case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
+			case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+				continue;
+			case CHAR_CONTROL_CODE_FONT_2:
 				current_font_sprite_base = 0x1C0;
 				break;
-			case 8:
+			case CHAR_CONTROL_CODE_FONT_3:
 				current_font_sprite_base = 0x2A0;
 				break;
-			case 9:
+			case CHAR_CONTROL_CODE_FONT_1:
 				current_font_sprite_base = 0x0E0;
 				break;
-			case 0x0A:
+			case CHAR_CONTROL_CODE_FONT_0:
 				current_font_sprite_base = 0;
 				break;
-			case 0x17:
-				clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*(curr_char+1) & 0x7FFFF) << 4];
+			case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+			case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+			case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
+			case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
+			case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+			case 0x10:
+				continue;
+			case CHAR_CONTROL_CODE_SPRITE:
+				g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+				clipped_width += g1_element.width;
 				curr_char += 4;
 				continue;
 			default:
-				if (*curr_char <= 0x10) {
-					continue;
-				}
-
-				if (*curr_char <= 0x16) {
+				if (*curr_char <= 0x16) { //case 0x11? CHAR_CONTROL_CODE_NEW_LINE_X_Y
 					curr_char += 2;
 					continue;
 				}
-				curr_char += 4;
+				curr_char += 4;//never happens?
 				continue;
 			}
 			max_width = width - (3 * RCT2_ADDRESS(0x141E9F6, uint8)[current_font_sprite_base]);
 		}
 
-		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char - 0x20)];
+		clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[current_font_sprite_base + (*curr_char - 0x20)];
 
-		if (clipped_width > width) {
+		if ((int)clipped_width > width) {
 			*((uint32*)last_char) = '...';
 			clipped_width = width;
 			return clipped_width;
@@ -1445,7 +1555,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 {
 	unsigned int line_width = 0;
 	unsigned int max_width = 0;
-	rct_g1_element* g1_element;
+	rct_g1_element g1_element;
 
     uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
@@ -1457,7 +1567,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 	// Width of line up to current word
 	unsigned int curr_width;
 
-	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
 
 		// Remember start of current word and line width up to this word
         if (*curr_char == ' ') {
@@ -1469,44 +1579,52 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
         if (*curr_char != 5) {
 			if (*curr_char < ' ') {
 				switch(*curr_char) {
-				case 1:
-				case 2:
+				case CHAR_CONTROL_CODE_MOVE_X:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
 				case 3:
 				case 4:
 					curr_char++;
 					continue;
-				case 7:
+				case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
+				case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+					continue;
+				case CHAR_CONTROL_CODE_FONT_2:
 					*font_height = 0x1C0;
 					continue;
-				case 8:
+				case CHAR_CONTROL_CODE_FONT_3:
 					*font_height = 0x2A0;
 					continue;
-				case 9:
+				case CHAR_CONTROL_CODE_FONT_1:
 					*font_height = 0xE0;
 					continue;
-				case 0x0A:
+				case CHAR_CONTROL_CODE_FONT_0:
 					*font_height = 0;
 					continue;
-				case 0x17:
-					line_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF)];
+				case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+				case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+				case 0x10:
+					continue;
+				case CHAR_CONTROL_CODE_SPRITE:
+					g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
+					line_width += g1_element.width;
 					curr_char += 4;
 					break;
 				default:
-					if (*curr_char < 0x10) {
-						continue;
-					}
-					curr_char += 2;
 					if (*curr_char <= 0x16) {
+						curr_char += 2;
 						continue;
 					}
-					curr_char += 2;
+					curr_char += 4;
 					continue;
 				}
 			}
 
-			line_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
+			line_width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*current_font_sprite_base + (*curr_char - 0x20)];
 
-			if (line_width <= width) {
+			if ((int)line_width <= width) {
 				continue;
 			}
 			if (curr_word == 0) {
@@ -1654,8 +1772,6 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	int font_height, line_height, line_width, line_y, num_lines;
 	// Location of font sprites
 	uint16* current_font_sprite_base;
-	// Location of font flags
-	uint16 current_font_flags;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
@@ -1782,15 +1898,18 @@ void colour_char(int al, uint16* current_font_flags) {
 
 	int eax;
 
-	rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332]);
-	eax = ((uint32*)g1_element->offset)[al & 0xFF];
+	rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332];
+	eax = ((uint32*)g1_element.offset)[al & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
 	}
 	// Adjust text palette. Store current colour? 
-	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
+	text_palette[1] = eax & 0xFF;
+	text_palette[2] = (eax>>8) & 0xFF;
+	text_palette[3] = (eax >> 16) & 0xFF;
+	text_palette[4] = (eax >> 24) & 0xFF;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
 }
 
 
@@ -1798,16 +1917,16 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 
 	int eax;
 
-	 // loc_682AC7
 	eax = RCT2_ADDRESS(0x0141FD45, uint8)[ebp * 8];
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
 	 //Adjust text palette. Store current colour? 
-	RCT2_GLOBAL(0x009ABE05, uint32) = eax;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
-	eax = 0;
-	// jmp     loc_682842
+	text_palette[1] = eax & 0xFF;
+	text_palette[2] = (eax >> 8) & 0xFF;
+	text_palette[3] = (eax >> 16) & 0xFF;
+	text_palette[4] = (eax >> 24) & 0xFF;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
 
 }
 
@@ -1824,20 +1943,12 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
 
-	//gLastDrawStringX = ecx;
-	//gLastDrawStringY = edx;
-	//return;
-	//
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax, ebx, ecx, ebp;
 	rct_g1_element* g1_element;
 
 	// Maximum length/height of string
 	int max_x = x;
 	int max_y = y;
-
-	// Store original x, y
-	RCT2_GLOBAL(0x00EDF840, uint16) = x;
-	RCT2_GLOBAL(0x00EDF842, uint16) = y;
 
 	// 
 	uint16* current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
@@ -1908,8 +2019,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
 				// Adjust text palette. Store current colour? ;
-				RCT2_GLOBAL(0x009ABE05, uint32) = eax;
-				RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009ABE04;
+				text_palette[1] = eax & 0xFF;
+				text_palette[2] = (eax >> 8) & 0xFF;
+				text_palette[3] = (eax >> 16) & 0xFF;
+				text_palette[4] = (eax >> 24) & 0xFF;
+				RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
 				eax = 0;
 			}
 		}
@@ -1944,194 +2058,182 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			}
 		}
 
-		if ((al >= 0x8E) && (al < 0x9C)){
-			// Colour codes
-			al -= 0x8E;
-			if (*current_font_flags == 1) {
+		// Control codes
+		switch (al) {
+		case CHAR_CONTROL_CODE_MOVE_X://Start New Line at start+buffer x, same y. (Overwrite?)
+			al = *(buffer+1);
+			buffer++;
+			max_x = x;
+			max_x += al;
+			break;
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
+			al = *(buffer + 1);
+			buffer++;
+			if (*current_font_flags & 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
-				} else {
-					skip_char = 0;
+					break;
 				}
-				continue;
 			}
-			colour_char(al, current_font_flags);
-			continue;
-		} else  {
-			if (al < 0x20) {
-				// Control codes
-				al -= 0x20;
-				switch (al) {
-				case 0x0E5://Start New Line at set y lower
-					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
-					max_y += 0x0A;
-					if (*current_font_sprite_base <= 0x0E) {
-						break;
-					}
-					max_y -= 4;
-					if (*current_font_sprite_base == 0x1C0) {
-						break;
-					}
-					max_y -= 0xFFF4;
-					break;
-				case 0x0E6://Start New Line at set y lower
-					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
-					max_y += 5;
-					if (*current_font_sprite_base <= 0x0E) {
-						break;
-					}
-					max_y -= 2;
-					if (*current_font_sprite_base == 0x1C0) {
-						break;
-					}
-					max_y -= 0xFFFA;//This does not look correct probably should be an add
-					break;
-				case 0x0E1://Start New Line at start+buffer x, same y. (Overwrite?)
-					al = *(buffer+1);
-					buffer++;
-					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
-					max_x += al;
-					break;
-				case 0x0F1: //Start new line at specified x,y
-					eax = *((uint16*)(buffer+1));
-					buffer += 2;
-					max_x = x;//RCT2_GLOBAL(0x0EDF840, uint16);
-					max_x += (eax & 0xFF);
-					max_y = y;//RCT2_GLOBAL(0x0EDF842, uint16);
-					max_y += (eax & 0xFF00) >> 8;
-					break;
-				case 0x0E7:
-					*current_font_sprite_base = 0x1C0;
-					break;
-				case 0x0E8:
-					*current_font_sprite_base = 0x2A0;
-					break;
-				case 0x0E9:
-					*current_font_sprite_base = 0xE0;
-					break;
-				case 0x0EA:
-					*current_font_sprite_base = 0;
-					break;
-				case 0x0EB:
-					*current_font_flags |= 2;
-					break;
-				case 0x0EC:
-					*current_font_flags &= 0x0FFFD;
-					break;
-				case 0x0ED:
-					ebp = RCT2_GLOBAL(0x0141F740, uint8);
-					if (*current_font_flags & 1) {
-						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
-							skip_char = 1;
-						} else {
-							skip_char = 0;
-						}
-						break;
-					}
-					sub_682AC7(ebp, current_font_flags);
-					break;
-				case 0x0EE:
-					ebp = RCT2_GLOBAL(0x0141F741, uint8);	
-					if (*current_font_flags & 1) {
-						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
-							skip_char = 1;
-						} else {
-							skip_char = 0;
-						}
-						break;
-					}
-					sub_682AC7(ebp, current_font_flags);
-					break;
-				case 0x0EF:
-					ebp = RCT2_GLOBAL(0x0141F742, uint8);
-					if (*current_font_flags & 1) {
-						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
-							skip_char = 1;
-						} else {
-							skip_char = 0;
-						}
-						break;
-					}
-					sub_682AC7(ebp, current_font_flags);
-					break;													   
-				case 0x0E2:
-					al = *(buffer+1);
-					buffer++;
-					if (*current_font_flags & 1) {
-						if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
-							skip_char = 1;
-							break;
-						}
-					}
-		
-					eax = RCT2_ADDRESS(0x097FCBC, uint32)[al*4];
-					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
-					ebx = g1_element->offset[0xF9] + (1 << 8);
 
-					if (!(*current_font_flags & 2)) {
-						ebx = ebx & 0xFF;
-					}
-					//Adjust the text palette
-					RCT2_GLOBAL(0x09ABE05, uint16) = ebx;
-					memcpy((uint8*)0x09ABE07,&(g1_element->offset[0xF7]),2);
-					//ebx = g1_element->offset[0xF7];
-					//RCT2_GLOBAL(0x09ABE07, uint16) = ebx;
-					memcpy((uint8*)0x09ABE09,&(g1_element->offset[0xFA]),2);
-					//ebx = g1_element->offset[0xFA];
-					//RCT2_GLOBAL(0x09ABE09, uint16) = ebx;
-					//Set the palette pointer
-					RCT2_GLOBAL(0x09ABDA4, uint32) = 0x09ABE04;
-					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
-						skip_char = 1;
-					}
-					break;
-				case 0x0F7:
-					buffer += 5;
-					if (max_x >= dpi->x + dpi->width) {
-						skip_char = 1;
-						break;
-					}
-					ebx = *(buffer - 3);
-					eax = ebx & 0x7FFFF;
-					g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
-		
-					gfx_draw_sprite(dpi, ebx, max_x, max_y);
+			eax = RCT2_ADDRESS(0x097FCBC, uint32)[al * 4];
+			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+			ebx = g1_element->offset[0xF9] + (1 << 8);
+			if (!(*current_font_flags & 2)) {
+				ebx = ebx & 0xFF;
+			}
 
-					max_x = max_x + g1_element->width;
-					break;
-				}
+			//Adjust the text palette
+			memcpy(&(text_palette[3]), &(g1_element->offset[0xF7]), 2);
+			memcpy(&(text_palette[5]), &(g1_element->offset[0xFA]), 2);
+			//Set the palette pointer
+			RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
 
-			} else {
-				al -= 0x20;
-				if (max_x >= dpi->x + dpi->width) {
+
+			if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+				skip_char = 1;
+			}
+			break;
+		case CHAR_CONTROL_CODE_NEW_LINE_FIXED://Start New Line at set y lower
+			max_x = x;
+			max_y += 0x0A;
+			if (*current_font_sprite_base <= 0x0E) {
+				break;
+			}
+			max_y -= 4;
+			if (*current_font_sprite_base == 0x1C0) {
+				break;
+			}
+			max_y -= 0xFFF4;
+			break;
+		case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER://Start New Line at set y lower
+			max_x = x;
+			max_y += 5;
+			if (*current_font_sprite_base <= 0x0E) {
+				break;
+			}
+			max_y -= 2;
+			if (*current_font_sprite_base == 0x1C0) {
+				break;
+			}
+			max_y -= 0xFFFA;//This does not look correct probably should be an add
+			break;
+		case CHAR_CONTROL_CODE_FONT_2:
+			*current_font_sprite_base = 0x1C0;
+			break;
+		case CHAR_CONTROL_CODE_FONT_3:
+			*current_font_sprite_base = 0x2A0;
+			break;
+		case CHAR_CONTROL_CODE_FONT_1:
+			*current_font_sprite_base = 0xE0;
+			break;
+		case CHAR_CONTROL_CODE_FONT_0:
+			*current_font_sprite_base = 0;
+			break;
+		case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+			*current_font_flags |= 2;
+			break;
+		case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+			*current_font_flags &= 0x0FFFD;
+			break;
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
+			ebp = RCT2_GLOBAL(0x0141F740, uint8);
+			if (*current_font_flags & 1) {
+				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
 				}
-				if (max_x + 0x1A < dpi->x) {
-					ebx = al;
-					ebx += *current_font_sprite_base;
-					max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
+				else {
+					skip_char = 0;
+				}
+				break;
+			}
+			sub_682AC7(ebp, current_font_flags);
+			break;
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
+			ebp = RCT2_GLOBAL(0x0141F741, uint8);
+			if (*current_font_flags & 1) {
+				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+					skip_char = 1;
+				}
+				else {
+					skip_char = 0;
+				}
+				break;
+			}
+			sub_682AC7(ebp, current_font_flags);
+			break;
+		case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+			ebp = RCT2_GLOBAL(0x0141F742, uint8);
+			if (*current_font_flags & 1) {
+				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+					skip_char = 1;
+				}
+				else {
+					skip_char = 0;
+				}
+				break;
+			}
+			sub_682AC7(ebp, current_font_flags);
+			break;
+		case CHAR_CONTROL_CODE_NEW_LINE_X_Y: //Start new line at specified x,y
+			eax = *((uint16*)(buffer+1));
+			buffer += 2;
+			max_x = x;
+			max_x += (eax & 0xFF);
+			max_y = y;
+			max_y += (eax & 0xFF00) >> 8;
+			break;
+		case CHAR_CONTROL_CODE_SPRITE:
+			buffer += 4;
+			if (max_x >= dpi->x + dpi->width) {
+				skip_char = 1;
+				break;
+			}
+			ebx = *(buffer - 3);
+			eax = ebx & 0x7FFFF;
+			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+
+			gfx_draw_sprite(dpi, ebx, max_x, max_y);
+
+			max_x = max_x + g1_element->width;
+			break;
+		default:
+			// Colour codes
+			if ((al >= 0x8E) && (al < 0x9C)){
+				
+				if (*current_font_flags == 1) {
+					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
+						skip_char = 1;
+					} else {
+						skip_char = 0;
+					}
 					continue;
 				}
-				ebx = al + *current_font_sprite_base;
-
-				ecx = max_x;
-
-				max_x = max_x + (RCT2_ADDRESS(0x0141E9E8, uint8)[ebx] & 0xFF);
-
-				eax = (int)al;
-				ebx += 0xF15;
-
-				edx = max_y;
-				esi = (int)buffer;
-				edi = (int)dpi;
-				ebp = 0;
-
-				RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-				
-				gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, edx, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
-
+				colour_char(al-0x8E, current_font_flags);
 				continue;
 			}
+				
+			// Normal Characters
+			if (max_x >= dpi->x + dpi->width) {
+				skip_char = 1;
+			}
+			if (max_x + 0x1A < dpi->x) {
+				ebx = al-0x20;
+				ebx += *current_font_sprite_base;
+				max_x = max_x + (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[ebx] & 0xFF);
+				continue;
+			}
+			ebx = al-0x20 + *current_font_sprite_base;
+
+			ecx = max_x;
+			max_x += (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[ebx] & 0xFF);
+			ebx += 0xF15;
+
+			RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+				
+			gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, max_y, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
+
+			continue;
 		} 
 	}
 

@@ -62,6 +62,7 @@ extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
 int gfx_load_g1();
+void gfx_load_character_widths();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
