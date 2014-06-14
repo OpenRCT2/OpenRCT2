@@ -150,9 +150,6 @@ int gfx_load_g1()
 * 0x6C19AC
 */
 void gfx_load_character_widths(){
-	//RCT2_CALLPROC_EBPSAFE(0x006C19AC);
-	//return;
-
 	uint8* char_width_pointer = RCT2_ADDRESS(0x141E9E8, uint8);
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
 		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
@@ -172,7 +169,7 @@ void gfx_load_character_widths(){
 	
 	uint8 drawing_surface[0x40];
 	rct_drawpixelinfo dpi = { 
-		.bits = &drawing_surface, 
+		.bits = (char*)&drawing_surface, 
 		.width = 8, 
 		.height = 8, 
 		.x = 0, 
@@ -180,9 +177,9 @@ void gfx_load_character_widths(){
 		.pitch = 0, 
 		.zoom_level = 0};
 
-
+	
 	for (int i = 0; i < 0xE0; ++i){
-		memset(drawing_surface, 0, size_of(drawing_surface));
+		memset(drawing_surface, 0, sizeof(drawing_surface));
 		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0);
 
 		for (int x = 0; x < 8; ++x){
@@ -1388,7 +1385,7 @@ int gfx_get_string_width(char* buffer)
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (uint8* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)NULL; curr_char++) {
 
 		if (*curr_char >= 0x20) {
 			width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
@@ -1474,7 +1471,7 @@ int gfx_clip_string(char* buffer, int width)
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch (*curr_char) {
 			case CHAR_CONTROL_CODE_MOVE_X:
@@ -1526,7 +1523,7 @@ int gfx_clip_string(char* buffer, int width)
 
 		clipped_width += RCT2_ADDRESS(0x0141E9E8, uint8)[current_font_sprite_base + (*curr_char - 0x20)];
 
-		if (clipped_width > width) {
+		if ((int)clipped_width > width) {
 			*((uint32*)last_char) = '...';
 			clipped_width = width;
 			return clipped_width;
@@ -1555,7 +1552,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 {
 	unsigned int line_width = 0;
 	unsigned int max_width = 0;
-	rct_g1_element* g1_element;
+	rct_g1_element g1_element;
 
     uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
@@ -1567,7 +1564,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 	// Width of line up to current word
 	unsigned int curr_width;
 
-	for (unsigned char* curr_char = buffer; *curr_char != NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
 
 		// Remember start of current word and line width up to this word
         if (*curr_char == ' ') {
@@ -1579,44 +1576,52 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
         if (*curr_char != 5) {
 			if (*curr_char < ' ') {
 				switch(*curr_char) {
-				case 1:
-				case 2:
+				case CHAR_CONTROL_CODE_MOVE_X:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
 				case 3:
 				case 4:
 					curr_char++;
 					continue;
-				case 7:
+				case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
+				case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+					continue;
+				case CHAR_CONTROL_CODE_FONT_2:
 					*font_height = 0x1C0;
 					continue;
-				case 8:
+				case CHAR_CONTROL_CODE_FONT_3:
 					*font_height = 0x2A0;
 					continue;
-				case 9:
+				case CHAR_CONTROL_CODE_FONT_1:
 					*font_height = 0xE0;
 					continue;
-				case 0x0A:
+				case CHAR_CONTROL_CODE_FONT_0:
 					*font_height = 0;
 					continue;
-				case 0x17:
-					line_width += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS + 4, uint16)[(*curr_char & 0x7FFFF)];
+				case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+				case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
+				case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+				case 0x10:
+					continue;
+				case CHAR_CONTROL_CODE_SPRITE:
+					g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
+					line_width += g1_element.width;
 					curr_char += 4;
 					break;
 				default:
-					if (*curr_char < 0x10) {
-						continue;
-					}
-					curr_char += 2;
 					if (*curr_char <= 0x16) {
+						curr_char += 2;
 						continue;
 					}
-					curr_char += 2;
+					curr_char += 4;
 					continue;
 				}
 			}
 
 			line_width += RCT2_ADDRESS(0x0141E9E8, uint8)[*current_font_sprite_base + (*curr_char-0x20)];
 
-			if (line_width <= width) {
+			if ((int)line_width <= width) {
 				continue;
 			}
 			if (curr_word == 0) {
@@ -1764,8 +1769,6 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	int font_height, line_height, line_width, line_y, num_lines;
 	// Location of font sprites
 	uint16* current_font_sprite_base;
-	// Location of font flags
-	uint16 current_font_flags;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
@@ -1934,7 +1937,7 @@ void sub_682AC7(int ebp, uint16* current_font_flags) {
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
 
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax, ebx, ecx, ebp;
 	rct_g1_element* g1_element;
 
 	// Maximum length/height of string
