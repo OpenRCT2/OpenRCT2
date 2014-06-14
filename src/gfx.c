@@ -150,6 +150,7 @@ int gfx_load_g1()
 * 0x6C19AC
 */
 void gfx_load_character_widths(){
+
 	uint8* char_width_pointer = RCT2_ADDRESS(0x141E9E8, uint8);
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
 		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
@@ -169,6 +170,7 @@ void gfx_load_character_widths(){
 	
 	uint8 drawing_surface[0x40];
 	rct_drawpixelinfo dpi = { 
+
 		.bits = (char*)&drawing_surface, 
 		.width = 8, 
 		.height = 8, 
@@ -1458,6 +1460,7 @@ int gfx_clip_string(char* buffer, int width)
 	// Width of the string, including ellipsis
 
 	unsigned int clipped_width;
+
 	rct_g1_element g1_element;
 
 	if (width < 6) {
@@ -1534,6 +1537,7 @@ int gfx_clip_string(char* buffer, int width)
 	}
 	return clipped_width;
 }
+
 
 /**
  *  Wrap the text in buffer to width, returns width of longest line.
