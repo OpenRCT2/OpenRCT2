@@ -117,6 +117,12 @@ void window_save_prompt_open()
 
 	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
 
+	// do not show save prompt if we're in the title demo and click on load game
+	if (prompt_mode != PM_QUIT && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		game_load_or_quit_no_save_prompt();
+		return;
+	}
+
 	// Check if window is already open
 	window = window_bring_to_front_by_id(WC_SAVE_PROMPT, 0);
 	if (window == NULL) {
@@ -146,14 +152,13 @@ void window_save_prompt_open()
 			y,
 			(uint32*)window_save_prompt_events,
 			WC_SAVE_PROMPT,
-			0
+			WF_TRANSPARENT | WF_STICK_TO_FRONT
 		);
 
 		window->widgets = widgets;
 		window->enabled_widgets = enabled_widgets;
 		window_init_scroll_widgets(window);
 		window->colours[0] = 154;
-		window->flags |= WF_TRANSPARENT;
 
 		// Pause the game
 		RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
@@ -170,6 +175,12 @@ void window_save_prompt_open()
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
 
 	if (!gGeneral_config.confirmation_prompt) {
+		/* game_load_or_quit_no_save_prompt() will exec requested task and close this window
+		 * immediately again.
+		 * TODO restructure these functions when we're sure game_load_or_quit_no_save_prompt()
+		 * and game_load_or_quit() are not called by the original binary anymore.
+		 */
+		
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
 			game_load_or_quit_no_save_prompt();
 			return;
@@ -246,11 +257,12 @@ static void window_save_prompt_mouseup()
 	} else {
 		switch (widgetIndex) {
 			case WIDX_SAVE:
-				// TODO to avoid data loss, treat SAVE as CANCEL
-				RCT2_ERROR("TODO");
-				window_close(w);
-				window_save_prompt_close();
-				return;
+				if (!save_game()) {
+					// user pressed cancel
+					window_close(w);
+					window_save_prompt_close();
+					return;
+				}
 				break;
 			case WIDX_DONT_SAVE:
 				break;

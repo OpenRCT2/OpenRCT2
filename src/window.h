@@ -81,7 +81,7 @@ typedef struct {
  * size: 0x12
  */
 typedef struct {
-	uint16 flags;				// 0x00
+	uint16 flags;				// 0x00 (0x10 == vertical scrollbar, 0x01 == horizontal scrollbar)
 	sint16 h_left;				// 0x02
 	sint16 h_right;				// 0x04
 	sint16 h_thumb_left;		// 0x06
@@ -126,7 +126,7 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;				// 0x49A
+	sint16 page;				// 0x48A
 	sint16 var_48C;
 	sint16 var_48E;
 	sint16 var_490;
@@ -286,7 +286,7 @@ enum {
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
-	PM_SAVE_BEFORE_LOAD,
+	PM_SAVE_BEFORE_LOAD = 0,
 	PM_SAVE_BEFORE_QUIT,
 	PM_SAVE_BEFORE_QUIT2,
 	PM_QUIT
@@ -359,6 +359,7 @@ void window_park_entrance_open();
 void window_park_guests_open();
 void window_park_objective_open();
 void window_park_rating_open();
+void window_finances_open();
 void window_ride_list_open();
 void window_banner_open();
 void window_cheats_open();

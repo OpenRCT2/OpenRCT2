@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Matthias Lanzinger
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,32 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _CLIMATE_H_
-#define _CLIMATE_H_
+#ifndef _VEHICLE_H_
+#define _VEHICLE_H_
 
 #include "rct2.h"
 
-enum {
-	CLIMATE_COOL_AND_WET,
-	CLIMATE_WARM,
-	CLIMATE_HOT_AND_DRY,
-	CLIMATE_COLD
-};
-
 typedef struct {
-	sint8 temp_delta;
-	sint8 effect_level;
-	sint8 gloom_level;
-	sint8 rain_level;
-	uint32 sprite_id;
-} rct_weather;
+	uint8 sprite_identifier;		// 0x00
+	uint8 pad_01[0x03];
+	uint16 next;					// 0x04
+	uint8 pad_06[0x08];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x2A];
+	uint16 next_vehicle_on_train;	// 0x3E
+} rct_vehicle;
 
-extern int gClimateNextWeather;
-extern const rct_weather climate_weather_data[6];
-
-int climate_celsius_to_fahrenheit(int celsius);
-void climate_reset(int climate);
-void climate_update();
-void climate_update_sound();
+void vehicle_update_all();
 
 #endif

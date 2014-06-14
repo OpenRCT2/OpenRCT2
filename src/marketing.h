@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Matthias Lanzinger
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,32 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _CLIMATE_H_
-#define _CLIMATE_H_
+#ifndef _MARKETING_H_
+#define _MARKETING_H_
 
-#include "rct2.h"
+#include "peep.h"
 
 enum {
-	CLIMATE_COOL_AND_WET,
-	CLIMATE_WARM,
-	CLIMATE_HOT_AND_DRY,
-	CLIMATE_COLD
+	ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
+	ADVERTISING_CAMPAIGN_RIDE_FREE,
+	ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
+	ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
+	ADVERTISING_CAMPAIGN_PARK,
+	ADVERTISING_CAMPAIGN_RIDE,
+	ADVERTISING_CAMPAIGN_COUNT
 };
 
-typedef struct {
-	sint8 temp_delta;
-	sint8 effect_level;
-	sint8 gloom_level;
-	sint8 rain_level;
-	uint32 sprite_id;
-} rct_weather;
-
-extern int gClimateNextWeather;
-extern const rct_weather climate_weather_data[6];
-
-int climate_celsius_to_fahrenheit(int celsius);
-void climate_reset(int climate);
-void climate_update();
-void climate_update_sound();
+int marketing_get_campaign_guest_generation_probability(int campaign);
+void marketing_update();
+void marketing_set_guest_campaign(rct_peep *peep, int campaign);
 
 #endif

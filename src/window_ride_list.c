@@ -68,7 +68,7 @@ static rct_widget window_ride_list_widgets[] = {
 static void window_ride_list_emptysub() { }
 static void window_ride_list_mouseup();
 static void window_ride_list_resize();
-static void window_ride_list_mousedown();
+static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_ride_list_dropdown();
 static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize();
@@ -248,31 +248,9 @@ static void window_ride_list_resize()
  * 
  *  rct2: 0x006B3532
  */
-static void window_ride_list_mousedown()
+static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int numItems, i;
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
 
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		gDropdownItemsFormat[0] = STR_CLOSE_ALL;
@@ -695,10 +673,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 	rct_ride *ride, *otherRide;
 
 	countA = countB = 0;
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 
@@ -717,10 +692,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 
 	w->var_476 = countA;
 	j = 0;
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 
@@ -844,10 +816,7 @@ static void window_ride_list_close_all(rct_window *w)
 	int i;
 	rct_ride *ride;
 
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 		if (ride->status == RIDE_STATUS_CLOSED)
@@ -864,10 +833,7 @@ static void window_ride_list_open_all(rct_window *w)
 	int i;
 	rct_ride *ride;
 
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i];
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
+	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 		if (ride->status == RIDE_STATUS_OPEN)

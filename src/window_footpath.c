@@ -111,7 +111,7 @@ static rct_widget window_footpath_widgets[] = {
 static void window_footpath_emptysub() { }
 static void window_footpath_close();
 static void window_footpath_mouseup();
-static void window_footpath_mousedown();
+static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_footpath_dropdown();
 static void window_footpath_update(rct_window *w);
 static void window_footpath_toolupdate();
@@ -307,31 +307,8 @@ static void window_footpath_mouseup()
  * 
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown()
+static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
-
 	switch (widgetIndex) {
 	case WIDX_FOOTPATH_TYPE:
 		window_footpath_show_footpath_types_dialog(w, widget, 0);
@@ -894,7 +871,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// bp = 0x009DEA62
 		// dx = 0x009DEA60
 		// cx = 0x009DEA5E
-		sound_play_panned(6, 0x8001);
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001);
 	}
 }
 

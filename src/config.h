@@ -21,8 +21,8 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include <windows.h>
 #include "rct2.h"
+#include <windows.h> // for MAX_PATH
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
@@ -136,8 +136,30 @@ typedef struct general_configuration {
 	sint8 currency_format;
 	sint8 construction_marker_colour;
 	sint8 edge_scrolling;
-
+	sint8 always_show_gridlines;
+	sint8 landscape_smoothing;
+	sint8 show_height_as_units;
+	sint8 save_plugin_data;
 } general_configuration_t;
+
+static const struct { char *key; int value; } _currencyLookupTable[] = {
+	{ "GBP", CURRENCY_POUNDS },
+	{ "USD", CURRENCY_DOLLARS },
+	{ "FRF", CURRENCY_FRANC },
+	{ "DEM", CURRENCY_DEUTSCHMARK },
+	{ "YEN", CURRENCY_YEN },
+	{ "ESP", CURRENCY_PESETA },
+	{ "ITL", CURRENCY_LIRA },
+	{ "NLG", CURRENCY_GUILDERS },
+	{ "NOK", CURRENCY_KRONA },
+	{ "SEK", CURRENCY_KRONA },
+	{ "DEK", CURRENCY_KRONA },
+	{ "EUR", CURRENCY_EUROS },
+
+	{ "£", CURRENCY_POUNDS },
+	{ "$", CURRENCY_DOLLARS },
+	{ "€", CURRENCY_EUROS }
+};
 
 //typedef struct hotkey_configuration{
 

@@ -82,7 +82,7 @@ void intro_update()
 		_sound_playing_flag = 0;
 		if (RCT2_GLOBAL(0x009AF280, sint32) != -1) {
 			// Prepare and play the sound
-			if (sound_prepare(RCT2_SOUND_CHAINLIFT, &_prepared_sound, 0, 1))
+			if (sound_prepare(SOUND_LIFT_7, &_prepared_sound, 0, 1))
 				if (sound_play(&_prepared_sound, 1, 0, 0, 0))
 					_sound_playing_flag = 1;
 		}
@@ -159,7 +159,7 @@ void intro_update()
 			// Play the track friction sound
 			if (RCT2_GLOBAL(0x009AF280, sint32) != -1) {
 				// Prepare and play the sound
-				if (sound_prepare(RCT2_SOUND_TRACKFRICTION, &_prepared_sound, 1, 1))
+				if (sound_prepare(SOUND_TRACK_FRICTION_3, &_prepared_sound, 1, 1))
 					if (sound_play(&_prepared_sound, 1, -800, 0, 0x3A98))
 						_sound_playing_flag = 1;
 			}
@@ -189,7 +189,7 @@ void intro_update()
 
 			// Play long peep scream sound
 			if (RCT2_GLOBAL(0x009AF280, sint32) != -1)
-				if (sound_prepare(RCT2_SOUND_SCREAM, &_prepared_sound, 0, 1))
+				if (sound_prepare(SOUND_SCREAM_1, &_prepared_sound, 0, 1))
 					if (sound_play(&_prepared_sound, 0, 0, 0, 0))
 						_sound_playing_flag = 1;
 

@@ -307,8 +307,8 @@ enum PEEP_ITEM {
 typedef struct {
 	uint8 type;
 	uint8 item;
-	uint8 pad_3;
-	uint8 pad_4;
+	uint8 var_2;
+	uint8 var_3;
 } rct_peep_thought;
 
 typedef struct {
@@ -359,7 +359,7 @@ typedef struct {
 	uint8 pad_41[0x2];
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 pad_45;
+	uint8 var_45;
 	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58
@@ -372,8 +372,14 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C
-	uint8 pad_6D[0x09];
+	uint8 pad_6D[3];
+	uint8 var_70;
+	uint8 var_71;
+	uint8 var_72;
+	uint8 var_73;
+	uint16 pad_74;
 	uint8 var_76;
+	uint8 pad_77;
 	uint8 var_78;
 	uint8 pad_79[0x03];
 	uint8 rides_been_on[32];		// 0x7C
@@ -382,7 +388,8 @@ typedef struct {
 	money32 cash_spent;				// 0xA4
 	uint8 pad_A8;
 	sint32 time_in_park;			// 0xA9
-	uint8 pad_AD[0x3];
+	uint8 var_AD;
+	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 pad_C4;
 	uint8 var_C5;
@@ -412,10 +419,30 @@ typedef struct {
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
+/** Helper macro until rides are stored in this module. */
+#define GET_PEEP(sprite_index) &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep)
+
+/**
+ * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are
+ * applied in tautology if statements.
+ */
+#define FOR_ALL_PEEPS(sprite_index, peep) \
+	for (sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next) \
+		if ((peep = GET_PEEP(sprite_index)) || 1)
+
+#define FOR_ALL_GUESTS(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_GUEST)
+
+#define FOR_ALL_STAFF(sprite_index, peep) \
+	FOR_ALL_PEEPS(sprite_index, peep) \
+		if (peep->type == PEEP_TYPE_STAFF)
+
 int peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
+void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 
 #endif

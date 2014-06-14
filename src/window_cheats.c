@@ -58,7 +58,7 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	65535},					// tab content panel
 	{ WWT_TAB,				1,	3,			33,		17,		43,		0x2000144E,		2462},					// tab 1
 	{ WWT_TAB,				1,	34,			64,		17,		43,		0x2000144E,		2462},					// tab 2
-	{ WWT_CLOSEBOX,			1,	4,			74,		47,		63,		STR_VERY_HIGH,	STR_VERY_HIGH},					// high money
+	{ WWT_CLOSEBOX,			1,	4,			74,		67,		83,		STR_VERY_HIGH,	STR_VERY_HIGH},					// high money
 	{ WIDGETS_END },
 };
 
@@ -69,7 +69,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },				// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },					// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },					// tab 2
-	{ WWT_CLOSEBOX,			1, 4,			74,		47, 63,			STR_EXTREME,	STR_EXTREME},					// happy guests
+	{ WWT_CLOSEBOX,			1, 4,			74,		77, 93,			STR_EXTREME,	STR_EXTREME},					// happy guests
 	{ WIDGETS_END },
 };
 
@@ -239,7 +239,7 @@ static void window_cheats_guests_mouseup()
 	#endif
 
 	rct_peep* peep;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -250,14 +250,9 @@ static void window_cheats_guests_mouseup()
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HAPPY_GUESTS:
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-			peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-			if (peep->type != PEEP_TYPE_GUEST)
-				continue;
-			if (peep->var_2A != 0)
-				continue;
-			peep->happiness = 255;
-		}
+		FOR_ALL_GUESTS(spriteIndex, peep)
+			if (peep->var_2A == 0)
+				peep->happiness = 255;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	}
@@ -322,6 +317,26 @@ static void window_cheats_paint()
 
 	window_draw_widgets(w, dpi);
 	window_cheats_draw_tab_images(dpi, w);
+
+	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
+		char buffer[256];
+		// Format text (name and version)
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 1,000.");
+		// Draw shadow
+		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
+	}
+	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
+		char buffer[256];
+		// Format text (name and version)
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness ");
+		// Draw shadow
+		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
+		// Format text (name and version)
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "to max.");
+		// Draw shadow
+		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 60);
+	}
+
 }
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
@@ -333,7 +348,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = 5261;
 		if (w->page == WINDOW_CHEATS_PAGE_MONEY)
 			sprite_idx += (w->var_48E / 2) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);	
 	}
 
 	// Guests tab

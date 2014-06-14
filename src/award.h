@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Matthias Lanzinger
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,32 +18,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _CLIMATE_H_
-#define _CLIMATE_H_
+#ifndef _AWARD_H_
+#define _AWARD_H_
 
 #include "rct2.h"
 
+typedef struct {
+	uint16 time;
+	uint16 type;
+} rct_award;
+
 enum {
-	CLIMATE_COOL_AND_WET,
-	CLIMATE_WARM,
-	CLIMATE_HOT_AND_DRY,
-	CLIMATE_COLD
+	PARK_AWARD_MOST_UNTIDY,
+	PARK_AWARD_MOST_TIDY,
+	PARK_AWARD_BEST_ROLLERCOASTERS,
+	PARK_AWARD_BEST_VALUE,
+	PARK_AWARD_MOST_BEAUTIFUL,
+	PARK_AWARD_WORST_VALUE,
+	PARK_AWARD_SAFEST,
+	PARK_AWARD_BEST_STAFF,
+	PARK_AWARD_BEST_FOOD,
+	PARK_AWARD_WORST_FOOD,
+	PARK_AWARD_BEST_RESTROOMS,
+	PARK_AWARD_MOST_DISAPPOINTING,
+	PARK_AWARD_BEST_WATER_RIDES,
+	PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES,
+	PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS,
+	PARK_AWARD_MOST_CONFUSING_LAYOUT,
+	PARK_AWARD_BEST_GENTLE_RIDES,
+	PARK_AWARD_COUNT
 };
 
-typedef struct {
-	sint8 temp_delta;
-	sint8 effect_level;
-	sint8 gloom_level;
-	sint8 rain_level;
-	uint32 sprite_id;
-} rct_weather;
+#define MAX_AWARDS 4
 
-extern int gClimateNextWeather;
-extern const rct_weather climate_weather_data[6];
-
-int climate_celsius_to_fahrenheit(int celsius);
-void climate_reset(int climate);
-void climate_update();
-void climate_update_sound();
+int award_is_positive(int type);
+void award_reset();
+void award_update_all();
 
 #endif

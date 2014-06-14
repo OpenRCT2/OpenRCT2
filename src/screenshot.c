@@ -17,10 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+#pragma pack(1)
 
 #include <lodepng.h>
 #include <stdio.h>
-#include <windows.h>
+#include "osinterface.h"
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
@@ -28,6 +29,8 @@
 #include "screenshot.h"
 #include "string_ids.h"
 #include "window_error.h"
+
+#include <windows.h> // For MAX_PATH
 
 
 static int screenshot_dump_bmp();
@@ -59,17 +62,27 @@ void screenshot_check()
 
 static int screenshot_get_next_path(char *path, char *extension)
 {
+	char *screenshotPath = osinterface_get_orct2_homesubfolder("screenshot");
+	if (!osinterface_ensure_directory_exists(screenshotPath)) {
+		free(screenshotPath);
+
+		fprintf(stderr, "Unable to save screenshots in OpenRCT2 screenshot directory.\n");
+		return -1;
+	}
+
 	int i;
 	for (i = 1; i < 1000; i++) {
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d%s", RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), i, extension);
+		sprintf(path, "%s%cSCR%d%s", screenshotPath, osinterface_get_path_separator(), i, extension);
 
-		if (GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND)
+		if (!osinterface_file_exists(path)) {
 			return i;
+		}
 	}
 
+	free(screenshotPath);
 	return -1;
 }
 
@@ -119,22 +132,23 @@ int screenshot_dump_bmp()
 
 	int i, y, index, width, height, stride;
 	char *buffer, path[MAX_PATH], *row;
-	HANDLE hFile;
-	DWORD bytesWritten;
+	FILE *fp;
+	unsigned int bytesWritten;
 
 	// Get a free screenshot path
 	if ((index = screenshot_get_next_path(path, ".bmp")) == -1)
 		return -1;
 
-	// Open file for writing
-	hFile = CreateFile(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE)
+	// Open binary file for writing
+	if ((fp = fopen(path, "wb")) == NULL){
 		return -1;
+	}
 
 	// Allocate buffer
 	buffer = malloc(0xFFFF);
 	if (buffer == NULL) {
-		CloseHandle(hFile);
+		//CloseHandle(hFile);
+		fclose(fp);
 		return -1;
 	}
 
@@ -149,9 +163,9 @@ int screenshot_dump_bmp()
 	header.bfSize = height * stride + 1038;
 	header.bfOffBits = 1038;
 
-	WriteFile(hFile, &header, sizeof(header), &bytesWritten, NULL);
-	if (bytesWritten != sizeof(header)) {
-		CloseHandle(hFile);
+	bytesWritten = fwrite(&header, sizeof(BitmapFileHeader), 1, fp);
+	if (bytesWritten != 1) {
+		fclose(fp);
 		free(buffer);
 	}
 
@@ -166,9 +180,9 @@ int screenshot_dump_bmp()
 	info.biYPelsPerMeter = 2520;
 	info.biClrUsed = 246;
 
-	WriteFile(hFile, &info, sizeof(info), &bytesWritten, NULL);
-	if (bytesWritten != sizeof(info)) {
-		CloseHandle(hFile);
+	bytesWritten=fwrite(&info, sizeof(BitmapInfoHeader), 1, fp); 
+	if (bytesWritten != 1) {
+		fclose(fp);
 		free(buffer);
 	}
 
@@ -180,9 +194,9 @@ int screenshot_dump_bmp()
 		buffer[i * 4 + 2] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
 	}
 
-	WriteFile(hFile, buffer, 246 * 4, &bytesWritten, NULL);
-	if (bytesWritten != 246 * 4) {
-		CloseHandle(hFile);
+	bytesWritten = fwrite(buffer, sizeof(char), 246*4,  fp);
+	if (bytesWritten != 246*4){
+		fclose(fp);
 		free(buffer);
 	}
 
@@ -194,14 +208,14 @@ int screenshot_dump_bmp()
 		memset(buffer, 0, stride);
 		memcpy(buffer, row, dpi->width);
 
-		WriteFile(hFile, buffer, stride, &bytesWritten, NULL);
-		if (bytesWritten != stride) {
-			CloseHandle(hFile);
+		bytesWritten=fwrite(buffer, sizeof(char), stride, fp);
+		if (bytesWritten != stride){
+			fclose(fp);
 			free(buffer);
 		}
 	}
 
-	CloseHandle(hFile);
+	fclose(fp);
 	free(buffer);
 
 	return index;

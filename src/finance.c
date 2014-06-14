@@ -71,16 +71,13 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 void finance_pay_wages()
 {
 	rct_peep* peep;
-	uint16 sprite_idx;
+	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
 		return;
 
-	for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
-		if (peep->type == PEEP_TYPE_STAFF) 
-			finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
-	}
+	FOR_ALL_STAFF(spriteIndex, peep)
+		finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
 }
 
 /**
@@ -120,12 +117,10 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
+	int i;
 	rct_ride* ride;
-	for (int i = 0; i < MAX_RIDES; i++) {
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
 
+	FOR_ALL_RIDES(i, ride) {
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 			ride->var_196 = 25855; // durability?
@@ -142,6 +137,15 @@ void finance_pay_ride_upkeep()
 	}
 }
 
+void finance_reset_history()
+{
+	int i;
+	for (i = 0; i < 128; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+	}
+}
 
 /**
 *

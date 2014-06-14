@@ -20,13 +20,13 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "map.h"
+#include "news_item.h"
+#include "sprite.h"
 #include "ride.h"
 #include "sprite.h"
 #include "peep.h"
 #include "window.h"
-
-#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
-#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
 
 #pragma region Ride classification table
 
@@ -104,11 +104,8 @@ int ride_get_count()
 	rct_ride *ride;
 	int i, count = 0;
 
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL)
-			count++;
-	}
+	FOR_ALL_RIDES(i, ride)
+		count++;
 
 	return count;
 }
@@ -162,13 +159,10 @@ void ride_init_all()
 void reset_all_ride_build_dates() {
 	int i;
 	rct_ride *ride;
-	for (i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL) {
-			//mov	ax, current_month_year
-			//sub	[esi + 180h], ax
-			ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-		}
+	FOR_ALL_RIDES(i, ride) {
+		//mov	ax, current_month_year
+		//sub	[esi + 180h], ax
+		ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	}
 }
 
@@ -177,17 +171,15 @@ void reset_all_ride_build_dates() {
   */
 void ride_update_favourited_stat()
 {
+	int i;
 	rct_ride *ride;
+	uint16 spriteIndex;
 	rct_peep* peep;
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
-		if (ride->type != RIDE_TYPE_NULL)
-			ride->guests_favourite = 0;
+	FOR_ALL_RIDES(i, ride)
+		ride->guests_favourite = 0;
 
-	}
-	for (int sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = peep->next) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_idx].peep);
+	FOR_ALL_PEEPS(spriteIndex, peep) {
 		if (peep->var_08 != 4)
 			return;
 		if (peep->favourite_ride != 0xff) {
@@ -198,6 +190,156 @@ void ride_update_favourited_stat()
 		}
 
 	}
+
 	window_invalidate_by_id(WC_RIDE_LIST, 0);
+}
+
+
+
+
+/**
+ * rct2: 0x006B7C59
+ * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
+ */
+int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index) {
+	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
+		y = (coordinate & 0xFF) << 5;		 // ax	
+	uint8 station_height = ride->station_heights[index];
+	int tile_idx = ((x << 8) | y) >> 5;
+	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+
+	while(1) {
+        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
+        if (element_type == MAP_ELEMENT_TYPE_ENTRANCE && station_height == tile->base_height) {
+            break;
+        } else if (tile->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+            return 1;
+        }
+        tile++;
+	}
+
+	uint8 face_direction = tile->type & 3;
+	y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+	x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+	tile_idx = ((x << 8) | y) >> 5;
+
+    return map_coord_is_connected(tile_idx, station_height, face_direction);
+}
+
+
+void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
+{
+	for (int i = 0; i < 4; ++i) {
+		uint16 station_start = ride->station_starts[i],
+			entrance = ride->entrances[i],
+			exit = ride->exits[i];
+
+		if (station_start == -1 )
+			continue;
+		if (entrance != -1 && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
+			// name of ride is parameter of the format string
+			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
+			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;			
+			news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
+			ride->connected_message_throttle = 3;
+		}
+			
+		if (exit != -1 && !ride_entrance_exit_is_reachable(exit, ride, i)) {
+			// name of ride is parameter of the format string
+			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
+			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
+			news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride_idx);
+			ride->connected_message_throttle = 3;
+		}
+
+	} 
+}
+
+
+void ride_shop_connected(rct_ride* ride, int ride_idx)
+{
+    uint16 coordinate = ride->station_starts[0];
+	if (coordinate == 0xFFFF)
+		return;
+
+	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
+		y = (coordinate & 0xFF) << 5;		 // ax	
+	uint16 entrance_directions = 0;
+	int tile_idx = ((x << 8) | y) >> 5, count = 0;
+	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+
+	
+    while (1) {
+        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
+        if(element_type == MAP_ELEMENT_TYPE_TRACK && tile->properties.track.ride_index == ride_idx)
+            break;
+
+        if(tile->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+            return;
+        tile++;
+    }
+
+    uint8 track_type = tile->properties.track.type;
+    ride = GET_RIDE(tile->properties.track.ride_index);
+    if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
+		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
+    } else {
+		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
+    }
+
+	
+	uint8 tile_direction = tile->type & MAP_ELEMENT_DIRECTION_MASK;
+	entrance_directions <<= tile_direction;
+	entrance_directions = ((entrance_directions >> 12) | entrance_directions) & 0xF;
+
+	// now each bit in entrance_directions stands for an entrance direction to check
+	if (entrance_directions == 0)
+		return;
+
+	for (int count = 0; entrance_directions != 0; ++count) {
+		if (!(entrance_directions & 1)) {
+			entrance_directions >>= 1;
+            continue;
+        }
+		entrance_directions >>= 1;
+
+        uint8 face_direction = count ^ 2; // flip direction north<->south, east<->west
+        y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+        x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+        tile_idx = ((x << 8) | y) >> 5;
+
+        if (map_coord_is_connected(tile_idx, tile->base_height, face_direction))
+            return;
+    }    
+    
+	// name of ride is parameter of the format string
+    RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
+	RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
+	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
+
+    ride->connected_message_throttle = 3;
+}
+
+
+
+/**
+ * rct2: 0x006B7A5E
+ **/
+void ride_check_all_reachable()
+{
+	rct_ride *ride;
+	int i;
+	
+	FOR_ALL_RIDES(i, ride) {		
+		if (ride->connected_message_throttle != 0)
+			ride->connected_message_throttle--;
+		if (ride->status != RIDE_STATUS_OPEN || ride->connected_message_throttle != 0)
+			continue;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)
+            ride_shop_connected(ride, i);
+		else
+			ride_entrance_exit_connected(ride, i);
+	}
 }
 

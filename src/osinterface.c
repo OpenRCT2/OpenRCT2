@@ -40,7 +40,7 @@ unsigned int gLastKeyPressed;
 static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
-static void osinterface_update_palette(char* colours, int start_index, int num_colours);
+
 
 static SDL_Window *_window;
 static SDL_Surface *_surface;
@@ -91,6 +91,7 @@ static void osinterface_create_window()
 		exit(-1);
 	}
 
+	SDL_VERSION(&wmInfo.version);
 	// Get the HWND context
 	if (SDL_GetWindowWMInfo(_window, &wmInfo) != SDL_TRUE) {
 		RCT2_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
@@ -167,7 +168,7 @@ static void osinterface_resize(int width, int height)
 	gfx_invalidate_screen();
 }
 
-static void osinterface_update_palette(char* colours, int start_index, int num_colours)
+void osinterface_update_palette(char* colours, int start_index, int num_colours)
 {
 	SDL_Color base[256];
 	SDL_Surface *surface;
@@ -394,14 +395,14 @@ char* osinterface_open_directory_browser(char *title) {
 	LPMALLOC        lpMalloc;
 
 	// Initialize COM
-	if (CoInitializeEx(0, COINIT_APARTMENTTHREADED) != S_OK) {
+	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
 	}
 
 	// Get a pointer to the shell memory allocator
-	if (SHGetMalloc(&lpMalloc) != S_OK) {
+	if (FAILED(SHGetMalloc(&lpMalloc))) {
 		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
 		return 0;
@@ -427,4 +428,53 @@ char* osinterface_open_directory_browser(char *title) {
 	}
 	CoUninitialize();
 	return outPath;
+}
+
+char* osinterface_get_orct2_homefolder()
+{
+	char *path=NULL;
+	path = malloc(sizeof(char) * MAX_PATH);
+	if (path == NULL){
+		osinterface_show_messagebox("Error allocating memory!");
+		exit(EXIT_FAILURE);
+	}
+
+	path[0] = '\0';
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path)))
+		strcat(path, "\\OpenRCT2");
+
+	return path;
+}
+
+char *osinterface_get_orct2_homesubfolder(const char *subFolder)
+{
+	char *path = osinterface_get_orct2_homefolder();
+	strcat(path, "\\");
+	strcat(path, subFolder);
+	return path;
+}
+
+int osinterface_file_exists(const char *path)
+{
+	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+}
+
+int osinterface_directory_exists(const char *path)
+{
+	DWORD dwAttrib = GetFileAttributes(path);
+	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+int osinterface_ensure_directory_exists(const char *path)
+{
+	if (osinterface_directory_exists(path))
+		return 1;
+
+	return CreateDirectory(path, NULL);
+}
+
+char osinterface_get_path_separator()
+{
+	return '\\';
 }

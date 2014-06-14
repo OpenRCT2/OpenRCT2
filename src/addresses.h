@@ -84,6 +84,8 @@
 #define RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS			0x009ABDE8
 #define RCT2_ADDRESS_DIRTY_BLOCK_ROWS				0x009ABDEC
 
+#define RCT2_ADDRESS_LIGHTNING_ACTIVE				0x009AC068
+
 #define RCT2_ADDRESS_RUN_INTRO_TICK_PART			0x009AC319
 
 #define RCT2_ADDRESS_INSTALLED_OBJECT_LIST			0x009ADAE8
@@ -110,6 +112,10 @@
 #define RCT2_ADDRESS_TOOL_WINDOWCLASS				0x009DE544
 #define RCT2_ADDRESS_CURRENT_TOOL					0x009DE545
 #define RCT2_ADDRESS_TOOL_WIDGETINDEX				0x009DE546
+
+#define RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE			0x009DE550
+#define RCT2_ADDRESS_PICKEDUP_PEEP_X				0x009DE554
+#define RCT2_ADDRESS_PICKEDUP_PEEP_Y				0x009DE556
 
 #define RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS		0x009DE55C
 #define RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER		0x009DE55E
@@ -176,11 +182,11 @@
 #define RCT2_ADDRESS_PARK_FLAGS						0x013573E4
 #define RCT2_ADDRESS_PARK_ENTRANCE_FEE				0x013573E8
 #define RCT2_ADDRESS_GUESTS_IN_PARK					0x01357844
+#define RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK		0x01357846
 #define RCT2_ADDRESS_MONTHLY_RIDE_INCOME			0x01357894
 #define RCT2_ADDRESS_CURRENT_PARK_RATING			0x01357CB0
 #define RCT2_ADDRESS_PARK_RATING_HISTORY			0x01357CB2
 #define RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY			0x01357CD2
-#define RCT2_ADDRESS_GUEST_GENERATION_PROBABILITY	0x013580EC
 #define RCT2_ADDRESS_OBJECTIVE_TYPE					0x013580F8
 #define RCT2_ADDRESS_OBJECTIVE_YEAR					0x013580F9
 #define RCT2_ADDRESS_OBJECTIVE_CURRENCY				0x013580FC
@@ -218,6 +224,8 @@
 #define RCT2_ADDRESS_MAP_SIZE						0x01358834
 #define RCT2_ADDRESS_PARK_SIZE						0x013580EA
 
+#define RCT2_TOTAL_RIDE_VALUE						0x013580EE
+
 #define RCT2_ADDRESS_SCENARIO_NAME					0x0135920A
 #define RCT2_ADDRESS_SCENARIO_DETAILS				0x0135924A
 
@@ -249,6 +257,7 @@
 #define RCT2_ADDRESS_NEWS_ITEM_LIST					0x013CA754
 
 #define RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE		0x013CE950
+#define RCT2_ADDRESS_CURRENT_FONT_FLAGS				0x013CE9A2
 
 #define RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS		0x013CE9A4
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT		0x0141E9AC
@@ -256,6 +265,10 @@
 
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID	0x0141E9AE
 #define RCT2_ADDRESS_CURRENT_ROTATION				0x0141E9E0
+
+#define RCT2_ADDRESS_FONT_CHAR_WIDTH				0x0141E9E8
+
+#define RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER	0x0141ED68
 
 #define RCT2_ADDRESS_WATER_RAISE_COST			0x0141F738
 #define RCT2_ADDRESS_WATER_LOWER_COST			0x0141F73C
@@ -353,6 +366,47 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
 		:
 		: "eax","ecx","edx","esi","edi"
+	);
+	#endif
+}
+
+static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+{
+	#ifdef _MSC_VER
+	__asm {
+		push ebp
+		push address
+		mov eax, _eax
+		mov ebx, _ebx
+		mov ecx, _ecx
+		mov edx, _edx
+		mov esi, _esi
+		mov edi, _edi
+		mov ebp, _ebp
+		call[esp]
+		add esp, 4
+		pop ebp
+	}
+	#else
+	__asm__ ( "\
+	\n\
+	push ebx \n\
+	push ebp \n\
+	push %[address] 	\n\
+	mov eax, %[_eax] 	\n\
+	mov ebx, %[_ebx] 	\n\
+	mov ecx, %[_ecx] 	\n\
+	mov edx, %[_edx] 	\n\
+	mov esi, %[_esi] 	\n\
+	mov edi, %[_edi] 	\n\
+	mov ebp, %[_ebp] 	\n\
+	call [esp] 	\n\
+	add esp, 4 	\n\
+	pop ebp \n\
+	pop ebx \n\
+	" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+	:
+	: "eax","ecx","edx","esi","edi"
 	);
 	#endif
 }

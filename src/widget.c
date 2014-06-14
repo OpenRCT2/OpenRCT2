@@ -156,6 +156,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CHECKBOX:
+		widget_checkbox_draw(dpi, w, widgetIndex);
+		break;
 	case WWT_24:
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
@@ -715,7 +717,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
-*
+ * 
 *  rct2: 0x006EBAD9
 */
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -736,14 +738,12 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	colour = w->colours[widget->colour];
 
 	// checkbox
-	if (widget->type != WWT_24) {
-		gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+	gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
 
-		// fill it when checkbox is pressed
-		if (widget_is_pressed(w, widgetIndex)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
-		}
+	// fill it when checkbox is pressed
+	if (widget_is_pressed(w, widgetIndex)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
 	}
 
 	// draw the text
@@ -995,4 +995,107 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 		return 0;
 
 	return 1;
+}
+
+void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *output_dx)
+{
+	rct_widget* iterator = w->widgets;
+	int scroll_id = 0;
+	while (++iterator != widget)
+	{
+		if (iterator->type == WWT_SCROLL)
+		{
+			scroll_id++;
+			break;
+		}
+	}
+
+	if ((w->scrolls[scroll_id].flags & 0x01) && y >= (w->y + widget->bottom - 11))
+	{
+		//horizon scrollbar
+		int rightOffset = 0;
+		int iteratorLeft = widget->left + w->x;
+		int iteratorRight = widget->right + w->x;
+		if (w->scrolls[scroll_id].flags & 0x01)
+		{
+			rightOffset = 11;
+		}
+		if (x <= (iteratorLeft += 10))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT;
+		}
+		else if (x >= (iteratorRight -= rightOffset))
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else if (x >= (iteratorRight -= 10))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
+		}
+		else if (x < (widget->left + w->x + w->scrolls[scroll_id].h_thumb_left))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT_TROUGH;
+		}
+		else if (x >(widget->left + w->x + w->scrolls[scroll_id].h_thumb_right))
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH;
+		}
+		else
+		{
+			*output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
+		}
+	}
+	else if ((w->scrolls[scroll_id].flags & 10) || (x >= w->x + widget->right - 11))
+	{
+		//vertical scrollbar
+		int bottomOffset = 0;
+		int iteratorTop = widget->top + w->y;
+		int iteratorBottom = widget->bottom + w->y;
+		if (w->scrolls[scroll_id].flags & 0x01)
+		{
+			bottomOffset = 11;
+		}
+		if (y <= (iteratorTop += 10))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP;
+		}
+		else if (y >= (iteratorBottom -= bottomOffset))
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else if (y >= (iteratorBottom -= 10))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
+		}
+		else if (y < (widget->top + w->y + w->scrolls[scroll_id].v_thumb_top))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP_TROUGH;
+		}
+		else if (y > (widget->top + w->y + w->scrolls[scroll_id].v_thumb_bottom))
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH;
+		}
+		else
+		{
+			*output_scroll_area = SCROLL_PART_VSCROLLBAR_THUMB;
+		}
+	}
+	else
+	{
+		//view
+		*output_scroll_area = SCROLL_PART_VIEW;
+		*output_x = x - widget->left;
+		*output_y = y - widget->top;
+		*output_x -= w->x;
+		*output_y -= w->y;
+		if (--*output_x < 0 || --*output_y < 0)
+		{
+			*output_scroll_area = SCROLL_PART_NONE;
+		}
+		else
+		{
+			*output_x += w->scrolls[scroll_id].h_left;
+			*output_y += w->scrolls[scroll_id].v_top;
+		}
+	}
 }

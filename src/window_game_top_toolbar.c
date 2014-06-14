@@ -78,7 +78,7 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 
 static void window_game_top_toolbar_emptysub() { }
 static void window_game_top_toolbar_mouseup();
-static void window_game_top_toolbar_mousedown();
+static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_game_top_toolbar_dropdown();
 static void window_game_top_toolbar_invalidate();
 static void window_game_top_toolbar_paint();
@@ -166,6 +166,11 @@ static void window_game_top_toolbar_mouseup()
 		game_do_command(0, 1, 0, 0, 2, 0, 0);
 		break;
 	case WIDX_FASTFORWARD:
+		// This is an excellent place to add in debugging statements and
+		// print routines, that will be triggered when you press the
+		// button in the game. Use "git update-index --skip-worktree
+		// src/window_game_top_toolbar" to avoid committing these changes to
+		// version control.
 		window_cheats_open();
 		break;
 
@@ -254,31 +259,9 @@ static void window_game_top_toolbar_mouseup()
  * 
  *  rct2: 0x0066CA3B
  */
-static void window_game_top_toolbar_mousedown()
+static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	short widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
 	rct_viewport *mainViewport;
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widget, edi
-	#else
-	__asm__ ( "mov %[widget], edi " : [widget] "+m" (widget) );
-	#endif
-
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		gDropdownItemsFormat[0] = 882;
@@ -384,30 +367,7 @@ static void window_game_top_toolbar_dropdown()
 			break;
 		case 1:		// save game
 			tool_cancel();
-			{
-				int eax, ebx, ecx, edx, esi, edi, ebp;
-				RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				if (eax == 0) {
-					gfx_invalidate_screen();
-					break;
-				}
-
-				char *src = (char*)0x0141EF67;
-				do {
-					src++;
-				} while (*src != '.' && *src != '\0');
-				strcpy(src, ".SV6");
-				strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
-
-				eax = 0;
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
-					eax |= 1;
-				RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
-				// check success?
-
-				game_do_command(0, 1047, 0, -1, 0, 0, 0);
-				gfx_invalidate_screen();
-			}
+			save_game();
 			break;
 		case 3:		// about
 			window_about_open();

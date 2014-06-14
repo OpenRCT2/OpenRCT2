@@ -1,16 +1,25 @@
 SET(CMAKE_SYSTEM_NAME Windows)
 
-SET(COMPILER_PREFIX i686-w64-mingw32)
-SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
-SET(CMAKE_CXX_COMPILER ${COMPILER_PREFIX}-c++)
-SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
-SET(CMAKE_PKGCONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
-SET(PKG_CONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
+if (APPLE)
+    SET(COMPILER_PREFIX i586-mingw32)
+    SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
+    SET(CMAKE_CXX_COMPILER ${COMPILER_PREFIX}-c++)
+    SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
+    SET(CMAKE_PKGCONFIG_EXECUTABLE i686-w64-mingw32-pkg-config)
+    SET(PKG_CONFIG_EXECUTABLE i686-w64-mingw32-pkg-config)
+else()
+    SET(COMPILER_PREFIX i686-w64-mingw32)
+    SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
+    SET(CMAKE_CXX_COMPILER ${COMPILER_PREFIX}-c++)
+    SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
+    SET(CMAKE_PKGCONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
+    SET(PKG_CONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
+endif (APPLE)
 
 # potential flags to make code more similar to MSVC:
-#   -fshort-wchar -fshort-enums -mms-bitfields -fpack-struct=1
+#   -fshort-wchar -fshort-enums -mms-bitfields
 #
-set(CMAKE_C_FLAGS "-masm=intel -std=gnu99" CACHE STRING "" FORCE)
+set(CMAKE_C_FLAGS "-masm=intel -std=gnu99 -fpack-struct=2" CACHE STRING "" FORCE)
 set(CMAKE_SHARED_LINKER_FLAGS "-static-libgcc" CACHE STRING "" FORCE)
 
 include_directories("/usr/include/wine/windows/")

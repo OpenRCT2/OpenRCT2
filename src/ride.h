@@ -23,6 +23,19 @@
 
 #include "rct2.h"
 
+typedef fixed16_2dp ride_rating;
+
+// Convenience function for writing ride ratings. The result is a 16 bit signed
+// integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
+#define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
+
+// Used for return values, for functions that modify all three.
+typedef struct {
+	ride_rating excitement;
+	ride_rating intensity;
+	ride_rating nausea;
+} rating_tuple;
+
 /**
  * Ride structure.
  * size: 0x0260
@@ -43,7 +56,8 @@ typedef struct {
 	uint32 var_04C;
 	uint16 overall_view;			// 0x050
 	uint16 station_starts[4];		// 0x052
-	uint8 pad_05A[0x10];
+	uint8 station_heights[4];		// 0x05A
+	uint8 pad_05E[0xC];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -55,7 +69,7 @@ typedef struct {
 	uint8 var_0C8;
 	uint8 var_0C9;
 
-	uint8 pad_0CA[0x1B];
+	uint8 pad_0CA[0x1A];
 
 	sint32 var_0E4;
 	sint32 var_0E8;
@@ -65,7 +79,7 @@ typedef struct {
 	uint8 var_114;
 	// Track length? Number of track segments?
 	uint8 var_115;
-	uint8 pad_116[0x0F];
+	uint8 pad_116[0x0E];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -96,13 +110,17 @@ typedef struct {
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
 	uint8 var_199;
-	uint8 pad_19A[0x1A];
-	money32 profit;					// 0x1B4
+	uint8 pad_19A[0x14];
+	uint8 var_1AE;
+	uint8 connected_message_throttle;
+	uint32 pad_1B0;
+	sint32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 pad_1BC[0x11];
+	uint8 var_1BC;
+	uint8 pad_1BD[0x10];
 	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
-	uint32 lifecycle_flags;
+	uint32 lifecycle_flags;			// 0x1D0
 	uint8 pad_1D4[0x20];
 	// Example value for wild mouse ride is d5 (before it's been constructed)
 	// I tried searching the IDA file for "1F4" but couldn't find places where
@@ -295,8 +313,29 @@ enum {
 	RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR
 };
 
+enum {
+	RIDE_GROUP_TRANSPORT,
+	RIDE_GROUP_GENTLE,
+	RIDE_GROUP_ROLLERCOASTER,
+	RIDE_GROUP_THRILL,
+	RIDE_GROUP_WATER,
+	RIDE_GROUP_SHOP
+};
+
 #define MAX_RIDES 255
 #define MAX_RIDE_MEASUREMENTS 8
+#define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+
+/** Helper macros until rides are stored in this module. */
+#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
+#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
+
+/**
+ * Helper macro loop for enumerating through all the non null rides.
+ */
+#define FOR_ALL_RIDES(i, ride) \
+	for (i = 0; i < MAX_RIDES; i++) \
+		if ((ride = GET_RIDE(i))->type != RIDE_TYPE_NULL)
 
 extern const uint8 gRideClassifications[255];
 
@@ -306,5 +345,6 @@ int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
+void ride_check_all_reachable();
 
 #endif

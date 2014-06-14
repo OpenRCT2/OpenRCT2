@@ -21,10 +21,12 @@
 #include <windows.h>
 #include <string.h>
 #include "addresses.h"
+#include "award.h"
 #include "date.h"
 #include "finance.h"
 #include "game.h"
 #include "map.h"
+#include "marketing.h"
 #include "news_item.h"
 #include "object.h"
 #include "park.h"
@@ -58,14 +60,12 @@ int scenario_load_basic(const char *path)
 
 			// Checks for a scenario string object (possibly for localisation)
 			if ((s6Info->entry.flags & 0xFF) != 255) {
-				if (sub_6A9428(&s6Info->entry)) {
+				if (object_get_scenario_text(&s6Info->entry)) {
 					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
 					format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
 					format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
 					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
-
-					// Disposes the scenario string object (0x009ADAF8)
-					RCT2_CALLPROC_EBPSAFE(0x006A982D);
+					object_free_scenario_text();
 				}
 			}
 			return 1;
@@ -279,7 +279,9 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 	sub_69E869(); // (loan related, called above already)
-	park_reset_awards_and_history();
+	park_reset_history();
+	finance_reset_history();
+	award_reset();
 	reset_all_ride_build_dates();
 	date_reset();
 	RCT2_CALLPROC_EBPSAFE(0x00674576);
@@ -336,7 +338,7 @@ void scenario_success()
 	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
-	RCT2_CALLPROC_EBPSAFE(0x0069BE9B); // celebration
+	peep_applause();
 
 	for (i = 0; i < gScenarioListCount; i++) {
 		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
@@ -365,20 +367,15 @@ void scenario_success()
 **/
 void scenario_objective5_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
@@ -400,21 +397,16 @@ void scenario_objective5_check()
  **/
 void scenario_objective8_check()
 {
-	int rcs = 0;
+	int i, rcs = 0;
 	uint8 type_already_counted[256];
 	rct_ride* ride;
 	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 
 	memset(type_already_counted, 0, 256);
 
-	for (int i = 0; i < MAX_RIDES; i++) {
-		uint8 subtype_id;
-		uint32 subtype_p;
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-		subtype_id = (uint8)ride->subtype;
-		subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + subtype_id * 4, uint32);
 
 		if ((RCT2_GLOBAL(subtype_p + 0x1BE, sint8) == 2 ||
 			RCT2_GLOBAL(subtype_p + 0x1BF, sint8) == 2) &&
@@ -545,9 +537,9 @@ void scenario_objectives_check()
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x, y;
-	uint16 magic = RCT2_GLOBAL(0x013580EE, uint16),
-		park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
-	int max_fee = magic + (magic / 2);
+	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
+	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	int max_fee = totalRideValue + (totalRideValue / 2);
 	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && park_entrance_fee > max_fee) {
@@ -560,49 +552,6 @@ void scenario_entrance_fee_too_high_check()
 		news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
 	}
 }
-
-
-/*
- * Update status of marketing campaigns and send a message when they are done.
- * rct2: 0x0069E0C1
- **/
-void scenario_marketing_update()
-{
-	for (int i = 0; i < 6; ++i) {
-		uint8 campaign_weeks_left = RCT2_ADDRESS(0x01358102, uint8)[i];
-		int campaign_item = 0;
-
-		if (!campaign_weeks_left)
-			continue;
-		window_invalidate_by_id(WC_FINANCES, 0);
-
-		// high bit marks the campaign as inactive, on first check the campaign is set actice
-		// this makes campaigns run a full x weeks even when started in the middle of a week
-		RCT2_ADDRESS(0x01358102, uint8)[i] &= ~(1 << 7);
-		if (campaign_weeks_left & (1 << 7))
-			continue;
-		
-		RCT2_ADDRESS(0x01358102, uint8)[i]--;
-		if (campaign_weeks_left - 1 != 0)
-			continue;
-
-		campaign_item = RCT2_ADDRESS(0x01358116, uint8)[i];
-
-		// this sets the string parameters for the marketing types that have an argument.
-		if (i == 1 || i == 5) { // free RIDES oh yea
-			RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x01362942 + 304 * campaign_item, uint16);;
-			RCT2_GLOBAL(0x013CE954, uint32) = RCT2_GLOBAL(0x01362944 + 152 * campaign_item, uint32);
-		} else if (i == 3) { // free food/merch
-			campaign_item += 2016;
-			if (campaign_item >= 2048)
-				campaign_item += 96;
-			RCT2_GLOBAL(0x013CE952, uint16) = campaign_item;
-		}
-
-		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + i, 0);
-	}
-}
-
 
 /*
  * Scenario and finance related update iteration.
@@ -630,6 +579,8 @@ void scenario_update()
 			objective_type == 6 || objective_type == 5) {
 			scenario_objectives_check();
 		}
+
+		window_invalidate_by_id(WC_BOTTOM_TOOLBAR, 0);
 	}
 
 	
@@ -639,9 +590,9 @@ void scenario_update()
 		finance_pay_wages();
 		finance_pay_research();
 		finance_pay_interest();
-		scenario_marketing_update();
+		marketing_update();
 		peep_problem_warnings_update();
-		RCT2_CALLPROC_EBPSAFE(0x006B7A5E); // check ride reachability
+		ride_check_all_reachable();
 		ride_update_favourited_stat();
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
@@ -660,7 +611,7 @@ void scenario_update()
 					break;
 			}
 		}
-		RCT2_CALLPROC_EBPSAFE(0x0066A231); // update histories (finance, ratings, etc)
+		park_update_histories();
 		park_calculate_size();
 	}
 
@@ -678,7 +629,7 @@ void scenario_update()
 		RCT2_CALLPROC_EBPSAFE(0x0069DEAD);
 		scenario_objectives_check();
 		scenario_entrance_fee_too_high_check();
-		RCT2_CALLPROC_EBPSAFE(0x0066A86C); // award checks
+		award_update_all();
 	}
 	
 }

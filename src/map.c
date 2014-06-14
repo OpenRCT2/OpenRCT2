@@ -329,3 +329,39 @@ void sub_68B089()
 	mapElement++;
 	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
 }
+
+
+/**
+ * Checks if the tile at coordinate at height counts as connected.
+ * @return 1 if connected, 0 otherwise
+ */
+int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
+{
+    rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+
+    do {
+        rct_map_element_path_properties props = tile->properties.path;
+        uint8 path_type = props.type >> 2, path_dir = props.type & 3;
+        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
+
+        if (element_type != PATH_ROAD)
+            continue;
+
+        if (path_type & 1) {
+			if (path_dir == face_direction) {
+				if (height == tile->base_height + 2)
+					return 1;
+			}
+			else if ((path_dir ^ 2) == face_direction && height == tile->base_height) {
+				return 1;
+			}
+        } else {
+			if (height == tile->base_height)
+				return 1;
+        }
+            
+    } while (!(tile->flags & MAP_ELEMENT_FLAG_LAST_TILE) && tile++);
+
+    return 0;
+}
+

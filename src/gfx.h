@@ -31,7 +31,7 @@ typedef struct {
 	short width;		// 0x08
 	short height;		// 0x0A
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
-	char pad_0E;		// 0x0E
+	uint8 zoom_level;	// 0x0E
 	char var_0F;		// 0x0F
 } rct_drawpixelinfo;
 
@@ -46,10 +46,23 @@ typedef struct {
 	sint16 unused;			// 0x0E
 } rct_g1_element;
 
+enum{
+	G1_FLAG_BMP = (1 << 0), //No invisible sections
+	G1_FLAG_RLE_COMPRESSION = (1<<2),
+};
+
+enum{
+	IMAGE_TYPE_NO_BACKGROUND = 0,
+	IMAGE_TYPE_USE_PALETTE= (1 << 1),
+	IMAGE_TYPE_MIX_BACKGROUND = (1<<2),
+	IMAGE_TYPE_UNKNOWN = (1<<3)
+};
+
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
 int gfx_load_g1();
+void gfx_load_character_widths();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
@@ -66,7 +79,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args);
 int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour);
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *format, int x, int y, int width, int colour, int unknown);
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour);
 
 int gfx_get_string_width(char *buffer);
 int clip_text(char *buffer, int width);
