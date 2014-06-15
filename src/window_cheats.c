@@ -320,21 +320,17 @@ static void window_cheats_paint()
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		char buffer[256];
-		// Format text (name and version)
+		// Format text
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 1,000.");
 		// Draw shadow
 		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		char buffer[256];
-		// Format text (name and version)
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness ");
+		// Format text
+		sprintf(buffer, "%c%c%s%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness ", FORMAT_NEWLINE, "to max.");
 		// Draw shadow
 		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
-		// Format text (name and version)
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "to max.");
-		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 60);
 	}
 
 }

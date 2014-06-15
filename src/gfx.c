@@ -43,39 +43,6 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
-enum{
-	//The next byte specifies the X coordinate
-	CHAR_CONTROL_CODE_MOVE_X = 1,
-
-	//The next byte specifies the palette
-	CHAR_CONTROL_CODE_ADJUST_PALETTE_1 = 2,
-
-	//Jumps a fixed amount of pixels down and
-	//starts a new line
-	CHAR_CONTROL_CODE_NEW_LINE_FIXED = 5,
-	//Jumps less than the above
-	CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER = 6,
-
-	CHAR_CONTROL_CODE_FONT_2 = 7,
-	CHAR_CONTROL_CODE_FONT_3 = 8,
-	CHAR_CONTROL_CODE_FONT_1 = 9,
-	CHAR_CONTROL_CODE_FONT_0 = 0xA,
-
-	CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1 = 0xB,
-	CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1 = 0xC,
-
-	//Adjusts the palette depending on a global var
-	CHAR_CONTROL_CODE_ADJUST_PALETTE_2 = 0xD,
-	CHAR_CONTROL_CODE_ADJUST_PALETTE_3 = 0xE,
-	CHAR_CONTROL_CODE_ADJUST_PALETTE_4 = 0xF,
-
-	//The next 2 bytes specify the X and Y coordinates
-	CHAR_CONTROL_CODE_NEW_LINE_X_Y = 0x11,
-
-	//The next 4 bytes specify the sprite
-	CHAR_CONTROL_CODE_SPRITE = 0x17
-};
-
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 uint8 peep_palette[0x100] = { 
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -160,7 +127,7 @@ void gfx_load_character_widths(){
 			if (char_set_offset == 0xE0*3) width = g1.width + 1;
 			else width = g1.width - 1;
 
-			if (c >= 0x5B && c < 0x7F){
+			if (c >= (FORMAT_ARGUMENT_CODE_START - 0x20) && c < (FORMAT_COLOUR_CODE_END - 0x20)){
 				width = 0;
 			}
 			*char_width_pointer = (uint8)width;
@@ -1393,44 +1360,44 @@ int gfx_get_string_width(char* buffer)
 			continue;
 		}
 		switch(*curr_char) {
-		case CHAR_CONTROL_CODE_MOVE_X:
+		case FORMAT_MOVE_X:
 			curr_char++;
 			width = *curr_char;
 			break;
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
+		case FORMAT_ADJUST_PALETTE:
 		case 3:
 		case 4:
 			curr_char++;
 			break;
-		case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
-		case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+		case FORMAT_NEWLINE:
+		case FORMAT_NEWLINE_SMALLER:
 			continue;
-		case CHAR_CONTROL_CODE_FONT_2:
+		case FORMAT_TINYFONT:
 			*current_font_sprite_base = 0x1C0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_3:
+		case FORMAT_BIGFONT:
 			*current_font_sprite_base = 0x2A0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_1:
+		case FORMAT_MEDIUMFONT:
 			*current_font_sprite_base = 0x0E0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_0:
+		case FORMAT_SMALLFONT:
 			*current_font_sprite_base = 0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
-		case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+		case FORMAT_OUTLINE:
+		case FORMAT_OUTLINE_OFF:
+		case FORMAT_WINDOW_COLOUR_1:
+		case FORMAT_WINDOW_COLOUR_2:
+		case FORMAT_WINDOW_COLOUR_3:
 		case 0x10:
 			continue;
-		case CHAR_CONTROL_CODE_SPRITE:
+		case FORMAT_INLINE_SPRITE:
 			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
 			width += g1_element.width;
 			curr_char += 4;
 			break;
 		default:
-			if (*curr_char <= 0x16) { //case 0x11? CHAR_CONTROL_CODE_NEW_LINE_X_Y
+			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
 				curr_char += 2;
 				continue;
 			}
@@ -1476,44 +1443,44 @@ int gfx_clip_string(char* buffer, int width)
 	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch (*curr_char) {
-			case CHAR_CONTROL_CODE_MOVE_X:
+			case FORMAT_MOVE_X:
 				curr_char++;
 				clipped_width = *curr_char;
 				continue;
-			case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
+			case FORMAT_ADJUST_PALETTE:
 			case 3:
 			case 4:
 				curr_char++;
 				continue;
-			case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
-			case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+			case FORMAT_NEWLINE:
+			case FORMAT_NEWLINE_SMALLER:
 				continue;
-			case CHAR_CONTROL_CODE_FONT_2:
+			case FORMAT_TINYFONT:
 				current_font_sprite_base = 0x1C0;
 				break;
-			case CHAR_CONTROL_CODE_FONT_3:
+			case FORMAT_BIGFONT:
 				current_font_sprite_base = 0x2A0;
 				break;
-			case CHAR_CONTROL_CODE_FONT_1:
+			case FORMAT_MEDIUMFONT:
 				current_font_sprite_base = 0x0E0;
 				break;
-			case CHAR_CONTROL_CODE_FONT_0:
+			case FORMAT_SMALLFONT:
 				current_font_sprite_base = 0;
 				break;
-			case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
-			case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
-			case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
-			case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
-			case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+			case FORMAT_OUTLINE:
+			case FORMAT_OUTLINE_OFF:
+			case FORMAT_WINDOW_COLOUR_1:
+			case FORMAT_WINDOW_COLOUR_2:
+			case FORMAT_WINDOW_COLOUR_3:
 			case 0x10:
 				continue;
-			case CHAR_CONTROL_CODE_SPRITE:
+			case FORMAT_INLINE_SPRITE:
 				g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
 				clipped_width += g1_element.width;
 				curr_char += 4;
 				continue;
 			default:
-				if (*curr_char <= 0x16) { //case 0x11? CHAR_CONTROL_CODE_NEW_LINE_X_Y
+				if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
 					curr_char += 2;
 					continue;
 				}
@@ -1579,35 +1546,35 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
         if (*curr_char != 5) {
 			if (*curr_char < ' ') {
 				switch(*curr_char) {
-				case CHAR_CONTROL_CODE_MOVE_X:
-				case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
+				case FORMAT_MOVE_X:
+				case FORMAT_ADJUST_PALETTE:
 				case 3:
 				case 4:
 					curr_char++;
 					continue;
-				case CHAR_CONTROL_CODE_NEW_LINE_FIXED:
-				case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER:
+				case FORMAT_NEWLINE:
+				case FORMAT_NEWLINE_SMALLER:
 					continue;
-				case CHAR_CONTROL_CODE_FONT_2:
+				case FORMAT_TINYFONT:
 					*font_height = 0x1C0;
 					continue;
-				case CHAR_CONTROL_CODE_FONT_3:
+				case FORMAT_BIGFONT:
 					*font_height = 0x2A0;
 					continue;
-				case CHAR_CONTROL_CODE_FONT_1:
+				case FORMAT_MEDIUMFONT:
 					*font_height = 0xE0;
 					continue;
-				case CHAR_CONTROL_CODE_FONT_0:
+				case FORMAT_SMALLFONT:
 					*font_height = 0;
 					continue;
-				case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
-				case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
-				case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
-				case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
-				case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
+				case FORMAT_OUTLINE:
+				case FORMAT_OUTLINE_OFF:
+				case FORMAT_WINDOW_COLOUR_1:
+				case FORMAT_WINDOW_COLOUR_2:
+				case FORMAT_WINDOW_COLOUR_3:
 				case 0x10:
 					continue;
-				case CHAR_CONTROL_CODE_SPRITE:
+				case FORMAT_INLINE_SPRITE:
 					g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
 					line_width += g1_element.width;
 					curr_char += 4;
@@ -1893,41 +1860,43 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
-
-void colour_char(int al, uint16* current_font_flags) {
+/* Changes the palette so that the next character changes colour
+*/
+void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
 
 	int eax;
 
 	rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332];
-	eax = ((uint32*)g1_element.offset)[al & 0xFF];
+	eax = ((uint32*)g1_element.offset)[colour & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
 	}
 	// Adjust text palette. Store current colour? 
-	text_palette[1] = eax & 0xFF;
-	text_palette[2] = (eax>>8) & 0xFF;
-	text_palette[3] = (eax >> 16) & 0xFF;
-	text_palette[4] = (eax >> 24) & 0xFF;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
+	palette_pointer[1] = eax & 0xFF;
+	palette_pointer[2] = (eax >> 8) & 0xFF;
+	palette_pointer[3] = (eax >> 16) & 0xFF;
+	palette_pointer[4] = (eax >> 24) & 0xFF;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
 }
 
-
-void sub_682AC7(int ebp, uint16* current_font_flags) {
+/* Changes the palette so that the next character changes colour
+*  This is specific to changing to a predefined window related colour
+*/
+void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
 
 	int eax;
 
-	eax = RCT2_ADDRESS(0x0141FD45, uint8)[ebp * 8];
+	eax = RCT2_ADDRESS(0x0141FD45, uint8)[colour * 8];
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
 	 //Adjust text palette. Store current colour? 
-	text_palette[1] = eax & 0xFF;
-	text_palette[2] = (eax >> 8) & 0xFF;
-	text_palette[3] = (eax >> 16) & 0xFF;
-	text_palette[4] = (eax >> 24) & 0xFF;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
-
+	palette_pointer[1] = eax & 0xFF;
+	palette_pointer[2] = (eax >> 8) & 0xFF;
+	palette_pointer[3] = (eax >> 16) & 0xFF;
+	palette_pointer[4] = (eax >> 24) & 0xFF;
+	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
 }
 
 
@@ -1953,6 +1922,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	// 
 	uint16* current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
 	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+
+	uint8* palette_pointer = text_palette;
 
 	// Flag for skipping non-printing characters
 	int skip_char = 0;
@@ -1997,7 +1968,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 						skip_char = 0;
 					}
 				} else {
-					sub_682AC7(ebp, current_font_flags);
+					colour_char_window(ebp, current_font_flags, palette_pointer);
 				}
 			} else {
 				*current_font_flags |= 1;
@@ -2019,11 +1990,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
 				// Adjust text palette. Store current colour? ;
-				text_palette[1] = eax & 0xFF;
-				text_palette[2] = (eax >> 8) & 0xFF;
-				text_palette[3] = (eax >> 16) & 0xFF;
-				text_palette[4] = (eax >> 24) & 0xFF;
-				RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
+				palette_pointer[1] = eax & 0xFF;
+				palette_pointer[2] = (eax >> 8) & 0xFF;
+				palette_pointer[3] = (eax >> 16) & 0xFF;
+				palette_pointer[4] = (eax >> 24) & 0xFF;
+				RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
 				eax = 0;
 			}
 		}
@@ -2040,9 +2011,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			if (al < 0x20) {
 				// Control codes
 				skip_char = 0;
-			} else if (al >= 0x8E && al < 0x9C) {
+			} else if (al >= FORMAT_COLOUR_CODE_START && al <= FORMAT_COLOUR_CODE_END) {
 				// Colour codes
-				al -= 0x8E;
 				if (*current_font_flags == 1) {
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 						skip_char = 1;
@@ -2051,7 +2021,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					continue;
 				}
-				colour_char(al, current_font_flags);
+				colour_char(al - FORMAT_COLOUR_CODE_START, current_font_flags, palette_pointer);
 				continue;
 			} else {
 				continue;
@@ -2060,13 +2030,13 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 		// Control codes
 		switch (al) {
-		case CHAR_CONTROL_CODE_MOVE_X://Start New Line at start+buffer x, same y. (Overwrite?)
+		case FORMAT_MOVE_X://Start New Line at start+buffer x, same y. (Overwrite?)
 			al = *(buffer+1);
 			buffer++;
 			max_x = x;
 			max_x += al;
 			break;
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_1:
+		case FORMAT_ADJUST_PALETTE:
 			al = *(buffer + 1);
 			buffer++;
 			if (*current_font_flags & 1) {
@@ -2084,60 +2054,60 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			}
 
 			//Adjust the text palette
-			memcpy(&(text_palette[3]), &(g1_element->offset[0xF7]), 2);
-			memcpy(&(text_palette[5]), &(g1_element->offset[0xFA]), 2);
+			memcpy(palette_pointer + 3, &(g1_element->offset[0xF7]), 2);
+			memcpy(palette_pointer + 5, &(g1_element->offset[0xFA]), 2);
 			//Set the palette pointer
-			RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)text_palette;
+			RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
 
 
 			if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 				skip_char = 1;
 			}
 			break;
-		case CHAR_CONTROL_CODE_NEW_LINE_FIXED://Start New Line at set y lower
+		case FORMAT_NEWLINE://Start New Line at set y lower
 			max_x = x;
-			max_y += 0x0A;
-			if (*current_font_sprite_base <= 0x0E) {
+			if (*current_font_sprite_base <= 0xE0) {
+				max_y += 10;
 				break;
 			}
-			max_y -= 4;
-			if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 0x1C0) {
+				max_y += 6;
 				break;
 			}
-			max_y -= 0xFFF4;
+			max_y += 18;
 			break;
-		case CHAR_CONTROL_CODE_NEW_LINE_FIXED_SMALLER://Start New Line at set y lower
+		case FORMAT_NEWLINE_SMALLER://Start New Line at set y lower
 			max_x = x;
-			max_y += 5;
-			if (*current_font_sprite_base <= 0x0E) {
+			if (*current_font_sprite_base <= 0xE0) {
+				max_y += 5;
 				break;
 			}
-			max_y -= 2;
-			if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 0x1C0) {
+				max_y += 3;
 				break;
 			}
-			max_y -= 0xFFFA;//This does not look correct probably should be an add
+			max_y += 9;
 			break;
-		case CHAR_CONTROL_CODE_FONT_2:
+		case FORMAT_TINYFONT:
 			*current_font_sprite_base = 0x1C0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_3:
+		case FORMAT_BIGFONT:
 			*current_font_sprite_base = 0x2A0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_1:
+		case FORMAT_MEDIUMFONT:
 			*current_font_sprite_base = 0xE0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_0:
+		case FORMAT_SMALLFONT:
 			*current_font_sprite_base = 0;
 			break;
-		case CHAR_CONTROL_CODE_FONT_FLAG_SET_BIT_1:
+		case FORMAT_OUTLINE:
 			*current_font_flags |= 2;
 			break;
-		case CHAR_CONTROL_CODE_FONT_FLAG_CLEAR_BIT_1:
+		case FORMAT_OUTLINE_OFF:
 			*current_font_flags &= 0x0FFFD;
 			break;
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_2:
-			ebp = RCT2_GLOBAL(0x0141F740, uint8);
+		case FORMAT_WINDOW_COLOUR_1:
+			ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8);
 			if (*current_font_flags & 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
@@ -2147,10 +2117,10 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				}
 				break;
 			}
-			sub_682AC7(ebp, current_font_flags);
+			colour_char_window(ebp, current_font_flags, palette_pointer);
 			break;
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_3:
-			ebp = RCT2_GLOBAL(0x0141F741, uint8);
+		case FORMAT_WINDOW_COLOUR_2:
+			ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8);
 			if (*current_font_flags & 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
@@ -2160,10 +2130,10 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				}
 				break;
 			}
-			sub_682AC7(ebp, current_font_flags);
+			colour_char_window(ebp, current_font_flags, palette_pointer);
 			break;
-		case CHAR_CONTROL_CODE_ADJUST_PALETTE_4:
-			ebp = RCT2_GLOBAL(0x0141F742, uint8);
+		case FORMAT_WINDOW_COLOUR_3:
+			ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8);
 			if (*current_font_flags & 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
@@ -2173,9 +2143,9 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				}
 				break;
 			}
-			sub_682AC7(ebp, current_font_flags);
+			colour_char_window(ebp, current_font_flags, palette_pointer);
 			break;
-		case CHAR_CONTROL_CODE_NEW_LINE_X_Y: //Start new line at specified x,y
+		case FORMAT_NEWLINE_X_Y: //Start new line at specified x,y
 			eax = *((uint16*)(buffer+1));
 			buffer += 2;
 			max_x = x;
@@ -2183,7 +2153,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			max_y = y;
 			max_y += (eax & 0xFF00) >> 8;
 			break;
-		case CHAR_CONTROL_CODE_SPRITE:
+		case FORMAT_INLINE_SPRITE:
 			buffer += 4;
 			if (max_x >= dpi->x + dpi->width) {
 				skip_char = 1;
@@ -2199,7 +2169,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			break;
 		default:
 			// Colour codes
-			if ((al >= 0x8E) && (al < 0x9C)){
+			if ((al >= FORMAT_COLOUR_CODE_START) && (al <= FORMAT_COLOUR_CODE_END)){
 				
 				if (*current_font_flags == 1) {
 					if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
@@ -2209,7 +2179,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 					}
 					continue;
 				}
-				colour_char(al-0x8E, current_font_flags);
+				colour_char(al - FORMAT_COLOUR_CODE_START, current_font_flags, palette_pointer);
 				continue;
 			}
 				
@@ -2231,7 +2201,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 
 			RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 				
-			gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, max_y, RCT2_GLOBAL(0x9ABDA4, uint8*), NULL);
+			gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, max_y, palette_pointer, NULL);
 
 			continue;
 		} 
