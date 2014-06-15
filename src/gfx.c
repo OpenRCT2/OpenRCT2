@@ -772,8 +772,6 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 /*
 * rct2: 0x67AA18 transfers readied images onto buffers
 * This function copies the sprite data onto the screen
-* I think its only used for bitmaps onto buttons but i am not sure.
-* There is still a small bug with this code when it is in the choose park view.
 */
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level + 1;
@@ -991,7 +989,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 }
 
 /*
-* 0x67A46E
+* rct: 0x0067A46E
+* image_id (ebx) and also (0x00EDF81C)
+* palette_pointer (0x9ABDA4)
+* unknown_pointer (0x9E3CDC)
+* dpi (edi)
+* x (cx)
+* y (dx)
 */
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
 	int image_element = 0x7FFFF&image_id;
