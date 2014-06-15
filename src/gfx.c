@@ -2053,6 +2053,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				ebx = ebx & 0xFF;
 			}
 
+			palette_pointer[1] = ebx & 0xff;
+			palette_pointer[2] = (ebx >> 8) & 0xff;
 			//Adjust the text palette
 			memcpy(palette_pointer + 3, &(g1_element->offset[0xF7]), 2);
 			memcpy(palette_pointer + 5, &(g1_element->offset[0xFA]), 2);
