@@ -344,13 +344,40 @@ void rct2_endupdate()
  * 
  *  rct2: 0x00674E6C
  */
-char *get_file_path(int pathId)
+const char *get_file_path(int pathId)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	static char path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
 
-	ebx = pathId;
-	RCT2_CALLFUNC_X(0x00674E6C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return (char*)ebx;
+	// The original implementation has a check for 0x009AA0B1 here. That flag is set
+	// by check_file_path if the file cannot be found in its default location, but this
+	// only seems to be the case for versions that require a CD-ROM. Therefore it has
+	// been removed.
+	strcpy(path, gGeneral_config.game_path);
+
+	// Make sure base path is terminated with a slash
+	if (strlen(path) == 0 || path[strlen(path) - 1] != '\\')
+	{
+		if (strlen(path) >= MAX_PATH - 1)
+		{
+			RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+			path[0] = '\0';
+			return path;
+		}
+
+		strcat(path, "\\");
+	}
+
+	// Concatenate file path
+	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH)
+	{
+		RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+		path[0] = '\0';
+		return path;
+	}
+
+	strcat(path, file_paths[pathId]);
+
+	return path;
 }
 
 /**

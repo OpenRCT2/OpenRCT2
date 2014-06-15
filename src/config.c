@@ -125,7 +125,7 @@ void config_load()
 {
 	FILE *fp=NULL;
 
-	char* path = get_file_path(PATH_ID_GAMECFG);
+	const char *path = get_file_path(PATH_ID_GAMECFG);
 
 	fp = fopen(path, "rb");
 

@@ -158,12 +158,77 @@ enum {
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
 	PATH_ID_CSS46
+};
 
+static const char * const file_paths[] =
+{
+	"Data\\G1.DAT",
+	"Data\\PLUGIN.DAT",
+	"Data\\CSS1.DAT",
+	"Data\\CSS2.DAT",
+	"Data\\CSS4.DAT",
+	"Data\\CSS5.DAT",
+	"Data\\CSS6.DAT",
+	"Data\\CSS7.DAT",
+	"Data\\CSS8.DAT",
+	"Data\\CSS9.DAT",
+	"Data\\CSS10.DAT",
+	"Data\\CSS11.DAT",
+	"Data\\CSS12.DAT",
+	"Data\\CSS13.DAT",
+	"Data\\CSS14.DAT",
+	"Data\\CSS15.DAT",
+	"Data\\CSS16.DAT",
+	"Data\\CSS3.DAT",
+	"Data\\GAME.CFG",
+	"Data\\TUT640A.DAT",
+	"Data\\TUT640B.DAT",
+	"Data\\TUT640C.DAT",
+	"Data\\TUT800A.DAT",
+	"Data\\TUT800B.DAT",
+	"Data\\TUT800C.DAT",
+	"Data\\KANJI.DAT",
+	"Data\\CSS17.DAT",
+	"Data\\CSS18.DAT",
+	"Data\\CSS19.DAT",
+	"Data\\CSS20.DAT",
+	"Data\\CSS21.DAT",
+	"Data\\CSS22.DAT",
+	"Saved Games\\scores.DAT",
+	"Data\\CSS23.DAT",
+	"Data\\CSS24.DAT",
+	"Data\\CSS25.DAT",
+	"Data\\CSS26.DAT",
+	"Data\\CSS27.DAT",
+	"Data\\CSS28.DAT",
+	"Data\\CSS29.DAT",
+	"Data\\CSS30.DAT",
+	"Data\\CSS31.DAT",
+	"Data\\CSS32.DAT",
+	"Data\\CSS33.DAT",
+	"Data\\CSS34.DAT",
+	"Data\\CSS35.DAT",
+	"Data\\CSS36.DAT",
+	"Data\\CSS37.DAT",
+	"Data\\CSS38.DAT",
+	"Data\\CUSTOM1.WAV",
+	"Data\\CUSTOM2.WAV",
+	"Data\\CSS39.DAT",
+	"Data\\CSS40.DAT",
+	"Tracks\\Tracks.IDX",
+	"Data\\CSS41.DAT",
+	"Scenarios\\Six Flags Magic Mountain.SC6",
+	"Scenarios\\Build your own Six Flags Park.SC6",
+	"Data\\CSS42.DAT",
+	"Data\\CSS43.DAT",
+	"Data\\CSS44.DAT",
+	"Data\\CSS45.DAT",
+	"Data\\CSS46.DAT"
 };
 
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
-char *get_file_path(int pathId);
+const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
 void get_local_time();
