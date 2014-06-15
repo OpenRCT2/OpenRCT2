@@ -2035,14 +2035,10 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 		// Control codes
 		switch (al) {
 		case FORMAT_MOVE_X://Start New Line at start+buffer x, same y. (Overwrite?)
-			al = *(buffer+1);
-			buffer++;
-			max_x = x;
-			max_x += al;
+			max_x = x + *++buffer;
 			break;
 		case FORMAT_ADJUST_PALETTE:
-			al = *(buffer + 1);
-			buffer++;
+			al = *++buffer;
 			if (*current_font_flags & 1) {
 				if ((y + 0x13 <= dpi->y) || (dpi->y + dpi->height <= y)) {
 					skip_char = 1;
@@ -2152,12 +2148,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			colour_char_window(ebp, current_font_flags, palette_pointer);
 			break;
 		case FORMAT_NEWLINE_X_Y: //Start new line at specified x,y
-			eax = *((uint16*)(buffer+1));
-			buffer += 2;
-			max_x = x;
-			max_x += (eax & 0xFF);
-			max_y = y;
-			max_y += (eax & 0xFF00) >> 8;
+			max_x = x + *++buffer;
+			max_y = y + *++buffer;
 			break;
 		case FORMAT_INLINE_SPRITE:
 			buffer += 4;
