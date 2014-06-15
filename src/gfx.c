@@ -27,6 +27,7 @@
 #include "gfx.h"
 #include "rct2.h"
 #include "string_ids.h"
+#include "sprites.h"
 #include "window.h"
 #include "osinterface.h"
 
@@ -121,7 +122,7 @@ void gfx_load_character_widths(){
 	uint8* char_width_pointer = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
 		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
-			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + 0xF15 + char_set_offset];
+			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + SPR_CHAR_START + char_set_offset];
 			int width;
 
 			if (char_set_offset == 0xE0*3) width = g1.width + 1;
@@ -2191,16 +2192,12 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				max_x = max_x + (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[ebx] & 0xFF);
 				continue;
 			}
-			ebx = al-0x20 + *current_font_sprite_base;
 
-			ecx = max_x;
-			max_x += (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[ebx] & 0xFF);
-			ebx += 0xF15;
-
-			RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+			uint32 char_offset = al - 0x20 + *current_font_sprite_base;
+			RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
 				
-			gfx_draw_sprite_palette_set(dpi, 0x20000000 | ebx, ecx, max_y, palette_pointer, NULL);
-
+			gfx_draw_sprite_palette_set(dpi, (IMAGE_TYPE_USE_PALETTE << 28) | char_offset + SPR_CHAR_START, max_x, max_y, palette_pointer, NULL);
+			max_x += (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[char_offset] & 0xFF);
 			continue;
 		} 
 	}

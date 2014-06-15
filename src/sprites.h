@@ -29,6 +29,13 @@ enum {
 	SPR_HOT_AND_DRY = 3292,
 	SPR_COLD = 3293,
 
+	// This is the start of every character there are 
+	// 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
+	// 4 fonts
+	// = 896 sprites
+	SPR_CHAR_START = 3861,
+	SPR_CHAR_END = 4757,
+
 	SPR_RESIZE = 5058,
 
 	SPR_HEARING_VIEWPORT = 5166,
