@@ -216,8 +216,8 @@ void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 	int y, w, h;
 	char* ptr;
 
-	w = dpi->width >> dpi->var_0F;
-	h = dpi->height >> dpi->var_0F;
+	w = dpi->width >> dpi->zoom_level;
+	h = dpi->height >> dpi->zoom_level;
 
 	ptr = dpi->bits;
 	for (y = 0; y < h; y++) {
