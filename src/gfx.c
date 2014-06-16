@@ -1003,7 +1003,24 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	int image_type = (image_id & 0xE0000000) >> 28;
 	
 	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+	
+	if ( dpi->zoom_level && !(g1_source->flags & (1<<4)) ){
+		rct_drawpixelinfo zoomed_dpi = {
+			.bits = dpi->bits,
+			.x = dpi->x >> 1,
+			.y = dpi->y >> 1,
+			.height = dpi->height>>1,
+			.width = dpi->width>>1,
+			.pitch = dpi->pitch,
+			.zoom_level = dpi->zoomlevel - 1
+		};
+		gfx_draw_sprite_palette_set(&zoomed_dpi,(image_type << 28) | (image_element - dpi->zoom_level), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+		return;
+	}
 
+	if ( dpi->zoom_level && !(g1_source->flags & (1<<5)) ){
+		return;
+	}
 	//Zooming code has been integrated into main code.
 	/*if (dpi->zoom_level >= 1){ //These have not been tested
 		//something to do with zooming
