@@ -29,17 +29,41 @@ void reset_saved_strings();
 
 enum {
 	// Font format codes
-	FORMAT_TINYFONT = 7,
+
+	// The next byte specifies the X coordinate
+	FORMAT_MOVE_X = 1,
+	// The next byte specifies the palette
+	FORMAT_ADJUST_PALETTE,
+
+	// Moves to the next line
+	FORMAT_NEWLINE = 5,
+	// Moves less than NEWLINE
+	FORMAT_NEWLINE_SMALLER,
+
+	FORMAT_TINYFONT,
 	FORMAT_BIGFONT,
 	FORMAT_MEDIUMFONT,
 	FORMAT_SMALLFONT,
 
 	FORMAT_OUTLINE,
+	FORMAT_OUTLINE_OFF,
+
+	// Changes the colour of the text to a predefined window colour.
+	FORMAT_WINDOW_COLOUR_1,
+	FORMAT_WINDOW_COLOUR_2,
+	FORMAT_WINDOW_COLOUR_3,
+
+	// The next 2 bytes specify the X and Y coordinates
+	FORMAT_NEWLINE_X_Y = 17,
+
+	// The next 4 bytes specify the sprite
+	FORMAT_INLINE_SPRITE = 23,
 
 	// Non ascii-characters
 	FORMAT_ENDQUOTES = 34,
 
 	// Argument format codes
+	FORMAT_ARGUMENT_CODE_START = 123,
 	FORMAT_COMMA32 = 123,
 	FORMAT_INT32,
 	FORMAT_COMMA2DP32,
@@ -61,6 +85,7 @@ enum {
 	FORMAT_SPRITE,
 
 	// Colour format codes
+	FORMAT_COLOUR_CODE_START = 142,
 	FORMAT_BLACK = 142,
 	FORMAT_GREY,
 	FORMAT_WHITE,
@@ -75,6 +100,7 @@ enum {
 	FORMAT_LIGHTPINK,
 	FORMAT_PEARLAQUA,
 	FORMAT_PALESILVER,
+	FORMAT_COLOUR_CODE_END = FORMAT_PALESILVER,
 
 	// Extra non-ascii characters
 	FORMAT_AMINUSCULE = 159,
