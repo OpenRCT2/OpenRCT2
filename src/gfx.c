@@ -426,36 +426,28 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 			} else {
 				// 00678B7E   00678C83
-				if (dpi->zoom_level < 1) {
-					// Location in screen buffer?
-					uint8* pixel = top_ * (dpi->width + dpi->pitch) + left_ + dpi->bits;
+				// Location in screen buffer?
+				uint8* dest_pointer = (top_>>dpi->zoom_level) * ((dpi->width>>dpi->zoom_level) + dpi->pitch) + left_>>dpi->zoom_level + dpi->bits;
 
-					// Find colour in colour table?
-					uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
-					rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+				// Find colour in colour table?
+				uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
+				rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 
-					int length = (dpi->width + dpi->pitch) - right_;
-
-					// Fill the rectangle with the colours from the colour table
-					for (int i = 0; i < bottom_; ++i) {
-						for (int j = 0; j < right_; ++j) {
-							*pixel = *((uint8*)(&g1_element->offset[*pixel]));
-							pixel++;
-						}
-						pixel += length;
+				// Fill the rectangle with the colours from the colour table
+				for (int i = 0; i < bottom_>>dpi->zoom_level; ++i) {
+					uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+					for (int j = 0; j < right_; ++j) {
+						*dest_pointer = g1_element->offset[*dest_pointer];
+						dest_pointer++;
 					}
-				} else if (dpi->zoom_level > 1) {
-					// 00678C8A    00678D57
-					right_ = right;
-				} else if (dpi->zoom_level == 1) {
-					// 00678C88   00678CEE
-					right = right;
+					dest_pointer = next_dest_pointer;
 				}
-	
+				return;
 			}
 		} else {
-			// 00678B3A    00678EC9
+			// 00678B3A    00678EC9 still to be implemented
 			right_ = right;
+			return;
       }
   } else {
     // 00678B2E    00678BE5
