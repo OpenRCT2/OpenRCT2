@@ -413,7 +413,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 						for (int no_pixels = right_; no_pixels >=0; --no_pixels) {
 							if (!(pattern & (1 << pattern_x)))
-								*dest_pointer = (char*)(left_ & 0xFF); //left seems odd here
+								*dest_pointer = colour & 0xFF;
 		
 							pattern_x = (pattern_x + 1) % 15;
 							dest_pointer++;
