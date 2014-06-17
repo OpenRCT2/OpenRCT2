@@ -393,47 +393,33 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 					}
 				} else {
 					// 00678B8A   00678E38
-					char* esi;
-					esi = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
+					char* dest_pointer;
+					dest_pointer = (top_ * (dpi->width + dpi->pitch)) + left_ + dpi->bits;;
 
-					int eax, ebp;
-					eax = colour;
-					ebp = dpi->width + dpi->pitch - right_;
+					//The pattern loops every 15 lines this is which
+					//part the pattern is on.
+					int pattern_y = (top + dpi->y) % 15;
 
-					RCT2_GLOBAL(0x00EDF810, uint32) = ebp;
-					RCT2_GLOBAL(0x009ABDB2, uint16) = bottom_;
-					RCT2_GLOBAL(0x00EDF814, uint32) = right_;
+					//The pattern loops every 15 pixels this is which
+					//part the pattern is on.
+					int pattern_x = (right + dpi_->x) % 15;
 
-					top_ = (top + dpi->y) & 0xf;
-					right_ = (right + dpi_->x) &0xf;
+					uint16* pattern_pointer;
+					pattern_pointer = (uint16*)RCT2_GLOBAL(0x0097FEFC,uint32)[colour >> 28]; // or possibly uint8)[esi*4] ?
 
-					dpi_ = (rct_drawpixelinfo*)esi;
+					for (int no_lines = bottom_; no_lines > 0; no_lines--) {
+						char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+						uint16 pattern = pattern_pointer[pattern_y]; 
 
-					esi = (char*)(eax >> 0x1C);
-					esi = (char*)RCT2_GLOBAL(0x0097FEFC,uint32)[esi]; // or possibly uint8)[esi*4] ?
-
-					for (; RCT2_GLOBAL(0x009ABDB2, uint16) > 0; RCT2_GLOBAL(0x009ABDB2, uint16)--) {
-						// push    ebx
-						// push    ecx
-						ebp = *(esi + top_*2);
-					     
-						// mov     bp, [esi+top_*2];
-						int ecx;
-						ecx = RCT2_GLOBAL(0x00EDF814, uint32);
-
-						for (int i = ecx; i >=0; --i) {
-							if (!(ebp & (1 << right_)))
-								dpi_->bits = (char*)(left_ & 0xFF);
+						for (int no_pixels = right_; no_pixels >=0; --no_pixels) {
+							if (!(pattern & (1 << pattern_x)))
+								*dest_pointer = (char*)(left_ & 0xFF); //left seems odd here
 		
-							right_++;
-							right_ = right_ & 0xF;
-							dpi_++;
+							pattern_x = (pattern_x + 1) % 15;
+							dest_pointer++;
 						}
-						// pop     ecx
-						// pop     ebx
-						top_++;
-						top_ = top_ &0xf;
-						dpi_ += RCT2_GLOBAL(0x00EDF810, uint32);
+						pattern_y = (pattern_y + 1) % 15;
+						dest_pointer = next_dest_pointer;
 					}
 					return;
 				}
