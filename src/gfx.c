@@ -922,7 +922,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax >>= 19;
 		//push edx/y
 		eax &= 0x1F;
-		ebp = RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32);
+		ebp = RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32); //ebp has not been set to anything before this! ??
+		//Possibly another variable input?!
 		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		ebp <<= 0x4;
 		eax <<= 0x4;
