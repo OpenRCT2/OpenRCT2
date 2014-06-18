@@ -356,126 +356,127 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 	colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
 
-	if (!(colour & 0x8000000)) {
-		uint16 cross_pattern = 0;
+	uint16 cross_pattern = 0;
 
-		int start_x = left - dpi->x;
-		if (start_x < 0){
-			start_x = 0;
-			cross_pattern ^= start_x;
-		}
+	int start_x = left - dpi->x;
+	if (start_x < 0){
+		start_x = 0;
+		cross_pattern ^= start_x;
+	}
 
-		int end_x = right - dpi->x;
-		end_x++;
-		if (end_x > dpi->width)
-			end_x = dpi->width;
+	int end_x = right - dpi->x;
+	end_x++;
+	if (end_x > dpi->width)
+		end_x = dpi->width;
 
-		int width = end_x - start_x;
+	int width = end_x - start_x;
 
-		int start_y = top - dpi->y;
-		if (start_y < 0){
-			start_y = 0;
-			cross_pattern ^= start_y;
-		}
-		int end_y = bottom - dpi->y;
-		end_y++;
+	int start_y = top - dpi->y;
+	if (start_y < 0){
+		start_y = 0;
+		cross_pattern ^= start_y;
+	}
+	int end_y = bottom - dpi->y;
+	end_y++;
 
-		if (end_y > dpi->height)
-			end_y = dpi->height;
+	if (end_y > dpi->height)
+		end_y = dpi->height;
 
-		int height = end_y - start_y;
-		if (colour&0x1000000){
-			// 00678B2E    00678BE5
-			//Cross hatching
-			uint8* dest_pointer = (start_y * (dpi->width + dpi->pitch)) + start_x + dpi->bits;
-		
-			uint32 ecx;
-			for (int i = 0; i < height; ++i) {
-				uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
-				ecx = cross_pattern;
-				// Rotate right
-				ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
-				ecx = (ecx & 0xFFFF0000) | width; 
-				// Fill every other pixel with the colour
-				for (; (ecx & 0xFFFF) > 0; ecx--) {
-					ecx = ecx ^ 0x80000000;
-					if ((int)ecx < 0) {
-						*dest_pointer = colour & 0xFF;
-					}
-					dest_pointer++;
-				}
-				cross_pattern ^= 1;
-				dest_pointer = next_dest_pointer;
-				
-			}
-		}
-		if (!(colour & 0x2000000)) {
-			if (!(colour & 0x4000000)) {
-				uint8* dest_pointer = start_y * (dpi->width + dpi->pitch) + start_x + dpi->bits;
-
-				for (int i = 0; i < height; ++i) {
-					memset(dest_pointer, (colour & 0xFF), width);
-					dest_pointer += dpi->width + dpi->pitch;
-				}
-				return;
-			} else {
-				// 00678B8A   00678E38
-				char* dest_pointer;
-				dest_pointer = start_y * (dpi->width + dpi->pitch) + start_x + dpi->bits;
-
-				//The pattern loops every 15 lines this is which
-				//part the pattern is on.
-				int pattern_y = (top + dpi->y) % 15;
-
-				//The pattern loops every 15 pixels this is which
-				//part the pattern is on.
-				int pattern_x = (right + dpi_->x) % 15;
-
-				uint16* pattern_pointer;
-				pattern_pointer = (uint16*)RCT2_GLOBAL(0x0097FEFC,uint32)[colour >> 28]; // or possibly uint8)[esi*4] ?
-
-				for (int no_lines = height; no_lines > 0; no_lines--) {
-					char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
-					uint16 pattern = pattern_pointer[pattern_y]; 
-
-					for (int no_pixels = width; no_pixels >=0; --no_pixels) {
-						if (!(pattern & (1 << pattern_x)))
-							*dest_pointer = colour & 0xFF;
+	int height = end_y - start_y;
+	if (colour&0x1000000){
+		// 00678B2E    00678BE5
+		//Cross hatching
+		uint8* dest_pointer = (start_y * (dpi->width + dpi->pitch)) + start_x + dpi->bits;
 	
-						pattern_x = (pattern_x + 1) % 15;
-						dest_pointer++;
-					}
-					pattern_y = (pattern_y + 1) % 15;
-					dest_pointer = next_dest_pointer;
+		uint32 ecx;
+		for (int i = 0; i < height; ++i) {
+			uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			ecx = cross_pattern;
+			// Rotate right
+			ecx = (ecx >> 1) | (ecx << (sizeof(ecx) * CHAR_BIT - 1));
+			ecx = (ecx & 0xFFFF0000) | width; 
+			// Fill every other pixel with the colour
+			for (; (ecx & 0xFFFF) > 0; ecx--) {
+				ecx = ecx ^ 0x80000000;
+				if ((int)ecx < 0) {
+					*dest_pointer = colour & 0xFF;
 				}
-				return;
+				dest_pointer++;
 			}
-
-		} else {
-			// 00678B7E   00678C83
-			// Location in screen buffer?
-			uint8* dest_pointer = (start_y>>dpi->zoom_level) * ((dpi->width>>dpi->zoom_level) + dpi->pitch) + start_x>>dpi->zoom_level + dpi->bits;
-
-			// Find colour in colour table?
-			uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
-			rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
-
-			// Fill the rectangle with the colours from the colour table
-			for (int i = 0; i < height>>dpi->zoom_level; ++i) {
-				uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
-				for (int j = 0; j < width; ++j) {
-					*dest_pointer = g1_element->offset[*dest_pointer];
-					dest_pointer++;
-				}
-				dest_pointer = next_dest_pointer;
-			}
-			return;
+			cross_pattern ^= 1;
+			dest_pointer = next_dest_pointer;
+			
 		}
-	} else {
+		return;
+	}
+	if (colour & 0x2000000){
+		//0x2000000
+		// 00678B7E   00678C83
+		// Location in screen buffer?
+		uint8* dest_pointer = (start_y>>dpi->zoom_level) * ((dpi->width>>dpi->zoom_level) + dpi->pitch) + start_x>>dpi->zoom_level + dpi->bits;
+
+		// Find colour in colour table?
+		uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
+		rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+
+		// Fill the rectangle with the colours from the colour table
+		for (int i = 0; i < height>>dpi->zoom_level; ++i) {
+			uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			for (int j = 0; j < width; ++j) {
+				*dest_pointer = g1_element->offset[*dest_pointer];
+				dest_pointer++;
+			}
+			dest_pointer = next_dest_pointer;
+		}
+		return;
+	}
+	if (colour & 0x4000000){
+		//0x4000000
+		// 00678B8A   00678E38
+		char* dest_pointer;
+		dest_pointer = start_y * (dpi->width + dpi->pitch) + start_x + dpi->bits;
+
+		//The pattern loops every 15 lines this is which
+		//part the pattern is on.
+		int pattern_y = (top + dpi->y) % 15;
+
+		//The pattern loops every 15 pixels this is which
+		//part the pattern is on.
+		int pattern_x = (right + dpi_->x) % 15;
+
+		uint16* pattern_pointer;
+		pattern_pointer = (uint16*)RCT2_GLOBAL(0x0097FEFC,uint32)[colour >> 28]; // or possibly uint8)[esi*4] ?
+
+		for (int no_lines = height; no_lines > 0; no_lines--) {
+			char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			uint16 pattern = pattern_pointer[pattern_y]; 
+
+			for (int no_pixels = width; no_pixels >=0; --no_pixels) {
+				if (!(pattern & (1 << pattern_x)))
+					*dest_pointer = colour & 0xFF;
+
+				pattern_x = (pattern_x + 1) % 15;
+				dest_pointer++;
+			}
+			pattern_y = (pattern_y + 1) % 15;
+			dest_pointer = next_dest_pointer;
+		}
+		return;
+	}
+	if (colour & 0x8000000){
+		//0x8000000
 		// 00678B3A    00678EC9 still to be implemented
+		//RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 		right_ = right;
 		return;
-      	}
+	}
+	//0x0000000
+	uint8* dest_pointer = start_y * (dpi->width + dpi->pitch) + start_x + dpi->bits;
+
+	for (int i = 0; i < height; ++i) {
+		memset(dest_pointer, (colour & 0xFF), width);
+		dest_pointer += dpi->width + dpi->pitch;
+	}
 	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
 
