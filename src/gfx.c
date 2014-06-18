@@ -1121,25 +1121,21 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
  */
 void gfx_transpose_palette(int pal, unsigned char product)
 {
-	int eax, ebx, ebp;
-	uint8* esi, *edi;
+	rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[pal];
+	int width = g1.width;
+	int x = g1.x_offset;  
+	uint8* dest_pointer = RCT2_ADDRESS(0x014124680,uint8)[x];
+	uint8* source_pointer = g1.offset;
 
-	ebx = pal * 16;
-	esi = (uint8*)(*((int*)(RCT2_ADDRESS_G1_ELEMENTS + ebx)));
-	ebp = *((short*)(0x009EBD2C + ebx));
-	eax = *((short*)(0x009EBD30 + ebx)) * 4;
-	edi = (uint8*)0x01424680 + eax;
-
-	for (; ebp > 0; ebp--) {
-		edi[0] = (esi[0] * product) >> 8;
-		edi[1] = (esi[1] * product) >> 8;
-		edi[2] = (esi[2] * product) >> 8;
-		esi += 3;
-		edi += 4;
+	for (; width > 0; width--) {
+		dest_pointer[0] = (source_pointer[0] * product) >> 8;
+		dest_pointer[1] = (source_pointer[1] * product) >> 8;
+		dest_pointer[2] = (source_pointer[2] * product) >> 8;
+		source_pointer += 3;
+		dest_pointer += 4;
 	}
-	osinterface_update_palette((char*)0x01424680, 10, 236);
+	osinterface_update_palette((char*)0x01424680, 10, 236);//Odd would have expected dest_pointer
 }
-
 /**
  * Draws i formatted text string centred at i specified position.
  *  rct2: 0x006C1D6C
