@@ -467,7 +467,59 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		//0x8000000
 		// 00678B3A    00678EC9 still to be implemented
 		//RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
-		right_ = right;
+		esi = left - RCT2_GLOBAL(0x1420070,sint16);
+		RCT2_GLOBAL(0xEDF824,uint32) = esi;
+		esi = top - RCT2_GLOBAL(0x1420072,sint16);
+		RCT2_GLOBAL(0xEDF828,uint32) = esi;
+		left -= dpi->x;//0x4
+		if ( left < 0 ){
+			RCT2_GLOBAL(0xEDF824,sint32) -= left;
+			left = 0; 
+		}
+		right -= dpi->x;
+		right++;
+		if ( right > dpi->width ){
+			right = dpi->width
+		}
+		right -= left;
+		top -= dpi->y;
+		if ( top < 0 ){
+			RCT2_GLOBAL(0xEDF828,sint32) -= top;
+			top = 0;
+		}
+		bottom -= dpi->y;
+		bottom++;
+		if (bottom > dpi->height){
+			bottom = dpi->height;
+		}
+		bottom -= top;
+		RCT2_GLOBAL(0xEDF824,sint32) &= 0x3F;
+		RCT2_GLOBAL(0xEDF828,sint32) &= 0x3F;
+		esi = dpi->width;
+		esi += dpi->pitch;
+		esi *= top;
+		esi += left;
+		esi += dpi->bits;
+		RCT2_GLOBAL(0xEDF82C,sint32) = right;
+		RCT2_GLOBAL(0xEDF830,sint32) = bottom;
+		left = dpi->width;
+		left+= dpi->pitch;
+		left-= right;
+		RCT2_GLOBAL(0xEDF834,sint32) = left;
+		colour &= 0xFF;
+		colour--;
+		right = colour;
+		colour <<= 8;
+		right |= colour;
+		RCT2_GLOBAL(0xEDF838,sint32) = right;
+		//right <<= 4;
+		int edi = esi;
+		esi = RCT2_GLOBAL(0xEDF828,sint32);
+		esi *= 0x40;
+		left = 0;
+		esi += RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS,rct_g1_element)[right];//???
+		//Not finished
+		//Start of loop
 		return;
 	}
 	//0x0000000
