@@ -230,7 +230,12 @@ void subsitute_path(char *dest, const char *path, const char *filename)
 // rct2: 0x00674B42
 void rct2_startup_checks()
 {
-	// check if game is already running
+	// Check if game is already running
+	if (check_mutex())
+	{
+		RCT2_ERROR("Game is already running");
+		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xB2B, 0, 0, 0, 0, 0); // exit_with_error
+	}
 
 	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
 }
@@ -301,6 +306,24 @@ void check_cmdline_arg()
 	{
 		//TODO: track design install
 	}
+}
+
+// rct2: 0x00407DB0
+int check_mutex()
+{
+	const char * const mutex_name = "RollerCoaster Tycoon 2_GSKMUTEX"; // rct2 @ 0x009AAC3D + 0x009A8B50
+
+	HANDLE mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, mutex_name);
+
+	if (mutex != NULL)
+	{
+		// Already running
+		CloseHandle(mutex);
+		return 1;
+	}
+
+	HANDLE status = CreateMutex(NULL, FALSE, mutex_name);
+	return 0;
 }
 
 void rct2_update_2()

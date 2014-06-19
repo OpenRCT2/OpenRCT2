@@ -228,6 +228,7 @@ static const char * const file_paths[] =
 
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
+int check_mutex();
 const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
