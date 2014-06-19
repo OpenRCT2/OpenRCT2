@@ -69,6 +69,46 @@ uint8 text_palette[0x8] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+// Previously 0x97FCBC use it to get the correct palette from g1_elements
+uint16 palette_to_g1_offset[] = {
+	0x1333, 0x1334, 0x1335, 0x1336,
+	0x1337, 0x1338, 0x1339, 0x133A,
+	0x133B, 0x133C, 0x133D, 0x133E,
+	0x133F, 0x1340, 0x1341, 0x1342,
+	0x1343, 0x1344, 0x1345, 0x1346,
+	0x1347, 0x1348, 0x1349, 0x134A,
+	0x134B, 0x134C, 0x134D, 0x134E,
+	0x134F, 0x1350, 0x1351, 0x1352,
+	0x1353, 0x0C1C, 0x0C1D, 0x0C1E,
+	0x0C1F, 0x0C20, 0x0C22, 0x0C23,
+	0x0C24, 0x0C25, 0x0C26, 0x0C21,
+	0x1354, 0x1355, 0x1356, 0x1357,
+	0x1358, 0x1359, 0x135A, 0x135B,
+	0x135C, 0x135D, 0x135E, 0x135F,
+	0x1360, 0x1361, 0x1362, 0x1363,
+	0x1364, 0x1365, 0x1366, 0x1367,
+	0x1368, 0x1369, 0x136A, 0x136B,
+	0x136C, 0x136D, 0x136E, 0x136F,
+	0x1370, 0x1371, 0x1372, 0x1373,
+	0x1374, 0x1375, 0x1376, 0x1377,
+	0x1378, 0x1379, 0x137A, 0x137B,
+	0x137C, 0x137D, 0x137E, 0x137F,
+	0x1380, 0x1381, 0x1382, 0x1383,
+	0x1384, 0x1385, 0x1386, 0x1387,
+	0x1388, 0x1389, 0x138A, 0x138B,
+	0x138C, 0x138D, 0x138E, 0x138F,
+	0x1390, 0x1391, 0x1392, 0x1393,
+	0x1394, 0x1395, 0x1396, 0x1397,
+	0x1398, 0x1399, 0x139A, 0x139B,
+	0x139C, 0x139D, 0x139E, 0x139F,
+	0x13A0, 0x13A1, 0x13A2, 0x13A3,
+	0x13A4, 0x13A5, 0x13A6, 0x13A7,
+	0x13A8, 0x13A9, 0x13AA, 0x13AB,
+	0x13AC, 0x13AD, 0x13AE, 0x13AF,
+	0x13B0, 0x13B1, 0x13B2, 0x13B3,
+	0x13B4, 0x13B5, 0x13B6, 0x13B7,
+};
+
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 
 /**
@@ -413,17 +453,17 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		//0x2000000
 		// 00678B7E   00678C83
 		// Location in screen buffer?
-		uint8* dest_pointer = dpi->bits + (uint32)((start_y>>(dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (start_x >> dpi->zoom_level));
+		uint8* dest_pointer = dpi->bits + (uint32)((start_y >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (start_x >> dpi->zoom_level));
 
 		// Find colour in colour table?
-		uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
-		rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+		uint16 eax = palette_to_g1_offset[(colour & 0xFF)];
+		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax];
 
 		// Fill the rectangle with the colours from the colour table
 		for (int i = 0; i < height>>dpi->zoom_level; ++i) {
-			uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			uint8* next_dest_pointer = dest_pointer + (dpi->width >> dpi->zoom_level) + dpi->pitch;
 			for (int j = 0; j < width; ++j) {
-				*dest_pointer = g1_element->offset[*dest_pointer];
+				*dest_pointer = g1_element.offset[*dest_pointer];
 				dest_pointer++;
 			}
 			dest_pointer = next_dest_pointer;
@@ -438,27 +478,29 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 		//The pattern loops every 15 lines this is which
 		//part the pattern is on.
-		int pattern_y = (top + dpi->y) % 15;
+		int pattern_y = (start_y + dpi->y) % 16;
 
 		//The pattern loops every 15 pixels this is which
 		//part the pattern is on.
-		int pattern_x = (right + dpi_->x) % 15;
+		int start_pattern_x = (start_x + dpi_->x) % 16;
+		int pattern_x = start_pattern_x;
 
 		uint16* pattern_pointer;
-		pattern_pointer = (uint16*)(&RCT2_ADDRESS(0x0097FEFC,uint16)[colour >> 28]); // or possibly uint8)[esi*4] ?
+		pattern_pointer = RCT2_ADDRESS(0x0097FEFC,uint16*)[colour >> 28]; // or possibly uint8)[esi*4] ?
 
 		for (int no_lines = height; no_lines > 0; no_lines--) {
 			char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
 			uint16 pattern = pattern_pointer[pattern_y]; 
 
-			for (int no_pixels = width; no_pixels >=0; --no_pixels) {
-				if (!(pattern & (1 << pattern_x)))
+			for (int no_pixels = width; no_pixels > 0; --no_pixels) {
+				if (pattern & (1 << pattern_x))
 					*dest_pointer = colour & 0xFF;
 
-				pattern_x = (pattern_x + 1) % 15;
+				pattern_x = (pattern_x + 1) % 16;
 				dest_pointer++;
 			}
-			pattern_y = (pattern_y + 1) % 15;
+			pattern_x = start_pattern_x;
+			pattern_y = (pattern_y + 1) % 16;
 			dest_pointer = next_dest_pointer;
 		}
 		return;
@@ -908,7 +950,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 			eax >>= 19;
 			eax &= 0x7F;
 		}
-		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
+		eax = palette_to_g1_offset[eax];// RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 
 		palette_pointer = ((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[eax].offset;
 		RCT2_GLOBAL(0x9ABDA4, uint32) = (uint32)palette_pointer;
@@ -922,9 +964,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		eax >>= 19;
 		//push edx/y
 		eax &= 0x1F;
-		ebp = RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32); //ebp has not been set to anything before this! ??
+		ebp = palette_to_g1_offset[ebp]; //RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32); //ebp has not been set to anything before this! ??
 		//Possibly another variable input?!
-		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
+		eax = palette_to_g1_offset[eax]; //RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		ebp <<= 0x4;
 		eax <<= 0x4;
 		ebp = RCT2_GLOBAL(ebp + RCT2_ADDRESS_G1_ELEMENTS, uint32);
@@ -950,7 +992,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
 		image_id |= IMAGE_TYPE_USE_PALETTE;
 
-		eax = RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
+		eax = palette_to_g1_offset[eax]; //RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 		eax <<= 4;
 		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
 		edx = *((uint32*)(eax + 0xF3));
@@ -973,13 +1015,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 
 		//Top
 		int top_type = (image_id >> 19) & 0x1f;
-		uint32 top_offset = RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
+		uint32 top_offset = palette_to_g1_offset[top_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
 		rct_g1_element top_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[top_offset];
 		memcpy(palette + 0xF3, top_palette.offset + 0xF3, 12);
 		
 		//Trousers
 		int trouser_type = (image_id >> 24) & 0x1f;
-		uint32 trouser_offset = RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
+		uint32 trouser_offset = palette_to_g1_offset[trouser_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
 		rct_g1_element trouser_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[trouser_offset];
 		memcpy(palette + 0xCA, trouser_palette.offset + 0xF3, 12);
 
@@ -2061,7 +2103,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				}
 			}
 
-			eax = RCT2_ADDRESS(0x097FCBC, uint32)[al * 4];
+			eax = palette_to_g1_offset[al]; //RCT2_ADDRESS(0x097FCBC, uint32)[al * 4];
 			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 			ebx = g1_element->offset[0xF9] + (1 << 8);
 			if (!(*current_font_flags & 2)) {
