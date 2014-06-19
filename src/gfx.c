@@ -413,17 +413,17 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		//0x2000000
 		// 00678B7E   00678C83
 		// Location in screen buffer?
-		uint8* dest_pointer = dpi->bits + (uint32)((start_y>>(dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (start_x >> dpi->zoom_level));
+		uint8* dest_pointer = dpi->bits + (uint32)((start_y >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (start_x >> dpi->zoom_level));
 
 		// Find colour in colour table?
 		uint32 eax = RCT2_ADDRESS(0x0097FCBC, uint32)[(colour & 0xFF)];
-		rct_g1_element* g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax];
 
 		// Fill the rectangle with the colours from the colour table
 		for (int i = 0; i < height>>dpi->zoom_level; ++i) {
-			uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			uint8* next_dest_pointer = dest_pointer + (dpi->width >> dpi->zoom_level) + dpi->pitch;
 			for (int j = 0; j < width; ++j) {
-				*dest_pointer = g1_element->offset[*dest_pointer];
+				*dest_pointer = g1_element.offset[*dest_pointer];
 				dest_pointer++;
 			}
 			dest_pointer = next_dest_pointer;
@@ -438,27 +438,29 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 
 		//The pattern loops every 15 lines this is which
 		//part the pattern is on.
-		int pattern_y = (top + dpi->y) % 15;
+		int pattern_y = (start_y + dpi->y) % 16;
 
 		//The pattern loops every 15 pixels this is which
 		//part the pattern is on.
-		int pattern_x = (right + dpi_->x) % 15;
+		int start_pattern_x = (start_x + dpi_->x) % 16;
+		int pattern_x = start_pattern_x;
 
 		uint16* pattern_pointer;
-		pattern_pointer = (uint16*)(&RCT2_ADDRESS(0x0097FEFC,uint16)[colour >> 28]); // or possibly uint8)[esi*4] ?
+		pattern_pointer = RCT2_ADDRESS(0x0097FEFC,uint16*)[colour >> 28]; // or possibly uint8)[esi*4] ?
 
 		for (int no_lines = height; no_lines > 0; no_lines--) {
 			char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
 			uint16 pattern = pattern_pointer[pattern_y]; 
 
-			for (int no_pixels = width; no_pixels >=0; --no_pixels) {
-				if (!(pattern & (1 << pattern_x)))
+			for (int no_pixels = width; no_pixels > 0; --no_pixels) {
+				if (pattern & (1 << pattern_x))
 					*dest_pointer = colour & 0xFF;
 
-				pattern_x = (pattern_x + 1) % 15;
+				pattern_x = (pattern_x + 1) % 16;
 				dest_pointer++;
 			}
-			pattern_y = (pattern_y + 1) % 15;
+			pattern_x = start_pattern_x;
+			pattern_y = (pattern_y + 1) % 16;
 			dest_pointer = next_dest_pointer;
 		}
 		return;
