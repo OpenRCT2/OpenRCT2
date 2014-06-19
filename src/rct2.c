@@ -237,7 +237,9 @@ void rct2_startup_checks()
 		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xB2B, 0, 0, 0, 0, 0); // exit_with_error
 	}
 
-	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
+	// Check data files
+	// TODO: implement check_file_paths @ 0x00674C95
+	check_files_integrity();
 }
 
 void rct2_update()
@@ -324,6 +326,30 @@ int check_mutex()
 
 	HANDLE status = CreateMutex(NULL, FALSE, mutex_name);
 	return 0;
+}
+
+// rct2: 0x00674C0B
+void check_files_integrity()
+{
+	int i = 0;
+	while (files_to_check[i].path_id != PATH_ID_END)
+	{
+		WIN32_FIND_DATA find_data;
+		const char * path = get_file_path(files_to_check[i].path_id);
+		HANDLE file = FindFirstFile(path, &find_data);
+
+		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].file_size)
+		{
+			if (file != INVALID_HANDLE_VALUE)
+				FindClose(file);
+			RCT2_ERROR("Integrity check failed for %s", path);
+			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+		}
+
+		FindClose(file);
+
+		i += 1;
+	}
 }
 
 void rct2_update_2()

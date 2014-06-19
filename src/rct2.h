@@ -157,9 +157,11 @@ enum {
 	PATH_ID_CSS43,
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
-	PATH_ID_CSS46
+	PATH_ID_CSS46,
+	PATH_ID_END
 };
 
+// rct2 @ 0x0097F67C
 static const char * const file_paths[] =
 {
 	"Data\\G1.DAT",
@@ -226,9 +228,42 @@ static const char * const file_paths[] =
 	"Data\\CSS46.DAT"
 };
 
+// Files to check (rct2 @ 0x0097FB5A)
+static const struct file_to_check
+{
+	int path_id; // ID of file
+	unsigned int file_size; // Expected size in bytes
+} files_to_check[] = {
+	{ PATH_ID_CSS18,  8429568 },
+	{ PATH_ID_CSS19, 10143784 },
+	{ PATH_ID_CSS20, 12271656 },
+	{ PATH_ID_CSS21,  9680968 },
+	{ PATH_ID_CSS22, 10062056 },
+	{ PATH_ID_CSS23, 11067432 },
+	{ PATH_ID_CSS24, 12427456 },
+	{ PATH_ID_CSS25, 15181512 },
+	{ PATH_ID_CSS26, 10694816 },
+	{ PATH_ID_CSS27, 10421232 },
+	{ PATH_ID_CSS28, 13118376 },
+	{ PATH_ID_CSS29, 15310892 },
+	{ PATH_ID_CSS30, 10215464 },
+	{ PATH_ID_CSS31, 11510316 },
+	{ PATH_ID_CSS32, 11771944 },
+	{ PATH_ID_CSS33, 10759724 },
+	{ PATH_ID_CSS34, 14030716 },
+	{ PATH_ID_CSS35, 11642576 },
+	{ PATH_ID_CSS36,  8953764 },
+	{ PATH_ID_CSS37, 13303852 },
+	{ PATH_ID_CSS38, 10093888 },
+	{ PATH_ID_CSS39,  7531564 },
+	{ PATH_ID_CSS40,  5291306 },
+	{ PATH_ID_END,          0 }
+};
+
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
+void check_files_integrity();
 const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
