@@ -47,6 +47,7 @@
 #include "title.h"
 #include "track.h"
 #include "viewport.h"
+#include "sprite.h"
 
 typedef struct tm tm_t;
 
@@ -167,7 +168,8 @@ void rct2_init()
 	get_local_time();
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13); //Sprite list reset/load
+	reset_sprite_list();
+	//RCT2_CALLPROC_EBPSAFE(0x0069EB13); //Sprite list reset/load
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
