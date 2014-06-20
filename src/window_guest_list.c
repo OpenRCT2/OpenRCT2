@@ -715,7 +715,7 @@ static void window_guest_list_scrollpaint()
 						gfx_draw_sprite(dpi, 5129, 112, y);
 					
 					// Action
-					eax = peep->var_0A;
+					eax = peep->sprite_index;
 					RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 					ebx &= 0xFFFF;
 					ecx &= 0xFFFF;
@@ -829,7 +829,7 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
 
 	switch (_window_guest_list_selected_view) {
 	case VIEW_ACTIONS:
-		eax = peep->var_0A;
+		eax = peep->sprite_index;
 		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 		RCT2_GLOBAL(0x013CE952, uint16) = ecx & 0xFFFF;
 		RCT2_GLOBAL(0x013CE952 + 2, uint32) = edx;
@@ -894,7 +894,7 @@ static void window_guest_list_find_groups()
 		if (groupIndex >= 240)
 			break;
 
-		int ax = peep->var_0A;
+		int ax = peep->sprite_index;
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->var_0C &= ~(1 << 8);
