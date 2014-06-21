@@ -169,7 +169,6 @@ void rct2_init()
 	reset_park_entrances();
 	reset_saved_strings();
 	reset_sprite_list();
-	//RCT2_CALLPROC_EBPSAFE(0x0069EB13); //Sprite list reset/load
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?

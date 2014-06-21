@@ -154,7 +154,7 @@ void scenario_load(const char *path)
 
 			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 			map_update_tile_pointers();
-			RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+			reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 			return;
 		}
 

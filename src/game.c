@@ -32,6 +32,7 @@
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
+#include "sprite.h"
 #include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
@@ -1581,7 +1582,7 @@ int game_load_save()
 	// The rest is the same as in scenario load and play
 	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 	map_update_tile_pointers();
-	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
