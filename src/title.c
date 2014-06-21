@@ -192,7 +192,7 @@ static void title_update_showcase()
 				}
 
 				window_invalidate(w);
-				RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+				sub_0x0069E9A7();// RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 				window_new_ride_init_vars();
 				RCT2_CALLPROC_EBPSAFE(0x00684AC3);
 				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);

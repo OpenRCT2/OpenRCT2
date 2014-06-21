@@ -214,7 +214,7 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
-	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	sub_0x0069E9A7();// RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds

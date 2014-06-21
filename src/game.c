@@ -1608,7 +1608,7 @@ int game_load_save()
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
-	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	sub_0x0069E9A7(); 
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
@@ -1618,6 +1618,20 @@ int game_load_save()
 	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
 	gfx_invalidate_screen();
 	return 1;
+}
+
+/*
+ *
+ * rct2: 0x0069E9A7
+ */
+void sub_0x0069E9A7(){
+	//RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	//return;
+	for (rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite); spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; ++spr){
+		if (spr->unknown.sprite_identifier != 0xFF){
+			RCT2_CALLPROC_X(0x0069E9D3, spr->unknown.x, 0, spr->unknown.y, spr->unknown.z, (int)spr, 0, 0);
+		}
+	}
 }
 
 /**
