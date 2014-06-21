@@ -336,9 +336,8 @@ static void window_all_wheel_input()
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
 {
 	rct_window *w;
-
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW == &(RCT2_FIRST_WINDOW[12])) {
+	if (RCT2_NEW_WINDOW >= &(RCT2_FIRST_WINDOW[11])) {
 		// Close least recently used window
 		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_9)))
