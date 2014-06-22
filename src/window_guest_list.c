@@ -917,7 +917,7 @@ static void window_guest_list_find_groups()
 			// Get and check if in same group
 			// BUG this doesn't work!
 			bx = sub_69B7EA(peep2, &eax);
-			if ((bx != _window_guest_list_groups_argument_1[groupIndex] || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
+			if ((bx != (0xFFFF&_window_guest_list_groups_argument_1[groupIndex]) || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
 				continue;
 
 			// Assign guest
