@@ -23,6 +23,7 @@
 #include <time.h>
 #include "addresses.h"
 #include "config.h"
+#include "climate.h"
 #include "date.h"
 #include "game.h"
 #include "gfx.h"
@@ -33,6 +34,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "scenario.h"
+#include "sprite.h"
 #include "string_ids.h"
 #include "viewport.h"
 #include "editor.h"
@@ -95,20 +97,20 @@ void title_load()
 
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	sub_6BD3A4(); // RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
 	map_init();
 	park_init();
 	date_reset();
-	RCT2_CALLPROC_X(0x006C45ED, 0, 0, 0, 0, 0, 0, 0);
+	climate_reset(CLIMATE_COOL_AND_WET);
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_init_vars();
-	RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
-	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	map_update_tile_pointers(); //RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
+	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	viewport_init_all();
 	news_item_init_queue();
 	title_create_windows();
@@ -191,7 +193,7 @@ static void title_update_showcase()
 				}
 
 				window_invalidate(w);
-				RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+				sub_0x0069E9A7();// RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 				window_new_ride_init_vars();
 				RCT2_CALLPROC_EBPSAFE(0x00684AC3);
 				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);

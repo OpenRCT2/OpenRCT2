@@ -37,7 +37,7 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void reset_sprite_list(){
 	RCT2_GLOBAL(0x1388698, uint16) = 0;
-	memset((uint32*)RCT2_ADDRESS_SPRITE_LIST, 0, 0x9C400);
+	memset((rct_sprite*)RCT2_ADDRESS_SPRITE_LIST, 0, sizeof(rct_sprite)* 0x2710);
 
 	for (int i = 0; i < 6; ++i){
 		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[i] = -1;
@@ -67,5 +67,39 @@ void reset_sprite_list(){
 
 	RCT2_GLOBAL(0x13573C8, uint16) = 0x2710;
 
-	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();
+}
+
+/*
+ *
+ * rct: 0x0069EBE4
+ * This function looks as though it sets some sort of order for sprites.
+ * Sprites can share thier position if this is the case.
+ */
+void reset_0x69EBE4(){
+	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	//return;
+	memset((uint16*)0xF1EF60, -1, 0x10001*2);
+
+	rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+	for (; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++){
+
+		if (spr->unknown.sprite_identifier != 0xFF){
+			uint32 edi = spr->unknown.x;
+			if ((uint16)(spr->unknown.x) == SPRITE_LOCATION_NULL){
+				edi = 0x10000;
+			}
+			else{
+				int ecx = spr->unknown.y;
+				ecx >>= 5;
+				edi &= 0x1FE0;
+				edi <<= 3;
+				edi |= ecx;
+			}
+			uint16 ax = RCT2_ADDRESS(0xF1EF60,uint16)[edi];
+			RCT2_ADDRESS(0xF1EF60,uint16)[edi] = spr->unknown.sprite_index;
+			spr->unknown.var_02 = ax;
+		}
+	}
 }
