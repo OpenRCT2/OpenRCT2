@@ -777,7 +777,7 @@ static void window_guest_list_scrollpaint()
 				// Draw guest faces
 				numGuests = _window_guest_list_groups_num_guests[i];
 				for (j = 0; j < 56 && j < numGuests; j++)
-					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[numGuests * 56 + j] + 5486, j * 8, y + 9);
+					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9);
 
 				// Draw action
 				RCT2_GLOBAL(0x013CE952, uint16) = _window_guest_list_groups_argument_1[i] & 0xFFFF;
@@ -807,7 +807,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
-		
+
 	esi = (int)peep;
 	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ebx &= 0xFFFF;
@@ -823,6 +823,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	return 1;
 }
 
+/* Calculates a hash value for comparing peep actions/thoughts*/
 static int sub_69B7EA(rct_peep *peep, int *outEAX)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
@@ -916,7 +917,7 @@ static void window_guest_list_find_groups()
 			// Get and check if in same group
 			// BUG this doesn't work!
 			bx = sub_69B7EA(peep2, &eax);
-			if (bx != RCT2_GLOBAL(0x00F1EDF6, uint32) || (eax & 0xFFFF) != RCT2_GLOBAL(0x013CE952, uint16) || eax != RCT2_GLOBAL(0x013CE952 + 2, uint32))
+			if ((bx != _window_guest_list_groups_argument_1[groupIndex] || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
 				continue;
 
 			// Assign guest
@@ -963,8 +964,9 @@ static void window_guest_list_find_groups()
 			edx = _window_guest_list_groups_argument_2[edi];
 			_window_guest_list_groups_argument_2[edi] = temp;
 
+			temp = RCT2_ADDRESS(0x00F1AF26, uint8)[edi];
 			RCT2_ADDRESS(0x00F1AF26, uint8)[edi] = bl;
-			bl = RCT2_ADDRESS(0x00F1AF26, uint8)[edi];
+			bl = temp;
 		} while (++edi <= groupIndex);
 
 	nextPeep:
