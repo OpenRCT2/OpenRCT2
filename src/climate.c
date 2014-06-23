@@ -228,7 +228,7 @@ static void climate_update_thunder_sound()
 	if (_thunderStereoEcho) {
 		// Play thunder on right side
 		_thunderStereoEcho = 0;
-		climate_play_thunder(1, _thunderSoundId, _thunderVolume, 10000);
+		climate_play_thunder(1, _thunderSoundId == SOUND_THUNDER_1 ? SOUND_THUNDER_2 : SOUND_THUNDER_1, _thunderVolume, 10000);
 	} else if (_thunderTimer != 0) {
 		climate_update_lightning();
 		climate_update_thunder();
