@@ -283,9 +283,11 @@ static void climate_update_thunder()
 			_thunderStereoEcho = 1;
 		}
 	} else {
-		_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-		int pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
-		climate_play_thunder(0, _thunderSoundId, 0, pan);
+		if (_thunderStatus[0] == THUNDER_STATUS_NULL){
+			_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
+			int pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
+			climate_play_thunder(0, _thunderSoundId, 0, pan);
+		}
 	}
 }
 
