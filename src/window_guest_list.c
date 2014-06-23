@@ -802,15 +802,13 @@ static void window_guest_list_scrollpaint()
  */
 static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax, ebx;
 	char temp;
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
 
-	esi = (int)peep;
-	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	ebx &= 0xFFFF;
+	ebx = sub_69B7EA(peep, &eax);
 
 	_window_guest_list_selected_view = temp;
 	eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | ebx;
