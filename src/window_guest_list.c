@@ -777,7 +777,7 @@ static void window_guest_list_scrollpaint()
 				// Draw guest faces
 				numGuests = _window_guest_list_groups_num_guests[i];
 				for (j = 0; j < 56 && j < numGuests; j++)
-					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[numGuests * 56 + j] + 5486, j * 8, y + 9);
+					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9);
 
 				// Draw action
 				RCT2_GLOBAL(0x013CE952, uint16) = _window_guest_list_groups_argument_1[i] & 0xFFFF;
@@ -807,7 +807,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
-		
+
 	esi = (int)peep;
 	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ebx &= 0xFFFF;
@@ -823,6 +823,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	return 1;
 }
 
+/* Calculates a hash value for comparing peep actions/thoughts*/
 static int sub_69B7EA(rct_peep *peep, int *outEAX)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
@@ -914,9 +915,8 @@ static void window_guest_list_find_groups()
 				continue;
 
 			// Get and check if in same group
-			// BUG this doesn't work!
 			bx = sub_69B7EA(peep2, &eax);
-			if (bx != RCT2_GLOBAL(0x00F1EDF6, uint32) || (eax & 0xFFFF) != RCT2_GLOBAL(0x013CE952, uint16) || eax != RCT2_GLOBAL(0x013CE952 + 2, uint32))
+			if ((bx != (0xFFFF&_window_guest_list_groups_argument_1[groupIndex]) || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
 				continue;
 
 			// Assign guest
@@ -924,7 +924,7 @@ static void window_guest_list_find_groups()
 			peep2->var_0C &= ~(1 << 8);
 
 			// Add face sprite, cap at 56 though
-			if (_window_guest_list_groups_num_guests[groupIndex] < 56)
+			if (_window_guest_list_groups_num_guests[groupIndex] >= 56)
 				continue;
 			_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep2) - 5486;
 		}
@@ -934,38 +934,44 @@ static void window_guest_list_find_groups()
 			continue;
 		}
 
-		ax = _window_guest_list_groups_num_guests[groupIndex];
-		int edi = 0;
-
+		int curr_num_guests = _window_guest_list_groups_num_guests[groupIndex];
+		int swap_position = 0;
+		//This section places the groups in size order.
 		while (1) {
-			if (edi >= groupIndex)
+			if (swap_position >= groupIndex)
 				goto nextPeep;
-			if (ax > _window_guest_list_groups_num_guests[edi])
+			if (curr_num_guests > _window_guest_list_groups_num_guests[swap_position])
 				break;
-			edi++;
+			swap_position++;
 		}
 
-		int ecx = _window_guest_list_groups_argument_1[groupIndex];
-		int edx = _window_guest_list_groups_argument_2[groupIndex];
+		int argument_1 = _window_guest_list_groups_argument_1[groupIndex];
+		int argument_2 = _window_guest_list_groups_argument_2[groupIndex];
 		int bl = RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex];
 		int temp;
 
 		do {
-			temp = ax;
-			ax = _window_guest_list_groups_num_guests[edi];
-			_window_guest_list_groups_num_guests[edi] = temp;
+			temp = curr_num_guests;
+			curr_num_guests = _window_guest_list_groups_num_guests[swap_position];
+			_window_guest_list_groups_num_guests[swap_position] = temp;
 
-			temp = ecx;
-			ecx = _window_guest_list_groups_argument_1[edi];
-			_window_guest_list_groups_argument_1[edi] = temp;
+			temp = argument_1;
+			argument_1 = _window_guest_list_groups_argument_1[swap_position];
+			_window_guest_list_groups_argument_1[swap_position] = temp;
 
-			temp = edx;
-			edx = _window_guest_list_groups_argument_2[edi];
-			_window_guest_list_groups_argument_2[edi] = temp;
+			temp = argument_2;
+			argument_2 = _window_guest_list_groups_argument_2[swap_position];
+			_window_guest_list_groups_argument_2[swap_position] = temp;
 
-			RCT2_ADDRESS(0x00F1AF26, uint8)[edi] = bl;
-			bl = RCT2_ADDRESS(0x00F1AF26, uint8)[edi];
-		} while (++edi <= groupIndex);
+			uint8 temp_faces[56];
+			memcpy(temp_faces, &(_window_guest_list_groups_guest_faces[groupIndex*56]), 56);
+			memcpy(&(_window_guest_list_groups_guest_faces[groupIndex * 56]), &(_window_guest_list_groups_guest_faces[swap_position * 56]), 56);
+			memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
+
+			temp = RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position];
+			RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position] = bl;
+			bl = temp;
+		} while (++swap_position <= groupIndex);
 
 	nextPeep:
 		;
@@ -980,10 +986,10 @@ static int get_guest_face_sprite_small(rct_peep *peep)
 {
 	int sprite;
 	sprite = SPR_PEEP_SMALL_FACE_ANGRY;
-
+	
 	if (peep->var_F3) return sprite;
 	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_SICK;
-
+	
 	if (peep->nausea > 200) return sprite;
 	sprite--; //VERY_SICK
 

@@ -32,7 +32,7 @@
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
-	uint16 pad_02;
+	uint16 var_02;
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 var_08;
@@ -69,5 +69,6 @@ typedef union {
 
 void create_balloon(int x, int y, int z, int colour);
 void reset_sprite_list();
+void reset_0x69EBE4();
 
 #endif

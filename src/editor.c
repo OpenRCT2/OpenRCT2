@@ -32,6 +32,7 @@
 #include "viewport.h"
 #include "finance.h"
 #include "audio.h"
+#include "sprite.h"
 #include "string_ids.h"
 
 static void set_all_land_owned();
@@ -53,7 +54,7 @@ void editor_load()
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // sprites_init
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();
@@ -102,7 +103,7 @@ void trackdesigner_load()
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
+	reset_sprite_list(); 
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();
@@ -140,7 +141,7 @@ void trackmanager_load()
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13); // reset_sprites
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();
