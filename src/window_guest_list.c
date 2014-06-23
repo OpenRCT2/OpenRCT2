@@ -132,6 +132,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
+static int sub_69B7EA(rct_peep *peep, int *outEAX);
 
 /**
  * 
