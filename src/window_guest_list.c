@@ -477,7 +477,8 @@ static void window_guest_list_scrollmousedown()
 
 			if (i == 0) {
 				// Open guest window
-				RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
+				window_peep_open(peep);
+				
 				break;
 			} else {
 				i--;

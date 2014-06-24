@@ -23,6 +23,7 @@
 
 #include "gfx.h"
 #include "park.h"
+#include "peep.h"
 #include "rct2.h"
 
 struct rct_window;
@@ -354,6 +355,7 @@ void window_water_open();
 void window_guest_list_open();
 void window_map_open();
 void window_options_open();
+void window_peep_open(rct_peep* peep);
 void window_park_awards_open();
 void window_park_entrance_open();
 void window_park_guests_open();
