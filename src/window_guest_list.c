@@ -824,6 +824,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 /** 
  * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
+ * peep (esi)
  * argument_1 (0x013CE952)
  * argument_2 (0x013CE954)
  */
@@ -845,14 +846,10 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
 				RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 				*argument_1 = (*((uint16*)esi)<< 16) | (ebx & 0xFFFF);
-				*argument_2 = *((uint32*)(esi + 2);
+				*argument_2 = *((uint32*)(esi + 2));
 				return;
 			}
 		}
-
-		*argument_1 = 0;
-		*argument_2 = 0;
-		return;
 	}
 
 	*argument_1 = 0;
@@ -915,7 +912,7 @@ static void window_guest_list_find_groups()
 			int argument1, argument2;
 			// Get and check if in same group
 			get_arguments_from_peep(peep2, &argument1, &argument2);
-			if (argument1 != _window_guest_list_groups_argument_1[groupIndex] || argument2 != _window_guest_list_groups_argument_2[groupIndex] ))
+			if (argument1 != _window_guest_list_groups_argument_1[groupIndex] || argument2 != _window_guest_list_groups_argument_2[groupIndex] )
 				continue;
 
 			// Assign guest
