@@ -19,12 +19,14 @@
  *****************************************************************************/
 
 #include <string.h>
+#include <assert.h>
 #include "addresses.h"
 #include "game.h"
 #include "peep.h"
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "ride.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -132,6 +134,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
+static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
 
 /**
  * 
@@ -796,69 +799,227 @@ static void window_guest_list_scrollpaint()
 	}
 }
 
+
 /**
- * 
+ *  returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
 static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
 	char temp;
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
-
-	esi = (int)peep;
-	RCT2_CALLFUNC_X(0x0069B7EA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	ebx &= 0xFFFF;
+	int argument1, argument2;
+	get_arguments_from_peep(peep, &argument1, &argument2);
 
 	_window_guest_list_selected_view = temp;
-	eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | ebx;
 
 	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && _window_guest_list_selected_filter == 1)
-		eax |= 0xFFFF;
+		argument1 |= 0xFFFF;
 
-	if (eax == RCT2_GLOBAL(0x00F1EDF6, uint32) && RCT2_GLOBAL(0x013CE954, uint32) == RCT2_GLOBAL(0x00F1EDFA, uint32))
+	if (argument1 == RCT2_GLOBAL(0x00F1EDF6, uint32) && argument2 == RCT2_GLOBAL(0x00F1EDFA, uint32))
 		return 0;
 	return 1;
 }
 
-/* Calculates a hash value for comparing peep actions/thoughts*/
-static int sub_69B7EA(rct_peep *peep, int *outEAX)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+/**
+ * rct2: 0x00698342
+ * thought.item (eax)
+ * thought.type (ebx)
+ * argument_1 (esi & ebx)
+ * argument_2 (esi+2)
+ */
+void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
+	int esi = 0x9AC86C;
 
+	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
+		uint32 item = thought.item;
+		item *= 0x260;
+		esi = 0x1362942 + item;
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7C4;
+		}
+		else{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x82A;
+		}
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 4){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7FC;
+		}
+		else
+		{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x856;
+		}
+	}
+	else{
+		esi = 0x9AC864;
+	}	
+	*argument_1 = ((thought.type + 0x5C8) & 0xFFFF) | (*((uint16*)esi) << 16);
+	*argument_2 = *((uint32*)(esi+2));
+}
+
+/**
+* rct2: 0x00698B0D
+* peep.sprite_index (eax)
+* thought.type (ebx)
+* argument_1 (ecx & ebx)
+* argument_2 (edx)
+*/
+void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2){
+	rct_ride ride;
+
+	switch (peep->state){
+	case 0:
+		*argument_1 = peep->var_71 == 0xB ? 0x59A : 0x597;
+		*argument_2 = 0;
+		break;
+	case 1:
+		*argument_1 = 0x597;
+		*argument_2 = 0;
+		break;
+	case 3:
+	case 4:
+	case 7:
+		*argument_1 = 0x59B;
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride.type*8, uint32)& 0x400000){
+			(*argument_1)++;
+		}
+		*argument_1 |= (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x11:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x59D | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 5:
+	case 0x14:
+		if (peep->var_C5 != 0xFF){
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
+			*argument_1 = 0x598 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+		}
+		else{
+			*argument_1 = peep->flags & 1 ? 0x5A7 : 0x597;
+			*argument_2 = 0;
+		}
+		break;
+	case 2:
+	case 6:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x599 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 8:
+		*argument_1 = 0x59E;
+		*argument_2 = 0;
+		break;
+	case 0x12:
+		if (peep->current_ride != 0xFF){
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+			*argument_1 = 0x5A4 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+			if (peep->current_seat & 0x1)
+				*argument_1 = 0x5A5 | (ride.var_04A << 16);
+			else 
+				*argument_1 = 0x5A4 | (ride.var_04A << 16);
+		}
+		else{
+			*argument_1 = peep->current_seat & 0x1 ? 0x5A8 : 0x5A6;
+			*argument_2 = 0;
+		}
+		break;
+	case 9:
+		*argument_1 = 0x59F;
+		*argument_2 = 0;
+		break;	
+	case 0xA:
+	case 0xD:
+	case 0xE:
+		*argument_1 = 0x597;
+		*argument_2 = 0;
+		break;
+	case 0xB:
+		*argument_1 = 0x5A0;
+		*argument_2 = 0;
+		break;
+	case 0xC:
+		*argument_1 = 0x5A1;
+		*argument_2 = 0;
+		break;
+	case 0x15:
+		*argument_1 = 0x5A3;
+		*argument_2 = 0;
+		break;
+	case 0x13:
+		*argument_1 = 0x5A2;
+		*argument_2 = 0;
+		break;
+	case 0xF:
+		if (peep->pad_2C == 0){
+			*argument_1 = 0x597;
+			*argument_2 = 0;
+		}
+		else if (peep->pad_2C == 1){
+			*argument_1 = 0x703;
+			*argument_2 = 0;
+		}
+		else{
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+			*argument_1 = 0x700 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+		}
+		break;
+	case 0x10:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x702 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x16:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x701 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x17:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x75E | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	}
+	
+}
+
+
+/** 
+ * rct2:0x0069B7EA
+ * Calculates a hash value (arguments) for comparing peep actions/thoughts
+ * peep (esi)
+ * argument_1 (0x013CE952)
+ * argument_2 (0x013CE954)
+ */
+static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2)
+{
 	switch (_window_guest_list_selected_view) {
 	case VIEW_ACTIONS:
-		eax = peep->sprite_index;
-		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		RCT2_GLOBAL(0x013CE952, uint16) = ecx & 0xFFFF;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = edx;
-
-		*outEAX = eax;
-		return ebx & 0xFFFF;
+		get_arguments_from_action(peep, argument_1, argument_2);
+		break;
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
-			eax = peep->thoughts[0].item;
-			ebx = peep->thoughts[0].type;
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				RCT2_GLOBAL(0x013CE952, uint16) = *((uint16*)esi);
-				RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)(esi + 2));
-
-				*outEAX = eax;
-				return ebx & 0xFFFF;
+				get_argument_from_thought(peep->thoughts[0], argument_1, argument_2);
+				break;
 			}
 		}
-
-		RCT2_GLOBAL(0x013CE952, uint16) = 0;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = 0;
-
-		*outEAX = 0;
-		return 0;
+	default:
+		*argument_1 = 0;
+		*argument_2 = 0;
 	}
-
-	return 0;
+	return;
 }
 
 /**
@@ -899,12 +1060,11 @@ static void window_guest_list_find_groups()
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->var_0C &= ~(1 << 8);
-		int bx = sub_69B7EA(peep, &eax);
-		eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | bx;
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
-		_window_guest_list_groups_argument_1[groupIndex] = eax;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = RCT2_GLOBAL(0x013CE952 + 2, uint32);
-		_window_guest_list_groups_argument_2[groupIndex] = RCT2_GLOBAL(0x013CE952 + 2, uint32);
+		
+		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[groupIndex];
+		
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
@@ -914,9 +1074,10 @@ static void window_guest_list_find_groups()
 			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
+			int argument1, argument2;
 			// Get and check if in same group
-			bx = sub_69B7EA(peep2, &eax);
-			if ((bx != (0xFFFF&_window_guest_list_groups_argument_1[groupIndex]) || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
+			get_arguments_from_peep(peep2, &argument1, &argument2);
+			if (argument1 != _window_guest_list_groups_argument_1[groupIndex] || argument2 != _window_guest_list_groups_argument_2[groupIndex] )
 				continue;
 
 			// Assign guest
