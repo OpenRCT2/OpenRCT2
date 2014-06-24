@@ -132,7 +132,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
-static int sub_69B7EA(rct_peep *peep, int *outEAX);
+static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
 
 /**
  * 
@@ -797,33 +797,37 @@ static void window_guest_list_scrollpaint()
 	}
 }
 
+
 /**
- * 
+ *  returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
 static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 {
-	int eax, ebx;
 	char temp;
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
-
-	ebx = sub_69B7EA(peep, &eax);
+	int argument1, argument2;
+	get_arguments_from_peep(peep, &argument1, &argument2);
 
 	_window_guest_list_selected_view = temp;
-	eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | ebx;
 
 	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && _window_guest_list_selected_filter == 1)
-		eax |= 0xFFFF;
+		argument1 |= 0xFFFF;
 
-	if (eax == RCT2_GLOBAL(0x00F1EDF6, uint32) && RCT2_GLOBAL(0x013CE954, uint32) == RCT2_GLOBAL(0x00F1EDFA, uint32))
+	if (argument1 == RCT2_GLOBAL(0x00F1EDF6, uint32) && argument2 == RCT2_GLOBAL(0x00F1EDFA, uint32))
 		return 0;
 	return 1;
 }
 
-/* Calculates a hash value for comparing peep actions/thoughts*/
-static int sub_69B7EA(rct_peep *peep, int *outEAX)
+/** 
+ * rct2:0x0069B7EA
+ * Calculates a hash value (arguments) for comparing peep actions/thoughts
+ * argument_1 (0x013CE952)
+ * argument_2 (0x013CE954)
+ */
+static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
@@ -831,33 +835,29 @@ static int sub_69B7EA(rct_peep *peep, int *outEAX)
 	case VIEW_ACTIONS:
 		eax = peep->sprite_index;
 		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		RCT2_GLOBAL(0x013CE952, uint16) = ecx & 0xFFFF;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = edx;
-
-		*outEAX = eax;
-		return ebx & 0xFFFF;
+		*argument_1 = (ecx & 0xFFFF << 16) | (ebx & 0xFFFF);
+		*argument_2 = edx;
+		return;
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
 			eax = peep->thoughts[0].item;
 			ebx = peep->thoughts[0].type;
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
 				RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				RCT2_GLOBAL(0x013CE952, uint16) = *((uint16*)esi);
-				RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)(esi + 2));
-
-				*outEAX = eax;
-				return ebx & 0xFFFF;
+				*argument_1 = (*((uint16*)esi)<< 16) | (ebx & 0xFFFF);
+				*argument_2 = *((uint32*)(esi + 2);
+				return;
 			}
 		}
 
-		RCT2_GLOBAL(0x013CE952, uint16) = 0;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = 0;
-
-		*outEAX = 0;
-		return 0;
+		*argument_1 = 0;
+		*argument_2 = 0;
+		return;
 	}
 
-	return 0;
+	*argument_1 = 0;
+	*argument_2 = 0;
+	return;
 }
 
 /**
@@ -898,12 +898,11 @@ static void window_guest_list_find_groups()
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->var_0C &= ~(1 << 8);
-		int bx = sub_69B7EA(peep, &eax);
-		eax = (RCT2_GLOBAL(0x013CE952, uint16) << 16) | bx;
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
-		_window_guest_list_groups_argument_1[groupIndex] = eax;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = RCT2_GLOBAL(0x013CE952 + 2, uint32);
-		_window_guest_list_groups_argument_2[groupIndex] = RCT2_GLOBAL(0x013CE952 + 2, uint32);
+		
+		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[groupIndex];
+		
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_guest_face_sprite_small(peep) - 5486;
@@ -913,9 +912,10 @@ static void window_guest_list_find_groups()
 			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
+			int argument1, argument2;
 			// Get and check if in same group
-			bx = sub_69B7EA(peep2, &eax);
-			if ((bx != (0xFFFF&_window_guest_list_groups_argument_1[groupIndex]) || (RCT2_GLOBAL(0x00F1EDF8, uint16) != RCT2_GLOBAL(0x013CE952, uint16)) || _window_guest_list_groups_argument_2[groupIndex] != RCT2_GLOBAL(0x013CE952 + 2, uint32)))
+			get_arguments_from_peep(peep2, &argument1, &argument2);
+			if (argument1 != _window_guest_list_groups_argument_1[groupIndex] || argument2 != _window_guest_list_groups_argument_2[groupIndex] ))
 				continue;
 
 			// Assign guest
