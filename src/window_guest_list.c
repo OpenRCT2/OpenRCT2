@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <string.h>
+#include <assert.h>
 #include "addresses.h"
 #include "game.h"
 #include "peep.h"
@@ -821,6 +822,45 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	return 1;
 }
 
+/**
+ * rct2: 0x00698342
+ * thought.item (eax)
+ * thought.type (ebx)
+ * argument_1 (esi & ebx)
+ * argument_2 (esi+2)
+ */
+void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
+	int esi = 0x9AC86C;
+
+	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
+		uint32 item = thought.item;
+		item *= 0x260;
+		esi = 0x1362942 + item;
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7C4;
+		}
+		else{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x82A;
+		}
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 4){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7FC;
+		}
+		else
+		{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x856;
+		}
+	}
+	else{
+		esi = 0x9AC864;
+	}	
+	*argument_1 = ((thought.type + 0x5C8) & 0xFFFF) | (*((uint16*)esi) << 16);
+	*argument_2 = *((uint32*)(esi+2));
+}
+
 /** 
  * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
@@ -836,24 +876,20 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 	case VIEW_ACTIONS:
 		eax = peep->sprite_index;
 		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		*argument_1 = (ecx & 0xFFFF << 16) | (ebx & 0xFFFF);
+		*argument_1 = (ecx << 16) | (ebx & 0xFFFF);
 		*argument_2 = edx;
-		return;
+		break;
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
-			eax = peep->thoughts[0].item;
-			ebx = peep->thoughts[0].type;
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				*argument_1 = (*((uint16*)esi)<< 16) | (ebx & 0xFFFF);
-				*argument_2 = *((uint32*)(esi + 2));
-				return;
+				get_argument_from_thought(peep->thoughts[0], argument_1, argument_2);
+				break;
 			}
 		}
+	default:
+		*argument_1 = 0;
+		*argument_2 = 0;
 	}
-
-	*argument_1 = 0;
-	*argument_2 = 0;
 	return;
 }
 
