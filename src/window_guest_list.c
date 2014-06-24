@@ -26,6 +26,7 @@
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "ride.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -861,6 +862,139 @@ void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uin
 	*argument_2 = *((uint32*)(esi+2));
 }
 
+/**
+* rct2: 0x00698B0D
+* peep.sprite_index (eax)
+* thought.type (ebx)
+* argument_1 (ecx & ebx)
+* argument_2 (edx)
+*/
+void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2){
+	rct_ride ride;
+
+	switch (peep->state){
+	case 0:
+		*argument_1 = peep->var_71 == 0xB ? 0x59A : 0x597;
+		*argument_2 = 0;
+		break;
+	case 1:
+		*argument_1 = 0x597;
+		*argument_2 = 0;
+		break;
+	case 3:
+	case 4:
+	case 7:
+		*argument_1 = 0x59B;
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride.type*8, uint32)& 0x400000){
+			(*argument_1)++;
+		}
+		*argument_1 |= (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x11:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x59D | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 5:
+	case 0x14:
+		if (peep->var_C5 != 0xFF){
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
+			*argument_1 = 0x598 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+		}
+		else{
+			*argument_1 = peep->flags & 1 ? 0x5A7 : 0x597;
+			*argument_2 = 0;
+		}
+		break;
+	case 2:
+	case 6:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x599 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 8:
+		*argument_1 = 0x59E;
+		*argument_2 = 0;
+		break;
+	case 0x12:
+		if (peep->current_ride != 0xFF){
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+			*argument_1 = 0x5A4 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+			if (peep->current_seat & 0x1)
+				*argument_1 = 0x5A5 | (ride.var_04A << 16);
+			else 
+				*argument_1 = 0x5A4 | (ride.var_04A << 16);
+		}
+		else{
+			*argument_1 = peep->current_seat & 0x1 ? 0x5A8 : 0x5A6;
+			*argument_2 = 0;
+		}
+		break;
+	case 9:
+		*argument_1 = 0x59F;
+		*argument_2 = 0;
+		break;	
+	case 0xA:
+	case 0xD:
+	case 0xE:
+		*argument_1 = 0x597;
+		*argument_2 = 0;
+		break;
+	case 0xB:
+		*argument_1 = 0x5A0;
+		*argument_2 = 0;
+		break;
+	case 0xC:
+		*argument_1 = 0x5A1;
+		*argument_2 = 0;
+		break;
+	case 0x15:
+		*argument_1 = 0x5A3;
+		*argument_2 = 0;
+		break;
+	case 0x13:
+		*argument_1 = 0x5A2;
+		*argument_2 = 0;
+		break;
+	case 0xF:
+		if (peep->pad_2C == 0){
+			*argument_1 = 0x597;
+			*argument_2 = 0;
+		}
+		else if (peep->pad_2C == 1){
+			*argument_1 = 0x703;
+			*argument_2 = 0;
+		}
+		else{
+			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+			*argument_1 = 0x700 | (ride.var_04A << 16);
+			*argument_2 = ride.var_04C;
+		}
+		break;
+	case 0x10:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x702 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x16:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x701 | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	case 0x17:
+		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
+		*argument_1 = 0x75E | (ride.var_04A << 16);
+		*argument_2 = ride.var_04C;
+		break;
+	}
+	
+}
+
+
 /** 
  * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
@@ -870,14 +1004,9 @@ void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uin
  */
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-
 	switch (_window_guest_list_selected_view) {
 	case VIEW_ACTIONS:
-		eax = peep->sprite_index;
-		RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		*argument_1 = (ecx << 16) | (ebx & 0xFFFF);
-		*argument_2 = edx;
+		get_arguments_from_action(peep, argument_1, argument_2);
 		break;
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
