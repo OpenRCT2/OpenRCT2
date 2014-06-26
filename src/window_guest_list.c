@@ -135,7 +135,8 @@ static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
-
+void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+void get_arguments_from_action(rct_peep* peep, uint32* argument_1, uint32* argument_2);
 /**
  * 
  *  rct2: 0x006992E3
@@ -656,6 +657,7 @@ static void window_guest_list_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
 	rct_peep_thought *thought;
+	uint32 argument_1, argument_2;
 
 	#ifdef _MSC_VER
 	__asm mov w, esi
@@ -718,7 +720,7 @@ static void window_guest_list_scrollpaint()
 						gfx_draw_sprite(dpi, 5129, 112, y);
 					
 					// Action
-					uint32 argument_1, argument_2;
+					
 					get_arguments_from_action(peep, &argument_1, &argument_2);
 
 					RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
@@ -736,7 +738,6 @@ static void window_guest_list_scrollpaint()
 						if (thought->var_2 > 5)
 							break;
 						
-						uint32 argument_1, argument_2;
 						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
 						RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
@@ -823,12 +824,12 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
+void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
 	int esi = 0x9AC86C;
 
 	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
 		rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST,rct_ride)[thought.item]);
-		esi = &(ride->var_4A);
+		esi = &(ride->var_04A);
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
 		if (thought.item < 0x20){
@@ -1003,7 +1004,7 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				get_argument_from_thought(peep->thoughts[0], argument_1, argument_2);
+				get_arguments_from_thought(peep->thoughts[0], argument_1, argument_2);
 				break;
 			}
 		}
