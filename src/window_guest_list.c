@@ -827,9 +827,8 @@ void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uin
 	int esi = 0x9AC86C;
 
 	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
-		uint32 item = thought.item;
-		item *= 0x260;
-		esi = 0x1362942 + item;
+		rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST,rct_ride)[thought.item]);
+		esi = &(ride->var_4A);
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
 		if (thought.item < 0x20){
