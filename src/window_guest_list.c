@@ -718,14 +718,11 @@ static void window_guest_list_scrollpaint()
 						gfx_draw_sprite(dpi, 5129, 112, y);
 					
 					// Action
-					eax = peep->sprite_index;
-					RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-					ebx &= 0xFFFF;
-					ecx &= 0xFFFF;
-					
-					RCT2_GLOBAL(0x013CE952, uint16) = ebx;
-					RCT2_GLOBAL(0x013CE952 + 2, uint16) = ecx;
-					RCT2_GLOBAL(0x013CE952 + 4, uint32) = edx;
+					uint32 argument_1, argument_2;
+					get_arguments_from_action(peep, &argument_1, &argument_2);
+
+					RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
+					RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
 					gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
@@ -738,15 +735,12 @@ static void window_guest_list_scrollpaint()
 							continue;
 						if (thought->var_2 > 5)
 							break;
+						
+						uint32 argument_1, argument_2;
+						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
-						ebx = thought->type;
-						eax = thought->item;
-						RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-						ebx &= 0xFFFF;
-
-						RCT2_GLOBAL(0x013CE952, uint16) = ebx;
-						RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)esi);
-						RCT2_GLOBAL(0x013CE952 + 6, uint16) = *((uint16*)(esi + 4));
+						RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
+						RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
 						gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 118, y - 1, 329);
 						break;
 					}
@@ -783,8 +777,7 @@ static void window_guest_list_scrollpaint()
 					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9);
 
 				// Draw action
-				RCT2_GLOBAL(0x013CE952, uint16) = _window_guest_list_groups_argument_1[i] & 0xFFFF;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = _window_guest_list_groups_argument_1[i] >> 16;
+				RCT2_GLOBAL(0x013CE952, uint32) = _window_guest_list_groups_argument_1[i];
 				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
 				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
 				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 414);
