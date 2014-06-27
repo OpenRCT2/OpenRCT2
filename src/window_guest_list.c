@@ -833,26 +833,26 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
 		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7C4;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_START;
 		}
 		else{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x82A;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_START;
 		}
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
 		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7FC;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_SINGULAR_ITEM_START;
 		}
 		else
 		{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x856;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_SINGULAR_ITEM2_START;
 		}
 	}
 	else{
-		esi = 0x9AC864;
+		esi = 0x9AC864; //No thought?
 	}	
 	*argument_1 = ((thought.type + STR_THOUGHT_START) & 0xFFFF) | (*((uint16*)esi) << 16);
-	*argument_2 = *((uint32*)(esi+2));
+	*argument_2 = *((uint32*)(esi+2)); //Always 0 apart from on rides?
 }
 
 /**
