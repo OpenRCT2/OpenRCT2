@@ -827,11 +827,11 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
 	int esi = 0x9AC86C;
 
-	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
+	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 1){
 		rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST,rct_ride)[thought.item]);
 		esi = &(ride->var_04A);
 	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
 		if (thought.item < 0x20){
 			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7C4;
 		}
@@ -839,7 +839,7 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x82A;
 		}
 	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 4){
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
 		if (thought.item < 0x20){
 			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7FC;
 		}
