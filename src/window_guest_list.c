@@ -841,11 +841,11 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
 		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_SINGULAR_ITEM_START;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_SINGULAR_START;
 		}
 		else
 		{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_SINGULAR_ITEM2_START;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_SINGULAR_START;
 		}
 	}
 	else{
