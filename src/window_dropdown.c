@@ -53,6 +53,7 @@ int _dropdown_highlighted_index;
 
 uint16 gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
+// Replaces 0x009DED38
 uint32 gDropdownItemsChecked;
 
 static void window_dropdown_emptysub() { }

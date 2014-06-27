@@ -281,7 +281,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
 		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
+		gDropdownItemsChecked = (1 << _window_guest_list_selected_view);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
@@ -300,7 +300,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_ACTIONS + i;
 		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
+		gDropdownItemsChecked = (1 << _window_guest_list_selected_view);
 		break;
 	}
 }
