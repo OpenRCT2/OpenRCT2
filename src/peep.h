@@ -200,7 +200,7 @@ enum PEEP_STATE {
 	PEEP_STATE_SITTING = 8,
 	PEEP_STATE_PICKED = 9,
 	PEEP_STATE_PATROLLING = 10, // Not sure
-	PEEP_STATE_MOPING = 11,
+	PEEP_STATE_MOWING = 11,
 	PEEP_STATE_SWEEPING = 12,
 	PEEP_STATE_ENTERING_PARK = 13,
 	PEEP_STATE_LEAVING_PARK = 14,
@@ -316,10 +316,10 @@ typedef struct {
 	uint8 pad_01;
 	uint16 pad_02;
 	uint16 next;					// 0x04
-	uint16 pad_06;
+	uint16 previous;				// 0x06
 	uint8 var_08;
 	uint8 pad_09;
-	sint16 var_0A;
+	uint16 sprite_index;			// 0x0A
 	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10

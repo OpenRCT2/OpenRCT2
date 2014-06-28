@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include <string.h>
 #include "sprite.h"
 
 /**
@@ -28,4 +29,77 @@
 void create_balloon(int x, int y, int z, int colour)
 {
 	RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
+}
+
+/*
+ *
+ * rct2: 0x0069EB13
+ */
+void reset_sprite_list(){
+	RCT2_GLOBAL(0x1388698, uint16) = 0;
+	memset((rct_sprite*)RCT2_ADDRESS_SPRITE_LIST, 0, sizeof(rct_sprite)* 0x2710);
+
+	for (int i = 0; i < 6; ++i){
+		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[i] = -1;
+		RCT2_ADDRESS(0x13573C8, uint16)[i] = 0;
+	}
+
+	rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
+
+	rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+	for (int i = 0; i < 0x2710; ++i){
+		spr->unknown.sprite_identifier = 0xFF;
+		spr->unknown.sprite_index = i;
+		spr->unknown.next = SPRITE_INDEX_NULL;
+		spr->unknown.var_08 = 0;
+
+		if (previous_spr != (rct_sprite*)SPRITE_INDEX_NULL){
+			spr->unknown.previous = previous_spr->unknown.sprite_index;
+			previous_spr->unknown.next = i;
+		}
+		else{
+			spr->unknown.previous = SPRITE_INDEX_NULL;
+			RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16) = i;
+		}
+		previous_spr = spr;
+		spr++;
+	}
+
+	RCT2_GLOBAL(0x13573C8, uint16) = 0x2710;
+
+	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();
+}
+
+/*
+ *
+ * rct: 0x0069EBE4
+ * This function looks as though it sets some sort of order for sprites.
+ * Sprites can share thier position if this is the case.
+ */
+void reset_0x69EBE4(){
+	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	//return;
+	memset((uint16*)0xF1EF60, -1, 0x10001*2);
+
+	rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+	for (; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++){
+
+		if (spr->unknown.sprite_identifier != 0xFF){
+			uint32 edi = spr->unknown.x;
+			if ((uint16)(spr->unknown.x) == SPRITE_LOCATION_NULL){
+				edi = 0x10000;
+			}
+			else{
+				int ecx = spr->unknown.y;
+				ecx >>= 5;
+				edi &= 0x1FE0;
+				edi <<= 3;
+				edi |= ecx;
+			}
+			uint16 ax = RCT2_ADDRESS(0xF1EF60,uint16)[edi];
+			RCT2_ADDRESS(0xF1EF60,uint16)[edi] = spr->unknown.sprite_index;
+			spr->unknown.var_02 = ax;
+		}
+	}
 }

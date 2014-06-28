@@ -27,7 +27,11 @@ typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01[0x03];
 	uint16 next;					// 0x04
-	uint8 pad_06[0x08];
+	uint16 previous;				// 0x06
+	uint8 var_08;
+	uint8 pad_09;
+	uint16 sprite_index;			// 0x0A
+	uint8 pad_0C[2];
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
