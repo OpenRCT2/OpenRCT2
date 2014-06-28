@@ -238,7 +238,7 @@ void rct2_startup_checks()
 	}
 
 	// Check data files
-	// TODO: implement check_file_paths @ 0x00674C95
+	check_file_paths();
 	check_files_integrity();
 }
 
@@ -328,6 +328,57 @@ int check_mutex()
 	return 0;
 }
 
+// rct2: 0x00674C95
+void check_file_paths()
+{
+	for (int pathId = 0; pathId < PATH_ID_END; pathId += 1)
+	{
+		check_file_path(pathId);
+	}
+}
+
+// rct2: 0x00674CA5
+void check_file_path(int pathId)
+{
+	const char * path = get_file_path(pathId);
+	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+
+	switch (pathId)
+	{
+	case PATH_ID_GAMECFG:
+	case PATH_ID_SCORES:
+		// Do nothing; these will be created later if they do not exist yet
+		break;
+
+	case PATH_ID_CUSTOM1:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		break;
+
+	case PATH_ID_CUSTOM2:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
+		break;
+
+	default:
+		if (file == INVALID_HANDLE_VALUE) {
+			// A data file is missing from the installation directory. The original implementation
+			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
+			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
+			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN and PATH_ID_SIXFLAGS_BUILDYOUROWN,
+			// the original implementation always assumes they are stored on CD-ROM.
+			// This has been removed for now for the sake of simplicity and could be added
+			// later in a more convenient way using the INI file.
+			RCT2_ERROR("Could not find file %s", path);
+			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+		}
+		break;
+	}
+
+	if (file != INVALID_HANDLE_VALUE)
+		CloseHandle(file);
+}
+
 // rct2: 0x00674C0B
 void check_files_integrity()
 {
@@ -397,10 +448,9 @@ const char *get_file_path(int pathId)
 {
 	static char path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
 
-	// The original implementation has a check for 0x009AA0B1 here. That flag is set
-	// by check_file_path if the file cannot be found in its default location, but this
-	// only seems to be the case for versions that require a CD-ROM. Therefore it has
-	// been removed.
+	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
+	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
+	// the sake of simplicity.
 	strcpy(path, gGeneral_config.game_path);
 
 	// Make sure base path is terminated with a slash

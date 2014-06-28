@@ -263,6 +263,8 @@ static const struct file_to_check
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
+void check_file_paths();
+void check_file_path(int pathId);
 void check_files_integrity();
 const char *get_file_path(int pathId);
 void get_system_info();
