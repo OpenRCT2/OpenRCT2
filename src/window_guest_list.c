@@ -286,6 +286,11 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
 
+		for (i = 0; i < 2; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_ACTIONS + i;
+		}
+
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -296,10 +301,6 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			widget->right - widget->left - 3
 		);
 
-		for (i = 0; i < 2; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_ACTIONS + i;
-		}
 		gDropdownItemsChecked = (1 << _window_guest_list_selected_view);
 		break;
 	}
