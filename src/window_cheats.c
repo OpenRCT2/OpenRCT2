@@ -48,6 +48,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_1,
 	WIDX_TAB_2,
 	WIDX_HIGH_MONEY,
+	WIDX_PARK_ENTRANCE_FEE,
 	WIDX_HAPPY_GUESTS = 6 //Same as HIGH_MONEY as it is also the 6th widget but on a different page
 };
 
@@ -58,7 +59,8 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	65535},					// tab content panel
 	{ WWT_TAB,				1,	3,			33,		17,		43,		0x2000144E,		2462},					// tab 1
 	{ WWT_TAB,				1,	34,			64,		17,		43,		0x2000144E,		2462},					// tab 2
-	{ WWT_CLOSEBOX,			1,	4,			74,		67,		83,		STR_VERY_HIGH,	STR_VERY_HIGH},					// high money
+	{ WWT_CLOSEBOX,			1,	4,			74,		67,		83,		STR_VERY_HIGH,	STR_VERY_HIGH},			// high money
+	{ WWT_CLOSEBOX,			1,	4,			74,		107,	123,	STR_FREE,		STR_FREE},				//Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
 
@@ -154,7 +156,7 @@ static void* window_cheats_page_events[] = {
 };
 
 static uint32 window_cheats_page_enabled_widgets[] = {
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HAPPY_GUESTS) 
 };
 
@@ -217,6 +219,11 @@ static void window_cheats_money_mouseup()
 		}
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(i);
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	case WIDX_PARK_ENTRANCE_FEE:
+		RCT2_GLOBAL(0x13573E5, uint32) ^= 0x020;
+		if (!(RCT2_GLOBAL(0x13573E5, uint32) & 0x020) ) w->widgets[widgetIndex].image = 2010;
+		else w->widgets[widgetIndex].image = STR_FREE;
 		break;
 	}
 }
@@ -324,6 +331,10 @@ static void window_cheats_paint()
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 1,000.");
 		// Draw shadow
 		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
+
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Toggle between Free and Paid Entry");
+		// Draw shadow
+		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 90);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		char buffer[256];
