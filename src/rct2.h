@@ -231,8 +231,8 @@ static const char * const file_paths[] =
 // Files to check (rct2 @ 0x0097FB5A)
 static const struct file_to_check
 {
-	int path_id; // ID of file
-	unsigned int file_size; // Expected size in bytes
+	int pathId; // ID of file
+	unsigned int fileSize; // Expected size in bytes
 } files_to_check[] = {
 	{ PATH_ID_CSS18,  8429568 },
 	{ PATH_ID_CSS19, 10143784 },

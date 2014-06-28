@@ -332,13 +332,13 @@ int check_mutex()
 void check_files_integrity()
 {
 	int i = 0;
-	while (files_to_check[i].path_id != PATH_ID_END)
+	while (files_to_check[i].pathId != PATH_ID_END)
 	{
 		WIN32_FIND_DATA find_data;
-		const char * path = get_file_path(files_to_check[i].path_id);
+		const char * path = get_file_path(files_to_check[i].pathId);
 		HANDLE file = FindFirstFile(path, &find_data);
 
-		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].file_size)
+		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].fileSize)
 		{
 			if (file != INVALID_HANDLE_VALUE)
 				FindClose(file);
