@@ -160,12 +160,12 @@ void window_peep_open(rct_peep* peep){
 		window->var_482 = -1;
 	}
 	
-	window->var_48A = 0;
+	window->page = 0;
 	//call 6EB13A
 	
 	window->widgets = RCT2_GLOBAL(0x981D0C, uint32);
 	window->enabled_widgets = RCT2_GLOBAL(0x981D3C,uint32);
-	window->var_20 = RCT2_GLOBAL(0x981D54,uint32);
+	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
 	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32);
 	window->pressed_widgets = 0;
 	
