@@ -103,7 +103,7 @@ static void peep_update(rct_peep *peep)
 					peep->thoughts[i].var_2++;
 					ebp--;
 				}
-			} else if (peep->thoughts[i].var_2 >= 0) {
+			} else if (peep->thoughts[i].var_2 > 1) {
 				if (++peep->thoughts[i].var_3 > 255) {
 					if (++peep->thoughts[i].var_3 >= 28) {
 						peep->var_45 |= 1;

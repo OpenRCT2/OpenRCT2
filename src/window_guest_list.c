@@ -135,7 +135,8 @@ static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
-
+void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+void get_arguments_from_action(rct_peep* peep, uint32* argument_1, uint32* argument_2);
 /**
  * 
  *  rct2: 0x006992E3
@@ -280,10 +281,15 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
 		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
+		gDropdownItemsChecked = (1 << _window_guest_list_selected_view);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
+
+		for (i = 0; i < 2; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_ACTIONS + i;
+		}
 
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
@@ -295,11 +301,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			widget->right - widget->left - 3
 		);
 
-		for (i = 0; i < 2; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_ACTIONS + i;
-		}
-		RCT2_GLOBAL(0x009DED38, uint32) |= (1 << _window_guest_list_selected_view);
+		gDropdownItemsChecked = (1 << _window_guest_list_selected_view);
 		break;
 	}
 }
@@ -656,6 +658,7 @@ static void window_guest_list_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
 	rct_peep_thought *thought;
+	uint32 argument_1, argument_2;
 
 	#ifdef _MSC_VER
 	__asm mov w, esi
@@ -718,14 +721,11 @@ static void window_guest_list_scrollpaint()
 						gfx_draw_sprite(dpi, 5129, 112, y);
 					
 					// Action
-					eax = peep->sprite_index;
-					RCT2_CALLFUNC_X(0x00698B0D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-					ebx &= 0xFFFF;
-					ecx &= 0xFFFF;
 					
-					RCT2_GLOBAL(0x013CE952, uint16) = ebx;
-					RCT2_GLOBAL(0x013CE952 + 2, uint16) = ecx;
-					RCT2_GLOBAL(0x013CE952 + 4, uint32) = edx;
+					get_arguments_from_action(peep, &argument_1, &argument_2);
+
+					RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
+					RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
 					gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
@@ -738,15 +738,11 @@ static void window_guest_list_scrollpaint()
 							continue;
 						if (thought->var_2 > 5)
 							break;
+						
+						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
-						ebx = thought->type;
-						eax = thought->item;
-						RCT2_CALLFUNC_X(0x00698342, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-						ebx &= 0xFFFF;
-
-						RCT2_GLOBAL(0x013CE952, uint16) = ebx;
-						RCT2_GLOBAL(0x013CE952 + 2, uint32) = *((uint32*)esi);
-						RCT2_GLOBAL(0x013CE952 + 6, uint16) = *((uint16*)(esi + 4));
+						RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
+						RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
 						gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 118, y - 1, 329);
 						break;
 					}
@@ -783,8 +779,7 @@ static void window_guest_list_scrollpaint()
 					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9);
 
 				// Draw action
-				RCT2_GLOBAL(0x013CE952, uint16) = _window_guest_list_groups_argument_1[i] & 0xFFFF;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = _window_guest_list_groups_argument_1[i] >> 16;
+				RCT2_GLOBAL(0x013CE952, uint32) = _window_guest_list_groups_argument_1[i];
 				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
 				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
 				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 414);
@@ -830,36 +825,35 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void get_argument_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
+void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
 	int esi = 0x9AC86C;
 
-	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 1){
-		uint32 item = thought.item;
-		item *= 0x260;
-		esi = 0x1362942 + item;
+	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 1){
+		rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST,rct_ride)[thought.item]);
+		esi = &(ride->var_04A);
 	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 2){
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
 		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7C4;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_START;
 		}
 		else{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x82A;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_START;
 		}
 	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) == 4){
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
 		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x7FC;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_SINGULAR_START;
 		}
 		else
 		{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + 0x856;
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_SINGULAR_START;
 		}
 	}
 	else{
-		esi = 0x9AC864;
+		esi = 0x9AC864; //No thought?
 	}	
-	*argument_1 = ((thought.type + 0x5C8) & 0xFFFF) | (*((uint16*)esi) << 16);
-	*argument_2 = *((uint32*)(esi+2));
+	*argument_1 = ((thought.type + STR_THOUGHT_START) & 0xFFFF) | (*((uint16*)esi) << 16);
+	*argument_2 = *((uint32*)(esi+2)); //Always 0 apart from on rides?
 }
 
 /**
@@ -874,120 +868,120 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 
 	switch (peep->state){
 	case 0:
-		*argument_1 = peep->var_71 == 0xB ? 0x59A : 0x597;
+		*argument_1 = peep->var_71 == 0xB ? STR_DROWNING : STR_WALKING;
 		*argument_2 = 0;
 		break;
 	case 1:
-		*argument_1 = 0x597;
+		*argument_1 = STR_WALKING;
 		*argument_2 = 0;
 		break;
-	case 3:
-	case 4:
-	case 7:
-		*argument_1 = 0x59B;
+	case PEEP_STATE_ON_RIDE:
+	case PEEP_STATE_LEAVING_RIDE:
+	case PEEP_STATE_ENTERING_RIDE:
+		*argument_1 = STR_ON_RIDE;
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride.type*8, uint32)& 0x400000){
-			(*argument_1)++;
+			*argument_1 = STR_IN_RIDE;
 		}
 		*argument_1 |= (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
-	case 0x11:
+	case PEEP_STATE_BUYING:
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-		*argument_1 = 0x59D | (ride.var_04A << 16);
+		*argument_1 = STR_AT_RIDE | (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
-	case 5:
+	case PEEP_STATE_WALKING:
 	case 0x14:
 		if (peep->var_C5 != 0xFF){
 			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
-			*argument_1 = 0x598 | (ride.var_04A << 16);
+			*argument_1 = STR_HEADING_FOR | (ride.var_04A << 16);
 			*argument_2 = ride.var_04C;
 		}
 		else{
-			*argument_1 = peep->flags & 1 ? 0x5A7 : 0x597;
+			*argument_1 = peep->flags & 1 ? STR_LEAVING_PARK : STR_WALKING;
 			*argument_2 = 0;
 		}
 		break;
-	case 2:
-	case 6:
+	case PEEP_STATE_QUEUING_FRONT:
+	case PEEP_STATE_QUEUING:
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-		*argument_1 = 0x599 | (ride.var_04A << 16);
+		*argument_1 = STR_QUEUING_FOR | (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
-	case 8:
-		*argument_1 = 0x59E;
+	case PEEP_STATE_SITTING:
+		*argument_1 = STR_SITTING;
 		*argument_2 = 0;
 		break;
-	case 0x12:
+	case PEEP_STATE_WATCHING:
 		if (peep->current_ride != 0xFF){
 			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-			*argument_1 = 0x5A4 | (ride.var_04A << 16);
+			*argument_1 = STR_WATCHING_RIDE | (ride.var_04A << 16);
 			*argument_2 = ride.var_04C;
 			if (peep->current_seat & 0x1)
-				*argument_1 = 0x5A5 | (ride.var_04A << 16);
+				*argument_1 = STR_WATCHING_CONSTRUCTION_OF | (ride.var_04A << 16);
 			else 
-				*argument_1 = 0x5A4 | (ride.var_04A << 16);
+				*argument_1 = STR_WATCHING_RIDE | (ride.var_04A << 16);
 		}
 		else{
-			*argument_1 = peep->current_seat & 0x1 ? 0x5A8 : 0x5A6;
+			*argument_1 = peep->current_seat & 0x1 ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
 			*argument_2 = 0;
 		}
 		break;
-	case 9:
-		*argument_1 = 0x59F;
+	case PEEP_STATE_PICKED:
+		*argument_1 = STR_SELECT_LOCATION;
 		*argument_2 = 0;
 		break;	
-	case 0xA:
-	case 0xD:
-	case 0xE:
-		*argument_1 = 0x597;
+	case PEEP_STATE_PATROLLING:
+	case PEEP_STATE_ENTERING_PARK:
+	case PEEP_STATE_LEAVING_PARK:
+		*argument_1 = STR_WALKING;
 		*argument_2 = 0;
 		break;
-	case 0xB:
-		*argument_1 = 0x5A0;
+	case PEEP_STATE_MOWING:
+		*argument_1 = STR_MOWING_GRASS;
 		*argument_2 = 0;
 		break;
-	case 0xC:
-		*argument_1 = 0x5A1;
+	case PEEP_STATE_SWEEPING:
+		*argument_1 = STR_SWEEPING_FOOTPATH;
 		*argument_2 = 0;
 		break;
-	case 0x15:
-		*argument_1 = 0x5A3;
+	case PEEP_STATE_WATERING:
+		*argument_1 = STR_WATERING_GARDENS;
 		*argument_2 = 0;
 		break;
-	case 0x13:
-		*argument_1 = 0x5A2;
+	case PEEP_STATE_EMPTYING_BIN:
+		*argument_1 = STR_EMPTYING_LITTER_BIN;
 		*argument_2 = 0;
 		break;
-	case 0xF:
+	case PEEP_STATE_ANSWERING:
 		if (peep->pad_2C == 0){
-			*argument_1 = 0x597;
+			*argument_1 = STR_WALKING;
 			*argument_2 = 0;
 		}
 		else if (peep->pad_2C == 1){
-			*argument_1 = 0x703;
+			*argument_1 = STR_ANSWERING_RADIO_CALL;
 			*argument_2 = 0;
 		}
 		else{
 			ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-			*argument_1 = 0x700 | (ride.var_04A << 16);
+			*argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | (ride.var_04A << 16);
 			*argument_2 = ride.var_04C;
 		}
 		break;
-	case 0x10:
+	case PEEP_STATE_FIXING:
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-		*argument_1 = 0x702 | (ride.var_04A << 16);
+		*argument_1 = STR_FIXING_RIDE | (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
-	case 0x16:
+	case PEEP_STATE_HEADING_TO_INSPECTION:
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-		*argument_1 = 0x701 | (ride.var_04A << 16);
+		*argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
-	case 0x17:
+	case PEEP_STATE_INSPECTING:
 		ride = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride];
-		*argument_1 = 0x75E | (ride.var_04A << 16);
+		*argument_1 = STR_INSPECTING_RIDE | (ride.var_04A << 16);
 		*argument_2 = ride.var_04C;
 		break;
 	}
@@ -1011,7 +1005,7 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 	case VIEW_THOUGHTS:
 		if (peep->thoughts[0].var_2 <= 5) {
 			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				get_argument_from_thought(peep->thoughts[0], argument_1, argument_2);
+				get_arguments_from_thought(peep->thoughts[0], argument_1, argument_2);
 				break;
 			}
 		}
