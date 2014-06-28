@@ -53,23 +53,23 @@ enum WINDOW_PEEP_WIDGET_IDX {
 void window_peep_emptysub(){};
 
 rct_widget window_peep_overview_widgets[] = { 
-	{ WWT_FRAME,	0, 0,	191,	0,		156,	0x0FFFFFFFF,	STR_NONE },
-	{ WWT_CAPTION,	0, 1,	190,	1,		14,		865,			STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX, 0, 179, 189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP },
-	{ WWT_RESIZE,	1, 1,	191,	43,		156,	0x0FFFFFFFF,	STR_NONE },
-	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		1938 },
-	{ WWT_TAB,		1, 73,	64,		17,		43,		0x2000144E,		1940},
-	{ WWT_TAB,		1, 65,	95,		17,		43,		0x2000144E,		1941},
-	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		1942},
-	{ WWT_TAB,		1, 127, 157,	17,		43,		0x2000144E,		1943},
-	{ WWT_TAB,		1, 158, 188,	17,		43,		0x2000144E,		1944},
-	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},
-	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },
-	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},
-	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		0x1436,			1706},
-	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},
-	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	0x142F,			STR_LOCATE_SUBJECT_TIP},
-	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	0x1444,			1930},
+	{ WWT_FRAME,	0, 0,	191,	0,		156,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,	190,	1,		14,		865,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, 179, 189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 1,	191,	43,		156,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		1938 },					// Tab 1
+	{ WWT_TAB,		1, 73,	64,		17,		43,		0x2000144E,		1940},					// Tab 2
+	{ WWT_TAB,		1, 65,	95,		17,		43,		0x2000144E,		1941},					// Tab 3
+	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		1942},					// Tab 4
+	{ WWT_TAB,		1, 127, 157,	17,		43,		0x2000144E,		1943},					// Tab 5
+	{ WWT_TAB,		1, 158, 188,	17,		43,		0x2000144E,		1944},					// Tab 6
+	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label 1
+	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },				// Viewport
+	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label 2
+	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Rename Button
+	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Pickup Button
+	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
+	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	SPR_TRACK_PEEP,	1930},					// Track Button
 	{ WIDGETS_END },
 };
 
@@ -103,8 +103,8 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	0x696749,
-	0x696887,
+	0x696749, //Invalidate
+	0x696887, //Paint
 	0x69707C
 };
 
@@ -170,7 +170,7 @@ void window_peep_open(rct_peep* peep){
 	window->pressed_widgets = 0;
 	
 	//call 6987A6
-	//call 6eaeb8
+	window_init_scroll_widgets(window);
 	//call 69883c
 	
 	
