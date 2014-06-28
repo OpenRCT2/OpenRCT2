@@ -224,6 +224,7 @@ static void window_cheats_money_mouseup()
 		RCT2_GLOBAL(0x13573E5, uint32) ^= 0x020;
 		if (!(RCT2_GLOBAL(0x13573E5, uint32) & 0x020) ) w->widgets[widgetIndex].image = 2010;
 		else w->widgets[widgetIndex].image = STR_FREE;
+		window_invalidate_by_id(0x40 | WC_PARK_INFORMATION, 0);
 		break;
 	}
 }
