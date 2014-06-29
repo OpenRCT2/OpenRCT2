@@ -22,6 +22,8 @@
 #include <string.h>
 #include "sprite.h"
 
+rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+
 /**
  * 
  *  rct2: 0x006736C7
@@ -37,7 +39,7 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void reset_sprite_list(){
 	RCT2_GLOBAL(0x1388698, uint16) = 0;
-	memset((rct_sprite*)RCT2_ADDRESS_SPRITE_LIST, 0, sizeof(rct_sprite)* 0x2710);
+	memset(g_sprite_list, 0, sizeof(rct_sprite)* 0x2710);
 
 	for (int i = 0; i < 6; ++i){
 		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[i] = -1;
@@ -46,7 +48,7 @@ void reset_sprite_list(){
 
 	rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
 
-	rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+	rct_sprite* spr = g_sprite_list;
 	for (int i = 0; i < 0x2710; ++i){
 		spr->unknown.sprite_identifier = 0xFF;
 		spr->unknown.sprite_index = i;
@@ -82,7 +84,7 @@ void reset_0x69EBE4(){
 	//return;
 	memset((uint16*)0xF1EF60, -1, 0x10001*2);
 
-	rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+	rct_sprite* spr = g_sprite_list;
 	for (; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++){
 
 		if (spr->unknown.sprite_identifier != 0xFF){

@@ -326,6 +326,7 @@ enum {
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
 
+// rct2: 0x013628F8
 extern rct_ride* g_ride_list;
 
 /** Helper macros until rides are stored in this module. */

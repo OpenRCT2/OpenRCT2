@@ -42,7 +42,7 @@ void vehicle_update_all()
 
 	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16);
 	while (sprite_index != SPRITE_INDEX_NULL) {
-		vehicle = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].vehicle);
+		vehicle = &(g_sprite_list[sprite_index].vehicle);
 		sprite_index = vehicle->next;
 
 		vehicle_update(vehicle);

@@ -1627,7 +1627,7 @@ int game_load_save()
 void sub_0x0069E9A7(){
 	//RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	//return;
-	for (rct_sprite* spr = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite); spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; ++spr){
+	for (rct_sprite* spr = g_sprite_list; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; ++spr){
 		if (spr->unknown.sprite_identifier != 0xFF){
 			RCT2_CALLPROC_X(0x0069E9D3, spr->unknown.x, 0, spr->unknown.y, spr->unknown.z, (int)spr, 0, 0);
 		}
