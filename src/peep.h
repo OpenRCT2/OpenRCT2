@@ -420,7 +420,7 @@ typedef struct {
 } rct_peep;
 
 /** Helper macro until rides are stored in this module. */
-#define GET_PEEP(sprite_index) &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[sprite_index].peep)
+#define GET_PEEP(sprite_index) &(g_sprite_list[sprite_index].peep)
 
 /**
  * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are

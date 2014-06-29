@@ -501,7 +501,7 @@ void scenario_objectives_check()
 		rct_ride* ride;
 		int rcs = 0;
 		for (int i = 0; i < MAX_RIDES; i++) {
-			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+			ride = &g_ride_list[i];
 			if (ride->status && ride->excitement > objective_currency)
 				rcs++;
 		}

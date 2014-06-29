@@ -58,7 +58,7 @@ void peep_update_all()
 	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
 	i = 0;
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		peep = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[spriteIndex].peep);
+		peep = &(g_sprite_list[spriteIndex].peep);
 		spriteIndex = peep->next;
 
 		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
@@ -181,7 +181,7 @@ void peep_problem_warnings_update()
 				hunger_counter++;
 				break;
 			}
-			ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
+			ride = &g_ride_list[peep->var_C5];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000))
 				hunger_counter++;
 			break;
@@ -191,7 +191,7 @@ void peep_problem_warnings_update()
 				thirst_counter++;
 				break;
 			}
-			ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
+			ride = &g_ride_list[peep->var_C5];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x1000000))
 				thirst_counter++;
 			break;
@@ -201,7 +201,7 @@ void peep_problem_warnings_update()
 				bathroom_counter++;
 				break;
 			}
-			ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->var_C5];
+			ride = &g_ride_list[peep->var_C5];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x2000000))
 				bathroom_counter++;
 			break;

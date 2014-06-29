@@ -332,6 +332,9 @@
     <ClCompile Include="..\src\award.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_peep.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

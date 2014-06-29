@@ -67,6 +67,9 @@ typedef union {
 	rct_vehicle vehicle;
 } rct_sprite;
 
+// rct2: 0x010E63BC
+extern rct_sprite* g_sprite_list;
+
 void create_balloon(int x, int y, int z, int colour);
 void reset_sprite_list();
 void reset_0x69EBE4();
