@@ -182,7 +182,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[subject]);
+		ride = &g_ride_list[subject];
 		if (ride->overall_view == 0xFFFF) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
@@ -205,7 +205,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find which ride peep is on
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+		ride = &g_ride_list[peep->current_ride];
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;

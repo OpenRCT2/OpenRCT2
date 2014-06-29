@@ -63,9 +63,9 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		1942},					// Tab 4
 	{ WWT_TAB,		1, 127, 157,	17,		43,		0x2000144E,		1943},					// Tab 5
 	{ WWT_TAB,		1, 158, 188,	17,		43,		0x2000144E,		1944},					// Tab 6
-	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label 1
+	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label Thought marquee
 	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },				// Viewport
-	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label 2
+	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label Action
 	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Rename Button
 	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Pickup Button
 	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
@@ -146,7 +146,7 @@ void window_peep_open(rct_peep* peep){
 		window->var_490 = 0;
 		window->var_492 = 0;
 		window->var_494 = 0;
-		//Call 6987a6
+		RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
 		window->min_width = 192;
 		window->min_height = 157;
 		window->max_width = 500;
@@ -169,7 +169,7 @@ void window_peep_open(rct_peep* peep){
 	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32);
 	window->pressed_widgets = 0;
 	
-	//call 6987A6
+	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
 	window_init_scroll_widgets(window);
 	//call 69883c
 	

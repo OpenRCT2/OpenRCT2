@@ -305,7 +305,7 @@ money32 calculate_park_value()
 	// Sum ride values
 	result = 0;
 	for (i = 0; i < 255; i++) {
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+		ride = &g_ride_list[i];
 		result += calculate_ride_value(ride);
 	}
 
