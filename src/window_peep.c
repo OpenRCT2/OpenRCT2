@@ -161,7 +161,7 @@ void window_peep_open(rct_peep* peep){
 	}
 	
 	window->page = 0;
-	//call 6EB13A
+	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)window, 0, 0);
 	
 	window->widgets = RCT2_GLOBAL(0x981D0C, uint32);
 	window->enabled_widgets = RCT2_GLOBAL(0x981D3C,uint32);
@@ -171,9 +171,5 @@ void window_peep_open(rct_peep* peep){
 	
 	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
 	window_init_scroll_widgets(window);
-	//call 69883c
-	
-	
-	//RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
-	
+	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
