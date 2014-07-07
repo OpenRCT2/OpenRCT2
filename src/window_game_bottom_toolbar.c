@@ -215,13 +215,13 @@ static void window_game_bottom_toolbar_mouseup()
 static void window_game_bottom_toolbar_tooltip()
 {
 	int month, day;
-	short widgetIndex;
+	short tool_tip_index;
 	rct_window *w;
 
 	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
+	__asm mov tool_tip_index, ax
 	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	__asm__ ( "mov %[tool_tip_index], dx " : [tool_tip_index] "+m" (tool_tip_index) );
 	#endif
 
 	#ifdef _MSC_VER
@@ -231,32 +231,25 @@ static void window_game_bottom_toolbar_tooltip()
 	#endif
 
 
-	switch (widgetIndex) {
+	switch (tool_tip_index) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
 		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-		widgetIndex = 0;
+		tool_tip_index = 0;
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-		widgetIndex = 0;
+		tool_tip_index = 0;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) * days_in_month[month]) >> 16) & 0xFF;
+		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
 		
 		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
-		widgetIndex = 0;
+		tool_tip_index = 0;
 		break;
 	}
-
-	#ifdef _MSC_VER
-	__asm mov dx, widgetIndex
-	#else
-	__asm__ ( "mov dx, %[widgetIndex] " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
 }
 
 /**
