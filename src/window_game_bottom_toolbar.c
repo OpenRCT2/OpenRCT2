@@ -221,7 +221,7 @@ static void window_game_bottom_toolbar_tooltip()
 	#ifdef _MSC_VER
 	__asm mov tool_tip_index, ax
 	#else
-	__asm__ ( "mov %[tool_tip_index], dx " : [tool_tip_index] "+m" (tool_tip_index) );
+	__asm__ ( "mov %[tool_tip_index], ax " : [tool_tip_index] "+m" (tool_tip_index) );
 	#endif
 
 	#ifdef _MSC_VER
