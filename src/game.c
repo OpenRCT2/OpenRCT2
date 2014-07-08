@@ -527,7 +527,33 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_SCROLL_LEFT:
-		RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		switch (state){
+		case 0:
+			if (widgetIndex != RCT2_GLOBAL(0x9DE524, uint32)){
+				//Jump to case 2 after first part
+			}
+			if (w->classification != RCT2_GLOBAL(0x9DE51F, uint8)){
+				//Jump to case 2 after first part
+			}
+			if (w->number != RCT2_GLOBAL(0x9DE520, uint16)){
+				//Jump to case 2 after first part
+			}
+
+			if (RCT2_GLOBAL(0x9DE548, uint16) == 5){
+				//Jump 0x6e8735
+			}
+
+			if (RCT2_GLOBAL(0x9DE548, uint16) == 10){
+				//Jump 0x6e874E
+			}
+
+			//Call 0x6E9F92
+			//0x6E86D3
+			break;
+		case 2:
+			break;
+		}
+		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_RESIZING:
 		// RCT2_CALLPROC_X(0x006E8B46, x, y, state, widgetIndex, w, widget, 0);
