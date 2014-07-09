@@ -66,7 +66,7 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Download the [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should resemble ```\OpenRCT2\sdl\include\```.
-3. Open the solution in the projects directory (**openrct2.vcxproj**) with Visual C++.
+3. Open the solution in the projects directory (**openrct2.sln**) with Visual Studio.
 4. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
 5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
 6. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
