@@ -501,6 +501,7 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
 	rct_window *w;
 
 	if (cls & 0x80) {
+		cls &= ~0x80;
 		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
 			if (w->classification == cls)
 				return w;
