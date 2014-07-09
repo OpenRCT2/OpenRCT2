@@ -33,6 +33,7 @@
 #include "climate.h"
 #include "config.h"
 #include "date.h"
+#include "editor.h"
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
@@ -47,6 +48,7 @@
 #include "title.h"
 #include "track.h"
 #include "viewport.h"
+#include "sprite.h"
 
 typedef struct tm tm_t;
 
@@ -157,7 +159,9 @@ void rct2_init()
 	scenario_load_list();
 	track_load_list(253);
 	gfx_load_g1();
-	RCT2_CALLPROC_EBPSAFE(0x006C19AC);
+	//RCT2_CALLPROC_EBPSAFE(0x006C19AC); //Load character widths
+	gfx_load_character_widths();
+	
 	osinterface_init();
 	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
@@ -165,10 +169,10 @@ void rct2_init()
 	get_local_time();
 	reset_park_entrances();
 	reset_saved_strings();
-	RCT2_CALLPROC_EBPSAFE(0x0069EB13);
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
+	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
 	map_init();
 	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
@@ -228,9 +232,16 @@ void subsitute_path(char *dest, const char *path, const char *filename)
 // rct2: 0x00674B42
 void rct2_startup_checks()
 {
-	// check if game is already running
+	// Check if game is already running
+	if (check_mutex())
+	{
+		RCT2_ERROR("Game is already running");
+		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xB2B, 0, 0, 0, 0, 0); // exit_with_error
+	}
 
-	RCT2_CALLPROC_EBPSAFE(0x00674C0B);
+	// Check data files
+	check_file_paths();
+	check_files_integrity();
 }
 
 void rct2_update()
@@ -301,6 +312,99 @@ void check_cmdline_arg()
 	}
 }
 
+// rct2: 0x00407DB0
+int check_mutex()
+{
+	const char * const mutex_name = "RollerCoaster Tycoon 2_GSKMUTEX"; // rct2 @ 0x009AAC3D + 0x009A8B50
+
+	HANDLE mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, mutex_name);
+
+	if (mutex != NULL)
+	{
+		// Already running
+		CloseHandle(mutex);
+		return 1;
+	}
+
+	HANDLE status = CreateMutex(NULL, FALSE, mutex_name);
+	return 0;
+}
+
+// rct2: 0x00674C95
+void check_file_paths()
+{
+	for (int pathId = 0; pathId < PATH_ID_END; pathId += 1)
+	{
+		check_file_path(pathId);
+	}
+}
+
+// rct2: 0x00674CA5
+void check_file_path(int pathId)
+{
+	const char * path = get_file_path(pathId);
+	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+
+	switch (pathId)
+	{
+	case PATH_ID_GAMECFG:
+	case PATH_ID_SCORES:
+		// Do nothing; these will be created later if they do not exist yet
+		break;
+
+	case PATH_ID_CUSTOM1:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		break;
+
+	case PATH_ID_CUSTOM2:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
+		break;
+
+	default:
+		if (file == INVALID_HANDLE_VALUE) {
+			// A data file is missing from the installation directory. The original implementation
+			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
+			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
+			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN and PATH_ID_SIXFLAGS_BUILDYOUROWN,
+			// the original implementation always assumes they are stored on CD-ROM.
+			// This has been removed for now for the sake of simplicity and could be added
+			// later in a more convenient way using the INI file.
+			RCT2_ERROR("Could not find file %s", path);
+			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+		}
+		break;
+	}
+
+	if (file != INVALID_HANDLE_VALUE)
+		CloseHandle(file);
+}
+
+// rct2: 0x00674C0B
+void check_files_integrity()
+{
+	int i = 0;
+	while (files_to_check[i].pathId != PATH_ID_END)
+	{
+		WIN32_FIND_DATA find_data;
+		const char * path = get_file_path(files_to_check[i].pathId);
+		HANDLE file = FindFirstFile(path, &find_data);
+
+		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].fileSize)
+		{
+			if (file != INVALID_HANDLE_VALUE)
+				FindClose(file);
+			RCT2_ERROR("Integrity check failed for %s", path);
+			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+		}
+
+		FindClose(file);
+
+		i += 1;
+	}
+}
+
 void rct2_update_2()
 {
 	int tick, tick2;
@@ -342,13 +446,39 @@ void rct2_endupdate()
  * 
  *  rct2: 0x00674E6C
  */
-char *get_file_path(int pathId)
+const char *get_file_path(int pathId)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	static char path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
 
-	ebx = pathId;
-	RCT2_CALLFUNC_X(0x00674E6C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return (char*)ebx;
+	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
+	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
+	// the sake of simplicity.
+	strcpy(path, gGeneral_config.game_path);
+
+	// Make sure base path is terminated with a slash
+	if (strlen(path) == 0 || path[strlen(path) - 1] != '\\')
+	{
+		if (strlen(path) >= MAX_PATH - 1)
+		{
+			RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+			path[0] = '\0';
+			return path;
+		}
+
+		strcat(path, "\\");
+	}
+
+	// Concatenate file path
+	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH)
+	{
+		RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+		path[0] = '\0';
+		return path;
+	}
+
+	strcat(path, file_paths[pathId]);
+
+	return path;
 }
 
 /**

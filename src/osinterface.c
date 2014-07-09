@@ -91,6 +91,7 @@ static void osinterface_create_window()
 		exit(-1);
 	}
 
+	SDL_VERSION(&wmInfo.version);
 	// Get the HWND context
 	if (SDL_GetWindowWMInfo(_window, &wmInfo) != SDL_TRUE) {
 		RCT2_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());

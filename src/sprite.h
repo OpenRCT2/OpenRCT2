@@ -32,9 +32,13 @@
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
-	uint16 pad_02;
+	uint16 var_02;
 	uint16 next;					// 0x04
-	uint8 pad_06[0x08];
+	uint16 previous;				// 0x06
+	uint8 var_08;
+	uint8 pad_09;
+	uint16 sprite_index;			// 0x0A
+	uint8 pad_0C[2];
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -43,7 +47,11 @@ typedef struct {
 typedef struct {
 	uint32 pad_00;
 	uint16 next;					// 0x04
-	uint8 pad_06[0x1E];
+	uint16 previous;				// 0x06
+	uint8 var_08;
+	uint8 pad_09;
+	uint16 sprite_index;			// 0x0A
+	uint8 pad_0B[0x19];
 	uint32 var_24;
 } rct_litter;
 
@@ -59,6 +67,11 @@ typedef union {
 	rct_vehicle vehicle;
 } rct_sprite;
 
+// rct2: 0x010E63BC
+extern rct_sprite* g_sprite_list;
+
 void create_balloon(int x, int y, int z, int colour);
+void reset_sprite_list();
+void reset_0x69EBE4();
 
 #endif

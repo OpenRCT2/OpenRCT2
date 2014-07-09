@@ -557,7 +557,7 @@ static void window_ride_list_scrollpaint()
 		}
 		
 		// Get ride
-		ride = &RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[i]];
+		ride = &g_ride_list[w->var_076[i]];
 
 		// Ride name
 		gfx_draw_string_left_clipped(dpi, format, &ride->var_04A, 0, 0, y - 1, 159);
@@ -703,7 +703,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
 			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, 0x0141ED68, 0);
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
 				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
 				if (strcmp((char*)0x0141ED68, (char*)0x0141EF68) >= 0)
@@ -716,7 +716,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
 					break;
 
@@ -727,7 +727,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
 					break;
 
@@ -738,7 +738,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride->profit <= otherRide->profit)
 					break;
 
@@ -749,7 +749,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
 					break;
 
@@ -760,7 +760,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
 					break;
 
@@ -771,7 +771,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
 					break;
 
@@ -782,7 +782,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride->var_199 <= otherRide->var_199)
 					break;
 
@@ -793,7 +793,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			while (--k >= 0) {
-				otherRide = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[w->var_076[k]]);
+				otherRide = &g_ride_list[w->var_076[k]];
 				if (ride->guests_favourite <= otherRide->guests_favourite)
 					break;
 

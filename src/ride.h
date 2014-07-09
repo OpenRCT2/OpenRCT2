@@ -326,8 +326,11 @@ enum {
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
 
+// rct2: 0x013628F8
+extern rct_ride* g_ride_list;
+
 /** Helper macros until rides are stored in this module. */
-#define GET_RIDE(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[x]))
+#define GET_RIDE(x) (&g_ride_list[x])
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
 
 /**
@@ -335,7 +338,7 @@ enum {
  */
 #define FOR_ALL_RIDES(i, ride) \
 	for (i = 0; i < MAX_RIDES; i++) \
-		if ((ride = GET_RIDE(i))->type != RIDE_TYPE_NULL)
+		if ((ride = &g_ride_list[i])->type != RIDE_TYPE_NULL)
 
 extern const uint8 gRideClassifications[255];
 

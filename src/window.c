@@ -336,9 +336,8 @@ static void window_all_wheel_input()
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
 {
 	rct_window *w;
-
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW == &(RCT2_FIRST_WINDOW[12])) {
+	if (RCT2_NEW_WINDOW >= &(RCT2_FIRST_WINDOW[11])) {
 		// Close least recently used window
 		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_9)))
@@ -999,10 +998,10 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		RCT2_GLOBAL(0x01420070, sint32) = v->x;
 
 		// Text colouring
-		RCT2_GLOBAL(0x0141F740, uint8) = v->colours[0] & 0x7F;
-		RCT2_GLOBAL(0x0141F741, uint8) = v->colours[1] & 0x7F;
-		RCT2_GLOBAL(0x0141F742, uint8) = v->colours[2] & 0x7F;
-		RCT2_GLOBAL(0x0141F743, uint8) = v->colours[3] & 0x7F;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = v->colours[0] & 0x7F;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = v->colours[1] & 0x7F;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = v->colours[2] & 0x7F;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
 
 		// Invalidate the window
 		RCT2_CALLPROC_X(v->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)v, 0, 0);

@@ -154,7 +154,7 @@ void scenario_load(const char *path)
 
 			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 			map_update_tile_pointers();
-			RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+			reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 			return;
 		}
 
@@ -214,7 +214,7 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
-	RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
+	sub_0x0069E9A7();// RCT2_CALLPROC_EBPSAFE(0x0069E9A7);
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds
@@ -501,7 +501,7 @@ void scenario_objectives_check()
 		rct_ride* ride;
 		int rcs = 0;
 		for (int i = 0; i < MAX_RIDES; i++) {
-			ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[i]);
+			ride = &g_ride_list[i];
 			if (ride->status && ride->excitement > objective_currency)
 				rcs++;
 		}

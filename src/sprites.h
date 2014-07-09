@@ -24,10 +24,23 @@
 enum {
 	SPR_NONE = -1,
 
+	SPR_PALETTE_1_START = 3100,
+	SPR_PALETTE_1_END = 3110,
+
 	SPR_COOL_AND_WET = 3290,
 	SPR_WARM = 3291,
 	SPR_HOT_AND_DRY = 3292,
 	SPR_COLD = 3293,
+
+	// This is the start of every character there are 
+	// 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
+	// 4 fonts
+	// = 896 sprites
+	SPR_CHAR_START = 3861,
+	SPR_CHAR_END = 4757,
+
+	SPR_PALETTE_2_START = 4915,
+	SPR_PALETTE_2_END = 5047,
 
 	SPR_RESIZE = 5058,
 

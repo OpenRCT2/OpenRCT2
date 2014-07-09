@@ -1188,7 +1188,7 @@ static void window_park_scroll_to_viewport(rct_window *w)
 		return;
 
 	if (*((uint32*)&w->var_486) & 0x80000000) {
-		rct_sprite *sprite = &(RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite)[w->var_482]);
+		rct_sprite *sprite = &(g_sprite_list[w->var_482]);
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;

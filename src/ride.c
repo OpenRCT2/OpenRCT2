@@ -99,6 +99,8 @@ const uint8 gRideClassifications[255] = {
 
 #pragma endregion
 
+rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+
 int ride_get_count()
 {
 	rct_ride *ride;
@@ -139,7 +141,7 @@ void ride_init_all()
 	rct_ride_measurement *ride_measurement;
 
 	for (i = 0; i < MAX_RIDES; i++) {
-		ride = GET_RIDE(i);
+		ride = &g_ride_list[i];
 		ride->type = RIDE_TYPE_NULL;
 	}
 
@@ -183,7 +185,7 @@ void ride_update_favourited_stat()
 		if (peep->var_08 != 4)
 			return;
 		if (peep->favourite_ride != 0xff) {
-			ride = GET_RIDE(peep->favourite_ride);
+			ride = &g_ride_list[peep->favourite_ride];
 			ride->guests_favourite++;
 			ride->var_14D |= 1;
 
@@ -280,7 +282,7 @@ void ride_shop_connected(rct_ride* ride, int ride_idx)
     }
 
     uint8 track_type = tile->properties.track.type;
-    ride = GET_RIDE(tile->properties.track.ride_index);
+	ride = &g_ride_list[tile->properties.track.ride_index];
     if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
 		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
     } else {

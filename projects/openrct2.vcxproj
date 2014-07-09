@@ -110,6 +110,7 @@
     <ClCompile Include="..\src\window_map.c" />
     <ClCompile Include="..\src\window_new_ride.c" />
     <ClCompile Include="..\src\window_options.c" />
+    <ClCompile Include="..\src\window_peep.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
     <ClCompile Include="..\src\window_staff.c" />

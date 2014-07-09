@@ -44,7 +44,7 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[RCT2_ADDRESS(0x01358116, uint8)[campaign]]);
+		ride = &g_ride_list[RCT2_ADDRESS(0x01358116, uint8)[campaign]];
 		if (ride->price < 3)
 			probability /= 8;
 		break;

@@ -22,6 +22,7 @@
 #include <memory.h>
 #include <stdlib.h>
 #include "addresses.h"
+#include "gfx.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -914,21 +915,23 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		// Draw greyed out (light border bottom right shadow)
 		colour = w->colours[widget->colour];
 		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
-		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
-		memset((void*)0x009DED74, colour, 256);
-		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+
+		uint8 palette[256];
+		memset(palette, colour, 256);
+		palette[0] = 0;
+
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 		image &= 0x7FFFF;
-		RCT2_CALLPROC_X(0x0067A46E, 0, image, l + 1, t + 1, 0, (int)dpi, 0);
+		gfx_draw_sprite_palette_set(dpi, image | 0x20000000, l + 1, t + 1, palette, NULL);
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
 		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
-		RCT2_GLOBAL(0x009ABDA4, uint32) = 0x009DED74;
-		memset((void*)0x009DED74, colour, 256);
-		RCT2_GLOBAL(0x009DED74, uint8) = 0;
+		memset(palette, colour, 256);
+		palette[0] = 0;
+
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-		RCT2_CALLPROC_X(0x0067A46E, 0, image, l, t, 0, (int)dpi, 0);
+		gfx_draw_sprite_palette_set(dpi, image | 0x20000000, l, t, palette, NULL);
 	} else {
 		if (image & 0x80000000) {
 			// ?

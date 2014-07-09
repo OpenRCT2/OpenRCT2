@@ -43,7 +43,7 @@ typedef struct {
 	sint16 x_offset;		// 0x08
 	sint16 y_offset;		// 0x0A
 	uint16 flags;			// 0x0C
-	sint16 unused;			// 0x0E
+	sint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
 
 enum{
@@ -62,6 +62,7 @@ extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
 int gfx_load_g1();
+void gfx_load_character_widths();
 
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
@@ -69,6 +70,7 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int c
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y);
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y);
 void gfx_transpose_palette(int pal, unsigned char product);
 
