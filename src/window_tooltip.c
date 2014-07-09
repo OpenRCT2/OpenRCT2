@@ -24,6 +24,7 @@
 #include "string_ids.h"
 #include "widget.h"
 #include "window.h"
+#include "gfx.h"
 
 enum {
 	WIDX_BACKGROUND
@@ -127,7 +128,8 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	esi = 0x0141ED68;
 	edi = ecx + 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	ecx = gfx_wrap_string((char*) 0x0141ED68, ecx + 1, &edi, &ebx);
+	//RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	ecx &= 0xFFFF;
 	edi &= 0xFFFF;
 
