@@ -49,7 +49,7 @@ void viewport_init_all()
 	}
 
 	// Setting up windows
-	RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+	RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) = g_window_list;
 	RCT2_GLOBAL(0x01423604, sint32) = 0;
 
 	// Setting up viewports
