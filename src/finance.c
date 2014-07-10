@@ -43,7 +43,7 @@ const money32 research_cost_table[4] = {
 };
 
 /**
- * 
+ * Pay an amount of money.
  * rct2: 0x069C674
  * @param amount (eax)
  * @param type passed via global var 0x0141F56C, our type is that var/4.
@@ -62,6 +62,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 
 	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money diry flag
 	window_invalidate_by_id(WC_FINANCES, 0);
+	window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 }
 
 /**
