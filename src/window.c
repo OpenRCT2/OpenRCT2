@@ -32,6 +32,10 @@
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
 #define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
 
+#define MAX_NUMBER_WINDOWS 11
+
+rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+
 static void window_all_wheel_input();
 static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
 
@@ -131,7 +135,7 @@ void window_dispatch_update_all()
 
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
-	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		RCT2_CALLPROC_WE_UPDATE(w->event_handlers[WE_UPDATE], w);
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
@@ -154,7 +158,7 @@ void window_update_all()
 
 	gfx_draw_all_dirty_blocks();
 
-	for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->viewport != NULL)
 			viewport_update_position(w);
 
@@ -162,12 +166,12 @@ void window_update_all()
 	RCT2_GLOBAL(0x009DEB7C, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
 	if (RCT2_GLOBAL(0x009DEB7C, sint16) >= 1000) {
 		RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
-		for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
+		for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int) w, 0, 0);
 	}
 
 	// Border flash invalidation
-	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--) {
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		if (w->flags & WF_WHITE_BORDER_MASK) {
 			w->flags -= WF_WHITE_BORDER_ONE;
 			if (!(w->flags & WF_WHITE_BORDER_MASK))
@@ -316,7 +320,7 @@ static void window_all_wheel_input()
 	}
 
 	// Check windows, front to back
-	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--)
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		if (window_wheel_input(w, wheel))
 			return;
 }
@@ -337,9 +341,9 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 {
 	rct_window *w;
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW >= &(RCT2_FIRST_WINDOW[11])) {
+	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_NUMBER_WINDOWS])) {
 		// Close least recently used window
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_9)))
 				break;
 
@@ -350,14 +354,14 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 
 	// Flags
 	if (flags & WF_STICK_TO_BACK) {
-		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
+		for (; w >= g_window_list + 1; w--) {
 			if ((w - 1)->flags & WF_STICK_TO_FRONT)
 				continue;
 			if ((w - 1)->flags & WF_STICK_TO_BACK)
 				break;
 		}
 	} else if (!(flags & WF_STICK_TO_FRONT)) {
-		for (; w >= RCT2_FIRST_WINDOW + 1; w--) {
+		for (; w >= g_window_list + 1; w--) {
 			if (!((w - 1)->flags & WF_STICK_TO_FRONT))
 				break;
 		}
@@ -464,7 +468,9 @@ void window_close(rct_window* window)
 }
 
 /**
- * 
+ *  Closes window with defined windowclass and windownumber.
+ *  If the windowclass has the highest bit set (bit 15) then it only looks
+ *  at the windowclass and not the windownumber
  *  rct2: 0x006ECCF4
  * @param cls (cl)
  * @param number (dx)
@@ -474,24 +480,28 @@ void window_close_by_id(rct_windowclass cls, rct_windownumber number)
 	rct_window* w;
 	
 	if (cls & 0x80) {
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+		cls &= ~0x80;
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 			if (w->classification == cls) {
 				window_close(w);
-				w = RCT2_FIRST_WINDOW - 1;
+				w = g_window_list - 1;
 			}
 		}
 	} else {
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 			if (w->classification == cls && w->number == number) {
 				window_close(w);
-				w = RCT2_FIRST_WINDOW - 1;
+				w = g_window_list - 1;
 			}
 		}
 	}
 }
 
 /**
- *
+ *  Returns the first window with defined windowclass and windownumber.
+ *  If the windowclass has the highest bit set (bit 15) then it only looks
+ *  at the windowclass and not the windownumber.
+ *  Returns NULL on failure to find window.
  *  rct2: 0x006EA8A0
  * @param cls (cl)
  * @param number (dx)
@@ -502,11 +512,11 @@ rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
 
 	if (cls & 0x80) {
 		cls &= ~0x80;
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (w->classification == cls)
 				return w;
 	} else {
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (w->classification == cls && w->number == number)
 				return w;
 	}
@@ -529,7 +539,7 @@ void window_close_top()
 		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
 			return;
 
-	for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++) {
+		for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			return;
@@ -547,10 +557,10 @@ void window_close_all() {
 
     window_close_by_id(WC_DROPDOWN, 0);
 
-    for (w = RCT2_FIRST_WINDOW; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
       if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 		window_close(w);
-		w = RCT2_FIRST_WINDOW;
+		w = g_window_list;
       }
     }
 }
@@ -565,7 +575,7 @@ rct_window *window_find_from_point(int x, int y)
 	rct_widget *widget;
 	int widget_index;
 
-	for (w = RCT2_LAST_WINDOW; w >= RCT2_FIRST_WINDOW; w--) {
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
 			continue;
 
@@ -656,7 +666,7 @@ void window_invalidate_by_id(uint16 cls, rct_windownumber number)
 	if (cls & 0x80) {
 		widgetIndex = cls >> 8;
 		cls &= 0x7F;
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++) {
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 			if (w->classification == cls && w->number == number) {
 				widget = &w->widgets[widgetIndex];
 				if (widget->left != -2) {
@@ -667,11 +677,11 @@ void window_invalidate_by_id(uint16 cls, rct_windownumber number)
 		}
 	} else if (cls & 0x40) {
 		cls &= 0xBF;
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (w->classification == cls)
 				window_invalidate(w);
 	} else {
-		for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (w->classification == cls && w->number == number)
 				window_invalidate(w);
 	}
@@ -789,11 +799,11 @@ rct_window *window_bring_to_front(rct_window *w)
 	if (w->flags & 0x03)
 		return w;
 
-	for (v = RCT2_LAST_WINDOW; v >= RCT2_FIRST_WINDOW; v--)
+	for (v = RCT2_LAST_WINDOW; v >= g_window_list; v--)
 		if (!(v->flags & 2))
 			break;
 
-	if (v >= RCT2_FIRST_WINDOW && w != v) {
+		if (v >= g_window_list && w != v) {
 		do {
 			t = *w;
 			*w = *(w + 1);
@@ -825,7 +835,7 @@ void window_push_others_below(rct_window *w1)
 	rct_window* w2;
 
 	// Enumerate through all other windows
-	for (w2 = RCT2_FIRST_WINDOW; w2 < RCT2_NEW_WINDOW; w2++) {
+	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
 		if (w1 == w2)
 			continue;
 
@@ -866,7 +876,7 @@ rct_window *window_get_main()
 {
 	rct_window* w;
 	
-	for (w = RCT2_FIRST_WINDOW; w < RCT2_NEW_WINDOW; w++)
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == WC_MAIN_WINDOW)
 			return w;
 
