@@ -818,6 +818,56 @@ static void input_hscrollbar_left_trough(rct_window* w)
 }
 
 /**
+ *  Horizontal scrollbar's right trough was clicked
+ *  rct2: 0x006E9BB7
+ */
+static void input_hscrollbar_right_trough(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 left, widgetWidth;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	left = scroll->h_left;
+
+	widgetWidth = widget->right - widget->left - 1;
+	if (scroll->flags & 0x0010)
+		widgetWidth -= 11;
+	left += widgetWidth;
+	widgetWidth *= -1;
+	widgetWidth += scroll->h_right;
+	if (widgetWidth < 0)
+		widgetWidth = 0;
+	if (left > widgetWidth)
+		left = widgetWidth;
+
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
  *  Vertical scrollbar's "top" button held down, scroll it upwards
  *  rct2: 0x006E9C37
  */
@@ -1012,7 +1062,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 			break;
 		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
 			// 0x006E9BB7
-			RCT2_CALLPROC_X(0x006E9BB7, 0, 0, 0, 0, (int)w, 0, 0);
+			input_hscrollbar_right_trough(w);
 			break;
 		case SCROLL_PART_VSCROLLBAR_TOP:
 			// 0x006E9C37
