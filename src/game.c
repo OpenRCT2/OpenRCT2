@@ -783,7 +783,7 @@ static void input_hscrollbar_rightbutton(rct_window* w)
  *  Vertical scrollbar's "top" button held down, scroll it upwards
  *  rct2: 0x006E9C37
  */
-static void input_vscrollbar_topbottom(rct_window* w)
+static void input_vscrollbar_topbutton(rct_window* w)
 {
 	rct_windowclass windowClass;
 	rct_windownumber windowNumber;
@@ -929,7 +929,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 			break;
 		case SCROLL_PART_VSCROLLBAR_TOP:
 			// 0x006E9C37
-			input_vscrollbar_topbottom(w);
+			input_vscrollbar_topbutton(w);
 			break;
 		case SCROLL_PART_VSCROLLBAR_BOTTOM:
 			// 0x006E9C96
