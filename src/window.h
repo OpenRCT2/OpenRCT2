@@ -168,7 +168,7 @@ typedef enum {
 	WE_SCROLL_MOUSEOVER = 18,
 	WE_TEXT_INPUT = 19,
 	WE_UNKNOWN_14 = 20,
-	WE_UNKNOWN_15 = 21,
+	WE_UNKNOWN_15 = 21, // scroll mouse move?
 	WE_TOOLTIP = 22,
 	WE_UNKNOWN_17 = 23, // tooltip related
 	WE_UNKNOWN_18 = 24,
