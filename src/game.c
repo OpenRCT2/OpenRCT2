@@ -874,7 +874,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 			break;
 		case SCROLL_PART_HSCROLLBAR_RIGHT:
 			// 0x006E9ABF
-			RCT2_CALLPROC_X(0x006E9ABF, 0, 0, 0, 0, (int)w, 0, 0);
+			input_hscrollbar_rightbutton(w);
 			break;
 		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
 			// 0x006E9B47
