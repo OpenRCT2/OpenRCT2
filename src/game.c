@@ -1143,38 +1143,14 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		case SCROLL_PART_VIEW:
 			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], edx / sizeof(rct_scroll), ebx, eax, ebx, (int)w, (int)widget, 0);
 			break;
-		case SCROLL_PART_HSCROLLBAR_LEFT:
-			// 0x006E9A60
-			input_hscrollbar_leftbutton(w);
-			break;
-		case SCROLL_PART_HSCROLLBAR_RIGHT:
-			// 0x006E9ABF
-			input_hscrollbar_rightbutton(w);
-			break;
-		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-			// 0x006E9B47
-			input_hscrollbar_left_trough(w);
-			break;
-		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-			// 0x006E9BB7
-			input_hscrollbar_right_trough(w);
-			break;
-		case SCROLL_PART_VSCROLLBAR_TOP:
-			// 0x006E9C37
-			input_vscrollbar_topbutton(w);
-			break;
-		case SCROLL_PART_VSCROLLBAR_BOTTOM:
-			// 0x006E9C96
-			input_vscrollbar_bottombutton(w);
-			break;
-		case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
-			// 0x006E9D1E
-			input_vscrollbar_top_trough(w);
-			break;
-		case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
-			// 0x006E9D8E
-			input_vscrollbar_bottom_trough(w);
-			break;
+		case SCROLL_PART_HSCROLLBAR_LEFT:           input_hscrollbar_leftbutton(w);    break;
+		case SCROLL_PART_HSCROLLBAR_RIGHT:          input_hscrollbar_rightbutton(w);   break;
+		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:    input_hscrollbar_left_trough(w);   break;
+		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:   input_hscrollbar_right_trough(w);  break;
+		case SCROLL_PART_VSCROLLBAR_TOP:            input_vscrollbar_topbutton(w);     break;
+		case SCROLL_PART_VSCROLLBAR_BOTTOM:         input_vscrollbar_bottombutton(w);  break;
+		case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:     input_vscrollbar_top_trough(w);    break;
+		case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:  input_vscrollbar_bottom_trough(w); break;
 		}
 		break;
 	default:
