@@ -29,6 +29,8 @@
 #define RCT2_LAST_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*) - 1)
 #define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*))
 
+rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+
 /**
  * 
  *  rct2: 0x006E6EAC
@@ -54,7 +56,7 @@ void viewport_init_all()
 
 	// Setting up viewports
 	for (i = 0; i < 9; i++)
-		RCT2_FIRST_VIEWPORT[i].width = 0;
+		g_viewport_list[i].width = 0;
 	RCT2_NEW_VIEWPORT = NULL;
 
 	// ?
@@ -90,7 +92,7 @@ void viewport_update_pointers()
 	rct_viewport *viewport;
 	rct_viewport **vp = &RCT2_NEW_VIEWPORT;
 
-	for (viewport = RCT2_FIRST_VIEWPORT; viewport <= RCT2_NEW_VIEWPORT; viewport++)
+	for (viewport = g_viewport_list; viewport <= RCT2_NEW_VIEWPORT; viewport++)
 		if (viewport->width != 0)
 			*vp++ = viewport;
 
@@ -169,9 +171,11 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	//cx
 	int height = y_start - y_end;
 	if (height > 384){
+		//Paint
 		RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_end + 384);
 		y_end += 384;
 	}
+	//Paint
 	RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_start);
 }
 
