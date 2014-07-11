@@ -752,17 +752,14 @@ static void input_hscrollbar_rightbutton(rct_window* w)
 	left += 3;
 
 	widgetWidth = widget->right - widget->left - 1;
-	if (scroll->flags & 0x0010) {
+	if (scroll->flags & 0x0010)
 		widgetWidth -= 11;
-	}
 	widgetWidth *= -1;
 	widgetWidth += scroll->h_right;
-	if (widgetWidth < 0) {
+	if (widgetWidth < 0)
 		widgetWidth = 0;
-	}
-	if (left > widgetWidth) {
+	if (left > widgetWidth)
 		left = widgetWidth;
-	}
 
 	scroll->h_left = left;
 
@@ -891,17 +888,14 @@ static void input_vscrollbar_bottombutton(rct_window* w)
 	top += 3;
 
 	widgetHeight = widget->bottom - widget->top - 1;
-	if (scroll->flags & 0x0001) {
+	if (scroll->flags & 0x0001)
 		widgetHeight -= 11;
-	}
 	widgetHeight *= -1;
 	widgetHeight += scroll->v_bottom;
-	if (widgetHeight < 0) {
+	if (widgetHeight < 0)
 		widgetHeight = 0;
-	}
-	if (top > widgetHeight) {
+	if (top > widgetHeight)
 		top = widgetHeight;
-	}
 
 	scroll->v_top = top;
 
