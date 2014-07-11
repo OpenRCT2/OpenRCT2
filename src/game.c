@@ -691,7 +691,6 @@ static void input_hscrollbar_leftbutton(rct_window* w)
 	rct_window* w2;
 	rct_widget* widget;
 	rct_scroll* scroll;
-	uint32 b;
 	uint16 widgetIndex;
 	sint16 left;
 
@@ -702,11 +701,10 @@ static void input_hscrollbar_leftbutton(rct_window* w)
 	if (w2 == NULL)
 		return;
 
-	b = RCT2_GLOBAL(0x009DE54C, uint32);
 	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
 
 	widget = &w->widgets[widgetIndex];
-	scroll = w->scrolls + b;
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
 
 	left = scroll->h_left;
 	left -= 3;
@@ -735,7 +733,6 @@ static void input_hscrollbar_rightbutton(rct_window* w)
 	rct_window* w2;
 	rct_widget* widget;
 	rct_scroll* scroll;
-	uint32 b;
 	uint16 widgetIndex;
 	sint16 left, widgetWidth;
 
@@ -746,11 +743,10 @@ static void input_hscrollbar_rightbutton(rct_window* w)
 	if (w2 == NULL)
 		return;
 
-	b = RCT2_GLOBAL(0x009DE54C, uint32);
 	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
 
 	widget = &w->widgets[widgetIndex];
-	scroll = w->scrolls + b;
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
 
 	left = scroll->h_left;
 	left += 3;
@@ -790,7 +786,6 @@ static void input_vscrollbar_topbutton(rct_window* w)
 	rct_window* w2;
 	rct_widget* widget;
 	rct_scroll* scroll;
-	uint32 b;
 	uint16 widgetIndex;
 	sint16 top;
 
@@ -801,11 +796,10 @@ static void input_vscrollbar_topbutton(rct_window* w)
 	if (w2 == NULL)
 		return;
 
-	b = RCT2_GLOBAL(0x009DE54C, uint32);
 	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
 
 	widget = &w->widgets[widgetIndex];
-	scroll = w->scrolls + b;
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
 
 	top = scroll->v_top;
 	top -= 3;
@@ -833,7 +827,6 @@ static void input_vscrollbar_bottombutton(rct_window* w)
 	rct_window* w2;
 	rct_widget* widget;
 	rct_scroll* scroll;
-	uint32 b;
 	uint16 widgetIndex;
 	sint16 top, widgetHeight;
 
@@ -844,11 +837,10 @@ static void input_vscrollbar_bottombutton(rct_window* w)
 	if (w2 == NULL)
 		return;
 
-	b = RCT2_GLOBAL(0x009DE54C, uint32);
 	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
 
 	widget = &w->widgets[widgetIndex];
-	scroll = w->scrolls + b;
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
 
 	top = scroll->v_top;
 	top += 3;
