@@ -720,7 +720,62 @@ static void input_hscrollbar_leftbutton(rct_window* w)
 	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
 	windowClass |= 0x80;
 
-	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint8);
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+
+/**
+ *  Horizontal scrollbar's "right" button held down, scroll it to the right
+ *  rct2: 0x006E9ABF
+ */
+static void input_hscrollbar_rightbutton(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint32 b;
+	uint16 widgetIndex;
+	sint16 left, widgetWidth;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	b = RCT2_GLOBAL(0x009DE54C, uint32);
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + b;
+
+	left = scroll->h_left;
+	left += 3;
+
+	widgetWidth = widget->right - widget->left - 1;
+	if (!(scroll->flags & 0x0010)) {
+		widgetWidth -= 11;
+	}
+	widgetWidth *= -1;
+	widgetWidth += scroll->h_right;
+	if (widgetWidth < 0) {
+		widgetWidth = 0;
+	}
+	if (left > widgetWidth) {
+		left = widgetWidth;
+	}
+
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
 	window_invalidate_by_id(widgetIndex, windowClass);
 }
 
@@ -815,7 +870,6 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 			break;
 		case SCROLL_PART_HSCROLLBAR_LEFT:
 			// 0x006E9A60
-			//RCT2_CALLPROC_X(0x006E9A60, 0, 0, 0, 0, (int)w, 0, 0);
 			input_hscrollbar_leftbutton(w);
 			break;
 		case SCROLL_PART_HSCROLLBAR_RIGHT:
