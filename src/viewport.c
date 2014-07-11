@@ -109,10 +109,70 @@ void viewport_update_position(rct_window *window)
 /**
  * 
  *  rct2: 0x00685C02
+ *  ax: left
+ *  bx: top
+ *  dx: right
+ *  esi: viewport
+ *  edi: dpi
+ *  ebp: bottom
  */
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom)
 {
-	RCT2_CALLPROC_X(0x00685C02, left , top, 0, right, (int)viewport, (int)dpi, bottom);
+	if (right <= viewport->x) return;
+	if (bottom <= viewport->y) return;
+	if (left >= viewport->x + viewport->width )return;
+	if (top  >= viewport->y + viewport->height )return;
+
+	//ax
+	int x_end = left;
+
+	if (left < viewport->x){
+		x_end = viewport->x;
+	}
+
+	//dx
+	int x_start = right;
+
+	if (right > viewport->x + viewport->width){
+		x_start = viewport->x + viewport->width;
+	}
+
+	//bx
+	int y_end = top;
+
+	if (top < viewport->y){
+		y_end = viewport->y;
+	}
+
+	//bp
+	int y_start = bottom;
+
+	if (bottom > viewport->y + viewport->height){
+		y_start = viewport->y + viewport->height;
+	}
+
+	x_end -= viewport->x;
+	x_start -= viewport->x;
+	y_end -= viewport->y;
+	y_start -= viewport->y;
+
+	x_end <<= viewport->zoom;
+	x_start <<= viewport->zoom;
+	y_end <<= viewport->zoom;
+	y_start <<= viewport->zoom;
+
+	x_end += viewport->view_x;
+	x_start += viewport->view_x;
+	y_end += viewport->view_y;
+	y_start += viewport->view_y;
+
+	//cx
+	int height = y_start - y_end;
+	if (height > 384){
+		RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_end + 384);
+		y_end += 384;
+	}
+	RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_start);
 }
 
 /**
