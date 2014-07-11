@@ -949,6 +949,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
 
 		int eax, ebx, ecx, edx;
+		edx = 0; // safety
 		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &ecx, &edx);
 
 		RCT2_GLOBAL(0x009DE548, uint16) = ecx;
