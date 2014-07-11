@@ -756,7 +756,7 @@ static void input_hscrollbar_rightbutton(rct_window* w)
 	left += 3;
 
 	widgetWidth = widget->right - widget->left - 1;
-	if (!(scroll->flags & 0x0010)) {
+	if (scroll->flags & 0x0010) {
 		widgetWidth -= 11;
 	}
 	widgetWidth *= -1;
