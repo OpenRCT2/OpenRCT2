@@ -681,6 +681,379 @@ static void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_windo
 }
 
 /**
+ *  Horizontal scrollbar's "left" button held down, scroll it to the left
+ *  rct2: 0x006E9A60
+ */
+static void input_hscrollbar_leftbutton(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 left;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	left = scroll->h_left;
+	left -= 3;
+	if (left < 0)
+		left = 0;
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+
+/**
+ *  Horizontal scrollbar's "right" button held down, scroll it to the right
+ *  rct2: 0x006E9ABF
+ */
+static void input_hscrollbar_rightbutton(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 left, widgetWidth;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	left = scroll->h_left;
+	left += 3;
+
+	widgetWidth = widget->right - widget->left - 1;
+	if (scroll->flags & 0x0010)
+		widgetWidth -= 11;
+	widgetWidth *= -1;
+	widgetWidth += scroll->h_right;
+	if (widgetWidth < 0)
+		widgetWidth = 0;
+	if (left > widgetWidth)
+		left = widgetWidth;
+
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+ *  Horizontal scrollbar's left trough was clicked
+ *  rct2: 0x006E9B47
+ */
+static void input_hscrollbar_left_trough(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 left, widgetWidth;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	left = scroll->h_left;
+
+	widgetWidth = widget->right - widget->left - 1;
+	if (scroll->flags & 0x0010)
+		widgetWidth -= 11;
+	left -= widgetWidth;
+	if (left < 0)
+		left = 0;
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+ *  Horizontal scrollbar's right trough was clicked
+ *  rct2: 0x006E9BB7
+ */
+static void input_hscrollbar_right_trough(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 left, widgetWidth;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	left = scroll->h_left;
+
+	widgetWidth = widget->right - widget->left - 1;
+	if (scroll->flags & 0x0010)
+		widgetWidth -= 11;
+	left += widgetWidth;
+	widgetWidth *= -1;
+	widgetWidth += scroll->h_right;
+	if (widgetWidth < 0)
+		widgetWidth = 0;
+	if (left > widgetWidth)
+		left = widgetWidth;
+
+	scroll->h_left = left;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+ *  Vertical scrollbar's "top" button held down, scroll it upwards
+ *  rct2: 0x006E9C37
+ */
+static void input_vscrollbar_topbutton(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 top;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	top = scroll->v_top;
+	top -= 3;
+	if (top < 0)
+		top = 0;
+	scroll->v_top = top;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+*  Vertical scrollbar's "bottom" button held down, scroll it downwards
+*  rct2: 0x006E9C96
+*/
+static void input_vscrollbar_bottombutton(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 top, widgetHeight;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	top = scroll->v_top;
+	top += 3;
+
+	widgetHeight = widget->bottom - widget->top - 1;
+	if (scroll->flags & 0x0001)
+		widgetHeight -= 11;
+	widgetHeight *= -1;
+	widgetHeight += scroll->v_bottom;
+	if (widgetHeight < 0)
+		widgetHeight = 0;
+	if (top > widgetHeight)
+		top = widgetHeight;
+
+	scroll->v_top = top;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+*  Vertical scrollbar's top trough was clicked
+*  rct2: 0x006E9D1E
+*/
+static void input_vscrollbar_top_trough(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 top, widgetHeight;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	top = scroll->v_top;
+
+	widgetHeight = widget->bottom - widget->top - 1;
+	if (scroll->flags & 0x0001)
+		widgetHeight -= 11;
+	top -= widgetHeight;
+	if (top < 0)
+		top = 0;
+	scroll->v_top = top;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
+*  Vertical scrollbar's bottom trough was clicked
+*  rct2: 0x006E9D8E
+*/
+static void input_vscrollbar_bottom_trough(rct_window* w)
+{
+	rct_windowclass windowClass;
+	rct_windownumber windowNumber;
+	rct_window* w2;
+	rct_widget* widget;
+	rct_scroll* scroll;
+	uint16 widgetIndex;
+	sint16 top, widgetHeight;
+
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	windowNumber = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	w2 = window_find_by_id(windowClass, windowNumber);
+
+	if (w2 == NULL)
+		return;
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16);
+
+	widget = &w->widgets[widgetIndex];
+	scroll = w->scrolls + RCT2_GLOBAL(0x009DE54C, uint32);
+
+	top = scroll->v_top;
+
+	widgetHeight = widget->bottom - widget->top - 1;
+	if (scroll->flags & 0x0001)
+		widgetHeight -= 11;
+	top += widgetHeight;
+	widgetHeight *= -1;
+	widgetHeight += scroll->v_bottom;
+	if (widgetHeight < 0)
+		widgetHeight = 0;
+	if (top > widgetHeight)
+		top = widgetHeight;
+
+	scroll->v_top = top;
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+
+	widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8);
+	windowClass = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+	windowClass |= 0x80;
+
+	window_invalidate_by_id(widgetIndex, windowClass);
+}
+
+/**
  * 
  *  rct2: 0x006E95F9
  */
@@ -760,6 +1133,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
 
 		int eax, ebx, ecx, edx;
+		edx = 0; // safety
 		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &ecx, &edx);
 
 		RCT2_GLOBAL(0x009DE548, uint16) = ecx;
@@ -769,38 +1143,14 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		case SCROLL_PART_VIEW:
 			RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], edx / sizeof(rct_scroll), ebx, eax, ebx, (int)w, (int)widget, 0);
 			break;
-		case SCROLL_PART_HSCROLLBAR_LEFT:
-			// 0x006E9A60
-			RCT2_CALLPROC_X(0x006E9A60, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_HSCROLLBAR_RIGHT:
-			// 0x006E9ABF
-			RCT2_CALLPROC_X(0x006E9ABF, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-			// 0x006E9B47
-			RCT2_CALLPROC_X(0x006E9B47, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-			// 0x006E9BB7
-			RCT2_CALLPROC_X(0x006E9BB7, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_VSCROLLBAR_TOP:
-			// 0x006E9C37
-			RCT2_CALLPROC_X(0x006E9C37, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_VSCROLLBAR_BOTTOM:
-			// 0x006E9C96
-			RCT2_CALLPROC_X(0x006E9C96, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
-			// 0x006E9D1E
-			RCT2_CALLPROC_X(0x006E9D1E, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
-		case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
-			// 0x006E9D8E
-			RCT2_CALLPROC_X(0x006E9D8E, 0, 0, 0, 0, (int)w, 0, 0);
-			break;
+		case SCROLL_PART_HSCROLLBAR_LEFT:           input_hscrollbar_leftbutton(w);    break;
+		case SCROLL_PART_HSCROLLBAR_RIGHT:          input_hscrollbar_rightbutton(w);   break;
+		case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:    input_hscrollbar_left_trough(w);   break;
+		case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:   input_hscrollbar_right_trough(w);  break;
+		case SCROLL_PART_VSCROLLBAR_TOP:            input_vscrollbar_topbutton(w);     break;
+		case SCROLL_PART_VSCROLLBAR_BOTTOM:         input_vscrollbar_bottombutton(w);  break;
+		case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:     input_vscrollbar_top_trough(w);    break;
+		case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:  input_vscrollbar_bottom_trough(w); break;
 		}
 		break;
 	default:
