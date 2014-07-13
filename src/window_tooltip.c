@@ -115,31 +115,29 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		return;
 
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
+	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
-	format_string((char*)0x0141ED68, widget->tooltip, (void*)0x013CE952);
+	format_string(buffer, widget->tooltip, (void*)0x013CE952);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 
-	esi = 0x0141ED68;
-	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	ecx &= 0xFFFF;
-	if (ecx > 196)
-		ecx = 196;
+	int tooltip_text_width = ecx, tooltip_text_height = 0;
+	//gfx_get_string_width_new_lined
+	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &tooltip_text_width, &edx, &buffer, &edi, &ebp);
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	tooltip_text_width &= 0xFFFF;
+	if (tooltip_text_width > 196)
+		tooltip_text_width = 196;
 
-	esi = 0x0141ED68;
-	edi = ecx + 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	ecx = gfx_wrap_string((char*) 0x0141ED68, ecx + 1, &edi, &ebx);
-	//RCT2_CALLFUNC_X(0x006C21E2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	ecx &= 0xFFFF;
-	edi &= 0xFFFF;
+	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &ebx);
 
-	RCT2_GLOBAL(0x01420044, sint16) = edi;
-	width = ecx + 3;
-	height = ((edi + 1) * 10) + 4;
+	RCT2_GLOBAL(0x01420044, sint16) = tooltip_text_height;
+	width = tooltip_text_width + 3;
+	height = ((tooltip_text_height + 1) * 10) + 4;
 	window_tooltip_widgets[WIDX_BACKGROUND].right = width;
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-	memcpy((void*)0x0141FE44, (void*)0x0141ED68, 512);
+	memcpy((void*)0x0141FE44, (void*)buffer, 512);
 	
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
 	y = clamp(22, y + 26, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height - 40);
