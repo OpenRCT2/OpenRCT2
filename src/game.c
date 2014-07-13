@@ -527,16 +527,15 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_SCROLL_LEFT:
-		switch (state){
-		case 0:
+		if (state == 0){
 			if (widgetIndex != RCT2_GLOBAL(0x9DE524, uint32)){
-				//Jump to case 2 after first part
+				//Jump to 2 after first part
 			}
 			if (w->classification != RCT2_GLOBAL(0x9DE51F, uint8)){
-				//Jump to case 2 after first part
+				//Jump to 2 after first part
 			}
 			if (w->number != RCT2_GLOBAL(0x9DE520, uint16)){
-				//Jump to case 2 after first part
+				//Jump to 2 after first part
 			}
 
 			if (RCT2_GLOBAL(0x9DE548, uint16) == 5){
@@ -547,11 +546,42 @@ static void game_handle_input_mouse(int x, int y, int state)
 				//Jump 0x6e874E
 			}
 			int cx = sub_0x6E9F92(&x, &y, state, w, widget);
-			//Call 0x6E9F92
-			//0x6E86D3
-			break;
-		case 2:
-			break;
+			if (cx != RCT2_GLOBAL(0x9DE548, uint16)){
+				//Jump to 2 after first part
+			}
+
+			switch (cx){
+			case 0:
+				//0x6E871A
+				break;
+			case 1:
+				//0x6E9A60
+				break;
+			case 2:
+				//0x6E9ABF
+				break;
+			case 3:
+			case 4:
+				//0x6E87B3
+				break;
+			case 6:
+				//0x6E9C37
+				break;
+			case 7:
+				//0x6E9C96
+				break;
+			case 8:
+			case 9:
+				//0x6E87B3
+				break;
+			default:
+				return;
+			}
+		}else if (state==2){
+
+		}
+		else{
+			return;
 		}
 		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
