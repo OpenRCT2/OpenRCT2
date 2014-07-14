@@ -528,60 +528,87 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	case INPUT_STATE_SCROLL_LEFT:
 		if (state == 0){
-			if (widgetIndex != RCT2_GLOBAL(0x9DE524, uint32)){
+			if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
 				//Jump to 2 after first part
+				goto state2;
 			}
-			if (w->classification != RCT2_GLOBAL(0x9DE51F, uint8)){
+			if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8)){
 				//Jump to 2 after first part
+				goto state2;
 			}
-			if (w->number != RCT2_GLOBAL(0x9DE520, uint16)){
+			if (w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16)){
 				//Jump to 2 after first part
+				goto state2;
 			}
 
 			if (RCT2_GLOBAL(0x9DE548, uint16) == 5){
-				//Jump 0x6e8735
+				int temp_x = x;
+				x -= RCT2_GLOBAL(0x9DE538, uint16);
+				RCT2_GLOBAL(0x9DE538, uint16) = temp_x;
+				RCT2_CALLPROC_X(0x006E8676, x, temp_x, state, w->number, (int)w, (int)widget, x);
 			}
 
 			if (RCT2_GLOBAL(0x9DE548, uint16) == 10){
-				//Jump 0x6e874E
+				int temp_y = y;
+				y -= RCT2_GLOBAL(0x9DE53A, uint16);
+				RCT2_GLOBAL(0x9DE53A, uint16) = temp_y;
+				RCT2_CALLPROC_X(0x006E99A9, temp_y, y, state, w->number, (int)w, (int)widget, x);
 			}
 			int cx = sub_0x6E9F92(&x, &y, state, w, widget);
 			if (cx != RCT2_GLOBAL(0x9DE548, uint16)){
 				//Jump to 2 after first part
+				goto state2;
 			}
 
 			switch (cx){
 			case 0:
-				//0x6E871A
+				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DRAG], w->number / 18, y, x, y, (int)w, (int)widget, w->event_handlers);
 				break;
 			case 1:
-				//0x6E9A60
+				RCT2_CALLPROC_X(0x006E9A60, x, y, cx, w->number, (int)w, (int)widget, 0);
 				break;
 			case 2:
-				//0x6E9ABF
+				RCT2_CALLPROC_X(0x006E9ABF, x, y, cx, w->number, (int)w, (int)widget, 0);
 				break;
 			case 3:
 			case 4:
-				//0x6E87B3
+				return;
 				break;
 			case 6:
-				//0x6E9C37
+				RCT2_CALLPROC_X(0x006E9C37, x, y, cx, w->number, (int)w, (int)widget, 0);
 				break;
 			case 7:
-				//0x6E9C96
+				RCT2_CALLPROC_X(0x006E9C96, x, y, cx, w->number, (int)w, (int)widget, 0);
 				break;
 			case 8:
 			case 9:
-				//0x6E87B3
+				return;
 				break;
 			default:
 				return;
 			}
 		}else if (state==2){
+			RCT2_GLOBAL(0x009DE51D, uint8) = 0;
+state2:
+			widgetIndex = widgetIndex;//Purely to make the goto work
 
-		}
-		else{
-			return;
+			int eax = x, ebx = y, ecx, edx, esi, edi, ebp;
+			edx = RCT2_GLOBAL(0x9DE520, uint16);
+			ecx = RCT2_GLOBAL(0x9DE51F, uint8);
+			esi = (int)w;
+			edi = (int)widget;
+
+			RCT2_CALLFUNC_X(0x006EA8A0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			if (esi == 0) return;
+			ebx = RCT2_GLOBAL(0x9DE54C, uint32);
+			edi = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+			rct_widget* widg = &w->widgets[edi];
+			w->scrolls[ebx].flags &= 0xFF11;
+			eax = RCT2_GLOBAL(0x9DE524, uint8) << 8;
+			eax |= RCT2_GLOBAL(0x9DE51F, uint8) | 0x80;
+			ebx = RCT2_GLOBAL(0x9DE520, uint16);
+			RCT2_CALLPROC_X(0x006EA8A0, eax, ebx, ecx, edx, esi, (int)widg, ebp);
+
 		}
 		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
