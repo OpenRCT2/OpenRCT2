@@ -42,6 +42,9 @@ enum {
 	VIEWPORT_FLAG_15 = (1 << 15)
 };
 
+// rct2: 0x014234BC
+extern rct_viewport* g_viewport_list;
+
 void viewport_init_all();
 void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx);
 void viewport_update_pointers();
