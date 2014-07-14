@@ -231,7 +231,7 @@ void game_handle_input()
 
 	if (RCT2_GLOBAL(0x009DEA64, uint16) & 2) {
 		RCT2_GLOBAL(0x009DEA64, uint16) &= ~2;
-		RCT2_CALLPROC_X(0x006677F2, 0, 1, 0, 0, 5, 2, 0);
+		game_do_command(0, 1, 0, 0, 5, 2, 0); 
 	}
 
 	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
@@ -1617,16 +1617,21 @@ void game_handle_keyboard_input()
 
 /**
  * 
- *  rct2: 0x006677F2
+ *  rct2: 0x0069C62C
  *
  * @param cost (ebp)
  */
 static int game_check_affordability(int cost)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	ebp = cost;
-	RCT2_CALLFUNC_X(0x0069C62C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebp;
+	if (cost <= 0)return cost;
+	if (RCT2_GLOBAL(0x141F568, uint8) & 0xF0)return cost;
+	
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&(1 << 8))){
+		if (cost <= (sint32)(DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32))))return cost;
+	}
+	RCT2_GLOBAL(0x13CE952, uint32) = cost;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
+	return 0x80000000;
 }
 
 static uint32 game_do_command_table[58];
