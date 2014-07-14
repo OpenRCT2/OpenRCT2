@@ -250,6 +250,12 @@ static void window_game_bottom_toolbar_tooltip()
 		tool_tip_index = 0;
 		break;
 	}
+
+#ifdef _MSC_VER
+	__asm mov  ax, tool_tip_index
+#else
+	__asm__("mov ax, %[tool_tip_index] " :[tool_tip_index] "+m" (tool_tip_index));
+#endif
 }
 
 /**

@@ -1585,10 +1585,8 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 	unsigned int max_width = 0;
 	rct_g1_element g1_element;
 
-    uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-
     *num_lines = 0;
-	*font_height = 0;
+	*font_height = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
 	// Pointer to the start of the current word
 	unsigned char* curr_word = NULL;
@@ -1650,7 +1648,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 				}
 			}
 
-			line_width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*current_font_sprite_base + (*curr_char - 0x20)];
+			line_width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*font_height + (*curr_char - 0x20)];
 
 			if ((int)line_width <= width) {
 				continue;
@@ -1694,7 +1692,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 		line_width = 0;
 		curr_word = 0;
 	}
-
+	if (max_width == 0)return line_width;
 	return max_width;
 }
 

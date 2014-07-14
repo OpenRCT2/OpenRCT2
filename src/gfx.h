@@ -64,6 +64,7 @@ extern int gLastDrawStringY;
 int gfx_load_g1();
 void gfx_load_character_widths();
 
+int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
