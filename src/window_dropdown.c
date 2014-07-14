@@ -137,9 +137,9 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
+	RCT2_GLOBAL(0x009DE518, uint32) &= ~((1 << 2) | (1 << 1));
 	if (flags & 0x80)
-		RCT2_GLOBAL(0x009DE518, uint32) |= 0x02;
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 1);
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
@@ -206,9 +206,9 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~(0x04 | 0x02);
+	RCT2_GLOBAL(0x009DE518, uint32) &= ~((1 << 2) | (1 << 1));
 	if (flags & 0x80)
-		RCT2_GLOBAL(0x009DE518, uint32) |= 0x02;
+		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 1);
 
 	// Close existing dropdown
 	window_dropdown_close();
