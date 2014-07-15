@@ -115,6 +115,8 @@ void viewport_update_position(rct_window *window)
 	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
+
 /**
  * 
  *  rct2: 0x00685C02
@@ -179,11 +181,25 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	int height = y_start - y_end;
 	if (height > 384){
 		//Paint
-		RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_end + 384);
+		viewport_paint(viewport, dpi, x_end, y_end, x_start, y_end + 384);
 		y_end += 384;
 	}
 	//Paint
-	RCT2_CALLPROC_X(0x00685CBF, x_end, y_end, height, x_start, (int)viewport, (int)dpi, y_start);
+	viewport_paint(viewport, dpi, x_end, y_end, x_start, y_start);
+}
+
+/**
+ *
+ *  rct2:0x00685CBF
+ *  eax: left
+ *  ebx: top
+ *  edx: right
+ *  esi: viewport
+ *  edi: dpi
+ *  ebp: bottom
+ */
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
+	RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
 }
 
 /**
