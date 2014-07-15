@@ -75,6 +75,13 @@ void viewport_init_all()
 /**
  * 
  *  rct2: 0x006EB009
+ *  x:      ax
+ *  y:      eax (top 16)
+ *  width:  bx
+ *  height: ebx (top 16)
+ *  ecx:    ecx
+ *  edx:    edx
+ *  w:      esi
  */
 void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx)
 {
