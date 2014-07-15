@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 
@@ -59,7 +60,7 @@ void* window_main_events[] = {
 	window_main_empty,
 	window_main_paint,
 	window_main_empty
-}
+};
 
 /**
  * Creates the main window that holds the main viewport.
@@ -74,14 +75,14 @@ void window_main_open()
 	window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,
-		window_main_events,
+		(uint32*)window_main_events,
 		WC_MAIN_WINDOW,
 		WF_STICK_TO_BACK
 	);
 	window->widgets = window_main_widgets;
 
 	viewport_create(window, window->x, window->y, window->width, window->height, 0x40000000, 0x0FFF0FFF);
-	
+	window->viewport->flags |= 0x0400;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
@@ -98,7 +99,7 @@ void window_main_open()
  */
 void window_main_paint(){
 	rct_window* w;
-	rct_draw_pixel_info * dpi;
+	rct_drawpixelinfo* dpi;
 
 #ifdef _MSC_VER
 	__asm mov w, esi
@@ -108,5 +109,5 @@ void window_main_paint(){
 	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
 #endif
 
-	viewport_render(dpi, w->viewport, dpi->left, dpi->top, dpi->right, dpi->bottom);
+	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
