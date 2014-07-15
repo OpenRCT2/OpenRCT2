@@ -619,6 +619,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
  */
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex)
 {
+	if (widgetIndex == -1) return; //Prevents invalid widgets being clicked source of bug is elsewhere
 	// Check if widget cursor was over has changed
 	if (windowClass != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) ||
 		windowNumber != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) ||

@@ -24,7 +24,7 @@
 #include "window.h"
 
 rct_widget window_main_widgets[] = {
-	{ WWT_VIEWPORT, 0, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0xFFFFFFFF, 0xFFFF },
+	{ WWT_VIEWPORT, 0, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0xFFFFFFFE, 0xFFFF },
 	{ WIDGETS_END },
 };
 
