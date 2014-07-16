@@ -2050,9 +2050,10 @@ char save_game()
  * 
  *  rct2: 0x006E3879
  */
-static void rct2_exit()
+void rct2_exit()
 {
 	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+	rct2_quit(); //Post quit message does not work in 0x6e3879 as its windows only.
 }
 
 /**

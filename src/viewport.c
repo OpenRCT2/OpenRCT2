@@ -72,6 +72,7 @@ void viewport_init_all()
 	format_string((char*)0x0141F944, STR_OK, NULL);
 }
 
+
 /**
  * 
  *  rct2: 0x006EB009
@@ -85,6 +86,15 @@ void viewport_init_all()
  */
 void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx)
 {
+	rct_viewport* viewport;
+	int eax = 0xFF000001;
+	int ebx = -1;
+
+	for (viewport = g_viewport_list; viewport->width != 0; viewport++){
+		if (viewport >= RCT2_NEW_VIEWPORT){
+			error_string_quit(0xFF000001, -1);
+		}
+	}
 	x &= 0xFFFF;
 	y &= 0xFFFF;
 	RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, ecx, edx, (int)w, 0, 0);

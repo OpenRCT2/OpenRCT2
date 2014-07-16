@@ -31,5 +31,6 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 void game_load_or_quit_no_save_prompt();
 int game_load_save();
 char save_game();
+void rct2_exit();
 
 #endif

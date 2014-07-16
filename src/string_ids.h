@@ -26,6 +26,7 @@ typedef unsigned short rct_string_id;
 void format_string(char *dest, rct_string_id format, void *args);
 void generate_string_file();
 void reset_saved_strings();
+void error_string_quit(int error, rct_string_id format);
 
 enum {
 	// Font format codes
