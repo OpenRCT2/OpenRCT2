@@ -84,6 +84,17 @@ void climate_reset(int climate)
 }
 
 
+//for cheats
+void climate_freeze()
+{
+	if (climate_frozen == 1){
+		climate_frozen = 0;
+	}
+	else{
+		climate_frozen = 1;
+	}
+}
+
 /**
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
@@ -99,7 +110,9 @@ void climate_update()
 		next_gloom = _climateNextWeatherGloom,
 		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
 		next_rain = _climateNextRainLevel;
-	
+
+	if (climate_frozen == 1) //for cheats
+		return;
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;

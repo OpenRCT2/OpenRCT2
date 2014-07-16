@@ -41,6 +41,9 @@ typedef struct {
 extern int gClimateNextWeather;
 extern const rct_weather climate_weather_data[6];
 
+int climate_frozen;
+void climate_freeze();
+
 int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);
 void climate_update();

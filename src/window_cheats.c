@@ -29,15 +29,19 @@
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
+#include "climate.h"
+#include "ride.h"
+#include "scenario.h"
+#include "game.h"
 
-
-#define WW 200
-#define WH 128
-#define CHEATS_MONEY_INCREMENT 10000
-
+//#define WW 200
+//#define WH 128
+#define CHEATS_MONEY_INCREMENT 50000
+#define CHEATS_TRAM_INCREMENT 1000
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
-	WINDOW_CHEATS_PAGE_GUESTS
+	WINDOW_CHEATS_PAGE_GUESTS,
+	WINDOW_CHEATS_PAGE_MISC,
 };
 
 enum WINDOW_CHEATS_WIDGET_IDX {
@@ -47,42 +51,87 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_PAGE_BACKGROUND,
 	WIDX_TAB_1,
 	WIDX_TAB_2,
+	WIDX_TAB_3,
 	WIDX_HIGH_MONEY,
 	WIDX_PARK_ENTRANCE_FEE,
-	WIDX_HAPPY_GUESTS = 6 //Same as HIGH_MONEY as it is also the 6th widget but on a different page
+	WIDX_HAPPY_GUESTS = 7, //Same as HIGH_MONEY as it is also the 7th widget but on a different page
+	WIDX_TRAM_GUESTS,
+	WIDX_FREEZE_CLIMATE = 7,
+	WIDX_FAST_STAFF,
+	WIDX_OPEN_CLOSE_PARK,
+	WIDX_DECREASE_GAME_SPEED,
+	WIDX_INCREASE_GAME_SPEED,
+	
 };
 
+#pragma region MEASUREMENTS
+#define WW 240
+#define WH 240
+#define YSPA 4
+#define XSPA 4
+#define XOS XSPA
+#define YOS 43 + YSPA
+#define BTNW 120 - (XOS * 2)
+#define BTNH 16
+#define YPL(YIND) YOS + ((BTNH + YSPA) * YIND)
+#define HPL(YIND) YPL(YIND) + BTNH
+#define XPL(XIND) XOS + ((BTNW + XSPA) * XIND)
+#define WPL(XIND) XPL(XIND) + BTNW
+#pragma endregion
+
 static rct_widget window_cheats_money_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,	0x0FFFFFFFF,	65535},					// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,		3165,			STR_WINDOW_TITLE_TIP},	// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,		0x338,			STR_CLOSE_WINDOW_TIP},	// close x button
-	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	65535},					// tab content panel
-	{ WWT_TAB,				1,	3,			33,		17,		43,		0x2000144E,		2462},					// tab 1
-	{ WWT_TAB,				1,	34,			64,		17,		43,		0x2000144E,		2462},					// tab 2
-	{ WWT_CLOSEBOX,			1,	4,			74,		67,		83,		STR_VERY_HIGH,	STR_VERY_HIGH},			// high money
-	{ WWT_CLOSEBOX,			1,	4,			74,		107,	123,	STR_FREE,		STR_FREE},				//Park Entrance Fee Toggle	
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,	65535},					// panel / background
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			3165,			STR_WINDOW_TITLE_TIP},	// title bar
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,			STR_CLOSE_WINDOW_TIP},	// close x button
+	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,	65535},					// tab content panel
+	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		2462},					// tab 1
+	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		2462},					// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		2462},					// tab 3
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		STR_VERY_HIGH,	STR_VERY_HIGH},			// high money
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_FREE,		STR_FREE},				//Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] = {
-	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },				// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },				// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },					// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },					// tab 2
-	{ WWT_CLOSEBOX,			1, 4,			74,		77, 93,			STR_EXTREME,	STR_EXTREME},					// happy guests
+	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462 },						// tab 3
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_EXTREME,	STR_EXTREME},				// happy guests
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// happy guests
+	{ WIDGETS_END },
+};
+
+//Strings for following moved to window_cheats_paint()
+static rct_widget window_cheats_misc_widgets[] = {
+	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},					// tab 3
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		STR_NONE,		STR_NONE},					// Freeze climate
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_NONE,		STR_NONE},					// open / close park
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// fast staff
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// decrease game speed
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// increase game speed
 	{ WIDGETS_END },
 };
 
 static rct_widget *window_cheats_page_widgets[] = {
 	window_cheats_money_widgets,
-	window_cheats_guests_widgets
+	window_cheats_guests_widgets,
+	window_cheats_misc_widgets,
 };
 
 static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
+static void window_cheats_misc_mouseup();
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
@@ -150,14 +199,47 @@ static void* window_cheats_guests_events[] = {
 	window_cheats_emptysub
 };
 
+static void* window_cheats_misc_events[] = {
+	window_cheats_emptysub,
+	window_cheats_misc_mouseup,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_update,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_emptysub,
+	window_cheats_invalidate,
+	window_cheats_paint,
+	window_cheats_emptysub
+};
+
 static void* window_cheats_page_events[] = {
 	window_cheats_money_events,
 	window_cheats_guests_events,
+	window_cheats_misc_events,
 };
 
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HAPPY_GUESTS) 
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED),
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -206,6 +288,7 @@ static void window_cheats_money_mouseup()
 		break;
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
+	case WIDX_TAB_3:
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HIGH_MONEY:
@@ -233,7 +316,7 @@ static void window_cheats_guests_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
-
+	int i;
 	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
 	#else
@@ -255,6 +338,7 @@ static void window_cheats_guests_mouseup()
 		break;
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
+	case WIDX_TAB_3:
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HAPPY_GUESTS:
@@ -263,6 +347,82 @@ static void window_cheats_guests_mouseup()
 				peep->happiness = 255;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
+	case WIDX_TRAM_GUESTS:
+		i = 0;
+		for (i = 0; i < CHEATS_TRAM_INCREMENT; i++){
+			generate_new_guest();
+		}
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	}
+}
+
+static void window_cheats_misc_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+	int i;
+	rct_ride *ride;
+	#ifdef _MSC_VER
+	__asm mov widgetIndex, dx
+	#else
+	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+	#endif
+
+	rct_peep* peep;
+	uint16 spriteIndex;
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_FREEZE_CLIMATE:
+		climate_freeze();
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	case WIDX_FAST_STAFF:
+		FOR_ALL_GUESTS(spriteIndex, peep)
+			if (peep->var_2A == 0)
+				peep->happiness = 255;
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	case WIDX_OPEN_CLOSE_PARK:
+		//No clue why the ; needs to be at the beginning, but otherwise it doesn't go through.
+		;int dropdownIndex = !park_is_open();
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+		if (dropdownIndex != 0) {
+			dropdownIndex &= 0x00FF;
+			dropdownIndex |= 0x0100;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
+		}
+		else {
+			dropdownIndex &= 0x00FF;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
+		}
+		game_do_command(0, 1, 0, dropdownIndex, 34, 0, 0);
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	case WIDX_DECREASE_GAME_SPEED:
+		game_change_game_speed(-1);
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+	case WIDX_INCREASE_GAME_SPEED:
+		game_change_game_speed(1);
+		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		break;
+
 	}
 }
 
@@ -305,6 +465,7 @@ static void window_cheats_invalidate()
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
+#define TXTO 3
 static void window_cheats_paint()
 {
 	rct_window *w;
@@ -329,20 +490,38 @@ static void window_cheats_paint()
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		char buffer[256];
 		// Format text
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 1,000.");
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 5,000.");
 		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
-
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Toggle between Free and Paid Entry");
 		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 90);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		char buffer[256];
 		// Format text
-		sprintf(buffer, "%c%c%s%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness ", FORMAT_NEWLINE, "to max.");
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness to max.");
 		// Draw shadow
 		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
+
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Large group of peeps arrive");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(2) + 3);
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Large Tram");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(3) + 3);
+	}
+	else if (w->page == WINDOW_CHEATS_PAGE_MISC){
+		char buffer[256];
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Freeze climate");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(0) + 3);
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Fast staff");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(1) + 3);
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Open/Close Park");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(2) + 3);
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Slower Gamespeed");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(3) + 3);
+		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Faster Gamespeed");
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(1) + 3, w->y + YPL(3) + 3);
 	}
 
 }
@@ -358,13 +537,19 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 			sprite_idx += (w->var_48E / 2) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);	
 	}
-
+	
 	// Guests tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = 5568;
 		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
 			sprite_idx += (w->var_48E / 3) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
+	}
+
+	// Misc tab
+	if (!(w->disabled_widgets & (1 << WIDX_TAB_3))) {
+		sprite_idx = SPR_TAB_QUESTION;
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top);
 	}
 }
 
