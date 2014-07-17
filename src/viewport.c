@@ -80,25 +80,26 @@ void viewport_init_all()
  *  z : cx
  *  out_x : ax
  *  out_y : bx
- *  Converts between 3d point of a sprite and its 2d point
+ *  Converts between 3d point of a sprite to 2d coordinates for centering on that sprite 
  */
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport){
 	int start_x = x;
 
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
-		y = y - x / 2 - z;
+		x = y - x;
+		y = y / 2 + start_x / 2 - z;
 		break;
 	case 1:
-		x = -x - y;
+		x = -y - x;
 		y = y / 2 - start_x / 2 - z;
 		break;
 	case 2:
-		x -= y;
+		x = -y + x;
 		y = -y / 2 - start_x / 2 - z;
 		break;
 	case 3:
-		x += y;
+		x = y + x;
 		y = -y / 2 + start_x / 2 - z;
 		break;
 	}
@@ -126,7 +127,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	int ebx = -1;
 
 	for (viewport = g_viewport_list; viewport->width != 0; viewport++){
-		if (viewport >= RCT2_NEW_VIEWPORT){
+		if (viewport >= RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport)){
 			error_string_quit(0xFF000001, -1);
 		}
 	}
@@ -169,6 +170,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 
 	int view_x, view_y;
 	center_2d_coordinates(center_x, center_y, center_z, &view_x, &view_y, viewport);
+
 	w->saved_view_x = view_x;
 	w->saved_view_y = view_y;
 	viewport->view_x = view_x;
@@ -182,14 +184,15 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 }
 
 /**
- * UNTESTED
+ * 
  *  rct2: 0x006EE510
  */
 void viewport_update_pointers()
 {
 	rct_viewport *viewport;
-	rct_viewport **vp = &RCT2_NEW_VIEWPORT;
+	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*);
 
+	if (*vp == NULL) *vp = g_viewport_list;
 	for (viewport = g_viewport_list; viewport <= RCT2_NEW_VIEWPORT; viewport++)
 		if (viewport->width != 0)
 			*vp++ = viewport;

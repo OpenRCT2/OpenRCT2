@@ -46,7 +46,7 @@ enum {
 extern rct_viewport* g_viewport_list;
 
 void viewport_init_all();
-void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx);
+void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int ecx, int edx);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
