@@ -22,6 +22,8 @@
 #include "config.h"
 #include "gfx.h"
 #include "string_ids.h"
+#include "sprite.h"
+#include "sprites.h"
 #include "viewport.h"
 #include "window.h"
 
@@ -71,7 +73,39 @@ void viewport_init_all()
 	format_string((char*)0x0141FA44, STR_CANCEL, NULL);
 	format_string((char*)0x0141F944, STR_OK, NULL);
 }
+/**
+ *  rct:0x006EB0C1
+ *  x : ax
+ *  y : bx
+ *  z : cx
+ *  out_x : ax
+ *  out_y : bx
+ *  Converts between 3d point of a sprite and its 2d point
+ */
+void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport){
+	int start_x = x;
 
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	case 0:
+		y = y - x / 2 - z;
+		break;
+	case 1:
+		x = -x - y;
+		y = y / 2 - start_x / 2 - z;
+		break;
+	case 2:
+		x -= y;
+		y = -y / 2 - start_x / 2 - z;
+		break;
+	case 3:
+		x += y;
+		y = -y / 2 + start_x / 2 - z;
+		break;
+	}
+
+	*out_x = x - viewport->view_width/2;
+	*out_y = y - viewport->view_height/2;
+}
 
 /**
  * 
@@ -80,11 +114,12 @@ void viewport_init_all()
  *  y:      eax (top 16)
  *  width:  bx
  *  height: ebx (top 16)
- *  ecx:    ecx
+ *  zoom:    cl (8 bits)
+ *  ecx:    ecx (top 16 bits see zoom)
  *  edx:    edx
  *  w:      esi
  */
-void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx, int edx)
+void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int ecx, int edx)
 {
 	rct_viewport* viewport;
 	int eax = 0xFF000001;
@@ -95,9 +130,55 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int ecx
 			error_string_quit(0xFF000001, -1);
 		}
 	}
-	x &= 0xFFFF;
-	y &= 0xFFFF;
-	RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, ecx, edx, (int)w, 0, 0);
+
+	viewport->x = x;
+	viewport->y = y;
+	viewport->width = width;
+	viewport->height = height;
+
+	if (!(edx & (1 << 30))){
+		zoom = 0;
+	}
+	edx &= ~(1 << 30); 
+
+	viewport->view_width = width << zoom;
+	viewport->view_height = height << zoom;
+	viewport->zoom = zoom;
+	viewport->flags = 0;
+
+	if (RCT2_GLOBAL(0x9AAC7A, uint8) & 1){
+		viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+	}
+	w->viewport = viewport;
+	int center_x, center_y, center_z;
+
+	if (edx & (1 << 31)){
+		edx &= 0xFFFF;
+		w->var_4B0 = edx;
+		rct_sprite* sprite = &g_sprite_list[edx];
+		center_x = sprite->unknown.x;
+		center_y = sprite->unknown.y;
+		center_z = sprite->unknown.z;
+	}
+	else{
+		center_x = edx & 0xFFFF;
+		center_y = edx >> 16;
+		center_z = ecx >> 16;
+		w->var_4B0 = SPR_NONE;
+	}
+
+	int view_x, view_y;
+	center_2d_coordinates(center_x, center_y, center_z, &view_x, &view_y, viewport);
+	w->saved_view_x = view_x;
+	w->saved_view_y = view_y;
+	viewport->view_x = view_x;
+	viewport->view_y = view_y;
+
+	viewport_update_pointers();
+
+	//x &= 0xFFFF;
+	//y &= 0xFFFF;
+	//RCT2_CALLPROC_X(0x006EB009, (y << 16) | x, (height << 16) | width, zoom, edx, (int)w, 0, 0);
 }
 
 /**
