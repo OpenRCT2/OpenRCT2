@@ -575,6 +575,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
 				return;
 				break;
+			case SCROLL_PART_HSCROLLBAR_THUMB:
 			case SCROLL_PART_VSCROLLBAR_TOP:
 				RCT2_CALLPROC_X(0x006E9C37, x, y, scroll_part, w->number, (int)w, (int)widget, 0);
 				break;
