@@ -70,6 +70,32 @@ void update_water_animation()
 }
 
 /**
+*
+*  rct2: 0x00684266
+*/
+void draw_rain_animation(uint32 eax)
+{
+	RCT2_GLOBAL(0x00EE7850, uint32) = eax;
+
+	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+
+	short ax = screenDPI->x;
+	short bx = screenDPI->y;
+	short dx = screenDPI->width;
+	short bp = screenDPI->height;
+
+	dx += ax;
+	bp += bx;
+
+	rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+	rct_window* newWindow = (RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*));
+
+	for (rct_window* esi = g_window_list; esi < newWindow; esi++) {
+		RCT2_CALLPROC_X(0x006842AF, ax, bx, 0, dx, (int)esi, 0, bp);
+	}
+}
+
+/**
  * 
  *  rct2: 0x00684218
  */
@@ -91,7 +117,7 @@ void update_rain_animation()
 	// Get rain draw function and draw rain
 	uint32 eax = RCT2_ADDRESS(0x009AC058, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8)];
 	if (eax != 0xFFFFFFFF && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
-		RCT2_CALLPROC_X(0x00684266, eax, 0, 0, 0, 0, 0, 0);
+		draw_rain_animation(eax);
 }
 
 void game_update()
