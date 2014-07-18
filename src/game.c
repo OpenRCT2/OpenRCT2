@@ -78,20 +78,15 @@ void draw_rain_animation(uint32 eax)
 	RCT2_GLOBAL(0x00EE7850, uint32) = eax;
 
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	short left = screenDPI->x;
+	short right = left + screenDPI->width;
+	short top = screenDPI->y;
+	short bottom = top + screenDPI->height;
 
-	short ax = screenDPI->x;
-	short bx = screenDPI->y;
-	short dx = screenDPI->width;
-	short bp = screenDPI->height;
-
-	dx += ax;
-	bp += bx;
-
-	rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 	rct_window* newWindow = (RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*));
 
-	for (rct_window* esi = g_window_list; esi < newWindow; esi++) {
-		RCT2_CALLPROC_X(0x006842AF, ax, bx, 0, dx, (int)esi, 0, bp);
+	for (rct_window* w = g_window_list; w < newWindow; w++) {
+		RCT2_CALLPROC_X(0x006842AF, left, top, 0, right, (int)w, 0, bottom);
 	}
 }
 
