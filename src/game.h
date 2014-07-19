@@ -25,11 +25,14 @@ void game_create_windows();
 void game_update();
 void game_logic_update();
 void sub_0x0069E9A7(); 
+void update_rain_animation();
+void update_water_animation();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
 void game_load_or_quit_no_save_prompt();
 int game_load_save();
+void game_pause_toggle();
 char save_game();
 void rct2_exit();
 

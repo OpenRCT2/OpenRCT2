@@ -25,6 +25,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
+#include "game.h"
 #include "rct2.h"
 #include "screenshot.h"
 #include "string_ids.h"
@@ -47,7 +48,7 @@ void screenshot_check()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
-			RCT2_CALLPROC_EBPSAFE(0x00684218);
+			update_rain_animation();
 			screenshotIndex = screenshot_dump();
 			RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;

@@ -91,7 +91,7 @@ static void title_create_windows();
 void title_load()
 {
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) & 1)
-		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0);
+		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0);//Game pause toggle
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
 
@@ -289,8 +289,8 @@ void title_update()
 	// RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
 	game_handle_input();
 
-	RCT2_CALLPROC_EBPSAFE(0x006838BD);
-	RCT2_CALLPROC_EBPSAFE(0x00684218);
+	update_water_animation();
+	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
