@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "addresses.h"
+#include "game.h"
 #include "date.h"
 #include "rct2.h"
 #include "string_ids.h"
@@ -1567,6 +1568,28 @@ void format_string(char *dest, rct_string_id format, void *args)
 {
 	// RCT2_CALLPROC_X(0x006C2555, format, 0, (int)args, 0, 0, (int)dest, 0);
 	format_string_part(&dest, format, (char**)&args);
+}
+
+/**
+ *  rct2: 0x006E37F7
+ *  error  (eax)
+ *  format (bx)
+ */
+void error_string_quit(int error, rct_string_id format){
+	//RCT2_CALLPROC_X(0x006E37F7, error, format, 0, 0, 0, 0, 0);
+	RCT2_GLOBAL(0x14241A0, uint32) = error;
+	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
+
+	char* error_string = RCT2_ADDRESS(0x1424080, char);
+	void* args = RCT2_ADDRESS(0x13CE952, void);
+	*error_string = 0;
+
+	if (format != 0xFFFF){
+		format_string(error_string, format, args);
+	}
+	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
+	rct2_exit();
+	rct2_endupdate();
 }
 
 void generate_string_file()

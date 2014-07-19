@@ -619,6 +619,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
  */
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex)
 {
+	if (widgetIndex == -1) return; //Prevents invalid widgets being clicked source of bug is elsewhere
 	// Check if widget cursor was over has changed
 	if (windowClass != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) ||
 		windowNumber != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) ||
@@ -2049,9 +2050,10 @@ char save_game()
  * 
  *  rct2: 0x006E3879
  */
-static void rct2_exit()
+void rct2_exit()
 {
 	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+	//Post quit message does not work in 0x6e3879 as its windows only.
 }
 
 /**

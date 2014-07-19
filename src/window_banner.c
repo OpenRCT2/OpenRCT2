@@ -139,6 +139,7 @@ void window_banner_open()
 		w->y + viewportWidget->top + 1,
 		(viewportWidget->right - viewportWidget->left) - 2,
 		(viewportWidget->bottom - viewportWidget->top) - 2,
+		0,
 		100,	// TODO: needs banner map position
 		100		// TODO: needs banner map position
 	);

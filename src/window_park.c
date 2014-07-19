@@ -1166,6 +1166,7 @@ static void window_park_init_viewport(rct_window *w)
 				w->y + viewportWidget->top + 1,
 				(viewportWidget->right - viewportWidget->left) - 2,
 				(viewportWidget->bottom - viewportWidget->top) - 2,
+				zr&0xFF,
 				zr,
 				xy
 			);
