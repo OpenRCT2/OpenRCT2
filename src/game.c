@@ -544,14 +544,16 @@ static void game_handle_input_mouse(int x, int y, int state)
 				int temp_x = x;
 				x -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16);
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = temp_x;
-				RCT2_CALLPROC_X(0x006E8676, x, temp_x, state, w->number, (int)w, (int)widget, x);
+				RCT2_CALLPROC_X(0x006E98F2, x, temp_x, state, w->number, (int)w, (int)widget, x);
+				return;
 			}
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_VSCROLLBAR_THUMB){
-				int temp_y = y;
+				int temp_y = y;	
 				y -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16);
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = temp_y;
-				RCT2_CALLPROC_X(0x006E99A9, temp_y, y, state, w->number, (int)w, (int)widget, x);
+				RCT2_CALLPROC_X(0x006E99A9, temp_y, y, state, w->number, (int)w, (int)widget, y);
+				return;
 			}
 			int scroll_part;
 			widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &state);
@@ -593,23 +595,16 @@ static void game_handle_input_mouse(int x, int y, int state)
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 state2:
 			widgetIndex = widgetIndex;//Purely to make the goto work
+			int window_no = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16);
+			int window_cls = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+		
+			rct_window* wind = window_find_by_id( window_cls,window_no);
+			if (wind == NULL) return;
+			int scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
 
-			int eax = x, ebx = y, ecx, edx, esi, edi, ebp;
-			edx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16);
-			ecx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
-			esi = (int)w;
-			edi = (int)widget;
+			wind->scrolls[scroll_id/sizeof(rct_scroll)].flags &= 0xFF11;
 
-			RCT2_CALLFUNC_X(0x006EA8A0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			if (esi == 0) return;
-			ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
-			edi = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
-			rct_widget* widg = &w->widgets[edi];
-			w->scrolls[ebx/sizeof(rct_scroll)].flags &= 0xFF11;
-			eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8) << 8;
-			eax |= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8) | 0x80;
-			ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16);
-			RCT2_CALLPROC_X(0x006EA8A0, eax, ebx, ecx, edx, esi, (int)widg, ebp);
+			window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
 
 		}
 		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
