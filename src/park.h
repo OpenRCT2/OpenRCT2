@@ -56,4 +56,6 @@ void reset_park_entrances();
 void park_update();
 void park_update_histories();
 
+uint8 calculate_guest_initial_happiness();
+
 #endif
