@@ -264,6 +264,48 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
  *  ebp: bottom
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
+	RCT2_GLOBAL(0x141E9E4, uint16) = viewport->flags;
+	RCT2_GLOBAL(0x9AC126, uint16) = viewport->zoom;//cx
+
+	//dx
+	int x = right - left;
+	//bp
+	int y = bottom - top;
+	int bitmask = 0xFFFF << viewport->zoom;
+
+	x &= bitmask;
+	y &= bitmask;
+	left &= bitmask;
+	top &= bitmask;
+
+	RCT2_GLOBAL(0x9AC11C, uint16) = left;
+	RCT2_GLOBAL(0x9AC11E, uint16) = top;
+
+	left -= viewport->view_x & bitmask;
+	top -=  viewport->view_y & bitmask;
+
+	RCT2_GLOBAL(0x9AC120, uint16) = x;
+	RCT2_GLOBAL(0x9AC122, uint16) = y;
+
+	left >>= viewport->zoom;
+	top >>= viewport->zoom;
+	x >>= viewport->zoom;
+
+	x = (viewport->view_x + viewport->view_width) - x;
+	RCT2_GLOBAL(0x9AC124, uint16) = x;
+	
+	left += viewport->x;
+	top += viewport->y;
+	uint8* bits_pointer = left - dpi->x + (top - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
+	RCT2_GLOBAL(0x9AC118, uint8*) = bits_pointer;
+
+	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(0x9AC128, rct_drawpixelinfo);
+	dpi2->y = RCT2_GLOBAL(0x9AC11E, uint16);
+	dpi2->height = RCT2_GLOBAL(0x9AC122, uint16);
+	dpi2->zoom_level = RCT2_GLOBAL(0x9AC126, uint16);
+
+	int ecx = RCT2_GLOBAL(0x9AC11C, uint16) & 0xFFFFFFE0;
+
 	RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
 }
 
