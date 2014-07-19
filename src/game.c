@@ -344,6 +344,24 @@ static void input_mouseover_widget_check(rct_windowclass windowClass, rct_window
 static void input_mouseover_widget_flatbutton_invalidate();
 static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex);
 
+/** 
+ *  rct2: 0x006E876D
+ *
+ */
+void invalidate_scroll(){
+	int window_no = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16);
+	int window_cls = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
+
+	rct_window* wind = window_find_by_id(window_cls, window_no);
+	if (wind == NULL) return;
+
+	int scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+	//Reset to basic scroll
+	wind->scrolls[scroll_id / sizeof(rct_scroll)].flags &= 0xFF11;
+
+	window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
+}
+
 /**
  * 
  *  rct2: 0x006E8655
@@ -525,19 +543,20 @@ static void game_handle_input_mouse(int x, int y, int state)
 	case INPUT_STATE_VIEWPORT_LEFT:
 		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
-	case INPUT_STATE_SCROLL_LEFT:
+	case INPUT_STATE_SCROLL_LEFT://0x006E8676
+		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		if (state == 0){
 			if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
-				//Jump to 2 after first part
-				goto state2;
+				invalidate_scroll();
+				return;
 			}
 			if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8)){
-				//Jump to 2 after first part
-				goto state2;
+				invalidate_scroll();
+				return;
 			}
 			if (w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16)){
-				//Jump to 2 after first part
-				goto state2;
+				invalidate_scroll();
+				return;
 			}
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
@@ -555,12 +574,12 @@ static void game_handle_input_mouse(int x, int y, int state)
 				RCT2_CALLPROC_X(0x006E99A9, temp_y, y, state, w->number, (int)w, (int)widget, y);
 				return;
 			}
-			int scroll_part;
-			widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &state);
+			int scroll_part, scroll_id;
+			widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &scroll_id);
 
 			if (scroll_part != RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16)){
-				//Jump to 2 after first part
-				goto state2;
+				invalidate_scroll();
+				return;
 			}
 
 			switch (scroll_part){
@@ -592,22 +611,10 @@ static void game_handle_input_mouse(int x, int y, int state)
 				return;
 			}
 		}else if (state==2){
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
-state2:
-			widgetIndex = widgetIndex;//Purely to make the goto work
-			int window_no = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16);
-			int window_cls = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8);
-		
-			rct_window* wind = window_find_by_id( window_cls,window_no);
-			if (wind == NULL) return;
-			int scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
-
-			wind->scrolls[scroll_id/sizeof(rct_scroll)].flags &= 0xFF11;
-
-			window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
-
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
+			invalidate_scroll();
+			return;
 		}
-		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_RESIZING:
 		// RCT2_CALLPROC_X(0x006E8B46, x, y, state, widgetIndex, w, widget, 0);
