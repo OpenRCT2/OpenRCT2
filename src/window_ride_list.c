@@ -701,12 +701,12 @@ static void window_ride_list_refresh_list(rct_window *w)
 		switch (w->var_490) {
 		case INFORMATION_TYPE_STATUS:
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
-			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, 0x0141ED68, 0);
+			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 0);
 			while (--k >= 0) {
 				otherRide = &g_ride_list[w->var_076[k]];
 				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
 				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
-				if (strcmp((char*)0x0141ED68, (char*)0x0141EF68) >= 0)
+				if (strcmp((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68) >= 0)
 					break;
 
 				swapper = w->var_076[k];

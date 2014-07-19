@@ -116,7 +116,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 	// RCT2_CALLPROC_X(0x006A9428, 0, 0, 0, 0, 0, 0, (int)entry); return;
 
 	int i;
-	rct_object_entry *installedObject = RCT2_GLOBAL(0x009ADAE8, rct_object_entry*);
+	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	for (i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
 		if (object_entry_compare(installedObject, entry)) {
 			char path[260];

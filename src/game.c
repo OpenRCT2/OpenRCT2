@@ -100,7 +100,7 @@ void update_rain_animation()
 		return;
 
 	// Draw picked-up peep
-	if (RCT2_GLOBAL(0x009DE550, uint32) != 0xFFFFFFFF) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) != 0xFFFFFFFF) {
 		gfx_draw_sprite(
 			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
@@ -1837,11 +1837,11 @@ static void game_load_or_quit()
 static int open_landscape_file_dialog()
 {
 	int result;
-	format_string((char*)0x0141ED68, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
+	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -1854,11 +1854,11 @@ static int open_landscape_file_dialog()
 static int open_load_game_dialog()
 {
 	int result;
-	format_string((char*)0x0141ED68, STR_LOAD_GAME_DIALOG_TITLE, 0);
+	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)0x0141ED68, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
+	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;

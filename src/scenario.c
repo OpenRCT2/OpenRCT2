@@ -245,22 +245,28 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 		char *ebp = RCT2_GLOBAL(0x009ADAE4, char*);
 
 		// 
-		format_string((char*)0x0141ED68, RCT2_GLOBAL(ebp + 2, uint16), 0);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 2, uint16), 0);
 		
 		// Set park name
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-		game_do_command(1, 1, 0, *((int*)(0x0141ED68 + 0)), 33, *((int*)(0x0141ED68 + 8)), *((int*)(0x0141ED68 + 4)));
-		game_do_command(2, 1, 0, *((int*)(0x0141ED68 + 12)), 33, *((int*)(0x0141ED68 + 20)), *((int*)(0x0141ED68 + 16)));
-		game_do_command(0, 1, 0, *((int*)(0x0141ED68 + 24)), 33, *((int*)(0x0141ED68 + 32)), *((int*)(0x0141ED68 + 28)));
+		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), 33,
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 8)), 
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 4)));
+		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), 33, 
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 20)),
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 16)));
+		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), 33,
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 32)),
+			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 28)));
 
 		// 
-		format_string((char*)0x0141ED68, RCT2_GLOBAL(ebp + 0, uint16), 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, (char*)0x0141ED68, 31);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 0, uint16), 0);
+		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 31);
 		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
 
 		// Set scenario details
-		format_string((char*)0x0141ED68, RCT2_GLOBAL(ebp + 4, uint16), 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, (char*)0x0141ED68, 255);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 4, uint16), 0);
+		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 255);
 		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
 	}
 

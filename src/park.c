@@ -66,7 +66,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = 28;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(0x01357BC8, uint16) = 0;
-	RCT2_GLOBAL(0x01357846, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(0x013573FE, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
 	_guestGenerationProbability = 0;
@@ -88,7 +88,7 @@ void park_init()
 		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
-	RCT2_GLOBAL(0x013573F2, sint16) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) = -1;
 	RCT2_GLOBAL(0x013573F8, sint16) = -1;
 	RCT2_GLOBAL(0x01357CF2, uint16) = 127;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = 2;
@@ -341,7 +341,7 @@ void reset_park_entrances()
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
 	}
 
-	RCT2_GLOBAL(0x013573F2, uint16) = 0xFFFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x013573F8, uint16) = 0xFFFF;
 }
 
@@ -389,9 +389,9 @@ static int park_calculate_guest_generation_probability()
 			if (ride->lifecycle_flags & 0x400)
 				continue;
 
-			if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x10000000))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
 				continue;
-			if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x200))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x200))
 				continue;
 			if (!(ride->lifecycle_flags & 0x02))
 				continue;
@@ -530,7 +530,7 @@ void park_update()
 		return;
 
 	// Every 5 seconds approximately
-	if (RCT2_GLOBAL(0x013628F4, uint8) % 512 == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint8) % 512 == 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
