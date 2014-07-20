@@ -492,6 +492,12 @@ static rct_peep *park_generate_new_guest()
 	return peep;
 }
 
+//This is called via the cheat window.
+void generate_new_guest()
+{
+	park_generate_new_guest();
+}
+
 static rct_peep *park_generate_new_guest_due_to_campaign(int campaign)
 {
 	rct_peep *peep = park_generate_new_guest();

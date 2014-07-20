@@ -323,6 +323,7 @@ enum {
 };
 
 #define MAX_RIDES 255
+
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
 

@@ -101,6 +101,7 @@ void pause_sounds() {
 		RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
 		RCT2_CALLPROC_EBPSAFE(0x006BD07F);
 	}
+	sounds_is_paused = 1;
 }
 
 /**
@@ -109,4 +110,5 @@ void pause_sounds() {
 */
 void unpause_sounds() {
 	RCT2_GLOBAL(0x009AF59C, uint8)--;
+	sounds_is_paused = 0;
 }

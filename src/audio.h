@@ -63,6 +63,8 @@ void sound_stop(rct_sound *sound);
 void pause_sounds();
 void unpause_sounds();
 
+int sounds_is_paused;
+
 typedef enum {
 	SOUND_LIFT_1 = 0,
 	SOUND_TRACK_FRICTION_1 = 1,

@@ -43,6 +43,7 @@
 #include "window_error.h"
 #include "window_tooltip.h"
 
+
 int _gameSpeed = 1;
 
 void game_handle_input();
@@ -1693,6 +1694,14 @@ void handle_shortcut_command(int shortcutIndex)
 		_gameSpeed = min(8, _gameSpeed + 1);
 		break;
 	}
+}
+void game_change_game_speed(int amount)
+{
+	//Sending 0 will reset to default
+	if (amount == 0)
+		_gameSpeed = 1;
+	else
+		_gameSpeed = max(1, min(8, _gameSpeed + amount));
 }
 
 /**
