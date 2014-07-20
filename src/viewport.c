@@ -264,83 +264,78 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
  *  ebp: bottom
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;//cx
 
-	//dx
-	int x = right - left;
-	//bp
-	int y = bottom - top;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
+
+	int width = right - left;
+	int height = bottom - top;
 	int bitmask = 0xFFFF << viewport->zoom;
 
-	x &= bitmask;
-	y &= bitmask;
+	width &= bitmask;
+	height &= bitmask;
 	left &= bitmask;
 	top &= bitmask;
 
-	RCT2_GLOBAL(0x9AC11C, uint16) = left;
-	RCT2_GLOBAL(0x9AC11E, uint16) = top;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) = left;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16) = top;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16) = width;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16) = height;
 
-	left -= viewport->view_x & bitmask;
-	top -= viewport->view_y & bitmask;
+	width >>= viewport->zoom;
 
-	RCT2_GLOBAL(0x9AC120, uint16) = x;
-	RCT2_GLOBAL(0x9AC122, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
 
-	left >>= viewport->zoom;
-	top >>= viewport->zoom;
+	int x = left - viewport->view_x & bitmask;
 	x >>= viewport->zoom;
+	x += viewport->x;
 
-	x = (dpi->width + dpi->pitch) - x;
-	RCT2_GLOBAL(0x9AC124, uint16) = x;
+	int y = top - viewport->view_y & bitmask;
+	y >>= viewport->zoom;
+	y += viewport->y;
 
-	left += viewport->x;
-	top += viewport->y;
-	uint8* bits_pointer = left - dpi->x + (top - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
+	uint8* bits_pointer = x - dpi->x + (y - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*) = bits_pointer;
 
-	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(0x9AC128, rct_drawpixelinfo);
-	dpi2->y = RCT2_GLOBAL(0x9AC11E, uint16);
-	dpi2->height = RCT2_GLOBAL(0x9AC122, uint16);
+	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
+	dpi2->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16);
+	dpi2->height = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16);
 	dpi2->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
 
-	int ecx = RCT2_GLOBAL(0x9AC11C, uint16) & 0xFFFFFFE0;
+	x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) & 0xFFFFFFE0;
 
 	int esi = (int)viewport;
 	int eax;
 
 	do{
-		eax = RCT2_GLOBAL(0x9AC11C, uint16);
-		int ebx = RCT2_GLOBAL(0x9AC120, uint16);
-		int edx = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint32);
-		int ebp = RCT2_GLOBAL(0x9AC124, uint16);
-		if (ecx >= eax){
-			esi = ecx;
-			esi -= eax;
-			ebx -= esi;
-			esi >>= RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
-			edx += esi;
-			ebp += esi & 0xFFFF;
-			eax = ecx;
+		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16);
+		int width = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+		bits_pointer = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*);
+		int pitch = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16);
+		int zoom = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+		if (x >= start_x){
+			int left_pitch = x - start_x;
+			width -= left_pitch;
+			bits_pointer += left_pitch >> zoom;
+			pitch += left_pitch >> zoom;
+			start_x = x;
 		}
-		ecx += 32;
-		int push_ecx = ecx;
-		ebx += eax;
-		if (ebx >= ecx){
-			esi = ebx;
-			esi -= ecx;
-			ebx -= esi;
-			esi >>= RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
-			ebp += esi & 0xFFFF;
+		x += 32;
+		int push_ecx = x;
+		int paint_right = start_x + width;
+		if (paint_right >= x){
+			int right_pitch = paint_right - x;
+			paint_right -= right_pitch;
+			pitch += right_pitch >> zoom;
 		}
-		ebx -= eax;
-		dpi2->x = eax & 0xFFFF;
-		dpi2->width = ebx & 0xFFFF;
-		dpi2->bits = edx;
-		dpi2->pitch = ebp & 0xFFFF;
+		width = paint_right - start_x;
+		dpi2->x = start_x & 0xFFFF;
+		dpi2->width = width & 0xFFFF;
+		dpi2->bits = bits_pointer;
+		dpi2->pitch = pitch & 0xFFFF;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x3001){
-			ebp = 0x0A0A0A0A;
+			int ebp = 0x0A0A0A0A;
 			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000){
 				ebp = 0;
 			}
@@ -348,31 +343,22 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
-		ebp = 0xEE788C;
-		RCT2_CALLFUNC_X(0x68615B, &eax, &ebx, &ecx, &edx, &esi, (int)&dpi2, &ebp); //Memory copy
-		RCT2_CALLFUNC_X(0x68B6C2, &eax, &ebx, &ecx, &edx, &esi, (int)&dpi2, &ebp); //Big function call
-		RCT2_CALLFUNC_X(0x688217, &eax, &ebx, &ecx, &edx, &esi, (int)&dpi2, &ebp); //Move memory
-		RCT2_CALLFUNC_X(0x688485, &eax, &ebx, &ecx, &edx, &esi, (int)&dpi2, &ebp); //Big function call
+		int ebp = 0xEE788C, ebx = 0;
+		RCT2_CALLFUNC_X(0x68615B, &start_x, &ebx, &x, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Memory copy
+		RCT2_CALLFUNC_X(0x68B6C2, &start_x, &ebx, &x, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &x, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
+		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &x, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
 
 		ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8);
 		ebp = RCT2_ADDRESS(0x98195C, uint32)[ebp];
 		if ((ebp != -1) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000) && (RCT2_GLOBAL(0x9DEA6F, uint8) & 1)){
 			dpi2 = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-			eax = dpi2->x;
-			ebx = dpi2->width;
-			ecx = dpi2->y;
-			edx = dpi2->height;
-			ebx += eax;
-			edx += ecx;
-			ebx--;
-			edx--;
-			gfx_fill_rect(dpi2, eax & 0xFFFF, ecx & 0xFFFF, ebx & 0xFFFF, edx & 0xFFFF, ebp);
+			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, ebp);
 		}
-		RCT2_CALLPROC_X(0x6860C3, eax, ebx, ecx, edx, esi, (int)dpi2, ebp); //string related
-		ecx = push_ecx;
-		eax = RCT2_GLOBAL(0x9AC11C, uint16);
-		eax += RCT2_GLOBAL(0x9AC120, uint16);
-	} while (ecx < eax);
+		RCT2_CALLPROC_X(0x6860C3, start_x, ebx, x, (int)bits_pointer, esi, (int)dpi2, ebp); //string related
+		x = push_ecx;
+		int right = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) + RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);;
+	} while (x < right);
 
 	//RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
 }
