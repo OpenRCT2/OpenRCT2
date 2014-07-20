@@ -291,7 +291,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	top >>= viewport->zoom;
 	x >>= viewport->zoom;
 
-	x = (viewport->view_x + viewport->view_width) - x;
+	x = (dpi->width + dpi->pitch) - x;
 	RCT2_GLOBAL(0x9AC124, uint16) = x;
 
 	left += viewport->x;
