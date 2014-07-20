@@ -146,6 +146,9 @@ typedef struct rct_window {
 	uint8 colours[6];			// 0x4BA
 } rct_window;
 
+#define RCT_WINDOW_RIGHT(w) (w->x + w->width)
+#define RCT_WINDOW_BOTTOM(w) (w->y + w->height)
+
 typedef enum {
 	WE_CLOSE = 0,
 	WE_MOUSE_UP = 1,
