@@ -228,58 +228,29 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	if (left >= viewport->x + viewport->width )return;
 	if (top  >= viewport->y + viewport->height )return;
 
-	//ax
-	int x_end = left;
+	left = max(left - viewport->x, 0);
+	right = min(right - viewport->x, viewport->width);
+	top = max(top - viewport->y, 0);
+	bottom = min(bottom - viewport->y, viewport->height);
 
-	if (left < viewport->x){
-		x_end = viewport->x;
-	}
+	left <<= viewport->zoom;
+	right <<= viewport->zoom;
+	top <<= viewport->zoom;
+	bottom <<= viewport->zoom;
 
-	//dx
-	int x_start = right;
+	left += viewport->view_x;
+	right += viewport->view_x;
+	top += viewport->view_y;
+	bottom += viewport->view_y;
 
-	if (right > viewport->x + viewport->width){
-		x_start = viewport->x + viewport->width;
-	}
-
-	//bx
-	int y_end = top;
-
-	if (top < viewport->y){
-		y_end = viewport->y;
-	}
-
-	//bp
-	int y_start = bottom;
-
-	if (bottom > viewport->y + viewport->height){
-		y_start = viewport->y + viewport->height;
-	}
-
-	x_end -= viewport->x;
-	x_start -= viewport->x;
-	y_end -= viewport->y;
-	y_start -= viewport->y;
-
-	x_end <<= viewport->zoom;
-	x_start <<= viewport->zoom;
-	y_end <<= viewport->zoom;
-	y_start <<= viewport->zoom;
-
-	x_end += viewport->view_x;
-	x_start += viewport->view_x;
-	y_end += viewport->view_y;
-	y_start += viewport->view_y;
-
-	//cx
-	int height = y_start - y_end;
+	int height = bottom - top;
 	if (height > 384){
 		//Paint
-		viewport_paint(viewport, dpi, x_end, y_end, x_start, y_end + 384);
-		y_end += 384;
+		viewport_paint(viewport, dpi, left, top, right, top + 384);
+		top += 384;
 	}
 	//Paint
-	viewport_paint(viewport, dpi, x_end, y_end, x_start, y_start);
+	viewport_paint(viewport, dpi, left, top, right, bottom);
 }
 
 /**
