@@ -264,13 +264,14 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
  *  ebp: bottom
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
-
+	//RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
+	//return;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
 
 	int width = right - left;
 	int height = bottom - top;
-	int bitmask = 0xFFFF << viewport->zoom;
+	int bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
 
 	width &= bitmask;
 	height &= bitmask;
@@ -286,11 +287,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
 
-	int x = left - viewport->view_x & bitmask;
+	int x = left - (viewport->view_x & bitmask);
 	x >>= viewport->zoom;
 	x += viewport->x;
 
-	int y = top - viewport->view_y & bitmask;
+	int y = top - (viewport->view_y & bitmask);
 	y >>= viewport->zoom;
 	y += viewport->y;
 
