@@ -150,8 +150,7 @@ static void window_water_mouseup()
 	case WIDX_DECREMENT:
 		// Decrement land tool size
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-		//limit = 1;
-		limit = 0;
+		limit = 1;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
 

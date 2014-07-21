@@ -85,14 +85,9 @@ void climate_reset(int climate)
 
 
 //for cheats
-void climate_freeze()
+void toggle_climate_lock()
 {
-	if (climate_frozen == 1){
-		climate_frozen = 0;
-	}
-	else{
-		climate_frozen = 1;
-	}
+	g_climate_locked = !g_climate_locked;
 }
 
 /**
@@ -111,7 +106,7 @@ void climate_update()
 		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
 		next_rain = _climateNextRainLevel;
 
-	if (climate_frozen == 1) //for cheats
+	if (g_climate_locked) //for cheats
 		return;
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate

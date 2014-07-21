@@ -63,7 +63,9 @@ void sound_stop(rct_sound *sound);
 void pause_sounds();
 void unpause_sounds();
 
-int sounds_is_paused;
+// 0x009AF59C probably does the same job
+// once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
+int g_sounds_disabled;
 
 typedef enum {
 	SOUND_LIFT_1 = 0,

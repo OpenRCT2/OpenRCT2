@@ -1688,20 +1688,22 @@ void handle_shortcut_command(int shortcutIndex)
 
 	// New
 	case SHORTCUT_REDUCE_GAME_SPEED:
-		_gameSpeed = max(1, _gameSpeed - 1);
+		game_reduce_game_speed();
 		break;
 	case SHORTCUT_INCREASE_GAME_SPEED:
-		_gameSpeed = min(8, _gameSpeed + 1);
+		game_increase_game_speed();
 		break;
 	}
 }
-void game_change_game_speed(int amount)
+
+void game_increase_game_speed()
 {
-	//Sending 0 will reset to default
-	if (amount == 0)
-		_gameSpeed = 1;
-	else
-		_gameSpeed = max(1, min(8, _gameSpeed + amount));
+	_gameSpeed = min(8, _gameSpeed + 1);
+}
+
+void game_reduce_game_speed()
+{
+	_gameSpeed = max(1, _gameSpeed - 1);
 }
 
 /**
