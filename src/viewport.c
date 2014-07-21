@@ -269,9 +269,9 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
 
-	int width = right - left;
-	int height = bottom - top;
-	int bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
+	uint16 width = right - left;
+	uint16 height = bottom - top;
+	uint16 bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
 
 	width &= bitmask;
 	height &= bitmask;
@@ -287,11 +287,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
 
-	int x = left - (viewport->view_x & bitmask);
+	int x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
 	x >>= viewport->zoom;
 	x += viewport->x;
 
-	int y = top - (viewport->view_y & bitmask);
+	int y = (sint16)(top - (sint16)(viewport->view_y & bitmask));
 	y >>= viewport->zoom;
 	y += viewport->y;
 
@@ -309,27 +309,27 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		x += 32){
 
 		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16);
-		int width = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+		int width_col = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
 		bits_pointer = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*);
 		int pitch = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16);
 		int zoom = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
 		if (x >= start_x){
 			int left_pitch = x - start_x;
-			width -= left_pitch;
+			width_col -= left_pitch;
 			bits_pointer += left_pitch >> zoom;
 			pitch += left_pitch >> zoom;
 			start_x = x;
 		}
 
-		int paint_right = start_x + width;
+		int paint_right = start_x + width_col;
 		if (paint_right >= x + 32){
 			int right_pitch = paint_right - x - 32;
 			paint_right -= right_pitch;
 			pitch += right_pitch >> zoom;
 		}
-		width = paint_right - start_x;
+		width_col = paint_right - start_x;
 		dpi2->x = start_x;
-		dpi2->width = width;
+		dpi2->width = width_col;
 		dpi2->bits = bits_pointer;
 		dpi2->pitch = pitch;
 
