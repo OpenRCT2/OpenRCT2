@@ -79,7 +79,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN,			0,	155,	299,	61,		72,		0x366,			STR_NONE },	// sound quality
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	62,		71,		0x36C,			STR_NONE },
 	{ WWT_CHECKBOX,			0,	10,		299,	76,		87,		STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING, STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING_TIP },
-	{ WWT_CHECKBOX,			0,	10,		229,	88,		99,		STR_SOUND,		STR_NONE }, // pause/unpause sound
+	{ WWT_CHECKBOX,			0,	10,		229,	88,		99,		STR_SOUND,		STR_NONE }, // enable/disable sound
 	{ WWT_GROUPBOX,			0,	3,		306,	112,	188,	STR_UNITS,		STR_NONE }, 
 	{ WWT_DROPDOWN,			0,	155,	299,	126,	137,	0x367,			STR_NONE },	// currency
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	127,	136,	0x36C,			STR_NONE },//
@@ -178,7 +178,7 @@ void window_options_open()
 		(1 << WIDX_TEMPERATURE_DROPDOWN) |
 		(1 << WIDX_HOTKEY_DROPDOWN) |
 		(1 << WIDX_SCREEN_EDGE_SCROLLING) |
-		(1 << WIDX_REAL_NAME_CHECKBOX) |
+		(1ULL << WIDX_REAL_NAME_CHECKBOX) |
 		(1 << WIDX_CONSTRUCTION_MARKER) |
 		(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 		(1 << WIDX_HEIGHT_LABELS) |
@@ -287,11 +287,11 @@ static void window_options_mouseup()
 		window_invalidate(w);
 		break;
 	case WIDX_SOUND_PAUSED_CHECKBOX:
-		if (sounds_is_paused == 0){
-			pause_sounds();
+		if (g_sounds_disabled){
+			unpause_sounds();
 		}
 		else{
-			unpause_sounds();
+			pause_sounds();
 		}
 		window_invalidate(w);
 		break;
@@ -571,7 +571,7 @@ static void window_options_update(rct_window *w)
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
 	
 	//Sound pause checkbox
-	if (sounds_is_paused)
+	if (!g_sounds_disabled)
 		w->pressed_widgets |= (1 << WIDX_SOUND_PAUSED_CHECKBOX);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_SOUND_PAUSED_CHECKBOX);
@@ -590,9 +590,9 @@ static void window_options_update(rct_window *w)
 
 	// real name checkbox
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-		w->pressed_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+		w->pressed_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
 	else
-		w->pressed_widgets &= ~(1 << WIDX_REAL_NAME_CHECKBOX);
+		w->pressed_widgets &= ~(1ULL << WIDX_REAL_NAME_CHECKBOX);
 	
 	// landscape tile smoothing checkbox
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
@@ -614,7 +614,7 @@ static void window_options_update(rct_window *w)
 
 	// unknown park flag can disable real name checkbox
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x8000)
-		w->disabled_widgets |= (1 << WIDX_REAL_NAME_CHECKBOX);
+		w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
 
 	// save plugin data checkbox: visible or not
 	if (RCT2_GLOBAL(0x00F42BDA, uint8) == 1)

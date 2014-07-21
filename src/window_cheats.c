@@ -57,7 +57,6 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_HAPPY_GUESTS = 7, //Same as HIGH_MONEY as it is also the 7th widget but on a different page
 	WIDX_TRAM_GUESTS,
 	WIDX_FREEZE_CLIMATE = 7,
-	WIDX_FAST_STAFF,
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_DECREASE_GAME_SPEED,
 	WIDX_INCREASE_GAME_SPEED,
@@ -67,16 +66,19 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #pragma region MEASUREMENTS
 #define WW 240
 #define WH 240
-#define YSPA 4
-#define XSPA 4
-#define XOS XSPA
-#define YOS 43 + YSPA
-#define BTNW 120 - (XOS * 2)
-#define BTNH 16
-#define YPL(YIND) YOS + ((BTNH + YSPA) * YIND)
-#define HPL(YIND) YPL(YIND) + BTNH
-#define XPL(XIND) XOS + ((BTNW + XSPA) * XIND)
-#define WPL(XIND) XPL(XIND) + BTNW
+#define TAB_HEIGHT 43
+#define XSPA 5			//X spacing
+#define YSPA 5			//Y spacing
+#define XOS 0			+ XSPA	//X offset from left
+#define YOS TAB_HEIGHT	+ YSPA	//Y offset ofrom top (includes tabs height)
+#define BTNW 110		//button width
+#define BTNH 16			//button height
+#define YPL(ROW) YOS + ((BTNH + YSPA) * ROW)
+#define HPL(ROW) YPL(ROW) + BTNH
+#define XPL(COL) XOS + ((BTNW + XSPA) * COL)
+#define WPL(COL) XPL(COL) + BTNW
+
+#define TXTO 3	//text horizontal offset from button left (for button text)
 #pragma endregion
 
 static rct_widget window_cheats_money_widgets[] = {
@@ -113,12 +115,11 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},					// tab 3
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		STR_NONE,		STR_NONE},					// Freeze climate
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_NONE,		STR_NONE},					// open / close park
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// fast staff
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// decrease game speed
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// increase game speed
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// decrease game speed
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// increase game speed
 	{ WIDGETS_END },
 };
 
@@ -348,7 +349,6 @@ static void window_cheats_guests_mouseup()
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_TRAM_GUESTS:
-		i = 0;
 		for (i = 0; i < CHEATS_TRAM_INCREMENT; i++){
 			generate_new_guest();
 		}
@@ -388,38 +388,19 @@ static void window_cheats_misc_mouseup()
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FREEZE_CLIMATE:
-		climate_freeze();
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
-		break;
-	case WIDX_FAST_STAFF:
-		FOR_ALL_GUESTS(spriteIndex, peep)
-			if (peep->var_2A == 0)
-				peep->happiness = 255;
+		toggle_climate_lock();
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
-		//No clue why the ; needs to be at the beginning, but otherwise it doesn't go through.
-		;int dropdownIndex = !park_is_open();
-		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
-		if (dropdownIndex != 0) {
-			dropdownIndex &= 0x00FF;
-			dropdownIndex |= 0x0100;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
-		}
-		else {
-			dropdownIndex &= 0x00FF;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
-		}
-		game_do_command(0, 1, 0, dropdownIndex, 34, 0, 0);
+		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, 34, 0, 0);
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_DECREASE_GAME_SPEED:
-		game_change_game_speed(-1);
+		game_reduce_game_speed();
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_INCREASE_GAME_SPEED:
-		game_change_game_speed(1);
+		game_increase_game_speed();
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 
@@ -465,7 +446,6 @@ static void window_cheats_invalidate()
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-#define TXTO 3
 static void window_cheats_paint()
 {
 	rct_window *w;
@@ -506,22 +486,20 @@ static void window_cheats_paint()
 		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
 
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Large group of peeps arrive");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(2) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Large Tram");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(3) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_MISC){
 		char buffer[256];
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Freeze climate");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(0) + 3);
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Fast staff");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(1) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Open/Close Park");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(2) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Slower Gamespeed");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + 3, w->y + YPL(3) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Faster Gamespeed");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(1) + 3, w->y + YPL(3) + 3);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(1) + TXTO, w->y + YPL(2) + TXTO);
 	}
 
 }

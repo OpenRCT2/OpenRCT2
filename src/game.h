@@ -29,7 +29,9 @@ void update_rain_animation();
 void update_water_animation();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
-void game_change_game_speed(int amount); //for cheats
+
+void game_increase_game_speed();
+void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
 int game_load_save();
