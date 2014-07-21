@@ -377,7 +377,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
 		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
 		sub_0x68615B(0xEE788C); //Memory copy
-		RCT2_CALLFUNC_X(0x68B6C2, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+		RCT2_CALLFUNC_X(0x68B6C2, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call 4 rotation versions
 		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
 		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
 
