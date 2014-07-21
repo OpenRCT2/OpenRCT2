@@ -267,6 +267,25 @@ void viewport_paint_underground_setup(rct_drawpixelinfo* dpi, uint8 colour){
 	}
 }
 
+
+/**
+*  
+*  rct2: 0x0068615B
+*  ebp: ebp
+*/
+void sub_0x68615B(int ebp){
+	RCT2_GLOBAL(0xEE7888, uint32) = ebp;
+	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	uint8* edi = RCT2_ADDRESS(0xF1A50C, uint8);
+	memset(edi, 0, 2048);
+	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
+	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD20, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
+}
+
+
 /**
  *
  *  rct2:0x00685CBF
@@ -356,8 +375,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
-		int ebp = 0xEE788C, ebx = 0, esi = 0, ecx = 0;
-		RCT2_CALLFUNC_X(0x68615B, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Memory copy
+		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
+		sub_0x68615B(0xEE788C); //Memory copy
 		RCT2_CALLFUNC_X(0x68B6C2, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
 		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
 		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
