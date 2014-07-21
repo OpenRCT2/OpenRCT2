@@ -254,6 +254,20 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 }
 
 /**
+*  Readies the viewport for underground view/remove base land/remove vert faces
+*  rct2:0x00678A9F
+*  edi: dpi
+*  ebp: colour
+*/
+void viewport_paint_underground_setup(rct_drawpixelinfo* dpi, uint8 colour){
+	uint8* bits_pointer = dpi->bits;
+	for (int i = dpi->height >> dpi->zoom_level; i != 0; --i){
+		memset(bits_pointer, colour, dpi->width >> dpi->zoom_level);
+		bits_pointer += (dpi->width >> dpi->zoom_level) + dpi->pitch;
+	}
+}
+
+/**
  *
  *  rct2:0x00685CBF
  *  eax: left
@@ -334,11 +348,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		dpi2->pitch = pitch;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x3001){
-			int ebp = 0x0A0A0A0A;
+			uint8 colour = 0x0A;
 			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000){
-				ebp = 0;
+				colour = 0;
 			}
-			RCT2_CALLPROC_X(0x00678A9F, 0, 0, 0, 0, 0, (int)dpi2, ebp); //Memory move loop
+			viewport_paint_underground_setup(dpi2, colour);
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
