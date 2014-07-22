@@ -513,7 +513,7 @@ static void window_ride_list_paint()
  */
 static void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax = 0, ebx = 0, ecx = 0, edx, esi = 0, edi = 0, ebp = 0;
 	edx = rideIndex;
 	RCT2_CALLFUNC_X(0x006AF561, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	*formatSecondary = ebx & 0xFFFF;
@@ -566,7 +566,7 @@ static void window_ride_list_scrollpaint()
 		formatSecondary = 0;
 		switch (_window_ride_list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			ride_get_status(i, &formatSecondary, &argument);
+			ride_get_status(w->var_076[i], &formatSecondary, &argument);
 			RCT2_GLOBAL(0x013CE952 + 2, sint32) = argument;
 			break;
 		case INFORMATION_TYPE_POPULARITY:
@@ -668,7 +668,7 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
  */
 static void window_ride_list_refresh_list(rct_window *w)
 {
-	int i, j, k, countA, countB;
+	int i, countA, countB;
 	uint8 swapper;
 	rct_ride *ride, *otherRide;
 
@@ -691,120 +691,120 @@ static void window_ride_list_refresh_list(rct_window *w)
 		return;
 
 	w->var_476 = countA;
-	j = 0;
+	int list_index = 0;
 	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 
-		w->var_076[j] = i;
-		k = j;
+		w->var_076[list_index] = i;
+		int current_list_position = list_index;
 		switch (w->var_490) {
 		case INFORMATION_TYPE_STATUS:
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
 			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 0);
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
 				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
 				if (strcmp((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68) >= 0)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_POPULARITY:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride->profit <= otherRide->profit)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride->var_199 <= otherRide->var_199)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
-			while (--k >= 0) {
-				otherRide = &g_ride_list[w->var_076[k]];
+			while (--current_list_position >= 0) {
+				otherRide = &g_ride_list[w->var_076[current_list_position]];
 				if (ride->guests_favourite <= otherRide->guests_favourite)
 					break;
 
-				swapper = w->var_076[k];
-				w->var_076[k] = w->var_076[k + 1];
-				w->var_076[k + 1] = swapper;
+				swapper = w->var_076[current_list_position];
+				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
+				w->var_076[current_list_position + 1] = swapper;
 			}
 			break;
 		}
 
-		j++;
+		list_index++;
 	}
 
 	w->var_47A = -1;
