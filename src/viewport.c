@@ -254,6 +254,177 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 }
 
 /**
+*  Readies the viewport for underground view/remove base land/remove vert faces
+*  rct2:0x00678A9F
+*  edi: dpi
+*  ebp: colour
+*/
+void viewport_paint_underground_setup(rct_drawpixelinfo* dpi, uint8 colour){
+	uint8* bits_pointer = dpi->bits;
+	for (int i = dpi->height >> dpi->zoom_level; i != 0; --i){
+		memset(bits_pointer, colour, dpi->width >> dpi->zoom_level);
+		bits_pointer += (dpi->width >> dpi->zoom_level) + dpi->pitch;
+	}
+}
+
+
+/**
+*  
+*  rct2: 0x0068615B
+*  ebp: ebp
+*/
+void sub_0x68615B(int ebp){
+	RCT2_GLOBAL(0xEE7888, uint32) = ebp;
+	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	uint8* edi = RCT2_ADDRESS(0xF1A50C, uint8);
+	memset(edi, 0, 2048);
+	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
+	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD20, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
+}
+
+/**
+*
+*  rct2: 0x0068615B
+*  ebp: ebp
+*/
+void sub_0x68B6C2(){
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	sint16 ax, bx, cx, dx;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	case 0:
+		ax = dpi->y;
+		bx = dpi->x;
+
+		ax -= 16;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;
+		ax -= bx;
+		cx += bx;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 2128;
+		dx >>= 5;
+		for (int i = dx; i > 0; --i){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+			ax -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+		}
+		break;
+	case 1:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;		
+		ax = -ax;
+		ax -= bx;
+		cx -= bx;
+		cx -= 0x10;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+		}
+		break;
+	case 2:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		ax = -ax;
+		cx = ax;
+		ax += bx;
+		cx -= bx;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx -= 0x20;
+		}
+		break;
+	case 3:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;
+		ax += bx;
+		cx = -cx;
+		cx += bx;
+		cx -= 0x10;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			int esi, ebp;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+		}
+		break;
+	}
+}
+
+/**
  *
  *  rct2:0x00685CBF
  *  eax: left
@@ -264,7 +435,100 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
  *  ebp: bottom
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
-	RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
+	//RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
+	//return;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
+
+	uint16 width = right - left;
+	uint16 height = bottom - top;
+	uint16 bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
+
+	width &= bitmask;
+	height &= bitmask;
+	left &= bitmask;
+	top &= bitmask;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) = left;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16) = top;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16) = width;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16) = height;
+
+	width >>= viewport->zoom;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
+
+	int x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
+	x >>= viewport->zoom;
+	x += viewport->x;
+
+	int y = (sint16)(top - (sint16)(viewport->view_y & bitmask));
+	y >>= viewport->zoom;
+	y += viewport->y;
+
+	uint8* bits_pointer = x - dpi->x + (y - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*) = bits_pointer;
+
+	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
+	dpi2->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16);
+	dpi2->height = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16);
+	dpi2->zoom_level = (uint8)RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+
+	//Splits the screen into 32 pixel columns and renders them.
+	for (x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) & 0xFFFFFFE0;
+		x < RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) + RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+		x += 32){
+
+		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16);
+		int width_col = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+		bits_pointer = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*);
+		int pitch = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16);
+		int zoom = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+		if (x >= start_x){
+			int left_pitch = x - start_x;
+			width_col -= left_pitch;
+			bits_pointer += left_pitch >> zoom;
+			pitch += left_pitch >> zoom;
+			start_x = x;
+		}
+
+		int paint_right = start_x + width_col;
+		if (paint_right >= x + 32){
+			int right_pitch = paint_right - x - 32;
+			paint_right -= right_pitch;
+			pitch += right_pitch >> zoom;
+		}
+		width_col = paint_right - start_x;
+		dpi2->x = start_x;
+		dpi2->width = width_col;
+		dpi2->bits = bits_pointer;
+		dpi2->pitch = pitch;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x3001){
+			uint8 colour = 0x0A;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000){
+				colour = 0;
+			}
+			viewport_paint_underground_setup(dpi2, colour);
+		}
+		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
+		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
+		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
+		sub_0x68615B(0xEE788C); //Memory copy
+		sub_0x68B6C2();
+		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
+		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
+		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+
+		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
+		if ((weather_colour != -1) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000) && (RCT2_GLOBAL(0x9DEA6F, uint8) & 1)){
+			dpi2 = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
+		}
+		RCT2_CALLPROC_EBPSAFE(0x6860C3); //string related
+	} 
+
+	//RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
 }
 
 /**
