@@ -83,6 +83,14 @@ void climate_reset(int climate)
 	climate_determine_future_weather();
 }
 
+sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
+	if (next_weather_level > cur_weather_level) {
+		return cur_weather_level + 1;
+	} else {
+		return cur_weather_level - 1;
+	}
+}
+
 
 //for cheats
 void toggle_climate_lock()
@@ -129,31 +137,16 @@ void climate_update()
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
 					climate_determine_future_weather();
 					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
-				} else {
-					if (next_rain == 3) {
-						cur_rain = 3;
-					} else {
-						sint8 next_rain_step = cur_rain + 1;
-						if (cur_rain > next_rain)
-							next_rain_step = cur_rain - 1;
-						RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = next_rain_step;
-					}
+				} else if (next_rain <= 2) { // Safe-guard
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = step_weather_level(cur_rain, next_rain);
 				}
 			} else {
-				sint8 next_gloom_step = cur_gloom + 1;
-				if (cur_gloom > next_gloom)
-					next_gloom_step = cur_gloom - 1;
-
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = next_gloom_step;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = step_weather_level(cur_gloom, next_gloom);
 				gfx_invalidate_screen();
 			}
 
 		} else {
-			sint8 newtemp = temperature + 1;			
-			if (temperature > target_temperature)
-				newtemp = temperature - 1;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = newtemp;
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = step_weather_level(temperature, target_temperature);
 			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
 		}
 	}
