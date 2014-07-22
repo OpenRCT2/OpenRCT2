@@ -285,6 +285,144 @@ void sub_0x68615B(int ebp){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
+/**
+*
+*  rct2: 0x0068615B
+*  ebp: ebp
+*/
+void sub_0x68B6C2(){
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	sint16 ax, bx, cx, dx;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	case 0:
+		ax = dpi->y;
+		bx = dpi->x;
+
+		ax -= 16;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;
+		ax -= bx;
+		cx += bx;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 2128;
+		dx >>= 5;
+		for (int i = dx; i > 0; --i){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+			ax -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+		}
+		break;
+	case 1:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;		
+		ax = -ax;
+		ax -= bx;
+		cx -= bx;
+		cx -= 0x10;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+		}
+		break;
+	case 2:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		ax = -ax;
+		cx = ax;
+		ax += bx;
+		cx -= bx;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx -= 0x20;
+		}
+		break;
+	case 3:
+		ax = dpi->y;
+		bx = dpi->x;
+		ax -= 0x10;
+		bx &= 0xFFE0;
+		ax &= 0xFFE0;
+		bx >>= 1;
+		cx = ax;
+		ax += bx;
+		cx = -cx;
+		cx += bx;
+		cx -= 0x10;
+		ax &= 0xFFE0;
+		cx &= 0xFFE0;
+		dx = dpi->height;
+		dx += 0x860;
+		dx >>= 5;
+		for (int i = dx; i > 0; i--){
+			int esi, ebp;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+			cx += 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax -= 0x20;
+			cx -= 0x20;
+			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			ax += 0x20;
+		}
+		break;
+	}
+}
 
 /**
  *
@@ -377,7 +515,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
 		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
 		sub_0x68615B(0xEE788C); //Memory copy
-		RCT2_CALLFUNC_X(0x68B6C2, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call 4 rotation versions
+		sub_0x68B6C2();
+		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
 		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
 		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
 
