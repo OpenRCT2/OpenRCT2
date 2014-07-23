@@ -153,9 +153,9 @@ void window_ride_list_open()
 			(1 << WIDX_TAB_3);
 		window_init_scroll_widgets(window);
 		window->page = PAGE_RIDES;
-		window->var_476 = 0;
-		window->var_47A = -1;
-		window->var_48E = 0;
+		window->no_list_items = 0;
+		window->selected_list_item = -1;
+		window->frame_no = 0;
 		window->min_width = 340;
 		window->min_height = 240;
 		window->max_width = 400;
@@ -166,7 +166,7 @@ void window_ride_list_open()
 		window->colours[2] = 26;
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
-	window->var_490 = 0;
+	window->list_information_type = 0;
 }
 
 /**
@@ -196,17 +196,17 @@ static void window_ride_list_mouseup()
 		window_close(w);
 		break;
 	case WIDX_SORT:
-		w->var_490 = _window_ride_list_information_type;
-		w->var_476 = 0;
-		w->var_47A = -1;
+		w->list_information_type = _window_ride_list_information_type;
+		w->no_list_items = 0;
+		w->selected_list_item = -1;
 		break;
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
 		if (w->page != widgetIndex - WIDX_TAB_1) {
 			w->page = widgetIndex - WIDX_TAB_1;
-			w->var_476 = 0;
-			w->var_47A = -1;
+			w->no_list_items = 0;
+			w->selected_list_item = -1;
 			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_PROFIT)
 				_window_ride_list_information_type = INFORMATION_TYPE_PROFIT;
 			window_invalidate(w);
@@ -322,7 +322,7 @@ static void window_ride_list_dropdown()
  */
 static void window_ride_list_update(rct_window *w)
 {
-	w->var_48E = (w->var_48E + 1) % 64;
+	w->frame_no = (w->frame_no + 1) % 64;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + w->page);
 	if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
 		window_invalidate(w);
@@ -344,9 +344,9 @@ static void window_ride_list_scrollgetsize()
 	#endif
 
 
-	height = w->var_476 * 10;
-	if (w->var_47A != -1) {
-		w->var_47A = -1;
+	height = w->no_list_items * 10;
+	if (w->selected_list_item != -1) {
+		w->selected_list_item = -1;
 		window_invalidate(w);
 	}
 
@@ -396,11 +396,11 @@ static void window_ride_list_scrollmousedown()
 
 
 	index = y / 10;
-	if (index >= w->var_476)
+	if (index >= w->no_list_items)
 		return;
 
 	// Open ride window
-	RCT2_CALLPROC_X(0x006ACC28, w->var_076[index], 0, 0, 0, 0, 0, 0);
+	RCT2_CALLPROC_X(0x006ACC28, w->list_item_positions[index], 0, 0, 0, 0, 0, 0);
 }
 
 /**
@@ -427,10 +427,10 @@ static void window_ride_list_scrollmouseover()
 
 
 	index = y / 10;
-	if (index >= w->var_476)
+	if (index >= w->no_list_items)
 		return;
 
-	w->var_47A = index;
+	w->selected_list_item = index;
 	window_invalidate(w);
 }
 
@@ -547,17 +547,17 @@ static void window_ride_list_scrollpaint()
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8));
 
 	y = 0;
-	for (i = 0; i < w->var_476; i++) {
+	for (i = 0; i < w->no_list_items; i++) {
 		format = 1191;
 
 		// Background highlight
-		if (i == w->var_47A) {
+		if (i == w->selected_list_item) {
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
 			format = 1193;
 		}
 		
 		// Get ride
-		ride = &g_ride_list[w->var_076[i]];
+		ride = &g_ride_list[w->list_item_positions[i]];
 
 		// Ride name
 		gfx_draw_string_left_clipped(dpi, format, &ride->var_04A, 0, 0, y - 1, 159);
@@ -566,7 +566,7 @@ static void window_ride_list_scrollpaint()
 		formatSecondary = 0;
 		switch (_window_ride_list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			ride_get_status(w->var_076[i], &formatSecondary, &argument);
+			ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
 			RCT2_GLOBAL(0x013CE952 + 2, sint32) = argument;
 			break;
 		case INFORMATION_TYPE_POPULARITY:
@@ -646,21 +646,23 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 	// Rides tab
 	sprite_idx = SPR_TAB_RIDE_0;
 	if (w->page == PAGE_RIDES)
-		sprite_idx += w->var_48E / 4;
+		sprite_idx += w->frame_no / 4;
 	gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);
 
 	// Shops and stalls tab
 	sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
 	if (w->page == PAGE_SHOPS_AND_STALLS)
-		sprite_idx += w->var_48E / 4;
+		sprite_idx += w->frame_no / 4;
 	gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
 
 	// Information kiosks and facilities tab
 	sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
 	if (w->page == PAGE_KIOSKS_AND_FACILITIES)
-		sprite_idx += (w->var_48E / 4) % 8;
+		sprite_idx += (w->frame_no / 4) % 8;
 	gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top);
 }
+
+
 
 /**
  * 
@@ -669,7 +671,6 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 static void window_ride_list_refresh_list(rct_window *w)
 {
 	int i, countA, countB;
-	uint8 swapper;
 	rct_ride *ride, *otherRide;
 
 	countA = countB = 0;
@@ -687,119 +688,101 @@ static void window_ride_list_refresh_list(rct_window *w)
 	if (countB != 0)
 		window_invalidate(w);
 
-	if (countA == w->var_476)
+	if (countA == w->no_list_items)
 		return;
 
-	w->var_476 = countA;
+	w->no_list_items = countA;
 	int list_index = 0;
 	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
 
-		w->var_076[list_index] = i;
+		w->list_item_positions[list_index] = i;
 		int current_list_position = list_index;
-		switch (w->var_490) {
+		switch (w->list_information_type) {
 		case INFORMATION_TYPE_STATUS:
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
 			RCT2_CALLPROC_X(0x006C2538, ride->var_04A, 0, 0x013CE952, 0, 0, RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 0);
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->var_04C;
 				RCT2_CALLPROC_X(0x006C2538, otherRide->var_04A, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
 				if (strcmp((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68) >= 0)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride->profit <= otherRide->profit)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride->var_199 <= otherRide->var_199)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->var_076[current_list_position]];
+				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
 				if (ride->guests_favourite <= otherRide->guests_favourite)
 					break;
 
-				swapper = w->var_076[current_list_position];
-				w->var_076[current_list_position] = w->var_076[current_list_position + 1];
-				w->var_076[current_list_position + 1] = swapper;
+				window_bubble_list_item(w, current_list_position);
 			}
 			break;
 		}
@@ -807,7 +790,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		list_index++;
 	}
 
-	w->var_47A = -1;
+	w->selected_list_item = -1;
 	window_invalidate(w);
 }
 

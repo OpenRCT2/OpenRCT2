@@ -399,8 +399,8 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->var_488 = 0;
 	w->page = 0;
 	w->var_48C = 0;
-	w->var_48E = 0;
-	w->var_490 = 0;
+	w->frame_no = 0;
+	w->list_information_type = 0;
 	w->var_492 = 0;
 	w->selected_tab = 0;
 	w->var_4AE = 0;
@@ -1280,4 +1280,15 @@ void window_guest_list_init_vars_b()
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event)
 {
 	RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, (int)w, 0, 0);
+}
+
+/**
+ *  rct2: New function not from rct2
+ *  Bubbles an item one position up in the window list.
+ *  This is done by swapping the two locations.
+ */
+void window_bubble_list_item(rct_window* w, int item_position){
+	char swap = w->list_item_positions[item_position];
+	w->list_item_positions[item_position] = w->list_item_positions[item_position + 1];
+	w->list_item_positions[item_position + 1] = swap;
 }

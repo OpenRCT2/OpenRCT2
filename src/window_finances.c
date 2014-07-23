@@ -291,7 +291,7 @@ void window_finances_open()
 		w->enabled_widgets = 0x1BF4;
 		w->number = 0;
 		w->page = 0;
-		w->var_48E = 0;
+		w->frame_no = 0;
 		w->disabled_widgets = 0;
 		w->colours[0] = 1;
 		w->colours[1] = 19;
@@ -350,8 +350,8 @@ static void window_finances_summary_mouseup()
 static void window_finances_summary_update(rct_window *w)
 {
 	// Tab animation
-	if (++w->var_48E >= window_finances_tab_animation_loops[w->page])
-		w->var_48E = 0;
+	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+		w->frame_no = 0;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1);
 }
 
@@ -389,7 +389,7 @@ static void window_finances_summary_invalidate()
 static void window_finances_set_page(rct_window *w, int page)
 {
 	w->page = page;
-	w->var_48E = 0;
+	w->frame_no = 0;
 	if (w->viewport != NULL) {
 		w->viewport->width = 0;
 		w->viewport = NULL;

@@ -193,7 +193,7 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	game_create_windows();
 	mainWindow = window_get_main();
 
-	mainWindow->var_4B0 = -1;
+	mainWindow->viewport_target_sprite = -1;
 	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 

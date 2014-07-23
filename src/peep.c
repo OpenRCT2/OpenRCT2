@@ -345,7 +345,7 @@ void peep_update_crowd_noise()
 		// Check if crowd noise is already playing
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
 			// Load and play crowd noise
-			if (RCT2_CALLFUNC_3(0x0040194E, int, int, char*, int, 2, get_file_path(PATH_ID_CSS2), 0)) {
+			if (RCT2_CALLFUNC_3(0x0040194E, int, int, char*, int, 2, (char*)get_file_path(PATH_ID_CSS2), 0)) {
 				RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 2, 1, volume, 0, 0);
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
 			}

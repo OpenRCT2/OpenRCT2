@@ -597,8 +597,8 @@ rct_window *window_park_open()
 	w->number = 0;
 	w->page = WINDOW_PARK_PAGE_ENTRANCE;
 	w->var_482 = 0;
-	w->var_48E = 0;
-	w->var_490 = -1;
+	w->frame_no = 0;
+	w->list_information_type = -1;
 	w->var_48C = -1;
 	w->var_492 = 0;
 	RCT2_CALLPROC_X(0x00667F8B, 0, 0, 0, 0, (int)w, 0, 0);
@@ -799,7 +799,7 @@ static void window_park_entrance_dropdown()
  */
 static void window_park_entrance_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	window_invalidate_by_id(w->classification, 1179);
 }
 
@@ -1289,7 +1289,7 @@ static void window_park_rating_resize()
  */
 static void window_park_rating_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
 }
 
@@ -1457,7 +1457,7 @@ static void window_park_guests_resize()
  */
 static void window_park_guests_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	w->var_492 = (w->var_492 + 1) % 24;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_3);
 }
@@ -1629,7 +1629,7 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
  */
 static void window_park_price_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_4);
 }
 
@@ -1769,13 +1769,13 @@ static void window_park_stats_update(rct_window *w)
 {
 	int i;
 
-	w->var_48E++;
+	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_5);
 
 	// Invalidate ride count if changed
 	i = ride_get_count();
-	if (w->var_490 != i) {
-		w->var_490 = i;
+	if (w->list_information_type != i) {
+		w->list_information_type = i;
 		widget_invalidate(w->classification, w->number, WIDX_PAGE_BACKGROUND);
 	}
 
@@ -1859,8 +1859,8 @@ static void window_park_stats_paint()
 	y += 10;
 
 	// Draw number of rides / attractions
-	if (w->var_490 != -1) {
-		RCT2_GLOBAL(0x013CE952, uint32) = w->var_490;
+	if (w->list_information_type != -1) {
+		RCT2_GLOBAL(0x013CE952, uint32) = w->list_information_type;
 		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)0x013CE952, 0, x, y);
 	}
 	y += 10;
@@ -1977,7 +1977,7 @@ static void window_park_objective_resize()
  */
 static void window_park_objective_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_6);
 }
 
@@ -2156,7 +2156,7 @@ static void window_park_awards_resize()
  */
 static void window_park_awards_update(rct_window *w)
 {
-	w->var_48E++;
+	w->frame_no++;
 	window_invalidate_by_id(w->classification, 1179);
 }
 
@@ -2260,7 +2260,7 @@ static void window_park_set_page(rct_window *w, int page)
 		listen++;
 
 	w->page = page;
-	w->var_48E = 0;
+	w->frame_no = 0;
 	w->var_492 = 0;
 	if (w->viewport != NULL) {
 		w->viewport->width = 0;
@@ -2326,7 +2326,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = SPR_TAB_GRAPH_0;
 		if (w->page == WINDOW_PARK_PAGE_RATING)
-			sprite_idx += (w->var_48E / 8) % 8;
+			sprite_idx += (w->frame_no / 8) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
 		gfx_draw_sprite(dpi, SPR_RATING_HIGH, w->x + w->widgets[WIDX_TAB_2].left + 7, w->y + w->widgets[WIDX_TAB_2].top + 1);
 		gfx_draw_sprite(dpi, SPR_RATING_LOW, w->x + w->widgets[WIDX_TAB_2].left + 16, w->y + w->widgets[WIDX_TAB_2].top + 12);
@@ -2336,7 +2336,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_3))) {
 		sprite_idx = SPR_TAB_GRAPH_0;
 		if (w->page == WINDOW_PARK_PAGE_GUESTS)
-			sprite_idx += (w->var_48E / 8) % 8;
+			sprite_idx += (w->frame_no / 8) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top);
 		
 		sprite_idx = *RCT2_GLOBAL(0x00982708, sint32*) + 1;
@@ -2356,7 +2356,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_4))) {
 		sprite_idx = SPR_TAB_ADMISSION_0;
 		if (w->page == WINDOW_PARK_PAGE_PRICE)
-			sprite_idx += (w->var_48E / 2) % 8;
+			sprite_idx += (w->frame_no / 2) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_4].left, w->y + w->widgets[WIDX_TAB_4].top);
 	}
 
@@ -2364,7 +2364,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_5))) {
 		sprite_idx = SPR_TAB_STATS_0;
 		if (w->page == WINDOW_PARK_PAGE_STATS)
-			sprite_idx += (w->var_48E / 4) % 7;
+			sprite_idx += (w->frame_no / 4) % 7;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_5].left, w->y + w->widgets[WIDX_TAB_5].top);
 	}
 
@@ -2372,7 +2372,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_6))) {
 		sprite_idx = SPR_TAB_OBJECTIVE_0;
 		if (w->page == WINDOW_PARK_PAGE_OBJECTIVE)
-			sprite_idx += (w->var_48E / 4) % 16;
+			sprite_idx += (w->frame_no / 4) % 16;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_6].left, w->y + w->widgets[WIDX_TAB_6].top);
 	}
 

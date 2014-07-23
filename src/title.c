@@ -170,7 +170,7 @@ static void title_update_showcase()
 				scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN));
 
 				w = window_get_main();
-				w->var_4B0 = -1;
+				w->viewport_target_sprite = -1;
 				w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 				w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 

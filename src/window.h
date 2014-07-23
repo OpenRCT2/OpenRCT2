@@ -116,10 +116,10 @@ typedef struct rct_window {
 	rct_windownumber number;	// 0x03C
 	uint16 flags;				// 0x03E
 	rct_scroll scrolls[3];		// 0x040
-	uint8 list_item_positions[1024]; // 0x076
-	uint16 no_list_items; // 0x476 0 for no items
+	uint8 list_item_positions[1024];// 0x076
+	uint16 no_list_items;			// 0x476 0 for no items
 	sint16 pad_478;
-	sint16 selected_list_item; // 0x47A -1 for none selected
+	sint16 selected_list_item;		// 0x47A -1 for none selected
 	sint16 pad_47C;
 	sint16 pad_47E;
 	sint16 var_480;
@@ -127,16 +127,16 @@ typedef struct rct_window {
 	sint16 var_484; // viewport target y
 	sint16 var_486; // viewport target z
 	sint16 var_488; // viewport rotation << 8
-	sint16 page;				// 0x48A
+	sint16 page;					// 0x48A
 	sint16 var_48C;
-	sint16 frame_no; // 0x48E updated every tic for motion in windows sprites
-	uint16 list_information_type; // 0x490 0 for none
+	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
+	uint16 list_information_type;	// 0x490 0 for none
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
 	sint16 selected_tab;			// 0x4AC
 	sint16 var_4AE;
-	sint16 viewport_target_sprite; // viewport target sprite?
+	sint16 viewport_target_sprite;	// 0x4B0 viewport target sprite?
 	sint16 saved_view_x;			// 0x4B2
 	sint16 saved_view_y; 			// 0x4B4
 	rct_windowclass classification;	// 0x4B6
@@ -374,6 +374,7 @@ void window_cheats_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
+void window_bubble_list_item(rct_window* w, int item_position);
 
 void window_new_ride_init_vars();
 

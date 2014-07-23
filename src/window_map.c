@@ -132,7 +132,7 @@ void window_map_open()
 	w = window_bring_to_front_by_id(WC_MAP, 0);
 	if (w != NULL) {
 		w->selected_tab = 0;
-		w->var_490 = 0;
+		w->list_information_type = 0;
 		return;
 	}
 
@@ -415,7 +415,7 @@ static void window_map_paint()
 	// guest tab image (animated)
 	image_id = SPR_TAB_GUESTS_0;
 	if (w->selected_tab == 0)
-		image_id += w->var_490 / 4;
+		image_id += w->list_information_type / 4;
 
 	gfx_draw_sprite(dpi, image_id, 
 		w->x + w->widgets[WIDX_PEOPLE_TAB].left, 
@@ -424,7 +424,7 @@ static void window_map_paint()
 	// ride/stall tab image (animated)
 	image_id = SPR_TAB_RIDE_0;
 	if (w->selected_tab == 1)
-		image_id += w->var_490 / 4;
+		image_id += w->list_information_type / 4;
 
 	gfx_draw_sprite(dpi, image_id,
 		w->x + w->widgets[WIDX_RIDES_TAB].left,
