@@ -2036,16 +2036,16 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				if (*current_font_flags & 4) {
 					if (*current_font_flags & 8) {
 						eax = RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
-						eax = eax << 10;
+						eax = eax << 16;
 						eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
 					} else {
 						eax = RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
-						eax = eax << 10;
+						eax = eax << 16;
 						eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
 					}
 				} else {
 					eax = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
-					eax = eax << 10;
+					eax = eax << 16;
 					eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
 				}
 				// Adjust text palette. Store current colour? ;
