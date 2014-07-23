@@ -116,10 +116,10 @@ typedef struct rct_window {
 	rct_windownumber number;	// 0x03C
 	uint16 flags;				// 0x03E
 	rct_scroll scrolls[3];		// 0x040
-	uint8 var_076[1024];
-	sint16 var_476;
+	uint8 list_item_positions[1024]; // 0x076
+	uint16 no_list_items; // 0x476 0 for no items
 	sint16 pad_478;
-	sint16 var_47A;
+	sint16 selected_list_item; // 0x47A -1 for none selected
 	sint16 pad_47C;
 	sint16 pad_47E;
 	sint16 var_480;
@@ -129,8 +129,8 @@ typedef struct rct_window {
 	sint16 var_488; // viewport rotation << 8
 	sint16 page;				// 0x48A
 	sint16 var_48C;
-	sint16 var_48E;
-	sint16 var_490;
+	sint16 frame_no; // 0x48E updated every tic for motion in windows sprites
+	uint16 list_information_type; // 0x490 0 for none
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
