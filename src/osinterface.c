@@ -59,6 +59,9 @@ void osinterface_init()
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
+void osinterface_set_cursor(int hCurs){
+	SetCursor((HCURSOR)hCurs);
+}
 /**
  *rct2: 0x0068352C
  */

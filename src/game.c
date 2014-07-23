@@ -402,6 +402,10 @@ static void game_get_next_input(int *x, int *y, int *state)
 	*y = RCT2_GLOBAL(eax + 4, sint32);
 	*state = RCT2_GLOBAL(eax + 8, sint32);
 
+	edx = RCT2_GLOBAL(0x9DE51C, uint8);
+	RCT2_GLOBAL(0x14241BC, uint32) = 2;
+	osinterface_set_cursor(RCT2_ADDRESS(0x1423598, int)[edx]);
+	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 	//int eax, ebx, ecx, edx, esi, edi, ebp;
 	//RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	//*x = eax & 0xFFFF;

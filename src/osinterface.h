@@ -47,6 +47,8 @@ void osinterface_draw();
 void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
+void osinterface_set_cursor(int hCurs);
+
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
 void osinterface_show_messagebox(char* message);
 char* osinterface_open_directory_browser(char *title);
