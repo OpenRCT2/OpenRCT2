@@ -1971,7 +1971,7 @@ void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y)
 {
 
-	int eax, ebx, ecx, ebp;
+	int eax, ebx, ebp;
 	rct_g1_element* g1_element;
 
 	// Maximum length/height of string

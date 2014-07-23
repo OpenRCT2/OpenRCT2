@@ -361,8 +361,6 @@ static void window_cheats_misc_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
-	int i;
-	rct_ride *ride;
 	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
 	#else
@@ -374,9 +372,6 @@ static void window_cheats_misc_mouseup()
 	#else
 	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 	#endif
-
-	rct_peep* peep;
-	uint16 spriteIndex;
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -417,7 +412,7 @@ static void window_cheats_update(rct_window *w)
 	__asm__ ( "mov %[w2], esi " : [w2] "+m" (w2) );
 	#endif
 
-	w->var_48E++;
+	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
 }
 
@@ -512,7 +507,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_1))) {
 		sprite_idx = 5261;
 		if (w->page == WINDOW_CHEATS_PAGE_MONEY)
-			sprite_idx += (w->var_48E / 2) % 8;
+			sprite_idx += (w->frame_no / 2) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);	
 	}
 	
@@ -520,7 +515,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = 5568;
 		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
-			sprite_idx += (w->var_48E / 3) % 8;
+			sprite_idx += (w->frame_no / 3) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
 	}
 

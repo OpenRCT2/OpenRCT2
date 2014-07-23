@@ -155,7 +155,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 
 	if (edx & (1 << 31)){
 		edx &= 0xFFFF;
-		w->var_4B0 = edx;
+		w->viewport_target_sprite = edx;
 		rct_sprite* sprite = &g_sprite_list[edx];
 		center_x = sprite->unknown.x;
 		center_y = sprite->unknown.y;
@@ -165,7 +165,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 		center_x = edx & 0xFFFF;
 		center_y = edx >> 16;
 		center_z = ecx >> 16;
-		w->var_4B0 = SPR_NONE;
+		w->viewport_target_sprite = SPR_NONE;
 	}
 
 	int view_x, view_y;

@@ -110,7 +110,8 @@ void draw_rain_window(rct_window* original_w, short left, short right, short top
 	for (; ; w++) {
 		if (w >= newWindow) {
 			// Loop ended, draw rain for original_w
-			return call_draw_rain_func(original_w, left, right, top, bottom, draw_rain_func);
+			call_draw_rain_func(original_w, left, right, top, bottom, draw_rain_func);
+			return;
 		}
 
 		if (right <= w->x || bottom <= w->y) {
@@ -128,7 +129,8 @@ void draw_rain_window(rct_window* original_w, short left, short right, short top
 		draw_rain_window(original_w, left, w->x, top, bottom, draw_rain_func);
 
 		left = w->x;
-		return draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
+		return;
 	}
 
 	sint16 w_right = RCT_WINDOW_RIGHT(w);
@@ -136,14 +138,16 @@ void draw_rain_window(rct_window* original_w, short left, short right, short top
 		draw_rain_window(original_w, left, w_right, top, bottom, draw_rain_func);
 
 		left = w_right;
-		return draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		return;
 	}
 
 	if (top < w->y) {
 		draw_rain_window(original_w, left, right, top, w->y, draw_rain_func);
 
 		top = w->y;
-		return draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		return;
 	}
 
 	sint16 w_bottom = RCT_WINDOW_BOTTOM(w);
@@ -151,7 +155,8 @@ void draw_rain_window(rct_window* original_w, short left, short right, short top
 		draw_rain_window(original_w, left, right, top, w_bottom, draw_rain_func);
 
 		top = w_bottom;
-		return draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		return;
 	}
 }
 
@@ -2146,7 +2151,7 @@ int game_load_save()
 	game_create_windows();
 	mainWindow = window_get_main();
 
-	mainWindow->var_4B0 = -1;
+	mainWindow->viewport_target_sprite = -1;
 	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;

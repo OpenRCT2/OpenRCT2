@@ -122,7 +122,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 
 	int tooltip_text_width = ecx, tooltip_text_height = 0;
 	//gfx_get_string_width_new_lined
-	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &tooltip_text_width, &edx, &buffer, &edi, &ebp);
+	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &tooltip_text_width, &edx, (int*)(&buffer), &edi, &ebp);
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	tooltip_text_width &= 0xFFFF;
 	if (tooltip_text_width > 196)

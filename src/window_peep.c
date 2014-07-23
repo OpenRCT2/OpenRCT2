@@ -78,34 +78,34 @@ rct_widget *window_peep_page_widgets[] = {
 };
 
 static void* window_peep_overview_events[] = {
-	0x696A75,
-	0x696A06,
-	0x696FBE,
+	(void*)0x696A75,
+	(void*)0x696A06,
+	(void*)0x696FBE,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	0x696F45,
+	(void*)0x696F45,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	0x696A5F,
-	0x696A54,
+	(void*)0x696A5F,
+	(void*)0x696A54,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	0x696A49,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	0x696A6A,
-	0x697076,
+	(void*)0x696A49,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	0x696749, //Invalidate
-	0x696887, //Paint
-	0x69707C
+	window_peep_emptysub,
+	(void*)0x696A6A,
+	(void*)0x697076,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*)0x696749, //Invalidate
+	(void*)0x696887, //Paint
+	(void*)0x69707C
 };
 
 void* window_peep_page_events[] = {
@@ -142,8 +142,8 @@ void window_peep_open(rct_peep* peep){
 		window->number = peep->sprite_index;
 		window->page = 0;
 		window->var_482 = 0;
-		window->var_48E = 0;
-		window->var_490 = 0;
+		window->frame_no = 0;
+		window->list_information_type = 0;
 		window->var_492 = 0;
 		window->var_494 = 0;
 		RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
@@ -152,8 +152,8 @@ void window_peep_open(rct_peep* peep){
 		window->max_width = 500;
 		window->max_height = 450;
 		window->flags = 8;
-		window->var_476 = 0;
-		window->var_47A = -1;
+		window->no_list_items = 0;
+		window->selected_list_item = -1;
 		window->colours[0] = 1;
 		window->colours[1] = 15;
 		window->colours[2] = 15;
@@ -163,10 +163,10 @@ void window_peep_open(rct_peep* peep){
 	window->page = 0;
 	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)window, 0, 0);
 	
-	window->widgets = RCT2_GLOBAL(0x981D0C, uint32);
+	window->widgets = RCT2_GLOBAL(0x981D0C, rct_widget*);
 	window->enabled_widgets = RCT2_GLOBAL(0x981D3C,uint32);
 	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
-	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32);
+	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32*);
 	window->pressed_widgets = 0;
 	
 	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);

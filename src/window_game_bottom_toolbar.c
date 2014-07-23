@@ -138,7 +138,7 @@ void window_game_bottom_toolbar_open()
 		(1 << WIDX_RIGHT_OUTSET) |
 		(1 << WIDX_DATE);
 
-	window->var_48E = 0;
+	window->frame_no = 0;
 	window_init_scroll_widgets(window);
 	window->colours[0] = 140;
 	window->colours[1] = 140;
@@ -653,7 +653,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		//	y += 3;
 
 		//_eax = *((int*)(0x00982708 + (peep->sprite_type * 8)));
-		//_ebx = w->var_48E & 0xFFFFFFFC;
+		//_ebx = w->frame_no & 0xFFFFFFFC;
 		//_ebx += *((int*)_eax);
 		//_ebx++;
 

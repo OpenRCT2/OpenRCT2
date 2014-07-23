@@ -164,7 +164,7 @@ void window_guest_list_open()
 
 	window_init_scroll_widgets(window);
 	_window_guest_list_highlighted_index = -1;
-	window->var_490 = 0;
+	window->list_information_type = 0;
 	_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 	_window_guest_list_selected_filter = -1;
 	_window_guest_list_selected_page = 0;
@@ -259,7 +259,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 		_window_guest_list_num_pages = 1;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
-		w->var_490 = 0;
+		w->list_information_type = 0;
 		_window_guest_list_selected_filter = -1;
 		window_invalidate(w);
 		w->scrolls[0].v_top = 0;
@@ -358,9 +358,9 @@ static void window_guest_list_update(rct_window *w)
 {
 	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
 		RCT2_GLOBAL(0x00F1AF20, uint16)--;
-	w->var_490++;
-	if (w->var_490 >= (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
-		w->var_490 = 0;
+	w->list_information_type++;
+	if (w->list_information_type >= (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
+		w->list_information_type = 0;
 	widget_invalidate(WC_GUEST_LIST, 0, WIDX_TAB_1 + _window_guest_list_selected_tab);
 }
 
@@ -602,7 +602,7 @@ static void window_guest_list_paint()
 	// Widgets
 	window_draw_widgets(w, dpi);
 	// Tab 1 image
-	i = (_window_guest_list_selected_tab == 0 ? w->var_490 & 0x0FFFFFFFC : 0);
+	i = (_window_guest_list_selected_tab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
 	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982708, int), int)[0] + 1;
 	i |= 0xA1600000;
 	gfx_draw_sprite(
@@ -613,7 +613,7 @@ static void window_guest_list_paint()
 	);
 
 	// Tab 2 image
-	i = (_window_guest_list_selected_tab == 1 ? w->var_490 / 4 : 0);
+	i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
 	gfx_draw_sprite(
 		dpi,
 		5568 + i,
@@ -653,7 +653,6 @@ static void window_guest_list_paint()
  */
 static void window_guest_list_scrollpaint()
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
 	int spriteIndex, format, numGuests, i, j, y;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
@@ -831,7 +830,7 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 
 	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 1){
 		rct_ride* ride = &g_ride_list[thought.item];
-		esi = &(ride->var_04A);
+		esi = (int)(&(ride->var_04A));
 	}
 	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
 		if (thought.item < 0x20){
