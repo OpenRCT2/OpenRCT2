@@ -141,7 +141,10 @@ void window_banner_open()
 		(viewportWidget->bottom - viewportWidget->top) - 2,
 		0,
 		100,	// TODO: needs banner map position
-		100		// TODO: needs banner map position
+		100,		// TODO: needs banner map position
+		100,
+		0,
+		-1
 	);
 
 	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;

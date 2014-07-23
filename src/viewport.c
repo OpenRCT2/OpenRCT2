@@ -34,7 +34,8 @@
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
 /**
- * 
+ *  This is not a viewport function. It is used to setup many variables for
+ *  multiple things.
  *  rct2: 0x006E6EAC
  */
 void viewport_init_all()
@@ -109,23 +110,25 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 }
 
 /**
- * 
- *  rct2: 0x006EB009
- *  x:      ax
- *  y:      eax (top 16)
- *  width:  bx
- *  height: ebx (top 16)
- *  zoom:    cl (8 bits)
- *  ecx:    ecx (top 16 bits see zoom)
- *  edx:    edx
- *  w:      esi
- */
-void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int ecx, int edx)
+*
+*  rct2: 0x006EB009
+*  x:      ax
+*  y:      eax (top 16)
+*  width:  bx
+*  height: ebx (top 16)
+*  zoom:    cl (8 bits)
+*  center_x: edx lower 16 bits
+*  center_y: edx upper 16 bits
+*  center_z: ecx upper 16 bits
+*  sprite: edx lower 16 bits
+*  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
+*  w:      esi
+*
+*  Viewport will look at sprite or at coordinates as specified in flags 0b_1X for sprite 0b_0X for coordinates
+*/
+void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite)
 {
 	rct_viewport* viewport;
-	int eax = 0xFF000001;
-	int ebx = -1;
-
 	for (viewport = g_viewport_list; viewport->width != 0; viewport++){
 		if (viewport >= RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport)){
 			error_string_quit(0xFF000001, -1);
@@ -137,10 +140,9 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	viewport->width = width;
 	viewport->height = height;
 
-	if (!(edx & (1 << 30))){
+	if (!(flags & (1 << 0))){
 		zoom = 0;
 	}
-	edx &= ~(1 << 30); 
 
 	viewport->view_width = width << zoom;
 	viewport->view_height = height << zoom;
@@ -151,20 +153,15 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 		viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 	w->viewport = viewport;
-	int center_x, center_y, center_z;
 
-	if (edx & (1 << 31)){
-		edx &= 0xFFFF;
-		w->viewport_target_sprite = edx;
-		rct_sprite* sprite = &g_sprite_list[edx];
-		center_x = sprite->unknown.x;
-		center_y = sprite->unknown.y;
-		center_z = sprite->unknown.z;
+	if (flags & (1<<1)){
+		w->viewport_target_sprite = sprite;
+		rct_sprite* center_sprite = &g_sprite_list[sprite];
+		center_x = center_sprite->unknown.x;
+		center_y = center_sprite->unknown.y;
+		center_z = center_sprite->unknown.z;
 	}
 	else{
-		center_x = edx & 0xFFFF;
-		center_y = edx >> 16;
-		center_z = ecx >> 16;
 		w->viewport_target_sprite = SPR_NONE;
 	}
 
@@ -406,7 +403,6 @@ void sub_0x68B6C2(){
 		dx += 0x860;
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
-			int esi, ebp;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
 			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
 			ax += 0x20;
