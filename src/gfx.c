@@ -2212,7 +2212,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				skip_char = 1;
 				break;
 			}
-			ebx = *(buffer - 3);
+			ebx = *((uint16*)(buffer - 3));
 			eax = ebx & 0x7FFFF;
 			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
 
