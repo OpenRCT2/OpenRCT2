@@ -1234,38 +1234,9 @@ void format_currency(char **dest, int value)
 
 	*dest = dst;
 
-	value /= 10;
-	if (value == 0) {
-		*dst++ = '0';
-	} else {
-		// Groups of three digits, right to left
-		groupIndex = 0;
-		while (value > 0) {
-			// Append group seperator
-			if (groupIndex == 3) {
-				groupIndex = 0;
-				*dst++ = ',';
-			}
-
-			digit = value % 10;
-			value /= 10;
-
-			*dst++ = '0' + digit;
-			groupIndex++;
-		}
-	}
-	finish = dst;
-
-	// Reverse string
-	dst--;
-	while (*dest < dst) {
-		tmp = **dest;
-		**dest = *dst;
-		*dst = tmp;
-		(*dest)++;
-		dst--;
-	}
-	*dest = finish;
+	// value is in tens of pennies, so to get rid of
+	// the pence, just divide by ten
+	format_comma_separated_integer(dest, value/10);
 }
 
 void format_currency_2dp(char **dest, int value)
@@ -1286,44 +1257,9 @@ void format_currency_2dp(char **dest, int value)
 
 	*dest = dst;
 
-	// Two decimal places
-	*dst++ = '0';
-	digit = value % 10;
-	value /= 10;
-	*dst++ = '0' + digit;
-	*dst++ = '.';
-
-	if (value == 0) {
-		*dst++ = '0';
-	} else {
-		// Groups of three digits, right to left
-		groupIndex = 0;
-		while (value > 0) {
-			// Append group seperator
-			if (groupIndex == 3) {
-				groupIndex = 0;
-				*dst++ = ',';
-			}
-
-			digit = value % 10;
-			value /= 10;
-
-			*dst++ = '0' + digit;
-			groupIndex++;
-		}
-	}
-	finish = dst;
-
-	// Reverse string
-	dst--;
-	while (*dest < dst) {
-		tmp = **dest;
-		**dest = *dst;
-		*dst = tmp;
-		(*dest)++;
-		dst--;
-	}
-	*dest = finish;
+	// value is in tens of pennies, so multiply by 10
+	// to get in pounds and pence
+	format_comma_separated_fixed_2dp(dest, value*10);
 }
 
 void format_string_code(unsigned char format_code, char **dest, char **args)
