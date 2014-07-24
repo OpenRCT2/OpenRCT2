@@ -67,10 +67,13 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX
 };
 
+#define WW 310
+#define WH 384
+
 static rct_widget window_options_widgets[] = {
-	{ WWT_FRAME,			0,	0,		309,	0,		383,	STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		308,	1,		14,		STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	297,	307,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
+	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
+	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,		STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
 	{ WWT_GROUPBOX,			0,	3,		306,	17,		105,	STR_SOUND,		STR_NONE },
 	{ WWT_DROPDOWN,			0,	10,		299,	31,		42,		0x361,			STR_NONE },	// sound
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	32,		41,		0x36C,			STR_NONE },
@@ -158,7 +161,7 @@ void window_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(310, 372, (uint32*)window_options_events, WC_OPTIONS, 0);
+	w = window_create_auto_pos(WW, WH, (uint32*)window_options_events, WC_OPTIONS, 0);
 	w->widgets = window_options_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
