@@ -29,6 +29,36 @@ enum {
 	CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
 
+enum{
+	CURSOR_ARROW,
+	CURSOR_BLANK,
+	CURSOR_UP_ARROW,
+	CURSOR_UP_DOWN_ARROW,
+	CURSOR_HAND_POINT,
+	CURSOR_ZZZ,
+	CURSOR_DIAGONAL_ARROWS,
+	CURSOR_PICKER,
+	CURSOR_TREE_DOWN,
+	CURSOR_FOUNTAIN_DOWN,
+	CURSOR_STATUE_DOWN,
+	CURSOR_BENCH_DOWN,
+	CURSOR_CROSS_HAIR,
+	CURSOR_BIN_DOWN,
+	CURSOR_LAMPPOST_DOWN,
+	CURSOR_FENCE_DOWN,
+	CURSOR_FLOWER_DOWN,
+	CURSOR_PATH_DOWN,
+	CURSOR_DIG_DOWN,
+	CURSOR_WATER_DOWN,
+	CURSOR_HOUSE_DOWN,
+	CURSOR_VOLCANO_DOWN,
+	CURSOR_WALK_DOWN,
+	CURSOR_PAINT_DOWN,
+	CURSOR_ENTRANCE_DOWN,
+	CURSOR_HAND_OPEN,
+	CURSOR_HAND_CLOSED
+};
+
 typedef struct {
 	int x, y;
 	unsigned char left, middle, right, any;
@@ -47,7 +77,7 @@ void osinterface_draw();
 void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
-void osinterface_set_cursor(int hCurs);
+void osinterface_set_cursor(char cursor);
 
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
 void osinterface_show_messagebox(char* message);

@@ -59,7 +59,13 @@ void osinterface_init()
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
-void osinterface_set_cursor(int hCurs){
+/**
+ *  This is not quite the same as the below function as we don't want to
+ *  derfererence the cursor before the function.
+ *  rct2: 0x0407956
+ */
+void osinterface_set_cursor(char cursor){
+	HCURSOR hCurs = RCT2_ADDRESS(RCT2_ADDRESS_HCURSOR_START, HCURSOR)[cursor];
 	SetCursor((HCURSOR)hCurs);
 }
 /**
@@ -95,7 +101,7 @@ static void osinterface_load_cursors(){
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ENTRANCE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x9F));
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_OPEN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA6));
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_CLOSED,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA5));
-	SetCursor(RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ARROW,	HCURSOR));
+	osinterface_set_cursor(CURSOR_ARROW);
 	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }
 
