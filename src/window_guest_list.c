@@ -899,7 +899,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 			*argument_2 = ride.var_04C;
 		}
 		else{
-			*argument_1 = peep->flags & 1 ? STR_LEAVING_PARK : STR_WALKING;
+			*argument_1 = peep->flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
 			*argument_2 = 0;
 		}
 		break;

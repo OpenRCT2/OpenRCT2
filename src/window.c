@@ -553,16 +553,16 @@ void window_close_top()
  *  rct2: 0x006EE927
  */
 void window_close_all() {
-  rct_window* w;
+	rct_window* w;
 
-    window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_id(WC_DROPDOWN, 0);
 
 	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
-      if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
-		window_close(w);
-		w = g_window_list;
-      }
-    }
+		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
+			window_close(w);
+			w = g_window_list;
+		}
+	}
 }
 
 /**
@@ -796,11 +796,11 @@ rct_window *window_bring_to_front(rct_window *w)
 	int i;
 	rct_window* v, t;
 
-	if (w->flags & 0x03)
+	if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
 		return w;
 
 	for (v = RCT2_LAST_WINDOW; v >= g_window_list; v--)
-		if (!(v->flags & 2))
+		if (!(v->flags & WF_STICK_TO_FRONT))
 			break;
 
 		if (v >= g_window_list && w != v) {
@@ -840,7 +840,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// ?
-		if (w2->flags & 3)
+		if (w2->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
 			continue;
 
 		// Check if w2 intersects with w1
@@ -1082,7 +1082,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	// RCT2_CALLPROC_X(0x006EB15C, 0, 0, 0, 0, w, dpi, 0);
 	// return;
 
-	if ((w->flags & WF_TRANSPARENT) && !(w->flags & 0x20))
+	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_5))
 		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
 
 	widgetIndex = 0;

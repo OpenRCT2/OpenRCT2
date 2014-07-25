@@ -642,7 +642,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 		// 
 		press = 0x70;
-		if (w->flags & 0x0400)
+		if (w->flags & WF_10)
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
@@ -650,7 +650,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	} else {
 		// 
 		press = 0x60;
-		if (w->flags & 0x0400)
+		if (w->flags & WF_10)
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
@@ -694,7 +694,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 	// Check if the button is pressed down
 	press = 0;
-	if (w->flags & 0x400)
+	if (w->flags & WF_10)
 		press |= 0x80;
 	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 		press |= 0x20;
@@ -1022,13 +1022,13 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 		}
 	}
 
-	if ((w->scrolls[*scroll_id].flags & 0x01) && y >= (w->y + widget->bottom - 11))
+	if ((w->scrolls[*scroll_id].flags & SCROLL_FLAG_HORIZONTAL) && y >= (w->y + widget->bottom - 11))
 	{
 		//horizon scrollbar
 		int rightOffset = 0;
 		int iteratorLeft = widget->left + w->x;
 		int iteratorRight = widget->right + w->x;
-		if (w->scrolls[*scroll_id].flags & 0x01)
+		if (w->scrolls[*scroll_id].flags & SCROLL_FLAG_VERTICAL)
 		{
 			rightOffset = 11;
 		}
@@ -1057,13 +1057,13 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 			*output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
 		}
 	}
-	else if ((w->scrolls[*scroll_id].flags & 10) || (x >= w->x + widget->right - 11))
+	else if ((w->scrolls[*scroll_id].flags & SCROLL_FLAG_VERTICAL) && (x >= w->x + widget->right - 11))
 	{
 		//vertical scrollbar
 		int bottomOffset = 0;
 		int iteratorTop = widget->top + w->y;
 		int iteratorBottom = widget->bottom + w->y;
-		if (w->scrolls[*scroll_id].flags & 0x01)
+		if (w->scrolls[*scroll_id].flags & SCROLL_FLAG_HORIZONTAL)
 		{
 			bottomOffset = 11;
 		}

@@ -950,7 +950,7 @@ static void input_hscrollbar_rightbutton(rct_window* w)
 	left += 3;
 
 	widgetWidth = widget->right - widget->left - 1;
-	if (scroll->flags & 0x0010)
+	if (scroll->flags & SCROLL_FLAG_VERTICAL)
 		widgetWidth -= 11;
 	widgetWidth *= -1;
 	widgetWidth += scroll->h_right;
@@ -999,7 +999,7 @@ static void input_hscrollbar_left_trough(rct_window* w)
 	left = scroll->h_left;
 
 	widgetWidth = widget->right - widget->left - 1;
-	if (scroll->flags & 0x0010)
+	if (scroll->flags & SCROLL_FLAG_VERTICAL)
 		widgetWidth -= 11;
 	left -= widgetWidth;
 	if (left < 0)
@@ -1044,7 +1044,7 @@ static void input_hscrollbar_right_trough(rct_window* w)
 	left = scroll->h_left;
 
 	widgetWidth = widget->right - widget->left - 1;
-	if (scroll->flags & 0x0010)
+	if (scroll->flags & SCROLL_FLAG_VERTICAL)
 		widgetWidth -= 11;
 	left += widgetWidth;
 	widgetWidth *= -1;
@@ -1136,7 +1136,7 @@ static void input_vscrollbar_bottombutton(rct_window* w)
 	top += 3;
 
 	widgetHeight = widget->bottom - widget->top - 1;
-	if (scroll->flags & 0x0001)
+	if (scroll->flags & SCROLL_FLAG_HORIZONTAL)
 		widgetHeight -= 11;
 	widgetHeight *= -1;
 	widgetHeight += scroll->v_bottom;
@@ -1185,7 +1185,7 @@ static void input_vscrollbar_top_trough(rct_window* w)
 	top = scroll->v_top;
 
 	widgetHeight = widget->bottom - widget->top - 1;
-	if (scroll->flags & 0x0001)
+	if (scroll->flags & SCROLL_FLAG_HORIZONTAL)
 		widgetHeight -= 11;
 	top -= widgetHeight;
 	if (top < 0)
@@ -1230,7 +1230,7 @@ static void input_vscrollbar_bottom_trough(rct_window* w)
 	top = scroll->v_top;
 
 	widgetHeight = widget->bottom - widget->top - 1;
-	if (scroll->flags & 0x0001)
+	if (scroll->flags & SCROLL_FLAG_HORIZONTAL)
 		widgetHeight -= 11;
 	top += widgetHeight;
 	widgetHeight *= -1;
