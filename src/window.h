@@ -82,7 +82,7 @@ typedef struct {
  * size: 0x12
  */
 typedef struct {
-	uint16 flags;				// 0x00 (0x10 == vertical scrollbar, 0x01 == horizontal scrollbar)
+	uint16 flags;				// 0x00
 	sint16 h_left;				// 0x02
 	sint16 h_right;				// 0x04
 	sint16 h_thumb_left;		// 0x06
@@ -92,6 +92,11 @@ typedef struct {
 	sint16 v_thumb_top;			// 0x0E
 	sint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
+
+typedef enum {
+	SCROLL_FLAG_HORIZONTAL = (1 << 0),
+	SCROLL_FLAG_VERTICAL = (1 << 4),
+} SCROLL_FLAGS;
 
 /**
  * Window structure
