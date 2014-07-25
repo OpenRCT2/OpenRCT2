@@ -586,19 +586,31 @@ static void window_footpath_update(rct_window *w)
 
 	// Check tool
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
-		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))){
 			window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+			return;
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH){
 			window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
+			return;
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND){
 			window_close(w);
+			return;
+		}
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
-		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+		if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))){
 			window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+			return;
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH){
 			window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+			return;
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL){
 			window_close(w);
+			return;
+		}
 	}
 }
 
