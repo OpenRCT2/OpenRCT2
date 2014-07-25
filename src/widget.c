@@ -642,7 +642,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 		// 
 		press = 0x70;
-		if (w->flags & 0x0400)
+		if (w->flags & WF_10)
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
@@ -650,7 +650,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	} else {
 		// 
 		press = 0x60;
-		if (w->flags & 0x0400)
+		if (w->flags & WF_10)
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
@@ -694,7 +694,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 	// Check if the button is pressed down
 	press = 0;
-	if (w->flags & 0x400)
+	if (w->flags & WF_10)
 		press |= 0x80;
 	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
 		press |= 0x20;

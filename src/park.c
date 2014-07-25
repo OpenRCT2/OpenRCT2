@@ -364,9 +364,9 @@ static int park_calculate_guest_generation_probability()
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (ride->lifecycle_flags & 0x80)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 			continue;
-		if (ride->lifecycle_flags & 0x400)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
 			continue;
 
 		// Add guest score for ride type
@@ -384,16 +384,16 @@ static int park_calculate_guest_generation_probability()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
 		suggestedMaxGuests = min(suggestedMaxGuests, 1000);
 		FOR_ALL_RIDES(i, ride) {
-			if (ride->lifecycle_flags & 0x80)
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 				continue;
-			if (ride->lifecycle_flags & 0x400)
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
 				continue;
 
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
 				continue;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x200))
 				continue;
-			if (!(ride->lifecycle_flags & 0x02))
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 				continue;
 			if (ride->var_0E4 < 0x2580000)
 				continue;

@@ -139,7 +139,7 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_ROLLERCOASTER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_ROLLERCOASTER)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
 			continue;
 
 		rollerCoasters++;
@@ -438,7 +438,7 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_WATER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_WATER)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
 			continue;
 
 		waterRides++;
@@ -464,7 +464,7 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 			continue;
 		if (ride->excitement < RIDE_RATING(5, 50))
 			continue;
-		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
 			continue;
 
 		customDesignedRides++;
@@ -530,7 +530,7 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_GENTLE && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_GENTLE)
 			continue;
 
-		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & 0x400))
+		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
 			continue;
 
 		gentleRides++;
