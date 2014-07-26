@@ -21,6 +21,7 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+#include "currency.h"
 #include "rct2.h"
 #include <windows.h> // for MAX_PATH
 
@@ -88,20 +89,6 @@ enum {
 };
 
 enum{
-	CURRENCY_POUNDS,
-	CURRENCY_DOLLARS,
-	CURRENCY_FRANC,
-	CURRENCY_DEUTSCHMARK,
-	CURRENCY_YEN,
-	CURRENCY_PESETA,
-	CURRENCY_LIRA,
-	CURRENCY_GUILDERS,
-	CURRENCY_KRONA,
-	CURRENCY_EUROS
-
-};
-
-enum{
 	SOUND_QUALITY_LOW,
 	SOUND_QUALITY_MEDIUM,
 	SOUND_QUALITY_HIGH
@@ -156,9 +143,10 @@ static const struct { char *key; int value; } _currencyLookupTable[] = {
 	{ "DEK", CURRENCY_KRONA },
 	{ "EUR", CURRENCY_EUROS },
 
-	{ "£", CURRENCY_POUNDS },
-	{ "$", CURRENCY_DOLLARS },
-	{ "€", CURRENCY_EUROS }
+	{ "\xA3", CURRENCY_POUNDS },
+	{ "\x24", CURRENCY_DOLLARS },
+	{ "\xA5", CURRENCY_YEN },
+	{ "\xB5", CURRENCY_EUROS }
 };
 
 //typedef struct hotkey_configuration{

@@ -138,6 +138,9 @@
     <ClInclude Include="..\src\award.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\currency.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -334,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_peep.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\currency.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

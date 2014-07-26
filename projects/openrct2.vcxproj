@@ -20,6 +20,7 @@
     <ClInclude Include="..\src\award.h" />
     <ClInclude Include="..\src\climate.h" />
     <ClInclude Include="..\src\config.h" />
+    <ClInclude Include="..\src\currency.h" />
     <ClInclude Include="..\src\date.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\finance.h" />
@@ -62,6 +63,7 @@
     <ClCompile Include="..\src\award.c" />
     <ClCompile Include="..\src\climate.c" />
     <ClCompile Include="..\src\config.c" />
+    <ClCompile Include="..\src\currency.c" />
     <ClCompile Include="..\src\date.c" />
     <ClCompile Include="..\src\editor.c" />
     <ClCompile Include="..\src\finance.c" />

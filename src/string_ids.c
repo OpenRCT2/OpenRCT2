@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "addresses.h"
+#include "config.h"
+#include "currency.h"
 #include "game.h"
 #include "date.h"
 #include "rct2.h"
@@ -1218,48 +1220,64 @@ void format_comma_separated_fixed_2dp(char **dest, int value)
 
 void format_currency(char **dest, int value)
 {
-	int digit, groupIndex;
-	char *dst = *dest;
-	char *finish;
-	char tmp;
+	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	value *= rate;
 
 	// Negative sign
 	if (value < 0) {
-		*dst++ = '-';
+		*(*dest)++ = '-';
 		value = -value;
 	}
 
 	// Currency symbol
-	*dst++ = '£';
+	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	// Prefix
+	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
+	}
 
-	*dest = dst;
+	// Divide by 100 to get rid of the pennies
+	format_comma_separated_integer(dest, value/100);
 
-	// value is in tens of pennies, so to get rid of
-	// the pence, just divide by ten
-	format_comma_separated_integer(dest, value/10);
+	// Currency symbol suffix
+	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
+	}
 }
 
 void format_currency_2dp(char **dest, int value)
 {
-	int digit, groupIndex;
-	char *dst = *dest;
-	char *finish;
-	char tmp;
+	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	value *= rate;
 
 	// Negative sign
 	if (value < 0) {
-		*dst++ = '-';
+		*(*dest)++ = '-';
 		value = -value;
 	}
 
 	// Currency symbol
-	*dst++ = '£';
+	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	// Prefix
+	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
+	}
 
-	*dest = dst;
+	// Drop the pennies for "large" currencies
+	if (rate > 10) {
+		format_comma_separated_integer(dest, value/100);
+	} else {
+		format_comma_separated_fixed_2dp(dest, value);
+	}
 
-	// value is in tens of pennies, so multiply by 10
-	// to get in pounds and pence
-	format_comma_separated_fixed_2dp(dest, value*10);
+	// Currency symbol suffix
+	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
+	}
 }
 
 void format_string_code(unsigned char format_code, char **dest, char **args)
