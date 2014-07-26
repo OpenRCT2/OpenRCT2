@@ -279,7 +279,9 @@ loc_6ED99E:
 	RCT2_GLOBAL(0x14241BC, uint32) = 2;
 	abc = (uint32 *)(0x1423598);
 	//edx = 6;
-	printf("%d %d\n", edx, abc[edx]);
+	char debug_out[250];
+	sprintf(debug_out, "%d %d\n", edx, abc[edx]);
+	OutputDebugString(debug_out);
 	osinterface_set_cursor(edx);
 	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }

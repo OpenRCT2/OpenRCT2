@@ -83,7 +83,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	audio_init();
 	audio_get_devices();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
-	
 	config_init();
 	rct2_init();
 	rct2_loop();

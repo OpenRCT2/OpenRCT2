@@ -65,6 +65,7 @@ void osinterface_init()
  *  rct2: 0x0407956
  */
 void osinterface_set_cursor(char cursor){
+
 	HCURSOR hCurs = RCT2_ADDRESS(RCT2_ADDRESS_HCURSOR_START, HCURSOR)[cursor];
 	SetCursor((HCURSOR)hCurs);
 }
