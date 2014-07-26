@@ -1361,11 +1361,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 			format_comma_separated_integer(dest, mph_to_kmph(value));
-			strcat(*dest, "kmh");
+			strcpy(*dest, "kmh");
 			*dest += strlen(*dest);
 		} else {
 			format_comma_separated_integer(dest, value);
-			strcat(*dest, "mph");
+			strcpy(*dest, "mph");
 			*dest += strlen(*dest);
 		}
 		break;
@@ -1412,11 +1412,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 			format_comma_separated_integer(dest, value);
-			strcat(*dest, "m");
+			strcpy(*dest, "m");
 			*dest += strlen(*dest);
 		} else {
 			format_comma_separated_integer(dest, metres_to_feet(value));
-			strcat(*dest, "ft");
+			strcpy(*dest, "ft");
 			*dest += strlen(*dest);
 		}
 		break;
