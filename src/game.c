@@ -70,14 +70,14 @@ int pop(void)
 *
 *  rct2: 0x006ED801
 */
-void sub_0x6ED801(){
+void sub_0x6ED801(int x, int y){
 	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
 		rct_window* w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16));
 		if (w == NULL){
 			tool_cancel();
 		}
 		else{
-			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], 0, 0, 0, RCT2_GLOBAL(0x9DE546, uint16), w, 0, 0);
+			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], x, y, 0, RCT2_GLOBAL(0x9DE546, uint16), w, 0, 0);
 		}
 	}
 }
@@ -612,7 +612,7 @@ void game_handle_input()
 				// RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
 				process_mouse_over(eax, ebx);
 				//RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
-				sub_0x6ED801();
+				sub_0x6ED801(eax, ebx);
 				//RCT2_CALLPROC_EBPSAFE(0x006ED801);
 			}
 		}
