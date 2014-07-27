@@ -1022,13 +1022,13 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 		}
 	}
 
-	if ((w->scrolls[*scroll_id].flags & SCROLL_FLAG_HORIZONTAL) && y >= (w->y + widget->bottom - 11))
+	if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && y >= (w->y + widget->bottom - 11))
 	{
 		//horizon scrollbar
 		int rightOffset = 0;
 		int iteratorLeft = widget->left + w->x;
 		int iteratorRight = widget->right + w->x;
-		if (w->scrolls[*scroll_id].flags & SCROLL_FLAG_VERTICAL)
+		if (w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE)
 		{
 			rightOffset = 11;
 		}
@@ -1057,13 +1057,13 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 			*output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
 		}
 	}
-	else if ((w->scrolls[*scroll_id].flags & SCROLL_FLAG_VERTICAL) && (x >= w->x + widget->right - 11))
+	else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (x >= w->x + widget->right - 11))
 	{
 		//vertical scrollbar
 		int bottomOffset = 0;
 		int iteratorTop = widget->top + w->y;
 		int iteratorBottom = widget->bottom + w->y;
-		if (w->scrolls[*scroll_id].flags & SCROLL_FLAG_HORIZONTAL)
+		if (w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE)
 		{
 			bottomOffset = 11;
 		}
