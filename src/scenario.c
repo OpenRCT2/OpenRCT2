@@ -462,20 +462,20 @@ void scenario_objectives_check()
 	case OBJECTIVE_GUESTS_BY://1
 
 		if (cur_month_year == 8 * objective_year){
-			if (park_rating < 600 || guests_in_park < objective_guests)
-				scenario_failure();
-			else
+			if (park_rating >= 600 && guests_in_park >= objective_guests)
 				scenario_success();
+			else
+				scenario_failure();
 		}
 		break;
 
 	case OBJECTIVE_PARK_VALUE_BY://2
 
 		if (cur_month_year == 8 * objective_year) {
-			if (park_value < objective_currency)
-				scenario_failure();
-			else
+			if (park_value >= objective_currency)
 				scenario_success();
+			else
+				scenario_failure();
 		}
 		break;
 
@@ -486,14 +486,14 @@ void scenario_objectives_check()
 
 	case OBJECTIVE_GUESTS_AND_RATING://6
 
-		if (park_rating >= 700 && guests_in_park > objective_guests)
+		if (park_rating >= 700 && guests_in_park >= objective_guests)
 			scenario_success();
 		break;
 
 	case OBJECTIVE_MONTHLY_RIDE_INCOME://7
 	{
 		sint32 monthly_ride_income = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, sint32);
-		if (monthly_ride_income > objective_currency)
+		if (monthly_ride_income >= objective_currency)
 			scenario_success();
 		break;
 	}
@@ -508,7 +508,7 @@ void scenario_objectives_check()
 		int rcs = 0;
 		for (int i = 0; i < MAX_RIDES; i++) {
 			ride = &g_ride_list[i];
-			if (ride->status && ride->excitement > objective_currency)
+			if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objective_currency)
 				rcs++;
 		}
 		if (rcs >= 5)
@@ -518,7 +518,7 @@ void scenario_objectives_check()
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE://A
 	{
 		sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
-		if (current_loan <= 0 && park_value > objective_currency)
+		if (current_loan <= 0 && park_value >= objective_currency)
 			scenario_success();
 		break;
 	}
@@ -526,7 +526,7 @@ void scenario_objectives_check()
 	{
 		sint32 income_sum = RCT2_GLOBAL(0x013578A4, sint32) + RCT2_GLOBAL(0x013578A0, sint32) +
 						   RCT2_GLOBAL(0x0135789C, sint32) + RCT2_GLOBAL(0x01357898, sint32);
-		if (income_sum > objective_currency)
+		if (income_sum >= objective_currency)
 			scenario_success();
 		break;
 	}

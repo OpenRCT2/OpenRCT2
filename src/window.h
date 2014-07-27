@@ -93,11 +93,6 @@ typedef struct {
 	sint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
-typedef enum {
-	SCROLL_FLAG_HORIZONTAL = (1 << 0),
-	SCROLL_FLAG_VERTICAL = (1 << 4),
-} SCROLL_FLAGS;
-
 /**
  * Window structure
  * size: 0x4C0
@@ -209,7 +204,7 @@ typedef enum {
 	WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 } WINDOW_FLAGS;
 
-enum {
+enum SCROLL_FLAGS {
 	HSCROLLBAR_VISIBLE = (1 << 0),
 	HSCROLLBAR_THUMB_PRESSED = (1 << 1),
 	HSCROLLBAR_LEFT_PRESSED = (1 << 2),
