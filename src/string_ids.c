@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "addresses.h"
+#include "config.h"
+#include "currency.h"
 #include "game.h"
 #include "date.h"
 #include "rct2.h"
@@ -1218,112 +1220,64 @@ void format_comma_separated_fixed_2dp(char **dest, int value)
 
 void format_currency(char **dest, int value)
 {
-	int digit, groupIndex;
-	char *dst = *dest;
-	char *finish;
-	char tmp;
+	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	value *= rate;
 
 	// Negative sign
 	if (value < 0) {
-		*dst++ = '-';
+		*(*dest)++ = '-';
 		value = -value;
 	}
 
 	// Currency symbol
-	*dst++ = '£';
-
-	*dest = dst;
-
-	value /= 10;
-	if (value == 0) {
-		*dst++ = '0';
-	} else {
-		// Groups of three digits, right to left
-		groupIndex = 0;
-		while (value > 0) {
-			// Append group seperator
-			if (groupIndex == 3) {
-				groupIndex = 0;
-				*dst++ = ',';
-			}
-
-			digit = value % 10;
-			value /= 10;
-
-			*dst++ = '0' + digit;
-			groupIndex++;
-		}
+	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	// Prefix
+	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
 	}
-	finish = dst;
 
-	// Reverse string
-	dst--;
-	while (*dest < dst) {
-		tmp = **dest;
-		**dest = *dst;
-		*dst = tmp;
-		(*dest)++;
-		dst--;
+	// Divide by 100 to get rid of the pennies
+	format_comma_separated_integer(dest, value/100);
+
+	// Currency symbol suffix
+	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
 	}
-	*dest = finish;
 }
 
 void format_currency_2dp(char **dest, int value)
 {
-	int digit, groupIndex;
-	char *dst = *dest;
-	char *finish;
-	char tmp;
+	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	value *= rate;
 
 	// Negative sign
 	if (value < 0) {
-		*dst++ = '-';
+		*(*dest)++ = '-';
 		value = -value;
 	}
 
 	// Currency symbol
-	*dst++ = '£';
+	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	// Prefix
+	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
+	}
 
-	*dest = dst;
-
-	// Two decimal places
-	*dst++ = '0';
-	digit = value % 10;
-	value /= 10;
-	*dst++ = '0' + digit;
-	*dst++ = '.';
-
-	if (value == 0) {
-		*dst++ = '0';
+	// Drop the pennies for "large" currencies
+	if (rate > 10) {
+		format_comma_separated_integer(dest, value/100);
 	} else {
-		// Groups of three digits, right to left
-		groupIndex = 0;
-		while (value > 0) {
-			// Append group seperator
-			if (groupIndex == 3) {
-				groupIndex = 0;
-				*dst++ = ',';
-			}
-
-			digit = value % 10;
-			value /= 10;
-
-			*dst++ = '0' + digit;
-			groupIndex++;
-		}
+		format_comma_separated_fixed_2dp(dest, value);
 	}
-	finish = dst;
 
-	// Reverse string
-	dst--;
-	while (*dest < dst) {
-		tmp = **dest;
-		**dest = *dst;
-		*dst = tmp;
-		(*dest)++;
-		dst--;
+	// Currency symbol suffix
+	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+		strcpy(*dest, symbol);
+		*dest += strlen(*dest);
 	}
-	*dest = finish;
 }
 
 void format_string_code(unsigned char format_code, char **dest, char **args)
@@ -1425,11 +1379,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 			format_comma_separated_integer(dest, mph_to_kmph(value));
-			strcat(*dest, "kmh");
+			strcpy(*dest, "kmh");
 			*dest += strlen(*dest);
 		} else {
 			format_comma_separated_integer(dest, value);
-			strcat(*dest, "mph");
+			strcpy(*dest, "mph");
 			*dest += strlen(*dest);
 		}
 		break;
@@ -1476,11 +1430,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 			format_comma_separated_integer(dest, value);
-			strcat(*dest, "m");
+			strcpy(*dest, "m");
 			*dest += strlen(*dest);
 		} else {
 			format_comma_separated_integer(dest, metres_to_feet(value));
-			strcat(*dest, "ft");
+			strcpy(*dest, "ft");
 			*dest += strlen(*dest);
 		}
 		break;
