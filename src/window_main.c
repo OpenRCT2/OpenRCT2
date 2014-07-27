@@ -81,7 +81,7 @@ void window_main_open()
 	);
 	window->widgets = window_main_widgets;
 
-	viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x40000000, 0x0FFF0FFF);
+	viewport_create(window, window->x, window->y, window->width, window->height, 0,0x0FFF,0x0FFF, 0, 0x1, -1);
 	window->viewport->flags |= 0x0400;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
