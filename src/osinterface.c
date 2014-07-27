@@ -29,6 +29,7 @@
 #include "gfx.h"
 #include "osinterface.h"
 #include "rct2.h"
+#include "cursors.h"
 
 typedef void(*update_palette_func)(char*, int, int);
 
@@ -49,6 +50,8 @@ static SDL_Palette *_palette;
 static int _screenBufferSize;
 static void *_screenBuffer;
 
+static SDL_Cursor* _cursors[NO_CURSORS];
+
 void osinterface_init()
 {
 	osinterface_create_window();
@@ -59,6 +62,26 @@ void osinterface_init()
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
+uint8 curs_data[32 * 4] = {
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x48, 0x00, 0x00, 0x00, 0xA4,
+	0x00, 0x00, 0x01, 0x52, 0x00, 0x00, 0x02, 0x8B, 0x00, 0x00, 0x02, 0x96, 0x00, 0x00, 0x02, 0x6C,
+	0x00, 0x00, 0x04, 0x18, 0x00, 0x00, 0x08, 0xF0, 0x00, 0x00, 0x11, 0x80, 0x00, 0x03, 0x2A, 0x00,
+	0x00, 0x04, 0xC6, 0x00, 0x00, 0x09, 0x8C, 0x00, 0x00, 0x15, 0x18, 0x00, 0x00, 0x22, 0x30, 0x00,
+	0x00, 0x24, 0x78, 0x00, 0x0F, 0xC5, 0xE4, 0x00, 0x08, 0xC7, 0xC4, 0x00, 0x08, 0xC3, 0x28, 0x00,
+	0x08, 0xA0, 0x10, 0x00, 0x08, 0x90, 0x20, 0x00, 0x08, 0x88, 0xC0, 0x00, 0x08, 0x87, 0x00, 0x00,
+	0x08, 0x80, 0x00, 0x00, 0xF8, 0xF8, 0x00, 0x00, 0x40, 0x10, 0x00, 0x00, 0x20, 0x20, 0x00, 0x00,
+	0x10, 0x40, 0x00, 0x00, 0x08, 0x80, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+};
+uint8 curs_mask[32 * 4] = {
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0xFC,
+	0x00, 0x00, 0x01, 0xDE, 0x00, 0x00, 0x03, 0x8F, 0x00, 0x00, 0x03, 0x9E, 0x00, 0x00, 0x03, 0xFC,
+	0x00, 0x00, 0x07, 0xF8, 0x00, 0x00, 0x0F, 0xF0, 0x00, 0x00, 0x1F, 0x80, 0x00, 0x03, 0x3E, 0x00,
+	0x00, 0x07, 0xFE, 0x00, 0x00, 0x0F, 0xFC, 0x00, 0x00, 0x1F, 0xF8, 0x00, 0x00, 0x3F, 0xF0, 0x00,
+	0x00, 0x3F, 0xF8, 0x00, 0x0F, 0xFF, 0xFC, 0x00, 0x0F, 0xFF, 0xFC, 0x00, 0x0F, 0xFF, 0xF8, 0x00,
+	0x0F, 0xBF, 0xF0, 0x00, 0x0F, 0x9F, 0xE0, 0x00, 0x0F, 0x8F, 0xC0, 0x00, 0x0F, 0x87, 0x00, 0x00,
+	0x0F, 0x80, 0x00, 0x00, 0xFF, 0xF8, 0x00, 0x00, 0x7F, 0xF0, 0x00, 0x00, 0x3F, 0xE0, 0x00, 0x00,
+	0x1F, 0xC0, 0x00, 0x00, 0x0F, 0x80, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+};
 /**
  *  This is not quite the same as the below function as we don't want to
  *  derfererence the cursor before the function.
@@ -67,12 +90,14 @@ void osinterface_init()
 void osinterface_set_cursor(char cursor){
 
 	HCURSOR hCurs = RCT2_ADDRESS(RCT2_ADDRESS_HCURSOR_START, HCURSOR)[cursor];
-	SetCursor((HCURSOR)hCurs);
+	//SetCursor((HCURSOR)hCurs);
+	SDL_SetCursor(_cursors[cursor]);
 }
 /**
  *rct2: 0x0068352C
  */
 static void osinterface_load_cursors(){
+
 	RCT2_GLOBAL(0x14241BC, uint32) = 2;
 	HINSTANCE hInst = RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE);
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ARROW,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x74));
@@ -102,6 +127,34 @@ static void osinterface_load_cursors(){
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ENTRANCE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x9F));
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_OPEN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA6));
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_CLOSED,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA5));
+
+	_cursors[0] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+	_cursors[1] = SDL_CreateCursor(blank_cursor_data, blank_cursor_mask, 32, 32, BLANK_CURSOR_HOTX, BLANK_CURSOR_HOTX);
+	_cursors[2] = SDL_CreateCursor(up_arrow_cursor_data, up_arrow_cursor_mask, 32, 32, UP_ARROW_CURSOR_HOTX, UP_ARROW_CURSOR_HOTX);
+	_cursors[3] = SDL_CreateCursor(up_down_arrow_cursor_data, up_down_arrow_cursor_mask, 32, 32, UP_DOWN_ARROW_CURSOR_HOTX, UP_DOWN_ARROW_CURSOR_HOTX);
+	_cursors[4] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+	_cursors[5] = SDL_CreateCursor(zzz_cursor_data, zzz_cursor_mask, 32, 32, ZZZ_CURSOR_HOTX, ZZZ_CURSOR_HOTX);
+	_cursors[6] = SDL_CreateCursor(diagonal_arrow_cursor_data, diagonal_arrow_cursor_mask, 32, 32, DIAGONAL_ARROW_CURSOR_HOTX, DIAGONAL_ARROW_CURSOR_HOTX);
+	_cursors[7] = SDL_CreateCursor(picker_cursor_data, picker_cursor_mask, 32, 32, PICKER_CURSOR_HOTX, PICKER_CURSOR_HOTX);
+	_cursors[8] = SDL_CreateCursor(tree_down_cursor_data, tree_down_cursor_mask, 32, 32, TREE_DOWN_CURSOR_HOTX, TREE_DOWN_CURSOR_HOTX);
+	_cursors[9] = SDL_CreateCursor(fountain_down_cursor_data, fountain_down_cursor_mask, 32, 32, FOUNTAIN_DOWN_CURSOR_HOTX, FOUNTAIN_DOWN_CURSOR_HOTX);
+	_cursors[10] = SDL_CreateCursor(statue_down_cursor_data, statue_down_cursor_mask, 32, 32, STATUE_DOWN_CURSOR_HOTX, STATUE_DOWN_CURSOR_HOTX);
+	_cursors[11] = SDL_CreateCursor(bench_down_cursor_data, bench_down_cursor_mask, 32, 32, BENCH_DOWN_CURSOR_HOTX, BENCH_DOWN_CURSOR_HOTX);
+	_cursors[12] = SDL_CreateCursor(cross_hair_cursor_data, cross_hair_cursor_mask, 32, 32, CROSS_HAIR_CURSOR_HOTX, CROSS_HAIR_CURSOR_HOTX);
+	_cursors[13] = SDL_CreateCursor(bin_down_cursor_data, bin_down_cursor_mask, 32, 32, BIN_DOWN_CURSOR_HOTX, BIN_DOWN_CURSOR_HOTX);
+	_cursors[14] = SDL_CreateCursor(lamppost_down_cursor_data, lamppost_down_cursor_mask, 32, 32, LAMPPOST_DOWN_CURSOR_HOTX, LAMPPOST_DOWN_CURSOR_HOTX);
+	_cursors[15] = SDL_CreateCursor(fence_down_cursor_data, fence_down_cursor_mask, 32, 32, FENCE_DOWN_CURSOR_HOTX, FENCE_DOWN_CURSOR_HOTX);
+	_cursors[16] = SDL_CreateCursor(flower_down_cursor_data, flower_down_cursor_mask, 32, 32, FLOWER_DOWN_CURSOR_HOTX, FLOWER_DOWN_CURSOR_HOTX);
+	_cursors[17] = SDL_CreateCursor(path_down_cursor_data, path_down_cursor_mask, 32, 32, PATH_DOWN_CURSOR_HOTX, PATH_DOWN_CURSOR_HOTX);
+	_cursors[18] = SDL_CreateCursor(dig_down_cursor_data, dig_down_cursor_mask, 32, 32, DIG_DOWN_CURSOR_HOTX, DIG_DOWN_CURSOR_HOTX);
+	_cursors[19] = SDL_CreateCursor(water_down_cursor_data, water_down_cursor_mask, 32, 32, WATER_DOWN_CURSOR_HOTX, WATER_DOWN_CURSOR_HOTX);
+	_cursors[20] = SDL_CreateCursor(house_down_cursor_data, house_down_cursor_mask, 32, 32, HOUSE_DOWN_CURSOR_HOTX, HOUSE_DOWN_CURSOR_HOTX);
+	_cursors[21] = SDL_CreateCursor(volcano_down_cursor_data, volcano_down_cursor_mask, 32, 32, VOLCANO_DOWN_CURSOR_HOTX, VOLCANO_DOWN_CURSOR_HOTX);
+	_cursors[22] = SDL_CreateCursor(walk_down_cursor_data, walk_down_cursor_mask, 32, 32, WALK_DOWN_CURSOR_HOTX, WALK_DOWN_CURSOR_HOTX);
+	_cursors[23] = SDL_CreateCursor(paint_down_cursor_data, paint_down_cursor_mask, 32, 32, PAINT_DOWN_CURSOR_HOTX, PAINT_DOWN_CURSOR_HOTX);
+	_cursors[24] = SDL_CreateCursor(entrance_down_cursor_data, entrance_down_cursor_mask, 32, 32, ENTRANCE_DOWN_CURSOR_HOTX, ENTRANCE_DOWN_CURSOR_HOTX);
+	_cursors[25] = SDL_CreateCursor(hand_open_cursor_data, hand_open_cursor_mask, 32, 32, HAND_OPEN_CURSOR_HOTX, HAND_OPEN_CURSOR_HOTX);
+	_cursors[26] = SDL_CreateCursor(hand_closed_cursor_data, hand_closed_cursor_mask, 32, 32, HAND_CLOSED_CURSOR_HOTX, HAND_CLOSED_CURSOR_HOTX);
 	osinterface_set_cursor(CURSOR_ARROW);
 	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }
