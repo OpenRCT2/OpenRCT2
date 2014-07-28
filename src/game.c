@@ -51,21 +51,6 @@ void game_handle_keyboard_input();
 
 void process_mouse_over(int x, int y);
 
-int stack[30];
-int stackPtr = 0;
-
-void push(int var)
-{
-	stack[stackPtr] = var;
-	stackPtr++;
-}
-
-int pop(void)
-{
-	return stack[--stackPtr];
-}
-
-
 /**
 *
 *  rct2: 0x006ED801
@@ -82,6 +67,10 @@ void sub_0x6ED801(int x, int y){
 	}
 }
 
+/**
+*
+*  rct2: 0x006ED990
+*/
 void sub_0x6ED990(char cursor_id){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESIZING)
 	{
@@ -107,148 +96,111 @@ void process_mouse_over(int x, int y)
 	rct_window* window;
 	rct_window* subWindow;
 
-
 	int widgetId;
 	int cursorId;
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
-	eax = x;
-	ebx = y;
-	edx = CURSOR_ARROW;
+	cursorId = CURSOR_ARROW;
 	RCT2_GLOBAL(0x9A9808, sint16) = -1;
-	//RCT2_CALLFUNC_X(0x6EA845, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	window = window_find_from_point(x, y);
 
-	if (window == NULL)
+	if (window != NULL)
 	{
-		goto loc_6ED983;
-	}
-	widgetId = window_find_widget_from_point(window, x, y);
-	
-	RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
-	if (widgetId == 0xFFFF)
-	{
-		goto loc_6ED983;
-	}
+		widgetId = window_find_widget_from_point(window, x, y);
 
-	if (window->widgets[widgetId].type != WWT_VIEWPORT)
-	{
-		goto loc_6ED8EE;
-	}
-	if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0)
-	{
-		int _edx = edx;
-		RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		edx = _edx;
-		if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+		RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
+		if (widgetId != 0xFFFF)
 		{
-			edx = CURSOR_HAND_POINT;
-			ebx = y;
-			eax = x;
-			sub_0x6ED990(edx);
-			return;
-		}
-		goto loc_6ED983;
-	}
-	edx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
-	subWindow = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
-	ebp = (int)subWindow;
-	if (subWindow == NULL)
-	{
-		goto loc_6ED983;
-	}
-	ebx = ebx & 0xFFFFFF00;
-	edi = edx;
-	esi = subWindow;
-	ebp = *(int*)esi;
-	RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	edx = edi;
-	if ((ebx & 0xFF) == 0)
-	{
-		goto loc_6ED983;
-	}
-	else
-	{
-		ebx = y;
-		eax = x;
-		sub_0x6ED990(edx);
-		return;
-	}
 
+			switch (window->widgets[widgetId].type){
+			case WWT_VIEWPORT:
+				if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0)
+				{
+					edx = cursorId;
+					eax = x;
+					ebx = y;
+					//Find out if there is a clickable item under pointer
+					RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
-loc_6ED8EE:
-	if (window->widgets[widgetId].type != WWT_RESIZE && window->widgets[widgetId].type != WWT_FRAME)
-	{
-		goto loc_6ED93D;
-	}
-	if (!(window->flags & 0x100))
-	{
-		goto loc_6ED93D;
-	}
-	if (window->min_width == window->max_width && window->min_height == window->max_height)
-	{
-		goto loc_6ED93D;
-	}
-	if (x < window->x + window->width - 0x13)
-	{
-		goto loc_6ED93D;
-	}
-	if (y < window->y + window->height - 0x13)
-	{
-		goto loc_6ED93D;
-	}
-	edx = CURSOR_DIAGONAL_ARROWS;
-	goto loc_6ED983;
+					if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+					{
+						sub_0x6ED990(CURSOR_HAND_POINT);
+						return;
+					}
+					break;
+				}
+				cursorId = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
+				subWindow = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
+				ebp = (int)subWindow;
+				if (subWindow == NULL)
+				{
+					break;
+				}
+				ebx = ebx & 0xFFFFFF00;
+				edi = cursorId;
+				esi = subWindow;
+				RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				cursorId = edi;
+				if ((ebx & 0xFF) != 0)
+				{
+					sub_0x6ED990(cursorId);
+					return;
+				}
+				break;
+			case WWT_FRAME:
+			case WWT_RESIZE:
+				if (!(window->flags & 0x100))
+				{
+					break;
+				}
+				if (window->min_width == window->max_width && window->min_height == window->max_height)
+				{
+					break;
+				}
+				if (x < window->x + window->width - 0x13)
+				{
+					break;
+				}
+				if (y < window->y + window->height - 0x13)
+				{
+					break;
+				}
+				cursorId = CURSOR_DIAGONAL_ARROWS;
+				break;
+			case WWT_SCROLL:
+				RCT2_GLOBAL(0x9DE558, uint16) = x;
+				RCT2_GLOBAL(0x9DE55A, uint16) = y;
+				int output_x, output_y, output_scroll_area, scroll_id;
+				widget_scroll_get_part(window, window->widgets, x, y, &output_x, &output_y, &output_scroll_area, &scroll_id);
+				cursorId = scroll_id;
+				if (output_scroll_area != SCROLL_PART_VIEW)
+				{
+					cursorId = CURSOR_ARROW;
+					break;
+				}
+				//Fall through to default
+			default:
+				ecx = x;
+				edx = y;
+				eax = widgetId;
+				ebx = 0xFFFFFFFF;
+				edi = (int)&window->widgets[widgetId];
 
-loc_6ED93D:
-	RCT2_GLOBAL(0x9DE558, uint16) = x;
-	RCT2_GLOBAL(0x9DE55A, uint16) = y;
-	push(eax);
-	push(ebx);
-	push(edx);
-	if (window->widgets[widgetId].type != WWT_SCROLL)
-	{
-		goto loc_6ED95C;
-	}
-	{
-		int output_x, output_y, output_cx, output_dx;
-		widget_scroll_get_part(window, window->widgets, eax, ebx, &output_x, &output_y, &output_cx, &output_dx);
-		edx = output_dx;
-		if (output_cx != 0)
-		{
-			goto loc_6ED980;
+				RCT2_CALLFUNC_X(window->event_handlers[WE_UNKNOWN_17], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				if (ebx == 0xFFFFFFFF)
+				{
+					cursorId = CURSOR_ARROW;
+					break;
+				}
+				cursorId = ebx;
+				break;
+			}
 		}
 	}
-loc_6ED95C:
-	{
-		ecx = eax;
-		edx = ebx;
-		eax = RCT2_GLOBAL(0x1420046, uint16);
-		ebx = 0xFFFFFFFF;
-		int _edi = edi;
-
-		RCT2_CALLFUNC_X(window->event_handlers[WE_UNKNOWN_17], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		edi = _edi;
-		if (ebx == 0xFFFFFFFF)
-		{
-			goto loc_6ED980;
-		}
-		edx = ebx;
-		ebx = pop();
-		ebx = pop();
-		eax = pop();
-		goto loc_6ED983;
-	}
-loc_6ED980:
-	edx = pop();
-	ebx = pop();
-	eax = pop();
-
-loc_6ED983:
-	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
+	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, cursorId, esi, edi, ebp);
 	//itemUnderCursor(&eax, &ebx, &ecx, &edx);
 
-	sub_0x6ED990(edx);
+	sub_0x6ED990(cursorId);
 	return;
 }
 
