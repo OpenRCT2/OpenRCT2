@@ -107,61 +107,55 @@ void process_mouse_over(int x, int y)
 	rct_window* window;
 	rct_window* subWindow;
 
+
 	int widgetId;
 	int cursorId;
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
 	eax = x;
 	ebx = y;
-	edx = 0;
+	edx = CURSOR_ARROW;
 	RCT2_GLOBAL(0x9A9808, sint16) = -1;
 	//RCT2_CALLFUNC_X(0x6EA845, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	window = window_find_from_point(x, y);
-	esi = window;
-	push(eax);
-	push(ebx);
+
 	if (window == NULL)
 	{
-		pop();
-		pop();
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		sub_0x6ED990((char)edx);
-		return;
+		goto loc_6ED983;
 	}
-	push(edx);
 	widgetId = window_find_widget_from_point(window, x, y);
-	edx = widgetId;
-	RCT2_GLOBAL(0x1420046, sint16) = (edx & 0xFFFF);
-	if (widgetId == -1)
+	
+	RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
+	if (widgetId == 0xFFFF)
 	{
-		edx = 0;
-		pop();
-		pop();
-		pop();
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		sub_0x6ED990((char)edx);
-		return;
+		goto loc_6ED983;
 	}
-	edx = 0;
-	pop();
+
 	if (window->widgets[widgetId].type != WWT_VIEWPORT)
 	{
 		goto loc_6ED8EE;
 	}
 	if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0)
 	{
-		goto loc_6ED8C8;
+		int _edx = edx;
+		RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		edx = _edx;
+		if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+		{
+			edx = CURSOR_HAND_POINT;
+			ebx = y;
+			eax = x;
+			sub_0x6ED990(edx);
+			return;
+		}
+		goto loc_6ED983;
 	}
 	edx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
 	subWindow = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
 	ebp = (int)subWindow;
 	if (subWindow == NULL)
 	{
-		pop();
-		pop();
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		sub_0x6ED990((char)edx);
-		return;
+		goto loc_6ED983;
 	}
 	ebx = ebx & 0xFFFFFF00;
 	edi = edx;
@@ -171,134 +165,91 @@ void process_mouse_over(int x, int y)
 	edx = edi;
 	if ((ebx & 0xFF) == 0)
 	{
-		pop();
-		pop();
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		sub_0x6ED990((char)edx);
-		return;
+		goto loc_6ED983;
 	}
 	else
 	{
 		ebx = y;
 		eax = x;
-		pop();
-		pop();
 		sub_0x6ED990(edx);
 		return;
-	}
-loc_6ED8C8:
-	{
-		push(edx);
-		RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		edx = 0;
-		pop();
-		if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8)
-		{
-			goto loc_6ED8E2;
-		}
-		if ((ebx & 0xFF) != 3)
-		{
-			pop();
-			pop();
-			RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-			sub_0x6ED990((char)edx);
-			return;
-		}
-	}
-loc_6ED8E2:
-	{
-		edx = CURSOR_HAND_POINT;
-		ebx = y;
-		eax = x;
-		pop();
-		pop();
-		sub_0x6ED990(edx);
-		return;
-	}
-loc_6ED8EE:
-	if (window->widgets[widgetId].type == WWT_RESIZE)
-	{
-		goto loc_6ED8F8;
-	}
-	if (window->widgets[widgetId].type == WWT_FRAME)
-	{
-		goto loc_6ED93D;
 	}
 
-loc_6ED8F8:
-	if (window->flags & 0x100)
-	{
-		pop();
-		pop();
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		sub_0x6ED990((char)edx);
-		return;
-	}
-	if (window->min_width != window->max_width)
-	{
-		goto loc_6ED914;
-	}
-	if (window->min_height != window->max_height)
+
+loc_6ED8EE:
+	if (window->widgets[widgetId].type != WWT_RESIZE && window->widgets[widgetId].type != WWT_FRAME)
 	{
 		goto loc_6ED93D;
 	}
-loc_6ED914:
-	if (x < window->x + window->width - 19)
+	if (!(window->flags & 0x100))
 	{
 		goto loc_6ED93D;
 	}
-	if (y < window->y + window->height - 19)
+	if (window->min_width == window->max_width && window->min_height == window->max_height)
+	{
+		goto loc_6ED93D;
+	}
+	if (x < window->x + window->width - 0x13)
+	{
+		goto loc_6ED93D;
+	}
+	if (y < window->y + window->height - 0x13)
 	{
 		goto loc_6ED93D;
 	}
 	edx = CURSOR_DIAGONAL_ARROWS;
-	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-	sub_0x6ED990((char)edx);
-	return;
+	goto loc_6ED983;
 
 loc_6ED93D:
 	RCT2_GLOBAL(0x9DE558, uint16) = x;
 	RCT2_GLOBAL(0x9DE55A, uint16) = y;
-	int push_eax = eax;
-	int push_ebx = ebx;
-	int push_edx = edx;
-
-	if (window->widgets[widgetId].type == WWT_SCROLL)
+	push(eax);
+	push(ebx);
+	push(edx);
+	if (window->widgets[widgetId].type != WWT_SCROLL)
+	{
+		goto loc_6ED95C;
+	}
 	{
 		int output_x, output_y, output_cx, output_dx;
-		widget_scroll_get_part(window, window->widgets, x, y, &output_x, &output_y, &output_cx, &output_dx);
+		widget_scroll_get_part(window, window->widgets, eax, ebx, &output_x, &output_y, &output_cx, &output_dx);
 		edx = output_dx;
 		if (output_cx != 0)
 		{
-			edx = push_edx;
-			ebx = y;
-			eax = x;
-			pop();
-			pop();
-			RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-			sub_0x6ED990((char)edx);
-			return;
+			goto loc_6ED980;
 		}
 	}
 loc_6ED95C:
 	{
-		ecx = x;
-		edx = y;
-		eax = widgetId;
-		//eax = RCT2_GLOBAL(0x1420046, uint16);
-		ebx = -1;
-		push(edi);
+		ecx = eax;
+		edx = ebx;
+		eax = RCT2_GLOBAL(0x1420046, uint16);
+		ebx = 0xFFFFFFFF;
+		int _edi = edi;
 
 		RCT2_CALLFUNC_X(window->event_handlers[WE_UNKNOWN_17], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		edi = pop();
-		if (ebx != -1){
-			edx = ebx;
+		edi = _edi;
+		if (ebx == 0xFFFFFFFF)
+		{
+			goto loc_6ED980;
 		}
-		RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
-		//itemUnderCursor(&eax, &ebx, &ecx, &edx);
+		edx = ebx;
+		ebx = pop();
+		ebx = pop();
+		eax = pop();
+		goto loc_6ED983;
 	}
+loc_6ED980:
+	edx = pop();
+	ebx = pop();
+	eax = pop();
 
-	sub_0x6ED990((char)edx);
+loc_6ED983:
+	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, edx, esi, edi, ebp);
+	//itemUnderCursor(&eax, &ebx, &ecx, &edx);
+
+	sub_0x6ED990(edx);
+	return;
 }
 
 /**
