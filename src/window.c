@@ -1085,6 +1085,8 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_5))
 		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
 
+	//some code missing here? Between 006EB18C and 006EB260
+
 	widgetIndex = 0;
 	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		// Check if widget is outside the draw region
@@ -1093,6 +1095,12 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 				widget_draw(dpi, w, widgetIndex);
 
 		widgetIndex++;
+	}
+
+	//something missing here too? Between 006EC32B and 006EC369
+
+	if (w->flags & WF_WHITE_BORDER_MASK) {
+		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 2, 0x10);
 	}
 }
 
