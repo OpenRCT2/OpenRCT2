@@ -848,7 +848,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	// Thumb
 	gfx_fill_rect_inset(dpi,
 		max(l + 10, l + scroll->h_thumb_left - 1), t,
-		min(r - 10, r + scroll->h_thumb_right - 1), t,
+		min(r - 10, l + scroll->h_thumb_right - 1), b,
 		colour, (scroll->flags & HSCROLLBAR_THUMB_PRESSED ? 0x20 : 0));
 
 	// Right button
