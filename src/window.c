@@ -1300,3 +1300,64 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position] = w->list_item_positions[item_position + 1];
 	w->list_item_positions[item_position + 1] = swap;
 }
+
+
+/**
+* rct2: 0x0066B905
+*/
+void window_resize_gui(int width, int height)
+{
+	if (RCT2_GLOBAL(0x9DEA68, uint8) & 0xE){
+		//Scenario editor version
+		RCT2_CALLPROC_EBPSAFE(0x66F0DD);
+	}
+	rct_window* mainWind = window_get_main();
+	if (mainWind){
+		rct_viewport* viewport = mainWind->viewport;
+		mainWind->width = width;
+		mainWind->height = height;
+		RCT2_GLOBAL(0x9A9418, uint16) = width - 1;
+		RCT2_GLOBAL(0x9A941C, uint16) = height - 1;
+		viewport->width = width;
+		viewport->height = height;
+		viewport->view_width = width << viewport->zoom;
+		viewport->view_height = height << viewport->zoom;
+		if (mainWind->widgets != NULL && mainWind->widgets[0].type == WWT_VIEWPORT){
+			mainWind->widgets[0].right = width;
+			mainWind->widgets[0].bottom = height;
+		}
+	}
+
+	rct_window* topWind = window_find_by_id(WC_TOP_TOOLBAR, 0);
+	if (topWind){
+		topWind->width = max(640, width);
+	}
+
+	rct_window* bottomWind = window_find_by_id(WC_BOTTOM_TOOLBAR, 0);
+	if (bottomWind){
+		bottomWind->y = height - 32;
+		bottomWind->width = max(640, width);
+		RCT2_GLOBAL(0x9A95D0, uint16) = width - 1;
+		RCT2_GLOBAL(0x9A95E0, uint16) = width - 3;
+		RCT2_GLOBAL(0x9A95DE, uint16) = width - 118;
+		RCT2_GLOBAL(0x9A95CE, uint16) = width - 120;
+		RCT2_GLOBAL(0x9A9590, uint16) = width - 121;
+		RCT2_GLOBAL(0x9A95A0, uint16) = width - 123;
+		RCT2_GLOBAL(0x9A95C0, uint16) = width - 126;
+		RCT2_GLOBAL(0x9A95BE, uint16) = width - 149;
+		RCT2_GLOBAL(0x9A95EE, uint16) = width - 118;
+		RCT2_GLOBAL(0x9A95F0, uint16) = width - 3;
+	}
+
+	rct_window* titleWind = window_find_by_id(WC_TITLE_MENU, 0);
+	if (titleWind){
+		titleWind->x = width / 2 - 164;
+		titleWind->y = height - 142;
+	}
+
+	rct_window* exitWind = window_find_by_id(WC_TITLE_EXIT, 0);
+	if (exitWind){
+		exitWind->x = width - 40;
+		exitWind->y = height - 64;
+	}
+}

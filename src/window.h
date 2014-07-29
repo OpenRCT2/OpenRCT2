@@ -345,6 +345,7 @@ void tool_cancel();
 
 // Open window functions
 void window_main_open();
+void window_resize_gui(int width, int height);
 void window_game_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
