@@ -160,7 +160,7 @@ void window_ride_list_open()
 		window->min_height = 240;
 		window->max_width = 400;
 		window->max_height = 450;
-		window->flags = WF_RESIZABLE;
+		window->flags |= WF_RESIZABLE;
 		window->colours[0] = 1;
 		window->colours[1] = 26;
 		window->colours[2] = 26;

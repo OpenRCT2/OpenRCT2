@@ -176,7 +176,7 @@ void window_guest_list_open()
 	window->min_height = 330;
 	window->max_width = 500;
 	window->max_height = 450;
-	window->flags = WF_RESIZABLE;
+	window->flags |= WF_RESIZABLE;
 	window->colours[0] = 1;
 	window->colours[1] = 15;
 	window->colours[2] = 15;
