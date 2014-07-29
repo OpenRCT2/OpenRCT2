@@ -193,6 +193,7 @@ static void osinterface_create_window()
 	osinterface_resize(width, height);
 }
 
+
 static void osinterface_resize(int width, int height)
 {
 	rct_drawpixelinfo *screenDPI;
@@ -250,14 +251,9 @@ static void osinterface_resize(int width, int height)
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
-	RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
-	//This part is to be moved inside resize_gui when it is decompiled.
-	rct_window* w = window_get_main();
-	if (w != NULL && w->widgets != NULL){
-		//Adjust the viewport widget
-		w->widgets[0].right = width;
-		w->widgets[0].bottom = height;
-	}
+	window_resize_gui(width, height);
+	//RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
+
 	gfx_invalidate_screen();
 }
 
