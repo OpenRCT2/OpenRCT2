@@ -469,7 +469,46 @@ static void window_map_paint()
 */
 static void window_map_scrollpaint()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068CF23);
+	//RCT2_CALLPROC_EBPSAFE(0x0068CF23);
+
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_g1_element *g1_element, pushed_g1_element;
+
+	#ifdef _MSC_VER
+	__asm mov w, esi
+	#else
+	__asm__("mov %[w], esi " : [w] "+m" (w));
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov dpi, edi
+	#else
+	__asm__("mov %[dpi], edi " : [dpi] "+m" (dpi));
+	#endif
+
+	gfx_clear(dpi, 0x0A0A0A0A);
+
+	g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+	pushed_g1_element = *g1_element;
+
+	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);
+	g1_element->width = 0x200;
+	g1_element->height = 0x200;
+	g1_element->x_offset = 0xFFF8;
+	g1_element->y_offset = 0xFFF8;
+	g1_element->flags = 0;
+
+	gfx_draw_sprite(dpi, 0, 0, 0);
+
+	*g1_element = pushed_g1_element;
+
+	if (w->selected_tab == 0)
+		RCT2_CALLPROC_EBPSAFE(0x68DADA);	//draws dots representing guests
+	else
+		RCT2_CALLPROC_EBPSAFE(0x68DBC1);	//draws dots representing trains
+	
+	RCT2_CALLPROC_EBPSAFE(0x68D8CE);	//draws the HUD rectangle on the map
 }
 
 /**
