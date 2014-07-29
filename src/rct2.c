@@ -76,14 +76,13 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	print_launch_information();
 
 	// Begin RCT2
-	RCT2_GLOBAL(0x01423A08, HINSTANCE) = hInstance;
+	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 	get_system_info();
 
 	audio_init();
 	audio_get_devices();
 	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
-	
 	config_init();
 	rct2_init();
 	rct2_loop();

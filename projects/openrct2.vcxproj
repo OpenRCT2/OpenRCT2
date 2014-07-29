@@ -21,6 +21,7 @@
     <ClInclude Include="..\src\climate.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\currency.h" />
+    <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\date.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\finance.h" />

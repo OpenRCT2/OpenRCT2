@@ -49,6 +49,161 @@ int _gameSpeed = 1;
 void game_handle_input();
 void game_handle_keyboard_input();
 
+void process_mouse_over(int x, int y);
+
+/**
+*
+*  rct2: 0x006ED801
+*/
+void sub_0x6ED801(int x, int y){
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+		rct_window* w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16));
+		if (w == NULL){
+			tool_cancel();
+		}
+		else{
+			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], x, y, 0, RCT2_GLOBAL(0x9DE546, uint16), (int)w, 0, 0);
+		}
+	}
+}
+
+/**
+*
+*  rct2: 0x006ED990
+*/
+void sub_0x6ED990(char cursor_id){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESIZING)
+	{
+		cursor_id = CURSOR_DIAGONAL_ARROWS;	//resize icon
+	}
+
+	if (cursor_id == RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8))
+	{
+		return;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor_id;
+	RCT2_GLOBAL(0x14241BC, uint32) = 2;
+	osinterface_set_cursor(cursor_id);
+	RCT2_GLOBAL(0x14241BC, uint32) = 0;
+}
+
+/**
+*
+*  rct2: 0x006ED833
+*/
+void process_mouse_over(int x, int y)
+{
+	rct_window* window;
+	rct_window* subWindow;
+
+	int widgetId;
+	int cursorId;
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	cursorId = CURSOR_ARROW;
+	RCT2_GLOBAL(0x9A9808, sint16) = -1;
+	window = window_find_from_point(x, y);
+
+	if (window != NULL)
+	{
+		widgetId = window_find_widget_from_point(window, x, y);
+
+		RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
+		if (widgetId != 0xFFFF)
+		{
+
+			switch (window->widgets[widgetId].type){
+			case WWT_VIEWPORT:
+				if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0)
+				{
+					edx = cursorId;
+					eax = x;
+					ebx = y;
+					//Find out if there is a clickable item under pointer
+					RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+					if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+					{
+						sub_0x6ED990(CURSOR_HAND_POINT);
+						return;
+					}
+					break;
+				}
+				cursorId = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
+				subWindow = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
+				ebp = (int)subWindow;
+				if (subWindow == NULL)
+				{
+					break;
+				}
+				ebx = ebx & 0xFFFFFF00;
+				edi = cursorId;
+				esi = subWindow;
+				RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				cursorId = edi;
+				if ((ebx & 0xFF) != 0)
+				{
+					sub_0x6ED990(cursorId);
+					return;
+				}
+				break;
+			case WWT_FRAME:
+			case WWT_RESIZE:
+				if (!(window->flags & 0x100))
+				{
+					break;
+				}
+				if (window->min_width == window->max_width && window->min_height == window->max_height)
+				{
+					break;
+				}
+				if (x < window->x + window->width - 0x13)
+				{
+					break;
+				}
+				if (y < window->y + window->height - 0x13)
+				{
+					break;
+				}
+				cursorId = CURSOR_DIAGONAL_ARROWS;
+				break;
+			case WWT_SCROLL:
+				RCT2_GLOBAL(0x9DE558, uint16) = x;
+				RCT2_GLOBAL(0x9DE55A, uint16) = y;
+				int output_x, output_y, output_scroll_area, scroll_id;
+				widget_scroll_get_part(window, window->widgets, x, y, &output_x, &output_y, &output_scroll_area, &scroll_id);
+				cursorId = scroll_id;
+				if (output_scroll_area != SCROLL_PART_VIEW)
+				{
+					cursorId = CURSOR_ARROW;
+					break;
+				}
+				//Fall through to default
+			default:
+				ecx = x;
+				edx = y;
+				eax = widgetId;
+				ebx = 0xFFFFFFFF;
+				edi = (int)&window->widgets[widgetId];
+
+				RCT2_CALLFUNC_X(window->event_handlers[WE_UNKNOWN_17], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				if (ebx == 0xFFFFFFFF)
+				{
+					cursorId = CURSOR_ARROW;
+					break;
+				}
+				cursorId = ebx;
+				break;
+			}
+		}
+	}
+	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, cursorId, esi, edi, ebp);
+	//itemUnderCursor(&eax, &ebx, &ecx, &edx);
+
+	sub_0x6ED990(cursorId);
+	return;
+}
+
 /**
  * 
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
@@ -373,8 +528,10 @@ void game_handle_input()
 
 				game_handle_input_mouse(eax, ebx, ecx);
 				// RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
-				RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
-				RCT2_CALLPROC_EBPSAFE(0x006ED801);
+				process_mouse_over(eax, ebx);
+				//RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
+				sub_0x6ED801(eax, ebx);
+				//RCT2_CALLPROC_EBPSAFE(0x006ED801);
 			}
 		}
 	}
