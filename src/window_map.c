@@ -248,7 +248,15 @@ static void window_map_update(rct_window *w)
 */
 static void window_map_scrollgetsize()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068D7CC);
+	window_map_invalidate();
+
+	#ifdef _MSC_VER
+	__asm mov ecx, 512
+	__asm mov edx, 512
+	#else
+	__asm__ ( "mov ecx, 512 " );
+	__asm__ ( "mov edx, 512 " );
+	#endif
 }
 
 /**
