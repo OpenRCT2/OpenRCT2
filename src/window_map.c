@@ -196,11 +196,11 @@ static void window_map_close()
 
 /**
 *
-*  rct2: 0x006BAFCA
+*  rct2: 0x0068CFC1
 */
 static void window_map_mouseup()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006BAFCA);
+	RCT2_CALLPROC_EBPSAFE(0x0068CFC1);
 	/*short widgetIndex;
 	rct_window *w;
 

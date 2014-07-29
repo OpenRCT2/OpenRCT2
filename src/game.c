@@ -231,7 +231,7 @@ void update_water_animation()
 */
 void call_draw_rain_func(rct_window* w, short left, short right, short top, short bottom, uint32 draw_rain_func)
 {
-	rct_viewport* vp = vp = w->viewport;
+	rct_viewport* vp = w->viewport;
 	if (vp == NULL) {
 		return;
 	}
