@@ -22,6 +22,7 @@
 #include "audio.h"
 #include "config.h"
 #include "gfx.h"
+#include "osinterface.h"
 #include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
@@ -55,6 +56,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_DISPLAY_GROUP,
 	WIDX_RESOLUTION,
 	WIDX_RESOLUTION_DROPDOWN,
+	WIDX_FULLSCREEN,
+	WIDX_FULLSCREEN_DROPDOWN,
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
 	WIDX_CONSTRUCTION_MARKER,
@@ -68,7 +71,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 384
+#define WH 399
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
@@ -92,19 +95,21 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	157,	166,	0x36C,			STR_NONE }, //jjj
 	{ WWT_DROPDOWN,			0,	155,	299,	171,	182,	0x364,			STR_NONE },	// height labels
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	172,	181,	0x36C,			STR_NONE },
-	{ WWT_GROUPBOX,			0,	3,		306,	194,	270,	STR_DISPLAY,	STR_NONE },//
+	{ WWT_GROUPBOX,			0,	3,		306,	194,	285,	STR_DISPLAY,	STR_NONE },//
 	{ WWT_DROPDOWN,			0,	155,	299,	208,	219,	0x348,			STR_NONE },	// resolution
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	209,	218,	0x36C,			STR_NONE },
-	{ WWT_CHECKBOX,			0,	10,		299,	224,	235,	STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },
-	{ WWT_CHECKBOX,			0,	10,		299,	239,	250,	STR_GRIDLINES,	STR_GRIDLINES_TIP },
-	{ WWT_DROPDOWN,			0,	155,	299,	253,	264,	STR_NONE,		STR_NONE },	// construction marker
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	254,	263,	0x36C,			STR_NONE },
-	{ WWT_GROUPBOX,			0,	3,		306,	276,	322,	STR_CONTROLS,	STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	291,	302,	STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
-	{ WWT_DROPDOWN_BUTTON,	0,	26,		185,	306,	316,	STR_HOTKEY,		STR_HOTKEY_TIP },
-	{ WWT_GROUPBOX,			0,	3,		306,	329,	377,	STR_GENERAL,	STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	343,	354,	STR_REAL_NAME,	STR_REAL_NAME_TIP },
-	{ WWT_CHECKBOX,			2,	10,		299,	357,	369,	STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
+	{ WWT_DROPDOWN,			0,	155,	299,	223,	234,	0x348,			STR_NONE },	// fullscreen
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	224,	233,	0x36C,			STR_NONE },
+	{ WWT_CHECKBOX,			0,	10,		299,	239,	250,	STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },
+	{ WWT_CHECKBOX,			0,	10,		299,	254,	265,	STR_GRIDLINES,	STR_GRIDLINES_TIP },
+	{ WWT_DROPDOWN,			0,	155,	299,	268,	279,	STR_NONE,		STR_NONE },	// construction marker
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	269,	278,	0x36C,			STR_NONE },
+	{ WWT_GROUPBOX,			0,	3,		306,	291,	337,	STR_CONTROLS,	STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	306,	317,	STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0,	26,		185,	321,	331,	STR_HOTKEY,		STR_HOTKEY_TIP },
+	{ WWT_GROUPBOX,			0,	3,		306,	344,	392,	STR_GENERAL,	STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	358,	369,	STR_REAL_NAME,	STR_REAL_NAME_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	372,	384,	STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
 	{ WIDGETS_END },
 };
 
@@ -177,10 +182,12 @@ void window_options_open()
 		(1 << WIDX_DISTANCE_DROPDOWN) |
 		(1 << WIDX_RESOLUTION) |
 		(1 << WIDX_RESOLUTION_DROPDOWN) |
+		(1 << WIDX_FULLSCREEN) |
+		(1 << WIDX_FULLSCREEN_DROPDOWN) |
 		(1 << WIDX_TEMPERATURE) |
 		(1 << WIDX_TEMPERATURE_DROPDOWN) |
-		(1 << WIDX_HOTKEY_DROPDOWN) |
-		(1 << WIDX_SCREEN_EDGE_SCROLLING) |
+		(1ULL << WIDX_HOTKEY_DROPDOWN) |
+		(1ULL << WIDX_SCREEN_EDGE_SCROLLING) |
 		(1ULL << WIDX_REAL_NAME_CHECKBOX) |
 		(1 << WIDX_CONSTRUCTION_MARKER) |
 		(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
@@ -382,6 +389,16 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WIDX_RESOLUTION_DROPDOWN:
 		// RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
 		break;
+	case WIDX_FULLSCREEN_DROPDOWN:
+		window_options_draw_dropdown_box(w, widget, 3);
+		gDropdownItemsFormat[0] = 1142;
+		gDropdownItemsFormat[1] = 1142;
+		gDropdownItemsFormat[2] = 1142;
+		gDropdownItemsArgs[0] = STR_CELSIUS;
+		gDropdownItemsArgs[1] = STR_FAHRENHEIT;
+		gDropdownItemsArgs[2] = STR_METRIC;
+		gDropdownItemsChecked = 1 << gGeneral_config.fullscreen_mode;
+		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
 
@@ -498,6 +515,19 @@ static void window_options_dropdown()
 		// the switch replaces ax value
 		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
 		break;
+	case WIDX_FULLSCREEN_DROPDOWN:
+		if (dropdownIndex != gGeneral_config.fullscreen_mode){
+			if (dropdownIndex == 2){
+				w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
+				w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+			}
+			else {
+				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
+				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+			}
+			osinterface_set_fullscreen_mode(dropdownIndex);
+		}
+		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8) = (uint8)dropdownIndex;
@@ -587,9 +617,9 @@ static void window_options_update(rct_window *w)
 
 	// screen edge scrolling checkbox
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8))
-		w->pressed_widgets |= (1 << WIDX_SCREEN_EDGE_SCROLLING);
+		w->pressed_widgets |= (1ULL << WIDX_SCREEN_EDGE_SCROLLING);
 	else
-		w->pressed_widgets &= ~(1 << WIDX_SCREEN_EDGE_SCROLLING);
+		w->pressed_widgets &= ~(1ULL << WIDX_SCREEN_EDGE_SCROLLING);
 
 	// real name checkbox
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
@@ -663,6 +693,12 @@ static void window_options_paint()
 	// display
 	gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, 0, w->x + 10,
 		w->y + window_options_widgets[WIDX_RESOLUTION].top + 1);
+
+	char buffer[256];
+	sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Fullscreen mode:");
+	gfx_draw_string(dpi, buffer, 0, w->x + 10,
+		w->y + window_options_widgets[WIDX_FULLSCREEN].top + 1);
+
 	gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, 0, w->x + 10,
 		w->y + window_options_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
 

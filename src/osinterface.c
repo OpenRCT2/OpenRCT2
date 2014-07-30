@@ -26,6 +26,7 @@
 #include <SDL_syswm.h>
 
 #include "addresses.h"
+#include "config.h"
 #include "gfx.h"
 #include "osinterface.h"
 #include "window.h"
@@ -52,6 +53,8 @@ static int _screenBufferSize;
 static void *_screenBuffer;
 
 static SDL_Cursor* _cursors[NO_CURSORS];
+
+static const int fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 
 void osinterface_init()
 {
@@ -170,8 +173,8 @@ static void osinterface_create_window()
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
-
-	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
+		fullscreen_modes[gGeneral_config.fullscreen_mode]);
 	if (!_window) {
 		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
@@ -382,6 +385,8 @@ void osinterface_process_messages()
 		case SDL_KEYDOWN:
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
+			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
+				osinterface_set_fullscreen_mode(!gGeneral_config.fullscreen_mode);
 			break;
 		default:
 			break;
@@ -412,6 +417,22 @@ void osinterface_free()
 
 	osinterface_close_window();
 	SDL_Quit();
+}
+
+void osinterface_set_fullscreen_mode(int mode){
+	if (mode == gGeneral_config.fullscreen_mode)
+		return;
+
+	if (SDL_SetWindowFullscreen(_window, fullscreen_modes[mode])){
+		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
+		exit(1);
+	}
+	//SDL automatically resizes the fullscreen window to the nearest allowed screen resolution
+	//No need to call osinterface_resize() here, SDL_WINDOWEVENT_SIZE_CHANGED event will be triggered anyway
+
+	gGeneral_config.fullscreen_mode = mode;
+
+	config_save();
 }
 
 /**

@@ -127,6 +127,9 @@ typedef struct general_configuration {
 	sint8 landscape_smoothing;
 	sint8 show_height_as_units;
 	sint8 save_plugin_data;
+
+	//new
+	uint8 fullscreen_mode;
 } general_configuration_t;
 
 static const struct { char *key; int value; } _currencyLookupTable[] = {
