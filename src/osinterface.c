@@ -310,6 +310,22 @@ void osinterface_draw()
 	}
 }
 
+static void osinterface_toggle_fullscreen(){
+	//may be useful if we create a dropdown window with all three options
+	const int fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+
+	//temporary, only switches between window and true fullscreen
+	static int mode = 0;
+	mode = !mode;
+
+	if(SDL_SetWindowFullscreen(_window, fullscreen_modes[mode])){
+		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
+		exit(1);
+	}
+	//SDL automatically resizes the fullscreen window to the nearest allowed screen resolution
+	//No need to call osinterface_resize() here, SDL_WINDOWEVENT_SIZE_CHANGED event will be triggered anyway
+}
+
 void osinterface_process_messages()
 {
 	SDL_Event e;
@@ -382,6 +398,8 @@ void osinterface_process_messages()
 		case SDL_KEYDOWN:
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
+			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
+				osinterface_toggle_fullscreen();
 			break;
 		default:
 			break;
