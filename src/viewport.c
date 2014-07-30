@@ -272,11 +272,15 @@ void sub_0x68615B(int ebp){
 *  rct2: 0x0069E8B0
 */
 void sub_0x69E8B0(int eax, int ecx){
+	rct_drawpixelinfo* dpi;
+	RCT2_CALLPROC_X(0x69E8B0, eax, 0, ecx, 0, 0, 0, 0);
+	return;
+
 	if (RCT2_GLOBAL(0x9DEA6F,uint8) & 1) return;
 	
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8,rct_drawpixelinfo*);
+	dpi = RCT2_GLOBAL(0x140E9A8,rct_drawpixelinfo*);
 	
-	if (RCT2_GLOBAL(0x141E9E4,uint16) & 0x4000)return;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)return;
 	
 	if (dpi->zoom_level > 2) return;
 	
@@ -289,7 +293,7 @@ void sub_0x69E8B0(int eax, int ecx){
 	if (eax == 0xFFFF) return;
 	//0x69E915
 	
-	RCT2_CALLPROC_X(0x69E8B0, eax, 0, ecx, 0, 0, 0, 0);
+	
 }
 
 /**
