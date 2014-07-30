@@ -26,6 +26,7 @@
 #include <SDL_syswm.h>
 
 #include "addresses.h"
+#include "config.h"
 #include "gfx.h"
 #include "osinterface.h"
 #include "window.h"
@@ -52,6 +53,8 @@ static int _screenBufferSize;
 static void *_screenBuffer;
 
 static SDL_Cursor* _cursors[NO_CURSORS];
+
+static const int fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 
 void osinterface_init()
 {
@@ -170,9 +173,8 @@ static void osinterface_create_window()
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
-	g_current_fullscreen_mode = 0;
-
-	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
+		fullscreen_modes[gGeneral_config.fullscreen_mode]);
 	if (!_window) {
 		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
@@ -384,7 +386,7 @@ void osinterface_process_messages()
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
 			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
-				osinterface_set_fullscreen_mode(!g_current_fullscreen_mode);
+				osinterface_set_fullscreen_mode(!gGeneral_config.fullscreen_mode);
 			break;
 		default:
 			break;
@@ -417,10 +419,8 @@ void osinterface_free()
 	SDL_Quit();
 }
 
-static const int fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-
 void osinterface_set_fullscreen_mode(int mode){
-	if (mode == g_current_fullscreen_mode)
+	if (mode == gGeneral_config.fullscreen_mode)
 		return;
 
 	if (SDL_SetWindowFullscreen(_window, fullscreen_modes[mode])){
@@ -430,7 +430,9 @@ void osinterface_set_fullscreen_mode(int mode){
 	//SDL automatically resizes the fullscreen window to the nearest allowed screen resolution
 	//No need to call osinterface_resize() here, SDL_WINDOWEVENT_SIZE_CHANGED event will be triggered anyway
 
-	g_current_fullscreen_mode = mode;
+	gGeneral_config.fullscreen_mode = mode;
+
+	config_save();
 }
 
 /**

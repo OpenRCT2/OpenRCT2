@@ -77,7 +77,6 @@ void osinterface_draw();
 void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
-int g_current_fullscreen_mode;
 void osinterface_set_fullscreen_mode(int mode);
 
 void osinterface_set_cursor(char cursor);

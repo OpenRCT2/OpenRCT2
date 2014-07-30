@@ -397,7 +397,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_CELSIUS;
 		gDropdownItemsArgs[1] = STR_FAHRENHEIT;
 		gDropdownItemsArgs[2] = STR_METRIC;
-		gDropdownItemsChecked = 1 << g_current_fullscreen_mode;
+		gDropdownItemsChecked = 1 << gGeneral_config.fullscreen_mode;
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
 		window_options_draw_dropdown_box(w, widget, 2);
@@ -516,7 +516,7 @@ static void window_options_dropdown()
 		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
 		break;
 	case WIDX_FULLSCREEN_DROPDOWN:
-		if (dropdownIndex != g_current_fullscreen_mode){
+		if (dropdownIndex != gGeneral_config.fullscreen_mode){
 			osinterface_set_fullscreen_mode(dropdownIndex);
 		}
 		break;
