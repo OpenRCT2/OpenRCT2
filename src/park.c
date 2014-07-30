@@ -550,7 +550,7 @@ void park_update()
 	park_generate_new_guests();
 }
 
-static uint8 calculate_guest_initial_happiness(uint8 percentage) {
+uint8 calculate_guest_initial_happiness(uint8 percentage) {
 	if (percentage < 15) {
 		// There is a minimum of 15% happiness
 		percentage = 15;

@@ -1230,7 +1230,7 @@ void format_currency(char **dest, int value)
 	}
 
 	// Currency symbol
-	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	const char *symbol = g_currency_specs[gGeneral_config.currency_format].symbol;
 	// Prefix
 	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
 		strcpy(*dest, symbol);
@@ -1259,7 +1259,7 @@ void format_currency_2dp(char **dest, int value)
 	}
 
 	// Currency symbol
-	char *symbol = &(g_currency_specs[gGeneral_config.currency_format].symbol);
+	const char *symbol = g_currency_specs[gGeneral_config.currency_format].symbol;
 	// Prefix
 	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
 		strcpy(*dest, symbol);

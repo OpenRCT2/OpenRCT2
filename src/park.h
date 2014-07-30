@@ -57,6 +57,6 @@ void generate_new_guest();
 void park_update();
 void park_update_histories();
 
-uint8 calculate_guest_initial_happiness();
+uint8 calculate_guest_initial_happiness(uint8 percentage);
 
 #endif
