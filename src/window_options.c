@@ -517,6 +517,14 @@ static void window_options_dropdown()
 		break;
 	case WIDX_FULLSCREEN_DROPDOWN:
 		if (dropdownIndex != gGeneral_config.fullscreen_mode){
+			if (dropdownIndex == 2){
+				w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
+				w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+			}
+			else {
+				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
+				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+			}
 			osinterface_set_fullscreen_mode(dropdownIndex);
 		}
 		break;
