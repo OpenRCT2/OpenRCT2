@@ -268,9 +268,33 @@ void sub_0x68615B(int ebp){
 }
 
 /**
+*  Paint Quadrant
+*  rct2: 0x0069E8B0
+*/
+void sub_0x69E8B0(int eax, int ecx){
+	if (RCT2_GLOBAL(0x9DEA6F,uint8) & 1) return;
+	
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8,rct_drawpixelinfo*);
+	
+	if (RCT2_GLOBAL(0x141E9E4,uint16) & 0x4000)return;
+	
+	if (dpi->zoom_level > 2) return;
+	
+	if (eax > 0x2000)return;
+	if (ecx > 0x2000)return;
+	
+	//push eax, ecx
+	eax = (eax&0x1FE0)<<3 | (ecx>>5);
+	eax = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
+	if (eax == 0xFFFF) return;
+	//0x69E915
+	
+	RCT2_CALLPROC_X(0x69E8B0, eax, 0, ecx, 0, 0, 0, 0);
+}
+
+/**
 *
 *  rct2: 0x0068615B
-*  ebp: ebp
 */
 void sub_0x68B6C2(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -294,16 +318,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; --i){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 			ax -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 		}
 		break;
@@ -326,16 +350,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 		}
 		break;
@@ -357,16 +381,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx -= 0x20;
 		}
 		break;
@@ -389,16 +413,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx -= 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 		}
 		break;
