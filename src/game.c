@@ -137,7 +137,7 @@ void process_mouse_over(int x, int y)
 				}
 				ebx = ebx & 0xFFFFFF00;
 				edi = cursorId;
-				esi = subWindow;
+				esi = (int) subWindow;
 				RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 				cursorId = edi;
 				if ((ebx & 0xFF) != 0)
@@ -2093,7 +2093,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
  * 
  *  rct2: 0x00667C15
  */
-static void game_pause_toggle()
+void game_pause_toggle()
 {
 	char input_bl;
 

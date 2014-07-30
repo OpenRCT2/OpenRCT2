@@ -1414,7 +1414,7 @@ int gfx_get_string_width(char* buffer)
 	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	width = 0;
 
-	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)NULL; curr_char++) {
+	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
 
 		if (*curr_char >= 0x20) {
 			width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*current_font_sprite_base + (*curr_char - 0x20)];
@@ -1501,7 +1501,7 @@ int gfx_clip_string(char* buffer, int width)
 	clipped_width = 0;
 	last_char = buffer;
 
-	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)0; curr_char++) {
 		if (*curr_char < 0x20) {
 			switch (*curr_char) {
 			case FORMAT_MOVE_X:
@@ -1554,7 +1554,8 @@ int gfx_clip_string(char* buffer, int width)
 		clipped_width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[current_font_sprite_base + (*curr_char - 0x20)];
 
 		if ((int)clipped_width > width) {
-			*((uint32*)last_char) = '...';
+// 			*((uint32*)last_char) = '...';
+			strcpy(last_char-3, "...");
 			clipped_width = width;
 			return clipped_width;
 		}
@@ -1593,7 +1594,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 	// Width of line up to current word
 	unsigned int curr_width;
 
-	for (unsigned char* curr_char = buffer; *curr_char != (uint8)NULL; curr_char++) {
+	for (unsigned char* curr_char = buffer; *curr_char != (uint8)0; curr_char++) {
 
 		// Remember start of current word and line width up to this word
         if (*curr_char == ' ') {

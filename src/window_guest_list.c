@@ -805,7 +805,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	temp = _window_guest_list_selected_view;
 	_window_guest_list_selected_view = _window_guest_list_selected_filter;
-	int argument1, argument2;
+	uint32 argument1, argument2;
 	get_arguments_from_peep(peep, &argument1, &argument2);
 
 	_window_guest_list_selected_view = temp;
@@ -1068,7 +1068,7 @@ static void window_guest_list_find_groups()
 			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
-			int argument1, argument2;
+			uint32 argument1, argument2;
 			// Get and check if in same group
 			get_arguments_from_peep(peep2, &argument1, &argument2);
 			if (argument1 != _window_guest_list_groups_argument_1[groupIndex] || argument2 != _window_guest_list_groups_argument_2[groupIndex] )
