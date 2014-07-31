@@ -54,7 +54,7 @@ static void *_screenBuffer;
 
 static SDL_Cursor* _cursors[NO_CURSORS];
 
-static const int fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 
 void osinterface_init()
 {
@@ -174,7 +174,7 @@ static void osinterface_create_window()
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
 	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
-		fullscreen_modes[gGeneral_config.fullscreen_mode]);
+		_fullscreen_modes[gGeneral_config.fullscreen_mode] | SDL_WINDOW_RESIZABLE);
 	if (!_window) {
 		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
@@ -423,7 +423,7 @@ void osinterface_set_fullscreen_mode(int mode){
 	if (mode == gGeneral_config.fullscreen_mode)
 		return;
 
-	if (SDL_SetWindowFullscreen(_window, fullscreen_modes[mode])){
+	if (SDL_SetWindowFullscreen(_window, _fullscreen_modes[mode])){
 		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
 		exit(1);
 	}
