@@ -250,7 +250,6 @@ static void window_save_prompt_mouseup()
 			case WQIDX_CLOSE:
 			case WQIDX_CANCEL:
 				window_close(w);
-				window_save_prompt_close();
 				break;
 		}
 		return;
@@ -260,7 +259,6 @@ static void window_save_prompt_mouseup()
 				if (!save_game()) {
 					// user pressed cancel
 					window_close(w);
-					window_save_prompt_close();
 					return;
 				}
 				break;
@@ -269,7 +267,6 @@ static void window_save_prompt_mouseup()
 			case WIDX_CLOSE:
 			case WIDX_CANCEL:
 				window_close(w);
-				window_save_prompt_close();
 				return;
 		}
 	}
