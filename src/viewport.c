@@ -313,7 +313,33 @@ void sub_0x69E8B0(int eax, int ecx){
 		RCT2_GLOBAL(0x9DE570, uint8) = 2;
 		RCT2_GLOBAL(0x9DE56C, uint16) = spr->unknown.y;
 		int edx = spr->unknown.z;
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98BC40,uint32)[spr->unknown.sprite_identifier], eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+		switch (spr->unknown.sprite_identifier){
+		case SPRITE_IDENTIFIER_VEHICLE:
+			RCT2_CALLPROC_X(0x6D4244, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_PEEP:
+			RCT2_CALLPROC_X(0x68F0FB, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_FLOATING_TEXT:
+			RCT2_CALLPROC_X(0x672AC9, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_LITTER:
+			RCT2_CALLPROC_X(0x6736FC, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_4:
+			RCT2_CALLPROC_X(0x69EA6E, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_5:
+			RCT2_CALLPROC_X(0x69EA82, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_6:
+			RCT2_CALLPROC_X(0x69EA96, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_7:
+			RCT2_CALLPROC_X(0x69EAAA, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		}
+		//RCT2_CALLPROC_X(RCT2_ADDRESS(0x98BC40,uint32)[spr->unknown.sprite_identifier], eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
 	}
 
 	//RCT2_CALLPROC_X(0x69E8B0, _eax, 0, _ecx, 0, 0, 0, 0);
