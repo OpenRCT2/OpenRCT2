@@ -272,9 +272,9 @@ void sub_0x68615B(int ebp){
 *  rct2: 0x0069E8B0
 */
 void sub_0x69E8B0(int eax, int ecx){
+	int _eax = eax, _ecx = ecx;
 	rct_drawpixelinfo* dpi;
-	RCT2_CALLPROC_X(0x69E8B0, eax, 0, ecx, 0, 0, 0, 0);
-	return;
+
 
 	if (RCT2_GLOBAL(0x9DEA6F,uint8) & 1) return;
 	
@@ -289,11 +289,35 @@ void sub_0x69E8B0(int eax, int ecx){
 	
 	//push eax, ecx
 	eax = (eax&0x1FE0)<<3 | (ecx>>5);
-	eax = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
-	if (eax == 0xFFFF) return;
-	//0x69E915
-	
-	
+	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
+	if (sprite_idx == 0xFFFF) return;
+
+	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != 0xFFFF; sprite_idx = spr->unknown.var_02){
+		spr = &g_sprite_list[sprite_idx];
+		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+		if (dpi->y + dpi->height <= spr->unknown.var_18) continue;
+		if (spr->unknown.var_1C <= dpi->y)continue;
+		if (dpi->x + dpi->width <= spr->unknown.var_16)continue;
+		if (spr->unknown.var_1A <= dpi->x)continue;
+
+		int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
+		int ebp = spr->unknown.sprite_identifier;
+		ebx <<= 3;
+		eax = spr->unknown.x;
+		ebx += spr->unknown.sprite_direction;
+		ecx = spr->unknown.y;
+		ebx &= 0x1F;
+		RCT2_GLOBAL(0x9DE568, uint16) = spr->unknown.x;
+		RCT2_GLOBAL(0x9DE570, uint8) = 2;
+		RCT2_GLOBAL(0x9DE56C, uint16) = spr->unknown.y;
+		int edx = spr->unknown.z;
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98BC40,uint32)[spr->unknown.sprite_identifier], eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+	}
+
+	//RCT2_CALLPROC_X(0x69E8B0, _eax, 0, _ecx, 0, 0, 0, 0);
+	//return;
 }
 
 /**

@@ -42,6 +42,12 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
+	uint16 pad_14;
+	sint16 var_16; //x related
+	sint16 var_18; //y related
+	sint16 var_1A; //x related
+	sint16 var_1C; //y related
+	uint8  sprite_direction; //direction of sprite?
 } rct_unk_sprite;
 
 typedef struct {
