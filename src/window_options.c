@@ -117,7 +117,7 @@ static void window_options_emptysub() { }
 static void window_options_mouseup();
 static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_options_dropdown();
-static void window_options_update(rct_window *w);
+static void window_options_invalidate();
 static void window_options_paint();
 static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, int num_items);
 static void window_options_update_height_markers();
@@ -148,7 +148,7 @@ static void* window_options_events[] = {
 	window_options_emptysub,
 	window_options_emptysub,
 	window_options_emptysub,
-	window_options_update,
+	window_options_invalidate,
 	window_options_paint,
 	window_options_emptysub
 };
@@ -551,9 +551,9 @@ static void window_options_dropdown()
 *
 *  rct2: 0x006BAD48
 */
-static void window_options_update(rct_window *w)
+static void window_options_invalidate()
 {
-	//Has use asm verison incase called by WM_INVALIDATE
+	rct_window *w;
 	#ifdef _MSC_VER
 	__asm mov w, esi
 	#else
