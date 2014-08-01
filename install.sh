@@ -5,8 +5,6 @@ SDL2_PV=2.0.3
 cachedir=.cache
 mkdir -p $cachedir
 
-echo `uname`
-
 if [[ `uname` == "Darwin" ]]; then
     echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
 
@@ -108,7 +106,9 @@ if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then
     # If this fails to work because of newlines, be sure you are running this
     # script with Bash, and not sh. We should really move this to a separate
     # file.
-    echo -e "#!/bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
+    echo "#!/bin/sh" > $cachedir/i686-w64-mingw32-pkg-config;
+    echo "export PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig" >> $cachedir/i686-w64-mingw32-pkg-config;
+    echo "pkg-config \$@" >> $cachedir/i686-w64-mingw32-pkg-config;
 fi
 
 chmod +x $cachedir/i686-w64-mingw32-pkg-config
