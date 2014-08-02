@@ -268,6 +268,46 @@ void sub_0x68615B(int ebp){
 }
 
 /**
+*  Litter Paint Setup??
+*  rct2: 0x006736FC
+*/
+void sub_0x6736FC(rct_litter* litter, int ebx, int edx){
+	rct_drawpixelinfo* dpi;
+
+	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level != 0)return; //If zoomed at all no litter drawn
+
+	int ebp = litter->var_01;
+	//push litter
+	ebx >>= 3;
+	ebx &= RCT2_ADDRESS(0x97EF6C, uint32)[ebp * 2 + 1];
+	ebx += RCT2_ADDRESS(0x97EF6C, uint32)[ebp * 2];
+	int ecx = 0;
+	int edi = 4;
+	int esi = 4;
+	int eax = 0xFF00;
+	RCT2_GLOBAL(0x9DEA52, uint16) = 0xFFFC;
+	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
+	RCT2_GLOBAL(0x9DEA56, uint16) = edx + 2;
+
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION,uint32)){
+	case 0:
+		//0x686806
+		break;
+	case 1:
+		//0x6869b2
+		break;
+	case 2:
+		//0x686b6f
+		break;
+	case 3:
+		//0x686d31
+		break;
+	}
+}
+
+
+/**
 *  Paint Quadrant
 *  rct2: 0x0069E8B0
 */
@@ -326,18 +366,7 @@ void sub_0x69E8B0(int eax, int ecx){
 		case SPRITE_IDENTIFIER_LITTER:
 			RCT2_CALLPROC_X(0x6736FC, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
 			break;
-		case SPRITE_IDENTIFIER_4:
-			RCT2_CALLPROC_X(0x69EA6E, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
-			break;
-		case SPRITE_IDENTIFIER_5:
-			RCT2_CALLPROC_X(0x69EA82, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
-			break;
-		case SPRITE_IDENTIFIER_6:
-			RCT2_CALLPROC_X(0x69EA96, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
-			break;
-		case SPRITE_IDENTIFIER_7:
-			RCT2_CALLPROC_X(0x69EAAA, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
-			break;
+			//I am pretty sure there are no other sprite identifier types
 		}
 		//RCT2_CALLPROC_X(RCT2_ADDRESS(0x98BC40,uint32)[spr->unknown.sprite_identifier], eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
 	}

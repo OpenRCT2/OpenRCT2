@@ -34,10 +34,6 @@ enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_PEEP = 1,
 	SPRITE_IDENTIFIER_FLOATING_TEXT = 2,
 	SPRITE_IDENTIFIER_LITTER = 3,
-	SPRITE_IDENTIFIER_4,
-	SPRITE_IDENTIFIER_5,
-	SPRITE_IDENTIFIER_6,
-	SPRITE_IDENTIFIER_7,
 };
 
 typedef struct {
@@ -62,7 +58,9 @@ typedef struct {
 } rct_unk_sprite;
 
 typedef struct {
-	uint32 pad_00;
+	uint8 sprite_identifier;        // 0x00
+	uint8 var_01;					// 0x01
+	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 var_08;
