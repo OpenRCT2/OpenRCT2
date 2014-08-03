@@ -267,6 +267,73 @@ void sub_0x68615B(int ebp){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
+void sub_688485(){
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	uint8* ebp = RCT2_GLOBAL(0xEE7884, uint8*);
+
+	while (1){
+		ebp = *((uint8**)(ebp + 0x24));
+		if (ebp = 0) return;
+
+		//push ebp
+		int ecx = *((uint16*)(ebp + 0x14));
+		int edx = *((uint16*)(ebp + 0x16));
+		if (*(ebp + 0x28) == 2){
+			if (dpi->zoom_level >= 1){
+				ecx &= 0xFFFE;
+				edx &= 0xFFFE;
+				if (dpi->zoom_level >= 2){
+					ecx &= 0xFFFC;
+					edx &= 0xFFFC;
+				}
+			}
+		}
+		int ebx = *((uint32*)ebp);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x2){
+			if (*(ebp + 0x28) == 3){
+				if (!(ebx & 0x40000000)){
+					ebx &= 0x7FFFF;
+					ebx |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1){
+			if (*(ebp + 0x28) == 9){
+				if (!(ebx & 0x40000000)){
+					ebx &= 0x7FFFF;
+					ebx |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4){
+			if (*(ebp + 0x28) == 10 || *(ebp + 0x28) == 12 || *(ebp + 0x28) == 9 || *(ebp + 0x28) == 5){
+				if (!(ebx & 0x40000000)){
+					ebx &= 0x7FFFF;
+					ebx |= 0x41880000;
+				}
+			}
+		}
+
+		if (!(*(ebp + 0x1A) & 1)){
+			//push ebp??
+			uint8* _ebp = *((uint8**)(ebp + 4));
+			gfx_draw_sprite(dpi, ebx, ecx, edx);
+			//pop ebp??
+			if (*((uint32*)(ebp + 0x20)) != 0){
+				//jmp 0x68858E
+			}
+			int esi = *((uint32*)(ebp + 0x1C));
+			if (esi != 0){
+				//jmp 0x688596
+			}
+			//pop ebp
+			continue;
+		}
+		//0x688570
+	}
+
+}
+
 int sub_0x686806(rct_sprite* sprite, int eax, int ecx, int edx){
 	int ebp = (eax >> 8) & 0xFF;
 	edx <<= 16;
@@ -274,9 +341,9 @@ int sub_0x686806(rct_sprite* sprite, int eax, int ecx, int edx){
 	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 	edx = (edx >> 16) | (ebp << 16);
-	int ebp = RCT2_GLOBAL(0xEE7888, uint32);
-	if (ebp >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
-	//686840
+	ebp = RCT2_GLOBAL(0xEE7888, uint32);
+	if ((uint32)ebp >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+	//686840 not finished
 
 	return 0;
 }
