@@ -267,6 +267,20 @@ void sub_0x68615B(int ebp){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
+int sub_0x686806(rct_sprite* sprite, int eax, int ecx, int edx){
+	int ebp = (eax >> 8) & 0xFF;
+	edx <<= 16;
+	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
+	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	edx = (edx >> 16) | (ebp << 16);
+	int ebp = RCT2_GLOBAL(0xEE7888, uint32);
+	if (ebp >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+	//686840
+
+	return 0;
+}
+
 /**
 *  Litter Paint Setup??
 *  rct2: 0x006736FC
@@ -377,7 +391,7 @@ void sub_0x69E8B0(int eax, int ecx){
 
 /**
 *
-*  rct2: 0x0068615B
+*  rct2: 0x0068B6C2
 */
 void sub_0x68B6C2(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
