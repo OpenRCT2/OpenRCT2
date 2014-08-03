@@ -259,7 +259,10 @@ int screenshot_dump_png()
 	unsigned int error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
 	if (!error) lodepng_save_file(png, pngSize, path);
 
-	if (error) fprintf(stderr, "error: %u: %s\n", error, lodepng_error_text(error));
+	if (error) {
+		fprintf(stderr, "error: %u: %s\n", error, lodepng_error_text(error));
+		index = -1;
+	}
 
 	free(png);
 	return index;
