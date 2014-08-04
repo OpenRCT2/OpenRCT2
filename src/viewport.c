@@ -33,6 +33,16 @@
 
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
+typedef struct {
+	uint32 image_id;		// 0x00
+	uint32 var_04;
+	uint8 pad_08[12];
+	uint16 var_14;
+	uint16 var_16;
+	uint8 pad_18[2];
+	uint8 var_1A;
+} paint_struct;
+
 /**
  *  This is not a viewport function. It is used to setup many variables for
  *  multiple things.
@@ -330,65 +340,65 @@ void sub_688485(){
 			continue;
 		}
 		//push ebp
-		int _ebp = *(ebp+4);
+		int _ebp = *(ebp + 4);
 		//Call 681DE2
 		//pop ebp
-		if (*(ebp+0x20) != 0 ){
-		  ebp = *(ebp + 0x20);
-		  continue; //Skip to just after first push ebp
+		if (*(ebp + 0x20) != 0){
+			ebp = *(ebp + 0x20);
+			continue; //Skip to just after first push ebp
 		}
-		
-		int esi = *((uint32*)(ebp+0x1C);
-		if (esi!= 0){
-		  //jmp 0x688596
+
+		int esi = *((uint32*)(ebp + 0x1C));
+		if (esi != 0){
+			//jmp 0x688596
 		}
 		//pop ebp
 		continue;
-		
+
 		//688596
 		//push esi
 		//push ebp
-		int ecx = *(esi+8);
-		int edx = *(esi+0xA);
-		ecx += *(ebp+0x14);
-		edx += *(ebp+0x16);
-		int ebx = *esi;
-		if (RCT2_GLOBAL(0x141E9E4,uint16)&0x2){
-		  if ((uint8)*(ebp+0x28)==3){
-		    if (ebx&0x40000000){
-		      ebx &= 0x7FFFF;
-		      ebx |= 0x41880000;
-		    }
-		  }
+		ecx = *(uint16*)(esi + 8);
+		edx = *(uint16*)(esi + 0xA);
+		ecx += *(ebp + 0x14);
+		edx += *(ebp + 0x16);
+		ebx = *(uint32*)esi;
+		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x2){
+			if ((uint8)*(ebp + 0x28) == 3){
+				if (ebx & 0x40000000){
+					ebx &= 0x7FFFF;
+					ebx |= 0x41880000;
+				}
+			}
 		}
-		
-		if (RCT2_GLOBAL(0x141E9E4,uint16)&0x4){
-		  if ((uint8)*(ebp+0x28)==5){
-		    if (ebx&0x40000000){
-		      ebx &= 0x7FFFF;
-		      ebx |= 0x41880000;
-		    }
-		  }
+
+		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x4){
+			if ((uint8)*(ebp + 0x28) == 5){
+				if (ebx & 0x40000000){
+					ebx &= 0x7FFFF;
+					ebx |= 0x41880000;
+				}
+			}
 		}
-		
-		if (!(esi+0xC & 1)){
-		  ebp = *(ebp+4)
-		  //call 67A28E draw_sprite
-		  //pop ebp
-		  //pop esi
-		  esi = *(esi + 0xE);
-		  if (esi) //jmp to 688596 continue;?
-		  //pop ebp
-		  //jmp 688491 i.e. start of previous loop
+
+		if (!(esi + 0xC & 1)){
+			ebp = *(ebp + 4);
+			//call 67A28E draw_sprite
+			//pop ebp
+			//pop esi
+			esi = *(uint32*)(esi + 0xE);
+			if (esi){} //jmp to 688596 continue;?
+			//pop ebp
+			//jmp 688491 i.e. start of previous loop
 		}
-		
-		ebp = *(esi + 4);
+
+		ebp = *(uint32*)(esi + 4);
 		//call 681DE2
 		//pop ebp
 		//pop esi
-		esi = *(esi +0xE);
-		if (esi) //jmp to 688596 continue;?
-		
+		esi = *(uint32*)(esi + 0xE);
+		if (esi) {}//jmp to 688596 continue;?
+
 		//pop ebp
 		//jmp 688491 i.e. start of previous loop
 	}
