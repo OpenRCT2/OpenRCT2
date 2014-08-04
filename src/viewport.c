@@ -329,7 +329,68 @@ void sub_688485(){
 			//pop ebp
 			continue;
 		}
-		//0x688570
+		//push ebp
+		int _ebp = *(ebp+4);
+		//Call 681DE2
+		//pop ebp
+		if (*(ebp+0x20) != 0 ){
+		  ebp = *(ebp + 0x20);
+		  continue; //Skip to just after first push ebp
+		}
+		
+		int esi = *((uint32*)(ebp+0x1C);
+		if (esi!= 0){
+		  //jmp 0x688596
+		}
+		//pop ebp
+		continue;
+		
+		//688596
+		//push esi
+		//push ebp
+		int ecx = *(esi+8);
+		int edx = *(esi+0xA);
+		ecx += *(ebp+0x14);
+		edx += *(ebp+0x16);
+		int ebx = *esi;
+		if (RCT2_GLOBAL(0x141E9E4,uint16)&0x2){
+		  if ((uint8)*(ebp+0x28)==3){
+		    if (ebx&0x40000000){
+		      ebx &= 0x7FFFF;
+		      ebx |= 0x41880000;
+		    }
+		  }
+		}
+		
+		if (RCT2_GLOBAL(0x141E9E4,uint16)&0x4){
+		  if ((uint8)*(ebp+0x28)==5){
+		    if (ebx&0x40000000){
+		      ebx &= 0x7FFFF;
+		      ebx |= 0x41880000;
+		    }
+		  }
+		}
+		
+		if (!(esi+0xC & 1)){
+		  ebp = *(ebp+4)
+		  //call 67A28E draw_sprite
+		  //pop ebp
+		  //pop esi
+		  esi = *(esi + 0xE);
+		  if (esi) //jmp to 688596 continue;?
+		  //pop ebp
+		  //jmp 688491 i.e. start of previous loop
+		}
+		
+		ebp = *(esi + 4);
+		//call 681DE2
+		//pop ebp
+		//pop esi
+		esi = *(esi +0xE);
+		if (esi) //jmp to 688596 continue;?
+		
+		//pop ebp
+		//jmp 688491 i.e. start of previous loop
 	}
 
 }
