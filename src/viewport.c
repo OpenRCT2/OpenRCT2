@@ -41,6 +41,11 @@ typedef struct {
 	uint16 var_16;
 	uint8 pad_18[2];
 	uint8 var_1A;
+	uint8 pad_1B;
+	uint32 var_1C;
+	uint32 var_20;
+	paint_struct* var_24;
+	uint8 var_28;
 } paint_struct;
 
 /**
@@ -279,16 +284,16 @@ void sub_0x68615B(int ebp){
 
 void sub_688485(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-	uint8* ebp = RCT2_GLOBAL(0xEE7884, uint8*);
+	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
 
 	while (1){
-		ebp = *((uint8**)(ebp + 0x24));
-		if (ebp = 0) return;
+		ps = ps->var_24;
+		if (!ps) return;
 
 		//push ebp
-		int ecx = *((uint16*)(ebp + 0x14));
-		int edx = *((uint16*)(ebp + 0x16));
-		if (*(ebp + 0x28) == 2){
+		int ecx = ps->var_14;
+		int edx = ps->var_16;
+		if (ps->var_28 == 2){
 			if (dpi->zoom_level >= 1){
 				ecx &= 0xFFFE;
 				edx &= 0xFFFE;
@@ -298,9 +303,9 @@ void sub_688485(){
 				}
 			}
 		}
-		int ebx = *((uint32*)ebp);
+		int ebx = ps->image_id;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x2){
-			if (*(ebp + 0x28) == 3){
+			if (ps->var_28  == 3){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -308,7 +313,7 @@ void sub_688485(){
 			}
 		}
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1){
-			if (*(ebp + 0x28) == 9){
+			if (ps->var_28  == 9){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -316,7 +321,7 @@ void sub_688485(){
 			}
 		}
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4){
-			if (*(ebp + 0x28) == 10 || *(ebp + 0x28) == 12 || *(ebp + 0x28) == 9 || *(ebp + 0x28) == 5){
+			if (ps->var_28  == 10 || ps->var_28  == 12 || ps->var_28  == 9 || ps->var_28  == 5){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -324,15 +329,15 @@ void sub_688485(){
 			}
 		}
 
-		if (!(*(ebp + 0x1A) & 1)){
+		if (!ps->var_1A & 1)){
 			//push ebp??
-			uint8* _ebp = *((uint8**)(ebp + 4));
+			uint8* _ebp = ps->var_04;
 			gfx_draw_sprite(dpi, ebx, ecx, edx);
 			//pop ebp??
-			if (*((uint32*)(ebp + 0x20)) != 0){
+			if (ps->var_20 != 0){
 				//jmp 0x68858E
 			}
-			int esi = *((uint32*)(ebp + 0x1C));
+			int esi = ps->var_1C;
 			if (esi != 0){
 				//jmp 0x688596
 			}
@@ -340,15 +345,15 @@ void sub_688485(){
 			continue;
 		}
 		//push ebp
-		int _ebp = *(ebp + 4);
+		int _ebp = ps->var_04;
 		//Call 681DE2
 		//pop ebp
-		if (*(ebp + 0x20) != 0){
-			ebp = *(ebp + 0x20);
+		if (ps->var_20 != 0){
+			ebp = ps->var_20;
 			continue; //Skip to just after first push ebp
 		}
 
-		int esi = *((uint32*)(ebp + 0x1C));
+		int esi = ps->var_1C;
 		if (esi != 0){
 			//jmp 0x688596
 		}
@@ -360,11 +365,11 @@ void sub_688485(){
 		//push ebp
 		ecx = *(uint16*)(esi + 8);
 		edx = *(uint16*)(esi + 0xA);
-		ecx += *(ebp + 0x14);
-		edx += *(ebp + 0x16);
+		ecx += ps->var_14;
+		edx += ps->var_16;
 		ebx = *(uint32*)esi;
 		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x2){
-			if ((uint8)*(ebp + 0x28) == 3){
+			if (ps->var_28 == 3){
 				if (ebx & 0x40000000){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -373,7 +378,7 @@ void sub_688485(){
 		}
 
 		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x4){
-			if ((uint8)*(ebp + 0x28) == 5){
+			if (ps->var_28 == 5){
 				if (ebx & 0x40000000){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -382,7 +387,7 @@ void sub_688485(){
 		}
 
 		if (!(esi + 0xC & 1)){
-			ebp = *(ebp + 4);
+			int _ebp = ps->var_04;
 			//call 67A28E draw_sprite
 			//pop ebp
 			//pop esi
@@ -392,7 +397,7 @@ void sub_688485(){
 			//jmp 688491 i.e. start of previous loop
 		}
 
-		ebp = *(uint32*)(esi + 4);
+		int _ebp = ps->var_04;
 		//call 681DE2
 		//pop ebp
 		//pop esi
