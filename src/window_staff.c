@@ -19,16 +19,15 @@
 *****************************************************************************/
 
 #include <string.h>
-#include <windows.h>
 #include "addresses.h"
 #include "game.h"
 #include "gfx.h"
 #include "peep.h"
-#include "window.h"
-#include "widget.h"
-#include "viewport.h"
 #include "sprite.h"
 #include "string_ids.h"
+#include "viewport.h"
+#include "widget.h"
+#include "window.h"
 
 enum {
 	PAGE_HANDYMEN,
@@ -212,21 +211,19 @@ void window_staff_close() {
 void window_staff_hire_new() {
 	uint8 bl = 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_HIRE_NEW_STAFF;
-	int peepIndex = 0;
-
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
 	eax = 0x8000;
 	ebx = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) << 8 | bl;
 	esi = 0x1D;
 
-	int result = game_do_command_p(&eax, &ebx, &ecx, &edx, &esi, &peepIndex, &ebp);
+	int result = game_do_command_p(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (result == 0x80000000) {
 		rct_window* window = window_find_by_id(WC_STAFF_LIST, 0);
 		window_invalidate(window);
 	} else {
-		window_staff_peep_open(&g_sprite_list[peepIndex].peep);
+		window_staff_peep_open(&g_sprite_list[edi].peep);
 	}
 }
 
