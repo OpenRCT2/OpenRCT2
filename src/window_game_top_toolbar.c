@@ -247,7 +247,8 @@ static void window_game_top_toolbar_mouseup()
 		window_park_entrance_open();
 		break;
 	case WIDX_STAFF:
-		RCT2_CALLPROC_EBPSAFE(0x006BD3CC);
+		window_staff_open();
+		//RCT2_CALLPROC_EBPSAFE(0x006BD3CC);
 		break;
 	case WIDX_GUESTS:
 		window_guest_list_open();

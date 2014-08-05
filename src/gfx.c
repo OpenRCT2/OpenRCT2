@@ -2260,3 +2260,66 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	gLastDrawStringX = max_x;
 	gLastDrawStringY = max_y;
 }
+
+/*
+*
+* rct2: 0x006EE53B
+* left (ax)
+* width (bx)
+* top (cx)
+* height (dx)
+* drawpixelinfo (edi)
+*/
+rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height)
+{
+	rct_drawpixelinfo* newDrawPixelInfo = rct2_malloc(sizeof(rct_drawpixelinfo));
+
+	int right = left + width;
+	int bottom = top + height;
+
+	newDrawPixelInfo->bits = dpi->bits;
+	newDrawPixelInfo->x = dpi->x;
+	newDrawPixelInfo->y = dpi->y;
+	newDrawPixelInfo->width = dpi->width;
+	newDrawPixelInfo->height = dpi->height;
+	newDrawPixelInfo->pitch = dpi->pitch;
+	newDrawPixelInfo->zoom_level = 0;
+	newDrawPixelInfo->var_0F = dpi->var_0F;
+
+	if (left > newDrawPixelInfo->x) {
+		uint16 newWidth = left - newDrawPixelInfo->x;
+		newDrawPixelInfo->width -= newWidth;
+		newDrawPixelInfo->x = left;
+		newDrawPixelInfo->pitch += newWidth;
+		newDrawPixelInfo->bits += newWidth;
+	}
+
+	int stickOutWidth = newDrawPixelInfo->x + newDrawPixelInfo->width - right;
+	if (stickOutWidth < 0) {
+		newDrawPixelInfo->width -= stickOutWidth;
+		newDrawPixelInfo->pitch += stickOutWidth;
+	}
+
+	if (top > newDrawPixelInfo->y) {
+		uint16 newHeight = top - newDrawPixelInfo->y;
+		newDrawPixelInfo->height = newHeight;
+		newDrawPixelInfo->y = top;
+		int bitsPlus = (newDrawPixelInfo->pitch + newDrawPixelInfo->width) * newHeight;
+		newDrawPixelInfo->bits += bitsPlus;
+	}
+
+	int bp = newDrawPixelInfo->y + newDrawPixelInfo->height - bottom;
+	if (bp < 0) {
+		newDrawPixelInfo->height -= bp;
+	}
+
+	if (newDrawPixelInfo->width > 0 && newDrawPixelInfo->height > 0) {
+		newDrawPixelInfo->x -= left;
+		newDrawPixelInfo->y -= top;
+
+		return newDrawPixelInfo;
+	}
+
+	rct2_free(newDrawPixelInfo);
+	return NULL;
+}

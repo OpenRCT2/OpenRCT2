@@ -29,6 +29,7 @@ void update_rain_animation();
 void update_water_animation();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+int game_do_command_p(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

@@ -649,8 +649,7 @@ static void window_park_entrance_close()
 	#else
 	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 	#endif
-
-
+		
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
