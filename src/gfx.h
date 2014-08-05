@@ -92,4 +92,6 @@ void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();
 
+rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
+
 #endif
