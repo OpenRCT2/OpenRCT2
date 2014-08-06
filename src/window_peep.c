@@ -182,7 +182,7 @@ void window_staff_peep_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
 	if (!w) {
-		int eax, ebx, ecx, edx, esi, edi, ebp;
+		int eax, ebx, ecx, edx, esi, edi;
 
 		eax = peep->sprite_index;
 		ecx = WC_PEEP;
@@ -196,7 +196,7 @@ void window_staff_peep_open(rct_peep* peep)
 	w->widgets = RCT2_GLOBAL(0x992998, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
 	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
-	w->event_handlers = RCT2_GLOBAL(0x9929A4, uint32);
+	w->event_handlers = (uint32*)RCT2_GLOBAL(0x9929A4, uint32);
 	w->pressed_widgets = 0;
 	RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
 	window_init_scroll_widgets(w);

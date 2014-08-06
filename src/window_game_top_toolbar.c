@@ -163,7 +163,7 @@ static void window_game_top_toolbar_mouseup()
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
-		game_do_command(0, 1, 0, 0, 2, 0, 0);
+		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
 		break;
 	case WIDX_FASTFORWARD:
 		// This is an excellent place to add in debugging statements and
@@ -364,7 +364,7 @@ static void window_game_top_toolbar_dropdown()
 	if (widgetIndex == WIDX_FILE_MENU) {
 		switch (dropdownIndex) {
 		case 0:		// load game
-			game_do_command(0, 1, 0, 0, 5, 0, 0);
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
 		case 1:		// save game
 			tool_cancel();
@@ -381,7 +381,7 @@ static void window_game_top_toolbar_dropdown()
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
 		case 7:		// quit game
-			game_do_command(0, 1, 0, 0, 5, 1, 0);
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		}
 	} else if (widgetIndex == WIDX_VIEW_MENU) {
