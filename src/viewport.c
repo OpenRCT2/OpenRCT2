@@ -33,7 +33,9 @@
 
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
-typedef struct {
+typedef struct paint_struct paint_struct;
+
+struct paint_struct{
 	uint32 image_id;		// 0x00
 	uint32 var_04;
 	uint8 pad_08[12];
@@ -43,10 +45,10 @@ typedef struct {
 	uint8 var_1A;
 	uint8 pad_1B;
 	uint32 var_1C;
-	uint32 var_20;
+	paint_struct* var_20;
 	paint_struct* var_24;
 	uint8 var_28;
-} paint_struct;
+};
 
 /**
  *  This is not a viewport function. It is used to setup many variables for
@@ -285,11 +287,12 @@ void sub_0x68615B(int ebp){
 void sub_688485(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
-
+	paint_struct* previous_ps = ps;
 	while (1){
 		ps = ps->var_24;
 		if (!ps) return;
 
+		previous_ps = ps;
 		//push ebp
 		int ecx = ps->var_14;
 		int edx = ps->var_16;
@@ -329,9 +332,9 @@ void sub_688485(){
 			}
 		}
 
-		if (!ps->var_1A & 1)){
+		if (!(ps->var_1A & 1)){
 			//push ebp??
-			uint8* _ebp = ps->var_04;
+			uint32 _ebp = ps->var_04;
 			gfx_draw_sprite(dpi, ebx, ecx, edx);
 			//pop ebp??
 			if (ps->var_20 != 0){
@@ -341,6 +344,7 @@ void sub_688485(){
 			if (esi != 0){
 				//jmp 0x688596
 			}
+			ps = previous_ps;
 			//pop ebp
 			continue;
 		}
@@ -349,7 +353,7 @@ void sub_688485(){
 		//Call 681DE2
 		//pop ebp
 		if (ps->var_20 != 0){
-			ebp = ps->var_20;
+			ps = ps->var_20;
 			continue; //Skip to just after first push ebp
 		}
 
@@ -357,6 +361,7 @@ void sub_688485(){
 		if (esi != 0){
 			//jmp 0x688596
 		}
+		ps = previous_ps;
 		//pop ebp
 		continue;
 
@@ -393,17 +398,18 @@ void sub_688485(){
 			//pop esi
 			esi = *(uint32*)(esi + 0xE);
 			if (esi){} //jmp to 688596 continue;?
+			ps = previous_ps;
 			//pop ebp
 			//jmp 688491 i.e. start of previous loop
 		}
 
-		int _ebp = ps->var_04;
+		_ebp = ps->var_04;
 		//call 681DE2
 		//pop ebp
 		//pop esi
 		esi = *(uint32*)(esi + 0xE);
 		if (esi) {}//jmp to 688596 continue;?
-
+		ps = previous_ps;
 		//pop ebp
 		//jmp 688491 i.e. start of previous loop
 	}
