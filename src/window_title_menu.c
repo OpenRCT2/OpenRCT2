@@ -118,7 +118,7 @@ static void window_title_menu_mouseup()
 	if (widgetIndex == WIDX_START_NEW_GAME) {
 		window_scenarioselect_open();
 	} else if (widgetIndex == WIDX_CONTINUE_SAVED_GAME) {
-		game_do_command(0, 1, 0, 0, 5, 0, 0);
+		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 	}
 }
 
