@@ -288,11 +288,14 @@ void sub_688485(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
 	paint_struct* previous_ps = ps;
+	int esi;
 	while (1){
 		ps = ps->var_24;
 		if (!ps) return;
 
 		previous_ps = ps;
+	x68849D:
+		previous_ps = previous_ps;
 		//push ebp
 		int ecx = ps->var_14;
 		int edx = ps->var_16;
@@ -338,10 +341,13 @@ void sub_688485(){
 			gfx_draw_sprite(dpi, ebx, ecx, edx);
 			//pop ebp??
 			if (ps->var_20 != 0){
-				//jmp 0x68858E
+				ps = ps->var_20;
+				goto x68849D;
+				//jmp 0x68849D
 			}
-			int esi = ps->var_1C;
+			esi = ps->var_1C;
 			if (esi != 0){
+				goto x688596;
 				//jmp 0x688596
 			}
 			ps = previous_ps;
@@ -349,22 +355,25 @@ void sub_688485(){
 			continue;
 		}
 		//push ebp
-		int _ebp = ps->var_04;
+		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0, (int)dpi, ps->var_04);
 		//Call 681DE2
 		//pop ebp
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
-			continue; //Skip to just after first push ebp
+			goto x68849D;
+			//jmp 68849D
 		}
 
-		int esi = ps->var_1C;
+		esi = ps->var_1C;
 		if (esi != 0){
+			goto x688596;
 			//jmp 0x688596
 		}
 		ps = previous_ps;
 		//pop ebp
 		continue;
 
+	x688596:
 		//688596
 		//push esi
 		//push ebp
@@ -391,27 +400,32 @@ void sub_688485(){
 			}
 		}
 
-		if (!(esi + 0xC & 1)){
+		if (!(*((uint8*)(esi + 0xC)) & 1)){
 			int _ebp = ps->var_04;
+			gfx_draw_sprite(dpi, ebx, ecx, edx);
 			//call 67A28E draw_sprite
 			//pop ebp
 			//pop esi
 			esi = *(uint32*)(esi + 0xE);
-			if (esi){} //jmp to 688596 continue;?
+			if (esi){ 
+				goto x688596;//jmp to 688596 continue;?
+			} 
 			ps = previous_ps;
+			continue;
 			//pop ebp
 			//jmp 688491 i.e. start of previous loop
 		}
 
-		_ebp = ps->var_04;
+		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0,(int) dpi, ps->var_04);
 		//call 681DE2
 		//pop ebp
 		//pop esi
 		esi = *(uint32*)(esi + 0xE);
-		if (esi) {}//jmp to 688596 continue;?
+		if (esi) {
+			goto x688596;//jmp to 688596 continue;?
+		}
 		ps = previous_ps;
 		//pop ebp
-		//jmp 688491 i.e. start of previous loop
 	}
 
 }
@@ -769,7 +783,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_0x68B6C2();
 		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
 		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
-		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+		sub_688485();
+		//RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
 		if ((weather_colour != -1) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000) && (RCT2_GLOBAL(0x9DEA6F, uint8) & 1)){

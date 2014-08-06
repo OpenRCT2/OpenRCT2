@@ -957,6 +957,8 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y)
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		//Has not been tested
+		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
+		return;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		unknown_pointer = NULL;
 
