@@ -51,6 +51,84 @@ void game_handle_keyboard_input();
 
 void process_mouse_over(int x, int y);
 
+typedef void(*draw_rain_func)(int left, int top, int width, int height);
+
+/**
+*
+*  rct2: 0x00684114
+*/
+void draw_light_rain(int left, int top, int width, int height){
+	int edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
+	int esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+
+	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
+	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+}
+
+/**
+*
+*  rct2: 0x0068416D
+*/
+void draw_heavy_rain(int left, int top, int width, int height){
+	int edi = -RCT2_GLOBAL(0x00F663AC, int);
+	int esi = RCT2_GLOBAL(0x00F663AC, int) * 5;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+
+	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x10;
+	esi = (RCT2_GLOBAL(0x00F663AC, int) * 6) + 5;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+
+	edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
+	esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+
+	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
+	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
+	esi = -esi;
+
+	edi += left;
+	esi += top;
+
+	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+}
+
+/**
+*
+*  rct2: 0x009AC058
+*/
+const draw_rain_func draw_rain_function[] = {
+	NULL,
+	&draw_light_rain,	// Light rain
+	&draw_heavy_rain	// Heavy rain 
+};
+
 /**
 *
 *  rct2: 0x006ED801
@@ -248,7 +326,7 @@ void call_draw_rain_func(rct_window* w, short left, short right, short top, shor
 	int width = right - left;
 	int height = bottom - top;
 
-	RCT2_CALLPROC_X(draw_rain_func, left, top, width, height, 0, 0, 0);
+	draw_rain_function[draw_rain_func](left, top, width, height);
 }
 
 /**
@@ -353,8 +431,8 @@ void update_rain_animation()
 	}
 
 	// Get rain draw function and draw rain
-	uint32 draw_rain_func = RCT2_ADDRESS(0x009AC058, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8)];
-	if (draw_rain_func != 0xFFFFFFFF && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
+	uint32 draw_rain_func = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8);
+	if (draw_rain_func > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
 		draw_rain_animation(draw_rain_func);
 }
 
