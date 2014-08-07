@@ -129,6 +129,12 @@
   <ItemGroup>
     <None Include="..\openrct2.exe" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\data\language\english.txt">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </DeploymentContent>
+    </Text>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2</RootNamespace>

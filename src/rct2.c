@@ -49,6 +49,7 @@
 #include "track.h"
 #include "viewport.h"
 #include "sprite.h"
+#include "string_ids.h"
 
 typedef struct tm tm_t;
 
@@ -74,6 +75,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	print_launch_information();
+
+	// OpenRCT2 initialisation
+	language_open("data/language/english.txt");
 
 	// Begin RCT2
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;

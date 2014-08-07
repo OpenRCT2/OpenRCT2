@@ -1068,11 +1068,6 @@ char real_name_initials[] = {
 void format_string_part_from_raw(char **dest, const char *src, char **args);
 void format_string_part(char **dest, rct_string_id format, char **args);
 
-const char *get_string(rct_string_id id)
-{
-	return RCT2_ADDRESS(0x009BF2D4, const char*)[id];
-}
-
 void format_integer(char **dest, int value)
 {
 	int digit;
@@ -1660,4 +1655,74 @@ void reset_saved_strings() {
 	for (int i = 0; i < 1024; i++) {
 		RCT2_ADDRESS(0x135A8F4, uint8)[i * 32] = 0;
 	}
+}
+
+// Buffer storing all the string data
+long language_buffer_size = 0;
+char *language_buffer = NULL;
+
+// List of string pointers into the string data
+int language_num_strings = 0;
+char **language_strings = NULL;
+
+const char *get_string(rct_string_id id)
+{
+	const char *str = language_strings == NULL ?
+		RCT2_ADDRESS(0x009BF2D4, const char*)[id] :
+		language_strings[id];
+
+	return str == NULL ? "" : str;
+}
+
+int language_open(const char *filename)
+{
+	// WIP, file can be loaded in but not in a suitable state.
+	// Due to loading an uncompiled text language file, tokens surrounded with braces need to be converted to the correct
+	// format character code. Therefore the language can not stay in its raw form and must be re-written as the text file is
+	// parsed.
+
+	// get_string returns the original game string address if no language is loaded in.
+	return 0;
+
+	FILE *f = fopen(filename, "rb");
+	if (f == NULL)
+		return 0;
+
+	fseek(f, 0, SEEK_END);
+	language_buffer_size = ftell(f);
+	language_buffer = calloc(1, language_buffer_size);
+	fseek(f, 0, SEEK_SET);
+	fread(language_buffer, language_buffer_size, 1, f);
+	fclose(f);
+
+	language_strings = calloc(STR_COUNT, sizeof(char*));
+
+	int i, stringIndex = 0, searchForEndLine = 0;
+	for (i = 0; i < language_buffer_size; i++) {
+		char *c = &language_buffer[i];
+
+		if (searchForEndLine) {
+			if (*c == '\n' || *c == '\r') {
+				*c = 0;
+				searchForEndLine = 0;
+			}
+		} else if (*c == ':') {
+			language_strings[stringIndex++] = c + 1;
+			searchForEndLine = 1;
+		}
+	}
+	language_num_strings = stringIndex;
+
+	return 1;
+}
+
+void language_close()
+{
+	if (language_buffer != NULL)
+		free(language_buffer);
+	language_buffer_size = 0;
+
+	if (language_strings != NULL)
+		free(language_strings);
+	language_num_strings = 0;
 }

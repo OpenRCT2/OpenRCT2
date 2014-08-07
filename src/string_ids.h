@@ -28,6 +28,10 @@ void generate_string_file();
 void reset_saved_strings();
 void error_string_quit(int error, rct_string_id format);
 
+const char *get_string(rct_string_id id);
+int language_open(const char *filename);
+void language_close();
+
 enum {
 	// Font format codes
 
@@ -755,6 +759,8 @@ enum {
 	STR_PAGE_3 = STR_PAGE_1 + 2,
 	STR_PAGE_4 = STR_PAGE_1 + 3,
 	STR_PAGE_5 = STR_PAGE_1 + 4,
+
+	STR_COUNT = 4000
 };
 
 #endif
