@@ -159,46 +159,47 @@ void sub_0x684027(int left, int top, int width, int height, int ebp, int edi, in
 	//esi = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_DPI,uint32);
 	edi += 0xEDF850;
 	
-	for( ; height != 0; height--){
-	//0x6840A4
-	int al = *((uint8*)(ecx*2+ebp));
-	if (al == 0xFF) continue;
-	if (RCT2_GLOBAL(0x9AC00C,uint32) > 0x1F38) continue;
-	//push ebx
-	//push ecx
-	int _ebx = ebx;
-	int _ecx = ecx;
-	
-	eax -= RCT2_GLOBAL(0xEE7870,uint32);
-	edx = width;
-	eax &= RCT2_GLOBAL(0xEE7868,uint32);
-	edx += ebx;
-	ebx += eax;
-	if (ebx >= edx)continue;
-	int ah = *((uint8*)(ecx*2+ebp+1));
-	ecx = RCT2_GLOBAL(0xEE7864,uint32);
-	
-	//inner loop
-	while(ebx < edx){
-		al = ah;
-		int old_al = al;
-		al = dpi->bits[ebx];
-		dpi->bits[ebx] = old_al;
-		RCT2_GLOBAL(0x9AC00C,uint32)++;
-		ebx <<= 8;
-		ebx |= al;
-		*(uint32*)edi = ebx;
-		ebx >>= 8;
-		edi += 4;
-		ebx += ecx;
+	for (; height != 0; height--){
+		//0x6840A4
+		int al = *((uint8*)(ecx * 2 + ebp));
+		if (al == 0xFF) continue;
+		if (RCT2_GLOBAL(0x9AC00C, uint32) > 0x1F38) continue;
+		//push ebx
+		//push ecx
+		int _ebx = ebx;
+		int _ecx = ecx;
+
+		eax -= RCT2_GLOBAL(0xEE7870, uint32);
+		edx = width;
+		eax &= RCT2_GLOBAL(0xEE7868, uint32);
+		edx += ebx;
+		ebx += eax;
+		if (ebx >= edx)continue;
+		int ah = *((uint8*)(ecx * 2 + ebp + 1));
+		ecx = RCT2_GLOBAL(0xEE7864, uint32);
+
+		//inner loop
+		while (ebx < edx){
+			al = ah;
+			int old_al = al;
+			al = dpi->bits[ebx];
+			dpi->bits[ebx] = old_al;
+			RCT2_GLOBAL(0x9AC00C, uint32)++;
+			ebx <<= 8;
+			ebx |= al;
+			*(uint32*)edi = ebx;
+			ebx >>= 8;
+			edi += 4;
+			ebx += ecx;
+		}
+		//pop ecx
+		//pop ebx
+		ecx = _ecx;
+		ebx = _ebx;
+		ecx++;
+		ebx += dpi->pitch + dpi->width;
+		ecx &= RCT2_GLOBAL(0xEE786C, uint32);
 	}
-	//pop ecx
-	//pop ebx
-	ecx = _ecx;
-	ebx = _ebx;
-	ecx++;
-	ebx += dpi->pitch + dpi->width;
-	ecx &= RCT2_GLOBAL(0xEE786C,uint32);
 }
 
 /**
