@@ -1220,7 +1220,9 @@ void format_comma_separated_fixed_2dp(char **dest, int value)
 
 void format_currency(char **dest, int value)
 {
-	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+
+	int rate = currencySpec->rate;
 	value *= rate;
 
 	// Negative sign
@@ -1230,18 +1232,19 @@ void format_currency(char **dest, int value)
 	}
 
 	// Currency symbol
-	const char *symbol = g_currency_specs[gGeneral_config.currency_format].symbol;
+	const char *symbol = currencySpec->symbol;
+
 	// Prefix
-	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+	if (currencySpec->affix == CURRENCY_PREFIX) {
 		strcpy(*dest, symbol);
 		*dest += strlen(*dest);
 	}
 
 	// Divide by 100 to get rid of the pennies
-	format_comma_separated_integer(dest, value/100);
+	format_comma_separated_integer(dest, value / 100);
 
 	// Currency symbol suffix
-	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+	if (currencySpec->affix == CURRENCY_SUFFIX) {
 		strcpy(*dest, symbol);
 		*dest += strlen(*dest);
 	}
@@ -1249,7 +1252,9 @@ void format_currency(char **dest, int value)
 
 void format_currency_2dp(char **dest, int value)
 {
-	int rate = g_currency_specs[gGeneral_config.currency_format].rate;
+	rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+
+	int rate = currencySpec->rate;
 	value *= rate;
 
 	// Negative sign
@@ -1259,22 +1264,23 @@ void format_currency_2dp(char **dest, int value)
 	}
 
 	// Currency symbol
-	const char *symbol = g_currency_specs[gGeneral_config.currency_format].symbol;
+	const char *symbol = currencySpec->symbol;
+
 	// Prefix
-	if (g_currency_specs[gGeneral_config.currency_format].prefix) {
+	if (currencySpec->affix == CURRENCY_PREFIX) {
 		strcpy(*dest, symbol);
 		*dest += strlen(*dest);
 	}
 
 	// Drop the pennies for "large" currencies
 	if (rate > 10) {
-		format_comma_separated_integer(dest, value/100);
+		format_comma_separated_integer(dest, value / 100);
 	} else {
 		format_comma_separated_fixed_2dp(dest, value);
 	}
 
 	// Currency symbol suffix
-	if (!g_currency_specs[gGeneral_config.currency_format].prefix) {
+	if (currencySpec->affix == CURRENCY_SUFFIX) {
 		strcpy(*dest, symbol);
 		*dest += strlen(*dest);
 	}

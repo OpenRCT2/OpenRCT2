@@ -21,14 +21,14 @@
 #include "currency.h"
 
 const rct_currency_spec g_currency_specs[CURRENCY_END] = {
-	 {10	, "\xA3"	, 1},	//British Pound
-	 {10	, "\x24"	, 1},	//US Dollar
-	 {10	, "F"		, 0},	//French Franc
-	 {10	, "DM"		, 1},	//Deutsche Mark
-	 {1000	, "\xA5"	, 1},	//Japanese Yen
-	 {10	, "Pts"		, 0},	//Spanish Peseta
-	 {1000	, "L"		, 1},	//Italian Lira
-	 {10	, "fl."		, 1},	//Dutch Guilder
-	 {10	, "kr."		, 0},	//Swedish Krona
-	 {10	, "\xb5"	, 1},	//Euro
+	{ 10	, "\xA3"	, CURRENCY_PREFIX },	// British Pound
+	{ 10	, "\x24"	, CURRENCY_PREFIX },	// US Dollar
+	{ 10	, "F"		, CURRENCY_SUFFIX },	// French Franc
+	{ 10	, "DM"		, CURRENCY_PREFIX },	// Deutsche Mark
+	{ 1000	, "\xA5"	, CURRENCY_PREFIX },	// Japanese Yen
+	{ 10	, "Pts"		, CURRENCY_SUFFIX },	// Spanish Peseta
+	{ 1000	, "L"		, CURRENCY_PREFIX },	// Italian Lira
+	{ 10	, "fl."		, CURRENCY_PREFIX },	// Dutch Guilder
+	{ 10	, "kr."		, CURRENCY_SUFFIX },	// Swedish Krona
+	{ 10	, "\xb5"	, CURRENCY_PREFIX },	// Euro
 };
