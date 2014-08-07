@@ -349,7 +349,7 @@ static void window_staff_dropdown()
 			(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) << 8) + 1,
 			0,
 			(dropdownIndex << 8) + 4,
-			GAME_COMMAND_UPDATE_STAFF_COLOUR,
+			GAME_COMMAND_SET_STAFF_COLOUR,
 			0,
 			0);
 	}

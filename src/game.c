@@ -2087,84 +2087,7 @@ static uint32 game_do_command_table[58];
  */
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	int cost, flags, insufficientFunds;
-	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
-
-	original_ebx = ebx;
-	original_edx = edx;
-	original_esi = esi;
-	original_edi = edi;
-	original_ebp = ebp;
-
-	flags = ebx;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
-
-	// Increment nest count
-	RCT2_GLOBAL(0x009A8C28, uint8)++;
-
-	ebx &= ~1;
-
-	// Primary command
-	RCT2_CALLFUNC_X(game_do_command_table[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	cost = ebx;
-
-	if (cost != 0x80000000) {
-		// Check funds
-		insufficientFunds = 0;
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
-			insufficientFunds = game_check_affordability(cost);
-
-		if (insufficientFunds != 0x80000000) {
-			ebx = original_ebx;
-			edx = original_edx;
-			esi = original_esi;
-			edi = original_edi;
-			ebp = original_ebp;
-
-			if (!(flags & 1)) {
-				// Decrement nest count
-				RCT2_GLOBAL(0x009A8C28, uint8)--;
-				return cost;
-			}
-
-			// Secondary command
-			RCT2_CALLFUNC_X(game_do_command_table[esi], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			edx = ebx;
-
-			if (edx != 0x80000000 && edx < cost)
-				cost = edx;
-
-			// Decrement nest count
-			RCT2_GLOBAL(0x009A8C28, uint8)--;
-			if (RCT2_GLOBAL(0x009A8C28, uint8) != 0)
-				return cost;
-
-			// 
-			if (!(flags & 0x20)) {
-				// Update money balance
-				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
-				RCT2_CALLPROC_X(0x0069C674, 0, cost, 0, 0, 0, 0, 0);
-				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
-					// Create a +/- money text effect
-					if (cost != 0)
-						RCT2_CALLPROC_X(0x0069C5D0, 0, cost, 0, 0, 0, 0, 0);
-				}
-			}
-
-			return cost;
-		}
-	}
-
-	// Error occured
-
-	// Decrement nest count
-	RCT2_GLOBAL(0x009A8C28, uint8)--;
-
-	// Show error window
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
-		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
-
-	return 0x80000000;
+	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 }
 
 /**
@@ -2625,7 +2548,7 @@ char save_game()
 	RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
 	// check success?
 
-	game_do_command(0, 1047, 0, -1, 0, 0, 0);
+	game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
 	gfx_invalidate_screen();
 	
 	return 1;

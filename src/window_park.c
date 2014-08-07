@@ -788,7 +788,7 @@ static void window_park_entrance_dropdown()
 			dropdownIndex &= 0x00FF;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
 		}
-		game_do_command(0, 1, 0, dropdownIndex, 34, 0, 0);
+		game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 	}
 }
 
@@ -997,9 +997,9 @@ static void window_park_entrance_textinput()
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-			game_do_command(1, 1, 0, *((int*)(text + 0)), 33, *((int*)(text + 8)), *((int*)(text + 4)));
-			game_do_command(2, 1, 0, *((int*)(text + 12)), 33, *((int*)(text + 20)), *((int*)(text + 16)));
-			game_do_command(0, 1, 0, *((int*)(text + 24)), 33, *((int*)(text + 32)), *((int*)(text + 28)));
+			game_do_command(1, 1, 0, *((int*)(text + 0)), GAME_COMMAND_33, *((int*)(text + 8)), *((int*)(text + 4)));
+			game_do_command(2, 1, 0, *((int*)(text + 12)), GAME_COMMAND_33, *((int*)(text + 20)), *((int*)(text + 16)));
+			game_do_command(0, 1, 0, *((int*)(text + 24)), GAME_COMMAND_33, *((int*)(text + 32)), *((int*)(text + 28)));
 		}
 	}
 }
@@ -1616,11 +1616,11 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
 		break;
 	case WIDX_INCREASE_PRICE:
 		newFee = min(1000, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) + 10);
-		game_do_command(0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
 		break;
 	case WIDX_DECREASE_PRICE:
 		newFee = max(0, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) - 10);
-		game_do_command(0, 1, 0, 0, 39, newFee, 0);
+		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
 		break;
 	}
 }

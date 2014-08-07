@@ -387,7 +387,7 @@ static void window_cheats_misc_mouseup()
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
-		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, 34, 0, 0);
+		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_DECREASE_GAME_SPEED:

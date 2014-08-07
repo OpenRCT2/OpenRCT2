@@ -807,7 +807,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 	RCT2_CALLPROC_EBPSAFE(0x006A77FF);
 
 	// Try and show provisional path
-	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, 17, 0, 0);
+	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
 
 	if (cost != MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
@@ -863,7 +863,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
 
 	// Try and place path
-	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, 17, 0, 0);
+	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
 
 	if (cost == MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 1;
@@ -952,7 +952,7 @@ loc_6A78EF:
 	
 	// Remove path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
-	game_do_command(RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16), 1, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16), mapElement->base_height, 19, 0, 0);
+	game_do_command(RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16), 1, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16), mapElement->base_height, GAME_COMMAND_REMOVE_PATH, 0, 0);
 
 	// Move selection
 	edge ^= 2;
