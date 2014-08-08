@@ -474,8 +474,8 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 	}
 
 	// Draw thumbs on the sides
-	gfx_draw_sprite(dpi, SPR_RATING_LOW, x - 14, y);
-	gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + 92, y);
+	gfx_draw_sprite(dpi, SPR_RATING_LOW, x - 14, y, 0);
+	gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + 92, y, 0);
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
@@ -532,13 +532,13 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y);
+	gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y, 0);
 
 	// Next weather
 	if (climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) < 960) {
-			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5);
-			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y);
+			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
+			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y, 0);
 		}
 	}
 }
@@ -582,7 +582,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
 	switch (newsItem->type) {
 	case NEWS_ITEM_RIDE:
-		gfx_draw_sprite(dpi, SPR_RIDE, x, y);
+		gfx_draw_sprite(dpi, SPR_RIDE, x, y, 0);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
@@ -680,16 +680,16 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 
 		break;
 	case NEWS_ITEM_MONEY:
-		gfx_draw_sprite(dpi, SPR_FINANCE, x, y);
+		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
 	case NEWS_ITEM_RESEARCH:
-		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y);
+		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y, 0);
 		break;
 	case NEWS_ITEM_PEEPS:
-		gfx_draw_sprite(dpi, SPR_GUESTS, x, y);
+		gfx_draw_sprite(dpi, SPR_GUESTS, x, y, 0);
 	case NEWS_ITEM_AWARD:
-		gfx_draw_sprite(dpi, SPR_AWARD, x, y);
+		gfx_draw_sprite(dpi, SPR_AWARD, x, y, 0);
 	case NEWS_ITEM_GRAPH:
-		gfx_draw_sprite(dpi, SPR_GRAPH, x, y);
+		gfx_draw_sprite(dpi, SPR_GRAPH, x, y, 0);
 		break;
 	}
 }

@@ -608,7 +608,7 @@ static void window_guest_list_paint()
 		dpi,
 		i,
 		(window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->x,
-		window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->y
+		window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->y, 0
 	);
 
 	// Tab 2 image
@@ -617,7 +617,7 @@ static void window_guest_list_paint()
 		dpi,
 		5568 + i,
 		window_guest_list_widgets[WIDX_TAB_2].left + w->x,
-		window_guest_list_widgets[WIDX_TAB_2].top + w->y
+		window_guest_list_widgets[WIDX_TAB_2].top + w->y, 0
 	);
 
 	// Filter description
@@ -713,11 +713,11 @@ static void window_guest_list_scrollpaint()
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
 					// Guest face
-					gfx_draw_sprite(dpi, get_guest_face_sprite_small(peep), 118, y);
+					gfx_draw_sprite(dpi, get_guest_face_sprite_small(peep), 118, y, 0);
 
 					// Tracking icon
 					if (peep->flags & PEEP_FLAGS_TRACKING)
-						gfx_draw_sprite(dpi, 5129, 112, y);
+						gfx_draw_sprite(dpi, 5129, 112, y, 0);
 					
 					// Action
 					
@@ -775,7 +775,7 @@ static void window_guest_list_scrollpaint()
 				// Draw guest faces
 				numGuests = _window_guest_list_groups_num_guests[i];
 				for (j = 0; j < 56 && j < numGuests; j++)
-					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9);
+					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9, 0);
 
 				// Draw action
 				RCT2_GLOBAL(0x013CE952, uint32) = _window_guest_list_groups_argument_1[i];

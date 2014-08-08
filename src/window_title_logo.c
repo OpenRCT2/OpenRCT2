@@ -112,7 +112,7 @@ static void window_title_logo_paint()
 	#endif
 
 
-	gfx_draw_sprite(dpi, SPR_MENU_LOGO, w->x, w->y);
+	gfx_draw_sprite(dpi, SPR_MENU_LOGO, w->x, w->y, 0);
 
 	x = 0;
 	y = 105;

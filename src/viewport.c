@@ -47,7 +47,7 @@ struct paint_struct{
 	uint32 var_1C;
 	paint_struct* var_20;
 	paint_struct* var_24;
-	uint8 var_28;
+	uint8 sprite_type;
 };
 
 /**
@@ -285,8 +285,8 @@ void sub_0x68615B(int ebp){
 }
 
 void sub_688485(){
-	RCT2_CALLPROC_EBPSAFE(0x688485);
-	return;
+	//RCT2_CALLPROC_EBPSAFE(0x688485);
+	//return;
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
 	paint_struct* previous_ps = ps;
@@ -303,7 +303,7 @@ void sub_688485(){
 		//push ebp
 		int ecx = ps->var_14;
 		int edx = ps->var_16;
-		if (ps->var_28 == 2){
+		if (ps->sprite_type == 2){
 			if (dpi->zoom_level >= 1){
 				ecx &= 0xFFFE;
 				edx &= 0xFFFE;
@@ -314,24 +314,24 @@ void sub_688485(){
 			}
 		}
 		int ebx = ps->image_id;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x2){
-			if (ps->var_28  == 3){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+			if (ps->sprite_type == 3){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1){
-			if (ps->var_28  == 9){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE){
+			if (ps->sprite_type == 9){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4){
-			if (ps->var_28  == 10 || ps->var_28  == 12 || ps->var_28  == 9 || ps->var_28  == 5){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
 				if (!(ebx & 0x40000000)){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -342,7 +342,7 @@ void sub_688485(){
 		if (!(ps->var_1A & 1)){
 			//push ebp??
 			uint32 _ebp = ps->var_04;
-			gfx_draw_sprite(dpi, ebx, ecx, edx);
+			gfx_draw_sprite(dpi, ebx, ecx, edx, _ebp);
 			//pop ebp??
 			if (ps->var_20 != 0){
 				ps = ps->var_20;
@@ -386,8 +386,8 @@ void sub_688485(){
 		ecx += ps->var_14;
 		edx += ps->var_16;
 		ebx = *(uint32*)esi;
-		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x2){
-			if (ps->var_28 == 3){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+			if (ps->sprite_type == 3){
 				if (ebx & 0x40000000){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -395,8 +395,8 @@ void sub_688485(){
 			}
 		}
 
-		if (RCT2_GLOBAL(0x141E9E4, uint16) & 0x4){
-			if (ps->var_28 == 5){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+			if (ps->sprite_type == 5){
 				if (ebx & 0x40000000){
 					ebx &= 0x7FFFF;
 					ebx |= 0x41880000;
@@ -406,7 +406,7 @@ void sub_688485(){
 
 		if (!(*((uint8*)(esi + 0xC)) & 1)){
 			int _ebp = ps->var_04;
-			gfx_draw_sprite(dpi, ebx, ecx, edx);
+			gfx_draw_sprite(dpi, ebx, ecx, edx, _ebp);
 			//call 67A28E draw_sprite
 			//pop ebp
 			//pop esi
@@ -419,8 +419,7 @@ void sub_688485(){
 			//pop ebp
 			//jmp 688491 i.e. start of previous loop
 		}
-		int a, b, c = ps->var_04;
-		RCT2_CALLFUNC_X(0x00681DE2, &a, &ebx, &ecx, &edx, &b,(int*) &dpi, &c);
+		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0, (int)dpi, *(uint32*)(esi + 0x4));
 		//call 681DE2
 		//pop ebp
 		//pop esi

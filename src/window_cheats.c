@@ -508,7 +508,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = 5261;
 		if (w->page == WINDOW_CHEATS_PAGE_MONEY)
 			sprite_idx += (w->frame_no / 2) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);	
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top, 0);
 	}
 	
 	// Guests tab
@@ -516,13 +516,13 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = 5568;
 		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
 			sprite_idx += (w->frame_no / 3) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top, 0);
 	}
 
 	// Misc tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_3))) {
 		sprite_idx = SPR_TAB_QUESTION;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 	}
 }
 
