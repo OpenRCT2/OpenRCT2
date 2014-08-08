@@ -285,13 +285,17 @@ void sub_0x68615B(int ebp){
 }
 
 void sub_688485(){
+	RCT2_CALLPROC_EBPSAFE(0x688485);
+	return;
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
 	paint_struct* previous_ps = ps;
 	int esi;
 	while (1){
 		ps = ps->var_24;
-		if (!ps) return;
+		if (!ps){ 
+			return; 
+		}
 
 		previous_ps = ps;
 	x68849D:
@@ -415,8 +419,8 @@ void sub_688485(){
 			//pop ebp
 			//jmp 688491 i.e. start of previous loop
 		}
-
-		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0,(int) dpi, ps->var_04);
+		int a, b, c = ps->var_04;
+		RCT2_CALLFUNC_X(0x00681DE2, &a, &ebx, &ecx, &edx, &b,(int*) &dpi, &c);
 		//call 681DE2
 		//pop ebp
 		//pop esi
@@ -782,9 +786,9 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_0x68615B(0xEE788C); //Memory copy
 		sub_0x68B6C2();
 		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
-		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
+		RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, dpi2, ebp); //Move memory
 		sub_688485();
-		//RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+		//RCT2_CALLPROC_EBPSAFE(0x688485); //Big function call
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
 		if ((weather_colour != -1) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000) && (RCT2_GLOBAL(0x9DEA6F, uint8) & 1)){
