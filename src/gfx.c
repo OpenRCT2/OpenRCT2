@@ -2323,3 +2323,60 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 	rct2_free(newDrawPixelInfo);
 	return NULL;
 }
+
+/***
+*
+* rct2: 0x00684027
+*
+* ebp used to be a parameter but it is always zero
+* left   : eax
+* top    : ebx
+* width  : ecx
+* height : edx
+* x_start: edi
+* y_start: esi
+*/
+void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uint32 y_start){
+	uint8* pattern = RCT2_GLOBAL(RCT2_ADDRESS_RAIN_PATTERN, uint8*);
+	uint8 pattern_x_space = *pattern++;
+	uint8 pattern_y_space = *pattern++;
+
+	uint8 pattern_start_x_offset = x_start % pattern_x_space;
+	uint8 pattern_start_y_offset = y_start % pattern_y_space;;
+
+	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
+	uint8 pattern_y_pos = pattern_start_y_offset;
+
+	//Stores the colours of changed pixels
+	uint32* pixel_store = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
+	pixel_store += RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
+
+	for (; height != 0; height--){
+		uint8 pattern_x = pattern[pattern_y_pos * 2];
+		if (pattern_x != 0xFF){
+			if (RCT2_GLOBAL(0x9AC00C, uint32) <= 0x1F38){
+
+				int final_pixel_offset = width + pixel_offset;
+
+				int x_pixel_offset = pixel_offset;
+				x_pixel_offset += ((uint8)(pattern_x - pattern_start_x_offset)) % pattern_x_space;
+
+				uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
+				for (; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space){
+					uint8 current_pixel = dpi->bits[x_pixel_offset];
+					dpi->bits[x_pixel_offset] = pattern_pixel;
+					RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32)++;
+
+					//Store colour and position
+					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
+				}
+			}
+		}
+
+		pixel_offset += dpi->pitch + dpi->width;
+
+		pattern_y_pos++;
+		pattern_y_pos %= pattern_y_space;
+	}
+}

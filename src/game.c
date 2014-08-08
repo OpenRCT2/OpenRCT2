@@ -51,50 +51,6 @@ void game_handle_keyboard_input();
 
 void process_mouse_over(int x, int y);
 
-void sub_0x684027(int left, int top, int width, int height, int ebp, uint32 edi, uint32 esi){
-	uint8* pattern = RCT2_ADDRESS(0x9AC010, uint8*)[ebp];
-	uint8 pattern_x_space = *pattern++;
-	uint8 pattern_y_space = *pattern++;
-
-	uint8 pattern_start_x_offset = edi % pattern_x_space;
-	uint8 pattern_start_y_offset = esi % pattern_y_space;;
-
-	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
-	uint8 pattern_y_pos = pattern_start_y_offset;
-	
-	//Stores the colours of changed pixels
-	uint32* pixel_store = RCT2_ADDRESS(0xEDF850, uint32);
-	pixel_store += RCT2_GLOBAL(0x9AC00C, uint32);
-
-	for (; height != 0; height--){
-		uint8 pattern_x = pattern[pattern_y_pos * 2];
-		if (pattern_x != 0xFF){
-			if (RCT2_GLOBAL(0x9AC00C, uint32) <= 0x1F38){
-				
-
-				int final_pixel_offset = width + pixel_offset;
-
-				int x_pixel_offset = pixel_offset;
-				x_pixel_offset += (pattern_x - pattern_start_x_offset)%pattern_x_space;
-
-				uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
-				for( ; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space){
-					uint8 current_pixel = dpi->bits[_pixel_offset];
-					dpi->bits[_pixel_offset] = pattern_pixel;
-					RCT2_GLOBAL(0x9AC00C, uint32)++;
-					*pixel_store++ = (x_pixel_offset << 8) | current_pixel; //Store colour and position
-				}
-			}
-		}
-
-		pixel_offset += dpi->pitch + dpi->width;
-
-		pattern_y_pos++;
-		pattern_y_pos %= pattern_y_space;
-	}
-}
-
 typedef void(*draw_rain_func)(int left, int top, int width, int height);
 
 /**
@@ -109,8 +65,7 @@ void draw_light_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
@@ -118,8 +73,7 @@ void draw_light_rain(int left, int top, int width, int height){
 
 	edi += left;
 	esi += top;
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 }
 
 /**
@@ -134,8 +88,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x10;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 6) + 5;
@@ -144,8 +97,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
@@ -154,8 +106,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
@@ -164,8 +115,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	sub_0x684027(left, top, width, height, 0, edi, esi);
-	//RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 }
 
 /**
@@ -484,7 +434,6 @@ void update_rain_animation()
 
 	// Get rain draw function and draw rain
 	uint32 draw_rain_func = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8);
-	draw_rain_func = 2;
 	if (draw_rain_func > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
 		draw_rain_animation(draw_rain_func);
 }
