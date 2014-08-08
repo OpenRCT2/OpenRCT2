@@ -760,7 +760,8 @@ enum {
 	STR_PAGE_4 = STR_PAGE_1 + 3,
 	STR_PAGE_5 = STR_PAGE_1 + 4,
 
-	STR_COUNT = 4000
+	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
+	STR_COUNT = 32768
 };
 
 #endif

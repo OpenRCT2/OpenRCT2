@@ -89,7 +89,7 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		2462},					// tab 1
 	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		2462},					// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		2462},					// tab 3
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		STR_VERY_HIGH,	STR_VERY_HIGH},			// high money
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_VERY_HIGH},			// high money
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_FREE,		STR_FREE},				//Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
