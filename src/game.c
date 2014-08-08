@@ -65,7 +65,7 @@ void draw_light_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
@@ -73,8 +73,7 @@ void draw_light_rain(int left, int top, int width, int height){
 
 	edi += left;
 	esi += top;
-
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 }
 
 /**
@@ -89,7 +88,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x10;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 6) + 5;
@@ -98,7 +97,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
@@ -107,7 +106,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 
 	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
 	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
@@ -116,7 +115,7 @@ void draw_heavy_rain(int left, int top, int width, int height){
 	edi += left;
 	esi += top;
 
-	RCT2_CALLPROC_X(0x00684027, left, top, width, height, esi, edi, 0);
+	gfx_draw_rain(left, top, width, height, edi, esi);
 }
 
 /**
@@ -128,6 +127,9 @@ const draw_rain_func draw_rain_function[] = {
 	&draw_light_rain,	// Light rain
 	&draw_heavy_rain	// Heavy rain 
 };
+
+
+
 
 /**
 *

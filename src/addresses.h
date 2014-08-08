@@ -84,6 +84,11 @@
 #define RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS			0x009ABDE8
 #define RCT2_ADDRESS_DIRTY_BLOCK_ROWS				0x009ABDEC
 
+//This is the number of pixels that are in the
+//rain_pixel_store
+#define RCT2_ADDRESS_NO_RAIN_PIXELS					0x009AC00C
+#define RCT2_ADDRESS_RAIN_PATTERN					0x009AC010
+
 #define RCT2_ADDRESS_LIGHTNING_ACTIVE				0x009AC068
 
 #define RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR		0x009AC118
@@ -162,6 +167,10 @@
 #define RCT2_ADDRESS_G1_ELEMENTS					0x009EBD28
 
 #define RCT2_ADDRESS_PATH_TYPES						0x009ADA14
+
+//Every pixel changed by rain is stored.
+//32bit (pixel_offset 24 bit)(pixel_colour 8 bit)
+#define RCT2_ADDRESS_RAIN_PIXEL_STORE				0x00EDF850
 
 #define RCT2_ADDRESS_MAP_IMAGE_DATA					0x00F1AD68
 
