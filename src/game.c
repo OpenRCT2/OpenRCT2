@@ -52,8 +52,6 @@ void game_handle_keyboard_input();
 void process_mouse_over(int x, int y);
 
 void sub_0x684027(int left, int top, int width, int height, int ebp, uint32 edi, uint32 esi){
-	uint32 eax = left,  ecx = width, edx = height;
-	uint32 ebx = top;
 	uint8* pattern = RCT2_ADDRESS(0x9AC010, uint8*)[ebp];
 	uint8 pattern_x_space = *pattern++;
 	uint8 pattern_y_space = *pattern++;
@@ -70,32 +68,29 @@ void sub_0x684027(int left, int top, int width, int height, int ebp, uint32 edi,
 	pixel_store += RCT2_GLOBAL(0x9AC00C, uint32);
 
 	for (; height != 0; height--){
-		int al = pattern[pattern_y_pos * 2];
-		if (al != 0xFF){
+		uint8 pattern_x = pattern[pattern_y_pos * 2];
+		if (pattern_x != 0xFF){
 			if (RCT2_GLOBAL(0x9AC00C, uint32) <= 0x1F38){
-				int _pixel_offset = pixel_offset;
+				
 
-				eax = al - pattern_start_x_offset;
-				edx = width;
-				eax %= pattern_x_space;
-				//eax &= RCT2_GLOBAL(0xEE7868, uint32);
-				edx += _pixel_offset;
-				_pixel_offset += eax;
-				if (_pixel_offset < edx){
-					uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
-					//inner loop
-					while (_pixel_offset < edx){
-						uint8 current_pixel = dpi->bits[_pixel_offset];
-						dpi->bits[_pixel_offset] = pattern_pixel;
-						RCT2_GLOBAL(0x9AC00C, uint32)++;
-						*pixel_store++ = (_pixel_offset << 8) | current_pixel; //Store colour and position
-						_pixel_offset += pattern_x_space;
-					}
+				int final_pixel_offset = width + pixel_offset;
+
+				int x_pixel_offset = pixel_offset;
+				x_pixel_offset += (pattern_x - pattern_start_x_offset)%pattern_x_space;
+
+				uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
+				for( ; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space){
+					uint8 current_pixel = dpi->bits[_pixel_offset];
+					dpi->bits[_pixel_offset] = pattern_pixel;
+					RCT2_GLOBAL(0x9AC00C, uint32)++;
+					*pixel_store++ = (x_pixel_offset << 8) | current_pixel; //Store colour and position
 				}
 			}
 		}
-		pattern_y_pos++;
+
 		pixel_offset += dpi->pitch + dpi->width;
+
+		pattern_y_pos++;
 		pattern_y_pos %= pattern_y_space;
 	}
 }
