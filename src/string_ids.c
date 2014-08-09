@@ -1089,7 +1089,6 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_NEWLINE_X_Y,				"NEWLINE_X_Y"			},
 	{ FORMAT_INLINE_SPRITE,				"INLINE_SPRITE"			},
 	{ FORMAT_ENDQUOTES,					"ENDQUOTES"				},
-	{ FORMAT_ARGUMENT_CODE_START,		"ARGUMENT_CODE_START"	},
 	{ FORMAT_COMMA32,					"COMMA32"				},
 	{ FORMAT_INT32,						"INT32"					},
 	{ FORMAT_COMMA2DP32,				"COMMA2DP32"			},
@@ -1109,7 +1108,6 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_REALTIME,					"REALTIME"				},
 	{ FORMAT_LENGTH,					"LENGTH"				},
 	{ FORMAT_SPRITE,					"SPRITE"				},
-	{ FORMAT_COLOUR_CODE_START,			"COLOUR_CODE_START"		},
 	{ FORMAT_BLACK,						"BLACK"					},
 	{ FORMAT_GREY,						"GREY"					},
 	{ FORMAT_WHITE,						"WHITE"					},
@@ -1124,7 +1122,6 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_LIGHTPINK,					"LIGHTPINK"				},
 	{ FORMAT_PEARLAQUA,					"PEARLAQUA"				},
 	{ FORMAT_PALESILVER,				"PALESILVER"			},
-	{ FORMAT_COLOUR_CODE_END,			"COLOUR_CODE_END"		},
 	{ FORMAT_AMINUSCULE,				"AMINUSCULE"			},
 	{ FORMAT_UP,						"UP"					},
 	{ FORMAT_POUND,						"POUND"					},
@@ -1153,7 +1150,7 @@ char format_get_code(const char *token)
 {
 	int i;
 	for (i = 0; i < countof(format_code_tokens); i++)
-		if (strcmpi(token, format_code_tokens[i].token) == 0)
+		if (_strcmpi(token, format_code_tokens[i].token) == 0)
 			return format_code_tokens[i].code;
 	return 0;
 }
@@ -1319,7 +1316,7 @@ void format_comma_separated_fixed_2dp(char **dest, int value)
 
 void format_currency(char **dest, int value)
 {
-	rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;
@@ -1351,7 +1348,7 @@ void format_currency(char **dest, int value)
 
 void format_currency_2dp(char **dest, int value)
 {
-	rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;

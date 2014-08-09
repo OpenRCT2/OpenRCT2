@@ -2380,3 +2380,32 @@ void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uin
 		pattern_y_pos %= pattern_y_space;
 	}
 }
+
+void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+{
+	char buffer[128];
+	int width;
+
+	format_string(buffer, format, args);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	width = gfx_get_string_width(buffer);
+	gfx_draw_string(dpi, buffer, colour, x, y);
+	gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
+	if (text_palette[2] != 0)
+		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
+}
+
+void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+{
+	char buffer[128];
+	int width;
+
+	format_string(buffer, format, args);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	width = gfx_get_string_width(buffer);
+	x -= width;
+	gfx_draw_string(dpi, buffer, colour, x, y);
+	gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
+	if (text_palette[2] != 0)
+		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
+}

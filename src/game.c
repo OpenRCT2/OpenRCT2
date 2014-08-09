@@ -2089,7 +2089,7 @@ static uint32 game_do_command_table[58];
  */
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 }
 
 /**

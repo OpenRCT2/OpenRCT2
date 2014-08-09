@@ -72,7 +72,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y);
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y);
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y);
 void gfx_transpose_palette(int pal, unsigned char product);
 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
@@ -95,5 +95,8 @@ void gfx_invalidate_screen();
 void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uint32 y_start);
 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
+
+void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
+void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 
 #endif
