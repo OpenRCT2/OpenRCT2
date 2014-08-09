@@ -819,7 +819,6 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 */
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level;
-
 	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
 
@@ -1050,33 +1049,33 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	
 	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
 
-	//Zooming code has been integrated into main code.
-	//if (dpi->zoom_level >= 1){ //These have not been tested
-	//	//something to do with zooming
-	//	if (dpi->zoom_level == 1){
-	//		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-	//		return;
-	//	}
-	//	if (dpi->zoom_level == 2){
-	//		RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-	//		return;
-	//	}
-	//	RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-	//	return;
-	//}
-	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
-		rct_drawpixelinfo zoomed_dpi = {
-			.bits = dpi->bits,
-			.x = dpi->x >> 1,
-			.y = dpi->y >> 1,
-			.height = dpi->height>>1,
-			.width = dpi->width>>1,
-			.pitch = (dpi->width+dpi->pitch)-(dpi->width>>1),//In the actual code this is dpi->pitch but that doesn't seem correct.
-			.zoom_level = dpi->zoom_level - 1
-		};
-		gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+	//Zooming code has been integrated into main code but is not working.
+	if (dpi->zoom_level >= 1){ //These have not been tested
+		//something to do with zooming
+		if (dpi->zoom_level == 1){
+			RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
+			return;
+		}
+		if (dpi->zoom_level == 2){
+			RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
+			return;
+		}
+		RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
 		return;
 	}
+	//if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
+	//	rct_drawpixelinfo zoomed_dpi = {
+	//		.bits = dpi->bits,
+	//		.x = dpi->x >> 1,
+	//		.y = dpi->y >> 1,
+	//		.height = dpi->height>>1,
+	//		.width = dpi->width>>1,
+	//		.pitch = dpi->pitch,//In the actual code this is dpi->pitch but that doesn't seem correct.
+	//		.zoom_level = dpi->zoom_level - 1
+	//	};
+	//	gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+	//	return;
+	//}
 
 	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
 		return;
