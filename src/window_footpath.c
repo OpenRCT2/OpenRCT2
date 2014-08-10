@@ -687,7 +687,7 @@ static void window_footpath_paint()
 		// Draw construction image
 		x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
 		y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
-		gfx_draw_sprite(dpi, image, x, y);
+		gfx_draw_sprite(dpi, image, x, y, 0);
 
 		// Draw build this... label
 		x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;

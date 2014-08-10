@@ -33,6 +33,28 @@
 
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
+typedef struct paint_struct paint_struct;
+
+struct paint_struct{
+	uint32 image_id;		// 0x00
+	uint32 var_04;
+	uint16 attached_x;		// 0x08
+	uint16 attached_y;		// 0x0A
+	uint8 var_0C;
+	uint8 pad_0D;
+	paint_struct* next_attached_ps;	//0x0E
+	uint8 pad_12[2];
+	uint16 x;				// 0x14
+	uint16 y;				// 0x16
+	uint8 pad_18[2];
+	uint8 var_1A;
+	uint8 pad_1B;
+	paint_struct* attached_ps;	//0x1C
+	paint_struct* var_20;
+	paint_struct* var_24;
+	uint8 sprite_type;		//0x28
+};
+
 /**
  *  This is not a viewport function. It is used to setup many variables for
  *  multiple things.
@@ -267,10 +289,242 @@ void sub_0x68615B(int ebp){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
+/***
+ *
+ * rct2: 0x00688596
+ * Part of 0x688485
+ */
+void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixelinfo* dpi){
+	for (; attached_ps; attached_ps = attached_ps->next_attached_ps){
+		int x = attached_ps->attached_x + ps->x;
+		int y = attached_ps->attached_y + ps->y;
+
+		int image_id = attached_ps->image_id;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+			if (ps->sprite_type == 3){
+				if (image_id & 0x40000000){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+			if (ps->sprite_type == 5){
+				if (image_id & 0x40000000){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (!(attached_ps->var_0C & 1)){
+			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+		}
+		else{
+			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, attached_ps->var_04);
+		}
+	}
+}
+
+void sub_688485(){
+	//RCT2_CALLPROC_EBPSAFE(0x688485);
+	//return;
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
+	paint_struct* previous_ps = ps->var_24;
+
+	for (ps = ps->var_24; ps;){
+		int x = ps->x;
+		int y = ps->y;
+		if (ps->sprite_type == 2){
+			if (dpi->zoom_level >= 1){
+				x &= 0xFFFE;
+				y &= 0xFFFE;
+				if (dpi->zoom_level >= 2){
+					x &= 0xFFFC;
+					y &= 0xFFFC;
+				}
+			}
+		}
+		int image_id = ps->image_id;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+			if (ps->sprite_type == 3){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE){
+			if (ps->sprite_type == 9){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (!(ps->var_1A & 1)){
+			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+
+			if (ps->var_20 != 0){
+				ps = ps->var_20;
+				continue;
+			}
+			paint_attached_ps(ps, ps->attached_ps, dpi);
+
+			ps = previous_ps->var_24;
+			previous_ps = ps;
+			continue;
+		}
+		RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
+
+		if (ps->var_20 != 0){
+			ps = ps->var_20;
+			continue;
+		}
+
+		paint_attached_ps(ps, ps->attached_ps, dpi);
+		ps = previous_ps->var_24;
+		previous_ps = ps;
+	}
+
+}
+
+int sub_0x686806(rct_sprite* sprite, int eax, int ecx, int edx){
+	int ebp = (eax >> 8) & 0xFF;
+	edx <<= 16;
+	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
+	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	edx = (edx >> 16) | (ebp << 16);
+	ebp = RCT2_GLOBAL(0xEE7888, uint32);
+	if ((uint32)ebp >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+	//686840 not finished
+
+	return 0;
+}
+
+/**
+*  Litter Paint Setup??
+*  rct2: 0x006736FC
+*/
+void sub_0x6736FC(rct_litter* litter, int ebx, int edx){
+	rct_drawpixelinfo* dpi;
+
+	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level != 0)return; //If zoomed at all no litter drawn
+
+	int ebp = litter->var_01;
+	//push litter
+	ebx >>= 3;
+	ebx &= RCT2_ADDRESS(0x97EF6C, uint32)[ebp * 2 + 1];
+	ebx += RCT2_ADDRESS(0x97EF6C, uint32)[ebp * 2];
+	int ecx = 0;
+	int edi = 4;
+	int esi = 4;
+	int eax = 0xFF00;
+	RCT2_GLOBAL(0x9DEA52, uint16) = 0xFFFC;
+	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
+	RCT2_GLOBAL(0x9DEA56, uint16) = edx + 2;
+
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION,uint32)){
+	case 0:
+		//0x686806
+		break;
+	case 1:
+		//0x6869b2
+		break;
+	case 2:
+		//0x686b6f
+		break;
+	case 3:
+		//0x686d31
+		break;
+	}
+}
+
+
+/**
+*  Paint Quadrant
+*  rct2: 0x0069E8B0
+*/
+void sub_0x69E8B0(int eax, int ecx){
+	int _eax = eax, _ecx = ecx;
+	rct_drawpixelinfo* dpi;
+
+
+	if (RCT2_GLOBAL(0x9DEA6F,uint8) & 1) return;
+	
+	dpi = RCT2_GLOBAL(0x140E9A8,rct_drawpixelinfo*);
+	
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)return;
+	
+	if (dpi->zoom_level > 2) return;
+	
+	if (eax > 0x2000)return;
+	if (ecx > 0x2000)return;
+	
+	//push eax, ecx
+	eax = (eax&0x1FE0)<<3 | (ecx>>5);
+	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
+	if (sprite_idx == 0xFFFF) return;
+
+	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.var_02){
+		spr = &g_sprite_list[sprite_idx];
+		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+		if (dpi->y + dpi->height <= spr->unknown.var_18) continue;
+		if (spr->unknown.var_1C <= dpi->y)continue;
+		if (dpi->x + dpi->width <= spr->unknown.var_16)continue;
+		if (spr->unknown.var_1A <= dpi->x)continue;
+
+		int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
+		int ebp = spr->unknown.sprite_identifier;
+		ebx <<= 3;
+		eax = spr->unknown.x;
+		ebx += spr->unknown.sprite_direction;
+		ecx = spr->unknown.y;
+		ebx &= 0x1F;
+		RCT2_GLOBAL(0x9DE568, uint16) = spr->unknown.x;
+		RCT2_GLOBAL(0x9DE570, uint8) = 2;
+		RCT2_GLOBAL(0x9DE56C, uint16) = spr->unknown.y;
+		int edx = spr->unknown.z;
+		switch (spr->unknown.sprite_identifier){
+		case SPRITE_IDENTIFIER_VEHICLE:
+			RCT2_CALLPROC_X(0x6D4244, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_PEEP:
+			RCT2_CALLPROC_X(0x68F0FB, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_FLOATING_TEXT:
+			RCT2_CALLPROC_X(0x672AC9, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+		case SPRITE_IDENTIFIER_LITTER:
+			RCT2_CALLPROC_X(0x6736FC, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+			break;
+			//I am pretty sure there are no other sprite identifier types
+		}
+		//RCT2_CALLPROC_X(RCT2_ADDRESS(0x98BC40,uint32)[spr->unknown.sprite_identifier], eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
+	}
+
+	//RCT2_CALLPROC_X(0x69E8B0, _eax, 0, _ecx, 0, 0, 0, 0);
+	//return;
+}
+
 /**
 *
-*  rct2: 0x0068615B
-*  ebp: ebp
+*  rct2: 0x0068B6C2
 */
 void sub_0x68B6C2(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -294,16 +548,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; --i){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 			ax -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 		}
 		break;
@@ -326,16 +580,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 		}
 		break;
@@ -357,16 +611,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx -= 0x20;
 		}
 		break;
@@ -389,16 +643,16 @@ void sub_0x68B6C2(){
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			cx -= 0x20;
 			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x69E8B0, ax, 0, cx, 0, 0, 0, 0);
+			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 		}
 		break;
@@ -498,8 +752,9 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_0x68615B(0xEE788C); //Memory copy
 		sub_0x68B6C2();
 		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
-		RCT2_CALLFUNC_X(0x688217, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Move memory
-		RCT2_CALLFUNC_X(0x688485, &start_x, &ebx, &ecx, (int*)&bits_pointer, &esi, (int*)&dpi2, &ebp); //Big function call
+		RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, (int)dpi2, ebp); //Move memory
+		sub_688485();
+		//RCT2_CALLPROC_EBPSAFE(0x688485); //Big function call
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
 		if ((weather_colour != -1) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000) && (RCT2_GLOBAL(0x9DEA6F, uint8) & 1)){

@@ -635,7 +635,7 @@ static void window_finances_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w
 			spriteIndex += frame;
 		}
 
-		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top);
+		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
 	}
 }
 

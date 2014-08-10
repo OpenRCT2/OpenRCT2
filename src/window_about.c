@@ -200,8 +200,8 @@ static void window_about_paint()
 	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, (void*)0x009E2D28);
 
 	// Images
-	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, w->y + 40);
-	gfx_draw_sprite(dpi, SPR_CREDITS_INFOGRAMES, w->x + 50, w->y + 247);
+	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, w->y + 40, 0);
+	gfx_draw_sprite(dpi, SPR_CREDITS_INFOGRAMES, w->x + 50, w->y + 247, 0);
 
 	// Licence
 	gfx_draw_string_left(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, 0, 0, w->x + 157, w->y + 257);

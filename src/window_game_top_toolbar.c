@@ -558,5 +558,5 @@ static void window_game_top_toolbar_paint()
 	if (widget_is_pressed(w, WIDX_STAFF))
 		imgId++;
 	imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
-	gfx_draw_sprite(dpi, imgId, x, y);
+	gfx_draw_sprite(dpi, imgId, x, y, 0);
 }

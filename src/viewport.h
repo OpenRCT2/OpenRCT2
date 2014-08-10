@@ -42,6 +42,7 @@ enum {
 	VIEWPORT_FLAG_15 = (1 << 15)
 };
 
+
 // rct2: 0x014234BC
 extern rct_viewport* g_viewport_list;
 
