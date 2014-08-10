@@ -38,16 +38,21 @@ typedef struct paint_struct paint_struct;
 struct paint_struct{
 	uint32 image_id;		// 0x00
 	uint32 var_04;
-	uint8 pad_08[12];
-	uint16 var_14;
-	uint16 var_16;
+	uint16 attached_x;		// 0x08
+	uint16 attached_y;		// 0x0A
+	uint8 var_0C;
+	uint8 pad_0D;
+	paint_struct* next_attached_ps;	//0x0E
+	uint8 pad_12[2];
+	uint16 x;				// 0x14
+	uint16 y;				// 0x16
 	uint8 pad_18[2];
 	uint8 var_1A;
 	uint8 pad_1B;
-	uint32 var_1C;
+	paint_struct* attached_ps;	//0x1C
 	paint_struct* var_20;
 	paint_struct* var_24;
-	uint8 sprite_type;
+	uint8 sprite_type;		//0x28
 };
 
 /**
@@ -284,151 +289,113 @@ void sub_0x68615B(int ebp){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
-void sub_688485(){
-	//RCT2_CALLPROC_EBPSAFE(0x688485);
-	//return;
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
-	paint_struct* previous_ps = ps;
-	int esi;
-	while (1){
-		ps = ps->var_24;
-		if (!ps){ 
-			return; 
-		}
+/***
+ *
+ * rct2: 0x00688596
+ * Part of 0x688485
+ */
+void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixelinfo* dpi){
+	for (; attached_ps; attached_ps = attached_ps->next_attached_ps){
+		int x = attached_ps->attached_x + ps->x;
+		int y = attached_ps->attached_y + ps->y;
 
-		previous_ps = ps;
-	x68849D:
-		previous_ps = previous_ps;
-		//push ebp
-		int ecx = ps->var_14;
-		int edx = ps->var_16;
-		if (ps->sprite_type == 2){
-			if (dpi->zoom_level >= 1){
-				ecx &= 0xFFFE;
-				edx &= 0xFFFE;
-				if (dpi->zoom_level >= 2){
-					ecx &= 0xFFFC;
-					edx &= 0xFFFC;
-				}
-			}
-		}
-		int ebx = ps->image_id;
+		int image_id = attached_ps->image_id;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
 			if (ps->sprite_type == 3){
-				if (!(ebx & 0x40000000)){
-					ebx &= 0x7FFFF;
-					ebx |= 0x41880000;
-				}
-			}
-		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE){
-			if (ps->sprite_type == 9){
-				if (!(ebx & 0x40000000)){
-					ebx &= 0x7FFFF;
-					ebx |= 0x41880000;
-				}
-			}
-		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
-			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
-				if (!(ebx & 0x40000000)){
-					ebx &= 0x7FFFF;
-					ebx |= 0x41880000;
-				}
-			}
-		}
-
-		if (!(ps->var_1A & 1)){
-			//push ebp??
-			uint32 _ebp = ps->var_04;
-			gfx_draw_sprite(dpi, ebx, ecx, edx, _ebp);
-			//pop ebp??
-			if (ps->var_20 != 0){
-				ps = ps->var_20;
-				goto x68849D;
-				//jmp 0x68849D
-			}
-			esi = ps->var_1C;
-			if (esi != 0){
-				goto x688596;
-				//jmp 0x688596
-			}
-			ps = previous_ps;
-			//pop ebp
-			continue;
-		}
-		//push ebp
-		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0, (int)dpi, ps->var_04);
-		//Call 681DE2
-		//pop ebp
-		if (ps->var_20 != 0){
-			ps = ps->var_20;
-			goto x68849D;
-			//jmp 68849D
-		}
-
-		esi = ps->var_1C;
-		if (esi != 0){
-			goto x688596;
-			//jmp 0x688596
-		}
-		ps = previous_ps;
-		//pop ebp
-		continue;
-
-	x688596:
-		//688596
-		//push esi
-		//push ebp
-		ecx = *(uint16*)(esi + 8);
-		edx = *(uint16*)(esi + 0xA);
-		ecx += ps->var_14;
-		edx += ps->var_16;
-		ebx = *(uint32*)esi;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
-			if (ps->sprite_type == 3){
-				if (ebx & 0x40000000){
-					ebx &= 0x7FFFF;
-					ebx |= 0x41880000;
+				if (image_id & 0x40000000){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
 				}
 			}
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
 			if (ps->sprite_type == 5){
-				if (ebx & 0x40000000){
-					ebx &= 0x7FFFF;
-					ebx |= 0x41880000;
+				if (image_id & 0x40000000){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
 				}
 			}
 		}
 
-		if (!(*((uint8*)(esi + 0xC)) & 1)){
-			int _ebp = ps->var_04;
-			gfx_draw_sprite(dpi, ebx, ecx, edx, _ebp);
-			//call 67A28E draw_sprite
-			//pop ebp
-			//pop esi
-			esi = *(uint32*)(esi + 0xE);
-			if (esi){ 
-				goto x688596;//jmp to 688596 continue;?
-			} 
-			ps = previous_ps;
+		if (!(attached_ps->var_0C & 1)){
+			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+		}
+		else{
+			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, attached_ps->var_04);
+		}
+	}
+}
+
+void sub_688485(){
+	//RCT2_CALLPROC_EBPSAFE(0x688485);
+	//return;
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
+	paint_struct* previous_ps = ps->var_24;
+
+	for (ps = ps->var_24; ps;){
+		int x = ps->x;
+		int y = ps->y;
+		if (ps->sprite_type == 2){
+			if (dpi->zoom_level >= 1){
+				x &= 0xFFFE;
+				y &= 0xFFFE;
+				if (dpi->zoom_level >= 2){
+					x &= 0xFFFC;
+					y &= 0xFFFC;
+				}
+			}
+		}
+		int image_id = ps->image_id;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+			if (ps->sprite_type == 3){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE){
+			if (ps->sprite_type == 9){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
+				if (!(image_id & 0x40000000)){
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (!(ps->var_1A & 1)){
+			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+
+			if (ps->var_20 != 0){
+				ps = ps->var_20;
+				continue;
+			}
+			paint_attached_ps(ps, ps->attached_ps, dpi);
+
+			ps = previous_ps->var_24;
+			previous_ps = ps;
 			continue;
-			//pop ebp
-			//jmp 688491 i.e. start of previous loop
 		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, ebx, ecx, edx, 0, (int)dpi, *(uint32*)(esi + 0x4));
-		//call 681DE2
-		//pop ebp
-		//pop esi
-		esi = *(uint32*)(esi + 0xE);
-		if (esi) {
-			goto x688596;//jmp to 688596 continue;?
+		RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
+
+		if (ps->var_20 != 0){
+			ps = ps->var_20;
+			continue;
 		}
-		ps = previous_ps;
-		//pop ebp
+
+		paint_attached_ps(ps, ps->attached_ps, dpi);
+		ps = previous_ps->var_24;
+		previous_ps = ps;
 	}
 
 }
@@ -512,7 +479,7 @@ void sub_0x69E8B0(int eax, int ecx){
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
 	if (sprite_idx == 0xFFFF) return;
 
-	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != 0xFFFF; sprite_idx = spr->unknown.var_02){
+	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.var_02){
 		spr = &g_sprite_list[sprite_idx];
 		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
@@ -785,7 +752,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_0x68615B(0xEE788C); //Memory copy
 		sub_0x68B6C2();
 		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
-		RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, dpi2, ebp); //Move memory
+		RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, (int)dpi2, ebp); //Move memory
 		sub_688485();
 		//RCT2_CALLPROC_EBPSAFE(0x688485); //Big function call
 
