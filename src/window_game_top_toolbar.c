@@ -51,6 +51,28 @@ enum {
 	WIDX_FASTFORWARD
 };
 
+typedef enum {
+	DDIDX_LOAD_GAME = 0,
+	DDIDX_SAVE_GAME = 1,
+	DDIDX_ABOUT = 3,
+	DDIDX_OPTIONS = 4,
+	DDIDX_SCREENSHOT = 5,
+	DDIDX_QUIT_GAME = 7,
+} FILE_MENU_DDIDX;
+
+typedef enum {
+	DDIDX_UNDERGROUND_INSIDE = 0,
+	DDIDX_HIDE_BASE = 1,
+	DDIDX_HIDE_VERTICAL = 2,
+	DDIDX_SEETHROUGH_RIDES = 4,
+	DDIDX_SEETHROUGH_SCENARY = 5,
+	DDIDX_INVISIBLE_SUPPORTS = 6,
+	DDIDX_INVISIBLE_PEEPS = 7,
+	DDIDX_LAND_HEIGHTS = 9,
+	DDIDX_TRACK_HEIGHTS = 10,
+	DDIDX_PATH_HEIGHTS = 11,
+} VIEW_MENU_DDIDX;
+
 static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x0000,			0x001D,			0,		27,		0x20000000 | SPR_TOOLBAR_PAUSE,				STR_PAUSE_GAME_TIP },				// Pause
 	{ WWT_TRNBTN,	0,	0x001E + 30,	0x003B + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_FILE,				STR_DISC_AND_GAME_OPTIONS_TIP },	// File menu
@@ -337,6 +359,8 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 			gDropdownItemsChecked |= (1 << 10);
 		if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
 			gDropdownItemsChecked |= (1 << 11);
+
+		RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
 	}
 }
 
@@ -347,6 +371,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 static void window_game_top_toolbar_dropdown()
 {
 	short widgetIndex, dropdownIndex;
+	rct_window* w;
 
 	#ifdef _MSC_VER
 	__asm mov widgetIndex, dx
@@ -363,29 +388,67 @@ static void window_game_top_toolbar_dropdown()
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		switch (dropdownIndex) {
-		case 0:		// load game
+		case DDIDX_LOAD_GAME:		// load game
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
-		case 1:		// save game
+		case DDIDX_SAVE_GAME:		// save game
 			tool_cancel();
 			save_game();
 			break;
-		case 3:		// about
+		case DDIDX_ABOUT:		// about
 			window_about_open();
 			break;
-		case 4:		// options
+		case DDIDX_OPTIONS:		// options
 			window_options_open();
 			//RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
 			break;
-		case 5:		// screenshot
+		case DDIDX_SCREENSHOT:		// screenshot
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
-		case 7:		// quit game
+		case DDIDX_QUIT_GAME:		// quit game
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		}
 	} else if (widgetIndex == WIDX_VIEW_MENU) {
-		RCT2_CALLPROC_X(0x0066CF8A, dropdownIndex, 0, 0, 0, 0, 0, 0);
+		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+		w = window_get_main();
+		if (w){
+			switch (dropdownIndex){
+			case DDIDX_UNDERGROUND_INSIDE:
+				w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+				break;
+			case DDIDX_HIDE_BASE:
+				w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
+				break;
+			case DDIDX_HIDE_VERTICAL:
+				w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
+				break;
+			case DDIDX_SEETHROUGH_RIDES:
+				w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+				break;
+			case DDIDX_SEETHROUGH_SCENARY:
+				w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+				break;
+			case DDIDX_INVISIBLE_SUPPORTS:
+				w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+				break;
+			case DDIDX_INVISIBLE_PEEPS:
+				w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+				break;
+			case DDIDX_LAND_HEIGHTS:
+				w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
+				break;
+			case DDIDX_TRACK_HEIGHTS:
+				w->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
+				break;
+			case DDIDX_PATH_HEIGHTS:
+				w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
+				break;
+			default:
+				return;
+			}
+			RCT2_CALLPROC_X(0x6EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+		}
 	}
 }
 
