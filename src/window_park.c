@@ -24,6 +24,7 @@
 #include "config.h"
 #include "date.h"
 #include "game.h"
+#include "graph.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
@@ -579,9 +580,6 @@ static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
 static void window_park_set_pressed_tab(rct_window *w);
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
-static void window_park_graph_draw_line_a(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
-static void window_park_graph_draw_line_b(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
 
 /**
  * 
@@ -1369,9 +1367,7 @@ static void window_park_rating_paint()
 	y += widget->top + 26;
 
 	history = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
-	window_park_graph_draw_months(dpi, history, x, y);
-	window_park_graph_draw_line_a(dpi, history, x, y);
-	window_park_graph_draw_line_b(dpi, history, x, y);
+	graph_draw_uint8(dpi, history, 32, x, y);
 }
 
 #pragma endregion
@@ -1538,9 +1534,7 @@ static void window_park_guests_paint()
 	y += widget->top + 26;
 
 	history = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
-	window_park_graph_draw_months(dpi, history, x, y);
-	window_park_graph_draw_line_a(dpi, history, x, y);
-	window_park_graph_draw_line_b(dpi, history, x, y);
+	graph_draw_uint8(dpi, history, 32, x, y);
 }
 
 #pragma endregion
@@ -2381,75 +2375,6 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	// Awards tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_7)))
 		gfx_draw_sprite(dpi, SPR_TAB_AWARDS, w->x + w->widgets[WIDX_TAB_7].left, w->y + w->widgets[WIDX_TAB_7].top, 0);
-}
-
-static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, yearOver32, currentMonth, currentDay;
-
-	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
-	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-	x = baseX;
-	y = baseY;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
-			// Draw month text
-			RCT2_GLOBAL(0x013CE952, uint32) = ((yearOver32 / 4) + 8) % 8 + STR_MONTH_SHORT_MAR;
-			gfx_draw_string_centred(dpi, 2222, x, y - 10, 0, (void*)0x013CE952);
-
-			// Draw month mark
-			gfx_fill_rect(dpi, x, y, x, y + 3, 10);
-		}
-
-		yearOver32 = (yearOver32 + 1) % 32;
-		x += 6;
-	}
-}
-
-static void window_park_graph_draw_line_a(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, lastX, lastY;
-	lastX = -1;
-	x = baseX;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
-
-			if (lastX != -1) {
-				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, 10);
-				gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, 10);
-			}
-			if (i == 0)
-				gfx_fill_rect(dpi, x, y, x + 2, y + 2, 10);
-
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
-}
-
-static void window_park_graph_draw_line_b(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, lastX, lastY;
-
-	lastX = -1;
-	x = baseX;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
-
-			if (lastX != -1)
-				gfx_draw_line(dpi, lastX, lastY, x, y, 21);
-			if (i == 0)
-				gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, 21);
-
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
 }
 
 #pragma endregion

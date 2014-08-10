@@ -150,6 +150,9 @@
     <ClInclude Include="..\src\cursors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -348,6 +351,9 @@
       <Filter>Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\currency.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

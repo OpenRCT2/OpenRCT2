@@ -19,7 +19,9 @@
 *****************************************************************************/
 
 #include "addresses.h"
+#include "date.h"
 #include "game.h"
+#include "graph.h"
 #include "scenario.h"
 #include "string_ids.h"
 #include "sprites.h"
@@ -199,6 +201,11 @@ static void window_finances_summary_update(rct_window *w);
 static void window_finances_summary_invalidate();
 static void window_finances_summary_paint();
 
+static void window_finances_financial_graph_mouseup();
+static void window_finances_financial_graph_update(rct_window *w);
+static void window_finances_financial_graph_invalidate();
+static void window_finances_financial_graph_paint();
+
 // 0x00988EB8
 static void* window_finances_summary_events[] = {
 	window_finances_emptysub,
@@ -231,9 +238,41 @@ static void* window_finances_summary_events[] = {
 	window_finances_emptysub
 };
 
+// 0x00988F28
+static void* window_finances_financial_graph_events[] = {
+	window_finances_emptysub,
+	window_finances_financial_graph_mouseup,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_financial_graph_update,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_emptysub,
+	window_finances_financial_graph_invalidate,
+	window_finances_financial_graph_paint,
+	window_finances_emptysub
+};
+
 static void* window_finances_page_events[] = {
 	window_finances_summary_events,
-	(void*)0x00988F28,
+	window_finances_financial_graph_events,
 	(void*)0x00988F98,
 	(void*)0x00989008,
 	(void*)0x00989078,
@@ -369,17 +408,7 @@ static void window_finances_summary_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_mouse_up_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -431,14 +460,10 @@ static void window_finances_summary_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_get_register(w);
 
-	if (w->widgets != window_finances_page_widgets[0]) {
-		w->widgets = window_finances_page_widgets[0];
+	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY]) {
+		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
 		window_init_scroll_widgets(w);
 	}
 
@@ -456,17 +481,7 @@ static void window_finances_summary_paint()
 	rct_drawpixelinfo *dpi;
 	int i, j, x, y;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_finances_draw_tab_images(dpi, w);
@@ -576,6 +591,144 @@ static void window_finances_summary_paint()
 		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_COMPANY_VALUE, 0, w->x + 280, w->y + 244);
 	}
 }
+
+#pragma endregion
+
+#pragma region Financial graph page
+
+/**
+ * 
+ *  rct2: 0x0069CF70
+ */
+static void window_finances_financial_graph_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_mouse_up_get_registers(w, widgetIndex);
+
+	if (widgetIndex == WIDX_CLOSE)
+		window_close(w);
+	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_6)
+		window_finances_set_page(w, widgetIndex - WIDX_TAB_1);
+}
+
+/**
+ * 
+ *  rct2: 0x0069CF8B
+ */
+static void window_finances_financial_graph_update(rct_window *w)
+{
+	// Tab animation
+	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+		w->frame_no = 0;
+	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+}
+
+/**
+ * 
+ *  rct2: 0x0069CBDB
+ */
+static void window_finances_financial_graph_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH]) {
+		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
+		window_init_scroll_widgets(w);
+	}
+
+	window_finances_set_pressed_tab(w);
+}
+
+/**
+ * 
+ *  rct2: 0x0069CC10
+ */
+static void window_finances_financial_graph_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	int i, x, y, graphLeft, graphTop, graphRight, graphBottom;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_finances_draw_tab_images(dpi, w);
+
+	rct_widget *pageWidget = &window_finances_cash_widgets[WIDX_PAGE_BACKGROUND];
+	graphLeft = w->x + pageWidget->left + 4;
+	graphTop = w->y + pageWidget->top + 15;
+	graphRight = w->x + pageWidget->right - 4;
+	graphBottom = w->y + pageWidget->bottom - 4;
+
+	// Cash (less loan)
+	money32 cashLessLoan =
+		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) -
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+
+	gfx_draw_string_left(
+		dpi,
+		cashLessLoan >= 0 ?
+			STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
+		&cashLessLoan,
+		0,
+		graphLeft,
+		graphTop - 11
+	);
+
+	// Graph
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+
+	// Calculate the Y axis scale (log2 of highest [+/-]balance)
+	int yAxisScale = 0;
+	money32 *balanceHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
+	for (i = 0; i < 64; i++) {
+		money32 balance = balanceHistory[i];
+		if (balance == 0x80000000)
+			continue;
+
+		// Modifier balance then keep halfing until less than 127 pixels
+		balance = abs(balance) >> yAxisScale;
+		while (balance > 127) {
+			balance /= 2;
+			yAxisScale++;
+		}
+	}
+
+	// Y axis labels
+	x = graphLeft + 18;
+	y = graphTop + 14;
+	money32 axisBase;
+	for (axisBase = MONEY(12,00); axisBase >= MONEY(-12,00); axisBase -= MONEY(6,00)) {
+		money32 axisValue = axisBase << yAxisScale;
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		y += 39;
+	}
+
+	// X axis labels and values
+	x = graphLeft + 98;
+	y = graphTop + 17;
+	graph_draw_money32(dpi, balanceHistory, 64, x, y, yAxisScale);
+}
+
+#pragma endregion
+
+#pragma region Value graph page
+
+#pragma endregion
+
+#pragma region Profit graph page
+
+#pragma endregion
+
+#pragma region Marketing page
+
+#pragma endregion
+
+#pragma region Research page
 
 #pragma endregion
 

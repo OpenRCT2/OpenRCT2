@@ -1169,7 +1169,7 @@ const char *format_get_token(char code)
 void format_string_part_from_raw(char **dest, const char *src, char **args);
 void format_string_part(char **dest, rct_string_id format, char **args);
 
-void format_integer(char **dest, int value)
+void format_integer(char **dest, long long value)
 {
 	int digit;
 	char *dst = *dest;
@@ -1209,7 +1209,7 @@ void format_integer(char **dest, int value)
 	*dest = finish;
 }
 
-void format_comma_separated_integer(char **dest, int value)
+void format_comma_separated_integer(char **dest, long long value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -1257,7 +1257,7 @@ void format_comma_separated_integer(char **dest, int value)
 	*dest = finish;
 }
 
-void format_comma_separated_fixed_2dp(char **dest, int value)
+void format_comma_separated_fixed_2dp(char **dest, long long value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -1314,7 +1314,7 @@ void format_comma_separated_fixed_2dp(char **dest, int value)
 	*dest = finish;
 }
 
-void format_currency(char **dest, int value)
+void format_currency(char **dest, long long value)
 {
 	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
 
@@ -1346,7 +1346,7 @@ void format_currency(char **dest, int value)
 	}
 }
 
-void format_currency_2dp(char **dest, int value)
+void format_currency_2dp(char **dest, long long value)
 {
 	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
 

@@ -27,6 +27,7 @@
     <ClInclude Include="..\src\finance.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
+    <ClInclude Include="..\src\graph.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\marketing.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\src\finance.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
+    <ClCompile Include="..\src\graph.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\marketing.c" />
