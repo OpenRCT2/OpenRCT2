@@ -45,6 +45,7 @@
 
 
 int _gameSpeed = 1;
+int previousPeepSpriteIndex = 0;
 
 void game_handle_input();
 void game_handle_keyboard_input();
@@ -2079,6 +2080,8 @@ static int game_check_affordability(int cost)
 }
 
 static uint32 game_do_command_table[58];
+typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+static GAME_COMMAND_POINTER* new_game_command_table[58];
 
 /**
  * 
@@ -2120,7 +2123,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	*ebx &= ~1;
 
 	// Primary command
-	RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+	if (game_do_command_table[command] == 0) {
+		new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+	} else {
+		RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+	}
 	cost = *ebx;
 
 	if (cost != 0x80000000) {
@@ -2143,7 +2150,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 
 			// Secondary command
-			RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+			if (game_do_command_table[command] == 0) {
+				new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+			} else {
+				RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+			}
 			*edx = *ebx;
 
 			if (*edx != 0x80000000 && *edx < cost)
@@ -2265,6 +2276,301 @@ static void game_load_or_quit()
 	#endif
 
 }
+
+/**
+*
+*  rct2: 0x0069ED0B
+*/
+static void sub_69ED0B(rct_peep* sprite, int cl)
+{
+	if (sprite->var_08 == 0)
+		return;
+
+	int ebx = sprite->var_08;
+	int ax = sprite->next;
+	
+	if (sprite->previous != 0xFFFF) {
+		g_sprite_list[sprite->previous].peep.next = ax;
+	}
+	else {
+		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[ebx] = ax;
+	}
+
+	sprite->previous = 0xFFFF;
+	sprite->var_08 = cl;
+
+	// set next sprite to the delimiter
+	int tmp_ax = RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[cl];
+	RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[cl] = sprite->sprite_index;
+	sprite->next = tmp_ax;
+
+	if (tmp_ax != 0xFFFF) {
+		g_sprite_list[tmp_ax].peep.previous = ax;
+	}
+
+	RCT2_ADDRESS(0x013573C8, uint16)[ebx]--;
+	RCT2_ADDRESS(0x013573C8, uint16)[cl]++;
+}
+
+/**
+*
+*  rct2: 0x0069EC6B
+*  bl
+*  return: new peep sprite (esi)
+*/
+static rct_peep* create_peep_sprite(short bl)
+{
+	int ecx = 0;
+	rct_peep* newSprite;
+
+	if (!(bl & 2)) {
+		if (RCT2_GLOBAL(0x013573C8, short) < 0)
+			return NULL;
+
+		*newSprite = g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)].peep;
+		ecx = 10;
+	}
+	else {
+		if (0x12C - RCT2_GLOBAL(0x0013573CE, short) >= RCT2_GLOBAL(0x013573C8, short))
+			return NULL;
+
+		*newSprite = g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)].peep;
+		ecx = 6;
+	}
+
+	sub_69ED0B(newSprite, ecx);
+
+	newSprite->x = 0x8000;
+	newSprite->y = 0x8000;
+	newSprite->z = 0;
+	newSprite->var_02 = previousPeepSpriteIndex;
+	previousPeepSpriteIndex = newSprite->sprite_index;
+	newSprite->name_string_idx = 0;
+	newSprite->var_14 = 10;
+	newSprite->var_09 = 0x14;
+	newSprite->var_15 = 10;
+	newSprite->var_0C = 10;
+	newSprite->var_16 = 0x8000;
+
+	return newSprite;
+}
+
+static void sub_6C42AC(uint16 name_string_idx)
+{
+	if (name_string_idx < 0x8000 || name_string_idx >= 0x9000)
+		return;
+
+	RCT2_ADDRESS(0x0095AFB8, uint32)[(name_string_idx + 0x3FF) * 20] = 0;
+}
+
+static void sub_69EDB6(rct_peep* peep) {
+	sub_69ED0B(peep, 0);
+	sub_6C42AC(peep->name_string_idx);
+	peep->sprite_identifier = 0;
+
+	int x = peep->x;
+	if (x == 0x8000)
+		x = 0x10000;
+	x &= 0x1FE0;
+
+	uint32* edi = RCT2_ADDRESS(0xF1EF60, uint32)[(x << 3) | (peep->y >> 5)];
+
+	rct_peep* peepSprite = NULL;
+	while (peepSprite != peep) {
+		peepSprite = g_sprite_list + (*edi << 8);
+		*edi = peepSprite->var_02;
+	}
+	peepSprite->sprite_identifier = peep->var_02;
+}
+
+/**
+*
+*  rct2: 0x0069E9D3
+*/
+static void sub_69E9D3(rct_peep* peep, int ax) {
+
+}
+
+/**
+*
+*  rct2: 0x006EC473
+*/
+static void sub_6EC473(rct_peep* peep) {
+
+}
+
+/**
+*
+*  rct2: 0x00699115
+*/
+static void sub_699115(rct_peep* peep) {
+
+}
+
+/**
+*
+*  rct2: 0x006BEFA1
+*/
+static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
+	int* esi, int* edi, int* ebp)
+{
+	uint8 _bl = *ebx & 0xF, tabIndex = (*ebx & 0xF0) >> 8;
+	uint16 _ax = *eax & 0xFF, _cx = *ecx & 0xFF, _dx = *edx & 0xFF;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 0x28;
+	RCT2_GLOBAL(0x009DEA5E, uint16) = _ax;
+	RCT2_GLOBAL(0x009DEA60, uint16) = _cx;
+	RCT2_GLOBAL(0x009DEA62, uint16) = _dx;
+
+	if (RCT2_GLOBAL(0x13573C8, uint16) < 0x190) {
+		*ebx = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_PEOPLE_IN_GAME;
+		return;
+	}
+
+	int i;
+	for (i = 0; i < 0xC8; i++) {
+		if (!(RCT2_ADDRESS(0x013CA672, uint8)[i] & 1))
+			break;
+	}
+
+	if (i == 0xC8) {
+		*ebx = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_STAFF_IN_GAME;
+		return;
+	}
+
+	int newStaffId = i;
+	
+	int _eax, _ebx, _ecx, _edx, _esi, _edi, _ebp;
+	_esi = 0;
+	_ebx = _bl;
+	RCT2_CALLFUNC_X(0x0069EC6B, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+	rct_peep* newPeep = (rct_peep*)_esi;
+
+	//if ((newPeep = create_peep_sprite(_bl)) == NULL)
+	if (_esi == 0)
+	{
+		#ifdef _MSC_VER
+		__asm mov ebx, 0x80000000
+		#else
+		__asm__("mov ebx, 0x80000000 ");
+		#endif
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_PEOPLE_IN_GAME;
+		return;
+	}
+	
+	if (_bl & 1) {
+		// TODO
+		RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)newPeep, 0, 0);
+		//sub_69EDB6(newPeep);
+		// 69EDB6
+	} else {
+		_ecx = 4;
+		//sub_69ED0B(newPeep, 4);
+		RCT2_CALLPROC_X(0x0069ED0B, 0, 0, &_ecx, 0, (int)newPeep, 0, 0);
+		
+		newPeep->sprite_identifier = 1;
+		newPeep->var_09 = 0x0F;
+		newPeep->var_15 = 5;
+		newPeep->var_14 = 8;
+		newPeep->var_1E = 0;
+
+		_eax = _ax;
+		_ecx = _cx;
+		_edx = _dx;
+		RCT2_CALLPROC_X(0x0069E9D3, &_eax, 0, &_ecx, &_edx, (int)newPeep, 0, 0);
+
+		newPeep->state = PEEP_STATE_PICKED;
+		if (newPeep->x != 0x8000) {
+			newPeep->state = 0;
+		}
+		newPeep->var_45 = 0;
+		newPeep->var_71 = 0xFF;
+		newPeep->var_6D = 0;
+		newPeep->var_70 = 0;
+		newPeep->var_E0 = 0;
+		newPeep->var_6E = 0;
+		newPeep->var_C4 = 0;
+		newPeep->type == PEEP_TYPE_STAFF;
+		newPeep->var_2A = 0;
+		newPeep->flags = 0;
+		newPeep->paid_to_enter = 0;
+		newPeep->paid_on_rides = 0;
+		newPeep->paid_on_food = 0;
+		newPeep->paid_on_souvenirs = 0;
+
+		newPeep->var_C6 = 0;
+		if (tabIndex == 0) {
+			newPeep->var_C6 = 7;
+		}
+		else if (tabIndex != 1) {
+			newPeep->var_C6 = 3;
+		}
+		newPeep->staff_type = 0xFF;
+		
+		uint16 idSearchSpriteIndex;
+		rct_peep* idSearchPeep;
+
+		// We search for the first available id for the given staff type
+		int newId = 0;
+		BOOL newIdFound = FALSE;
+		do {
+			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
+				newIdFound = TRUE;
+
+				if (idSearchPeep->staff_type == tabIndex && idSearchPeep->id == newId) {
+					newIdFound = FALSE;
+					break;
+				}
+			}
+		} while (newIdFound == FALSE);
+
+		newPeep->staff_type = tabIndex;
+		
+
+		_eax = RCT2_ADDRESS(0x009929FC, uint8)[(tabIndex << 8) + _bl];
+		newPeep->name_string_idx = (tabIndex << 8) + _bl + 0x300;
+		newPeep->sprite_type = _eax;
+
+		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 8];
+		newPeep->var_14 = *((int*)_edx);
+		newPeep->var_09 = *((int*)(_edx + 1));
+		newPeep->var_15 = *((int*)(_edx + 2));
+
+		//sub_69E9D3(newPeep);
+		RCT2_CALLPROC_X(0x0069E9D3, 0, 0, 0, 0, (int)newPeep, 0, 0);
+		//sub_6EC473(newPeep);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)newPeep, 0, 0);
+
+		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
+		newPeep->var_CC = 0xFFFFFFFF;
+		
+		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex];
+		newPeep->tshirt_colour = colour;
+		newPeep->trousers_colour = colour;
+
+		_eax = *ebp & 0x3F;
+		_ebp = (*ebp << 26) | (*ebp >> 6);
+
+		//sub_699115(newPeep);
+		RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)newPeep, 0, &_ebp);
+
+		newPeep->var_C5 = newStaffId;
+
+		RCT2_ADDRESS(0x013CA672, uint8)[newStaffId] = 1;
+
+		for (int edi = 0; edi < 0x80; edi++) {
+			int addr = 0x013B0E72 + (newStaffId << 9) + edi * 4;
+			RCT2_ADDRESS(addr, uint32) = 0;
+		}
+	}
+
+	*ebx = 0;
+	*edi = newPeep->sprite_index;
+}
+
 
 /**
 *
@@ -2624,7 +2930,7 @@ static uint32 game_do_command_table[58] = {
 	0x006E66A0,
 	0x006E6878,
 	0x006C5AE9,
-	0x006BEFA1,
+	0,
 	0x006C09D1, // 30
 	0x006C0B83,
 	0x006C0BB5,
@@ -2653,6 +2959,69 @@ static uint32 game_do_command_table[58] = {
 	0x006BA16A,
 	0x006648E3,
 	0x0068DF91
+};
+
+game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
+
+static GAME_COMMAND_POINTER* new_game_command_table[58] = {
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_hire_new_staff_member, //game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,  //(uint32)game_update_staff_colour, // 40
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub
 };
 
 #pragma endregion

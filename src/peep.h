@@ -314,17 +314,18 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
-	uint16 pad_02;
+	uint16 var_02;					// 0x02 - it seems that it is used
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 var_08;
-	uint8 pad_09;
+	uint8 var_09;					// 0x09
 	uint16 sprite_index;			// 0x0A
 	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	sint16 pad_14;
+	uint8 var_14;					// 0x14
+	uint8 var_15;					// 0x15
 	sint16 var_16;
 	sint16 var_18;
 	sint16 var_1A;
@@ -372,7 +373,9 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C
-	uint8 pad_6D[3];
+	uint8 var_6D;					// 0x6D
+	uint8 var_6E;					// 0x6E
+	uint8 pad_6F;
 	uint8 var_70;
 	uint8 var_71;
 	uint8 var_72;
@@ -386,18 +389,20 @@ typedef struct {
 	uint32 id;						// 0x9C
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
-	uint8 pad_A8;
+	uint8 var_A8;					// 0xA8
 	sint32 time_in_park;			// 0xA9
-	uint8 var_AD;
+	uint8 var_AD;					// creation/hire time?
 	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
-	uint8 pad_C4;
+	uint8 var_C4;					// 0xC4
 	uint8 var_C5;
 	uint8 var_C6;
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
-	uint8 var_CC;					
-	uint8 pad_CD[0x17];
+	uint8 var_CC;
+	uint8 pad_CD[0x13];
+	uint8 var_E0;					// 0xE0
+	uint8 pad_E1[0x3];
 	money16 paid_to_enter;			// 0xE4
 	money16 paid_on_rides;			// 0xE6
 	money16 paid_on_food;			// 0xE8
