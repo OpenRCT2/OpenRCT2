@@ -314,7 +314,7 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
-	uint16 var_02;					// 0x02 - it seems that it is used
+	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 var_08;
@@ -399,10 +399,12 @@ typedef struct {
 	uint8 var_C6;
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
-	uint8 var_CC;
-	uint8 pad_CD[0x13];
+	uint32 var_CC;
+	uint8 pad_D0[0x10];
 	uint8 var_E0;					// 0xE0
-	uint8 pad_E1[0x3];
+	uint8 pad_E1;
+	uint8 var_E2;					// 0xE2
+	uint8 pad_E3;
 	money16 paid_to_enter;			// 0xE4
 	money16 paid_on_rides;			// 0xE6
 	money16 paid_on_food;			// 0xE8

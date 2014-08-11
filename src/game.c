@@ -2121,7 +2121,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
 
 	*ebx &= ~1;
-
+	
 	// Primary command
 	if (game_do_command_table[command] == 0) {
 		new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
@@ -2414,8 +2414,12 @@ static void sub_699115(rct_peep* peep) {
 static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 	int* esi, int* edi, int* ebp)
 {
-	uint8 _bl = *ebx & 0xF, tabIndex = (*ebx & 0xF0) >> 8;
-	uint16 _ax = *eax & 0xFF, _cx = *ecx & 0xFF, _dx = *edx & 0xFF;
+	//RCT2_CALLFUNC_X(0x006BEFA1, eax, ebx, ecx, edx, esi, edi, ebp);
+	//return;
+
+
+	uint8 _bl = *ebx & 0xFF, tabIndex = (*ebx & 0xFF00) >> 8;
+	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
 
 	RCT2_GLOBAL(0x0141F56C, uint8) = 0x28;
 	RCT2_GLOBAL(0x009DEA5E, uint16) = _ax;
@@ -2442,10 +2446,10 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 	int newStaffId = i;
 	
-	int _eax, _ebx, _ecx, _edx, _esi, _edi, _ebp;
+	int _eax, _ebx, _ecx = _cx, _edx, _esi, _edi, _ebp;
 	_esi = 0;
 	_ebx = _bl;
-	RCT2_CALLFUNC_X(0x0069EC6B, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+	RCT2_CALLFUNC_X(0x0069EC6B, &_eax, &_bl, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 	rct_peep* newPeep = (rct_peep*)_esi;
 
 	//if ((newPeep = create_peep_sprite(_bl)) == NULL)
@@ -2461,15 +2465,10 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		return;
 	}
 	
-	if (_bl & 1) {
-		// TODO
-		RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)newPeep, 0, 0);
-		//sub_69EDB6(newPeep);
-		// 69EDB6
+	if (_bl == 0) {
+		RCT2_CALLPROC_X(0x0069EDB6, 0, 0, _ecx, 0, (int)newPeep, 0, 0);
 	} else {
-		_ecx = 4;
-		//sub_69ED0B(newPeep, 4);
-		RCT2_CALLPROC_X(0x0069ED0B, 0, 0, &_ecx, 0, (int)newPeep, 0, 0);
+		RCT2_CALLPROC_X(0x0069ED0B, 0, 0, 4, 0, (int)newPeep, 0, 0);
 		
 		newPeep->sprite_identifier = 1;
 		newPeep->var_09 = 0x0F;
@@ -2478,14 +2477,18 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_1E = 0;
 
 		_eax = _ax;
-		_ecx = _cx;
 		_edx = _dx;
-		RCT2_CALLPROC_X(0x0069E9D3, &_eax, 0, &_ecx, &_edx, (int)newPeep, 0, 0);
+		_ecx = *ecx;
+		// ax (cmp ax, 8000h)
+		// esi (peep)
+		// cx (shr cx, 5)
+		RCT2_CALLPROC_X(0x0069E9D3, _eax, 0, _ecx, *edx, (int)newPeep, 0, 0);
 
 		newPeep->state = PEEP_STATE_PICKED;
-		if (newPeep->x != 0x8000) {
+		if (newPeep->x != -32768) {
 			newPeep->state = 0;
 		}
+		
 		newPeep->var_45 = 0;
 		newPeep->var_71 = 0xFF;
 		newPeep->var_6D = 0;
@@ -2493,7 +2496,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_E0 = 0;
 		newPeep->var_6E = 0;
 		newPeep->var_C4 = 0;
-		newPeep->type == PEEP_TYPE_STAFF;
+		newPeep->type = PEEP_TYPE_STAFF;
 		newPeep->var_2A = 0;
 		newPeep->flags = 0;
 		newPeep->paid_to_enter = 0;
@@ -2502,47 +2505,54 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->paid_on_souvenirs = 0;
 
 		newPeep->var_C6 = 0;
-		if (tabIndex == 0) {
+		/*if (tabIndex == 0) {
 			newPeep->var_C6 = 7;
-		}
-		else if (tabIndex != 1) {
+		} else if (tabIndex == 1) {
 			newPeep->var_C6 = 3;
-		}
+		}*/
+
 		newPeep->staff_type = 0xFF;
 		
 		uint16 idSearchSpriteIndex;
 		rct_peep* idSearchPeep;
 
-		// We search for the first available id for the given staff type
-		int newId = 0;
-		BOOL newIdFound = FALSE;
-		do {
-			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
-				newIdFound = TRUE;
+		// We search for the first available id for a given staff type
+		int newStaffIndex = 0;
+		for (;;) {
+			int found = 0;
+			newStaffIndex++;
 
-				if (idSearchPeep->staff_type == tabIndex && idSearchPeep->id == newId) {
-					newIdFound = FALSE;
+			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
+				if (idSearchPeep->staff_type != tabIndex) {
+					continue;
+				}
+
+				if (idSearchPeep->id == newStaffIndex) {
+					found = 1;
 					break;
 				}
 			}
-		} while (newIdFound == FALSE);
 
+			if (found == 0)
+				break;
+		}
+
+		newPeep->id = newStaffIndex;
 		newPeep->staff_type = tabIndex;
-		
 
-		_eax = RCT2_ADDRESS(0x009929FC, uint8)[(tabIndex << 8) + _bl];
-		newPeep->name_string_idx = (tabIndex << 8) + _bl + 0x300;
+		_eax = RCT2_ADDRESS(0x009929FC, uint8)[tabIndex];
+		newPeep->name_string_idx = tabIndex + 0x300;
 		newPeep->sprite_type = _eax;
 
-		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 8];
+		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
 		newPeep->var_14 = *((int*)_edx);
 		newPeep->var_09 = *((int*)(_edx + 1));
 		newPeep->var_15 = *((int*)(_edx + 2));
 
 		//sub_69E9D3(newPeep);
-		RCT2_CALLPROC_X(0x0069E9D3, 0, 0, 0, 0, (int)newPeep, 0, 0);
+		RCT2_CALLPROC_X(0x0069E9D3, newPeep->x, 0, newPeep->y, newPeep->z, (int)newPeep, 0, 0);
 		//sub_6EC473(newPeep);
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)newPeep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, *eax, 0, 0, 0, (int)newPeep, 0, 0);
 
 		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
 		newPeep->var_CC = 0xFFFFFFFF;
@@ -2551,11 +2561,15 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
-		_eax = *ebp & 0x3F;
-		_ebp = (*ebp << 26) | (*ebp >> 6);
+		_eax = (uint32)ebp & 0xFFFFFF3F;
+		_ebp = (*ebp << 25) | (*ebp >> 6);
+
+		newPeep->energy = 0x60;
+		newPeep->energy_growth_rate = 0x60;
+		newPeep->var_E2 = 0;
 
 		//sub_699115(newPeep);
-		RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)newPeep, 0, &_ebp);
+		RCT2_CALLPROC_X(0x00699115, _eax, 0, 0, 0, (int)newPeep, 0, _ebp);
 
 		newPeep->var_C5 = newStaffId;
 
@@ -2930,7 +2944,7 @@ static uint32 game_do_command_table[58] = {
 	0x006E66A0,
 	0x006E6878,
 	0x006C5AE9,
-	0,
+	0, //0x006BEFA1, // 0,
 	0x006C09D1, // 30
 	0x006C0B83,
 	0x006C0BB5,
