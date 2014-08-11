@@ -394,6 +394,11 @@ void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 
+	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
+		__asm mov dropdownIndex, ax														\
+		__asm mov widgetIndex, dx														\
+		__asm mov w, esi
+
 	#define window_paint_get_registers(w, dpi)											\
 		__asm mov w, esi																\
 		__asm mov dpi, edi
@@ -402,6 +407,11 @@ void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 
 	#define window_mouse_up_get_registers(w, widgetIndex)								\
+		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+
+	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
+		__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 

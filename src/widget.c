@@ -157,8 +157,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CHECKBOX:
-		widget_checkbox_draw(dpi, w, widgetIndex);
-		break;
 	case WWT_24:
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
@@ -414,9 +412,9 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	widget = &w->widgets[widgetIndex];
 
 	// Get the colour
-// 	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour];
 	// do not use widget color as this is already used as background for the text_button
-	colour = 2;
+	// colour = 2;
 
 	// Resolve the absolute ltrb
 	l = w->x + widget->left;
