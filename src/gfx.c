@@ -920,6 +920,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
  * 0b_XXX1_11XX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_sub_type (unknown pointer)
  * 0b_XXX1_1111_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX secondary_colour
  * 0b_XXXX_XXXX_1111_1XXX_XXXX_XXXX_XXXX_XXXX primary_colour
+ * 0b_XXXX_X111_1111_1XXX_XXXX_XXXX_XXXX_XXXX palette_ref
  * 0b_XXXX_XXXX_XXXX_X111_1111_1111_1111_1111 image_id (offset to g1)
  * x (cx)
  * y (dx)
@@ -930,33 +931,30 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 {
 	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, tertiary_colour);
 	//return;
-	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi;
+
 	int image_type = (image_id & 0xE0000000) >> 28;
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
+
 	uint8* palette_pointer = NULL;
 	uint8 palette[0x100];
+
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
-	eax = (image_id >> 26) & 0x7;
 
 	uint8* unknown_pointer = (uint8*)(RCT2_ADDRESS(0x9E3CE4, uint32*)[image_sub_type]);
-	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
+	RCT2_GLOBAL(0x009E3CDC, uint32) = (uint32)unknown_pointer;
 
 	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
+		uint8 palette_ref = (image_id >> 19) & 0xFF;
 		if (!(image_type & IMAGE_TYPE_MIX_BACKGROUND)){
-			eax = image_id;
-			eax >>= 19;
-			eax &= 0xFF;
 			unknown_pointer = NULL;
 			RCT2_GLOBAL(0x009E3CDC, uint32) = 0;
 		}
 		else{
-			eax = image_id;
-			eax >>= 19;
-			eax &= 0x7F;
+			palette_ref &= 0x7F;
 		}
-		eax = palette_to_g1_offset[eax];// RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
 
-		palette_pointer = ((rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS)[eax].offset;
+		uint16 palette_offset = palette_to_g1_offset[palette_ref];
+		palette_pointer = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette_offset].offset;
 		RCT2_GLOBAL(0x9ABDA4, uint32) = (uint32)palette_pointer;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
