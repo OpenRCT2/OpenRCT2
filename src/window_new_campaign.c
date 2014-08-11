@@ -18,13 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _GRAPH_H_
-#define _GRAPH_H_
+#include "addresses.h"
+#include "window.h"
 
-#include "gfx.h"
-#include "rct2.h"
-
-void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY);
-void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset);
-
-#endif
+/**
+ * 
+ *  rct2: 0x0069E16F
+ */
+void window_new_campaign_open(int campaignType)
+{
+	RCT2_CALLPROC_X(0x0069E16F, campaignType, 0, 0, 0, 0, 0, 0);
+}

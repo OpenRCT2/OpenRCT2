@@ -33,6 +33,8 @@ enum {
 	ADVERTISING_CAMPAIGN_COUNT
 };
 
+extern const money16 AdvertisingCampaignPricePerWeek[6];
+
 int marketing_get_campaign_guest_generation_probability(int campaign);
 void marketing_update();
 void marketing_set_guest_campaign(rct_peep *peep, int campaign);

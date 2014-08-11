@@ -123,14 +123,14 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier)
+static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
 {
 	int i, x, y, lastX, lastY;
 	lastX = -1;
 	x = baseX;
 	for (i = count - 1; i >= 0; i--) {
 		if (history[i] != 0x80000000) {
-			y = baseY + 170 - 6 - ((((history[i] >> modifier) + 128) * 170) / 256);
+			y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
 			if (lastX != -1) {
 				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, 10);
@@ -146,7 +146,7 @@ static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier)
+static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
 {
 	int i, x, y, lastX, lastY;
 
@@ -154,7 +154,7 @@ static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	x = baseX;
 	for (i = count - 1; i >= 0; i--) {
 		if (history[i] != 0x80000000) {
-			y = baseY + 170 - 6 - ((((history[i] >> modifier) + 128) * 170) / 256);
+			y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
 			if (lastX != -1)
 				gfx_draw_line(dpi, lastX, lastY, x, y, 21);
@@ -168,9 +168,9 @@ static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, 
 	}
 }
 
-void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier)
+void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset)
 {
-	graph_draw_months_money32(dpi, history, count, baseX, baseY, modifier);
-	graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier);
-	graph_draw_line_b_money32(dpi, history, count, baseX, baseY, modifier);
+	graph_draw_months_money32(dpi, history, count, baseX, baseY);
+	graph_draw_line_a_money32(dpi, history, count, baseX, baseY, modifier, offset);
+	graph_draw_line_b_money32(dpi, history, count, baseX, baseY, modifier, offset);
 }
