@@ -882,9 +882,9 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 				for (; no_pixels > 0; no_pixels -= (1<<zoom_level), source_pointer += (1<<zoom_level), dest_pointer++){
 					uint8 al = *source_pointer;
 					uint8 ah = *dest_pointer;
-					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
+					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
 						al = palette_pointer[(((uint16)al << 8) | ah) - 0x100];
-					else //Adjust colours?
+					else
 						al = palette_pointer[al];
 					*dest_pointer = al;
 				}
