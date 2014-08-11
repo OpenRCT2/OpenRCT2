@@ -909,7 +909,22 @@ void window_rotate_camera(rct_window *w)
  */
 void window_zoom_in(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006887A6, 0, 0, 0, 0, (int)w, 0, 0);
+	rct_viewport* v = w->viewport;
+	
+	// Prevent zooming more than possible.
+	if (v->zoom <= 0) {
+		return;
+	}
+
+	v->zoom--;
+
+	v->view_width /= 2;
+	v->view_height /= 2;
+
+	w->saved_view_x += v->view_width >> 1;
+	w->saved_view_y += v->view_height >> 1;
+
+	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -918,7 +933,25 @@ void window_zoom_in(rct_window *w)
  */
 void window_zoom_out(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006887E0, 0, 0, 0, 0, (int)w, 0, 0);
+	rct_viewport* v = w->viewport;
+
+	// Prevent zooming more than possible.
+	if (v->zoom >= 3) {
+		return;
+	}
+
+	v->zoom++;
+
+	int width = v->view_width;
+	int height = v->view_height;
+	
+	v->view_width *= 2;
+	v->view_height *= 2;
+
+	w->saved_view_x -= width / 2;
+	w->saved_view_y -= height >> 1;
+
+	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
