@@ -883,7 +883,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 					uint8 al = *source_pointer;
 					uint8 ah = *dest_pointer;
 					if (image_type & IMAGE_TYPE_MIX_BACKGROUND)//Mix with background and image Not Tested
-						al = palette_pointer[(al | ((int)ah) << 8) - 0x100];
+						al = palette_pointer[(((uint16)al << 8) | ah) - 0x100];
 					else //Adjust colours?
 						al = palette_pointer[al];
 					*dest_pointer = al;
@@ -936,7 +936,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, int ebp
 	RCT2_GLOBAL(0x009E3CDC, uint32) = RCT2_GLOBAL(0x009E3CE4 + eax * 4, uint32);
 
 	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
-
 		if (!(image_type & IMAGE_TYPE_MIX_BACKGROUND)){
 			eax = image_id;
 			eax >>= 19;
