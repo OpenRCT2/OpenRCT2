@@ -1310,8 +1310,7 @@ void window_bubble_list_item(rct_window* w, int item_position){
 void window_resize_gui(int width, int height)
 {
 	if (RCT2_GLOBAL(0x9DEA68, uint8) & 0xE){
-		//Scenario editor version
-		RCT2_CALLPROC_EBPSAFE(0x66F0DD);
+		return window_resize_gui_scenario_editor(width, height);
 	}
 	rct_window* mainWind = window_get_main();
 	if (mainWind){
@@ -1362,4 +1361,43 @@ void window_resize_gui(int width, int height)
 		exitWind->x = width - 40;
 		exitWind->y = height - 64;
 	}
+}
+
+/**
+* rct2: 0x0066F0DD
+*/
+void window_resize_gui_scenario_editor(int width, int height)
+{
+	rct_window* mainWind = window_get_main();
+	if (mainWind) {
+		rct_viewport* viewport = mainWind->viewport;
+		mainWind->width = width;
+		mainWind->height = height;
+		RCT2_GLOBAL(0x9A9834, uint16) = width - 1;
+		RCT2_GLOBAL(0x9A9838, uint16) = height - 1;
+		viewport->width = width;
+		viewport->height = height;
+		viewport->view_width = width << viewport->zoom;
+		viewport->view_height = height << viewport->zoom;
+		if (mainWind->widgets != NULL && mainWind->widgets[0].type == WWT_VIEWPORT){
+			mainWind->widgets[0].right = width;
+			mainWind->widgets[0].bottom = height;
+		}
+	}
+
+	rct_window* topWind = window_find_by_id(WC_TOP_TOOLBAR, 0);
+	if (topWind){
+		topWind->width = max(640, width);
+	}
+
+	rct_window* bottomWind = window_find_by_id(WC_BOTTOM_TOOLBAR, 0);
+	if (bottomWind){
+		bottomWind->y = height - 32;
+		bottomWind->width = max(640, width);
+		RCT2_GLOBAL(0x9A997C, uint16) = bottomWind->width - 1;
+		RCT2_GLOBAL(0x9A997A, uint16) = bottomWind->width - 200;
+		RCT2_GLOBAL(0x9A998A, uint16) = bottomWind->width - 198;
+		RCT2_GLOBAL(0x9A998C, uint16) = bottomWind->width - 3;
+	}
+	
 }
