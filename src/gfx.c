@@ -251,9 +251,8 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 	if (y < 0)return;
 	if (y >= dpi->height)return;
 	//Check to make sure we are drawing at least a pixel
-	if (!no_pixels) return;
+	if (!no_pixels) no_pixels++;
 
-	no_pixels++;
 	x -= dpi->x;
 
 	//If x coord outside range leave
