@@ -458,8 +458,8 @@ void sub_0x6736FC(rct_litter* litter, int ebx, int edx){
 *  Paint Quadrant
 *  rct2: 0x0069E8B0
 */
-void sub_0x69E8B0(int eax, int ecx){
-	int _eax = eax, _ecx = ecx;
+void sub_0x69E8B0(uint32 eax, uint32 ecx){
+	uint32 _eax = eax, _ecx = ecx;
 	rct_drawpixelinfo* dpi;
 
 
@@ -477,7 +477,7 @@ void sub_0x69E8B0(int eax, int ecx){
 	//push eax, ecx
 	eax = (eax&0x1FE0)<<3 | (ecx>>5);
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
-	if (sprite_idx == 0xFFFF) return;
+	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
 	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.var_02){
 		spr = &g_sprite_list[sprite_idx];
