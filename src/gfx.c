@@ -957,17 +957,17 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, int ebp
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		unknown_pointer = NULL;
 
-		uint32 primary_offset = palette_to_g1_offset[ebp];
-		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
-		uint32 tertiary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
+		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
+		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
+		uint32 tertiary_offset = palette_to_g1_offset[ebp];
 
 		rct_g1_element* primary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[primary_offset];
 		rct_g1_element* secondary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[secondary_offset];
 		rct_g1_element* tertiary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[tertiary_offset];
 
-		memcpy((uint8*)0x9ABF3A, &primary_colour->offset[0xF3], 12);
-		memcpy((uint8*)0x9ABFFF, &secondary_colour->offset[0xF3], 12);
-		memcpy((uint8*)0x9ABFD6, &tertiary_colour->offset[0xF3], 12);
+		memcpy((uint8*)0x9ABFFF, &primary_colour->offset[0xF3], 12);
+		memcpy((uint8*)0x9ABFD6, &secondary_colour->offset[0xF3], 12);
+		memcpy((uint8*)0x9ABF3A, &tertiary_colour->offset[0xF3], 12);
 
 		//image_id
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
