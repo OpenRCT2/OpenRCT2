@@ -914,15 +914,21 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 /**
  *
  *  rct2: 0x0067A28E
- * image_id (ebx)
+ * image_id (ebx) 
+ * image_id as below
+ * 0b_111X_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_type
+ * 0b_XXX1_11XX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_sub_type (unknown pointer)
+ * 0b_XXX1_1111_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX secondary_colour
+ * 0b_XXXX_XXXX_1111_1XXX_XXXX_XXXX_XXXX_XXXX primary_colour
+ * 0b_XXXX_XXXX_XXXX_X111_1111_1111_1111_1111 image_id (offset to g1)
  * x (cx)
  * y (dx)
  * dpi (esi)
- * (ebp)
+ * tertiary_colour (ebp)
  */
-void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, int ebp)
+void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
 {
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, ebp);
+	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, tertiary_colour);
 	//return;
 	int eax = 0, ebx = image_id, ecx = x, edx = y, esi = 0, edi = (int)dpi;
 	int image_type = (image_id & 0xE0000000) >> 28;
@@ -959,7 +965,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, int ebp
 
 		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
-		uint32 tertiary_offset = palette_to_g1_offset[ebp];
+		uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
 
 		rct_g1_element* primary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[primary_offset];
 		rct_g1_element* secondary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[secondary_offset];
