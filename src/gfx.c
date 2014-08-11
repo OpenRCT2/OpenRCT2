@@ -954,57 +954,27 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, int ebp
 		RCT2_GLOBAL(0x9ABDA4, uint32) = (uint32)palette_pointer;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
-		//Has not been tested
-		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-		return;
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		unknown_pointer = NULL;
 
-		eax = image_id;
-		eax >>= 19;
-		//push edx/y
-		eax &= 0x1F;
-		ebp = palette_to_g1_offset[ebp]; //RCT2_GLOBAL(ebp * 4 + 0x97FCBC, uint32); //ebp has not been set to anything before this! ??
-		//Possibly another variable input?!
-		eax = palette_to_g1_offset[eax]; //RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
-		ebp <<= 0x4;
-		eax <<= 0x4;
-		ebp = RCT2_GLOBAL(ebp + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		edx = *((uint32*)(eax + 0xF3));
-		esi = *((uint32*)(eax + 0xF7));
-		RCT2_GLOBAL(0x9ABFFF, uint32) = edx;
-		RCT2_GLOBAL(0x9AC003, uint32) = esi;
-		edx = *((uint32*)(ebp + 0xF3));
-		esi = *((uint32*)(ebp + 0xF7));
-		esi = *((uint32*)(eax + 0xF7));
+		uint32 primary_offset = palette_to_g1_offset[ebp];
+		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
+		uint32 tertiary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
 
-		edx = *((uint32*)(eax + 0xFB));
-		esi = *((uint32*)(ebp + 0xFB));
+		rct_g1_element* primary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[primary_offset];
+		rct_g1_element* secondary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[secondary_offset];
+		rct_g1_element* tertiary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[tertiary_offset];
 
-		eax = image_id;
-		RCT2_GLOBAL(0x9AC007, uint32) = edx;
-		eax >>= 24;
-		RCT2_GLOBAL(0x9ABF42, uint32) = esi;
-		eax &= 0x1F;
+		memcpy((uint8*)0x9ABF3A, &primary_colour->offset[0xF3], 12);
+		memcpy((uint8*)0x9ABFFF, &secondary_colour->offset[0xF3], 12);
+		memcpy((uint8*)0x9ABFD6, &tertiary_colour->offset[0xF3], 12);
 
 		//image_id
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
-		image_id |= IMAGE_TYPE_USE_PALETTE;
+		image_id |= IMAGE_TYPE_USE_PALETTE << 28;
 
-		eax = palette_to_g1_offset[eax]; //RCT2_GLOBAL(eax * 4 + 0x97FCBC, uint32);
-		eax <<= 4;
-		eax = RCT2_GLOBAL(eax + RCT2_ADDRESS_G1_ELEMENTS, uint32);
-		edx = *((uint32*)(eax + 0xF3));
-		esi = *((uint32*)(eax + 0xF7));
-		RCT2_GLOBAL(0x9ABFD6, uint32) = edx;
-		RCT2_GLOBAL(0x9ABFDA, uint32) = esi;
-		edx = *((uint32*)(eax + 0xFB));
 		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
 		palette_pointer = (uint8*)0x9ABF0C;
-		RCT2_GLOBAL(0x9ABFDE, uint32) = edx;
-		edx = y;
-
 	}
 	else if (image_type){
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
