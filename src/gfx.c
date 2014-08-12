@@ -1039,8 +1039,8 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
 		rct_drawpixelinfo zoomed_dpi = {
 			.bits = dpi->bits,
-			.x = ((uint16)dpi->x) >> 1,
-			.y = ((uint16)dpi->y) >> 1,
+			.x = dpi->x >> 1,
+			.y = dpi->y >> 1,
 			.height = dpi->height>>1,
 			.width = dpi->width>>1,
 			.pitch = dpi->pitch,
@@ -1049,7 +1049,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
 		return;
 	}
-	
+
 	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
 		return;
 	}
@@ -1059,7 +1059,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//This will be the height of the drawn image
 	int height = g1_source->height >> zoom_level;
 	//This is the start y coordinate on the destination
-	sint16 dest_start_y = (y + g1_source->y_offset - (uint16)dpi->y) >> zoom_level;
+	sint16 dest_start_y = ((sint16)y + g1_source->y_offset - dpi->y) >> zoom_level;
 	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
@@ -1094,7 +1094,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//This is the source start x coordinate
 	int source_start_x = 0;
 	//This is the destination start x coordinate
-	sint16 dest_start_x = (x + g1_source->x_offset - (uint16)dpi->x)>>zoom_level;
+	sint16 dest_start_x = ((sint16)x + g1_source->x_offset - dpi->x) >> zoom_level;
 	
 	if (dest_start_x < 0){
 		//If the destination is negative reduce the width
