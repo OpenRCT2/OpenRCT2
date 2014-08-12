@@ -1022,44 +1022,45 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
 
 	//Zooming code has been integrated into main code but is not working.
-	if (dpi->zoom_level >= 1){ //These have not been tested
-		//something to do with zooming
-		if (dpi->zoom_level == 1){
-			RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-			return;
-		}
-		if (dpi->zoom_level == 2){
-			RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-			return;
-		}
-		RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-		return;
-	}
-	//if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
-	//	rct_drawpixelinfo zoomed_dpi = {
-	//		.bits = dpi->bits,
-	//		.x = dpi->x >> 1,
-	//		.y = dpi->y >> 1,
-	//		.height = dpi->height>>1,
-	//		.width = dpi->width>>1,
-	//		.pitch = dpi->pitch,//In the actual code this is dpi->pitch but that doesn't seem correct.
-	//		.zoom_level = dpi->zoom_level - 1
-	//	};
-	//	gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+	//if (dpi->zoom_level >= 1){ //These have not been tested
+	//	//something to do with zooming
+	//	if (dpi->zoom_level == 1){
+	//		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
+	//		return;
+	//	}
+	//	if (dpi->zoom_level == 2){
+	//		RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
+	//		return;
+	//	}
+	//	RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
 	//	return;
 	//}
-
+	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
+		rct_drawpixelinfo zoomed_dpi = {
+			.bits = dpi->bits,
+			.x = ((uint16)dpi->x) >> 1,
+			.y = ((uint16)dpi->y) >> 1,
+			.height = dpi->height>>1,
+			.width = dpi->width>>1,
+			.pitch = dpi->pitch,
+			.zoom_level = dpi->zoom_level - 1
+		};
+		gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+		return;
+	}
+	
 	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
 		return;
 	}
-
+	//Disable all buggy code
+	if (dpi->zoom_level)return;
 
 	//Its used super often so we will define it to a seperate variable.
 	int zoom_level = dpi->zoom_level;
 	//This will be the height of the drawn image
 	int height = g1_source->height >> zoom_level;
 	//This is the start y coordinate on the destination
-	sint16 dest_start_y = y - dpi->y + g1_source->y_offset;
+	sint16 dest_start_y = y - ((uint16)dpi->y) + g1_source->y_offset;
 	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
@@ -1094,7 +1095,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//This is the source start x coordinate
 	int source_start_x = 0;
 	//This is the destination start x coordinate
-	sint16 dest_start_x = x - dpi->x + g1_source->x_offset;
+	sint16 dest_start_x = x - ((uint16)dpi->x) + g1_source->x_offset;
 	
 	if (dest_start_x < 0){
 		//If the destination is negative reduce the width

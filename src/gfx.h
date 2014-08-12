@@ -43,7 +43,7 @@ typedef struct {
 	sint16 x_offset;		// 0x08
 	sint16 y_offset;		// 0x0A
 	uint16 flags;			// 0x0C
-	sint16 zoomed_offset;	// 0x0E
+	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
 
 enum{
