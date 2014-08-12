@@ -296,8 +296,8 @@ void sub_0x68615B(int ebp){
  */
 void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixelinfo* dpi){
 	for (; attached_ps; attached_ps = attached_ps->next_attached_ps){
-		int x = attached_ps->attached_x + ps->x;
-		int y = attached_ps->attached_y + ps->y;
+		sint16 x = attached_ps->attached_x + ps->x;
+		sint16 y = attached_ps->attached_y + ps->y;
 
 		int image_id = attached_ps->image_id;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
@@ -335,8 +335,8 @@ void sub_688485(){
 	paint_struct* previous_ps = ps->var_24;
 
 	for (ps = ps->var_24; ps;){
-		int x = ps->x;
-		int y = ps->y;
+		sint16 x = ps->x;
+		sint16 y = ps->y;
 		if (ps->sprite_type == 2){
 			if (dpi->zoom_level >= 1){
 				x &= 0xFFFE;
@@ -373,20 +373,10 @@ void sub_688485(){
 			}
 		}
 
-		if (!(ps->var_1A & 1)){
+		if (!(ps->var_1A & 1))
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
-
-			if (ps->var_20 != 0){
-				ps = ps->var_20;
-				continue;
-			}
-			paint_attached_ps(ps, ps->attached_ps, dpi);
-
-			ps = previous_ps->var_24;
-			previous_ps = ps;
-			continue;
-		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
+		else
+			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);	
 
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
