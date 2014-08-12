@@ -373,20 +373,10 @@ void sub_688485(){
 			}
 		}
 
-		if (!(ps->var_1A & 1)){
+		if (!(ps->var_1A & 1))
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
-
-			if (ps->var_20 != 0){
-				ps = ps->var_20;
-				continue;
-			}
-			paint_attached_ps(ps, ps->attached_ps, dpi);
-
-			ps = previous_ps->var_24;
-			previous_ps = ps;
-			continue;
-		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
+		else
+			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);	
 
 		if (ps->var_20 != 0){
 			ps = ps->var_20;

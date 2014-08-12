@@ -690,7 +690,6 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 */
 void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 	uint8 zoom_level = dest_dpi->zoom_level;
-
 	//Requires use of palette?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
 
@@ -893,6 +892,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
 				//Doesnt use source pointer ??? mix with background only?
 				//Not Tested
+				
 				for (; no_pixels > 0; no_pixels -= (1<<zoom_level), dest_pointer++){
 					uint8 pixel = *dest_pointer;
 					pixel = palette_pointer[pixel];
@@ -1053,7 +1053,6 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
 		return;
 	}
-
 	//Its used super often so we will define it to a seperate variable.
 	int zoom_level = dpi->zoom_level;
 	uint16 zoom_mask = 0xFFFF << zoom_level;
@@ -1086,10 +1085,10 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		//If the destination y is outside of the drawing
 		//image reduce the height of the image
 		height -= dest_end_y - (dpi->height >> zoom_level);
-		//If the image no longer has anything to draw
-		if (height <= 0)return;
 	}
-	
+	//If the image no longer has anything to draw
+	if (height <= 0)return;
+
 	//This will be the width of the drawn image
 	int width = g1_source->width >> zoom_level;
 	//This is the source start x coordinate
