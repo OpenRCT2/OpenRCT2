@@ -199,33 +199,23 @@ void sub_6BED21(rct_window* w)
 
 	// end sub_698827
 
+	int a = 0;
+
 	// pop esi
-	if (CF == 1)
-		goto loc_6BED50;
+	if (CF == 1 && w->page == 0) {
+		eax |= 0x400; //or      eax, 400h
 
-loc_6BED47:
-
-	CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
-	if (CF == 1) {
-		goto loc_6BED66; //jb      short loc_6BED66
-	}
-	goto loc_6BED6B; //jmp     short loc_6BED6B
-
-loc_6BED50:
-	if (w->page != 0) //cmp     word ptr [esi+48Ah], 0
-		goto loc_6BED47; //jnz     short loc_6BED47
-	
-	eax |= 0x400; //or      eax, 400h
-	
-	CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
-	if (CF == 1) {
-		goto loc_6BED6B; //jb      short loc_6BED6B
+		a = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
+		
 	}
 
-loc_6BED66:
-	RCT2_CALLFUNC_X(0x6EB13A, 0, 0, 0, 0, 0, 0, 0);
+	if (a != 1) {
+		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
+		if (CF == 1) {
+			RCT2_CALLFUNC_X(0x6EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+		}
+	}
 
-loc_6BED6B:
 	w->disabled_widgets = eax;
 }
 
