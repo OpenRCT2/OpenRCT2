@@ -174,6 +174,61 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+void sub_6BED21(rct_window* w)
+{
+	int eax = 0 | 0x80;
+	uint32 esi = 0x10E63BC + (w->number << 8);
+
+	if (RCT2_GLOBAL(esi + 0x2F, uint8) == 2) { // Staff type?
+		eax |= 0x20;
+	}
+
+	//RCT2_CALLFUNC_X(0x698827, 0, 0, 0, 0, 0, 0, 0);
+	// sub_698827
+	// This is here due to needing the Carry Flag.
+
+	int CF = 0;
+	int _eax = RCT2_GLOBAL(esi + 0x2B, uint8); // State?
+	int res = RCT2_GLOBAL(0x982004 + _eax, uint8) & 1;
+
+	if (res == 0) {
+		CF = 1;
+	} else {
+		eax = eax & eax;
+	}
+
+	// end sub_698827
+
+	// pop esi
+	if (CF == 1)
+		goto loc_6BED50;
+
+loc_6BED47:
+
+	CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
+	if (CF == 1) {
+		goto loc_6BED66; //jb      short loc_6BED66
+	}
+	goto loc_6BED6B; //jmp     short loc_6BED6B
+
+loc_6BED50:
+	if (w->page != 0) //cmp     word ptr [esi+48Ah], 0
+		goto loc_6BED47; //jnz     short loc_6BED47
+	
+	eax |= 0x400; //or      eax, 400h
+	
+	CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
+	if (CF == 1) {
+		goto loc_6BED6B; //jb      short loc_6BED6B
+	}
+
+loc_6BED66:
+	RCT2_CALLFUNC_X(0x6EB13A, 0, 0, 0, 0, 0, 0, 0);
+
+loc_6BED6B:
+	w->disabled_widgets = eax;
+}
+
 /**
  * Create the window for a specific peep.
  *
@@ -188,7 +243,7 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 	int window_id; // esi
 
 	int _eax = eax, edi;
-	RCT2_CALLFUNC_X(0x6EA9B1, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
+	RCT2_CALLFUNC_X(0x6EA9B1, &_eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
 
 	// Create the window from the ESI.
 	rct_window* w = (rct_window*)window_id;
@@ -202,7 +257,8 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 
 	RCT2_GLOBAL(window_id + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
 
-	RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
+	//RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
+	sub_6BED21(w);
 
 	w->min_width = 190;
 	w->min_height = 180;
