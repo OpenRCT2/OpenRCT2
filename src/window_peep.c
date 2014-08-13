@@ -177,7 +177,7 @@ void window_peep_open(rct_peep* peep){
 void sub_6BED21(rct_window* w)
 {
 	int eax = 0 | 0x80;
-	uint32 esi = 0x10E63BC + (w->number << 8);
+	uint32 esi = RCT2_ADDRESS_SPRITE_LIST + (w->number << 8);
 
 	if (RCT2_GLOBAL(esi + 0x2F, uint8) == 2) { // Staff type?
 		eax |= 0x20;
@@ -209,7 +209,7 @@ void sub_6BED21(rct_window* w)
 		
 	}
 
-	if (a != 1) {
+	if (a == 0) {
 		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
 		if (CF == 1) {
 			RCT2_CALLFUNC_X(0x6EB13A, 0, 0, 0, 0, (int)w, 0, 0);
