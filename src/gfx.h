@@ -43,7 +43,7 @@ typedef struct {
 	sint16 x_offset;		// 0x08
 	sint16 y_offset;		// 0x0A
 	uint16 flags;			// 0x0C
-	sint16 zoomed_offset;	// 0x0E
+	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
 
 enum{
@@ -70,9 +70,9 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
-void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y);
+void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *format, int colour, int x, int y);
+void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y);
 void gfx_transpose_palette(int pal, unsigned char product);
 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
@@ -95,5 +95,8 @@ void gfx_invalidate_screen();
 void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uint32 y_start);
 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
+
+void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
+void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 
 #endif

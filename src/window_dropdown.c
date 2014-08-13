@@ -330,7 +330,7 @@ static void window_dropdown_paint()
 						dpi,
 						image,
 						w->x + 2 + (cell_x * _dropdown_item_width),
-						w->y + 2 + (cell_y * _dropdown_item_height)
+						w->y + 2 + (cell_y * _dropdown_item_height), 0
 					);
 				} else {
 					// Text item

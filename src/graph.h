@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Ted John, Peter Hill, Duncan Frost
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,25 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _MARKETING_H_
-#define _MARKETING_H_
+#ifndef _GRAPH_H_
+#define _GRAPH_H_
 
-#include "peep.h"
+#include "gfx.h"
+#include "rct2.h"
 
-enum {
-	ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,
-	ADVERTISING_CAMPAIGN_RIDE_FREE,
-	ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE,
-	ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE,
-	ADVERTISING_CAMPAIGN_PARK,
-	ADVERTISING_CAMPAIGN_RIDE,
-	ADVERTISING_CAMPAIGN_COUNT
-};
-
-extern const money16 AdvertisingCampaignPricePerWeek[6];
-
-int marketing_get_campaign_guest_generation_probability(int campaign);
-void marketing_update();
-void marketing_set_guest_campaign(rct_peep *peep, int campaign);
+void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY);
+void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset);
 
 #endif

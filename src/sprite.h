@@ -29,6 +29,13 @@
 #include "peep.h"
 #include "vehicle.h"
 
+enum SPRITE_IDENTIFIER{
+	SPRITE_IDENTIFIER_VEHICLE = 0,
+	SPRITE_IDENTIFIER_PEEP = 1,
+	SPRITE_IDENTIFIER_FLOATING_TEXT = 2,
+	SPRITE_IDENTIFIER_LITTER = 3,
+};
+
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
@@ -42,10 +49,18 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
+	uint16 pad_14;
+	sint16 var_16; //x related
+	sint16 var_18; //y related
+	sint16 var_1A; //x related
+	sint16 var_1C; //y related
+	uint8  sprite_direction; //direction of sprite?
 } rct_unk_sprite;
 
 typedef struct {
-	uint32 pad_00;
+	uint8 sprite_identifier;        // 0x00
+	uint8 var_01;					// 0x01
+	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 var_08;

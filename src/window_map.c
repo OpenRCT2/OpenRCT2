@@ -427,7 +427,7 @@ static void window_map_paint()
 
 	gfx_draw_sprite(dpi, image_id, 
 		w->x + w->widgets[WIDX_PEOPLE_TAB].left, 
-		w->y + w->widgets[WIDX_PEOPLE_TAB].top);
+		w->y + w->widgets[WIDX_PEOPLE_TAB].top, 0);
 
 	// ride/stall tab image (animated)
 	image_id = SPR_TAB_RIDE_0;
@@ -436,13 +436,13 @@ static void window_map_paint()
 
 	gfx_draw_sprite(dpi, image_id,
 		w->x + w->widgets[WIDX_RIDES_TAB].left,
-		w->y + w->widgets[WIDX_RIDES_TAB].top);
+		w->y + w->widgets[WIDX_RIDES_TAB].top, 0);
 
 	// people starting position (scenario editor only)
 	if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != 0) {
 		gfx_draw_sprite(dpi, 0x0B6E0190A,
 			w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-			w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18);
+			w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18, 0);
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
@@ -507,7 +507,7 @@ static void window_map_scrollpaint()
 	g1_element->y_offset = 0xFFF8;
 	g1_element->flags = 0;
 
-	gfx_draw_sprite(dpi, 0, 0, 0);
+	gfx_draw_sprite(dpi, 0, 0, 0, 0);
 
 	*g1_element = pushed_g1_element;
 

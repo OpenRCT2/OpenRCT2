@@ -429,7 +429,7 @@ void update_rain_animation()
 			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16)
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
 		);
 	}
 
@@ -2092,7 +2092,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58];
  */
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 }
 
 /**

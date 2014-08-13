@@ -157,8 +157,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_scroll_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_CHECKBOX:
-		widget_checkbox_draw(dpi, w, widgetIndex);
-		break;
 	case WWT_24:
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
@@ -204,7 +202,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
 }
 
 /**
@@ -241,7 +239,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
 }
 
 /**
@@ -324,7 +322,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	image = widget->image + 2;
 
 	// Draw coloured image
-	gfx_draw_sprite(dpi, image | colour, l, t);
+	gfx_draw_sprite(dpi, image | colour, l, t, 0);
 }
 
 /**
@@ -414,9 +412,9 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	widget = &w->widgets[widgetIndex];
 
 	// Get the colour
-// 	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour];
 	// do not use widget color as this is already used as background for the text_button
-	colour = 2;
+	// colour = 2;
 
 	// Resolve the absolute ltrb
 	l = w->x + widget->left;
@@ -631,13 +629,13 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 	// 
 	if (w->var_4B8 != -1) {
-		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1);
+		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1, 0);
 		if (w->width > 638)
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1 + 638, t + 1);
+			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1 + 638, t + 1, 0);
 		if (w->var_4B9 != -1) {
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1, t + 1);
+			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1, t + 1, 0);
 			if (w->width > 638)
-				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1);
+				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1, 0);
 		}
 
 		// 
@@ -942,7 +940,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		else
 			image |= colour << 19;
 
-		gfx_draw_sprite(dpi, image, l, t);
+		gfx_draw_sprite(dpi, image, l, t, 0);
 	}
 }
 

@@ -27,6 +27,7 @@
     <ClInclude Include="..\src\finance.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
+    <ClInclude Include="..\src\graph.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\marketing.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="..\src\finance.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
+    <ClCompile Include="..\src\graph.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\marketing.c" />
@@ -106,6 +108,7 @@
     <ClCompile Include="..\src\window_dropdown.c" />
     <ClCompile Include="..\src\window_guest_list.c" />
     <ClCompile Include="..\src\window_land.c" />
+    <ClCompile Include="..\src\window_new_campaign.c" />
     <ClCompile Include="..\src\window_news.c" />
     <ClCompile Include="..\src\window_park.c" />
     <ClCompile Include="..\src\window_finances.c" />
@@ -211,6 +214,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(ProjectDir)\..\Data\Language\*.*" "$(TargetDir)\Data\Language\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

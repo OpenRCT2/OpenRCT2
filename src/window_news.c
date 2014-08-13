@@ -385,7 +385,7 @@ static void window_news_scrollpaint()
 
 			switch (newsItem->type) {
 			case NEWS_ITEM_RIDE:
-				gfx_draw_sprite(dpi, SPR_RIDE, x, yy);
+				gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
 				break;
 			case NEWS_ITEM_PEEP_ON_RIDE:
 				// TODO
@@ -394,19 +394,19 @@ static void window_news_scrollpaint()
 				// TODO
 				break;
 			case NEWS_ITEM_MONEY:
-				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy);
+				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
 				break;
 			case NEWS_ITEM_RESEARCH:
-				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY, x, yy);
+				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY, x, yy, 0);
 				break;
 			case NEWS_ITEM_PEEPS:
-				gfx_draw_sprite(dpi, SPR_GUESTS, x, yy);
+				gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
 				break;
 			case NEWS_ITEM_AWARD:
-				gfx_draw_sprite(dpi, SPR_AWARD, x, yy);
+				gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
 				break;
 			case NEWS_ITEM_GRAPH:
-				gfx_draw_sprite(dpi, SPR_GRAPH, x, yy);
+				gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
 				break;
 			}
 		}
@@ -423,7 +423,7 @@ static void window_news_scrollpaint()
 					press = 0x20;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
-			gfx_draw_sprite(dpi, SPR_LOCATE, x, yy);
+			gfx_draw_sprite(dpi, SPR_LOCATE, x, yy, 0);
 		}
 
 		y += 42;

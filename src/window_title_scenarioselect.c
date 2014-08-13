@@ -386,7 +386,7 @@ static void window_scenarioselect_paint()
 
 	// Draw SixFlags image
 	if (scenario->flags & SCENARIO_FLAGS_SIXFLAGS)
-		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75);
+		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75, 0);
 
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
@@ -466,7 +466,7 @@ static void window_scenarioselect_scrollpaint()
 		// Check if scenario is completed
 		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1);
+			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1, 0);
 
 			// Draw completion score
 			strcpy((char*)0x009BC677, scenario->completed_by);

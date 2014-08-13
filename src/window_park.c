@@ -24,6 +24,7 @@
 #include "config.h"
 #include "date.h"
 #include "game.h"
+#include "graph.h"
 #include "park.h"
 #include "peep.h"
 #include "ride.h"
@@ -579,9 +580,6 @@ static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
 static void window_park_set_pressed_tab(rct_window *w);
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
-static void window_park_graph_draw_line_a(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
-static void window_park_graph_draw_line_b(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY);
 
 /**
  * 
@@ -1090,7 +1088,7 @@ static void window_park_entrance_paint()
 	if (w->viewport != NULL) {
 		window_draw_viewport(dpi, w);
 		if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2);
+			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
 	}
 
 	// Draw park closed / open label
@@ -1369,9 +1367,7 @@ static void window_park_rating_paint()
 	y += widget->top + 26;
 
 	history = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
-	window_park_graph_draw_months(dpi, history, x, y);
-	window_park_graph_draw_line_a(dpi, history, x, y);
-	window_park_graph_draw_line_b(dpi, history, x, y);
+	graph_draw_uint8(dpi, history, 32, x, y);
 }
 
 #pragma endregion
@@ -1538,9 +1534,7 @@ static void window_park_guests_paint()
 	y += widget->top + 26;
 
 	history = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
-	window_park_graph_draw_months(dpi, history, x, y);
-	window_park_graph_draw_line_a(dpi, history, x, y);
-	window_park_graph_draw_line_b(dpi, history, x, y);
+	graph_draw_uint8(dpi, history, 32, x, y);
 }
 
 #pragma endregion
@@ -2229,7 +2223,7 @@ static void window_park_awards_paint()
 		if (award->time == 0)
 			continue;
 
-		gfx_draw_sprite(dpi, SPR_AWARD_MOST_UNTIDY + award->type, x, y);
+		gfx_draw_sprite(dpi, SPR_AWARD_MOST_UNTIDY + award->type, x, y, 0);
 		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, STR_AWARD_MOST_UNTIDY + award->type, 0);
 
 		y += 32;
@@ -2322,16 +2316,16 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 	// Entrance tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_1)))
-		gfx_draw_sprite(dpi, 5200, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top);
+		gfx_draw_sprite(dpi, 5200, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top, 0);
 
 	// Rating tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
 		sprite_idx = SPR_TAB_GRAPH_0;
 		if (w->page == WINDOW_PARK_PAGE_RATING)
 			sprite_idx += (w->frame_no / 8) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top);
-		gfx_draw_sprite(dpi, SPR_RATING_HIGH, w->x + w->widgets[WIDX_TAB_2].left + 7, w->y + w->widgets[WIDX_TAB_2].top + 1);
-		gfx_draw_sprite(dpi, SPR_RATING_LOW, w->x + w->widgets[WIDX_TAB_2].left + 16, w->y + w->widgets[WIDX_TAB_2].top + 12);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top, 0);
+		gfx_draw_sprite(dpi, SPR_RATING_HIGH, w->x + w->widgets[WIDX_TAB_2].left + 7, w->y + w->widgets[WIDX_TAB_2].top + 1, 0);
+		gfx_draw_sprite(dpi, SPR_RATING_LOW, w->x + w->widgets[WIDX_TAB_2].left + 16, w->y + w->widgets[WIDX_TAB_2].top + 12, 0);
 	}
 
 	// Guests tab
@@ -2339,7 +2333,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = SPR_TAB_GRAPH_0;
 		if (w->page == WINDOW_PARK_PAGE_GUESTS)
 			sprite_idx += (w->frame_no / 8) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 		
 		sprite_idx = *RCT2_GLOBAL(0x00982708, sint32*) + 1;
 		if (w->page == WINDOW_PARK_PAGE_GUESTS)
@@ -2350,7 +2344,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 			dpi,
 			sprite_idx,
 			w->x + (w->widgets[WIDX_TAB_3].left + w->widgets[WIDX_TAB_3].right) / 2,
-			w->y + w->widgets[WIDX_TAB_3].bottom - 9
+			w->y + w->widgets[WIDX_TAB_3].bottom - 9, 0
 		);
 	}
 
@@ -2359,7 +2353,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = SPR_TAB_ADMISSION_0;
 		if (w->page == WINDOW_PARK_PAGE_PRICE)
 			sprite_idx += (w->frame_no / 2) % 8;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_4].left, w->y + w->widgets[WIDX_TAB_4].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_4].left, w->y + w->widgets[WIDX_TAB_4].top, 0);
 	}
 
 	// Statistics tab
@@ -2367,7 +2361,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = SPR_TAB_STATS_0;
 		if (w->page == WINDOW_PARK_PAGE_STATS)
 			sprite_idx += (w->frame_no / 4) % 7;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_5].left, w->y + w->widgets[WIDX_TAB_5].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_5].left, w->y + w->widgets[WIDX_TAB_5].top, 0);
 	}
 
 	// Objective tab
@@ -2375,81 +2369,12 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 		sprite_idx = SPR_TAB_OBJECTIVE_0;
 		if (w->page == WINDOW_PARK_PAGE_OBJECTIVE)
 			sprite_idx += (w->frame_no / 4) % 16;
-		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_6].left, w->y + w->widgets[WIDX_TAB_6].top);
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_6].left, w->y + w->widgets[WIDX_TAB_6].top, 0);
 	}
 
 	// Awards tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_7)))
-		gfx_draw_sprite(dpi, SPR_TAB_AWARDS, w->x + w->widgets[WIDX_TAB_7].left, w->y + w->widgets[WIDX_TAB_7].top);
-}
-
-static void window_park_graph_draw_months(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, yearOver32, currentMonth, currentDay;
-
-	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
-	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-	x = baseX;
-	y = baseY;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
-			// Draw month text
-			RCT2_GLOBAL(0x013CE952, uint32) = ((yearOver32 / 4) + 8) % 8 + STR_MONTH_SHORT_MAR;
-			gfx_draw_string_centred(dpi, 2222, x, y - 10, 0, (void*)0x013CE952);
-
-			// Draw month mark
-			gfx_fill_rect(dpi, x, y, x, y + 3, 10);
-		}
-
-		yearOver32 = (yearOver32 + 1) % 32;
-		x += 6;
-	}
-}
-
-static void window_park_graph_draw_line_a(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, lastX, lastY;
-	lastX = -1;
-	x = baseX;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
-
-			if (lastX != -1) {
-				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, 10);
-				gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, 10);
-			}
-			if (i == 0)
-				gfx_fill_rect(dpi, x, y, x + 2, y + 2, 10);
-
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
-}
-
-static void window_park_graph_draw_line_b(rct_drawpixelinfo *dpi, uint8 *history, int baseX, int baseY)
-{
-	int i, x, y, lastX, lastY;
-
-	lastX = -1;
-	x = baseX;
-	for (i = 31; i >= 0; i--) {
-		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
-
-			if (lastX != -1)
-				gfx_draw_line(dpi, lastX, lastY, x, y, 21);
-			if (i == 0)
-				gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, 21);
-
-			lastX = x;
-			lastY = y;
-		}
-		x += 6;
-	}
+		gfx_draw_sprite(dpi, SPR_TAB_AWARDS, w->x + w->widgets[WIDX_TAB_7].left, w->y + w->widgets[WIDX_TAB_7].top, 0);
 }
 
 #pragma endregion

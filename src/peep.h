@@ -330,7 +330,7 @@ typedef struct {
 	sint16 var_18;
 	sint16 var_1A;
 	sint16 var_1C;
-	uint8 var_1E;
+	uint8 sprite_direction;
 	uint8 pad_1F[3];
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24

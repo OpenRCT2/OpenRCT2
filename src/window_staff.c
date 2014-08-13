@@ -613,7 +613,7 @@ void window_staff_paint() {
 		dpi,
 		i,
 		(window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].left + window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].bottom - 6 + w->y
+		window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].bottom - 6 + w->y, 0
 		);
 
 	// Handymen tab image
@@ -625,7 +625,7 @@ void window_staff_paint() {
 		dpi,
 		i,
 		(window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].left + window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].bottom - 6 + w->y
+		window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].bottom - 6 + w->y, 0
 		);
 
 	// Security tab image
@@ -637,7 +637,7 @@ void window_staff_paint() {
 		dpi,
 		i,
 		(window_staff_widgets[WIDX_STAFF_SECURITY_TAB].left + window_staff_widgets[WIDX_STAFF_SECURITY_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_SECURITY_TAB].bottom - 6 + w->y
+		window_staff_widgets[WIDX_STAFF_SECURITY_TAB].bottom - 6 + w->y, 0
 	);
 
 	rct_drawpixelinfo* sprite_dpi = clip_drawpixelinfo(
@@ -658,7 +658,7 @@ void window_staff_paint() {
 			sprite_dpi,
 			i,
 			0x0F,
-			0x17
+			0x17, 0
 			);
 		rct2_free(sprite_dpi);
 	}
@@ -739,7 +739,7 @@ void window_staff_scrollpaint()
 
 				// True if a patrol path is set for the worker
 				if (RCT2_ADDRESS(0x013CA672, uint8)[peep->var_C5] & 2) {
-					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1);
+					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1, 0);
 				}
 
 				staffOrderIcon_x = 0x7D;
@@ -749,14 +749,14 @@ void window_staff_scrollpaint()
 
 					while (staffOrders != 0) {
 						if (staffOrders & 1) {
-							gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y - 1);
+							gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y - 1, 0);
 						}
 						staffOrders = staffOrders >> 1;
 						staffOrderIcon_x += 9;
 						staffOrderSprite++;
 					}
 				} else {
-					gfx_draw_sprite(dpi, peep->sprite_type - 4 + 0x13FE, staffOrderIcon_x, y - 1);
+					gfx_draw_sprite(dpi, peep->sprite_type - 4 + 0x13FE, staffOrderIcon_x, y - 1, 0);
 				}
 			}
 

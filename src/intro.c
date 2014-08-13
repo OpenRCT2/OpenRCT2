@@ -104,10 +104,10 @@ void intro_update()
 			129);
 
 		// Draw the logo
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_00, (screenWidth / 2) - 320 + 69, _tick_counter + 69);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_10, (screenWidth / 2) - 320 + 319, _tick_counter + 69);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_01, (screenWidth / 2) - 320 + 69, _tick_counter + 319);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_11, (screenWidth / 2) - 320 + 319, _tick_counter + 319);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_00, (screenWidth / 2) - 320 + 69, _tick_counter + 69, 0);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_10, (screenWidth / 2) - 320 + 319, _tick_counter + 69, 0);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_01, (screenWidth / 2) - 320 + 69, _tick_counter + 319, 0);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_11, (screenWidth / 2) - 320 + 319, _tick_counter + 319, 0);
 
 		// Check if logo is off the screen .ish
 		if (_tick_counter > 520) {
@@ -145,8 +145,8 @@ void intro_update()
 		gfx_clear(screenDPI, 10);
 
 		// Draw Chris Sawyer logo
-		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_00, (screenWidth / 2) - 320 + 70, _tick_counter);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_10, (screenWidth / 2) - 320 + 320, _tick_counter);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_00, (screenWidth / 2) - 320 + 70, _tick_counter, 0);
+		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_10, (screenWidth / 2) - 320 + 320, _tick_counter, 0);
 
 		// Check if logo is at 259 pixels
 		if (_tick_counter == 259) {
@@ -171,12 +171,12 @@ void intro_update()
 			gfx_clear(screenDPI, 245);
 
 			// Draw RollerCoaster Tycoon 2 logo
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_00, (screenWidth / 2) - 320 + 0, 0);
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_10, (screenWidth / 2) - 320 + 220, 0);
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_20, (screenWidth / 2) - 320 + 440, 0);
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_01, (screenWidth / 2) - 320 + 0, 240);
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_11, (screenWidth / 2) - 320 + 220, 240);
-			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_21, (screenWidth / 2) - 320 + 440, 240);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_00, (screenWidth / 2) - 320 + 0, 0, 0);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_10, (screenWidth / 2) - 320 + 220, 0, 0);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_20, (screenWidth / 2) - 320 + 440, 0, 0);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_01, (screenWidth / 2) - 320 + 0, 240, 0);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_11, (screenWidth / 2) - 320 + 220, 240, 0);
+			gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_21, (screenWidth / 2) - 320 + 440, 240, 0);
 
 			// Set palette thing
 			gfx_transpose_palette(23224, 0);

@@ -32,6 +32,7 @@ enum {
 	RCT_EXPENDITURE_TYPE_INTEREST = 13
 };
 
+extern const money32 research_cost_table[4];
 
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();

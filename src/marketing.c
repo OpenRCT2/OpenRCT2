@@ -26,6 +26,15 @@
 #include "string_ids.h"
 #include "window.h"
 
+const money16 AdvertisingCampaignPricePerWeek[] = {
+	MONEY(50,00),	// PARK_ENTRY_FREE,
+	MONEY(50,00),	// RIDE_FREE,
+	MONEY(50,00),	// PARK_ENTRY_HALF_PRICE,
+	MONEY(50,00),	// FOOD_OR_DRINK_FREE,
+	MONEY(350,00),	// PARK,
+	MONEY(200,00)	// RIDE,
+};
+
 const int advertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
 
 int marketing_get_campaign_guest_generation_probability(int campaign)
