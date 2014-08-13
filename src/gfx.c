@@ -1236,6 +1236,18 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
 }
 
 /**
+*
+*  rct2: 0x006EB13A
+*/
+void gfx_invalidate_window(rct_window* w)
+{
+	if (!w)return;
+	int width = w->x + w->width;
+	int height = w->y + w->height;
+	gfx_set_dirty_blocks(w->x, w->y, width, height);
+}
+
+/**
  *
  *  rct2: 0x006ED7E5
  */

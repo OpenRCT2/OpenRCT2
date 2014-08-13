@@ -447,7 +447,7 @@ static void window_game_top_toolbar_dropdown()
 			default:
 				return;
 			}
-			RCT2_CALLPROC_X(0x6EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+			gfx_invalidate_window(w);
 		}
 	}
 }
