@@ -210,7 +210,7 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
 	if (a == 0) {
 		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
 		if (CF == 1) {
-			RCT2_CALLFUNC_X(0x6EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+			window_invalidate(w);
 		}
 	}
 
