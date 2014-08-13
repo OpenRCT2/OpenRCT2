@@ -182,15 +182,16 @@ void window_peep_open(rct_peep* peep){
 rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 {
 	ecx = 262167;
-	int ebx = 0xB400BE;
-	edx = 0x992AEC;
+	int ebx = 0xB400BE;	// mov     ebx, offset unk_B400BE
+	edx = 0x992AEC;		// mov     edx, offset off_992AEC
 	
-	// Get ESI.
-	int _eax = eax, esi, edi;
-	RCT2_CALLFUNC_X(0x6EA9B1, &_eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
+	int window_id; // esi
+
+	int _eax = eax, edi;
+	RCT2_CALLFUNC_X(0x6EA9B1, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
 
 	// Create the window from the ESI.
-	rct_window* w = (rct_window*)esi;
+	rct_window* w = (rct_window*)window_id;
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -199,18 +200,19 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 	w->var_482 = 0;
 	w->frame_no = 0;
 
-	RCT2_GLOBAL(esi + 1174, sint16) = 0; // ??
+	RCT2_GLOBAL(window_id + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
 
-	RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
+	RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
 
 	w->min_width = 190;
 	w->min_height = 180;
 	w->max_width = 500;
 	w->max_height = 450;
 
-	RCT2_GLOBAL(esi + 62, uint16) = RCT2_GLOBAL(esi + 62, uint16) | 8; // flags????
+	w->flags |= 1 << 8;
 
-	w->colours[0] = 1;
+	//w->colours[0] = 1;
+	w->colours[0] = 16;
 	w->colours[1] = 4;
 	w->colours[2] = 4;
 
