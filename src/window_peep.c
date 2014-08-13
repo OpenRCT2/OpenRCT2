@@ -174,12 +174,11 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
-void sub_6BED21(rct_window* w)
+void sub_6BED21(rct_window* w, rct_peep* peep)
 {
 	int eax = 0 | 0x80;
-	uint32 esi = RCT2_ADDRESS_SPRITE_LIST + (w->number << 8);
 
-	if (RCT2_GLOBAL(esi + 0x2F, uint8) == 2) { // Staff type?
+	if (peep->staff_type == 2) {
 		eax |= 0x20;
 	}
 
@@ -188,8 +187,7 @@ void sub_6BED21(rct_window* w)
 	// This is here due to needing the Carry Flag.
 
 	int CF = 0;
-	int _eax = RCT2_GLOBAL(esi + 0x2B, uint8); // State?
-	int res = RCT2_GLOBAL(0x982004 + _eax, uint8) & 1;
+	int res = RCT2_GLOBAL(0x982004 + peep->state, uint8) & 1;
 
 	if (res == 0) {
 		CF = 1;
@@ -248,7 +246,7 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 	RCT2_GLOBAL(window_id + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
 
 	//RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
-	sub_6BED21(w);
+	sub_6BED21(w, peep);
 
 	w->min_width = 190;
 	w->min_height = 180;
