@@ -174,60 +174,45 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+/**
+ * Create the window for a specific peep.
+ *
+ * rct2: 0x006BEF1B
+ */
 rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 {
-	int v3 = eax; // push    eax
-
-	ecx = 262167;		// mov     ecx, 40017h
-	int ebx = 0xB400BE; // mov     ebx, offset unk_B400BE
-	edx = 0x992AEC;	// mov     edx, offset off_992AEC
+	ecx = 262167;
+	int ebx = 0xB400BE;
+	edx = 0x992AEC;
 	
-	int esi, edi;
-	RCT2_CALLFUNC_X(0x6EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep); // sub_6EA9B1(262167, off_992AEC);
+	// Get ESI.
+	int _eax = eax, esi, edi;
+	RCT2_CALLFUNC_X(0x6EA9B1, &_eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
 
+	// Create the window from the ESI.
 	rct_window* w = (rct_window*)esi;
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->number = v3;
+	w->number = eax;
 	w->page = 0;
 	w->var_482 = 0;
 	w->frame_no = 0;
 
 	RCT2_GLOBAL(esi + 1174, sint16) = 0; // ??
-	
-	//RCT2_GLOBAL(esi + 40, uint32) = 0x9AF81C;
-	//RCT2_GLOBAL(esi + 8, uint32) = RCT2_GLOBAL(0x9929B0, uint32);
-	//RCT2_GLOBAL(esi + 60, uint16) = v3;
-	//RCT2_GLOBAL(esi + 1162, sint16) = 0; // page
-	//RCT2_GLOBAL(esi + 1154, sint16) = 0;
-	//RCT2_GLOBAL(esi + 1166, sint16) = 0; // frame_no
-	
 
-	eax = v3; // pop eax
-
-	RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep); // sub_6BED21();
+	RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
 
 	w->min_width = 190;
 	w->min_height = 180;
 	w->max_width = 500;
 	w->max_height = 450;
 
-	// RCT2_GLOBAL(esi + 52, sint16) = 190; // mix_width
-	// RCT2_GLOBAL(esi + 56, sint16) = 180; // min_height
-	// RCT2_GLOBAL(esi + 54, sint16) = 500; // max_width
-	// RCT2_GLOBAL(esi + 58, sint16) = 450; // max_height
-
 	RCT2_GLOBAL(esi + 62, uint16) = RCT2_GLOBAL(esi + 62, uint16) | 8; // flags????
 
 	w->colours[0] = 1;
 	w->colours[1] = 4;
 	w->colours[2] = 4;
-
-	// Colours
-	// RCT2_GLOBAL(esi + 1210, uint8) = 1;
-	// RCT2_GLOBAL(esi + 1211, uint8) = 4;
-	// RCT2_GLOBAL(esi + 1212, uint8) = 4;
 
 	return w;
 }
@@ -247,8 +232,9 @@ void window_staff_peep_open(rct_peep* peep)
 		edx = peep->sprite_index;
 
 		//RCT2_CALLFUNC_X(0x006BEF1B, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
-		w = sub_6BEF1B(eax, ecx, edx, peep);
 		//w = (rct_window*)esi;
+
+		w = sub_6BEF1B(eax, ecx, edx, peep);
 	}
 
 	int PEEP_BACKGROUND_IDX = 0;
