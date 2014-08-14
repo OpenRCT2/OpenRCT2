@@ -161,7 +161,7 @@ void window_peep_open(rct_peep* peep){
 	}
 	
 	window->page = 0;
-	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)window, 0, 0);
+	window_invalidate(window);
 	
 	window->widgets = RCT2_GLOBAL(0x981D0C, rct_widget*);
 	window->enabled_widgets = RCT2_GLOBAL(0x981D3C,uint32);
