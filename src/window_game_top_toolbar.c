@@ -447,7 +447,7 @@ static void window_game_top_toolbar_dropdown()
 			default:
 				return;
 			}
-			gfx_invalidate_window(w);
+			window_invalidate(w);
 		}
 	}
 }

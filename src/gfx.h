@@ -92,9 +92,6 @@ void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();
 
-typedef struct rct_window rct_window;
-void gfx_invalidate_window(rct_window *w);
-
 void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uint32 y_start);
 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
