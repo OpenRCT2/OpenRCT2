@@ -222,12 +222,14 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
  *
  * rct2: 0x006BEF1B
  */
-rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
+rct_window* sub_6BEF1B(rct_peep* peep)
 {
-	ecx = 0x38ae7; // class and flags
-	edx = 0x992AEC; // event handler
+	int eax = peep->sprite_index;
+
+	int ecx = 0x38ae7; // class and flags
+	int edx = 0x992AEC; // event handler
 	
-	rct_window* w = window_create_auto_pos(190, 180, edx, ecx, 0);
+	rct_window* w = window_create_auto_pos(190, 180, (uint32*)edx, ecx, 0);
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -262,16 +264,16 @@ void window_staff_peep_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
 	if (!w) {
-		int eax, ebx, ecx, edx, esi, edi;
+		//int eax, ebx, ecx, edx, esi, edi;
 
-		eax = peep->sprite_index;
-		ecx = WC_PEEP;
-		edx = peep->sprite_index;
+		//eax = peep->sprite_index;
+		//ecx = WC_PEEP;
+		//edx = peep->sprite_index;
 
 		//RCT2_CALLFUNC_X(0x006BEF1B, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
 		//w = (rct_window*)esi;
 
-		w = sub_6BEF1B(eax, ecx, edx, peep);
+		w = sub_6BEF1B(peep);
 	}
 
 	int PEEP_BACKGROUND_IDX = 0;
