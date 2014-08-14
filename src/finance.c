@@ -130,7 +130,7 @@ void finance_pay_ride_upkeep()
 		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
-				ride->var_158 -= upkeep;
+				ride->var_154 -= upkeep;
 				ride->var_14D |= 2;
 				finance_payment(upkeep, RCT2_EXPENDITURE_TYPE_RIDE_UPKEEP);
 			}

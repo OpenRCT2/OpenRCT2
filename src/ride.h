@@ -100,7 +100,8 @@ typedef struct {
 	uint16 var_14A;
 	uint8 pad_14C;
 	uint8 var_14D;
-	uint8 pad_14E[0x0A];
+	uint8 pad_14E[0x06];
+	uint32 var_154;
 	uint16 var_158;
 	uint8 pad_15A[0x26];
 	uint16 build_date;				
