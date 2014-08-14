@@ -1720,8 +1720,9 @@ const char *get_string(rct_string_id id)
  * read / write strings in some way is decompiled. The original game used a DIY extended 8-bit extended ASCII set for special
  * characters, format codes and accents.
  *
- * In terms of reading the language files, the STR_XXXX part is completely ignored at the moment. It just parses each line from
- * the colon and thus not allowing gaps in the string indices.
+ * In terms of reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
+ * colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
+ * Use # at the beginning of a line to leave a comment.
  */
 int language_open(const char *filename)
 {
@@ -1740,17 +1741,28 @@ int language_open(const char *filename)
 
 	char *dst, *token;
 	char tokenBuffer[64];
-	int i, stringIndex = 0, mode = 0;
+	int i, stringIndex = 0, mode = 0, string_no;
 	for (i = 0; i < language_buffer_size; i++) {
 		char *src = &language_buffer[i];
 
 		switch (mode) {
 		case 0:
-			// Search for colon
-			if (*src == ':') {
+			// Search for a comment
+			if (*src == '#'){
+				mode = 3;
+			}
+			else if (*src == ':' && string_no != -1) {
+				// Search for colon
 				dst = src + 1;
-				language_strings[stringIndex++] = dst;
+				language_strings[string_no] = dst;
+				stringIndex++;
 				mode = 1;
+			}
+			else if (!strncmp(src, "STR_", 4)){
+				// Copy in the string number
+				if (sscanf(src, "STR_%d", &string_no) != 1){
+					string_no = -1;
+				}
 			}
 			break;
 		case 1:
@@ -1778,6 +1790,10 @@ int language_open(const char *filename)
 				mode = 1;
 			}
 			break;
+		case 3:
+			if (*src == '\n' || *src == '\r'){
+				mode = 0;
+			}
 		}
 	}
 	language_num_strings = stringIndex;

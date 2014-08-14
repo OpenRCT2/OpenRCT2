@@ -1,3 +1,6 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Ride
@@ -2758,6 +2761,7 @@ STR_2756    :???
 STR_2757    :???
 STR_2758    :???
 STR_2759    :???
+# New strings used in the cheats window previously these were ???
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
@@ -2771,6 +2775,7 @@ STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
+# End of new strings
 STR_2773    :???
 STR_2774    :???
 STR_2775    :???
