@@ -1759,8 +1759,8 @@ int language_open(const char *filename)
 				mode = 1;
 			}
 			else if (!strncmp(src, "STR_", 4)){
-				// Copy in the string number
-				if (sscanf(src, "STR_%d", &string_no) != 1){
+				// Copy in the string number, 4 characters only
+				if (sscanf(src, "STR_%4d", &string_no) != 1){
 					string_no = -1;
 				}
 			}

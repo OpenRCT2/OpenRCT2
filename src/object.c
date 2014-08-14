@@ -100,16 +100,16 @@ static int object_calculate_checksum(rct_object_entry *entry, char *data, int da
  *  chunk : esi
  */
 int object_scenario_load_custom_text(char* chunk){
-	int ebp = &((uint32*)chunk)[2];
+	int ebp = (int)(&((uint32*)chunk)[2]);
 	int edx = 0;
 	int eax, ebx, ecx, edi;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, &chunk, &edi, &ebp);
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
 	*((uint16*)chunk) = eax;
 	edx++;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, &chunk, &edi, &ebp);
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
 	*((uint16*)chunk + 1) = eax;
 	edx++;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, &chunk, &edi, &ebp);
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
 	*((uint16*)chunk + 2) = eax;
 
 	if (RCT2_GLOBAL(0x9ADAF4, int) == -1)return 0;
