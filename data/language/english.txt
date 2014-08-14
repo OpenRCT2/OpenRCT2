@@ -2759,18 +2759,18 @@ STR_2757    :???
 STR_2758    :???
 STR_2759    :???
 STR_2760    :+5K Money
-STR_2761    :???
-STR_2762    :???
+STR_2761    :Pay For Entrance
+STR_2762    :Pay For Rides
 STR_2763    :???
-STR_2764    :???
-STR_2765    :???
+STR_2764    :Happy Guests
+STR_2765    :Large Tram
 STR_2766    :???
-STR_2767    :???
-STR_2768    :???
-STR_2769    :???
-STR_2770    :???
-STR_2771    :???
-STR_2772    :???
+STR_2767    :Freeze Climate
+STR_2768    :Unfreeze Climate
+STR_2769    :Open Park
+STR_2770    :Close Park
+STR_2771    :Slower Gamespeed
+STR_2772    :Faster Gamespeed
 STR_2773    :???
 STR_2774    :???
 STR_2775    :???
