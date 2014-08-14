@@ -89,8 +89,8 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		2462},					// tab 1
 	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		2462},					// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		2462},					// tab 3
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_VERY_HIGH},			// high money
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_FREE,		STR_FREE},				//Park Entrance Fee Toggle	
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_NONE},				// high money
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		2761,			STR_NONE},				//Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
 
@@ -102,8 +102,8 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462 },						// tab 3
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_EXTREME,	STR_EXTREME},				// happy guests
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_NONE,		STR_NONE},					// happy guests
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// happy guests
 	{ WIDGETS_END },
 };
 
@@ -116,10 +116,10 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		STR_NONE,		STR_NONE},					// Freeze climate
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_NONE,		STR_NONE},					// open / close park
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// decrease game speed
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		STR_NONE,		STR_NONE},					// increase game speed
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2767,			STR_NONE},					// Freeze climate
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2769,			STR_NONE},					// open / close park
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2771,			STR_NONE},					// decrease game speed
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2772,			STR_NONE},					// increase game speed
 	{ WIDGETS_END },
 };
 
@@ -306,8 +306,8 @@ static void window_cheats_money_mouseup()
 		break;
 	case WIDX_PARK_ENTRANCE_FEE:
 		RCT2_GLOBAL(0x13573E5, uint32) ^= 0x020;
-		if (!(RCT2_GLOBAL(0x13573E5, uint32) & 0x020) ) w->widgets[widgetIndex].image = 2010;
-		else w->widgets[widgetIndex].image = STR_FREE;
+		if (!(RCT2_GLOBAL(0x13573E5, uint32) & 0x020) ) w->widgets[widgetIndex].image = 2762;
+		else w->widgets[widgetIndex].image = 2761;
 		window_invalidate_by_id(0x40 | WC_PARK_INFORMATION, 0);
 		break;
 	}
@@ -384,10 +384,12 @@ static void window_cheats_misc_mouseup()
 		break;
 	case WIDX_FREEZE_CLIMATE:
 		toggle_climate_lock();
+		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2767 ? 2768 : 2767;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
 		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
+		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2769 ? 2770 : 2769;
 		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_DECREASE_GAME_SPEED:
@@ -478,23 +480,10 @@ static void window_cheats_paint()
 		// Format text
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness to max.");
 		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 50);
+		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 
 		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Large group of peeps arrive");
 		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Large Tram");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
-	}
-	else if (w->page == WINDOW_CHEATS_PAGE_MISC){
-		char buffer[256];
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Freeze climate");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Open/Close Park");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Slower Gamespeed");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Faster Gamespeed");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(1) + TXTO, w->y + YPL(2) + TXTO);
 	}
 
 }
