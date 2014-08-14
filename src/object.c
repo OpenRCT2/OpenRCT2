@@ -94,8 +94,34 @@ static int object_calculate_checksum(rct_object_entry *entry, char *data, int da
 	return checksum;
 }
 
+/**
+ *  rct2: 0x66B355 part 
+ *  If al is 0
+ *  chunk : esi
+ */
+int object_scenario_load_custom_text(char* chunk){
+	int ebp = (int)(&((uint32*)chunk)[2]);
+	int edx = 0;
+	int eax, ebx, ecx, edi;
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
+	*((uint16*)chunk) = eax;
+	edx++;
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
+	*((uint16*)chunk + 1) = eax;
+	edx++;
+	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
+	*((uint16*)chunk + 2) = eax;
+
+	if (RCT2_GLOBAL(0x9ADAF4, int) == -1)return 0;
+	else *(RCT2_GLOBAL(0x9ADAF4, uint32*)) = 0;
+	return 1;
+}
+
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
+	if (type == 10){
+		if (eax == 0) return object_scenario_load_custom_text((char*)esi);
+	}
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp);
 	#ifdef _MSC_VER
 	__asm jb success
