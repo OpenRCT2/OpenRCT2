@@ -946,7 +946,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 
 	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
 		uint8 palette_ref = (image_id >> 19) & 0xFF;
-		if (!(image_type & IMAGE_TYPE_MIX_BACKGROUND)){
+		if (image_type & IMAGE_TYPE_MIX_BACKGROUND){
 			unknown_pointer = NULL;
 			RCT2_GLOBAL(0x009E3CDC, uint32) = 0;
 		}
