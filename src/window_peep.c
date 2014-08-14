@@ -224,17 +224,10 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
  */
 rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 {
-	ecx = 262167;
-	int ebx = 0xB400BE;	// mov     ebx, offset unk_B400BE
-	edx = 0x992AEC;		// mov     edx, offset off_992AEC
+	ecx = 0x38ae7; // class and flags
+	edx = 0x992AEC; // event handler
 	
-	int window_id; // esi
-
-	int _eax = eax, edi;
-	RCT2_CALLFUNC_X(0x6EA9B1, &_eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
-
-	// Create the window from the ESI.
-	rct_window* w = (rct_window*)window_id;
+	rct_window* w = window_create_auto_pos(190, 180, edx, ecx, 0);
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -243,9 +236,8 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 	w->var_482 = 0;
 	w->frame_no = 0;
 
-	RCT2_GLOBAL(window_id + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
+	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
 
-	//RCT2_CALLFUNC_X(0x6BED21, &eax, &ebx, &ecx, &edx, &window_id, &edi, (int*)peep);
 	sub_6BED21(w, peep);
 
 	w->min_width = 190;
@@ -255,8 +247,7 @@ rct_window* sub_6BEF1B(int eax, int ecx, int edx, rct_peep* peep)
 
 	w->flags |= 1 << 8;
 
-	//w->colours[0] = 1;
-	w->colours[0] = 16;
+	w->colours[0] = 1;
 	w->colours[1] = 4;
 	w->colours[2] = 4;
 
@@ -289,7 +280,8 @@ void window_staff_peep_open(rct_peep* peep)
 	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
 	w->event_handlers = (uint32*)RCT2_GLOBAL(0x9929A4, uint32);
 	w->pressed_widgets = 0;
-	RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
+	sub_6BED21(w, peep);
+	//RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
 	window_init_scroll_widgets(w);
 	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
