@@ -153,6 +153,9 @@
     <ClInclude Include="..\src\graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\language.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="..\src\window_new_campaign.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\language.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,7 @@
 #include "audio.h"
 #include "config.h"
 #include "gfx.h"
+#include "language.h"
 #include "osinterface.h"
 #include "string_ids.h"
 #include "viewport.h"
@@ -67,11 +68,14 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_HOTKEY_DROPDOWN,
 	WIDX_GENERAL_GROUP,
 	WIDX_REAL_NAME_CHECKBOX,
-	WIDX_SAVE_PLUGIN_DATA_CHECKBOX
+	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
+	WIDX_LANGUAGE_GROUP,
+	WIDX_LANGUAGE_DROPDOWN,
+	WIDX_LANGUAGE_DROPDOWN_BUTTON
 };
 
 #define WW 310
-#define WH 399
+#define WH 437
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
@@ -110,6 +114,9 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_GROUPBOX,			0,	3,		306,	344,	392,	STR_GENERAL,	STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	358,	369,	STR_REAL_NAME,	STR_REAL_NAME_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	372,	384,	STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
+	{ WWT_GROUPBOX,			0,	3,		306,	399,	430,	2776,			STR_NONE },
+	{ WWT_DROPDOWN,			0,	10,		299,	413,	424,	STR_NONE,		STR_NONE },	// language
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	414,	423,	0x36C,			STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -119,7 +126,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 static void window_options_dropdown();
 static void window_options_invalidate();
 static void window_options_paint();
-static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, int num_items);
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int num_items);
 static void window_options_update_height_markers();
 
 static void* window_options_events[] = {
@@ -326,7 +333,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsArgs[i] = 1170 | ((uint64)(intptr_t)gAudioDevices[i].name << 16);
 		}
 
-		window_options_draw_dropdown_box(w, widget, gAudioDeviceCount);
+		window_options_show_dropdown(w, widget, gAudioDeviceCount);
 
 		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(0x9AF280, uint32));
 		break;
@@ -336,7 +343,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_UNITS;
 		gDropdownItemsArgs[1] = STR_REAL_VALUES;
 
-		window_options_draw_dropdown_box(w, widget, 2);
+		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked =
 			(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &
@@ -348,7 +355,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_OFF;
 		gDropdownItemsArgs[1] = STR_ON;
 
-		window_options_draw_dropdown_box(w, widget, 2);
+		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
 		break;
@@ -360,7 +367,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsArgs[i] = STR_SOUND_LOW + i; // low, medium, high
 		}
 
-		window_options_draw_dropdown_box(w, widget, num_items);
+		window_options_show_dropdown(w, widget, num_items);
 
 		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, uint8);
 		break;
@@ -372,7 +379,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsArgs[i] = STR_POUNDS + i; // all different currencies
 		}
 
-		window_options_draw_dropdown_box(w, widget, num_items);
+		window_options_show_dropdown(w, widget, num_items);
 
 		gDropdownItemsChecked = 1 << (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, uint8) & 0x3F);
 		break;
@@ -382,7 +389,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_IMPERIAL;
 		gDropdownItemsArgs[1] = STR_METRIC;
 
-		window_options_draw_dropdown_box(w, widget, 2);
+		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8);
 		break;
@@ -397,7 +404,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[1] = STR_FAHRENHEIT;
 		gDropdownItemsArgs[2] = STR_METRIC;
 
-		window_options_draw_dropdown_box(w, widget, 3);
+		window_options_show_dropdown(w, widget, 3);
 
 		gDropdownItemsChecked = 1 << gGeneral_config.fullscreen_mode;
 		break;
@@ -407,7 +414,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_CELSIUS;
 		gDropdownItemsArgs[1] = STR_FAHRENHEIT;
 
-		window_options_draw_dropdown_box(w, widget, 2);
+		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8);
 		break;
@@ -417,9 +424,17 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsArgs[0] = STR_WHITE;
 		gDropdownItemsArgs[1] = STR_TRANSLUCENT;
 
-		window_options_draw_dropdown_box(w, widget, 2);
+		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
+		break;
+	case WIDX_LANGUAGE_DROPDOWN_BUTTON:
+		for (i = 1; i < LANGUAGE_COUNT; i++) {
+			gDropdownItemsFormat[i - 1] = 2777;
+			gDropdownItemsArgs[i - 1] = (sint64)language_names[i];
+		}
+		window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
+		gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
 		break;
 	}
 }
@@ -540,6 +555,14 @@ static void window_options_dropdown()
 	case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
 		if (dropdownIndex != RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = (uint8)dropdownIndex;
+			config_save();
+			gfx_invalidate_screen();
+		}
+		break;
+	case WIDX_LANGUAGE_DROPDOWN_BUTTON:
+		if (dropdownIndex != gCurrentLanguage - 1) {
+			language_open(dropdownIndex + 1);
+			gGeneral_config.language = dropdownIndex + 1;
 			config_save();
 			gfx_invalidate_screen();
 		}
@@ -708,10 +731,19 @@ static void window_options_paint()
 		w->y + window_options_widgets[WIDX_MUSIC].top + 1);
 	gfx_draw_string_left(dpi, STR_SOUND_QUALITY, w, 0, w->x + 10,
 		w->y + window_options_widgets[WIDX_SOUND_QUALITY].top + 1);
+
+	// language
+	gfx_draw_string(
+		dpi,
+		(char*)language_names[gCurrentLanguage],
+		12,
+		w->x + window_options_widgets[WIDX_LANGUAGE_DROPDOWN].left + 1,
+		w->y + window_options_widgets[WIDX_LANGUAGE_DROPDOWN].top
+	);
 }
 
 // helper function, all dropdown boxes have similar properties
-static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, int num_items)
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int num_items)
 {
 	window_dropdown_show_text_custom_width(
 		w->x + widget->left,
@@ -721,7 +753,7 @@ static void window_options_draw_dropdown_box(rct_window *w, rct_widget *widget, 
 		0x80,
 		num_items,
 		widget->right - widget->left - 3
-		);
+	);
 }
 
 static void window_options_update_height_markers() 

@@ -29,6 +29,7 @@
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\graph.h" />
     <ClInclude Include="..\src\intro.h" />
+    <ClInclude Include="..\src\language.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\marketing.h" />
     <ClInclude Include="..\src\news_item.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\graph.c" />
     <ClCompile Include="..\src\intro.c" />
+    <ClCompile Include="..\src\language.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\marketing.c" />
     <ClCompile Include="..\src\news_item.c" />

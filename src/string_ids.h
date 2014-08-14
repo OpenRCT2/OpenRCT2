@@ -28,9 +28,8 @@ void generate_string_file();
 void reset_saved_strings();
 void error_string_quit(int error, rct_string_id format);
 
-const char *get_string(rct_string_id id);
-int language_open(const char *filename);
-void language_close();
+char format_get_code(const char *token);
+const char *format_get_token(char code);
 
 enum {
 	// Font format codes
