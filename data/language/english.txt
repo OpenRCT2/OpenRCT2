@@ -1845,8 +1845,8 @@ STR_1843    :Favorite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{OUTLINE}{20}
-STR_1848    :{INLINE_SPRITE}{SMALLFONT}{20}
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
 STR_1849    :{WINDOW_COLOUR_2}Play music
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
