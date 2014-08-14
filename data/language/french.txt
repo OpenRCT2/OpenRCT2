@@ -1,3 +1,6 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Ride
@@ -1845,8 +1848,8 @@ STR_1843    :Favorite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{OUTLINE}{20}
-STR_1848    :{INLINE_SPRITE}{SMALLFONT}{20}
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
 STR_1849    :{WINDOW_COLOUR_2}Play music
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
@@ -2758,6 +2761,7 @@ STR_2756    :???
 STR_2757    :???
 STR_2758    :???
 STR_2759    :???
+# New strings used in the cheats window previously these were ???
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
@@ -2771,12 +2775,13 @@ STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
+# End of new strings
 STR_2773    :???
 STR_2774    :???
 STR_2775    :???
-STR_2776    :???
-STR_2777    :???
-STR_2778    :???
+STR_2776    :Language
+STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :???
 STR_2780    :???
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}

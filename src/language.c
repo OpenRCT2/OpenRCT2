@@ -28,14 +28,16 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
 	"English (UK)",		// LANGUAGE_ENGLISH_UK
 	"English (US)",		// LANGUAGE_ENGLISH_US
-	"Nederlands"		// LANGUAGE_DUTCH
+	"Nederlands",		// LANGUAGE_DUTCH
+	"Fran\u00e7ais"		// LANGUAGE_FRENCH
 };
 
 const char *language_filenames[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
 	"english_uk",		// LANGUAGE_ENGLISH_UK
 	"english_us",		// LANGUAGE_ENGLISH_US
-	"dutch"				// LANGUAGE_DUTCH
+	"dutch",			// LANGUAGE_DUTCH
+	"french"			// LANGUAGE_FRENCH
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
