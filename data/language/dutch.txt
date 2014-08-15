@@ -1214,7 +1214,7 @@ STR_1212    :{WINDOW_COLOUR_2}Maximumwachttijd:
 STR_1213    :{SMALLFONT}{BLACK}Selecteer de minimale wachttijd voor vertrek
 STR_1214    :{SMALLFONT}{BLACK}Selecteer de maximale wachttijd voor vertrek
 STR_1215    :{WINDOW_COLOUR_2}Synchroniseren met aangrenzende stations
-STR_1216    :{SMALLFONT}{BLACK}Selecteer of een trein op hetzelfde moment moet vertrekken als alle aangrenzende station (om te 'racen')
+STR_1216    :{SMALLFONT}{BLACK}Selecteer of een trein op hetzelfde moment moet vertrekken als alle aangrenzende stations (om te 'racen')
 STR_1217    :{COMMA16} seconden
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
@@ -1519,7 +1519,7 @@ STR_1517    :{SMALLFONT}{OPENQUOTES}Er speelt hier leuke muziek{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}Deze plattegrond van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}Deze paraplu van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Deze frisdrank van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1537,7 +1537,7 @@ STR_1535    :{SMALLFONT}{OPENQUOTES}Deze tentakel van {STRINGID} is erg goedkoop
 STR_1536    :{SMALLFONT}{OPENQUOTES}Deze hoed van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1537    :{SMALLFONT}{OPENQUOTES}Deze toffeeappel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1538    :{SMALLFONT}{OPENQUOTES}Dit T-shirt van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Deze donet van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Deze donut van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}Deze koffie van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1541    :
 STR_1542    :{SMALLFONT}{OPENQUOTES}Deze gegrilde kip van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1585,24 +1585,24 @@ STR_1583    :
 STR_1584    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1585    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1586    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}This warme chocolademelk van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}This ijsthee van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses van {STRINGID} are really good value{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles van {STRINGID} are really good value{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles van {STRINGID} are really good value{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}This sap van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}This sojamelk van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Dit broodje van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Dit koekje van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Deze gebraden worst van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1614,27 +1614,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo van {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo van {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor an on-ride photo van {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een krakeling van {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor ijsthee van {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a funnel cake van {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sunglasses van {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor beef noodles van {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor fried rice noodles van {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor wonton soup van {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor meatball soup van {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sap van {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sojamelk van {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sujongkwa van {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een broodje van {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een koekje van {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor a gebraden worst van {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1652,7 +1652,7 @@ STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
 STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
 STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
+STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
 STR_1657    :{WINDOW_COLOUR_2}Preferred ride
@@ -1670,13 +1670,13 @@ STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
+STR_1672    :Remmen
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Brake speed
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
+STR_1677    :{WINDOW_COLOUR_2}Populariteit: {BLACK}onbekend
+STR_1678    :{WINDOW_COLOUR_2}Populariteit: {BLACK}{COMMA16}%
 STR_1679    :Helix up (left)
 STR_1680    :Helix up (right)
 STR_1681    :Helix down (left)
@@ -1687,13 +1687,13 @@ STR_1685    :Base size 2 x 4
 STR_1686    :Base size 5 x 1
 STR_1687    :Water splash
 STR_1688    :Base size 4 x 1
-STR_1689    :Block brakes
+STR_1689    :Blokremmen
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
+STR_1693    :{SMALLFONT}{BLACK}Bezoekers
+STR_1694    :{SMALLFONT}{BLACK}Wernemers
+STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
 STR_1696    :{SMALLFONT}{BLACK}Customer information
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
@@ -1707,19 +1707,19 @@ STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
-STR_1709    :Sack staff
-STR_1710    :Yes
-STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
+STR_1709    :Werknemer ontslaan
+STR_1710    :Ja
+STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt ontslaan?
 STR_1712    :{INLINE_SPRITE}{247}{19}
 STR_1713    :{INLINE_SPRITE}{248}{19}
 STR_1714    :{INLINE_SPRITE}{249}{19}
 STR_1715    :{INLINE_SPRITE}{250}{19}
 STR_1716    :Invalid name for park
 STR_1717    :Can't rename park...
-STR_1718    :Park Name
+STR_1718    :Parknaam
 STR_1719    :Enter name for park:-
 STR_1720    :{SMALLFONT}{BLACK}Name park
-STR_1721    :Park closed
+STR_1721    :Park gesloten
 STR_1722    :Park open
 STR_1723    :Can't open park...
 STR_1724    :Can't close park...
@@ -1728,10 +1728,10 @@ STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}Gesloten - - 
 STR_1731    :{WHITE}{STRINGID} - - 
-STR_1732    :Build
-STR_1733    :Mode
+STR_1732    :Bouwen
+STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1752,30 +1752,30 @@ STR_1750    :{DURATION}
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
-STR_1756    :{WINDOW_COLOUR_2}Admission price:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Build mode
-STR_1759    :{SMALLFONT}{BLACK}Move mode
-STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
-STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
-STR_1762    :Waterfalls
-STR_1763    :Rapids
-STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
-STR_1766    :Reverser turntable
-STR_1767    :Spinning tunnel
+STR_1754    :{BLACK}{COMMA16} bezoekers
+STR_1755    :{BLACK}{COMMA16} bezoeker
+STR_1756    :{WINDOW_COLOUR_2}Toegangsprijs:
+STR_1757    :{WINDOW_COLOUR_2}Betrouwbaarheid: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Bouwmodus
+STR_1759    :{SMALLFONT}{BLACK}Verplaatsmodus
+STR_1760    :{SMALLFONT}{BLACK}Dichtmaakmodus
+STR_1761    :{SMALLFONT}{BLACK}Bouw doolhof in deze richting
+STR_1762    :Watervallen
+STR_1763    :Stroomversnelling
+STR_1764    :Balkendrempels
+STR_1765    :Actiefoto-installatie
+STR_1766    :Draaischijf
+STR_1767    :Draaiende tunnel
 STR_1768    :Can't change number of swings...
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-ride photo section allowed per ride
-STR_1774    :Only one cable lift hill allowed per ride
+STR_1773    :Een attractie mag maar een actiefoto-installatie hebben
+STR_1774    :Een attractie mag maar een kabellift hebben
 STR_1775    :Uit
 STR_1776    :Aan
-STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1777    :{WINDOW_COLOUR_2}Muziek:
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}
 STR_1780    :{INLINE_SPRITE}{255}{19}
@@ -1788,36 +1788,36 @@ STR_1786    :{INLINE_SPRITE}{NEWLINE}{20}
 STR_1787    :{INLINE_SPRITE}{6}{20}
 STR_1788    :{INLINE_SPRITE}{TINYFONT}{20}
 STR_1789    :{INLINE_SPRITE}{BIGFONT}{20}
-STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
-STR_1791    :{WINDOW_COLOUR_2}Uniform color:
-STR_1792    :Responding to {STRINGID} breakdown call
-STR_1793    :Heading to {STRINGID} for an inspection
-STR_1794    :Fixing {STRINGID}
-STR_1795    :Answering radio call
-STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this ride
-STR_1798    :Whirlpool
+STR_1790    :{SMALLFONT}{BLACK}Selecteer de uniformkleur voor dit type werknemer
+STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
+STR_1792    :Gaat naar {STRINGID} voor een reparatie
+STR_1793    :Gaat naar {STRINGID} voor een inspectie
+STR_1794    :Repareert {STRINGID}
+STR_1795    :Beantwoordt radio-oproep
+STR_1796    :Is defect en moet worden gerepareerd
+STR_1797    :Deze optie kan niet worden aangepast bij deze attractie
+STR_1798    :Draaikolk
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Safety cut-out
-STR_1801    :Restraints stuck closed
-STR_1802    :Restraints stuck open
-STR_1803    :Doors stuck closed
-STR_1804    :Doors stuck open
-STR_1805    :Vehicle malfunction
-STR_1806    :Brakes failure
-STR_1807    :Control failure
-STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
-STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
-STR_1810    :{WINDOW_COLOUR_2}Carrying:
-STR_1811    :Can't build this here...
+STR_1800    :Veiligheidsvergrendeling
+STR_1801    :Veiligheidsbeugel gaat niet open
+STR_1802    :Veiligheidsbeugel gaat niet dicht
+STR_1803    :Deuren gaan niet open
+STR_1804    :Deuren gaan niet dicht
+STR_1805    :Defect voertuig
+STR_1806    :Defecte remmen
+STR_1807    :Defecte besturing
+STR_1808    :{WINDOW_COLOUR_2}Laatste defect: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}Huidig defect: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}Heeft bij zich:
+STR_1811    :Kan dit hier niet bouwen...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
-STR_1813    :Miscellaneous Objects
-STR_1814    :Actions
-STR_1815    :Thoughts
+STR_1813    :Overige objecten
+STR_1814    :Acties
+STR_1815    :Gedachten
 STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
 STR_1817    :({COMMA16})
-STR_1818    :{WINDOW_COLOUR_2}All guests
-STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
+STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
+STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
@@ -1825,116 +1825,116 @@ STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
 STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
 STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
 STR_1826    :Status
-STR_1827    :Popularity
-STR_1828    :Satisfaction
-STR_1829    :Profit
-STR_1830    :Queue length
-STR_1831    :Queue time
-STR_1832    :Reliability
-STR_1833    :Down-time
-STR_1834    :Guests favorite
-STR_1835    :Popularity: Unknown
-STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
-STR_1839    :Reliability: {COMMA16}%
-STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY} per hour
-STR_1842    :Favorite of: {COMMA16} guest
-STR_1843    :Favorite of: {COMMA16} guests
+STR_1827    :Populariteit
+STR_1828    :Voldoening
+STR_1829    :Winst
+STR_1830    :Lengte wachtrij
+STR_1831    :Wachttijd
+STR_1832    :Betrouwbaarheid
+STR_1833    :Stilstandtijd
+STR_1834    :Favoriet bij bezoekers
+STR_1835    :Populariteit: onbekend
+STR_1836    :Populariteit: {COMMA16}%
+STR_1837    :Voldoening: onbekend
+STR_1838    :Voldoening: {COMMA16}%
+STR_1839    :Betrouwbaarheid: {COMMA16}%
+STR_1840    :Stilstandtijd: {COMMA16}%
+STR_1841    :Winst: {CURRENCY} per uur
+STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
+STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{OUTLINE}{20}
-STR_1848    :{INLINE_SPRITE}{SMALLFONT}{20}
-STR_1849    :{WINDOW_COLOUR_2}Play music
+STR_1846    :{COMMA16} bezoekers
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoekers
+STR_1849    :{WINDOW_COLOUR_2}Draai muziek
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
 STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_1859    :Handymen
-STR_1860    :Mechanics
-STR_1861    :Security Guards
+STR_1853    :{WINDOW_COLOUR_2}Bouw: {BLACK}dit jaar
+STR_1854    :{WINDOW_COLOUR_2}Bouw: {BLACK}vorig jaar
+STR_1855    :{WINDOW_COLOUR_2}Bouw: {BLACK}{COMMA16} jaar geleden
+STR_1856    :{WINDOW_COLOUR_2}Winst per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Verlies per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} per maand
+STR_1859    :Klusjesmannen
+STR_1860    :Monteurs
+STR_1861    :Bewakers
 STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
+STR_1863    :Klusjesman
+STR_1864    :Monteur
+STR_1865    :Bewaker
 STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
+STR_1868    :Kan het aantal rotaties niet aanpassen...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
-STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
+STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY} per uur
+STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY} per uur
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
+STR_1878    :{WINDOW_COLOUR_2}Inspectie:
+STR_1879    :Elke 10 minuten
+STR_1880    :Elke 20 minutes
+STR_1881    :Elke 30 minutes
+STR_1882    :Elke 45 minutes
+STR_1883    :Elk uur
+STR_1884    :Elke 2 uur
+STR_1885    :Nooit
 STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
-STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
 STR_1892    :RollerCoaster Tycoon 2
 STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the folLaaging drive:-
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
-STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
-STR_1897    :{WINDOW_COLOUR_2}Ride construction
-STR_1898    :{WINDOW_COLOUR_2}Ride running costs
-STR_1899    :{WINDOW_COLOUR_2}Land purchase
-STR_1900    :{WINDOW_COLOUR_2}Landscaping
-STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
-STR_1902    :{WINDOW_COLOUR_2}Ride tickets
-STR_1903    :{WINDOW_COLOUR_2}Shop sales
-STR_1904    :{WINDOW_COLOUR_2}Shop stock
-STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
-STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
-STR_1907    :{WINDOW_COLOUR_2}Staff wages
+STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
+STR_1897    :{WINDOW_COLOUR_2}Attractiebouw
+STR_1898    :{WINDOW_COLOUR_2}Attractiebedrijf
+STR_1899    :{WINDOW_COLOUR_2}Landaankoop
+STR_1900    :{WINDOW_COLOUR_2}Landaanpassingen
+STR_1901    :{WINDOW_COLOUR_2}Entreekaartjes
+STR_1902    :{WINDOW_COLOUR_2}Attractiekaartjes
+STR_1903    :{WINDOW_COLOUR_2}Winkelverkoop
+STR_1904    :{WINDOW_COLOUR_2}Winkelvoorraad
+STR_1905    :{WINDOW_COLOUR_2}Horecaverkoop
+STR_1906    :{WINDOW_COLOUR_2}Horecavoorraad
+STR_1907    :{WINDOW_COLOUR_2}Lonen
 STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
-STR_1910    :{WINDOW_COLOUR_2}Loan interest
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1909    :{WINDOW_COLOUR_2}Onderzoek
+STR_1910    :{WINDOW_COLOUR_2}Rente op lening
+STR_1911    :{BLACK} tegen {COMMA16}% per jaar
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}Loan:
+STR_1916    :{WINDOW_COLOUR_2}Lening:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
+STR_1922    :{SMALLFONT}{BLACK}Verder gaan aan een opgeslagen spel
+STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
+STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} has broken down
-STR_1928    :{RED}{STRINGID} has crashed!
+STR_1927    :{YELLOW}{STRINGID} is kapot gegaan
+STR_1928    :{RED}{STRINGID} is neergestort!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
-STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
-STR_1932    :{STRINGID} is on {STRINGID}
-STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has left {STRINGID}
-STR_1935    :{STRINGID} has left the park
-STR_1936    :{STRINGID} has bought {STRINGID}
+STR_1931    :{STRINGID} staat nu in de rij voor {STRINGID}
+STR_1932    :{STRINGID} is nu in {STRINGID}
+STR_1933    :{STRINGID} is nu in {STRINGID}
+STR_1934    :{STRINGID} heeft {STRINGID} verlaten
+STR_1935    :{STRINGID} heeft het park verlaten
+STR_1936    :{STRINGID} heeft {STRINGID} gekocht
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
@@ -1947,33 +1947,33 @@ STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
 STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
 STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
 STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
-STR_1949    :Financial Summary
+STR_1949    :Samenvatting financien
 STR_1950    :Financial Graph
 STR_1951    :Park Value Graph
 STR_1952    :Profit Graph
 STR_1953    :Marketing
-STR_1954    :Research Funding
-STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1954    :Onderzoeksbudget
+STR_1955    :{WINDOW_COLOUR_2}Aantal rondes:
+STR_1956    :{SMALLFONT}{BLACK}Aantal af te leggen rondes per rit
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Can't change number of circuits...
-STR_1960    :{WINDOW_COLOUR_2}Balloon price:
-STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
-STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
-STR_1965    :{WINDOW_COLOUR_2}Drink price:
-STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Fries price:
-STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1959    :Kan het aantal rondes niet aanpassen...
+STR_1960    :{WINDOW_COLOUR_2}Prijs ballon:
+STR_1961    :{WINDOW_COLOUR_2}Prijs knuffel:
+STR_1962    :{WINDOW_COLOUR_2}Prijs parkplattegrond:
+STR_1963    :{WINDOW_COLOUR_2}Prijs actiefoto:
+STR_1964    :{WINDOW_COLOUR_2}Prijs paraplu:
+STR_1965    :{WINDOW_COLOUR_2}Prijs frisdrank:
+STR_1966    :{WINDOW_COLOUR_2}Prijs hamburger:
+STR_1967    :{WINDOW_COLOUR_2}Prijs friet:
+STR_1968    :{WINDOW_COLOUR_2}Prijs ijsje:
+STR_1969    :{WINDOW_COLOUR_2}Prijs suikerspin:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1973    :{WINDOW_COLOUR_2}Prijs pizza:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
+STR_1975    :{WINDOW_COLOUR_2}Prijs popcorn:
 STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
 STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
 STR_1978    :{WINDOW_COLOUR_2}Hat price:
@@ -1986,35 +1986,35 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Fries
-STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
+STR_1988    :Ballon
+STR_1989    :Knuffel
+STR_1990    :Parkplattegrond
+STR_1991    :Actiefoto
+STR_1992    :Paraplu
+STR_1993    :Frisdrank
+STR_1994    :Hamburger
+STR_1995    :Frietjes
+STR_1996    :IJs
+STR_1997    :Suikerspin
+STR_1998    :Leeg blikje
+STR_1999    :Afval
+STR_2000    :Lege hamburgerdoos
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Bon
 STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2004    :Hotdog
+STR_2005    :Tentakel
+STR_2006    :Hoed
+STR_2007    :Toffeeappel
 STR_2008    :T-Shirt
 STR_2009    :Donut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
+STR_2010    :Koffie
+STR_2011    :Lege beker
+STR_2012    :Gegrilde kip
+STR_2013    :Limonade
+STR_2014    :Lege doos
+STR_2015    :Lege fles
+STR_2016    :Ballonnen
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
 STR_2019    :On-Ride Photos
@@ -2102,111 +2102,111 @@ STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
-STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
-STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
+STR_2104    :{WINDOW_COLOUR_2}warme chocolademelk price:
+STR_2105    :{WINDOW_COLOUR_2}ijsthee price:
 STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
 STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
 STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
 STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
 STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
 STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
-STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
-STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
+STR_2112    :{WINDOW_COLOUR_2}sap price:
+STR_2113    :{WINDOW_COLOUR_2}sojamelk price:
 STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
 STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
 STR_2116    :{WINDOW_COLOUR_2}Cookie price:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}gebraden worst price:
 STR_2121    :{WINDOW_COLOUR_2}
 STR_2122    :On-Ride Photo
 STR_2123    :On-Ride Photo
 STR_2124    :On-Ride Photo
 STR_2125    :Pretzel
-STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
+STR_2126    :warme chocolademelk
+STR_2127    :ijsthee
 STR_2128    :Funnel Cake
 STR_2129    :Sunglasses
 STR_2130    :Beef Noodles
 STR_2131    :Fried Rice Noodles
 STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
+STR_2134    :sap
+STR_2135    :sojamelk
 STR_2136    :Sujongkwa
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
 STR_2139    :Empty Bowl
 STR_2140    :Empty Drink Carton
 STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
+STR_2142    :gebraden worst
 STR_2143    :Empty Bowl
 STR_2144    :On-Ride Photos
 STR_2145    :On-Ride Photos
 STR_2146    :On-Ride Photos
 STR_2147    :Pretzels
-STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
+STR_2148    :warme chocolademelks
+STR_2149    :ijsthees
 STR_2150    :Funnel Cakes
 STR_2151    :Sunglasses
 STR_2152    :Beef Noodles
 STR_2153    :Fried Rice Noodles
 STR_2154    :Wonton Soups
 STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
+STR_2156    :saps
+STR_2157    :sojamelks
 STR_2158    :Sujongkwa
 STR_2159    :Sub Sandwiches
 STR_2160    :Cookies
 STR_2161    :Empty Bowls
 STR_2162    :Empty Drink Cartons
 STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
+STR_2164    :gebraden worsts
 STR_2165    :Empty Bowls
 STR_2166    :an On-Ride Photo
 STR_2167    :an On-Ride Photo
 STR_2168    :an On-Ride Photo
-STR_2169    :a Pretzel
-STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
+STR_2169    :een krakeling
+STR_2170    :a warme chocolademelk
+STR_2171    :an ijsthee
 STR_2172    :a Funnel Cake
 STR_2173    :a pair of Sunglasses
 STR_2174    :some Beef Noodles
 STR_2175    :some Fried Rice Noodles
 STR_2176    :some Wonton Soup
 STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
+STR_2178    :a sap
+STR_2179    :some sojamelk
 STR_2180    :some Sujongkwa
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
+STR_2181    :een broodje
+STR_2182    :een koekje
 STR_2183    :an Empty Bowl
 STR_2184    :an Empty Drink Carton
 STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
+STR_2186    :a gebraden worst
 STR_2187    :an Empty Bowl
 STR_2188    :On-Ride Photo of {STRINGID}
 STR_2189    :On-Ride Photo of {STRINGID}
 STR_2190    :On-Ride Photo of {STRINGID}
 STR_2191    :Pretzel
-STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
+STR_2192    :warme chocolademelk
+STR_2193    :ijsthee
 STR_2194    :Funnel Cake
 STR_2195    :Sunglasses
 STR_2196    :Beef Noodles
 STR_2197    :Fried Rice Noodles
 STR_2198    :Wonton Soup
 STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
+STR_2200    :sap
+STR_2201    :sojamelk
 STR_2202    :Sujongkwa
 STR_2203    :Sub Sandwich
 STR_2204    :Cookie
 STR_2205    :Empty Bowl
 STR_2206    :Empty Drink Carton
 STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
+STR_2208    :gebraden worst
 STR_2209    :Empty Bowl
 STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
 STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
@@ -2325,7 +2325,7 @@ STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or beLaag land outside the park
-STR_2327    :Optie
+STR_2327    :Opties
 STR_2328    :{WINDOW_COLOUR_2}Valuta:
 STR_2329    :{WINDOW_COLOUR_2}Afstanden en snelheden:
 STR_2330    :{WINDOW_COLOUR_2}Temperatuur:
@@ -2345,7 +2345,7 @@ STR_2343    :Euro's ({EURO})
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2346    :Weergave
-STR_2347    :{RED}{STRINGID} has drowned!
+STR_2347    :{RED}{STRINGID} is verdronken!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
@@ -2384,9 +2384,9 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Je doel:
 STR_2385    :{BLACK}Geen
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
+STR_2386    :{BLACK}Om minstens {COMMA16} bezoekers in je park toe hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
-STR_2388    :{BLACK}Have Fun!
+STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
 STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop beLaag 700 at any time!
@@ -2774,7 +2774,7 @@ STR_2772    :Hogere spelsnelheid
 STR_2773    :???
 STR_2774    :???
 STR_2775    :???
-STR_2776    :Language
+STR_2776    :Taal
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :???
