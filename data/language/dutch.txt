@@ -1523,7 +1523,7 @@ STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoo
 STR_1522    :{SMALLFONT}{OPENQUOTES}Deze paraplu van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Deze frisdrank van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Deze frietjes van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Deze frietjes van {STRINGID} zijn erg goedkoop{ENDQUOTES}
 STR_1526    :{SMALLFONT}{OPENQUOTES}Dit ijsje van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1527    :{SMALLFONT}{OPENQUOTES}Deze suikerspin van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1528    :
