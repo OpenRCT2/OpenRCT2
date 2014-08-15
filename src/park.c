@@ -71,7 +71,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
 	_guestGenerationProbability = 0;
 	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
-	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
 
 	for (i = 0; i < 20; i++)
 		RCT2_ADDRESS(0x01358102, uint8)[i] = 0;

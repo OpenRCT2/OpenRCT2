@@ -48,7 +48,8 @@ enum {
 	WIDX_GUESTS,
 	WIDX_CLEAR_SCENERY,
 
-	WIDX_FASTFORWARD
+	WIDX_FASTFORWARD,
+	WIDX_RESEARCH
 };
 
 typedef enum {
@@ -93,8 +94,8 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,	STR_NONE },							// Fast forward
-
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	{ WIDGETS_END },
 };
 
@@ -274,6 +275,9 @@ static void window_game_top_toolbar_mouseup()
 		break;
 	case WIDX_GUESTS:
 		window_guest_list_open();
+		break;
+	case WIDX_RESEARCH:
+		window_research_open();
 		break;
 	}
 }
@@ -488,6 +492,10 @@ static void window_game_top_toolbar_invalidate()
 	window_game_top_toolbar_widgets[WIDX_RIDES].right = x;
 	x -= 29;
 	window_game_top_toolbar_widgets[WIDX_RIDES].left = x;
+	x -= 1;
+	window_game_top_toolbar_widgets[WIDX_RESEARCH].right = x;
+	x -= 29;
+	window_game_top_toolbar_widgets[WIDX_RESEARCH].left = x;
 	x -= 11;
 	window_game_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].right = x;
 	x -= 29;
@@ -558,5 +566,11 @@ static void window_game_top_toolbar_paint()
 	if (widget_is_pressed(w, WIDX_STAFF))
 		imgId++;
 	imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
+	gfx_draw_sprite(dpi, imgId, x, y, 0);
+
+	// Draw research button
+	x = w->x + window_game_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
+	y = w->y + window_game_top_toolbar_widgets[WIDX_RESEARCH].top - 1;
+	imgId = SPR_TAB_FINANCES_RESEARCH_0;
 	gfx_draw_sprite(dpi, imgId, x, y, 0);
 }
