@@ -1519,7 +1519,7 @@ STR_1517    :{SMALLFONT}{OPENQUOTES}Er speelt hier leuke muziek{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}Deze plattegrond van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}Deze paraplu van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Deze frisdrank van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1844,85 +1844,85 @@ STR_1842    :Favorite of: {COMMA16} guest
 STR_1843    :Favorite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{OUTLINE}{20}
-STR_1848    :{INLINE_SPRITE}{SMALLFONT}{20}
-STR_1849    :{WINDOW_COLOUR_2}Play music
+STR_1846    :{COMMA16} bezoekers
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoekers
+STR_1849    :{WINDOW_COLOUR_2}Draai muziek
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
 STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_1859    :Handymen
-STR_1860    :Mechanics
-STR_1861    :Security Guards
+STR_1853    :{WINDOW_COLOUR_2}Bouw: {BLACK}dit jaar
+STR_1854    :{WINDOW_COLOUR_2}Bouw: {BLACK}vorig jaar
+STR_1855    :{WINDOW_COLOUR_2}Bouw: {BLACK}{COMMA16} jaar geleden
+STR_1856    :{WINDOW_COLOUR_2}Winst per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Verlies per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} per maand
+STR_1859    :Klusjesmannen
+STR_1860    :Monteurs
+STR_1861    :Bewakers
 STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
+STR_1863    :Klusjesman
+STR_1864    :Monteur
+STR_1865    :Bewaker
 STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
+STR_1868    :Kan het aantal rotaties niet aanpassen...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
-STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
+STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY} per uur
+STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY} per uur
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
+STR_1878    :{WINDOW_COLOUR_2}Inspectie:
+STR_1879    :Elke 10 minuten
+STR_1880    :Elke 20 minutes
+STR_1881    :Elke 30 minutes
+STR_1882    :Elke 45 minutes
+STR_1883    :Elk uur
+STR_1884    :Elke 2 uur
+STR_1885    :Nooit
 STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
-STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
 STR_1892    :RollerCoaster Tycoon 2
 STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the folLaaging drive:-
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
-STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
-STR_1897    :{WINDOW_COLOUR_2}Ride construction
-STR_1898    :{WINDOW_COLOUR_2}Ride running costs
-STR_1899    :{WINDOW_COLOUR_2}Land purchase
-STR_1900    :{WINDOW_COLOUR_2}Landscaping
-STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
-STR_1902    :{WINDOW_COLOUR_2}Ride tickets
-STR_1903    :{WINDOW_COLOUR_2}Shop sales
-STR_1904    :{WINDOW_COLOUR_2}Shop stock
-STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
-STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
-STR_1907    :{WINDOW_COLOUR_2}Staff wages
+STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
+STR_1897    :{WINDOW_COLOUR_2}Attractiebouw
+STR_1898    :{WINDOW_COLOUR_2}Attractiebedrijf
+STR_1899    :{WINDOW_COLOUR_2}Landaankoop
+STR_1900    :{WINDOW_COLOUR_2}Landaanpassingen
+STR_1901    :{WINDOW_COLOUR_2}Entreekaartjes
+STR_1902    :{WINDOW_COLOUR_2}Attractiekaartjes
+STR_1903    :{WINDOW_COLOUR_2}Winkelverkoop
+STR_1904    :{WINDOW_COLOUR_2}Winkelvoorraad
+STR_1905    :{WINDOW_COLOUR_2}Horecaverkoop
+STR_1906    :{WINDOW_COLOUR_2}Horecavoorraad
+STR_1907    :{WINDOW_COLOUR_2}Lonen
 STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
-STR_1910    :{WINDOW_COLOUR_2}Loan interest
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1909    :{WINDOW_COLOUR_2}Onderzoek
+STR_1910    :{WINDOW_COLOUR_2}Rente op lening
+STR_1911    :{BLACK} tegen {COMMA16}% per jaar
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}Loan:
+STR_1916    :{WINDOW_COLOUR_2}Lening:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
+STR_1922    :{SMALLFONT}{BLACK}Verder gaan aan een opgeslagen spel
+STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
+STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
@@ -1930,11 +1930,11 @@ STR_1928    :{RED}{STRINGID} has crashed!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
-STR_1932    :{STRINGID} is on {STRINGID}
+STR_1932    :{STRINGID} is in {STRINGID}
 STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has left {STRINGID}
-STR_1935    :{STRINGID} has left the park
-STR_1936    :{STRINGID} has bought {STRINGID}
+STR_1934    :{STRINGID} heeft {STRINGID} verlaten
+STR_1935    :{STRINGID} heeft het park verlaten
+STR_1936    :{STRINGID} heeft {STRINGID} gekocht
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
@@ -1986,35 +1986,35 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Fries
-STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
+STR_1988    :Ballon
+STR_1989    :Knuffel
+STR_1990    :Parkplattegrond
+STR_1991    :Actiefoto
+STR_1992    :Paraplu
+STR_1993    :Frisdrank
+STR_1994    :Hamburger
+STR_1995    :Frietjes
+STR_1996    :IJs
+STR_1997    :Suikerspin
+STR_1998    :Leeg blikje
+STR_1999    :Afval
+STR_2000    :Lege hamburgerdoos
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Bon
 STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2004    :Hotdog
+STR_2005    :Tentakel
+STR_2006    :Hoed
+STR_2007    :Toffeeappel
 STR_2008    :T-Shirt
 STR_2009    :Donut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
+STR_2010    :Koffie
+STR_2011    :Lege beker
+STR_2012    :Gegrilde kip
+STR_2013    :Limonade
+STR_2014    :Lege doos
+STR_2015    :Lege fles
+STR_2016    :Ballonnen
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
 STR_2019    :On-Ride Photos
@@ -2325,7 +2325,7 @@ STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or beLaag land outside the park
-STR_2327    :Optie
+STR_2327    :Opties
 STR_2328    :{WINDOW_COLOUR_2}Valuta:
 STR_2329    :{WINDOW_COLOUR_2}Afstanden en snelheden:
 STR_2330    :{WINDOW_COLOUR_2}Temperatuur:
@@ -2345,7 +2345,7 @@ STR_2343    :Euro's ({EURO})
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2346    :Weergave
-STR_2347    :{RED}{STRINGID} has drowned!
+STR_2347    :{RED}{STRINGID} is verdronken!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
@@ -2384,9 +2384,9 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Je doel:
 STR_2385    :{BLACK}Geen
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
+STR_2386    :{BLACK}Om minstens {COMMA16} bezoekers in je park toe hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
-STR_2388    :{BLACK}Have Fun!
+STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
 STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop beLaag 700 at any time!
