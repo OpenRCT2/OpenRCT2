@@ -372,7 +372,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\english.txt">
+    <Text Include="..\data\language\dutch.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\english_uk.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\english_us.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\french.txt">
       <Filter>Data\Language</Filter>
     </Text>
   </ItemGroup>

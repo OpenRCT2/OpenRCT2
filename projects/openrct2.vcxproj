@@ -135,10 +135,10 @@
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\english.txt">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </DeploymentContent>
-    </Text>
+    <Text Include="..\data\language\dutch.txt" />
+    <Text Include="..\data\language\english_uk.txt" />
+    <Text Include="..\data\language\english_us.txt" />
+    <Text Include="..\data\language\french.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
