@@ -29,6 +29,7 @@
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\graph.h" />
     <ClInclude Include="..\src\intro.h" />
+    <ClInclude Include="..\src\language.h" />
     <ClInclude Include="..\src\map.h" />
     <ClInclude Include="..\src\marketing.h" />
     <ClInclude Include="..\src\news_item.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\graph.c" />
     <ClCompile Include="..\src\intro.c" />
+    <ClCompile Include="..\src\language.c" />
     <ClCompile Include="..\src\map.c" />
     <ClCompile Include="..\src\marketing.c" />
     <ClCompile Include="..\src\news_item.c" />
@@ -117,6 +119,7 @@
     <ClCompile Include="..\src\window_new_ride.c" />
     <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_peep.c" />
+    <ClCompile Include="..\src\window_research.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
     <ClCompile Include="..\src\window_staff.c" />
@@ -133,10 +136,10 @@
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\english.txt">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </DeploymentContent>
-    </Text>
+    <Text Include="..\data\language\dutch.txt" />
+    <Text Include="..\data\language\english_uk.txt" />
+    <Text Include="..\data\language\english_us.txt" />
+    <Text Include="..\data\language\french.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
