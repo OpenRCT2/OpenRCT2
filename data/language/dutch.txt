@@ -1563,7 +1563,7 @@ STR_1561    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een suikerspin va
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet pizza van {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor pizza van {STRINGID}{ENDQUOTES}
 STR_1566    :
 STR_1567    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor popcorn van {STRINGID}{ENDQUOTES}
 STR_1568    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hotdog van {STRINGID}{ENDQUOTES}
@@ -1832,7 +1832,7 @@ STR_1830    :Lengte wachtrij
 STR_1831    :Wachttijd
 STR_1832    :Betrouwbaarheid
 STR_1833    :Stilstandtijd
-STR_1834    :Favoriet bij bezoekers
+STR_1834    :Favoriet bez.
 STR_1835    :Populariteit: onbekend
 STR_1836    :Populariteit: {COMMA16}%
 STR_1837    :Voldoening: onbekend
@@ -2759,7 +2759,7 @@ STR_2757    :???
 STR_2758    :???
 STR_2759    :???
 STR_2760    :+5000 geld
-STR_2761    :Betaalde parktoegang
+STR_2761    :Betaalde entree
 STR_2762    :Betalen per rit
 STR_2763    :???
 STR_2764    :Tevreden gasten
@@ -2771,9 +2771,9 @@ STR_2769    :Park openen
 STR_2770    :Park sluiten
 STR_2771    :Lagere spelsnelheid
 STR_2772    :Hogere spelsnelheid
-STR_2773    :Windowed
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
+STR_2773    :Venster
+STR_2774    :Volledig scherm
+STR_2775    :Volledig scherm (bureaublad)
 STR_2776    :Taal
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -2991,9 +2991,9 @@ STR_2989    :{SMALLFONT}{BLACK}Select main color
 STR_2990    :{SMALLFONT}{BLACK}Select text color
 STR_2991    :Bord
 STR_2992    :Bordtekst
-STR_2993    :Enter new text for this sign:-
-STR_2994    :{SMALLFONT}{BLACK}Change text on sign
-STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2993    :Voer een nieuwe tekst in voor dit bord:
+STR_2994    :{SMALLFONT}{BLACK}Tekst op het bord veranderen
+STR_2995    :{SMALLFONT}{BLACK}Dit bord weghalen
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -3011,7 +3011,7 @@ STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan dit bestand niet laden...
 STR_3011    :Bestand bevat ongeldige gegevens
 STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
+STR_3013    :Kermisorgelstijl
 STR_3014    :Roman fanfare style
 STR_3015    :Oriental style
 STR_3016    :Martian style
@@ -3044,7 +3044,7 @@ STR_3042    :Pirates style
 STR_3043    :Rock style 3
 STR_3044    :Candy style
 STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
+STR_3046    :Deze attractie kan niet worden aangepast
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golfhole A
@@ -3071,9 +3071,9 @@ STR_3069    :Bovensegment
 STR_3070    :Van helling naar vlak
 STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
 STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
-STR_3073    :{RED}WARNING: Your park rating has dropped beLaag 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
-STR_3074    :{RED}WARNING: Your park rating is still beLaag 700 !{NEWLINE}You have 3 weeks to raise the park rating
-STR_3075    :{RED}WARNING: Your park rating is still beLaag 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
+STR_3073    :{RED}WAARSCHUWING: Your park rating has dropped beLaag 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
+STR_3074    :{RED}WAARSCHUWING: Your park rating is still beLaag 700 !{NEWLINE}You have 3 weeks to raise the park rating
+STR_3075    :{RED}WAARSCHUWING: Your park rating is still beLaag 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still beLaag 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
 STR_3078    :Standaardingang
@@ -3091,8 +3091,8 @@ STR_3089    :Ruimte-ingang
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :Je mag dit segment niet verwijderen!
 STR_3092    :You are not allowed to move or modify the station for this ride!
-STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
-STR_3094    :N/A
+STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
+STR_3094    :n.v.t.
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
