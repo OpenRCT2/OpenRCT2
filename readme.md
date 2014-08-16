@@ -5,6 +5,8 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 - [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
 - [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
+[![Build Status](https://travis-ci.org/IntelOrca/OpenRCT2.svg)](https://travis-ci.org/IntelOrca/OpenRCT2)
+
 # Contents
 - 1 - [Introduction](#1-introduction)
   - 1.1 - [Background](#11-background)
