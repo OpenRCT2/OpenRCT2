@@ -866,6 +866,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
+		//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber));
 		if (!w){
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
@@ -889,7 +890,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DRAG], x, y, 0, (int)RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
 		}
 		else if (state == 2){
-			//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			
 			RCT2_GLOBAL(0x9DE51D, uint8) = 0;
 			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
 			if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 3))){
