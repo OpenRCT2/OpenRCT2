@@ -112,6 +112,38 @@ void* window_peep_page_events[] = {
 	window_peep_overview_events
 };
 
+// 0x992AEC
+static void* window_peep_staff_events[] = {
+	(void*)0x6BDFF8,
+	(void*)0x6BDF55,
+	(void*)0x6BE558,
+	(void*)0x6BDF98,
+	(void*)0x6BDFA3,
+	window_peep_emptysub,
+	(void*)0x6BE602,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*)0x6BDFD8,
+	(void*)0x6BDFC3,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*)0x6BDFAE,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*)0x6BDFED,
+	(void*)0x6BE5FC,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*)0x6BDD91,
+	(void*)0x6BDEAF,
+	window_peep_emptysub
+};
+
 uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -174,6 +206,10 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+/**
+ * rct2: 0x006BED21
+ *
+ */
 void sub_6BED21(rct_window* w, rct_peep* peep)
 {
 	int eax = 0 | 0x80;
@@ -225,11 +261,9 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
 rct_window* sub_6BEF1B(rct_peep* peep)
 {
 	int eax = peep->sprite_index;
-
 	int ecx = 0x38ae7; // class and flags
-	int edx = 0x992AEC; // event handler
 	
-	rct_window* w = window_create_auto_pos(190, 180, (uint32*)edx, ecx, 0);
+	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_peep_staff_events, ecx, 0);
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -238,7 +272,7 @@ rct_window* sub_6BEF1B(rct_peep* peep)
 	w->var_482 = 0;
 	w->frame_no = 0;
 
-	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing var_494 should perhaps be uint16?
+	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
 
 	sub_6BED21(w, peep);
 
@@ -247,7 +281,7 @@ rct_window* sub_6BEF1B(rct_peep* peep)
 	w->max_width = 500;
 	w->max_height = 450;
 
-	w->flags |= 1 << 8;
+	w->flags = 8;
 
 	w->colours[0] = 1;
 	w->colours[1] = 4;
