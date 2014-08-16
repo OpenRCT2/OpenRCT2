@@ -2775,9 +2775,9 @@ STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
-STR_2773    :???
-STR_2774    :???
-STR_2775    :???
+STR_2773    :Windowed
+STR_2774    :Fullscreen
+STR_2775    :Fullscreen (desktop)
 STR_2776    :Language
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
