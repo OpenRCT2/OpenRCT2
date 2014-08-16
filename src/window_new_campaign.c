@@ -28,6 +28,14 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+#ifndef min
+    #define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef max
+    #define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
 #define SELECTED_RIDE_UNDEFINED ((sint16)0xFFFF)
 
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {

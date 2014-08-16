@@ -32,6 +32,14 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+#ifndef min
+    #define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef max
+    #define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
 enum {
 	WINDOW_FINANCES_PAGE_SUMMARY,
 	WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH,
