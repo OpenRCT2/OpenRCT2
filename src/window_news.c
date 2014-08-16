@@ -129,18 +129,7 @@ static void window_news_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_mouse_up_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -304,18 +293,7 @@ static void window_news_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 }
@@ -331,18 +309,7 @@ static void window_news_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_news_item *newsItems, *newsItem, *newsItem2;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	y = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -366,9 +333,9 @@ static void window_news_scrollpaint()
 		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
 
 		// Item text
-		RCT2_GLOBAL(0x009B5F2C, uint8) = newsItem->colour;
-		strcpy((char*)0x009B5F2D, newsItem->text);
-		gfx_draw_string_left_wrapped(dpi, 0, 2, y + 10, 325, 1926, 14);
+		char *sz = (char*)0x013CE952;
+		sprintf(sz, "%c%c%s", newsItem->colour, FORMAT_SMALLFONT, newsItem->text);
+		gfx_draw_string_left_wrapped(dpi, &sz, 2, y + 10, 325, 1170, 14);
 
 		// Subject button
 		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
