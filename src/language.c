@@ -24,6 +24,14 @@
 #include "language.h"
 #include "string_ids.h"
 
+#ifndef min
+    #define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef max
+    #define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
 const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
 	"English (UK)",		// LANGUAGE_ENGLISH_UK
