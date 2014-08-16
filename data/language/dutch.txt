@@ -2771,9 +2771,9 @@ STR_2769    :Park openen
 STR_2770    :Park sluiten
 STR_2771    :Lagere spelsnelheid
 STR_2772    :Hogere spelsnelheid
-STR_2773    :???
-STR_2774    :???
-STR_2775    :???
+STR_2773    :Windowed
+STR_2774    :Fullscreen
+STR_2775    :Fullscreen (desktop)
 STR_2776    :Taal
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
