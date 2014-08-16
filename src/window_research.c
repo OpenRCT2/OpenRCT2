@@ -342,7 +342,7 @@ static void window_research_development_paint()
 		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
 			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
 			if (typeId >= 0x10000) {
-				uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFFFF) * 4, uint8*);
+				uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
 				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
 					stringId = RCT2_GLOBAL(rideEntry, uint16);
 				else
@@ -380,7 +380,7 @@ static void window_research_development_paint()
 	uint32 typeId = RCT2_GLOBAL(0x01357CF4, uint32);
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
-			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFFFF) * 4, uint8*);
+			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
 				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
 					stringId = RCT2_GLOBAL(rideEntry, uint16);
 				else
