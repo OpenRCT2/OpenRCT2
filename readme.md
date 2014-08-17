@@ -60,9 +60,13 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 - Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
 - [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
-### Linux:
+### Max OS X:
+- [Homebrew](http://brew.sh)
+- RollerCoaster Tycoon 2
+
+### Mac OS X / Linux:
 - [MinGW-w64](mingw-w64.sourceforge.net)
-- [Wine](http://www.winehq.org/)
+- [Wine](http://www.winehq.org)
 - RollerCoaster Tycoon 2
 - libsdl2 compiled with MinGW-w64
 
@@ -75,6 +79,14 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
 6. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
 7. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+
+### Mac OS X:
+Providing Homebrew is installed, OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+```
+bash install.sh
+bash build.sh
+wine openrct2.exe
+```
 
 ### Linux:
 As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/IntelOrca/OpenRCT2/wiki).
