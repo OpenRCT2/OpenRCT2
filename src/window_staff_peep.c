@@ -198,7 +198,7 @@ rct_window* sub_6BEF1B(rct_peep* peep)
 	w->max_width = 500;
 	w->max_height = 450;
 
-	w->flags = 8;
+	w->flags = 1 << 8;
 
 	w->colours[0] = 1;
 	w->colours[1] = 4;
