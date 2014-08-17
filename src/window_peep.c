@@ -112,38 +112,6 @@ void* window_peep_page_events[] = {
 	window_peep_overview_events
 };
 
-// 0x992AEC
-static void* window_peep_staff_events[] = {
-	(void*)0x6BDFF8,
-	(void*)0x6BDF55,
-	(void*)0x6BE558,
-	(void*)0x6BDF98,
-	(void*)0x6BDFA3,
-	window_peep_emptysub,
-	(void*)0x6BE602,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	(void*)0x6BDFD8,
-	(void*)0x6BDFC3,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	(void*)0x6BDFAE,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	(void*)0x6BDFED,
-	(void*)0x6BE5FC,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	window_peep_emptysub,
-	(void*)0x6BDD91,
-	(void*)0x6BDEAF,
-	window_peep_emptysub
-};
-
 uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -161,7 +129,8 @@ uint32 window_peep_page_enabled_widgets[] = {
 void window_peep_open(rct_peep* peep){
 	
 	if (peep->type == PEEP_TYPE_STAFF){
-		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
+		window_staff_peep_open(peep);
+		return;
 	}
 
 	rct_window* window;
@@ -204,123 +173,4 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
 	window_init_scroll_widgets(window);
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
-}
-
-/**
- * rct2: 0x006BED21
- *
- */
-void sub_6BED21(rct_window* w, rct_peep* peep)
-{
-	int eax = 0 | 0x80;
-
-	if (peep->staff_type == 2) {
-		eax |= 0x20;
-	}
-
-	//RCT2_CALLFUNC_X(0x698827, 0, 0, 0, 0, 0, 0, 0);
-	// sub_698827
-	// This is here due to needing the Carry Flag.
-
-	int CF = 0;
-	int res = RCT2_GLOBAL(0x982004 + peep->state, uint8) & 1;
-
-	if (res == 0) {
-		CF = 1;
-	} else {
-		eax = eax & eax;
-	}
-
-	// end sub_698827
-
-	int a = 0;
-
-	// pop esi
-	if (CF == 1 && w->page == 0) {
-		eax |= 0x400; //or      eax, 400h
-
-		a = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
-		
-	}
-
-	if (a == 0) {
-		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
-		if (CF == 1) {
-			window_invalidate(w);
-		}
-	}
-
-	w->disabled_widgets = eax;
-}
-
-/**
- * Create the window for a specific peep.
- *
- * rct2: 0x006BEF1B
- */
-rct_window* sub_6BEF1B(rct_peep* peep)
-{
-	int eax = peep->sprite_index;
-	int ecx = 0x38ae7; // class and flags
-	
-	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_peep_staff_events, ecx, 0);
-
-	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->number = eax;
-	w->page = 0;
-	w->var_482 = 0;
-	w->frame_no = 0;
-
-	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
-
-	sub_6BED21(w, peep);
-
-	w->min_width = 190;
-	w->min_height = 180;
-	w->max_width = 500;
-	w->max_height = 450;
-
-	w->flags = 8;
-
-	w->colours[0] = 1;
-	w->colours[1] = 4;
-	w->colours[2] = 4;
-
-	return w;
-}
-
-/**
-*
-*  rct2: 0x006BEE98
-*/
-void window_staff_peep_open(rct_peep* peep)
-{
-	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
-	if (!w) {
-		//int eax, ebx, ecx, edx, esi, edi;
-
-		//eax = peep->sprite_index;
-		//ecx = WC_PEEP;
-		//edx = peep->sprite_index;
-
-		//RCT2_CALLFUNC_X(0x006BEF1B, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
-		//w = (rct_window*)esi;
-
-		w = sub_6BEF1B(peep);
-	}
-
-	int PEEP_BACKGROUND_IDX = 0;
-	w->widgets = RCT2_GLOBAL(0x992998, rct_widget*);
-	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
-	w->event_handlers = (uint32*)RCT2_GLOBAL(0x9929A4, uint32);
-	w->pressed_widgets = 0;
-	sub_6BED21(w, peep);
-	//RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
-	window_init_scroll_widgets(w);
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
-	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
-		RCT2_CALLPROC_X(w->event_handlers[1], 0, 0, 0, 10, (int)w, 0, 0);
-	}
 }
