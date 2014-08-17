@@ -152,7 +152,7 @@ void window_peep_open(rct_peep* peep){
 		window->min_height = 157;
 		window->max_width = 500;
 		window->max_height = 450;
-		window->flags = 8;
+		window->flags = 1 << 8;
 		window->no_list_items = 0;
 		window->selected_list_item = -1;
 		window->colours[0] = 1;
