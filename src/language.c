@@ -52,6 +52,24 @@ char **language_strings = NULL;
 
 static int language_open_file(const char *filename);
 
+static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
+{
+	int result;
+	int numBytes;
+
+	if (!(char_ptr[0] & 0x80)) {
+		result = char_ptr[0];
+		numBytes = 1;
+	} else if (!(char_ptr[0] & 0x20)) {
+		result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
+		numBytes = 2;
+	}
+
+	if (nextchar_ptr != NULL)
+		*nextchar_ptr = char_ptr + numBytes;
+	return result;
+}
+
 const char *language_get_string(rct_string_id id)
 {
 	const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
@@ -114,12 +132,21 @@ static int language_open_file(const char *filename)
 	for (i = 0; i < language_buffer_size; i++) {
 		char *src = &language_buffer[i];
 
+		// Handle UTF-8
+		char *srcNext;
+		int utf8Char = utf8_get_next(src, &srcNext);
+		i += srcNext - src - 1;
+		if (utf8Char > 0xFF)
+			utf8Char = '?';
+		else if (utf8Char > 0x7F)
+			utf8Char &= 0xFF;
+
 		switch (mode) {
 		case 0:
 			// Search for a comment
-			if (*src == '#') {
+			if (utf8Char == '#') {
 				mode = 3;
-			} else if (*src == ':' && string_no != -1) {
+			} else if (utf8Char == ':' && string_no != -1) {
 				// Search for colon
 				dst = src + 1;
 				language_strings[string_no] = dst;
@@ -134,19 +161,19 @@ static int language_open_file(const char *filename)
 			break;
 		case 1:
 			// Copy string over, stop at line break
-			if (*src == '{') {
+			if (utf8Char == '{') {
 				token = src + 1;
 				mode = 2;
-			} else if (*src == '\n' || *src == '\r') {
+			} else if (utf8Char == '\n' || *src == '\r') {
 				*dst = 0;
 				mode = 0;
 			} else {
-				*dst++ = *src;
+				*dst++ = utf8Char;
 			}
 			break;
 		case 2:
 			// Read token, convert to code
-			if (*src == '}') {
+			if (utf8Char == '}') {
 				int tokenLength = min(src - token, sizeof(tokenBuffer) - 1);
 				memcpy(tokenBuffer, token, tokenLength);
 				tokenBuffer[tokenLength] = 0;
@@ -158,7 +185,7 @@ static int language_open_file(const char *filename)
 			}
 			break;
 		case 3:
-			if (*src == '\n' || *src == '\r') {
+			if (utf8Char == '\n' || utf8Char == '\r') {
 				mode = 0;
 			}
 		}
