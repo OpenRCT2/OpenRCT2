@@ -129,7 +129,8 @@ uint32 window_peep_page_enabled_widgets[] = {
 void window_peep_open(rct_peep* peep){
 	
 	if (peep->type == PEEP_TYPE_STAFF){
-		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
+		window_staff_peep_open(peep);
+		return;
 	}
 
 	rct_window* window;
