@@ -180,14 +180,11 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
 */
 rct_window* sub_6BEF1B(rct_peep* peep)
 {
-	int eax = peep->sprite_index;
-	int ecx = 0x38ae7; // class and flags
-
-	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, ecx, 0);
+	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
 
 	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->number = eax;
+	w->number = peep->sprite_index;
 	w->page = 0;
 	w->var_482 = 0;
 	w->frame_no = 0;
