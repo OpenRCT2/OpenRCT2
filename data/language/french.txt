@@ -773,12 +773,12 @@ STR_0768    :Homme de service {INT32}
 STR_0769    :Mécanicien {INT32}
 STR_0770    :Agent de sécurité {INT32}
 STR_0771    :Animateur {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0772    :Parc sans nom{POP16}{POP16}
+STR_0773    :Parc sans nom{POP16}{POP16}
+STR_0774    :Parc sans nom{POP16}{POP16}
+STR_0775    :Parc sans nom{POP16}{POP16}
+STR_0776    :Parc sans nom{POP16}{POP16}
+STR_0777    :Parc sans nom{POP16}{POP16}
 STR_0778    :Sign
 STR_0779    :1st
 STR_0780    :2nd
@@ -888,8 +888,8 @@ STR_0883    :Sauvegarder partie
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :Quitter la partie
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
+STR_0887    :Quitter l'Editeur de scénario
+STR_0888    :Quitter Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :Capture d'écran
@@ -2292,7 +2292,7 @@ STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
-STR_2291    :Select scenario for new game
+STR_2291    :Choisir scénario pour nouvelle partie
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
@@ -3067,11 +3067,11 @@ STR_3060    :Ice blocks
 STR_3061    :Wooden fences
 STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
-STR_3064    :Beginner Parks
-STR_3065    :Challenging Parks
-STR_3066    :Expert Parks
-STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_3068    :Other Parks
+STR_3064    :Parcs débutants
+STR_3065    :Parcs moyens
+STR_3066    :Parcs experts
+STR_3067    :Parcs {OPENQUOTES}Réels{ENDQUOTES}
+STR_3068    :Autres parcs
 STR_3069    :Top Section
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
@@ -3163,7 +3163,7 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
+STR_3160    :RollerCoaster Tycoon 2: Première visite...
 STR_3161    :RollerCoaster Tycoon 2: Checking object files...
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
@@ -3184,75 +3184,75 @@ STR_3177    :Unable to de-select this object
 STR_3178    :At least one path object must be selected
 STR_3179    :At least one ride vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
+STR_3181    :Sélection d'object - {STRINGID}
 STR_3182    :Park entrance type must be selected
 STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
-STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
-STR_3190    :Path Extras
-STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
-STR_3193    :Water
+STR_3184    :Véhicules/Attractions
+STR_3185    :Petit décor
+STR_3186    :Grand décor
+STR_3187    :Murs/Clôtures
+STR_3188    :Panneaux de direction
+STR_3189    :Allées
+STR_3190    :Suppléments allées
+STR_3191    :Groupes de décor
+STR_3192    :Entrée du parc
+STR_3193    :Etendue d'eau
 STR_3194    :Scenario Description
-STR_3195    :Invention List
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
-STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
-STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
+STR_3195    :Liste d'inventions
+STR_3196    :{WINDOW_COLOUR_2}Groupe de recherche: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Eléments pré-inventés au début d'une partie:
+STR_3198    :{WINDOW_COLOUR_2}Eléments à inventer pendant la partie:
+STR_3199    :Choix aléatoire
+STR_3200    :{SMALLFONT}{BLACK}Définissez de manière aléatoire la liste d'éléments à inventer pendant la partie
+STR_3201    :Sélection des objets
+STR_3202    :Editeur de paysage
+STR_3203    :Liste d'inventions
+STR_3204    :Sélection des options
 STR_3205    :Objective Selection
-STR_3206    :Save Scenario
+STR_3206    :Sauvegarder scénario
 STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
-STR_3209    :Back to Previous Step:
-STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3209    :Retour étape précédente:
+STR_3210    :Passer à l'étape suivante:
+STR_3211    :{WINDOW_COLOUR_2}Taille carte:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
-STR_3213    :Can't decrease map size any further
-STR_3214    :Can't increase map size any further
+STR_3213    :Impossible de diminuer davantage la taille de la carte
+STR_3214    :Impossible d'augmenter davantage la taille de le carte
 STR_3215    :Too close to edge of map
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
-STR_3217    :Land Owned
-STR_3218    :Construction Rights Owned
-STR_3219    :Land For Sale
-STR_3220    :Construction Rights For Sale
-STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
-STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
+STR_3216    :{SMALLFONT}{BLACK}Choisir terrain du parc etc.
+STR_3217    :Terrain du parc
+STR_3218    :Droits de constr. du parc
+STR_3219    :Terrain à vendre
+STR_3220    :Droits constr. à vendre
+STR_3221    :{SMALLFONT}{BLACK}Définir le terrain sur lequel s'étend le parc
+STR_3222    :{SMALLFONT}{BLACK}Définir les droits de construction exclusifs du parc
+STR_3223    :{SMALLFONT}{BLACK}Définir le terrain disponible à l'achat
+STR_3224    :{SMALLFONT}{BLACK}Définir les droits de construction disponibles à l'achat
 STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Build park entrance
-STR_3227    :Too many park entrances!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3226    :{SMALLFONT}{BLACK}Construire entrée parc
+STR_3227    :Trop d'entrée de parc
+STR_3228    :{SMALLFONT}{BLACK}Définir position de départ pour les visiteurs
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
-STR_3238    :No Money
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
-STR_3244    :Forbid marketing campaigns
-STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3232    :Options - Finances
+STR_3233    :Options - Visiteurs
+STR_3234    :Options - Parc
+STR_3235    :{SMALLFONT}{BLACK}Voir les options financières
+STR_3236    :{SMALLFONT}{BLACK}Voir les options des visiteurs
+STR_3237    :{SMALLFONT}{BLACK}Voir les options du parc
+STR_3238    :Pas d'argent
+STR_3239    :{SMALLFONT}{BLACK}Faire de ce parc un parc 'sans argent' sans restriction financière
+STR_3240    :{WINDOW_COLOUR_2}Argent initial:
+STR_3241    :{WINDOW_COLOUR_2}Emprunt initial:
+STR_3242    :{WINDOW_COLOUR_2}Emprunt maximum:
+STR_3243    :{WINDOW_COLOUR_2}Taux d'int. annuel:
+STR_3244    :Interdire campagnes marketing
+STR_3245    :{SMALLFONT}{BLACK}Interdire la publicité, les opérations promotionnelles et autres campagnes marketing
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Can't increase initial cash any further!
-STR_3249    :Can't reduce initial cash any further!
+STR_3248    :Impossible d'augmenter davantage la somme d'argent initiale !
+STR_3249    :Impossible de diminuer davantage la somme d'argent initiale !
 STR_3250    :Can't increase initial loan any further!
 STR_3251    :Can't reduce initial loan any further!
 STR_3252    :Can't increase maximum loan size any further!
@@ -3263,53 +3263,53 @@ STR_3256    :Guests prefer less intense rides
 STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
 STR_3258    :Guests prefer more intense rides
 STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
-STR_3264    :Can't increase this any further!
-STR_3265    :Can't reduce this any further!
+STR_3260    :{WINDOW_COLOUR_2}Argent par visiteur (moy.):
+STR_3261    :{WINDOW_COLOUR_2}Bonheur initial:
+STR_3262    :{WINDOW_COLOUR_2}Faim initiale:
+STR_3263    :{WINDOW_COLOUR_2}Soif initiale:
+STR_3264    :Impossible d'augmenter davantage!
+STR_3265    :Impossible de diminuer davantage!
 STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
-STR_3267    :Forbid tree removal
+STR_3267    :Interdire le déracinement d'arbres
 STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
-STR_3269    :Forbid landscape changes
+STR_3269    :Interdire les modifications du paysage
 STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
-STR_3271    :Forbid high construction
+STR_3271    :Interdire les constructions hautes
 STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
-STR_3273    :Park rating higher difficult level
+STR_3273    :Niveau de difficulté supérieur pour fréquentation
 STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
 STR_3275    :Guest generation higher difficult level
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3277    :{WINDOW_COLOUR_2}Coût d'achat de terrain:
+STR_3278    :{WINDOW_COLOUR_2}Coût d'achat droits de constr.:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
-STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
+STR_3281    :{WINDOW_COLOUR_2}Prix d'entrée:
+STR_3282    :{SMALLFONT}{BLACK}Choisir objectif et nom du parc
 STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
-STR_3284    :Objective Selection
+STR_3284    :Sélection des objectifs
 STR_3285    :Preserved Rides
 STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
-STR_3287    :{WINDOW_COLOUR_2}Objective:
+STR_3287    :{WINDOW_COLOUR_2}Objectif:
 STR_3288    :{SMALLFONT}{BLACK}Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
-STR_3294    :Change...
+STR_3289    :{WINDOW_COLOUR_2}Climat:
+STR_3290    :Frais et humide
+STR_3291    :Chaud
+STR_3292    :Chaud et sec
+STR_3293    :Froid
+STR_3294    :Modifier...
 STR_3295    :{SMALLFONT}{BLACK}Change name of park
 STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
-STR_3298    :{WINDOW_COLOUR_2}Park Name: {BLACK}{STRINGID}
+STR_3298    :{WINDOW_COLOUR_2}Nom du parc: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
-STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
-STR_3301    :{WINDOW_COLOUR_2}Objective Date:
+STR_3300    :{WINDOW_COLOUR_2}Nom du scénario: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Date objectif:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
-STR_3303    :{WINDOW_COLOUR_2}Number of guests:
-STR_3304    :{WINDOW_COLOUR_2}Park value:
+STR_3303    :{WINDOW_COLOUR_2}Nombre de visiteurs:
+STR_3304    :{WINDOW_COLOUR_2}Valeur du parc:
 STR_3305    :{WINDOW_COLOUR_2}Monthly income:
-STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
+STR_3306    :{WINDOW_COLOUR_2}Bénéfice mensuel:
 STR_3307    :{WINDOW_COLOUR_2}Minimum length:
 STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
@@ -3319,8 +3319,8 @@ STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :Scenario Name
 STR_3314    :Enter name for scenario:-
 STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:-
-STR_3317    :No details yet
+STR_3316    :Décrire ce scénario:-
+STR_3317    :Pas de détails
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
@@ -3344,11 +3344,11 @@ STR_3337    :Six Flags Park
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Game tools
-STR_3342    :Scenario Editor
-STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
-STR_3345    :Track Designs Manager
+STR_3341    :{SMALLFONT}{BLACK}Outils
+STR_3342    :Editeur de scénario
+STR_3343    :Convertir partie sauvegardée en scénario
+STR_3344    :Concepteur de montages russes
+STR_3345    :Gestionnaire de voies
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
 STR_3348    :Rename
