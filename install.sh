@@ -31,7 +31,7 @@ if [[ `uname` == "Darwin" ]]; then
     echo "Check if wget is installed"
     which -s wget
     if [ $? -eq 1 ]; then
-	echo "wget is not installed, installing wget.."
+        echo "wget is not installed, installing wget.."
         eval "$package_command install wget"
     fi
 
