@@ -28,6 +28,13 @@ if [[ `uname` == "Darwin" ]]; then
         echo "brew was found"
     fi
 
+    echo "Check if wget is installed"
+    which -s wget
+    if [ $? -eq 1 ]; then
+	echo "wget is not installed, installing wget.."
+        eval "$package_command install wget"
+    fi
+
     # Install packages with whatever command was found.
     # Very possible I'm missing some dependencies here.
     eval "$package_command install cmake wine"
