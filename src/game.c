@@ -2474,7 +2474,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_09 = 0x0F;
 		newPeep->var_15 = 5;
 		newPeep->var_14 = 8;
-		newPeep->var_1E = 0;
+		newPeep->sprite_direction = 0;
 
 		_eax = _ax;
 		_edx = _dx;
