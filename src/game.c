@@ -921,14 +921,14 @@ static void game_handle_input_mouse(int x, int y, int state)
 					rct_map_element* map_element = (rct_map_element*)spr;
 		
 					if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
-						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type)];
-						if (eax & 0x10){
-							//Open ride window part way through.
+						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
+						if (!(eax & 0x10)){//If not station track
+							//Open ride window in overview mode.
 							RCT2_CALLPROC_X(0x6ACC28, map_element->properties.track.ride_index, ebx, ecx, (int)map_element, esi, edi, ebp);
 							break;
 						}
 					}
-					//Open ride window part way through
+					//Open ride window in station view
 					RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
 				}
 				else if ((ebx & 0xFF) == 8){
