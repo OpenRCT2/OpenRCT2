@@ -316,9 +316,11 @@ static void window_news_scrollpaint()
 		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
 
 		// Item text
-		char *sz = (char*)0x013CE952;
+		char sz[400];// = (char*)0x09B5F2C;
+		char* args[1];
+		args[0] = &sz;
 		sprintf(sz, "%c%c%s", newsItem->colour, FORMAT_SMALLFONT, newsItem->text);
-		gfx_draw_string_left_wrapped(dpi, &sz, 2, y + 10, 325, 1170, 14);
+		gfx_draw_string_left_wrapped(dpi, args, 2, y + 10, 325, 1170, 14);
 
 		// Subject button
 		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
