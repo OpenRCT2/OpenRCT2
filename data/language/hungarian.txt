@@ -604,250 +604,250 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :
 STR_0601    :
 STR_0602    :
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0603    :{INT32}. vendég
+STR_0604    :{INT32}. vendég
+STR_0605    :{INT32}. vendég
+STR_0606    :{INT32}. vendég
+STR_0607    :{INT32}. vendég
+STR_0608    :{INT32}. vendég
+STR_0609    :{INT32}. vendég
+STR_0610    :{INT32}. vendég
+STR_0611    :{INT32}. vendég
+STR_0612    :{INT32}. vendég
+STR_0613    :{INT32}. vendég
+STR_0614    :{INT32}. vendég
+STR_0615    :{INT32}. vendég
+STR_0616    :{INT32}. vendég
+STR_0617    :{INT32}. vendég
+STR_0618    :{INT32}. vendég
+STR_0619    :{INT32}. vendég
+STR_0620    :{INT32}. vendég
+STR_0621    :{INT32}. vendég
+STR_0622    :{INT32}. vendég
+STR_0623    :{INT32}. vendég
+STR_0624    :{INT32}. vendég
+STR_0625    :{INT32}. vendég
+STR_0626    :{INT32}. vendég
+STR_0627    :{INT32}. vendég
+STR_0628    :{INT32}. vendég
+STR_0629    :{INT32}. vendég
+STR_0630    :{INT32}. vendég
+STR_0631    :{INT32}. vendég
+STR_0632    :{INT32}. vendég
+STR_0633    :{INT32}. vendég
+STR_0634    :{INT32}. vendég
+STR_0635    :{INT32}. vendég
+STR_0636    :{INT32}. vendég
+STR_0637    :{INT32}. vendég
+STR_0638    :{INT32}. vendég
+STR_0639    :{INT32}. vendég
+STR_0640    :{INT32}. vendég
+STR_0641    :{INT32}. vendég
+STR_0642    :{INT32}. vendég
+STR_0643    :{INT32}. vendég
+STR_0644    :{INT32}. vendég
+STR_0645    :{INT32}. vendég
+STR_0646    :{INT32}. vendég
+STR_0647    :{INT32}. vendég
+STR_0648    :{INT32}. vendég
+STR_0649    :{INT32}. vendég
+STR_0650    :{INT32}. vendég
+STR_0651    :{INT32}. vendég
+STR_0652    :{INT32}. vendég
+STR_0653    :{INT32}. vendég
+STR_0654    :{INT32}. vendég
+STR_0655    :{INT32}. vendég
+STR_0656    :{INT32}. vendég
+STR_0657    :{INT32}. vendég
+STR_0658    :{INT32}. vendég
+STR_0659    :{INT32}. vendég
+STR_0660    :{INT32}. vendég
+STR_0661    :{INT32}. vendég
+STR_0662    :{INT32}. vendég
+STR_0663    :{INT32}. vendég
+STR_0664    :{INT32}. vendég
+STR_0665    :{INT32}. vendég
+STR_0666    :{INT32}. vendég
+STR_0667    :{INT32}. vendég
+STR_0668    :{INT32}. vendég
+STR_0669    :{INT32}. vendég
+STR_0670    :{INT32}. vendég
+STR_0671    :{INT32}. vendég
+STR_0672    :{INT32}. vendég
+STR_0673    :{INT32}. vendég
+STR_0674    :{INT32}. vendég
+STR_0675    :{INT32}. vendég
+STR_0676    :{INT32}. vendég
+STR_0677    :{INT32}. vendég
+STR_0678    :{INT32}. vendég
+STR_0679    :{INT32}. vendég
+STR_0680    :{INT32}. vendég
+STR_0681    :{INT32}. vendég
+STR_0682    :{INT32}. vendég
+STR_0683    :{INT32}. vendég
+STR_0684    :{INT32}. vendég
+STR_0685    :{INT32}. vendég
+STR_0686    :{INT32}. vendég
+STR_0687    :{INT32}. vendég
+STR_0688    :{INT32}. vendég
+STR_0689    :{INT32}. vendég
+STR_0690    :{INT32}. vendég
+STR_0691    :{INT32}. vendég
+STR_0692    :{INT32}. vendég
+STR_0693    :{INT32}. vendég
+STR_0694    :{INT32}. vendég
+STR_0695    :{INT32}. vendég
+STR_0696    :{INT32}. vendég
+STR_0697    :{INT32}. vendég
+STR_0698    :{INT32}. vendég
+STR_0699    :{INT32}. vendég
+STR_0700    :{INT32}. vendég
+STR_0701    :{INT32}. vendég
+STR_0702    :{INT32}. vendég
+STR_0703    :{INT32}. vendég
+STR_0704    :{INT32}. vendég
+STR_0705    :{INT32}. vendég
+STR_0706    :{INT32}. vendég
+STR_0707    :{INT32}. vendég
+STR_0708    :{INT32}. vendég
+STR_0709    :{INT32}. vendég
+STR_0710    :{INT32}. vendég
+STR_0711    :{INT32}. vendég
+STR_0712    :{INT32}. vendég
+STR_0713    :{INT32}. vendég
+STR_0714    :{INT32}. vendég
+STR_0715    :{INT32}. vendég
+STR_0716    :{INT32}. vendég
+STR_0717    :{INT32}. vendég
+STR_0718    :{INT32}. vendég
+STR_0719    :{INT32}. vendég
+STR_0720    :{INT32}. vendég
+STR_0721    :{INT32}. vendég
+STR_0722    :{INT32}. vendég
+STR_0723    :{INT32}. vendég
+STR_0724    :{INT32}. vendég
+STR_0725    :{INT32}. vendég
+STR_0726    :{INT32}. vendég
+STR_0727    :{INT32}. vendég
+STR_0728    :{INT32}. vendég
+STR_0729    :{INT32}. vendég
+STR_0730    :{INT32}. vendég
+STR_0731    :{INT32}. vendég
+STR_0732    :{INT32}. vendég
+STR_0733    :{INT32}. vendég
+STR_0734    :{INT32}. vendég
+STR_0735    :{INT32}. vendég
+STR_0736    :{INT32}. vendég
+STR_0737    :{INT32}. vendég
+STR_0738    :{INT32}. vendég
+STR_0739    :{INT32}. vendég
+STR_0740    :{INT32}. vendég
+STR_0741    :{INT32}. vendég
+STR_0742    :{INT32}. vendég
+STR_0743    :{INT32}. vendég
+STR_0744    :{INT32}. vendég
+STR_0745    :{INT32}. vendég
+STR_0746    :{INT32}. vendég
+STR_0747    :{INT32}. vendég
+STR_0748    :{INT32}. vendég
+STR_0749    :{INT32}. vendég
+STR_0750    :{INT32}. vendég
+STR_0751    :{INT32}. vendég
+STR_0752    :{INT32}. vendég
+STR_0753    :{INT32}. vendég
+STR_0754    :{INT32}. vendég
+STR_0755    :{INT32}. vendég
+STR_0756    :{INT32}. vendég
+STR_0757    :{INT32}. vendég
+STR_0758    :{INT32}. vendég
+STR_0759    :{INT32}. vendég
+STR_0760    :{INT32}. vendég
+STR_0761    :{INT32}. vendég
+STR_0762    :{INT32}. vendég
+STR_0763    :{INT32}. vendég
+STR_0764    :{INT32}. vendég
+STR_0765    :{INT32}. vendég
+STR_0766    :{INT32}. vendég
+STR_0767    :{INT32}. vendég
+STR_0768    :{INT32}. ezermester
+STR_0769    :{INT32}. műszerész
+STR_0770    :{INT32}. biztonsági őr
+STR_0771    :{INT32}. szórakoztató
+STR_0772    :Névtelen park{POP16}{POP16}
+STR_0773    :Névtelen park{POP16}{POP16}
+STR_0774    :Névtelen park{POP16}{POP16}
+STR_0775    :Névtelen park{POP16}{POP16}
+STR_0776    :Névtelen park{POP16}{POP16}
+STR_0777    :Névtelen park{POP16}{POP16}
 STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
+STR_0779    :1.
+STR_0780    :2.
+STR_0781    :3.
+STR_0782    :4.
+STR_0783    :5.
+STR_0784    :6.
+STR_0785    :7.
+STR_0786    :8.
+STR_0787    :9.
+STR_0788    :10.
+STR_0789    :11.
+STR_0790    :12.
+STR_0791    :13.
+STR_0792    :14.
+STR_0793    :15.
+STR_0794    :16.
+STR_0795    :17.
+STR_0796    :18.
+STR_0797    :19.
+STR_0798    :20.
+STR_0799    :21.
+STR_0800    :22.
+STR_0801    :23.
+STR_0802    :24.
+STR_0803    :25.
+STR_0804    :26.
+STR_0805    :27.
+STR_0806    :28.
+STR_0807    :29.
+STR_0808    :30.
+STR_0809    :31.
 STR_0810    :Jan
 STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
+STR_0812    :Már
+STR_0813    :Ápr
+STR_0814    :Máj
+STR_0815    :Jún
+STR_0816    :Júl
 STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
+STR_0818    :Sze
+STR_0819    :Okt
 STR_0820    :Nov
 STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0822    :Nem sikerült hozzáférni az adatfájlhoz
+STR_0823    :Hiányzó vagy nem elérhető adatfájl
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
+STR_0825    :A választott név már használatban van
 STR_0826    :Too many names defined
 STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
+STR_0828    :{SMALLFONT}{BLACK}Ablak bezárása
+STR_0829    :{SMALLFONT}{BLACK}Az albak címsora - Húzd az ablak mozgatásához
+STR_0830    :{SMALLFONT}{BLACK}Nagyítás
+STR_0831    :{SMALLFONT}{BLACK}KicsinyítésZoom view out
+STR_0832    :{SMALLFONT}{BLACK}Forgatás 90{DEGREE}-kal órajárás szerint
+STR_0833    :{SMALLFONT}{BLACK}Játék megállítása
 STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
+STR_0835    :Nem sikerült inicializálni a játékot
 STR_0836    :Unable to start game in a minimized state
 STR_0837    :Unable to initialize graphics system
 STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
-STR_0842    :640x480 full screen
-STR_0843    :800x600 full screen
-STR_0844    :1024x768 full screen
-STR_0845    :1152x864 full screen
-STR_0846    :1280x1024 full screen
+STR_0841    :Ablakban
+STR_0842    :Teljes képernyő, 640x480
+STR_0843    :Teljes képernyő, 800x600
+STR_0844    :Teljes képernyő, 1024x768
+STR_0845    :Teljes képernyő, 1152x864
+STR_0846    :Teljes képernyő, 1280x1024
 STR_0847    :About 'RollerCoaster Tycoon 2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -878,16 +878,16 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
+STR_0877    :Túl alacsony !
+STR_0878    :Túl magas !
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
+STR_0881    :Egy tárgy van az útba
+STR_0882    :Játék betöltése
+STR_0883    :Játék mentése
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
-STR_0886    :Quit Game
+STR_0886    :Kilépés
 STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
@@ -1713,10 +1713,10 @@ STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
 STR_1709    :Sack staff
 STR_1710    :Yes
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Utak takarítása
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Kertek locsolása
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Kukák ürítése
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fűnyírás
 STR_1716    :Invalid name for park
 STR_1717    :Can't rename park...
 STR_1718    :Park Name
@@ -1780,19 +1780,19 @@ STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Music:
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakosztüm
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigriskosztüm
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefántkosztüm
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Római kosztüm
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillakosztüm
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Hóemberkosztüm
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Lovagkosztüm
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Űrhajóskosztüm
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditakosztüm
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Seriffkosztüm
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Kalózkosztüm
 STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
-STR_1791    :{WINDOW_COLOUR_2}Uniform color:
+STR_1791    :{WINDOW_COLOUR_2}Egyenruha színe:
 STR_1792    :Responding to {STRINGID} breakdown call
 STR_1793    :Heading to {STRINGID} for an inspection
 STR_1794    :Fixing {STRINGID}
@@ -1879,14 +1879,14 @@ STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
+STR_1878    :{WINDOW_COLOUR_2}Ellenőrzés:
+STR_1879    :Minden 10 percben
+STR_1880    :Minden 20 percben
+STR_1881    :Minden 30 percben
+STR_1882    :Minden 45 percben
+STR_1883    :Minden órában
+STR_1884    :Minden második órában
+STR_1885    :Soha
 STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
@@ -1989,34 +1989,34 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
+STR_1988    :Léggömb
 STR_1989    :Cuddly Toy
-STR_1990    :Park Map
+STR_1990    :Térkép
 STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Fries
-STR_1996    :Ice Cream
+STR_1992    :Esernyő
+STR_1993    :Innivaló
+STR_1994    :Hamburger
+STR_1995    :Sült krumpli
+STR_1996    :Jégkrém
 STR_1997    :Cotton Candy
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
+STR_1998    :Üres doboz
+STR_1999    :Szemét
+STR_2000    :Üres hamburgerdoboz
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Kupon
 STR_2003    :Popcorn
-STR_2004    :Hot Dog
+STR_2004    :Hotdog
 STR_2005    :Tentacle
-STR_2006    :Hat
+STR_2006    :Kalap
 STR_2007    :Candy Apple
-STR_2008    :T-Shirt
+STR_2008    :Póló
 STR_2009    :Donut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
+STR_2010    :Kávé
+STR_2011    :Üres pohár
+STR_2012    :Sült csirke
+STR_2013    :Limonádé
+STR_2014    :Üres doboz
+STR_2015    :Üres flakon
 STR_2016    :Balloons
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
@@ -2334,21 +2334,21 @@ STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
 STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
-STR_2333    :Sound
-STR_2334    :Pounds ({POUND})
-STR_2335    :Dollars ($)
-STR_2336    :Franc (F)
-STR_2337    :Deutschmark (DM)
-STR_2338    :Yen ({YEN})
-STR_2339    :Peseta (Pts)
-STR_2340    :Lira (L)
-STR_2341    :Guilders (Dfl.)
-STR_2342    :Krona (kr)
-STR_2343    :Euros ({EURO})
-STR_2344    :Imperial
-STR_2345    :Metric
+STR_2333    :Hang
+STR_2334    :Font ({POUND})
+STR_2335    :Dollár ($)
+STR_2336    :Frank (F)
+STR_2337    :Német márka (DM)
+STR_2338    :Jen ({YEN})
+STR_2339    :Pezeta (Pts)
+STR_2340    :Líra (L)
+STR_2341    :Gulden (Dfl.)
+STR_2342    :Korona (kr)
+STR_2343    :Euró ({EURO})
+STR_2344    :Birodalmi
+STR_2345    :Metrikus
 STR_2346    :Display
-STR_2347    :{RED}{STRINGID} has drowned!
+STR_2347    :{RED}{STRINGID} megfulladt!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
@@ -2437,16 +2437,16 @@ STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
 STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
-STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
+STR_2436    :1 hét
+STR_2437    :2 hét
+STR_2438    :3 hét
+STR_2439    :4 hét
+STR_2440    :5 hét
+STR_2441    :6 hét
+STR_2442    :{BLACK}({STRINGID} van hátra)
+STR_2443    :{WINDOW_COLOUR_2}Költség hetente: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Teljes költség: {BLACK}{CURRENCY2DP}
+STR_2445    :Reklámkampány indítása
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
 STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
@@ -2497,7 +2497,7 @@ STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settin
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
 STR_2495    :Cancel construction mode
-STR_2496    :Pause game
+STR_2496    :Játék megállítása
 STR_2497    :Zoom view out
 STR_2498    :Zoom view in
 STR_2499    :Rotate view
@@ -2778,7 +2778,7 @@ STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2776    :Nyelv
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
