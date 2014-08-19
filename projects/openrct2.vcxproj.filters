@@ -390,5 +390,11 @@
     <Text Include="..\data\language\french.txt">
       <Filter>Data\Language</Filter>
     </Text>
+    <Text Include="..\data\language\hungarian.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\polish.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
   </ItemGroup>
 </Project>
