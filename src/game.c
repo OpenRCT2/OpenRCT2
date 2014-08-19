@@ -1845,34 +1845,74 @@ void handle_shortcut_command(int shortcutIndex)
 		RCT2_CALLPROC_EBPSAFE(0x006E4182);
 		break;
 	case SHORTCUT_UNDERGROUND_VIEW_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 0, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_REMOVE_BASE_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 1, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 2, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_SEE_THROUGH_RIDES_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 4, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 5, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 6, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_INVISIBLE_PEOPLE_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 7, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 9, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 10, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 11, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_ADJUST_LAND:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
