@@ -121,6 +121,6 @@ void window_new_ride_open()
 		w->var_482 = RCT2_GLOBAL(0x00F43523, sint16);
 	
 	w->width = 1;
-	RCT2_CALLPROC_EBPSAFE(0x006B3DF1);	// initialise window size and widgets
-	RCT2_CALLPROC_EBPSAFE(0x006B7220);
+	RCT2_CALLPROC_X(0x006B3DF1, 0, 0, 0, 0, (int)w, 0, 0);	// initialise window size and widgets
+	RCT2_CALLPROC_X(0x006B7220, 0, 0, 0, 0, (int)w, 0, 0);
 }
