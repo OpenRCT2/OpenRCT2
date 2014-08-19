@@ -21,7 +21,7 @@ STR_0016    :Ride
 STR_0017    :Looping Roller Coaster
 STR_0018    :Ride
 STR_0019    :Ride
-STR_0020    :Chairlift
+STR_0020    :Libegő
 STR_0021    :Ride
 STR_0022    :Ride
 STR_0023    :Ride
@@ -55,9 +55,9 @@ STR_0050    :Ride
 STR_0051    :Ride
 STR_0052    :Ride
 STR_0053    :Hyper-Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
+STR_0054    :Fa hullámvasút
 STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
+STR_0056    :Vad egér
 STR_0057    :Multi-Dimension Roller Coaster
 STR_0058    :Ride
 STR_0059    :Aerial Inverted Roller Coaster
@@ -66,7 +66,7 @@ STR_0061    :Ride
 STR_0062    :Ride
 STR_0063    :Ride
 STR_0064    :Ride
-STR_0065    :Suspended Monorail
+STR_0065    :Felfüggesztett egysínű
 STR_0066    :Ride
 STR_0067    :Ride
 STR_0068    :Heartline Twister Coaster
@@ -90,7 +90,7 @@ STR_0085    :Ride
 STR_0086    :Ride
 STR_0087    :Ride
 STR_0088    :Ride
-STR_0089    :Mini Roller Coaster
+STR_0089    :Mini hullámvasút
 STR_0090    :Ride
 STR_0091    :Ride
 STR_0092    :Ride
@@ -769,8 +769,8 @@ STR_0764    :{INT32}. vendég
 STR_0765    :{INT32}. vendég
 STR_0766    :{INT32}. vendég
 STR_0767    :{INT32}. vendég
-STR_0768    :{INT32}. ezermester
-STR_0769    :{INT32}. műszerész
+STR_0768    :{INT32}. mindenes
+STR_0769    :{INT32}. szerelő
 STR_0770    :{INT32}. biztonsági őr
 STR_0771    :{INT32}. szórakoztató
 STR_0772    :Névtelen park{POP16}{POP16}
@@ -945,15 +945,15 @@ STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
 STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
+STR_0944    :Mentés
+STR_0945    :Nincs mentés
+STR_0946    :Mégse
 STR_0947    :Save this before loading ?
 STR_0948    :Save this before quitting ?
 STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
+STR_0950    :Játék betöltése
+STR_0951    :Kilépés a játékból
+STR_0952    :Kilépés a játékból
 STR_0953    :Load Landscape
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
@@ -973,7 +973,7 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Mégse
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
@@ -1012,10 +1012,10 @@ STR_1007    :Unable to create enough vehicles
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
 STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_1011    :Összes bezárása
+STR_1012    :Összes megnyitása
+STR_1013    :Park bezárása
+STR_1014    :Park megnyitása
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1037,18 +1037,18 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
+STR_1036    :Játék betöltése
 STR_1037    :Load Landscape
 STR_1038    :Convert saved game to scenario
 STR_1039    :Install new track design
-STR_1040    :Save Game
+STR_1040    :Játék mentése
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
+STR_1043    :RollerCoaster Tycoon 2 mentett játék
 STR_1044    :RollerCoaster Tycoon 2 Scenario File
 STR_1045    :RollerCoaster Tycoon 2 Landscape File
 STR_1046    :RollerCoaster Tycoon 2 Track Design File
-STR_1047    :Game save failed!
+STR_1047    :Játék mentése sikertelen!
 STR_1048    :Scenario save failed!
 STR_1049    :Landscape save failed!
 STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
@@ -1169,10 +1169,10 @@ STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Can't lower water level here...
 STR_1167    :Can't raise water level here...
-STR_1168    :Options
+STR_1168    :Beállítások
 STR_1169    :(None)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
+STR_1171    :{RED}Zárva - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
 STR_1174    :Banner sign in the way
@@ -1181,10 +1181,10 @@ STR_1176    :Can't build footpath here...
 STR_1177    :Can't remove footpath from here...
 STR_1178    :Land slope unsuitable
 STR_1179    :Footpath in the way
-STR_1180    :Can't build this underwater!
+STR_1180    :Nem építhető víz alá!
 STR_1181    :Footpaths
-STR_1182    :Type
-STR_1183    :Direction
+STR_1182    :Típus
+STR_1183    :Irány
 STR_1184    :Slope
 STR_1185    :{SMALLFONT}{BLACK}Direction
 STR_1186    :{SMALLFONT}{BLACK}Slope down
@@ -1195,16 +1195,16 @@ STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
+STR_1194    :Zárva
+STR_1195    :Tesztüzem
+STR_1196    :Nyitva
+STR_1197    :Lerobbant
+STR_1198    :Baleset!
 STR_1199    :{COMMA16} person on ride
 STR_1200    :{COMMA16} people on ride
-STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
+STR_1201    :Senki nem várakozik
+STR_1202    :Egy ember várakozik
+STR_1203    :{COMMA16} ember várakozik
 STR_1204    :{COMMA16} minute queue time
 STR_1205    :{COMMA16} minutes queue time
 STR_1206    :{WINDOW_COLOUR_2}Wait for:
@@ -1224,12 +1224,12 @@ STR_1219    :{BLACK}{SMALLDOWN}
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport rides
-STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK}Roller coasters
-STR_1226    :{SMALLFONT}{BLACK}Thrill rides
-STR_1227    :{SMALLFONT}{BLACK}Water rides
-STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
+STR_1223    :{SMALLFONT}{BLACK}Szállító járművek
+STR_1224    :{SMALLFONT}{BLACK}Enyhe játékok
+STR_1225    :{SMALLFONT}{BLACK}Hullámvasutak
+STR_1226    :{SMALLFONT}{BLACK}Izgalmas játékok
+STR_1227    :{SMALLFONT}{BLACK}Vízi játékok
+STR_1228    :{SMALLFONT}{BLACK}Boltok és bódék
 STR_1229    :train
 STR_1230    :trains
 STR_1231    :Train
@@ -1427,24 +1427,24 @@ STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
 STR_1423    :{SMALLFONT}{BLACK}Queue line path
 STR_1424    :{SMALLFONT}{BLACK}Footpath
 STR_1425    :Footpath
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1426    :Várósor
+STR_1427    :{WINDOW_COLOUR_2}Látogatók: {BLACK}óránként {COMMA32}
+STR_1428    :{WINDOW_COLOUR_2}Belépési díj:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
-STR_1431    :Walking
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
+STR_1430    :Ingyenes
+STR_1431    :Sétál
+STR_1432    :A következő felé tart: {STRINGID}
+STR_1433    :Várakozik a következőre: {STRINGID}
 STR_1434    :Drowning
 STR_1435    :On {STRINGID}
 STR_1436    :In {STRINGID}
 STR_1437    :At {STRINGID}
-STR_1438    :Sitting
+STR_1438    :Ül
 STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
+STR_1440    :Füvet nyír
+STR_1441    :Utat takarít
+STR_1442    :Kukát ürít
+STR_1443    :Kertet locsol
 STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
 STR_1446    :Looking at scenery
@@ -1453,8 +1453,8 @@ STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:-
+STR_1452    :Vendég neve
+STR_1453    :Add meg a vendég nevét:-
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
 STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
@@ -1701,10 +1701,10 @@ STR_1696    :{SMALLFONT}{BLACK}Customer information
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
+STR_1700    :Új mindenes felvétele
+STR_1701    :Új szerelő felvétele
+STR_1702    :Új biztonsági őr felvétele
+STR_1703    :Új szórakoztató felvétele
 STR_1704    :Can't hire new staff...
 STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
@@ -1860,14 +1860,14 @@ STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
 STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_1859    :Handymen
-STR_1860    :Mechanics
-STR_1861    :Security Guards
-STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
-STR_1866    :Entertainer
+STR_1859    :mindenes
+STR_1860    :szerelő
+STR_1861    :biztonsági őr
+STR_1862    :szórakoztató
+STR_1863    :mindenes
+STR_1864    :szerelő
+STR_1865    :biztonsági őr
+STR_1866    :szórakoztató
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Can't change number of rotations...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
@@ -2237,16 +2237,16 @@ STR_2232    :Cable lift hill
 STR_2233    :{SMALLFONT}{BLACK}Park information
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :January
-STR_2237    :February
-STR_2238    :March
-STR_2239    :April
-STR_2240    :May
-STR_2241    :June
-STR_2242    :July
-STR_2243    :August
-STR_2244    :September
-STR_2245    :October
+STR_2236    :Január
+STR_2237    :Februáy
+STR_2238    :Március
+STR_2239    :Április
+STR_2240    :Május
+STR_2241    :Június
+STR_2242    :Július
+STR_2243    :Augusztus
+STR_2244    :Szeptember
+STR_2245    :Október
 STR_2246    :November
 STR_2247    :December
 STR_2248    :Can't demolish ride/attraction...
