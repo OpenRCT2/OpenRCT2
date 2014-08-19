@@ -263,7 +263,7 @@ static void window_research_development_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -378,6 +378,7 @@ static void window_research_development_paint()
 	y = w->y + window_research_development_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
 
 	uint32 typeId = RCT2_GLOBAL(0x01357CF4, uint32);
+	int lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
@@ -385,12 +386,15 @@ static void window_research_development_paint()
 					stringId = RCT2_GLOBAL(rideEntry, uint16);
 				else
 					stringId = (typeId & 0xFF00) + 2;
+
+			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
 			uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 			stringId = RCT2_GLOBAL(sceneryEntry, uint16);
+			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, STR_RESEARCH_RIDE_LABEL, 0);
-	}
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);
+	}	
 }
 
 #pragma endregion
@@ -407,7 +411,7 @@ static void window_research_funding_mouseup()
 	short widgetIndex;
 	int activeResearchTypes;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

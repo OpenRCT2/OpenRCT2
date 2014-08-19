@@ -101,13 +101,7 @@ void window_main_paint(){
 	rct_window* w;
 	rct_drawpixelinfo* dpi;
 
-#ifdef _MSC_VER
-	__asm mov w, esi
-	__asm mov dpi, edi
-#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-#endif
+	window_paint_get_registers(w, dpi);
 
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }

@@ -30,6 +30,7 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"English (US)",		// LANGUAGE_ENGLISH_US
 	"Nederlands",		// LANGUAGE_DUTCH
 	"Fran\u00e7ais",	// LANGUAGE_FRENCH
+	"Magyar",			// LANGUAGE_HUNGARIAN
 	"Polski"			// LANGUAGE_POLISH
 };
 
@@ -39,6 +40,7 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"english_us",		// LANGUAGE_ENGLISH_US
 	"dutch",			// LANGUAGE_DUTCH
 	"french",			// LANGUAGE_FRENCH
+	"hungarian",		// LANGUAGE_HUNGARIAN
 	"polish"			// LANGUAGE_POLISH
 };
 

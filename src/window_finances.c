@@ -578,7 +578,7 @@ static void window_finances_summary_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -775,7 +775,7 @@ static void window_finances_financial_graph_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -897,7 +897,7 @@ static void window_finances_park_value_graph_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1015,7 +1015,7 @@ static void window_finances_profit_graph_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1133,7 +1133,7 @@ static void window_finances_marketing_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1320,7 +1320,7 @@ static void window_finances_research_mouseup()
 	short widgetIndex;
 	int activeResearchTypes;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

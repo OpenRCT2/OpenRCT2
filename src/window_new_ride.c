@@ -207,7 +207,7 @@ void window_new_ride_open()
 	
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
-	RCT2_CALLPROC_EBPSAFE(0x006B7220);
+	RCT2_CALLPROC_X(0x006B7220, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -311,7 +311,7 @@ static void window_new_ride_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
