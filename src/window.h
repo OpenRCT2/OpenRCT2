@@ -394,7 +394,7 @@ void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 	#define window_get_register(w)														\
 		__asm mov w, esi
 
-	#define window_widget_get_registers(w, widgetIndex)										\
+	#define window_widget_get_registers(w, widgetIndex)									\
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 

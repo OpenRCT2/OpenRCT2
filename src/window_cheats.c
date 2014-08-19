@@ -377,10 +377,6 @@ static void window_cheats_misc_mouseup()
 
 static void window_cheats_update(rct_window *w)
 {
-	rct_window *w2;
-
-	window_get_register(w2);
-
 	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
 }
