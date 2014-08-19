@@ -553,6 +553,20 @@ void window_finances_open()
 	window_init_scroll_widgets(w);
 }
 
+/**
+ *
+ *  rct2: 0x0069DDE1
+ */
+void window_finances_research_open()
+{
+	rct_window *w;
+
+	window_finances_open();
+	w = window_find_by_id(WC_FINANCES, 0);
+	if (w != NULL)
+		window_finances_set_page(w, WINDOW_FINANCES_PAGE_RESEARCH);
+}
+
 #pragma region Summary page
 
 /**
