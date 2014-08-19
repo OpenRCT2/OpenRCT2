@@ -823,7 +823,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 					switch (ebx & 0xFF) {
 					case 2:
 						if (*((uint8*)edx) == 0)
-							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, 0, 0, 0, 0);
+							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 3:
 						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, edx, 0, 0, 0);

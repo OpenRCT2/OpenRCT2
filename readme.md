@@ -36,7 +36,7 @@ The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each p
 ## 1.3 Progress
 Currently, the windowing system, graphics rendering and basic game loop are being decompiled. Decompiling all of the game's procedures is a convenient way of identifying the game's memory structure. SDL2 has been used as a replacement for the operating system calls, allowing for cross-platform support after the dependency on the original game's executable has been removed.
 
-As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of haivng the game run on 100% C code. More information can be found in [changes to original game](https://github.com/IntelOrca/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/IntelOrca/OpenRCT2/wiki/Window-progress).
+As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of having the game run on 100% C code. More information can be found in [changes to original game](https://github.com/IntelOrca/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/IntelOrca/OpenRCT2/wiki/Window-progress).
 
 ## 1.4 Aim
 The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there is much more possible:
@@ -60,9 +60,13 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 - Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
 - [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
-### Linux:
+### Max OS X:
+- [Homebrew](http://brew.sh)
+- RollerCoaster Tycoon 2
+
+### Mac OS X / Linux:
 - [MinGW-w64](mingw-w64.sourceforge.net)
-- [Wine](http://www.winehq.org/)
+- [Wine](http://www.winehq.org)
 - RollerCoaster Tycoon 2
 - libsdl2 compiled with MinGW-w64
 
@@ -75,6 +79,14 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
 6. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
 7. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+
+### Mac OS X:
+Providing Homebrew is installed, OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+```
+bash install.sh
+bash build.sh
+wine openrct2.exe
+```
 
 ### Linux:
 As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/IntelOrca/OpenRCT2/wiki).
