@@ -918,20 +918,18 @@ static void game_handle_input_mouse(int x, int y, int state)
 					}
 				}
 				else if ((ebx & 0xFF) == 3){
-					//Don't think it is a map element.
-					rct_map_element_properties* map_element = (rct_map_element_properties*)spr;
-					uint32 edx = (uint32)spr;
-					
-					if (!((map_element->track.type & 0x3C) == 16)){
-						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * (*(uint8*)(edx + 4))];
-						if (!(eax & 0x10)){
-							eax = *((uint8*)(edx + 7));
-							RCT2_CALLPROC_X(0x6ACC28, eax, ebx, ecx, edx, esi, edi, ebp);
+					rct_map_element* map_element = (rct_map_element*)spr;
+		
+					if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
+						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type)];
+						if (eax & 0x10){
+							//Open ride window part way through.
+							RCT2_CALLPROC_X(0x6ACC28, map_element->properties.track.ride_index, ebx, ecx, (int)map_element, esi, edi, ebp);
 							break;
 						}
 					}
-					//Open ride window
-					RCT2_CALLPROC_X(0x6ACCCE, *(uint8*)(edx + 7), ((*(uint8*)(edx + 5)) & 0x70) >> 4, ecx, edx, esi, edi, ebp);
+					//Open ride window part way through
+					RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
 				}
 				else if ((ebx & 0xFF) == 8){
 					window_park_entrance_open();
