@@ -271,18 +271,7 @@ static void window_dropdown_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

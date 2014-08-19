@@ -173,11 +173,7 @@ void window_staff_open()
 void window_staff_cancel_tools() {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_get_register(w);
 
 	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
 	int toolWindowNumber = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber);
@@ -192,11 +188,7 @@ void window_staff_cancel_tools() {
 void window_staff_close() {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_get_register(w);
 
 	window_staff_cancel_tools(w);
 }
@@ -228,18 +220,7 @@ static void window_staff_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__("mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_STAFF_CLOSE:
@@ -272,12 +253,7 @@ static void window_staff_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
+	window_get_register(w);
 
 	w->min_width = 320;
 	w->min_height = 270;
@@ -329,19 +305,9 @@ static void window_staff_mousedown(int widgetIndex, rct_window*w, rct_widget* wi
 */
 static void window_staff_dropdown()
 {
+	rct_window* w;
 	short widgetIndex, dropdownIndex;
-
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__("mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__("mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex));
-	#endif
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_STAFF_UNIFORM_COLOR_PICKER && dropdownIndex != -1) {
 		game_do_command(
@@ -390,17 +356,7 @@ void window_staff_toolabort() {
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__("mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_STAFF_SHOW_PATROL_AREA_BUTTON) {
 		hide_gridlines();
@@ -419,11 +375,7 @@ void window_staff_scrollgetsize() {
 	rct_peep *peep;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_get_register(w);
 
 	uint16 staffCount = 0;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -466,21 +418,11 @@ void window_staff_scrollgetsize() {
 */
 void window_staff_scrollmousedown() {
 	int i, spriteIndex;
-	short y;
+	short x, y;
 	rct_window *w;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__("mov %[y], dx " : [y] "+m" (y));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_scrollmouse_get_registers(w, x, y);
 
 	i = y / 10;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -505,21 +447,10 @@ void window_staff_scrollmousedown() {
 */
 void window_staff_scrollmouseover() {
 	int i;
-	short y;
+	short x, y;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__("mov %[y], dx " : [y] "+m" (y));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	i = y / 10;
 	if (i != RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
@@ -545,11 +476,7 @@ void window_staff_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
+	window_get_register(w);
 
 	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
 	uint8 tabIndex = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
@@ -587,17 +514,7 @@ void window_staff_paint() {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__("mov %[dpi], edi " : [dpi] "+m" (dpi));
-	#endif
+	window_paint_get_registers(w, dpi);
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -697,17 +614,7 @@ void window_staff_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__("mov %[dpi], edi " : [dpi] "+m" (dpi));
-	#endif
+	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
 

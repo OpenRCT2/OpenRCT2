@@ -157,18 +157,7 @@ static void window_banner_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -209,14 +198,10 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 
 static void window_banner_dropdown()
 {
-	short widgetIndex;
+	short widgetIndex, dropdownIndex;
+	rct_window* w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx;
-	#else
-	__asm__ ( "mov %[widgetIndex], dx; " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_MAIN_COLOR)
 		RCT2_CALLPROC_EBPSAFE(0x006BA548);
@@ -250,18 +235,7 @@ static void window_banner_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
