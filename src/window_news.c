@@ -129,7 +129,7 @@ static void window_news_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -213,24 +213,7 @@ static void window_news_scrollmousedown()
 	rct_window *w;
 	rct_news_item *newsItems;
 
-	#ifdef _MSC_VER
-	__asm mov x, cx
-	#else
-	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -333,9 +316,11 @@ static void window_news_scrollpaint()
 		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
 
 		// Item text
-		char *sz = (char*)0x013CE952;
+		char sz[400];// = (char*)0x09B5F2C;
+		char* args[1];
+		args[0] = &sz;
 		sprintf(sz, "%c%c%s", newsItem->colour, FORMAT_SMALLFONT, newsItem->text);
-		gfx_draw_string_left_wrapped(dpi, &sz, 2, y + 10, 325, 1170, 14);
+		gfx_draw_string_left_wrapped(dpi, args, 2, y + 10, 325, 1170, 14);
 
 		// Subject button
 		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {

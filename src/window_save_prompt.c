@@ -228,17 +228,7 @@ static void window_save_prompt_mouseup()
 	rct_window *w;
 	short prompt_mode;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
 
@@ -300,18 +290,7 @@ static void window_save_prompt_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 }

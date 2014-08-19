@@ -919,20 +919,18 @@ static void game_handle_input_mouse(int x, int y, int state)
 					}
 				}
 				else if ((ebx & 0xFF) == 3){
-					//Don't think it is a map element.
-					rct_map_element_properties* map_element = (rct_map_element_properties*)spr;
-					uint32 edx = (uint32)spr;
-					
-					if (!((map_element->track.type & 0x3C) == 16)){
-						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * (*(uint8*)(edx + 4))];
-						if (!(eax & 0x10)){
-							eax = *((uint8*)(edx + 7));
-							RCT2_CALLPROC_X(0x6ACC28, eax, ebx, ecx, edx, esi, edi, ebp);
+					rct_map_element* map_element = (rct_map_element*)spr;
+		
+					if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
+						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
+						if (!(eax & 0x10)){//If not station track
+							//Open ride window in overview mode.
+							RCT2_CALLPROC_X(0x6ACC28, map_element->properties.track.ride_index, ebx, ecx, (int)map_element, esi, edi, ebp);
 							break;
 						}
 					}
-					//Open ride window
-					RCT2_CALLPROC_X(0x6ACCCE, *(uint8*)(edx + 7), ((*(uint8*)(edx + 5)) & 0x70) >> 4, ecx, edx, esi, edi, ebp);
+					//Open ride window in station view
+					RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
 				}
 				else if ((ebx & 0xFF) == 8){
 					window_park_entrance_open();
@@ -1846,34 +1844,74 @@ void handle_shortcut_command(int shortcutIndex)
 		RCT2_CALLPROC_EBPSAFE(0x006E4182);
 		break;
 	case SHORTCUT_UNDERGROUND_VIEW_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 0, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_REMOVE_BASE_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 1, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 2, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_SEE_THROUGH_RIDES_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 4, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 5, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 6, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_INVISIBLE_PEOPLE_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 7, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 9, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 10, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE:
-		RCT2_CALLPROC_X(0x0066CF8A, 11, 0, 0, 0, 0, 0, 0);
+		window = window_get_main();
+		if (window != NULL) {
+			window->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
+			window_invalidate(window);
+		}
 		break;
 	case SHORTCUT_ADJUST_LAND:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {

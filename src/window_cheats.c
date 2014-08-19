@@ -270,18 +270,7 @@ static void window_cheats_money_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -318,17 +307,8 @@ static void window_cheats_guests_mouseup()
 	short widgetIndex;
 	rct_window *w;
 	int i;
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	rct_peep* peep;
 	uint16 spriteIndex;
@@ -361,17 +341,8 @@ static void window_cheats_misc_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -406,14 +377,6 @@ static void window_cheats_misc_mouseup()
 
 static void window_cheats_update(rct_window *w)
 {
-	rct_window *w2;
-
-	#ifdef _MSC_VER
-	__asm mov w2, esi
-	#else
-	__asm__ ( "mov %[w2], esi " : [w2] "+m" (w2) );
-	#endif
-
 	w->frame_no++;
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
 }
@@ -423,11 +386,7 @@ static void window_cheats_invalidate()
 	int i;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_get_register(w);
 
 	strcpy((char*)0x009BC677, "Cheats");
 
@@ -448,18 +407,7 @@ static void window_cheats_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_cheats_draw_tab_images(dpi, w);

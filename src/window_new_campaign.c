@@ -226,7 +226,7 @@ static void window_new_campaign_mouseup()
 	rct_window *w;
 	short widgetIndex;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:

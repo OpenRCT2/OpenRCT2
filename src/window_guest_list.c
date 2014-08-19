@@ -190,18 +190,7 @@ static void window_guest_list_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -221,12 +210,7 @@ static void window_guest_list_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->min_width = 350;
 	w->min_height = 330;
@@ -314,24 +298,7 @@ static void window_guest_list_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -373,12 +340,7 @@ static void window_guest_list_scrollgetsize()
 	rct_window *w;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -446,22 +408,11 @@ static void window_guest_list_scrollgetsize()
 static void window_guest_list_scrollmousedown()
 {
 	int i, spriteIndex;
-	short y;
+	short x, y;
 	rct_window *w;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -505,21 +456,10 @@ static void window_guest_list_scrollmousedown()
 static void window_guest_list_scrollmouseover()
 {
 	int i;
-	short y;
+	short x, y;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -546,12 +486,7 @@ static void window_guest_list_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
@@ -585,18 +520,7 @@ static void window_guest_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -659,18 +583,7 @@ static void window_guest_list_scrollpaint()
 	rct_peep_thought *thought;
 	uint32 argument_1, argument_2;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
