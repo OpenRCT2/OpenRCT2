@@ -22,11 +22,117 @@
 #include "addresses.h"
 #include "game.h"
 #include "news_item.h"
+#include "ride.h"
 #include "string_ids.h"
 #include "widget.h"
 #include "window.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(0x00F43824, uint8)
+
+typedef struct {
+	uint8 type;
+	uint8 entry_index;
+} ride_list_item;
+
+#pragma region Ride type category mappings
+
+char RideTypeCategoryMap[] = {
+	// Transport rides
+	RIDE_TYPE_MINIATURE_RAILWAY,
+	RIDE_TYPE_MONORAIL,
+	RIDE_TYPE_SUSPENDED_MONORAIL,
+	RIDE_TYPE_CHAIRLIFT,
+	RIDE_TYPE_ELEVATOR,
+
+	// Roller Coasters
+	RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
+	RIDE_TYPE_VIRGINIA_REEL,
+	RIDE_TYPE_REVERSER_ROLLER_COASTER,
+	RIDE_TYPE_WOODEN_ROLLER_COASTER,
+	RIDE_TYPE_WOODEN_WILD_MOUSE,
+	RIDE_TYPE_WILD_MOUSE,
+	RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
+	RIDE_TYPE_JUNIOR_ROLLER_COASTER,
+	RIDE_TYPE_MINI_ROLLER_COASTER,
+	RIDE_TYPE_SPIRAL_ROLLER_COASTER,
+	RIDE_TYPE_MINE_TRAIN_COASTER,
+	RIDE_TYPE_LOOPING_ROLLER_COASTER,
+	RIDE_TYPE_STAND_UP_ROLLER_COASTER,
+	RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
+	RIDE_TYPE_90,
+	RIDE_TYPE_TWISTER_ROLLER_COASTER,
+	RIDE_TYPE_GIGA_COASTER,
+	RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
+	RIDE_TYPE_COMPACT_INVERTED_COASTER,
+	RIDE_TYPE_INVERTED_ROLLER_COASTER,
+	RIDE_TYPE_INVERTED_IMPULSE_COASTER,
+	RIDE_TYPE_MINI_SUSPENDED_COASTER,
+	RIDE_TYPE_STEEPLECHASE,
+	RIDE_TYPE_BOBSLEIGH_COASTER,
+	RIDE_TYPE_MINE_RIDE,
+	RIDE_TYPE_HEARTLINE_TWISTER_COASTER,
+	RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
+	RIDE_TYPE_FLYING_ROLLER_COASTER,
+	RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER,
+	RIDE_TYPE_REVERSE_FREEFALL_COASTER,
+	RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
+	RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
+
+	// Gentle rides
+	RIDE_TYPE_MONORAIL_CYCLES,
+	RIDE_TYPE_CROOKED_HOUSE,
+	RIDE_TYPE_HAUNTED_HOUSE,
+	RIDE_TYPE_FERRIS_WHEEL,
+	RIDE_TYPE_MAZE,
+	RIDE_TYPE_MERRY_GO_ROUND,
+	RIDE_TYPE_MINI_GOLF,
+	RIDE_TYPE_OBSERVATION_TOWER,
+	RIDE_TYPE_CAR_RIDE,
+	RIDE_TYPE_MINI_HELICOPTERS,
+	RIDE_TYPE_SPIRAL_SLIDE,
+	RIDE_TYPE_BUMPER_CARS,
+	RIDE_TYPE_SPACE_RINGS,
+	RIDE_TYPE_CIRCUS_SHOW,
+	RIDE_TYPE_GHOST_TRAIN,
+	RIDE_TYPE_FLYING_SAUCERS,
+
+	// Thrill rides
+	RIDE_TYPE_TWIST,
+	RIDE_TYPE_MAGIC_CARPET,
+	RIDE_TYPE_LAUNCHED_FREEFALL,
+	RIDE_TYPE_PIRATE_SHIP,
+	RIDE_TYPE_GO_KARTS,
+	RIDE_TYPE_SWINGING_INVERTER_SHIP,
+	RIDE_TYPE_MOTION_SIMULATOR,
+	RIDE_TYPE_3D_CINEMA,
+	RIDE_TYPE_TOP_SPIN,
+	RIDE_TYPE_ROTO_DROP,
+	RIDE_TYPE_ENTERPRISE,
+
+	// Water rides
+	RIDE_TYPE_DINGHY_SLIDE,
+	RIDE_TYPE_LOG_FLUME,
+	RIDE_TYPE_RIVER_RAPIDS,
+	RIDE_TYPE_SPLASH_BOATS,
+	RIDE_TYPE_SUBMARINE_RIDE,
+	RIDE_TYPE_BUMPER_BOATS,
+	RIDE_TYPE_RIVER_RAFTS,
+	RIDE_TYPE_WATER_COASTER,
+
+	// Shops / stalls
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_1D,
+	RIDE_TYPE_DRINK_STALL,
+	RIDE_TYPE_1F,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_22,
+	RIDE_TYPE_INFORMATION_KIOSK,
+	RIDE_TYPE_FIRST_AID,
+	RIDE_TYPE_ATM,
+	RIDE_TYPE_BATHROOM
+};
+
+#pragma endregion
 
 enum {
 	WINDOW_NEW_RIDE_PAGE_TRANSPORT,
@@ -160,6 +266,88 @@ void window_new_ride_init_vars() {
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_INFORMATION_TYPE, uint8) = 0;
 }
 
+uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
+{
+	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
+	uint8 *entryIndexList = typeToRideEntryIndexMap;
+	while (rideType > 0) {
+		do {
+			entryIndexList++;
+		} while (*(entryIndexList - 1) != 255);
+		rideType--;
+	}
+	return entryIndexList;
+}
+
+/**
+ *
+ *  rct2: 0x006B6F3E
+ */
+static void window_new_ride_populate_list()
+{
+	int i, quadIndex, bitIndex;
+
+	uint8 currentCategory = _window_new_ride_current_tab;
+	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
+	uint8 **rideEntries = (uint8**)0x009ACFA4;
+
+	for (i = 0; i < countof(RideTypeCategoryMap); i++) {
+		uint8 rideType = RideTypeCategoryMap[i];
+		if (rideType == RIDE_TYPE_NULL)
+			continue;
+
+		quadIndex = rideType >> 5;
+		bitIndex = rideType & 0x1F;
+		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1 << bitIndex)) {
+			int dh = 0;
+			uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
+
+			// For each ride entry for this ride type
+			while (*rideEntryIndexPtr != 255) {
+				uint8 rideEntryIndex = *rideEntryIndexPtr++;
+
+				quadIndex = rideEntryIndex >> 5;
+				bitIndex = rideEntryIndex & 0x1F;
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+					continue;
+
+				// Ride entries
+				uint8 *rideEntry = rideEntries[rideEntryIndex];
+				uint8 categoryA = rideEntry[0x1BE];
+				uint8 categoryB = rideEntry[0x1BF];
+
+				// Check if ride is in this category
+				if (currentCategory != categoryA && currentCategory != categoryB)
+					continue;
+
+				if (rideEntry[8] & 0x2000) {
+					// loc_6B6FFB:
+					dh &= ~4;
+					nextListItem->type = rideType;
+					nextListItem->entry_index = rideEntryIndex;
+					nextListItem++;
+				} else if (!(dh & 1)) {
+					// loc_6B6FEA:
+					dh |= 5;
+					nextListItem->type = rideType;
+					nextListItem->entry_index = rideEntryIndex;
+					nextListItem++;
+				} else if (dh & 4) {
+					if (rideType == rideEntry[0x0C]) {
+						nextListItem--;
+						nextListItem->type = rideType;
+						nextListItem->entry_index = rideEntryIndex;
+						nextListItem++;
+					}
+				}
+			}
+		}
+	}
+
+	nextListItem->type = 255;
+	nextListItem->entry_index = 255;
+}
+
 /**
  *
  *  rct2: 0x006B3CFF
@@ -199,9 +387,9 @@ void window_new_ride_open()
 	w->var_482 = -1;
 	RCT2_GLOBAL(0x00F43866, sint16) = -1;
 	
-	RCT2_CALLPROC_EBPSAFE(0x006B6F3E);
+	window_new_ride_populate_list();
 	
-	w->var_482 = RCT2_ADDRESS(0x00F43825, sint16)[RCT2_GLOBAL(0x00F43824, uint8)];
+	w->var_482 = RCT2_ADDRESS(0x00F43825, sint16)[_window_new_ride_current_tab];
 	if (w->var_482 == -1)
 		w->var_482 = RCT2_GLOBAL(0x00F43523, sint16);
 	
@@ -342,7 +530,7 @@ static void window_new_ride_mousedown(int widgetIndex, rct_window *w, rct_widget
 	w->frame_no = 0;
 	w->var_482 = -1;
 	w->var_480 = -1;
-	RCT2_CALLPROC_EBPSAFE(0x006B6F3E);
+	window_new_ride_populate_list();
 	if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		w->var_482 = RCT2_ADDRESS(0x00F43825, sint16)[page];
 		if (w->var_482 == -1)
@@ -521,4 +709,6 @@ static void window_new_ride_scrollpaint()
 	rct_drawpixelinfo *dpi;
 
 	window_paint_get_registers(w, dpi);
+
+	RCT2_CALLPROC_X(0x006B6ABF, 0, 0, 0, 0, w, dpi, 0);
 }
