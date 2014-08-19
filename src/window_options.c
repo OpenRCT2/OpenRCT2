@@ -269,7 +269,7 @@ static void window_options_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	window_mouse_up_get_registers(w, widgetIndex);
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
