@@ -761,7 +761,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  * 
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(int *x, int *y)
+void screen_pos_to_map_pos(short *x, short *y)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = *x;

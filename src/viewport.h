@@ -52,7 +52,7 @@ void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
 
-void screen_pos_to_map_pos(int *x, int *y);
+void screen_pos_to_map_pos(short *x, short *y);
 
 void show_gridlines();
 void hide_gridlines();
