@@ -287,6 +287,7 @@ enum {
 	WC_CLEAR_SCENERY = 50,
 	WC_MANAGE_TRACK_DESIGN = 89,
 	WC_CHEATS = 110,
+	WC_RESEARCH = 111
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -374,8 +375,10 @@ void window_park_rating_open();
 void window_finances_open();
 void window_new_campaign_open(int campaignType);
 void window_ride_list_open();
+void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
+void window_research_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

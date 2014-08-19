@@ -153,6 +153,9 @@
     <ClInclude Include="..\src\graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\language.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -359,6 +362,15 @@
     <ClCompile Include="..\src\window_new_campaign.c">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\language.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_research.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_staff_peep.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -366,7 +378,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\english.txt">
+    <Text Include="..\data\language\dutch.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\english_uk.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\english_us.txt">
+      <Filter>Data\Language</Filter>
+    </Text>
+    <Text Include="..\data\language\french.txt">
       <Filter>Data\Language</Filter>
     </Text>
   </ItemGroup>

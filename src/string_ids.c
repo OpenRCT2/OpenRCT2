@@ -25,6 +25,7 @@
 #include "currency.h"
 #include "game.h"
 #include "date.h"
+#include "language.h"
 #include "rct2.h"
 #include "string_ids.h"
 #include "util.h"
@@ -1471,7 +1472,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		strcpy(*dest, get_string(STR_MONTH_MARCH + date_get_month(value)));
+		strcpy(*dest, language_get_string(STR_MONTH_MARCH + date_get_month(value)));
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_VELOCITY:
@@ -1591,7 +1592,7 @@ void format_string_part(char **dest, rct_string_id format, char **args)
 {
 	if (format < 0x8000) {
 		// Language string
-		format_string_part_from_raw(dest, get_string(format), args);
+		format_string_part_from_raw(dest, language_get_string(format), args);
 	} else if (format < 0x9000) {
 		// Custom string
 		format -= 0x8000;
@@ -1690,108 +1691,4 @@ void reset_saved_strings() {
 	for (int i = 0; i < 1024; i++) {
 		RCT2_ADDRESS(0x135A8F4, uint8)[i * 32] = 0;
 	}
-}
-
-// Buffer storing all the string data
-long language_buffer_size = 0;
-char *language_buffer = NULL;
-
-// List of string pointers into the string data
-int language_num_strings = 0;
-char **language_strings = NULL;
-
-const char *get_string(rct_string_id id)
-{
-	const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
-	const char *openrct = language_strings == NULL ? NULL : language_strings[id];
-	const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
-	return str == NULL ? "" : str;
-}
-
-/**
- * Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
- * code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
- * get_string will use those if the same entry in the loaded language is empty.
- * 
- * Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
- * strings for the time being. Further investigation is required.
- *
- * Also note that all strings are currently still ASCII. It probably can't be converted to UTF-8 until all game functions that
- * read / write strings in some way is decompiled. The original game used a DIY extended 8-bit extended ASCII set for special
- * characters, format codes and accents.
- *
- * In terms of reading the language files, the STR_XXXX part is completely ignored at the moment. It just parses each line from
- * the colon and thus not allowing gaps in the string indices.
- */
-int language_open(const char *filename)
-{
-	FILE *f = fopen(filename, "rb");
-	if (f == NULL)
-		return 0;
-
-	fseek(f, 0, SEEK_END);
-	language_buffer_size = ftell(f);
-	language_buffer = calloc(1, language_buffer_size);
-	fseek(f, 0, SEEK_SET);
-	fread(language_buffer, language_buffer_size, 1, f);
-	fclose(f);
-
-	language_strings = calloc(STR_COUNT, sizeof(char*));
-
-	char *dst, *token;
-	char tokenBuffer[64];
-	int i, stringIndex = 0, mode = 0;
-	for (i = 0; i < language_buffer_size; i++) {
-		char *src = &language_buffer[i];
-
-		switch (mode) {
-		case 0:
-			// Search for colon
-			if (*src == ':') {
-				dst = src + 1;
-				language_strings[stringIndex++] = dst;
-				mode = 1;
-			}
-			break;
-		case 1:
-			// Copy string over, stop at line break
-			if (*src == '{') {
-				token = src + 1;
-				mode = 2;
-			} else if (*src == '\n' || *src == '\r') {
-				*dst = 0;
-				mode = 0;
-			} else {
-				*dst++ = *src;
-			}
-			break;
-		case 2:
-			// Read token, convert to code
-			if (*src == '}') {
-				int tokenLength = min(src - token, sizeof(tokenBuffer) - 1);
-				memcpy(tokenBuffer, token, tokenLength);
-				tokenBuffer[tokenLength] = 0;
-				char code = format_get_code(tokenBuffer);
-				if (code == 0)
-					code = atoi(tokenBuffer);
-				*dst++ = code;
-				mode = 1;
-			}
-			break;
-		}
-	}
-	language_num_strings = stringIndex;
-
-	return 1;
-}
-
-void language_close()
-{
-	if (language_buffer != NULL)
-		free(language_buffer);
-	language_buffer_size = 0;
-
-	if (language_strings != NULL)
-		free(language_strings);
-	language_num_strings = 0;
 }

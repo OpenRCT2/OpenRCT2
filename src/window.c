@@ -642,7 +642,7 @@ int window_find_widget_from_point(rct_window *w, int x, int y)
 
 /**
  * Invalidates the specified window.
- *  rct2: 0x006EB31A
+ *  rct2: 0x006EB13A
  *
  * @param window The window to invalidate (esi).
  */
@@ -924,7 +924,7 @@ void window_zoom_in(rct_window *w)
 	w->saved_view_x += v->view_width >> 1;
 	w->saved_view_y += v->view_height >> 1;
 
-	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+	window_invalidate(w);
 }
 
 /**
@@ -951,7 +951,7 @@ void window_zoom_out(rct_window *w)
 	w->saved_view_x -= width / 2;
 	w->saved_view_y -= height >> 1;
 
-	RCT2_CALLPROC_X(0x006EB13A, 0, 0, 0, 0, (int)w, 0, 0);
+	window_invalidate(w);
 }
 
 /**

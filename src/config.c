@@ -23,6 +23,7 @@
 #include <ctype.h>
 #include "addresses.h"
 #include "config.h"
+#include "language.h"
 #include "rct2.h"
 
 
@@ -90,6 +91,7 @@ general_configuration_t gGeneral_config_default = {
 	0,		// show_height_as_units
 	1,		// save_plugin_data
 	0,		// fullscreen mode (default: windowed)
+	LANGUAGE_ENGLISH_UK
 };
 sound_configuration_t gSound_config;
 
@@ -381,6 +383,8 @@ void config_write_ini_general(FILE *fp)
 		fprintf(fp, "fullscreen_mode = fullscreen\n");
 	else
 		fprintf(fp, "fullscreen_mode = borderless_fullscreen\n");
+
+	fprintf(fp, "language = %d\n", gGeneral_config.language);
 }
 
 /**
@@ -620,6 +624,9 @@ static void config_general(char *setting, char *value){
 		}
 		else
 			gGeneral_config.fullscreen_mode = 2;
+	}
+	else if (strcmp(setting, "language") == 0) {
+		gGeneral_config.language = atoi(value);
 	}
 }
 

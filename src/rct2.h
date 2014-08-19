@@ -42,6 +42,12 @@ typedef unsigned long long uint64;
 #define ror32(x, shift)		(((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
 #define rol64(x, shift)		(((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
 #define ror64(x, shift)		(((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
+#ifndef min
+	#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+#ifndef max
+	#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 

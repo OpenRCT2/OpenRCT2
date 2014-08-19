@@ -824,7 +824,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 					switch (ebx & 0xFF) {
 					case 2:
 						if (*((uint8*)edx) == 0)
-							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, 0, 0, 0, 0);
+							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, edx, 0, 0, 0);
 						break;
 					case 3:
 						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, edx, 0, 0, 0);
@@ -867,7 +867,78 @@ static void game_handle_input_mouse(int x, int y, int state)
 		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
-		RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber));
+		if (!w){
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
+			break;
+		}
+
+		if (state == 0){
+			if (!w->viewport){
+				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
+				break;
+			}
+
+			if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) ||
+				w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) ||
+				!(RCT2_GLOBAL(0x9DE518, uint32)&(1 << 3)))break;
+			
+			w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
+
+			if (!w)break;
+
+			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DRAG], x, y, 0, (int)RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
+		}
+		else if (state == 2){
+			
+			RCT2_GLOBAL(0x9DE51D, uint8) = 0;
+			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
+			if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 3))){
+				w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
+				if (!w)break;
+				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UP], x, y, 0, (int)RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
+			}
+			else{
+				if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 4)))break;
+				rct_sprite* spr;
+				int eax = x, ebx = y, ecx = state, esi = (int)w, edi = (int)widget, ebp = 0;
+				RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, (int*)&spr, &esi, &edi, &ebp);
+				if ((ebx & 0xFF) == 2){
+					
+					if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE){
+						//Open ride window
+						RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
+					}
+					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
+						window_peep_open(&spr->peep);
+					}
+					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
+						//Unknown for now
+						RCT2_CALLPROC_X(0x6E88D7, eax, ebx, ecx, (int)spr, esi, edi, ebp);
+					}
+				}
+				else if ((ebx & 0xFF) == 3){
+					//Don't think it is a map element.
+					rct_map_element_properties* map_element = (rct_map_element_properties*)spr;
+					uint32 edx = (uint32)spr;
+					
+					if (!((map_element->track.type & 0x3C) == 16)){
+						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * (*(uint8*)(edx + 4))];
+						if (!(eax & 0x10)){
+							eax = *((uint8*)(edx + 7));
+							RCT2_CALLPROC_X(0x6ACC28, eax, ebx, ecx, edx, esi, edi, ebp);
+							break;
+						}
+					}
+					//Open ride window
+					RCT2_CALLPROC_X(0x6ACCCE, *(uint8*)(edx + 7), ((*(uint8*)(edx + 5)) & 0x70) >> 4, ecx, edx, esi, edi, ebp);
+				}
+				else if ((ebx & 0xFF) == 8){
+					window_park_entrance_open();
+				}
+			}
+		}
 		break;
 	case INPUT_STATE_SCROLL_LEFT://0x006E8676
 		//RCT2_CALLPROC_X(0x006E8676, x, y, state, widgetIndex, (int)w, (int)widget, 0);

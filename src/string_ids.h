@@ -28,9 +28,8 @@ void generate_string_file();
 void reset_saved_strings();
 void error_string_quit(int error, rct_string_id format);
 
-const char *get_string(rct_string_id id);
-int language_open(const char *filename);
-void language_close();
+char format_get_code(const char *token);
+const char *format_get_token(char code);
 
 enum {
 	// Font format codes
@@ -238,6 +237,7 @@ enum {
 	STR_SHOPS_AND_STALLS = 975,
 	STR_RESTROOMS_AND_INFORMATION_KIOSKS = 976,
 
+	STR_RESEARCH_AND_DEVELOPMENT = 983,
 	STR_RAISE_COST_AMOUNT = 984,
 	STR_LOWER_COST_AMOUNT = 985,
 	STR_COST_AMOUNT = 986,
@@ -515,7 +515,29 @@ enum {
 	STR_RESEARCH_COST_PER_MONTH = 2265,
 	STR_RESEARCH_PRIORITIES = 2266,
 
+	STR_RESEARCH_TYPE_LABEL = 2269,
+	STR_RESEARCH_PROGRESS_LABEL = 2270,
+	STR_RESEARCH_EXPECTED_LABEL = 2271,
+	STR_RESEARCH_RIDE_LABEL = 2272,
+	STR_RESEARCH_SCENERY_LABEL = 2273,
+
+	STR_RESEARCH_SHOW_DETAILS_TIP = 2274,
 	STR_FINANCES_RESEARCH = 2275,
+	STR_RESEARCH_AND_DEVELOPMENT_TIP = 2276,
+	STR_RESEARCH_UNKNOWN = 2277,
+
+	STR_TRANSPORT_RIDE = 2278,
+	STR_GENTLE_RIDE = 2279,
+	STR_ROLLER_COASTER = 2280,
+	STR_THRILL_RIDE = 2281,
+	STR_WATER_RIDE = 2282,
+	STR_SHOP_STALL = 2283,
+	STR_SCENERY_THEMEING = 2284,
+
+	STR_INITIAL_RESEARCH = 2285,
+	STR_DESIGNING = 2286,
+	STR_COMPLETING_DESIGN = 2287,
+	STR_UNKNOWN = 2288,
 
 	STR_SELECT_SCENARIO = 2291,
 

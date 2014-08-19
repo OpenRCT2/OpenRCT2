@@ -54,7 +54,7 @@ static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	x = baseX;
 	for (i = count - 1; i >= 0; i--) {
 		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
+			y = baseY + ((255 - history[i]) * 100) / 256;
 
 			if (lastX != -1) {
 				gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, 10);
@@ -78,7 +78,7 @@ static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	x = baseX;
 	for (i = count - 1; i >= 0; i--) {
 		if (history[i] != 0 && history[i] != 255) {
-			y = baseY + (history[i] * 100) / 256;
+			y = baseY + ((255 - history[i]) * 100) / 256;
 
 			if (lastX != -1)
 				gfx_draw_line(dpi, lastX, lastY, x, y, 21);

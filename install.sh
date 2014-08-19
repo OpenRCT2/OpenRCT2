@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 SDL2_PV=2.0.3
 
 cachedir=.cache
@@ -11,13 +9,44 @@ echo `uname`
 
 if [[ `uname` == "Darwin" ]]; then
     echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
+
+    echo "Check if brew is installed"
+    package_command="brew"
+    which -s brew
+    if [ $? -eq 1 ]; then
+        echo "brew is not installed, or is not in your \$PATH"
+        echo "Check if MacPorts is installed"
+        which -s port
+        if [ $? -eq 1 ]; then
+            echo "MacPorts not found either, abort"
+            exit
+        else
+            echo "MacPorts found"
+            package_command="sudo port"
+        fi
+    else
+        echo "brew was found"
+    fi
+
+    echo "Check if wget is installed"
+    which -s wget
+    if [ $? -eq 1 ]; then
+        echo "wget is not installed, installing wget.."
+        eval "$package_command install wget"
+    fi
+
+    # Install packages with whatever command was found.
     # Very possible I'm missing some dependencies here.
-    brew install cmake wine
+    eval "$package_command install cmake wine"
 
     if [[ ! -d /usr/include/wine ]]; then
         # This will almost certainly break as brew changes. Better ideas
         # welcome.
-        sudo ln -s /usr/local/Cellar/wine/1.6.2/include/wine /usr/include
+        wine_path="/usr/local/Cellar/wine/1.6.2/include/wine"
+        if [ $package_command == "sudo port" ]; then
+            wine_path="/opt/local/include/wine"
+        fi
+        sudo ln -s $wine_path /usr/include
     fi
 
     mingw_dmg=gcc-4.8.0-qt-4.8.4-for-mingw32.dmg
@@ -68,7 +97,7 @@ if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then
     # If this fails to work because of newlines, be sure you are running this
     # script with Bash, and not sh. We should really move this to a separate
     # file.
-    echo -e "#! /bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
+    echo -e "#!/bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
 fi
 
 chmod +x $cachedir/i686-w64-mingw32-pkg-config
