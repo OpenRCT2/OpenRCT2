@@ -2534,7 +2534,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 		for (int edi = 0; edi < 0x80; edi++) {
 			int addr = 0x013B0E72 + (newStaffId << 9) + edi * 4;
-			RCT2_ADDRESS(addr, uint32) = 0;
+			RCT2_GLOBAL(addr, uint32) = 0;
 		}
 	}
 
