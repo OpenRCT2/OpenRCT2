@@ -2507,9 +2507,9 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->sprite_type = _eax;
 
 		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
-		newPeep->var_14 = *((int*)_edx);
-		newPeep->var_09 = *((int*)(_edx + 1));
-		newPeep->var_15 = *((int*)(_edx + 2));
+		newPeep->var_14 = *((uint8*)_edx);
+		newPeep->var_09 = *((uint8*)(_edx + 1));
+		newPeep->var_15 = *((uint8*)(_edx + 2));
 
 		RCT2_CALLPROC_X(0x0069E9D3, newPeep->x, 0, newPeep->y, newPeep->z, (int)newPeep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, *eax, 0, 0, 0, (int)newPeep, 0, 0);
