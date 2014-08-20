@@ -189,3 +189,28 @@ void window_peep_close(){
 			tool_cancel();
 	}
 }
+
+/* rct2: 0x00696FBE */
+void window_peep_resize(){
+	rct_window* w;
+	
+	window_get_register(w);
+	
+	RCT2_CALLPROC_EBPSAFE(0x6987a6);
+	RCT2_CALLPROC_EBPSAFE(w->eventhandler[WE_INVALIDATE]);
+	
+	window_invalidate_by_id(0xA97,w->number);
+	
+	w->min_width = 192;
+	w->max_width = 500;
+	w->min_height = 159;
+	w->max_height = 450;
+	
+	if (w->min_width > w->width){
+		w->width = w->min_width;
+		window_invalidate(w);
+	}
+	
+	//0x697002	
+}
+
