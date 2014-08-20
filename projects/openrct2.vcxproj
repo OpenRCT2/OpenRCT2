@@ -143,6 +143,7 @@
     <Text Include="..\data\language\french.txt" />
     <Text Include="..\data\language\hungarian.txt" />
     <Text Include="..\data\language\polish.txt" />
+    <Text Include="..\data\language\spanish_sp.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>

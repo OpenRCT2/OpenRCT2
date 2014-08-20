@@ -29,9 +29,10 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"English (UK)",		// LANGUAGE_ENGLISH_UK
 	"English (US)",		// LANGUAGE_ENGLISH_US
 	"Nederlands",		// LANGUAGE_DUTCH
-	"Fran\u00e7ais",	// LANGUAGE_FRENCH
+	"Fran\u00E7ais",	// LANGUAGE_FRENCH
 	"Magyar",			// LANGUAGE_HUNGARIAN
-	"Polski"			// LANGUAGE_POLISH
+	"Polski",			// LANGUAGE_POLISH
+	"Espa\u00F1ol"		// LANGUAGE_SPANISH
 };
 
 const char *language_filenames[LANGUAGE_COUNT] = {
@@ -41,7 +42,8 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"dutch",			// LANGUAGE_DUTCH
 	"french",			// LANGUAGE_FRENCH
 	"hungarian",		// LANGUAGE_HUNGARIAN
-	"polish"			// LANGUAGE_POLISH
+	"polish",			// LANGUAGE_POLISH
+	"spanish_sp"		// LANGUAGE_SPANISH
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
