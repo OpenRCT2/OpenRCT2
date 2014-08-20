@@ -77,8 +77,10 @@ rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets
 };
 
+void window_peep_close();
+
 static void* window_peep_overview_events[] = {
-	(void*)0x696A75,
+	window_peep_close,
 	(void*)0x696A06,
 	(void*)0x696FBE,
 	window_peep_emptysub,
@@ -173,4 +175,17 @@ void window_peep_open(rct_peep* peep){
 	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
 	window_init_scroll_widgets(window);
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+}
+
+/* rct2: 0x00696A75 */
+void window_peep_close(){
+	rct_window* w;
+	
+	window_get_register(w);
+	
+	if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<3)){
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) && 
+		    w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber)) 
+			tool_cancel();
+	}
 }
