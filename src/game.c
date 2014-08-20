@@ -2666,7 +2666,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
 		newPeep->var_CC = 0xFFFFFFFF;
 		
-		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex];
+		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex > 2 ? 2 : tabIndex];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
