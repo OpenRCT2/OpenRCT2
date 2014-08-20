@@ -2188,7 +2188,6 @@ static int game_check_affordability(int cost)
 }
 
 static uint32 game_do_command_table[58];
-typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 static GAME_COMMAND_POINTER* new_game_command_table[58];
 
 /**
