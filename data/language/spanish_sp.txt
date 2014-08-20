@@ -604,171 +604,171 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :
 STR_0601    :
 STR_0602    :
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
+STR_0603    :Visitante {INT32}
+STR_0604    :Visitante {INT32}
+STR_0605    :Visitante {INT32}
+STR_0606    :Visitante {INT32}
+STR_0607    :Visitante {INT32}
+STR_0608    :Visitante {INT32}
+STR_0609    :Visitante {INT32}
+STR_0610    :Visitante {INT32}
+STR_0611    :Visitante {INT32}
+STR_0612    :Visitante {INT32}
+STR_0613    :Visitante {INT32}
+STR_0614    :Visitante {INT32}
+STR_0615    :Visitante {INT32}
+STR_0616    :Visitante {INT32}
+STR_0617    :Visitante {INT32}
+STR_0618    :Visitante {INT32}
+STR_0619    :Visitante {INT32}
+STR_0620    :Visitante {INT32}
+STR_0621    :Visitante {INT32}
+STR_0622    :Visitante {INT32}
+STR_0623    :Visitante {INT32}
+STR_0624    :Visitante {INT32}
+STR_0625    :Visitante {INT32}
+STR_0626    :Visitante {INT32}
+STR_0627    :Visitante {INT32}
+STR_0628    :Visitante {INT32}
+STR_0629    :Visitante {INT32}
+STR_0630    :Visitante {INT32}
+STR_0631    :Visitante {INT32}
+STR_0632    :Visitante {INT32}
+STR_0633    :Visitante {INT32}
+STR_0634    :Visitante {INT32}
+STR_0635    :Visitante {INT32}
+STR_0636    :Visitante {INT32}
+STR_0637    :Visitante {INT32}
+STR_0638    :Visitante {INT32}
+STR_0639    :Visitante {INT32}
+STR_0640    :Visitante {INT32}
+STR_0641    :Visitante {INT32}
+STR_0642    :Visitante {INT32}
+STR_0643    :Visitante {INT32}
+STR_0644    :Visitante {INT32}
+STR_0645    :Visitante {INT32}
+STR_0646    :Visitante {INT32}
+STR_0647    :Visitante {INT32}
+STR_0648    :Visitante {INT32}
+STR_0649    :Visitante {INT32}
+STR_0650    :Visitante {INT32}
+STR_0651    :Visitante {INT32}
+STR_0652    :Visitante {INT32}
+STR_0653    :Visitante {INT32}
+STR_0654    :Visitante {INT32}
+STR_0655    :Visitante {INT32}
+STR_0656    :Visitante {INT32}
+STR_0657    :Visitante {INT32}
+STR_0658    :Visitante {INT32}
+STR_0659    :Visitante {INT32}
+STR_0660    :Visitante {INT32}
+STR_0661    :Visitante {INT32}
+STR_0662    :Visitante {INT32}
+STR_0663    :Visitante {INT32}
+STR_0664    :Visitante {INT32}
+STR_0665    :Visitante {INT32}
+STR_0666    :Visitante {INT32}
+STR_0667    :Visitante {INT32}
+STR_0668    :Visitante {INT32}
+STR_0669    :Visitante {INT32}
+STR_0670    :Visitante {INT32}
+STR_0671    :Visitante {INT32}
+STR_0672    :Visitante {INT32}
+STR_0673    :Visitante {INT32}
+STR_0674    :Visitante {INT32}
+STR_0675    :Visitante {INT32}
+STR_0676    :Visitante {INT32}
+STR_0677    :Visitante {INT32}
+STR_0678    :Visitante {INT32}
+STR_0679    :Visitante {INT32}
+STR_0680    :Visitante {INT32}
+STR_0681    :Visitante {INT32}
+STR_0682    :Visitante {INT32}
+STR_0683    :Visitante {INT32}
+STR_0684    :Visitante {INT32}
+STR_0685    :Visitante {INT32}
+STR_0686    :Visitante {INT32}
+STR_0687    :Visitante {INT32}
+STR_0688    :Visitante {INT32}
+STR_0689    :Visitante {INT32}
+STR_0690    :Visitante {INT32}
+STR_0691    :Visitante {INT32}
+STR_0692    :Visitante {INT32}
+STR_0693    :Visitante {INT32}
+STR_0694    :Visitante {INT32}
+STR_0695    :Visitante {INT32}
+STR_0696    :Visitante {INT32}
+STR_0697    :Visitante {INT32}
+STR_0698    :Visitante {INT32}
+STR_0699    :Visitante {INT32}
+STR_0700    :Visitante {INT32}
+STR_0701    :Visitante {INT32}
+STR_0702    :Visitante {INT32}
+STR_0703    :Visitante {INT32}
+STR_0704    :Visitante {INT32}
+STR_0705    :Visitante {INT32}
+STR_0706    :Visitante {INT32}
+STR_0707    :Visitante {INT32}
+STR_0708    :Visitante {INT32}
+STR_0709    :Visitante {INT32}
+STR_0710    :Visitante {INT32}
+STR_0711    :Visitante {INT32}
+STR_0712    :Visitante {INT32}
+STR_0713    :Visitante {INT32}
+STR_0714    :Visitante {INT32}
+STR_0715    :Visitante {INT32}
+STR_0716    :Visitante {INT32}
+STR_0717    :Visitante {INT32}
+STR_0718    :Visitante {INT32}
+STR_0719    :Visitante {INT32}
+STR_0720    :Visitante {INT32}
+STR_0721    :Visitante {INT32}
+STR_0722    :Visitante {INT32}
+STR_0723    :Visitante {INT32}
+STR_0724    :Visitante {INT32}
+STR_0725    :Visitante {INT32}
+STR_0726    :Visitante {INT32}
+STR_0727    :Visitante {INT32}
+STR_0728    :Visitante {INT32}
+STR_0729    :Visitante {INT32}
+STR_0730    :Visitante {INT32}
+STR_0731    :Visitante {INT32}
+STR_0732    :Visitante {INT32}
+STR_0733    :Visitante {INT32}
+STR_0734    :Visitante {INT32}
+STR_0735    :Visitante {INT32}
+STR_0736    :Visitante {INT32}
+STR_0737    :Visitante {INT32}
+STR_0738    :Visitante {INT32}
+STR_0739    :Visitante {INT32}
+STR_0740    :Visitante {INT32}
+STR_0741    :Visitante {INT32}
+STR_0742    :Visitante {INT32}
+STR_0743    :Visitante {INT32}
+STR_0744    :Visitante {INT32}
+STR_0745    :Visitante {INT32}
+STR_0746    :Visitante {INT32}
+STR_0747    :Visitante {INT32}
+STR_0748    :Visitante {INT32}
+STR_0749    :Visitante {INT32}
+STR_0750    :Visitante {INT32}
+STR_0751    :Visitante {INT32}
+STR_0752    :Visitante {INT32}
+STR_0753    :Visitante {INT32}
+STR_0754    :Visitante {INT32}
+STR_0755    :Visitante {INT32}
+STR_0756    :Visitante {INT32}
+STR_0757    :Visitante {INT32}
+STR_0758    :Visitante {INT32}
+STR_0759    :Visitante {INT32}
+STR_0760    :Visitante {INT32}
+STR_0761    :Visitante {INT32}
+STR_0762    :Visitante {INT32}
+STR_0763    :Visitante {INT32}
+STR_0764    :Visitante {INT32}
+STR_0765    :Visitante {INT32}
+STR_0766    :Visitante {INT32}
+STR_0767    :Visitante {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
 STR_0770    :Security Guard {INT32}
@@ -947,7 +947,7 @@ STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
 STR_0944    :Save
 STR_0945    :Don't Save
-STR_0946    :Cancel
+STR_0946    :Cancelar
 STR_0947    :Save this before loading ?
 STR_0948    :Save this before quitting ?
 STR_0949    :Save this before quitting ?
@@ -973,7 +973,7 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Cancelar
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
@@ -1453,7 +1453,7 @@ STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
+STR_1452    :Visitante's name
 STR_1453    :Enter name for this guest:-
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
@@ -1464,7 +1464,7 @@ STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
-STR_1463    :Guests
+STR_1463    :Visitantes
 STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
@@ -1835,7 +1835,7 @@ STR_1830    :Queue length
 STR_1831    :Queue time
 STR_1832    :Reliability
 STR_1833    :Down-time
-STR_1834    :Guests favourite
+STR_1834    :Visitantes favourite
 STR_1835    :Popularity: Unknown
 STR_1836    :Popularity: {COMMA16}%
 STR_1837    :Satisfaction: Unknown
@@ -2496,7 +2496,7 @@ STR_2491    :Reset keys
 STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
-STR_2495    :Cancel construction mode
+STR_2495    :Cancelar construction mode
 STR_2496    :Pause game
 STR_2497    :Zoom view out
 STR_2498    :Zoom view in
@@ -2572,7 +2572,7 @@ STR_2567    :Print
 STR_2568    :Execute
 STR_2569    :Snapshot
 STR_2570    :Insert
-STR_2571    :Delete
+STR_2571    :Borrar
 STR_2572    :Help
 STR_2573    :0
 STR_2574    :1
@@ -3134,7 +3134,7 @@ STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
 STR_3130    :Save
-STR_3131    :Cancel
+STR_3131    :Cancelar
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3259,9 +3259,9 @@ STR_3252    :Can't increase maximum loan size any further!
 STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
+STR_3256    :Visitantes prefer less intense rides
 STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
+STR_3258    :Visitantes prefer more intense rides
 STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
 STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
@@ -3278,7 +3278,7 @@ STR_3271    :Forbid high construction
 STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
 STR_3273    :Park rating higher difficult level
 STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation higher difficult level
+STR_3275    :Visitante generation higher difficult level
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
@@ -3352,14 +3352,14 @@ STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
 STR_3348    :Rename
-STR_3349    :Delete
+STR_3349    :Borrar
 STR_3350    :Track design name
 STR_3351    :Enter new name for this track design:-
 STR_3352    :Can't rename track design...
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
-STR_3356    :Delete File
+STR_3356    :Borrar Archivo
 STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
@@ -3382,7 +3382,7 @@ STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design...
 STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
 STR_3378    :Install
-STR_3379    :Cancel
+STR_3379    :Cancelar
 STR_3380    :Unable to install this track design...
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
@@ -3449,4 +3449,4 @@ STR_3442    :Page 3
 STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
-STR_3446    :Cancel Patrol Area
+STR_3446    :Cancelar Patrol Area
