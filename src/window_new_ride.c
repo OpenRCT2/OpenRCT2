@@ -325,14 +325,12 @@ static void window_new_ride_populate_list()
 				if (currentCategory != categoryA && currentCategory != categoryB)
 					continue;
 
-				if (rideEntry[8] & 0x2000) {
-					// loc_6B6FFB:
+				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x2000) {
 					dh &= ~4;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
 					nextListItem++;
 				} else if (!(dh & 1)) {
-					// loc_6B6FEA:
 					dh |= 5;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
@@ -351,6 +349,43 @@ static void window_new_ride_populate_list()
 
 	nextListItem->type = 255;
 	nextListItem->entry_index = 255;
+}
+
+/**
+ *
+ *  rct2: 0x006B7220
+ */
+static void window_new_ride_scroll_to_focused_ride(rct_window *w)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	// Get the scroll height
+	eax = 0;
+	esi = (int)w;
+	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	int scrollHeight = edx;
+	ebx = 0;
+	
+	// Find row index of the focused ride type
+	rct_widget *listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
+	int focusRideType = RCT2_ADDRESS(0x00F43825, uint16)[_window_new_ride_current_tab];
+	int count = 0, row = 0;
+	ride_list_item *listItem = (ride_list_item*)0x00F43523;
+	while (listItem->type != 255 || listItem->entry_index != 255) {
+		if (listItem->type == focusRideType) {
+			row = count / 5;
+			break;
+		}
+
+		count++;
+		listItem++;
+	};
+
+	// Update the Y scroll position
+	int listWidgetHeight = listWidget->bottom - listWidget->top - 1;
+	scrollHeight = max(0, scrollHeight - listWidgetHeight);
+	w->scrolls[0].v_top = min(row * 116, scrollHeight);
+	widget_scroll_update_thumbs(w, WIDX_RIDE_LIST);
 }
 
 /**
@@ -400,7 +435,7 @@ void window_new_ride_open()
 	
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
-	RCT2_CALLPROC_X(0x006B7220, 0, 0, 0, 0, (int)w, 0, 0);
+	window_new_ride_scroll_to_focused_ride(w);
 }
 
 /**
