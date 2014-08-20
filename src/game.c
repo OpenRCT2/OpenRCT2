@@ -45,7 +45,6 @@
 
 
 int _gameSpeed = 1;
-int previousPeepSpriteIndex = 0;
 
 void game_handle_input();
 void game_handle_keyboard_input();
@@ -2946,6 +2945,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_emptysub, // 10
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -2955,8 +2955,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_emptysub, // 20
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -2966,6 +2965,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_hire_new_staff_member, //game_command_emptysub,
+	game_command_emptysub, // 30
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -2975,9 +2975,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,  //(uint32)game_update_staff_colour, // 40
-	game_command_emptysub,
+	game_command_emptysub, // 40
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -2987,6 +2985,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_emptysub, // 50
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
