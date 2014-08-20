@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "audio.h"
 #include "game.h"
 #include "news_item.h"
 #include "ride.h"
@@ -245,6 +246,9 @@ const int window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 }
 const int window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 
 static void window_new_ride_refresh_widget_sizing(rct_window *w);
+static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w, int x, int y);
+static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width, int unk);
+static void window_new_ride_select(rct_window *w);
 
 /**
 *
@@ -594,8 +598,8 @@ static void window_new_ride_update(rct_window *w)
 
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + _window_new_ride_current_tab);
 
-	if (w->var_480 != -1 && w->var_488 == 1)
-		RCT2_CALLPROC_X(0x006B6B78, 0, 0, 0, 0, (int)w, 0, 0);
+	if (w->var_480 != -1 && w->var_488-- == 0)
+		window_new_ride_select(w);
 }
 
 /**
@@ -604,7 +608,28 @@ static void window_new_ride_update(rct_window *w)
  */
 static void window_new_ride_scrollgetsize()
 {
+	ride_list_item *listItem = (ride_list_item*)0x00F43523;
+	int scrollWidth, scrollHeight;
 
+	int count = 0;
+	while (listItem->type != 255 || listItem->entry_index != 255) {
+		count++;
+		listItem++;
+	}
+	scrollWidth = 0;
+	scrollHeight = ((count + 4) / 5) * 116;
+
+	#ifdef _MSC_VER
+	__asm mov ecx, scrollWidth
+	#else
+	__asm__ ( "mov ecx, %[scrollWidth] " : [scrollWidth] "+m" (scrollWidth) );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov edx, scrollHeight
+	#else
+	__asm__ ( "mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight) );
+	#endif
 }
 
 /**
@@ -613,16 +638,47 @@ static void window_new_ride_scrollgetsize()
  */
 static void window_new_ride_scrollmousedown()
 {
+	short x, y;
+	rct_window *w;
 
+	window_scrollmouse_get_registers(w, x, y);
+
+	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+		return;
+
+	ride_list_item item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+	if (item.type == 255 && item.entry_index == 255)
+		return;
+
+	RCT2_ADDRESS(0x00F43825, ride_list_item)[_window_new_ride_current_tab] = item;
+	w->var_480 = *((sint16*)&item);
+
+	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
+	w->var_488 = 8;
+	window_invalidate(w);
 }
 
 /**
  *
- *  rct2: 0x006B6BBF
+ *  rct2: 0x006B6C51
  */
 static void window_new_ride_scrollmouseover()
 {
+	short x, y;
+	rct_window *w;
 
+	window_scrollmouse_get_registers(w, x, y);
+
+	if (w->var_480 != -1)
+		return;
+
+	ride_list_item item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+	if (w->var_482 == *((sint16*)&item))
+		return;
+
+	w->var_482 = *((sint16*)&item);
+	RCT2_ADDRESS(0x00F43825, ride_list_item)[_window_new_ride_current_tab] = item;
+	window_invalidate(w);
 }
 
 /**
@@ -675,8 +731,14 @@ static void window_new_ride_paint()
 	window_draw_widgets(w, dpi);
 	window_new_ride_draw_tab_images(dpi, w);
 
-	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
+	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
+		ride_list_item item = *((ride_list_item*)&w->var_482);
+		if (item.type == 255 && item.entry_index == 255)
+			return;
+
+		window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6, 256);
 		return;
+	}
 
 	int x = w->x + 10;
 	int y = w->y + window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12;
@@ -751,4 +813,52 @@ static void window_new_ride_scrollpaint()
 	window_paint_get_registers(w, dpi);
 
 	RCT2_CALLPROC_X(0x006B6ABF, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006B6D3C
+ */
+static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w, int x, int y)
+{
+	ride_list_item result;
+	result.type = 255;
+	result.entry_index = 255;
+
+	if (--x < 0 || --y < 0)
+		return result;
+
+	int column = x / 116;
+	int row = y / 116;
+	if (row >= 5)
+		return result;
+
+	int index = column + (row * 5);
+
+	ride_list_item *listItem = (ride_list_item*)0x00F43523;
+	while (listItem->type != 255 || listItem->entry_index != 255) {
+		if (index-- == 0)
+			return *listItem;
+		listItem++;
+	}
+
+	return result;
+}
+
+/**
+ *
+ *  rct2: 0x006B701C
+ */
+static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width, int unk)
+{
+	RCT2_CALLPROC_X(0x006B701C, w->var_482, unk, x, y, (int)w, (int)dpi, width);
+}
+
+/**
+ *
+ *  rct2: 0x006B6B78
+ */
+static void window_new_ride_select(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006B6B78, 0, 0, 0, 0, (int)w, 0, 0);
 }
