@@ -2931,7 +2931,7 @@ static uint32 game_do_command_table[58] = {
 	0x0068DF91
 };
 
-game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
+void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
 
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
