@@ -34,9 +34,13 @@ typedef struct {
 	uint8 entry_index;
 } ride_list_item;
 
-#pragma region Ride type category mappings
+#pragma region Ride type view order
 
-char RideTypeCategoryMap[] = {
+/**
+ * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
+ * type are kept together.
+ */
+const char RideTypeViewOrder[] = {
 	// Transport rides
 	RIDE_TYPE_MINIATURE_RAILWAY,
 	RIDE_TYPE_MONORAIL,
@@ -291,8 +295,9 @@ static void window_new_ride_populate_list()
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
 	uint8 **rideEntries = (uint8**)0x009ACFA4;
 
-	for (i = 0; i < countof(RideTypeCategoryMap); i++) {
-		uint8 rideType = RideTypeCategoryMap[i];
+	// For each ride type in the view order list
+	for (i = 0; i < countof(RideTypeViewOrder); i++) {
+		uint8 rideType = RideTypeViewOrder[i];
 		if (rideType == RIDE_TYPE_NULL)
 			continue;
 
@@ -710,5 +715,5 @@ static void window_new_ride_scrollpaint()
 
 	window_paint_get_registers(w, dpi);
 
-	RCT2_CALLPROC_X(0x006B6ABF, 0, 0, 0, 0, w, dpi, 0);
+	RCT2_CALLPROC_X(0x006B6ABF, 0, 0, 0, 0, (int)w, (int)dpi, 0);
 }
