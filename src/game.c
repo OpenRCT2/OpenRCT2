@@ -40,6 +40,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "staff.h"
 #include "window_error.h"
 #include "window_tooltip.h"
 
@@ -2188,6 +2189,7 @@ static int game_check_affordability(int cost)
 }
 
 static uint32 game_do_command_table[58];
+static GAME_COMMAND_POINTER* new_game_command_table[58];
 
 /**
  * 
@@ -2227,9 +2229,13 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
 
 	*ebx &= ~1;
-
+	
 	// Primary command
-	RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+	if (game_do_command_table[command] == 0) {
+		new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+	} else {
+		RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+	}
 	cost = *ebx;
 
 	if (cost != 0x80000000) {
@@ -2252,7 +2258,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 
 			// Secondary command
-			RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+			if (game_do_command_table[command] == 0) {
+				new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+			} else {
+				RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
+			}
 			*edx = *ebx;
 
 			if (*edx != 0x80000000 && *edx < cost)
@@ -2373,54 +2383,6 @@ static void game_load_or_quit()
 	__asm__ ( "mov ebx, 0 "  );
 	#endif
 
-}
-
-/**
-*
-*  rct2: 0x00669E55
-*/
-static void game_update_staff_colour()
-{
-	byte tabIndex, colour, _bl;
-	int spriteIndex;
-	rct_peep *peep;
-	
-	#ifdef _MSC_VER
-	__asm mov _bl, bl
-	#else
-	__asm__("mov %[_bl], bl " : [_bl] "+m" (_bl));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov tabIndex, bh
-	#else
-	__asm__("mov %[tabIndex], bh " : [tabIndex] "+m" (tabIndex));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov colour, dh
-	#else
-	__asm__("mov %[colour], bh " : [colour] "+m" (colour));
-	#endif
-
-	if (_bl & 1) {
-		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] = colour;
-
-		FOR_ALL_PEEPS(spriteIndex, peep) {
-			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == tabIndex) {
-				peep->tshirt_colour = colour;
-				peep->trousers_colour = colour;
-			}
-		}
-	}
-
-	gfx_invalidate_screen();
-	
-	#ifdef _MSC_VER
-	__asm mov ebx, 0
-	#else
-	__asm__("mov ebx, 0 ");
-	#endif
 }
 
 /**
@@ -2733,7 +2695,7 @@ static uint32 game_do_command_table[58] = {
 	0x006E66A0,
 	0x006E6878,
 	0x006C5AE9,
-	0x006BEFA1,
+	0, // use new_game_command_table, original: 0x006BEFA1, 29
 	0x006C09D1, // 30
 	0x006C0B83,
 	0x006C0BB5,
@@ -2744,7 +2706,7 @@ static uint32 game_do_command_table[58] = {
 	0x00666A63,
 	0x006CD8CE,
 	0x00669E30,
-	(uint32)game_update_staff_colour, // 40
+	(uint32)game_command_update_staff_colour, // 40
 	0x006E519A,
 	0x006E5597,
 	0x006B893C,
@@ -2762,6 +2724,69 @@ static uint32 game_do_command_table[58] = {
 	0x006BA16A,
 	0x006648E3,
 	0x0068DF91
+};
+
+void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
+
+static GAME_COMMAND_POINTER* new_game_command_table[58] = {
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub, // 10
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub, // 20
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_hire_new_staff_member, //game_command_emptysub,
+	game_command_emptysub, // 30
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub, // 40
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub, // 50
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_emptysub
 };
 
 #pragma endregion
