@@ -2391,7 +2391,7 @@ static void game_load_or_quit()
 static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 	int* esi, int* edi, int* ebp)
 {
-	uint8 _bl = *ebx & 0xFF, tabIndex = (*ebx & 0xFF00) >> 8;
+	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
 	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
 
 	RCT2_GLOBAL(0x0141F56C, uint8) = 0x28;
@@ -2406,12 +2406,12 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 	}
 
 	int i;
-	for (i = 0; i < 0xC8; i++) {
+	for (i = 0; i < STAFF_MAX_COUNT; i++) {
 		if (!(RCT2_ADDRESS(0x013CA672, uint8)[i] & 1))
 			break;
 	}
 
-	if (i == 0xC8) {
+	if (i == STAFF_MAX_COUNT) {
 		*ebx = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_STAFF_IN_GAME;
 		return;
@@ -2467,9 +2467,10 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->paid_on_souvenirs = 0;
 
 		newPeep->var_C6 = 0;
-		if (tabIndex == 0) {
+		if (staff_type == 0) {
 			newPeep->var_C6 = 7;
-		} else if (tabIndex == 1) {
+		}
+		else if (staff_type == 1) {
 			newPeep->var_C6 = 3;
 		}
 
@@ -2485,7 +2486,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 			newStaffIndex++;
 
 			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
-				if (idSearchPeep->staff_type != tabIndex) {
+				if (idSearchPeep->staff_type != staff_type) {
 					continue;
 				}
 
@@ -2500,10 +2501,10 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		}
 
 		newPeep->id = newStaffIndex;
-		newPeep->staff_type = tabIndex;
+		newPeep->staff_type = staff_type;
 
-		_eax = RCT2_ADDRESS(0x009929FC, uint8)[tabIndex];
-		newPeep->name_string_idx = tabIndex + 0x300;
+		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		newPeep->name_string_idx = staff_type + 0x300;
 		newPeep->sprite_type = _eax;
 
 		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
@@ -2517,7 +2518,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
 		newPeep->var_CC = 0xFFFFFFFF;
 		
-		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex > 2 ? 2 : tabIndex];
+		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
@@ -2548,7 +2549,7 @@ static void game_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 */
 static void game_update_staff_colour()
 {
-	byte tabIndex, colour, _bl;
+	byte staff_type, colour, _bl;
 	int spriteIndex;
 	rct_peep *peep;
 	
@@ -2559,9 +2560,9 @@ static void game_update_staff_colour()
 	#endif
 
 	#ifdef _MSC_VER
-	__asm mov tabIndex, bh
+	__asm mov staff_type, bh
 	#else
-	__asm__("mov %[tabIndex], bh " : [tabIndex] "+m" (tabIndex));
+	__asm__("mov %[staff_type], bh " : [staff_type] "+m" (staff_type));
 	#endif
 
 	#ifdef _MSC_VER
@@ -2571,10 +2572,10 @@ static void game_update_staff_colour()
 	#endif
 
 	if (_bl & 1) {
-		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] = colour;
+		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type] = colour;
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
-			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == tabIndex) {
+			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staff_type) {
 				peep->tshirt_colour = colour;
 				peep->trousers_colour = colour;
 			}
