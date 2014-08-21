@@ -87,10 +87,11 @@ rct_widget *window_peep_page_widgets[] = {
 
 void window_peep_close();
 void window_peep_resize();
+void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget* widget);
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
-	(void*)0x696A06,
+	window_peep_overview_mouse_down,
 	window_peep_resize,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -255,10 +256,11 @@ void window_peep_resize(){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+/* rct2: 0x00696A06 */
 void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget* widget){
 	switch(widgetIndex){
 	case WIDX_CLOSE:
-		//6ecd4c
+		window_close(w);
 		break;
 	case WIDX_PAGE_BACKGROUND:
 		//696a20
