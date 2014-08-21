@@ -379,6 +379,7 @@ void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
 void window_research_open();
+void window_scenery_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

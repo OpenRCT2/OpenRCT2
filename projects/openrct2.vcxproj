@@ -134,6 +134,7 @@
     <ClCompile Include="..\src\window_tooltip.c" />
     <ClCompile Include="..\src\window_water.c" />
     <ClCompile Include="..\src\staff.c" />
+    <ClCompile Include="..\src\window_scenery.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
