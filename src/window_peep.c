@@ -80,6 +80,7 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WIDGETS_END },
 };
 
+//0x981D0C
 rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets
 };
@@ -118,10 +119,12 @@ static void* window_peep_overview_events[] = {
 	(void*)0x69707C
 };
 
+//0x981D24
 void* window_peep_page_events[] = {
 	window_peep_overview_events
 };
 
+//0x981D3C
 uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -266,7 +269,7 @@ void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget*
 	case WIDX_TAB4:
 	case WIDX_TAB5:
 	case WIDX_TAB6:
-		//696aa0
+		window_peep_set_page(w, widgetIndex - WIDX_TAB1);
 		break;
 	case WIDX_RENAME:
 		//696ba6
@@ -281,4 +284,47 @@ void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget*
 		g_sprite_list[w->number].peep.flags ^= PEEP_FLAGS_TRACKING;
 		break;
 	}
+}
+
+void window_peep_set_page(rct_window* w, int page){
+	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	{
+		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
+			tool_cancel();
+	
+	}
+	int listen = 0;
+	if ( page == WINDOW_PEEP_OVERVIEW && w->page==WINDOW_PEEP_OVERVIEW && w->viewport){
+		if(!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			listen = 1;
+	}
+	
+	
+	w->page = page;
+	w->frame_no = 0;
+	w->no_list_items = 0;
+	w->selected_list_item = -1;
+	
+	rct_viewport* viewport = w->viewport;
+	w->viewport = 0;
+	if (viewport){
+		viewport->width = 0;
+	}
+	
+	w->enabled_widgets = window_peep_page_enabled_widgets[page];
+	w->var_020 = RCT2_ADDRESS(0x981D54,uint32)[page];
+	w->event_handlers = window_peep_page_events[page];
+	w->pressed_widgets = 0;
+	w->widgets = window_peep_page_widgets[page];
+	RCT2_CALLPROC_X(0x6987A6, 0, 0, 0, 0, (int) w, 0, 0);
+	window_invalidate(w);
+	
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	
+	window_init_scroll_widgets(w);
+	window_invalidate(w);
+	
+	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
