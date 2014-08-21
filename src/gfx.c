@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <windows.h>
+#include <limits.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
