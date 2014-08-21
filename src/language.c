@@ -42,8 +42,12 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"dutch",			// LANGUAGE_DUTCH
 	"french",			// LANGUAGE_FRENCH
 	"hungarian",		// LANGUAGE_HUNGARIAN
+<<<<<<< HEAD
 	"polish",			// LANGUAGE_POLISH
 	"spanish_sp"		// LANGUAGE_SPANISH
+=======
+	"polish"			// LANGUAGE_POLISH
+>>>>>>> new-ride-window
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
