@@ -211,6 +211,36 @@ void window_peep_resize(){
 		window_invalidate(w);
 	}
 	
-	//0x697002	
+	if (w->max_width < w->width){
+		w->width = w->max_width;
+		window_invalidate(w);
+	}
+	
+	if (w->min_height > w->height){
+		w->height = w->min_height;
+		window_invalidate(w);
+	}
+	
+	if (w->max_height < w->height){
+		w->height = w->max_height;
+		window_invalidate(w);
+	}
+	
+	rct_viewport* view = w->viewport;
+	
+	if (view){
+		if ((w->width - 30) == view->width){
+			if ((w->height - 72) == view->height){
+				RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+				return;
+			}
+		}
+		uint8 zoom_amount = 1 << view->zoom;
+		view->width = w->width - 30;
+		view->height = w->height - 72;
+		view->view_width = view->width / zoom_amount;
+		view->view_height = view->height / zoom_amount;
+	}
+	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
