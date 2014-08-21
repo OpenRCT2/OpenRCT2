@@ -970,5 +970,24 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006B6B78, 0, 0, 0, 0, (int)w, 0, 0);
+	ride_list_item item = *((ride_list_item*)&w->var_480);
+	if (item.type == 255)
+		return;
+
+	window_close(w);
+
+	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (item.type * 8), uint32);
+	if (rideTypeFlags & 0x10000000) {
+		track_load_list(*((sint16*)&item));
+
+		uint8 *trackDesignList = (uint8*)0x00F441EC;
+		if (*trackDesignList != 0) {
+			// Show track design list
+			RCT2_CALLPROC_X(0x006CF1A2, *((sint16*)&item), 0, 0, 0, 0, 0, 0);
+			return;
+		}
+	}
+
+	// Show ride construction window
+	RCT2_CALLPROC_X(0x006B4800, *((sint16*)&item), 0, 0, 0, 0, 0, 0);
 }
