@@ -48,6 +48,13 @@ enum WINDOW_PEEP_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_TAB_5,
 	WIDX_TAB_6,
+	WIDX_MARQUEE,
+	WIDX_VIEWPORT,
+	WIDX_ACTION_LBL,
+	WIDX_RENAME,
+	WIDX_PICKUP,
+	WIDX_LOCATE,
+	WIDX_TRACK
 };
 
 void window_peep_emptysub(){};
@@ -78,11 +85,12 @@ rct_widget *window_peep_page_widgets[] = {
 };
 
 void window_peep_close();
+void window_peep_resize();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
 	(void*)0x696A06,
-	(void*)0x696FBE,
+	window_peep_resize,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -244,3 +252,33 @@ void window_peep_resize(){
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
+void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget* widget){
+	switch(widgetIndex){
+	case WIDX_CLOSE:
+		//6ecd4c
+		break;
+	case WIDX_PAGE_BACKGROUND:
+		//696a20
+		break;
+	case WIDX_TAB1:
+	case WIDX_TAB2:
+	case WIDX_TAB3:
+	case WIDX_TAB4:
+	case WIDX_TAB5:
+	case WIDX_TAB6:
+		//696aa0
+		break;
+	case WIDX_RENAME:
+		//696ba6
+		break;
+	case WIDX_PICKUP:
+		//696e4d
+		break;
+	case WIDX_LOCATE:
+		//696ee9
+		break;
+	case WIDX_TRACK:
+		g_sprite_list[w->number].peep.flags ^= PEEP_FLAGS_TRACKING;
+		break;
+	}
+}
