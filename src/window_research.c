@@ -346,7 +346,7 @@ static void window_research_development_paint()
 				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
 					stringId = RCT2_GLOBAL(rideEntry, uint16);
 				else
-					stringId = (typeId & 0xFF) + 2;
+					stringId = ((typeId >> 8) & 0xFF) + 2;
 			} else {
 				uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 				stringId = RCT2_GLOBAL(sceneryEntry, uint16);
@@ -385,7 +385,7 @@ static void window_research_development_paint()
 			if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
 				stringId = RCT2_GLOBAL(rideEntry, uint16);
 			else
-				stringId = (typeId & 0xFF00) + 2;
+				stringId = ((typeId >> 8) & 0xFF) + 2;
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
