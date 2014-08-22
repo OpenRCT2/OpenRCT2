@@ -894,12 +894,12 @@ void window_scroll_to_viewport(rct_window *w)
 {
 	int x, y, z;
 	rct_window *mainWindow;
-
+	// In original checked to make sure x and y were not -1 as well.
 	if (w->viewport == NULL || w->focus.sprite.viewport_target_sprite_id == -1)
 		return;
 
-	if (w->focus.coordinate.viewport_target_y & VIEWPORT_FOCUS_TYPE_MASK_SPRITE) {
-		rct_sprite *sprite = &(g_sprite_list[w->focus.sprite.viewport_target_sprite_id & VIEWPORT_FOCUS_SPRITE_MASK]);
+	if (w->focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK) {
+		rct_sprite *sprite = &(g_sprite_list[w->focus.sprite.viewport_target_sprite_id]);
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;
