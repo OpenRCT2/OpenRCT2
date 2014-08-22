@@ -886,6 +886,35 @@ rct_window *window_get_main()
 }
 
 /**
+ * Based on 
+ * rct2: 0x696ee9 & 0x66842F
+ * 
+ */
+void window_scroll_to_viewport(rct_window *w)
+{
+	int x, y, z;
+	rct_window *mainWindow;
+
+	if (w->viewport == NULL || w->focus.sprite.viewport_target_sprite_id == -1)
+		return;
+
+	if (w->focus.coordinate.viewport_target_y & VIEWPORT_FOCUS_TYPE_MASK_SPRITE) {
+		rct_sprite *sprite = &(g_sprite_list[w->focus.sprite.viewport_target_sprite_id & VIEWPORT_FOCUS_SPRITE_MASK]);
+		x = sprite->unknown.x;
+		y = sprite->unknown.y;
+		z = sprite->unknown.z;
+	} else {
+		x = w->focus.coordinate.viewport_target_x;
+		y = w->focus.coordinate.viewport_target_y & VIEWPORT_FOCUS_Y_MASK;
+		z = w->focus.coordinate.viewport_target_z;
+	}
+
+	mainWindow = window_get_main();
+	if (mainWindow != NULL)
+		window_scroll_to_location(mainWindow, x, y, z);
+}
+
+/**
  * 
  *  rct2: 0x006E7C9C
  */
