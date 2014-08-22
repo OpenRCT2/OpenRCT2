@@ -93,6 +93,33 @@ typedef struct {
 	sint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
+// Type is viewport_target_y & 0x8000 == 0
+typedef struct sprite_focus{
+	sint16 viewport_target_x; //0x482
+	sint16 viewport_target_y; //0x484
+	sint16 viewport_target_z; //0x486
+	uint8 viewport_target_rotation;//0x488
+	uint8 pad_489;
+}
+
+// Type is viewport_target_sprite_id & 0x80000000 != 0
+typedef struct coordinate_focus{
+	uint32 viewport_target_sprite_id; //0x482
+	uint32 pad_486; 
+}
+
+#define VIEWPORT_FOCUS_TYPE_MASK_SPRITE 0x8000
+#define VIEWPORT_FOCUS_SPRITE_MASK 0x3FFFFFFF;
+
+/** 
+ * Viewport focus structure.
+ * size: 0x8
+ */
+union{
+	sprite_focus sprite;
+	coordinate_focus coordinate;
+} viewport_focus;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -123,10 +150,7 @@ typedef struct rct_window {
 	sint16 pad_47C;
 	sint16 pad_47E;
 	sint16 var_480;
-	sint16 var_482; // viewport target x
-	sint16 var_484; // viewport target y
-	sint16 var_486; // viewport target z
-	sint16 var_488; // viewport rotation << 8
+	viewport_focus focus; // 0x482 viewport focus
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
@@ -326,6 +350,7 @@ void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
 
+void window_scroll_to_viewport(rct_window *w);
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w);
 void window_zoom_in(rct_window *w);
