@@ -133,6 +133,51 @@ uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3) |
 	(1 << WIDX_TAB_4) |
 	(1 << WIDX_TAB_5) |
+	(1 << WIDX_TAB_6) |
+	(1 << WIDX_RENAME)|
+	(1 << WIDX_PICKUP)|
+	(1 << WIDX_LOCATE)|
+	(1 << WIDX_TRACK),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_TAB_4) |
+	(1 << WIDX_TAB_5) |
+	(1 << WIDX_TAB_6),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_TAB_4) |
+	(1 << WIDX_TAB_5) |
+	(1 << WIDX_TAB_6) |
+	(1 << WIDX_?),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_TAB_4) |
+	(1 << WIDX_TAB_5) |
+	(1 << WIDX_TAB_6),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_TAB_4) |
+	(1 << WIDX_TAB_5) |
+	(1 << WIDX_TAB_6),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_TAB_4) |
+	(1 << WIDX_TAB_5) |
 	(1 << WIDX_TAB_6)
 };
 
@@ -179,7 +224,7 @@ void window_peep_open(rct_peep* peep){
 	window_invalidate(window);
 	
 	window->widgets = RCT2_GLOBAL(0x981D0C, rct_widget*);
-	window->enabled_widgets = RCT2_GLOBAL(0x981D3C,uint32);
+	window->enabled_widgets = window_peep_page_enabled_widgets[WINDOW_PEEP_OVERVIEW];
 	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
 	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32*);
 	window->pressed_widgets = 0;
