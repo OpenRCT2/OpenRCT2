@@ -346,7 +346,7 @@ static void window_research_development_paint()
 				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
 					stringId = RCT2_GLOBAL(rideEntry, uint16);
 				else
-					stringId = (typeId & 0xFF00) + 2;
+					stringId = ((typeId >> 8) & 0xFF) + 2;
 			} else {
 				uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 				stringId = RCT2_GLOBAL(sceneryEntry, uint16);
@@ -382,10 +382,10 @@ static void window_research_development_paint()
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-					stringId = RCT2_GLOBAL(rideEntry, uint16);
-				else
-					stringId = (typeId & 0xFF00) + 2;
+			if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
+				stringId = RCT2_GLOBAL(rideEntry, uint16);
+			else
+				stringId = ((typeId >> 8) & 0xFF) + 2;
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
@@ -394,7 +394,7 @@ static void window_research_development_paint()
 			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);
-	}	
+	}
 }
 
 #pragma endregion
