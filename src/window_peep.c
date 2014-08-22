@@ -87,11 +87,11 @@ rct_widget *window_peep_page_widgets[] = {
 
 void window_peep_close();
 void window_peep_resize();
-void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget* widget);
+void window_peep_overview_mouse_up(int widgetIndex, rct_window* w, rct_widget* widget);
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
-	window_peep_overview_mouse_down,
+	window_peep_overview_mouse_up,
 	window_peep_resize,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -257,13 +257,10 @@ void window_peep_resize(){
 }
 
 /* rct2: 0x00696A06 */
-void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget* widget){
+void window_peep_overview_mouse_up(int widgetIndex, rct_window* w, rct_widget* widget){
 	switch(widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);
-		break;
-	case WIDX_PAGE_BACKGROUND:
-		//696a20
 		break;
 	case WIDX_TAB1:
 	case WIDX_TAB2:
@@ -280,7 +277,7 @@ void window_peep_overview_mouse_down(int widgetIndex, rct_window* w, rct_widget*
 		//696e4d
 		break;
 	case WIDX_LOCATE:
-		//696ee9
+		window_scroll_to_viewport(w);
 		break;
 	case WIDX_TRACK:
 		g_sprite_list[w->number].peep.flags ^= PEEP_FLAGS_TRACKING;
