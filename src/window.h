@@ -94,22 +94,24 @@ typedef struct {
 } rct_scroll;
 
 // Type is viewport_target_y & 0x8000 == 0
-typedef struct sprite_focus{
+typedef struct coordinate_focus{
 	sint16 viewport_target_x; //0x482
-	sint16 viewport_target_y; //0x484
+	sint16 viewport_target_y; //0x484 & VIEWPORT_FOCUS_Y_MASK
 	sint16 viewport_target_z; //0x486
 	uint8 viewport_target_rotation;//0x488
 	uint8 pad_489;
 }
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
-typedef struct coordinate_focus{
-	uint32 viewport_target_sprite_id; //0x482
+typedef struct sprite_focus{
+	uint16 viewport_target_sprite_id; //0x482
+	uint8 pad_484;
+	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
 	uint32 pad_486; 
 }
 
-#define VIEWPORT_FOCUS_TYPE_MASK_SPRITE 0x8000
-#define VIEWPORT_FOCUS_SPRITE_MASK 0x3FFFFFFF;
+#define VIEWPORT_FOCUS_TYPE_MASK 0x80
+#define VIEWPORT_FOCUS_Y_MASK 0x3FFF;
 
 /** 
  * Viewport focus structure.
