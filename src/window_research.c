@@ -68,8 +68,8 @@ static rct_widget window_research_development_widgets[] = {
 	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,								STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_RESEARCH_AND_DEVELOPMENT_TIP },
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_RESEARCH },
-	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	2267,									STR_NONE },
-	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	2268,									STR_NONE },
+	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	STR_CURRENTLY_IN_DEVELOPMENT,			STR_NONE },
+	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	STR_LAST_DEVELOPMENT,					STR_NONE },
 	{ WWT_FLATBTN,			2,	265,	288,	161,	184,	0xFFFFFFFF,								STR_RESEARCH_SHOW_DETAILS_TIP },
 	{ WIDGETS_END },
 };
@@ -382,10 +382,10 @@ static void window_research_development_paint()
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-			if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-				stringId = RCT2_GLOBAL(rideEntry, uint16);
-			else
-				stringId = (typeId & 0xFF00) + 2;
+				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
+					stringId = RCT2_GLOBAL(rideEntry, uint16);
+				else
+					stringId = (typeId & 0xFF00) + 2;
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
@@ -394,7 +394,7 @@ static void window_research_development_paint()
 			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);
-	}
+	}	
 }
 
 #pragma endregion

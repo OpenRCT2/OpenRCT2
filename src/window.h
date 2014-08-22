@@ -373,6 +373,7 @@ void window_park_guests_open();
 void window_park_objective_open();
 void window_park_rating_open();
 void window_finances_open();
+void window_finances_research_open();
 void window_new_campaign_open(int campaignType);
 void window_ride_list_open();
 void window_new_ride_open();
