@@ -165,10 +165,10 @@ void window_new_campaign_open(int campaignType)
 	w->var_480 = campaignType;
 
 	// Number of weeks
-	w->var_482 = 2;
+	w->campaign.no_weeks = 2;
 
 	// Currently selected ride
-	w->var_484 = SELECTED_RIDE_UNDEFINED;
+	w->campaign.ride_id = SELECTED_RIDE_UNDEFINED;
 
 	// Get all applicable rides
 	numApplicableRides = 0;
@@ -234,7 +234,7 @@ static void window_new_campaign_mouseup()
 		break;
 	case WIDX_START_BUTTON:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
-		game_do_command(0, (w->var_482 << 8) | 1, 0, (w->var_484 << 8) | w->var_480, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
+		game_do_command(0, (w->campaign.no_weeks<< 8) | 1, 0, (w->campaign.ride_id << 8) | w->var_480, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
 		window_close(w);
 		break;
 	}
@@ -305,11 +305,11 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 		}
 		break;
 	case WIDX_WEEKS_INCREASE_BUTTON:
-		w->var_482 = min(w->var_482 + 1, 6);
+		w->campaign.no_weeks = min(w->campaign.no_weeks + 1, 6);
 		window_invalidate(w);
 		break;
 	case WIDX_WEEKS_DECREASE_BUTTON:
-		w->var_482 = max(w->var_482 - 1, 2);
+		w->campaign.no_weeks = max(w->campaign.no_weeks - 1, 2);
 		window_invalidate(w);
 		break;
 	}
@@ -333,9 +333,9 @@ static void window_new_campaign_dropdown()
 		rct_string_id itemStringId = (uint16)gDropdownItemsArgs[dropdownIndex] - 2016;
 		if (itemStringId >= 32)
 			itemStringId -= 96;
-		w->var_484 = itemStringId;
+		w->campaign.ride_id = itemStringId;
 	} else {
-		w->var_484 = window_new_campaign_rides[dropdownIndex];
+		w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
 	}
 
 	window_invalidate(w);
@@ -362,8 +362,8 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_RIDE;
-		if (w->var_484 != SELECTED_RIDE_UNDEFINED) {
-			rct_ride *ride = GET_RIDE(w->var_484);
+		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
+			rct_ride *ride = GET_RIDE(w->campaign.ride_id);
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->var_04A;
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
 		}
@@ -373,8 +373,8 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_ITEM;
-		if (w->var_484 != SELECTED_RIDE_UNDEFINED) {
-			rct_string_id itemStringId = w->var_484 + 2016;
+		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
+			rct_string_id itemStringId = w->campaign.ride_id + 2016;
 			if (itemStringId >= 2048)
 				itemStringId += 96;
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = itemStringId;
@@ -383,11 +383,11 @@ static void window_new_campaign_invalidate()
 	}
 
 	// Set current number of weeks spinner
-	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = (STR_MARKETING_1_WEEK - 1) + w->var_482;
+	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = (STR_MARKETING_1_WEEK - 1) + w->campaign.no_weeks;
 
 	// Enable / disable start button based on ride dropdown
 	w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
-	if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->var_484 == SELECTED_RIDE_UNDEFINED)
+	if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->campaign.ride_id == SELECTED_RIDE_UNDEFINED)
 		w->disabled_widgets |= 1 << WIDX_START_BUTTON;
 }
 
@@ -414,6 +414,6 @@ static void window_new_campaign_paint()
 	y += 13;
 
 	// Total price
-	money32 totalPrice = AdvertisingCampaignPricePerWeek[w->var_480] * w->var_482;
+	money32 totalPrice = AdvertisingCampaignPricePerWeek[w->var_480] * w->campaign.no_weeks;
 	gfx_draw_string_left(dpi, STR_MARKETING_TOTAL_COST, &totalPrice, 0, x, y);
 }

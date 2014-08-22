@@ -24,6 +24,7 @@
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -84,6 +85,8 @@ rct_widget window_peep_overview_widgets[] = {
 rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets
 };
+
+void window_peep_set_page(rct_window* w, int page);
 
 void window_peep_close();
 void window_peep_resize();
@@ -153,8 +156,8 @@ uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3) |
 	(1 << WIDX_TAB_4) |
 	(1 << WIDX_TAB_5) |
-	(1 << WIDX_TAB_6) |
-	(1 << WIDX_?),
+	(1 << WIDX_TAB_6), //|
+	//(1 << WIDX_?),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -201,7 +204,7 @@ void window_peep_open(rct_peep* peep){
 		window->enabled_widgets = window_peep_page_enabled_widgets[0];
 		window->number = peep->sprite_index;
 		window->page = 0;
-		window->var_482 = 0;
+		window->focus.coordinate.viewport_target_y = 0;
 		window->frame_no = 0;
 		window->list_information_type = 0;
 		window->var_492 = 0;
@@ -217,7 +220,7 @@ void window_peep_open(rct_peep* peep){
 		window->colours[0] = 1;
 		window->colours[1] = 15;
 		window->colours[2] = 15;
-		window->var_482 = -1;
+		window->focus.coordinate.viewport_target_y = -1;
 	}
 	
 	window->page = 0;
@@ -254,7 +257,7 @@ void window_peep_resize(){
 	window_get_register(w);
 	
 	RCT2_CALLPROC_EBPSAFE(0x6987a6);
-	RCT2_CALLPROC_EBPSAFE(w->eventhandler[WE_INVALIDATE]);
+	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
 	
 	window_invalidate_by_id(0xA97,w->number);
 	
@@ -288,7 +291,7 @@ void window_peep_resize(){
 	if (view){
 		if ((w->width - 30) == view->width){
 			if ((w->height - 72) == view->height){
-				RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+				RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)w, 0, 0);
 				return;
 			}
 		}
@@ -298,7 +301,7 @@ void window_peep_resize(){
 		view->view_width = view->width / zoom_amount;
 		view->view_height = view->height / zoom_amount;
 	}
-	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /* rct2: 0x00696A06 */
@@ -307,13 +310,13 @@ void window_peep_overview_mouse_up(int widgetIndex, rct_window* w, rct_widget* w
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
-	case WIDX_TAB1:
-	case WIDX_TAB2:
-	case WIDX_TAB3:
-	case WIDX_TAB4:
-	case WIDX_TAB5:
-	case WIDX_TAB6:
-		window_peep_set_page(w, widgetIndex - WIDX_TAB1);
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_RENAME:
 		//696ba6

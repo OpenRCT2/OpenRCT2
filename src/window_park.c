@@ -593,7 +593,7 @@ rct_window *window_park_open()
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
 	w->page = WINDOW_PARK_PAGE_ENTRANCE;
-	w->var_482 = 0;
+	w->focus.coordinate.viewport_target_y = 0;
 	w->frame_no = 0;
 	w->list_information_type = -1;
 	w->var_48C = -1;
@@ -619,8 +619,8 @@ void window_park_entrance_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->focus.coordinate.viewport_target_y = -1;
+		window->focus.coordinate.viewport_target_x = -1;
 	}
 
 	window->page = WINDOW_PARK_PAGE_ENTRANCE;
@@ -1021,10 +1021,11 @@ static void window_park_init_viewport(rct_window *w)
 	// Call invalidate event
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
-	w->var_482 = x;
-	w->var_484 = y;
-	w->var_486 = z;
-	w->var_488 = r << 8;
+	w->focus.coordinate.viewport_target_x = x;
+	w->focus.coordinate.viewport_target_y = y;
+	w->focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+	w->focus.coordinate.viewport_target_z = z;
+	w->focus.coordinate.viewport_target_rotation = r;
 
 	if (zr != 0xFFFF) {
 		// Create viewport
@@ -1036,11 +1037,11 @@ static void window_park_init_viewport(rct_window *w)
 				w->y + viewportWidget->top + 1,
 				(viewportWidget->right - viewportWidget->left) - 2,
 				(viewportWidget->bottom - viewportWidget->top) - 2,
-				zr&0xFF,
+				r,
 				x,
 				y,
 				z,
-				xy&0xC0000000 >> 30, 
+				w->focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, 
 				-1
 			);
 			w->flags |= (1 << 2);
@@ -1068,8 +1069,8 @@ void window_park_rating_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->focus.coordinate.viewport_target_x = -1;
+		window->focus.coordinate.viewport_target_y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1202,8 +1203,8 @@ void window_park_guests_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->focus.coordinate.viewport_target_x = -1;
+		window->focus.coordinate.viewport_target_y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1608,8 +1609,8 @@ void window_park_objective_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->focus.coordinate.viewport_target_x = -1;
+		window->focus.coordinate.viewport_target_y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1771,8 +1772,8 @@ void window_park_awards_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->focus.coordinate.viewport_target_x = -1;
+		window->focus.coordinate.viewport_target_y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))

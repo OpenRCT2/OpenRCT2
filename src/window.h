@@ -94,34 +94,57 @@ typedef struct {
 } rct_scroll;
 
 // Type is viewport_target_y & 0x8000 == 0
-typedef struct coordinate_focus{
+typedef struct{
 	sint16 viewport_target_x; //0x482
 	sint16 viewport_target_y; //0x484 & VIEWPORT_FOCUS_Y_MASK
 	sint16 viewport_target_z; //0x486
 	uint8 viewport_target_rotation;//0x488
 	uint8 pad_489;
-}
+} coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
-typedef struct sprite_focus{
+typedef struct{
 	uint16 viewport_target_sprite_id; //0x482
 	uint8 pad_484;
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
 	uint32 pad_486; 
-}
+} sprite_focus;
 
-#define VIEWPORT_FOCUS_TYPE_MASK 0x80
+#define VIEWPORT_FOCUS_TYPE_MASK 0xC0
+enum{
+	VIEWPORT_FOCUS_TYPE_COORDINATE = (1<<6),
+	VIEWPORT_FOCUS_TYPE_SPRITE = (1<<7)
+};
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF;
 
 /** 
  * Viewport focus structure.
  * size: 0x8
  */
-union{
+typedef union{
 	sprite_focus sprite;
 	coordinate_focus coordinate;
 } viewport_focus;
 
+typedef struct{
+	uint16 no_weeks; //0x482
+	uint16 ride_id; //0x484
+	uint32 pad_486;
+} campaign_variables;
+
+typedef struct{
+	uint16 selected_ride_id; //0x482
+	uint16 pad_484;
+	uint16 pad_486;
+	uint16 selected_ride_countdown; //488
+} new_ride_variables;
+
+typedef struct{
+	uint16 var_482;
+	uint16 var_484;
+	uint16 var_486;
+	uint16 var_488;
+} news_variables;
 /**
  * Window structure
  * size: 0x4C0
@@ -152,7 +175,13 @@ typedef struct rct_window {
 	sint16 pad_47C;
 	sint16 pad_47E;
 	sint16 var_480;
-	viewport_focus focus; // 0x482 viewport focus
+	union{
+		viewport_focus focus;
+		campaign_variables campaign;
+		new_ride_variables new_ride;
+		news_variables news;
+	};
+	//viewport_focus focus; // 0x482 viewport focus
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites

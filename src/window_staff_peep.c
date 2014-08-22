@@ -186,7 +186,7 @@ rct_window* sub_6BEF1B(rct_peep* peep)
 	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
 	w->number = peep->sprite_index;
 	w->page = 0;
-	w->var_482 = 0;
+	w->focus.coordinate.viewport_target_y = 0;
 	w->frame_no = 0;
 
 	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?

@@ -146,7 +146,7 @@ static void window_news_update(rct_window *w)
 
 	if (w->var_480 == -1)
 		return;
-	if (--w->var_484 != 0)
+	if (--w->news.var_484 != 0)
 		return;
 
 	window_invalidate(w);
@@ -162,10 +162,11 @@ static void window_news_update(rct_window *w)
 		if (j == 0) {
 			if (newsItems[i].flags & 1)
 				return;
-			if (w->var_482 == 1) {
+			if (w->news.var_482 == 1) {
 				news_item_open_subject(newsItems[i].type, newsItems[i].assoc);
 				return;
-			} else if (w->var_482 > 1) {
+			}
+			else if (w->news.var_482 > 1) {
 				news_item_get_subject_location(newsItems[i].type, newsItems[i].assoc, &x, &y, &z);
 				if (x != SPRITE_LOCATION_NULL)
 					if ((w = window_get_main()) != NULL)
@@ -251,8 +252,8 @@ static void window_news_scrollmousedown()
 
 	if (buttonIndex != 0) {
 		w->var_480 = i - 11;
-		w->var_482 = buttonIndex;
-		w->var_484 = 4;
+		w->news.var_482 = buttonIndex;
+		w->news.var_484 = 4;
 		window_invalidate(w);
 		sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
 	}
@@ -330,7 +331,7 @@ static void window_news_scrollpaint()
 			press = 0;
 			if (w->var_480 != -1) {
 				newsItem2 = &newsItems[11 + w->var_480];
-				if (newsItem == newsItem2 && w->var_482 == 1)
+				if (newsItem == newsItem2 && w->news.var_482 == 1)
 					press = 0x20;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
@@ -371,7 +372,7 @@ static void window_news_scrollpaint()
 			press = 0;
 			if (w->var_480 != -1) {
 				newsItem2 = &newsItems[11 + w->var_480];
-				if (newsItem == newsItem2 && w->var_482 == 2)
+				if (newsItem == newsItem2 && w->news.var_482 == 2)
 					press = 0x20;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
