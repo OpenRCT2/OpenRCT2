@@ -395,7 +395,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
 	w->var_020 = 0;
-	w->var_480 = 0;
+	w->focus.coordinate.var_480 = 0;
 	w->focus.coordinate.viewport_target_x = 0;
 	w->focus.coordinate.viewport_target_y = 0;
 	w->focus.coordinate.viewport_target_z = 0;

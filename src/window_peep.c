@@ -90,7 +90,7 @@ void window_peep_set_page(rct_window* w, int page);
 
 void window_peep_close();
 void window_peep_resize();
-void window_peep_overview_mouse_up(int widgetIndex, rct_window* w, rct_widget* widget);
+void window_peep_overview_mouse_up();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
@@ -226,10 +226,10 @@ void window_peep_open(rct_peep* peep){
 	window->page = 0;
 	window_invalidate(window);
 	
-	window->widgets = RCT2_GLOBAL(0x981D0C, rct_widget*);
+	window->widgets = window_peep_page_widgets[WINDOW_PEEP_OVERVIEW];
 	window->enabled_widgets = window_peep_page_enabled_widgets[WINDOW_PEEP_OVERVIEW];
 	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
-	window->event_handlers = RCT2_GLOBAL(0x981D24,uint32*);
+	window->event_handlers = window_peep_page_events[WINDOW_PEEP_OVERVIEW];
 	window->pressed_widgets = 0;
 	
 	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
@@ -259,32 +259,9 @@ void window_peep_resize(){
 	RCT2_CALLPROC_EBPSAFE(0x6987a6);
 	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
 	
-	window_invalidate_by_id(0xA97,w->number);
+	window_invalidate_by_id(0xA97, w->number);
 	
-	w->min_width = 192;
-	w->max_width = 500;
-	w->min_height = 159;
-	w->max_height = 450;
-	
-	if (w->min_width > w->width){
-		w->width = w->min_width;
-		window_invalidate(w);
-	}
-	
-	if (w->max_width < w->width){
-		w->width = w->max_width;
-		window_invalidate(w);
-	}
-	
-	if (w->min_height > w->height){
-		w->height = w->min_height;
-		window_invalidate(w);
-	}
-	
-	if (w->max_height < w->height){
-		w->height = w->max_height;
-		window_invalidate(w);
-	}
+	window_set_resize(w, 192, 159, 500, 450);
 	
 	rct_viewport* view = w->viewport;
 	
@@ -305,7 +282,11 @@ void window_peep_resize(){
 }
 
 /* rct2: 0x00696A06 */
-void window_peep_overview_mouse_up(int widgetIndex, rct_window* w, rct_widget* widget){
+void window_peep_overview_mouse_up(){
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
 	switch(widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);

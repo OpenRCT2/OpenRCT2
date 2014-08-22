@@ -162,7 +162,7 @@ void window_map_open()
 	w->var_020 |= 0x300;
 
 	window_init_scroll_widgets(w);
-	w->var_480 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
+	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;

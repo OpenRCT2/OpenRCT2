@@ -95,6 +95,7 @@ typedef struct {
 
 // Type is viewport_target_y & 0x8000 == 0
 typedef struct{
+	sint16 var_480;
 	sint16 viewport_target_x; //0x482
 	sint16 viewport_target_y; //0x484 & VIEWPORT_FOCUS_Y_MASK
 	sint16 viewport_target_z; //0x486
@@ -104,6 +105,7 @@ typedef struct{
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
 typedef struct{
+	sint16 var_480;
 	uint16 viewport_target_sprite_id; //0x482
 	uint8 pad_484;
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
@@ -119,7 +121,7 @@ enum{
 
 /** 
  * Viewport focus structure.
- * size: 0x8
+ * size: 0xA
  */
 typedef union{
 	sprite_focus sprite;
@@ -127,24 +129,35 @@ typedef union{
 } viewport_focus;
 
 typedef struct{
-	uint16 no_weeks; //0x482
+	sint16 campaign_type;
+	sint16 no_weeks; //0x482
 	uint16 ride_id; //0x484
 	uint32 pad_486;
 } campaign_variables;
 
 typedef struct{
-	uint16 selected_ride_id; //0x482
+	sint16 selected_ride_id; //0x480
+	sint16 highlighted_ride_id; //0x482
 	uint16 pad_484;
 	uint16 pad_486;
 	uint16 selected_ride_countdown; //488
 } new_ride_variables;
 
 typedef struct{
-	uint16 var_482;
+	sint16 var_480;
+	sint16 var_482;
 	uint16 var_484;
 	uint16 var_486;
 	uint16 var_488;
 } news_variables;
+
+typedef struct{
+	sint16 rotation;
+	sint16 var_482;
+	uint16 var_484;
+	uint16 var_486;
+	uint16 var_488;
+}map_variables;
 /**
  * Window structure
  * size: 0x4C0
@@ -174,14 +187,13 @@ typedef struct rct_window {
 	sint16 selected_list_item;		// 0x47A -1 for none selected
 	sint16 pad_47C;
 	sint16 pad_47E;
-	sint16 var_480;
 	union{
 		viewport_focus focus;
 		campaign_variables campaign;
 		new_ride_variables new_ride;
 		news_variables news;
+		map_variables map;
 	};
-	//viewport_focus focus; // 0x482 viewport focus
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
@@ -430,7 +442,7 @@ void window_park_objective_open();
 void window_park_rating_open();
 void window_finances_open();
 void window_finances_research_open();
-void window_new_campaign_open(int campaignType);
+void window_new_campaign_open(sint16 campaignType);
 void window_ride_list_open();
 void window_new_ride_open();
 void window_banner_open();
