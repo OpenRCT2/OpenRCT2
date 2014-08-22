@@ -574,7 +574,6 @@ static uint32 window_park_page_enabled_widgets[] = {
 #pragma endregion
 
 static void window_park_init_viewport(rct_window *w);
-static void window_park_scroll_to_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, int page);
 static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
@@ -680,7 +679,7 @@ static void window_park_entrance_mouseup()
 		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_LOCATE:
-		window_park_scroll_to_viewport(w);
+		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
@@ -1052,30 +1051,6 @@ static void window_park_init_viewport(rct_window *w)
 	if (w->viewport != NULL)
 		w->viewport->flags = viewportFlags;
 	window_invalidate(w);
-}
-
-static void window_park_scroll_to_viewport(rct_window *w)
-{
-	int x, y, z;
-	rct_window *mainWindow;
-
-	if (w->viewport == NULL || *((sint32*)&w->var_482) == -1)
-		return;
-
-	if (*((uint32*)&w->var_486) & 0x80000000) {
-		rct_sprite *sprite = &(g_sprite_list[w->var_482]);
-		x = sprite->unknown.x;
-		y = sprite->unknown.y;
-		z = sprite->unknown.z;
-	} else {
-		x = w->var_482;
-		y = w->var_484;
-		z = w->var_486;
-	}
-
-	mainWindow = window_get_main();
-	if (mainWindow != NULL)
-		window_scroll_to_location(mainWindow, x, y, z);
 }
 
 #pragma endregion
