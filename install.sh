@@ -51,7 +51,7 @@ if [[ `uname` == "Darwin" ]]; then
 
     mingw_name=mingw-w32-bin_i686-darwin_20130531
     mingw_tar=$mingw_name.tar.bz2
-    mingw_install_dir=/usr/local/
+    mingw_install_dir=/usr/local/mingw_w32-bin_i686-darwin
     mingw_path=$mingw_install_dir$mingw_name/
     if [[ ! -f $cachedir/$mingw_tar ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
