@@ -58,8 +58,8 @@ if [[ `uname` == "Darwin" ]]; then
     fi
     if [[ ! -d $ming_path ]]; then
         echo "Extracting contents of $mingw_tar to $mingw_install_dir"
-        echo "Don't forget to add $mingw_path to your $PATH variable!"
-        tar -xyf $cachedir/$mingw_tar -C $mingw_install_dir
+        echo "Don't forget to add $mingw_path to your PATH variable!"
+        sudo tar -xyf $cachedir/$mingw_tar -C $mingw_install_dir
     fi
 elif [[ `uname` == "Linux" ]]; then
     sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686
