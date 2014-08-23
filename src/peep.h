@@ -437,6 +437,7 @@ typedef struct {
 		if (peep->type == PEEP_TYPE_STAFF)
 
 int peep_get_staff_count();
+int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();

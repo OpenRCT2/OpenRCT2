@@ -20,6 +20,8 @@
 
 #include "addresses.h"
 #include "game.h"
+#include "map.h"
+#include "ride.h"
 #include "peep.h"
 #include "string_ids.h"
 #include "sprite.h"
@@ -49,11 +51,12 @@ enum WINDOW_PEEP_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_TAB_5,
 	WIDX_TAB_6,
-	WIDX_MARQUEE,
+
+	WIDX_MARQUEE = 10,
 	WIDX_VIEWPORT,
-	WIDX_ACTION_LBL,
-	WIDX_RENAME,
+	WIDX_ACTION_LBL,	
 	WIDX_PICKUP,
+	WIDX_RENAME,
 	WIDX_LOCATE,
 	WIDX_TRACK
 };
@@ -74,8 +77,8 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label Thought marquee
 	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },				// Viewport
 	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label Action
-	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Rename Button
-	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Pickup Button
+	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Pickup Button
+	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Rename Button
 	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
 	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	SPR_TRACK_PEEP,	1930},					// Track Button
 	{ WIDGETS_END },
@@ -87,6 +90,7 @@ rct_widget *window_peep_page_widgets[] = {
 };
 
 void window_peep_set_page(rct_window* w, int page);
+void window_peep_disable_widgets(rct_window* w);
 
 void window_peep_close();
 void window_peep_resize();
@@ -209,7 +213,7 @@ void window_peep_open(rct_peep* peep){
 		window->list_information_type = 0;
 		window->var_492 = 0;
 		window->var_494 = 0;
-		RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
+		window_peep_disable_widgets(window);
 		window->min_width = 192;
 		window->min_height = 157;
 		window->max_width = 500;
@@ -232,9 +236,32 @@ void window_peep_open(rct_peep* peep){
 	window->event_handlers = window_peep_page_events[WINDOW_PEEP_OVERVIEW];
 	window->pressed_widgets = 0;
 	
-	RCT2_CALLPROC_X(0x006987A6, 0, 0, 0, 0, (int)window, 0, 0);
+	window_peep_disable_widgets(window);
 	window_init_scroll_widgets(window);
 	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+}
+
+/* rct2: 0x006987A6 
+ * Disables the finance tab when no money.
+ * Disables peep pickup when in certain no pickup states.
+ */
+void window_peep_disable_widgets(rct_window* w){
+	rct_peep* peep = &g_sprite_list[w->number].peep;
+	uint64 disabled_widgets = 0;
+
+	if (peep_can_be_picked_up(peep)){
+		if (w->disabled_widgets & (1 << WIDX_PICKUP))
+			window_invalidate(w);
+	}
+	else{
+		disabled_widgets = (1 << WIDX_PICKUP);
+		if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+			window_invalidate(w);
+	}
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11){
+		disabled_widgets |= (1 << WIDX_TAB_4); //Disable finance tab if no money
+	}
+	w->disabled_widgets = disabled_widgets;
 }
 
 /* rct2: 0x00696A75 */
@@ -256,7 +283,7 @@ void window_peep_resize(){
 	
 	window_get_register(w);
 	
-	RCT2_CALLPROC_EBPSAFE(0x6987a6);
+	window_peep_disable_widgets(w);
 	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
 	
 	window_invalidate_by_id(0xA97, w->number);
@@ -299,10 +326,10 @@ void window_peep_overview_mouse_up(){
 	case WIDX_TAB_6:
 		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_RENAME:
+	case WIDX_PICKUP:
 		//696ba6
 		break;
-	case WIDX_PICKUP:
+	case WIDX_RENAME:
 		//696e4d
 		break;
 	case WIDX_LOCATE:
@@ -345,7 +372,7 @@ void window_peep_set_page(rct_window* w, int page){
 	w->event_handlers = window_peep_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_peep_page_widgets[page];
-	RCT2_CALLPROC_X(0x6987A6, 0, 0, 0, 0, (int) w, 0, 0);
+	window_peep_disable_widgets(w);
 	window_invalidate(w);
 	
 	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
@@ -355,4 +382,100 @@ void window_peep_set_page(rct_window* w, int page){
 	window_invalidate(w);
 	
 	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
+
+void window_peep_viewport_init(rct_window* w){
+	if (w->page != WINDOW_PEEP_OVERVIEW) return;
+	int edx = w->number;
+	int ecx = 0;
+	//edi
+	rct_peep* peep = GET_PEEP(w->number);
+
+	if (peep->state == PEEP_STATE_PICKED){
+		edx = -1;
+	}
+	else{
+		uint8 final_check = 1;
+		if (peep->state == PEEP_STATE_ON_RIDE 
+			|| peep->state == PEEP_STATE_ENTERING_RIDE 
+			|| (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == 0x8000)){
+
+			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
+				rct_vehicle* train = GET_VEHICLE(ride->train_car_map[peep->current_train]);
+				int car = peep->current_car;
+
+				for (; car != 0; car--){
+					train = GET_VEHICLE(train->next_vehicle_on_train);
+				}
+
+				edx = train->sprite_index;
+				final_check = 0;
+			}
+		}
+		if (peep->x == 0x8000 && final_check){
+			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			int x = ride->overall_view & 0xFF * 32 + 16;
+			int y = (ride->overall_view >> 8) * 32 + 16;
+			int height = map_element_height(x, y);
+			height += 32;
+			ecx = height << 16;
+			edx = ((y << 16) & 0xFFFF0000) | x;
+			edx |= 0x40000000;
+		}
+		else{
+			edx |= 0xC0000000;
+			ecx &= 0xFFFF;
+		}
+		ecx &= 0xFFFF0000;
+		ecx |= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) << 8;
+	}
+//698935
+	rct_viewport* viewport;
+	uint16 viewport_flags;
+
+	if (w->viewport){
+		//Check all combos, for now skipping y and rot
+		if (edx & 0xFFFF == w->viewport_focus_coordinates.x && ecx & 0xFFFF == w->viewport_focus_coordinates.z)
+			return;
+		viewport = w->viewport;
+		w->viewport = 0;
+		viewport_flags = viewport->flags;
+		viewport->width = 0;
+		viewport_update_pointers();
+	}
+	else{
+		viewport_flags = 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+	}
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	w->viewport_focus_coordinates.x = edx;
+	w->viewport_focus_coordinates.y = edx >> 16;
+	w->viewport_focus_coordinates.z = ecx;
+	w->viewport_focus_coordinates.rotation = ecx >> 16;
+
+	if (edx != 0xFFFF){
+		if (!(w->viewport)){
+			int eax = RCT2_GLOBAL(0x9AC3FE, uint16);
+			int ebx = RCT2_GLOBAL(0x9AC400, uint16);
+			eax <<= 16;
+			ebx <<= 16;
+			eax |= RCT2_GLOBAL(0x9AC3FA, uint16);
+			ebx |= RCT2_GLOBAL(0x9AC3FC, uint16);
+			ebx -= eax;
+			ebx -= 0x10001;
+			eax &= 0x10001;
+			eax += w->x;
+			viewport_create(w, x, y, width, height, zoom, center_x, center_y, center_z, flags, sprite);
+			w->flags |= WF_2;
+			window_invalidate(w);
+		}
+	}
+	viewport = w->viewport;
+	if (w->viewport)
+		viewport->flags = viewport_flags;
+	window_invalidate(w);
 }

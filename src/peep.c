@@ -541,3 +541,11 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	}
 
 }
+
+/**
+ * rct2: 0x00698827 
+ * returns 1 on pickup (CF not set)
+ */
+int peep_can_be_picked_up(rct_peep* peep){
+	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+}
