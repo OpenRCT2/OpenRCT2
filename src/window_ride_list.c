@@ -456,7 +456,6 @@ static void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		*formatSecondary = STR_TEST_RUN;
 		return;
 	}
-	ride->mode = RIDE_MODE_RACE;
 	rct_peep *peep = GET_PEEP(ride->race_winner);
 	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
 		if (peep->name_string_idx == STR_GUEST) {
@@ -468,11 +467,11 @@ static void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		}
 	} else {
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)) {
-			*formatSecondary = STR_PERSON_ON_RIDE;
 			*argument = ride->num_riders;
-			if(*argument != 1) {
+			*formatSecondary = STR_PERSON_ON_RIDE;
+			if(*argument != 1)
 				*formatSecondary = STR_PEOPLE_ON_RIDE;
-			}
+
 		} else {
 			*formatSecondary = STR_OPEN;
 		}
