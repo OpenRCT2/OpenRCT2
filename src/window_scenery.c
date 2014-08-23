@@ -56,6 +56,9 @@ enum {
 } WINDOW_SCENERY_LIST_TAB;
 
 static void window_scenery_emptysub() { }
+static void window_scenery_invalidate();
+static void window_scenery_paint();
+static void window_scenery_tooltip();
 
 static void* window_scenery_events[] = {
 	(void*)0x006E1A73,    // window_scenery_close
@@ -80,11 +83,11 @@ static void* window_scenery_events[] = {
 	window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
-	(void*)0x006E1C05,	  // window_scenery_tooltip,
+	window_scenery_tooltip, //(void*)0x006E1C05,	  // window_scenery_tooltip,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
-	(void*)0x006E118B,	  // window_scenery_invalidate,
-	(void*)0x006E1462,	  // window_scenery_paint,
+	window_scenery_invalidate, //(void*)0x006E118B,	  // window_scenery_invalidate,
+	window_scenery_paint,	  // (void*)0x006E1462,	  // window_scenery_paint, 
 	(void*)0x006E15ED,	  // window_scenery_scrollpaint,
 };
 
@@ -227,4 +230,44 @@ void window_scenery_open()
 	window->colours[0] = 0x18;
 	window->colours[1] = 0x0C;
 	window->colours[2] = 0x0C;
+}
+
+/**
+*
+*  rct2: 0x006E1C05
+*/
+void window_scenery_tooltip() {
+	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+}
+
+/**
+*
+*  rct2: 0x006E118B
+*/
+void window_senery_invalidate() {
+}
+
+/**
+*
+*  rct2: 0x006E1462
+*/
+void window_scenery_paint() {
+	int i;
+	uint8 selectedTab;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+
+	uint32 selectedTab = RCT2_GLOBAL(0x00F64EDC, uint8) + 4;
+	uint32 image_id = ((w->colours[1] << 19) | window_scenery_widgets[selectedTab].image) + 1ul;
+	
+	gfx_draw_sprite(dpi, image_id,
+		window_scenery_widgets[selectedTab].left,
+		window_scenery_widgets[selectedTab].top,
+		selectedTab);
+
+
 }
