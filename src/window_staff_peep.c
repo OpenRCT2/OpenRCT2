@@ -321,6 +321,7 @@ void window_staff_peep_mouse_up()
 	short widgetIndex;
 	rct_window* w;
 	window_widget_get_registers(w, widgetIndex);
+	rct_peep* peep = GET_PEEP(w->number);
 
 	switch (widgetIndex) {
 		
@@ -343,6 +344,7 @@ void window_staff_peep_mouse_up()
 		break;
 	case WIDX_RENAME: // 0xC
 		// 6BE4BC
+		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
 		break;
 	}
 }

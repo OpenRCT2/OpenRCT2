@@ -325,6 +325,7 @@ void window_peep_overview_mouse_up(){
 	short widgetIndex;
 	rct_window* w;
 	window_widget_get_registers(w, widgetIndex);
+	rct_peep* peep = GET_PEEP(w->number);
 
 	switch(widgetIndex){
 	case WIDX_CLOSE:
@@ -343,6 +344,7 @@ void window_peep_overview_mouse_up(){
 		break;
 	case WIDX_RENAME:
 		//696e4d
+		window_show_textinput(w, (int)widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx);
 		break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
