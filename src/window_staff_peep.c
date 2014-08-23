@@ -24,6 +24,7 @@
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -45,6 +46,7 @@ enum WINDOW_STAFF_PEEP_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_VIEWPORT,
 	WIDX_BTM_LABEL,
+	WIDX_PICKUP,
 	WIDX_PATROL,
 	WIDX_RENAME,
 	WIDX_LOCATE,
@@ -73,13 +75,21 @@ rct_widget window_staff_peep_overview_widgets[] = {
 };
 
 rct_widget *window_staff_peep_page_widgets[] = {
-	window_staff_peep_overview_widgets
+	window_staff_peep_overview_widgets,
+	(rct_widget *)0x9AF910,
+	(rct_widget *)0x9AF9F4
 };
+
+void window_staff_peep_set_page(rct_window* w, int page);
+void window_staff_peep_disable_widgets(rct_window* w);
+
+void window_staff_peep_close();
+void window_staff_peep_mouse_up();
 
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
-	(void*)0x6BDFF8,
-	(void*)0x6BDF55,
+	window_staff_peep_close,
+	window_staff_peep_mouse_up,
 	(void*)0x6BE558,
 	(void*)0x6BDF98,
 	(void*)0x6BDFA3,
@@ -109,7 +119,9 @@ static void* window_staff_peep_overview_events[] = {
 };
 
 void* window_staff_peep_page_events[] = {
-	window_staff_peep_overview_events
+	window_staff_peep_overview_events,
+	(void*)0x992B5C,
+	(void*)0x992BCC
 };
 
 uint32 window_staff_peep_page_enabled_widgets[] = {
@@ -117,20 +129,79 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_TAB_2) |
 	(1 << WIDX_TAB_3) |
+	(1 << WIDX_PICKUP) |
 	(1 << WIDX_PATROL) |
 	(1 << WIDX_RENAME) |
 	(1 << WIDX_LOCATE) |
-	(1 << WIDX_FIRE) |
-	(1 << 14)
+	(1 << WIDX_FIRE),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3)
 };
 
+/**
+*
+*  rct2: 0x006BEE98
+*/
+void window_staff_peep_open(rct_peep* peep)
+{
+	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
+	if (w == NULL) {
+		w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
+
+		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
+		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
+		w->number = peep->sprite_index;
+		w->page = 0;
+		w->viewport_focus_coordinates.y = 0;
+		w->frame_no = 0;
+
+		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
+
+		window_staff_peep_disable_widgets(w);
+
+		w->min_width = 190;
+		w->min_height = 180;
+		w->max_width = 500;
+		w->max_height = 450;
+
+		w->flags = 1 << 8;
+
+		w->colours[0] = 1;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
+	}
+	w->page = 0;
+	window_invalidate(w);
+
+	w->widgets = window_staff_peep_overview_widgets;
+	w->enabled_widgets = window_staff_peep_page_enabled_widgets[0];
+	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
+	w->event_handlers = window_staff_peep_page_events[0];
+	w->pressed_widgets = 0;
+	window_staff_peep_disable_widgets(w);
+	window_init_scroll_widgets(w);
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
+		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
+	}
+}
 
 /**
 * rct2: 0x006BED21
-*
+* Disable the staff pickup if not in pickup state.
 */
-void sub_6BED21(rct_window* w, rct_peep* peep)
+void window_staff_peep_disable_widgets(rct_window* w)
 {
+	rct_peep* peep = &g_sprite_list[w->number].peep;
+
 	int eax = 0 | 0x80;
 
 	if (peep->staff_type == 2) {
@@ -174,71 +245,119 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
 }
 
 /**
-* Create the window for a specific peep.
-*
-* rct2: 0x006BEF1B
-*/
-rct_window* sub_6BEF1B(rct_peep* peep)
+ * Same as window_peep_close.
+ * rct2: 0x006BDFF8
+ */
+void window_staff_peep_close()
 {
-	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
+	rct_window* w;
 
-	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->number = peep->sprite_index;
-	w->page = 0;
-	w->viewport_focus_coordinates.y = 0;
-	w->frame_no = 0;
+	window_get_register(w);
 
-	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+			tool_cancel();
+	}
+}
 
-	sub_6BED21(w, peep);
-
-	w->min_width = 190;
-	w->min_height = 180;
-	w->max_width = 500;
-	w->max_height = 450;
-
-	w->flags = 1 << 8;
-
-	w->colours[0] = 1;
-	w->colours[1] = 4;
-	w->colours[2] = 4;
-
-	return w;
+/** rct2: 0x6C0A77 */
+void window_staff_peep_fire(rct_window* w)
+{
+	RCT2_CALLPROC_X(0x6C0A77, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
-*
-*  rct2: 0x006BEE98
-*/
-void window_staff_peep_open(rct_peep* peep)
+ * Mostly similar to window_peep_set_page.
+ * rct2: 0x006BE023
+ */
+void window_staff_peep_set_page(rct_window* w, int page)
 {
-	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
-	if (!w) {
-		//int eax, ebx, ecx, edx, esi, edi;
-
-		//eax = peep->sprite_index;
-		//ecx = WC_PEEP;
-		//edx = peep->sprite_index;
-
-		//RCT2_CALLFUNC_X(0x006BEF1B, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
-		//w = (rct_window*)esi;
-
-		w = sub_6BEF1B(peep);
+	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	{
+		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
+			tool_cancel();
+	
 	}
-	w->page = 0;
+	
+	int listen = 0;
+	if (page == WINDOW_STAFF_PEEP_OVERVIEW && w->page == WINDOW_STAFF_PEEP_OVERVIEW && w->viewport){
+		if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			listen = 1;
+	}
+
+	
+	w->page = page;
+	w->frame_no = 0;
+
+	rct_viewport* viewport = w->viewport;
+	w->viewport = 0;
+	if (viewport){
+		viewport->width = 0;
+	}
+
+	w->enabled_widgets = window_staff_peep_page_enabled_widgets[page];
+	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
+	w->event_handlers = window_staff_peep_page_events[page];
+	w->pressed_widgets = 0;
+	w->widgets = window_staff_peep_page_widgets[page];
+
+	window_staff_peep_disable_widgets(w);
 	window_invalidate(w);
 
-	w->widgets = window_staff_peep_overview_widgets;
-	w->enabled_widgets = window_staff_peep_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
-	w->event_handlers = window_staff_peep_page_events[0];
-	w->pressed_widgets = 0;
-	//RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
-	sub_6BED21(w, peep);
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
 	window_init_scroll_widgets(w);
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
-	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
+	window_invalidate(w);
+
+	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
+/** rct2: 0x006BDF55 */
+void window_staff_peep_mouse_up()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+	rct_peep* peep = GET_PEEP(w->number);
+
+	switch (widgetIndex) {
+		
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_LOCATE: // 0xD
+		window_scroll_to_viewport(w);
+		break;
+	case WIDX_PICKUP: // 0xA
+		// 0x6BE236
+		if (tool_set(w, widgetIndex, 7)) {
+			return;
+		}
+
+		w->var_48C = peep->sprite_identifier;
+
+		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 9;
+		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		break;
+	case WIDX_FIRE: // 0xE
+		window_staff_peep_fire(w);
+		break;
+	case WIDX_RENAME: // 0xC
+		// 6BE4BC
+		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
+		break;
 	}
 }
