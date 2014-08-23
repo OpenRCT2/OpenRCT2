@@ -395,11 +395,11 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
 	w->var_020 = 0;
-	w->focus.coordinate.var_480 = 0;
-	w->focus.coordinate.viewport_target_x = 0;
-	w->focus.coordinate.viewport_target_y = 0;
-	w->focus.coordinate.viewport_target_z = 0;
-	w->focus.coordinate.viewport_target_rotation = 0;
+	w->viewport_focus_coordinates.var_480 = 0;
+	w->viewport_focus_coordinates.x = 0;
+	w->viewport_focus_coordinates.y = 0;
+	w->viewport_focus_coordinates.z = 0;
+	w->viewport_focus_coordinates.rotation = 0;
 	w->page = 0;
 	w->var_48C = 0;
 	w->frame_no = 0;
@@ -896,18 +896,18 @@ void window_scroll_to_viewport(rct_window *w)
 	int x, y, z;
 	rct_window *mainWindow;
 	// In original checked to make sure x and y were not -1 as well.
-	if (w->viewport == NULL || w->focus.coordinate.viewport_target_y == -1)
+	if (w->viewport == NULL || w->viewport_focus_coordinates.y == -1)
 		return;
 
-	if (w->focus.sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE) {
-		rct_sprite *sprite = &(g_sprite_list[w->focus.sprite.viewport_target_sprite_id]);
+	if (w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE) {
+		rct_sprite *sprite = &(g_sprite_list[w->viewport_focus_sprite.sprite_id]);
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;
 	} else {
-		x = w->focus.coordinate.viewport_target_x;
-		y = w->focus.coordinate.viewport_target_y & VIEWPORT_FOCUS_Y_MASK;
-		z = w->focus.coordinate.viewport_target_z;
+		x = w->viewport_focus_coordinates.x;
+		y = w->viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
+		z = w->viewport_focus_coordinates.z;
 	}
 
 	mainWindow = window_get_main();

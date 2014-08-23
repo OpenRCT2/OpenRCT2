@@ -319,7 +319,7 @@ static void window_news_scrollpaint()
 		// Item text
 		char sz[400];// = (char*)0x09B5F2C;
 		char* args[1];
-		args[0] = &sz;
+		args[0] = (char*)&sz;
 		sprintf(sz, "%c%c%s", newsItem->colour, FORMAT_SMALLFONT, newsItem->text);
 		gfx_draw_string_left_wrapped(dpi, args, 2, y + 10, 325, 1170, 14);
 

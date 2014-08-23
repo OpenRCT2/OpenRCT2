@@ -204,7 +204,7 @@ void window_peep_open(rct_peep* peep){
 		window->enabled_widgets = window_peep_page_enabled_widgets[0];
 		window->number = peep->sprite_index;
 		window->page = 0;
-		window->focus.coordinate.viewport_target_y = 0;
+		window->viewport_focus_coordinates.y = 0;
 		window->frame_no = 0;
 		window->list_information_type = 0;
 		window->var_492 = 0;
@@ -220,7 +220,7 @@ void window_peep_open(rct_peep* peep){
 		window->colours[0] = 1;
 		window->colours[1] = 15;
 		window->colours[2] = 15;
-		window->focus.coordinate.viewport_target_y = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 	
 	window->page = 0;

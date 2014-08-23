@@ -93,20 +93,24 @@ typedef struct {
 	sint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
-// Type is viewport_target_y & 0x8000 == 0
+/** 
+ * Viewport focus structure.
+ * size: 0xA
+ * Use sprite.type to work out type.
+ */
 typedef struct{
 	sint16 var_480;
-	sint16 viewport_target_x; //0x482
-	sint16 viewport_target_y; //0x484 & VIEWPORT_FOCUS_Y_MASK
-	sint16 viewport_target_z; //0x486
-	uint8 viewport_target_rotation;//0x488
+	sint16 x; //0x482
+	sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
+	sint16 z; //0x486
+	uint8 rotation;//0x488
 	uint8 pad_489;
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
 typedef struct{
 	sint16 var_480;
-	uint16 viewport_target_sprite_id; //0x482
+	uint16 sprite_id; //0x482
 	uint8 pad_484;
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
 	uint32 pad_486; 
@@ -119,14 +123,6 @@ enum{
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF;
 
-/** 
- * Viewport focus structure.
- * size: 0xA
- */
-typedef union{
-	sprite_focus sprite;
-	coordinate_focus coordinate;
-} viewport_focus;
 
 typedef struct{
 	sint16 campaign_type;
@@ -188,7 +184,8 @@ typedef struct rct_window {
 	sint16 pad_47C;
 	sint16 pad_47E;
 	union{
-		viewport_focus focus;
+		coordinate_focus viewport_focus_coordinates;
+		sprite_focus viewport_focus_sprite;
 		campaign_variables campaign;
 		new_ride_variables new_ride;
 		news_variables news;
