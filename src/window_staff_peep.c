@@ -77,10 +77,13 @@ rct_widget *window_staff_peep_page_widgets[] = {
 	window_staff_peep_overview_widgets
 };
 
+void window_staff_peep_close();
+void window_staff_peep_mouse_up();
+
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
-	(void*)0x6BDFF8,
-	(void*)0x6BDF55,
+	window_staff_peep_close,
+	window_staff_peep_mouse_up,
 	(void*)0x6BE558,
 	(void*)0x6BDF98,
 	(void*)0x6BDFA3,
@@ -241,5 +244,66 @@ void window_staff_peep_open(rct_peep* peep)
 	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
 		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
+	}
+}
+
+/**
+ * Same as window_peep_close.
+ * rct2: 0x006BDFF8
+ */
+void window_staff_peep_close()
+{
+	rct_window* w;
+
+	window_get_register(w);
+
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+			tool_cancel();
+	}
+}
+
+/** rct2: 0x6C0A77 */
+void window_staff_peep_fire(rct_window* w)
+{
+	RCT2_CALLPROC_X(0x6C0A77, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/** rct2: 0x006BDF55 */
+void window_staff_peep_mouse_up()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+		
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+#ifdef _MSC_VER
+		__asm mov esi, w
+		__asm mov dx, widgetIndex
+#else
+		
+#endif
+		RCT2_CALLPROC_EBPSAFE(0x6BE023);
+		break;
+	case WIDX_LOCATE: // 0xD
+		window_scroll_to_viewport(w);
+		break;
+	case WIDX_PICKUP: // 0xA
+		// 0x6BE236
+		break;
+	case WIDX_FIRE: // 0xE
+		window_staff_peep_fire(w);
+		break;
+	case WIDX_RENAME: // 0xC
+		// 6BE4BC
+		break;
 	}
 }
