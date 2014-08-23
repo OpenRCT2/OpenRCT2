@@ -113,7 +113,9 @@ typedef struct{
 	uint16 sprite_id; //0x482
 	uint8 pad_484;
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
-	uint32 pad_486; 
+	uint16 pad_486; 
+	uint8 rotation; //0x488
+	uint8 pad_489;
 } sprite_focus;
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0

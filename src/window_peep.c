@@ -91,6 +91,7 @@ rct_widget *window_peep_page_widgets[] = {
 
 void window_peep_set_page(rct_window* w, int page);
 void window_peep_disable_widgets(rct_window* w);
+void window_peep_viewport_init(rct_window* w);
 
 void window_peep_close();
 void window_peep_resize();
@@ -238,7 +239,7 @@ void window_peep_open(rct_peep* peep){
 	
 	window_peep_disable_widgets(window);
 	window_init_scroll_widgets(window);
-	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)window, 0, 0);
+	window_peep_viewport_init(window);
 }
 
 /* rct2: 0x006987A6 
@@ -295,7 +296,7 @@ void window_peep_resize(){
 	if (view){
 		if ((w->width - 30) == view->width){
 			if ((w->height - 72) == view->height){
-				RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)w, 0, 0);
+				window_peep_viewport_init(w);
 				return;
 			}
 		}
@@ -305,7 +306,7 @@ void window_peep_resize(){
 		view->view_width = view->width / zoom_amount;
 		view->view_height = view->height / zoom_amount;
 	}
-	RCT2_CALLPROC_X(0x0069883C, 0, 0, 0, 0, (int)w, 0, 0);
+	window_peep_viewport_init(w);
 }
 
 /* rct2: 0x00696A06 */
@@ -384,22 +385,27 @@ void window_peep_set_page(rct_window* w, int page){
 	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
-
+/* rct2: 0x0069883C */
 void window_peep_viewport_init(rct_window* w){
 	if (w->page != WINDOW_PEEP_OVERVIEW) return;
-	int edx = w->number;
-	int ecx = 0;
-	//edi
+
+	union{
+		sprite_focus sprite;
+		coordinate_focus coordinate;
+	} focus; //The focus will be either a sprite or a coordinate.
+
+	focus.sprite.sprite_id = w->number;
+	
 	rct_peep* peep = GET_PEEP(w->number);
 
 	if (peep->state == PEEP_STATE_PICKED){
-		edx = -1;
+		focus.sprite.sprite_id = -1;
 	}
 	else{
 		uint8 final_check = 1;
 		if (peep->state == PEEP_STATE_ON_RIDE 
 			|| peep->state == PEEP_STATE_ENTERING_RIDE 
-			|| (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == 0x8000)){
+			|| (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == SPRITE_LOCATION_NULL)){
 
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
@@ -410,39 +416,42 @@ void window_peep_viewport_init(rct_window* w){
 					train = GET_VEHICLE(train->next_vehicle_on_train);
 				}
 
-				edx = train->sprite_index;
+				focus.sprite.sprite_id = train->sprite_index;
 				final_check = 0;
 			}
 		}
-		if (peep->x == 0x8000 && final_check){
+		if (peep->x == SPRITE_LOCATION_NULL && final_check){
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
 			int x = ride->overall_view & 0xFF * 32 + 16;
 			int y = (ride->overall_view >> 8) * 32 + 16;
 			int height = map_element_height(x, y);
 			height += 32;
-			ecx = height << 16;
-			edx = ((y << 16) & 0xFFFF0000) | x;
-			edx |= 0x40000000;
+			focus.coordinate.x = x;
+			focus.coordinate.y = y;
+			focus.coordinate.z = height;
+			focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
 		}
 		else{
-			edx |= 0xC0000000;
-			ecx &= 0xFFFF;
+			focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+			focus.sprite.pad_486 &= 0xFFFF;
 		}
-		ecx &= 0xFFFF0000;
-		ecx |= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) << 8;
+		focus.coordinate.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
 	}
-//698935
-	rct_viewport* viewport;
+
 	uint16 viewport_flags;
 
 	if (w->viewport){
 		//Check all combos, for now skipping y and rot
-		if (edx & 0xFFFF == w->viewport_focus_coordinates.x && ecx & 0xFFFF == w->viewport_focus_coordinates.z)
+		if (focus.coordinate.x == w->viewport_focus_coordinates.x && 
+			focus.coordinate.y == w->viewport_focus_coordinates.y &&
+			focus.coordinate.z == w->viewport_focus_coordinates.z &&
+			focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
 			return;
-		viewport = w->viewport;
+
+		viewport_flags = w->viewport->flags;
+		w->viewport->width = 0;
 		w->viewport = 0;
-		viewport_flags = viewport->flags;
-		viewport->width = 0;
+
 		viewport_update_pointers();
 	}
 	else{
@@ -452,30 +461,28 @@ void window_peep_viewport_init(rct_window* w){
 	}
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	w->viewport_focus_coordinates.x = edx;
-	w->viewport_focus_coordinates.y = edx >> 16;
-	w->viewport_focus_coordinates.z = ecx;
-	w->viewport_focus_coordinates.rotation = ecx >> 16;
 
-	if (edx != 0xFFFF){
+	w->viewport_focus_coordinates.x = focus.coordinate.x;
+	w->viewport_focus_coordinates.y = focus.coordinate.y;
+	w->viewport_focus_coordinates.z = focus.coordinate.z;
+	w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
+
+	if (peep->state != PEEP_STATE_PICKED){
 		if (!(w->viewport)){
-			int eax = RCT2_GLOBAL(0x9AC3FE, uint16);
-			int ebx = RCT2_GLOBAL(0x9AC400, uint16);
-			eax <<= 16;
-			ebx <<= 16;
-			eax |= RCT2_GLOBAL(0x9AC3FA, uint16);
-			ebx |= RCT2_GLOBAL(0x9AC3FC, uint16);
-			ebx -= eax;
-			ebx -= 0x10001;
-			eax &= 0x10001;
-			eax += w->x;
-			viewport_create(w, x, y, width, height, zoom, center_x, center_y, center_z, flags, sprite);
+			rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+
+			int x = view_widget->left + 1 + w->x;
+			int y = view_widget->top + 1 + w->y;
+			int width = view_widget->right - view_widget->left - 1;
+			int height = view_widget->bottom - view_widget->top - 1;
+
+			viewport_create(w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y, focus.coordinate.z, focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
 			w->flags |= WF_2;
 			window_invalidate(w);
 		}
 	}
-	viewport = w->viewport;
+
 	if (w->viewport)
-		viewport->flags = viewport_flags;
+		w->viewport->flags = viewport_flags;
 	window_invalidate(w);
 }
