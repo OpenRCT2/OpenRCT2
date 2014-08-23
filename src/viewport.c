@@ -227,7 +227,7 @@ void viewport_update_pointers()
 void viewport_update_position(rct_window *window)
 {
 	//push w
-	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, window, 0, 0);
+	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)window, 0, 0);
 
 	rct_viewport* viewport = window->viewport;
 	if (!viewport)return;
@@ -238,12 +238,12 @@ void viewport_update_position(rct_window *window)
 		int height = map_element_height(sprite->unknown.x, sprite->unknown.y) - 16;
 		int underground = sprite->unknown.z < height;
 
-		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, window, viewport, 0);
+		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, (int)window, (int)viewport, 0);
 
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, window, viewport, 0);
+		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
 		window_invalidate(window);//Added to force a redraw.
 		return;
 	}
@@ -253,8 +253,140 @@ void viewport_update_position(rct_window *window)
 	int ebx = viewport->view_height;
 	eax /= 2;
 	ebx /= 2;	
+	eax += window->viewport_focus_coordinates.x;
+	ebx += window->viewport_focus_coordinates.y;
+	int edx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	int ecx = 0, ebp;
+	RCT2_CALLFUNC_X(0x00689174, &eax, &ebx, &ecx, &edx, (int*)&window, (int*)&viewport, &ebp);
+	
+	RCT2_CALLPROC_X(0x006E7A15, eax, ebx, 0, 0, (int)window, (int)viewport, 0);
 
-	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
+	ebp = 0;
+	if (eax < 0xFF00){
+		eax = 0xFF00;
+		ebp++;
+	}
+	if (ebx < 0xFF00){
+		ebx = 0xFF00;
+		ebp++;
+	}
+
+	if (eax > RCT2_GLOBAL(0x1358832, sint16)){
+		eax = RCT2_GLOBAL(0x1358832, sint16);
+		ebp++;
+	}
+	if (ebx > RCT2_GLOBAL(0x1358832, sint16)){
+		ebx = RCT2_GLOBAL(0x1358832, sint16);
+		ebp++;
+	}
+	if (ebp) {
+		ecx = ebx;
+		edx = map_element_height(ebx, eax);
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+		case 0:
+			ebx = eax;
+			eax = -eax;
+			eax += ecx;
+			ecx += ebx;
+			ecx /= 2;
+			ecx -= edx;
+			break;
+		case 1:
+			eax = -eax;
+			ebx = eax;
+			eax -= ecx;
+			ecx += ebx;
+			ecx /= 2;
+			ecx -= edx;
+			break;
+		case 2:
+			ebx = eax;
+			eax -= ecx;
+			ecx = -ecx;
+			ecx -= ebx;
+			ecx /= 2;
+			ecx -= edx;
+			break;
+		case 3:
+			ebx = eax;
+			eax += ecx;
+			ecx = -ecx;
+			ecx += ebx;
+			ecx /= 2;
+			ecx -= edx;
+			break;
+		}
+		ebx = ecx;
+		ecx = viewport->view_width;
+		ecx /= 2;
+		eax -= ecx;
+		ecx = viewport->view_height;
+		ecx /= 2;
+		ebx -= ecx;
+
+		if (window->viewport_focus_coordinates.x > 0){
+			if (window->viewport_focus_coordinates.x > eax){
+				eax = window->viewport_focus_coordinates.x;
+			}
+		}
+		else{
+			if (eax <= window->viewport_focus_coordinates.x){
+				eax = window->viewport_focus_coordinates.x;
+			}
+		}
+
+		if (window->viewport_focus_coordinates.y > 0){
+			if (window->viewport_focus_coordinates.y > ebx){
+				ebx = window->viewport_focus_coordinates.y;
+			}
+		}
+		else{
+			if (ebx <= window->viewport_focus_coordinates.y){
+				ebx = window->viewport_focus_coordinates.y;
+			}
+		}
+
+		window->viewport_focus_coordinates.x = eax;
+		window->viewport_focus_coordinates.y = ebx;
+	}
+
+	eax = window->viewport_focus_coordinates.x;
+	ebx = window->viewport_focus_coordinates.y;
+	if (window->flags & (1 << 3)){
+		ecx = 0;
+		eax -= viewport->view_x;
+		if (eax < 0){
+			eax = -eax;
+			ecx |= 1;
+		}
+		ebx -= viewport->view_y;
+		if (ebx < 0){
+			ebx = -ebx;
+			ecx |= 2;
+		}
+		eax += 7;
+		ebx += 7;
+		eax /= 8;
+		ebx /= 8;
+		edx = eax;
+		edx |= ebx;
+		if (!edx){
+			window->flags &= ~(1<<3);
+		}
+		if (ecx & 1){
+			eax = -eax;
+		}
+		if (ecx & 2){
+			ebx = -ebx;
+		}
+		eax += viewport->view_x;
+		ebx += viewport->view_y;
+	}
+
+	RCT2_CALLPROC_X(0x6E7DE1, eax, ebx, ecx, edx, (int)window, (int)viewport, 0);
+
+	// 6e7c03
+	//RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
