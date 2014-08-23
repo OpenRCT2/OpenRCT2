@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
+#include "map.h"
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
@@ -225,6 +226,34 @@ void viewport_update_pointers()
  */
 void viewport_update_position(rct_window *window)
 {
+	//push w
+	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, window, 0, 0);
+
+	rct_viewport* viewport = window->viewport;
+	if (!viewport)return;
+
+	if (window->viewport_target_sprite != -1){
+		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
+
+		int height = map_element_height(sprite->unknown.x, sprite->unknown.y) - 16;
+		int underground = sprite->unknown.z < height;
+
+		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, window, viewport, 0);
+
+		int center_x, center_y;
+		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
+
+		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, window, viewport, 0);
+		window_invalidate(window);//Added to force a redraw.
+		return;
+	}
+
+
+	int eax = viewport->view_width;
+	int ebx = viewport->view_height;
+	eax /= 2;
+	ebx /= 2;	
+
 	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
