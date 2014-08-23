@@ -114,7 +114,9 @@ static void* window_staff_peep_overview_events[] = {
 };
 
 void* window_staff_peep_page_events[] = {
-	window_staff_peep_overview_events
+	window_staff_peep_overview_events,
+	0x992B5C,
+	0x992BCC
 };
 
 uint32 window_staff_peep_page_enabled_widgets[] = {
@@ -126,7 +128,17 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_PATROL) |
 	(1 << WIDX_RENAME) |
 	(1 << WIDX_LOCATE) |
-	(1 << WIDX_FIRE)
+	(1 << WIDX_FIRE),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3)
 };
 
 
@@ -303,7 +315,6 @@ void window_staff_peep_set_page(rct_window* w, int page)
 	}
 
 	// loc_6BE09B
-	page = 0; // FOR NOW!!
 	w->enabled_widgets = window_staff_peep_page_enabled_widgets[page];
 	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
 	w->event_handlers = window_staff_peep_page_events[page];
