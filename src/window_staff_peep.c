@@ -24,6 +24,7 @@
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
@@ -270,6 +271,57 @@ void window_staff_peep_fire(rct_window* w)
 	RCT2_CALLPROC_X(0x6C0A77, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
+/**
+ * Mostly similar to window_peep_set_page.
+ * rct2: 0x006BE023
+ */
+void window_staff_peep_set_page(rct_window* w, int page)
+{
+	// loc_6BE023
+	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	{
+		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
+			tool_cancel();
+	
+	}
+	// loc_6BE04D
+	int listen = 0;
+	if (page == WINDOW_STAFF_PEEP_OVERVIEW && w->page == WINDOW_STAFF_PEEP_OVERVIEW && w->viewport){
+		if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			listen = 1;
+	}
+
+	// loc_6BE079
+	w->page = page;
+	w->frame_no = 0;
+
+	rct_viewport* viewport = w->viewport;
+	w->viewport = 0;
+	if (viewport){
+		viewport->width = 0;
+	}
+
+	// loc_6BE09B
+	page = 0; // FOR NOW!!
+	w->enabled_widgets = window_staff_peep_page_enabled_widgets[page];
+	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
+	w->event_handlers = window_staff_peep_page_events[page];
+	w->pressed_widgets = 0;
+	w->widgets = window_staff_peep_page_widgets[page];
+
+	sub_6BED21(w, &g_sprite_list[w->number].peep);
+	window_invalidate(w);
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	window_init_scroll_widgets(w);
+	window_invalidate(w);
+
+	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
 /** rct2: 0x006BDF55 */
 void window_staff_peep_mouse_up()
 {
@@ -285,13 +337,7 @@ void window_staff_peep_mouse_up()
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
 	case WIDX_TAB_3:
-#ifdef _MSC_VER
-		__asm mov esi, w
-		__asm mov dx, widgetIndex
-#else
-		
-#endif
-		RCT2_CALLPROC_EBPSAFE(0x6BE023);
+		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_LOCATE: // 0xD
 		window_scroll_to_viewport(w);
