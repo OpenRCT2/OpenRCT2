@@ -45,6 +45,7 @@ enum WINDOW_STAFF_PEEP_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_VIEWPORT,
 	WIDX_BTM_LABEL,
+	WIDX_PICKUP,
 	WIDX_PATROL,
 	WIDX_RENAME,
 	WIDX_LOCATE,
@@ -117,11 +118,11 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_TAB_2) |
 	(1 << WIDX_TAB_3) |
+	(1 << WIDX_PICKUP) |
 	(1 << WIDX_PATROL) |
 	(1 << WIDX_RENAME) |
 	(1 << WIDX_LOCATE) |
-	(1 << WIDX_FIRE) |
-	(1 << 14)
+	(1 << WIDX_FIRE)
 };
 
 
