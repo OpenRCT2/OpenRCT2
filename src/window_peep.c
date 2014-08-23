@@ -86,7 +86,12 @@ rct_widget window_peep_overview_widgets[] = {
 
 //0x981D0C
 rct_widget *window_peep_page_widgets[] = {
-	window_peep_overview_widgets
+	window_peep_overview_widgets,
+	(rct_widget *)0x9AC45C,
+	(rct_widget *)0x9ac500,
+	(rct_widget *)0x9ac5b4,
+	(rct_widget *)0x9ac658,
+	(rct_widget *)0x9ac6FC
 };
 
 void window_peep_set_page(rct_window* w, int page);
@@ -131,7 +136,12 @@ static void* window_peep_overview_events[] = {
 
 //0x981D24
 void* window_peep_page_events[] = {
-	window_peep_overview_events
+	window_peep_overview_events,
+	(void*)0x982468,
+	(void*)0x9824d8,
+	(void*)0x982548,
+	(void*)0x9825b8,
+	(void*)0x982628
 };
 
 //0x981D3C
@@ -495,6 +505,8 @@ void window_peep_overview_paint(){
 	rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
+	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, w, dpi, 0);
+	return;
 
 	window_draw_widgets(w, dpi);
 	//6983dd
