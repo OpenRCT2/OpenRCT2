@@ -431,16 +431,16 @@ void window_new_ride_open()
 	w->colours[0] = 24;
 	w->colours[1] = 26;
 	w->colours[2] = 26;
-	w->var_480 = -1;
-	w->var_482 = -1;
+	w->new_ride.selected_ride_countdown = -1;
+	w->new_ride.highlighted_ride_id = -1;
 	_lastTrackDesignCountRideType.type = 255;
 	_lastTrackDesignCountRideType.entry_index = 255;
 	
 	window_new_ride_populate_list();
 	
-	w->var_482 = RCT2_ADDRESS(0x00F43825, sint16)[_window_new_ride_current_tab];
-	if (w->var_482 == -1)
-		w->var_482 = RCT2_GLOBAL(0x00F43523, sint16);
+	w->new_ride.highlighted_ride_id = RCT2_ADDRESS(0x00F43825, sint16)[_window_new_ride_current_tab];
+	if (w->new_ride.highlighted_ride_id == -1)
+		w->new_ride.highlighted_ride_id = RCT2_GLOBAL(0x00F43523, sint16);
 	
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
@@ -577,13 +577,13 @@ static void window_new_ride_mousedown(int widgetIndex, rct_window *w, rct_widget
 
 	_window_new_ride_current_tab = page;
 	w->frame_no = 0;
-	w->var_482 = -1;
-	w->var_480 = -1;
+	w->new_ride.highlighted_ride_id = -1;
+	w->new_ride.selected_ride_countdown = -1;
 	window_new_ride_populate_list();
 	if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-		w->var_482 = RCT2_ADDRESS(0x00F43825, sint16)[page];
-		if (w->var_482 == -1)
-			w->var_482 = RCT2_GLOBAL(0x00F43523, sint16);
+		w->new_ride.highlighted_ride_id = RCT2_ADDRESS(0x00F43825, sint16)[page];
+		if (w->new_ride.highlighted_ride_id == -1)
+			w->new_ride.highlighted_ride_id = RCT2_GLOBAL(0x00F43523, sint16);
 	}
 
 	window_new_ride_refresh_widget_sizing(w);
@@ -603,7 +603,7 @@ static void window_new_ride_update(rct_window *w)
 
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + _window_new_ride_current_tab);
 
-	if (w->var_480 != -1 && w->var_488-- == 0)
+	if (w->new_ride.selected_ride_countdown != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);
 }
 
@@ -645,21 +645,22 @@ static void window_new_ride_scrollmousedown()
 {
 	short x, y;
 	rct_window *w;
+	ride_list_item item;
 
 	window_scrollmouse_get_registers(w, x, y);
 
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
 		return;
 
-	ride_list_item item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
 	if (item.type == 255 && item.entry_index == 255)
 		return;
 
 	RCT2_ADDRESS(0x00F43825, ride_list_item)[_window_new_ride_current_tab] = item;
-	w->var_480 = *((sint16*)&item);
+	w->new_ride.selected_ride_countdown = *((sint16*)&item);
 
 	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
-	w->var_488 = 8;
+	w->new_ride.selected_ride_countdown = 8;
 	window_invalidate(w);
 }
 
@@ -671,17 +672,18 @@ static void window_new_ride_scrollmouseover()
 {
 	short x, y;
 	rct_window *w;
+	ride_list_item item;
 
 	window_scrollmouse_get_registers(w, x, y);
 
-	if (w->var_480 != -1)
+	if (w->new_ride.selected_ride_countdown != -1)
 		return;
 
-	ride_list_item item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
-	if (w->var_482 == *((sint16*)&item))
+	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+	if (w->new_ride.highlighted_ride_id == *((sint16*)&item))
 		return;
 
-	w->var_482 = *((sint16*)&item);
+	w->new_ride.highlighted_ride_id = *((sint16*)&item);
 	RCT2_ADDRESS(0x00F43825, ride_list_item)[_window_new_ride_current_tab] = item;
 	window_invalidate(w);
 }
@@ -737,7 +739,7 @@ static void window_new_ride_paint()
 	window_new_ride_draw_tab_images(dpi, w);
 
 	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-		ride_list_item item = *((ride_list_item*)&w->var_482);
+		ride_list_item item = *((ride_list_item*)&w->new_ride.highlighted_ride_id);
 		if (item.type == 255 && item.entry_index == 255)
 			return;
 
@@ -827,15 +829,16 @@ static void window_new_ride_scrollpaint()
 	int y = 1;
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
+		uint8 *rideEntry;
 		// Draw flat button rectangle
 		int flags = 0;
-		if (w->var_480 == *((sint16*)listItem))
+		if (w->new_ride.selected_ride_countdown == *((sint16*)listItem))
 			flags |= 0x20;
-		if (w->var_482 == *((sint16*)listItem) || flags != 0)
+		if (w->new_ride.highlighted_ride_id == *((sint16*)listItem) || flags != 0)
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
 		
 		// Draw ride image
-		uint8 *rideEntry = rideEntries[listItem->entry_index];
+		rideEntry = rideEntries[listItem->entry_index];
 		int unk = RCT2_GLOBAL(rideEntry + 4, uint32);
 		if (listItem->type != RCT2_GLOBAL(rideEntry + 12, uint8)) {
 			unk++;
@@ -970,7 +973,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-	ride_list_item item = *((ride_list_item*)&w->var_480);
+	ride_list_item item = *((ride_list_item*)&w->new_ride.selected_ride_countdown);
 	if (item.type == 255)
 		return;
 

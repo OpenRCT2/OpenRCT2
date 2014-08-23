@@ -54,7 +54,7 @@ typedef struct {
 	uint8 status;					// 0x049
 	uint16 var_04A;
 	uint32 var_04C;
-	uint16 overall_view;			// 0x050
+	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
 	uint8 pad_05E[0xC];

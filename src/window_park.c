@@ -574,7 +574,6 @@ static uint32 window_park_page_enabled_widgets[] = {
 #pragma endregion
 
 static void window_park_init_viewport(rct_window *w);
-static void window_park_scroll_to_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, int page);
 static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
@@ -594,7 +593,7 @@ rct_window *window_park_open()
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
 	w->page = WINDOW_PARK_PAGE_ENTRANCE;
-	w->var_482 = 0;
+	w->viewport_focus_coordinates.y = 0;
 	w->frame_no = 0;
 	w->list_information_type = -1;
 	w->var_48C = -1;
@@ -620,8 +619,8 @@ void window_park_entrance_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.y = -1;
+		window->viewport_focus_coordinates.x = -1;
 	}
 
 	window->page = WINDOW_PARK_PAGE_ENTRANCE;
@@ -680,7 +679,7 @@ static void window_park_entrance_mouseup()
 		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_LOCATE:
-		window_park_scroll_to_viewport(w);
+		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
@@ -1022,10 +1021,11 @@ static void window_park_init_viewport(rct_window *w)
 	// Call invalidate event
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
-	w->var_482 = x;
-	w->var_484 = y;
-	w->var_486 = z;
-	w->var_488 = r << 8;
+	w->viewport_focus_coordinates.x = x;
+	w->viewport_focus_coordinates.y = y;
+	w->viewport_focus_sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+	w->viewport_focus_coordinates.z = z;
+	w->viewport_focus_coordinates.rotation = r;
 
 	if (zr != 0xFFFF) {
 		// Create viewport
@@ -1037,11 +1037,11 @@ static void window_park_init_viewport(rct_window *w)
 				w->y + viewportWidget->top + 1,
 				(viewportWidget->right - viewportWidget->left) - 2,
 				(viewportWidget->bottom - viewportWidget->top) - 2,
-				zr&0xFF,
+				0,
 				x,
 				y,
 				z,
-				xy&0xC0000000 >> 30, 
+				w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK,
 				-1
 			);
 			w->flags |= (1 << 2);
@@ -1052,30 +1052,6 @@ static void window_park_init_viewport(rct_window *w)
 	if (w->viewport != NULL)
 		w->viewport->flags = viewportFlags;
 	window_invalidate(w);
-}
-
-static void window_park_scroll_to_viewport(rct_window *w)
-{
-	int x, y, z;
-	rct_window *mainWindow;
-
-	if (w->viewport == NULL || *((sint32*)&w->var_482) == -1)
-		return;
-
-	if (*((uint32*)&w->var_486) & 0x80000000) {
-		rct_sprite *sprite = &(g_sprite_list[w->var_482]);
-		x = sprite->unknown.x;
-		y = sprite->unknown.y;
-		z = sprite->unknown.z;
-	} else {
-		x = w->var_482;
-		y = w->var_484;
-		z = w->var_486;
-	}
-
-	mainWindow = window_get_main();
-	if (mainWindow != NULL)
-		window_scroll_to_location(mainWindow, x, y, z);
 }
 
 #pragma endregion
@@ -1093,8 +1069,8 @@ void window_park_rating_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1227,8 +1203,8 @@ void window_park_guests_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1633,8 +1609,8 @@ void window_park_objective_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1796,8 +1772,8 @@ void window_park_awards_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))

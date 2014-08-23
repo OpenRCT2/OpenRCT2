@@ -41,4 +41,7 @@ typedef struct {
 
 void vehicle_update_all();
 
+/** Helper macro until rides are stored in this module. */
+#define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)
+
 #endif

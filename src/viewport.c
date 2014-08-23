@@ -162,7 +162,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	viewport->width = width;
 	viewport->height = height;
 
-	if (!(flags & (1 << 0))){
+	if (!(flags & VIEWPORT_FOCUS_TYPE_COORDINATE)){
 		zoom = 0;
 	}
 
@@ -171,12 +171,12 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	viewport->zoom = zoom;
 	viewport->flags = 0;
 
-	if (RCT2_GLOBAL(0x9AAC7A, uint8) & 1){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS, uint8) & 1){
 		viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 	w->viewport = viewport;
 
-	if (flags & (1<<1)){
+	if (flags & VIEWPORT_FOCUS_TYPE_SPRITE){
 		w->viewport_target_sprite = sprite;
 		rct_sprite* center_sprite = &g_sprite_list[sprite];
 		center_x = center_sprite->unknown.x;

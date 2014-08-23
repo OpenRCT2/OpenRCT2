@@ -128,7 +128,7 @@ void window_scenarioselect_open()
 	window->colours[0] = 1;
 	window->colours[1] = 26;
 	window->colours[2] = 26;
-	window->var_480 = -1;
+	window->viewport_focus_coordinates.var_480 = -1;
 	window->var_494 = 0;
 
 	window_scenarioselect_init_tabs();
