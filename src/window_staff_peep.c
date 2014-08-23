@@ -144,10 +144,12 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 
 /**
 * rct2: 0x006BED21
-*
+* Disable the staff pickup if not in pickup state.
 */
-void sub_6BED21(rct_window* w, rct_peep* peep)
+void window_staff_peep_disable_widgets(rct_window* w)
 {
+	rct_peep* peep = &g_sprite_list[w->number].peep;
+
 	int eax = 0 | 0x80;
 
 	if (peep->staff_type == 2) {
@@ -191,57 +193,36 @@ void sub_6BED21(rct_window* w, rct_peep* peep)
 }
 
 /**
-* Create the window for a specific peep.
-*
-* rct2: 0x006BEF1B
-*/
-rct_window* sub_6BEF1B(rct_peep* peep)
-{
-	rct_window* w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
-
-	w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-	w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-	w->number = peep->sprite_index;
-	w->page = 0;
-	w->viewport_focus_coordinates.y = 0;
-	w->frame_no = 0;
-
-	RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
-
-	sub_6BED21(w, peep);
-
-	w->min_width = 190;
-	w->min_height = 180;
-	w->max_width = 500;
-	w->max_height = 450;
-
-	w->flags = 1 << 8;
-
-	w->colours[0] = 1;
-	w->colours[1] = 4;
-	w->colours[2] = 4;
-
-	return w;
-}
-
-/**
 *
 *  rct2: 0x006BEE98
 */
 void window_staff_peep_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
-	if (!w) {
-		//int eax, ebx, ecx, edx, esi, edi;
+	if (w == NULL) {
+		w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
 
-		//eax = peep->sprite_index;
-		//ecx = WC_PEEP;
-		//edx = peep->sprite_index;
+		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
+		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
+		w->number = peep->sprite_index;
+		w->page = 0;
+		w->viewport_focus_coordinates.y = 0;
+		w->frame_no = 0;
 
-		//RCT2_CALLFUNC_X(0x006BEF1B, &eax, &ebx, &ecx, &edx, &esi, &edi, (int*)peep);
-		//w = (rct_window*)esi;
+		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
 
-		w = sub_6BEF1B(peep);
+		window_staff_peep_disable_widgets(w);
+
+		w->min_width = 190;
+		w->min_height = 180;
+		w->max_width = 500;
+		w->max_height = 450;
+
+		w->flags = 1 << 8;
+
+		w->colours[0] = 1;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
 	}
 	w->page = 0;
 	window_invalidate(w);
@@ -251,8 +232,7 @@ void window_staff_peep_open(rct_peep* peep)
 	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
 	w->event_handlers = window_staff_peep_page_events[0];
 	w->pressed_widgets = 0;
-	//RCT2_CALLPROC_X(0x006BED21, 0, 0, 0, 0, (int)w, 0, 0);
-	sub_6BED21(w, peep);
+	window_staff_peep_disable_widgets(w);
 	window_init_scroll_widgets(w);
 	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
@@ -321,7 +301,7 @@ void window_staff_peep_set_page(rct_window* w, int page)
 	w->pressed_widgets = 0;
 	w->widgets = window_staff_peep_page_widgets[page];
 
-	sub_6BED21(w, &g_sprite_list[w->number].peep);
+	window_staff_peep_disable_widgets(w);
 	window_invalidate(w);
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
