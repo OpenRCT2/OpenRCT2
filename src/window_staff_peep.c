@@ -75,8 +75,13 @@ rct_widget window_staff_peep_overview_widgets[] = {
 };
 
 rct_widget *window_staff_peep_page_widgets[] = {
-	window_staff_peep_overview_widgets
+	window_staff_peep_overview_widgets,
+	(rct_widget *)0x9AF910,
+	(rct_widget *)0x9AF9F4
 };
+
+void window_staff_peep_set_page(rct_window* w, int page);
+void window_staff_peep_disable_widgets(rct_window* w);
 
 void window_staff_peep_close();
 void window_staff_peep_mouse_up();
@@ -115,8 +120,8 @@ static void* window_staff_peep_overview_events[] = {
 
 void* window_staff_peep_page_events[] = {
 	window_staff_peep_overview_events,
-	0x992B5C,
-	0x992BCC
+	(void*)0x992B5C,
+	(void*)0x992BCC
 };
 
 uint32 window_staff_peep_page_enabled_widgets[] = {
@@ -141,6 +146,53 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3)
 };
 
+/**
+*
+*  rct2: 0x006BEE98
+*/
+void window_staff_peep_open(rct_peep* peep)
+{
+	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
+	if (w == NULL) {
+		w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
+
+		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
+		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
+		w->number = peep->sprite_index;
+		w->page = 0;
+		w->viewport_focus_coordinates.y = 0;
+		w->frame_no = 0;
+
+		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
+
+		window_staff_peep_disable_widgets(w);
+
+		w->min_width = 190;
+		w->min_height = 180;
+		w->max_width = 500;
+		w->max_height = 450;
+
+		w->flags = 1 << 8;
+
+		w->colours[0] = 1;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
+	}
+	w->page = 0;
+	window_invalidate(w);
+
+	w->widgets = window_staff_peep_overview_widgets;
+	w->enabled_widgets = window_staff_peep_page_enabled_widgets[0];
+	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
+	w->event_handlers = window_staff_peep_page_events[0];
+	w->pressed_widgets = 0;
+	window_staff_peep_disable_widgets(w);
+	window_init_scroll_widgets(w);
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
+		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
+	}
+}
 
 /**
 * rct2: 0x006BED21
@@ -193,54 +245,6 @@ void window_staff_peep_disable_widgets(rct_window* w)
 }
 
 /**
-*
-*  rct2: 0x006BEE98
-*/
-void window_staff_peep_open(rct_peep* peep)
-{
-	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
-	if (w == NULL) {
-		w = window_create_auto_pos(190, 180, (uint32*)window_staff_peep_overview_events, WC_PEEP, (uint16)0x400);
-
-		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
-		w->number = peep->sprite_index;
-		w->page = 0;
-		w->viewport_focus_coordinates.y = 0;
-		w->frame_no = 0;
-
-		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
-
-		window_staff_peep_disable_widgets(w);
-
-		w->min_width = 190;
-		w->min_height = 180;
-		w->max_width = 500;
-		w->max_height = 450;
-
-		w->flags = 1 << 8;
-
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
-	w->page = 0;
-	window_invalidate(w);
-
-	w->widgets = window_staff_peep_overview_widgets;
-	w->enabled_widgets = window_staff_peep_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
-	w->event_handlers = window_staff_peep_page_events[0];
-	w->pressed_widgets = 0;
-	window_staff_peep_disable_widgets(w);
-	window_init_scroll_widgets(w);
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
-	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
-	}
-}
-
-/**
  * Same as window_peep_close.
  * rct2: 0x006BDFF8
  */
@@ -269,7 +273,6 @@ void window_staff_peep_fire(rct_window* w)
  */
 void window_staff_peep_set_page(rct_window* w, int page)
 {
-	// loc_6BE023
 	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
@@ -277,14 +280,14 @@ void window_staff_peep_set_page(rct_window* w, int page)
 			tool_cancel();
 	
 	}
-	// loc_6BE04D
+	
 	int listen = 0;
 	if (page == WINDOW_STAFF_PEEP_OVERVIEW && w->page == WINDOW_STAFF_PEEP_OVERVIEW && w->viewport){
 		if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
 			listen = 1;
 	}
 
-	// loc_6BE079
+	
 	w->page = page;
 	w->frame_no = 0;
 
@@ -294,7 +297,6 @@ void window_staff_peep_set_page(rct_window* w, int page)
 		viewport->width = 0;
 	}
 
-	// loc_6BE09B
 	w->enabled_widgets = window_staff_peep_page_enabled_widgets[page];
 	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
 	w->event_handlers = window_staff_peep_page_events[page];
