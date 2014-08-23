@@ -19,7 +19,7 @@ PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 
 # here is the target environment located
-SET(CMAKE_FIND_ROOT_PATH /Users/skip/Downloads/mingw-w32-bin_i686-darwin_20130531/i686-w64-mingw32)
+SET(CMAKE_FIND_ROOT_PATH /usr/local/mingw-w32-bin_i686-darwin_20130531/i686-w64-mingw32)
 
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search
