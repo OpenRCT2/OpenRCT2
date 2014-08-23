@@ -49,17 +49,27 @@ if [[ `uname` == "Darwin" ]]; then
         sudo ln -s $wine_path /usr/include
     fi
 
-    mingw_name=mingw-w32-bin_i686-darwin_20130531
-    mingw_tar=$mingw_name.tar.bz2
-    mingw_path=/usr/local/mingw_w32-bin_i686-darwin
+    mingw_name=mingw-w32-bin_i686-darwin
+    mingw_tar=$mingw_name"_20130531".tar.bz2
+    mingw_path=/usr/local/$mingw_name
     if [[ ! -f $cachedir/$mingw_tar ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
     if [[ ! -d $ming_path ]]; then
-	mkdir -p $mingw_path
+        pushd /usr/local/
+        sudo mkdir $mingw_name
+        popd
+
         echo "Extracting contents of $mingw_tar to $mingw_path"
         echo "Don't forget to add $mingw_path to your PATH variable!"
-        sudo tar -xyfp $cachedir/$mingw_tar -C $mingw_path
+        sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
+        #sudo gnutar -xjf $cachedir/$mingw_tar -C $mingw_path --no-same-permissions
+        pushd /usr/local
+        sudo chmod 755 $mingw_name
+        pushd $mingw_name
+        sudo find . -type d -exec chmod 755 {} \;
+        popd
+        popd
     fi
 elif [[ `uname` == "Linux" ]]; then
     sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686
