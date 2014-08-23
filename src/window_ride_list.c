@@ -23,6 +23,7 @@
 #include "game.h"
 #include "ride.h"
 #include "string_ids.h"
+#include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -437,11 +438,45 @@ static void window_ride_list_paint()
  */
 static void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 {
-	int eax = 0, ebx = 0, ecx = 0, edx, esi = 0, edi = 0, ebp = 0;
-	edx = rideIndex;
-	RCT2_CALLFUNC_X(0x006AF561, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*formatSecondary = ebx & 0xFFFF;
-	*argument = eax;
+	rct_ride *ride = &g_ride_list[rideIndex];
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
+		*formatSecondary = STR_CRASHED;
+		return;
+	}
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		*formatSecondary = STR_BROKEN_DOWN;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_CLOSED) {
+		*formatSecondary = STR_CLOSED;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_TESTING) {
+		*formatSecondary = STR_TEST_RUN;
+		return;
+	}
+	ride->mode = RIDE_MODE_RACE;
+	rct_peep *peep = GET_PEEP(ride->race_winner);
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+		if (peep->name_string_idx == STR_GUEST) {
+			*argument = peep->id;
+			*formatSecondary = STR_RACE_WON_BY_GUEST;
+		} else {
+			*argument = peep->name_string_idx;
+			*formatSecondary = STR_RACE_WON_BY;
+		}
+	} else {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)) {
+			*formatSecondary = STR_PERSON_ON_RIDE;
+			*argument = ride->num_riders;
+			if(*argument != 1) {
+				*formatSecondary = STR_PEOPLE_ON_RIDE;
+			}
+		} else {
+			*formatSecondary = STR_OPEN;
+		}
+	}
 }
 
 /**
