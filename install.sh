@@ -56,19 +56,20 @@ if [[ `uname` == "Darwin" ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
     if [[ ! -d $ming_path ]]; then
+
         pushd /usr/local/
-        sudo mkdir $mingw_name
+            sudo mkdir $mingw_name
         popd
 
         echo "Extracting contents of $mingw_tar to $mingw_path"
         echo "Don't forget to add $mingw_path to your PATH variable!"
         sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
-        #sudo gnutar -xjf $cachedir/$mingw_tar -C $mingw_path --no-same-permissions
+
         pushd /usr/local
-        sudo chmod 755 $mingw_name
-        pushd $mingw_name
-        sudo find . -type d -exec chmod 755 {} \;
-        popd
+            sudo chmod 755 $mingw_name
+            pushd $mingw_name
+                sudo find . -type d -exec chmod 755 {} \;
+            popd
         popd
     fi
 elif [[ `uname` == "Linux" ]]; then
