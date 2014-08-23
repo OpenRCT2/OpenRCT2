@@ -103,10 +103,13 @@ typedef struct {
 	uint8 pad_14E[0x06];
 	uint32 var_154;
 	uint16 var_158;
-	uint8 pad_15A[0x26];
+	uint8 pad_15A;
+	uint8 num_riders;				// 0x15B
+	uint8 pad_15C[0x24];
 	uint16 build_date;				
 	sint16 upkeep_cost;				// 0x182
-	uint8 pad_184[0x12];
+	uint16 race_winner;				// 0x184
+	uint8 pad_186[0x10];
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
