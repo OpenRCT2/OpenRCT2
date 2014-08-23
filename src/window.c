@@ -27,6 +27,7 @@
 #include "widget.h"
 #include "window.h"
 #include "viewport.h"
+#include "sprite.h"
 
 #define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
@@ -394,11 +395,11 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
 	w->var_020 = 0;
-	w->var_480 = 0;
-	w->var_482 = 0;
-	w->var_484 = 0;
-	w->var_486 = 0;
-	w->var_488 = 0;
+	w->viewport_focus_coordinates.var_480 = 0;
+	w->viewport_focus_coordinates.x = 0;
+	w->viewport_focus_coordinates.y = 0;
+	w->viewport_focus_coordinates.z = 0;
+	w->viewport_focus_coordinates.rotation = 0;
 	w->page = 0;
 	w->var_48C = 0;
 	w->frame_no = 0;
@@ -883,6 +884,35 @@ rct_window *window_get_main()
 			return w;
 
 	return NULL;
+}
+
+/**
+ * Based on 
+ * rct2: 0x696ee9 & 0x66842F
+ * 
+ */
+void window_scroll_to_viewport(rct_window *w)
+{
+	int x, y, z;
+	rct_window *mainWindow;
+	// In original checked to make sure x and y were not -1 as well.
+	if (w->viewport == NULL || w->viewport_focus_coordinates.y == -1)
+		return;
+
+	if (w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE) {
+		rct_sprite *sprite = &(g_sprite_list[w->viewport_focus_sprite.sprite_id]);
+		x = sprite->unknown.x;
+		y = sprite->unknown.y;
+		z = sprite->unknown.z;
+	} else {
+		x = w->viewport_focus_coordinates.x;
+		y = w->viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
+		z = w->viewport_focus_coordinates.z;
+	}
+
+	mainWindow = window_get_main();
+	if (mainWindow != NULL)
+		window_scroll_to_location(mainWindow, x, y, z);
 }
 
 /**

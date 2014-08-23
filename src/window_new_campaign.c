@@ -128,7 +128,7 @@ int ride_name_compare(const void *a, const void *b)
  * 
  *  rct2: 0x0069E16F
  */
-void window_new_campaign_open(int campaignType)
+void window_new_campaign_open(sint16 campaignType)
 {
 	// RCT2_CALLPROC_X(0x0069E16F, campaignType, 0, 0, 0, 0, 0, 0);
 
@@ -138,7 +138,7 @@ void window_new_campaign_open(int campaignType)
 	
 	w = window_bring_to_front_by_id(WC_NEW_CAMPAIGN, 0);
 	if (w != NULL) {
-		if (w->var_480 == campaignType)
+		if (w->campaign.campaign_type == campaignType)
 			return;
 
 		window_close(w);
@@ -162,13 +162,13 @@ void window_new_campaign_open(int campaignType)
 	window_new_campaign_widgets[WIDX_TITLE].image = STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + campaignType;
 
 	// Campaign type
-	w->var_480 = campaignType;
+	w->campaign.campaign_type = campaignType;
 
 	// Number of weeks
-	w->var_482 = 2;
+	w->campaign.no_weeks = 2;
 
 	// Currently selected ride
-	w->var_484 = SELECTED_RIDE_UNDEFINED;
+	w->campaign.ride_id = SELECTED_RIDE_UNDEFINED;
 
 	// Get all applicable rides
 	numApplicableRides = 0;
@@ -234,7 +234,7 @@ static void window_new_campaign_mouseup()
 		break;
 	case WIDX_START_BUTTON:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
-		game_do_command(0, (w->var_482 << 8) | 1, 0, (w->var_484 << 8) | w->var_480, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
+		game_do_command(0, (w->campaign.no_weeks << 8) | 1, 0, (w->campaign.ride_id << 8) | w->campaign.campaign_type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
 		window_close(w);
 		break;
 	}
@@ -252,7 +252,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 	case WIDX_RIDE_DROPDOWN_BUTTON:
 		dropdownWidget = widget - 1;
 
-		if (w->var_480 == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
+		if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
 			window_new_campaign_get_shop_items();
 			if (window_new_campaign_shop_items[0] != 255) {
 				int numItems = 0;
@@ -305,11 +305,11 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 		}
 		break;
 	case WIDX_WEEKS_INCREASE_BUTTON:
-		w->var_482 = min(w->var_482 + 1, 6);
+		w->campaign.no_weeks = min(w->campaign.no_weeks + 1, 6);
 		window_invalidate(w);
 		break;
 	case WIDX_WEEKS_DECREASE_BUTTON:
-		w->var_482 = max(w->var_482 - 1, 2);
+		w->campaign.no_weeks = max(w->campaign.no_weeks - 1, 2);
 		window_invalidate(w);
 		break;
 	}
@@ -329,13 +329,13 @@ static void window_new_campaign_dropdown()
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;
 
-	if (w->var_480 == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
+	if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
 		rct_string_id itemStringId = (uint16)gDropdownItemsArgs[dropdownIndex] - 2016;
 		if (itemStringId >= 32)
 			itemStringId -= 96;
-		w->var_484 = itemStringId;
+		w->campaign.ride_id = itemStringId;
 	} else {
-		w->var_484 = window_new_campaign_rides[dropdownIndex];
+		w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
 	}
 
 	window_invalidate(w);
@@ -355,15 +355,15 @@ static void window_new_campaign_invalidate()
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = STR_MARKETING_NOT_SELECTED;
-	switch (w->var_480) {
+	switch (w->campaign.campaign_type) {
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
 	case ADVERTISING_CAMPAIGN_RIDE:
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_24;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_RIDE;
-		if (w->var_484 != SELECTED_RIDE_UNDEFINED) {
-			rct_ride *ride = GET_RIDE(w->var_484);
+		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
+			rct_ride *ride = GET_RIDE(w->campaign.ride_id);
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->var_04A;
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
 		}
@@ -373,8 +373,8 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_ITEM;
-		if (w->var_484 != SELECTED_RIDE_UNDEFINED) {
-			rct_string_id itemStringId = w->var_484 + 2016;
+		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
+			rct_string_id itemStringId = w->campaign.ride_id + 2016;
 			if (itemStringId >= 2048)
 				itemStringId += 96;
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = itemStringId;
@@ -383,11 +383,11 @@ static void window_new_campaign_invalidate()
 	}
 
 	// Set current number of weeks spinner
-	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = (STR_MARKETING_1_WEEK - 1) + w->var_482;
+	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = (STR_MARKETING_1_WEEK - 1) + w->campaign.no_weeks;
 
 	// Enable / disable start button based on ride dropdown
 	w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
-	if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->var_484 == SELECTED_RIDE_UNDEFINED)
+	if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->campaign.ride_id == SELECTED_RIDE_UNDEFINED)
 		w->disabled_widgets |= 1 << WIDX_START_BUTTON;
 }
 
@@ -409,11 +409,11 @@ static void window_new_campaign_paint()
 	y = w->y + 60;
 
 	// Price per week
-	money32 pricePerWeek = AdvertisingCampaignPricePerWeek[w->var_480];
+	money32 pricePerWeek = AdvertisingCampaignPricePerWeek[w->campaign.campaign_type];
 	gfx_draw_string_left(dpi, STR_MARKETING_COST_PER_WEEK, &pricePerWeek, 0, x, y);
 	y += 13;
 
 	// Total price
-	money32 totalPrice = AdvertisingCampaignPricePerWeek[w->var_480] * w->var_482;
+	money32 totalPrice = AdvertisingCampaignPricePerWeek[w->campaign.campaign_type] * w->campaign.no_weeks;
 	gfx_draw_string_left(dpi, STR_MARKETING_TOTAL_COST, &totalPrice, 0, x, y);
 }
