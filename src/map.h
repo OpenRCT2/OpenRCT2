@@ -24,8 +24,8 @@
 #include "rct2.h"
 
 typedef struct {
-	uint8 slope;
-	uint8 terrain;
+	uint8 slope; //4
+	uint8 terrain; //5
 	uint8 grass_length;
 	uint8 ownership;
 } rct_map_element_surface_properties;
@@ -92,10 +92,10 @@ typedef union {
  * size: 0x08
  */
 typedef struct {
-	uint8 type;
-	uint8 flags;
-	uint8 base_height;
-	uint8 clearance_height;
+	uint8 type; //0
+	uint8 flags; //1
+	uint8 base_height; //2
+	uint8 clearance_height; //3
 	rct_map_element_properties properties;
 } rct_map_element;
 

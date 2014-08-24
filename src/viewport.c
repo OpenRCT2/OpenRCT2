@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <assert.h>
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
@@ -221,25 +222,32 @@ void viewport_update_pointers()
 }
 
 void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
+	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
+
 	int start_x = *x;
 	int start_y = *y;
-	int eax, ebx, ecx = 0;
+	int eax = start_x, ebx, ecx = 0;
 	switch (curr_rotation){
 	case 0:
 		for (int i = 0; i < 6; ++i){
 			int edx = start_x / 2;
-			eax = -start_x;
+			eax = -start_x / 2;
 			eax += start_y;
 			ebx = start_y + edx;
 			eax += ecx;
 			ebx += ecx;
+
+			int __eax = eax, __ebx = 0, __ecx = ebx, __edx = 0, __edi= 0, __esi = 0, __ebp = 0;
+			RCT2_CALLFUNC_X(0x00662783, &__eax, &__ebx, &__ecx, &__edx, &__esi, &__edi, &__ebp);
 			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
+			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
+			assert(ecx == __edx);
 		}
 		break;
 	case 1:
 		for (int i = 0; i < 6; ++i){
 			int edx = start_x / 2;
-			eax = -start_x;
+			eax = -start_x / 2;
 			eax -= start_y;
 			ebx = start_y - edx;
 			eax -= ecx;
@@ -250,7 +258,7 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 	case 2:
 		for (int i = 0; i < 6; ++i){
 			int edx = start_x / 2;
-			eax -= start_y;
+			eax = start_x / 2 - start_y;
 			ebx = -start_y;
 			ebx -= edx;
 			eax -= ecx;
@@ -261,7 +269,7 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 	case 3:
 		for (int i = 0; i < 6; ++i){
 			int edx = start_x / 2;
-			eax += start_y;
+			eax = start_x / 2 + start_y;
 			ebx = -start_y;
 			ebx += edx;
 			eax += ecx;
@@ -272,6 +280,10 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 	}
 	*x = eax;
 	*y = ebx;
+	int _eax = start_x, _ebx = start_y, _ecx, _edx = curr_rotation, _esi, _edi, _ebp;
+	RCT2_CALLFUNC_X(0x00689174, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+	assert(*x == (sint16)_eax);
+	assert(*y == (sint16)_ebx);
 }
 
 /**
@@ -307,9 +319,7 @@ void viewport_update_position(rct_window *window)
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
 
 	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	int ecx = 0, ebp;
 	sub_689174(&x, &y, curr_rotation);
-	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 	
 	RCT2_CALLPROC_X(0x006E7A15, x, y, 0, 0, (int)window, (int)viewport, 0);
 

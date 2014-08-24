@@ -168,7 +168,7 @@ int map_element_height(int x, int y)
 	// Remove the extra height bit
 	slope &= 0xF;
 
-	uint8 quad, quad_extra; // which quadrant the element is in?
+	sint8 quad, quad_extra; // which quadrant the element is in?
 	                        // quad_extra is for extra height tiles
 
 	uint8 xl, yl;	    // coordinates across this tile
@@ -198,7 +198,7 @@ int map_element_height(int x, int y)
 			quad = TILE_SIZE - yl - xl;
 			break;
 		case 8:   // NW corner up
-			quad = xl - yl;
+			quad = yl - xl;
 			break;
 		}
 		// If the element is in the quadrant with the slope, raise its height
@@ -241,7 +241,7 @@ int map_element_height(int x, int y)
 			break;
 		case 14:  // NE corner down
 			quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-			quad = TILE_SIZE - yl - xl;
+			quad = TILE_SIZE - yl - xl - 1;
 			break;
 		}
 
@@ -255,7 +255,6 @@ int map_element_height(int x, int y)
 		// so we move *down* the slope
 		if (quad < 0) {
 			height += quad / 2;
-			height += 0xFF00;
 		}
 	}
 
