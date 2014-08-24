@@ -249,12 +249,12 @@ void viewport_update_position(rct_window *window)
 	}
 
 
-	int eax = viewport->view_width;
-	int ebx = viewport->view_height;
+	sint16 eax = viewport->view_width;
+	sint16 ebx = viewport->view_height;
 	eax /= 2;
 	ebx /= 2;	
-	eax += window->viewport_focus_coordinates.x;
-	ebx += window->viewport_focus_coordinates.y;
+	eax += window->saved_view_x;
+	ebx += window->saved_view_y;
 	int edx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	int ecx = 0, ebp;
 	RCT2_CALLFUNC_X(0x00689174, &eax, &ebx, &ecx, &edx, (int*)&window, (int*)&viewport, &ebp);
@@ -262,12 +262,12 @@ void viewport_update_position(rct_window *window)
 	RCT2_CALLPROC_X(0x006E7A15, eax, ebx, 0, 0, (int)window, (int)viewport, 0);
 
 	ebp = 0;
-	if (eax < 0xFF00){
-		eax = 0xFF00;
+	if (eax < (sint16)0xFF00){
+		eax = (sint16)0xFF00;
 		ebp++;
 	}
-	if (ebx < 0xFF00){
-		ebx = 0xFF00;
+	if (ebx < (sint16)0xFF00){
+		ebx = (sint16)0xFF00;
 		ebp++;
 	}
 
@@ -324,34 +324,34 @@ void viewport_update_position(rct_window *window)
 		ecx /= 2;
 		ebx -= ecx;
 
-		if (window->viewport_focus_coordinates.x > 0){
-			if (window->viewport_focus_coordinates.x > eax){
-				eax = window->viewport_focus_coordinates.x;
+		if (window->saved_view_x > 0){
+			if (window->saved_view_x > eax){
+				eax = window->saved_view_x;
 			}
 		}
 		else{
-			if (eax <= window->viewport_focus_coordinates.x){
-				eax = window->viewport_focus_coordinates.x;
+			if (eax <= window->saved_view_x){
+				eax = window->saved_view_x;
 			}
 		}
 
-		if (window->viewport_focus_coordinates.y > 0){
-			if (window->viewport_focus_coordinates.y > ebx){
-				ebx = window->viewport_focus_coordinates.y;
+		if (window->saved_view_y > 0){
+			if (window->saved_view_y > ebx){
+				ebx = window->saved_view_y;
 			}
 		}
 		else{
-			if (ebx <= window->viewport_focus_coordinates.y){
-				ebx = window->viewport_focus_coordinates.y;
+			if (ebx <= window->saved_view_y){
+				ebx = window->saved_view_y;
 			}
 		}
 
-		window->viewport_focus_coordinates.x = eax;
-		window->viewport_focus_coordinates.y = ebx;
+		window->saved_view_x = eax;
+		window->saved_view_y = ebx;
 	}
 
-	eax = window->viewport_focus_coordinates.x;
-	ebx = window->viewport_focus_coordinates.y;
+	eax = window->saved_view_x;
+	ebx = window->saved_view_y;
 	if (window->flags & (1 << 3)){
 		ecx = 0;
 		eax -= viewport->view_x;
