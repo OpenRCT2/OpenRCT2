@@ -99,6 +99,7 @@ const uint8 gRideClassifications[255] = {
 
 #pragma endregion
 
+rct_ride_type **gRideTypeList = RCT2_ADDRESS(0x009ACFA4, rct_ride_type*);
 rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 
 int ride_get_count()

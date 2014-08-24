@@ -301,7 +301,7 @@ static void window_new_ride_populate_list()
 
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
-	uint8 **rideEntries = (uint8**)0x009ACFA4;
+	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
 
 	// For each ride type in the view order list
 	for (i = 0; i < countof(RideTypeViewOrder); i++) {
@@ -325,15 +325,13 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Ride entries
-				uint8 *rideEntry = rideEntries[rideEntryIndex];
-				uint8 categoryA = rideEntry[0x1BE];
-				uint8 categoryB = rideEntry[0x1BF];
+				rct_ride_type *rideEntry = rideEntries[rideEntryIndex];
 
 				// Check if ride is in this category
-				if (currentCategory != categoryA && currentCategory != categoryB)
+				if (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1])
 					continue;
 
-				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x2000) {
+				if (rideEntry->var_008 & 0x2000) {
 					dh &= ~4;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
@@ -344,7 +342,7 @@ static void window_new_ride_populate_list()
 					nextListItem->entry_index = rideEntryIndex;
 					nextListItem++;
 				} else if (dh & 4) {
-					if (rideType == rideEntry[0x0C]) {
+					if (rideType == rideEntry->var_00C) {
 						nextListItem--;
 						nextListItem->type = rideType;
 						nextListItem->entry_index = rideEntryIndex;
@@ -758,11 +756,10 @@ static void window_new_ride_paint()
 		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
 			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
 			if (typeId >= 0x10000) {
-				uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-					stringId = RCT2_GLOBAL(rideEntry, uint16);
-				else
-					stringId = (typeId & 0xFF00) + 2;
+				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+				stringId = rideEntry->var_008 & 0x1000 ?
+					rideEntry->name :
+					(typeId & 0xFF00) + 2;
 			} else {
 				uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 				stringId = RCT2_GLOBAL(sceneryEntry, uint16);
@@ -796,11 +793,10 @@ static void window_new_ride_paint()
 	uint32 typeId = RCT2_GLOBAL(0x01357CF4, uint32);
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
-			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-					stringId = RCT2_GLOBAL(rideEntry, uint16);
-				else
-					stringId = (typeId & 0xFF00) + 2;
+			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+			stringId = rideEntry->var_008 & 0x1000 ?
+				rideEntry->name :
+				(typeId & 0xFF00) + 2;
 		} else {
 			uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 			stringId = RCT2_GLOBAL(sceneryEntry, uint16);
@@ -817,7 +813,7 @@ static void window_new_ride_scrollpaint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	uint8 **rideEntries = (uint8**)0x009ACFA4;
+	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
 
 	window_paint_get_registers(w, dpi);
 
@@ -830,7 +826,7 @@ static void window_new_ride_scrollpaint()
 	int y = 1;
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
-		uint8 *rideEntry;
+		rct_ride_type *rideEntry;
 		// Draw flat button rectangle
 		int flags = 0;
 		if (w->new_ride.selected_ride_id == *((sint16*)listItem))
@@ -840,10 +836,10 @@ static void window_new_ride_scrollpaint()
 		
 		// Draw ride image
 		rideEntry = rideEntries[listItem->entry_index];
-		int unk = RCT2_GLOBAL(rideEntry + 4, uint32);
-		if (listItem->type != RCT2_GLOBAL(rideEntry + 12, uint8)) {
+		int unk = rideEntry->var_004;
+		if (listItem->type != rideEntry->var_00C) {
 			unk++;
-			if (listItem->type != RCT2_GLOBAL(rideEntry + 13, uint8))
+			if (listItem->type != rideEntry->var_00D)
 				unk++;
 		}
 		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, unk);
@@ -909,13 +905,13 @@ static int get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width)
 {
-	uint8 **rideEntries = (uint8**)0x009ACFA4;
-	uint8 *rideEntry = rideEntries[item.entry_index];
+	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_ride_type *rideEntry = rideEntries[item.entry_index];
 
 	// Ride name and description
-	rct_string_id rideName = RCT2_GLOBAL(rideEntry + 0, uint16);
-	rct_string_id rideDescription = RCT2_GLOBAL(rideEntry + 2, uint16);
-	if (!(RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)) {
+	rct_string_id rideName = rideEntry->name;
+	rct_string_id rideDescription = rideEntry->description;
+	if (!(rideEntry->var_008 & 0x1000)) {
 		rideName = item.type + 2;
 		rideDescription = item.type + 512;
 	}
