@@ -232,7 +232,6 @@ void sound_stop(rct_sound* sound)
 */
 rct_sound* sound_remove(rct_sound* sound)
 {
-	printf("sound_remove called\n");
 	rct_sound* result = RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
 	if(sound == result){
 		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)){
