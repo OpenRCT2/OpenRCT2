@@ -210,7 +210,7 @@ int map_element_height(int x, int y)
 	// One side up
 	switch (slope) {
 	case 3:   // E side up
-		height += xl / 2;
+		height += xl / 2 + 1;
 		break;
 	case 6:   // S side up
 		height += (TILE_SIZE - yl) / 2;
@@ -233,11 +233,11 @@ int map_element_height(int x, int y)
 			break;
 		case 11:  // SW corner down
 			quad_extra = xl + yl;
-			quad = xl + yl - TILE_SIZE;
+			quad = xl + yl - TILE_SIZE - 1;
 			break;
 		case 13:  // SE corner down
 			quad_extra = TILE_SIZE - xl + yl;
-			quad = xl - yl;
+			quad = yl - xl;
 			break;
 		case 14:  // NE corner down
 			quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);

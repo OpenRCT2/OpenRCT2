@@ -224,66 +224,44 @@ void viewport_update_pointers()
 void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 
-	int start_x = *x;
-	int start_y = *y;
-	int eax = start_x, ebx, ecx = 0;
+	sint16 start_x = *x;
+	sint16 start_y = *y;
+	sint16 height = 0;
 	switch (curr_rotation){
 	case 0:
 		for (int i = 0; i < 6; ++i){
-			int edx = start_x / 2;
-			eax = -start_x / 2;
-			eax += start_y;
-			ebx = start_y + edx;
-			eax += ecx;
-			ebx += ecx;
 
-			int __eax = eax, __ebx = 0, __ecx = ebx, __edx = 0, __edi= 0, __esi = 0, __ebp = 0;
-			RCT2_CALLFUNC_X(0x00662783, &__eax, &__ebx, &__ecx, &__edx, &__esi, &__edi, &__ebp);
-			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
-			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
-			assert(ecx == __edx);
+			*x = start_y - start_x / 2 + height;
+			*y = start_y + start_x / 2 + height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
 		}
 		break;
 	case 1:
 		for (int i = 0; i < 6; ++i){
-			int edx = start_x / 2;
-			eax = -start_x / 2;
-			eax -= start_y;
-			ebx = start_y - edx;
-			eax -= ecx;
-			ebx += ecx;
-			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
+			*x = -start_y - start_x / 2 - height;
+			*y = start_y - start_x / 2 + height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
 		}
 		break;
 	case 2:
 		for (int i = 0; i < 6; ++i){
-			int edx = start_x / 2;
-			eax = start_x / 2 - start_y;
-			ebx = -start_y;
-			ebx -= edx;
-			eax -= ecx;
-			ebx -= ecx;
-			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) &  ebx);
+			*x = -start_y + start_x / 2 - height;
+			*y = -start_y - start_x / 2 - height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
 		}
 		break;
 	case 3:
 		for (int i = 0; i < 6; ++i){
-			int edx = start_x / 2;
-			eax = start_x / 2 + start_y;
-			ebx = -start_y;
-			ebx += edx;
-			eax += ecx;
-			ebx -= ecx;
-			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) &  ebx);
+			*x = start_x / 2 + start_y + height;
+			*y = start_x / 2 - start_y - height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
 		}
 		break;
 	}
-	*x = eax;
-	*y = ebx;
-	int _eax = start_x, _ebx = start_y, _ecx, _edx = curr_rotation, _esi, _edi, _ebp;
-	RCT2_CALLFUNC_X(0x00689174, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
-	assert(*x == (sint16)_eax);
-	assert(*y == (sint16)_ebx);
 }
 
 /**
@@ -292,7 +270,8 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
  */
 void viewport_update_position(rct_window *window)
 {
-	//push w
+	//RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
+
 	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)window, 0, 0);
 
 	rct_viewport* viewport = window->viewport;
@@ -402,8 +381,6 @@ void viewport_update_position(rct_window *window)
 	}
 
 	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
-
-	//RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
