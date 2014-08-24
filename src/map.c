@@ -102,7 +102,7 @@ void map_init()
 	RCT2_GLOBAL(0x013CE774, sint16) = 0;
 	RCT2_GLOBAL(0x013CE776, sint16) = 0;
 	RCT2_GLOBAL(0x01358830, sint16) = 4768;
-	RCT2_GLOBAL(0x01358832, sint16) = 5054;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = 5054;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
 	RCT2_GLOBAL(0x01358836, sint16) = 4767;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
@@ -141,7 +141,7 @@ void map_update_tile_pointers()
 
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
- *
+ * 
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)
@@ -168,7 +168,7 @@ int map_element_height(int x, int y)
 	// Remove the extra height bit
 	slope &= 0xF;
 
-	uint8 quad, quad_extra; // which quadrant the element is in?
+	sint8 quad, quad_extra; // which quadrant the element is in?
 	                        // quad_extra is for extra height tiles
 
 	uint8 xl, yl;	    // coordinates across this tile
@@ -198,7 +198,7 @@ int map_element_height(int x, int y)
 			quad = TILE_SIZE - yl - xl;
 			break;
 		case 8:   // NW corner up
-			quad = xl - yl;
+			quad = yl - xl;
 			break;
 		}
 		// If the element is in the quadrant with the slope, raise its height
@@ -210,7 +210,7 @@ int map_element_height(int x, int y)
 	// One side up
 	switch (slope) {
 	case 3:   // E side up
-		height += xl / 2;
+		height += xl / 2 + 1;
 		break;
 	case 6:   // S side up
 		height += (TILE_SIZE - yl) / 2;
@@ -233,15 +233,15 @@ int map_element_height(int x, int y)
 			break;
 		case 11:  // SW corner down
 			quad_extra = xl + yl;
-			quad = xl + yl - TILE_SIZE;
+			quad = xl + yl - TILE_SIZE - 1;
 			break;
 		case 13:  // SE corner down
 			quad_extra = TILE_SIZE - xl + yl;
-			quad = xl - yl;
+			quad = yl - xl;
 			break;
 		case 14:  // NE corner down
 			quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-			quad = TILE_SIZE - yl - xl;
+			quad = TILE_SIZE - yl - xl - 1;
 			break;
 		}
 
@@ -255,7 +255,6 @@ int map_element_height(int x, int y)
 		// so we move *down* the slope
 		if (quad < 0) {
 			height += quad / 2;
-			height += 0xFF00;
 		}
 	}
 

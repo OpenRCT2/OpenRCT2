@@ -260,7 +260,7 @@ typedef enum {
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
 	WF_2 = (1 << 2),
-	WF_3 = (1 << 3),
+	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
@@ -457,6 +457,7 @@ void window_new_ride_init_vars();
 void window_staff_init_vars();
 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
+void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
