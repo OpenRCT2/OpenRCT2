@@ -792,9 +792,12 @@ static void game_handle_input_mouse(int x, int y, int state)
 	case INPUT_STATE_VIEWPORT_DRAG:
 	{
 		int dx, dy;
+
+		POINT newDragPosition;
+		GetCursorPos(&newDragPosition);
 		
-		dx = x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
-		dy = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
+		dx = newDragPosition.x - _dragPosition.x;
+		dy = newDragPosition.y - _dragPosition.y;
 		w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber));
 		if (state == 0) {
 			rct_viewport *viewport = w->viewport;
