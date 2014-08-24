@@ -521,10 +521,10 @@ void window_peep_viewport_init(rct_window* w){
 void window_peep_overview_paint(){
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	rct_widget *labelWidget;
+	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, w, dpi, 0);
+	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
 	return;
 
 	window_draw_widgets(w, dpi);

@@ -680,6 +680,7 @@ static void window_new_ride_scrollmouseover()
 		return;
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+
 	if (w->new_ride.highlighted_ride_id == *((sint16*)&item))
 		return;
 
