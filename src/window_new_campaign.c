@@ -28,7 +28,7 @@
 #include "window.h"
 #include "window_dropdown.h"
 
-#define SELECTED_RIDE_UNDEFINED ((sint16)0xFFFF)
+#define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 	WIDX_BACKGROUND,

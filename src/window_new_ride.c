@@ -431,7 +431,7 @@ void window_new_ride_open()
 	w->colours[0] = 24;
 	w->colours[1] = 26;
 	w->colours[2] = 26;
-	w->new_ride.selected_ride_countdown = -1;
+	w->new_ride.selected_ride_id = -1;
 	w->new_ride.highlighted_ride_id = -1;
 	_lastTrackDesignCountRideType.type = 255;
 	_lastTrackDesignCountRideType.entry_index = 255;
@@ -603,7 +603,7 @@ static void window_new_ride_update(rct_window *w)
 
 	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + _window_new_ride_current_tab);
 
-	if (w->new_ride.selected_ride_countdown != -1 && w->new_ride.selected_ride_countdown-- == 0)
+	if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);
 }
 
@@ -657,7 +657,7 @@ static void window_new_ride_scrollmousedown()
 		return;
 
 	RCT2_ADDRESS(0x00F43825, ride_list_item)[_window_new_ride_current_tab] = item;
-	w->new_ride.selected_ride_countdown = *((sint16*)&item);
+	w->new_ride.selected_ride_id = *((sint16*)&item);
 
 	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
 	w->new_ride.selected_ride_countdown = 8;
@@ -676,7 +676,7 @@ static void window_new_ride_scrollmouseover()
 
 	window_scrollmouse_get_registers(w, x, y);
 
-	if (w->new_ride.selected_ride_countdown != -1)
+	if (w->new_ride.selected_ride_id != -1)
 		return;
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
@@ -832,7 +832,7 @@ static void window_new_ride_scrollpaint()
 		uint8 *rideEntry;
 		// Draw flat button rectangle
 		int flags = 0;
-		if (w->new_ride.selected_ride_countdown == *((sint16*)listItem))
+		if (w->new_ride.selected_ride_id == *((sint16*)listItem))
 			flags |= 0x20;
 		if (w->new_ride.highlighted_ride_id == *((sint16*)listItem) || flags != 0)
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
@@ -973,7 +973,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-	ride_list_item item = *((ride_list_item*)&w->new_ride.selected_ride_countdown);
+	ride_list_item item = *((ride_list_item*)&w->new_ride.selected_ride_id);
 	if (item.type == 255)
 		return;
 
