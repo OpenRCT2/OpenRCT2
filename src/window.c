@@ -1465,3 +1465,34 @@ void window_resize_gui_scenario_editor(int width, int height)
 	}
 	
 }
+
+void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_window*w, rct_widget* widget )
+{
+#ifdef _MSC_VER
+	__asm {
+		push address
+		push widget
+		push w
+		push widgetIndex
+		mov edi, widget
+		mov edx, widgetIndex
+		mov esi, w
+		call[esp + 12]
+		add esp, 16
+	}
+#else
+	__asm__("\
+			push %[address]\n\
+			mov edi, %[widget] \n\
+			mov eax, %[w]  \n\
+			mov edx, %[widgetIndex] \n\
+			push edi \n\
+			push eax \n\
+			push edx \n\
+			mov esi, %[w]	\n\
+			call [esp+12]	\n\
+			add esp, 16	\n\
+			" :[address] "+m" (address), [w] "+m" (w), [widget] "+m" (widget), [widgetIndex] "+m" (widgetIndex): : "eax", "esi", "edx", "edi"
+		);
+#endif
+}
