@@ -47,14 +47,13 @@ typedef struct {
 /**
  * Represents a prepared sound.
  */
-typedef struct rct_sound rct_sound;
-struct rct_sound {
+typedef struct rct_sound {
 	LPDIRECTSOUNDBUFFER dsbuffer;
 	int id;
 	int has_caps;
 	int var_0C;
-	rct_sound* next;
-};
+	struct rct_sound* next;
+} rct_sound;
 
 void get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);

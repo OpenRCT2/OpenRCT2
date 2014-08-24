@@ -108,10 +108,10 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
 int sound_channel_set_frequency(int channel, int frequency)
 {
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
-	if(dsbuffer){
-		if(SUCCEEDED(dsbuffer->lpVtbl->SetFrequency(dsbuffer, frequency))){
+	if (dsbuffer) {
+		if (SUCCEEDED(dsbuffer->lpVtbl->SetFrequency(dsbuffer, frequency)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -123,10 +123,10 @@ int sound_channel_set_frequency(int channel, int frequency)
 int sound_channel_set_pan(int channel, int pan)
 {
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
-	if(dsbuffer){
-		if(SUCCEEDED(dsbuffer->lpVtbl->SetPan(dsbuffer, pan))){
+	if (dsbuffer) {
+		if (SUCCEEDED(dsbuffer->lpVtbl->SetPan(dsbuffer, pan)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -138,10 +138,10 @@ int sound_channel_set_pan(int channel, int pan)
 int sound_channel_set_volume(int channel, int volume)
 {
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
-	if(dsbuffer){
-		if(SUCCEEDED(dsbuffer->lpVtbl->SetVolume(dsbuffer, volume))){
+	if (dsbuffer) {
+		if (SUCCEEDED(dsbuffer->lpVtbl->SetVolume(dsbuffer, volume)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -152,21 +152,22 @@ int sound_channel_set_volume(int channel, int volume)
 */
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency)
 {
-	if(sound){
+	if (sound) {
 		sound_set_frequency(sound, frequency);
 		sound_set_pan(sound, pan);
 		sound_set_volume(sound, volume);
 		DWORD playflags;
-		if(looping){
-			if(looping != 1)
+		if (looping) {
+			if (looping != 1)
 				return 1;
+
 			playflags = DSBPLAY_LOOPING;
-		}else{
+		} else {
 			playflags = 0;
 		}
-		if(SUCCEEDED(sound->dsbuffer->lpVtbl->Play(sound->dsbuffer, 0, 0, playflags))){
+		if (SUCCEEDED(sound->dsbuffer->lpVtbl->Play(sound->dsbuffer, 0, 0, playflags))) 
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -177,10 +178,10 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 */
 int sound_set_frequency(rct_sound* sound, int frequency)
 {
-	if(sound){
-		if(SUCCEEDED(sound->dsbuffer->lpVtbl->SetFrequency(sound->dsbuffer, frequency))){
+	if (sound) {
+		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetFrequency(sound->dsbuffer, frequency)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -191,10 +192,10 @@ int sound_set_frequency(rct_sound* sound, int frequency)
 */
 int sound_set_pan(rct_sound* sound, int pan)
 {
-	if(sound){
-		if(SUCCEEDED(sound->dsbuffer->lpVtbl->SetPan(sound->dsbuffer, pan))){
+	if (sound) {
+		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetPan(sound->dsbuffer, pan)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -205,10 +206,10 @@ int sound_set_pan(rct_sound* sound, int pan)
 */
 int sound_set_volume(rct_sound* sound, int volume)
 {
-	if(sound){
-		if(SUCCEEDED(sound->dsbuffer->lpVtbl->SetVolume(sound->dsbuffer, volume))){
+	if (sound) {
+		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetVolume(sound->dsbuffer, volume)))
 			return 1;
-		}
+
 	}
 	return 0;
 }
@@ -219,7 +220,7 @@ int sound_set_volume(rct_sound* sound, int volume)
 */
 void sound_stop(rct_sound* sound)
 {
-	if(sound->dsbuffer){
+	if (sound->dsbuffer) {
 		sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
 		sound->dsbuffer = 0;
 		sound_remove(sound);
@@ -233,25 +234,23 @@ void sound_stop(rct_sound* sound)
 rct_sound* sound_remove(rct_sound* sound)
 {
 	rct_sound* result = RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
-	if(sound == result){
-		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)){
+	if (sound == result) {
+		if (sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = 0;
 		}
 		result = sound->next;
 		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = result;
-	}
-	else{
-		while(result->next != sound){
+	} else {
+		while (result->next != sound)
 			result = result->next;
-		}
-		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)){
+
+		if (sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = result;
 			result->next = 0;
-		}
-		else{
+		} else
 			result->next = sound->next;
-		}
+
 	}
 	sound->next = 0;
 	return result;
