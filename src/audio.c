@@ -220,7 +220,7 @@ int sound_set_volume(rct_sound* sound, int volume)
 void sound_stop(rct_sound* sound)
 {
 	if(sound->dsbuffer){
-		sound->dsbuffer->lpVtbl->Release(sound);
+		sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
 		sound->dsbuffer = 0;
 		sound_remove(sound);
 	}
@@ -232,28 +232,29 @@ void sound_stop(rct_sound* sound)
 */
 rct_sound* sound_remove(rct_sound* sound)
 {
-	rct_sound* result = RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*);
+	printf("sound_remove called\n");
+	rct_sound* result = RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
 	if(sound == result){
-		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*)){
-			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = 0;
+		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)){
 			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = 0;
 		}
-		result = sound->prev;
-		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = result;
+		result = sound->next;
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = result;
 	}
 	else{
-		while(result->prev != sound){
-			result = result->prev;
+		while(result->next != sound){
+			result = result->next;
 		}
-		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*)){
-			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = result;
-			result->prev = 0;
+		if(sound == RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)){
+			RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = result;
+			result->next = 0;
 		}
 		else{
-			result->prev = sound->prev;
+			result->next = sound->next;
 		}
 	}
-	sound->prev = 0;
+	sound->next = 0;
 	return result;
 }
 
