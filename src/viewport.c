@@ -18,9 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <assert.h>
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
+#include "map.h"
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
@@ -219,13 +221,166 @@ void viewport_update_pointers()
 	*vp = NULL;
 }
 
+void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
+	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
+
+	sint16 start_x = *x;
+	sint16 start_y = *y;
+	sint16 height = 0;
+	switch (curr_rotation){
+	case 0:
+		for (int i = 0; i < 6; ++i){
+
+			*x = start_y - start_x / 2 + height;
+			*y = start_y + start_x / 2 + height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+		}
+		break;
+	case 1:
+		for (int i = 0; i < 6; ++i){
+			*x = -start_y - start_x / 2 - height;
+			*y = start_y - start_x / 2 + height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+		}
+		break;
+	case 2:
+		for (int i = 0; i < 6; ++i){
+			*x = -start_y + start_x / 2 - height;
+			*y = -start_y - start_x / 2 - height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+		}
+		break;
+	case 3:
+		for (int i = 0; i < 6; ++i){
+			*x = start_x / 2 + start_y + height;
+			*y = start_x / 2 - start_y - height;
+
+			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+		}
+		break;
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E7A3A
  */
 void viewport_update_position(rct_window *window)
 {
-	RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
+	//RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
+
+	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)window, 0, 0);
+
+	rct_viewport* viewport = window->viewport;
+	if (!viewport)return;
+
+	if (window->viewport_target_sprite != -1){
+		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
+
+		int height = map_element_height(sprite->unknown.x, sprite->unknown.y) - 16;
+		int underground = sprite->unknown.z < height;
+
+		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, (int)window, (int)viewport, 0);
+
+		int center_x, center_y;
+		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
+
+		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
+		window_invalidate(window);//Added to force a redraw.
+		return;
+	}
+
+
+	sint16 x = viewport->view_width / 2 + window->saved_view_x;
+	sint16 y = viewport->view_height / 2 + window->saved_view_y;
+
+	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	sub_689174(&x, &y, curr_rotation);
+	
+	RCT2_CALLPROC_X(0x006E7A15, x, y, 0, 0, (int)window, (int)viewport, 0);
+
+	//Clamp to the map minimum value
+	int at_map_edge = 0;
+	if (x < MAP_MINIMUM_X_Y){
+		x = MAP_MINIMUM_X_Y;
+		at_map_edge = 1;
+	}
+	if (y < MAP_MINIMUM_X_Y){
+		y = MAP_MINIMUM_X_Y;
+		at_map_edge = 1;
+	}
+
+	//Clamp to the map maximum value (scenario specific)
+	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
+		x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		at_map_edge = 1;
+	}
+	if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
+		y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		at_map_edge = 1;
+	}
+
+	if (at_map_edge) {
+		// The &0xFFFF is to prevent the sign extension messing the
+		// function up.
+		int z = map_element_height(x & 0xFFFF, y & 0xFFFF);
+		int _2d_x, _2d_y;
+		center_2d_coordinates(x, y, z, &_2d_x, &_2d_y, viewport);
+	
+		if (window->saved_view_x > 0){
+			_2d_x = min(_2d_x, window->saved_view_x);
+		}
+		else{
+			_2d_x = max(_2d_x, window->saved_view_x);
+		}
+
+		if (window->saved_view_y > 0){
+			_2d_y = min(_2d_y, window->saved_view_y);
+		}
+		else{
+			_2d_y = max(_2d_y, window->saved_view_y);
+		}
+
+		window->saved_view_x = _2d_x;
+		window->saved_view_y = _2d_y;
+	}
+
+	x = window->saved_view_x;
+	y = window->saved_view_y;
+	if (window->flags & WF_SCROLLING_TO_LOCATION){
+		// Moves the viewport if focusing in on an item
+		uint8 flags = 0;
+		x -= viewport->view_x;
+		if (x < 0){
+			x = -x;
+			flags |= 1;
+		}
+		y -= viewport->view_y;
+		if (y < 0){
+			y = -y;
+			flags |= 2;
+		}
+		x = (x + 7)/8;
+		y = (y + 7)/8;
+
+		//If we are at the final zoom position
+		if (!x && !y){
+			window->flags &= ~WF_SCROLLING_TO_LOCATION;
+		}
+		if (flags & 1){
+			x = -x;
+		}
+		if (flags & 2){
+			y = -y;
+		}
+		x += viewport->view_x;
+		y += viewport->view_y;
+	}
+
+	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);

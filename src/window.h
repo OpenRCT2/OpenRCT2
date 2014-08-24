@@ -260,7 +260,7 @@ typedef enum {
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
 	WF_2 = (1 << 2),
-	WF_3 = (1 << 3),
+	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
