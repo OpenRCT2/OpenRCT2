@@ -102,7 +102,7 @@ void map_init()
 	RCT2_GLOBAL(0x013CE774, sint16) = 0;
 	RCT2_GLOBAL(0x013CE776, sint16) = 0;
 	RCT2_GLOBAL(0x01358830, sint16) = 4768;
-	RCT2_GLOBAL(0x01358832, sint16) = 5054;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = 5054;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
 	RCT2_GLOBAL(0x01358836, sint16) = 4767;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
@@ -141,7 +141,7 @@ void map_update_tile_pointers()
 
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
- *
+ * 
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)

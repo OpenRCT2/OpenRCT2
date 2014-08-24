@@ -73,7 +73,7 @@ void editor_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_3;
+	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
@@ -120,7 +120,7 @@ void trackdesigner_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_3;
+	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
@@ -158,7 +158,7 @@ void trackmanager_load()
 	RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
-	mainWindow->flags &= ~WF_3;
+	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;

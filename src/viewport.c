@@ -220,6 +220,60 @@ void viewport_update_pointers()
 	*vp = NULL;
 }
 
+void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
+	int start_x = *x;
+	int start_y = *y;
+	int eax, ebx, ecx = 0;
+	switch (curr_rotation){
+	case 0:
+		for (int i = 0; i < 6; ++i){
+			int edx = start_x / 2;
+			eax = -start_x;
+			eax += start_y;
+			ebx = start_y + edx;
+			eax += ecx;
+			ebx += ecx;
+			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
+		}
+		break;
+	case 1:
+		for (int i = 0; i < 6; ++i){
+			int edx = start_x / 2;
+			eax = -start_x;
+			eax -= start_y;
+			ebx = start_y - edx;
+			eax -= ecx;
+			ebx += ecx;
+			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) & ebx);
+		}
+		break;
+	case 2:
+		for (int i = 0; i < 6; ++i){
+			int edx = start_x / 2;
+			eax -= start_y;
+			ebx = -start_y;
+			ebx -= edx;
+			eax -= ecx;
+			ebx -= ecx;
+			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) &  ebx);
+		}
+		break;
+	case 3:
+		for (int i = 0; i < 6; ++i){
+			int edx = start_x / 2;
+			eax += start_y;
+			ebx = -start_y;
+			ebx += edx;
+			eax += ecx;
+			ebx -= ecx;
+			ecx = map_element_height((0xFFFF) & eax, (0xFFFF) &  ebx);
+		}
+		break;
+	}
+	*x = eax;
+	*y = ebx;
+}
+
 /**
  * 
  *  rct2: 0x006E7A3A
@@ -249,143 +303,96 @@ void viewport_update_position(rct_window *window)
 	}
 
 
-	sint16 eax = viewport->view_width;
-	sint16 ebx = viewport->view_height;
-	eax /= 2;
-	ebx /= 2;	
-	eax += window->saved_view_x;
-	ebx += window->saved_view_y;
-	int edx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	sint16 x = viewport->view_width / 2 + window->saved_view_x;
+	sint16 y = viewport->view_height / 2 + window->saved_view_y;
+
+	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	int ecx = 0, ebp;
-	RCT2_CALLFUNC_X(0x00689174, &eax, &ebx, &ecx, &edx, (int*)&window, (int*)&viewport, &ebp);
+	sub_689174(&x, &y, curr_rotation);
+	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 	
-	RCT2_CALLPROC_X(0x006E7A15, eax, ebx, 0, 0, (int)window, (int)viewport, 0);
+	RCT2_CALLPROC_X(0x006E7A15, x, y, 0, 0, (int)window, (int)viewport, 0);
 
-	ebp = 0;
-	if (eax < (sint16)0xFF00){
-		eax = (sint16)0xFF00;
-		ebp++;
+	//Clamp to the map minimum value
+	int at_map_edge = 0;
+	if (x < MAP_MINIMUM_X_Y){
+		x = MAP_MINIMUM_X_Y;
+		at_map_edge = 1;
 	}
-	if (ebx < (sint16)0xFF00){
-		ebx = (sint16)0xFF00;
-		ebp++;
+	if (y < MAP_MINIMUM_X_Y){
+		y = MAP_MINIMUM_X_Y;
+		at_map_edge = 1;
 	}
 
-	if (eax > RCT2_GLOBAL(0x1358832, sint16)){
-		eax = RCT2_GLOBAL(0x1358832, sint16);
-		ebp++;
+	//Clamp to the map maximum value (scenario specific)
+	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
+		x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		at_map_edge = 1;
 	}
-	if (ebx > RCT2_GLOBAL(0x1358832, sint16)){
-		ebx = RCT2_GLOBAL(0x1358832, sint16);
-		ebp++;
+	if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
+		y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		at_map_edge = 1;
 	}
-	if (ebp) {
-		ecx = ebx;
-		edx = map_element_height(ebx, eax);
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
-		case 0:
-			ebx = eax;
-			eax = -eax;
-			eax += ecx;
-			ecx += ebx;
-			ecx /= 2;
-			ecx -= edx;
-			break;
-		case 1:
-			eax = -eax;
-			ebx = eax;
-			eax -= ecx;
-			ecx += ebx;
-			ecx /= 2;
-			ecx -= edx;
-			break;
-		case 2:
-			ebx = eax;
-			eax -= ecx;
-			ecx = -ecx;
-			ecx -= ebx;
-			ecx /= 2;
-			ecx -= edx;
-			break;
-		case 3:
-			ebx = eax;
-			eax += ecx;
-			ecx = -ecx;
-			ecx += ebx;
-			ecx /= 2;
-			ecx -= edx;
-			break;
-		}
-		ebx = ecx;
-		ecx = viewport->view_width;
-		ecx /= 2;
-		eax -= ecx;
-		ecx = viewport->view_height;
-		ecx /= 2;
-		ebx -= ecx;
 
+	if (at_map_edge) {
+		// The &0xFFFF is to prevent the sign extension messing the
+		// function up.
+		int z = map_element_height(x & 0xFFFF, y & 0xFFFF);
+		int _2d_x, _2d_y;
+		center_2d_coordinates(x, y, z, &_2d_x, &_2d_y, viewport);
+	
 		if (window->saved_view_x > 0){
-			if (window->saved_view_x > eax){
-				eax = window->saved_view_x;
-			}
+			_2d_x = min(_2d_x, window->saved_view_x);
 		}
 		else{
-			if (eax <= window->saved_view_x){
-				eax = window->saved_view_x;
-			}
+			_2d_x = max(_2d_x, window->saved_view_x);
 		}
 
 		if (window->saved_view_y > 0){
-			if (window->saved_view_y > ebx){
-				ebx = window->saved_view_y;
-			}
+			_2d_y = min(_2d_y, window->saved_view_y);
 		}
 		else{
-			if (ebx <= window->saved_view_y){
-				ebx = window->saved_view_y;
-			}
+			_2d_y = max(_2d_y, window->saved_view_y);
 		}
 
-		window->saved_view_x = eax;
-		window->saved_view_y = ebx;
+		window->saved_view_x = _2d_x;
+		window->saved_view_y = _2d_y;
 	}
 
-	eax = window->saved_view_x;
-	ebx = window->saved_view_y;
-	if (window->flags & (1 << 3)){
-		ecx = 0;
-		eax -= viewport->view_x;
-		if (eax < 0){
-			eax = -eax;
-			ecx |= 1;
+	x = window->saved_view_x;
+	y = window->saved_view_y;
+	if (window->flags & WF_SCROLLING_TO_LOCATION){
+		// Moves the viewport if focusing in on an item
+		uint8 flags = 0;
+		x -= viewport->view_x;
+		if (x < 0){
+			x = -x;
+			flags |= 1;
 		}
-		ebx -= viewport->view_y;
-		if (ebx < 0){
-			ebx = -ebx;
-			ecx |= 2;
+		y -= viewport->view_y;
+		if (y < 0){
+			y = -y;
+			flags |= 2;
 		}
-		eax += 7;
-		ebx += 7;
-		eax /= 8;
-		ebx /= 8;
-		edx = eax;
-		edx |= ebx;
-		if (!edx){
-			window->flags &= ~(1<<3);
+		x = (x + 7)/8;
+		y = (y + 7)/8;
+
+		//If we are at the final zoom position
+		if (!x && !y){
+			window->flags &= ~WF_SCROLLING_TO_LOCATION;
 		}
-		if (ecx & 1){
-			eax = -eax;
+		if (flags & 1){
+			x = -x;
 		}
-		if (ecx & 2){
-			ebx = -ebx;
+		if (flags & 2){
+			y = -y;
 		}
-		eax += viewport->view_x;
-		ebx += viewport->view_y;
+		x += viewport->view_x;
+		y += viewport->view_y;
 	}
 
-	RCT2_CALLPROC_X(0x6E7DE1, eax, ebx, ecx, edx, (int)window, (int)viewport, 0);
+	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 
-	// 6e7c03
 	//RCT2_CALLPROC_X(0x006E7A3A, 0, 0, 0, 0, (int)window, 0, 0);
 }
 
