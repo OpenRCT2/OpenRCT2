@@ -174,6 +174,22 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 
 /**
 *
+*  rct2: 0x00404E53
+*/
+int sound_is_playing(rct_sound* sound){
+	if (sound) {
+		DWORD status;
+		if (SUCCEEDED(sound->dsbuffer->lpVtbl->GetStatus(sound->dsbuffer, &status))) {
+			if (status & DSBSTATUS_PLAYING || status & DSBSTATUS_LOOPING)
+				return 1;
+
+		}
+	}
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x00404ED7
 */
 int sound_set_frequency(rct_sound* sound, int frequency)
@@ -260,21 +276,112 @@ rct_sound* sound_remove(rct_sound* sound)
 *
 *  rct2: 0x006BABB4
 */
-void pause_sounds() {
+void pause_sounds()
+{
 	if (++RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
-		RCT2_CALLPROC_EBPSAFE(0x006BCAE5);
-		RCT2_CALLPROC_EBPSAFE(0x006BABDF);
-		RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
-		RCT2_CALLPROC_EBPSAFE(0x006BD07F);
+		pause_other_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BCAE5); // ? sounds
+		pause_vehicle_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BABDF); // vehicle sounds
+		pause_ride_music(); //RCT2_CALLPROC_EBPSAFE(0x006BCA9F); // ride music
+		pause_peep_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BD07F); // peep sounds
 	}
 	g_sounds_disabled = 1;
 }
 
 /**
 *
+*  rct2: 0x006BCAE5
+*/
+void pause_other_sounds()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != 0xFFFFFFFF) {
+		if (RCT2_GLOBAL(0x009AF5A8, uint32) != 1) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			sound_stop(RCT2_GLOBAL(0x009AF5AC, rct_sound*));
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			RCT2_GLOBAL(0x009AF5A8, uint32) = 1;
+		}
+		if (RCT2_GLOBAL(0x009AF5C0, uint32) != 8) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			sound_stop(RCT2_GLOBAL(0x009AF5C4, rct_sound*));
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			RCT2_GLOBAL(0x009AF5C0, uint32) = 8;
+		}
+		if (RCT2_GLOBAL(0x009AF5D8, uint32) != 8) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			sound_stop(RCT2_GLOBAL(0x009AF5DC, rct_sound*));
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			RCT2_GLOBAL(0x009AF5D8, uint32) = 8;
+		}
+	}
+}
+
+/**
+*
+*  rct2: 0x006BABDF
+*/
+void pause_vehicle_sounds()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != 0xFFFFFFFF) {
+		for (int i = 0; i < 7; i++) {
+			uint8 * data = RCT2_ADDRESS(0x009AF288 + (i * 60), uint8);
+			if (*(uint16 *)&data[0] != 0xFFFF) {
+				if (*(uint16 *)&data[0x18] != 0xFFFF) {
+					RCT2_GLOBAL(0x014241BC, uint32) = 1;
+					sound_stop((rct_sound*)&data[0x04]);
+					RCT2_GLOBAL(0x014241BC, uint32) = 0;
+				}
+				if (*(uint16 *)&data[0x34] != 0xFFFF) {
+					RCT2_GLOBAL(0x014241BC, uint32) = 1;
+					sound_stop((rct_sound*)&data[0x20]);
+					RCT2_GLOBAL(0x014241BC, uint32) = 0;
+				}
+			}
+			*(uint16 *)&data[0] = 0xFFFF;
+		}
+	}
+}
+
+/**
+*
+*  rct2: 0x006BCA9F
+*/
+void pause_ride_music()
+{
+	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
+		for (int i = 0; i < 2; i++) {
+			uint8 * data = RCT2_ADDRESS(0x009AF46C + (i * 8), uint8);
+			if (data[0] != 0xFF) {
+				RCT2_GLOBAL(0x014241BC, uint32) = 1;
+				RCT2_CALLPROC_1(0x00401A05, int, i);
+				RCT2_GLOBAL(0x014241BC, uint32) = 0;
+				data[0] = 0xFF;
+			}
+		}
+	}
+}
+
+/**
+*
+*  rct2: 0x006BD07F
+*/
+void pause_peep_sounds()
+{
+	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
+		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			RCT2_CALLPROC_1(0x00401A05, int, 2);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
+		}
+	}
+}
+
+/**
+*
 *  rct2: 0x006BABD8
 */
-void unpause_sounds() {
+void unpause_sounds()
+{
 	RCT2_GLOBAL(0x009AF59C, uint8)--;
 	g_sounds_disabled = 0;
 }

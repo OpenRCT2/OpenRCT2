@@ -186,7 +186,7 @@ static void climate_determine_future_weather()
  */
 void climate_update_sound()
 {
-	if (RCT2_GLOBAL(0x009AF280, uint32) == 0xFFFFFFFF)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) == 0xFFFFFFFF)
 		return;
 	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
 		return;
@@ -210,13 +210,13 @@ static void climate_update_rain_sound()
 		} else {
 			// Increase rain sound
 			_rainVolume = min(-1400, _rainVolume + 80);
-			RCT2_CALLPROC_2(0x00404F0D, rct_sound*, int, &_rainSoundInstance, _rainVolume);
+			sound_set_volume(&_rainSoundInstance, _rainVolume);
 		}
 	} else if (_rainVolume != 1) {
 		// Decrease rain sound
 		_rainVolume -= 80;
 		if (_rainVolume > -4000) {
-			RCT2_CALLPROC_2(0x00404F0D, rct_sound*, int, &_rainSoundInstance, _rainVolume);
+			sound_set_volume(&_rainSoundInstance, _rainVolume);
 		} else {
 			sound_stop(&_rainSoundInstance);
 			_rainVolume = 1;
@@ -248,7 +248,7 @@ static void climate_update_thunder_sound()
 		if (_thunderStatus[i] == THUNDER_STATUS_NULL)
 			continue;
 
-		if (!RCT2_CALLFUNC_1(0x00404E53, int, rct_sound*, &_thunderSoundInstance[i])) {
+		if (!sound_is_playing(&_thunderSoundInstance[i])) {
 			sound_stop(&_thunderSoundInstance[i]);
 			_thunderStatus[i] = THUNDER_STATUS_NULL;
 		}
