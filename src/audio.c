@@ -90,14 +90,15 @@ void sound_play_panned(int sound_id, int x)
 */
 int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
 {
-	RCT2_GLOBAL(0x1426444 + (91 * channel * 4), uint32) = a2;
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel];
+	sound_channel->var_164 = a2;
 	sound_channel_set_frequency(channel, frequency);
 	sound_channel_set_pan(channel, pan);
 	sound_channel_set_volume(channel, volume);
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	dsbuffer->lpVtbl->SetCurrentPosition(dsbuffer, 0);
 	dsbuffer->lpVtbl->Play(dsbuffer, 0, 0, DSBPLAY_LOOPING);
-	RCT2_GLOBAL(0x14262E0 + (91 * channel * 4), uint32) = 1;
+	sound_channel->var_0 = 1;
 	return 1;
 }
 
@@ -279,10 +280,10 @@ rct_sound* sound_remove(rct_sound* sound)
 void pause_sounds()
 {
 	if (++RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
-		pause_other_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BCAE5); // ? sounds
-		pause_vehicle_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BABDF); // vehicle sounds
-		pause_ride_music(); //RCT2_CALLPROC_EBPSAFE(0x006BCA9F); // ride music
-		pause_peep_sounds(); //RCT2_CALLPROC_EBPSAFE(0x006BD07F); // peep sounds
+		stop_other_sounds();
+		stop_vehicle_sounds();
+		stop_ride_music();
+		stop_peep_sounds();
 	}
 	g_sounds_disabled = 1;
 }
@@ -291,7 +292,7 @@ void pause_sounds()
 *
 *  rct2: 0x006BCAE5
 */
-void pause_other_sounds()
+void stop_other_sounds()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != 0xFFFFFFFF) {
 		if (RCT2_GLOBAL(0x009AF5A8, uint32) != 1) {
@@ -319,24 +320,24 @@ void pause_other_sounds()
 *
 *  rct2: 0x006BABDF
 */
-void pause_vehicle_sounds()
+void stop_vehicle_sounds()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != 0xFFFFFFFF) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 		for (int i = 0; i < 7; i++) {
-			uint8 * data = RCT2_ADDRESS(0x009AF288 + (i * 60), uint8);
-			if (*(uint16 *)&data[0] != 0xFFFF) {
-				if (*(uint16 *)&data[0x18] != 0xFFFF) {
+			rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
+			if (vehicle_sound->var_0 != 0xFFFF) {
+				if (vehicle_sound->var_18 != 0xFFFF) {
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
-					sound_stop((rct_sound*)&data[0x04]);
+					sound_stop(&vehicle_sound->sound1);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;
 				}
-				if (*(uint16 *)&data[0x34] != 0xFFFF) {
+				if (vehicle_sound->var_34 != 0xFFFF) {
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
-					sound_stop((rct_sound*)&data[0x20]);
+					sound_stop(&vehicle_sound->sound2);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;
 				}
 			}
-			*(uint16 *)&data[0] = 0xFFFF;
+			vehicle_sound->var_0 = 0xFFFF;
 		}
 	}
 }
@@ -345,14 +346,14 @@ void pause_vehicle_sounds()
 *
 *  rct2: 0x006BCA9F
 */
-void pause_ride_music()
+void stop_ride_music()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 		for (int i = 0; i < 2; i++) {
 			uint8 * data = RCT2_ADDRESS(0x009AF46C + (i * 8), uint8);
 			if (data[0] != 0xFF) {
 				RCT2_GLOBAL(0x014241BC, uint32) = 1;
-				RCT2_CALLPROC_1(0x00401A05, int, i);
+				sound_channel_stop(i);
 				RCT2_GLOBAL(0x014241BC, uint32) = 0;
 				data[0] = 0xFF;
 			}
@@ -364,16 +365,40 @@ void pause_ride_music()
 *
 *  rct2: 0x006BD07F
 */
-void pause_peep_sounds()
+void stop_peep_sounds()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			RCT2_CALLPROC_1(0x00401A05, int, 2);
+			sound_channel_stop(2);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
 		}
 	}
+}
+
+/**
+*
+*  rct2: 0x00401A05
+*/
+int sound_channel_stop(int channel)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel];
+	sound_channel->var_0 = 0;
+	sound_channel->var_160 = 1;
+	while (InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, int), 1) != 1) {
+		Sleep(10);
+	}
+	if (sound_channel->var_120)
+		RCT2_CALLPROC_2(0x00405436, uint32, uint32, sound_channel->var_11C, sound_channel->var_120); // free_sound?
+
+	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
+	if (dsbuffer) {
+		dsbuffer->lpVtbl->Stop(dsbuffer);
+		dsbuffer->lpVtbl->Release(dsbuffer);
+	}
+	InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, int), 0);
+	return 1;
 }
 
 /**
