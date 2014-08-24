@@ -52,14 +52,22 @@ typedef struct {
 	int id;
 	int has_caps;
 	int var_0C;
-	int var_10;
+	struct rct_sound* prev;
 } rct_sound;
 
 void get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
 void sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
+int sound_set_frequency(rct_sound* sound, int frequency);
+int sound_set_pan(rct_sound* sound, int pan);
+int sound_set_volume(rct_sound* sound, int volume);
+int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
+int sound_channel_set_frequency(int channel, int frequency);
+int sound_channel_set_pan(int channel, int pan);
+int sound_channel_set_volume(int channel, int volume);
 void sound_stop(rct_sound *sound);
+rct_sound* sound_remove(rct_sound* sound);
 void pause_sounds();
 void unpause_sounds();
 

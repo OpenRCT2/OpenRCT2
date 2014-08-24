@@ -109,7 +109,9 @@ typedef struct {
 	uint16 build_date;				
 	sint16 upkeep_cost;				// 0x182
 	uint16 race_winner;				// 0x184
-	uint8 pad_186[0x10];
+	uint8 pad_186[0x06];
+	uint8 var_18C;
+	uint8 pad_18D[0x09];
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
