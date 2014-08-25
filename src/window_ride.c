@@ -65,7 +65,7 @@ static uint32* window_ride_page_events[] = {
 
 /**
  * 
- * rct2: 0x006ACC28
+ * rct2: 0x006AEAB4
  */
 rct_window *window_ride_open(int rideIndex)
 {

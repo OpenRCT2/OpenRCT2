@@ -488,11 +488,12 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
 
 	// Open dialog
+	DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == 0) {
-		openFileName.Flags = OFN_EXPLORER | OFN_CREATEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
 		result = GetSaveFileName(&openFileName);
 	} else if (type == 1) {
-		openFileName.Flags = OFN_EXPLORER | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
 		result = GetOpenFileName(&openFileName);
 	}
 
