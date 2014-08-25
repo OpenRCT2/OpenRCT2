@@ -265,7 +265,7 @@ int calculate_park_rating()
 			litter = &(g_sprite_list[sprite_idx].litter);
 
 			// Guessing this eliminates recently dropped litter
-			if (litter->var_24 - RCT2_GLOBAL(0x00F663AC, uint32) >= 7680)
+			if (litter->var_24 - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
 				num_litter++;
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
