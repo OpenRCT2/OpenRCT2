@@ -84,10 +84,24 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WIDGETS_END },
 };
 
+rct_widget window_peep_stats_widgets[] = {
+	{WWT_FRAME,	0, 0,191,0,156,-1,-1},
+	{WWT_CAPTION,	0, 1,190,1,14,865,829},
+	{WWT_CLOSEBOX,	0, 179,189,2,13,824,828},
+	{WWT_RESIZE,	1, 0,191,43,156,-1,-1},
+	{WWT_TAB,		1, 3,33,17,43,0x2000144E,1938},
+	{WWT_TAB,		1, 34,64,17,43,0x2000144E,1940},
+	{WWT_TAB,		1, 65,95,17,43,0x2000144E,1941},
+	{WWT_TAB,		1, 96,126,17,43,0x2000144E,1942},
+	{WWT_TAB,		1, 127,157,17,43,0x2000144E,1943},
+	{WWT_TAB,		1, 158,188,17,43,0x2000144E,1944},
+	{WIDGETS_END},
+}
+
 //0x981D0C
 rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets,
-	(rct_widget *)0x9AC45C,
+	window_peep_stats_widgets,
 	(rct_widget *)0x9ac500,
 	(rct_widget *)0x9ac5b4,
 	(rct_widget *)0x9ac658,
