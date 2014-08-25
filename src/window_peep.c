@@ -85,18 +85,18 @@ rct_widget window_peep_overview_widgets[] = {
 };
 
 rct_widget window_peep_stats_widgets[] = {
-	{WWT_FRAME,	0, 0,191,0,156,-1,-1},
-	{WWT_CAPTION,	0, 1,190,1,14,865,829},
-	{WWT_CLOSEBOX,	0, 179,189,2,13,824,828},
-	{WWT_RESIZE,	1, 0,191,43,156,-1,-1},
-	{WWT_TAB,		1, 3,33,17,43,0x2000144E,1938},
-	{WWT_TAB,		1, 34,64,17,43,0x2000144E,1940},
-	{WWT_TAB,		1, 65,95,17,43,0x2000144E,1941},
-	{WWT_TAB,		1, 96,126,17,43,0x2000144E,1942},
-	{WWT_TAB,		1, 127,157,17,43,0x2000144E,1943},
-	{WWT_TAB,		1, 158,188,17,43,0x2000144E,1944},
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
 	{WIDGETS_END},
-}
+};
 
 //0x981D0C
 rct_widget *window_peep_page_widgets[] = {
@@ -693,8 +693,8 @@ void window_peep_overview_paint(){
 	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
-	return;
+	//RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+	//return;
 
 	window_draw_widgets(w, dpi);
 	//6983dd
@@ -703,7 +703,58 @@ void window_peep_overview_paint(){
 	//69861f
 	//69869b
 	//698661
+
+	// Draw the viewport no sound sprite
 	if (w->viewport){
 		window_draw_viewport(dpi, w);
+		rct_viewport* viewport = w->viewport;
+		if (viewport->flags & VIEWPORT_FLAG_SOUND_ON){
+			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+		}
 	}
+
+	// Draw the centered label
+	uint32 argument1, argument2;
+	rct_peep* peep = GET_PEEP(w->number);
+	get_arguments_from_action(peep, &argument1, &argument2);
+	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
+	int x = (widget->left + widget->right) / 2 + w->x;
+	int y = w->y + widget->top - 1;
+	int width = widget->right - widget->left;
+	gfx_draw_string_centred_clipped(dpi, 1191, (void*)0x13CE952, 0, x, y, width);
+
+	// Draw the marquee thought
+	widget = &w->widgets[WIDX_MARQUEE];
+	width = widget->right - widget->left - 3;
+	int left = widget->left + 2 + w->x;
+	int top = widget->top + w->y;
+	int height = widget->bottom - widget->top;
+	rct_drawpixelinfo* dpi_marquee = clip_drawpixelinfo(dpi, left, width, top, height);
+
+	if (!dpi_marquee)return;
+	int i = 0;
+	for (; i < PEEP_MAX_THOUGHTS; ++i){
+		if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE){
+			w->list_information_type = 0;
+			return;
+		}
+		if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
+			break;
+		}
+	}
+	if (i == PEEP_MAX_THOUGHTS){
+		w->list_information_type = 0;
+		return;
+	}
+
+	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
+
+	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	RCT2_GLOBAL(0x13CE952 + 8, uint16) = 0;
+
+	x = widget->right - widget->left - w->list_information_type;
+	gfx_draw_string_left(dpi_marquee, 1193, (void*)0x13CE952, 0, x, 0);
 }

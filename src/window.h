@@ -203,7 +203,7 @@ typedef struct rct_window {
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
-	uint16 list_information_type;	// 0x490 0 for none
+	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
