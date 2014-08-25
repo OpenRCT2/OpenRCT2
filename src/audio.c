@@ -511,7 +511,7 @@ int sound_channel_stop(int channel)
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel];
 	sound_channel->var_0 = 0;
 	sound_channel->var_160 = 1;
-	while (InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
+	while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
 		Sleep(10);
 	}
 	if (sound_channel->var_120)
@@ -523,7 +523,7 @@ int sound_channel_stop(int channel)
 		dsbuffer->lpVtbl->Release(dsbuffer);
 		RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel] = 0;
 	}
-	InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
+	_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
 	return 1;
 }
 
