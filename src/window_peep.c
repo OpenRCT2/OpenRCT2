@@ -134,14 +134,169 @@ static void* window_peep_overview_events[] = {
 	(void*)0x69707C
 };
 
+static void* window_peep_stats_events[] = {
+	window_peep_emptysub,
+	(void*) 0x0069744F, //mouse_up
+	(void*) 0x00697488, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x006974ED,
+	(void*) 0x0069746A,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069707D, //invalidate
+	(void*) 0x0069711D, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_rides_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697795, //mouse_up
+	(void*) 0x006978F4, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697959,
+	(void*) 0x006977B0,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069784E,
+	(void*) 0x006978CC,
+	window_peep_emptysub,
+	(void*) 0x0069789C,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697844,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069757A, //invalidate
+	(void*) 0x00697637, //paint
+	(void*) 0x006976FC
+};
+
+static void* window_peep_finance_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697BDD, //mouse_up
+	(void*) 0x00697C16, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697C7B,
+	(void*) 0x00697BF8,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697968, //invalidate
+	(void*) 0x00697A08, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_thoughts_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697E18, //mouse_up
+	(void*) 0x00697E33, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697ED2,
+	(void*) 0x00697EB4,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697C8A, //invalidate
+	(void*) 0x00697D2A, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_inventory_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00698279, //mouse_up
+	(void*) 0x00698294, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00698333,
+	(void*) 0x00698315,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697EE1, //invalidate
+	(void*) 0x00697F81, //paint
+	window_peep_emptysub
+};
+
 //0x981D24
 void* window_peep_page_events[] = {
 	window_peep_overview_events,
-	(void*)0x982468,
-	(void*)0x9824d8,
-	(void*)0x982548,
-	(void*)0x9825b8,
-	(void*)0x982628
+	window_peep_stats_events,
+	window_peep_rides_events,
+	window_peep_finance_events,
+	window_peep_thoughts_events,
+	window_peep_inventory_events
 };
 
 //0x981D3C
