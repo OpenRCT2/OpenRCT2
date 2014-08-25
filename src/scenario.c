@@ -116,7 +116,10 @@ void scenario_load(const char *path)
 
 			object_read_and_load_entries(file);
 
-			// Read flags (16 bytes)
+			// Read flags (16 bytes). Loads:
+			//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
+			//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
+			//	RCT2_ADDRESS_SCENARIO_TICKS
 			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 			// Read map elements

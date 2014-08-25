@@ -55,22 +55,22 @@ typedef void(*draw_rain_func)(int left, int top, int width, int height);
 *  rct2: 0x00684114
 */
 void draw_light_rain(int left, int top, int width, int height){
-	int edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
-	int esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
-	esi = -esi;
+	int x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 8;
+	int y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 3) + 7;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
+	x_start += left;
+	y_start += top;
 
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
-	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
-	esi = -esi;
+	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x18;
+	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 4) + 0x0D;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	x_start += left;
+	y_start += top;
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 }
 
 /**
@@ -78,41 +78,41 @@ void draw_light_rain(int left, int top, int width, int height){
 *  rct2: 0x0068416D
 */
 void draw_heavy_rain(int left, int top, int width, int height){
-	int edi = -RCT2_GLOBAL(0x00F663AC, int);
-	int esi = RCT2_GLOBAL(0x00F663AC, int) * 5;
-	esi = -esi;
+	int x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int);
+	int y_start = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 5;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
+	x_start += left;
+	y_start += top;
 
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x10;
-	esi = (RCT2_GLOBAL(0x00F663AC, int) * 6) + 5;
-	esi = -esi;
+	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x10;
+	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 6) + 5;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
+	x_start += left;
+	y_start += top;
 
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	edi = -RCT2_GLOBAL(0x00F663AC, int) + 8;
-	esi = (RCT2_GLOBAL(0x00F663AC, int) * 3) + 7;
-	esi = -esi;
+	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 8;
+	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 3) + 7;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
+	x_start += left;
+	y_start += top;
 
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	edi = -RCT2_GLOBAL(0x00F663AC, int) + 0x18;
-	esi = (RCT2_GLOBAL(0x00F663AC, int) * 4) + 0x0D;
-	esi = -esi;
+	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x18;
+	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 4) + 0x0D;
+	y_start = -y_start;
 
-	edi += left;
-	esi += top;
+	x_start += left;
+	y_start += top;
 
-	gfx_draw_rain(left, top, width, height, edi, esi);
+	gfx_draw_rain(left, top, width, height, x_start, y_start);
 }
 
 /**
@@ -363,7 +363,7 @@ void game_logic_update()
 	short stringId, _dx;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32)++;
-	RCT2_GLOBAL(0x00F663AC, sint32)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, sint32)++;
 	RCT2_GLOBAL(0x009DEA66, sint16)++;
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
