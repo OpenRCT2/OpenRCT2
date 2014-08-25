@@ -393,6 +393,36 @@ static void window_ride_set_pressed_tab(rct_window *w)
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
+static void window_ride_anchor_border_widgets(rct_window *w)
+{
+	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+	w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+	w->widgets[WIDX_TITLE].right = w->width - 2;
+	w->widgets[WIDX_CLOSE].left = w->width - 13;
+	w->widgets[WIDX_CLOSE].right = w->width - 3;
+}
+
+/**
+ * 
+ * rct2: 0x006AEC68
+ */
+static void window_ride_align_tabs(rct_window *w)
+{
+	int i, x, tab_width;
+
+	x = w->widgets[WIDX_TAB_1].left;
+	tab_width = w->widgets[WIDX_TAB_1].right - w->widgets[WIDX_TAB_1].left;
+	for (i = 0; i < 7; i++) {
+		if (w->disabled_widgets & (1LL << (WIDX_TAB_1 + i)))
+			continue;
+		w->widgets[WIDX_TAB_1 + i].left = x;
+		w->widgets[WIDX_TAB_1 + i].right = x + tab_width;
+		x += tab_width + 1;
+	}
+}
+
 #pragma region Main
 
 /**
@@ -485,6 +515,7 @@ static void window_ride_main_invalidate()
 {
 	rct_window *w;
 	rct_widget *widgets;
+	int i;
 
 	window_get_register(w);
 
@@ -507,6 +538,24 @@ static void window_ride_main_invalidate()
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->overall_view;
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_04C;
 	window_ride_main_widgets[WIDX_OPEN].image = SPR_CLOSED + ride->status;
+
+	window_ride_anchor_border_widgets(w);
+
+	// Anchor main page specific widgets
+	window_ride_main_widgets[WIDX_VIEWPORT].right = w->width - 26;
+	window_ride_main_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+	window_ride_main_widgets[WIDX_STATUS].right = w->width - 26;
+	window_ride_main_widgets[WIDX_STATUS].top = w->height - 13;
+	window_ride_main_widgets[WIDX_STATUS].bottom = w->height - 3;
+	for (i = WIDX_OPEN; i <= WIDX_DEMOLISH; i++) {
+		window_ride_main_widgets[i].left = w->width - 25;
+		window_ride_main_widgets[i].right = w->width - 2;
+	}
+	window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
+	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
+	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
+
+	window_ride_align_tabs(w);
 }
 
 /**
