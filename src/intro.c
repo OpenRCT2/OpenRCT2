@@ -80,7 +80,7 @@ void intro_update()
 
 		// Chain lift sound
 		_sound_playing_flag = 0;
-		if (RCT2_GLOBAL(0x009AF280, sint32) != -1) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 			// Prepare and play the sound
 			if (sound_prepare(SOUND_LIFT_7, &_prepared_sound, 0, 1))
 				if (sound_play(&_prepared_sound, 1, 0, 0, 0))
@@ -157,7 +157,7 @@ void intro_update()
 			}
 
 			// Play the track friction sound
-			if (RCT2_GLOBAL(0x009AF280, sint32) != -1) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 				// Prepare and play the sound
 				if (sound_prepare(SOUND_TRACK_FRICTION_3, &_prepared_sound, 1, 1))
 					if (sound_play(&_prepared_sound, 1, -800, 0, 0x3A98))
@@ -188,7 +188,7 @@ void intro_update()
 			}
 
 			// Play long peep scream sound
-			if (RCT2_GLOBAL(0x009AF280, sint32) != -1)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1)
 				if (sound_prepare(SOUND_SCREAM_1, &_prepared_sound, 0, 1))
 					if (sound_play(&_prepared_sound, 0, 0, 0, 0))
 						_sound_playing_flag = 1;

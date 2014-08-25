@@ -379,7 +379,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 		window_options_show_dropdown(w, widget, gAudioDeviceCount);
 
-		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(0x9AF280, uint32));
+		gDropdownItemsChecked |= (1 << RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32));
 		break;
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
 		gDropdownItemsFormat[0] = 1142;
@@ -500,13 +500,15 @@ static void window_options_dropdown()
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		#ifdef _MSC_VER
+		audio_init2(dropdownIndex);
+		/*#ifdef _MSC_VER
 		__asm movzx ax, dropdownIndex		
 		#else
 		__asm__ ( "movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
 		#endif
 		// the switch replaces ax value
-		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio
+		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio*/
+
 		window_invalidate(w);
 		break;
 	case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -670,7 +672,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_HEIGHT_LABELS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_AUDIO:
-		currentSoundDevice = RCT2_GLOBAL(0x009AF280, sint32);
+		currentSoundDevice = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32);
 
 		// sound devices
 		if (currentSoundDevice == -1 || gAudioDeviceCount == 0) {

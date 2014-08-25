@@ -21,6 +21,8 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include "rct2.h"
+
 typedef struct {
 	char name[256];
 } audio_device;
@@ -31,6 +33,7 @@ extern audio_device *gAudioDevices;
 void audio_init();
 void audio_quit();
 void audio_get_devices();
+void audio_init2(int device);
 
 
 #include <dsound.h>
@@ -55,10 +58,38 @@ typedef struct rct_sound {
 	struct rct_sound* next;
 } rct_sound;
 
+typedef struct {
+	uint32 var_0;
+	uint8 pad_4[0x118];
+	uint32 var_11C;
+	uint32 var_120;
+	uint8 pad_124[0x3C];
+	uint32 var_160;
+	uint32 var_164;
+	uint32 var_168;
+} rct_sound_channel;
+
+typedef struct {
+	uint16 id;
+	uint16 var_2;
+	rct_sound sound1;		// 0x04
+	uint16 var_18;
+	uint8 pad_1A[0x06];
+	rct_sound sound2;		// 0x20
+	uint16 var_34;
+	uint8 pad_36[0x06];
+} rct_vehicle_sound;
+
+typedef struct {
+	uint16 id;
+	rct_sound sound;
+} rct_other_sound;
+
 void get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
-void sound_play_panned(int sound_id, int x);
+int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
+int sound_is_playing(rct_sound* sound);
 int sound_set_frequency(rct_sound* sound, int frequency);
 int sound_set_pan(rct_sound* sound, int pan);
 int sound_set_volume(rct_sound* sound, int volume);
@@ -67,8 +98,13 @@ int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
 void sound_stop(rct_sound *sound);
+int sound_channel_stop(int channel);
 rct_sound* sound_remove(rct_sound* sound);
 void pause_sounds();
+void stop_other_sounds();
+void stop_vehicle_sounds();
+void stop_ride_music();
+void stop_peep_sounds();
 void unpause_sounds();
 
 // 0x009AF59C probably does the same job
