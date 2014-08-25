@@ -33,6 +33,7 @@ extern audio_device *gAudioDevices;
 void audio_init();
 void audio_quit();
 void audio_get_devices();
+void audio_init2(int device);
 
 
 #include <dsound.h>
@@ -69,7 +70,7 @@ typedef struct {
 } rct_sound_channel;
 
 typedef struct {
-	uint16 var_0;
+	uint16 id;
 	uint16 var_2;
 	rct_sound sound1;		// 0x04
 	uint16 var_18;
@@ -79,9 +80,14 @@ typedef struct {
 	uint8 pad_36[0x06];
 } rct_vehicle_sound;
 
+typedef struct {
+	uint16 id;
+	rct_sound sound;
+} rct_other_sound;
+
 void get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
-void sound_play_panned(int sound_id, int x);
+int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
 int sound_is_playing(rct_sound* sound);
 int sound_set_frequency(rct_sound* sound, int frequency);

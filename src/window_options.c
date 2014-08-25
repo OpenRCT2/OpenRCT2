@@ -500,13 +500,15 @@ static void window_options_dropdown()
 
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
-		#ifdef _MSC_VER
+		audio_init2(dropdownIndex);
+		/*#ifdef _MSC_VER
 		__asm movzx ax, dropdownIndex		
 		#else
 		__asm__ ( "movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
 		#endif
 		// the switch replaces ax value
-		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio
+		RCT2_CALLPROC_EBPSAFE(0x006BA9B5);	// part of init audio*/
+
 		window_invalidate(w);
 		break;
 	case WIDX_HEIGHT_LABELS_DROPDOWN:

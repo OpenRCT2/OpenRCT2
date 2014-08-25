@@ -388,6 +388,8 @@ void game_logic_update()
 	news_item_update_current();
 	RCT2_CALLPROC_EBPSAFE(0x0067009A);	// scenario editor opening of windows for a phase
 
+	RCT2_CALLPROC_EBPSAFE(0x006BB991); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
+
 	// Update windows
 	window_dispatch_update_all();
 
