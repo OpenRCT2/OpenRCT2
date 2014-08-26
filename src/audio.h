@@ -58,6 +58,16 @@ typedef struct rct_sound {
 } rct_sound;
 
 typedef struct {
+	uint16 var_0;
+	uint16 channels;
+	uint32 samples;
+	uint32 var_8;
+	uint16 bytes;
+	uint16 bits;
+	uint16 var_E;
+} rct_audio_info;
+
+typedef struct {
 	uint32 var_0;
 	uint8 pad_4[0x118];
 	HMMIO hmmio;
@@ -90,7 +100,7 @@ typedef struct {
 	rct_sound sound;
 } rct_other_sound;
 
-void get_dsound_devices();
+int get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
 int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
@@ -102,7 +112,9 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
-rct_sound* sound_stop(rct_sound *sound);
+int sound_stop(rct_sound *sound);
+int sound_stop_all();
+int sound_unmap_file(LPCVOID base);
 int sound_channel_stop(int channel);
 rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);
@@ -113,6 +125,7 @@ void stop_other_sounds();
 void stop_vehicle_sounds();
 void stop_ride_music();
 void stop_peep_sounds();
+void stop_title_music();
 void unpause_sounds();
 
 // 0x009AF59C probably does the same job
