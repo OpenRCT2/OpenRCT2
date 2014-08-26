@@ -1698,10 +1698,10 @@ STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
 STR_1697    :Dit kan niet op wachtrijen worden geplaatst
 STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
 STR_1699    :Teveel personen in het spel
-STR_1700    :Nieuwe klusjesman aannemen
-STR_1701    :Nieuwe monteur aannemen
-STR_1702    :Nieuwe bewaker aannemen
-STR_1703    :Nieuwe entertainer aannemen
+STR_1700    :Nieuwe klusjesman...
+STR_1701    :Nieuwe monteur...
+STR_1702    :Nieuwe bewaker...
+STR_1703    :Nieuwe entertainer...
 STR_1704    :Kan geen nieuwe werknemer aannemen...
 STR_1705    :{SMALLFONT}{BLACK}Deze werknemer ontslaan
 STR_1706    :{SMALLFONT}{BLACK}Deze persoon naar een andere locatie verplaatsen
@@ -1891,7 +1891,7 @@ STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moet inspecteren
 STR_1891    :Nog geen {STRINGID} in het park!
 STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Voer je CD van RollerCoaster Tycoon 2 in het volgende stationCD in the folLaaging drive:
+STR_1893    :Voer je CD van RollerCoaster Tycoon 2 in het volgende station:
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
 STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
@@ -2182,7 +2182,7 @@ STR_2180    :sujeonggwa
 STR_2181    :een broodje
 STR_2182    :een koekje
 STR_2183    :een lege kom
-STR_2184    :een leeg drinkarton
+STR_2184    :een leeg drinkpakje
 STR_2185    :een lege sapbeker
 STR_2186    :een gebraden worst
 STR_2187    :een lege kom
@@ -2295,7 +2295,7 @@ STR_2293    :{BLACK} Geen
 STR_2294    :{SMALLFONT}{BLACK}Bovenkant land aanpassen
 STR_2295    :{SMALLFONT}{BLACK}Zijkant land aanpassen
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} betaald voor entree
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgeven aan {BLACK}{COMMA16} attractie
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} attractie
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} attracties
 STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} stuk voedsel
 STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} stuks voedsel
@@ -2444,10 +2444,10 @@ STR_2442    :{BLACK}({STRINGID} resterend)
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Start deze marketingcampagne
-STR_2446    :{YELLOW}Je advertentiecampagne voor gratis entree tot het park is afgelopen
-STR_2447    :{YELLOW}Je advertentiecampagne voor gratis ritjes op {STRINGID} is afgelopen
-STR_2448    :{YELLOW}Je advertentiecampagne voor 50% korting op de entree is afgelopen
-STR_2449    :{YELLOW}Je advertentiecampagne voor gratis {STRINGID} is afgelopen
+STR_2446    :{YELLOW}Je marketingcampagne voor gratis entree tot het park is afgelopen
+STR_2447    :{YELLOW}Je marketingcampagne voor gratis ritjes op {STRINGID} is afgelopen
+STR_2448    :{YELLOW}Je marketingcampagne voor 50% korting op de entree is afgelopen
+STR_2449    :{YELLOW}Je marketingcampagne voor gratis {STRINGID} is afgelopen
 STR_2450    :{YELLOW}Je advertentiecampagne voor het park is afgelopen
 STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is afgelopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
@@ -2852,8 +2852,8 @@ STR_2850    :Nieuw baanontwerp is succesvol geïnstalleerd
 STR_2851    :Scenario al is geïnstalleerd
 STR_2852    :Baanontwerp is al geïnstalleerd
 STR_2853    :Niet toegestaan door de gemeente!
-STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Maak een pad naar de ingang
-STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Maak een pad vanaf de uitgang
+STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Bouw een pad naar de ingang
+STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Bouw een pad vanaf de uitgang
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over te nemen)
 STR_2858    :Kan marketingcampagne niet starten...
@@ -3070,7 +3070,7 @@ STR_3068    :Andere parken
 STR_3069    :Bovensegment
 STR_3070    :Van helling naar vlak
 STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
+STR_3072    :{SMALLFONT}{BLACK}Selecteer of deze prijs in het hele park moet worden gehanteerd
 STR_3073    :{RED}WAARSCHUWING: Je parkwaardering is onder de 700 gekomen!{NEWLINE}Als je niet binnen 4 weken de waardering boven de 700 hebt gekregen, wordt je park gesloten
 STR_3074    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog 3 weken om de waardering te verhogen
 STR_3075    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog maar 2 weken om de waardering te verhogen, anders wordt je park gesloten
@@ -3115,10 +3115,10 @@ STR_3113    :Een ander ontwerp selecteren
 STR_3114    :{SMALLFONT}{BLACK}Terug naar ontwerpselectie
 STR_3115    :{SMALLFONT}{BLACK}Baanontwerp opslaan
 STR_3116    :{SMALLFONT}{BLACK}Baanontwerp opslaan (Niet mogelijk voordat de attractie is getest en de statistieken zijn gegenereerd)
-STR_3117    :{BLACK}Monteur wordt gebeld...
+STR_3117    :{BLACK}Monteur wordt opgeroepen...
 STR_3118    :{BLACK}{STRINGID} gaat naar deze attractie
 STR_3119    :{BLACK}{STRINGID} is bezig deze attractie te repareren
-STR_3120    :{SMALLFONT}{BLACK}Vind de dichstbijzijnde monteur, of de monteur die de attractie aan het repareren is
+STR_3120    :{SMALLFONT}{BLACK}Vind de dichtstbijzijnde monteur, of de monteur die de attractie aan het repareren is
 STR_3121    :Kan geen monteur vinden, of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
