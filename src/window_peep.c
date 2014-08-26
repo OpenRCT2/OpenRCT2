@@ -825,7 +825,7 @@ void window_peep_overview_invalidate(){
 	
 	if (window_peep_page_widgets[w->page] != w->widgets){
 		w->widgets = window_peep_page_widgets[w->page];
-		//call 6eaeb8
+		window_init_scroll_widgets(w);
 	}
 	
 	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
@@ -874,5 +874,5 @@ void window_peep_overview_invalidate(){
 	window_peep_overview_widgets[WIDX_LOCATE].left = ax;
 	window_peep_overview_widgets[WIDX_TRACK].left = ax;
 	
-	//call 6987ed
+	RCT2_CALLPROC_X(0x6987ED, 0, 0, 0, 0, (int)w, 0, 0);
 }
