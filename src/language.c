@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -28,6 +28,7 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
 	"English (UK)",		// LANGUAGE_ENGLISH_UK
 	"English (US)",		// LANGUAGE_ENGLISH_US
+	"Deutsch", // LANGUAGE_GERMAN
 	"Nederlands",		// LANGUAGE_DUTCH
 	"Fran\u00E7ais",	// LANGUAGE_FRENCH
 	"Magyar",			// LANGUAGE_HUNGARIAN
@@ -39,6 +40,7 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
 	"english_uk",		// LANGUAGE_ENGLISH_UK
 	"english_us",		// LANGUAGE_ENGLISH_US
+	"german", // LANGUAGE_GERMAN
 	"dutch",			// LANGUAGE_DUTCH
 	"french",			// LANGUAGE_FRENCH
 	"hungarian",		// LANGUAGE_HUNGARIAN
@@ -105,7 +107,7 @@ int language_open(int id)
  * Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
  * code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
  * get_string will use those if the same entry in the loaded language is empty.
- * 
+ *
  * Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
  * strings for the time being. Further investigation is required.
  *

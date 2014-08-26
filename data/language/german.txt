@@ -1,0 +1,3452 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
+STR_0000    :
+STR_0001    :{STRINGID} {COMMA16}
+STR_0002    :Attraktion
+STR_0003    :Attraktion
+STR_0004    :Schwingende Hängebahn
+STR_0005    :Attraktion
+STR_0006    :Kinderachterbahn
+STR_0007    :Minizug
+STR_0008    :Einschienenzug
+STR_0009    :Minihängebahn
+STR_0010    :Attraktion
+STR_0011    :Attraktion
+STR_0012    :Attraktion
+STR_0013    :Autofahrt
+STR_0014    :Attraktion
+STR_0015    :Attraktion
+STR_0016    :Attraktion
+STR_0017    :Looping-Achterbahn
+STR_0018    :Attraktion
+STR_0019    :Attraktion
+STR_0020    :Sessellift
+STR_0021    :Attraktion
+STR_0022    :Attraktion
+STR_0023    :Attraktion
+STR_0024    :Attraktion
+STR_0025    :Attraktion
+STR_0026    :Attraktion
+STR_0027    :Attraktion
+STR_0028    :Attraktion
+STR_0029    :Attraktion
+STR_0030    :Stand
+STR_0031    :Stand
+STR_0032    :Stand
+STR_0033    :Stand
+STR_0034    :Stand
+STR_0035    :Attraktion
+STR_0036    :Stand
+STR_0037    :Kiosk
+STR_0038    :Toilette
+STR_0039    :Attraktion
+STR_0040    :Attraktion
+STR_0041    :Attraktion
+STR_0042    :Attraktion
+STR_0043    :Attraktion
+STR_0044    :Umgekehrte Freefall-Achterbahn
+STR_0045    :Lift
+STR_0046    :Attraktion
+STR_0047    :Attraktion
+STR_0048    :Attraktion
+STR_0049    :Attraktion
+STR_0050    :Attraktion
+STR_0051    :Attraktion
+STR_0052    :Attraktion
+STR_0053    :Hyper-Twister-Achterbahn
+STR_0054    :Holz-Achterbahn
+STR_0055    :Achterbahn mit seitlicher Führung
+STR_0056    :Wilde Maus
+STR_0057    :Mehrdimensionale Achterbahn
+STR_0058    :Attraktion
+STR_0059    :Umgekehrte Flug-Achterbahn
+STR_0060    :Attraktion
+STR_0061    :Attraktion
+STR_0062    :Attraktion
+STR_0063    :Attraktion
+STR_0064    :Attraktion
+STR_0065    :Hängebahn
+STR_0066    :Attraktion
+STR_0067    :Attraktion
+STR_0068    :Pipeline-Achterbahn
+STR_0069    :Attraktion
+STR_0070    :Attraktion
+STR_0071    :Attraktion
+STR_0072    :Attraktion
+STR_0073    :Attraktion
+STR_0074    :Attraktion
+STR_0075    :Attraktion
+STR_0076    :Wasser-Achterbahn
+STR_0077    :Attraktion
+STR_0078    :Attraktion
+STR_0079    :Attraktion
+STR_0080    :Attraktion
+STR_0081    :Attraktion
+STR_0082    :Attraktion
+STR_0083    :Attraktion
+STR_0084    :Attraktion
+STR_0085    :Attraktion
+STR_0086    :Attraktion
+STR_0087    :Attraktion
+STR_0088    :Attraktion
+STR_0089    :Mini-Achterbahn
+STR_0090    :Attraktion
+STR_0091    :Attraktion
+STR_0092    :Attraktion
+STR_0093    :
+STR_0094    :
+STR_0095    :
+STR_0096    :
+STR_0097    :
+STR_0098    :
+STR_0099    :
+STR_0100    :
+STR_0101    :
+STR_0102    :
+STR_0103    :
+STR_0104    :
+STR_0105    :
+STR_0106    :
+STR_0107    :
+STR_0108    :
+STR_0109    :
+STR_0110    :
+STR_0111    :
+STR_0112    :
+STR_0113    :
+STR_0114    :
+STR_0115    :
+STR_0116    :
+STR_0117    :
+STR_0118    :
+STR_0119    :
+STR_0120    :
+STR_0121    :
+STR_0122    :
+STR_0123    :
+STR_0124    :
+STR_0125    :
+STR_0126    :
+STR_0127    :
+STR_0128    :
+STR_0129    :
+STR_0130    :
+STR_0131    :
+STR_0132    :
+STR_0133    :
+STR_0134    :
+STR_0135    :
+STR_0136    :
+STR_0137    :
+STR_0138    :
+STR_0139    :
+STR_0140    :
+STR_0141    :
+STR_0142    :
+STR_0143    :
+STR_0144    :
+STR_0145    :
+STR_0146    :
+STR_0147    :
+STR_0148    :
+STR_0149    :
+STR_0150    :
+STR_0151    :
+STR_0152    :
+STR_0153    :
+STR_0154    :
+STR_0155    :
+STR_0156    :
+STR_0157    :
+STR_0158    :
+STR_0159    :
+STR_0160    :
+STR_0161    :
+STR_0162    :
+STR_0163    :
+STR_0164    :
+STR_0165    :
+STR_0166    :
+STR_0167    :
+STR_0168    :
+STR_0169    :
+STR_0170    :
+STR_0171    :
+STR_0172    :
+STR_0173    :
+STR_0174    :
+STR_0175    :
+STR_0176    :
+STR_0177    :
+STR_0178    :
+STR_0179    :
+STR_0180    :
+STR_0181    :
+STR_0182    :
+STR_0183    :
+STR_0184    :
+STR_0185    :
+STR_0186    :
+STR_0187    :
+STR_0188    :
+STR_0189    :
+STR_0190    :
+STR_0191    :
+STR_0192    :
+STR_0193    :
+STR_0194    :
+STR_0195    :
+STR_0196    :
+STR_0197    :
+STR_0198    :
+STR_0199    :
+STR_0200    :
+STR_0201    :
+STR_0202    :
+STR_0203    :
+STR_0204    :
+STR_0205    :
+STR_0206    :
+STR_0207    :
+STR_0208    :
+STR_0209    :
+STR_0210    :
+STR_0211    :
+STR_0212    :
+STR_0213    :
+STR_0214    :
+STR_0215    :
+STR_0216    :
+STR_0217    :
+STR_0218    :
+STR_0219    :
+STR_0220    :
+STR_0221    :
+STR_0222    :
+STR_0223    :
+STR_0224    :
+STR_0225    :
+STR_0226    :
+STR_0227    :
+STR_0228    :
+STR_0229    :
+STR_0230    :
+STR_0231    :
+STR_0232    :
+STR_0233    :
+STR_0234    :
+STR_0235    :
+STR_0236    :
+STR_0237    :
+STR_0238    :
+STR_0239    :
+STR_0240    :
+STR_0241    :
+STR_0242    :
+STR_0243    :
+STR_0244    :
+STR_0245    :
+STR_0246    :
+STR_0247    :
+STR_0248    :
+STR_0249    :
+STR_0250    :
+STR_0251    :
+STR_0252    :
+STR_0253    :
+STR_0254    :
+STR_0255    :
+STR_0256    :
+STR_0257    :
+STR_0258    :
+STR_0259    :
+STR_0260    :
+STR_0261    :
+STR_0262    :
+STR_0263    :
+STR_0264    :
+STR_0265    :
+STR_0266    :
+STR_0267    :
+STR_0268    :
+STR_0269    :
+STR_0270    :
+STR_0271    :
+STR_0272    :
+STR_0273    :
+STR_0274    :
+STR_0275    :
+STR_0276    :
+STR_0277    :
+STR_0278    :
+STR_0279    :
+STR_0280    :
+STR_0281    :
+STR_0282    :
+STR_0283    :
+STR_0284    :
+STR_0285    :
+STR_0286    :
+STR_0287    :
+STR_0288    :
+STR_0289    :
+STR_0290    :
+STR_0291    :
+STR_0292    :
+STR_0293    :
+STR_0294    :
+STR_0295    :
+STR_0296    :
+STR_0297    :
+STR_0298    :
+STR_0299    :
+STR_0300    :
+STR_0301    :
+STR_0302    :
+STR_0303    :
+STR_0304    :
+STR_0305    :
+STR_0306    :
+STR_0307    :
+STR_0308    :
+STR_0309    :
+STR_0310    :
+STR_0311    :
+STR_0312    :
+STR_0313    :
+STR_0314    :
+STR_0315    :
+STR_0316    :
+STR_0317    :
+STR_0318    :
+STR_0319    :
+STR_0320    :
+STR_0321    :
+STR_0322    :
+STR_0323    :
+STR_0324    :
+STR_0325    :
+STR_0326    :
+STR_0327    :
+STR_0328    :
+STR_0329    :
+STR_0330    :
+STR_0331    :
+STR_0332    :
+STR_0333    :
+STR_0334    :
+STR_0335    :
+STR_0336    :
+STR_0337    :
+STR_0338    :
+STR_0339    :
+STR_0340    :
+STR_0341    :
+STR_0342    :
+STR_0343    :
+STR_0344    :
+STR_0345    :
+STR_0346    :
+STR_0347    :
+STR_0348    :
+STR_0349    :
+STR_0350    :
+STR_0351    :
+STR_0352    :
+STR_0353    :
+STR_0354    :
+STR_0355    :
+STR_0356    :
+STR_0357    :
+STR_0358    :
+STR_0359    :
+STR_0360    :
+STR_0361    :
+STR_0362    :
+STR_0363    :
+STR_0364    :
+STR_0365    :
+STR_0366    :
+STR_0367    :
+STR_0368    :
+STR_0369    :
+STR_0370    :
+STR_0371    :
+STR_0372    :
+STR_0373    :
+STR_0374    :
+STR_0375    :
+STR_0376    :
+STR_0377    :
+STR_0378    :
+STR_0379    :
+STR_0380    :
+STR_0381    :
+STR_0382    :
+STR_0383    :
+STR_0384    :
+STR_0385    :
+STR_0386    :
+STR_0387    :
+STR_0388    :
+STR_0389    :
+STR_0390    :
+STR_0391    :
+STR_0392    :
+STR_0393    :
+STR_0394    :
+STR_0395    :
+STR_0396    :
+STR_0397    :
+STR_0398    :
+STR_0399    :
+STR_0400    :
+STR_0401    :
+STR_0402    :
+STR_0403    :
+STR_0404    :
+STR_0405    :
+STR_0406    :
+STR_0407    :
+STR_0408    :
+STR_0409    :
+STR_0410    :
+STR_0411    :
+STR_0412    :
+STR_0413    :
+STR_0414    :
+STR_0415    :
+STR_0416    :
+STR_0417    :
+STR_0418    :
+STR_0419    :
+STR_0420    :
+STR_0421    :
+STR_0422    :
+STR_0423    :
+STR_0424    :
+STR_0425    :
+STR_0426    :
+STR_0427    :
+STR_0428    :
+STR_0429    :
+STR_0430    :
+STR_0431    :
+STR_0432    :
+STR_0433    :
+STR_0434    :
+STR_0435    :
+STR_0436    :
+STR_0437    :
+STR_0438    :
+STR_0439    :
+STR_0440    :
+STR_0441    :
+STR_0442    :
+STR_0443    :
+STR_0444    :
+STR_0445    :
+STR_0446    :
+STR_0447    :
+STR_0448    :
+STR_0449    :
+STR_0450    :
+STR_0451    :
+STR_0452    :
+STR_0453    :
+STR_0454    :
+STR_0455    :
+STR_0456    :
+STR_0457    :
+STR_0458    :
+STR_0459    :
+STR_0460    :
+STR_0461    :
+STR_0462    :
+STR_0463    :
+STR_0464    :
+STR_0465    :
+STR_0466    :
+STR_0467    :
+STR_0468    :
+STR_0469    :
+STR_0470    :
+STR_0471    :
+STR_0472    :
+STR_0473    :
+STR_0474    :
+STR_0475    :
+STR_0476    :
+STR_0477    :
+STR_0478    :
+STR_0479    :
+STR_0480    :
+STR_0481    :
+STR_0482    :
+STR_0483    :
+STR_0484    :
+STR_0485    :
+STR_0486    :
+STR_0487    :
+STR_0488    :
+STR_0489    :
+STR_0490    :
+STR_0491    :
+STR_0492    :
+STR_0493    :
+STR_0494    :
+STR_0495    :
+STR_0496    :
+STR_0497    :
+STR_0498    :
+STR_0499    :
+STR_0500    :
+STR_0501    :
+STR_0502    :
+STR_0503    :
+STR_0504    :
+STR_0505    :
+STR_0506    :
+STR_0507    :
+STR_0508    :
+STR_0509    :
+STR_0510    :
+STR_0511    :
+STR_0512    :
+STR_0513    :
+STR_0514    :Unter dem Achterbahngleis hängende Züge schwingen in Kurven aus.
+STR_0515    :
+STR_0516    :Eine mäßige Achterbahn für Besucher, die sich noch nicht auf größere Achterbahnen trauen.
+STR_0517    :Fahrgäste fahren in Minizügen auf schmalspurigen Schienen.
+STR_0518    :Fahrgäste fahren in elektronischen Zügen auf Gleisen.
+STR_0519    :Fahrgäste fahren in kleinen, unter den Gleisen hängenden Wagen, die in Kurven frei herumschwingen.
+STR_0520    :
+STR_0521    :
+STR_0522    :
+STR_0523    :Fahrgäste fahren in angetriebenen Wagen auf einer festgelegten Route.
+STR_0524    :
+STR_0525    :
+STR_0526    :
+STR_0527    :Eine Stahl-Achterbahn, die Loopings unterstützt.
+STR_0528    :
+STR_0529    :
+STR_0530    :Wagen hängen an Stahlseilen, die durchgehend von einer Station zur anderen fahren.
+STR_0531    :
+STR_0532    :
+STR_0533    :
+STR_0534    :
+STR_0535    :
+STR_0536    :
+STR_0537    :
+STR_0538    :
+STR_0539    :
+STR_0540    :
+STR_0541    :
+STR_0542    :
+STR_0543    :
+STR_0544    :
+STR_0545    :
+STR_0546    :
+STR_0547    :
+STR_0548    :
+STR_0549    :
+STR_0550    :
+STR_0551    :
+STR_0552    :
+STR_0553    :
+STR_0554    :Der Wagen wird aus der Station heraus beschleunigt, schießt vertikal hoch, um anschließend rückwärts wieder herunter und zurück zur Station zu fahren.
+STR_0555    :
+STR_0556    :
+STR_0557    :
+STR_0558    :
+STR_0559    :
+STR_0560    :
+STR_0561    :
+STR_0562    :
+STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
+STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
+STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
+STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0568    :
+STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0570    :
+STR_0571    :
+STR_0572    :
+STR_0573    :
+STR_0574    :
+STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0576    :
+STR_0577    :
+STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0579    :
+STR_0580    :
+STR_0581    :
+STR_0582    :
+STR_0583    :
+STR_0584    :
+STR_0585    :
+STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0587    :
+STR_0588    :
+STR_0589    :
+STR_0590    :
+STR_0591    :
+STR_0592    :
+STR_0593    :
+STR_0594    :
+STR_0595    :
+STR_0596    :
+STR_0597    :
+STR_0598    :
+STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0600    :
+STR_0601    :
+STR_0602    :
+STR_0603    :Guest {INT32}
+STR_0604    :Guest {INT32}
+STR_0605    :Guest {INT32}
+STR_0606    :Guest {INT32}
+STR_0607    :Guest {INT32}
+STR_0608    :Guest {INT32}
+STR_0609    :Guest {INT32}
+STR_0610    :Guest {INT32}
+STR_0611    :Guest {INT32}
+STR_0612    :Guest {INT32}
+STR_0613    :Guest {INT32}
+STR_0614    :Guest {INT32}
+STR_0615    :Guest {INT32}
+STR_0616    :Guest {INT32}
+STR_0617    :Guest {INT32}
+STR_0618    :Guest {INT32}
+STR_0619    :Guest {INT32}
+STR_0620    :Guest {INT32}
+STR_0621    :Guest {INT32}
+STR_0622    :Guest {INT32}
+STR_0623    :Guest {INT32}
+STR_0624    :Guest {INT32}
+STR_0625    :Guest {INT32}
+STR_0626    :Guest {INT32}
+STR_0627    :Guest {INT32}
+STR_0628    :Guest {INT32}
+STR_0629    :Guest {INT32}
+STR_0630    :Guest {INT32}
+STR_0631    :Guest {INT32}
+STR_0632    :Guest {INT32}
+STR_0633    :Guest {INT32}
+STR_0634    :Guest {INT32}
+STR_0635    :Guest {INT32}
+STR_0636    :Guest {INT32}
+STR_0637    :Guest {INT32}
+STR_0638    :Guest {INT32}
+STR_0639    :Guest {INT32}
+STR_0640    :Guest {INT32}
+STR_0641    :Guest {INT32}
+STR_0642    :Guest {INT32}
+STR_0643    :Guest {INT32}
+STR_0644    :Guest {INT32}
+STR_0645    :Guest {INT32}
+STR_0646    :Guest {INT32}
+STR_0647    :Guest {INT32}
+STR_0648    :Guest {INT32}
+STR_0649    :Guest {INT32}
+STR_0650    :Guest {INT32}
+STR_0651    :Guest {INT32}
+STR_0652    :Guest {INT32}
+STR_0653    :Guest {INT32}
+STR_0654    :Guest {INT32}
+STR_0655    :Guest {INT32}
+STR_0656    :Guest {INT32}
+STR_0657    :Guest {INT32}
+STR_0658    :Guest {INT32}
+STR_0659    :Guest {INT32}
+STR_0660    :Guest {INT32}
+STR_0661    :Guest {INT32}
+STR_0662    :Guest {INT32}
+STR_0663    :Guest {INT32}
+STR_0664    :Guest {INT32}
+STR_0665    :Guest {INT32}
+STR_0666    :Guest {INT32}
+STR_0667    :Guest {INT32}
+STR_0668    :Guest {INT32}
+STR_0669    :Guest {INT32}
+STR_0670    :Guest {INT32}
+STR_0671    :Guest {INT32}
+STR_0672    :Guest {INT32}
+STR_0673    :Guest {INT32}
+STR_0674    :Guest {INT32}
+STR_0675    :Guest {INT32}
+STR_0676    :Guest {INT32}
+STR_0677    :Guest {INT32}
+STR_0678    :Guest {INT32}
+STR_0679    :Guest {INT32}
+STR_0680    :Guest {INT32}
+STR_0681    :Guest {INT32}
+STR_0682    :Guest {INT32}
+STR_0683    :Guest {INT32}
+STR_0684    :Guest {INT32}
+STR_0685    :Guest {INT32}
+STR_0686    :Guest {INT32}
+STR_0687    :Guest {INT32}
+STR_0688    :Guest {INT32}
+STR_0689    :Guest {INT32}
+STR_0690    :Guest {INT32}
+STR_0691    :Guest {INT32}
+STR_0692    :Guest {INT32}
+STR_0693    :Guest {INT32}
+STR_0694    :Guest {INT32}
+STR_0695    :Guest {INT32}
+STR_0696    :Guest {INT32}
+STR_0697    :Guest {INT32}
+STR_0698    :Guest {INT32}
+STR_0699    :Guest {INT32}
+STR_0700    :Guest {INT32}
+STR_0701    :Guest {INT32}
+STR_0702    :Guest {INT32}
+STR_0703    :Guest {INT32}
+STR_0704    :Guest {INT32}
+STR_0705    :Guest {INT32}
+STR_0706    :Guest {INT32}
+STR_0707    :Guest {INT32}
+STR_0708    :Guest {INT32}
+STR_0709    :Guest {INT32}
+STR_0710    :Guest {INT32}
+STR_0711    :Guest {INT32}
+STR_0712    :Guest {INT32}
+STR_0713    :Guest {INT32}
+STR_0714    :Guest {INT32}
+STR_0715    :Guest {INT32}
+STR_0716    :Guest {INT32}
+STR_0717    :Guest {INT32}
+STR_0718    :Guest {INT32}
+STR_0719    :Guest {INT32}
+STR_0720    :Guest {INT32}
+STR_0721    :Guest {INT32}
+STR_0722    :Guest {INT32}
+STR_0723    :Guest {INT32}
+STR_0724    :Guest {INT32}
+STR_0725    :Guest {INT32}
+STR_0726    :Guest {INT32}
+STR_0727    :Guest {INT32}
+STR_0728    :Guest {INT32}
+STR_0729    :Guest {INT32}
+STR_0730    :Guest {INT32}
+STR_0731    :Guest {INT32}
+STR_0732    :Guest {INT32}
+STR_0733    :Guest {INT32}
+STR_0734    :Guest {INT32}
+STR_0735    :Guest {INT32}
+STR_0736    :Guest {INT32}
+STR_0737    :Guest {INT32}
+STR_0738    :Guest {INT32}
+STR_0739    :Guest {INT32}
+STR_0740    :Guest {INT32}
+STR_0741    :Guest {INT32}
+STR_0742    :Guest {INT32}
+STR_0743    :Guest {INT32}
+STR_0744    :Guest {INT32}
+STR_0745    :Guest {INT32}
+STR_0746    :Guest {INT32}
+STR_0747    :Guest {INT32}
+STR_0748    :Guest {INT32}
+STR_0749    :Guest {INT32}
+STR_0750    :Guest {INT32}
+STR_0751    :Guest {INT32}
+STR_0752    :Guest {INT32}
+STR_0753    :Guest {INT32}
+STR_0754    :Guest {INT32}
+STR_0755    :Guest {INT32}
+STR_0756    :Guest {INT32}
+STR_0757    :Guest {INT32}
+STR_0758    :Guest {INT32}
+STR_0759    :Guest {INT32}
+STR_0760    :Guest {INT32}
+STR_0761    :Guest {INT32}
+STR_0762    :Guest {INT32}
+STR_0763    :Guest {INT32}
+STR_0764    :Guest {INT32}
+STR_0765    :Guest {INT32}
+STR_0766    :Guest {INT32}
+STR_0767    :Guest {INT32}
+STR_0768    :Handyman {INT32}
+STR_0769    :Mechanic {INT32}
+STR_0770    :Security Guard {INT32}
+STR_0771    :Entertainer {INT32}
+STR_0772    :Unnamed park{POP16}{POP16}
+STR_0773    :Unnamed park{POP16}{POP16}
+STR_0774    :Unnamed park{POP16}{POP16}
+STR_0775    :Unnamed park{POP16}{POP16}
+STR_0776    :Unnamed park{POP16}{POP16}
+STR_0777    :Unnamed park{POP16}{POP16}
+STR_0778    :Sign
+STR_0779    :1st
+STR_0780    :2nd
+STR_0781    :3rd
+STR_0782    :4th
+STR_0783    :5th
+STR_0784    :6th
+STR_0785    :7th
+STR_0786    :8th
+STR_0787    :9th
+STR_0788    :10th
+STR_0789    :11th
+STR_0790    :12th
+STR_0791    :13th
+STR_0792    :14th
+STR_0793    :15th
+STR_0794    :16th
+STR_0795    :17th
+STR_0796    :18th
+STR_0797    :19th
+STR_0798    :20th
+STR_0799    :21st
+STR_0800    :22nd
+STR_0801    :23rd
+STR_0802    :24th
+STR_0803    :25th
+STR_0804    :26th
+STR_0805    :27th
+STR_0806    :28th
+STR_0807    :29th
+STR_0808    :30th
+STR_0809    :31st
+STR_0810    :Jan
+STR_0811    :Feb
+STR_0812    :Mar
+STR_0813    :Apr
+STR_0814    :May
+STR_0815    :Jun
+STR_0816    :Jul
+STR_0817    :Aug
+STR_0818    :Sep
+STR_0819    :Oct
+STR_0820    :Nov
+STR_0821    :Dec
+STR_0822    :Unable to access graphic data file
+STR_0823    :Missing or inaccessible data file
+STR_0824    :{BLACK}{CROSS}
+STR_0825    :Chosen name in use already
+STR_0826    :Too many names defined
+STR_0827    :Not enough cash - requires {CURRENCY2DP}
+STR_0828    :{SMALLFONT}{BLACK}Close window
+STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
+STR_0830    :{SMALLFONT}{BLACK}Zoom view in
+STR_0831    :{SMALLFONT}{BLACK}Zoom view out
+STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
+STR_0833    :{SMALLFONT}{BLACK}Pause game
+STR_0834    :{SMALLFONT}{BLACK}Disk and game options
+STR_0835    :Game initialization failed
+STR_0836    :Unable to start game in a minimized state
+STR_0837    :Unable to initialize graphics system
+STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
+STR_0839    :{UINT16} x {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :Desktop window
+STR_0842    :640x480 full screen
+STR_0843    :800x600 full screen
+STR_0844    :1024x768 full screen
+STR_0845    :1152x864 full screen
+STR_0846    :1280x1024 full screen
+STR_0847    :About 'RollerCoaster Tycoon 2'
+STR_0848    :RollerCoaster Tycoon 2
+STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
+STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Thanks to:-
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0858    :{WINDOW_COLOUR_2}
+STR_0859    :{WINDOW_COLOUR_2}
+STR_0860    :{WINDOW_COLOUR_2}
+STR_0861    :
+STR_0862    :
+STR_0863    :
+STR_0864    :
+STR_0865    :{STRINGID}
+STR_0866    :{POP16}{STRINGID}
+STR_0867    :{POP16}{POP16}{STRINGID}
+STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
+STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0876    :{BLACK}{DOWN}
+STR_0877    :Too low !
+STR_0878    :Too high !
+STR_0879    :Can't lower land here...
+STR_0880    :Can't raise land here...
+STR_0881    :Object in the way
+STR_0882    :Load Game
+STR_0883    :Save Game
+STR_0884    :Load Landscape
+STR_0885    :Save Landscape
+STR_0886    :Quit Game
+STR_0887    :Quit Scenario Editor
+STR_0888    :Quit Roller Coaster Designer
+STR_0889    :Quit Track Designs Manager
+STR_0890    :SCR{COMMA16}.BMP
+STR_0891    :Screenshot
+STR_0892    :Screenshot saved to disk as '{STRINGID}'
+STR_0893    :Screenshot failed !
+STR_0894    :Landscape data area full !
+STR_0895    :Can't build partly above and partly below ground
+STR_0896    :{POP16}{POP16}{STRINGID} Construction
+STR_0897    :Direction
+STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
+STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
+STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
+STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
+STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
+STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
+STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
+STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
+STR_0906    :{SMALLFONT}{BLACK}Straight
+STR_0907    :Slope
+STR_0908    :Roll/Banking
+STR_0909    :Seat Rot.
+STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
+STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
+STR_0912    :{SMALLFONT}{BLACK}No roll
+STR_0913    :{SMALLFONT}{BLACK}Move to previous section
+STR_0914    :{SMALLFONT}{BLACK}Move to next section
+STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
+STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
+STR_0917    :{SMALLFONT}{BLACK}Vertical drop
+STR_0918    :{SMALLFONT}{BLACK}Steep slope down
+STR_0919    :{SMALLFONT}{BLACK}Slope down
+STR_0920    :{SMALLFONT}{BLACK}Level
+STR_0921    :{SMALLFONT}{BLACK}Slope up
+STR_0922    :{SMALLFONT}{BLACK}Steep slope up
+STR_0923    :{SMALLFONT}{BLACK}Vertical rise
+STR_0924    :{SMALLFONT}{BLACK}Helix down
+STR_0925    :{SMALLFONT}{BLACK}Helix up
+STR_0926    :Can't remove this...
+STR_0927    :Can't construct this here...
+STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
+STR_0929    :'S' Bend (left)
+STR_0930    :'S' Bend (right)
+STR_0931    :Vertical Loop (left)
+STR_0932    :Vertical Loop (right)
+STR_0933    :Raise or lower land first
+STR_0934    :Attraktion entrance in the way
+STR_0935    :Attraktion exit in the way
+STR_0936    :Park entrance in the way
+STR_0937    :{SMALLFONT}{BLACK}View options
+STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
+STR_0939    :Underground/Inside View
+STR_0940    :Remove Base Land
+STR_0941    :Remove Vertical Faces
+STR_0942    :See-Through Rides
+STR_0943    :See-Through Scenery
+STR_0944    :Save
+STR_0945    :Don't Save
+STR_0946    :Cancel
+STR_0947    :Save this before loading ?
+STR_0948    :Save this before quitting ?
+STR_0949    :Save this before quitting ?
+STR_0950    :Load Game
+STR_0951    :Quit Game
+STR_0952    :Quit Game
+STR_0953    :Load Landscape
+STR_0954    :
+STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0956    :-180{DEGREE}
+STR_0957    :-135{DEGREE}
+STR_0958    :-90{DEGREE}
+STR_0959    :-45{DEGREE}
+STR_0960    :0{DEGREE}
+STR_0961    :+45{DEGREE}
+STR_0962    :+90{DEGREE}
+STR_0963    :+135{DEGREE}
+STR_0964    :+180{DEGREE}
+STR_0965    :+225{DEGREE}
+STR_0966    :+270{DEGREE}
+STR_0967    :+315{DEGREE}
+STR_0968    :+360{DEGREE}
+STR_0969    :+405{DEGREE}
+STR_0970    :+450{DEGREE}
+STR_0971    :+495{DEGREE}
+STR_0972    :Cancel
+STR_0973    :OK
+STR_0974    :Attraktions
+STR_0975    :Shops and Stalls
+STR_0976    :Restrooms and Information Kiosks
+STR_0977    :New Transport Rides
+STR_0978    :New Gentle Rides
+STR_0979    :New Roller Coasters
+STR_0980    :New Thrill Rides
+STR_0981    :New Water Rides
+STR_0982    :New Shops & Stalls
+STR_0983    :Research & Development
+STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0986    :{BLACK}{CURRENCY2DP}
+STR_0987    :Too many rides/attractions
+STR_0988    :Can't create new ride/attraction...
+STR_0989    :{STRINGID}
+STR_0990    :{SMALLFONT}{BLACK}Construction
+STR_0991    :Station platform
+STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
+STR_0993    :Demolish ride/attraction
+STR_0994    :Demolish
+STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
+STR_0996    :Overall view
+STR_0997    :{SMALLFONT}{BLACK}View selection
+STR_0998    :No more stations allowed on this ride
+STR_0999    :Requires a station platform
+STR_1000    :Track is not a complete circuit
+STR_1001    :Track unsuitable for type of train
+STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Must be closed first
+STR_1007    :Unable to create enough vehicles
+STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
+STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
+STR_1010    :{SMALLFONT}{BLACK}Open or close park
+STR_1011    :Close all
+STR_1012    :Open all
+STR_1013    :Close park
+STR_1014    :Open park
+STR_1015    :Unable to operate with more than one station platform in this mode
+STR_1016    :Unable to operate with less than two stations in this mode
+STR_1017    :Can't change operating mode...
+STR_1018    :Can't make changes...
+STR_1019    :Can't make changes...
+STR_1020    :Can't make changes...
+STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
+STR_1024    :{COMMA16} car per train
+STR_1025    :{COMMA16} cars per train
+STR_1026    :Station platform too long!
+STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
+STR_1028    :Off edge of map!
+STR_1029    :Cannot build partly above and partly below water!
+STR_1030    :Can only build this underwater!
+STR_1031    :Can't build this underwater!
+STR_1032    :Can only build this on water!
+STR_1033    :Can only build this above ground!
+STR_1034    :Can only build this on land!
+STR_1035    :Local authority won't allow construction above tree-height!
+STR_1036    :Load Game
+STR_1037    :Load Landscape
+STR_1038    :Convert saved game to scenario
+STR_1039    :Install new track design
+STR_1040    :Save Game
+STR_1041    :Save Scenario
+STR_1042    :Save Landscape
+STR_1043    :RollerCoaster Tycoon 2 Saved Game
+STR_1044    :RollerCoaster Tycoon 2 Scenario File
+STR_1045    :RollerCoaster Tycoon 2 Landscape File
+STR_1046    :RollerCoaster Tycoon 2 Track Design File
+STR_1047    :Game save failed!
+STR_1048    :Scenario save failed!
+STR_1049    :Landscape save failed!
+STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
+STR_1051    :Invisible Supports
+STR_1052    :Invisible People
+STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
+STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
+STR_1055    :{SMALLFONT}{BLACK}Name person
+STR_1056    :{SMALLFONT}{BLACK}Name staff member
+STR_1057    :Attraktion/attraction name
+STR_1058    :Enter new name for this ride/attraction:-
+STR_1059    :Can't rename ride/attraction...
+STR_1060    :Invalid ride/attraction name
+STR_1061    :Normal mode
+STR_1062    :Continuous circuit mode
+STR_1063    :Reverse-Incline launched shuttle mode
+STR_1064    :Powered launch
+STR_1065    :Shuttle mode
+STR_1066    :Boat hire mode
+STR_1067    :Upward launch
+STR_1068    :Rotating lift mode
+STR_1069    :Station to station mode
+STR_1070    :Single ride per admission
+STR_1071    :Unlimited rides per admission
+STR_1072    :Maze mode
+STR_1073    :Race mode
+STR_1074    :Bumper-car mode
+STR_1075    :Swing mode
+STR_1076    :Shop stall mode
+STR_1077    :Rotation mode
+STR_1078    :Forward rotation
+STR_1079    :Backward rotation
+STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
+STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
+STR_1082    :Space rings mode
+STR_1083    :Beginners mode
+STR_1084    :LIM-powered launch
+STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
+STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
+STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
+STR_1088    :Intense mode
+STR_1089    :Berserk mode
+STR_1090    :Haunted house mode
+STR_1091    :Circus show mode
+STR_1092    :Downward launch
+STR_1093    :Crooked house mode
+STR_1094    :Freefall drop mode
+STR_1095    :Continuous circuit block sectioned mode
+STR_1096    :Powered launch
+STR_1097    :Powered launch block sectioned mode
+STR_1098    :Moving to end of {POP16}{STRINGID}
+STR_1099    :Waiting for passengers at {POP16}{STRINGID}
+STR_1100    :Waiting to depart {POP16}{STRINGID}
+STR_1101    :Departing {POP16}{STRINGID}
+STR_1102    :Traveling at {VELOCITY}
+STR_1103    :Arriving at {POP16}{STRINGID}
+STR_1104    :Unloading passengers at {POP16}{STRINGID}
+STR_1105    :Traveling at {VELOCITY}
+STR_1106    :Crashing!
+STR_1107    :Crashed!
+STR_1108    :Traveling at {VELOCITY}
+STR_1109    :Swinging
+STR_1110    :Rotating
+STR_1111    :Rotating
+STR_1112    :Operating
+STR_1113    :Showing film
+STR_1114    :Rotating
+STR_1115    :Operating
+STR_1116    :Operating
+STR_1117    :Doing circus show
+STR_1118    :Operating
+STR_1119    :Waiting for cable lift
+STR_1120    :Traveling at {VELOCITY}
+STR_1121    :Stopping
+STR_1122    :Waiting for passengers
+STR_1123    :Waiting to start
+STR_1124    :Starting
+STR_1125    :Operating
+STR_1126    :Stopping
+STR_1127    :Unloading passengers
+STR_1128    :Stopped by block brakes
+STR_1129    :All vehicles in same colors
+STR_1130    :Different colors per {STRINGID}
+STR_1131    :Different colors per vehicle
+STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Vehicle {POP16}{COMMA16}
+STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1135    :{STRINGID} {COMMA16}
+STR_1136    :{SMALLFONT}{BLACK}Select main color
+STR_1137    :{SMALLFONT}{BLACK}Select additional color 1
+STR_1138    :{SMALLFONT}{BLACK}Select additional color 2
+STR_1139    :{SMALLFONT}{BLACK}Select support structure color
+STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
+STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1144    :Can't build/move entrance for this ride/attraction...
+STR_1145    :Can't build/move exit for this ride/attraction...
+STR_1146    :Entrance not yet built
+STR_1147    :Exit not yet built
+STR_1148    :Quarter load
+STR_1149    :Half load
+STR_1150    :Three-quarter load
+STR_1151    :Full load
+STR_1152    :Any load
+STR_1153    :Height Marks on Ride Tracks
+STR_1154    :Height Marks on Land
+STR_1155    :Height Marks on Paths
+STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1158    :Can't remove this...
+STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
+STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
+STR_1161    :Can't position this here...
+STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
+STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
+STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1166    :Can't lower water level here...
+STR_1167    :Can't raise water level here...
+STR_1168    :Options
+STR_1169    :(None)
+STR_1170    :{STRING}
+STR_1171    :{RED}Closed - -
+STR_1172    :{YELLOW}{STRINGID} - -
+STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
+STR_1174    :Banner sign in the way
+STR_1175    :Can't build this on sloped footpath
+STR_1176    :Can't build footpath here...
+STR_1177    :Can't remove footpath from here...
+STR_1178    :Land slope unsuitable
+STR_1179    :Footpath in the way
+STR_1180    :Can't build this underwater!
+STR_1181    :Footpaths
+STR_1182    :Type
+STR_1183    :Direction
+STR_1184    :Slope
+STR_1185    :{SMALLFONT}{BLACK}Direction
+STR_1186    :{SMALLFONT}{BLACK}Slope down
+STR_1187    :{SMALLFONT}{BLACK}Level
+STR_1188    :{SMALLFONT}{BLACK}Slope up
+STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
+STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
+STR_1191    :{BLACK}{STRINGID}
+STR_1192    :{OUTLINE}{RED}{STRINGID}
+STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
+STR_1194    :Closed
+STR_1195    :Test Run
+STR_1196    :Open
+STR_1197    :Broken Down
+STR_1198    :Crashed!
+STR_1199    :{COMMA16} person on ride
+STR_1200    :{COMMA16} people on ride
+STR_1201    :Nobody in queue line
+STR_1202    :1 person in queue line
+STR_1203    :{COMMA16} people in queue line
+STR_1204    :{COMMA16} minute queue time
+STR_1205    :{COMMA16} minutes queue time
+STR_1206    :{WINDOW_COLOUR_2}Wait for:
+STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
+STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
+STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
+STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
+STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
+STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
+STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
+STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
+STR_1215    :{WINDOW_COLOUR_2}Synchronize with adjacent stations
+STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronize departure with all adjacent stations (for 'racing')
+STR_1217    :{COMMA16} seconds
+STR_1218    :{BLACK}{SMALLUP}
+STR_1219    :{BLACK}{SMALLDOWN}
+STR_1220    :Exit only
+STR_1221    :No entrance
+STR_1222    :No exit
+STR_1223    :{SMALLFONT}{BLACK}Transport rides
+STR_1224    :{SMALLFONT}{BLACK}Gentle rides
+STR_1225    :{SMALLFONT}{BLACK}Roller coasters
+STR_1226    :{SMALLFONT}{BLACK}Thrill rides
+STR_1227    :{SMALLFONT}{BLACK}Water rides
+STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
+STR_1229    :train
+STR_1230    :trains
+STR_1231    :Train
+STR_1232    :Trains
+STR_1233    :{COMMA16} train
+STR_1234    :{COMMA16} trains
+STR_1235    :Train {COMMA16}
+STR_1236    :boat
+STR_1237    :boats
+STR_1238    :Boat
+STR_1239    :Boats
+STR_1240    :{COMMA16} boat
+STR_1241    :{COMMA16} boats
+STR_1242    :Boat {COMMA16}
+STR_1243    :track
+STR_1244    :tracks
+STR_1245    :Track
+STR_1246    :Tracks
+STR_1247    :{COMMA16} track
+STR_1248    :{COMMA16} tracks
+STR_1249    :Track {COMMA16}
+STR_1250    :docking platform
+STR_1251    :docking platforms
+STR_1252    :Docking platform
+STR_1253    :Docking platforms
+STR_1254    :{COMMA16} docking platform
+STR_1255    :{COMMA16} docking platforms
+STR_1256    :Docking platform {COMMA16}
+STR_1257    :station
+STR_1258    :stations
+STR_1259    :Station
+STR_1260    :Stations
+STR_1261    :{COMMA16} station
+STR_1262    :{COMMA16} stations
+STR_1263    :Station {COMMA16}
+STR_1264    :car
+STR_1265    :cars
+STR_1266    :Car
+STR_1267    :Cars
+STR_1268    :{COMMA16} car
+STR_1269    :{COMMA16} cars
+STR_1270    :Car {COMMA16}
+STR_1271    :building
+STR_1272    :buildings
+STR_1273    :Building
+STR_1274    :Buildings
+STR_1275    :{COMMA16} building
+STR_1276    :{COMMA16} buildings
+STR_1277    :Building {COMMA16}
+STR_1278    :structure
+STR_1279    :structures
+STR_1280    :Structure
+STR_1281    :Structures
+STR_1282    :{COMMA16} structure
+STR_1283    :{COMMA16} structures
+STR_1284    :Structure {COMMA16}
+STR_1285    :ship
+STR_1286    :ships
+STR_1287    :Ship
+STR_1288    :Ships
+STR_1289    :{COMMA16} ship
+STR_1290    :{COMMA16} ships
+STR_1291    :Ship {COMMA16}
+STR_1292    :cabin
+STR_1293    :cabins
+STR_1294    :Cabin
+STR_1295    :Cabins
+STR_1296    :{COMMA16} cabin
+STR_1297    :{COMMA16} cabins
+STR_1298    :Cabin {COMMA16}
+STR_1299    :wheel
+STR_1300    :wheels
+STR_1301    :Wheel
+STR_1302    :Wheels
+STR_1303    :{COMMA16} wheel
+STR_1304    :{COMMA16} wheels
+STR_1305    :Wheel {COMMA16}
+STR_1306    :ring
+STR_1307    :rings
+STR_1308    :Ring
+STR_1309    :Rings
+STR_1310    :{COMMA16} ring
+STR_1311    :{COMMA16} rings
+STR_1312    :Ring {COMMA16}
+STR_1313    :player
+STR_1314    :players
+STR_1315    :Player
+STR_1316    :Players
+STR_1317    :{COMMA16} player
+STR_1318    :{COMMA16} players
+STR_1319    :Player {COMMA16}
+STR_1320    :course
+STR_1321    :courses
+STR_1322    :Course
+STR_1323    :Courses
+STR_1324    :{COMMA16} course
+STR_1325    :{COMMA16} courses
+STR_1326    :Course {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
+STR_1328    :Level land required
+STR_1329    :{WINDOW_COLOUR_2}Launch speed:
+STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_1332    :{VELOCITY}
+STR_1333    :{STRINGID} - {STRINGID}{POP16}
+STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
+STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
+STR_1337    :{STRINGID} - Exit{POP16}{POP16}
+STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
+STR_1339    :{BLACK}No test results yet...
+STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1342    :{DURATION}
+STR_1343    :{DURATION} /
+STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1345    :{LENGTH}
+STR_1346    :{LENGTH} /
+STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical G's: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
+STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
+STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
+STR_1361    :Can't change speed...
+STR_1362    :Can't change launch speed...
+STR_1363    :Too high for supports!
+STR_1364    :Supports for track above can't be extended any further!
+STR_1365    :In-line Twist (left)
+STR_1366    :In-line Twist (right)
+STR_1367    :Half Loop
+STR_1368    :Half Corkscrew (left)
+STR_1369    :Half Corkscrew (right)
+STR_1370    :Barrel Roll (left)
+STR_1371    :Barrel Roll (right)
+STR_1372    :Launched Lift Hill
+STR_1373    :Large Half Loop (left)
+STR_1374    :Large Half Loop (right)
+STR_1375    :Upper Transfer
+STR_1376    :Lower Transfer
+STR_1377    :Heartline Roll (left)
+STR_1378    :Heartline Roll (right)
+STR_1379    :Reverser (left)
+STR_1380    :Reverser (right)
+STR_1381    :Curved Lift Hill (left)
+STR_1382    :Curved Lift Hill (right)
+STR_1383    :Quarter Loop
+STR_1384    :{YELLOW}{STRINGID}
+STR_1385    :{SMALLFONT}{BLACK}Other track configurations
+STR_1386    :Special...
+STR_1387    :Can't change land type...
+STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
+STR_1389    :{OUTLINE}{RED}- {CURRENCY}
+STR_1390    :{CURRENCY2DP}
+STR_1391    :{RED}{CURRENCY2DP}
+STR_1392    :{SMALLFONT}{BLACK}View of ride/attraction
+STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
+STR_1394    :{SMALLFONT}{BLACK}Operating options
+STR_1395    :{SMALLFONT}{BLACK}Maintenance options
+STR_1396    :{SMALLFONT}{BLACK}Color scheme options
+STR_1397    :{SMALLFONT}{BLACK}Sound & music options
+STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
+STR_1399    :{SMALLFONT}{BLACK}Graphs
+STR_1400    :Entrance
+STR_1401    :Exit
+STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
+STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
+STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
+STR_1405    :{SMALLFONT}{BLACK}Mirror image
+STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
+STR_1407    :{WINDOW_COLOUR_2}Build this...
+STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
+STR_1409    :Entry/Exit Platform
+STR_1410    :Vertical Tower
+STR_1411    :{STRINGID} in the way
+STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
+STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
+STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1415    :{WINDOW_COLOUR_2}Velocity
+STR_1416    :{WINDOW_COLOUR_2}Altitude
+STR_1417    :{WINDOW_COLOUR_2}Vert.G's
+STR_1418    :{WINDOW_COLOUR_2}Lat.G's
+STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
+STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
+STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
+STR_1423    :{SMALLFONT}{BLACK}Queue line path
+STR_1424    :{SMALLFONT}{BLACK}Footpath
+STR_1425    :Footpath
+STR_1426    :Queue Line
+STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
+STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1430    :Free
+STR_1431    :Walking
+STR_1432    :Heading for {STRINGID}
+STR_1433    :Queuing for {STRINGID}
+STR_1434    :Drowning
+STR_1435    :On {STRINGID}
+STR_1436    :In {STRINGID}
+STR_1437    :At {STRINGID}
+STR_1438    :Sitting
+STR_1439    :(select location)
+STR_1440    :Mowing grass
+STR_1441    :Sweeping footpath
+STR_1442    :Emptying litter bin
+STR_1443    :Watering gardens
+STR_1444    :Watching {STRINGID}
+STR_1445    :Watching construction of {STRINGID}
+STR_1446    :Looking at scenery
+STR_1447    :Leaving the park
+STR_1448    :Watching new ride being constructed
+STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
+STR_1452    :Guest's name
+STR_1453    :Enter name for this guest:-
+STR_1454    :Can't name guest...
+STR_1455    :Invalid name for guest
+STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
+STR_1459    :Track style
+STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
+STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
+STR_1462    :Too steep for lift hill
+STR_1463    :Guests
+STR_1464    :Helix up (small)
+STR_1465    :Helix up (large)
+STR_1466    :Helix down (small)
+STR_1467    :Helix down (large)
+STR_1468    :Staff
+STR_1469    :Attraktion must start and end with stations
+STR_1470    :Station not long enough
+STR_1471    :{WINDOW_COLOUR_2}Speed:
+STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
+STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
+STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
+STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
+STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
+STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1528    :
+STR_1529    :
+STR_1530    :
+STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1532    :
+STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}This donut from {STRINGID} is really good value{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1541    :
+STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1544    :
+STR_1545    :
+STR_1546    :
+STR_1547    :
+STR_1548    :
+STR_1549    :
+STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1562    :
+STR_1563    :
+STR_1564    :
+STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1566    :
+STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a donut from {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1575    :
+STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1578    :
+STR_1579    :
+STR_1580    :
+STR_1581    :
+STR_1582    :
+STR_1583    :
+STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1601    :
+STR_1602    :
+STR_1603    :
+STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1605    :
+STR_1606    :
+STR_1607    :
+STR_1608    :
+STR_1609    :
+STR_1610    :
+STR_1611    :
+STR_1612    :
+STR_1613    :
+STR_1614    :
+STR_1615    :
+STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1633    :
+STR_1634    :
+STR_1635    :
+STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1637    :
+STR_1638    :
+STR_1639    :
+STR_1640    :
+STR_1641    :
+STR_1642    :
+STR_1643    :
+STR_1644    :
+STR_1645    :
+STR_1646    :
+STR_1647    :
+STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
+STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
+STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
+STR_1657    :{WINDOW_COLOUR_2}Preferred ride
+STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Happiness:
+STR_1663    :{WINDOW_COLOUR_2}Nausea:
+STR_1664    :{WINDOW_COLOUR_2}Energy:
+STR_1665    :{WINDOW_COLOUR_2}Hunger:
+STR_1666    :{WINDOW_COLOUR_2}Thirst:
+STR_1667    :{WINDOW_COLOUR_2}Bathroom:
+STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
+STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
+STR_1672    :Brakes
+STR_1673    :Spinning Control Toggle Track
+STR_1674    :Brake speed
+STR_1675    :{POP16}{VELOCITY}
+STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
+STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
+STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
+STR_1679    :Helix up (left)
+STR_1680    :Helix up (right)
+STR_1681    :Helix down (left)
+STR_1682    :Helix down (right)
+STR_1683    :Base size 2 x 2
+STR_1684    :Base size 4 x 4
+STR_1685    :Base size 2 x 4
+STR_1686    :Base size 5 x 1
+STR_1687    :Water splash
+STR_1688    :Base size 4 x 1
+STR_1689    :Block brakes
+STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
+STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}Guests
+STR_1694    :{SMALLFONT}{BLACK}Staff
+STR_1695    :{SMALLFONT}{BLACK}Income and costs
+STR_1696    :{SMALLFONT}{BLACK}Customer information
+STR_1697    :Cannot place these on queue line area
+STR_1698    :Can only place these on queue area
+STR_1699    :Too many people in game
+STR_1700    :Hire new Handyman
+STR_1701    :Hire new Mechanic
+STR_1702    :Hire new Security Guard
+STR_1703    :Hire new Entertainer
+STR_1704    :Can't hire new staff...
+STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
+STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
+STR_1707    :Too many staff in game
+STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
+STR_1709    :Sack staff
+STR_1710    :Yes
+STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
+STR_1716    :Invalid name for park
+STR_1717    :Can't rename park...
+STR_1718    :Park Name
+STR_1719    :Enter name for park:-
+STR_1720    :{SMALLFONT}{BLACK}Name park
+STR_1721    :Park closed
+STR_1722    :Park open
+STR_1723    :Can't open park...
+STR_1724    :Can't close park...
+STR_1725    :Can't buy land...
+STR_1726    :Land not for sale!
+STR_1727    :Construction rights not for sale!
+STR_1728    :Can't buy construction rights here...
+STR_1729    :Land not owned by park!
+STR_1730    :{RED}Closed - -
+STR_1731    :{WHITE}{STRINGID} - -
+STR_1732    :Build
+STR_1733    :Mode
+STR_1734    :{WINDOW_COLOUR_2}Number of laps:
+STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
+STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1737    :{COMMA16}
+STR_1738    :Can't change number of laps...
+STR_1739    :Race won by guest {INT32}
+STR_1740    :Race won by {STRINGID}
+STR_1741    :Not yet constructed !
+STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
+STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1745    :{COMMA16}
+STR_1746    :Can't change this...
+STR_1747    :{WINDOW_COLOUR_2}Time limit:
+STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
+STR_1750    :{DURATION}
+STR_1751    :Can't change time limit for ride...
+STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
+STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
+STR_1754    :{BLACK}{COMMA16} guests
+STR_1755    :{BLACK}{COMMA16} guest
+STR_1756    :{WINDOW_COLOUR_2}Admission price:
+STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Build mode
+STR_1759    :{SMALLFONT}{BLACK}Move mode
+STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
+STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
+STR_1762    :Waterfalls
+STR_1763    :Rapids
+STR_1764    :Log Bumps
+STR_1765    :On-ride photo section
+STR_1766    :Reverser turntable
+STR_1767    :Spinning tunnel
+STR_1768    :Can't change number of swings...
+STR_1769    :{WINDOW_COLOUR_2}Number of swings:
+STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
+STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1772    :{COMMA16}
+STR_1773    :Only one on-ride photo section allowed per ride
+STR_1774    :Only one cable lift hill allowed per ride
+STR_1775    :Off
+STR_1776    :On
+STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1778    :{STRINGID} - -
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
+STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
+STR_1791    :{WINDOW_COLOUR_2}Uniform color:
+STR_1792    :Responding to {STRINGID} breakdown call
+STR_1793    :Heading to {STRINGID} for an inspection
+STR_1794    :Fixing {STRINGID}
+STR_1795    :Answering radio call
+STR_1796    :Has broken down and requires fixing
+STR_1797    :This option cannot be changed for this ride
+STR_1798    :Whirlpool
+STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1800    :Safety cut-out
+STR_1801    :Restraints stuck closed
+STR_1802    :Restraints stuck open
+STR_1803    :Doors stuck closed
+STR_1804    :Doors stuck open
+STR_1805    :Vehicle malfunction
+STR_1806    :Brakes failure
+STR_1807    :Control failure
+STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}Carrying:
+STR_1811    :Can't build this here...
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1813    :Miscellaneous Objects
+STR_1814    :Actions
+STR_1815    :Thoughts
+STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
+STR_1817    :({COMMA16})
+STR_1818    :{WINDOW_COLOUR_2}All guests
+STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
+STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
+STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
+STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
+STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
+STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1826    :Status
+STR_1827    :Popularity
+STR_1828    :Satisfaction
+STR_1829    :Profit
+STR_1830    :Queue length
+STR_1831    :Queue time
+STR_1832    :Reliability
+STR_1833    :Down-time
+STR_1834    :Guests favorite
+STR_1835    :Popularity: Unknown
+STR_1836    :Popularity: {COMMA16}%
+STR_1837    :Satisfaction: Unknown
+STR_1838    :Satisfaction: {COMMA16}%
+STR_1839    :Reliability: {COMMA16}%
+STR_1840    :Down-time: {COMMA16}%
+STR_1841    :Profit: {CURRENCY} per hour
+STR_1842    :Favorite of: {COMMA16} guest
+STR_1843    :Favorite of: {COMMA16} guests
+STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1845    :{MONTHYEAR}
+STR_1846    :{COMMA16} guests
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1849    :{WINDOW_COLOUR_2}Play music
+STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
+STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
+STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
+STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
+STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
+STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
+STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
+STR_1859    :Handymen
+STR_1860    :Mechanics
+STR_1861    :Security Guards
+STR_1862    :Entertainers
+STR_1863    :Handyman
+STR_1864    :Mechanic
+STR_1865    :Security Guard
+STR_1866    :Entertainer
+STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1868    :Can't change number of rotations...
+STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
+STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
+STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1872    :{COMMA16}
+STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
+STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
+STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
+STR_1878    :{WINDOW_COLOUR_2}Inspection:
+STR_1879    :Every 10 minutes
+STR_1880    :Every 20 minutes
+STR_1881    :Every 30 minutes
+STR_1882    :Every 45 minutes
+STR_1883    :Every hour
+STR_1884    :Every 2 hours
+STR_1885    :Never
+STR_1886    :Inspecting {STRINGID}
+STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
+STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
+STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
+STR_1891    :No {STRINGID} in park yet!
+STR_1892    :RollerCoaster Tycoon 2
+STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:-
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
+STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
+STR_1897    :{WINDOW_COLOUR_2}Ride construction
+STR_1898    :{WINDOW_COLOUR_2}Ride running costs
+STR_1899    :{WINDOW_COLOUR_2}Land purchase
+STR_1900    :{WINDOW_COLOUR_2}Landscaping
+STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
+STR_1902    :{WINDOW_COLOUR_2}Ride tickets
+STR_1903    :{WINDOW_COLOUR_2}Shop sales
+STR_1904    :{WINDOW_COLOUR_2}Shop stock
+STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
+STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
+STR_1907    :{WINDOW_COLOUR_2}Staff wages
+STR_1908    :{WINDOW_COLOUR_2}Marketing
+STR_1909    :{WINDOW_COLOUR_2}Research
+STR_1910    :{WINDOW_COLOUR_2}Loan interest
+STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1912    :{MONTH}
+STR_1913    :{BLACK}+{CURRENCY2DP}
+STR_1914    :{BLACK}{CURRENCY2DP}
+STR_1915    :{RED}{CURRENCY2DP}
+STR_1916    :{WINDOW_COLOUR_2}Loan:
+STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
+STR_1918    :Can't borrow any more money!
+STR_1919    :Not enough cash available!
+STR_1920    :Can't pay back loan!
+STR_1921    :{SMALLFONT}{BLACK}Start a new game
+STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
+STR_1923    :{SMALLFONT}{BLACK}Show tutorial
+STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1925    :Can't place person here...
+STR_1926    :{SMALLFONT}
+STR_1927    :{YELLOW}{STRINGID} has broken down
+STR_1928    :{RED}{STRINGID} has crashed!
+STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
+STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
+STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
+STR_1932    :{STRINGID} is on {STRINGID}
+STR_1933    :{STRINGID} is in {STRINGID}
+STR_1934    :{STRINGID} has left {STRINGID}
+STR_1935    :{STRINGID} has left the park
+STR_1936    :{STRINGID} has bought {STRINGID}
+STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
+STR_1938    :{SMALLFONT}{BLACK}Show view of guest
+STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
+STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
+STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
+STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
+STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
+STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
+STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
+STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
+STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
+STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
+STR_1949    :Financial Summary
+STR_1950    :Financial Graph
+STR_1951    :Park Value Graph
+STR_1952    :Profit Graph
+STR_1953    :Marketing
+STR_1954    :Research Funding
+STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
+STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1958    :{COMMA16}
+STR_1959    :Can't change number of circuits...
+STR_1960    :{WINDOW_COLOUR_2}Balloon price:
+STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
+STR_1962    :{WINDOW_COLOUR_2}Park Map price:
+STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
+STR_1965    :{WINDOW_COLOUR_2}Drink price:
+STR_1966    :{WINDOW_COLOUR_2}Burger price:
+STR_1967    :{WINDOW_COLOUR_2}Fries price:
+STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
+STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1970    :{WINDOW_COLOUR_2}
+STR_1971    :{WINDOW_COLOUR_2}
+STR_1972    :{WINDOW_COLOUR_2}
+STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1974    :{WINDOW_COLOUR_2}
+STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
+STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
+STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
+STR_1978    :{WINDOW_COLOUR_2}Hat price:
+STR_1979    :{WINDOW_COLOUR_2}Candy Apple price:
+STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
+STR_1981    :{WINDOW_COLOUR_2}Donut price:
+STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1983    :{WINDOW_COLOUR_2}
+STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
+STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1986    :{WINDOW_COLOUR_2}
+STR_1987    :{WINDOW_COLOUR_2}
+STR_1988    :Balloon
+STR_1989    :Cuddly Toy
+STR_1990    :Park Map
+STR_1991    :On-Ride Photo
+STR_1992    :Umbrella
+STR_1993    :Drink
+STR_1994    :Burger
+STR_1995    :Fries
+STR_1996    :Ice Cream
+STR_1997    :Cotton Candy
+STR_1998    :Empty Can
+STR_1999    :Rubbish
+STR_2000    :Empty Burger Box
+STR_2001    :Pizza
+STR_2002    :Voucher
+STR_2003    :Popcorn
+STR_2004    :Hot Dog
+STR_2005    :Tentacle
+STR_2006    :Hat
+STR_2007    :Candy Apple
+STR_2008    :T-Shirt
+STR_2009    :Donut
+STR_2010    :Coffee
+STR_2011    :Empty Cup
+STR_2012    :Fried Chicken
+STR_2013    :Lemonade
+STR_2014    :Empty Box
+STR_2015    :Empty Bottle
+STR_2016    :Balloons
+STR_2017    :Cuddly Toys
+STR_2018    :Park Maps
+STR_2019    :On-Ride Photos
+STR_2020    :Umbrellas
+STR_2021    :Drinks
+STR_2022    :Burgers
+STR_2023    :Fries
+STR_2024    :Ice Creams
+STR_2025    :Cotton Candy
+STR_2026    :Empty Cans
+STR_2027    :Rubbish
+STR_2028    :Empty Burger Boxes
+STR_2029    :Pizzas
+STR_2030    :Vouchers
+STR_2031    :Popcorn
+STR_2032    :Hot Dogs
+STR_2033    :Tentacles
+STR_2034    :Hats
+STR_2035    :Candy Apples
+STR_2036    :T-Shirts
+STR_2037    :Donuts
+STR_2038    :Coffees
+STR_2039    :Empty Cups
+STR_2040    :Fried Chicken
+STR_2041    :Lemonade
+STR_2042    :Empty Boxes
+STR_2043    :Empty Bottles
+STR_2044    :a Balloon
+STR_2045    :a Cuddly Toy
+STR_2046    :a Park Map
+STR_2047    :an On-Ride Photo
+STR_2048    :an Umbrella
+STR_2049    :a Drink
+STR_2050    :a Burger
+STR_2051    :some Fries
+STR_2052    :an Ice Cream
+STR_2053    :some Cotton Candy
+STR_2054    :an Empty Can
+STR_2055    :some Rubbish
+STR_2056    :an Empty Burger Box
+STR_2057    :a Pizza
+STR_2058    :a Voucher
+STR_2059    :some Popcorn
+STR_2060    :a Hot Dog
+STR_2061    :a Tentacle
+STR_2062    :a Hat
+STR_2063    :a Candy Apple
+STR_2064    :a T-Shirt
+STR_2065    :a Donut
+STR_2066    :a Coffee
+STR_2067    :an Empty Cup
+STR_2068    :some Fried Chicken
+STR_2069    :some Lemonade
+STR_2070    :an Empty Box
+STR_2071    :an Empty Bottle
+STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
+STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
+STR_2074    :Map of {STRINGID}
+STR_2075    :On-Ride Photo of {STRINGID}
+STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
+STR_2077    :Drink
+STR_2078    :Burger
+STR_2079    :Fries
+STR_2080    :Ice Cream
+STR_2081    :Cotton Candy
+STR_2082    :Empty Can
+STR_2083    :Rubbish
+STR_2084    :Empty Burger Box
+STR_2085    :Pizza
+STR_2086    :Voucher for {STRINGID}
+STR_2087    :Popcorn
+STR_2088    :Hot Dog
+STR_2089    :Tentacle
+STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
+STR_2091    :Candy Apple
+STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2093    :Donut
+STR_2094    :Coffee
+STR_2095    :Empty Cup
+STR_2096    :Fried Chicken
+STR_2097    :Lemonade
+STR_2098    :Empty Box
+STR_2099    :Empty Bottle
+STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
+STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
+STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
+STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
+STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
+STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
+STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
+STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
+STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
+STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
+STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
+STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
+STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
+STR_2116    :{WINDOW_COLOUR_2}Cookie price:
+STR_2117    :{WINDOW_COLOUR_2}
+STR_2118    :{WINDOW_COLOUR_2}
+STR_2119    :{WINDOW_COLOUR_2}
+STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2121    :{WINDOW_COLOUR_2}
+STR_2122    :On-Ride Photo
+STR_2123    :On-Ride Photo
+STR_2124    :On-Ride Photo
+STR_2125    :Pretzel
+STR_2126    :Hot Chocolate
+STR_2127    :Iced Tea
+STR_2128    :Funnel Cake
+STR_2129    :Sunglasses
+STR_2130    :Beef Noodles
+STR_2131    :Fried Rice Noodles
+STR_2132    :Wonton Soup
+STR_2133    :Meatball Soup
+STR_2134    :Fruit Juice
+STR_2135    :Soybean Milk
+STR_2136    :Sujongkwa
+STR_2137    :Sub Sandwich
+STR_2138    :Cookie
+STR_2139    :Empty Bowl
+STR_2140    :Empty Drink Carton
+STR_2141    :Empty Juice Cup
+STR_2142    :Roast Sausage
+STR_2143    :Empty Bowl
+STR_2144    :On-Ride Photos
+STR_2145    :On-Ride Photos
+STR_2146    :On-Ride Photos
+STR_2147    :Pretzels
+STR_2148    :Hot Chocolates
+STR_2149    :Iced Teas
+STR_2150    :Funnel Cakes
+STR_2151    :Sunglasses
+STR_2152    :Beef Noodles
+STR_2153    :Fried Rice Noodles
+STR_2154    :Wonton Soups
+STR_2155    :Meatball Soups
+STR_2156    :Fruit Juices
+STR_2157    :Soybean Milks
+STR_2158    :Sujongkwa
+STR_2159    :Sub Sandwiches
+STR_2160    :Cookies
+STR_2161    :Empty Bowls
+STR_2162    :Empty Drink Cartons
+STR_2163    :Empty Juice cups
+STR_2164    :Roast Sausages
+STR_2165    :Empty Bowls
+STR_2166    :an On-Ride Photo
+STR_2167    :an On-Ride Photo
+STR_2168    :an On-Ride Photo
+STR_2169    :a Pretzel
+STR_2170    :a Hot Chocolate
+STR_2171    :an Iced Tea
+STR_2172    :a Funnel Cake
+STR_2173    :a pair of Sunglasses
+STR_2174    :some Beef Noodles
+STR_2175    :some Fried Rice Noodles
+STR_2176    :some Wonton Soup
+STR_2177    :some Meatball Soup
+STR_2178    :a Fruit Juice
+STR_2179    :some Soybean Milk
+STR_2180    :some Sujongkwa
+STR_2181    :a Sub Sandwich
+STR_2182    :a Cookie
+STR_2183    :an Empty Bowl
+STR_2184    :an Empty Drink Carton
+STR_2185    :an Empty Juice Cup
+STR_2186    :a Roast Sausage
+STR_2187    :an Empty Bowl
+STR_2188    :On-Ride Photo of {STRINGID}
+STR_2189    :On-Ride Photo of {STRINGID}
+STR_2190    :On-Ride Photo of {STRINGID}
+STR_2191    :Pretzel
+STR_2192    :Hot Chocolate
+STR_2193    :Iced Tea
+STR_2194    :Funnel Cake
+STR_2195    :Sunglasses
+STR_2196    :Beef Noodles
+STR_2197    :Fried Rice Noodles
+STR_2198    :Wonton Soup
+STR_2199    :Meatball Soup
+STR_2200    :Fruit Juice
+STR_2201    :Soybean Milk
+STR_2202    :Sujongkwa
+STR_2203    :Sub Sandwich
+STR_2204    :Cookie
+STR_2205    :Empty Bowl
+STR_2206    :Empty Drink Carton
+STR_2207    :Empty Juice Cup
+STR_2208    :Roast Sausage
+STR_2209    :Empty Bowl
+STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
+STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
+STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
+STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
+STR_2214    :Construction not possible while game is paused!
+STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
+STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
+STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Last month's profit from food/drink and{NEWLINE}merchandise sales: {BLACK}{CURRENCY}
+STR_2229    :Slope up to vertical
+STR_2230    :Vertical track
+STR_2231    :Holding brake for drop
+STR_2232    :Cable lift hill
+STR_2233    :{SMALLFONT}{BLACK}Park information
+STR_2234    :Recent Messages
+STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2236    :January
+STR_2237    :February
+STR_2238    :March
+STR_2239    :April
+STR_2240    :May
+STR_2241    :June
+STR_2242    :July
+STR_2243    :August
+STR_2244    :September
+STR_2245    :October
+STR_2246    :November
+STR_2247    :December
+STR_2248    :Can't demolish ride/attraction...
+STR_2249    :{BABYBLUE}New ride/attraction now available:-{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}New scenery/themeing now available:-{NEWLINE}{STRINGID}
+STR_2251    :Can only be built on paths!
+STR_2252    :Can only be built across paths!
+STR_2253    :Transport Rides
+STR_2254    :Gentle Rides
+STR_2255    :Roller Coasters
+STR_2256    :Thrill Rides
+STR_2257    :Water Rides
+STR_2258    :Shops & Stalls
+STR_2259    :Scenery & Themeing
+STR_2260    :No funding
+STR_2261    :Minimum funding
+STR_2262    :Normal funding
+STR_2263    :Maximum funding
+STR_2264    :Research funding
+STR_2265    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
+STR_2266    :Research priorities
+STR_2267    :Currently in development
+STR_2268    :Last development
+STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
+STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
+STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2277    :Unknown
+STR_2278    :Transport Ride
+STR_2279    :Gentle Ride
+STR_2280    :Roller Coaster
+STR_2281    :Thrill Ride
+STR_2282    :Water Ride
+STR_2283    :Shop/Stall
+STR_2284    :Scenery/Themeing
+STR_2285    :Initial research
+STR_2286    :Designing
+STR_2287    :Completing design
+STR_2288    :Unknown
+STR_2289    :{STRINGID} {STRINGID}
+STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2291    :Select scenario for new game
+STR_2292    :{WINDOW_COLOUR_2}Rides been on:
+STR_2293    :{BLACK} Nothing
+STR_2294    :{SMALLFONT}{BLACK}Change base land style
+STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drinks
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenir
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenirs
+STR_2305    :Track design files
+STR_2306    :Save track design
+STR_2307    :Select {STRINGID} design
+STR_2308    :{STRINGID} Track Designs
+STR_2309    :Install New Track Design
+STR_2310    :Build custom design
+STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
+STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
+STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
+STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
+STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
+STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
+STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
+STR_2318    :Low
+STR_2319    :Medium
+STR_2320    :High
+STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
+STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
+STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
+STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
+STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
+STR_2327    :Options
+STR_2328    :{WINDOW_COLOUR_2}Currency:
+STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
+STR_2330    :{WINDOW_COLOUR_2}Temperature:
+STR_2331    :{WINDOW_COLOUR_2}Height Labels:
+STR_2332    :Units
+STR_2333    :Sound
+STR_2334    :Pounds ({POUND})
+STR_2335    :Dollars ($)
+STR_2336    :Franc (F)
+STR_2337    :Deutschmark (DM)
+STR_2338    :Yen ({YEN})
+STR_2339    :Peseta (Pts)
+STR_2340    :Lira (L)
+STR_2341    :Guilders (Dfl.)
+STR_2342    :Krona (kr)
+STR_2343    :Euros ({EURO})
+STR_2344    :Imperial
+STR_2345    :Metric
+STR_2346    :Display
+STR_2347    :{RED}{STRINGID} has drowned!
+STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
+STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
+STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2357    :House
+STR_2358    :Units
+STR_2359    :Real Values
+STR_2360    :{WINDOW_COLOUR_2}Display Resolution:
+STR_2361    :Landscape Smoothing
+STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
+STR_2363    :Gridlines on Landscape
+STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
+STR_2365    :The bank refuses to increase your loan!
+STR_2366    :Celsius ({DEGREE}C)
+STR_2367    :Fahrenheit (F)
+STR_2368    :None
+STR_2369    :Low
+STR_2370    :Average
+STR_2371    :High
+STR_2372    :Low
+STR_2373    :Medium
+STR_2374    :High
+STR_2375    :Very high
+STR_2376    :Extreme
+STR_2377    :Ultra-Extreme
+STR_2378    :{SMALLFONT}{BLACK}Adjust smaller area of land
+STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
+STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
+STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
+STR_2382    :Land
+STR_2383    :Water
+STR_2384    :{WINDOW_COLOUR_2}Your objective:
+STR_2385    :{BLACK}None
+STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
+STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2388    :{BLACK}Have Fun!
+STR_2389    :{BLACK}Build the best {STRINGID} you can!
+STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
+STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
+STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
+STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
+STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
+STR_2397    :None
+STR_2398    :Number of guests at a given date
+STR_2399    :Park value at a given date
+STR_2400    :Have fun
+STR_2401    :Build the best ride you can
+STR_2402    :Build 10 roller coasters
+STR_2403    :Number of guests in park
+STR_2404    :Monthly income from ride tickets
+STR_2405    :Build 10 roller coasters of a given length
+STR_2406    :Finish building 5 roller coasters
+STR_2407    :Repay loan and achieve a given park value
+STR_2408    :Monthly profit from food/merchandise
+STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
+STR_2410    :{BLACK}None
+STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
+STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
+STR_2413    :{BLACK}({CURRENCY2DP} per week)
+STR_2414    :(Not Selected)
+STR_2415    :{WINDOW_COLOUR_2}Ride:
+STR_2416    :{WINDOW_COLOUR_2}Item:
+STR_2417    :{WINDOW_COLOUR_2}Length of time:
+STR_2418    :Free entry to {STRINGID}
+STR_2419    :Free ride on {STRINGID}
+STR_2420    :Half-price entry to {STRINGID}
+STR_2421    :Free {STRINGID}
+STR_2422    :Advertising campaign for {STRINGID}
+STR_2423    :Advertising campaign for {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
+STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
+STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
+STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
+STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
+STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
+STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
+STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
+STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
+STR_2433    :{BLACK}Vouchers for free {STRINGID}
+STR_2434    :{BLACK}Advertising campaign for {STRINGID}
+STR_2435    :{BLACK}Advertising campaign for {STRINGID}
+STR_2436    :1 week
+STR_2437    :2 weeks
+STR_2438    :3 weeks
+STR_2439    :4 weeks
+STR_2440    :5 weeks
+STR_2441    :6 weeks
+STR_2442    :{BLACK}({STRINGID} remaining)
+STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
+STR_2445    :Start this marketing campaign
+STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
+STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
+STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
+STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
+STR_2450    :{YELLOW}Your advertising campaign for the park has finished
+STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
+STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
+STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
+STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
+STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
+STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
+STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
+STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
+STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
+STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
+STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
+STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
+STR_2466    :{SMALLFONT}{BLACK}Show park statistics
+STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
+STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
+STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
+STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
+STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
+STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
+STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
+STR_2474    :{SMALLFONT}{BLACK}Research new water rides
+STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
+STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
+STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
+STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
+STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
+STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
+STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
+STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
+STR_2485    :Controls
+STR_2486    :General
+STR_2487    :Show 'real' names of guests
+STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
+STR_2489    :Shortcut keys...
+STR_2490    :Keyboard shortcuts
+STR_2491    :Reset keys
+STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
+STR_2493    :Close top-most window
+STR_2494    :Close all floating windows
+STR_2495    :Cancel construction mode
+STR_2496    :Pause game
+STR_2497    :Zoom view out
+STR_2498    :Zoom view in
+STR_2499    :Rotate view
+STR_2500    :Rotate construction object
+STR_2501    :Underground view toggle
+STR_2502    :Remove base land toggle
+STR_2503    :Remove vertical land toggle
+STR_2504    :See-through rides toggle
+STR_2505    :See-through scenery toggle
+STR_2506    :Invisible supports toggle
+STR_2507    :Invisible people toggle
+STR_2508    :Height marks on land toggle
+STR_2509    :Height marks on ride tracks toggle
+STR_2510    :Height marks on paths toggle
+STR_2511    :Adjust land
+STR_2512    :Adjust water
+STR_2513    :Build scenery
+STR_2514    :Build paths
+STR_2515    :Build new ride
+STR_2516    :Show financial information
+STR_2517    :Show research information
+STR_2518    :Show rides list
+STR_2519    :Show park information
+STR_2520    :Show guest list
+STR_2521    :Show staff list
+STR_2522    :Show recent messages
+STR_2523    :Show map
+STR_2524    :Screenshot
+STR_2525    :???
+STR_2526    :???
+STR_2527    :???
+STR_2528    :???
+STR_2529    :???
+STR_2530    :???
+STR_2531    :???
+STR_2532    :???
+STR_2533    :Backspace
+STR_2534    :Tab
+STR_2535    :???
+STR_2536    :???
+STR_2537    :Clear
+STR_2538    :Return
+STR_2539    :???
+STR_2540    :???
+STR_2541    :???
+STR_2542    :???
+STR_2543    :Alt/Menu
+STR_2544    :Pause
+STR_2545    :Caps
+STR_2546    :???
+STR_2547    :???
+STR_2548    :???
+STR_2549    :???
+STR_2550    :???
+STR_2551    :???
+STR_2552    :Escape
+STR_2553    :???
+STR_2554    :???
+STR_2555    :???
+STR_2556    :???
+STR_2557    :Spacebar
+STR_2558    :PgUp
+STR_2559    :PgDn
+STR_2560    :End
+STR_2561    :Home
+STR_2562    :Left
+STR_2563    :Up
+STR_2564    :Right
+STR_2565    :Down
+STR_2566    :Select
+STR_2567    :Print
+STR_2568    :Execute
+STR_2569    :Snapshot
+STR_2570    :Insert
+STR_2571    :Delete
+STR_2572    :Help
+STR_2573    :0
+STR_2574    :1
+STR_2575    :2
+STR_2576    :3
+STR_2577    :4
+STR_2578    :5
+STR_2579    :6
+STR_2580    :7
+STR_2581    :8
+STR_2582    :9
+STR_2583    :???
+STR_2584    :???
+STR_2585    :???
+STR_2586    :???
+STR_2587    :???
+STR_2588    :???
+STR_2589    :???
+STR_2590    :A
+STR_2591    :B
+STR_2592    :C
+STR_2593    :D
+STR_2594    :E
+STR_2595    :F
+STR_2596    :G
+STR_2597    :H
+STR_2598    :I
+STR_2599    :J
+STR_2600    :K
+STR_2601    :L
+STR_2602    :M
+STR_2603    :N
+STR_2604    :O
+STR_2605    :P
+STR_2606    :Q
+STR_2607    :R
+STR_2608    :S
+STR_2609    :T
+STR_2610    :U
+STR_2611    :V
+STR_2612    :W
+STR_2613    :X
+STR_2614    :Y
+STR_2615    :Z
+STR_2616    :???
+STR_2617    :???
+STR_2618    :Menu
+STR_2619    :???
+STR_2620    :???
+STR_2621    :NumPad 0
+STR_2622    :NumPad 1
+STR_2623    :NumPad 2
+STR_2624    :NumPad 3
+STR_2625    :NumPad 4
+STR_2626    :NumPad 5
+STR_2627    :NumPad 6
+STR_2628    :NumPad 7
+STR_2629    :NumPad 8
+STR_2630    :NumPad 9
+STR_2631    :NumPad *
+STR_2632    :NumPad +
+STR_2633    :???
+STR_2634    :NumPad -
+STR_2635    :NumPad .
+STR_2636    :NumPad /
+STR_2637    :F1
+STR_2638    :F2
+STR_2639    :F3
+STR_2640    :F4
+STR_2641    :F5
+STR_2642    :F6
+STR_2643    :F7
+STR_2644    :F8
+STR_2645    :F9
+STR_2646    :F10
+STR_2647    :F11
+STR_2648    :F12
+STR_2649    :F13
+STR_2650    :F14
+STR_2651    :F15
+STR_2652    :F16
+STR_2653    :F17
+STR_2654    :F18
+STR_2655    :F19
+STR_2656    :F20
+STR_2657    :F21
+STR_2658    :F22
+STR_2659    :F23
+STR_2660    :F24
+STR_2661    :???
+STR_2662    :???
+STR_2663    :???
+STR_2664    :???
+STR_2665    :???
+STR_2666    :???
+STR_2667    :???
+STR_2668    :???
+STR_2669    :NumLock
+STR_2670    :Scroll
+STR_2671    :???
+STR_2672    :???
+STR_2673    :???
+STR_2674    :???
+STR_2675    :???
+STR_2676    :???
+STR_2677    :???
+STR_2678    :???
+STR_2679    :???
+STR_2680    :???
+STR_2681    :???
+STR_2682    :???
+STR_2683    :???
+STR_2684    :???
+STR_2685    :???
+STR_2686    :???
+STR_2687    :???
+STR_2688    :???
+STR_2689    :???
+STR_2690    :???
+STR_2691    :???
+STR_2692    :???
+STR_2693    :???
+STR_2694    :???
+STR_2695    :???
+STR_2696    :???
+STR_2697    :???
+STR_2698    :???
+STR_2699    :???
+STR_2700    :???
+STR_2701    :???
+STR_2702    :???
+STR_2703    :???
+STR_2704    :???
+STR_2705    :???
+STR_2706    :???
+STR_2707    :???
+STR_2708    :???
+STR_2709    :???
+STR_2710    :???
+STR_2711    :;
+STR_2712    :=
+STR_2713    :,
+STR_2714    :-
+STR_2715    :.
+STR_2716    :/
+STR_2717    :'
+STR_2718    :???
+STR_2719    :???
+STR_2720    :???
+STR_2721    :???
+STR_2722    :???
+STR_2723    :???
+STR_2724    :???
+STR_2725    :???
+STR_2726    :???
+STR_2727    :???
+STR_2728    :???
+STR_2729    :???
+STR_2730    :???
+STR_2731    :???
+STR_2732    :???
+STR_2733    :???
+STR_2734    :???
+STR_2735    :???
+STR_2736    :???
+STR_2737    :???
+STR_2738    :???
+STR_2739    :???
+STR_2740    :???
+STR_2741    :???
+STR_2742    :???
+STR_2743    :???
+STR_2744    :[
+STR_2745    :\
+STR_2746    :]
+STR_2747    :{ENDQUOTES}
+STR_2748    :Bar
+STR_2749    :???
+STR_2750    :???
+STR_2751    :???
+STR_2752    :???
+STR_2753    :???
+STR_2754    :???
+STR_2755    :???
+STR_2756    :???
+STR_2757    :???
+STR_2758    :???
+STR_2759    :???
+# New strings used in the cheats window previously these were ???
+STR_2760    :+5K Money
+STR_2761    :Pay For Entrance
+STR_2762    :Pay For Rides
+STR_2763    :???
+STR_2764    :Happy Guests
+STR_2765    :Large Tram
+STR_2766    :???
+STR_2767    :Freeze Climate
+STR_2768    :Unfreeze Climate
+STR_2769    :Open Park
+STR_2770    :Close Park
+STR_2771    :Slower Gamespeed
+STR_2772    :Faster Gamespeed
+STR_2773    :Windowed
+STR_2774    :Fullscreen
+STR_2775    :Fullscreen (desktop)
+STR_2776    :Language
+STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+# End of new strings
+STR_2779    :???
+STR_2780    :???
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2782    :SHIFT +
+STR_2783    :CTRL +
+STR_2784    :Change keyboard shortcut
+STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
+STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
+STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
+STR_2790    :Enter name into scenario chart
+STR_2791    :Enter name
+STR_2792    :Please enter your name for the scenario chart:-
+STR_2793    :{SMALLFONT}(Completed by {STRINGID})
+STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
+STR_2795    :Sort
+STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2797    :Scroll view when pointer at screen edge
+STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
+STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
+STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
+STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
+STR_2802    :Map
+STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
+STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
+STR_2805    :{SMALLFONT}{BLACK}Show map of park
+STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
+STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
+STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
+STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
+STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
+STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
+STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
+STR_2815    :{WINDOW_COLOUR_2}Tidiest park award
+STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best roller coasters
+STR_2817    :{WINDOW_COLOUR_2}Best value park award
+STR_2818    :{WINDOW_COLOUR_2}Most beautiful park award
+STR_2819    :{WINDOW_COLOUR_2}Worst value park award
+STR_2820    :{WINDOW_COLOUR_2}Safest park award
+STR_2821    :{WINDOW_COLOUR_2}Best staff award
+STR_2822    :{WINDOW_COLOUR_2}Best park food award
+STR_2823    :{WINDOW_COLOUR_2}Worst park food award
+STR_2824    :{WINDOW_COLOUR_2}Best park restrooms award
+STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
+STR_2826    :{WINDOW_COLOUR_2}Best water rides award
+STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
+STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride color schemes award
+STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
+STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
+STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
+STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
+STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
+STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
+STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
+STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
+STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park in the country'!
+STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
+STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
+STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
+STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
+STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
+STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
+STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
+STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
+STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
+STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
+STR_2848    :{WINDOW_COLOUR_2}No recent awards
+STR_2849    :New scenario installed successfully
+STR_2850    :New track design installed successfully
+STR_2851    :Scenario already installed
+STR_2852    :Track design already installed
+STR_2853    :Forbidden by the local authority!
+STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
+STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
+STR_2856    :{WINDOW_COLOUR_2}Tutorial
+STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
+STR_2858    :Can't start marketing campaign...
+STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
+STR_2860    :Infogrames Interactive credits...
+STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
+STR_2862    :Music acknowledgements...
+STR_2863    :Music acknowledgements
+STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
+STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
+STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
+STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
+STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
+STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyright
+STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
+STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2900    :{WINDOW_COLOUR_2}
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
+STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
+STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
+STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
+STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
+STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
+STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
+STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
+STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
+STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
+STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
+STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
+STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
+STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
+STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
+STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
+STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
+STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
+STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
+STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
+STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin
+STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
+STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2931    :{WINDOW_COLOUR_2}
+STR_2932    :{WINDOW_COLOUR_2}
+STR_2933    :{WINDOW_COLOUR_2}
+STR_2934    :{WINDOW_COLOUR_2}
+STR_2935    :{WINDOW_COLOUR_2}
+STR_2936    :{WINDOW_COLOUR_2}
+STR_2937    :{WINDOW_COLOUR_2}
+STR_2938    :{WINDOW_COLOUR_2}
+STR_2939    :{WINDOW_COLOUR_2}
+STR_2940    :{WINDOW_COLOUR_2}
+STR_2941    :{WINDOW_COLOUR_2}
+STR_2942    :{WINDOW_COLOUR_2}
+STR_2943    :{WINDOW_COLOUR_2}
+STR_2944    :{WINDOW_COLOUR_2}
+STR_2945    :{WINDOW_COLOUR_2}
+STR_2946    :{WINDOW_COLOUR_2}
+STR_2947    :{WINDOW_COLOUR_2}
+STR_2948    :{WINDOW_COLOUR_2}
+STR_2949    :{WINDOW_COLOUR_2}
+STR_2950    :{WINDOW_COLOUR_2}
+STR_2951    :{WINDOW_COLOUR_2}
+STR_2952    :{WINDOW_COLOUR_2}
+STR_2953    :{WINDOW_COLOUR_2}
+STR_2954    :{WINDOW_COLOUR_2}
+STR_2955    :{WINDOW_COLOUR_2}
+STR_2956    :{WINDOW_COLOUR_2}
+STR_2957    :{WINDOW_COLOUR_2}
+STR_2958    :{WINDOW_COLOUR_2}
+STR_2959    :{WINDOW_COLOUR_2}
+STR_2960    :{WINDOW_COLOUR_2}
+STR_2961    :{WINDOW_COLOUR_2}
+STR_2962    :{WINDOW_COLOUR_2}
+STR_2963    :{WINDOW_COLOUR_2}
+STR_2964    :{WINDOW_COLOUR_2}
+STR_2965    :{WINDOW_COLOUR_2}
+STR_2966    :
+STR_2967    :
+STR_2968    :
+STR_2969    :Use of this product is subject to the terms of a license agreement
+STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
+STR_2971    :Main color scheme
+STR_2972    :Alternative color scheme 1
+STR_2973    :Alternative color scheme 2
+STR_2974    :Alternative color scheme 3
+STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
+STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
+STR_2977    :Staff member name
+STR_2978    :Enter new name for this member of staff:-
+STR_2979    :Can't name staff member...
+STR_2980    :Too many banners in game
+STR_2981    :{RED}No entry - -
+STR_2982    :Banner text
+STR_2983    :Enter new text for this banner:-
+STR_2984    :Can't set new text for banner...
+STR_2985    :Banner
+STR_2986    :{SMALLFONT}{BLACK}Change text on banner
+STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
+STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
+STR_2989    :{SMALLFONT}{BLACK}Select main color
+STR_2990    :{SMALLFONT}{BLACK}Select text color
+STR_2991    :Sign
+STR_2992    :Sign text
+STR_2993    :Enter new text for this sign:-
+STR_2994    :{SMALLFONT}{BLACK}Change text on sign
+STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2996    :{BLACK}ABC
+STR_2997    :{GREY}ABC
+STR_2998    :{WHITE}ABC
+STR_2999    :{RED}ABC
+STR_3000    :{GREEN}ABC
+STR_3001    :{YELLOW}ABC
+STR_3002    :{TOPAZ}ABC
+STR_3003    :{CELADON}ABC
+STR_3004    :{BABYBLUE}ABC
+STR_3005    :{PALELAVENDER}ABC
+STR_3006    :{PALEGOLD}ABC
+STR_3007    :{LIGHTPINK}ABC
+STR_3008    :{PEARLAQUA}ABC
+STR_3009    :{PALESILVER}ABC
+STR_3010    :Unable to load file...
+STR_3011    :File contains invalid data
+STR_3012    :Dodgems beat style
+STR_3013    :Fairground organ style
+STR_3014    :Roman fanfare style
+STR_3015    :Oriental style
+STR_3016    :Martian style
+STR_3017    :Jungle drums style
+STR_3018    :Egyptian style
+STR_3019    :Toyland style
+STR_3020    :
+STR_3021    :Space style
+STR_3022    :Horror style
+STR_3023    :Techno style
+STR_3024    :Gentle style
+STR_3025    :Summer style
+STR_3026    :Water style
+STR_3027    :Wild west style
+STR_3028    :Jurassic style
+STR_3029    :Rock style
+STR_3030    :Ragtime style
+STR_3031    :Fantasy style
+STR_3032    :Rock style 2
+STR_3033    :Ice style
+STR_3034    :Snow style
+STR_3035    :Custom music 1
+STR_3036    :Custom music 2
+STR_3037    :Medieval style
+STR_3038    :Urban style
+STR_3039    :Organ style
+STR_3040    :Mechanical style
+STR_3041    :Modern style
+STR_3042    :Pirates style
+STR_3043    :Rock style 3
+STR_3044    :Candy style
+STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
+STR_3046    :This ride cannot be modified
+STR_3047    :Local authority forbids demolition or modifications to this ride
+STR_3048    :Marketing campaigns forbidden by local authority
+STR_3049    :Golf hole A
+STR_3050    :Golf hole B
+STR_3051    :Golf hole C
+STR_3052    :Golf hole D
+STR_3053    :Golf hole E
+STR_3054    :Loading...
+STR_3055    :White
+STR_3056    :Translucent
+STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
+STR_3058    :Brick walls
+STR_3059    :Hedges
+STR_3060    :Ice blocks
+STR_3061    :Wooden fences
+STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
+STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
+STR_3064    :Beginner Parks
+STR_3065    :Challenging Parks
+STR_3066    :Expert Parks
+STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_3068    :Other Parks
+STR_3069    :Top Section
+STR_3070    :Slope to Level
+STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
+STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
+STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
+STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
+STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
+STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
+STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
+STR_3078    :Plain entrance
+STR_3079    :Wooden entrance
+STR_3080    :Canvas tent entrance
+STR_3081    :Castle entrance (gray)
+STR_3082    :Castle entrance (brown)
+STR_3083    :Jungle entrance
+STR_3084    :Log cabin entrance
+STR_3085    :Classical/Roman entrance
+STR_3086    :Abstract entrance
+STR_3087    :Snow/Ice entrance
+STR_3088    :Pagoda entrance
+STR_3089    :Space entrance
+STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
+STR_3091    :You are not allowed to remove this section!
+STR_3092    :You are not allowed to move or modify the station for this ride!
+STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
+STR_3094    :N/A
+STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
+STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
+STR_3098    :Can't change lift hill speed...
+STR_3099    :{SMALLFONT}{BLACK}Select color
+STR_3100    :{SMALLFONT}{BLACK}Select second color
+STR_3101    :{SMALLFONT}{BLACK}Select third color
+STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
+STR_3103    :Can't re-paint this...
+STR_3104    :{SMALLFONT}{BLACK}List rides
+STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
+STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
+STR_3107    :Close
+STR_3108    :Test
+STR_3109    :Open
+STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
+STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
+STR_3113    :Select a different design
+STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
+STR_3115    :{SMALLFONT}{BLACK}Save track design
+STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3117    :{BLACK}Calling mechanic...
+STR_3118    :{BLACK}{STRINGID} is heading for the ride
+STR_3119    :{BLACK}{STRINGID} is fixing the ride
+STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
+STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
+STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
+STR_3124    :Broken {STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
+STR_3128    :Save Track Design
+STR_3129    :Save Track Design with Scenery
+STR_3130    :Save
+STR_3131    :Cancel
+STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
+STR_3133    :Unable to build this on a slope
+STR_3134    :{RED}(Design includes scenery which is unavailable)
+STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
+STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
+STR_3137    :Select Nearby Scenery
+STR_3138    :Reset Selection
+STR_3139    :Cable lift unable to work in this operating mode
+STR_3140    :Cable lift hill must start immediately after station
+STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
+STR_3143    :{SMALLFONT}{BLACK}Show people on map
+STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
+STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
+STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
+STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
+STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} right fast
+STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} left/right
+STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
+STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
+STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
+STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
+STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
+STR_3155    :
+STR_3156    :
+STR_3157    :map
+STR_3158    :graph
+STR_3159    :list
+STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
+STR_3161    :RollerCoaster Tycoon 2: Checking object files...
+STR_3162    :Unable to allocate enough memory
+STR_3163    :Installing new data:
+STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
+STR_3165    :
+STR_3166    :{BLACK}(ID:
+STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
+STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
+STR_3169    :Data for the following object not found:
+STR_3170    :Not enough space for graphics
+STR_3171    :Too many objects of this type selected
+STR_3172    :The following object must be selected first:
+STR_3173    :This object is currently in use
+STR_3174    :This object is required by another object
+STR_3175    :This object is always required
+STR_3176    :Unable to select this object
+STR_3177    :Unable to de-select this object
+STR_3178    :At least one path object must be selected
+STR_3179    :At least one ride vehicle/attraction object must be selected
+STR_3180    :Invalid selection of objects
+STR_3181    :Object Selection - {STRINGID}
+STR_3182    :Park entrance type must be selected
+STR_3183    :Water type must be selected
+STR_3184    :Attraktion Vehicles/Attractions
+STR_3185    :Small Scenery
+STR_3186    :Large Scenery
+STR_3187    :Walls/Fences
+STR_3188    :Path Signs
+STR_3189    :Footpaths
+STR_3190    :Path Extras
+STR_3191    :Scenery Groups
+STR_3192    :Park Entrance
+STR_3193    :Water
+STR_3194    :Scenario Description
+STR_3195    :Invention List
+STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
+STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
+STR_3199    :Random Shuffle
+STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
+STR_3201    :Object Selection
+STR_3202    :Landscape Editor
+STR_3203    :Invention List Set Up
+STR_3204    :Options Selection
+STR_3205    :Objective Selection
+STR_3206    :Save Scenario
+STR_3207    :Roller Coaster Designer
+STR_3208    :Track Designs Manager
+STR_3209    :Back to Previous Step:
+STR_3210    :Forward to Next Step:
+STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3213    :Can't decrease map size any further
+STR_3214    :Can't increase map size any further
+STR_3215    :Too close to edge of map
+STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
+STR_3217    :Land Owned
+STR_3218    :Construction Rights Owned
+STR_3219    :Land For Sale
+STR_3220    :Construction Rights For Sale
+STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
+STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
+STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
+STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
+STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
+STR_3226    :{SMALLFONT}{BLACK}Build park entrance
+STR_3227    :Too many park entrances!
+STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3229    :Block Brakes cannot be used directly after station
+STR_3230    :Block Brakes cannot be used directly after each other
+STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
+STR_3232    :Options - Financial
+STR_3233    :Options - Guests
+STR_3234    :Options - Park
+STR_3235    :{SMALLFONT}{BLACK}Show financial options
+STR_3236    :{SMALLFONT}{BLACK}Show guest options
+STR_3237    :{SMALLFONT}{BLACK}Show park options
+STR_3238    :No Money
+STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
+STR_3240    :{WINDOW_COLOUR_2}Initial cash:
+STR_3241    :{WINDOW_COLOUR_2}Initial loan:
+STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
+STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
+STR_3244    :Forbid marketing campaigns
+STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
+STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3248    :Can't increase initial cash any further!
+STR_3249    :Can't reduce initial cash any further!
+STR_3250    :Can't increase initial loan any further!
+STR_3251    :Can't reduce initial loan any further!
+STR_3252    :Can't increase maximum loan size any further!
+STR_3253    :Can't reduce maximum loan size any further!
+STR_3254    :Can't increase interest rate any further!
+STR_3255    :Can't reduce interest rate any further!
+STR_3256    :Guests prefer less intense rides
+STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
+STR_3258    :Guests prefer more intense rides
+STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
+STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
+STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
+STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
+STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3264    :Can't increase this any further!
+STR_3265    :Can't reduce this any further!
+STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3267    :Forbid tree removal
+STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
+STR_3269    :Forbid landscape changes
+STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
+STR_3271    :Forbid high construction
+STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
+STR_3273    :Park rating higher difficult level
+STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
+STR_3275    :Guest generation higher difficult level
+STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
+STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
+STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3279    :Free park entry / Pay per ride
+STR_3280    :Pay to enter park / Free rides
+STR_3281    :{WINDOW_COLOUR_2}Entry price:
+STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
+STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3284    :Objective Selection
+STR_3285    :Preserved Rides
+STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3287    :{WINDOW_COLOUR_2}Objective:
+STR_3288    :{SMALLFONT}{BLACK}Select climate
+STR_3289    :{WINDOW_COLOUR_2}Climate:
+STR_3290    :Cool and wet
+STR_3291    :Warm
+STR_3292    :Hot and dry
+STR_3293    :Cold
+STR_3294    :Change...
+STR_3295    :{SMALLFONT}{BLACK}Change name of park
+STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
+STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
+STR_3298    :{WINDOW_COLOUR_2}Park Name: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
+STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Objective Date:
+STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
+STR_3303    :{WINDOW_COLOUR_2}Number of guests:
+STR_3304    :{WINDOW_COLOUR_2}Park value:
+STR_3305    :{WINDOW_COLOUR_2}Monthly income:
+STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
+STR_3307    :{WINDOW_COLOUR_2}Minimum length:
+STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
+STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
+STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
+STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
+STR_3313    :Scenario Name
+STR_3314    :Enter name for scenario:-
+STR_3315    :Park/Scenario Details
+STR_3316    :Enter description of this scenario:-
+STR_3317    :No details yet
+STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
+STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
+STR_3320    :Unable to save scenario file...
+STR_3321    :New objects installed successfully
+STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
+STR_3323    :Missing object data, ID:
+STR_3324    :Requires Add-On Pack:
+STR_3325    :Requires an Add-On Pack
+STR_3326    :{WINDOW_COLOUR_2}(no image)
+STR_3327    :Starting positions for people not set
+STR_3328    :Can't advance to next editor stage...
+STR_3329    :Park entrance not yet built
+STR_3330    :Park must own some land
+STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
+STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
+STR_3333    :Export plug-in objects with saved games
+STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
+STR_3336    :Track Designs Manager - Select Ride Type
+STR_3337    :Six Flags Park
+STR_3338    :{BLACK}Custom-designed layout
+STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
+STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
+STR_3341    :{SMALLFONT}{BLACK}Game tools
+STR_3342    :Scenario Editor
+STR_3343    :Convert Saved Game to Scenario
+STR_3344    :Roller Coaster Designer
+STR_3345    :Track Designs Manager
+STR_3346    :Can't save track design...
+STR_3347    :Attraktion is too large, contains too many elements, or scenery is too spread out
+STR_3348    :Rename
+STR_3349    :Delete
+STR_3350    :Track design name
+STR_3351    :Enter new name for this track design:-
+STR_3352    :Can't rename track design...
+STR_3353    :New name contains invalid characters
+STR_3354    :Another file exists with this name, or file is write-protected
+STR_3355    :File is write-protected or locked
+STR_3356    :Delete File
+STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
+STR_3358    :Can't delete track design...
+STR_3359    :{BLACK}No track designs of this type
+STR_3360    :Warning!
+STR_3361    :Too many track designs of this type - Some will not be listed.
+STR_3362    :Forced Software Buffer Mixing
+STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
+STR_3364    :Advanced
+STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3366    :{BLACK}= Ride
+STR_3367    :{BLACK}= Food Stall
+STR_3368    :{BLACK}= Drink Stall
+STR_3369    :{BLACK}= Souvenir Stall
+STR_3370    :{BLACK}= Info. Kiosk
+STR_3371    :{BLACK}= First Aid
+STR_3372    :{BLACK}= A.T.M.
+STR_3373    :{BLACK}= Restroom
+STR_3374    :Warning: Too many objects selected!
+STR_3375    :Not all objects in this scenery group could be selected
+STR_3376    :Install new track design...
+STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
+STR_3378    :Install
+STR_3379    :Cancel
+STR_3380    :Unable to install this track design...
+STR_3381    :File is not compatible or contains invalid data
+STR_3382    :File copy failed
+STR_3383    :Select new name for track design
+STR_3384    :An existing track design already has this name - Please select a new name for this design:
+STR_3385    :Beginners Tutorial
+STR_3386    :Custom Rides Tutorial
+STR_3387    :Roller Coaster Building Tutorial
+STR_3388    :Unable to switch to selected mode
+STR_3389    :Unable to select additional item of scenery...
+STR_3390    :Too many items selected
+STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
+STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
+STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
+STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
+STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
+STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
+STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
+STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
+STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
+STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
+STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
+STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
+STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
+STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
+STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
+STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
+STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
+STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
+STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
+STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
+STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
+STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
+STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
+STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
+STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
+STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
+STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
+STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
+STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
+STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
+STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
+STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
+STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
+STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
+STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
+STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
+STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
+STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
+STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
+STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
+STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
+STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
+STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
+STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
+STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
+STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
+STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3438    :Unable to remove all scenery from here...
+STR_3439    :Clear Scenery
+STR_3440    :Page 1
+STR_3441    :Page 2
+STR_3442    :Page 3
+STR_3443    :Page 4
+STR_3444    :Page 5
+STR_3445    :Set Patrol Area
+STR_3446    :Cancel Patrol Area
