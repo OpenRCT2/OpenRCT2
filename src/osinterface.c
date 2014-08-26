@@ -452,6 +452,7 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	OPENFILENAME openFileName;
 	BOOL result;
 	int tmp;
+	DWORD commonFlags;
 
 	// Get directory path from given filename
 	strcpy(initialDirectory, filename);
@@ -488,7 +489,7 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
 
 	// Open dialog
-	DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == 0) {
 		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
 		result = GetSaveFileName(&openFileName);
