@@ -146,6 +146,7 @@
     <Text Include="..\data\language\english_uk.txt" />
     <Text Include="..\data\language\english_us.txt" />
     <Text Include="..\data\language\french.txt" />
+    <Text Include="..\data\language\german.txt" />
     <Text Include="..\data\language\hungarian.txt" />
     <Text Include="..\data\language\polish.txt" />
     <Text Include="..\data\language\spanish_sp.txt" />

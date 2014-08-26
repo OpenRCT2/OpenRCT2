@@ -564,19 +564,19 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0563    :Durch die einfachen Schoßbügel können die Fahrgäste die gigantischen Gefälle, die kurvige Bahn und die Schwerelosigkeit genießen.
+STR_0564    :Eine schnelle, holperige und laute Holzachterbahn, die den Fahrgästen das Gefühl des Kontrollverlusts und der Schwerelosigkeit bereitet.
+STR_0565    :Eine einfache Holzachterbahn mit leichten Gefällen und Kurven, bei der die Wagen ausschließlich durch seitliche Führungen und die Erdanziehungskraft auf den Gleisen gehalten werden.
+STR_0566    :Einzelne Wagen rasen den engen Zick-Zack-Aufbau mit scharfen Kurven und steilen Gefällen entlang.
+STR_0567    :Fahrgäste sitzen in frei schwebenden Sitzen abseits der Fahrbahn und stürzen kopfüber steile Gefälle herunter und fahren durch verschiedene Dreh-Segmente.
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :Durch die mit speziellen Halterungen ausgestatteten, unter der Bahn hängenden Wagen haben die Fahrgäste das Gefühl, sie würden fliegen.
 STR_0570    :
 STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0575    :Angetriebene, hängende Züge transportieren die Besucher durch den Park.
 STR_0576    :
 STR_0577    :
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
@@ -604,260 +604,260 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :
 STR_0601    :
 STR_0602    :
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
+STR_0603    :Gast {INT32}
+STR_0604    :Gast {INT32}
+STR_0605    :Gast {INT32}
+STR_0606    :Gast {INT32}
+STR_0607    :Gast {INT32}
+STR_0608    :Gast {INT32}
+STR_0609    :Gast {INT32}
+STR_0610    :Gast {INT32}
+STR_0611    :Gast {INT32}
+STR_0612    :Gast {INT32}
+STR_0613    :Gast {INT32}
+STR_0614    :Gast {INT32}
+STR_0615    :Gast {INT32}
+STR_0616    :Gast {INT32}
+STR_0617    :Gast {INT32}
+STR_0618    :Gast {INT32}
+STR_0619    :Gast {INT32}
+STR_0620    :Gast {INT32}
+STR_0621    :Gast {INT32}
+STR_0622    :Gast {INT32}
+STR_0623    :Gast {INT32}
+STR_0624    :Gast {INT32}
+STR_0625    :Gast {INT32}
+STR_0626    :Gast {INT32}
+STR_0627    :Gast {INT32}
+STR_0628    :Gast {INT32}
+STR_0629    :Gast {INT32}
+STR_0630    :Gast {INT32}
+STR_0631    :Gast {INT32}
+STR_0632    :Gast {INT32}
+STR_0633    :Gast {INT32}
+STR_0634    :Gast {INT32}
+STR_0635    :Gast {INT32}
+STR_0636    :Gast {INT32}
+STR_0637    :Gast {INT32}
+STR_0638    :Gast {INT32}
+STR_0639    :Gast {INT32}
+STR_0640    :Gast {INT32}
+STR_0641    :Gast {INT32}
+STR_0642    :Gast {INT32}
+STR_0643    :Gast {INT32}
+STR_0644    :Gast {INT32}
+STR_0645    :Gast {INT32}
+STR_0646    :Gast {INT32}
+STR_0647    :Gast {INT32}
+STR_0648    :Gast {INT32}
+STR_0649    :Gast {INT32}
+STR_0650    :Gast {INT32}
+STR_0651    :Gast {INT32}
+STR_0652    :Gast {INT32}
+STR_0653    :Gast {INT32}
+STR_0654    :Gast {INT32}
+STR_0655    :Gast {INT32}
+STR_0656    :Gast {INT32}
+STR_0657    :Gast {INT32}
+STR_0658    :Gast {INT32}
+STR_0659    :Gast {INT32}
+STR_0660    :Gast {INT32}
+STR_0661    :Gast {INT32}
+STR_0662    :Gast {INT32}
+STR_0663    :Gast {INT32}
+STR_0664    :Gast {INT32}
+STR_0665    :Gast {INT32}
+STR_0666    :Gast {INT32}
+STR_0667    :Gast {INT32}
+STR_0668    :Gast {INT32}
+STR_0669    :Gast {INT32}
+STR_0670    :Gast {INT32}
+STR_0671    :Gast {INT32}
+STR_0672    :Gast {INT32}
+STR_0673    :Gast {INT32}
+STR_0674    :Gast {INT32}
+STR_0675    :Gast {INT32}
+STR_0676    :Gast {INT32}
+STR_0677    :Gast {INT32}
+STR_0678    :Gast {INT32}
+STR_0679    :Gast {INT32}
+STR_0680    :Gast {INT32}
+STR_0681    :Gast {INT32}
+STR_0682    :Gast {INT32}
+STR_0683    :Gast {INT32}
+STR_0684    :Gast {INT32}
+STR_0685    :Gast {INT32}
+STR_0686    :Gast {INT32}
+STR_0687    :Gast {INT32}
+STR_0688    :Gast {INT32}
+STR_0689    :Gast {INT32}
+STR_0690    :Gast {INT32}
+STR_0691    :Gast {INT32}
+STR_0692    :Gast {INT32}
+STR_0693    :Gast {INT32}
+STR_0694    :Gast {INT32}
+STR_0695    :Gast {INT32}
+STR_0696    :Gast {INT32}
+STR_0697    :Gast {INT32}
+STR_0698    :Gast {INT32}
+STR_0699    :Gast {INT32}
+STR_0700    :Gast {INT32}
+STR_0701    :Gast {INT32}
+STR_0702    :Gast {INT32}
+STR_0703    :Gast {INT32}
+STR_0704    :Gast {INT32}
+STR_0705    :Gast {INT32}
+STR_0706    :Gast {INT32}
+STR_0707    :Gast {INT32}
+STR_0708    :Gast {INT32}
+STR_0709    :Gast {INT32}
+STR_0710    :Gast {INT32}
+STR_0711    :Gast {INT32}
+STR_0712    :Gast {INT32}
+STR_0713    :Gast {INT32}
+STR_0714    :Gast {INT32}
+STR_0715    :Gast {INT32}
+STR_0716    :Gast {INT32}
+STR_0717    :Gast {INT32}
+STR_0718    :Gast {INT32}
+STR_0719    :Gast {INT32}
+STR_0720    :Gast {INT32}
+STR_0721    :Gast {INT32}
+STR_0722    :Gast {INT32}
+STR_0723    :Gast {INT32}
+STR_0724    :Gast {INT32}
+STR_0725    :Gast {INT32}
+STR_0726    :Gast {INT32}
+STR_0727    :Gast {INT32}
+STR_0728    :Gast {INT32}
+STR_0729    :Gast {INT32}
+STR_0730    :Gast {INT32}
+STR_0731    :Gast {INT32}
+STR_0732    :Gast {INT32}
+STR_0733    :Gast {INT32}
+STR_0734    :Gast {INT32}
+STR_0735    :Gast {INT32}
+STR_0736    :Gast {INT32}
+STR_0737    :Gast {INT32}
+STR_0738    :Gast {INT32}
+STR_0739    :Gast {INT32}
+STR_0740    :Gast {INT32}
+STR_0741    :Gast {INT32}
+STR_0742    :Gast {INT32}
+STR_0743    :Gast {INT32}
+STR_0744    :Gast {INT32}
+STR_0745    :Gast {INT32}
+STR_0746    :Gast {INT32}
+STR_0747    :Gast {INT32}
+STR_0748    :Gast {INT32}
+STR_0749    :Gast {INT32}
+STR_0750    :Gast {INT32}
+STR_0751    :Gast {INT32}
+STR_0752    :Gast {INT32}
+STR_0753    :Gast {INT32}
+STR_0754    :Gast {INT32}
+STR_0755    :Gast {INT32}
+STR_0756    :Gast {INT32}
+STR_0757    :Gast {INT32}
+STR_0758    :Gast {INT32}
+STR_0759    :Gast {INT32}
+STR_0760    :Gast {INT32}
+STR_0761    :Gast {INT32}
+STR_0762    :Gast {INT32}
+STR_0763    :Gast {INT32}
+STR_0764    :Gast {INT32}
+STR_0765    :Gast {INT32}
+STR_0766    :Gast {INT32}
+STR_0767    :Gast {INT32}
+STR_0768    :Handlanger {INT32}
+STR_0769    :Mechaniker {INT32}
+STR_0770    :Wachmann {INT32}
 STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0772    :Unbenannter Park{POP16}{POP16}
+STR_0773    :Unbenannter Park{POP16}{POP16}
+STR_0774    :Unbenannter Park{POP16}{POP16}
+STR_0775    :Unbenannter Park{POP16}{POP16}
+STR_0776    :Unbenannter Park{POP16}{POP16}
+STR_0777    :Unbenannter Park{POP16}{POP16}
 STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
+STR_0779    :1.
+STR_0780    :2.
+STR_0781    :3.
+STR_0782    :4.
+STR_0783    :5.
+STR_0784    :6.
+STR_0785    :7.
+STR_0786    :8.
+STR_0787    :9.
+STR_0788    :10.
+STR_0789    :11.
+STR_0790    :12.
+STR_0791    :13.
+STR_0792    :14.
+STR_0793    :15.
+STR_0794    :16.
+STR_0795    :17.
+STR_0796    :18.
+STR_0797    :19.
+STR_0798    :20.
+STR_0799    :21.
+STR_0800    :22.
+STR_0801    :23.
+STR_0802    :24.
+STR_0803    :25.
+STR_0804    :26.
+STR_0805    :27.
+STR_0806    :28.
+STR_0807    :29.
+STR_0808    :30.
+STR_0809    :31.
 STR_0810    :Jan
 STR_0811    :Feb
-STR_0812    :Mar
+STR_0812    :Mär
 STR_0813    :Apr
-STR_0814    :May
+STR_0814    :Mai
 STR_0815    :Jun
 STR_0816    :Jul
 STR_0817    :Aug
 STR_0818    :Sep
-STR_0819    :Oct
+STR_0819    :Okt
 STR_0820    :Nov
-STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0821    :Dez
+STR_0822    :Konnte nicht auf Grafikdatei zugreifen
+STR_0823    :Fehlende oder unzugängliche Datei
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
-STR_0836    :Unable to start game in a minimized state
-STR_0837    :Unable to initialize graphics system
-STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
+STR_0825    :Name wird bereits verwendet
+STR_0826    :Zu viele Namen angegeben
+STR_0827    :Nicht genügend Geld - {CURRENCY2DP} werden benötigt
+STR_0828    :{SMALLFONT}{BLACK}Fenster schließen
+STR_0829    :{SMALLFONT}{BLACK}Fenstertitel - Ziehen, um Fenster zu bewegen
+STR_0830    :{SMALLFONT}{BLACK}Heranzoomen
+STR_0831    :{SMALLFONT}{BLACK}Herauszoomen
+STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90{DEGREE} im Uhrzeigersinn drehen
+STR_0833    :{SMALLFONT}{BLACK}Spiel pausieren
+STR_0834    :{SMALLFONT}{BLACK}Spieloptionen
+STR_0835    :Spiel-Initialisierung fehlgeschlagen
+STR_0836    :Spiel kann nicht im minimierten Zustand gestartet werden.
+STR_0837    :Grafiksystem konnte nicht initialisiert werden.
+STR_0838    :CD-Keycode {INT32} ist für diese RollerCoaster Tycoon 2 CD ungültig!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Bitte deinstalliere RollerCoaster Tycoon 2% und installiere es mit dem korrekten CD-Code erneut.
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
-STR_0842    :640x480 full screen
-STR_0843    :800x600 full screen
-STR_0844    :1024x768 full screen
-STR_0845    :1152x864 full screen
-STR_0846    :1280x1024 full screen
-STR_0847    :About 'RollerCoaster Tycoon 2'
+STR_0841    :Fenstermodus
+STR_0842    :640x480 Vollbild
+STR_0843    :800x600 Vollbild
+STR_0844    :1024x768 Vollbild
+STR_0845    :1152x864 Vollbild
+STR_0846    :1280x1024 Vollbild
+STR_0847    :Über 'RollerCoaster Tycoon 2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:-
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, Alle Rechte vorbehalten
+STR_0851    :{WINDOW_COLOUR_2}Konzipiert and entwickelt von Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Grafik von Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Ton und Musik von Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Weitere Sounds aufgenommen von David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representation durch Jacqui Lyons bei Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Danke an:-
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -878,85 +878,85 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
-STR_0889    :Quit Track Designs Manager
+STR_0877    :Zu niedrig!
+STR_0878    :Zu hoch!
+STR_0879    :Land kann hier nicht gesenkt werden...
+STR_0880    :Land kann hier nicht erhöht werden...
+STR_0881    :Objekt im Weg
+STR_0882    :Spiel laden
+STR_0883    :Spiel speichern
+STR_0884    :Landschaft laden
+STR_0885    :Landschaft speichern
+STR_0886    :Spiel beenden
+STR_0887    :Szenario-Editor beenden
+STR_0888    :Achterbahn-Designer verlassen
+STR_0889    :Achterbahn-Design-Manager beenden
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
-STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
-STR_0908    :Roll/Banking
+STR_0892    :Screenshot gespeichert als '{STRINGID}'
+STR_0893    :Screenshot fehlgeschlagen!
+STR_0894    :Landschafts-Datenbereich voll!
+STR_0895    :Kann nicht teilweise unter und teilweise über Grund bauen.
+STR_0896    :{POP16}{POP16}{STRINGID} bauen
+STR_0897    :Richtung
+STR_0898    :{SMALLFONT}{BLACK}Linkskurve
+STR_0899    :{SMALLFONT}{BLACK}Rechtskurve
+STR_0900    :{SMALLFONT}{BLACK}Linkskurve (kleiner Radius)
+STR_0901    :{SMALLFONT}{BLACK}Rechtskurve (kleiner Radius)
+STR_0902    :{SMALLFONT}{BLACK}Linkskurve (sehr kleiner Radius)
+STR_0903    :{SMALLFONT}{BLACK}Rechtskurve (sehr kleiner Radius)
+STR_0904    :{SMALLFONT}{BLACK}Linkskurve (großer Radius)
+STR_0905    :{SMALLFONT}{BLACK}Rechtskurve (großer Radius)
+STR_0906    :{SMALLFONT}{BLACK}Gerade
+STR_0907    :Steigung
+STR_0908    :Neigung
 STR_0909    :Seat Rot.
-STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
-STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :Can't remove this...
-STR_0927    :Can't construct this here...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Attraktion entrance in the way
-STR_0935    :Attraktion exit in the way
-STR_0936    :Park entrance in the way
-STR_0937    :{SMALLFONT}{BLACK}View options
-STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
+STR_0910    :{SMALLFONT}{BLACK}Nach links neigen
+STR_0911    :{SMALLFONT}{BLACK}Nach rechts neigen
+STR_0912    :{SMALLFONT}{BLACK}Keine Neigung
+STR_0913    :{SMALLFONT}{BLACK}Zu vorherigem Abschnitt wechseln
+STR_0914    :{SMALLFONT}{BLACK}Zu nächstem Abschnitt wechseln
+STR_0915    :{SMALLFONT}{BLACK}Gewählten Abschnitt bauen
+STR_0916    :{SMALLFONT}{BLACK}Gewählten Abschnitt entfernen
+STR_0917    :{SMALLFONT}{BLACK}Vertikales Gefälle
+STR_0918    :{SMALLFONT}{BLACK}Steiles Gefälle
+STR_0919    :{SMALLFONT}{BLACK}Gefälle
+STR_0920    :{SMALLFONT}{BLACK}Höhe
+STR_0921    :{SMALLFONT}{BLACK}Steigung
+STR_0922    :{SMALLFONT}{BLACK}Starke Steigung
+STR_0923    :{SMALLFONT}{BLACK}Vertikale Steigung
+STR_0924    :{SMALLFONT}{BLACK}Helix abwärts
+STR_0925    :{SMALLFONT}{BLACK}Helix aufwärts
+STR_0926    :Kann nicht entfernt werden...
+STR_0927    :Kann hier nicht gebaut werden...
+STR_0928    :{SMALLFONT}{BLACK}Kettenlift, um Wagen hochzuziehen
+STR_0929    :'S'-Kurve (links)
+STR_0930    :'S'-Kurve (rechts)
+STR_0931    :Looping (links)
+STR_0932    :Looping (rechts)
+STR_0933    :Land muss erhöht oder gesenkt werden
+STR_0934    :Attraktions-Eingang im Weg
+STR_0935    :Attraktions-Ausgang im Weg
+STR_0936    :Park-Eingang im Weg
+STR_0937    :{SMALLFONT}{BLACK}Ansichtsoptionen
+STR_0938    :{SMALLFONT}{BLACK}Land anpassen
+STR_0939    :Untergrund-/Innenansicht
 STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Rides
-STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0942    :Attraktionen unsichtbar
+STR_0943    :Szenerie unsichtbar
+STR_0944    :Speichern
+STR_0945    :Nicht speichern
+STR_0946    :Abbrechen
+STR_0947    :Vor dem Laden speichern?
+STR_0948    :Vor dem Beenden speichern?
+STR_0949    :Vor dem Beenden speichern?
+STR_0950    :Spiel laden
+STR_0951    :Spiel beenden
+STR_0952    :Spiel beenden
+STR_0953    :Landschaft laden
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}Sitzrotation für diesen Gleisabschnitt wählen
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -973,363 +973,363 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Abbrechen
 STR_0973    :OK
-STR_0974    :Attraktions
-STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0974    :Attraktionen
+STR_0975    :Läden und Stände
+STR_0976    :Toiletten und Informations-Kioske
+STR_0977    :Neue Transport-Attraktion
+STR_0978    :Neue mäßige Attraktion
+STR_0979    :Neue Achterbahn
+STR_0980    :Neue aufregende Attraktion
+STR_0981    :Neue Wasser-Attraktion
+STR_0982    :Neuer Laden/Stand
+STR_0983    :Forschung & Entwicklung
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :Zu viele Attraktionen
+STR_0988    :Neue Attraktion kann nicht gebaut werden...
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Construction
-STR_0991    :Station platform
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
-STR_0996    :Overall view
-STR_0997    :{SMALLFONT}{BLACK}View selection
-STR_0998    :No more stations allowed on this ride
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
-STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
-STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
-STR_1015    :Unable to operate with more than one station platform in this mode
-STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can't change operating mode...
-STR_1018    :Can't make changes...
-STR_1019    :Can't make changes...
-STR_1020    :Can't make changes...
+STR_0991    :Stationsplattform
+STR_0992    :{SMALLFONT}{BLACK}Gesamte Attraktion abreißen
+STR_0993    :Attraktion abreißen
+STR_0994    :Abreißen
+STR_0995    :{WINDOW_COLOUR_1}Bist du sicher, dass du {STRINGID} abreißen möchtest?
+STR_0996    :Gesamtansicht
+STR_0997    :{SMALLFONT}{BLACK}Ansichtsauswahl
+STR_0998    :Keine weiteren Stationen für diese Attraktion erlaubt
+STR_0999    :Stationsplattform wird benötigt
+STR_1000    :Strecke ist kein geschlossener Kreislauf
+STR_1001    :Strecke unpassend für Zugtyp
+STR_1002    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht öffnen...
+STR_1003    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht testen...
+STR_1004    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht schließen...
+STR_1005    :Kann {POP16}{POP16}{POP16}{STRINGID} nicht bearbeiten...
+STR_1006    :Muss zuerst geschlossen werden
+STR_1007    :Kann nicht genug Fahrzeuge erstellen
+STR_1008    :{SMALLFONT}{BLACK}Attraktion öffnen, schließen oder testen
+STR_1009    :{SMALLFONT}{BLACK}Alle Attraktionen schließen oder öffnen
+STR_1010    :{SMALLFONT}{BLACK}Park schließen oder öffnen
+STR_1011    :Alle schließen
+STR_1012    :Alle öffnen
+STR_1013    :Park schließen
+STR_1014    :Park öffnen
+STR_1015    :Kann in diesem Modus nicht mit mehr als einer Stationsplattform betrieben werden
+STR_1016    :Kann in diesem Modus nicht mit weniger als zwei Stationen betrieben werden
+STR_1017    :Kann Betriebsmodus nicht ändern...
+STR_1018    :Kann keine Änderungen vornehmen...
+STR_1019    :Kann keine Änderungen vornehmen...
+STR_1020    :Kann keine Änderungen vornehmen...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
-STR_1024    :{COMMA16} car per train
-STR_1025    :{COMMA16} cars per train
-STR_1026    :Station platform too long!
-STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
-STR_1028    :Off edge of map!
-STR_1029    :Cannot build partly above and partly below water!
-STR_1030    :Can only build this underwater!
-STR_1031    :Can't build this underwater!
-STR_1032    :Can only build this on water!
-STR_1033    :Can only build this above ground!
-STR_1034    :Can only build this on land!
-STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
-STR_1040    :Save Game
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
-STR_1044    :RollerCoaster Tycoon 2 Scenario File
-STR_1045    :RollerCoaster Tycoon 2 Landscape File
-STR_1046    :RollerCoaster Tycoon 2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Attraktion/attraction name
-STR_1058    :Enter new name for this ride/attraction:-
-STR_1059    :Can't rename ride/attraction...
-STR_1060    :Invalid ride/attraction name
-STR_1061    :Normal mode
-STR_1062    :Continuous circuit mode
-STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
-STR_1065    :Shuttle mode
-STR_1066    :Boat hire mode
-STR_1067    :Upward launch
-STR_1068    :Rotating lift mode
-STR_1069    :Station to station mode
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
-STR_1072    :Maze mode
-STR_1073    :Race mode
-STR_1074    :Bumper-car mode
-STR_1075    :Swing mode
-STR_1076    :Shop stall mode
-STR_1077    :Rotation mode
-STR_1078    :Forward rotation
-STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
-STR_1082    :Space rings mode
-STR_1083    :Beginners mode
-STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
-STR_1088    :Intense mode
-STR_1089    :Berserk mode
-STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
-STR_1092    :Downward launch
-STR_1093    :Crooked house mode
-STR_1094    :Freefall drop mode
-STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
-STR_1097    :Powered launch block sectioned mode
-STR_1098    :Moving to end of {POP16}{STRINGID}
-STR_1099    :Waiting for passengers at {POP16}{STRINGID}
-STR_1100    :Waiting to depart {POP16}{STRINGID}
-STR_1101    :Departing {POP16}{STRINGID}
-STR_1102    :Traveling at {VELOCITY}
-STR_1103    :Arriving at {POP16}{STRINGID}
-STR_1104    :Unloading passengers at {POP16}{STRINGID}
-STR_1105    :Traveling at {VELOCITY}
-STR_1106    :Crashing!
-STR_1107    :Crashed!
-STR_1108    :Traveling at {VELOCITY}
-STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
-STR_1112    :Operating
-STR_1113    :Showing film
-STR_1114    :Rotating
-STR_1115    :Operating
-STR_1116    :Operating
-STR_1117    :Doing circus show
-STR_1118    :Operating
-STR_1119    :Waiting for cable lift
-STR_1120    :Traveling at {VELOCITY}
-STR_1121    :Stopping
-STR_1122    :Waiting for passengers
-STR_1123    :Waiting to start
-STR_1124    :Starting
-STR_1125    :Operating
-STR_1126    :Stopping
-STR_1127    :Unloading passengers
-STR_1128    :Stopped by block brakes
-STR_1129    :All vehicles in same colors
-STR_1130    :Different colors per {STRINGID}
-STR_1131    :Different colors per vehicle
-STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vehicle {POP16}{COMMA16}
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} Wagen pro Zug
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} Wagen pro Zug
+STR_1024    :{COMMA16} Wagen pro Zug
+STR_1025    :{COMMA16} Wagen pro Zug
+STR_1026    :Stationsplattform zu lang!
+STR_1027    :{SMALLFONT}{BLACK}In Hauptansicht ansehen
+STR_1028    :Außerhalb der Karte!
+STR_1029    :Kann nicht teilweise unter und teilweise über dem Wasser bauen!
+STR_1030    :Kann nur unter Wasser gebaut werden!
+STR_1031    :Kann nicht unter Wasser gebaut werden!
+STR_1032    :Kann nur auf Wasser gebaut werden!
+STR_1033    :Kann nur überirdisch gebaut werden!
+STR_1034    :Kann nur auf Land gebaut werden!
+STR_1035    :Behörde verbietet das Bauen über Baumhöhe!
+STR_1036    :Spiel laden
+STR_1037    :Landschaft laden
+STR_1038    :Spielstand zu Szenario konvertieren
+STR_1039    :Neues Bahndesign installieren
+STR_1040    :Spiel speichern
+STR_1041    :Szenario speichern
+STR_1042    :Landschaft speichern
+STR_1043    :RollerCoaster Tycoon 2 Spielstand
+STR_1044    :RollerCoaster Tycoon 2 Szenario
+STR_1045    :RollerCoaster Tycoon 2 Landschaft
+STR_1046    :RollerCoaster Tycoon 2 Bahndesign
+STR_1047    :Speichern des Spiels fehlgeschlagen!
+STR_1048    :Speichern des Szenarios fehlgeschlagen!
+STR_1049    :Speichern der Landschaft fehlgeschlagen!
+STR_1050    :Laden fehlgeschlagen...{NEWLINE}Datei enthält unzulässige Daten!
+STR_1051    :Stützen unsichtbar
+STR_1052    :Besucher unsichtbar
+STR_1053    :{SMALLFONT}{BLACK}Attraktionen im Park
+STR_1054    :{SMALLFONT}{BLACK}Attraktion benennen
+STR_1055    :{SMALLFONT}{BLACK}Besucher benennen
+STR_1056    :{SMALLFONT}{BLACK}Angestellten benennen
+STR_1057    :Attraktionsname
+STR_1058    :Gib einen Namen für diese Attraktion ein:-
+STR_1059    :Kann Attraktion nicht benennen...
+STR_1060    :Unzulässiger Attraktionsname
+STR_1061    :Normaler Modus
+STR_1062    :Geschlossener Kreislauf
+STR_1063    :Seilzug-Antrieb
+STR_1064    :Angetriebener Start
+STR_1065    :Shuttle-Modus
+STR_1066    :Bootsverleih-Modus
+STR_1067    :Abschuss nach oben
+STR_1068    :Lift-Rotations-Modus
+STR_1069    :Station-zu-Station-Modus
+STR_1070    :Eine Fahrt pro Einlass
+STR_1071    :Beliebig viele Fahrten pro Einlass
+STR_1072    :Labyrinth-Modus
+STR_1073    :Rennmodus
+STR_1074    :Autoscooter-Modus
+STR_1075    :Schwingmodus
+STR_1076    :Einkaufsstand-Modus
+STR_1077    :Rotationsmodus
+STR_1078    :Vorwärts drehen
+STR_1079    :Rückwärts drehen
+STR_1080    :Film: {ENDQUOTES}Rache der Flieger{ENDQUOTES}
+STR_1081    :3D-Film: {ENDQUOTES}Mäuseschwänze{ENDQUOTES}
+STR_1082    :Weltraumringe-Modus
+STR_1083    :Anfängermodus
+STR_1084    :LIM-Antrieb
+STR_1085    :Film: {ENDQUOTES}Adrenalinjunkies{ENDQUOTES}
+STR_1086    :3D-Film: {ENDQUOTES}Sturmjäger{ENDQUOTES}
+STR_1087    :3D-Film: {ENDQUOTES}Weltraumaffen{ENDQUOTES}
+STR_1088    :Intensivmodus
+STR_1089    :Berserker-Modus
+STR_1090    :Geisterhaus-Modus
+STR_1091    :Zirkus-Modus
+STR_1092    :Abschuss nach unten
+STR_1093    :Schiefes-Haus-Modus
+STR_1094    :Freifall-Modus
+STR_1095    :Abgeschlossener Kreislauf mit Blockbremsen
+STR_1096    :Angetriebener Start
+STR_1097    :Angetriebener Start mit Blockbremsen
+STR_1098    :Bewegt sich zum Ende von {POP16}{STRINGID}
+STR_1099    :Wartet auf Fahrgäste bei {POP16}{STRINGID}
+STR_1100    :Wartet darauf, {POP16}{STRINGID} zu verlassen
+STR_1101    :Verlässt {POP16}{STRINGID}
+STR_1102    :Fährt mit {VELOCITY}
+STR_1103    :Fährt bei {POP16}{STRINGID} ein
+STR_1104    :Lädt Fahrgäste bei {POP16}{STRINGID} ab
+STR_1105    :Fährt mit {VELOCITY}
+STR_1106    :Unfall!
+STR_1107    :Unfall!
+STR_1108    :Fährt mit {VELOCITY}
+STR_1109    :Schwingt
+STR_1110    :Dreht sich
+STR_1111    :Dreht sich
+STR_1112    :In Betrieb
+STR_1113    :Zeigt Film
+STR_1114    :Dreht sich
+STR_1115    :In Betrieb
+STR_1116    :In Betrieb
+STR_1117    :Zirkus-Show läuft
+STR_1118    :In Betrieb
+STR_1119    :Wartet auf Seil-Lift
+STR_1120    :Fährt mit {VELOCITY}
+STR_1121    :Stoppt
+STR_1122    :Wartet auf Fahrgäste
+STR_1123    :Wartet auf Start
+STR_1124    :Startet
+STR_1125    :In Betrieb
+STR_1126    :Stoppt
+STR_1127    :Lädt Fahrgäste ab
+STR_1128    :Gestoppt durch Blockbremsen
+STR_1129    :Alle Fahrzeuge in den selben Farben
+STR_1130    :Verschiedene Farben pro {STRINGID}
+STR_1131    :Verschiedene Farben pro Fahrzeug
+STR_1132    :Fahrzeug {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Fahrzeug {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Select main color
-STR_1137    :{SMALLFONT}{BLACK}Select additional color 1
-STR_1138    :{SMALLFONT}{BLACK}Select additional color 2
-STR_1139    :{SMALLFONT}{BLACK}Select support structure color
-STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
-STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1136    :{SMALLFONT}{BLACK}Hauptfarbe auswählen
+STR_1137    :{SMALLFONT}{BLACK}Zusatzfarbe 1 auswählen
+STR_1138    :{SMALLFONT}{BLACK}Zusatzfarbe 2 auswählen
+STR_1139    :{SMALLFONT}{BLACK}Farbe für Stützen auswählen
+STR_1140    :{SMALLFONT}{BLACK}Fahrzeug-Farbschema auswählen
+STR_1141    :{SMALLFONT}{BLACK}Fahrzeug wählen
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this ride/attraction...
-STR_1145    :Can't build/move exit for this ride/attraction...
-STR_1146    :Entrance not yet built
-STR_1147    :Exit not yet built
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
-STR_1151    :Full load
-STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+STR_1144    :Kann Eingang für diese Attraktion nicht bauen/bewegen...
+STR_1145    :Kann Ausgang für diese Attraktion nicht bauen/bewegen...
+STR_1146    :Eingang noch nicht gebaut
+STR_1147    :Ausgang noch nicht gebaut
+STR_1148    :Viertel Last
+STR_1149    :Halbe Last
+STR_1150    :Dreiviertel Last
+STR_1151    :Volllast
+STR_1152    :Egal
+STR_1153    :Höhenmarkierungen an Fahrbahnen
+STR_1154    :Höhenmarkierungen auf Land
+STR_1155    :Höhenmarkierungen auf Gehwegen
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1158    :Kann nicht entfernt werden...
+STR_1159    :{SMALLFONT}{BLACK}Szenerie, Gärten und weitere Accessoires bauen
+STR_1160    :{SMALLFONT}{BLACK}Seen und Wasser anlegen/anpassen
+STR_1161    :Kann hier nicht gebaut werden...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(Rechtsklick zum Bearbeiten)
+STR_1164    :{STRINGID}{NEWLINE}(Rechtsklick zum Entfernen)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1166    :Wasserpegel kann hier nicht gesenkt werden...
+STR_1167    :Wasserpegel kann hier nicht erhöht werden...
+STR_1168    :Einstellungen
+STR_1169    :(Keine)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - -
+STR_1171    :{RED}Geschlossen - -
 STR_1172    :{YELLOW}{STRINGID} - -
-STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
-STR_1174    :Banner sign in the way
-STR_1175    :Can't build this on sloped footpath
-STR_1176    :Can't build footpath here...
-STR_1177    :Can't remove footpath from here...
-STR_1178    :Land slope unsuitable
-STR_1179    :Footpath in the way
-STR_1180    :Can't build this underwater!
-STR_1181    :Footpaths
-STR_1182    :Type
-STR_1183    :Direction
-STR_1184    :Slope
-STR_1185    :{SMALLFONT}{BLACK}Direction
-STR_1186    :{SMALLFONT}{BLACK}Slope down
-STR_1187    :{SMALLFONT}{BLACK}Level
-STR_1188    :{SMALLFONT}{BLACK}Slope up
-STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
-STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
+STR_1173    :{SMALLFONT}{BLACK}Gehwege und Warteschlangen bauen
+STR_1174    :Banner im Weg
+STR_1175    :Kann nicht auf geneigtem Gehweg gebaut werden
+STR_1176    :Gehweg kann hier nicht gebaut werden...
+STR_1177    :Gehweg kann nicht entfernt werden...
+STR_1178    :Neigung des Bodens unpassend
+STR_1179    :Gehweg im Weg
+STR_1180    :Kann nicht unter Wasser gebaut werden!
+STR_1181    :Gehwege
+STR_1182    :Typ
+STR_1183    :Richtung
+STR_1184    :Steigung
+STR_1185    :{SMALLFONT}{BLACK}Richtung
+STR_1186    :{SMALLFONT}{BLACK}Abwärts
+STR_1187    :{SMALLFONT}{BLACK}Flach
+STR_1188    :{SMALLFONT}{BLACK}Aufwärts
+STR_1189    :{SMALLFONT}{BLACK}Gewählten Gehweg bauen
+STR_1190    :{SMALLFONT}{BLACK}Vorherigen Gehweg entfernen
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on ride
-STR_1200    :{COMMA16} people on ride
-STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
-STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
-STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
-STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
-STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
-STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
-STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronize with adjacent stations
-STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronize departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1194    :Geschlossen
+STR_1195    :Testlauf
+STR_1196    :Geöffnet
+STR_1197    :Defekt
+STR_1198    :Unfall!
+STR_1199    :{COMMA16} Person fährt
+STR_1200    :{COMMA16} Personen fahren
+STR_1201    :Niemand in Warteschlange
+STR_1202    :1 Person in Warteschlange
+STR_1203    :{COMMA16} Personen in Warteschlange
+STR_1204    :{COMMA16} Minute Wartezeit
+STR_1205    :{COMMA16} Minuten Wartezeit
+STR_1206    :{WINDOW_COLOUR_2}Warten auf:
+STR_1207    :{WINDOW_COLOUR_2}Abfahren, wenn ein anderer Zug die Station erreicht
+STR_1208    :{WINDOW_COLOUR_2}Abfahren, wenn ein anderes Boot die Station erreicht
+STR_1209    :{SMALLFONT}{BLACK}Auswählen, wenn vor Abfahrt auf Fahrgäste gewartet werden soll
+STR_1210    :{SMALLFONT}{BLACK}Auswählen, wenn abgefahren werden soll, sobald ein anderes Fahrzeug die selbe Station erreicht
+STR_1211    :{WINDOW_COLOUR_2}Minimale Wartezeit:
+STR_1212    :{WINDOW_COLOUR_2}Maximale Wartezeit:
+STR_1213    :{SMALLFONT}{BLACK}Wähle die minimale Zeit, die gewartet werden soll, bevor abgefahren wird
+STR_1214    :{SMALLFONT}{BLACK}Wähle die maximale Zeit, die gewartet werden soll, bevor abgefahren wird
+STR_1215    :{WINDOW_COLOUR_2}Mit benachbarten Stationen synchronisieren
+STR_1216    :{SMALLFONT}{BLACK}Auswählen, wenn Abfahrt mit allen benachbarten Stationen synchronisiert werden soll
+STR_1217    :{COMMA16} Sekunden
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :Exit only
-STR_1221    :No entrance
-STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport rides
-STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK}Roller coasters
-STR_1226    :{SMALLFONT}{BLACK}Thrill rides
-STR_1227    :{SMALLFONT}{BLACK}Water rides
-STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
-STR_1229    :train
-STR_1230    :trains
-STR_1231    :Train
-STR_1232    :Trains
-STR_1233    :{COMMA16} train
-STR_1234    :{COMMA16} trains
-STR_1235    :Train {COMMA16}
-STR_1236    :boat
-STR_1237    :boats
-STR_1238    :Boat
-STR_1239    :Boats
-STR_1240    :{COMMA16} boat
-STR_1241    :{COMMA16} boats
-STR_1242    :Boat {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
-STR_1250    :docking platform
-STR_1251    :docking platforms
-STR_1252    :Docking platform
-STR_1253    :Docking platforms
-STR_1254    :{COMMA16} docking platform
-STR_1255    :{COMMA16} docking platforms
-STR_1256    :Docking platform {COMMA16}
-STR_1257    :station
-STR_1258    :stations
+STR_1220    :Nur Ausgang
+STR_1221    :Kein Eingang
+STR_1222    :Keine Ausgang
+STR_1223    :{SMALLFONT}{BLACK}Transport-Attraktionen
+STR_1224    :{SMALLFONT}{BLACK}Mäßige Attraktionen
+STR_1225    :{SMALLFONT}{BLACK}Achterbahnen
+STR_1226    :{SMALLFONT}{BLACK}Aufregende Attraktionen
+STR_1227    :{SMALLFONT}{BLACK}Wasser-Attraktionen
+STR_1228    :{SMALLFONT}{BLACK}Läden & Stände
+STR_1229    :Zug
+STR_1230    :Züge
+STR_1231    :Zug
+STR_1232    :Züge
+STR_1233    :{COMMA16} Zug
+STR_1234    :{COMMA16} Züge
+STR_1235    :Zug {COMMA16}
+STR_1236    :Boot
+STR_1237    :Boote
+STR_1238    :Boot
+STR_1239    :Boote
+STR_1240    :{COMMA16} Boot
+STR_1241    :{COMMA16} Boote
+STR_1242    :Boot {COMMA16}
+STR_1243    :Bahn
+STR_1244    :Bahnen
+STR_1245    :Bahn
+STR_1246    :Bahnen
+STR_1247    :{COMMA16} Bahn
+STR_1248    :{COMMA16} Bahnen
+STR_1249    :Bahn {COMMA16}
+STR_1250    :Dockingstation
+STR_1251    :Dockingstationen
+STR_1252    :Dockingstation
+STR_1253    :Dockingstationen
+STR_1254    :{COMMA16} Dockingstation
+STR_1255    :{COMMA16} Dockingstationen
+STR_1256    :Dockingstation {COMMA16}
+STR_1257    :Station
+STR_1258    :Stationen
 STR_1259    :Station
-STR_1260    :Stations
-STR_1261    :{COMMA16} station
-STR_1262    :{COMMA16} stations
+STR_1260    :Stationen
+STR_1261    :{COMMA16} Station
+STR_1262    :{COMMA16} Stationen
 STR_1263    :Station {COMMA16}
-STR_1264    :car
-STR_1265    :cars
-STR_1266    :Car
-STR_1267    :Cars
-STR_1268    :{COMMA16} car
-STR_1269    :{COMMA16} cars
-STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
-STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
-STR_1306    :ring
-STR_1307    :rings
+STR_1264    :Wagen
+STR_1265    :Wagen
+STR_1266    :Wagen
+STR_1267    :Wagen
+STR_1268    :{COMMA16} Wagen
+STR_1269    :{COMMA16} Wagen
+STR_1270    :Wagen {COMMA16}
+STR_1271    :Gebäude
+STR_1272    :Gebäude
+STR_1273    :Gebäude
+STR_1274    :Gebäude
+STR_1275    :{COMMA16} Gebäude
+STR_1276    :{COMMA16} Gebäude
+STR_1277    :Gebäude {COMMA16}
+STR_1278    :Gebäude
+STR_1279    :Gebäude
+STR_1280    :Gebäude
+STR_1281    :Gebäude
+STR_1282    :{COMMA16} Gebäude
+STR_1283    :{COMMA16} Gebäude
+STR_1284    :Gebäude {COMMA16}
+STR_1285    :Schiff
+STR_1286    :Schiffe
+STR_1287    :Schiff
+STR_1288    :Schiffe
+STR_1289    :{COMMA16} Schiff
+STR_1290    :{COMMA16} Schiffe
+STR_1291    :Schiff {COMMA16}
+STR_1292    :Kabine
+STR_1293    :Kabinen
+STR_1294    :Kabine
+STR_1295    :Kabinen
+STR_1296    :{COMMA16} Kabine
+STR_1297    :{COMMA16} Kabinen
+STR_1298    :Kabine {COMMA16}
+STR_1299    :Rad
+STR_1300    :Räder
+STR_1301    :Rad
+STR_1302    :Räder
+STR_1303    :{COMMA16} Rad
+STR_1304    :{COMMA16} Räder
+STR_1305    :Rad {COMMA16}
+STR_1306    :Ring
+STR_1307    :Ringe
 STR_1308    :Ring
-STR_1309    :Rings
-STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
+STR_1309    :Ringe
+STR_1310    :{COMMA16} Ring
+STR_1311    :{COMMA16} Ringe
 STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
-STR_1328    :Level land required
+STR_1313    :Spieler
+STR_1314    :Spieler
+STR_1315    :Spieler
+STR_1316    :Spieler
+STR_1317    :{COMMA16} Spieler
+STR_1318    :{COMMA16} Spieler
+STR_1319    :Spieler {COMMA16}
+STR_1320    :Bahn
+STR_1321    :Bahnen
+STR_1322    :Bahn
+STR_1323    :Bahnen
+STR_1324    :{COMMA16} Bahn
+STR_1325    :{COMMA16} Bahnen
+STR_1326    :Bahn {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Objekte um 90{DEGREE} drehen
+STR_1328    :Flaches Lang benötigt
 STR_1329    :{WINDOW_COLOUR_2}Launch speed:
 STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
@@ -3278,7 +3278,7 @@ STR_3271    :Forbid high construction
 STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
 STR_3273    :Park rating higher difficult level
 STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation higher difficult level
+STR_3275    :Gast generation higher difficult level
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
