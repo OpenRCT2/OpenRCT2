@@ -944,7 +944,7 @@ STR_0939    :Untergrund-/Innenansicht
 STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
 STR_0942    :Attraktionen unsichtbar
-STR_0943    :Szenerie unsichtbar
+STR_0943    :Dekoration unsichtbar
 STR_0944    :Speichern
 STR_0945    :Nicht speichern
 STR_0946    :Abbrechen
@@ -1096,9 +1096,9 @@ STR_1091    :Zirkus-Modus
 STR_1092    :Abschuss nach unten
 STR_1093    :Schiefes-Haus-Modus
 STR_1094    :Freifall-Modus
-STR_1095    :Abgeschlossener Kreislauf mit Blockbremsen
+STR_1095    :Abgeschlossener Kreislauf mit Klotzbremse
 STR_1096    :Angetriebener Start
-STR_1097    :Angetriebener Start mit Blockbremsen
+STR_1097    :Angetriebener Start mit Klotzbremse
 STR_1098    :Bewegt sich zum Ende von {POP16}{STRINGID}
 STR_1099    :Wartet auf Fahrgäste bei {POP16}{STRINGID}
 STR_1100    :Wartet darauf, {POP16}{STRINGID} zu verlassen
@@ -1129,7 +1129,7 @@ STR_1124    :Startet
 STR_1125    :In Betrieb
 STR_1126    :Stoppt
 STR_1127    :Lädt Fahrgäste ab
-STR_1128    :Gestoppt durch Blockbremsen
+STR_1128    :Gestoppt durch Klotzbremse
 STR_1129    :Alle Fahrzeuge in den selben Farben
 STR_1130    :Verschiedene Farben pro {STRINGID}
 STR_1131    :Verschiedene Farben pro Fahrzeug
@@ -1160,7 +1160,7 @@ STR_1155    :Höhenmarkierungen auf Gehwegen
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kann nicht entfernt werden...
-STR_1159    :{SMALLFONT}{BLACK}Szenerie, Gärten und weitere Accessoires bauen
+STR_1159    :{SMALLFONT}{BLACK}Dekoration, Gärten und weitere Accessoires bauen
 STR_1160    :{SMALLFONT}{BLACK}Seen und Wasser anlegen/anpassen
 STR_1161    :Kann hier nicht gebaut werden...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
@@ -1330,221 +1330,221 @@ STR_1325    :{COMMA16} Bahnen
 STR_1326    :Bahn {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}Objekte um 90{DEGREE} drehen
 STR_1328    :Flaches Lang benötigt
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1329    :{WINDOW_COLOUR_2}Antriebsgeschwindigkeit:
+STR_1330    :{SMALLFONT}{BLACK}Höchstgeschwindigkeit bei Verlassen der Station
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet...
-STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1335    :{STRINGID} - Eingang{POP16}{POP16}
+STR_1336    :{STRINGID} - Eingang Station {POP16}{COMMA16}
+STR_1337    :{STRINGID} - Ausgang{POP16}{POP16}
+STR_1338    :{STRINGID} - Ausgang Station {POP16}{COMMA16}
+STR_1339    :{BLACK}Noch keine Testergebnisse vorhanden...
+STR_1340    :{WINDOW_COLOUR_2}Höchstgeschwindigkeit: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Fahrdauer: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} /
-STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}Streckenlänge: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} /
-STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical G's: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
+STR_1347    :{WINDOW_COLOUR_2}Durchschnittsgeschwindigkeit: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Max. positive vertikale G-Kraft: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Max. positive vertikale G-Kraft: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Max. negative vertikale G-Kraft: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Max. negative vertikale G-Kraft: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Max. seitliche G-Kraft: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Max. seitliche G-Kraft: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Höchste Fallhöhe: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Stürze: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Loopings: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :Can't change speed...
-STR_1362    :Can't change launch speed...
-STR_1363    :Too high for supports!
-STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (left)
-STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
-STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (left)
-STR_1374    :Large Half Loop (right)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
-STR_1383    :Quarter Loop
+STR_1358    :{WINDOW_COLOUR_2}Zeit "in der Luft": {BLACK}{COMMA2DP32}sek.
+STR_1359    :{WINDOW_COLOUR_2}Wartezeit: {BLACK}{COMMA16} Minute
+STR_1360    :{WINDOW_COLOUR_2}Wartezeit: {BLACK}{COMMA16} Minuten
+STR_1361    :Geschwindigkeit kann nicht geändert werden...
+STR_1362    :Antriebsgeschwindigkeit kann nicht geändert werden...
+STR_1363    :Zu hoch für Stützen!
+STR_1364    :Stützen für darüberliegende Bahn können nicht erweitert werden.
+STR_1365    :Halbe Drehung (links)
+STR_1366    :Halbe Drehung (rechts)
+STR_1367    :Halber Looping
+STR_1368    :Halber Korkenzieher (links)
+STR_1369    :Halber Korkenzieher (rechts)
+STR_1370    :Rolle (links)
+STR_1371    :Rolle (rechts)
+STR_1372    :Angetriebene Steigung
+STR_1373    :Großer halber Looping (links)
+STR_1374    :Großer halber Looping (rechts)
+STR_1375    :Übergang nach oben
+STR_1376    :Übergang nach unten
+STR_1377    :Rolle (links)
+STR_1378    :Rolle (rechts)
+STR_1379    :Umkehrung (links)
+STR_1380    :Umkehrung (rechts)
+STR_1381    :Seilzug-Kurve (links)
+STR_1382    :Seilzug-Kurve (rechts)
+STR_1383    :Viertel-Looping
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
-STR_1387    :Can't change land type...
+STR_1385    :{SMALLFONT}{BLACK}Weitere Streckeneinstellungen
+STR_1386    :Spezial...
+STR_1387    :Landtyp kann nicht geändert werden...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}View of ride/attraction
-STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
-STR_1394    :{SMALLFONT}{BLACK}Operating options
-STR_1395    :{SMALLFONT}{BLACK}Maintenance options
-STR_1396    :{SMALLFONT}{BLACK}Color scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
-STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
-STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this...
-STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
-STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
-STR_1411    :{STRINGID} in the way
-STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
-STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
+STR_1392    :{SMALLFONT}{BLACK}Attraktion ansehen
+STR_1393    :{SMALLFONT}{BLACK}Fahrzeugdetails und -einstellungen
+STR_1394    :{SMALLFONT}{BLACK}Betriebseinstellungen
+STR_1395    :{SMALLFONT}{BLACK}Wartungseinstellungen
+STR_1396    :{SMALLFONT}{BLACK}Farbschema-Einstellungen
+STR_1397    :{SMALLFONT}{BLACK}Ton- & Musikeinstellungen
+STR_1398    :{SMALLFONT}{BLACK}Messungen und Testdaten
+STR_1399    :{SMALLFONT}{BLACK}Graphen
+STR_1400    :Eingang
+STR_1401    :Ausgang
+STR_1402    :{SMALLFONT}{BLACK}Eingang bauen/bewegen
+STR_1403    :{SMALLFONT}{BLACK}Ausgang bauen/bewegen
+STR_1404    :{SMALLFONT}{BLACK}Um 90{DEGREE} drehen
+STR_1405    :{SMALLFONT}{BLACK}Spiegeln
+STR_1406    :{SMALLFONT}{BLACK}Dekoration ein/aus (wenn verfügbar)
+STR_1407    :{WINDOW_COLOUR_2}Bauen...
+STR_1408    :{WINDOW_COLOUR_2}Preis: {BLACK}{CURRENCY}
+STR_1409    :Ein-/Ausstiegsplattform
+STR_1410    :Vertikaler Turm
+STR_1411    :{STRINGID} im Weg
+STR_1412    :{WINDOW_COLOUR_3}Datenaufzeichnung ist für diesen Attraktionstyp nicht verfügbar
+STR_1413    :{WINDOW_COLOUR_3}Datenaufzeichnung beginnt, wenn nächster/s {STRINGID} {STRINGID} verlässt
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
-STR_1416    :{WINDOW_COLOUR_2}Altitude
-STR_1417    :{WINDOW_COLOUR_2}Vert.G's
-STR_1418    :{WINDOW_COLOUR_2}Lat.G's
+STR_1415    :{WINDOW_COLOUR_2}Geschwindigkeit
+STR_1416    :{WINDOW_COLOUR_2}Höhe
+STR_1417    :{WINDOW_COLOUR_2}Vert. G-Kraft
+STR_1418    :{WINDOW_COLOUR_2}Seitl. G-Kraft
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Queue line path
-STR_1424    :{SMALLFONT}{BLACK}Footpath
-STR_1425    :Footpath
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1422    :{SMALLFONT}{BLACK}Zeichne Daten von {POP16}{STRINGID} auf
+STR_1423    :{SMALLFONT}{BLACK}Warteschlange
+STR_1424    :{SMALLFONT}{BLACK}Gehweg
+STR_1425    :Gehweg
+STR_1426    :Warteschlange
+STR_1427    :{WINDOW_COLOUR_2}Kunden: {BLACK}{COMMA32} pro Stunde
+STR_1428    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
-STR_1431    :Walking
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
-STR_1434    :Drowning
-STR_1435    :On {STRINGID}
+STR_1430    :Kostenlos
+STR_1431    :Geht
+STR_1432    :Auf dem Weg zu {STRINGID}
+STR_1433    :Wartet auf {STRINGID}
+STR_1434    :Ertrinkt
+STR_1435    :Auf {STRINGID}
 STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1437    :Bei {STRINGID}
+STR_1438    :Sitzt
+STR_1439    :(Ort wählen)
+STR_1440    :Mäht den Rasen
+STR_1441    :Fegt einen Gehweg
+STR_1442    :Leert einen Mülleimer
+STR_1443    :Wässert ein Beet
+STR_1444    :Beobachtet {STRINGID}
+STR_1445    :Beobachtet den Bau von {STRINGID}
+STR_1446    :Sieht sich Dekoration an
+STR_1447    :Verlässt den Park
+STR_1448    :Beobachtet den Bau einer neuen Attraktion
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:-
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
-STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
-STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
-STR_1462    :Too steep for lift hill
-STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
-STR_1468    :Staff
-STR_1469    :Attraktion must start and end with stations
-STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1452    :Name des Besuchers
+STR_1453    :Gib einen Namen für diesen Besucher ein:-
+STR_1454    :Kann Namen des Besuchers nicht ändern...
+STR_1455    :Ungültiger Name
+STR_1456    :{WINDOW_COLOUR_2}Geld ausgegeben: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Geld im Portmonee: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Zeit im Park: {BLACK}{REALTIME}
+STR_1459    :Streckenstil
+STR_1460    :{SMALLFONT}{BLACK}'U'-förmige offene Strecke
+STR_1461    :{SMALLFONT}{BLACK}'O'-förmige geschlossene Strecke
+STR_1462    :Zu Steil für Seilzug
+STR_1463    :Gäste
+STR_1464    :Helix aufwärts (klein)
+STR_1465    :Helix aufwärts (groß)
+STR_1466    :Helix abwärts (klein)
+STR_1467    :Helix abwärts (groß)
+STR_1468    :Angestellte
+STR_1469    :Attraktion muss mit Station beginnen und enden
+STR_1470    :Station ist nicht lang genug
+STR_1471    :{WINDOW_COLOUR_2}Geschwindigkeit:
+STR_1472    :{SMALLFONT}{BLACK}Geschwindigkeit dieser Attraktion
+STR_1473    :{WINDOW_COLOUR_2}Erregungsrate: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Erregungsrate: {BLACK}Noch nicht verfügbar
+STR_1475    :{WINDOW_COLOUR_2}Intensitätsrate: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensitätsrate: {BLACK}Noch nicht verfügbar
+STR_1477    :{WINDOW_COLOUR_2}Intensitätsrate: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Übelkeitsrate: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Übelkeitsrate: {BLACK}Noch nicht verfügbar
+STR_1480    :{SMALLFONT}{OPENQUOTES}Ich kann mir {STRINGID}{ENDQUOTES} nicht leisten
+STR_1481    :{SMALLFONT}{OPENQUOTES}Ich hab kein Geld mehr{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}Mir ist schlecht{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}Mir ist mega schlecht{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}Ich will auf was aufregenderes als {STRINGID}{ENDQUOTES} gehen
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} sieht mir zu extrem aus{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}Ich bin mit meinem {STRINGID} noch nicht fertig{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Schon beim Anblick von {STRINGID} wird mir schlecht{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für {STRINGID}{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}Ich will nach Hause{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} ist den Preis wirklich wert{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}{STRINGID} hab ich schon{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}Ich kann mir {STRINGID}{ENDQUOTES} nicht leisten
+STR_1493    :{SMALLFONT}{OPENQUOTES}Ich hab keinen Hunger{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}Ich hab keinen Durst{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Hilfe! Ich ertrinke!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}Ich hab mich verlaufen{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} war super{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}Ich steh schon ewig für {STRINGID} an{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}Ich bin müde{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}Ich hab Hunger{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}Ich hab Durst{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}Ich muss auf's Klo!{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}Ich kann {STRINGID} nicht finden{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}Ich geh nicht auf {STRINGID} wenn es regnet{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}Hier ist es wirklich dreckig{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}Ich kann den Parkausgang nicht finden{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}Ich will von {STRINGID} runter{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}Ich will aus {STRINGID} raus{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}Ich geh nicht auf {STRINGID} - Das ist nicht sicher{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}Dieser Gehweg ist wiederlich{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}Hier ist es zu voll{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}Der Vandalismus hier ist schlimm{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Schöne Dekoration!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}Dieser Park ist wirklich sauber und aufgeräumt{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Die Springbrunnen sind super{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}Ich mag die Musik hier{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Dieser Luftballon von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Dieses Kuscheltier von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Dieser Parkplan von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Dieses Foto von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Dieser Regenschirm von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Dieses Getränk von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Dieser Burger {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Diese Pommes von {STRINGID} sind ihren Preis wirklich wert{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Dieses Eis von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Diese Zuckerwatte von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}Diese Pizza von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This donut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}Dieses Popcorn von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Dieser Hotdog von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Diese Tentakel von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Dieser Hut von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Dieser Liebesapfel von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Dieses T-Shirt von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Dieser Donut von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Dieser Kaffee von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}Dieses Brathähnchen von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Diese Limonade von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -1552,60 +1552,60 @@ STR_1547    :
 STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}Irgendwie hab ich das Gefühl, dass mich jemand beobachtet...{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Luftballon von {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Kuscheltier von {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Parkplan von {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Photo von {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Regenschirm von {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Getränk von {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Burger von {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für Pommes von {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Eis von {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Zuckerwatte von {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Pizza von {STRINGID}{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a donut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Popcorn von {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Hotdog von {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Tentakel von {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Hut von {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Liebesapfel von {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein T-Shirt von {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Donut von {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Kaffee von {STRINGID}{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Brathähnchen von {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Limonade von {STRINGID}{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}Dieses Photo von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Dieses Photo von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Dieses Photo von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Diese Brezel von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Diese heiße Schokolade von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Dieser Eistee von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Diese Strauben von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Diese Sonnenbrille von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Diese Nudeln von {STRINGID} sind ihren Preis wirklich wert{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Diese gebratenen Nudeln von {STRINGID} sind ihren Preis wirklich wert{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Diese Wontonsuppe von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Diese Fleischbällchensuppe von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Dieser Saft von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Diese Sojamilch von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Dieses Sujeonggwa von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Dieses Sandwich von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Dieser Keks von {STRINGID} ist seinen Preis wirklich wert{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Diese Bratwurst von {STRINGID} ist ihren Preis wirklich wert{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1617,27 +1617,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Photo von {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Photo von {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Photo von {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Bretzel von {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine heiße Schokolade von {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Eistee von {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Strauben von {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Sonnenbrille von {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für Nudeln von {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für Bratnudeln von {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Wontonsuppe von {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Fleischbällchensuppe von {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Saft von {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Sojamilch von {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Sujeonggwa von {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für ein Sandwich von {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für einen Keks von {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}So viel bezahle ich nicht für eine Bratwurst von {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1649,124 +1649,124 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
-STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
-STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
-STR_1657    :{WINDOW_COLOUR_2}Preferred ride
-STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
-STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
-STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
+STR_1648    :{SMALLFONT}{OPENQUOTES}Hilfe! Lass mich runter!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}Ich hab bald kein Geld mehr!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Eine neue Attraktion!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Coole Attraktion! Aber nicht so cool wie die Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}Ich bin so aufgeregt - das ist eine Bahn von Intamin!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...und schon bin ich auf {STRINGID}!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}Letzte Gedanken:
+STR_1655    :{SMALLFONT}{BLACK}Gehweg auf Land bauen
+STR_1656    :{SMALLFONT}{BLACK}Gehwegbrücke oder -tunnel bauen
+STR_1657    :{WINDOW_COLOUR_2}Bevorzugte Attraktion
+STR_1658    :{WINDOW_COLOUR_2}Intensität: {BLACK}weniger als {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}Intensität: {BLACK}zwischen {COMMA16} und {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}Intensität: {BLACK}mehr als {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Übelkeitstoleranz: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Glücklichkeit:
+STR_1663    :{WINDOW_COLOUR_2}Übelkeit:
+STR_1664    :{WINDOW_COLOUR_2}Energie:
 STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
-STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
-STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
-STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
-STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
-STR_1673    :Spinning Control Toggle Track
-STR_1674    :Brake speed
+STR_1666    :{WINDOW_COLOUR_2}Durst:
+STR_1667    :{WINDOW_COLOUR_2}Toilette:
+STR_1668    :{WINDOW_COLOUR_2}Zufriedenheit: {BLACK}Unbekannt
+STR_1669    :{WINDOW_COLOUR_2}Zufriedenheit: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}Kunden gesamt: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}Gewinn gesamt: {BLACK}{CURRENCY2DP}
+STR_1672    :Bremsen
+STR_1673    :Drehungs-Schaltstrecke
+STR_1674    :Bremsgeschwindigkeit
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
-STR_1683    :Base size 2 x 2
-STR_1684    :Base size 4 x 4
-STR_1685    :Base size 2 x 4
-STR_1686    :Base size 5 x 1
-STR_1687    :Water splash
-STR_1688    :Base size 4 x 1
-STR_1689    :Block brakes
+STR_1676    :{SMALLFONT}{BLACK}Höchstgeschwindigkeit für Bremsen setzen
+STR_1677    :{WINDOW_COLOUR_2}Beliebtheit: {BLACK}Unbekannt
+STR_1678    :{WINDOW_COLOUR_2}Beliebtheit: {BLACK}{COMMA16}%
+STR_1679    :Helix aufwärts (links)
+STR_1680    :Helix aufwärts (rechts)
+STR_1681    :Helix abwärts (links)
+STR_1682    :Helix abwärts (rechts)
+STR_1683    :Grundfläche 2 x 2
+STR_1684    :Grundfläche 4 x 4
+STR_1685    :Grundfläche 2 x 4
+STR_1686    :Grundfläche 5 x 1
+STR_1687    :Wasserbecken
+STR_1688    :Grundfläche 4 x 1
+STR_1689    :Klotzbremse
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
-STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
-STR_1697    :Cannot place these on queue line area
-STR_1698    :Can only place these on queue area
-STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
-STR_1704    :Can't hire new staff...
-STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
-STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
-STR_1707    :Too many staff in game
-STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
-STR_1709    :Sack staff
-STR_1710    :Yes
-STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
-STR_1716    :Invalid name for park
-STR_1717    :Can't rename park...
-STR_1718    :Park Name
-STR_1719    :Enter name for park:-
-STR_1720    :{SMALLFONT}{BLACK}Name park
-STR_1721    :Park closed
-STR_1722    :Park open
-STR_1723    :Can't open park...
-STR_1724    :Can't close park...
-STR_1725    :Can't buy land...
-STR_1726    :Land not for sale!
-STR_1727    :Construction rights not for sale!
-STR_1728    :Can't buy construction rights here...
-STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - -
+STR_1691    :{WINDOW_COLOUR_2}  Preis: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Preis: {BLACK}ab {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}Gäste
+STR_1694    :{SMALLFONT}{BLACK}Angestellte
+STR_1695    :{SMALLFONT}{BLACK}Ein- und Ausgaben
+STR_1696    :{SMALLFONT}{BLACK}Kundeninformationen
+STR_1697    :Kann nicht auf Warteschlange gebaut werden
+STR_1698    :Kann nur auf Warteschlange gebaut werden
+STR_1699    :Zu viele Besucher im Spiel
+STR_1700    :Neuen Handlanger einstellen
+STR_1701    :Neuen Mechaniker einstellen
+STR_1702    :Neuen Wachmann einstellen
+STR_1703    :Neuen Entertainer einstellen
+STR_1704    :Kann Person nicht einstellen...
+STR_1705    :{SMALLFONT}{BLACK}Diesen Angestellten feuern
+STR_1706    :{SMALLFONT}{BLACK}Diese Person an einen anderen Ort bewegen
+STR_1707    :Zu viele Angestellte im Spiel
+STR_1708    :{SMALLFONT}{BLACK}Einsatzgebiet für diesen Angestellten festlegen
+STR_1709    :Angestellten feuern
+STR_1710    :Ja
+STR_1711    :{WINDOW_COLOUR_1}Bist du sicher, dass du {STRINGID} feuern möchtest?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Gehwege reinigen
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Pflanzen gießen
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Mülleimer ausleeren
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Gras mähen
+STR_1716    :Ungültiger Name für den Park
+STR_1717    :Park kann nicht umbenannt werden...
+STR_1718    :Name des Parks
+STR_1719    :Gib einen Namen für den Park ein:-
+STR_1720    :{SMALLFONT}{BLACK}Park umbenennen
+STR_1721    :Park geschlossen
+STR_1722    :Park geöffnet
+STR_1723    :Park kann nicht geöffnet werden...
+STR_1724    :Park nicht schließen...
+STR_1725    :Land kann nicht gekauft werden...
+STR_1726    :Land ist nicht käuflich!
+STR_1727    :Baugenehmigung ist nicht käuflich!
+STR_1728    :Baugenehmigung kann nicht gekauft werden...
+STR_1729    :Land gehört nicht zu Park!
+STR_1730    :{RED}Geschlossen - -
 STR_1731    :{WHITE}{STRINGID} - -
-STR_1732    :Build
-STR_1733    :Mode
-STR_1734    :{WINDOW_COLOUR_2}Number of laps:
-STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
+STR_1732    :Bauen
+STR_1733    :Modus
+STR_1734    :{WINDOW_COLOUR_2}Anzahl Runden:
+STR_1735    :{SMALLFONT}{BLACK}Anzahl Runden:
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
-STR_1738    :Can't change number of laps...
-STR_1739    :Race won by guest {INT32}
-STR_1740    :Race won by {STRINGID}
-STR_1741    :Not yet constructed !
-STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
-STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1738    :Rundenanzahl kann nicht geändert werden...
+STR_1739    :Gast {INT32} hat das Rennen gewonnen
+STR_1740    :{STRINGID} hat das Rennen gewonnen
+STR_1741    :Noch nicht fertig gebaut!
+STR_1742    :{WINDOW_COLOUR_2}Max. Besucher auf Attraktion:
+STR_1743    :{SMALLFONT}{BLACK}Maximale Anzahl an Besuchern, die gleichzeitig auf dieser Attraktion sein dürfen
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
-STR_1746    :Can't change this...
-STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1746    :Kann nicht geändert werden...
+STR_1747    :{WINDOW_COLOUR_2}Zeitlimit:
+STR_1748    :{SMALLFONT}{BLACK}Zeitlimit für diese Attraktion
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
-STR_1751    :Can't change time limit for ride...
-STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
-STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
-STR_1756    :{WINDOW_COLOUR_2}Admission price:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Build mode
-STR_1759    :{SMALLFONT}{BLACK}Move mode
-STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
-STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
-STR_1762    :Waterfalls
-STR_1763    :Rapids
+STR_1751    :Zeitlimit für diese Attraktion kann nicht geändert werden...
+STR_1752    :{SMALLFONT}{BLACK}Liste aller Besucher im Park anzeigen
+STR_1753    :{SMALLFONT}{BLACK}Gruppierte Liste aller Besucher im Park anzeigen
+STR_1754    :{BLACK}{COMMA16} Besucher
+STR_1755    :{BLACK}{COMMA16} Besucher
+STR_1756    :{WINDOW_COLOUR_2}Eintrittspreis:
+STR_1757    :{WINDOW_COLOUR_2}Zuverlässigkeit: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Baumodus
+STR_1759    :{SMALLFONT}{BLACK}Bewegungsmodus
+STR_1760    :{SMALLFONT}{BLACK}Füllmodus
+STR_1761    :{SMALLFONT}{BLACK}Labyrinth in diese Richtung bauen
+STR_1762    :Wasserfall
+STR_1763    :Stromschnellen
 STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
+STR_1765    :Foto-Abschnitt
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings...
@@ -2312,9 +2312,9 @@ STR_2307    :Select {STRINGID} design
 STR_2308    :{STRINGID} Track Designs
 STR_2309    :Install New Track Design
 STR_2310    :Build custom design
-STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
+STR_2311    :{WINDOW_COLOUR_2}Erregungsrate: {BLACK}{COMMA2DP32} (ungefähr)
+STR_2312    :{WINDOW_COLOUR_2}Intensitätsrate: {BLACK}{COMMA2DP32} (ungefähr)
+STR_2313    :{WINDOW_COLOUR_2}Übelkeitsrate: {BLACK}{COMMA2DP32} (ungefähr)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
@@ -2394,8 +2394,8 @@ STR_2389    :{BLACK}Build the best {STRINGID} you can!
 STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
 STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
 STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
-STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
+STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an Erregungsrate of at least 7.00
+STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve Erregungsrates of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
 STR_2397    :None
@@ -3311,7 +3311,7 @@ STR_3304    :{WINDOW_COLOUR_2}Park value:
 STR_3305    :{WINDOW_COLOUR_2}Monthly income:
 STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
 STR_3307    :{WINDOW_COLOUR_2}Minimum length:
-STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
+STR_3308    :{WINDOW_COLOUR_2}Erregungsrate:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
