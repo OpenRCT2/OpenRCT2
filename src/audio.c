@@ -159,28 +159,49 @@ void get_dsound_devices()
 *
 *  rct2: 0x00404D99
 */
-int sub_404D99(rct_sound* sound, rct_sound* end)
+int sound_duplicate(rct_sound* newsound, rct_sound* sound)
 {
-	return RCT2_CALLFUNC_2(0x00404D99, int, rct_sound*, rct_sound*, sound, end);
+	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->DuplicateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), sound->dsbuffer, &newsound->dsbuffer))) {
+		return 0;
+	} else {
+		newsound->id = sound->id;
+		newsound->has_caps = sound->has_caps;
+		newsound->var_0C = sound->var_0C;
+		sound_add(newsound);
+		return 1;
+	}
+}
+
+/**
+*
+*  rct2: 0x00405103
+*/
+rct_sound* sound_begin()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
 }
 
 /**
 *
 *  rct2: 0x00405109
 */
-rct_sound* sub_405109(rct_sound* end)
+rct_sound* sound_next(rct_sound* sound)
 {
-	return RCT2_CALLFUNC_1(0x00405109, rct_sound*, rct_sound*, end);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) == sound) {
+		return 0;
+	} else {
+		return sound->next;
+	}
 }
 
 /**
 *
 *  rct2: 0x00405206
 */
-int sub_405206(uint16 sound_id)
+rct_sound_info* sound_get_info(uint16 sound_id)
 {
-	if (RCT2_GLOBAL(0x009E2B94, uint32) && sound_id < RCT2_GLOBAL(0x009E2B94, uint32)) {
-		return RCT2_GLOBAL(0x009E2B94, uint32) + RCT2_GLOBAL(0x009E2B94, uint32*)[sound_id + 1];
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int)) {
+		return (rct_sound_info*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int*)[sound_id + 1]);
 	}
 	return 0;
 }
@@ -189,11 +210,11 @@ int sub_405206(uint16 sound_id)
 *
 *  rct2: 0x00405054
 */
-int sub_405054(int var1, WAVEFORMATEX* waveformat, DWORD* var3, DWORD* buffersize)
+int sound_info_loadvars(rct_sound_info* sound_info, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize)
 {
-	*buffersize = *(DWORD*)var1;
-	*(DWORD *)&waveformat->wFormatTag = var1 + 4;
-	*var3 = var1 + 22;
+	*buffersize = sound_info->size;
+	*waveformat = &sound_info->format;
+	*data = (char*)&sound_info->data;
 	return 1;
 }
 
@@ -226,27 +247,26 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 {
 	//return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, channels, software);
 	DSBUFFERDESC bufferdesc;
-	void* var2 = 0;
-
+	char* buffer = 0;
 	memset(&bufferdesc, 0, sizeof(bufferdesc));
 	bufferdesc.dwSize = sizeof(bufferdesc);
-	rct_sound* begin = RCT2_CALLFUNC(0x00405103, rct_sound*);
-	if (begin) {
-		int beginfound = 0;
-		while (!begin->dsbuffer || begin->id != sound_id || !sub_404D99(sound, begin)) {
-			begin = sub_405109(begin);
-			if (!begin) {
-				beginfound = 1;
+	rct_sound* tempsound = sound_begin();
+	if (tempsound) {
+		int wasduplicated = 0;
+		while (!tempsound->dsbuffer || tempsound->id != sound_id || !sound_duplicate(sound, tempsound)) {
+			tempsound = sound_next(tempsound);
+			if (!tempsound) {
+				wasduplicated = 1;
 				break;
 			}
 		}
-		if (!beginfound) {
+		if (!wasduplicated) {
 			return 1;
 		}
 	}
-	int b = sub_405206(sound_id);
-	if (b) {
-		if (sub_405054(b, (WAVEFORMATEX*)&bufferdesc.lpwfxFormat, (DWORD*)&var2, &bufferdesc.dwBufferBytes)) {
+	rct_sound_info* sound_info = sound_get_info(sound_id);
+	if (sound_info) {
+		if (sound_info_loadvars(sound_info, &bufferdesc.lpwfxFormat, &buffer, &bufferdesc.dwBufferBytes)) {
 			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
 			if (channels) {
 				if (channels == 2) {
@@ -254,23 +274,20 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 				} else {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
 				}
-
 				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
 					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
 				}
-
 				if (software) {
 					bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
 				}
-
-				if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA0, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(0x009E2BA0, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
-					if (sound_fill_buffer(sound->dsbuffer, var2, bufferdesc.dwBufferBytes)) {
+				if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
+					if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
 						sound->id = sound_id;
 						DSBCAPS caps;
 						caps.dwSize = sizeof(caps);
 						sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
 						sound->has_caps = caps.dwFlags;
-						RCT2_CALLPROC_1(0x0040511C, rct_sound*, sound); // adds sound to list
+						sound_add(sound);
 						return 1;
 					}
 					sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
@@ -496,6 +513,22 @@ rct_sound* sound_stop(rct_sound* sound)
 
 /**
 *
+*  rct2: 0x0040511C
+*/
+rct_sound* sound_add(rct_sound* sound)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)->next = sound;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = sound;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = sound;
+	sound->next = 0;
+	return sound;
+}
+
+/**
+*
 *  rct2: 0x00405143
 */
 rct_sound* sound_remove(rct_sound* sound)
@@ -521,6 +554,24 @@ rct_sound* sound_remove(rct_sound* sound)
 	}
 	sound->next = 0;
 	return result;
+}
+
+/**
+*
+*  rct2: 0x00405436
+*/
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem)
+{
+	if(*hmem)
+	{
+		GlobalFree(*hmem);
+		*hmem = 0;
+	}
+	if(*hmmio)
+	{
+		mmioClose(*hmmio, 0);
+		*hmmio = 0;
+	}
 }
 
 /**
@@ -639,8 +690,9 @@ int sound_channel_stop(int channel)
 	while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
 		Sleep(10);
 	}
-	if (sound_channel->var_120)
-		RCT2_CALLPROC_2(0x00405436, uint32, uint32, sound_channel->var_11C, sound_channel->var_120); // free_sound?
+	if (sound_channel->hmem) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+	}
 
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	if (dsbuffer) {

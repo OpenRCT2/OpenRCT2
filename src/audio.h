@@ -60,13 +60,19 @@ typedef struct rct_sound {
 typedef struct {
 	uint32 var_0;
 	uint8 pad_4[0x118];
-	uint32 var_11C;
-	uint32 var_120;
+	HMMIO hmmio;
+	HGLOBAL hmem;
 	uint8 pad_124[0x3C];
 	uint32 var_160;
 	uint32 var_164;
 	uint32 var_168;
 } rct_sound_channel;
+
+typedef struct {
+	uint32 size;
+	WAVEFORMATEX format;
+	char* data;
+} rct_sound_info;
 
 typedef struct {
 	uint16 id;
@@ -98,7 +104,10 @@ int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
 rct_sound* sound_stop(rct_sound *sound);
 int sound_channel_stop(int channel);
+rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);
+rct_sound* sound_begin();
+rct_sound* sound_next(rct_sound* sound);
 void pause_sounds();
 void stop_other_sounds();
 void stop_vehicle_sounds();
