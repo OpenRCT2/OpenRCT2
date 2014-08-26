@@ -70,7 +70,7 @@ void audio_get_devices()
 *
 *  rct2: 0x006BAB21
 */
-void audio_6BAB21(void)
+void sub_6BAB21(void)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1) {
 		stop_other_sounds();
@@ -96,7 +96,7 @@ void audio_6BAB21(void)
 */
 void audio_init2(int device)
 {
-	audio_6BAB21();
+	sub_6BAB21();
 	for (int i = 0; i < 7; i++) {
 		rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
@@ -157,11 +157,147 @@ void get_dsound_devices()
 
 /**
 *
+*  rct2: 0x00404D99
+*/
+int sound_duplicate(rct_sound* newsound, rct_sound* sound)
+{
+	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->DuplicateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), sound->dsbuffer, &newsound->dsbuffer))) {
+		return 0;
+	} else {
+		newsound->id = sound->id;
+		newsound->has_caps = sound->has_caps;
+		newsound->var_0C = sound->var_0C;
+		sound_add(newsound);
+		return 1;
+	}
+}
+
+/**
+*
+*  rct2: 0x00405103
+*/
+rct_sound* sound_begin()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
+}
+
+/**
+*
+*  rct2: 0x00405109
+*/
+rct_sound* sound_next(rct_sound* sound)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) == sound) {
+		return 0;
+	} else {
+		return sound->next;
+	}
+}
+
+/**
+*
+*  rct2: 0x00405206
+*/
+rct_sound_info* sound_get_info(uint16 sound_id)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int)) {
+		return (rct_sound_info*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int*)[sound_id + 1]);
+	}
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x00405054
+*/
+int sound_info_loadvars(rct_sound_info* sound_info, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize)
+{
+	*buffersize = sound_info->size;
+	*waveformat = &sound_info->format;
+	*data = (char*)&sound_info->data;
+	return 1;
+}
+
+/**
+*
+*  rct2: 0x00405076
+*/
+int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, int size)
+{
+	char* buf;
+	char* buf2;
+	int buf2size;
+	if (SUCCEEDED(dsbuffer->lpVtbl->Lock(dsbuffer, 0, size, &buf, &size, &buf2, &buf2size, 0))) {
+		memset(buf, 0, size);
+		memcpy(buf, src, size);
+		if (buf2size) {
+			memcpy(buf2, &src[size], buf2size);
+		}
+		dsbuffer->lpVtbl->Unlock(dsbuffer, buf, size, buf2, buf2size);
+		return 1;
+	}
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x00404C6D
 */
-int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c)
+int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 {
-	return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, var_8, var_c);
+	//return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, channels, software);
+	DSBUFFERDESC bufferdesc;
+	char* buffer = 0;
+	memset(&bufferdesc, 0, sizeof(bufferdesc));
+	bufferdesc.dwSize = sizeof(bufferdesc);
+	rct_sound* tempsound = sound_begin();
+	if (tempsound) {
+		int wasduplicated = 0;
+		while (!tempsound->dsbuffer || tempsound->id != sound_id || !sound_duplicate(sound, tempsound)) {
+			tempsound = sound_next(tempsound);
+			if (!tempsound) {
+				wasduplicated = 1;
+				break;
+			}
+		}
+		if (!wasduplicated) {
+			return 1;
+		}
+	}
+	rct_sound_info* sound_info = sound_get_info(sound_id);
+	if (sound_info) {
+		if (sound_info_loadvars(sound_info, &bufferdesc.lpwfxFormat, &buffer, &bufferdesc.dwBufferBytes)) {
+			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
+			if (channels) {
+				if (channels == 2) {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
+				} else {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
+				}
+				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
+					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
+				}
+				if (software) {
+					bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
+				}
+				if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
+					if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
+						sound->id = sound_id;
+						DSBCAPS caps;
+						caps.dwSize = sizeof(caps);
+						sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
+						sound->has_caps = caps.dwFlags;
+						sound_add(sound);
+						return 1;
+					}
+					sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
+					sound->dsbuffer = 0;
+				}
+			}
+			sound->dsbuffer = 0;
+		}
+	}
+	return 0;
 }
 
 /**
@@ -171,7 +307,7 @@ int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c)
 int sound_play_panned(int sound_id, int x)
 {
 	//RCT2_CALLPROC_X(0x006BB76E, sound_id, x, 0, 0, 0, 0, 0);
-	// this function is not complete, need to add in volume and pan adjust
+	// this function is not complete, need to add in volume adjust
 	int result = 0;
 	if (RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
@@ -193,7 +329,12 @@ int sound_play_panned(int sound_id, int x)
 		if (x == 0x8000) {
 			pan = 0;
 		} else {
-			// stuff to adjust pan
+			int x2 = x << 16;
+			uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+			if (screenwidth < 64) {
+				screenwidth = 64;
+			}
+			pan = ((x2 / screenwidth) - 0x8000) >> 4;
 		}
 		if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
 			pan = 0;
@@ -360,13 +501,30 @@ int sound_set_volume(rct_sound* sound, int volume)
 *
 *  rct2: 0x00404DD8
 */
-void sound_stop(rct_sound* sound)
+rct_sound* sound_stop(rct_sound* sound)
 {
 	if (sound->dsbuffer) {
 		sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
 		sound->dsbuffer = 0;
-		sound_remove(sound);
+		return sound_remove(sound);
 	}
+	return sound;
+}
+
+/**
+*
+*  rct2: 0x0040511C
+*/
+rct_sound* sound_add(rct_sound* sound)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)->next = sound;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*) = sound;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*) = sound;
+	sound->next = 0;
+	return sound;
 }
 
 /**
@@ -396,6 +554,24 @@ rct_sound* sound_remove(rct_sound* sound)
 	}
 	sound->next = 0;
 	return result;
+}
+
+/**
+*
+*  rct2: 0x00405436
+*/
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem)
+{
+	if(*hmem)
+	{
+		GlobalFree(*hmem);
+		*hmem = 0;
+	}
+	if(*hmmio)
+	{
+		mmioClose(*hmmio, 0);
+		*hmmio = 0;
+	}
 }
 
 /**
@@ -514,8 +690,9 @@ int sound_channel_stop(int channel)
 	while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
 		Sleep(10);
 	}
-	if (sound_channel->var_120)
-		RCT2_CALLPROC_2(0x00405436, uint32, uint32, sound_channel->var_11C, sound_channel->var_120); // free_sound?
+	if (sound_channel->hmem) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+	}
 
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	if (dsbuffer) {
