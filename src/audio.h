@@ -35,7 +35,6 @@ void audio_quit();
 void audio_get_devices();
 void audio_init2(int device);
 
-
 #include <dsound.h>
 
 /**
@@ -86,7 +85,7 @@ typedef struct {
 } rct_other_sound;
 
 void get_dsound_devices();
-int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
+int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
 int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
 int sound_is_playing(rct_sound* sound);
@@ -97,7 +96,7 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
-void sound_stop(rct_sound *sound);
+rct_sound* sound_stop(rct_sound *sound);
 int sound_channel_stop(int channel);
 rct_sound* sound_remove(rct_sound* sound);
 void pause_sounds();

@@ -70,7 +70,7 @@ void audio_get_devices()
 *
 *  rct2: 0x006BAB21
 */
-void audio_6BAB21(void)
+void sub_6BAB21(void)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1) {
 		stop_other_sounds();
@@ -96,7 +96,7 @@ void audio_6BAB21(void)
 */
 void audio_init2(int device)
 {
-	audio_6BAB21();
+	sub_6BAB21();
 	for (int i = 0; i < 7; i++) {
 		rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
@@ -157,11 +157,130 @@ void get_dsound_devices()
 
 /**
 *
+*  rct2: 0x00404D99
+*/
+int sub_404D99(rct_sound* sound, rct_sound* end)
+{
+	return RCT2_CALLFUNC_2(0x00404D99, int, rct_sound*, rct_sound*, sound, end);
+}
+
+/**
+*
+*  rct2: 0x00405109
+*/
+rct_sound* sub_405109(rct_sound* end)
+{
+	return RCT2_CALLFUNC_1(0x00405109, rct_sound*, rct_sound*, end);
+}
+
+/**
+*
+*  rct2: 0x00405206
+*/
+int sub_405206(uint16 sound_id)
+{
+	if (RCT2_GLOBAL(0x009E2B94, uint32) && sound_id < RCT2_GLOBAL(0x009E2B94, uint32)) {
+		return RCT2_GLOBAL(0x009E2B94, uint32) + RCT2_GLOBAL(0x009E2B94, uint32*)[sound_id + 1];
+	}
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x00405054
+*/
+int sub_405054(int var1, WAVEFORMATEX* waveformat, DWORD* var3, DWORD* buffersize)
+{
+	*buffersize = *(DWORD*)var1;
+	*(DWORD *)&waveformat->wFormatTag = var1 + 4;
+	*var3 = var1 + 22;
+	return 1;
+}
+
+/**
+*
+*  rct2: 0x00405076
+*/
+int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, int size)
+{
+	char* buf;
+	char* buf2;
+	int buf2size;
+	if (SUCCEEDED(dsbuffer->lpVtbl->Lock(dsbuffer, 0, size, &buf, &size, &buf2, &buf2size, 0))) {
+		memset(buf, 0, size);
+		memcpy(buf, src, size);
+		if (buf2size) {
+			memcpy(buf2, &src[size], buf2size);
+		}
+		dsbuffer->lpVtbl->Unlock(dsbuffer, buf, size, buf2, buf2size);
+		return 1;
+	}
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x00404C6D
 */
-int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c)
+int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 {
-	return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, var_8, var_c);
+	//return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, channels, software);
+	DSBUFFERDESC bufferdesc;
+	void* var2 = 0;
+
+	memset(&bufferdesc, 0, sizeof(bufferdesc));
+	bufferdesc.dwSize = sizeof(bufferdesc);
+	rct_sound* begin = RCT2_CALLFUNC(0x00405103, rct_sound*);
+	if (begin) {
+		int beginfound = 0;
+		while (!begin->dsbuffer || begin->id != sound_id || !sub_404D99(sound, begin)) {
+			begin = sub_405109(begin);
+			if (!begin) {
+				beginfound = 1;
+				break;
+			}
+		}
+		if (!beginfound) {
+			return 1;
+		}
+	}
+	int b = sub_405206(sound_id);
+	if (b) {
+		if (sub_405054(b, (WAVEFORMATEX*)&bufferdesc.lpwfxFormat, (DWORD*)&var2, &bufferdesc.dwBufferBytes)) {
+			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
+			if (channels) {
+				if (channels == 2) {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
+				} else {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
+				}
+
+				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
+					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
+				}
+
+				if (software) {
+					bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
+				}
+
+				if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA0, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(0x009E2BA0, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
+					if (sound_fill_buffer(sound->dsbuffer, var2, bufferdesc.dwBufferBytes)) {
+						sound->id = sound_id;
+						DSBCAPS caps;
+						caps.dwSize = sizeof(caps);
+						sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
+						sound->has_caps = caps.dwFlags;
+						RCT2_CALLPROC_1(0x0040511C, rct_sound*, sound); // adds sound to list
+						return 1;
+					}
+					sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
+					sound->dsbuffer = 0;
+				}
+			}
+			sound->dsbuffer = 0;
+		}
+	}
+	return 0;
 }
 
 /**
@@ -171,7 +290,7 @@ int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c)
 int sound_play_panned(int sound_id, int x)
 {
 	//RCT2_CALLPROC_X(0x006BB76E, sound_id, x, 0, 0, 0, 0, 0);
-	// this function is not complete, need to add in volume and pan adjust
+	// this function is not complete, need to add in volume adjust
 	int result = 0;
 	if (RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
@@ -193,7 +312,12 @@ int sound_play_panned(int sound_id, int x)
 		if (x == 0x8000) {
 			pan = 0;
 		} else {
-			// stuff to adjust pan
+			int x2 = x << 16;
+			uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+			if (screenwidth < 64) {
+				screenwidth = 64;
+			}
+			pan = ((x2 / screenwidth) - 0x8000) >> 4;
 		}
 		if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
 			pan = 0;
@@ -360,13 +484,14 @@ int sound_set_volume(rct_sound* sound, int volume)
 *
 *  rct2: 0x00404DD8
 */
-void sound_stop(rct_sound* sound)
+rct_sound* sound_stop(rct_sound* sound)
 {
 	if (sound->dsbuffer) {
 		sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
 		sound->dsbuffer = 0;
-		sound_remove(sound);
+		return sound_remove(sound);
 	}
+	return sound;
 }
 
 /**
