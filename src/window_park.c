@@ -574,7 +574,6 @@ static uint32 window_park_page_enabled_widgets[] = {
 #pragma endregion
 
 static void window_park_init_viewport(rct_window *w);
-static void window_park_scroll_to_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, int page);
 static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
@@ -594,7 +593,7 @@ rct_window *window_park_open()
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
 	w->page = WINDOW_PARK_PAGE_ENTRANCE;
-	w->var_482 = 0;
+	w->viewport_focus_coordinates.y = 0;
 	w->frame_no = 0;
 	w->list_information_type = -1;
 	w->var_48C = -1;
@@ -620,8 +619,8 @@ void window_park_entrance_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.y = -1;
+		window->viewport_focus_coordinates.x = -1;
 	}
 
 	window->page = WINDOW_PARK_PAGE_ENTRANCE;
@@ -642,11 +641,7 @@ static void window_park_entrance_close()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_get_register(w);
 		
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
@@ -662,18 +657,7 @@ static void window_park_entrance_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -695,7 +679,7 @@ static void window_park_entrance_mouseup()
 		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_LOCATE:
-		window_park_scroll_to_viewport(w);
+		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
@@ -712,12 +696,7 @@ static void window_park_entrance_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->flags |= WF_RESIZABLE;
 	window_set_resize(w, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
@@ -761,18 +740,9 @@ static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_wi
 static void window_park_entrance_dropdown()
 {
 	short widgetIndex, dropdownIndex;
+	rct_window* w;
 
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
@@ -806,34 +776,10 @@ static void window_park_entrance_update(rct_window *w)
  */
 static void window_park_entrance_toolupdate()
 {
-	int x, y;
-	short widgetIndex;
+	short x, y, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov x, eax
-	#else
-	__asm__ ( "mov %[x], eax " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, ebx
-	#else
-	__asm__ ( "mov %[y], ebx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_tool_get_registers(w, widgetIndex, x, y);
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
@@ -860,30 +806,7 @@ static void window_park_entrance_tooldown()
 	short x, y, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov x, ax
-	#else
-	__asm__ ( "mov %[x], ax " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, bx
-	#else
-	__asm__ ( "mov %[y], bx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_tool_get_registers(w, widgetIndex, x, y);
 
 	RCT2_CALLPROC_X(0x006681E6, x, y, 0, widgetIndex, (int)w, 0, 0);
 }
@@ -897,30 +820,7 @@ static void window_park_entrance_tooldrag()
 	short x, y, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov x, ax
-	#else
-	__asm__ ( "mov %[x], ax " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, bx
-	#else
-	__asm__ ( "mov %[y], bx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_tool_get_registers(w, widgetIndex, x, y);
 
 	RCT2_CALLPROC_X(0x006681FB, x, y, 0, widgetIndex, (int)w, 0, 0);
 }
@@ -934,18 +834,7 @@ static void window_park_entrance_toolabort()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		hide_gridlines();
@@ -1011,12 +900,7 @@ static void window_park_entrance_invalidate()
 	int i;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->widgets = window_park_page_widgets[w->page];
 	window_init_scroll_widgets(w);
@@ -1068,18 +952,7 @@ static void window_park_entrance_paint()
 	rct_drawpixelinfo *dpi;
 	rct_widget *labelWidget;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1148,10 +1021,11 @@ static void window_park_init_viewport(rct_window *w)
 	// Call invalidate event
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 
-	w->var_482 = x;
-	w->var_484 = y;
-	w->var_486 = z;
-	w->var_488 = r << 8;
+	w->viewport_focus_coordinates.x = x;
+	w->viewport_focus_coordinates.y = y;
+	w->viewport_focus_sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+	w->viewport_focus_coordinates.z = z;
+	w->viewport_focus_coordinates.rotation = r;
 
 	if (zr != 0xFFFF) {
 		// Create viewport
@@ -1163,11 +1037,11 @@ static void window_park_init_viewport(rct_window *w)
 				w->y + viewportWidget->top + 1,
 				(viewportWidget->right - viewportWidget->left) - 2,
 				(viewportWidget->bottom - viewportWidget->top) - 2,
-				zr&0xFF,
+				0,
 				x,
 				y,
 				z,
-				xy&0xC0000000 >> 30, 
+				w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK,
 				-1
 			);
 			w->flags |= (1 << 2);
@@ -1178,30 +1052,6 @@ static void window_park_init_viewport(rct_window *w)
 	if (w->viewport != NULL)
 		w->viewport->flags = viewportFlags;
 	window_invalidate(w);
-}
-
-static void window_park_scroll_to_viewport(rct_window *w)
-{
-	int x, y, z;
-	rct_window *mainWindow;
-
-	if (w->viewport == NULL || *((sint32*)&w->var_482) == -1)
-		return;
-
-	if (*((uint32*)&w->var_486) & 0x80000000) {
-		rct_sprite *sprite = &(g_sprite_list[w->var_482]);
-		x = sprite->unknown.x;
-		y = sprite->unknown.y;
-		z = sprite->unknown.z;
-	} else {
-		x = w->var_482;
-		y = w->var_484;
-		z = w->var_486;
-	}
-
-	mainWindow = window_get_main();
-	if (mainWindow != NULL)
-		window_scroll_to_location(mainWindow, x, y, z);
 }
 
 #pragma endregion
@@ -1219,8 +1069,8 @@ void window_park_rating_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1246,18 +1096,7 @@ static void window_park_rating_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1273,12 +1112,7 @@ static void window_park_rating_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -1302,12 +1136,7 @@ static void window_park_rating_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1336,18 +1165,7 @@ static void window_park_rating_paint()
 	rct_widget *widget;
 	uint8 *history;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1385,8 +1203,8 @@ void window_park_guests_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1412,18 +1230,7 @@ static void window_park_guests_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1439,12 +1246,7 @@ static void window_park_guests_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -1469,12 +1271,7 @@ static void window_park_guests_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1503,18 +1300,7 @@ static void window_park_guests_paint()
 	rct_widget *widget;
 	uint8 *history;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
@@ -1550,18 +1336,7 @@ static void window_park_price_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -1577,12 +1352,7 @@ static void window_park_price_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 124, 230, 124);
 }
@@ -1638,12 +1408,7 @@ static void window_park_price_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1683,19 +1448,8 @@ static void window_park_price_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
-
+	window_paint_get_registers(w, dpi);
+	
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
 
@@ -1720,19 +1474,8 @@ static void window_park_stats_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-
+	window_widget_get_registers(w, widgetIndex);
+	
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
 	else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
@@ -1747,12 +1490,7 @@ static void window_park_stats_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 109, 230, 109);
 }
@@ -1792,12 +1530,7 @@ static void window_park_stats_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1824,19 +1557,8 @@ static void window_park_stats_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
-
+	window_paint_get_registers(w, dpi);
+	
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
 
@@ -1887,8 +1609,8 @@ void window_park_objective_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -1917,18 +1639,7 @@ static void window_park_objective_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1957,12 +1668,7 @@ static void window_park_objective_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 224, 230, 224);
 }
@@ -1985,12 +1691,7 @@ static void window_park_objective_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_park_set_pressed_tab(w);
 
@@ -2018,19 +1719,8 @@ static void window_park_objective_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
-
+	window_paint_get_registers(w, dpi);
+	
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
 
@@ -2082,8 +1772,8 @@ void window_park_awards_open()
 	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
 	if (window == NULL) {
 		window = window_park_open();
-		window->var_482 = -1;
-		window->var_484 = -1;
+		window->viewport_focus_coordinates.x = -1;
+		window->viewport_focus_coordinates.y = -1;
 	}
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -2109,18 +1799,7 @@ static void window_park_awards_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -2136,12 +1815,7 @@ static void window_park_awards_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_set_resize(w, 230, 182, 230, 182);
 }
@@ -2165,12 +1839,7 @@ static void window_park_awards_invalidate()
 	rct_window *w;
 	rct_widget *widgets;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -2198,19 +1867,8 @@ static void window_park_awards_paint()
 	rct_drawpixelinfo *dpi;
 	rct_award *award;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
-
+	window_paint_get_registers(w, dpi);
+	
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
 

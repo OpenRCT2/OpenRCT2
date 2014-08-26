@@ -23,6 +23,7 @@
 #include "game.h"
 #include "ride.h"
 #include "string_ids.h"
+#include "sprite.h"
 #include "sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -178,18 +179,7 @@ static void window_ride_list_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -223,12 +213,7 @@ static void window_ride_list_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->min_width = 340;
 	w->min_height = 124;
@@ -283,24 +268,7 @@ static void window_ride_list_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		if (dropdownIndex == 0)
@@ -336,13 +304,8 @@ static void window_ride_list_scrollgetsize()
 {
 	int top, height;
 	rct_window *w;
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	
+	window_get_register(w);
 
 	height = w->no_list_items * 10;
 	if (w->selected_list_item != -1) {
@@ -379,28 +342,17 @@ static void window_ride_list_scrollgetsize()
 static void window_ride_list_scrollmousedown()
 {
 	int index;
-	short y;
+	short x, y;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
 		return;
 
 	// Open ride window
-	RCT2_CALLPROC_X(0x006ACC28, w->list_item_positions[index], 0, 0, 0, 0, 0, 0);
+	window_ride_main_open(w->list_item_positions[index]);
 }
 
 /**
@@ -410,21 +362,10 @@ static void window_ride_list_scrollmousedown()
 static void window_ride_list_scrollmouseover()
 {
 	int index;
-	short y;
+	short x, y;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -452,12 +393,7 @@ static void window_ride_list_invalidate()
 	int i;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = STR_STATUS + _window_ride_list_information_type;
 
@@ -490,18 +426,7 @@ static void window_ride_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_ride_list_draw_tab_images(dpi, w);
@@ -513,11 +438,44 @@ static void window_ride_list_paint()
  */
 static void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 {
-	int eax = 0, ebx = 0, ecx = 0, edx, esi = 0, edi = 0, ebp = 0;
-	edx = rideIndex;
-	RCT2_CALLFUNC_X(0x006AF561, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*formatSecondary = ebx & 0xFFFF;
-	*argument = eax;
+	rct_ride *ride = &g_ride_list[rideIndex];
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
+		*formatSecondary = STR_CRASHED;
+		return;
+	}
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		*formatSecondary = STR_BROKEN_DOWN;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_CLOSED) {
+		*formatSecondary = STR_CLOSED;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_TESTING) {
+		*formatSecondary = STR_TEST_RUN;
+		return;
+	}
+	rct_peep *peep = GET_PEEP(ride->race_winner);
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+		if (peep->name_string_idx == STR_GUEST) {
+			*argument = peep->id;
+			*formatSecondary = STR_RACE_WON_BY_GUEST;
+		} else {
+			*argument = peep->name_string_idx;
+			*formatSecondary = STR_RACE_WON_BY;
+		}
+	} else {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)) {
+			*argument = ride->num_riders;
+			*formatSecondary = STR_PERSON_ON_RIDE;
+			if(*argument != 1)
+				*formatSecondary = STR_PEOPLE_ON_RIDE;
+
+		} else {
+			*formatSecondary = STR_OPEN;
+		}
+	}
 }
 
 /**
@@ -531,18 +489,7 @@ static void window_ride_list_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_ride *ride;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8));
 

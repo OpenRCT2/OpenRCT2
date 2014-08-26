@@ -128,7 +128,7 @@ void window_scenarioselect_open()
 	window->colours[0] = 1;
 	window->colours[1] = 26;
 	window->colours[2] = 26;
-	window->var_480 = -1;
+	window->viewport_focus_coordinates.var_480 = -1;
 	window->var_494 = 0;
 
 	window_scenarioselect_init_tabs();
@@ -173,18 +173,7 @@ static void window_scenarioselect_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -209,12 +198,7 @@ static void window_scenarioselect_scrollgetsize()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	height = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
@@ -246,24 +230,7 @@ static void window_scenarioselect_scrollmousedown()
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
-	#ifdef _MSC_VER
-	__asm mov x, cx
-	#else
-	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
@@ -289,24 +256,7 @@ static void window_scenarioselect_scrollmouseover()
 	rct_window *w;
 	rct_scenario_basic *scenario, *selected;
 
-	#ifdef _MSC_VER
-	__asm mov x, cx
-	#else
-	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	selected = NULL;
 	for (i = 0; i < gScenarioListCount; i++) {
@@ -333,12 +283,7 @@ static void window_scenarioselect_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
@@ -352,18 +297,7 @@ static void window_scenarioselect_paint()
 	rct_widget *widget;
 	rct_scenario_basic *scenario;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
@@ -424,18 +358,7 @@ static void window_scenarioselect_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_scenario_basic *scenario;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;

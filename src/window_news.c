@@ -107,7 +107,7 @@ void window_news_open()
 		window->colours[0] = 1;
 		window->colours[1] = 1;
 		window->colours[2] = 0;
-		window->var_480 = -1;
+		window->news.var_480 = -1;
 	}
 
 // sub_66E4BA:
@@ -129,18 +129,7 @@ static void window_news_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
@@ -155,17 +144,17 @@ static void window_news_update(rct_window *w)
 	int i, j, x, y, z;
 	rct_news_item *newsItems;
 
-	if (w->var_480 == -1)
+	if (w->news.var_480 == -1)
 		return;
-	if (--w->var_484 != 0)
+	if (--w->news.var_484 != 0)
 		return;
 
 	window_invalidate(w);
 	sound_play_panned(SOUND_CLICK_2, w->x + (w->width / 2));
 
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
-	j = w->var_480;
-	w->var_480 = -1;
+	j = w->news.var_480;
+	w->news.var_480 = -1;
 	for (i = 11; i < 61; i++) {
 		if (newsItems[i].type == NEWS_ITEM_NULL)
 			return;
@@ -173,10 +162,11 @@ static void window_news_update(rct_window *w)
 		if (j == 0) {
 			if (newsItems[i].flags & 1)
 				return;
-			if (w->var_482 == 1) {
+			if (w->news.var_482 == 1) {
 				news_item_open_subject(newsItems[i].type, newsItems[i].assoc);
 				return;
-			} else if (w->var_482 > 1) {
+			}
+			else if (w->news.var_482 > 1) {
 				news_item_get_subject_location(newsItems[i].type, newsItems[i].assoc, &x, &y, &z);
 				if (x != SPRITE_LOCATION_NULL)
 					if ((w = window_get_main()) != NULL)
@@ -224,24 +214,7 @@ static void window_news_scrollmousedown()
 	rct_window *w;
 	rct_news_item *newsItems;
 
-	#ifdef _MSC_VER
-	__asm mov x, cx
-	#else
-	__asm__ ( "mov %[x], cx " : [x] "+m" (x) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -278,9 +251,9 @@ static void window_news_scrollmousedown()
 	}
 
 	if (buttonIndex != 0) {
-		w->var_480 = i - 11;
-		w->var_482 = buttonIndex;
-		w->var_484 = 4;
+		w->news.var_480 = i - 11;
+		w->news.var_482 = buttonIndex;
+		w->news.var_484 = 4;
 		window_invalidate(w);
 		sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
 	}
@@ -304,18 +277,7 @@ static void window_news_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 }
@@ -331,18 +293,7 @@ static void window_news_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_news_item *newsItems, *newsItem, *newsItem2;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	y = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -366,9 +317,11 @@ static void window_news_scrollpaint()
 		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
 
 		// Item text
-		RCT2_GLOBAL(0x009B5F2C, uint8) = newsItem->colour;
-		strcpy((char*)0x009B5F2D, newsItem->text);
-		gfx_draw_string_left_wrapped(dpi, 0, 2, y + 10, 325, 1926, 14);
+		char sz[400];// = (char*)0x09B5F2C;
+		char* args[1];
+		args[0] = (char*)&sz;
+		sprintf(sz, "%c%c%s", newsItem->colour, FORMAT_SMALLFONT, newsItem->text);
+		gfx_draw_string_left_wrapped(dpi, args, 2, y + 10, 325, 1170, 14);
 
 		// Subject button
 		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
@@ -376,9 +329,9 @@ static void window_news_scrollpaint()
 			yy = y + 14;
 
 			press = 0;
-			if (w->var_480 != -1) {
-				newsItem2 = &newsItems[11 + w->var_480];
-				if (newsItem == newsItem2 && w->var_482 == 1)
+			if (w->news.var_480 != -1) {
+				newsItem2 = &newsItems[11 + w->news.var_480];
+				if (newsItem == newsItem2 && w->news.var_482 == 1)
 					press = 0x20;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
@@ -417,9 +370,9 @@ static void window_news_scrollpaint()
 			yy = y + 14;
 
 			press = 0;
-			if (w->var_480 != -1) {
-				newsItem2 = &newsItems[11 + w->var_480];
-				if (newsItem == newsItem2 && w->var_482 == 2)
+			if (w->news.var_480 != -1) {
+				newsItem2 = &newsItems[11 + w->news.var_480];
+				if (newsItem == newsItem2 && w->news.var_482 == 2)
 					press = 0x20;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);

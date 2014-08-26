@@ -162,7 +162,7 @@ void window_map_open()
 	w->var_020 |= 0x300;
 
 	window_init_scroll_widgets(w);
-	w->var_480 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
+	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
@@ -180,11 +180,7 @@ static void window_map_close()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_get_register(w);
 
 	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
@@ -278,11 +274,7 @@ static void window_map_invalidate()
 	uint32 pressed_widgets;
 	int i, height;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_get_register(w);
 
 	// set the pressed widgets
 	pressed_widgets = (uint32)w->pressed_widgets;
@@ -405,18 +397,7 @@ static void window_map_paint()
 	int image_id;
 	int i, x, y;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
@@ -483,17 +464,7 @@ static void window_map_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_g1_element *g1_element, pushed_g1_element;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__("mov %[w], esi " : [w] "+m" (w));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__("mov %[dpi], edi " : [dpi] "+m" (dpi));
-	#endif
+	window_paint_get_registers(w, dpi);
 
 	gfx_clear(dpi, 0x0A0A0A0A);
 

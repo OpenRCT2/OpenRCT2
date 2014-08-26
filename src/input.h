@@ -18,29 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#ifndef _INPUT_H_
+#define _INPUT_H_
 
-#include "rct2.h"
-#include "string_ids.h"
-
-enum {
-	LANGUAGE_UNDEFINED,
-	LANGUAGE_ENGLISH_UK,
-	LANGUAGE_ENGLISH_US,
-	LANGUAGE_DUTCH,
-	LANGUAGE_FRENCH,
-	LANGUAGE_HUNGARIAN,
-	LANGUAGE_POLISH,
-	LANGUAGE_SPANISH,
-	LANGUAGE_COUNT
-};
-
-extern const char *language_names[LANGUAGE_COUNT];
-extern int gCurrentLanguage;
-
-const char *language_get_string(rct_string_id id);
-int language_open(int id);
-void language_close();
+void game_handle_input();
+void game_handle_keyboard_input();
 
 #endif

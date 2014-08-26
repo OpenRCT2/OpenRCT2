@@ -153,8 +153,27 @@ void window_game_top_toolbar_open()
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 	);
 	window->widgets = window_game_top_toolbar_widgets;
-	window->enabled_widgets |= (1 | 2 | 4 | 8 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100 | 0x200 | 0x400 | 0x800 |
-		0x1000 | 0x2000 | 0x4000 | 0x8000 | 0x10000 | 0x20000);
+
+	window->enabled_widgets |= 
+		(1 << WIDX_PAUSE) | 
+		(1 << WIDX_FILE_MENU) |
+		(1 << WIDX_ZOOM_OUT) | 
+		(1 << WIDX_ZOOM_IN) |
+		(1 << WIDX_ROTATE) | 
+		(1 << WIDX_VIEW_MENU) |
+		(1 << WIDX_MAP) | 
+		(1 << WIDX_LAND) |
+		(1 << WIDX_WATER) | 
+		(1 << WIDX_SCENERY) |
+		(1 << WIDX_PATH) | 
+		(1 << WIDX_CONSTRUCT_RIDE) |
+		(1 << WIDX_RIDES) | 
+		(1 << WIDX_PARK) |
+		(1 << WIDX_STAFF) | 
+		(1 << WIDX_CLEAR_SCENERY) |
+		(1ULL << WIDX_FASTFORWARD) | 
+		(1ULL << WIDX_RESEARCH);
+
 	window_init_scroll_widgets(window);
 	window->colours[0] = 7;
 	window->colours[1] = 12;
@@ -171,22 +190,13 @@ static void window_game_top_toolbar_mouseup()
 	short widgetIndex;
 	rct_window *w, *mainWindow;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		// Not sure where this was done in the original code
+		w->pressed_widgets ^= (1 << WIDX_PAUSE);
 		break;
 	case WIDX_FASTFORWARD:
 		// This is an excellent place to add in debugging statements and
@@ -210,7 +220,6 @@ static void window_game_top_toolbar_mouseup()
 			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_MAP:
-		//RCT2_CALLPROC_EBPSAFE(0x0068C88A);
 		window_map_open();
 		break;
 	case WIDX_CLEAR_SCENERY:
@@ -261,7 +270,7 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_CONSTRUCT_RIDE:
-		RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
+		window_new_ride_open();
 		break;
 	case WIDX_RIDES:
 		window_ride_list_open();
@@ -271,7 +280,6 @@ static void window_game_top_toolbar_mouseup()
 		break;
 	case WIDX_STAFF:
 		window_staff_open();
-		//RCT2_CALLPROC_EBPSAFE(0x006BD3CC);
 		break;
 	case WIDX_GUESTS:
 		window_guest_list_open();
@@ -377,18 +385,7 @@ static void window_game_top_toolbar_dropdown()
 	short widgetIndex, dropdownIndex;
 	rct_window* w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_FILE_MENU) {
 		switch (dropdownIndex) {
@@ -465,12 +462,7 @@ static void window_game_top_toolbar_invalidate()
 	int x;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	// Anchor the right half of the buttons to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -532,6 +524,18 @@ static void window_game_top_toolbar_invalidate()
 		w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
+
+	// Zoomed out/in disable. Not sure where this code is in the original.
+	if (window_get_main()->viewport->zoom == 0){
+		w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
+	}
+	else if (window_get_main()->viewport->zoom == 3){
+		w->disabled_widgets |= (1 << WIDX_ZOOM_OUT);
+	}
+	else
+	{
+		w->disabled_widgets &= ~((1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT));
+	}
 }
 
 /**
@@ -544,18 +548,7 @@ static void window_game_top_toolbar_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

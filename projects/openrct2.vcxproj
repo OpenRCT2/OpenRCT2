@@ -28,6 +28,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\graph.h" />
+    <ClInclude Include="..\src\input.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\language.h" />
     <ClInclude Include="..\src\map.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="..\src\window_error.h" />
     <ClInclude Include="..\src\window_tooltip.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="..\src\staff.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lodepng\lodepng.c" />
@@ -73,6 +75,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\graph.c" />
+    <ClCompile Include="..\src\input.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\language.c" />
     <ClCompile Include="..\src\map.c" />
@@ -120,9 +123,11 @@
     <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_peep.c" />
     <ClCompile Include="..\src\window_research.c" />
+    <ClCompile Include="..\src\window_ride.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
     <ClCompile Include="..\src\window_staff.c" />
+    <ClCompile Include="..\src\window_staff_peep.c" />
     <ClCompile Include="..\src\window_title_exit.c" />
     <ClCompile Include="..\src\window_title_logo.c" />
     <ClCompile Include="..\src\window_main.c" />
@@ -131,6 +136,7 @@
     <ClCompile Include="..\src\window_game_top_toolbar.c" />
     <ClCompile Include="..\src\window_tooltip.c" />
     <ClCompile Include="..\src\window_water.c" />
+    <ClCompile Include="..\src\staff.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
@@ -140,6 +146,9 @@
     <Text Include="..\data\language\english_uk.txt" />
     <Text Include="..\data\language\english_us.txt" />
     <Text Include="..\data\language\french.txt" />
+    <Text Include="..\data\language\hungarian.txt" />
+    <Text Include="..\data\language\polish.txt" />
+    <Text Include="..\data\language\spanish_sp.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>

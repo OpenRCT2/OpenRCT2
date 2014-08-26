@@ -82,6 +82,10 @@ enum GAME_COMMAND {
 	GAME_COMMAND_57
 };
 
+typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+extern int gGameSpeed;
+
 void game_create_windows();
 void game_update();
 void game_logic_update();

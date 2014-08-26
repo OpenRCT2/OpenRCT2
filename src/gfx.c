@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <windows.h>
+#include <limits.h>
 #include "addresses.h"
 #include "gfx.h"
 #include "rct2.h"
@@ -2316,7 +2317,7 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 * x_start: edi
 * y_start: esi
 */
-void gfx_draw_rain(int left, int top, int width, int height, uint32 x_start, uint32 y_start){
+void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start){
 	uint8* pattern = RCT2_GLOBAL(RCT2_ADDRESS_RAIN_PATTERN, uint8*);
 	uint8 pattern_x_space = *pattern++;
 	uint8 pattern_y_space = *pattern++;

@@ -93,6 +93,75 @@ typedef struct {
 	sint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
+/** 
+ * Viewport focus structure.
+ * size: 0xA
+ * Use sprite.type to work out type.
+ */
+typedef struct{
+	sint16 var_480;
+	sint16 x; //0x482
+	sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
+	sint16 z; //0x486
+	uint8 rotation;//0x488
+	uint8 pad_489;
+} coordinate_focus;
+
+// Type is viewport_target_sprite_id & 0x80000000 != 0
+typedef struct{
+	sint16 var_480;
+	uint16 sprite_id; //0x482
+	uint8 pad_484;
+	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
+	uint16 pad_486; 
+	uint8 rotation; //0x488
+	uint8 pad_489;
+} sprite_focus;
+
+#define VIEWPORT_FOCUS_TYPE_MASK 0xC0
+enum{
+	VIEWPORT_FOCUS_TYPE_COORDINATE = (1<<6),
+	VIEWPORT_FOCUS_TYPE_SPRITE = (1<<7)
+};
+#define VIEWPORT_FOCUS_Y_MASK 0x3FFF;
+
+
+typedef struct{
+	sint16 campaign_type;
+	sint16 no_weeks; //0x482
+	uint16 ride_id; //0x484
+	uint32 pad_486;
+} campaign_variables;
+
+typedef struct{
+	sint16 selected_ride_id; //0x480
+	sint16 highlighted_ride_id; //0x482
+	uint16 pad_484;
+	uint16 pad_486;
+	uint16 selected_ride_countdown; //488
+} new_ride_variables;
+
+typedef struct{
+	sint16 var_480;
+	sint16 var_482;
+	uint16 var_484;
+	uint16 var_486;
+	uint16 var_488;
+} news_variables;
+
+typedef struct{
+	sint16 rotation;
+	sint16 var_482;
+	uint16 var_484;
+	uint16 var_486;
+	uint16 var_488;
+} map_variables;
+
+typedef struct {
+	sint16 var_480;
+	sint32 var_482;
+} ride_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -122,11 +191,15 @@ typedef struct rct_window {
 	sint16 selected_list_item;		// 0x47A -1 for none selected
 	sint16 pad_47C;
 	sint16 pad_47E;
-	sint16 var_480;
-	sint16 var_482; // viewport target x
-	sint16 var_484; // viewport target y
-	sint16 var_486; // viewport target z
-	sint16 var_488; // viewport rotation << 8
+	union {
+		coordinate_focus viewport_focus_coordinates;
+		sprite_focus viewport_focus_sprite;
+		campaign_variables campaign;
+		new_ride_variables new_ride;
+		news_variables news;
+		map_variables map;
+		ride_variables ride;
+	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
@@ -194,7 +267,7 @@ typedef enum {
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
 	WF_2 = (1 << 2),
-	WF_3 = (1 << 3),
+	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
@@ -326,6 +399,7 @@ void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
 
+void window_scroll_to_viewport(rct_window *w);
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w);
 void window_zoom_in(rct_window *w);
@@ -373,8 +447,11 @@ void window_park_guests_open();
 void window_park_objective_open();
 void window_park_rating_open();
 void window_finances_open();
-void window_new_campaign_open(int campaignType);
+void window_finances_research_open();
+void window_new_campaign_open(sint16 campaignType);
+void window_ride_main_open(int rideIndex);
 void window_ride_list_open();
+void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
 void window_research_open();
@@ -388,17 +465,29 @@ void window_new_ride_init_vars();
 void window_staff_init_vars();
 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
+void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
 		__asm mov w, esi
 
-	#define window_mouse_up_get_registers(w, widgetIndex)								\
+	#define window_widget_get_registers(w, widgetIndex)									\
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 
 	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
 		__asm mov dropdownIndex, ax														\
+		__asm mov widgetIndex, dx														\
+		__asm mov w, esi
+
+	#define window_scrollmouse_get_registers(w, x, y)									\
+		__asm mov x, cx																	\
+		__asm mov y, dx																	\
+		__asm mov w, esi
+
+	#define window_tool_get_registers(w, widgetIndex, x, y)								\
+		__asm mov x, ax																	\
+		__asm mov y, bx																	\
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 
@@ -409,12 +498,23 @@ void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 	#define window_get_register(w)														\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 
-	#define window_mouse_up_get_registers(w, widgetIndex)								\
+	#define window_widget_get_registers(w, widgetIndex)									\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 
 	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
 		__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
+		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+
+	#define window_scrollmouse_get_registers(w, x, y)									\
+		__asm__ ( "mov %[x], cx " : [x] "+m" (x) );										\
+		__asm__ ( "mov %[y], dx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+
+	#define window_tool_get_registers(w, widgetIndex, x, y)								\
+		__asm__ ( "mov %[x], ax " : [x] "+m" (x) );										\
+		__asm__ ( "mov %[y], bx " : [y] "+m" (y) );										\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
 

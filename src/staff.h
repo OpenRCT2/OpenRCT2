@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
+ * Copyright (c) 2014 Dániel Tar
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -16,31 +16,26 @@
  
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************/
+*****************************************************************************/
 
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#ifndef _STAFF_H_
+#define _STAFF_H_
 
 #include "rct2.h"
-#include "string_ids.h"
 
-enum {
-	LANGUAGE_UNDEFINED,
-	LANGUAGE_ENGLISH_UK,
-	LANGUAGE_ENGLISH_US,
-	LANGUAGE_DUTCH,
-	LANGUAGE_FRENCH,
-	LANGUAGE_HUNGARIAN,
-	LANGUAGE_POLISH,
-	LANGUAGE_SPANISH,
-	LANGUAGE_COUNT
+#define STAFF_MAX_COUNT 0xC8
+
+enum STAFF_TYPE {
+	STAFF_TYPE_HANDYMAN,
+	STAFF_TYPE_MECHANIC,
+	STAFF_TYPE_SECURITY,
+	STAFF_TYPE_ENTERTAINER
 };
 
-extern const char *language_names[LANGUAGE_COUNT];
-extern int gCurrentLanguage;
+void game_command_update_staff_colour();
+void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
-const char *language_get_string(rct_string_id id);
-int language_open(int id);
-void language_close();
+void update_staff_colour(uint8 staff_type, uint16 color);
+uint16 hire_new_staff_member(uint8 staff_type);
 
 #endif

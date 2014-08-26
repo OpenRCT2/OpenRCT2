@@ -1,0 +1,3447 @@
+STR_0000    :
+STR_0001    :{STRINGID} {COMMA16}
+STR_0002    :Attractie
+STR_0003    :Attractie
+STR_0004    :Omgekeerde schommelachtbaan
+STR_0005    :Attractie
+STR_0006    :Juniorachtbaan
+STR_0007    :Miniatuur spoorbaan
+STR_0008    :Monorail
+STR_0009    :Omgekeerde miniachtbaan
+STR_0010    :Attractie
+STR_0011    :Attractie
+STR_0012    :Attractie
+STR_0013    :Rit in een karretje
+STR_0014    :Attractie
+STR_0015    :Attractie
+STR_0016    :Attractie
+STR_0017    :Stalen achtbaan
+STR_0018    :Attractie
+STR_0019    :Attractie
+STR_0020    :Kabelbaan
+STR_0021    :Attractie
+STR_0022    :Attractie
+STR_0023    :Attractie
+STR_0024    :Attractie
+STR_0025    :Attractie
+STR_0026    :Attractie
+STR_0027    :Attractie
+STR_0028    :Attractie
+STR_0029    :Attractie
+STR_0030    :Kraam
+STR_0031    :Kraam
+STR_0032    :Kraam
+STR_0033    :Kraam
+STR_0034    :Kraam
+STR_0035    :Attractie
+STR_0036    :Kraam
+STR_0037    :Kiosk
+STR_0038    :Toilet
+STR_0039    :Attractie
+STR_0040    :Attractie
+STR_0041    :Attractie
+STR_0042    :Attractie
+STR_0043    :Attractie
+STR_0044    :Omgekeerde vrijevalachtbaan
+STR_0045    :Lift
+STR_0046    :Attractie
+STR_0047    :Attractie
+STR_0048    :Attractie
+STR_0049    :Attractie
+STR_0050    :Attractie
+STR_0051    :Attractie
+STR_0052    :Attractie
+STR_0053    :Hyper-Twisterachtbaan
+STR_0054    :Houten achtbaan
+STR_0055    :Zijfrictieachtbaan
+STR_0056    :Wilde muis
+STR_0057    :Multidimensieachtbaan
+STR_0058    :Attractie
+STR_0059    :Omgekeerde luchtachtbaan
+STR_0060    :Attractie
+STR_0061    :Attractie
+STR_0062    :Attractie
+STR_0063    :Attractie
+STR_0064    :Attractie
+STR_0065    :Omgekeerde monorail
+STR_0066    :Attractie
+STR_0067    :Attractie
+STR_0068    :Heartline-kurkentrekkerachtbaan
+STR_0069    :Attractie
+STR_0070    :Attractie
+STR_0071    :Attractie
+STR_0072    :Attractie
+STR_0073    :Attractie
+STR_0074    :Attractie
+STR_0075    :Attractie
+STR_0076    :Waterachtbaan
+STR_0077    :Attractie
+STR_0078    :Attractie
+STR_0079    :Attractie
+STR_0080    :Attractie
+STR_0081    :Attractie
+STR_0082    :Attractie
+STR_0083    :Attractie
+STR_0084    :Attractie
+STR_0085    :Attractie
+STR_0086    :Attractie
+STR_0087    :Attractie
+STR_0088    :Attractie
+STR_0089    :Miniachtbaan
+STR_0090    :Attractie
+STR_0091    :Attractie
+STR_0092    :Attractie
+STR_0093    :
+STR_0094    :
+STR_0095    :
+STR_0096    :
+STR_0097    :
+STR_0098    :
+STR_0099    :
+STR_0100    :
+STR_0101    :
+STR_0102    :
+STR_0103    :
+STR_0104    :
+STR_0105    :
+STR_0106    :
+STR_0107    :
+STR_0108    :
+STR_0109    :
+STR_0110    :
+STR_0111    :
+STR_0112    :
+STR_0113    :
+STR_0114    :
+STR_0115    :
+STR_0116    :
+STR_0117    :
+STR_0118    :
+STR_0119    :
+STR_0120    :
+STR_0121    :
+STR_0122    :
+STR_0123    :
+STR_0124    :
+STR_0125    :
+STR_0126    :
+STR_0127    :
+STR_0128    :
+STR_0129    :
+STR_0130    :
+STR_0131    :
+STR_0132    :
+STR_0133    :
+STR_0134    :
+STR_0135    :
+STR_0136    :
+STR_0137    :
+STR_0138    :
+STR_0139    :
+STR_0140    :
+STR_0141    :
+STR_0142    :
+STR_0143    :
+STR_0144    :
+STR_0145    :
+STR_0146    :
+STR_0147    :
+STR_0148    :
+STR_0149    :
+STR_0150    :
+STR_0151    :
+STR_0152    :
+STR_0153    :
+STR_0154    :
+STR_0155    :
+STR_0156    :
+STR_0157    :
+STR_0158    :
+STR_0159    :
+STR_0160    :
+STR_0161    :
+STR_0162    :
+STR_0163    :
+STR_0164    :
+STR_0165    :
+STR_0166    :
+STR_0167    :
+STR_0168    :
+STR_0169    :
+STR_0170    :
+STR_0171    :
+STR_0172    :
+STR_0173    :
+STR_0174    :
+STR_0175    :
+STR_0176    :
+STR_0177    :
+STR_0178    :
+STR_0179    :
+STR_0180    :
+STR_0181    :
+STR_0182    :
+STR_0183    :
+STR_0184    :
+STR_0185    :
+STR_0186    :
+STR_0187    :
+STR_0188    :
+STR_0189    :
+STR_0190    :
+STR_0191    :
+STR_0192    :
+STR_0193    :
+STR_0194    :
+STR_0195    :
+STR_0196    :
+STR_0197    :
+STR_0198    :
+STR_0199    :
+STR_0200    :
+STR_0201    :
+STR_0202    :
+STR_0203    :
+STR_0204    :
+STR_0205    :
+STR_0206    :
+STR_0207    :
+STR_0208    :
+STR_0209    :
+STR_0210    :
+STR_0211    :
+STR_0212    :
+STR_0213    :
+STR_0214    :
+STR_0215    :
+STR_0216    :
+STR_0217    :
+STR_0218    :
+STR_0219    :
+STR_0220    :
+STR_0221    :
+STR_0222    :
+STR_0223    :
+STR_0224    :
+STR_0225    :
+STR_0226    :
+STR_0227    :
+STR_0228    :
+STR_0229    :
+STR_0230    :
+STR_0231    :
+STR_0232    :
+STR_0233    :
+STR_0234    :
+STR_0235    :
+STR_0236    :
+STR_0237    :
+STR_0238    :
+STR_0239    :
+STR_0240    :
+STR_0241    :
+STR_0242    :
+STR_0243    :
+STR_0244    :
+STR_0245    :
+STR_0246    :
+STR_0247    :
+STR_0248    :
+STR_0249    :
+STR_0250    :
+STR_0251    :
+STR_0252    :
+STR_0253    :
+STR_0254    :
+STR_0255    :
+STR_0256    :
+STR_0257    :
+STR_0258    :
+STR_0259    :
+STR_0260    :
+STR_0261    :
+STR_0262    :
+STR_0263    :
+STR_0264    :
+STR_0265    :
+STR_0266    :
+STR_0267    :
+STR_0268    :
+STR_0269    :
+STR_0270    :
+STR_0271    :
+STR_0272    :
+STR_0273    :
+STR_0274    :
+STR_0275    :
+STR_0276    :
+STR_0277    :
+STR_0278    :
+STR_0279    :
+STR_0280    :
+STR_0281    :
+STR_0282    :
+STR_0283    :
+STR_0284    :
+STR_0285    :
+STR_0286    :
+STR_0287    :
+STR_0288    :
+STR_0289    :
+STR_0290    :
+STR_0291    :
+STR_0292    :
+STR_0293    :
+STR_0294    :
+STR_0295    :
+STR_0296    :
+STR_0297    :
+STR_0298    :
+STR_0299    :
+STR_0300    :
+STR_0301    :
+STR_0302    :
+STR_0303    :
+STR_0304    :
+STR_0305    :
+STR_0306    :
+STR_0307    :
+STR_0308    :
+STR_0309    :
+STR_0310    :
+STR_0311    :
+STR_0312    :
+STR_0313    :
+STR_0314    :
+STR_0315    :
+STR_0316    :
+STR_0317    :
+STR_0318    :
+STR_0319    :
+STR_0320    :
+STR_0321    :
+STR_0322    :
+STR_0323    :
+STR_0324    :
+STR_0325    :
+STR_0326    :
+STR_0327    :
+STR_0328    :
+STR_0329    :
+STR_0330    :
+STR_0331    :
+STR_0332    :
+STR_0333    :
+STR_0334    :
+STR_0335    :
+STR_0336    :
+STR_0337    :
+STR_0338    :
+STR_0339    :
+STR_0340    :
+STR_0341    :
+STR_0342    :
+STR_0343    :
+STR_0344    :
+STR_0345    :
+STR_0346    :
+STR_0347    :
+STR_0348    :
+STR_0349    :
+STR_0350    :
+STR_0351    :
+STR_0352    :
+STR_0353    :
+STR_0354    :
+STR_0355    :
+STR_0356    :
+STR_0357    :
+STR_0358    :
+STR_0359    :
+STR_0360    :
+STR_0361    :
+STR_0362    :
+STR_0363    :
+STR_0364    :
+STR_0365    :
+STR_0366    :
+STR_0367    :
+STR_0368    :
+STR_0369    :
+STR_0370    :
+STR_0371    :
+STR_0372    :
+STR_0373    :
+STR_0374    :
+STR_0375    :
+STR_0376    :
+STR_0377    :
+STR_0378    :
+STR_0379    :
+STR_0380    :
+STR_0381    :
+STR_0382    :
+STR_0383    :
+STR_0384    :
+STR_0385    :
+STR_0386    :
+STR_0387    :
+STR_0388    :
+STR_0389    :
+STR_0390    :
+STR_0391    :
+STR_0392    :
+STR_0393    :
+STR_0394    :
+STR_0395    :
+STR_0396    :
+STR_0397    :
+STR_0398    :
+STR_0399    :
+STR_0400    :
+STR_0401    :
+STR_0402    :
+STR_0403    :
+STR_0404    :
+STR_0405    :
+STR_0406    :
+STR_0407    :
+STR_0408    :
+STR_0409    :
+STR_0410    :
+STR_0411    :
+STR_0412    :
+STR_0413    :
+STR_0414    :
+STR_0415    :
+STR_0416    :
+STR_0417    :
+STR_0418    :
+STR_0419    :
+STR_0420    :
+STR_0421    :
+STR_0422    :
+STR_0423    :
+STR_0424    :
+STR_0425    :
+STR_0426    :
+STR_0427    :
+STR_0428    :
+STR_0429    :
+STR_0430    :
+STR_0431    :
+STR_0432    :
+STR_0433    :
+STR_0434    :
+STR_0435    :
+STR_0436    :
+STR_0437    :
+STR_0438    :
+STR_0439    :
+STR_0440    :
+STR_0441    :
+STR_0442    :
+STR_0443    :
+STR_0444    :
+STR_0445    :
+STR_0446    :
+STR_0447    :
+STR_0448    :
+STR_0449    :
+STR_0450    :
+STR_0451    :
+STR_0452    :
+STR_0453    :
+STR_0454    :
+STR_0455    :
+STR_0456    :
+STR_0457    :
+STR_0458    :
+STR_0459    :
+STR_0460    :
+STR_0461    :
+STR_0462    :
+STR_0463    :
+STR_0464    :
+STR_0465    :
+STR_0466    :
+STR_0467    :
+STR_0468    :
+STR_0469    :
+STR_0470    :
+STR_0471    :
+STR_0472    :
+STR_0473    :
+STR_0474    :
+STR_0475    :
+STR_0476    :
+STR_0477    :
+STR_0478    :
+STR_0479    :
+STR_0480    :
+STR_0481    :
+STR_0482    :
+STR_0483    :
+STR_0484    :
+STR_0485    :
+STR_0486    :
+STR_0487    :
+STR_0488    :
+STR_0489    :
+STR_0490    :
+STR_0491    :
+STR_0492    :
+STR_0493    :
+STR_0494    :
+STR_0495    :
+STR_0496    :
+STR_0497    :
+STR_0498    :
+STR_0499    :
+STR_0500    :
+STR_0501    :
+STR_0502    :
+STR_0503    :
+STR_0504    :
+STR_0505    :
+STR_0506    :
+STR_0507    :
+STR_0508    :
+STR_0509    :
+STR_0510    :
+STR_0511    :
+STR_0512    :
+STR_0513    :
+STR_0514    :Karretjes die onder de baan hangen zwaaien naar buiten in bochten
+STR_0515    :
+STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorbaan
+STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
+STR_0519    :Passagiers zitten in kleine karretjes onder een enkelrailsbaan en zwaaien naar buiten zwaaien in bochten
+STR_0520    :
+STR_0521    :
+STR_0522    :
+STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes
+STR_0524    :
+STR_0525    :
+STR_0526    :
+STR_0527    :Een stalen achtbaan die verticale loopings kan maken
+STR_0528    :
+STR_0529    :
+STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug
+STR_0531    :
+STR_0532    :
+STR_0533    :
+STR_0534    :
+STR_0535    :
+STR_0536    :
+STR_0537    :
+STR_0538    :
+STR_0539    :
+STR_0540    :
+STR_0541    :
+STR_0542    :
+STR_0543    :
+STR_0544    :
+STR_0545    :
+STR_0546    :
+STR_0547    :
+STR_0548    :
+STR_0549    :
+STR_0550    :
+STR_0551    :
+STR_0552    :
+STR_0553    :
+STR_0554    :Het karretje word het station uitversnelt over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station
+STR_0555    :
+STR_0556    :
+STR_0557    :
+STR_0558    :
+STR_0559    :
+STR_0560    :
+STR_0561    :
+STR_0562    :
+STR_0563    :Zittend in comfortable treintjes met enkel een simpele schootbeugel genieten bezoeker van grote glijdende afdalingen en kronkelende stukken baan, evenals genoeg 'air time' over de heuvels
+STR_0564    :Over een houten baan donderend is deze achtbaan snel, ruig, luidruchting, en geeft hij rijders een gevoel van controleverleis met meer dan genoeg 'air time'
+STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden alleen maar op de baan gehouden door middel van zijfrictie wieltjes en zwaartekracht
+STR_0566    :Individuele achtbaankarretjes vliegen door een dichte zig-zag baan met scherpe bochten en korte scherpe afdalingen
+STR_0567    :Zittend in speciale stoeltjes die aan bijde kanten van de baan hangen worden rijders hals over de kop gegooid terwijl de diepe afdalingen maken en door menige loopings vliegen
+STR_0568    :
+STR_0569    :Hangend in speciale harnassen onder de baan krijgen bezoekers het gevoel alsof ze een vogel op de wind zijn terwijl ze door de lucht heen zwiepen en vliegen
+STR_0570    :
+STR_0571    :
+STR_0572    :
+STR_0573    :
+STR_0574    :
+STR_0575    :Aangedreven treintjes hangen van een enkele rail en transporteren mensen door het park heen
+STR_0576    :
+STR_0577    :
+STR_0578    :Karretjes lopen over een baan omgeven door hoepels en ondergaan steile afdalingen en heartline kurkentrekkers
+STR_0579    :
+STR_0580    :
+STR_0581    :
+STR_0582    :
+STR_0583    :
+STR_0584    :
+STR_0585    :
+STR_0586    :Bootvormige karretjes lopen over achtbaan rails waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonsen voor rustige rivier secties van de baan
+STR_0587    :
+STR_0588    :
+STR_0589    :
+STR_0590    :
+STR_0591    :
+STR_0592    :
+STR_0593    :
+STR_0594    :
+STR_0595    :
+STR_0596    :
+STR_0597    :
+STR_0598    :
+STR_0599    :Een compacte achtbaan met individuele karretjes, scherpe bochten, en steile afdalingen
+STR_0600    :
+STR_0601    :
+STR_0602    :
+STR_0603    :Bezoeker {INT32}
+STR_0604    :Bezoeker {INT32}
+STR_0605    :Bezoeker {INT32}
+STR_0606    :Bezoeker {INT32}
+STR_0607    :Bezoeker {INT32}
+STR_0608    :Bezoeker {INT32}
+STR_0609    :Bezoeker {INT32}
+STR_0610    :Bezoeker {INT32}
+STR_0611    :Bezoeker {INT32}
+STR_0612    :Bezoeker {INT32}
+STR_0613    :Bezoeker {INT32}
+STR_0614    :Bezoeker {INT32}
+STR_0615    :Bezoeker {INT32}
+STR_0616    :Bezoeker {INT32}
+STR_0617    :Bezoeker {INT32}
+STR_0618    :Bezoeker {INT32}
+STR_0619    :Bezoeker {INT32}
+STR_0620    :Bezoeker {INT32}
+STR_0621    :Bezoeker {INT32}
+STR_0622    :Bezoeker {INT32}
+STR_0623    :Bezoeker {INT32}
+STR_0624    :Bezoeker {INT32}
+STR_0625    :Bezoeker {INT32}
+STR_0626    :Bezoeker {INT32}
+STR_0627    :Bezoeker {INT32}
+STR_0628    :Bezoeker {INT32}
+STR_0629    :Bezoeker {INT32}
+STR_0630    :Bezoeker {INT32}
+STR_0631    :Bezoeker {INT32}
+STR_0632    :Bezoeker {INT32}
+STR_0633    :Bezoeker {INT32}
+STR_0634    :Bezoeker {INT32}
+STR_0635    :Bezoeker {INT32}
+STR_0636    :Bezoeker {INT32}
+STR_0637    :Bezoeker {INT32}
+STR_0638    :Bezoeker {INT32}
+STR_0639    :Bezoeker {INT32}
+STR_0640    :Bezoeker {INT32}
+STR_0641    :Bezoeker {INT32}
+STR_0642    :Bezoeker {INT32}
+STR_0643    :Bezoeker {INT32}
+STR_0644    :Bezoeker {INT32}
+STR_0645    :Bezoeker {INT32}
+STR_0646    :Bezoeker {INT32}
+STR_0647    :Bezoeker {INT32}
+STR_0648    :Bezoeker {INT32}
+STR_0649    :Bezoeker {INT32}
+STR_0650    :Bezoeker {INT32}
+STR_0651    :Bezoeker {INT32}
+STR_0652    :Bezoeker {INT32}
+STR_0653    :Bezoeker {INT32}
+STR_0654    :Bezoeker {INT32}
+STR_0655    :Bezoeker {INT32}
+STR_0656    :Bezoeker {INT32}
+STR_0657    :Bezoeker {INT32}
+STR_0658    :Bezoeker {INT32}
+STR_0659    :Bezoeker {INT32}
+STR_0660    :Bezoeker {INT32}
+STR_0661    :Bezoeker {INT32}
+STR_0662    :Bezoeker {INT32}
+STR_0663    :Bezoeker {INT32}
+STR_0664    :Bezoeker {INT32}
+STR_0665    :Bezoeker {INT32}
+STR_0666    :Bezoeker {INT32}
+STR_0667    :Bezoeker {INT32}
+STR_0668    :Bezoeker {INT32}
+STR_0669    :Bezoeker {INT32}
+STR_0670    :Bezoeker {INT32}
+STR_0671    :Bezoeker {INT32}
+STR_0672    :Bezoeker {INT32}
+STR_0673    :Bezoeker {INT32}
+STR_0674    :Bezoeker {INT32}
+STR_0675    :Bezoeker {INT32}
+STR_0676    :Bezoeker {INT32}
+STR_0677    :Bezoeker {INT32}
+STR_0678    :Bezoeker {INT32}
+STR_0679    :Bezoeker {INT32}
+STR_0680    :Bezoeker {INT32}
+STR_0681    :Bezoeker {INT32}
+STR_0682    :Bezoeker {INT32}
+STR_0683    :Bezoeker {INT32}
+STR_0684    :Bezoeker {INT32}
+STR_0685    :Bezoeker {INT32}
+STR_0686    :Bezoeker {INT32}
+STR_0687    :Bezoeker {INT32}
+STR_0688    :Bezoeker {INT32}
+STR_0689    :Bezoeker {INT32}
+STR_0690    :Bezoeker {INT32}
+STR_0691    :Bezoeker {INT32}
+STR_0692    :Bezoeker {INT32}
+STR_0693    :Bezoeker {INT32}
+STR_0694    :Bezoeker {INT32}
+STR_0695    :Bezoeker {INT32}
+STR_0696    :Bezoeker {INT32}
+STR_0697    :Bezoeker {INT32}
+STR_0698    :Bezoeker {INT32}
+STR_0699    :Bezoeker {INT32}
+STR_0700    :Bezoeker {INT32}
+STR_0701    :Bezoeker {INT32}
+STR_0702    :Bezoeker {INT32}
+STR_0703    :Bezoeker {INT32}
+STR_0704    :Bezoeker {INT32}
+STR_0705    :Bezoeker {INT32}
+STR_0706    :Bezoeker {INT32}
+STR_0707    :Bezoeker {INT32}
+STR_0708    :Bezoeker {INT32}
+STR_0709    :Bezoeker {INT32}
+STR_0710    :Bezoeker {INT32}
+STR_0711    :Bezoeker {INT32}
+STR_0712    :Bezoeker {INT32}
+STR_0713    :Bezoeker {INT32}
+STR_0714    :Bezoeker {INT32}
+STR_0715    :Bezoeker {INT32}
+STR_0716    :Bezoeker {INT32}
+STR_0717    :Bezoeker {INT32}
+STR_0718    :Bezoeker {INT32}
+STR_0719    :Bezoeker {INT32}
+STR_0720    :Bezoeker {INT32}
+STR_0721    :Bezoeker {INT32}
+STR_0722    :Bezoeker {INT32}
+STR_0723    :Bezoeker {INT32}
+STR_0724    :Bezoeker {INT32}
+STR_0725    :Bezoeker {INT32}
+STR_0726    :Bezoeker {INT32}
+STR_0727    :Bezoeker {INT32}
+STR_0728    :Bezoeker {INT32}
+STR_0729    :Bezoeker {INT32}
+STR_0730    :Bezoeker {INT32}
+STR_0731    :Bezoeker {INT32}
+STR_0732    :Bezoeker {INT32}
+STR_0733    :Bezoeker {INT32}
+STR_0734    :Bezoeker {INT32}
+STR_0735    :Bezoeker {INT32}
+STR_0736    :Bezoeker {INT32}
+STR_0737    :Bezoeker {INT32}
+STR_0738    :Bezoeker {INT32}
+STR_0739    :Bezoeker {INT32}
+STR_0740    :Bezoeker {INT32}
+STR_0741    :Bezoeker {INT32}
+STR_0742    :Bezoeker {INT32}
+STR_0743    :Bezoeker {INT32}
+STR_0744    :Bezoeker {INT32}
+STR_0745    :Bezoeker {INT32}
+STR_0746    :Bezoeker {INT32}
+STR_0747    :Bezoeker {INT32}
+STR_0748    :Bezoeker {INT32}
+STR_0749    :Bezoeker {INT32}
+STR_0750    :Bezoeker {INT32}
+STR_0751    :Bezoeker {INT32}
+STR_0752    :Bezoeker {INT32}
+STR_0753    :Bezoeker {INT32}
+STR_0754    :Bezoeker {INT32}
+STR_0755    :Bezoeker {INT32}
+STR_0756    :Bezoeker {INT32}
+STR_0757    :Bezoeker {INT32}
+STR_0758    :Bezoeker {INT32}
+STR_0759    :Bezoeker {INT32}
+STR_0760    :Bezoeker {INT32}
+STR_0761    :Bezoeker {INT32}
+STR_0762    :Bezoeker {INT32}
+STR_0763    :Bezoeker {INT32}
+STR_0764    :Bezoeker {INT32}
+STR_0765    :Bezoeker {INT32}
+STR_0766    :Bezoeker {INT32}
+STR_0767    :Bezoeker {INT32}
+STR_0768    :Klusjesman {INT32}
+STR_0769    :Monteur {INT32}
+STR_0770    :Bewaker {INT32}
+STR_0771    :Entertainer {INT32}
+STR_0772    :Naamloos park{POP16}{POP16}
+STR_0773    :Naamloos park{POP16}{POP16}
+STR_0774    :Naamloos park{POP16}{POP16}
+STR_0775    :Naamloos park{POP16}{POP16}
+STR_0776    :Naamloos park{POP16}{POP16}
+STR_0777    :Naamloos park{POP16}{POP16}
+STR_0778    :Bord
+STR_0779    :1
+STR_0780    :2
+STR_0781    :3
+STR_0782    :4
+STR_0783    :5
+STR_0784    :6
+STR_0785    :7
+STR_0786    :8
+STR_0787    :9
+STR_0788    :10
+STR_0789    :11
+STR_0790    :12
+STR_0791    :13
+STR_0792    :14
+STR_0793    :15
+STR_0794    :16
+STR_0795    :17
+STR_0796    :18
+STR_0797    :19
+STR_0798    :20
+STR_0799    :21
+STR_0800    :22
+STR_0801    :23
+STR_0802    :24
+STR_0803    :25
+STR_0804    :26
+STR_0805    :27
+STR_0806    :28
+STR_0807    :29
+STR_0808    :30
+STR_0809    :31
+STR_0810    :jan
+STR_0811    :feb
+STR_0812    :mrt
+STR_0813    :apr
+STR_0814    :mei
+STR_0815    :jun
+STR_0816    :jul
+STR_0817    :aug
+STR_0818    :sep
+STR_0819    :okt
+STR_0820    :nov
+STR_0821    :dec
+STR_0822    :Kan bestand met grafische gegevens niet openen
+STR_0823    :Ontbrekend of ontoegankelijk gegevensbestand
+STR_0824    :{BLACK}{CROSS}
+STR_0825    :Gekozen naam is al in gebruik
+STR_0826    :Teveel namen gedefinieerd
+STR_0827    :Onvoldoende geld - {CURRENCY2DP} benodigd
+STR_0828    :{SMALLFONT}{BLACK}Venster sluiten
+STR_0829    :{SMALLFONT}{BLACK}Venstertitel - Sleep dit om het venster te verplaatsen
+STR_0830    :{SMALLFONT}{BLACK}Inzoomen
+STR_0831    :{SMALLFONT}{BLACK}Uitzoomen
+STR_0832    :{SMALLFONT}{BLACK}Beeld 90{DEGREE} met de klok mee draaien
+STR_0833    :{SMALLFONT}{BLACK}Spel pauzeren
+STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
+STR_0835    :Kan het spel niet initialiseren
+STR_0836    :Kan het spel niet in geminimaliseerde toestand starten
+STR_0837    :Kan het grafisch systeem niet starten
+STR_0838    :CD-code {INT32} is niet geldig voor deze CD van RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Deïnstalleer RollerCoaster Tycoon 2% en installeer het opnieuw met de correcte CD-code
+STR_0839    :{UINT16} x {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :Bureaubladvenster
+STR_0842    :640x480 (volledig scherm)
+STR_0843    :800x600 (volledig scherm)
+STR_0844    :1024x768 (volledig scherm)
+STR_0845    :1152x864 (volledig scherm)
+STR_0846    :1280x1024 (volledig scherm)
+STR_0847    :Over 'RollerCoaster Tycoon 2'
+STR_0848    :RollerCoaster Tycoon 2
+STR_0849    :{WINDOW_COLOUR_2}Versie 2.01.028
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle rechten voorbehouden
+STR_0851    :{WINDOW_COLOUR_2}Ontworpen en geprogrammeerd door Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Grafisch werk door Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Geluiden en muziek door Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Extra geluiden opgenomen door David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representatie door Jacqui Lyons van Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Met dank aan:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth en John Wardley
+STR_0858    :{WINDOW_COLOUR_2}
+STR_0859    :{WINDOW_COLOUR_2}
+STR_0860    :{WINDOW_COLOUR_2}
+STR_0861    :
+STR_0862    :
+STR_0863    :
+STR_0864    :
+STR_0865    :{STRINGID}
+STR_0866    :{POP16}{STRINGID}
+STR_0867    :{POP16}{POP16}{STRINGID}
+STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
+STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0876    :{BLACK}{DOWN}
+STR_0877    :Te laag!
+STR_0878    :Te hoog!
+STR_0879    :Kan het land hier niet verlagen...
+STR_0880    :Kan het land hier niet verhogen...
+STR_0881    :Object in de weg
+STR_0882    :Spel laden
+STR_0883    :Spel opslaan
+STR_0884    :Landschap laden
+STR_0885    :Landschap opslaan
+STR_0886    :Spel afsluiten
+STR_0887    :Scenariobewerker afsluiten
+STR_0888    :Achtbaanontwerper afsluiten
+STR_0889    :Baanontwerpbeheer afsluiten
+STR_0890    :SCR{COMMA16}.PNG
+STR_0891    :Screenshot
+STR_0892    :Screenshot opgeslagen als '{STRINGID}'
+STR_0893    :Screenshot maken mislukt!
+STR_0894    :Landscape data area zit vol!
+STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
+STR_0896    :{POP16}{POP16}{STRINGID} Constructie
+STR_0897    :Richting
+STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
+STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
+STR_0900    :{SMALLFONT}{BLACK}Bocht naar links (kleine radius)
+STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine radius)
+STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine radius)
+STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine radius)
+STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote radius)
+STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote radius)
+STR_0906    :{SMALLFONT}{BLACK}Recht stuk
+STR_0907    :Helling
+STR_0908    :Roll/Banking
+STR_0909    :Stoeldraaing
+STR_0910    :{SMALLFONT}{BLACK}Roll voor bocht naar links
+STR_0911    :{SMALLFONT}{BLACK}Roll voor bocht naar rechts
+STR_0912    :{SMALLFONT}{BLACK}Geen roll
+STR_0913    :{SMALLFONT}{BLACK}Ga naar vorig segment
+STR_0914    :{SMALLFONT}{BLACK}Ga naar volgend segment
+STR_0915    :{SMALLFONT}{BLACK}Bouw het geselecteerde segment
+STR_0916    :{SMALLFONT}{BLACK}Verwijder het gemarkeerde segment
+STR_0917    :{SMALLFONT}{BLACK}Verticale val
+STR_0918    :{SMALLFONT}{BLACK}Steile helling naar beneden
+STR_0919    :{SMALLFONT}{BLACK}Helling naar beneden
+STR_0920    :{SMALLFONT}{BLACK}Vlak
+STR_0921    :{SMALLFONT}{BLACK}Helling naar boven
+STR_0922    :{SMALLFONT}{BLACK}Steile helling naar boven
+STR_0923    :{SMALLFONT}{BLACK}Verticaal stuk naar boven
+STR_0924    :{SMALLFONT}{BLACK}Spiraal naar beneden
+STR_0925    :{SMALLFONT}{BLACK}Spiraal naar boven
+STR_0926    :Kan dit niet verwijderen...
+STR_0927    :Kan dit hier niet bouwen...
+STR_0928    :{SMALLFONT}{BLACK}Kettinglift, om karretjes omhoog te trekken
+STR_0929    :S-bocht (links)
+STR_0930    :S-bocht (rechts)
+STR_0931    :Verticale looping (links)
+STR_0932    :Verticale looping (rechts)
+STR_0933    :Verhoog of verlaag eerst het land
+STR_0934    :Attractieingang in de weg
+STR_0935    :Attractieuitgang in de weg
+STR_0936    :Parkingang in de weg
+STR_0937    :{SMALLFONT}{BLACK}Beeldopties
+STR_0938    :{SMALLFONT}{BLACK}Landhoogte en -helling aanpassen
+STR_0939    :Zicht ondergronds/binnen
+STR_0940    :Bovenkant land verbergen
+STR_0941    :Zijkant land verbergen
+STR_0942    :Doorzichtige attracties
+STR_0943    :Doorzichtig decor
+STR_0944    :Opslaan
+STR_0945    :Niet opslaan
+STR_0946    :Annuleren
+STR_0947    :Dit spel opslaan voordat je een ander laadt?
+STR_0948    :Dit spel opslaan voordat je afsluit?
+STR_0949    :Dit spel opslaan voordat je afsluit?
+STR_0950    :Spel laden
+STR_0951    :Spel afsluiten
+STR_0952    :Spel afsluiten
+STR_0953    :Landschap laden
+STR_0954    :
+STR_0955    :{SMALLFONT}{BLACK}Selecteer de draaiing van de stoelen voor dit segment
+STR_0956    :-180{DEGREE}
+STR_0957    :-135{DEGREE}
+STR_0958    :-90{DEGREE}
+STR_0959    :-45{DEGREE}
+STR_0960    :0{DEGREE}
+STR_0961    :+45{DEGREE}
+STR_0962    :+90{DEGREE}
+STR_0963    :+135{DEGREE}
+STR_0964    :+180{DEGREE}
+STR_0965    :+225{DEGREE}
+STR_0966    :+270{DEGREE}
+STR_0967    :+315{DEGREE}
+STR_0968    :+360{DEGREE}
+STR_0969    :+405{DEGREE}
+STR_0970    :+450{DEGREE}
+STR_0971    :+495{DEGREE}
+STR_0972    :Annuleren
+STR_0973    :OK
+STR_0974    :Attracties
+STR_0975    :Winkels en kraampjes
+STR_0976    :Toiletten en informatiekiosken
+STR_0977    :Nieuwe transportattracties
+STR_0978    :Nieuwe rustige attracties
+STR_0979    :Nieuwe achtbanen
+STR_0980    :Nieuwe spannende attracties
+STR_0981    :Nieuwe waterattracties
+STR_0982    :Nieuwe winkels en kraampjes
+STR_0983    :Onderzoek & Ontwikkeling
+STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0986    :{BLACK}{CURRENCY2DP}
+STR_0987    :Teveel attracties
+STR_0988    :Kan geen nieuwe attractie aanmaken...
+STR_0989    :{STRINGID}
+STR_0990    :{SMALLFONT}{BLACK}Constructie
+STR_0991    :Station
+STR_0992    :{SMALLFONT}{BLACK}Gehele attractie afbreken
+STR_0993    :Attractie afbreken
+STR_0994    :Afbreken
+STR_0995    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} helemaal wilt afbreken?
+STR_0996    :Totaaloverzicht
+STR_0997    :{SMALLFONT}{BLACK}Selectie bekijken
+STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
+STR_0999    :Vereist een station
+STR_1000    :Baan vormt geen volledig circuit
+STR_1001    :Baan is ongeschikt voor dit type trein
+STR_1002    :Kan {POP16}{POP16}{POP16}{STRINGID} niet openen...
+STR_1003    :Kan {POP16}{POP16}{POP16}{STRINGID} niet testen...
+STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten...
+STR_1005    :Kan verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet beginnen...
+STR_1006    :Moet eerst worden gesloten
+STR_1007    :Kan niet voldoende voertuigen aanmaken
+STR_1008    :{SMALLFONT}{BLACK}Attractie openen, sluiten of testen
+STR_1009    :{SMALLFONT}{BLACK}Alle attracties openen of sluiten
+STR_1010    :{SMALLFONT}{BLACK}Park openen of sluiten
+STR_1011    :Alles sluiten
+STR_1012    :Alles openen
+STR_1013    :Park sluiten
+STR_1014    :Park openen
+STR_1015    :Kan in deze modus niet met meer dan een station werken
+STR_1016    :Kan in deze modus niet met minder dan twee stations werken
+STR_1017    :Kan modus niet veranderen...
+STR_1018    :Kan geen veranderingen aanbrengen...
+STR_1019    :Kan geen veranderingen aanbrengen...
+STR_1020    :Kan geen veranderingen aanbrengen...
+STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} karretje per trein
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} karretjes per trein
+STR_1024    :{COMMA16} karretje per trein
+STR_1025    :{COMMA16} karretjes per trein
+STR_1026    :Perron is te lang!
+STR_1027    :{SMALLFONT}{BLACK}Zoek dit op in het hoofdvenster
+STR_1028    :Buiten de kaart!
+STR_1029    :Kan niet gedeeltelijk boven en onder water bouwen!
+STR_1030    :Dit kan alleen onder water worden gebouwd!
+STR_1031    :Dit kan niet onder water worden gebouwd!
+STR_1032    :Dit kan alleen op water worden gebouwd!
+STR_1033    :Dit kan alleen boven de grond worden gebouwd!
+STR_1034    :Dit kan alleen op land worden gebouwd!
+STR_1035    :De gemeente staat geen constructies boven boomniveau toe!
+STR_1036    :Spel laden
+STR_1037    :Landschap laden
+STR_1038    :Opgeslagen spel omzetten naar scenario
+STR_1039    :Nieuw baanontwerp installeren
+STR_1040    :Spel opslaan
+STR_1041    :Scenario opslaan
+STR_1042    :Landschap opslaan
+STR_1043    :Opgeslagen spel van RollerCoaster Tycoon 2
+STR_1044    :Scenario voor RollerCoaster Tycoon 2
+STR_1045    :Landschap voor RollerCoaster Tycoon 2
+STR_1046    :Baanontwerp voor RollerCoaster Tycoon 2
+STR_1047    :Spel opslaan mislukt!
+STR_1048    :Scenario opslaan mislukt!
+STR_1049    :Landschap opslaan mislukt!
+STR_1050    :Kan dit niet laden...{NEWLINE}Bestand bevat ongeldige gegevens!
+STR_1051    :Onzichtbare ondersteuningen
+STR_1052    :Onzichtbare mensen
+STR_1053    :{SMALLFONT}{BLACK}Attracties in park
+STR_1054    :{SMALLFONT}{BLACK}Attractienaam
+STR_1055    :{SMALLFONT}{BLACK}Persoonsnaam
+STR_1056    :{SMALLFONT}{BLACK}Werknemersnaam
+STR_1057    :Attractienaam
+STR_1058    :Voer een nieuwe naam in voor deze attractie:
+STR_1059    :Kan deze attractienaam geen andere naam geven...
+STR_1060    :Ongeldige attractienaam
+STR_1061    :Normale stand
+STR_1062    :Voortdurend circuit
+STR_1063    :Lancering via achterwaartse optakeling
+STR_1064    :Lancering
+STR_1065    :Shuttlestand
+STR_1066    :Bootverhuurmodus
+STR_1067    :Opwaartse lancering
+STR_1068    :Draaiendeliftmodus
+STR_1069    :Station-naar-station
+STR_1070    :Enkele rit per toegang
+STR_1071    :Onbeperkt aantal ritten per toegang
+STR_1072    :Doolhofstand
+STR_1073    :Racestand
+STR_1074    :Botsautomodus
+STR_1075    :Schommelstand
+STR_1076    :Winkelstand
+STR_1077    :Draaistand
+STR_1078    :Voorwaartse rotatie
+STR_1079    :Achterwaartse rotatie
+STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
+STR_1081    :3D-film: {ENDQUOTES}Mouse tails{ENDQUOTES}
+STR_1082    :Ruimteringenmodus
+STR_1083    :Beginnersstand
+STR_1084    :LIM-lancering
+STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
+STR_1086    :3D-film: {ENDQUOTES}Storm chasers{ENDQUOTES}
+STR_1087    :3D-film: {ENDQUOTES}Space raiders{ENDQUOTES}
+STR_1088    :Intense stand
+STR_1089    :Gestoorde stand
+STR_1090    :Spookhuismodus
+STR_1091    :Circusmodus
+STR_1092    :Neerwaartse lancering
+STR_1093    :Crooked housestand
+STR_1094    :Vrijevalmodus
+STR_1095    :Voortdurend circuit met blokken
+STR_1096    :Lancering
+STR_1097    :Lancering met blokken
+STR_1098    :Gaat naar het einde van {POP16}{STRINGID}
+STR_1099    :Wacht op passagiers op {POP16}{STRINGID}
+STR_1100    :Wacht om te vertrekken van {POP16}{STRINGID}
+STR_1101    :Vertrekt van {POP16}{STRINGID}
+STR_1102    :Gaat {VELOCITY}
+STR_1103    :Komt aan op {POP16}{STRINGID}
+STR_1104    :Laat passagiers uitstappen op {POP16}{STRINGID}
+STR_1105    :Gaat {VELOCITY}
+STR_1106    :Bezig neer te storten!
+STR_1107    :Neergestort!
+STR_1108    :Gaat {VELOCITY}
+STR_1109    :Schommelt
+STR_1110    :Draait
+STR_1111    :Draait
+STR_1112    :In bedrijf
+STR_1113    :Toont film
+STR_1114    :Draait
+STR_1115    :In bedrijf
+STR_1116    :In bedrijf
+STR_1117    :Voert circusshow op
+STR_1118    :In bedrijf
+STR_1119    :Wacht op kabellift
+STR_1120    :Gaat {VELOCITY}
+STR_1121    :Stopt
+STR_1122    :Wacht op passagiers
+STR_1123    :Wacht op start
+STR_1124    :Start
+STR_1125    :In bedrijf
+STR_1126    :Stopt
+STR_1127    :Laat passagiers uitstappen
+STR_1128    :Gestopt door blokremmen
+STR_1129    :Alle voertuigen in dezelfde kleur
+STR_1130    :Verschillende kleuren per {STRINGID}
+STR_1131    :Verschillende kleuren per voertuig
+STR_1132    :Voertuig {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Voertuig {POP16}{COMMA16}
+STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1135    :{STRINGID} {COMMA16}
+STR_1136    :{SMALLFONT}{BLACK}Selecteer hoofdkleur
+STR_1137    :{SMALLFONT}{BLACK}Selecteer extra kleur 1
+STR_1138    :{SMALLFONT}{BLACK}Selecteer extra kleur 2
+STR_1139    :{SMALLFONT}{BLACK}Selecteer kleur ondersteuningen
+STR_1140    :{SMALLFONT}{BLACK}Selecteer kleurenschemaoptie voor voertuigen
+STR_1141    :{SMALLFONT}{BLACK}Selecteer welk voertuig je wilt aanpassen
+STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1144    :Kan de ingang van deze attractie niet bouwen of verplaatsen...
+STR_1145    :Kan de uitgang van deze attractie niet bouwen of verplaatsen...
+STR_1146    :Ingang nog niet gebouwd
+STR_1147    :Uitgang nog niet gebouwd
+STR_1148    :Kwartvol
+STR_1149    :Halfvol
+STR_1150    :Driekwartvol
+STR_1151    :Vol
+STR_1152    :Aantal maakt niet uit
+STR_1153    :Hoogtemarkering op attracties
+STR_1154    :Hoogtemarkering op land
+STR_1155    :Hoogtemarkering op paden
+STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1158    :Kan dit niet verwijderen...
+STR_1159    :{SMALLFONT}{BLACK}Decor, tuinen en andere accessoires neerzetten
+STR_1160    :{SMALLFONT}{BLACK}Waterniveaus bewerken
+STR_1161    :Kan dit hier niet positioneren...
+STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
+STR_1163    :{STRINGID}{NEWLINE}(Klik rechts om te bewerken)
+STR_1164    :{STRINGID}{NEWLINE}(Klik rechts om te verwijderen)
+STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1166    :Kan het waterniveau hier niet verlagen...
+STR_1167    :Kan het waterniveau hier niet verhogen...
+STR_1168    :Opties
+STR_1169    :(Geen)
+STR_1170    :{STRING}
+STR_1171    :{RED}Gesloten - - 
+STR_1172    :{YELLLOW}{STRINGID} - - 
+STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen neerzetten
+STR_1174    :Banier in de weg
+STR_1175    :Kan dit niet op hellend voetpad neerzetten
+STR_1176    :Kan hier geen voetpad neerzetten...
+STR_1177    :Kan dit voetpad niet verwijderen...
+STR_1178    :Landhelling is ongeschikt
+STR_1179    :Voetpad in de weg
+STR_1180    :Dit kan niet onder water worden gebouwd!
+STR_1181    :Voetpaden
+STR_1182    :Type
+STR_1183    :Richting
+STR_1184    :Helling
+STR_1185    :{SMALLFONT}{BLACK}Richting
+STR_1186    :{SMALLFONT}{BLACK}Helling naar beneden
+STR_1187    :{SMALLFONT}{BLACK}Vlak
+STR_1188    :{SMALLFONT}{BLACK}Helling naar boven
+STR_1189    :{SMALLFONT}{BLACK}Bouw het geselecteerde segment
+STR_1190    :{SMALLFONT}{BLACK}Verwijder vorig segment
+STR_1191    :{BLACK}{STRINGID}
+STR_1192    :{OUTLINE}{RED}{STRINGID}
+STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
+STR_1194    :Gesloten
+STR_1195    :Testrit
+STR_1196    :Open
+STR_1197    :Defect
+STR_1198    :Neergestort!
+STR_1199    :{COMMA16} passagier
+STR_1200    :{COMMA16} passagiers
+STR_1201    :Niemand in de wachtrij
+STR_1202    :1 bezoeker in de wachtrij
+STR_1203    :{COMMA16} bezoekers in de wachtrij
+STR_1204    :{COMMA16} minuut wachttijd
+STR_1205    :{COMMA16} minuten wachttijd
+STR_1206    :{WINDOW_COLOUR_2}Wacht op:
+STR_1207    :{WINDOW_COLOUR_2}Vertrek als een andere trein binnenkomt
+STR_1208    :{WINDOW_COLOUR_2}Vertrek als een andere boot binnenkomt
+STR_1209    :{SMALLFONT}{BLACK}Selecteer of er moet worden gewacht op passagiers
+STR_1210    :{SMALLFONT}{BLACK}Selecteer of er moet worden vertrokken als een ander voertuig binnenkomt op het station
+STR_1211    :{WINDOW_COLOUR_2}Minimumwachttijd:
+STR_1212    :{WINDOW_COLOUR_2}Maximumwachttijd:
+STR_1213    :{SMALLFONT}{BLACK}Selecteer de minimale wachttijd voor vertrek
+STR_1214    :{SMALLFONT}{BLACK}Selecteer de maximale wachttijd voor vertrek
+STR_1215    :{WINDOW_COLOUR_2}Synchroniseren met aangrenzende stations
+STR_1216    :{SMALLFONT}{BLACK}Selecteer of een trein op hetzelfde moment moet vertrekken als alle aangrenzende stations (om te 'racen')
+STR_1217    :{COMMA16} seconden
+STR_1218    :{BLACK}{SMALLUP}
+STR_1219    :{BLACK}{SMALLDOWN}
+STR_1220    :Alleen uitgang
+STR_1221    :Geen ingang
+STR_1222    :Geen uitgang
+STR_1223    :{SMALLFONT}{BLACK}Transportattracties
+STR_1224    :{SMALLFONT}{BLACK}Rustige attracties
+STR_1225    :{SMALLFONT}{BLACK}Achtbanen
+STR_1226    :{SMALLFONT}{BLACK}Spannende attracties
+STR_1227    :{SMALLFONT}{BLACK}Waterattracties
+STR_1228    :{SMALLFONT}{BLACK}Winkels en kraampjes
+STR_1229    :trein
+STR_1230    :treinen
+STR_1231    :Trein
+STR_1232    :Treinen
+STR_1233    :{COMMA16} trein
+STR_1234    :{COMMA16} treinen
+STR_1235    :Trein {COMMA16}
+STR_1236    :boot
+STR_1237    :boten
+STR_1238    :Boot
+STR_1239    :Boten
+STR_1240    :{COMMA16} boot
+STR_1241    :{COMMA16} boten
+STR_1242    :Boot {COMMA16}
+STR_1243    :baan
+STR_1244    :banen
+STR_1245    :Baan
+STR_1246    :Banen
+STR_1247    :{COMMA16} baan
+STR_1248    :{COMMA16} banen
+STR_1249    :Baan {COMMA16}
+STR_1250    :aanlegsteiger
+STR_1251    :aanlegsteigers
+STR_1252    :Aanlegsteiger
+STR_1253    :Aanlegsteigers
+STR_1254    :{COMMA16} aanlegsteiger
+STR_1255    :{COMMA16} aanlegsteigers
+STR_1256    :Aanlegsteiger {COMMA16}
+STR_1257    :station
+STR_1258    :stations
+STR_1259    :Station
+STR_1260    :Stations
+STR_1261    :{COMMA16} station
+STR_1262    :{COMMA16} stations
+STR_1263    :Station {COMMA16}
+STR_1264    :karretje
+STR_1265    :karretjes
+STR_1266    :Karretje
+STR_1267    :Karretjes
+STR_1268    :{COMMA16} karretje
+STR_1269    :{COMMA16} karretjes
+STR_1270    :Karretje {COMMA16}
+STR_1271    :gebouw
+STR_1272    :gebouwen
+STR_1273    :Gebouw
+STR_1274    :Gebouwen
+STR_1275    :{COMMA16} gebouw
+STR_1276    :{COMMA16} gebouwen
+STR_1277    :Gebouw {COMMA16}
+STR_1278    :structuur
+STR_1279    :structuren
+STR_1280    :Structuur
+STR_1281    :Structuren
+STR_1282    :{COMMA16} structuur
+STR_1283    :{COMMA16} structuren
+STR_1284    :Structuur {COMMA16}
+STR_1285    :schip
+STR_1286    :schepen
+STR_1287    :Schip
+STR_1288    :Schepen
+STR_1289    :{COMMA16} schip
+STR_1290    :{COMMA16} schepen
+STR_1291    :Schip {COMMA16}
+STR_1292    :cabine
+STR_1293    :cabines
+STR_1294    :Cabine
+STR_1295    :Cabines
+STR_1296    :{COMMA16} cabine
+STR_1297    :{COMMA16} cabines
+STR_1298    :Cabine {COMMA16}
+STR_1299    :rad
+STR_1300    :raderen
+STR_1301    :Rad
+STR_1302    :Raderen
+STR_1303    :{COMMA16} rad
+STR_1304    :{COMMA16} raderen
+STR_1305    :Rad {COMMA16}
+STR_1306    :ring
+STR_1307    :ringen
+STR_1308    :Ring
+STR_1309    :Ringen
+STR_1310    :{COMMA16} ring
+STR_1311    :{COMMA16} ringen
+STR_1312    :Ring {COMMA16}
+STR_1313    :speler
+STR_1314    :spelers
+STR_1315    :Speler
+STR_1316    :Spelers
+STR_1317    :{COMMA16} speler
+STR_1318    :{COMMA16} spelers
+STR_1319    :Speler {COMMA16}
+STR_1320    :parcours
+STR_1321    :parcours
+STR_1322    :Parcours
+STR_1323    :Parcours
+STR_1324    :{COMMA16} parcours
+STR_1325    :{COMMA16} parcours
+STR_1326    :Parcours {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Objecten 90{DEGREE} draaien
+STR_1328    :Vlak land vereist
+STR_1329    :{WINDOW_COLOUR_2}Lanceersnelheid:
+STR_1330    :{SMALLFONT}{BLACK}Maximumsnelheid bij het verlaten van het station
+STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_1332    :{VELOCITY}
+STR_1333    :{STRINGID} - {STRINGID}{POP16}
+STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1335    :{STRINGID} - Ingang{POP16}{POP16}
+STR_1336    :{STRINGID} - Ingang station {POP16}{COMMA16}
+STR_1337    :{STRINGID} - Uitgang{POP16}{POP16}
+STR_1338    :{STRINGID} - Uitgang station {POP16}{COMMA16}
+STR_1339    :{BLACK}Nog geen testresultaten...
+STR_1340    :{WINDOW_COLOUR_2}Max. snlhd: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Ritduur: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1342    :{DURATION}
+STR_1343    :{DURATION} / 
+STR_1344    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1345    :{LENGTH}
+STR_1346    :{LENGTH} / 
+STR_1347    :{WINDOW_COLOUR_2}Gem. snlhd: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Max. pos. vert. G-krachten: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Max. pos. vert. G-krachten: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Max. neg. vert. G-krachten: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Max. neg. vert. G-krachten: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Max. zijw. G-krachten: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Max. zijw. G-krachten: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Hoogste afdaling: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Afdalingen: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Omkeringen: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}Totale zweeftijd: {BLACK}{COMMA2DP32}sec
+STR_1359    :{WINDOW_COLOUR_2}Wachttijd: {BLACK}{COMMA16} minuut
+STR_1360    :{WINDOW_COLOUR_2}Wachttijd: {BLACK}{COMMA16} minuten
+STR_1361    :Kan de snelheid niet veranderen...
+STR_1362    :Kan de lanceersnelheid niet veranderen...
+STR_1363    :Te hoog voor ondersteuningen!
+STR_1364    :Ondersteuningen voor de baan kunnen niet verder verlengd worden!
+STR_1365    :Inlinetwist (links)
+STR_1366    :Inlinetwist (rechts)
+STR_1367    :Halve looping
+STR_1368    :Halve schroef (links)
+STR_1369    :Halve schroef (rechts)
+STR_1370    :Barrel roll (links)
+STR_1371    :Barrel roll (rechts)
+STR_1372    :Gelanceerde liftheuvel
+STR_1373    :Grote halve looping (links)
+STR_1374    :Grote halve looping (rechts)
+STR_1375    :Overgang naar boven
+STR_1376    :Overgang naar beneden
+STR_1377    :Heartline roll (links)
+STR_1378    :Heartline roll (rechts)
+STR_1379    :Omdraaiing (links)
+STR_1380    :Omdraaiing (rechts)
+STR_1381    :Gedraaide liftheuvel (links)
+STR_1382    :Gedraaide liftheuvel (rechts)
+STR_1383    :Kwartlooping
+STR_1384    :{YELLOW}{STRINGID}
+STR_1385    :{SMALLFONT}{BLACK}Andere baanconfiguraties
+STR_1386    :Speciaal...
+STR_1387    :Kan het landtype niet aanpassen...
+STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
+STR_1389    :{OUTLINE}{RED}- {CURRENCY}
+STR_1390    :{CURRENCY2DP}
+STR_1391    :{RED}{CURRENCY2DP}
+STR_1392    :{SMALLFONT}{BLACK}Attractieoverzicht
+STR_1393    :{SMALLFONT}{BLACK}Voertuigopties en -details
+STR_1394    :{SMALLFONT}{BLACK}Bedrijfsopties
+STR_1395    :{SMALLFONT}{BLACK}Onderhoudsopties
+STR_1396    :{SMALLFONT}{BLACK}Opties voor kleurenschema
+STR_1397    :{SMALLFONT}{BLACK}Opties voor geluid en muziek
+STR_1398    :{SMALLFONT}{BLACK}Metingen en testgegevens
+STR_1399    :{SMALLFONT}{BLACK}Grafieken
+STR_1400    :Ingang
+STR_1401    :Uitgang
+STR_1402    :{SMALLFONT}{BLACK}Attractieingang bouwen of verplaatsen
+STR_1403    :{SMALLFONT}{BLACK}Attractieuitgang bouwen of verplaatsen
+STR_1404    :{SMALLFONT}{BLACK}90{DEGREE} draaien
+STR_1405    :{SMALLFONT}{BLACK}Ontwerpen spiegelen
+STR_1406    :{SMALLFONT}{BLACK}Decor aan/uit (indien beschikbaar)
+STR_1407    :{WINDOW_COLOUR_2}Dit bouwen...
+STR_1408    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY}
+STR_1409    :Platform voor ingang/uitgang
+STR_1410    :Verticale toren
+STR_1411    :{STRINGID} in de weg
+STR_1412    :{15}Datalog is niet beschikbaar voor dit type attractie
+STR_1413    :{15}Datalog zal beginnen wanneer de volgende {STRINGID} {STRINGID} verlaat
+STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1415    :{WINDOW_COLOUR_2}Snelheid
+STR_1416    :{WINDOW_COLOUR_2}Hoogte
+STR_1417    :{WINDOW_COLOUR_2}Vert. G
+STR_1418    :{WINDOW_COLOUR_2}Zijw. G
+STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
+STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
+STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1422    :{SMALLFONT}{BLACK}Loggegevens van {POP16}{STRINGID}
+STR_1423    :{SMALLFONT}{BLACK}Wachtrijpad
+STR_1424    :{SMALLFONT}{BLACK}Voetpad
+STR_1425    :Voetpad
+STR_1426    :Wachtrij
+STR_1427    :{WINDOW_COLOUR_2}Passagiers: {BLACK}{COMMA32} per uur
+STR_1428    :{WINDOW_COLOUR_2}Toegangsprijs:
+STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1430    :Gratis
+STR_1431    :Loopt
+STR_1432    :Gaat naar {STRINGID}
+STR_1433    :Staat in de rij voor {STRINGID}
+STR_1434    :Verdrinkt
+STR_1435    :In {STRINGID}
+STR_1436    :In {STRINGID}
+STR_1437    :Bij {STRINGID}
+STR_1438    :Zit
+STR_1439    :(selecteer locatie)
+STR_1440    :Maait gras
+STR_1441    :Veegt voetpad
+STR_1442    :Leegt prullenbak
+STR_1443    :Geeft planten water
+STR_1444    :Kijkt naar {STRINGID}
+STR_1445    :Kijkt naar bouw van {STRINGID}
+STR_1446    :Kijkt naar decor
+STR_1447    :Verlaat het park
+STR_1448    :Kijkt naar bouw van nieuwe attractie
+STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
+STR_1452    :Naam bezoeker
+STR_1453    :Voer een naam in voor deze bezoeker:
+STR_1454    :Kan bezoekersnaam niet veranderen...
+STR_1455    :Ongeldige bezoekersnaam
+STR_1456    :{WINDOW_COLOUR_2}Uitgegeven bedrag: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Geld op zak: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Tijd in park: {BLACK}{REALTIME}
+STR_1459    :Baansoort
+STR_1460    :{SMALLFONT}{BLACK}Open baan in U-vorm
+STR_1461    :{SMALLFONT}{BLACK}Gesloten baan in O-vorm
+STR_1462    :Te steil voor een kettinglift
+STR_1463    :Bezoekers
+STR_1464    :Spiraal omhoog (klein)
+STR_1465    :Spiraal omhoog (groot)
+STR_1466    :Spiraal omlaag (klein)
+STR_1467    :Spiraal omlaag (groot)
+STR_1468    :Werknemers
+STR_1469    :Attracties moeten beginnen en eindigen met stations
+STR_1470    :Station is niet lang genoeg
+STR_1471    :{WINDOW_COLOUR_2}Snelheid:
+STR_1472    :{SMALLFONT}{BLACK}Snelheid van deze attractie
+STR_1473    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}Nog niet beschikbaar
+STR_1475    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}Nog niet beschikbaar
+STR_1477    :{WINDOW_COLOUR_2}Intensiteitswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}Nog niet beschikbaar
+STR_1480    :{SMALLFONT}{OPENQUOTES}Ik kan {STRINGID} niet betalen{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}Ik heb al mijn geld uitgegeven{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}Ik ben misselijk{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}Ik ben erg misselijk{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}Ik wil in iets spannenders dan {STRINGID}{ENDQUOTES}
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} vind ik te eng{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}Ik heb mijn {STRINGID} nog niet op{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Als ik alleen al kijk naar {STRINGID} word ik al misselijk{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor {STRINGID}{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}Ik wil naar huis{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}Ik heb al {STRINGID}{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}Ik kan {STRINGID} niet betalen{ENDQUOTES}
+STR_1493    :{SMALLFONT}{OPENQUOTES}Ik heb geen honger{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}Ik heb geen dorst{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Help! Ik verdrink!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}Ik ben verdwaald!{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was geweldig{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}Ik sta al eeuwen in de rij voor {STRINGID}{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}Ik ben moe{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}Ik heb honger{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}Ik heb dorst{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}Ik moet naar de WC{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}Ik kan {STRINGID} niet vinden{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}Zoveel betalen ik niet voor het gebruik van {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} als het regent{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}Het is hier een zwijnenstal{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}Ik kan de parkuitgang niet vinden{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}Ik wil uit {STRINGID}{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}Ik wil uit {STRINGID}{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} - het is gevaarlijk{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}Dit pad is smerig{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}Het is hier te druk{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Mooi decor!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}Dit park is erg schoon en netjes{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg leuk{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}Er speelt hier leuke muziek{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Deze plattegrond van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Deze paraplu van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Deze frisdrank van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Deze frietjes van {STRINGID} zijn erg goedkoop{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Dit ijsje van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Deze suikerspin van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1528    :
+STR_1529    :
+STR_1530    :
+STR_1531    :{SMALLFONT}{OPENQUOTES}Deze pizza van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1532    :
+STR_1533    :{SMALLFONT}{OPENQUOTES}Deze popcorn van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Deze hotdog van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Deze tentakel van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Deze hoed van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Deze toffeeappel van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Dit T-shirt van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Deze donut van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Deze koffie van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1541    :
+STR_1542    :{SMALLFONT}{OPENQUOTES}Deze gegrilde kip van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Deze limonade van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1544    :
+STR_1545    :
+STR_1546    :
+STR_1547    :
+STR_1548    :
+STR_1549    :
+STR_1550    :{SMALLFONT}{OPENQUOTES}Wauw!{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}Ik heb het vreemde gevoel dat er iemand naar me kijkt{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een ballon van {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een knuffel van {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een plattegrond van {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een paraplu van {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor frisdrank van {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hamburger {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor frietjes van {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een ijsje van {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een suikerspin van {STRINGID}{ENDQUOTES}
+STR_1562    :
+STR_1563    :
+STR_1564    :
+STR_1565    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor pizza van {STRINGID}{ENDQUOTES}
+STR_1566    :
+STR_1567    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor popcorn van {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hotdog van {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een tentakel van {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hoed van {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een toffeeappel van {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een T-shirt van {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een donut van {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor koffie van {STRINGID}{ENDQUOTES}
+STR_1575    :
+STR_1576    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor gegrilde kip van {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor limonade van {STRINGID}{ENDQUOTES}
+STR_1578    :
+STR_1579    :
+STR_1580    :
+STR_1581    :
+STR_1582    :
+STR_1583    :
+STR_1584    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Deze krakeling van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Deze warme chocolademelk van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Deze ijsthee van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Deze funnel cake van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Deze zonnebril van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Deze rundernoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Deze rijstnoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Deze wantansoep van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Deze soep met balletjes van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Dit sap van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Deze sojamelk van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Deze sujeonggwa van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Dit broodje van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Dit koekje van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1601    :
+STR_1602    :
+STR_1603    :
+STR_1604    :{SMALLFONT}{OPENQUOTES}Deze gebraden worst van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1605    :
+STR_1606    :
+STR_1607    :
+STR_1608    :
+STR_1609    :
+STR_1610    :
+STR_1611    :
+STR_1612    :
+STR_1613    :
+STR_1614    :
+STR_1615    :
+STR_1616    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een krakeling van {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor ijsthee van {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een funnel cake van {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een zonnebril van {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rundernoedels van {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rijstnoedels van {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor wantansoep van {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor soep met balletjes van {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sap van {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sojamelk van {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor sujeonggwa van {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een broodje van {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een koekje van {STRINGID}{ENDQUOTES}
+STR_1633    :
+STR_1634    :
+STR_1635    :
+STR_1636    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een gebraden worst van {STRINGID}{ENDQUOTES}
+STR_1637    :
+STR_1638    :
+STR_1639    :
+STR_1640    :
+STR_1641    :
+STR_1642    :
+STR_1643    :
+STR_1644    :
+STR_1645    :
+STR_1646    :
+STR_1647    :
+STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Zet me neer!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}Mijn geld is bijna op!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wauw! Hier wordt een nieuwe attractie gebouwd!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Leuke attractie! Maar niet zo goed als de Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}Ik ben zo enthousiast - het is een attractie van Intamin!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...en nu zijn we in {STRINGID}!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
+STR_1655    :{SMALLFONT}{BLACK}Voetpaden op land bouwen
+STR_1656    :{SMALLFONT}{BLACK}Voetpad over bruggen of door tunnels bouwen
+STR_1657    :{WINDOW_COLOUR_2}Voorkeursintensiteit:
+STR_1658    :{WINDOW_COLOUR_2}{BLACK}minder dan {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}{BLACK}tussen {COMMA16} en {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}{BLACK}meer dan {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Misselijkheidstolerantie: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Stemming:
+STR_1663    :{WINDOW_COLOUR_2}Misselijkheid:
+STR_1664    :{WINDOW_COLOUR_2}Blijheid:
+STR_1665    :{WINDOW_COLOUR_2}Honger:
+STR_1666    :{WINDOW_COLOUR_2}Dorst:
+STR_1667    :{WINDOW_COLOUR_2}WC-behoefte:
+STR_1668    :{WINDOW_COLOUR_2}Voldoening: {BLACK}onbekend
+STR_1669    :{WINDOW_COLOUR_2}Voldoening: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}Totale bezoekers: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}Totale winst: {BLACK}{CURRENCY2DP}
+STR_1672    :Remmen
+STR_1673    :Draaistop
+STR_1674    :Remsnelheid
+STR_1675    :{POP16}{VELOCITY}
+STR_1676    :{SMALLFONT}{BLACK}Snelheidslimiet voor remmen instellen
+STR_1677    :{WINDOW_COLOUR_2}Populariteit: {BLACK}onbekend
+STR_1678    :{WINDOW_COLOUR_2}Populariteit: {BLACK}{COMMA16}%
+STR_1679    :Spiraal omhoog (links)
+STR_1680    :Spiraal omhoog (rechts)
+STR_1681    :Spiraal omlaag (links)
+STR_1682    :Spiraal omlaag (rechts)
+STR_1683    :Oppervlakte 2 x 2
+STR_1684    :Oppervlakte 4 x 4
+STR_1685    :Oppervlakte 2 x 4
+STR_1686    :Oppervlakte 5 x 1
+STR_1687    :Waterspetter
+STR_1688    :Oppervlakte 4 x 1
+STR_1689    :Blokremmen
+STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
+STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}vanaf {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}Bezoekers
+STR_1694    :{SMALLFONT}{BLACK}Werknemers
+STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
+STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
+STR_1697    :Dit kan niet op wachtrijen worden geplaatst
+STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
+STR_1699    :Teveel personen in het spel
+STR_1700    :Nieuwe klusjesman aannemen
+STR_1701    :Nieuwe monteur aannemen
+STR_1702    :Nieuwe bewaker aannemen
+STR_1703    :Nieuwe entertainer aannemen
+STR_1704    :Kan geen nieuwe werknemer aannemen...
+STR_1705    :{SMALLFONT}{BLACK}Deze werknemer ontslaan
+STR_1706    :{SMALLFONT}{BLACK}Deze persoon naar een andere locatie verplaatsen
+STR_1707    :Teveel werknemers in dit park
+STR_1708    :{SMALLFONT}{BLACK}Werkgebied van deze werknemer instellen
+STR_1709    :Werknemer ontslaan
+STR_1710    :Ja
+STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt ontslaan?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}
+STR_1716    :Ongeldige parknaam
+STR_1717    :Kan het park geen andere naam geven...
+STR_1718    :Parknaam
+STR_1719    :Voer een naam in voor het park:
+STR_1720    :{SMALLFONT}{BLACK}Parknaam aanpassen
+STR_1721    :Park gesloten
+STR_1722    :Park open
+STR_1723    :Kan het park niet openen...
+STR_1724    :Kan het park niet sluiten...
+STR_1725    :Kan geen land aankopen...
+STR_1726    :Dit land is niet te koop!
+STR_1727    :Voor dit land zijn geen bouwrechten te koop!
+STR_1728    :Kan hier geen bouwrechten kopen...
+STR_1729    :Land is geen eigendom van het park!
+STR_1730    :{RED}Gesloten - - 
+STR_1731    :{WHITE}{STRINGID} - - 
+STR_1732    :Bouwen
+STR_1733    :Modus
+STR_1734    :{WINDOW_COLOUR_2}Aantal rondes:
+STR_1735    :{SMALLFONT}{BLACK}Aantal rondes op het circuit
+STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1737    :{COMMA16}
+STR_1738    :Kan het aantal rondes niet aanpassen...
+STR_1739    :Race is gewonnen door bezoeker {INT32}
+STR_1740    :Race is gewonnen door {STRINGID}
+STR_1741    :Nog niet gebouwd!
+STR_1742    :{WINDOW_COLOUR_2}Max. aant. personen:
+STR_1743    :{SMALLFONT}{BLACK}Het maximale aantal personen dat tegelijkertijd in deze attractie mag zijn
+STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1745    :{COMMA16}
+STR_1746    :Kan dit niet aanpassen...
+STR_1747    :{WINDOW_COLOUR_2}Tijdslimiet:
+STR_1748    :{SMALLFONT}{BLACK}Tijdsmiliet voor deze attractie
+STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
+STR_1750    :{DURATION}
+STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen...
+STR_1752    :{SMALLFONT}{BLACK}Toon een lijst van indivuele bezoekers in het park
+STR_1753    :{SMALLFONT}{BLACK}Toon een samengevatte lijst van bezoekers in het park
+STR_1754    :{BLACK}{COMMA16} bezoekers
+STR_1755    :{BLACK}{COMMA16} bezoeker
+STR_1756    :{WINDOW_COLOUR_2}Toegangsprijs:
+STR_1757    :{WINDOW_COLOUR_2}Betrouwbaarheid: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Bouwmodus
+STR_1759    :{SMALLFONT}{BLACK}Verplaatsmodus
+STR_1760    :{SMALLFONT}{BLACK}Dichtmaakmodus
+STR_1761    :{SMALLFONT}{BLACK}Bouw doolhof in deze richting
+STR_1762    :Watervallen
+STR_1763    :Stroomversnelling
+STR_1764    :Balkendrempels
+STR_1765    :Actiefoto-installatie
+STR_1766    :Draaischijf
+STR_1767    :Draaiende tunnel
+STR_1768    :Kan het aantal schommelingen niet aanpassen...
+STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
+STR_1770    :{SMALLFONT}{BLACK}Aantal complete schommelingen
+STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1772    :{COMMA16}
+STR_1773    :Een attractie mag maar één actiefoto-installatie hebben
+STR_1774    :Een attractie mag maar één kabellift hebben
+STR_1775    :Uit
+STR_1776    :Aan
+STR_1777    :{WINDOW_COLOUR_2}Muziek:
+STR_1778    :{STRINGID} - - 
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Olifantenpak
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romeins kostuum
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillapak
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Sneeuwpoppak
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridderkostuum
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautenpak
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandietenkostuum
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostuum
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenpak
+STR_1790    :{SMALLFONT}{BLACK}Selecteer de uniformkleur voor dit type werknemer
+STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
+STR_1792    :Gaat {STRINGID} repareren
+STR_1793    :Gaat {STRINGID} inspecteren
+STR_1794    :Repareert {STRINGID}
+STR_1795    :Beantwoordt radio-oproep
+STR_1796    :Is defect en moet worden gerepareerd
+STR_1797    :Deze optie kan niet worden aangepast bij deze attractie
+STR_1798    :Draaikolk
+STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1800    :Veiligheidsvergrendeling
+STR_1801    :Veiligheidsbeugel gaat niet open
+STR_1802    :Veiligheidsbeugel gaat niet dicht
+STR_1803    :Deuren gaan niet open
+STR_1804    :Deuren gaan niet dicht
+STR_1805    :Defect voertuig
+STR_1806    :Defecte remmen
+STR_1807    :Defecte besturing
+STR_1808    :{WINDOW_COLOUR_2}Laatste defect: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}Huidig defect: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}Heeft bij zich:
+STR_1811    :Kan dit hier niet bouwen...
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1813    :Overige objecten
+STR_1814    :Acties
+STR_1815    :Gedachten
+STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de gastenlijst wilt zien
+STR_1817    :({COMMA16})
+STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
+STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
+STR_1820    :{WINDOW_COLOUR_2}Bezoekers die {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Bezoekers die {STRINGID} denken
+STR_1822    :{WINDOW_COLOUR_2}Bezoekers met gedachten over {POP16}{STRINGID}
+STR_1823    :{SMALLFONT}{BLACK}Toon de gedachten van bezoekers over deze attractie
+STR_1824    :{SMALLFONT}{BLACK}Toon de bezoekers in deze attractie
+STR_1825    :{SMALLFONT}{BLACK}Toon de bezoekers die in de rij staan voor deze attractie
+STR_1826    :Status
+STR_1827    :Populariteit
+STR_1828    :Voldoening
+STR_1829    :Winst
+STR_1830    :Lengte wachtrij
+STR_1831    :Wachttijd
+STR_1832    :Betrouwbaarheid
+STR_1833    :Stilstandtijd
+STR_1834    :Favoriet bez.
+STR_1835    :Populariteit: onbekend
+STR_1836    :Populariteit: {COMMA16}%
+STR_1837    :Voldoening: onbekend
+STR_1838    :Voldoening: {COMMA16}%
+STR_1839    :Betrouwbaarheid: {COMMA16}%
+STR_1840    :Stilstandtijd: {COMMA16}%
+STR_1841    :Winst: {CURRENCY} per uur
+STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
+STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
+STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
+STR_1845    :{MONTHYEAR}
+STR_1846    :{COMMA16} bezoekers
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoekers
+STR_1849    :{WINDOW_COLOUR_2}Draai muziek
+STR_1850    :{SMALLFONT}{BLACK}Selecteer of er in deze attractie muziek moet worden gedraaid
+STR_1851    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}{CURRENCY2DP} per uur
+STR_1852    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}Onbekend
+STR_1853    :{WINDOW_COLOUR_2}Bouw: {BLACK}dit jaar
+STR_1854    :{WINDOW_COLOUR_2}Bouw: {BLACK}vorig jaar
+STR_1855    :{WINDOW_COLOUR_2}Bouw: {BLACK}{COMMA16} jaar geleden
+STR_1856    :{WINDOW_COLOUR_2}Winst per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Verlies per verkocht artikel: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} per maand
+STR_1859    :Klusjesmannen
+STR_1860    :Monteurs
+STR_1861    :Bewakers
+STR_1862    :Entertainers
+STR_1863    :Klusjesman
+STR_1864    :Monteur
+STR_1865    :Bewaker
+STR_1866    :Entertainer
+STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1868    :Kan het aantal rotaties niet aanpassen...
+STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
+STR_1870    :{SMALLFONT}{BLACK}Aantal complete rotaties
+STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1872    :{COMMA16}
+STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY} per uur
+STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY} per uur
+STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attracties inspecteren
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attracties repareren
+STR_1878    :{WINDOW_COLOUR_2}Inspectie:
+STR_1879    :Elke 10 minuten
+STR_1880    :Elke 20 minutes
+STR_1881    :Elke 30 minutes
+STR_1882    :Elke 45 minutes
+STR_1883    :Elk uur
+STR_1884    :Elke 2 uur
+STR_1885    :Nooit
+STR_1886    :Inspecteert {STRINGID}
+STR_1887    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}{COMMA16} minuten
+STR_1888    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}meer dan 4 uur
+STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moet inspecteren
+STR_1891    :Nog geen {STRINGID} in het park!
+STR_1892    :RollerCoaster Tycoon 2
+STR_1893    :Voer je CD van RollerCoaster Tycoon 2 in het volgende stationCD in the folLaaging drive:
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
+STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
+STR_1897    :{WINDOW_COLOUR_2}Attractiebouw
+STR_1898    :{WINDOW_COLOUR_2}Attractiebedrijf
+STR_1899    :{WINDOW_COLOUR_2}Landaankoop
+STR_1900    :{WINDOW_COLOUR_2}Landaanpassingen
+STR_1901    :{WINDOW_COLOUR_2}Entreekaartjes
+STR_1902    :{WINDOW_COLOUR_2}Attractiekaartjes
+STR_1903    :{WINDOW_COLOUR_2}Winkelverkoop
+STR_1904    :{WINDOW_COLOUR_2}Winkelvoorraad
+STR_1905    :{WINDOW_COLOUR_2}Horecaverkoop
+STR_1906    :{WINDOW_COLOUR_2}Horecavoorraad
+STR_1907    :{WINDOW_COLOUR_2}Lonen
+STR_1908    :{WINDOW_COLOUR_2}Marketing
+STR_1909    :{WINDOW_COLOUR_2}Onderzoek
+STR_1910    :{WINDOW_COLOUR_2}Rente op lening
+STR_1911    :{BLACK} tegen {COMMA16}% per jaar
+STR_1912    :{MONTH}
+STR_1913    :{BLACK}+{CURRENCY2DP}
+STR_1914    :{BLACK}{CURRENCY2DP}
+STR_1915    :{RED}{CURRENCY2DP}
+STR_1916    :{WINDOW_COLOUR_2}Lening:
+STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
+STR_1918    :Kan niet meer geld lenen!
+STR_1919    :Onvoldoende contant geld beschikbaar!
+STR_1920    :Kan geen lening terugbetalen!
+STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
+STR_1922    :{SMALLFONT}{BLACK}Verder gaan aan een opgeslagen spel
+STR_1923    :{SMALLFONT}{BLACK}Snelcursus tonen
+STR_1924    :{SMALLFONT}{BLACK}Afsluiten
+STR_1925    :Kan hier geen persoon plaatsen...
+STR_1926    :{SMALLFONT}
+STR_1927    :{YELLOW}{STRINGID} is kapot gegaan
+STR_1928    :{RED}{STRINGID} is neergestort!
+STR_1929    :{RED}{STRINGID} is nog steeds niet gerepareerd{NEWLINE}Controleer waar je monteurs zijn en overweeg ze beter te organiseren
+STR_1930    :{SMALLFONT}{BLACK}Volgen van bezoeker aan- of uitschakelen - (Als volgen is ingeschakeld, worden de activiteit van deze bezoeker vermeld in het berichtengebied)
+STR_1931    :{STRINGID} staat nu in de rij voor {STRINGID}
+STR_1932    :{STRINGID} is nu in {STRINGID}
+STR_1933    :{STRINGID} is nu in {STRINGID}
+STR_1934    :{STRINGID} heeft {STRINGID} verlaten
+STR_1935    :{STRINGID} heeft het park verlaten
+STR_1936    :{STRINGID} heeft {STRINGID} gekocht
+STR_1937    :{SMALLFONT}{BLACK}Informatie tonen over het onderwerp van dit bericht
+STR_1938    :{SMALLFONT}{BLACK}Beeld van bezoeker tonen
+STR_1939    :{SMALLFONT}{BLACK}Beeld van werknemer tonen
+STR_1940    :{SMALLFONT}{BLACK}Stemming, blijheid, hongerniveau e.d. van deze bezoeker tonen
+STR_1941    :{SMALLFONT}{BLACK}Tonen in welke attracties deze bezoeker is geweest
+STR_1942    :{SMALLFONT}{BLACK}Financiële informatie over deze bezoeker tonen
+STR_1943    :{SMALLFONT}{BLACK}Recente gedachten van deze bezoeker tonen
+STR_1944    :{SMALLFONT}{BLACK}Toon de dingen die de gast bij zich heeft
+STR_1945    :{SMALLFONT}{BLACK}Orders en opties voor deze werknemer tonen
+STR_1946    :{SMALLFONT}{BLACK}Kostuum van deze entertainer selecteren
+STR_1947    :{SMALLFONT}{BLACK}Werkgebieden van het geselecteerde type werknemer weergeven, en de dichtstbijzijnde werknemer localiseren
+STR_1948    :{SMALLFONT}{BLACK}Nieuwe werknemer van het geselecteerde type aannemen
+STR_1949    :Samenvatting financiën
+STR_1950    :Grafiek financiën
+STR_1951    :Grafiek van parkwaardering
+STR_1952    :Winstgrafiek
+STR_1953    :Marketing
+STR_1954    :Onderzoeksbudget
+STR_1955    :{WINDOW_COLOUR_2}Aantal rondes:
+STR_1956    :{SMALLFONT}{BLACK}Aantal af te leggen rondes per rit
+STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1958    :{COMMA16}
+STR_1959    :Kan het aantal rondes niet aanpassen...
+STR_1960    :{WINDOW_COLOUR_2}Prijs ballon:
+STR_1961    :{WINDOW_COLOUR_2}Prijs knuffel:
+STR_1962    :{WINDOW_COLOUR_2}Prijs parkplattegrond:
+STR_1963    :{WINDOW_COLOUR_2}Prijs actiefoto:
+STR_1964    :{WINDOW_COLOUR_2}Prijs paraplu:
+STR_1965    :{WINDOW_COLOUR_2}Prijs frisdrank:
+STR_1966    :{WINDOW_COLOUR_2}Prijs hamburger:
+STR_1967    :{WINDOW_COLOUR_2}Prijs friet:
+STR_1968    :{WINDOW_COLOUR_2}Prijs ijsje:
+STR_1969    :{WINDOW_COLOUR_2}Prijs suikerspin:
+STR_1970    :{WINDOW_COLOUR_2}
+STR_1971    :{WINDOW_COLOUR_2}
+STR_1972    :{WINDOW_COLOUR_2}
+STR_1973    :{WINDOW_COLOUR_2}Prijs pizza:
+STR_1974    :{WINDOW_COLOUR_2}
+STR_1975    :{WINDOW_COLOUR_2}Prijs popcorn:
+STR_1976    :{WINDOW_COLOUR_2}Prijs hotdog:
+STR_1977    :{WINDOW_COLOUR_2}Prijs tentakel:
+STR_1978    :{WINDOW_COLOUR_2}Prijs hoed:
+STR_1979    :{WINDOW_COLOUR_2}Prijs toffeeappel:
+STR_1980    :{WINDOW_COLOUR_2}Prijs T-shirt:
+STR_1981    :{WINDOW_COLOUR_2}Prijs donut:
+STR_1982    :{WINDOW_COLOUR_2}Prijs koffie:
+STR_1983    :{WINDOW_COLOUR_2}
+STR_1984    :{WINDOW_COLOUR_2}Prijs gegrilde kip:
+STR_1985    :{WINDOW_COLOUR_2}Prijs limonade:
+STR_1986    :{WINDOW_COLOUR_2}
+STR_1987    :{WINDOW_COLOUR_2}
+STR_1988    :Ballon
+STR_1989    :Knuffel
+STR_1990    :Parkplattegrond
+STR_1991    :Actiefoto
+STR_1992    :Paraplu
+STR_1993    :Frisdrank
+STR_1994    :Hamburger
+STR_1995    :Frietjes
+STR_1996    :IJs
+STR_1997    :Suikerspin
+STR_1998    :Leeg blikje
+STR_1999    :Afval
+STR_2000    :Lege hamburgerdoos
+STR_2001    :Pizza
+STR_2002    :Bon
+STR_2003    :Popcorn
+STR_2004    :Hotdog
+STR_2005    :Tentakel
+STR_2006    :Hoed
+STR_2007    :Toffeeappel
+STR_2008    :T-shirt
+STR_2009    :Donut
+STR_2010    :Koffie
+STR_2011    :Lege beker
+STR_2012    :Gegrilde kip
+STR_2013    :Limonade
+STR_2014    :Lege doos
+STR_2015    :Lege fles
+STR_2016    :Ballonnen
+STR_2017    :Knuffels
+STR_2018    :Parkplattegronden
+STR_2019    :Actiefoto's
+STR_2020    :Paraplu's
+STR_2021    :Blikjes frisdrank
+STR_2022    :Hamburgers
+STR_2023    :Zakjes fries
+STR_2024    :IJsjes
+STR_2025    :Suikerspinnen
+STR_2026    :Lege blikjes
+STR_2027    :Stuks rommel
+STR_2028    :Lege hamburgerdozen
+STR_2029    :Pizza's
+STR_2030    :Bonnen
+STR_2031    :Bakjes popcorn
+STR_2032    :Hotdogs
+STR_2033    :Tentakels
+STR_2034    :Hoeden
+STR_2035    :Toffeeappels
+STR_2036    :T-shirts
+STR_2037    :Donuts
+STR_2038    :Kopjes koffie
+STR_2039    :Lege bekertjes
+STR_2040    :Gegrilde kip
+STR_2041    :Limonade
+STR_2042    :Lege dozen
+STR_2043    :Lege flessen
+STR_2044    :een ballon
+STR_2045    :een knuffel
+STR_2046    :een parkplattegrond
+STR_2047    :een actiefoto
+STR_2048    :een paraplu
+STR_2049    :frisdrank
+STR_2050    :een hamburger
+STR_2051    :frietjes
+STR_2052    :een ijsje
+STR_2053    :een suikerspin
+STR_2054    :een leeg blikje
+STR_2055    :afval
+STR_2056    :een lege hamburgerdoos
+STR_2057    :een pizza
+STR_2058    :een bon
+STR_2059    :popcorn
+STR_2060    :een hotdog
+STR_2061    :een tentakel
+STR_2062    :een hoed
+STR_2063    :een toffeeappel
+STR_2064    :een T-shirt
+STR_2065    :een donut
+STR_2066    :een kop koffie
+STR_2067    :een lege beker
+STR_2068    :gegrilde kip
+STR_2069    :limonade
+STR_2070    :een lege doos
+STR_2071    :een lege fles
+STR_2072    :Ballon van {OPENQUOTES}{STRINGID}{ENDQUOTES} 
+STR_2073    :Knuffel van {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2074    :Kaart van {STRINGID}
+STR_2075    :Actiefoto van {STRINGID}
+STR_2076    :Paraplu van {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2077    :Frisdrank
+STR_2078    :Hamburger
+STR_2079    :Frietjes
+STR_2080    :IJs
+STR_2081    :Suikerspin
+STR_2082    :Leeg blikje
+STR_2083    :Afval
+STR_2084    :Lege hamburgerdoos
+STR_2085    :Pizza
+STR_2086    :Bon voor {STRINGID}
+STR_2087    :Popcorn
+STR_2088    :Hotdog
+STR_2089    :Tentakel
+STR_2090    :Hoed van {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2091    :Toffeeappel
+STR_2092    :T-shirt van {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2093    :Donut
+STR_2094    :Koffie
+STR_2095    :Lege beker
+STR_2096    :Gegrilde kip
+STR_2097    :Limonade
+STR_2098    :Lege doos
+STR_2099    :Lege fles
+STR_2100    :{WINDOW_COLOUR_2}Prijs actiefoto:
+STR_2101    :{WINDOW_COLOUR_2}Prijs actiefoto:
+STR_2102    :{WINDOW_COLOUR_2}Prijs actiefoto:
+STR_2103    :{WINDOW_COLOUR_2}Prijs krakeling:
+STR_2104    :{WINDOW_COLOUR_2}Prijs warme chocolademelk:
+STR_2105    :{WINDOW_COLOUR_2}Prijs ijsthee:
+STR_2106    :{WINDOW_COLOUR_2}Prijs funnel cake:
+STR_2107    :{WINDOW_COLOUR_2}Prijs zonnebril:
+STR_2108    :{WINDOW_COLOUR_2}Prijs rundernoedels:
+STR_2109    :{WINDOW_COLOUR_2}Prijs rijstnoedels:
+STR_2110    :{WINDOW_COLOUR_2}Prijs wantansoep:
+STR_2111    :{WINDOW_COLOUR_2}Prijs soep met balletjes:
+STR_2112    :{WINDOW_COLOUR_2}Prijs sap:
+STR_2113    :{WINDOW_COLOUR_2}Prijs sojamelk:
+STR_2114    :{WINDOW_COLOUR_2}Prijs sujeonggwa:
+STR_2115    :{WINDOW_COLOUR_2}Prijs broodje:
+STR_2116    :{WINDOW_COLOUR_2}Prijs koekje:
+STR_2117    :{WINDOW_COLOUR_2}
+STR_2118    :{WINDOW_COLOUR_2}
+STR_2119    :{WINDOW_COLOUR_2}
+STR_2120    :{WINDOW_COLOUR_2}Prijs gebraden worst:
+STR_2121    :{WINDOW_COLOUR_2}
+STR_2122    :Actiefoto
+STR_2123    :Actiefoto
+STR_2124    :Actiefoto
+STR_2125    :Krakeling
+STR_2126    :Warme chocolademelk
+STR_2127    :IJsthee
+STR_2128    :Funnel cake
+STR_2129    :Zonnebril
+STR_2130    :Rundernoedels
+STR_2131    :Rijstnoedels
+STR_2132    :Wantansoep
+STR_2133    :Soep met balletjes
+STR_2134    :Sap
+STR_2135    :Sojamelk
+STR_2136    :Sujeonggwa
+STR_2137    :Broodje
+STR_2138    :Koekje
+STR_2139    :Lege kom
+STR_2140    :Leeg drinkpakje
+STR_2141    :Lege sapbeker
+STR_2142    :Gebraden worst
+STR_2143    :Lege kom
+STR_2144    :Actiefoto's
+STR_2145    :Actiefoto's
+STR_2146    :Actiefoto's
+STR_2147    :Krakelingen
+STR_2148    :Warme chocolademelk
+STR_2149    :IJsthee
+STR_2150    :Funnel cakes
+STR_2151    :Zonnebrillen
+STR_2152    :Rundernoedels
+STR_2153    :Rijstnoedels
+STR_2154    :Kommen wantansoep
+STR_2155    :Kommen soep met balletjes
+STR_2156    :Sap
+STR_2157    :Sojamelk
+STR_2158    :Sujeonggwa
+STR_2159    :Broodjes
+STR_2160    :Koekjes
+STR_2161    :Lege kommen
+STR_2162    :Lege drinkkartons
+STR_2163    :Lege sapbekers
+STR_2164    :gebraden worsten
+STR_2165    :Lege kommen
+STR_2166    :een actiefoto
+STR_2167    :een actiefoto
+STR_2168    :een actiefoto
+STR_2169    :een krakeling
+STR_2170    :warme chocolademelk
+STR_2171    :ijsthee
+STR_2172    :een funnel cake
+STR_2173    :een zonnebril
+STR_2174    :rundernoedels
+STR_2175    :rijstnoedels
+STR_2176    :wantansoep
+STR_2177    :soep met balletjes
+STR_2178    :sap
+STR_2179    :sojamelk
+STR_2180    :sujeonggwa
+STR_2181    :een broodje
+STR_2182    :een koekje
+STR_2183    :een lege kom
+STR_2184    :een leeg drinkarton
+STR_2185    :een lege sapbeker
+STR_2186    :een gebraden worst
+STR_2187    :een lege kom
+STR_2188    :Actiefoto van {STRINGID}
+STR_2189    :Actiefoto van {STRINGID}
+STR_2190    :Actiefoto van {STRINGID}
+STR_2191    :Krakeling
+STR_2192    :Warme chocolademelk
+STR_2193    :IJsthee
+STR_2194    :Funnel cake
+STR_2195    :Zonnebril
+STR_2196    :Rundernoedels
+STR_2197    :Rijstnoedels
+STR_2198    :Wantansoep
+STR_2199    :Soep met balletjes
+STR_2200    :Sap
+STR_2201    :Sojamelk
+STR_2202    :Sujeonggwa
+STR_2203    :Broodje
+STR_2204    :Koekje
+STR_2205    :Lege kom
+STR_2206    :Leeg drinkkarton
+STR_2207    :Lege sapbeker
+STR_2208    :Gebraden worst
+STR_2209    :Lege kom
+STR_2210    :{SMALLFONT}{BLACK}Toon lijst van klusjesmannen in het park
+STR_2211    :{SMALLFONT}{BLACK}Toon lijst van monteurs in het park
+STR_2212    :{SMALLFONT}{BLACK}Toon lijst van bewakers in het park
+STR_2213    :{SMALLFONT}{BLACK}Toon lijst van entertainers in het park
+STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
+STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
+STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
+STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}Parkwaardering: {COMMA16}
+STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}Bedrijfswaarde: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Inkomsten horeca en merchandise{NEWLINE}vorige maand: {BLACK}{CURRENCY}
+STR_2229    :Helling omhoog naar verticaal
+STR_2230    :Verticale baan
+STR_2231    :Vasthoudrem voor afdaling
+STR_2232    :Kabelliftheuvel
+STR_2233    :{SMALLFONT}{BLACK}Parkinformatie
+STR_2234    :Recente berichten
+STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2236    :januari
+STR_2237    :februari
+STR_2238    :maart
+STR_2239    :april
+STR_2240    :mei
+STR_2241    :juni
+STR_2242    :juli
+STR_2243    :augustus
+STR_2244    :september
+STR_2245    :oktober
+STR_2246    :november
+STR_2247    :december
+STR_2248    :Kan deze attractie niet afbreken...
+STR_2249    :{BABYBLUE}Nieuwe attractie is nu beschikbaar:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}Nieuw decor/thema is nu beschikbaar:{NEWLINE}{STRINGID}
+STR_2251    :Kan alleen op paden worden gebouwd!
+STR_2252    :Kan alleen over paden worden gebouwd!
+STR_2253    :Transportattracties
+STR_2254    :Rustige attracties
+STR_2255    :Achtbanen
+STR_2256    :Spannende attracties
+STR_2257    :Waterattracties
+STR_2258    :Winkels en kraampjes
+STR_2259    :Decor & thematisering
+STR_2260    :Geen budget
+STR_2261    :Minimaal budget
+STR_2262    :Normaal budget
+STR_2263    :Maximaal budget
+STR_2264    :Onderzoeksbudget
+STR_2265    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} per maand
+STR_2266    :Onderzoeksprioriteiten
+STR_2267    :Momenteel in ontwikkeling
+STR_2268    :Laatste uitvinding
+STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}Voortgang: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}Verwacht: {BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}Attractie:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}Decor/thema:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}Details van deze uitvinding of ontwikkeling tonen
+STR_2275    :{SMALLFONT}{BLACK}Budget en opties voor onderzoek en ontwikkeling tonen
+STR_2276    :{SMALLFONT}{BLACK}Status van onderzoek en ontwikkeling tonen
+STR_2277    :Onbekend
+STR_2278    :Transportattractie
+STR_2279    :Rustige attractie
+STR_2280    :Achtbaan
+STR_2281    :Spannende attractie
+STR_2282    :Waterattractie
+STR_2283    :Winkel/kraam
+STR_2284    :Decor/Thema
+STR_2285    :Vooronderzoek
+STR_2286    :Ontwerpen
+STR_2287    :Ontwerp voltooien
+STR_2288    :Onbekend
+STR_2289    :{STRINGID} {STRINGID}
+STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2291    :Selecteer een scenario voor een nieuw spel
+STR_2292    :{WINDOW_COLOUR_2}Bezochte attracties:
+STR_2293    :{BLACK} Geen
+STR_2294    :{SMALLFONT}{BLACK}Bovenkant land aanpassen
+STR_2295    :{SMALLFONT}{BLACK}Zijkant land aanpassen
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} betaald voor entree
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgeven aan {BLACK}{COMMA16} attractie
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} attracties
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} stuk voedsel
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} stuks voedsel
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} drankjr
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} drankjes
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} souvenir
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} souvenirs
+STR_2305    :Baantontwerpbestanden
+STR_2306    :Baanontwerp opslaan
+STR_2307    :Ontwerp voor {STRINGID} selecteren
+STR_2308    :Baanontwerpen voor {STRINGID}
+STR_2309    :Nieuw baanontwerp installeren
+STR_2310    :Eigen ontwerp bouwen
+STR_2311    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2312    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2313    :{WINDOW_COLOUR_2}Misselheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
+STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
+STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} x {COMMA16} blokken
+STR_2317    :{WINDOW_COLOUR_2}Geluidskwaliteit:
+STR_2318    :Laag
+STR_2319    :Gemiddeld
+STR_2320    :Hoog
+STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
+STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m{SQUARED}
+STR_2324    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}sq.ft.
+STR_2325    :{SMALLFONT}{BLACK}Land kopen om het park uit te breiden
+STR_2326    :{SMALLFONT}{BLACK}Bouwrechten kopen om boven of onder land buiten het park te kunnen bouwen
+STR_2327    :Opties
+STR_2328    :{WINDOW_COLOUR_2}Valuta:
+STR_2329    :{WINDOW_COLOUR_2}Afstanden en snelheden:
+STR_2330    :{WINDOW_COLOUR_2}Temperatuur:
+STR_2331    :{WINDOW_COLOUR_2}Hoogtemarkering:
+STR_2332    :Eenheden
+STR_2333    :Geluid
+STR_2334    :Ponden ({POUND})
+STR_2335    :Dollars ($)
+STR_2336    :Frank (F)
+STR_2337    :Duitse mark (DM)
+STR_2338    :Yen ({YEN})
+STR_2339    :Peseta (Pts)
+STR_2340    :Lire (L)
+STR_2341    :Guldens (fl.)
+STR_2342    :Kronen (kr)
+STR_2343    :Euro's ({EURO})
+STR_2344    :Engelse maten
+STR_2345    :Metriek stelsel
+STR_2346    :Weergave
+STR_2347    :{RED}{STRINGID} is verdronken!
+STR_2348    :{SMALLFONT}{BLACK}Statistieken voor deze werknemer tonen
+STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per month
+STR_2350    :{WINDOW_COLOUR_2}In dienst genomen: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Bloembakken water gegeven: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA16}
+STR_2357    :Huis
+STR_2358    :Eenheden
+STR_2359    :Echte waarden
+STR_2360    :{WINDOW_COLOUR_2}Schermresolutie:
+STR_2361    :Landschapslijnen verzachten
+STR_2362    :{SMALLFONT}{BLACK}Verzachting van lijnen tussen blokken land aan- of uitzetten
+STR_2363    :Raster weergeven op landschap
+STR_2364    :{SMALLFONT}{BLACK}Rasterlijnen op land aan- of uitzetten
+STR_2365    :De bank wil je lening niet verhogen!
+STR_2366    :Celsius ({DEGREE}C)
+STR_2367    :Fahrenheit (F)
+STR_2368    :Geen
+STR_2369    :Laag
+STR_2370    :Gemiddeld
+STR_2371    :Hoog
+STR_2372    :Laag
+STR_2373    :Gemiddeld
+STR_2374    :Hoog
+STR_2375    :Zeer hoog
+STR_2376    :Extreem
+STR_2377    :Ultra-extreem
+STR_2378    :{SMALLFONT}{BLACK}Kleiner stuk land aanpassen
+STR_2379    :{SMALLFONT}{BLACK}Groter stuk land aanpassen
+STR_2380    :{SMALLFONT}{BLACK}Kleiner stuk water aanpassen
+STR_2381    :{SMALLFONT}{BLACK}Groter stuk water aanpassen
+STR_2382    :Land
+STR_2383    :Water
+STR_2384    :{WINDOW_COLOUR_2}Je doel:
+STR_2385    :{BLACK}Geen
+STR_2386    :{BLACK}Om minstens {COMMA16} bezoekers in je park toe hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
+STR_2387    :{BLACK}Om een parkwaarde van minstens {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2388    :{BLACK}Om plezier te hebben!
+STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
+STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een spanningswaarde van minstens 6,00
+STR_2391    :{BLACK}Om minstens {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
+STR_2392    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
+STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van minstens {LENGTH}, en een spanningswaarde van minstens 7,00
+STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, ek met een spanningswaarde van minstens {POP16}{POP16}{COMMA2DP32}
+STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van minstens {POP16}{POP16}{CURRENCY} te bereiken
+STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en merchandise te verdienen
+STR_2397    :Geen
+STR_2398    :Aantal bezoekers op een bepaalde datum
+STR_2399    :Parkwaarde op een bepaalde datum
+STR_2400    :Plezier hebben
+STR_2401    :De beste attractie te bouwen
+STR_2402    :10 achtbanen bouwen
+STR_2403    :Aantal bezoekers in het park
+STR_2404    :Maandelijks inkomen van attractiekaartjes
+STR_2405    :10 achtbanen van een bepaalde lengte bouwen
+STR_2406    :5 achtbanen afmaken
+STR_2407    :Lening terugbetalen en een bepaalde parkwaarde bereiken
+STR_2408    :Maandelijks inkomen van voedsel/merchandise
+STR_2409    :{WINDOW_COLOUR_2}Lopende marketingcampagnes
+STR_2410    :{BLACK}Geen
+STR_2411    :{WINDOW_COLOUR_2}Beschikbare marketingcampagnes
+STR_2412    :{SMALLFONT}{BLACK}Deze marketingcampagne starten
+STR_2413    :{BLACK}({CURRENCY2DP} per week)
+STR_2414    :(niet geselecteerd)
+STR_2415    :{WINDOW_COLOUR_2}Attractie:
+STR_2416    :{WINDOW_COLOUR_2}Item:
+STR_2417    :{WINDOW_COLOUR_2}Tijdsduur:
+STR_2418    :Gratis entree voor {STRINGID}
+STR_2419    :Gratis toegang tot {STRINGID}
+STR_2420    :50% korting op entree voor {STRINGID}
+STR_2421    :Gratis {STRINGID}
+STR_2422    :Advertentiecampagne voor {STRINGID}
+STR_2423    :Advertentiecampagne voor {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Bonnen voor gratis entree
+STR_2425    :{WINDOW_COLOUR_2}Bonnen voor gratis ritten op een bepaalde attractie
+STR_2426    :{WINDOW_COLOUR_2}Bonnen voor 50% korting op de entreeprijs
+STR_2427    :{WINDOW_COLOUR_2}Bonnen voor gratis eten of drinken
+STR_2428    :{WINDOW_COLOUR_2}Advertentiecampagne voor het park
+STR_2429    :{WINDOW_COLOUR_2}Advertentiecampagne voor een bepaalde attractie
+STR_2430    :{BLACK}Bonnen voor gratis entree voor {STRINGID}
+STR_2431    :{BLACK}Bonnen voor een gratis rit in {STRINGID}
+STR_2432    :{BLACK}Bonnen voor 50% korting op entree voor {STRINGID}
+STR_2433    :{BLACK}Bonnen voor gratis {STRINGID}
+STR_2434    :{BLACK}Advertentiecampagne voor {STRINGID}
+STR_2435    :{BLACK}Advertentiecampagne voor {STRINGID}
+STR_2436    :1 week
+STR_2437    :2 weken
+STR_2438    :3 weken
+STR_2439    :4 weken
+STR_2440    :5 weken
+STR_2441    :6 weken
+STR_2442    :{BLACK}({STRINGID} resterend)
+STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
+STR_2445    :Start deze marketingcampagne
+STR_2446    :{YELLOW}Je advertentiecampagne voor gratis entree tot het park is verlopen
+STR_2447    :{YELLOW}Je advertentiecampagne voor gratis ritjes op {STRINGID} is verlopen
+STR_2448    :{YELLOW}Je advertentiecampagne voor halve prijs entree tot het park is verlopen
+STR_2449    :{YELLOW}Je advertentiecampagne voor gratis {STRINGID} is verlopen
+STR_2450    :{YELLOW}Je advertentiecampagne voor het park is verlopen
+STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is verlopen
+STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
+STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
+STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2457    :{SMALLFONT}{BLACK}Laat financiële rekeningen zien
+STR_2458    :{SMALLFONT}{BLACK}Toon grafiek van geld (min lening) over tijd
+STR_2459    :{SMALLFONT}{BLACK}Toon grafiek van parkwaarde over tijd
+STR_2460    :{SMALLFONT}{BLACK}Toon grafiek van wekelijke winst
+STR_2461    :{SMALLFONT}{BLACK}Toon advertentiecampagnes
+STR_2462    :{SMALLFONT}{BLACK}Toon parkingang
+STR_2463    :{SMALLFONT}{BLACK}Toon grafiek van parkwaardering over tijd
+STR_2464    :{SMALLFONT}{BLACK}Toon grafiek van hoeveelheid gasten over tijd
+STR_2465    :{SMALLFONT}{BLACK}Toon park entreeprijs en informatie
+STR_2466    :{SMALLFONT}{BLACK}Toon park statistieken
+STR_2467    :{SMALLFONT}{BLACK}Toon doelstellingen voor deze game
+STR_2468    :{SMALLFONT}{BLACK}Toon recente prijzen die het park heeft gekregen
+STR_2469    :{SMALLFONT}{BLACK}Selecteer niveau van onderzoek & ontwikkeling
+STR_2470    :{SMALLFONT}{BLACK}Onderzoek nieuwe transportattracties
+STR_2471    :{SMALLFONT}{BLACK}Onderzoek nieuwe rustige attracties
+STR_2472    :{SMALLFONT}{BLACK}Onderzoek nieuwe achtbanen
+STR_2473    :{SMALLFONT}{BLACK}Onderzoek nieuwe spannende attracties
+STR_2474    :{SMALLFONT}{BLACK}Onderzoek nieuwe waterattracties
+STR_2475    :{SMALLFONT}{BLACK}Onderzoek nieuwe winkels en kraampjes
+STR_2476    :{SMALLFONT}{BLACK}Onderzoek nieuw decor en thematisering 
+STR_2477    :{SMALLFONT}{BLACK}Selecteer werkzame modus voor deze attractie
+STR_2478    :{SMALLFONT}{BLACK}Toon grafiek van snelheid over tijd
+STR_2479    :{SMALLFONT}{BLACK}Toon grafiek van hoogte over tijd
+STR_2480    :{SMALLFONT}{BLACK}Toon grafiek van verticale versnelling over tijd
+STR_2481    :{SMALLFONT}{BLACK}Toon grafiek van horizontale versnelling over tijd
+STR_2482    :{SMALLFONT}{BLACK}Winst: {CURRENCY} per week,  Parkwaarde: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}Wekelijke winst: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Wekelijke winst: {RED}{CURRENCY2DP}
+STR_2485    :Besturing
+STR_2486    :Algemeen
+STR_2487    :'Echte' namen van bezoekers tonen
+STR_2488    :{SMALLFONT}{BLACK}Wissel tussen het tonen van 'echte' namen van bezoekers en bezoekernummers
+STR_2489    :Sneltoetsen...
+STR_2490    :Sneltoetsen
+STR_2491    :Toetsen herstellen
+STR_2492    :{SMALLFONT}{BLACK}Herstel alle toetsen terug naar de standaard instellingen
+STR_2493    :Close top-most window
+STR_2494    :Close all floating windows
+STR_2495    :Cancel construction mode
+STR_2496    :Spel pauzeren
+STR_2497    :Zoom aanblik uit
+STR_2498    :Zoom aanblik in
+STR_2499    :Draai aanblik
+STR_2500    :Draai constructieobject
+STR_2501    :Onder de grond kijken
+STR_2502    :Verwijder basis land
+STR_2503    :Verwijder verticaal land
+STR_2504    :Doorzichtige attracties
+STR_2505    :Doorzichtig decor
+STR_2506    :Onzichtbare ondersteuning
+STR_2507    :Onzichtbare bezoekers
+STR_2508    :Toon hoogtemarkeringen op land
+STR_2509    :Toon hoogtemarkeringen op rails
+STR_2510    :Toon hoogtemarkeringen op paden
+STR_2511    :Land aanpassen
+STR_2512    :Water aanpassen
+STR_2513    :Decor bouwen
+STR_2514    :Bouw paden
+STR_2515    :Bouw nieuwe attractie
+STR_2516    :Toon financiële informatie
+STR_2517    :Toon onderzoeksinformatie
+STR_2518    :Toon lijst met attracties
+STR_2519    :Toon park informatie
+STR_2520    :Toon lijst met bezoekers
+STR_2521    :Toon lijst met werknemers
+STR_2522    :Toon recente berichten
+STR_2523    :Kaart tonen
+STR_2524    :Screenshot
+STR_2525    :???
+STR_2526    :???
+STR_2527    :???
+STR_2528    :???
+STR_2529    :???
+STR_2530    :???
+STR_2531    :???
+STR_2532    :???
+STR_2533    :Backspace
+STR_2534    :Tab
+STR_2535    :???
+STR_2536    :???
+STR_2537    :Wissen
+STR_2538    :Enter
+STR_2539    :???
+STR_2540    :???
+STR_2541    :???
+STR_2542    :???
+STR_2543    :Alt/Menu
+STR_2544    :Pause
+STR_2545    :Caps
+STR_2546    :???
+STR_2547    :???
+STR_2548    :???
+STR_2549    :???
+STR_2550    :???
+STR_2551    :???
+STR_2552    :Escape
+STR_2553    :???
+STR_2554    :???
+STR_2555    :???
+STR_2556    :???
+STR_2557    :Spatiebalk
+STR_2558    :PgUp
+STR_2559    :PgDn
+STR_2560    :End
+STR_2561    :Home
+STR_2562    :Links
+STR_2563    :Omhoog
+STR_2564    :Rechts
+STR_2565    :Omloog
+STR_2566    :Selecteren
+STR_2567    :Afdrukken
+STR_2568    :Uitvoeren
+STR_2569    :Snapshot
+STR_2570    :Insert
+STR_2571    :Delete
+STR_2572    :Help
+STR_2573    :0
+STR_2574    :1
+STR_2575    :2
+STR_2576    :3
+STR_2577    :4
+STR_2578    :5
+STR_2579    :6
+STR_2580    :7
+STR_2581    :8
+STR_2582    :9
+STR_2583    :???
+STR_2584    :???
+STR_2585    :???
+STR_2586    :???
+STR_2587    :???
+STR_2588    :???
+STR_2589    :???
+STR_2590    :A
+STR_2591    :B
+STR_2592    :C
+STR_2593    :D
+STR_2594    :E
+STR_2595    :F
+STR_2596    :G
+STR_2597    :H
+STR_2598    :I
+STR_2599    :J
+STR_2600    :K
+STR_2601    :L
+STR_2602    :M
+STR_2603    :N
+STR_2604    :O
+STR_2605    :P
+STR_2606    :Q
+STR_2607    :R
+STR_2608    :S
+STR_2609    :T
+STR_2610    :U
+STR_2611    :V
+STR_2612    :W
+STR_2613    :X
+STR_2614    :Y
+STR_2615    :Z
+STR_2616    :???
+STR_2617    :???
+STR_2618    :Menu
+STR_2619    :???
+STR_2620    :???
+STR_2621    :NumPad 0
+STR_2622    :NumPad 1
+STR_2623    :NumPad 2
+STR_2624    :NumPad 3
+STR_2625    :NumPad 4
+STR_2626    :NumPad 5
+STR_2627    :NumPad 6
+STR_2628    :NumPad 7
+STR_2629    :NumPad 8
+STR_2630    :NumPad 9
+STR_2631    :NumPad *
+STR_2632    :NumPad +
+STR_2633    :???
+STR_2634    :NumPad -
+STR_2635    :NumPad .
+STR_2636    :NumPad /
+STR_2637    :F1
+STR_2638    :F2
+STR_2639    :F3
+STR_2640    :F4
+STR_2641    :F5
+STR_2642    :F6
+STR_2643    :F7
+STR_2644    :F8
+STR_2645    :F9
+STR_2646    :F10
+STR_2647    :F11
+STR_2648    :F12
+STR_2649    :F13
+STR_2650    :F14
+STR_2651    :F15
+STR_2652    :F16
+STR_2653    :F17
+STR_2654    :F18
+STR_2655    :F19
+STR_2656    :F20
+STR_2657    :F21
+STR_2658    :F22
+STR_2659    :F23
+STR_2660    :F24
+STR_2661    :???
+STR_2662    :???
+STR_2663    :???
+STR_2664    :???
+STR_2665    :???
+STR_2666    :???
+STR_2667    :???
+STR_2668    :???
+STR_2669    :NumLock
+STR_2670    :Scroll
+STR_2671    :???
+STR_2672    :???
+STR_2673    :???
+STR_2674    :???
+STR_2675    :???
+STR_2676    :???
+STR_2677    :???
+STR_2678    :???
+STR_2679    :???
+STR_2680    :???
+STR_2681    :???
+STR_2682    :???
+STR_2683    :???
+STR_2684    :???
+STR_2685    :???
+STR_2686    :???
+STR_2687    :???
+STR_2688    :???
+STR_2689    :???
+STR_2690    :???
+STR_2691    :???
+STR_2692    :???
+STR_2693    :???
+STR_2694    :???
+STR_2695    :???
+STR_2696    :???
+STR_2697    :???
+STR_2698    :???
+STR_2699    :???
+STR_2700    :???
+STR_2701    :???
+STR_2702    :???
+STR_2703    :???
+STR_2704    :???
+STR_2705    :???
+STR_2706    :???
+STR_2707    :???
+STR_2708    :???
+STR_2709    :???
+STR_2710    :???
+STR_2711    :;
+STR_2712    :=
+STR_2713    :,
+STR_2714    :-
+STR_2715    :.
+STR_2716    :/
+STR_2717    :'
+STR_2718    :???
+STR_2719    :???
+STR_2720    :???
+STR_2721    :???
+STR_2722    :???
+STR_2723    :???
+STR_2724    :???
+STR_2725    :???
+STR_2726    :???
+STR_2727    :???
+STR_2728    :???
+STR_2729    :???
+STR_2730    :???
+STR_2731    :???
+STR_2732    :???
+STR_2733    :???
+STR_2734    :???
+STR_2735    :???
+STR_2736    :???
+STR_2737    :???
+STR_2738    :???
+STR_2739    :???
+STR_2740    :???
+STR_2741    :???
+STR_2742    :???
+STR_2743    :???
+STR_2744    :[
+STR_2745    :\
+STR_2746    :]
+STR_2747    :{ENDQUOTES}
+STR_2748    :Bar
+STR_2749    :???
+STR_2750    :???
+STR_2751    :???
+STR_2752    :???
+STR_2753    :???
+STR_2754    :???
+STR_2755    :???
+STR_2756    :???
+STR_2757    :???
+STR_2758    :???
+STR_2759    :???
+STR_2760    :+5000 geld
+STR_2761    :Betaalde entree
+STR_2762    :Betalen per rit
+STR_2763    :???
+STR_2764    :Tevreden gasten
+STR_2765    :Grote groep
+STR_2766    :???
+STR_2767    :Weer vastzetten
+STR_2768    :Weer vrijgeven
+STR_2769    :Park openen
+STR_2770    :Park sluiten
+STR_2771    :Lagere spelsnelheid
+STR_2772    :Hogere spelsnelheid
+STR_2773    :Venster
+STR_2774    :Volledig scherm
+STR_2775    :Volledig scherm (bureaublad)
+STR_2776    :Taal
+STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :???
+STR_2780    :???
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2782    :SHIFT + 
+STR_2783    :CTRL + 
+STR_2784    :Sneltoets wijzigen
+STR_2785    :{WINDOW_COLOUR_2}Voer een nieuwe sneltoets in voor:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
+STR_2787    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}Gefeliciteerd!{NEWLINE}{BLACK}Je hebt je doel bereikt met een bedrijfswaarde van {CURRENCY}!
+STR_2789    :{WINDOW_COLOUR_2}Je hebt je doel niet bereikt!
+STR_2790    :Naam invoeren voor scenario-overzicht
+STR_2791    :Naam invoeren
+STR_2792    :Voer je naam in voor het scenario-overzicht:
+STR_2793    :{SMALLFONT}(Voltooid door {STRINGID})
+STR_2794    :{WINDOW_COLOUR_2}Voltooid door: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} met een bedrijfswaarde van: {BLACK}{CURRENCY}
+STR_2795    :Sorteren
+STR_2796    :{SMALLFONT}{BLACK}Sorteer de lijst met attracties op basis van het aangegeven informatietype
+STR_2797    :Beeld verschuiven als aanwijzer op de rand staat
+STR_2798    :{SMALLFONT}{BLACK}Selecteer of het beeld wel of niet moet verschuiven als de muisaanwijzer op de rand van het beeld staat
+STR_2799    :{SMALLFONT}{BLACK}Instellingen voor sneltoetsen bekijken of aanpassen
+STR_2800    :{WINDOW_COLOUR_2}Totale bezoeken: {BLACK}{COMMA32}
+STR_2801    :{WINDOW_COLOUR_2}Entree-inkomsten: {BLACK}{CURRENCY2DP}
+STR_2802    :Kaart
+STR_2803    :{SMALLFONT}{BLACK}Parkkaart tonen waarop deze bezoekers gemarkeerd zijn
+STR_2804    :{SMALLFONT}{BLACK}Parkkaart tonen waarop deze werknemers gemarkeerd zijn
+STR_2805    :{SMALLFONT}{BLACK}Parkkaart tonen
+STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
+STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
+STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
+STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
+STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
+STR_2813    :{RED}Your park entrance fee is too Hoog!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
+STR_2814    :{WINDOW_COLOUR_2}Rommeligste park
+STR_2815    :{WINDOW_COLOUR_2}Netste park
+STR_2816    :{WINDOW_COLOUR_2}Beste achtbanen
+STR_2817    :{WINDOW_COLOUR_2}Beste park
+STR_2818    :{WINDOW_COLOUR_2}Mooiste park
+STR_2819    :{WINDOW_COLOUR_2}Slechtste park
+STR_2820    :{WINDOW_COLOUR_2}Veiligste park
+STR_2821    :{WINDOW_COLOUR_2}Beste werknemers
+STR_2822    :{WINDOW_COLOUR_2}Beste eten
+STR_2823    :{WINDOW_COLOUR_2}Slechtste eten
+STR_2824    :{WINDOW_COLOUR_2}Beste toiletten
+STR_2825    :{WINDOW_COLOUR_2}Meest teleurstellende park
+STR_2826    :{WINDOW_COLOUR_2}Beste waterattracties
+STR_2827    :{WINDOW_COLOUR_2}Beste unieke attracties
+STR_2828    :{WINDOW_COLOUR_2}Meest duizelingwekkende kleurenschema
+STR_2829    :{WINDOW_COLOUR_2}Vreemdste indeling
+STR_2830    :{WINDOW_COLOUR_2}Beste rustige attracties
+STR_2831    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het rommeligste park in het land zijn'
+STR_2832    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het netste park in het land zijn'
+STR_2833    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste achtbanen in het land zijn'
+STR_2834    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het beste park in het land zijn'
+STR_2835    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het mooiste park in het land zijn'
+STR_2836    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het slechtste park in het land zijn'
+STR_2837    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het veiligste park in het land zijn'
+STR_2838    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste werknemers in het land zijn'
+STR_2839    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met het beste eten in het land zijn'
+STR_2840    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met het slechtste eten in het land zijn'
+STR_2841    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste toiletten in het land zijn'
+STR_2842    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het meest teleurstellende park in het land zijn'
+STR_2843    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste waterattracties in het land zijn'
+STR_2844    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste unieke attracties in het land zijn'
+STR_2845    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de meest duizelingwekkende kleurenschemas in het land zijn'
+STR_2846    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de vreemste indeling in het land zijn'
+STR_2847    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste rustige attracties in het land zijn'
+STR_2848    :{WINDOW_COLOUR_2}Geen recente prijzen
+STR_2849    :Nieuw scenario successvol geïnstalleerd
+STR_2850    :Nieuw baanontwerp successvol geïnstalleerd
+STR_2851    :Scenario al geïnstalleerd
+STR_2852    :Baanontwerp al geïnstalleerd
+STR_2853    :Verboden door de lokale overheid!
+STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Maak een pad naar de ingang
+STR_2855    :{RED}{STRINGID} heeft geen pad vanaf zijn uitgang !{NEWLINE}Maak een pad vanaf de uitgang
+STR_2856    :{WINDOW_COLOUR_2}Snelcursus
+STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
+STR_2858    :Kan advertentiecampagne niet starten...
+STR_2859    :Een andere instantie van RollerCoaster Tycoon 2 draait al
+STR_2860    :Infogrames Interactive credits...
+STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
+STR_2862    :Music acknowledgements...
+STR_2863    :Music acknowledgements
+STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) geen copyright
+STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Onbekende componist) Copyright Control
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditioneel)
+STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) geen copyright
+STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditioneel)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditioneel)
+STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditioneel)
+STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) geen copyright
+STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) geen copyright
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditioneel)
+STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, gebruikt met toestemming
+STR_2876    :{WINDOW_COLOUR_2}Titelmuziek RollerCoaster Tycoon 2:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2900    :{WINDOW_COLOUR_2}
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
+STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
+STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
+STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
+STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
+STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
+STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
+STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
+STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
+STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
+STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
+STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
+STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
+STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
+STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
+STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
+STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
+STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
+STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
+STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
+STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
+STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
+STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2931    :{WINDOW_COLOUR_2}
+STR_2932    :{WINDOW_COLOUR_2}
+STR_2933    :{WINDOW_COLOUR_2}
+STR_2934    :{WINDOW_COLOUR_2}
+STR_2935    :{WINDOW_COLOUR_2}
+STR_2936    :{WINDOW_COLOUR_2}
+STR_2937    :{WINDOW_COLOUR_2}
+STR_2938    :{WINDOW_COLOUR_2}
+STR_2939    :{WINDOW_COLOUR_2}
+STR_2940    :{WINDOW_COLOUR_2}
+STR_2941    :{WINDOW_COLOUR_2}
+STR_2942    :{WINDOW_COLOUR_2}
+STR_2943    :{WINDOW_COLOUR_2}
+STR_2944    :{WINDOW_COLOUR_2}
+STR_2945    :{WINDOW_COLOUR_2}
+STR_2946    :{WINDOW_COLOUR_2}
+STR_2947    :{WINDOW_COLOUR_2}
+STR_2948    :{WINDOW_COLOUR_2}
+STR_2949    :{WINDOW_COLOUR_2}
+STR_2950    :{WINDOW_COLOUR_2}
+STR_2951    :{WINDOW_COLOUR_2}
+STR_2952    :{WINDOW_COLOUR_2}
+STR_2953    :{WINDOW_COLOUR_2}
+STR_2954    :{WINDOW_COLOUR_2}
+STR_2955    :{WINDOW_COLOUR_2}
+STR_2956    :{WINDOW_COLOUR_2}
+STR_2957    :{WINDOW_COLOUR_2}
+STR_2958    :{WINDOW_COLOUR_2}
+STR_2959    :{WINDOW_COLOUR_2}
+STR_2960    :{WINDOW_COLOUR_2}
+STR_2961    :{WINDOW_COLOUR_2}
+STR_2962    :{WINDOW_COLOUR_2}
+STR_2963    :{WINDOW_COLOUR_2}
+STR_2964    :{WINDOW_COLOUR_2}
+STR_2965    :{WINDOW_COLOUR_2}
+STR_2966    :
+STR_2967    :
+STR_2968    :
+STR_2969    :Het gebruik van dit product is onderhevig aan de bepalen in de gebruikersovereenkomst
+STR_2970    :die te raadplegen is in de {OPENQUOTES}ReadMe{ENDQUOTES} of de handleiding.
+STR_2971    :Standaard kleurenschema
+STR_2972    :Alternatief kleurenschema 1
+STR_2973    :Alternatief kleurenschema 2
+STR_2974    :Alternatief kleurenschema 3
+STR_2975    :{SMALLFONT}{BLACK}Selecteer welk kleurenschema je wilt aanpassen of gebruiken
+STR_2976    :{SMALLFONT}{BLACK}Met het geselecteerde kleurenschema een onderdeel van de baan verven
+STR_2977    :Naam werknemer
+STR_2978    :Voer een nieuwe naam in voor deze werknemer:
+STR_2979    :Kan de naam van deze werknemer niet veranderen...
+STR_2980    :Teveel banieren in dit park
+STR_2981    :{RED}Geen toegang - - 
+STR_2982    :Baniertekst
+STR_2983    :Voer een nieuwe tekst in voer deze banier:
+STR_2984    :Kan de tekst op deze banier niet veranderen...
+STR_2985    :Banier
+STR_2986    :{SMALLFONT}{BLACK}Change text on banner
+STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
+STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
+STR_2989    :{SMALLFONT}{BLACK}Select main color
+STR_2990    :{SMALLFONT}{BLACK}Select text color
+STR_2991    :Bord
+STR_2992    :Bordtekst
+STR_2993    :Voer een nieuwe tekst in voor dit bord:
+STR_2994    :{SMALLFONT}{BLACK}Tekst op het bord veranderen
+STR_2995    :{SMALLFONT}{BLACK}Dit bord weghalen
+STR_2996    :{BLACK}ABC
+STR_2997    :{GREY}ABC
+STR_2998    :{WHITE}ABC
+STR_2999    :{RED}ABC
+STR_3000    :{GREEN}ABC
+STR_3001    :{YELLOW}ABC
+STR_3002    :{TOPAZ}ABC
+STR_3003    :{CELADON}ABC
+STR_3004    :{BABYBLUE}ABC
+STR_3005    :{PALELAVENDER}ABC
+STR_3006    :{PALEGOLD}ABC
+STR_3007    :{LIGHTPINK}ABC
+STR_3008    :{PEARLAQUA}ABC
+STR_3009    :{PALESILVER}ABC
+STR_3010    :Kan dit bestand niet laden...
+STR_3011    :Bestand bevat ongeldige gegevens
+STR_3012    :Botsautos beat stijl
+STR_3013    :Kermisorgelstijl
+STR_3014    :Romijnse fanfare stijl
+STR_3015    :Orientaalse stijl
+STR_3016    :Marsmannetjes stijl
+STR_3017    :Jungle drums stijl
+STR_3018    :Egyptische stijl
+STR_3019    :Speelgoedland stijl
+STR_3020    :
+STR_3021    :Ruimte stijl
+STR_3022    :Horror stijl
+STR_3023    :Techno stijl
+STR_3024    :Rustige stijl
+STR_3025    :Zomerstijl
+STR_3026    :Water stijl
+STR_3027    :Wilde westen stijl
+STR_3028    :Jurassic stijl
+STR_3029    :Rock stijl
+STR_3030    :Ragtime stijl
+STR_3031    :Fantasy stijl
+STR_3032    :Rock stijl 2
+STR_3033    :Ijs stijl
+STR_3034    :Sneeuw stijl
+STR_3035    :Extra muziek 1
+STR_3036    :Extra muziek 2
+STR_3037    :Middeleeuwse stijl
+STR_3038    :Stedelijke stijl
+STR_3039    :Orgel stijl
+STR_3040    :Mechanische stijl
+STR_3041    :Moderne stijl
+STR_3042    :Piraten stijl
+STR_3043    :Rock stijl 3
+STR_3044    :Snoepjes stijl
+STR_3045    :{SMALLFONT}{BLACK}Selecteer muziekstijl om te spelen
+STR_3046    :Deze attractie kan niet worden aangepast
+STR_3047    :Lokale overheid verbied sloop of verandering van deze attractie
+STR_3048    :Advertentiecampagnes verboden door lokale overheid
+STR_3049    :Golfhole A
+STR_3050    :Golfhole B
+STR_3051    :Golfhole C
+STR_3052    :Golfhole D
+STR_3053    :Golfhole E
+STR_3054    :Laden...
+STR_3055    :Wit
+STR_3056    :Doorzichting
+STR_3057    :{WINDOW_COLOUR_2}Bouwmarkering:
+STR_3058    :Stenen muren
+STR_3059    :Heggen
+STR_3060    :Blokken ijs
+STR_3061    :Houten schuttingen
+STR_3062    :{SMALLFONT}{BLACK}Standard achtbaanspoor
+STR_3063    :{SMALLFONT}{BLACK}Watersegment (spoor onder water)
+STR_3064    :Eenvoudige parken
+STR_3065    :Uitdagende parken
+STR_3066    :Moeilijke parken
+STR_3067    :{OPENQUOTES}Echte{ENDQUOTES} parken
+STR_3068    :Andere parken
+STR_3069    :Bovensegment
+STR_3070    :Van helling naar vlak
+STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
+STR_3072    :{SMALLFONT}{BLACK}Selecteer of dezelfde prijs word gebruikt door het hele park
+STR_3073    :{RED}WAARSCHUWING: Je parkwaardering is onder 700 gezakt!{NEWLINE}Als je je parkwaardering niet verhoogd binnen 4 weken word je park gesloten
+STR_3074    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Je hebt 3 weken om je waardering te verhogen
+STR_3075    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Je hebt nog maar 2 weken om je waardering te verhogen, of je park word gesloten
+STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Over 7 dagen word je park gesloten als je je waardering niet verhoogd
+STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
+STR_3078    :Standaardingang
+STR_3079    :Houten ingang
+STR_3080    :Canvastentingang
+STR_3081    :Kasteelingang (grijs)
+STR_3082    :Kasteelingang (bruin)
+STR_3083    :Jungle-ingang
+STR_3084    :Blokhutingang
+STR_3085    :Klassieke/Romeinse ingang
+STR_3086    :Abstracte ingang
+STR_3087    :Sneeuw/ijs-ingang
+STR_3088    :Pagode-ingang
+STR_3089    :Ruimte-ingang
+STR_3090    :{SMALLFONT}{BLACK}Selecteer stijl van de ingang, uitgang, en het station
+STR_3091    :Je mag dit segment niet verwijderen!
+STR_3092    :Je mag het station van deze attractie niet verplaatsen of veranderen!
+STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
+STR_3094    :n.v.t.
+STR_3095    :{WINDOW_COLOUR_2}Lift helling snelheid:
+STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_3097    :{SMALLFONT}{BLACK}Selecteer lift helling ketting snelheid
+STR_3098    :Kan lift helling snelheid niet veranderen...
+STR_3099    :{SMALLFONT}{BLACK}Selecteer kleur
+STR_3100    :{SMALLFONT}{BLACK}Selecteer kleur twee
+STR_3101    :{SMALLFONT}{BLACK}Selecteer kleur drie
+STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape???
+STR_3103    :Can't re-paint this...
+STR_3104    :{SMALLFONT}{BLACK}Toon een lijst van attracties
+STR_3105    :{SMALLFONT}{BLACK}Toon een lijst van winkels en kraampjes
+STR_3106    :{SMALLFONT}{BLACK}Toon een lijst van informatiekiosken en andere faciliteiten
+STR_3107    :Sluiten
+STR_3108    :Testen
+STR_3109    :Openen
+STR_3110    :{WINDOW_COLOUR_2}Blokken: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Klik op ontwerp om het te bouwen
+STR_3112    :{SMALLFONT}{BLACK}Klik op ontwerp om het te verwijderen of om het een andere naam te geven
+STR_3113    :Selecteer een ander ontwerp
+STR_3114    :{SMALLFONT}{BLACK}Ga terug naar ontwerp keuzevenster
+STR_3115    :{SMALLFONT}{BLACK}Sla baanontwerp op
+STR_3116    :{SMALLFONT}{BLACK}Sla baanontwerp op (Niet mogelijk totdat de attractie getest is en statestieken bepaald zijn)
+STR_3117    :{BLACK}Monteur bellen...
+STR_3118    :{BLACK}{STRINGID} gaat naar de attractie
+STR_3119    :{BLACK}{STRINGID} is de attractie aan het repareren
+STR_3120    :{SMALLFONT}{BLACK}Vind dichstbijzijnde monteur, of monteur die de attractie aan het repareren is
+STR_3121    :Kan monteur niet vinden, of alle monteurs zijn bezig
+STR_3122    :{WINDOW_COLOUR_2}Favoriete attractie van: {BLACK}{COMMA16} bezoeker
+STR_3123    :{WINDOW_COLOUR_2}Favoriete attractie van: {BLACK}{COMMA16} bezoekers
+STR_3124    :{STRINGID} defect
+STR_3125    :{WINDOW_COLOUR_2}Opwinding: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intensiteit: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Misselijkmakendheid: {BLACK}+{COMMA16}%
+STR_3128    :Baanontwerp opslaan
+STR_3129    :Baanontwerp en decor opslaan
+STR_3130    :Opslaan
+STR_3131    :Annuleren
+STR_3132    :{BLACK}Klik op decoritems om ze op te laten slaan met het baanontwerp...
+STR_3133    :Kan dit niet bouwen op een helling
+STR_3134    :{RED}(Ontwerp bezit decor dat niet beschikbaar is)
+STR_3135    :{RED}(Karretjestype niet beschikbaar - baanprestatie kan beïnvloed worden)
+STR_3136    :Waarschuwing: Dit ontwerp word gebouwd met een ander type karretje, en kan onverwachte prestaties leveren
+STR_3137    :Decor naast baan selecteren
+STR_3138    :Alles deselecteren
+STR_3139    :Stoeltjeslift kan niet werken in deze operatiemodus
+STR_3140    :Stoeltjeslift moet meteen beginnen na station
+STR_3141    :Meerdere rondjes per rit niet mogelijk met een stoeltjeslift
+STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
+STR_3143    :{SMALLFONT}{BLACK}Laat bezoekers zien op kaart
+STR_3144    :{SMALLFONT}{BLACK}Laat attracties en kraampjes zien op kaart
+STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar links
+STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar rechts
+STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar links
+STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar rechts
+STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} links/rechts
+STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog
+STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} omlaag
+STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omhoog
+STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omlaag
+STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog/omlaag
+STR_3155    :
+STR_3156    :
+STR_3157    :kaart
+STR_3158    :grafiek
+STR_3159    :lijst
+STR_3160    :RollerCoaster Tycoon 2: Eerste start...
+STR_3161    :RollerCoaster Tycoon 2: Objectbestanden controleren...
+STR_3162    :Kan niet voldoende geheugen toewijzen
+STR_3163    :Nieuwe data installeren: 
+STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
+STR_3165    :
+STR_3166    :{BLACK}(ID: 
+STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
+STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
+STR_3169    :Data voor de volgende objecten niet gevonden: 
+STR_3170    :Niet genoeg ruimte voor graphics
+STR_3171    :Te veel objecten van dit type geselecteerd
+STR_3172    :De volgende objecten moeten eerst geselecteerd worden:
+STR_3173    :Dit object is momenteel in gebruik
+STR_3174    :Dit object word benodigd door een ander object
+STR_3175    :Dit object is altijd benodigd
+STR_3176    :Kan object niet selecteren
+STR_3177    :Kan object niet de-selecteren
+STR_3178    :Tenminste 1 padobject moet geselecteerd zijn
+STR_3179    :Tenminste 1 attractie moet geselecteerd zijn
+STR_3180    :Ongeldige selectie van objecten
+STR_3181    :Object Selectie - {STRINGID}
+STR_3182    :Park ingang moet geselecteerd zijn
+STR_3183    :Water type moet geselecteerd zijn
+STR_3184    :Attracties
+STR_3185    :Klein Decor
+STR_3186    :Groot Decor
+STR_3187    :Muren/Hekjes
+STR_3188    :Pad Borden
+STR_3189    :Voetpaden
+STR_3190    :Pad Extras
+STR_3191    :Decor Groepen
+STR_3192    :Park Ingang
+STR_3193    :Water
+STR_3194    :Scenario Beschrijving
+STR_3195    :Uitvindingen Lijst
+STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Items onderzocht aan begin van het spel:
+STR_3198    :{WINDOW_COLOUR_2}Items die onderzocht worden tijdens het spel:
+STR_3199    :Willekeurig
+STR_3200    :{SMALLFONT}{BLACK}Schuffle de lijst met items die onderzocht moeten worden tijdens het spel
+STR_3201    :Object Selectie
+STR_3202    :Landschap Aanpassen
+STR_3203    :Uitvindingen Lijst Opgezet
+STR_3204    :Opties Selectie
+STR_3205    :Objective Selectie
+STR_3206    :Sla Scenario Op
+STR_3207    :Achtbaan Ontwerper
+STR_3208    :Baan Ontwerp Manager
+STR_3209    :Terug Naar Vorige Stap:
+STR_3210    :Door Naar Volgende Stap:
+STR_3211    :{WINDOW_COLOUR_2}Kaart grootte:up
+STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3213    :Kan kaart niet verder verkleinen
+STR_3214    :Kan kaart niet verder vergroten
+STR_3215    :Te dicht bij rand van de kaart
+STR_3216    :{SMALLFONT}{BLACK}Selecteer parkland etc.
+STR_3217    :Parkland
+STR_3218    :Land Met Constructierechten
+STR_3219    :Land Te Koop
+STR_3220    :Constructierechten Te Koop
+STR_3221    :{SMALLFONT}{BLACK}Geef aan welk land van het park is
+STR_3222    :{SMALLFONT}{BLACK}Geef aan van welk land het park constructierechten heeft
+STR_3223    :{SMALLFONT}{BLACK}Geef aan welk land gekocht kan worden door het park
+STR_3224    :{SMALLFONT}{BLACK}Geef aan welk land constructierechten heeft die te koop zijn
+STR_3225    :{SMALLFONT}{BLACK}Wissel aan/uit van het bouwen van een willekeurige cluster van objecten rondom de geselecteerde positie
+STR_3226    :{SMALLFONT}{BLACK}Bouw park ingang
+STR_3227    :Te veel park ingangen!
+STR_3228    :{SMALLFONT}{BLACK}Geef start posities voor bezoekers aan
+STR_3229    :Blokremmen kunnen niet direct na het station geplaatst worden
+STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
+STR_3231    :Blokremmen kunnen niet direct achter de top van een liftheuvel geplaatst worden
+STR_3232    :Opties - Financiëel
+STR_3233    :Opties - Bezoekers
+STR_3234    :Opties - Park
+STR_3235    :{SMALLFONT}{BLACK}Toon financiële opties
+STR_3236    :{SMALLFONT}{BLACK}Toon bezoekrs opties
+STR_3237    :{SMALLFONT}{BLACK}Toon park opties
+STR_3238    :Zonder geld
+STR_3239    :{SMALLFONT}{BLACK}Maak dit park 'zonder geld' zodat je oneindig veel geld hebt
+STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
+STR_3241    :{WINDOW_COLOUR_2}Startlening
+STR_3242    :{WINDOW_COLOUR_2}Maximale lening:
+STR_3243    :{WINDOW_COLOUR_2}Jaarlijkse rente:
+STR_3244    :Marketingcampagnes niet toestaan
+STR_3245    :{SMALLFONT}{BLACK}Geen advertenties, promoties of andere marketingacties toestaan
+STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
+STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3248    :Kan aanvankelijke hoeveelheid geld niet verder verhogen!
+STR_3249    :Kan aanvankelijke hoeveelheid geld niet verder verlagen!
+STR_3250    :Kan aanvankelijke lening niet verder verhogen!
+STR_3251    :Kan aanvankelijke lening niet verder verlagen!
+STR_3252    :Kan maximale lening niet verder vergroten!
+STR_3253    :Kan maximale lening niet verder verkleinen!
+STR_3254    :Kan rente niet verder verhogen!
+STR_3255    :Kan rente niet verder verlagen!
+STR_3256    :Bezoekers houden meer van rustigere attracties
+STR_3257    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
+STR_3258    :Bezoekers houden meer van spannende attracties
+STR_3259    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van spannende attracties houden
+STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
+STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke blijheid bezoekers:
+STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
+STR_3263    :{WINDOW_COLOUR_2}Aanvankelijke dorst bezoekers:
+STR_3264    :Kan dit niet verder verhogen!
+STR_3265    :Kan dit niet verder verlagen!
+STR_3266    :{SMALLFONT}{BLACK}Selecteer hoe dit park geld vraagt voor entree en attracties
+STR_3267    :Verbied verwijderen bomen
+STR_3268    :{SMALLFONT}{BLACK}Verbied het verwijderen van bomen
+STR_3269    :Verbied veranderen landschap
+STR_3270    :{SMALLFONT}{BLACK}Verbied het veranderen van het landschap
+STR_3271    :Verbied hoge constructie
+STR_3272    :{SMALLFONT}{BLACK}Verbied het bouwen van hoge constructies
+STR_3273    :Hogere moeilijkheid parkwaardering
+STR_3274    :{SMALLFONT}{BLACK}Maak de parkwaardering meer uitdagend
+STR_3275    :Hogere moeilijkheid bezoekersgeneratie
+STR_3276    :{SMALLFONT}{BLACK}Maak het moeilijker om gasten aan te trekken naar je park te komen
+STR_3277    :{WINDOW_COLOUR_2}Landkoop kosten:
+STR_3278    :{WINDOW_COLOUR_2}Constructierechten kosten:
+STR_3279    :Gratis entree / Per rit betalen
+STR_3280    :Betaalde toegang / Attracties gratis
+STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
+STR_3282    :{SMALLFONT}{BLACK}Selecteer doelstellingen en parknaam
+STR_3283    :{SMALLFONT}{BLACK}Selecteer attracties die beschermd moeten blijven
+STR_3284    :Doelselectie
+STR_3285    :Beschermde attracties
+STR_3286    :{SMALLFONT}{BLACK}Selecteer doelstellingen voor dit scenario
+STR_3287    :{WINDOW_COLOUR_2}Doel:
+STR_3288    :{SMALLFONT}{BLACK}Selecteer klimaat:
+STR_3289    :{WINDOW_COLOUR_2}Klimaat:
+STR_3290    :Koel en nat
+STR_3291    :Warm
+STR_3292    :Heet en droog
+STR_3293    :Koud
+STR_3294    :Aanpassen...
+STR_3295    :{SMALLFONT}{BLACK}Parknaam veranderen
+STR_3296    :{SMALLFONT}{BLACK}Scenarionaam veranderen
+STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
+STR_3298    :{WINDOW_COLOUR_2}Parknaam: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
+STR_3300    :{WINDOW_COLOUR_2}Scenario Naam: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Datum doelstellingen:
+STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
+STR_3303    :{WINDOW_COLOUR_2}Aantal bezoekers:
+STR_3304    :{WINDOW_COLOUR_2}Parkwaarde:
+STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomst:
+STR_3306    :{WINDOW_COLOUR_2}Maandelijke winst:
+STR_3307    :{WINDOW_COLOUR_2}Minimale lengte:
+STR_3308    :{WINDOW_COLOUR_2}Opwindingscijfer:
+STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
+STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
+STR_3312    :{WINDOW_COLOUR_2}Attracties die beschermd moeten worden:
+STR_3313    :Scenarionaam
+STR_3314    :Geef naam voor scenario:-
+STR_3315    :Park/Scenario Details
+STR_3316    :Geef een beschrijving van die scenario:-
+STR_3317    :Nog geen details
+STR_3318    :{SMALLFONT}{BLACK}Selecteer in welke groep dit scenario terechtkomt
+STR_3319    :{WINDOW_COLOUR_2}Scenario Groep:
+STR_3320    :Kan scenariobestand niet opslaan...
+STR_3321    :Nieuwe objecten successvol geïnstalleerd
+STR_3322    :{WINDOW_COLOUR_2}Doelstelling: {BLACK}{STRINGID}
+STR_3323    :Vermiste object data, ID: 
+STR_3324    :Vereist uitbreidingspakket:
+STR_3325    :Vereist een uitbreidingspakket
+STR_3326    :{WINDOW_COLOUR_2}(geen plaatje)
+STR_3327    :Startpositie voor bezoekers niet aangegeven
+STR_3328    :Kan niet verder naar volgende stap...
+STR_3329    :Park ingang nog niet gebouwd
+STR_3330    :Park moet wat land bezitten
+STR_3331    :Pad van park ingang naar kaart rand niet compleet of te complex - Pad moet 1 breed zijn met zo min mogelijk kruisingen en bochten als mogelijk
+STR_3332    :Park ingang staat verkeerdom of heeft geen pad naar de kaart rand
+STR_3333    :Exporteer plug-in objecten met opgeslagen games
+STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3335    :Achtbaanontwerper - Selecteer Attractie- & Karretjestype
+STR_3336    :Baanontwerpbeheer - Selecteer Karretjestype
+STR_3337    :Six Flags-park
+STR_3338    :{BLACK}Zelfontworpen opmaak
+STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of ontwerp zelf
+STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of ontwerp zelf
+STR_3341    :{SMALLFONT}{BLACK}Spel gereedschap
+STR_3342    :Scenario Editor
+STR_3343    :Zet Opgeslagen Spel om tot Scenario
+STR_3344    :Achtbaanontwerper
+STR_3345    :Baanontwerpbeheer
+STR_3346    :Kan baanontwerp niet opslaan...
+STR_3347    :Attractie is te groot, bezit teveel dingen, of het decor is te wijd verspreid
+STR_3348    :Naam wijzigen
+STR_3349    :Verwijderen
+STR_3350    :Naam baanontwerp
+STR_3351    :Voer nieuwe naam in voor dit baanontwerp:-
+STR_3352    :Kan baanontwerp geen nieuwe naam geven...
+STR_3353    :Nieuwe naam bezit ongeldige karakters
+STR_3354    :Een bestand bestaat al met deze naam, of het bestand is schrijf-beschermd
+STR_3355    :Bestand is schrijf-beschermd of vergrendeld
+STR_3356    :Verwijder Bestand
+STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} voor altijd wil verwijderen?
+STR_3358    :Kan baanontwerp niet verwijderen...
+STR_3359    :{BLACK}Geen baanontwerp van dit type
+STR_3360    :Warschuwing!
+STR_3361    :Te veel baanontwerpen van dit type - Sommige staan niet in de lijst
+STR_3362    :Mixing via softwarebuffer forceren
+STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
+STR_3364    :Meer opties
+STR_3365    :{SMALLFONT}{BLACK}sta selectie van individuele decoritems toe naast decorgroepen
+STR_3366    :{BLACK}= Attractie
+STR_3367    :{BLACK}= Eetkraampje
+STR_3368    :{BLACK}= Drankkraampje
+STR_3369    :{BLACK}= Souvenirkraampje
+STR_3370    :{BLACK}= Infokiosk
+STR_3371    :{BLACK}= Eerste hulp
+STR_3372    :{BLACK}= PIN
+STR_3373    :{BLACK}= Toilet
+STR_3374    :Waarschuwing: Te veel objecten geselecteerd!
+STR_3375    :Niet alle objecten in deze decorgroep kunnen worden geselecteerd
+STR_3376    :Installeer nieuw baanontwerp...
+STR_3377    :{SMALLFONT}{BLACK}Installeer een nieuw baanontwerp
+STR_3378    :Installeren
+STR_3379    :Annuleren
+STR_3380    :Kan baanontwerp niet installeren...
+STR_3381    :Bestand is niet verenigbaar of bezit ongeldige data
+STR_3382    :Bestand kopïeren gefaald
+STR_3383    :Selecteer nieuwe naam voor dit baanontwerp
+STR_3384    :Er bestaat al een baanontwerp met deze naam - Verzin een andere naam voor dit ontwerp:
+STR_3385    :Snelcursus voor Beginners
+STR_3386    :Snelcursus Zelfontworpen Attracties
+STR_3387    :Snelcursus Achtbanen Bouwen
+STR_3388    :Kan niet naar geselecteerde modus wisselen
+STR_3389    :Kan additionele decorstukken niet selecteren...
+STR_3390    :Te veel items geselecteerd
+STR_3391    :{SMALLFONT}{BLACK}Dit is ons park - Laten we eventjes kort rondkijken...
+STR_3392    :{SMALLFONT}{BLACK}De snelste manier om het beeld te verschuiven is de RECHTER muisknop inhouden en met de muis bewegen...
+STR_3393    :{SMALLFONT}{BLACK}Als je meer van het park wil zien, kan je uitzoomen met het icoontje bovenaan het scherm...
+STR_3394    :{SMALLFONT}{BLACK}Je kan het beeld ook draaien in stappen van 90 graden...
+STR_3395    :{SMALLFONT}{BLACK}Dingen bouwen vanaf deze hoogte word een beetje lastig, laten we terug inzoomen...
+STR_3396    :{SMALLFONT}{BLACK}Laten we een simpele attractie bouwen om met dit park te beginnen...
+STR_3397    :{SMALLFONT}{BLACK}Het witte 'spook' plaatje laat zien waar de attractie zal worden gebouwd. Beweeg de muis er naar toe en klik om het te bouwen...
+STR_3398    :{SMALLFONT}{BLACK}Attracties hebben een ingang en een uitgang nodig. Beweeg de muis naar een tegeltje aan de rand van de attractie en klik om de ingang te bouwen. Klik nog een keer ergens om de uitgang te bouwen...
+STR_3399    :{SMALLFONT}{BLACK}We moeten een voetpad bouwen zodat bezoekers onze nieuwe attractie kunnen bereiken...
+STR_3400    :{SMALLFONT}{BLACK}Voor het pad naar de ingang gebruiken we een speciaal 'wachtrij' pad...
+STR_3401    :{SMALLFONT}{BLACK}Voor de uitgang maakt het niet uit welk pad je gebruikt. Een 'normaal' pad is goed...
+STR_3402    :{SMALLFONT}{BLACK}Okay dan, laten we de attractie openen! Om de attractie te openen klikken we op het vlag icoontje in het attractievenster en selecteren we 'openen'...
+STR_3403    :{SMALLFONT}{BLACK}Maar waar zijn de bezoekers?!
+STR_3404    :{SMALLFONT}{BLACK}Oh, juist - het park is nog gesloten! Laten we ons park openen...
+STR_3405    :{SMALLFONT}{BLACK}Terwijl we op onze eerste bezoekers wachten kunnen we wat decorstukken neerzetten...
+STR_3406    :{SMALLFONT}{BLACK}Dit is ons lege park. We gaan een simpele zelfontworpen attractie bouwen...
+STR_3407    :{SMALLFONT}{BLACK}Ten eerste hebben we een startpositie nodig...
+STR_3408    :{SMALLFONT}{BLACK}Het stuk baan dat we net gebouwd hebben is een 'station platform', en zorgt ervoor dat bezoekers in en uit kunnen stappen...
+STR_3409    :{SMALLFONT}{BLACK}We verlengen het platform een beetje door nog wat station platform secties aan te leggen...
+STR_3410    :{SMALLFONT}{BLACK}De icoontjes aan de bovenkant van het constructievenster laten je tusen verschillende soorten baanstukjes kiezen...
+STR_3411    :{SMALLFONT}{BLACK}We gaan een bocht naar links bouwen...
+STR_3412    :{SMALLFONT}{BLACK}De bocht is nog niet gebouwt, maar het witte spookplaatje laat zien waar het gebouwd gaat worden. Als je op het grote 'bouw dit' icoontje klikt word het gebouwd...
+STR_3413    :{SMALLFONT}{BLACK}Nu willen we een recht stuk bouwen, dus klikken we op het rechte stuk icoontjes...
+STR_3414    :{SMALLFONT}{BLACK}Nu dat het circuit compleet is, kunnen we de ingang en uitgang bouwen...
+STR_3415    :{SMALLFONT}{BLACK}Laten we testen of onze attractie werkt...
+STR_3416    :{SMALLFONT}{BLACK}Terwijl het word getest kunnen we een wachtrij en uitgang pad bouwen...
+STR_3417    :{SMALLFONT}{BLACK}Goed - laten we het park en onze attractie openen...
+STR_3418    :{SMALLFONT}{BLACK}Onze nieuwe attractie is niet heel erg spannend - misschien moeten we wat decor toevoegen?
+STR_3419    :{SMALLFONT}{BLACK}Om decor te bouwen boven ander decor (of midden in de lucht) hou je de SHIFT toets ingedrukt en beweeg je de muis om de hoogte te bepalen...
+STR_3420    :{SMALLFONT}{BLACK}Sommige types decor kunnen overgeverft worden nadat ze gebouwd zijn...
+STR_3421    :{SMALLFONT}{BLACK}Laten we wat muziek toevoegen aan onze attractie...
+STR_3422    :{SMALLFONT}{BLACK}Laten we een achtbaan bouwen!
+STR_3423    :{SMALLFONT}{BLACK}Er zijn tonnen met voorafgebouwde achtbanen, maar wij gaan ons eigen ontwerp bouwen...
+STR_3424    :{SMALLFONT}{BLACK}Zo, dat is het station platform. Nu hebben we een liftheuvel nodig...
+STR_3425    :{SMALLFONT}{BLACK}Achtbaankarretjes zijn niet aangedreven, dus is een 'kettinglift' nodig om ze eerst een heuvel op te trekken...
+STR_3426    :{SMALLFONT}{BLACK}Okay, de liftheuvel is klaar - Nu voor de eerste afdaling...
+STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee - De rijders zullen naar de zijkanten gesmeten worden terwijl de trein er overheen dondert...
+STR_3428    :{SMALLFONT}{BLACK}De bochten een banking geven zal de rit prettiger maken - Rijders zullen in hun stoelen geduwt worden in plaats van naar de zijkanten...
+STR_3429    :{SMALLFONT}{BLACK}Ja dat wordt em dus niet! Kijk naar de hoogtemarkeringen - De tweede heuvel is hoger dan de liftheuvel...
+STR_3430    :{SMALLFONT}{BLACK}Om ervoor te zorgen dat de trein terug naar het station komt, moet elke heuevel iets lager zijn dan de heuvel daarvoor...
+STR_3431    :{SMALLFONT}{BLACK}Dat ziet er beter uit! Onze trein zou het nu moeten halen! Laten we wat meer bochtige stukjes toevoegen...
+STR_3432    :{SMALLFONT}{BLACK}We moeten de trein afremmen voordat we de laatste bocht en het station inkomen, dus laten we wat remmen toevoegen...
+STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen zitten...
+STR_3434    :{SMALLFONT}{BLACK}Laten we kijken of onze achtbaan werkt!
+STR_3435    :{SMALLFONT}{BLACK}Fantastisch - Hij werkt! Laten we wat voetpaden aanleggen zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
+STR_3436    :{SMALLFONT}{BLACK}Terwijl we wachten op onze eerste rijders, kunnen we onze achtbaan een beetje aanpassen...
+STR_3437    :{SMALLFONT}{BLACK}Verwijder grote gebieden decor van het landschap
+STR_3438    :Kan hier niet al het decor verwijderen...
+STR_3439    :Decor verwijderen
+STR_3440    :Pagina 1
+STR_3441    :Pagina 2
+STR_3442    :Pagina 3
+STR_3443    :Pagina 4
+STR_3444    :Pagina 5
+STR_3445    :Werkgebied instellen
+STR_3446    :Werkgebied wissen
