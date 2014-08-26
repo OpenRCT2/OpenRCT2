@@ -58,7 +58,9 @@ enum WINDOW_PEEP_WIDGET_IDX {
 	WIDX_PICKUP,
 	WIDX_RENAME,
 	WIDX_LOCATE,
-	WIDX_TRACK
+	WIDX_TRACK,
+	
+	WIDX_RIDE_SCROLL = 10
 };
 
 void window_peep_emptysub(){};
@@ -98,14 +100,71 @@ rct_widget window_peep_stats_widgets[] = {
 	{WIDGETS_END},
 };
 
+rct_widget window_peep_rides_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WWT_SCROLL,		1, 3,	188,	57,	143,		2,	STR_NONE},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_finance_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_thoughts_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_inventory_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
 //0x981D0C
 rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets,
 	window_peep_stats_widgets,
-	(rct_widget *)0x9ac500,
-	(rct_widget *)0x9ac5b4,
-	(rct_widget *)0x9ac658,
-	(rct_widget *)0x9ac6FC
+	window_peep_rides_widgets,
+	window_peep_finance_widgets,
+	window_peep_thoughts_widgets,
+	window_peep_inventory_widgets
 };
 
 void window_peep_set_page(rct_window* w, int page);
@@ -341,8 +400,8 @@ uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3) |
 	(1 << WIDX_TAB_4) |
 	(1 << WIDX_TAB_5) |
-	(1 << WIDX_TAB_6), //|
-	//(1 << WIDX_?),
+	(1 << WIDX_TAB_6) |
+	(1 << WIDX_RIDE_SCROLL),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
