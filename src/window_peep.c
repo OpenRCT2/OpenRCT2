@@ -817,3 +817,62 @@ void window_peep_overview_paint(){
 	x = widget->right - widget->left - w->list_information_type;
 	gfx_draw_string_left(dpi_marquee, 1193, (void*)0x13CE952, 0, x, 0);
 }
+
+/* rct2: 0x696749*/
+void window_peep_overview_invalidate(){
+	rct_window* w;
+	window_invalidate_get_registers(w);
+	
+	if (window_peep_page_widgets[w->page] != w->widgets){
+		w->widgets = window_peep_page_widgets[w->page];
+		//call 6eaeb8
+	}
+	
+	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
+	w->pressed_widgets |= 1 << (w->page + WIDX_TAB_1);
+	
+	rct_peep* peep = GET_PEEP(w->number);
+	RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954,uint32) = peep->id;
+	
+	w->pressed_widgets &= ~(1<<WIDX_TRACK);
+	if (peep->flags & 0x8){
+		w->pressed_widgets |= (1<<WIDX_TRACK);
+	}
+	
+	ax = w->width - 1;
+	cx = w->height - 1;
+	window_peep_overview_widgets[WIDX_BACKGROUND].right = ax;
+	window_peep_overview_widgets[WIDX_BACKGROUND].bottom = cx;
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].right =ax;
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].bottom = cx;
+	ax = w->width - 2;
+	window_peep_overview_widgets[WIDX_TITLE].right = ax;
+	ax = w->width - 13;
+	window_peep_overview_widgets[WIDX_CLOSE].left = ax;
+	ax = w->width - 3;
+	window_peep_overview_widgets[WIDX_CLOSE].rigth = ax;
+	ax = w->width - 26;
+	cx = w->height - 14;
+	window_peep_overview_widgets[WIDX_VIEWPORT].right = ax;
+	window_peep_overview_widgets[WIDX_VIEWPORT].bottom = cx;
+	cx = w->height - 12;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].top = cx;
+	cx = w->height - 3;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].bottom = cx;
+	ax = w->width - 24;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].right = ax;
+	window_peep_overview_widgets[WIDX_MARQUEE].right = ax;
+	ax = w->width - 2;
+	window_peep_overview_widgets[WIDX_PICKUP].right = ax;
+	window_peep_overview_widgets[WIDX_RENAME].right = ax;
+	window_peep_overview_widgets[WIDX_LOCATE].right = ax;
+	window_peep_overview_widgets[WIDX_TRACK].right = ax;
+	ax = w->width - 25;
+	window_peep_overview_widgets[WIDX_PICKUP].left = ax;
+	window_peep_overview_widgets[WIDX_RENAME].left = ax;
+	window_peep_overview_widgets[WIDX_LOCATE].left = ax;
+	window_peep_overview_widgets[WIDX_TRACK].left = ax;
+	
+	//call 6987ed
+}
