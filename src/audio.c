@@ -228,7 +228,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 			RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
 			return 0;
 		}
-		if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->QueryInterface(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &RCT2_GLOBAL(0x009A4444, IID) /* IID_IDirectSound3DBuffer */, &RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)))) {
+		if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->QueryInterface(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &RCT2_GLOBAL(0x009A4444, IID) /* IID_IDirectSound3DBuffer */, (void**)&RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)))) {
 			// doesn't seem to ever make it here, below doesn't make sense and is probably remnants of unused 3d sound tests
 			memset(&RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 0, sizeof(RCT2_GLOBAL(0x009A6084, DS3DBUFFER)));
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).dwSize = sizeof(RCT2_GLOBAL(0x009A6084, DS3DBUFFER));
@@ -378,7 +378,7 @@ int audio_create_timer()
 		rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[i];
 		sound_channel->var_0 = 0;
 	}
-	RCT2_GLOBAL(0x009E1AA0, MMRESULT) = timeSetEvent(50, 10, audio_timer_callback, 0, TIME_PERIODIC);
+	RCT2_GLOBAL(0x009E1AA0, MMRESULT) = timeSetEvent(50, 10, (LPTIMECALLBACK)audio_timer_callback, 0, TIME_PERIODIC);
 	if (!RCT2_GLOBAL(0x009E1AA0, MMRESULT)) {
 		return 0;
 	}
@@ -565,11 +565,11 @@ int sound_info_loadvars(rct_sound_info* sound_info, LPWAVEFORMATEX* waveformat, 
 *
 *  rct2: 0x00405076
 */
-int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, int size)
+int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size)
 {
-	char* buf;
-	char* buf2;
-	int buf2size;
+	LPVOID buf;
+	LPVOID buf2;
+	DWORD buf2size;
 	if (SUCCEEDED(dsbuffer->lpVtbl->Lock(dsbuffer, 0, size, &buf, &size, &buf2, &buf2size, 0))) {
 		memset(buf, 0, size);
 		memcpy(buf, src, size);
