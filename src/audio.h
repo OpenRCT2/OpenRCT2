@@ -114,7 +114,7 @@ int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
 int sound_stop(rct_sound *sound);
 int sound_stop_all();
-int sound_unmap_file(LPCVOID base);
+int unmap_file(LPCVOID base);
 int sound_channel_stop(int channel);
 rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);

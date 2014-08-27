@@ -70,7 +70,7 @@ void audio_get_devices()
 *
 *  rct2: 0x00404BD2
 */
-int sound_release()
+int audio_release()
 {
 	sound_stop_all();
 	if (RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)) {
@@ -93,12 +93,12 @@ int sound_release()
 *
 *  rct2: 0x00404C45
 */
-int sound_unmap_info()
+int unmap_sound_info()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int)) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID)) {
 		sound_stop_all();
-		sound_unmap_file(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, LPCVOID));
-		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) = 0;
+		unmap_file(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID));
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID) = 0;
 		return 1;
 	}
 	return 0;
@@ -121,7 +121,7 @@ int sound_stop_all()
 *
 *  rct2: 0x004068A0
 */
-int sound_unmap_file(LPCVOID base)
+int unmap_file(LPCVOID base)
 {
 	if (base) {
 		return UnmapViewOfFile(base);
@@ -131,9 +131,31 @@ int sound_unmap_file(LPCVOID base)
 
 /**
 *
+*  rct2: 0x004018F0
+*/
+int audio_remove_timer()
+{
+	for (int i = 0; i < 4; i++) {
+		sound_channel_stop(i);
+	}
+	if (RCT2_GLOBAL(0x009E1AA4, int)) {
+		timeKillEvent(RCT2_GLOBAL(0x009E1AA0, MMRESULT));
+		timeEndPeriod(50);
+		while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
+			Sleep(100);
+		}
+		int result = _InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
+		RCT2_GLOBAL(0x009E1AA4, int) = 0;
+		return result;
+	}
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x006BAB21
 */
-void sub_6BAB21()
+void audio_close()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1) {
 		stop_other_sounds();
@@ -142,12 +164,12 @@ void sub_6BAB21()
 		if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
 			stop_ride_music();
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			RCT2_CALLPROC(0x004018F0); // remove multimedia timer
+			audio_remove_timer();
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		}
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
-		sound_unmap_info();
-		sound_release();
+		unmap_sound_info();
+		audio_release();
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 	}
@@ -267,11 +289,110 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 
 /**
 *
+*  rct2: 0x004067F9
+*/
+LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap)
+{
+	DWORD dwDesiredAccess;
+	DWORD dwDesiredAccessmap;
+	DWORD flProtect;
+	HANDLE filehandle;
+	HANDLE filemaphandle;
+	LPVOID address = 0;
+	if (dwCreationDisposition) {
+		if (dwCreationDisposition == CREATE_NEW) {
+			dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
+			dwDesiredAccessmap = FILE_MAP_WRITE;
+			flProtect = PAGE_READWRITE;
+			dwCreationDisposition = OPEN_ALWAYS;
+		}
+	} else {
+		dwDesiredAccess = GENERIC_READ;
+		flProtect = PAGE_READONLY;
+		dwDesiredAccessmap = FILE_MAP_READ;
+		dwCreationDisposition = OPEN_EXISTING;
+	}
+	filehandle = CreateFileA(lpFileName, dwDesiredAccess, 0, 0, dwCreationDisposition, FILE_ATTRIBUTE_NORMAL, 0);
+	if (filehandle != INVALID_HANDLE_VALUE) {
+		filemaphandle = CreateFileMappingA(filehandle, 0, flProtect, 0, dwNumberOfBytesToMap, 0);
+		CloseHandle(filehandle);
+		if (filemaphandle) {
+			address = MapViewOfFile(filemaphandle, dwDesiredAccessmap, 0, 0, dwNumberOfBytesToMap);
+			CloseHandle(filemaphandle);
+		}
+	}
+	return address;
+}
+
+/**
+*
+*  rct2: 0x00404C1A
+*/
+int map_sound_info(const char* filename)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID)) {
+		return 0;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID) = map_file(filename, 0, 0);
+		return RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID) != 0;
+	}
+}
+
+/**
+*
+*  rct2: 0x00401000
+*/
+void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel)
+{
+	RCT2_CALLFUNC_6(0x00401000, void, UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR, int, uTimerID, uMsg, dwUser, dw1, dw2, channel);
+}
+
+/**
+*
+*  rct2: 0x004014DF
+*/
+int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2)
+{
+	if (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) == 0) {
+		for (int i = 0; i < 4; i++) {
+			rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[i];
+			if(sound_channel->var_0){
+				sub_401000(uTimerID, uMsg, dwUser, dw1, dw2, i);
+			}
+		}
+		return _InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
+	}
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x004018A6
+*/
+int audio_create_timer()
+{
+	if (RCT2_GLOBAL(0x009E1AA4, int)) {
+		return 0;
+	}
+	for (int i = 0; i < 4; i++) {
+		rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[i];
+		sound_channel->var_0 = 0;
+	}
+	RCT2_GLOBAL(0x009E1AA0, MMRESULT) = timeSetEvent(50, 10, audio_timer_callback, 0, TIME_PERIODIC);
+	if (!RCT2_GLOBAL(0x009E1AA0, MMRESULT)) {
+		return 0;
+	}
+	RCT2_GLOBAL(0x009E1AA4, int) = 1;
+	return 1;
+}
+
+/**
+*
 *  rct2: 0x006BA9B5
 */
 void audio_init2(int device)
 {
-	sub_6BAB21();
+	audio_close();
 	for (int i = 0; i < 7; i++) {
 		rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
@@ -281,19 +402,18 @@ void audio_init2(int device)
 		other_sound->id = 0xFFFF;
 	}
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;
-	int v5 = dsound_create_primary_buffer(0, device, 2, 22050, 16);
-	//int v5 = RCT2_CALLFUNC_5(0x00404932, int, int, int, int, int, int, 0, device, 2, 22050, 16);
+	int successdsound = dsound_create_primary_buffer(0, device, 2, 22050, 16);
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
-	if (!v5) {
+	if (!successdsound) {
 		return;
 	}
 	const char * filepath = get_file_path(2);
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;
-	int v8 = RCT2_CALLFUNC_1(0x00404C1A, int, const char *, filepath);
+	int successmap = map_sound_info(filepath);
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
-	if (!v8) {
+	if (!successmap) {
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
-		sound_release();
+		audio_release();
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		return;
 	}
@@ -306,9 +426,9 @@ void audio_init2(int device)
 	RCT2_GLOBAL(0x009AAC5C, uint8) = 1;
 	config_save();
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;
-	int result = RCT2_CALLFUNC(0x004018A6, int); // create multimedia timer
+	int successtimer = audio_create_timer();
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
-	if (result) {
+	if (successtimer) {
 		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 			for (int i = 0; i < 2; i++) {
 				RCT2_GLOBAL(0x009AF46C + (i * 8), uint8) = -1;
@@ -423,8 +543,8 @@ rct_sound* sound_next(rct_sound* sound)
 */
 rct_sound_info* sound_get_info(uint16 sound_id)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int*)[0]) {
-		return (rct_sound_info*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET, int*)[sound_id + 1]);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, LPVOID) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, uint32*)[0]) {
+		return (rct_sound_info*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING, uint32*)[sound_id + 1]);
 	}
 	return 0;
 }
@@ -468,7 +588,6 @@ int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, int size)
 */
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 {
-	//return RCT2_CALLFUNC_4(0x00404C6D, int, int, rct_sound*, int, int, sound_id, sound, channels, software);
 	DSBUFFERDESC bufferdesc;
 	char* buffer = 0;
 	memset(&bufferdesc, 0, sizeof(bufferdesc));

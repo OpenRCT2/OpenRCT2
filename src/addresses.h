@@ -33,6 +33,7 @@
 #define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)			(((returnType(*)(a1, a2, a3))(address))(v1, v2, v3))
 #define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)	(((returnType(*)(a1, a2, a3, a4))(address))(v1, v2, v3, v4))
 #define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	(((returnType(*)(a1, a2, a3, a4, a5))(address))(v1, v2, v3, v4, v5))
+#define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)	(((returnType(*)(a1, a2, a3, a4, a5, a6))(address))(v1, v2, v3, v4, v5, v6))
 
 #define RCT2_CALLPROC_1(address, a1, v1)									RCT2_CALLFUNC_1(address, void, a1, v1)
 #define RCT2_CALLPROC_2(address, a1, a2, v1, v2)							RCT2_CALLFUNC_2(address, void, a1, a2, v1, v2)
@@ -161,7 +162,7 @@
 #define RCT2_ADDRESS_DSOUND_BUFFERS					0x009E1AB0
 #define RCT2_ADDRESS_NUM_DSOUND_DEVICES				0x009E2B88
 #define RCT2_ADDRESS_DSOUND_DEVICES					0x009E2B8C
-#define RCT2_ADDRESS_SOUND_INFO_LIST_OFFSET			0x009E2B94
+#define RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING		0x009E2B94
 #define RCT2_ADDRESS_SOUNDLIST_BEGIN				0x009E2B98
 #define RCT2_ADDRESS_SOUNDLIST_END					0x009E2B9C
 #define RCT2_ADDRESS_DIRECTSOUND					0x009E2BA0
