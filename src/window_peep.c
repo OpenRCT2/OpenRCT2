@@ -175,6 +175,7 @@ void window_peep_close();
 void window_peep_resize();
 void window_peep_overview_mouse_up();
 void window_peep_overview_paint();
+void window_peep_overview_invalidate();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
@@ -202,9 +203,9 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696749, //Invalidate
+	window_peep_overview_invalidate, //Invalidate
 	window_peep_overview_paint, //Paint
-	(void*)0x69707C
+	window_peep_emptysub
 };
 
 static void* window_peep_stats_events[] = {
