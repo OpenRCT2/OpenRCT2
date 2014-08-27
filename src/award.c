@@ -131,12 +131,12 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 {
 	int i, rollerCoasters;
 	rct_ride *ride;
-	char *object;
+	rct_ride_type *rideType;
 
 	rollerCoasters = 0;
 	FOR_ALL_RIDES(i, ride) {
-		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
-		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_ROLLERCOASTER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_ROLLERCOASTER)
+		rideType = gRideTypeList[ride->subtype];
+		if (rideType->category[0] != RIDE_GROUP_ROLLERCOASTER && rideType->category[1] != RIDE_GROUP_ROLLERCOASTER)
 			continue;
 
 		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -274,7 +274,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	char *object;
+	rct_ride_type *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -291,9 +291,9 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
-		if (!(shopTypes & (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8)))) {
-			shopTypes |= (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8));
+		rideType = gRideTypeList[ride->subtype];
+		if (!(shopTypes & (1ULL << rideType->shop_item))) {
+			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
 		}
 	}
@@ -320,7 +320,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	char *object;
+	rct_ride_type *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -337,9 +337,9 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
-		if (!(shopTypes & (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8)))) {
-			shopTypes |= (1ULL << RCT2_GLOBAL(object + 0x1C0, uint8));
+		rideType = gRideTypeList[ride->subtype];
+		if (!(shopTypes & (1ULL << rideType->shop_item))) {
+			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
 		}
 	}
@@ -430,12 +430,12 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 {
 	int i, waterRides;
 	rct_ride *ride;
-	char *object;
+	rct_ride_type *rideType;
 
 	waterRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
-		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_WATER && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_WATER)
+		rideType = gRideTypeList[ride->subtype];
+		if (rideType->category[0] != RIDE_GROUP_WATER && rideType->category[1] != RIDE_GROUP_WATER)
 			continue;
 
 		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -522,12 +522,12 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 {
 	int i, gentleRides;
 	rct_ride *ride;
-	char *object;
+	rct_ride_type *rideType;
 
 	gentleRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		object = RCT2_ADDRESS(0x009ACFA4, char*)[ride->subtype];
-		if (RCT2_GLOBAL(object + 0x1BE, uint8) != RIDE_GROUP_GENTLE && RCT2_GLOBAL(object + 0x1BF, uint8) != RIDE_GROUP_GENTLE)
+		rideType = gRideTypeList[ride->subtype];
+		if (rideType->category[0] != RIDE_GROUP_GENTLE && rideType->category[1] != RIDE_GROUP_GENTLE)
 			continue;
 
 		if (ride->status != RIDE_STATUS_OPEN || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))

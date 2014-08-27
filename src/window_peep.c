@@ -325,6 +325,7 @@ void window_peep_overview_mouse_up(){
 	short widgetIndex;
 	rct_window* w;
 	window_widget_get_registers(w, widgetIndex);
+	rct_peep* peep = GET_PEEP(w->number);
 
 	switch(widgetIndex){
 	case WIDX_CLOSE:
@@ -340,9 +341,27 @@ void window_peep_overview_mouse_up(){
 		break;
 	case WIDX_PICKUP:
 		//696ba6
+		if (!peep_can_be_picked_up(peep)) {
+			return;
+		}
+		if (tool_set(w, widgetIndex, 7)) {
+			return;
+		}
+		
+		w->var_48C = peep->sprite_identifier;
+
+		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 9;
+		peep->pad_2C = 0;
+		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_RENAME:
 		//696e4d
+		window_show_textinput(w, (int)widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx);
 		break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
@@ -502,10 +521,10 @@ void window_peep_viewport_init(rct_window* w){
 void window_peep_overview_paint(){
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	rct_widget *labelWidget;
+	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, w, dpi, 0);
+	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
 	return;
 
 	window_draw_widgets(w, dpi);

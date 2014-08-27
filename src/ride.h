@@ -22,6 +22,7 @@
 #define _RIDE_H_
 
 #include "rct2.h"
+#include "string_ids.h"
 
 typedef fixed16_2dp ride_rating;
 
@@ -35,6 +36,26 @@ typedef struct {
 	ride_rating intensity;
 	ride_rating nausea;
 } rating_tuple;
+
+/**
+ * Ride type structure.
+ * size: unknown
+ */
+typedef struct {
+	rct_string_id name;				// 0x000
+	rct_string_id description;		// 0x002
+	uint32 var_004;
+	uint32 var_008;
+	uint8 var_00C;
+	uint8 var_00D;
+	uint8 pad_00E[0x1A4];
+	sint8 excitement_multipler;		// 0x1B2
+	sint8 intensity_multipler;		// 0x1B3
+	sint8 nausea_multipler;			// 0x1B4
+	uint8 pad_1B5[0x09];
+	uint8 category[2];				// 0x1BE
+	uint8 shop_item;				// 0x1C0
+} rct_ride_type;
 
 /**
  * Ride structure.
@@ -109,7 +130,9 @@ typedef struct {
 	uint16 build_date;				
 	sint16 upkeep_cost;				// 0x182
 	uint16 race_winner;				// 0x184
-	uint8 pad_186[0x10];
+	uint8 pad_186[0x06];
+	uint8 var_18C;
+	uint8 pad_18D[0x09];
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
@@ -331,6 +354,9 @@ enum {
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+
+// rct2: 0x009ACFA4
+rct_ride_type **gRideTypeList;
 
 // rct2: 0x013628F8
 extern rct_ride* g_ride_list;

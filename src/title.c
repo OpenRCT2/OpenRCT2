@@ -22,6 +22,7 @@
 #include <string.h>
 #include <time.h>
 #include "addresses.h"
+#include "audio.h"
 #include "config.h"
 #include "climate.h"
 #include "date.h"
@@ -309,7 +310,7 @@ static void title_play_music()
 
 	if (!(RCT2_GLOBAL(0x009AF284, uint32) & 1) || !(RCT2_GLOBAL(0x009AF59D, uint8) & 1)) {
 		if (RCT2_GLOBAL(0x009AF600, uint8) != 0)
-			RCT2_CALLPROC_EBPSAFE(0x006BD0BD); // stop music
+			stop_title_music();
 		return;
 	}
 

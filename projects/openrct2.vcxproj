@@ -28,6 +28,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\gfx.h" />
     <ClInclude Include="..\src\graph.h" />
+    <ClInclude Include="..\src\input.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\language.h" />
     <ClInclude Include="..\src\map.h" />
@@ -74,6 +75,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gfx.c" />
     <ClCompile Include="..\src\graph.c" />
+    <ClCompile Include="..\src\input.c" />
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\language.c" />
     <ClCompile Include="..\src\map.c" />
@@ -121,6 +123,7 @@
     <ClCompile Include="..\src\window_options.c" />
     <ClCompile Include="..\src\window_peep.c" />
     <ClCompile Include="..\src\window_research.c" />
+    <ClCompile Include="..\src\window_ride.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
     <ClCompile Include="..\src\window_staff.c" />
@@ -199,7 +202,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -222,7 +225,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(ProjectDir)\..\Data\Language\*.*" "$(TargetDir)\Data\Language\"</Command>

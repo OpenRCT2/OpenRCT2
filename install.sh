@@ -49,18 +49,29 @@ if [[ `uname` == "Darwin" ]]; then
         sudo ln -s $wine_path /usr/include
     fi
 
-    mingw_dmg=gcc-4.8.0-qt-4.8.4-for-mingw32.dmg
-    mingw_path=/usr/local/gcc-4.8.0-qt-4.8.4-for-mingw32/win32-gcc/bin
-    if [[ ! -f $cachedir/$mingw_dmg ]]; then
-        wget http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/$mingw_dmg --output-document $cachedir/$mingw_dmg
+    mingw_name=mingw-w32-bin_i686-darwin
+    mingw_tar=$mingw_name"_20130531".tar.bz2
+    mingw_path=/usr/local/$mingw_name
+    if [[ ! -f $cachedir/$mingw_tar ]]; then
+        wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
+    if [[ ! -d $ming_path ]]; then
 
-    if [[ ! -d $mingw_path ]]; then
-        echo "Open the DMG file and install its contents"
-        open $cachedir/$mingw_dmg
+        pushd /usr/local/
+            sudo mkdir $mingw_name
+        popd
+
+        echo "Extracting contents of $mingw_tar to $mingw_path"
+        echo "Don't forget to add $mingw_path to your PATH variable!"
+        sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
+
+        pushd /usr/local
+            sudo chmod 755 $mingw_name
+            pushd $mingw_name
+                sudo find . -type d -exec chmod 755 {} \;
+            popd
+        popd
     fi
-
-    echo "You will need to add $mingw_path to your \$PATH"
 elif [[ `uname` == "Linux" ]]; then
     sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686
 fi

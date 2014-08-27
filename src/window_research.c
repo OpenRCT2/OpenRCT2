@@ -22,6 +22,7 @@
 #include "finance.h"
 #include "game.h"
 #include "news_item.h"
+#include "ride.h"
 #include "string_ids.h"
 #include "sprites.h"
 #include "widget.h"
@@ -342,11 +343,10 @@ static void window_research_development_paint()
 		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
 			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
 			if (typeId >= 0x10000) {
-				uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-				if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-					stringId = RCT2_GLOBAL(rideEntry, uint16);
-				else
-					stringId = ((typeId >> 8) & 0xFF) + 2;
+				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+				stringId = rideEntry->var_008 & 0x1000 ?
+					rideEntry->name :
+					((typeId >> 8) & 0xFF) + 2;
 			} else {
 				uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
 				stringId = RCT2_GLOBAL(sceneryEntry, uint16);
@@ -381,11 +381,10 @@ static void window_research_development_paint()
 	int lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
-			uint8 *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, uint8*);
-			if (RCT2_GLOBAL(rideEntry + 8, uint32) & 0x1000)
-				stringId = RCT2_GLOBAL(rideEntry, uint16);
-			else
-				stringId = ((typeId >> 8) & 0xFF) + 2;
+			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+			stringId = rideEntry->var_008 & 0x1000 ?
+				rideEntry->name :
+				((typeId >> 8) & 0xFF) + 2;
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {

@@ -172,17 +172,12 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
 {
 	// NB: The table here is allocated dynamically. Reading the exe will tell
 	// you nothing
-	uint32 subtype_p = RCT2_GLOBAL(0x009ACFA4 + ride->subtype * 4, uint32);
+	rct_ride_type *rideType = gRideTypeList[ride->subtype];
 
 	// example value here: 12 (?)
-	sint16 ctr = RCT2_GLOBAL(subtype_p + 0x1b2, sint16);
-	excitement = excitement + ((excitement * ctr) >> 7);
-
-	ctr = RCT2_GLOBAL(subtype_p + 0x1b3, sint16);
-	intensity = intensity + ((intensity * ctr) >> 7);
-
-	ctr = RCT2_GLOBAL(subtype_p + 0x1b4, sint16);
-	nausea = nausea + ((nausea * ctr) >> 7);
+	excitement = excitement + ((excitement * rideType->excitement_multipler) >> 7);
+	intensity = intensity + ((intensity * rideType->intensity_multipler) >> 7);
+	nausea = nausea + ((nausea * rideType->nausea_multipler) >> 7);
 
 	// As far as I can tell, this flag detects whether the ride is a roller
 	// coaster, or a log flume or rapids. Everything else it's not set.
@@ -190,7 +185,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
 	uint16 ridetype_var = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
 	if (ridetype_var & 0x80) {
 		uint16 ax = ride->var_1F4;
-		if (RCT2_GLOBAL(subtype_p + 8, uint32) & 0x800) {
+		if (rideType->var_008 & 0x800) {
 			// 65e86e
 			ax = ax - 96;
 			if (ax >= 0) {

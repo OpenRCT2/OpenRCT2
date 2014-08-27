@@ -264,7 +264,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	newsItem->assoc = assoc;
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem->day = (days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16;
+	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
 
 	format_string((char*)0x0141EF68, string_id, (void*)0x013CE952); // overflows possible?
 	newsItem->colour = ((char*)0x0141EF68)[0];

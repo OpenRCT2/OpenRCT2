@@ -804,7 +804,7 @@ static void window_guest_list_find_groups()
 	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
-	int eax = RCT2_GLOBAL(0x00F663AC, uint32) & 0xFFFFFF00;
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 0xFFFFFF00;
 	if (_window_guest_list_selected_view == RCT2_GLOBAL(0x00F1EE02, uint32))
 		if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0 || eax == RCT2_GLOBAL(0x00F1AF1C, uint32))
 			return;

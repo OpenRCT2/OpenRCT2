@@ -5,13 +5,13 @@ STR_0003    :Attractie
 STR_0004    :Omgekeerde schommelachtbaan
 STR_0005    :Attractie
 STR_0006    :Juniorachtbaan
-STR_0007    :Smalspoorweg
+STR_0007    :Miniatuur spoorbaan
 STR_0008    :Monorail
 STR_0009    :Omgekeerde miniachtbaan
 STR_0010    :Attractie
 STR_0011    :Attractie
 STR_0012    :Attractie
-STR_0013    :Autorondrit
+STR_0013    :Rit in een karretje
 STR_0014    :Attractie
 STR_0015    :Attractie
 STR_0016    :Attractie
@@ -66,7 +66,7 @@ STR_0064    :Attractie
 STR_0065    :Omgekeerde monorail
 STR_0066    :Attractie
 STR_0067    :Attractie
-STR_0068    :Heartline-twisterachtbaan
+STR_0068    :Heartline-kurkentrekkerachtbaan
 STR_0069    :Attractie
 STR_0070    :Attractie
 STR_0071    :Attractie
@@ -512,23 +512,23 @@ STR_0510    :
 STR_0511    :
 STR_0512    :
 STR_0513    :
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
+STR_0514    :Karretjes die onder de baan hangen zwaaien naar buiten in bochten
 STR_0515    :
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorbaan
+STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
+STR_0519    :Passagiers zitten in kleine karretjes onder een enkelrailsbaan en zwaaien naar buiten zwaaien in bochten
 STR_0520    :
 STR_0521    :
 STR_0522    :
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
+STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes
 STR_0524    :
 STR_0525    :
 STR_0526    :
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
+STR_0527    :Een stalen achtbaan die verticale loopings kan maken
 STR_0528    :
 STR_0529    :
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
+STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug
 STR_0531    :
 STR_0532    :
 STR_0533    :
@@ -552,7 +552,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :Het karretje word het station uitversnelt over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station
 STR_0555    :
 STR_0556    :
 STR_0557    :
@@ -561,22 +561,22 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0563    :Zittend in comfortable treintjes met enkel een simpele schootbeugel genieten bezoeker van grote glijdende afdalingen en kronkelende stukken baan, evenals genoeg 'air time' over de heuvels
+STR_0564    :Over een houten baan donderend is deze achtbaan snel, ruig, luidruchting, en geeft hij rijders een gevoel van controleverleis met meer dan genoeg 'air time'
+STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden alleen maar op de baan gehouden door middel van zijfrictie wieltjes en zwaartekracht
+STR_0566    :Individuele achtbaankarretjes vliegen door een dichte zig-zag baan met scherpe bochten en korte scherpe afdalingen
+STR_0567    :Zittend in speciale stoeltjes die aan bijde kanten van de baan hangen worden rijders hals over de kop gegooid terwijl de diepe afdalingen maken en door menige loopings vliegen
 STR_0568    :
-STR_0569    :Riding in special harnesses beLaag the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :Hangend in speciale harnassen onder de baan krijgen bezoekers het gevoel alsof ze een vogel op de wind zijn terwijl ze door de lucht heen zwiepen en vliegen
 STR_0570    :
 STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0575    :Aangedreven treintjes hangen van een enkele rail en transporteren mensen door het park heen
 STR_0576    :
 STR_0577    :
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0578    :Karretjes lopen over een baan omgeven door hoepels en ondergaan steile afdalingen en heartline kurkentrekkers
 STR_0579    :
 STR_0580    :
 STR_0581    :
@@ -584,7 +584,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0586    :Bootvormige karretjes lopen over achtbaan rails waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonsen voor rustige rivier secties van de baan
 STR_0587    :
 STR_0588    :
 STR_0589    :
@@ -597,7 +597,7 @@ STR_0595    :
 STR_0596    :
 STR_0597    :
 STR_0598    :
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0599    :Een compacte achtbaan met individuele karretjes, scherpe bochten, en steile afdalingen
 STR_0600    :
 STR_0601    :
 STR_0602    :
@@ -907,7 +907,7 @@ STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote radius)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
 STR_0908    :Roll/Banking
-STR_0909    :Stoelrot.
+STR_0909    :Stoeldraaing
 STR_0910    :{SMALLFONT}{BLACK}Roll voor bocht naar links
 STR_0911    :{SMALLFONT}{BLACK}Roll voor bocht naar rechts
 STR_0912    :{SMALLFONT}{BLACK}Geen roll
@@ -926,7 +926,7 @@ STR_0924    :{SMALLFONT}{BLACK}Spiraal naar beneden
 STR_0925    :{SMALLFONT}{BLACK}Spiraal naar boven
 STR_0926    :Kan dit niet verwijderen...
 STR_0927    :Kan dit hier niet bouwen...
-STR_0928    :{SMALLFONT}{BLACK}Kettinglift, om karretjes een heuvel op te trekken
+STR_0928    :{SMALLFONT}{BLACK}Kettinglift, om karretjes omhoog te trekken
 STR_0929    :S-bocht (links)
 STR_0930    :S-bocht (rechts)
 STR_0931    :Verticale looping (links)
@@ -1662,7 +1662,7 @@ STR_1660    :{WINDOW_COLOUR_2}{BLACK}meer dan {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Misselijkheidstolerantie: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Stemming:
 STR_1663    :{WINDOW_COLOUR_2}Misselijkheid:
-STR_1664    :{WINDOW_COLOUR_2}Energie:
+STR_1664    :{WINDOW_COLOUR_2}Blijheid:
 STR_1665    :{WINDOW_COLOUR_2}Honger:
 STR_1666    :{WINDOW_COLOUR_2}Dorst:
 STR_1667    :{WINDOW_COLOUR_2}WC-behoefte:
@@ -1921,7 +1921,7 @@ STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan geen lening terugbetalen!
 STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
 STR_1922    :{SMALLFONT}{BLACK}Verder gaan aan een opgeslagen spel
-STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
+STR_1923    :{SMALLFONT}{BLACK}Snelcursus tonen
 STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen...
 STR_1926    :{SMALLFONT}
@@ -1938,7 +1938,7 @@ STR_1936    :{STRINGID} heeft {STRINGID} gekocht
 STR_1937    :{SMALLFONT}{BLACK}Informatie tonen over het onderwerp van dit bericht
 STR_1938    :{SMALLFONT}{BLACK}Beeld van bezoeker tonen
 STR_1939    :{SMALLFONT}{BLACK}Beeld van werknemer tonen
-STR_1940    :{SMALLFONT}{BLACK}Stemming, energie, hongerniveau e.d. van deze bezoeker tonen
+STR_1940    :{SMALLFONT}{BLACK}Stemming, blijheid, hongerniveau e.d. van deze bezoeker tonen
 STR_1941    :{SMALLFONT}{BLACK}Tonen in welke attracties deze bezoeker is geweest
 STR_1942    :{SMALLFONT}{BLACK}Financiële informatie over deze bezoeker tonen
 STR_1943    :{SMALLFONT}{BLACK}Recente gedachten van deze bezoeker tonen
@@ -2444,83 +2444,83 @@ STR_2442    :{BLACK}({STRINGID} resterend)
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Start deze marketingcampagne
-STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
-STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
-STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
-STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
-STR_2450    :{YELLOW}Your advertising campaign for the park has finished
-STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
+STR_2446    :{YELLOW}Je advertentiecampagne voor gratis entree tot het park is verlopen
+STR_2447    :{YELLOW}Je advertentiecampagne voor gratis ritjes op {STRINGID} is verlopen
+STR_2448    :{YELLOW}Je advertentiecampagne voor halve prijs entree tot het park is verlopen
+STR_2449    :{YELLOW}Je advertentiecampagne voor gratis {STRINGID} is verlopen
+STR_2450    :{YELLOW}Je advertentiecampagne voor het park is verlopen
+STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is verlopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
-STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
-STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
-STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
-STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
-STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
-STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
-STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
-STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
-STR_2466    :{SMALLFONT}{BLACK}Show park statistics
-STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
-STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
-STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
-STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
-STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
-STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
-STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
-STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
-STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
-STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
-STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
-STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
+STR_2457    :{SMALLFONT}{BLACK}Laat financiële rekeningen zien
+STR_2458    :{SMALLFONT}{BLACK}Toon grafiek van geld (min lening) over tijd
+STR_2459    :{SMALLFONT}{BLACK}Toon grafiek van parkwaarde over tijd
+STR_2460    :{SMALLFONT}{BLACK}Toon grafiek van wekelijke winst
+STR_2461    :{SMALLFONT}{BLACK}Toon advertentiecampagnes
+STR_2462    :{SMALLFONT}{BLACK}Toon parkingang
+STR_2463    :{SMALLFONT}{BLACK}Toon grafiek van parkwaardering over tijd
+STR_2464    :{SMALLFONT}{BLACK}Toon grafiek van hoeveelheid gasten over tijd
+STR_2465    :{SMALLFONT}{BLACK}Toon park entreeprijs en informatie
+STR_2466    :{SMALLFONT}{BLACK}Toon park statistieken
+STR_2467    :{SMALLFONT}{BLACK}Toon doelstellingen voor deze game
+STR_2468    :{SMALLFONT}{BLACK}Toon recente prijzen die het park heeft gekregen
+STR_2469    :{SMALLFONT}{BLACK}Selecteer niveau van onderzoek & ontwikkeling
+STR_2470    :{SMALLFONT}{BLACK}Onderzoek nieuwe transportattracties
+STR_2471    :{SMALLFONT}{BLACK}Onderzoek nieuwe rustige attracties
+STR_2472    :{SMALLFONT}{BLACK}Onderzoek nieuwe achtbanen
+STR_2473    :{SMALLFONT}{BLACK}Onderzoek nieuwe spannende attracties
+STR_2474    :{SMALLFONT}{BLACK}Onderzoek nieuwe waterattracties
+STR_2475    :{SMALLFONT}{BLACK}Onderzoek nieuwe winkels en kraampjes
+STR_2476    :{SMALLFONT}{BLACK}Onderzoek nieuw decor en thematisering 
+STR_2477    :{SMALLFONT}{BLACK}Selecteer werkzame modus voor deze attractie
+STR_2478    :{SMALLFONT}{BLACK}Toon grafiek van snelheid over tijd
+STR_2479    :{SMALLFONT}{BLACK}Toon grafiek van hoogte over tijd
+STR_2480    :{SMALLFONT}{BLACK}Toon grafiek van verticale versnelling over tijd
+STR_2481    :{SMALLFONT}{BLACK}Toon grafiek van horizontale versnelling over tijd
+STR_2482    :{SMALLFONT}{BLACK}Winst: {CURRENCY} per week,  Parkwaarde: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}Wekelijke winst: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Wekelijke winst: {RED}{CURRENCY2DP}
 STR_2485    :Besturing
 STR_2486    :Algemeen
 STR_2487    :'Echte' namen van bezoekers tonen
-STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
+STR_2488    :{SMALLFONT}{BLACK}Wissel tussen het tonen van 'echte' namen van bezoekers en bezoekernummers
 STR_2489    :Sneltoetsen...
 STR_2490    :Sneltoetsen
 STR_2491    :Toetsen herstellen
-STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
+STR_2492    :{SMALLFONT}{BLACK}Herstel alle toetsen terug naar de standaard instellingen
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
 STR_2495    :Cancel construction mode
 STR_2496    :Spel pauzeren
-STR_2497    :Zoom view out
-STR_2498    :Zoom view in
-STR_2499    :Rotate view
-STR_2500    :Rotate construction object
-STR_2501    :Underground view toggle
-STR_2502    :Remove base land toggle
-STR_2503    :Remove vertical land toggle
-STR_2504    :See-through rides toggle
-STR_2505    :See-through scenery toggle
-STR_2506    :Invisible supports toggle
-STR_2507    :Invisible people toggle
-STR_2508    :Height marks on land toggle
-STR_2509    :Height marks on ride tracks toggle
-STR_2510    :Height marks on paths toggle
+STR_2497    :Zoom aanblik uit
+STR_2498    :Zoom aanblik in
+STR_2499    :Draai aanblik
+STR_2500    :Draai constructieobject
+STR_2501    :Onder de grond kijken
+STR_2502    :Verwijder basis land
+STR_2503    :Verwijder verticaal land
+STR_2504    :Doorzichtige attracties
+STR_2505    :Doorzichtig decor
+STR_2506    :Onzichtbare ondersteuning
+STR_2507    :Onzichtbare bezoekers
+STR_2508    :Toon hoogtemarkeringen op land
+STR_2509    :Toon hoogtemarkeringen op rails
+STR_2510    :Toon hoogtemarkeringen op paden
 STR_2511    :Land aanpassen
 STR_2512    :Water aanpassen
 STR_2513    :Decor bouwen
-STR_2514    :Build paths
-STR_2515    :Build new ride
-STR_2516    :Show financial information
-STR_2517    :Show research information
-STR_2518    :Show rides list
-STR_2519    :Show park information
-STR_2520    :Show guest list
-STR_2521    :Show staff list
-STR_2522    :Show recent messages
+STR_2514    :Bouw paden
+STR_2515    :Bouw nieuwe attractie
+STR_2516    :Toon financiële informatie
+STR_2517    :Toon onderzoeksinformatie
+STR_2518    :Toon lijst met attracties
+STR_2519    :Toon park informatie
+STR_2520    :Toon lijst met bezoekers
+STR_2521    :Toon lijst met werknemers
+STR_2522    :Toon recente berichten
 STR_2523    :Kaart tonen
 STR_2524    :Screenshot
 STR_2525    :???
@@ -2536,7 +2536,7 @@ STR_2534    :Tab
 STR_2535    :???
 STR_2536    :???
 STR_2537    :Wissen
-STR_2538    :Return
+STR_2538    :Enter
 STR_2539    :???
 STR_2540    :???
 STR_2541    :???
@@ -2792,11 +2792,11 @@ STR_2790    :Naam invoeren voor scenario-overzicht
 STR_2791    :Naam invoeren
 STR_2792    :Voer je naam in voor het scenario-overzicht:
 STR_2793    :{SMALLFONT}(Voltooid door {STRINGID})
-STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
+STR_2794    :{WINDOW_COLOUR_2}Voltooid door: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} met een bedrijfswaarde van: {BLACK}{CURRENCY}
 STR_2795    :Sorteren
-STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2796    :{SMALLFONT}{BLACK}Sorteer de lijst met attracties op basis van het aangegeven informatietype
 STR_2797    :Beeld verschuiven als aanwijzer op de rand staat
-STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
+STR_2798    :{SMALLFONT}{BLACK}Selecteer of het beeld wel of niet moet verschuiven als de muisaanwijzer op de rand van het beeld staat
 STR_2799    :{SMALLFONT}{BLACK}Instellingen voor sneltoetsen bekijken of aanpassen
 STR_2800    :{WINDOW_COLOUR_2}Totale bezoeken: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Entree-inkomsten: {BLACK}{CURRENCY2DP}
@@ -2819,7 +2819,7 @@ STR_2817    :{WINDOW_COLOUR_2}Beste park
 STR_2818    :{WINDOW_COLOUR_2}Mooiste park
 STR_2819    :{WINDOW_COLOUR_2}Slechtste park
 STR_2820    :{WINDOW_COLOUR_2}Veiligste park
-STR_2821    :{WINDOW_COLOUR_2}Beste personeel
+STR_2821    :{WINDOW_COLOUR_2}Beste werknemers
 STR_2822    :{WINDOW_COLOUR_2}Beste eten
 STR_2823    :{WINDOW_COLOUR_2}Slechtste eten
 STR_2824    :{WINDOW_COLOUR_2}Beste toiletten
@@ -2829,35 +2829,35 @@ STR_2827    :{WINDOW_COLOUR_2}Beste unieke attracties
 STR_2828    :{WINDOW_COLOUR_2}Meest duizelingwekkende kleurenschema
 STR_2829    :{WINDOW_COLOUR_2}Vreemdste indeling
 STR_2830    :{WINDOW_COLOUR_2}Beste rustige attracties
-STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
-STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
-STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
-STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
-STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
-STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park in the country'!
-STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
-STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
-STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
-STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
-STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
-STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
-STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
-STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
+STR_2831    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het rommeligste park in het land zijn'
+STR_2832    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het netste park in het land zijn'
+STR_2833    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste achtbanen in het land zijn'
+STR_2834    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het beste park in het land zijn'
+STR_2835    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het mooiste park in het land zijn'
+STR_2836    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het slechtste park in het land zijn'
+STR_2837    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het veiligste park in het land zijn'
+STR_2838    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste werknemers in het land zijn'
+STR_2839    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met het beste eten in het land zijn'
+STR_2840    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met het slechtste eten in het land zijn'
+STR_2841    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste toiletten in het land zijn'
+STR_2842    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het meest teleurstellende park in het land zijn'
+STR_2843    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste waterattracties in het land zijn'
+STR_2844    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste unieke attracties in het land zijn'
+STR_2845    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de meest duizelingwekkende kleurenschemas in het land zijn'
+STR_2846    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de vreemste indeling in het land zijn'
+STR_2847    :{TOPAZ}Je park heeft een prijs gekregen voor 'Het park met de beste rustige attracties in het land zijn'
 STR_2848    :{WINDOW_COLOUR_2}Geen recente prijzen
-STR_2849    :New scenario installed successfully
-STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
-STR_2852    :Track design already installed
-STR_2853    :Forbidden by the local authority!
-STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
-STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
+STR_2849    :Nieuw scenario successvol geïnstalleerd
+STR_2850    :Nieuw baanontwerp successvol geïnstalleerd
+STR_2851    :Scenario al geïnstalleerd
+STR_2852    :Baanontwerp al geïnstalleerd
+STR_2853    :Verboden door de lokale overheid!
+STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Maak een pad naar de ingang
+STR_2855    :{RED}{STRINGID} heeft geen pad vanaf zijn uitgang !{NEWLINE}Maak een pad vanaf de uitgang
+STR_2856    :{WINDOW_COLOUR_2}Snelcursus
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
-STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
+STR_2858    :Kan advertentiecampagne niet starten...
+STR_2859    :Een andere instantie van RollerCoaster Tycoon 2 draait al
 STR_2860    :Infogrames Interactive credits...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
@@ -3010,43 +3010,43 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan dit bestand niet laden...
 STR_3011    :Bestand bevat ongeldige gegevens
-STR_3012    :Dodgems beat style
+STR_3012    :Botsautos beat stijl
 STR_3013    :Kermisorgelstijl
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
+STR_3014    :Romijnse fanfare stijl
+STR_3015    :Orientaalse stijl
+STR_3016    :Marsmannetjes stijl
+STR_3017    :Jungle drums stijl
+STR_3018    :Egyptische stijl
+STR_3019    :Speelgoedland stijl
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
+STR_3021    :Ruimte stijl
+STR_3022    :Horror stijl
+STR_3023    :Techno stijl
+STR_3024    :Rustige stijl
+STR_3025    :Zomerstijl
+STR_3026    :Water stijl
+STR_3027    :Wilde westen stijl
+STR_3028    :Jurassic stijl
+STR_3029    :Rock stijl
+STR_3030    :Ragtime stijl
+STR_3031    :Fantasy stijl
+STR_3032    :Rock stijl 2
+STR_3033    :Ijs stijl
+STR_3034    :Sneeuw stijl
 STR_3035    :Extra muziek 1
 STR_3036    :Extra muziek 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
+STR_3037    :Middeleeuwse stijl
+STR_3038    :Stedelijke stijl
+STR_3039    :Orgel stijl
+STR_3040    :Mechanische stijl
+STR_3041    :Moderne stijl
+STR_3042    :Piraten stijl
+STR_3043    :Rock stijl 3
+STR_3044    :Snoepjes stijl
+STR_3045    :{SMALLFONT}{BLACK}Selecteer muziekstijl om te spelen
 STR_3046    :Deze attractie kan niet worden aangepast
-STR_3047    :Local authority forbids demolition or modifications to this ride
-STR_3048    :Marketing campaigns forbidden by local authority
+STR_3047    :Lokale overheid verbied sloop of verandering van deze attractie
+STR_3048    :Advertentiecampagnes verboden door lokale overheid
 STR_3049    :Golfhole A
 STR_3050    :Golfhole B
 STR_3051    :Golfhole C
@@ -3070,11 +3070,11 @@ STR_3068    :Andere parken
 STR_3069    :Bovensegment
 STR_3070    :Van helling naar vlak
 STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
-STR_3073    :{RED}WAARSCHUWING: Your park rating has dropped beLaag 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
-STR_3074    :{RED}WAARSCHUWING: Your park rating is still beLaag 700 !{NEWLINE}You have 3 weeks to raise the park rating
-STR_3075    :{RED}WAARSCHUWING: Your park rating is still beLaag 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
-STR_3076    :{RED}FINAL WARNING: Your park rating is still beLaag 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
+STR_3072    :{SMALLFONT}{BLACK}Selecteer of dezelfde prijs word gebruikt door het hele park
+STR_3073    :{RED}WAARSCHUWING: Je parkwaardering is onder 700 gezakt!{NEWLINE}Als je je parkwaardering niet verhoogd binnen 4 weken word je park gesloten
+STR_3074    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Je hebt 3 weken om je waardering te verhogen
+STR_3075    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Je hebt nog maar 2 weken om je waardering te verhogen, of je park word gesloten
+STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds onder 700 !{NEWLINE}Over 7 dagen word je park gesloten als je je waardering niet verhoogd
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
 STR_3078    :Standaardingang
 STR_3079    :Houten ingang
@@ -3088,19 +3088,19 @@ STR_3086    :Abstracte ingang
 STR_3087    :Sneeuw/ijs-ingang
 STR_3088    :Pagode-ingang
 STR_3089    :Ruimte-ingang
-STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
+STR_3090    :{SMALLFONT}{BLACK}Selecteer stijl van de ingang, uitgang, en het station
 STR_3091    :Je mag dit segment niet verwijderen!
-STR_3092    :You are not allowed to move or modify the station for this ride!
+STR_3092    :Je mag het station van deze attractie niet verplaatsen of veranderen!
 STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
 STR_3094    :n.v.t.
-STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
+STR_3095    :{WINDOW_COLOUR_2}Lift helling snelheid:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3098    :Can't change lift hill speed...
-STR_3099    :{SMALLFONT}{BLACK}Select color
-STR_3100    :{SMALLFONT}{BLACK}Select second color
-STR_3101    :{SMALLFONT}{BLACK}Select third color
-STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
+STR_3097    :{SMALLFONT}{BLACK}Selecteer lift helling ketting snelheid
+STR_3098    :Kan lift helling snelheid niet veranderen...
+STR_3099    :{SMALLFONT}{BLACK}Selecteer kleur
+STR_3100    :{SMALLFONT}{BLACK}Selecteer kleur twee
+STR_3101    :{SMALLFONT}{BLACK}Selecteer kleur drie
+STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape???
 STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}Toon een lijst van attracties
 STR_3105    :{SMALLFONT}{BLACK}Toon een lijst van winkels en kraampjes
@@ -3109,50 +3109,50 @@ STR_3107    :Sluiten
 STR_3108    :Testen
 STR_3109    :Openen
 STR_3110    :{WINDOW_COLOUR_2}Blokken: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
-STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
-STR_3117    :{BLACK}Calling mechanic...
-STR_3118    :{BLACK}{STRINGID} is heading for the ride
-STR_3119    :{BLACK}{STRINGID} is fixing the ride
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
-STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
+STR_3111    :{SMALLFONT}{BLACK}Klik op ontwerp om het te bouwen
+STR_3112    :{SMALLFONT}{BLACK}Klik op ontwerp om het te verwijderen of om het een andere naam te geven
+STR_3113    :Selecteer een ander ontwerp
+STR_3114    :{SMALLFONT}{BLACK}Ga terug naar ontwerp keuzevenster
+STR_3115    :{SMALLFONT}{BLACK}Sla baanontwerp op
+STR_3116    :{SMALLFONT}{BLACK}Sla baanontwerp op (Niet mogelijk totdat de attractie getest is en statestieken bepaald zijn)
+STR_3117    :{BLACK}Monteur bellen...
+STR_3118    :{BLACK}{STRINGID} gaat naar de attractie
+STR_3119    :{BLACK}{STRINGID} is de attractie aan het repareren
+STR_3120    :{SMALLFONT}{BLACK}Vind dichstbijzijnde monteur, of monteur die de attractie aan het repareren is
+STR_3121    :Kan monteur niet vinden, of alle monteurs zijn bezig
+STR_3122    :{WINDOW_COLOUR_2}Favoriete attractie van: {BLACK}{COMMA16} bezoeker
+STR_3123    :{WINDOW_COLOUR_2}Favoriete attractie van: {BLACK}{COMMA16} bezoekers
 STR_3124    :{STRINGID} defect
-STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
+STR_3125    :{WINDOW_COLOUR_2}Opwinding: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intensiteit: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Misselijkmakendheid: {BLACK}+{COMMA16}%
 STR_3128    :Baanontwerp opslaan
 STR_3129    :Baanontwerp en decor opslaan
 STR_3130    :Opslaan
 STR_3131    :Annuleren
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
-STR_3133    :Unable to build this on a slope
-STR_3134    :{RED}(Design includes scenery which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
-STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
+STR_3132    :{BLACK}Klik op decoritems om ze op te laten slaan met het baanontwerp...
+STR_3133    :Kan dit niet bouwen op een helling
+STR_3134    :{RED}(Ontwerp bezit decor dat niet beschikbaar is)
+STR_3135    :{RED}(Karretjestype niet beschikbaar - baanprestatie kan beïnvloed worden)
+STR_3136    :Waarschuwing: Dit ontwerp word gebouwd met een ander type karretje, en kan onverwachte prestaties leveren
 STR_3137    :Decor naast baan selecteren
 STR_3138    :Alles deselecteren
-STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3139    :Stoeltjeslift kan niet werken in deze operatiemodus
+STR_3140    :Stoeltjeslift moet meteen beginnen na station
+STR_3141    :Meerdere rondjes per rit niet mogelijk met een stoeltjeslift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} right fast
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} left/right
-STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
-STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
-STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
-STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
-STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
+STR_3143    :{SMALLFONT}{BLACK}Laat bezoekers zien op kaart
+STR_3144    :{SMALLFONT}{BLACK}Laat attracties en kraampjes zien op kaart
+STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar links
+STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar rechts
+STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar links
+STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar rechts
+STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} links/rechts
+STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog
+STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} omlaag
+STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omhoog
+STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omlaag
+STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog/omlaag
 STR_3155    :
 STR_3156    :
 STR_3157    :kaart
@@ -3167,77 +3167,77 @@ STR_3165    :
 STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
 STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
-STR_3169    :Data for the folLaaging object not found: 
-STR_3170    :Not enough space for graphics
-STR_3171    :Too many objects of this type selected
-STR_3172    :The folLaaging object must be selected first: 
-STR_3173    :This object is currently in use
-STR_3174    :This object is required by another object
-STR_3175    :This object is always required
-STR_3176    :Unable to select this object
-STR_3177    :Unable to de-select this object
-STR_3178    :At least one path object must be selected
-STR_3179    :At least one ride vehicle/attraction object must be selected
-STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
-STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
-STR_3190    :Path Extras
-STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
+STR_3169    :Data voor de volgende objecten niet gevonden: 
+STR_3170    :Niet genoeg ruimte voor graphics
+STR_3171    :Te veel objecten van dit type geselecteerd
+STR_3172    :De volgende objecten moeten eerst geselecteerd worden:
+STR_3173    :Dit object is momenteel in gebruik
+STR_3174    :Dit object word benodigd door een ander object
+STR_3175    :Dit object is altijd benodigd
+STR_3176    :Kan object niet selecteren
+STR_3177    :Kan object niet de-selecteren
+STR_3178    :Tenminste 1 padobject moet geselecteerd zijn
+STR_3179    :Tenminste 1 attractie moet geselecteerd zijn
+STR_3180    :Ongeldige selectie van objecten
+STR_3181    :Object Selectie - {STRINGID}
+STR_3182    :Park ingang moet geselecteerd zijn
+STR_3183    :Water type moet geselecteerd zijn
+STR_3184    :Attracties
+STR_3185    :Klein Decor
+STR_3186    :Groot Decor
+STR_3187    :Muren/Hekjes
+STR_3188    :Pad Borden
+STR_3189    :Voetpaden
+STR_3190    :Pad Extras
+STR_3191    :Decor Groepen
+STR_3192    :Park Ingang
 STR_3193    :Water
-STR_3194    :Scenario Description
-STR_3195    :Invention List
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
-STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
-STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
-STR_3205    :Objective Selection
-STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
-STR_3208    :Track Designs Manager
-STR_3209    :Back to Previous Step:
-STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3194    :Scenario Beschrijving
+STR_3195    :Uitvindingen Lijst
+STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Items onderzocht aan begin van het spel:
+STR_3198    :{WINDOW_COLOUR_2}Items die onderzocht worden tijdens het spel:
+STR_3199    :Willekeurig
+STR_3200    :{SMALLFONT}{BLACK}Schuffle de lijst met items die onderzocht moeten worden tijdens het spel
+STR_3201    :Object Selectie
+STR_3202    :Landschap Aanpassen
+STR_3203    :Uitvindingen Lijst Opgezet
+STR_3204    :Opties Selectie
+STR_3205    :Objective Selectie
+STR_3206    :Sla Scenario Op
+STR_3207    :Achtbaan Ontwerper
+STR_3208    :Baan Ontwerp Manager
+STR_3209    :Terug Naar Vorige Stap:
+STR_3210    :Door Naar Volgende Stap:
+STR_3211    :{WINDOW_COLOUR_2}Kaart grootte:up
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
-STR_3213    :Can't decrease map size any further
-STR_3214    :Can't increase map size any further
-STR_3215    :Too close to edge of map
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
-STR_3217    :Land Owned
-STR_3218    :Construction Rights Owned
-STR_3219    :Land For Sale
-STR_3220    :Construction Rights For Sale
-STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
-STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
-STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Build park entrance
-STR_3227    :Too many park entrances!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
-STR_3229    :Block Brakes cannot be used directly after station
-STR_3230    :Block Brakes cannot be used directly after each other
-STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
+STR_3213    :Kan kaart niet verder verkleinen
+STR_3214    :Kan kaart niet verder vergroten
+STR_3215    :Te dicht bij rand van de kaart
+STR_3216    :{SMALLFONT}{BLACK}Selecteer parkland etc.
+STR_3217    :Parkland
+STR_3218    :Land Met Constructierechten
+STR_3219    :Land Te Koop
+STR_3220    :Constructierechten Te Koop
+STR_3221    :{SMALLFONT}{BLACK}Geef aan welk land van het park is
+STR_3222    :{SMALLFONT}{BLACK}Geef aan van welk land het park constructierechten heeft
+STR_3223    :{SMALLFONT}{BLACK}Geef aan welk land gekocht kan worden door het park
+STR_3224    :{SMALLFONT}{BLACK}Geef aan welk land constructierechten heeft die te koop zijn
+STR_3225    :{SMALLFONT}{BLACK}Wissel aan/uit van het bouwen van een willekeurige cluster van objecten rondom de geselecteerde positie
+STR_3226    :{SMALLFONT}{BLACK}Bouw park ingang
+STR_3227    :Te veel park ingangen!
+STR_3228    :{SMALLFONT}{BLACK}Geef start posities voor bezoekers aan
+STR_3229    :Blokremmen kunnen niet direct na het station geplaatst worden
+STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
+STR_3231    :Blokremmen kunnen niet direct achter de top van een liftheuvel geplaatst worden
+STR_3232    :Opties - Financiëel
+STR_3233    :Opties - Bezoekers
+STR_3234    :Opties - Park
+STR_3235    :{SMALLFONT}{BLACK}Toon financiële opties
+STR_3236    :{SMALLFONT}{BLACK}Toon bezoekrs opties
+STR_3237    :{SMALLFONT}{BLACK}Toon park opties
 STR_3238    :Zonder geld
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
+STR_3239    :{SMALLFONT}{BLACK}Maak dit park 'zonder geld' zodat je oneindig veel geld hebt
 STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
 STR_3241    :{WINDOW_COLOUR_2}Startlening
 STR_3242    :{WINDOW_COLOUR_2}Maximale lening:
@@ -3246,47 +3246,47 @@ STR_3244    :Marketingcampagnes niet toestaan
 STR_3245    :{SMALLFONT}{BLACK}Geen advertenties, promoties of andere marketingacties toestaan
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Can't increase initial cash any further!
-STR_3249    :Can't reduce initial cash any further!
-STR_3250    :Can't increase initial loan any further!
-STR_3251    :Can't reduce initial loan any further!
-STR_3252    :Can't increase maximum loan size any further!
-STR_3253    :Can't reduce maximum loan size any further!
-STR_3254    :Can't increase interest rate any further!
-STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
-STR_3264    :Can't increase this any further!
-STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
-STR_3267    :Forbid tree removal
-STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
-STR_3269    :Forbid landscape changes
-STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
-STR_3271    :Forbid Hoog construction
-STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
-STR_3273    :Park rating Hooger difficult level
-STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation Hooger difficult level
-STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3248    :Kan aanvankelijke hoeveelheid geld niet verder verhogen!
+STR_3249    :Kan aanvankelijke hoeveelheid geld niet verder verlagen!
+STR_3250    :Kan aanvankelijke lening niet verder verhogen!
+STR_3251    :Kan aanvankelijke lening niet verder verlagen!
+STR_3252    :Kan maximale lening niet verder vergroten!
+STR_3253    :Kan maximale lening niet verder verkleinen!
+STR_3254    :Kan rente niet verder verhogen!
+STR_3255    :Kan rente niet verder verlagen!
+STR_3256    :Bezoekers houden meer van rustigere attracties
+STR_3257    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
+STR_3258    :Bezoekers houden meer van spannende attracties
+STR_3259    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van spannende attracties houden
+STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
+STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke blijheid bezoekers:
+STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
+STR_3263    :{WINDOW_COLOUR_2}Aanvankelijke dorst bezoekers:
+STR_3264    :Kan dit niet verder verhogen!
+STR_3265    :Kan dit niet verder verlagen!
+STR_3266    :{SMALLFONT}{BLACK}Selecteer hoe dit park geld vraagt voor entree en attracties
+STR_3267    :Verbied verwijderen bomen
+STR_3268    :{SMALLFONT}{BLACK}Verbied het verwijderen van bomen
+STR_3269    :Verbied veranderen landschap
+STR_3270    :{SMALLFONT}{BLACK}Verbied het veranderen van het landschap
+STR_3271    :Verbied hoge constructie
+STR_3272    :{SMALLFONT}{BLACK}Verbied het bouwen van hoge constructies
+STR_3273    :Hogere moeilijkheid parkwaardering
+STR_3274    :{SMALLFONT}{BLACK}Maak de parkwaardering meer uitdagend
+STR_3275    :Hogere moeilijkheid bezoekersgeneratie
+STR_3276    :{SMALLFONT}{BLACK}Maak het moeilijker om gasten aan te trekken naar je park te komen
+STR_3277    :{WINDOW_COLOUR_2}Landkoop kosten:
+STR_3278    :{WINDOW_COLOUR_2}Constructierechten kosten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde toegang / Attracties gratis
 STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3282    :{SMALLFONT}{BLACK}Selecteer doelstellingen en parknaam
+STR_3283    :{SMALLFONT}{BLACK}Selecteer attracties die beschermd moeten blijven
 STR_3284    :Doelselectie
 STR_3285    :Beschermde attracties
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :{SMALLFONT}{BLACK}Selecteer doelstellingen voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doel:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
+STR_3288    :{SMALLFONT}{BLACK}Selecteer klimaat:
 STR_3289    :{WINDOW_COLOUR_2}Klimaat:
 STR_3290    :Koel en nat
 STR_3291    :Warm
@@ -3298,72 +3298,72 @@ STR_3296    :{SMALLFONT}{BLACK}Scenarionaam veranderen
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
 STR_3298    :{WINDOW_COLOUR_2}Parknaam: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
-STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
-STR_3301    :{WINDOW_COLOUR_2}Objective Date:
+STR_3300    :{WINDOW_COLOUR_2}Scenario Naam: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Datum doelstellingen:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
-STR_3303    :{WINDOW_COLOUR_2}Number of guests:
-STR_3304    :{WINDOW_COLOUR_2}Park value:
-STR_3305    :{WINDOW_COLOUR_2}Monthly income:
-STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
-STR_3307    :{WINDOW_COLOUR_2}Minimum length:
-STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
+STR_3303    :{WINDOW_COLOUR_2}Aantal bezoekers:
+STR_3304    :{WINDOW_COLOUR_2}Parkwaarde:
+STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomst:
+STR_3306    :{WINDOW_COLOUR_2}Maandelijke winst:
+STR_3307    :{WINDOW_COLOUR_2}Minimale lengte:
+STR_3308    :{WINDOW_COLOUR_2}Opwindingscijfer:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
+STR_3312    :{WINDOW_COLOUR_2}Attracties die beschermd moeten worden:
 STR_3313    :Scenarionaam
-STR_3314    :Enter name for scenario:-
+STR_3314    :Geef naam voor scenario:-
 STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:-
+STR_3316    :Geef een beschrijving van die scenario:-
 STR_3317    :Nog geen details
-STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
-STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
-STR_3320    :Unable to save scenario file...
-STR_3321    :New objects installed successfully
-STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: 
-STR_3325    :Requires an Add-On Pack
-STR_3326    :{WINDOW_COLOUR_2}(no image)
-STR_3327    :Starting positions for people not set
-STR_3328    :Can't advance to next editor stage...
-STR_3329    :Park entrance not yet built
-STR_3330    :Park must own some land
-STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
-STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
+STR_3318    :{SMALLFONT}{BLACK}Selecteer in welke groep dit scenario terechtkomt
+STR_3319    :{WINDOW_COLOUR_2}Scenario Groep:
+STR_3320    :Kan scenariobestand niet opslaan...
+STR_3321    :Nieuwe objecten successvol geïnstalleerd
+STR_3322    :{WINDOW_COLOUR_2}Doelstelling: {BLACK}{STRINGID}
+STR_3323    :Vermiste object data, ID: 
+STR_3324    :Vereist uitbreidingspakket:
+STR_3325    :Vereist een uitbreidingspakket
+STR_3326    :{WINDOW_COLOUR_2}(geen plaatje)
+STR_3327    :Startpositie voor bezoekers niet aangegeven
+STR_3328    :Kan niet verder naar volgende stap...
+STR_3329    :Park ingang nog niet gebouwd
+STR_3330    :Park moet wat land bezitten
+STR_3331    :Pad van park ingang naar kaart rand niet compleet of te complex - Pad moet 1 breed zijn met zo min mogelijk kruisingen en bochten als mogelijk
+STR_3332    :Park ingang staat verkeerdom of heeft geen pad naar de kaart rand
+STR_3333    :Exporteer plug-in objecten met opgeslagen games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
+STR_3335    :Achtbaanontwerper - Selecteer Attractie- & Karretjestype
+STR_3336    :Baanontwerpbeheer - Selecteer Karretjestype
 STR_3337    :Six Flags-park
-STR_3338    :{BLACK}Custom-designed layout
-STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
-STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Game tools
+STR_3338    :{BLACK}Zelfontworpen opmaak
+STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of ontwerp zelf
+STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of ontwerp zelf
+STR_3341    :{SMALLFONT}{BLACK}Spel gereedschap
 STR_3342    :Scenario Editor
-STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
-STR_3345    :Track Designs Manager
-STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
+STR_3343    :Zet Opgeslagen Spel om tot Scenario
+STR_3344    :Achtbaanontwerper
+STR_3345    :Baanontwerpbeheer
+STR_3346    :Kan baanontwerp niet opslaan...
+STR_3347    :Attractie is te groot, bezit teveel dingen, of het decor is te wijd verspreid
 STR_3348    :Naam wijzigen
 STR_3349    :Verwijderen
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:-
-STR_3352    :Can't rename track design...
-STR_3353    :New name contains invalid characters
-STR_3354    :Another file exists with this name, or file is write-protected
-STR_3355    :File is write-protected or locked
-STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
-STR_3358    :Can't delete track design...
-STR_3359    :{BLACK}No track designs of this type
+STR_3350    :Naam baanontwerp
+STR_3351    :Voer nieuwe naam in voor dit baanontwerp:-
+STR_3352    :Kan baanontwerp geen nieuwe naam geven...
+STR_3353    :Nieuwe naam bezit ongeldige karakters
+STR_3354    :Een bestand bestaat al met deze naam, of het bestand is schrijf-beschermd
+STR_3355    :Bestand is schrijf-beschermd of vergrendeld
+STR_3356    :Verwijder Bestand
+STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} voor altijd wil verwijderen?
+STR_3358    :Kan baanontwerp niet verwijderen...
+STR_3359    :{BLACK}Geen baanontwerp van dit type
 STR_3360    :Warschuwing!
-STR_3361    :Too many track designs of this type - Some will not be listed.
+STR_3361    :Te veel baanontwerpen van dit type - Sommige staan niet in de lijst
 STR_3362    :Mixing via softwarebuffer forceren
 STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
 STR_3364    :Meer opties
-STR_3365    :{SMALLFONT}{BLACK}allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :{SMALLFONT}{BLACK}sta selectie van individuele decoritems toe naast decorgroepen
 STR_3366    :{BLACK}= Attractie
 STR_3367    :{BLACK}= Eetkraampje
 STR_3368    :{BLACK}= Drankkraampje
@@ -3372,70 +3372,70 @@ STR_3370    :{BLACK}= Infokiosk
 STR_3371    :{BLACK}= Eerste hulp
 STR_3372    :{BLACK}= PIN
 STR_3373    :{BLACK}= Toilet
-STR_3374    :Warning: Too many objects selected!
-STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
+STR_3374    :Waarschuwing: Te veel objecten geselecteerd!
+STR_3375    :Niet alle objecten in deze decorgroep kunnen worden geselecteerd
+STR_3376    :Installeer nieuw baanontwerp...
+STR_3377    :{SMALLFONT}{BLACK}Installeer een nieuw baanontwerp
 STR_3378    :Installeren
 STR_3379    :Annuleren
-STR_3380    :Unable to install this track design...
-STR_3381    :File is not compatible or contains invalid data
-STR_3382    :File copy failed
-STR_3383    :Select new name for track design
-STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
-STR_3388    :Unable to switch to selected mode
-STR_3389    :Unable to select additional item of scenery...
-STR_3390    :Too many items selected
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3380    :Kan baanontwerp niet installeren...
+STR_3381    :Bestand is niet verenigbaar of bezit ongeldige data
+STR_3382    :Bestand kopïeren gefaald
+STR_3383    :Selecteer nieuwe naam voor dit baanontwerp
+STR_3384    :Er bestaat al een baanontwerp met deze naam - Verzin een andere naam voor dit ontwerp:
+STR_3385    :Snelcursus voor Beginners
+STR_3386    :Snelcursus Zelfontworpen Attracties
+STR_3387    :Snelcursus Achtbanen Bouwen
+STR_3388    :Kan niet naar geselecteerde modus wisselen
+STR_3389    :Kan additionele decorstukken niet selecteren...
+STR_3390    :Te veel items geselecteerd
+STR_3391    :{SMALLFONT}{BLACK}Dit is ons park - Laten we eventjes kort rondkijken...
+STR_3392    :{SMALLFONT}{BLACK}De snelste manier om het beeld te verschuiven is de RECHTER muisknop inhouden en met de muis bewegen...
+STR_3393    :{SMALLFONT}{BLACK}Als je meer van het park wil zien, kan je uitzoomen met het icoontje bovenaan het scherm...
+STR_3394    :{SMALLFONT}{BLACK}Je kan het beeld ook draaien in stappen van 90 graden...
+STR_3395    :{SMALLFONT}{BLACK}Dingen bouwen vanaf deze hoogte word een beetje lastig, laten we terug inzoomen...
+STR_3396    :{SMALLFONT}{BLACK}Laten we een simpele attractie bouwen om met dit park te beginnen...
+STR_3397    :{SMALLFONT}{BLACK}Het witte 'spook' plaatje laat zien waar de attractie zal worden gebouwd. Beweeg de muis er naar toe en klik om het te bouwen...
+STR_3398    :{SMALLFONT}{BLACK}Attracties hebben een ingang en een uitgang nodig. Beweeg de muis naar een tegeltje aan de rand van de attractie en klik om de ingang te bouwen. Klik nog een keer ergens om de uitgang te bouwen...
+STR_3399    :{SMALLFONT}{BLACK}We moeten een voetpad bouwen zodat bezoekers onze nieuwe attractie kunnen bereiken...
+STR_3400    :{SMALLFONT}{BLACK}Voor het pad naar de ingang gebruiken we een speciaal 'wachtrij' pad...
+STR_3401    :{SMALLFONT}{BLACK}Voor de uitgang maakt het niet uit welk pad je gebruikt. Een 'normaal' pad is goed...
+STR_3402    :{SMALLFONT}{BLACK}Okay dan, laten we de attractie openen! Om de attractie te openen klikken we op het vlag icoontje in het attractievenster en selecteren we 'openen'...
+STR_3403    :{SMALLFONT}{BLACK}Maar waar zijn de bezoekers?!
+STR_3404    :{SMALLFONT}{BLACK}Oh, juist - het park is nog gesloten! Laten we ons park openen...
+STR_3405    :{SMALLFONT}{BLACK}Terwijl we op onze eerste bezoekers wachten kunnen we wat decorstukken neerzetten...
+STR_3406    :{SMALLFONT}{BLACK}Dit is ons lege park. We gaan een simpele zelfontworpen attractie bouwen...
+STR_3407    :{SMALLFONT}{BLACK}Ten eerste hebben we een startpositie nodig...
+STR_3408    :{SMALLFONT}{BLACK}Het stuk baan dat we net gebouwd hebben is een 'station platform', en zorgt ervoor dat bezoekers in en uit kunnen stappen...
+STR_3409    :{SMALLFONT}{BLACK}We verlengen het platform een beetje door nog wat station platform secties aan te leggen...
+STR_3410    :{SMALLFONT}{BLACK}De icoontjes aan de bovenkant van het constructievenster laten je tusen verschillende soorten baanstukjes kiezen...
+STR_3411    :{SMALLFONT}{BLACK}We gaan een bocht naar links bouwen...
+STR_3412    :{SMALLFONT}{BLACK}De bocht is nog niet gebouwt, maar het witte spookplaatje laat zien waar het gebouwd gaat worden. Als je op het grote 'bouw dit' icoontje klikt word het gebouwd...
+STR_3413    :{SMALLFONT}{BLACK}Nu willen we een recht stuk bouwen, dus klikken we op het rechte stuk icoontjes...
+STR_3414    :{SMALLFONT}{BLACK}Nu dat het circuit compleet is, kunnen we de ingang en uitgang bouwen...
+STR_3415    :{SMALLFONT}{BLACK}Laten we testen of onze attractie werkt...
+STR_3416    :{SMALLFONT}{BLACK}Terwijl het word getest kunnen we een wachtrij en uitgang pad bouwen...
+STR_3417    :{SMALLFONT}{BLACK}Goed - laten we het park en onze attractie openen...
+STR_3418    :{SMALLFONT}{BLACK}Onze nieuwe attractie is niet heel erg spannend - misschien moeten we wat decor toevoegen?
+STR_3419    :{SMALLFONT}{BLACK}Om decor te bouwen boven ander decor (of midden in de lucht) hou je de SHIFT toets ingedrukt en beweeg je de muis om de hoogte te bepalen...
+STR_3420    :{SMALLFONT}{BLACK}Sommige types decor kunnen overgeverft worden nadat ze gebouwd zijn...
+STR_3421    :{SMALLFONT}{BLACK}Laten we wat muziek toevoegen aan onze attractie...
+STR_3422    :{SMALLFONT}{BLACK}Laten we een achtbaan bouwen!
+STR_3423    :{SMALLFONT}{BLACK}Er zijn tonnen met voorafgebouwde achtbanen, maar wij gaan ons eigen ontwerp bouwen...
+STR_3424    :{SMALLFONT}{BLACK}Zo, dat is het station platform. Nu hebben we een liftheuvel nodig...
+STR_3425    :{SMALLFONT}{BLACK}Achtbaankarretjes zijn niet aangedreven, dus is een 'kettinglift' nodig om ze eerst een heuvel op te trekken...
+STR_3426    :{SMALLFONT}{BLACK}Okay, de liftheuvel is klaar - Nu voor de eerste afdaling...
+STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee - De rijders zullen naar de zijkanten gesmeten worden terwijl de trein er overheen dondert...
+STR_3428    :{SMALLFONT}{BLACK}De bochten een banking geven zal de rit prettiger maken - Rijders zullen in hun stoelen geduwt worden in plaats van naar de zijkanten...
+STR_3429    :{SMALLFONT}{BLACK}Ja dat wordt em dus niet! Kijk naar de hoogtemarkeringen - De tweede heuvel is hoger dan de liftheuvel...
+STR_3430    :{SMALLFONT}{BLACK}Om ervoor te zorgen dat de trein terug naar het station komt, moet elke heuevel iets lager zijn dan de heuvel daarvoor...
+STR_3431    :{SMALLFONT}{BLACK}Dat ziet er beter uit! Onze trein zou het nu moeten halen! Laten we wat meer bochtige stukjes toevoegen...
+STR_3432    :{SMALLFONT}{BLACK}We moeten de trein afremmen voordat we de laatste bocht en het station inkomen, dus laten we wat remmen toevoegen...
+STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen zitten...
+STR_3434    :{SMALLFONT}{BLACK}Laten we kijken of onze achtbaan werkt!
+STR_3435    :{SMALLFONT}{BLACK}Fantastisch - Hij werkt! Laten we wat voetpaden aanleggen zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
+STR_3436    :{SMALLFONT}{BLACK}Terwijl we wachten op onze eerste rijders, kunnen we onze achtbaan een beetje aanpassen...
+STR_3437    :{SMALLFONT}{BLACK}Verwijder grote gebieden decor van het landschap
 STR_3438    :Kan hier niet al het decor verwijderen...
 STR_3439    :Decor verwijderen
 STR_3440    :Pagina 1

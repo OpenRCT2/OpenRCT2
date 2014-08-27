@@ -352,7 +352,7 @@ static void window_ride_list_scrollmousedown()
 		return;
 
 	// Open ride window
-	RCT2_CALLPROC_X(0x006ACC28, w->list_item_positions[index], 0, 0, 0, 0, 0, 0);
+	window_ride_main_open(w->list_item_positions[index]);
 }
 
 /**

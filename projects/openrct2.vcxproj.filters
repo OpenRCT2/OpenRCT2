@@ -159,6 +159,9 @@
     <ClInclude Include="..\src\staff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -378,6 +381,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\window_scenery.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_ride.c">
       <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>

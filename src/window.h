@@ -155,7 +155,13 @@ typedef struct{
 	uint16 var_484;
 	uint16 var_486;
 	uint16 var_488;
-}map_variables;
+} map_variables;
+
+typedef struct {
+	sint16 var_480;
+	sint32 var_482;
+} ride_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -185,13 +191,14 @@ typedef struct rct_window {
 	sint16 selected_list_item;		// 0x47A -1 for none selected
 	sint16 pad_47C;
 	sint16 pad_47E;
-	union{
+	union {
 		coordinate_focus viewport_focus_coordinates;
 		sprite_focus viewport_focus_sprite;
 		campaign_variables campaign;
 		new_ride_variables new_ride;
 		news_variables news;
 		map_variables map;
+		ride_variables ride;
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;
@@ -260,7 +267,7 @@ typedef enum {
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
 	WF_2 = (1 << 2),
-	WF_3 = (1 << 3),
+	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
 	WF_RESIZABLE = (1 << 8),
@@ -442,6 +449,7 @@ void window_park_rating_open();
 void window_finances_open();
 void window_finances_research_open();
 void window_new_campaign_open(sint16 campaignType);
+void window_ride_main_open(int rideIndex);
 void window_ride_list_open();
 void window_new_ride_open();
 void window_banner_open();
@@ -458,6 +466,7 @@ void window_new_ride_init_vars();
 void window_staff_init_vars();
 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
+void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
