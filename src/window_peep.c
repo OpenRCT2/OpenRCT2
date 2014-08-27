@@ -176,6 +176,7 @@ void window_peep_resize();
 void window_peep_overview_mouse_up();
 void window_peep_overview_paint();
 void window_peep_overview_invalidate();
+void window_peep_overview_viewport_init_wrapper();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
@@ -198,7 +199,7 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	(void*)0x696A6A,
-	(void*)0x697076,
+	window_peep_overview_viewport_init_wrapper,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -642,6 +643,13 @@ void window_peep_set_page(rct_window* w, int page){
 	window_invalidate(w);
 	
 	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
+void window_peep_overview_viewport_init_wrapper(){
+	rct_window* w;
+	window_get_register(w);
+	
+	window_peep_viewport_init(w);
 }
 
 /* rct2: 0x0069883C */
