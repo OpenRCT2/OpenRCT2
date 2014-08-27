@@ -881,3 +881,46 @@ void window_peep_overview_invalidate(){
 	
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
+
+void window_peep_overview_tab_paint( rct_window* w, rct_drawpixelinfo* dpi){
+
+	if ( w->disabled_widgets & (1ULL<<WIDX_TAB_1) )return;
+
+	//ax
+	int x = w->widgets[WIDX_TAB_1].left + 1 + w->x;
+	//cx
+	int y = w->widgets[WIDX_TAB_1].top + 1 + w->y;
+	//bx
+	int width = w->widgets[WIDX_TAB_1].right - 1 - w->widgets[WIDX_TAB_1].left;
+	//dx
+	int height = w->widgets[WIDX_TAB_1].bottom - 1 - w->widgets[WIDX_TAB_1].top;
+
+	if (w->page == WINDOW_PEEP_OVERVIEW){
+		height++;
+	}
+
+	rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo( dpi, x, width, y, height );
+
+	if (!cliped_dpi) return;
+
+	int cx = 14;
+	int dx = 20;
+
+	//ebp
+	rct_peep* peep = GET_PEEP(w->number);
+	
+	
+	if (peep->type == 1 && peep->staff_type == 3)
+		dx++;
+	eax = RCT2_GLOBAL(peep->sprite_type*8 + 0x982708, uint32);
+	ebx = *eax;
+	ebx++;
+	eax = 0;
+	
+	if (w->page == WINDOW_PEEP_OVERVIEW){
+		ax =  w->var_496;
+		ax &= ~((1<<0)|(1<<1));
+	}
+	ebx += eax;
+	//698474
+}
