@@ -840,39 +840,35 @@ void window_peep_overview_invalidate(){
 		w->pressed_widgets |= (1<<WIDX_TRACK);
 	}
 	
-	ax = w->width - 1;
-	cx = w->height - 1;
-	window_peep_overview_widgets[WIDX_BACKGROUND].right = ax;
-	window_peep_overview_widgets[WIDX_BACKGROUND].bottom = cx;
-	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].right =ax;
-	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].bottom = cx;
-	ax = w->width - 2;
-	window_peep_overview_widgets[WIDX_TITLE].right = ax;
-	ax = w->width - 13;
-	window_peep_overview_widgets[WIDX_CLOSE].left = ax;
-	ax = w->width - 3;
-	window_peep_overview_widgets[WIDX_CLOSE].rigth = ax;
-	ax = w->width - 26;
-	cx = w->height - 14;
-	window_peep_overview_widgets[WIDX_VIEWPORT].right = ax;
-	window_peep_overview_widgets[WIDX_VIEWPORT].bottom = cx;
-	cx = w->height - 12;
-	window_peep_overview_widgets[WIDX_ACTION_LBL].top = cx;
-	cx = w->height - 3;
-	window_peep_overview_widgets[WIDX_ACTION_LBL].bottom = cx;
-	ax = w->width - 24;
-	window_peep_overview_widgets[WIDX_ACTION_LBL].right = ax;
-	window_peep_overview_widgets[WIDX_MARQUEE].right = ax;
-	ax = w->width - 2;
-	window_peep_overview_widgets[WIDX_PICKUP].right = ax;
-	window_peep_overview_widgets[WIDX_RENAME].right = ax;
-	window_peep_overview_widgets[WIDX_LOCATE].right = ax;
-	window_peep_overview_widgets[WIDX_TRACK].right = ax;
-	ax = w->width - 25;
-	window_peep_overview_widgets[WIDX_PICKUP].left = ax;
-	window_peep_overview_widgets[WIDX_RENAME].left = ax;
-	window_peep_overview_widgets[WIDX_LOCATE].left = ax;
-	window_peep_overview_widgets[WIDX_TRACK].left = ax;
+	window_peep_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].right =w->width - 1;
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+	
+	window_peep_overview_widgets[WIDX_TITLE].right = w->width - 2;
+	
+	window_peep_overview_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_overview_widgets[WIDX_CLOSE].rigth = w->width - 3;
+
+	window_peep_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
+	window_peep_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+
+	window_peep_overview_widgets[WIDX_ACTION_LBL].top = w->height - 12;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].bottom = w->height - 3;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].right = w->width - 24;
+	
+	window_peep_overview_widgets[WIDX_MARQUEE].right = w->width - 24;
+
+	window_peep_overview_widgets[WIDX_PICKUP].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_RENAME].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_LOCATE].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_TRACK].right = w->width - 2;
+
+	window_peep_overview_widgets[WIDX_PICKUP].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_RENAME].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_LOCATE].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_TRACK].left = w->width - 25;
 	
 	RCT2_CALLPROC_X(0x6987ED, 0, 0, 0, 0, (int)w, 0, 0);
 }
