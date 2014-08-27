@@ -460,6 +460,8 @@ void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
 void window_bubble_list_item(rct_window* w, int item_position);
 
+void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
+
 void window_new_ride_init_vars();
 
 void window_staff_init_vars();
