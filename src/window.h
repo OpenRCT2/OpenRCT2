@@ -162,6 +162,11 @@ typedef struct {
 	sint32 var_482;
 } ride_variables;
 
+typedef struct {
+	sint16 var_480;
+	sint32 var_482;
+} scenery_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -199,6 +204,7 @@ typedef struct rct_window {
 		news_variables news;
 		map_variables map;
 		ride_variables ride;
+		scenery_variables scenery;
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;

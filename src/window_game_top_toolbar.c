@@ -258,8 +258,8 @@ static void window_game_top_toolbar_mouseup()
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
 			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-			window_scenery_open();
-			//RCT2_CALLPROC_EBPSAFE(006E0FEF);
+			//window_scenery_open();
+			RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
 		}
 		break;
 	case WIDX_PATH:
