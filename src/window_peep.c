@@ -870,5 +870,5 @@ void window_peep_overview_invalidate(){
 	window_peep_overview_widgets[WIDX_LOCATE].left = w->width - 25;
 	window_peep_overview_widgets[WIDX_TRACK].left = w->width - 25;
 	
-	RCT2_CALLPROC_X(0x6987ED, 0, 0, 0, 0, (int)w, 0, 0);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
