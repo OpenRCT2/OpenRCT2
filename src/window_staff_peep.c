@@ -115,13 +115,77 @@ static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_emptysub,
 	(void*)0x6BDD91, //Invalidate
 	(void*)0x6BDEAF, //Paint
-	(void*)0x6BE62A
+	window_staff_peep_emptysub
+};
+
+// 0x992B5C
+static void* window_staff_peep_orders_events[] = {
+	window_staff_peep_emptysub,
+	(void*)0x6BE7DB,
+	(void*)0x6BE975,
+	(void*)0x6BE802,
+	(void*)0x6BE809,
+	(void*)0x6BE9DA,
+	(void*)0x6BE960,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	(void*)0x6BE62B, //Invalidate
+	(void*)0x6BE7C6, //Paint
+	window_staff_peep_emptysub
+};
+
+// 0x992BCC
+static void* window_staff_peep_stats_events[] = {
+	window_staff_peep_emptysub,
+	(void*)0x6BEBCF,
+	(void*)0x6BEC1B,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	(void*)0x6BEC80,
+	(void*)0x6BEBEA,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	window_staff_peep_emptysub,
+	(void*)0x6BE9E9, //Invalidate
+	(void*)0x6BEA86, //Paint
+	window_staff_peep_emptysub
 };
 
 void* window_staff_peep_page_events[] = {
 	window_staff_peep_overview_events,
-	(void*)0x992B5C,
-	(void*)0x992BCC
+	window_staff_peep_orders_events,
+	window_staff_peep_stats_events
 };
 
 uint32 window_staff_peep_page_enabled_widgets[] = {
