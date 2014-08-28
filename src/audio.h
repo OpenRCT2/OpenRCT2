@@ -69,10 +69,20 @@ typedef struct {
 
 typedef struct {
 	uint32 var_0;
-	uint8 pad_4[0x118];
-	HMMIO hmmio;
-	HGLOBAL hmem;
-	uint8 pad_124[0x3C];
+	uint32 var_4;
+	uint8 pad_8[0x114];
+	HGLOBAL hmem;					// 0x11C
+	HMMIO hmmio;					// 0x120
+	uint32 var_124;
+	uint32 var_128;
+	uint32 var_12C;
+	uint32 var_130;
+	uint8 pad_134[0x18];
+	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+	uint32 var_150;
+	uint32 playpos;					// 0x154
+	uint32 var_158;
+	uint32 var_15C;
 	uint32 var_160;
 	uint32 var_164;
 	uint32 var_168;
@@ -99,101 +109,6 @@ typedef struct {
 	uint16 id;
 	rct_sound sound;
 } rct_other_sound;
-
-typedef struct {
-	uint32 var_0;
-	uint32 var_4;
-	uint32 var_8;
-	uint16 var_C;
-	uint16 var_E;
-	uint32 var_10;
-	uint32 var_14;
-	uint32 var_18;
-	uint32 var_1C;
-	uint32 var_20;
-	uint32 var_24;
-	uint32 var_28;
-	uint32 var_2C;
-	uint32 var_30;
-	uint32 var_34;
-	uint32 var_38;
-	uint32 var_3C;
-	uint32 var_40;
-	uint32 var_44;
-	uint32 var_48;
-	uint32 var_4C;
-	uint32 var_50;
-	uint32 var_54;
-	uint32 var_58;
-	uint32 var_5C;
-	uint32 var_60;
-	uint32 var_64;
-	uint32 var_68;
-	uint32 var_6C;
-	uint32 var_70;
-	uint32 var_74;
-	uint32 var_78;
-	uint32 var_7C;
-	uint32 var_80;
-	uint32 var_84;
-	uint32 var_88;
-	uint32 var_8C;
-	uint32 var_90;
-	uint32 var_94;
-	uint32 var_98;
-	uint32 var_9C;
-	uint32 var_A0;
-	uint32 var_A4;
-	uint32 var_A8;
-	uint32 var_AC;
-	uint32 var_B0;
-	uint32 var_B4;
-	uint32 var_B8;
-	uint32 var_BC;
-	uint32 var_C0;
-	uint32 var_C4;
-	uint32 var_C8;
-	uint32 var_CC;
-	uint32 var_D0;
-	uint32 var_D4;
-	uint32 var_D8;
-	uint32 var_DC;
-	uint32 var_E0;
-	uint32 var_E4;
-	uint32 var_E8;
-	uint32 var_EC;
-	uint32 var_F0;
-	uint32 var_F4;
-	uint32 var_F8;
-	uint32 var_FC;
-	uint32 var_100;
-	uint32 var_104;
-	uint32 var_108;
-	uint32 var_10C;
-	uint32 var_110;
-	uint32 var_114;
-	uint32 var_118;
-	HGLOBAL var_11C;
-	HMMIO var_120;
-	uint32 var_124;
-	uint32 var_128;
-	uint32 var_12C;
-	uint32 var_130;
-	uint32 var_134;
-	uint32 var_138;
-	uint32 var_13C;
-	uint32 var_140;
-	uint32 var_144;
-	uint32 var_148;
-	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
-	uint32 var_150;
-	uint32 playpos;					// 0x154
-	uint32 var_158;
-	uint32 var_15C;
-	uint32 var_160;
-	uint32 var_164;
-	uint32 var_168;
-} rct_sound_unknown;
 
 int get_dsound_devices();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
