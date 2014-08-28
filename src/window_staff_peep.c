@@ -84,12 +84,12 @@ void window_staff_peep_set_page(rct_window* w, int page);
 void window_staff_peep_disable_widgets(rct_window* w);
 
 void window_staff_peep_close();
-void window_staff_peep_mouse_up();
+void window_staff_peep_mouseup();
 
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_close,
-	window_staff_peep_mouse_up,
+	window_staff_peep_mouseup,
 	(void*)0x6BE558,
 	(void*)0x6BDF98,
 	(void*)0x6BDFA3,
@@ -401,7 +401,7 @@ void window_staff_peep_set_page(rct_window* w, int page)
 }
 
 /** rct2: 0x006BDF55 */
-void window_staff_peep_mouse_up()
+void window_staff_peep_mouseup()
 {
 	short widgetIndex;
 	rct_window* w;
