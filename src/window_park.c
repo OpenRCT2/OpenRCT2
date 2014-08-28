@@ -576,7 +576,6 @@ static uint32 window_park_page_enabled_widgets[] = {
 static void window_park_init_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, int page);
 static void window_park_anchor_border_widgets(rct_window *w);
-static void window_park_align_tabs(rct_window *w);
 static void window_park_set_pressed_tab(rct_window *w);
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
@@ -916,7 +915,7 @@ static void window_park_entrance_invalidate()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
 		w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE);
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 
 	// Anchor entrance page specific widgets
@@ -1149,7 +1148,7 @@ static void window_park_rating_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1284,7 +1283,7 @@ static void window_park_guests_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1434,7 +1433,7 @@ static void window_park_price_invalidate()
 	RCT2_GLOBAL(0x013CE952 + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	window_park_price_widgets[WIDX_PRICE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) == 0 ? STR_FREE : 1429;
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1543,7 +1542,7 @@ static void window_park_stats_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1705,7 +1704,7 @@ static void window_park_objective_invalidate()
 	else
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1852,7 +1851,7 @@ static void window_park_awards_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 
-	window_park_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
 }
 
@@ -1943,21 +1942,6 @@ static void window_park_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_TITLE].right = w->width - 2;
 	w->widgets[WIDX_CLOSE].left = w->width - 13;
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
-}
-
-static void window_park_align_tabs(rct_window *w)
-{
-	int i, x, tab_width;
-
-	x = w->widgets[WIDX_TAB_1].left;
-	tab_width = w->widgets[WIDX_TAB_1].right - w->widgets[WIDX_TAB_1].left;
-	for (i = 0; i < 7; i++) {
-		if (w->disabled_widgets & (1LL << (WIDX_TAB_1 + i)))
-			continue;
-		w->widgets[WIDX_TAB_1 + i].left = x;
-		w->widgets[WIDX_TAB_1 + i].right = x + tab_width;
-		x += tab_width + 1;
-	}
 }
 
 static void window_park_set_pressed_tab(rct_window *w)
