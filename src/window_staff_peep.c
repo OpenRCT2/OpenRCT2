@@ -86,6 +86,10 @@ void window_staff_peep_disable_widgets(rct_window* w);
 void window_staff_peep_close();
 void window_staff_peep_mouseup();
 
+void window_staff_peep_orders_mouseup();
+
+void window_staff_peep_stats_mouseup();
+
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_close,
@@ -121,7 +125,7 @@ static void* window_staff_peep_overview_events[] = {
 // 0x992B5C
 static void* window_staff_peep_orders_events[] = {
 	window_staff_peep_emptysub,
-	(void*)0x6BE7DB,
+	window_staff_peep_orders_mouseup,
 	(void*)0x6BE975,
 	(void*)0x6BE802,
 	(void*)0x6BE809,
@@ -153,7 +157,7 @@ static void* window_staff_peep_orders_events[] = {
 // 0x992BCC
 static void* window_staff_peep_stats_events[] = {
 	window_staff_peep_emptysub,
-	(void*)0x6BEBCF,
+	window_staff_peep_stats_mouseup,
 	(void*)0x6BEC1B,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
@@ -409,7 +413,6 @@ void window_staff_peep_mouseup()
 	rct_peep* peep = GET_PEEP(w->number);
 
 	switch (widgetIndex) {
-		
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
@@ -443,6 +446,64 @@ void window_staff_peep_mouseup()
 	case WIDX_RENAME: // 0xC
 		// 6BE4BC
 		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
+		break;
+	}
+}
+
+/** rct2: 0x006BE814 */
+void window_staff_peep_set_order(rct_window* w, int order_id)
+{
+	int eax = 1 << order_id;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	int ax = peep->var_C6 ^ eax;
+	int flags = (ax << 8) | 1;
+
+	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+}
+
+/** rct2: 0x006BE7DB */
+void window_staff_peep_orders_mouseup()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_VIEWPORT:
+	case WIDX_BTM_LABEL:
+	case WIDX_PICKUP:
+	case WIDX_PATROL:
+	case WIDX_RENAME:
+		window_staff_peep_set_order(w, widgetIndex - 8);
+		break;
+	}
+}
+
+/** rct2: 0x0006BEBCF */
+void window_staff_peep_stats_mouseup()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	}
 }
