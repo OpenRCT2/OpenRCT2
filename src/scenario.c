@@ -139,7 +139,7 @@ void scenario_load(const char *path)
 			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)0x01357CF2);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
 
 			// Read ?
 			sawyercoding_read_chunk(file, (uint8*)0x0135832C);

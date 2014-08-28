@@ -174,7 +174,7 @@ void window_new_campaign_open(sint16 campaignType)
 	numApplicableRides = 0;
 	window_new_campaign_rides[0] = 255;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x03820000))
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x03820000))
 			window_new_campaign_rides[numApplicableRides++] = i;
 	}
 	window_new_campaign_rides[numApplicableRides] = 255;
