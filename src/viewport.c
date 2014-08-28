@@ -280,7 +280,7 @@ void viewport_update_position(rct_window *window)
 	if (window->viewport_target_sprite != -1){
 		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
 
-		int height = map_element_height(sprite->unknown.x, sprite->unknown.y) - 16;
+		int height = map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) - 16;
 		int underground = sprite->unknown.z < height;
 
 		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, (int)window, (int)viewport, 0);
