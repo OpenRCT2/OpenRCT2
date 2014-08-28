@@ -171,11 +171,7 @@ void window_staff_open()
 	window->colours[2] = 4;
 }
 
-void window_staff_cancel_tools() {
-	rct_window *w;
-
-	window_get_register(w);
-
+void window_staff_cancel_tools(rct_window *w) {
 	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
 	int toolWindowNumber = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber);
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))

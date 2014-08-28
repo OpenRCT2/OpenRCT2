@@ -70,12 +70,13 @@ enum {
 } WINDOW_SCENERY_LIST_TAB;
 
 static void window_scenery_emptysub() { }
+static void window_scenery_close();
 static void window_scenery_invalidate();
 static void window_scenery_paint();
 static void window_scenery_tooltip();
 
 static void* window_scenery_events[] = {
-	(void*)0x006E1A73,    // window_scenery_close
+	window_scenery_close, //(void*)0x006E1A73,    // window_scenery_close
 	(void*)0x006E19FC,    // window_scenery_mouseup
 	(void*)0x006E1E48,    // window_scenery_resize,
 	(void*)0x006E1A25,    // window_scenery_mousedown,
@@ -246,12 +247,48 @@ void window_scenery_open()
 	window->colours[2] = 0x0C;
 }
 
+/*
+* rct2: 0x006E1A73
+**/
+void window_scenery_close() {
+	rct_window *w;
+
+	window_get_register(w);
+
+	RCT2_CALLPROC_EBPSAFE(0x6E2712);
+	hide_gridlines();
+	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
+
+	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
+	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, rct_windownumber);
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9)
+			tool_cancel();
+}
+
 /**
 *
 *  rct2: 0x006E1C05
 */
 void window_scenery_tooltip() {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	uint16 tooltipIndex;
+
+	#ifdef _MSC_VER
+	__asm mov tooltipIndex, ax
+	#else
+	__asm__("mov %[tooltipIndex], ax " : [tooltipIndex] "+m" (tooltipIndex));
+	#endif
+
+	if (tooltipIndex == 0x18)
+	{
+		RCT2_GLOBAL(0x013CE952, uint16) = 3159;
+	}
+	else if (tooltipIndex >= 4 && tooltipIndex < 0x17)
+	{
+		uint32* sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32*)[tooltipIndex - 4];
+		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL((int)sceneryEntry, uint16);
+	}
 }
 
 /**
