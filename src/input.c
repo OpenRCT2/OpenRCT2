@@ -43,6 +43,7 @@ static void input_mouseover_widget_flatbutton_invalidate();
 void process_mouse_over(int x, int y);
 void sub_6ED801(int x, int y);
 void invalidate_scroll();
+static void* sub_407074();
 
 #pragma region Scroll bar input
 
@@ -1557,9 +1558,8 @@ void game_handle_input()
  */
 static void game_get_next_input(int *x, int *y, int *state)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x00407074, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax == 0) {
+	void* eax = sub_407074(); //RCT2_CALLFUNC_X(0x00407074, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax == NULL) {
 		*x = gCursorState.x;
 		*y = gCursorState.y;
 		*state = 0;
@@ -1762,4 +1762,19 @@ void invalidate_scroll()
 	wind->scrolls[scroll_id / sizeof(rct_scroll)].flags &= 0xFF11;
 
 	window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
+}
+
+static void* sub_407074()
+{
+	int ecx = RCT2_GLOBAL(0x009E2DE8, uint32);
+	if (ecx != RCT2_GLOBAL(0x009E2DE4, uint32)) {
+		int eax = ecx + ecx*2;
+		ecx++;
+		ecx &= 0x3F;
+		eax = 0x1424340 + eax*4;
+		RCT2_GLOBAL(0x009E2DE8, uint32) = ecx;
+		return (void*)eax;
+	} else {
+		return NULL;
+	}
 }
