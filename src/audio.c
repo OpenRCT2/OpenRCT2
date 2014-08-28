@@ -282,7 +282,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 	}
 	WAVEFORMATEX waveformat1, waveformat2;
 	RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->GetFormat(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &waveformat1, sizeof(WAVEFORMATEX), 0);
-	RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->SetFormat(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &RCT2_GLOBAL(0x01425B40, WAVEFORMATEX));
+	RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->SetFormat(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX));
 	RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER)->lpVtbl->GetFormat(RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), &waveformat2, sizeof(WAVEFORMATEX), 0);
 	return 1;
 }
@@ -683,7 +683,7 @@ int sound_play_panned(int sound_id, int x)
 		}
 
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
-		sound_prepare(sound_id, &other_sound->sound, 1, RCT2_GLOBAL(0x009AAC6E, uint32));
+		sound_prepare(sound_id, &other_sound->sound, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
 		result = sound_play(&other_sound->sound, 0, volume, pan, 0);
