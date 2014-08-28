@@ -79,8 +79,8 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label Thought marquee
 	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },				// Viewport
 	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label Action
-	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Pickup Button
-	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Rename Button
+	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		0x1436,			1706},					// Pickup Button
+	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		SPR_RENAME,		1055},					// Rename Button
 	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
 	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	SPR_TRACK_PEEP,	1930},					// Track Button
 	{ WIDGETS_END },
@@ -111,7 +111,7 @@ rct_widget window_peep_rides_widgets[] = {
 	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
 	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
 	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
-	{WWT_SCROLL,		1, 3,	188,	57,	143,		2,	STR_NONE},
+	{WWT_SCROLL,	1, 3,	188,	57,	143,	2,			STR_NONE},
 	{WIDGETS_END},
 };
 
@@ -570,7 +570,6 @@ void window_peep_overview_mouse_up(){
 		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PICKUP:
-		//696ba6
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
@@ -590,7 +589,6 @@ void window_peep_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_RENAME:
-		//696e4d
 		window_show_textinput(w, (int)widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx);
 		break;
 	case WIDX_LOCATE:
@@ -761,8 +759,8 @@ void window_peep_overview_paint(){
 	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	//RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
-	//return;
+	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+	return;
 
 	window_draw_widgets(w, dpi);
 	//6983dd
@@ -830,7 +828,7 @@ void window_peep_overview_paint(){
 /* rct2: 0x696749*/
 void window_peep_overview_invalidate(){
 	rct_window* w;
-	window_invalidate_get_registers(w);
+	window_get_register(w);
 	
 	if (window_peep_page_widgets[w->page] != w->widgets){
 		w->widgets = window_peep_page_widgets[w->page];
@@ -838,7 +836,7 @@ void window_peep_overview_invalidate(){
 	}
 	
 	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
-	w->pressed_widgets |= 1 << (w->page + WIDX_TAB_1);
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 	
 	rct_peep* peep = GET_PEEP(w->number);
 	RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
@@ -858,7 +856,7 @@ void window_peep_overview_invalidate(){
 	window_peep_overview_widgets[WIDX_TITLE].right = w->width - 2;
 	
 	window_peep_overview_widgets[WIDX_CLOSE].left = w->width - 13;
-	window_peep_overview_widgets[WIDX_CLOSE].rigth = w->width - 3;
+	window_peep_overview_widgets[WIDX_CLOSE].right = w->width - 3;
 
 	window_peep_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
 	window_peep_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
@@ -912,13 +910,13 @@ void window_peep_overview_tab_paint( rct_window* w, rct_drawpixelinfo* dpi){
 	
 	if (peep->type == 1 && peep->staff_type == 3)
 		dx++;
-	eax = RCT2_GLOBAL(peep->sprite_type*8 + 0x982708, uint32);
-	ebx = *eax;
+	int eax = RCT2_GLOBAL(peep->sprite_type*8 + 0x982708, uint32);
+	int ebx = *(uint32*)eax;
 	ebx++;
 	eax = 0;
 	
 	if (w->page == WINDOW_PEEP_OVERVIEW){
-		ax =  w->var_496;
+		int ax = *((uint16*)w + 496 / 2);
 		ax &= ~((1<<0)|(1<<1));
 	}
 	ebx += eax;

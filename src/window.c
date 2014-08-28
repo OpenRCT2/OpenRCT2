@@ -1499,6 +1499,7 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_window*w, rc
 
 /* Based on rct2: 0x6987ED and another version from window_park */
 void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id )
+{
 	int x = w->widgets[start_tab_id].left;
 	int tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
 	
