@@ -86,14 +86,16 @@ void window_staff_peep_disable_widgets(rct_window* w);
 void window_staff_peep_overview_close();
 void window_staff_peep_overview_mouseup();
 void window_staff_peep_overview_resize();
-void window_staff_peep_overview_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+void window_staff_peep_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
 void window_staff_peep_overview_dropdown();
-void window_staff_peep_overview_update(rct_window *w);
+void window_staff_peep_overview_update(rct_window* w);
 
 void window_staff_peep_orders_mouseup();
+void window_staff_peep_orders_update(rct_window* w);
 
 void window_staff_peep_stats_mouseup();
 void window_staff_peep_stats_resize();
+void window_staff_peep_stats_update(rct_window* w);
 
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
@@ -135,7 +137,7 @@ static void* window_staff_peep_orders_events[] = {
 	(void*)0x6BE802,
 	(void*)0x6BE809,
 	(void*)0x6BE9DA,
-	(void*)0x6BE960, // update
+	window_staff_peep_orders_update,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
@@ -167,7 +169,7 @@ static void* window_staff_peep_stats_events[] = {
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	(void*)0x6BEC80,
-	(void*)0x6BEBEA, // update
+	window_staff_peep_stats_update,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
@@ -624,6 +626,13 @@ void window_staff_peep_orders_mouseup()
 	}
 }
 
+/** rct2: 0x006BE960 */
+void window_staff_peep_orders_update(rct_window* w)
+{
+	w->frame_no++;
+	window_invalidate_by_id(0x597, w->number);
+}
+
 /** rct2: 0x006BEBCF */
 void window_staff_peep_stats_mouseup()
 {
@@ -672,5 +681,18 @@ void window_staff_peep_stats_resize()
 	if (w->height > w->max_height) {
 		window_invalidate(w);
 		w->height = w->max_height;
+	}
+}
+
+/** rct2: 0x006BEBEA */
+void window_staff_peep_stats_update(rct_window* w)
+{
+	w->frame_no++;
+	window_invalidate_by_id(0x697, w->number);
+
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep->var_45 && 10) {
+		peep->var_45 &= 0xEF;
+		window_invalidate(w);
 	}
 }
