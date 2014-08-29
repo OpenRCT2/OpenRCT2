@@ -89,6 +89,7 @@ void window_staff_peep_mouseup();
 void window_staff_peep_orders_mouseup();
 
 void window_staff_peep_stats_mouseup();
+void window_staff_peep_stats_resize();
 
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
@@ -126,11 +127,11 @@ static void* window_staff_peep_overview_events[] = {
 static void* window_staff_peep_orders_events[] = {
 	window_staff_peep_emptysub,
 	window_staff_peep_orders_mouseup,
-	(void*)0x6BE975,
+	window_staff_peep_stats_resize,
 	(void*)0x6BE802,
 	(void*)0x6BE809,
 	(void*)0x6BE9DA,
-	(void*)0x6BE960,
+	(void*)0x6BE960, // update
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
@@ -158,11 +159,11 @@ static void* window_staff_peep_orders_events[] = {
 static void* window_staff_peep_stats_events[] = {
 	window_staff_peep_emptysub,
 	window_staff_peep_stats_mouseup,
-	(void*)0x6BEC1B,
+	window_staff_peep_stats_resize,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	(void*)0x6BEC80,
-	(void*)0x6BEBEA,
+	(void*)0x6BEBEA, // update
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
@@ -489,7 +490,7 @@ void window_staff_peep_orders_mouseup()
 	}
 }
 
-/** rct2: 0x0006BEBCF */
+/** rct2: 0x006BEBCF */
 void window_staff_peep_stats_mouseup()
 {
 	short widgetIndex;
@@ -505,5 +506,37 @@ void window_staff_peep_stats_mouseup()
 	case WIDX_TAB_3:
 		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
+	}
+}
+
+/** rct2: 0x006BEC1B and rct2: 0x006BE975 */
+void window_staff_peep_stats_resize()
+{
+	rct_window* w;
+	window_get_register(w);
+
+	w->min_width = 190;
+	w->max_width = 190; 
+	w->min_height = 119;
+	w->max_height = 119;
+	
+	if (w->width < w->min_width) {
+		w->width = w->min_width;
+		window_invalidate(w);
+	}
+
+	if (w->width > w->max_width) {
+		window_invalidate(w);
+		w->width = w->max_width;
+	}
+
+	if (w->height < w->min_height) {
+		w->height = w->min_height;
+		window_invalidate(w);
+	}
+
+	if (w->height > w->max_height) {
+		window_invalidate(w);
+		w->height = w->max_height;
 	}
 }
