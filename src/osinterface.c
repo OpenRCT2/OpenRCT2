@@ -28,6 +28,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
+#include "input.h"
 #include "osinterface.h"
 #include "screenshot.h"
 #include "window.h"
@@ -40,12 +41,10 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
-openrct2_mouse_data* mouse_buffer = (openrct2_mouse_data*)0x1424340;
 
 static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
-static void store_mouse_input(int state);
 
 static SDL_Window *_window;
 static SDL_Surface *_surface;
@@ -598,20 +597,4 @@ int osinterface_ensure_directory_exists(const char *path)
 char osinterface_get_path_separator()
 {
 	return '\\';
-}
-
-/**
- * rct2: 0x00406C96
- */
-static void store_mouse_input(int state)
-{
-	int write_index = RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32);
-	int next_write_index = (write_index + 1) & 0x3F; //64 length buffer
-	
-	if (next_write_index != RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32)) {
-		mouse_buffer[write_index].x = RCT2_GLOBAL(0x01424318, uint32);
-		mouse_buffer[write_index].y = RCT2_GLOBAL(0x0142431C, uint32);
-		mouse_buffer[write_index].state = state;
-		RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32) = next_write_index;
-	}
 }
