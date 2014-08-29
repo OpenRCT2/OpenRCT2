@@ -70,14 +70,15 @@ typedef struct {
 typedef struct {
 	uint32 var_0;
 	uint32 var_4;
-	uint8 pad_8[0x114];
+	uint32 var_8;
+	uint8 pad_C[0x104];
+	uint32 var_110;
+	uint32 var_114;
+	uint32 var_118;
 	HGLOBAL hmem;					// 0x11C
 	HMMIO hmmio;					// 0x120
-	uint32 var_124;
-	uint32 var_128;
-	uint32 var_12C;
-	uint32 var_130;
-	uint8 pad_134[0x18];
+	MMCKINFO mmckinfo1;				// 0x124
+	MMCKINFO mmckinfo2;				// 0x138
 	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
 	uint32 var_150;
 	uint32 playpos;					// 0x154

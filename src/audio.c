@@ -189,6 +189,18 @@ int sound_load3dparameters()
 
 /**
 *
+*  rct2: 0x00404F3F
+*/
+int sound_load3dposition()
+{
+	if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 1))) {
+		return 1;
+	}
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x00404932
 */
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits)
@@ -240,7 +252,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).vPosition.x = -1.0f;
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMaxDistance = 9.8999996f;
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMinDistance = 0.25f;
-			if (RCT2_CALLFUNC(0x00404F3F, int)) {
+			if (sound_load3dposition()) {
 				if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->SetMinDistance(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMinDistance, 1))) {
 					if (sound_load3dparameters()) {
 						return 1;
@@ -404,11 +416,62 @@ MMRESULT sub_405383(HMMIO hmmio, uint32 size, char* buffer, uint32* a4, int* rea
 
 /**
 *
+*  rct2: 0x00401822
+*/
+int sub_401822(int channel, HMMIO hmmio, LONG offset)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	LPMMCKINFO v4 = &sound_channel->mmckinfo2;
+	HMMIO* v5 = &sound_channel->hmmio;
+	if (RCT2_CALLFUNC_4(0x00405222, int, HMMIO, HMMIO*, HGLOBAL*, LPMMCKINFO, hmmio, &sound_channel->hmmio, &sound_channel->hmem, &sound_channel->mmckinfo2)) {
+		return -100;
+	}
+	if (*(uint16*)sound_channel->hmem != 1) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -101;
+	}
+	if (RCT2_CALLFUNC_4(0x00405465, int, HMMIO*, LPMMCKINFO, LPMMCKINFO, int, &sound_channel->hmmio, &sound_channel->mmckinfo1, &sound_channel->mmckinfo2, offset)) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -103;
+	}
+	sound_channel->var_158 = offset;
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x0040153B
+*/
+int sub_40153B(int channel)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	if (sound_channel->var_4) {
+		if (sound_channel->hmmio) {
+			sound_channel_free(sound_channel->hmmio, sound_channel->hmem);
+		}
+		if (sub_401822(channel, &sound_channel->var_8, sound_channel->var_110)) {
+			return 0;
+		}
+		sound_channel->var_164 = sound_channel->var_114;
+		sound_channel->var_118 = sound_channel->var_110;
+		sound_channel->var_4 = 0;
+	} else {
+		int result = RCT2_CALLFUNC_4(0x00405465, int, HMMIO*, LPMMCKINFO, LPMMCKINFO, int, &sound_channel->hmmio, &sound_channel->mmckinfo1, &sound_channel->mmckinfo2, sound_channel->var_118);
+		sound_channel->var_158 = sound_channel->var_118;
+		if (result) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+/**
+*
 *  rct2: 0x00401000
 */
 void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel)
 {
-	rct_sound_channel* soundchannel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	DWORD status;
 	DWORD dwCurrentPlayCursor;
 	DWORD dwCurrentWriteCursor;
@@ -419,67 +482,67 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 	int buf1size;
 	char* buf2;
 	int buf2size;
-	soundchannel->dsbuffer->lpVtbl->GetStatus(soundchannel->dsbuffer, &status);
+	sound_channel->dsbuffer->lpVtbl->GetStatus(sound_channel->dsbuffer, &status);
 	if (status & DSBSTATUS_BUFFERLOST) {
-		if (FAILED(soundchannel->dsbuffer->lpVtbl->Restore(soundchannel->dsbuffer))) {
+		if (FAILED(sound_channel->dsbuffer->lpVtbl->Restore(sound_channel->dsbuffer))) {
 			return;
 		}
-		soundchannel->playpos = 0;
+		sound_channel->playpos = 0;
 		bufferlost = 1;
 	}
-	soundchannel->dsbuffer->lpVtbl->GetCurrentPosition(soundchannel->dsbuffer, &dwCurrentPlayCursor, &dwCurrentWriteCursor);
-	if (dwCurrentPlayCursor != soundchannel->playpos || bufferlost) {
-		if (soundchannel->var_168 && !soundchannel->var_15C) {
-			if (!soundchannel->var_160) {
-				soundchannel->var_160 = 1;
-				if (!soundchannel->var_4) {
+	sound_channel->dsbuffer->lpVtbl->GetCurrentPosition(sound_channel->dsbuffer, &dwCurrentPlayCursor, &dwCurrentWriteCursor);
+	if (dwCurrentPlayCursor != sound_channel->playpos || bufferlost) {
+		if (sound_channel->var_168 && !sound_channel->var_15C) {
+			if (!sound_channel->var_160) {
+				sound_channel->var_160 = 1;
+				if (!sound_channel->var_4) {
 					LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
-					soundchannel->var_0 = 0;
+					sound_channel->var_0 = 0;
 					if (dsbuffer) {
 						dsbuffer->lpVtbl->Stop(dsbuffer);
 						dsbuffer->lpVtbl->Release(dsbuffer);
 						RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel] = 0;
 					}
-					if (soundchannel->hmmio) {
-						sound_channel_free(&soundchannel->hmmio, &soundchannel->hmem);
+					if (sound_channel->hmmio) {
+						sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
 					}
 				}
 			}
 			return;
 		}
-		if (dwCurrentPlayCursor >= soundchannel->playpos) {
-			var1 = dwCurrentPlayCursor - soundchannel->playpos;
+		if (dwCurrentPlayCursor >= sound_channel->playpos) {
+			var1 = dwCurrentPlayCursor - sound_channel->playpos;
 		} else {
-			var1 = dwCurrentPlayCursor + soundchannel->var_150 - soundchannel->playpos;
+			var1 = dwCurrentPlayCursor + sound_channel->var_150 - sound_channel->playpos;
 		}
 		if (bufferlost) {
-			var2 = 2 * soundchannel->var_150 / 6;
+			var2 = 2 * sound_channel->var_150 / 6;
 		} else {
 			var2 = var1;
 		}
-		soundchannel->var_158 += var1;
-		if (soundchannel->var_168) {
-			int var3 = soundchannel->var_15C;
-			int* var4 = &soundchannel->var_15C;
+		sound_channel->var_158 += var1;
+		if (sound_channel->var_168) {
+			int var3 = sound_channel->var_15C;
+			int* var4 = &sound_channel->var_15C;
 			if (var3) {
 				if (var1 <= var3) {
 					*var4 = var3 - var1;
 				} else {
 					*var4 = 0;
 				}
-				if (SUCCEEDED(soundchannel->dsbuffer->lpVtbl->Lock(soundchannel->dsbuffer, soundchannel->playpos, var2, &buf1, &buf1size, &buf2, &buf2size, 0))) {
-					uint16 var5 = -(soundchannel->var_128 != 8);
+				if (SUCCEEDED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, &buf2size, 0))) {
+					uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
 					var5 &= 0x80;
 					memset(buf1, var5 + 128, buf1size);
 					if (buf2 && buf2size) {
-						uint16 var5 = -(soundchannel->var_128 != 8);
+						uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
 						var5 &= 0x80;
 						memset(buf2, var5 + 128, buf2size);
 					}
-					soundchannel->dsbuffer->lpVtbl->Unlock(soundchannel->dsbuffer, buf1, buf1size, buf2, buf2size);
-					soundchannel->playpos += var2;
-					if( soundchannel->playpos >= soundchannel->var_150) {
-						soundchannel->playpos = soundchannel->playpos - soundchannel->var_150;
+					sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
+					sound_channel->playpos += var2;
+					if (sound_channel->playpos >= sound_channel->var_150) {
+						sound_channel->playpos = sound_channel->playpos - sound_channel->var_150;
 					}
 					return;
 				}
@@ -487,23 +550,23 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 				return;
 			}
 		}
-		if (FAILED(soundchannel->dsbuffer->lpVtbl->Lock(soundchannel->dsbuffer, soundchannel->playpos, var2, &buf1, &buf1size, &buf2, &buf2size, 0))) {
+		if (FAILED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, &buf2size, 0))) {
 			// TimeFunc() could not lock DirectSoundBuffer
 			return;
 		}
 		if (buf1size) {
-			if (soundchannel->var_160) {
-				uint16 var5 = -(soundchannel->var_128 != 8);
+			if (sound_channel->var_160) {
+				uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
 				var5 &= 0x80;
 				memset(buf1, var5 + 128, buf1size);
 				goto label49;
 			}
 		}
 		int var7;
-		sub_405383(soundchannel->hmmio, buf1size, buf1, &soundchannel->var_124, &var7);
+		sub_405383(sound_channel->hmmio, buf1size, buf1, &sound_channel->mmckinfo1, &var7);
 		if (var7 < buf1size) {
-			if (!soundchannel->var_164) {
-				int s = soundchannel->var_128;
+			if (!sound_channel->var_164) {
+				int s = sound_channel->mmckinfo1.cksize;
 				int t = buf1size - var7;
 				int v;
 				if (s == 8) {
@@ -516,11 +579,11 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 				}
 				memset(&buf1[var7], v, t);
 			label42:
-				soundchannel->var_168 = 1;
-				if (dwCurrentPlayCursor <= soundchannel->playpos) {
-					soundchannel->var_15C = soundchannel->playpos - dwCurrentPlayCursor;
+				sound_channel->var_168 = 1;
+				if (dwCurrentPlayCursor <= sound_channel->playpos) {
+					sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
 				} else {
-					soundchannel->var_15C = soundchannel->playpos + soundchannel->var_150 - dwCurrentPlayCursor;
+					sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
 				}
 				goto label49;
 			}
@@ -529,60 +592,60 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 			do {
 				v38 -= var7;
 				v21 += var7;
-				RCT2_CALLFUNC_1(0x0040153B, int, int, channel);
-				sub_405383(soundchannel->hmmio, v38, v21, &soundchannel->var_124, &var7);
+				sub_40153B(channel);//RCT2_CALLFUNC_1(0x0040153B, int, int, channel);
+				sub_405383(sound_channel->hmmio, v38, v21, &sound_channel->mmckinfo1, &var7);
 			} while(var7 < v38);
 		}
 	label49:
-		if (buf2size == 0 || soundchannel->var_160 != 0) {
-			if(buf2 != 0 && buf2size != 0 && soundchannel->var_160 != 0) {
-				int var5 = -(soundchannel->var_128 != 8);
+		if (buf2size == 0 || sound_channel->var_160 != 0) {
+			if(buf2 != 0 && buf2size != 0 && sound_channel->var_160 != 0) {
+				int var5 = -(sound_channel->mmckinfo1.cksize != 8);
 				var5 &= 0x80;
 				memset(buf2, var5 + 128, buf2size);
 			}
 			goto label68;
 		}
-		sub_405383(soundchannel->hmmio, buf2size, buf2, &soundchannel->var_124, &var7);
+		sub_405383(sound_channel->hmmio, buf2size, buf2, &sound_channel->mmckinfo1, &var7);
 		if (var7 >= buf2size) {
 		label68:
-			soundchannel->dsbuffer->lpVtbl->Unlock(soundchannel->dsbuffer, buf1, buf1size, buf2, buf2size);
-			soundchannel->playpos += var2;
-			if (soundchannel->playpos >= soundchannel->var_150) {
-				soundchannel->playpos -= soundchannel->var_150;
+			sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
+			sound_channel->playpos += var2;
+			if (sound_channel->playpos >= sound_channel->var_150) {
+				sound_channel->playpos -= sound_channel->var_150;
 			}
 			if (bufferlost != 0) {
-				soundchannel->dsbuffer->lpVtbl->Play(soundchannel->dsbuffer, 0, 0, DSBPLAY_LOOPING);
+				sound_channel->dsbuffer->lpVtbl->Play(sound_channel->dsbuffer, 0, 0, DSBPLAY_LOOPING);
 			}
 			return;
 		}
-		if (soundchannel->var_164 != 0) {
+		if (sound_channel->var_164 != 0) {
 			char* v26 = buf2;
 			int v27 = buf2size;
 			do {
 				v26 += var7;
 				v27 -= var7;
-				RCT2_CALLFUNC_1(0x0040153B, int, int, channel);
-				sub_405383(soundchannel->hmmio, v27, v26, &soundchannel->var_124, &var7);
+				sub_40153B(channel);//RCT2_CALLFUNC_1(0x0040153B, int, int, channel);
+				sub_405383(sound_channel->hmmio, v27, v26, &sound_channel->mmckinfo1, &var7);
 			} while(var7 < v27);
 			goto label68;
 		}
 		int s = buf2size - var7;
 		int v;
-		if (soundchannel->hmem == (HGLOBAL)8) {
+		if (sound_channel->hmem == (HGLOBAL)8) {
 			v = 128;
 		} else {
-			if (soundchannel->hmem != (HGLOBAL)16) {
+			if (sound_channel->hmem != (HGLOBAL)16) {
 				goto label58;
 			}
 			v = 0;
 		}
 		memset(&buf2[var7], v, s);
 	label58:
-		soundchannel->var_168 = 1;
-		if (dwCurrentPlayCursor <= soundchannel->playpos) {
-			soundchannel->var_15C = soundchannel->playpos - dwCurrentPlayCursor;
+		sound_channel->var_168 = 1;
+		if (dwCurrentPlayCursor <= sound_channel->playpos) {
+			sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
 		} else {
-			soundchannel->var_15C = soundchannel->playpos + soundchannel->var_150 - dwCurrentPlayCursor;
+			sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
 		}
 		goto label68;
 	}
@@ -1288,7 +1351,7 @@ int sound_channel_stop(int channel)
 	while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
 		Sleep(10);
 	}
-	if (sound_channel->hmem) {
+	if (sound_channel->hmmio) {
 		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
 	}
 
