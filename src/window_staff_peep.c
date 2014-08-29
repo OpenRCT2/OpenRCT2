@@ -87,6 +87,7 @@ void window_staff_peep_overview_close();
 void window_staff_peep_overview_mouseup();
 void window_staff_peep_overview_resize();
 void window_staff_peep_overview_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+void window_staff_peep_overview_dropdown();
 
 void window_staff_peep_orders_mouseup();
 
@@ -99,7 +100,7 @@ static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_overview_mouseup,
 	window_staff_peep_overview_resize,
 	window_staff_peep_overview_mousedown,
-	(void*)0x6BDFA3,
+	window_staff_peep_overview_dropdown,
 	window_staff_peep_emptysub,
 	(void*)0x6BE602,
 	window_staff_peep_emptysub,
@@ -529,6 +530,42 @@ void window_staff_peep_overview_mousedown(int widgetIndex, rct_window* w, rct_wi
 	// Disable clear patrol area if no area is set.
 	if (!(RCT2_ADDRESS(0x013CA672, uint8)[peep->var_C5] & 2)) {
 		RCT2_GLOBAL(0x009DED34, sint32) |= 1 << 1;
+	}
+}
+
+/** rct2: 0x006BDFA3 */
+void window_staff_peep_overview_dropdown()
+{
+	short widgetIndex, dropdownIndex;
+	rct_window* w;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (widgetIndex != WIDX_PATROL) {
+		return;
+	}
+
+	// Clear patrol
+	if (dropdownIndex == 1) {
+		rct_peep* peep = GET_PEEP(w->number);
+		int edi = peep->var_C5;
+		int ebx = edi << 9;
+
+		for (int i = 0; i < 128; i++)
+		{
+			RCT2_GLOBAL(0x13B0E72 + ebx + i * 4, uint32) = 0;
+		}
+		RCT2_GLOBAL(0x13CA672 + edi, uint16) &= 0xFD; // bug??
+
+		window_invalidate(w);
+		RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+	}
+	else {
+		if (!tool_set(w, widgetIndex, 22)) {
+			show_gridlines();
+			RCT2_GLOBAL(0x009DEA50, sint16) = w->number;
+			window_invalidate(w);
+		}
 	}
 }
 
