@@ -582,3 +582,39 @@ void park_update_histories()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0066A231);
 }
+
+/**
+*
+*  rct2: 0x00669E30
+*/
+void game_command_set_park_entrance_fee()
+{
+	uint8 _bl;
+	uint16 new_fee;
+
+	#ifdef _MSC_VER
+		__asm mov _bl, bl
+	#else
+		__asm__("mov %[_bl], bl " : [_bl] "+m" (_bl));
+	#endif
+
+	#ifdef _MSC_VER
+		__asm mov new_fee, di
+	#else
+		__asm__("mov %[new_fee], di " : [new_fee] "+m" (new_fee));
+	#endif
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 0x10;
+
+	if (_bl & 1){
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = new_fee;
+
+		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+	}
+
+	#ifdef _MSC_VER
+		__asm mov ebx, 0
+	#else
+		__asm__("mov ebx, 0 ");
+	#endif
+}
