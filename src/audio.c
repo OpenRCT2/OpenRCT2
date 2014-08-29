@@ -193,9 +193,9 @@ int sound_load3dparameters()
 */
 int sound_load3dposition()
 {
-	if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 1))) {
+	/*if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 1))) {
 		return 1;
-	}
+	}*/
 	return 0;
 }
 
@@ -354,7 +354,7 @@ int map_sound_info(const char* filename)
 *
 *  rct2: 0x00405383
 */
-MMRESULT sub_405383(HMMIO hmmio, uint32 size, char* buffer, uint32* a4, int* read)
+MMRESULT sub_405383(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO a4, int* read)
 {
 	MMIOINFO mmioinfo;
 	MMRESULT result;
@@ -364,11 +364,11 @@ MMRESULT sub_405383(HMMIO hmmio, uint32 size, char* buffer, uint32* a4, int* rea
 		return 1;
 	}
 	int size2 = size;
-	if (size > a4[1]) {
-		size2 = a4[1];
+	if (size > a4->cksize) {
+		size2 = a4->cksize;
 	}
 	int v8 = 0;
-	a4[1] -= size2;
+	a4->cksize -= size2;
 	if (size2) {
 		while (1) {
 			HPSTR p = mmioinfo.pchEndRead;
@@ -418,12 +418,12 @@ MMRESULT sub_405383(HMMIO hmmio, uint32 size, char* buffer, uint32* a4, int* rea
 *
 *  rct2: 0x00401822
 */
-int sub_401822(int channel, HMMIO hmmio, LONG offset)
+int sub_401822(int channel, HMMIO* hmmio, LONG offset)
 {
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	LPMMCKINFO v4 = &sound_channel->mmckinfo2;
 	HMMIO* v5 = &sound_channel->hmmio;
-	if (RCT2_CALLFUNC_4(0x00405222, int, HMMIO, HMMIO*, HGLOBAL*, LPMMCKINFO, hmmio, &sound_channel->hmmio, &sound_channel->hmem, &sound_channel->mmckinfo2)) {
+	if (RCT2_CALLFUNC_4(0x00405222, int, HMMIO*, HMMIO*, HGLOBAL*, LPMMCKINFO, hmmio, &sound_channel->hmmio, &sound_channel->hmem, &sound_channel->mmckinfo2)) {
 		return -100;
 	}
 	if (*(uint16*)sound_channel->hmem != 1) {
@@ -447,9 +447,9 @@ int sub_40153B(int channel)
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	if (sound_channel->var_4) {
 		if (sound_channel->hmmio) {
-			sound_channel_free(sound_channel->hmmio, sound_channel->hmem);
+			sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
 		}
-		if (sub_401822(channel, &sound_channel->var_8, sound_channel->var_110)) {
+		if (sub_401822(channel, (HMMIO*)&sound_channel->var_8, sound_channel->var_110)) {
 			return 0;
 		}
 		sound_channel->var_164 = sound_channel->var_114;
@@ -475,7 +475,7 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 	DWORD status;
 	DWORD dwCurrentPlayCursor;
 	DWORD dwCurrentWriteCursor;
-	int var1;
+	uint32 var1;
 	int var2;
 	int bufferlost = 0;
 	char* buf1;
@@ -522,15 +522,15 @@ void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD
 		}
 		sound_channel->var_158 += var1;
 		if (sound_channel->var_168) {
-			int var3 = sound_channel->var_15C;
-			int* var4 = &sound_channel->var_15C;
+			uint32 var3 = sound_channel->var_15C;
+			uint32* var4 = &sound_channel->var_15C;
 			if (var3) {
 				if (var1 <= var3) {
 					*var4 = var3 - var1;
 				} else {
 					*var4 = 0;
 				}
-				if (SUCCEEDED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, &buf2size, 0))) {
+				if (SUCCEEDED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0))) {
 					uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
 					var5 &= 0x80;
 					memset(buf1, var5 + 128, buf1size);
