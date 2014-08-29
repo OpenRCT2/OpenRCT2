@@ -86,6 +86,7 @@ void window_staff_peep_disable_widgets(rct_window* w);
 void window_staff_peep_overview_close();
 void window_staff_peep_overview_mouseup();
 void window_staff_peep_overview_resize();
+void window_staff_peep_overview_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 
 void window_staff_peep_orders_mouseup();
 
@@ -97,7 +98,7 @@ static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_overview_close,
 	window_staff_peep_overview_mouseup,
 	window_staff_peep_overview_resize,
-	(void*)0x6BDF98,
+	window_staff_peep_overview_mousedown,
 	(void*)0x6BDFA3,
 	window_staff_peep_emptysub,
 	(void*)0x6BE602,
@@ -501,6 +502,34 @@ void window_staff_peep_overview_resize()
 	}
 
 	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/** 
+ * Handle the dropdown of patrol button.
+ * rct2: 0x006BDF98
+ */
+void window_staff_peep_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
+{
+	if (widgetIndex != WIDX_PATROL) {
+		return;
+	}
+
+	// Dropdown names
+	gDropdownItemsFormat[0] = 0xD75;
+	gDropdownItemsFormat[1] = 0xD76;
+
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;;
+	int extray = widget->bottom - widget->top + 1;
+	window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
+	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	// Disable clear patrol area if no area is set.
+	if (!(RCT2_ADDRESS(0x013CA672, uint8)[peep->var_C5] & 2)) {
+		RCT2_GLOBAL(0x009DED34, sint32) |= 1 << 1;
+	}
 }
 
 /** rct2: 0x006BE814 */
