@@ -310,7 +310,7 @@ static void window_research_development_invalidate()
 	window_research_set_pressed_tab(w);
 
 	window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-	uint32 typeId = RCT2_GLOBAL(0x01357CF4, uint32);
+	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
 	if (typeId != 0xFFFFFFFF) {
 		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
 		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? 5189 : 5191;
@@ -377,7 +377,7 @@ static void window_research_development_paint()
 	x = w->x + 10;
 	y = w->y + window_research_development_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
 
-	uint32 typeId = RCT2_GLOBAL(0x01357CF4, uint32);
+	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
 	int lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {

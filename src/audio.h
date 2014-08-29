@@ -69,10 +69,21 @@ typedef struct {
 
 typedef struct {
 	uint32 var_0;
-	uint8 pad_4[0x118];
-	HMMIO hmmio;
-	HGLOBAL hmem;
-	uint8 pad_124[0x3C];
+	uint32 var_4;
+	uint32 var_8;
+	uint8 pad_C[0x104];
+	uint32 var_110;
+	uint32 var_114;
+	uint32 var_118;
+	HGLOBAL hmem;					// 0x11C
+	HMMIO hmmio;					// 0x120
+	MMCKINFO mmckinfo1;				// 0x124
+	MMCKINFO mmckinfo2;				// 0x138
+	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+	uint32 var_150;
+	uint32 playpos;					// 0x154
+	uint32 var_158;
+	uint32 var_15C;
 	uint32 var_160;
 	uint32 var_164;
 	uint32 var_168;
@@ -112,6 +123,7 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
 int sound_stop(rct_sound *sound);
 int sound_stop_all();
 int unmap_file(LPCVOID base);
