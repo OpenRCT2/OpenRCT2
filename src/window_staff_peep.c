@@ -83,8 +83,9 @@ rct_widget *window_staff_peep_page_widgets[] = {
 void window_staff_peep_set_page(rct_window* w, int page);
 void window_staff_peep_disable_widgets(rct_window* w);
 
-void window_staff_peep_close();
-void window_staff_peep_mouseup();
+void window_staff_peep_overview_close();
+void window_staff_peep_overview_mouseup();
+void window_staff_peep_overview_resize();
 
 void window_staff_peep_orders_mouseup();
 
@@ -93,9 +94,9 @@ void window_staff_peep_stats_resize();
 
 // 0x992AEC
 static void* window_staff_peep_overview_events[] = {
-	window_staff_peep_close,
-	window_staff_peep_mouseup,
-	(void*)0x6BE558,
+	window_staff_peep_overview_close,
+	window_staff_peep_overview_mouseup,
+	window_staff_peep_overview_resize,
 	(void*)0x6BDF98,
 	(void*)0x6BDFA3,
 	window_staff_peep_emptysub,
@@ -317,7 +318,7 @@ void window_staff_peep_disable_widgets(rct_window* w)
  * Same as window_peep_close.
  * rct2: 0x006BDFF8
  */
-void window_staff_peep_close()
+void window_staff_peep_overview_close()
 {
 	rct_window* w;
 
@@ -406,7 +407,7 @@ void window_staff_peep_set_page(rct_window* w, int page)
 }
 
 /** rct2: 0x006BDF55 */
-void window_staff_peep_mouseup()
+void window_staff_peep_overview_mouseup()
 {
 	short widgetIndex;
 	rct_window* w;
@@ -449,6 +450,57 @@ void window_staff_peep_mouseup()
 		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
 		break;
 	}
+}
+
+/** rct2: 0x006BE558 */
+void window_staff_peep_overview_resize()
+{
+	rct_window* w;
+	window_get_register(w);
+
+	window_staff_peep_disable_widgets(w);
+
+	w->min_width = 190;
+	w->max_width = 500;
+	w->min_height = 180;
+	w->max_height = 450;
+
+	if (w->width < w->min_width) {
+		w->width = w->min_width;
+		window_invalidate(w);
+	}
+
+	if (w->width > w->max_width) {
+		window_invalidate(w);
+		w->width = w->max_width;
+	}
+
+	if (w->height < w->min_height) {
+		w->height = w->min_height;
+		window_invalidate(w);
+	}
+
+	if (w->height > w->max_height) {
+		window_invalidate(w);
+		w->height = w->max_height;
+	}
+
+	rct_viewport* viewport = w->viewport;
+
+	if (viewport) {
+		int new_width = w->width - 30;
+		int new_height = w->height - 62;
+
+		// Update the viewport size
+		if (viewport->width != new_width || viewport->height != new_height) {
+			viewport->width = new_width;
+			viewport->height = new_height;
+			viewport->view_width = new_width << viewport->zoom;
+			viewport->view_height = new_height << viewport->zoom;
+		}
+	}
+
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /** rct2: 0x006BE814 */
