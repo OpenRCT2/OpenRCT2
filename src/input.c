@@ -43,6 +43,7 @@ static void input_mouseover_widget_flatbutton_invalidate();
 void process_mouse_over(int x, int y);
 void sub_6ED801(int x, int y);
 void invalidate_scroll();
+static openrct2_mouse_data* get_mouse_input();
 
 #pragma region Scroll bar input
 
@@ -1557,18 +1558,17 @@ void game_handle_input()
  */
 static void game_get_next_input(int *x, int *y, int *state)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x00407074, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax == 0) {
+	openrct2_mouse_data* eax = get_mouse_input();
+	if (eax == NULL) {
 		*x = gCursorState.x;
 		*y = gCursorState.y;
 		*state = 0;
 		return;
 	}
 
-	*x = RCT2_GLOBAL(eax + 0, sint32);
-	*y = RCT2_GLOBAL(eax + 4, sint32);
-	*state = RCT2_GLOBAL(eax + 8, sint32);
+	*x = eax->x;
+	*y = eax->y;
+	*state = eax->state;
 
 	//int eax, ebx, ecx, edx, esi, edi, ebp;
 	//RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
@@ -1762,4 +1762,18 @@ void invalidate_scroll()
 	wind->scrolls[scroll_id / sizeof(rct_scroll)].flags &= 0xFF11;
 
 	window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
+}
+
+/**
+ * rct2: 0x00407074
+ */
+static openrct2_mouse_data* get_mouse_input()
+{
+	int read_index = RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32);
+	if (read_index != RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32) = (read_index + 1) & 0x3F;
+		return &mouse_buffer[read_index];
+	} else {
+		return NULL;
+	}
 }
