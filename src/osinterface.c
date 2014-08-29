@@ -40,11 +40,12 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
+openrct2_mouse_data* mouse_buffer = (openrct2_mouse_data*)0x1424340;
 
 static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
-static void sub_406C96(int actionType);
+static void store_mouse_input(int state);
 
 static SDL_Window *_window;
 static SDL_Surface *_surface;
@@ -350,7 +351,7 @@ void osinterface_process_messages()
 			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				sub_406C96(1); //RCT2_CALLPROC_1(0x00406C96, int, 1);
+				store_mouse_input(1);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 				break;
@@ -358,7 +359,7 @@ void osinterface_process_messages()
 				gCursorState.middle = CURSOR_PRESSED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				sub_406C96(3); //RCT2_CALLPROC_1(0x00406C96, int, 3);
+				store_mouse_input(3);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 				break;
@@ -369,7 +370,7 @@ void osinterface_process_messages()
 			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				sub_406C96(2); //RCT2_CALLPROC_1(0x00406C96, int, 2);
+				store_mouse_input(2);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 				break;
@@ -377,7 +378,7 @@ void osinterface_process_messages()
 				gCursorState.middle = CURSOR_RELEASED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				sub_406C96(4); //RCT2_CALLPROC_1(0x00406C96, int, 4);
+				store_mouse_input(4);
 				gCursorState.right = CURSOR_RELEASED;
 				gCursorState.old = 4;
 				break;
@@ -599,22 +600,18 @@ char osinterface_get_path_separator()
 	return '\\';
 }
 
-void sub_406C96(int actionType)
+/**
+ * rct2: 0x00406C96
+ */
+static void store_mouse_input(int state)
 {
-	int eax = RCT2_GLOBAL(0x009E2DE4, uint32);
-	int ecx = eax + 1;
-	ecx &= 0x3F; //Array of 64 point structs, loop around buffer?
-	if (ecx != RCT2_GLOBAL(0x009E2DE8, uint32)) {
-		int edx = RCT2_GLOBAL(0x01424318, uint32); // X
-		//eax is a struct index here. Mutliplied by then and then 4 for the struct with 3 4 byte fields
-		//Struct is {int x, int y, int actionType}
-		eax = eax + eax*2;
-		eax = 0x01424340 + eax * 4; //get base of struct, address is base of array
-		*((uint32*)eax) = edx;
-		edx = RCT2_GLOBAL(0x0142431C, uint32); // Y
-		*((uint32*)eax + 1) = edx;
-		edx = actionType;
-		*((uint32*)eax + 2) = edx;
-		RCT2_GLOBAL(0x009E2DE4, uint32) = ecx;
+	int write_index = RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32);
+	int next_write_index = (write_index + 1) & 0x3F; //64 length buffer
+	
+	if (next_write_index != RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32)) {
+		mouse_buffer[write_index].x = RCT2_GLOBAL(0x01424318, uint32);
+		mouse_buffer[write_index].y = RCT2_GLOBAL(0x0142431C, uint32);
+		mouse_buffer[write_index].state = state;
+		RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32) = next_write_index;
 	}
 }
