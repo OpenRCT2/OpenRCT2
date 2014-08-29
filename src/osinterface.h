@@ -66,12 +66,6 @@ typedef struct {
 	int old;
 } openrct2_cursor;
 
-typedef struct {
-	int x, y;
-	int state; //0 = ? 1 = LeftDown 2 = LeftUp 3 = RightDown 4 = RightUp
-} openrct2_mouse_data;
-
-extern openrct2_mouse_data* mouse_buffer;
 extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
