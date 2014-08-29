@@ -88,6 +88,7 @@ void window_staff_peep_overview_mouseup();
 void window_staff_peep_overview_resize();
 void window_staff_peep_overview_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 void window_staff_peep_overview_dropdown();
+void window_staff_peep_overview_update(rct_window *w);
 
 void window_staff_peep_orders_mouseup();
 
@@ -102,7 +103,7 @@ static void* window_staff_peep_overview_events[] = {
 	window_staff_peep_overview_mousedown,
 	window_staff_peep_overview_dropdown,
 	window_staff_peep_emptysub,
-	(void*)0x6BE602,
+	window_staff_peep_overview_update,
 	window_staff_peep_emptysub,
 	window_staff_peep_emptysub,
 	(void*)0x6BDFD8,
@@ -567,6 +568,21 @@ void window_staff_peep_overview_dropdown()
 			window_invalidate(w);
 		}
 	}
+}
+
+/**
+ * Update the animation frame of the tab icon.
+ * rct2: 0x6BE602 
+ */
+void window_staff_peep_overview_update(rct_window* w)
+{
+	int var_496 = RCT2_GLOBAL((int)w + 0x496, uint16);
+	var_496++;
+	if (var_496 >= 24) {
+		var_496 = 0;
+	}
+	RCT2_GLOBAL((int)w + 0x496, uint16) = var_496;
+	window_invalidate_by_id(0x497, w->number);
 }
 
 /** rct2: 0x006BE814 */
