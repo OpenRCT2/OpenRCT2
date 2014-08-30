@@ -118,23 +118,17 @@ static void window_about_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_MUSIC_CREDITS:
-		RCT2_CALLPROC_EBPSAFE(0x0066D4EC);
+		RCT2_CALLPROC_EBPSAFE(0x0066D55B);
 		break;
 	case WIDX_PUBLISHER_CREDITS:
-		RCT2_CALLPROC_EBPSAFE(0x0066D55B);
+		RCT2_CALLPROC_EBPSAFE(0x0066D4EC);
 		break;
 	}
 }
@@ -149,13 +143,7 @@ static void window_about_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

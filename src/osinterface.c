@@ -28,6 +28,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "gfx.h"
+#include "input.h"
 #include "osinterface.h"
 #include "screenshot.h"
 #include "window.h"
@@ -44,7 +45,6 @@ unsigned int gLastKeyPressed;
 static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
-
 
 static SDL_Window *_window;
 static SDL_Surface *_surface;
@@ -350,7 +350,7 @@ void osinterface_process_messages()
 			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				RCT2_CALLPROC_1(0x00406C96, int, 1);
+				store_mouse_input(1);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 				break;
@@ -358,7 +358,7 @@ void osinterface_process_messages()
 				gCursorState.middle = CURSOR_PRESSED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				RCT2_CALLPROC_1(0x00406C96, int, 3);
+				store_mouse_input(3);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 				break;
@@ -369,7 +369,7 @@ void osinterface_process_messages()
 			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				RCT2_CALLPROC_1(0x00406C96, int, 2);
+				store_mouse_input(2);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 				break;
@@ -377,7 +377,7 @@ void osinterface_process_messages()
 				gCursorState.middle = CURSOR_RELEASED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				RCT2_CALLPROC_1(0x00406C96, int, 4);
+				store_mouse_input(4);
 				gCursorState.right = CURSOR_RELEASED;
 				gCursorState.old = 4;
 				break;
@@ -452,6 +452,7 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	OPENFILENAME openFileName;
 	BOOL result;
 	int tmp;
+	DWORD commonFlags;
 
 	// Get directory path from given filename
 	strcpy(initialDirectory, filename);
@@ -488,11 +489,12 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
 
 	// Open dialog
+	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == 0) {
-		openFileName.Flags = OFN_EXPLORER | OFN_CREATEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
 		result = GetSaveFileName(&openFileName);
 	} else if (type == 1) {
-		openFileName.Flags = OFN_EXPLORER | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
 		result = GetOpenFileName(&openFileName);
 	}
 

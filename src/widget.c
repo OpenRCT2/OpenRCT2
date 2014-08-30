@@ -318,11 +318,11 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	b = w->y + widget->bottom;
 
 	// Get the colour and image
-	colour = w->colours[widget->colour] << 19;
+	colour = w->colours[widget->colour];
 	image = widget->image + 2;
 
 	// Draw coloured image
-	gfx_draw_sprite(dpi, image | colour, l, t, 0);
+	gfx_draw_sprite(dpi, image | (colour << 19), l, t, 0);
 }
 
 /**

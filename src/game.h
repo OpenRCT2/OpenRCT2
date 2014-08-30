@@ -54,7 +54,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, // 29
 	GAME_COMMAND_30,
 	GAME_COMMAND_31,
-	GAME_COMMAND_32,
+	GAME_COMMAND_SET_STAFF_ORDER,
 	GAME_COMMAND_33,
 	GAME_COMMAND_SET_PARK_OPEN, // 34
 	GAME_COMMAND_35,
@@ -81,6 +81,10 @@ enum GAME_COMMAND {
 	GAME_COMMAND_56,	// Set land owned (possibly does other things)
 	GAME_COMMAND_57
 };
+
+typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+extern int gGameSpeed;
 
 void game_create_windows();
 void game_update();

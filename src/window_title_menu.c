@@ -108,12 +108,9 @@ void window_title_menu_open()
 static void window_title_menu_mouseup()
 {
 	short widgetIndex;
+	rct_window* w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
+	window_widget_get_registers(w, widgetIndex);
 
 	if (widgetIndex == WIDX_START_NEW_GAME) {
 		window_scenarioselect_open();
@@ -155,19 +152,9 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 static void window_title_menu_dropdown()
 {
 	short widgetIndex, dropdownIndex;
+	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
 		tutorial_start(dropdownIndex);
@@ -199,18 +186,7 @@ static void window_title_menu_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 }

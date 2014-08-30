@@ -99,6 +99,7 @@ const uint8 gRideClassifications[255] = {
 
 #pragma endregion
 
+rct_ride_type **gRideTypeList = RCT2_ADDRESS(0x009ACFA4, rct_ride_type*);
 rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 
 int ride_get_count()
@@ -260,27 +261,25 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 
 void ride_shop_connected(rct_ride* ride, int ride_idx)
 {
+	rct_ride* ride_back = ride;
     uint16 coordinate = ride->station_starts[0];
 	if (coordinate == 0xFFFF)
 		return;
 
 	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
 		y = (coordinate & 0xFF) << 5;		 // ax	
-	uint16 entrance_directions = 0;
-	int tile_idx = ((x << 8) | y) >> 5, count = 0;
-	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
-
 	
-    while (1) {
+	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[coordinate];
+	
+    for (; ; tile++){
         uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
         if(element_type == MAP_ELEMENT_TYPE_TRACK && tile->properties.track.ride_index == ride_idx)
             break;
-
         if(tile->flags & MAP_ELEMENT_FLAG_LAST_TILE)
             return;
-        tile++;
     }
 
+	uint16 entrance_directions = 0;
     uint8 track_type = tile->properties.track.type;
 	ride = &g_ride_list[tile->properties.track.ride_index];
     if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
@@ -306,9 +305,9 @@ void ride_shop_connected(rct_ride* ride, int ride_idx)
 		entrance_directions >>= 1;
 
         uint8 face_direction = count ^ 2; // flip direction north<->south, east<->west
-        y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
-        x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
-        tile_idx = ((x << 8) | y) >> 5;
+		int y2 = y - RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+		int x2 = x - RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+        int tile_idx = ((x2 << 8) | y2) >> 5;
 
         if (map_coord_is_connected(tile_idx, tile->base_height, face_direction))
             return;

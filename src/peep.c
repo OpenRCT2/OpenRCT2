@@ -541,3 +541,49 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	}
 
 }
+
+/**
+* rct2: 0x00698342
+* thought.item (eax)
+* thought.type (ebx)
+* argument_1 (esi & ebx)
+* argument_2 (esi+2)
+*/
+void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
+	int esi = 0x9AC86C;
+
+	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 1){
+		rct_ride* ride = &g_ride_list[thought.item];
+		esi = (int)(&(ride->var_04A));
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_START;
+		}
+		else{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_START;
+		}
+	}
+	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
+		if (thought.item < 0x20){
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_SINGULAR_START;
+		}
+		else
+		{
+			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_SINGULAR_START;
+		}
+	}
+	else{
+		esi = 0x9AC864; //No thought?
+	}
+	*argument_1 = ((thought.type + STR_THOUGHT_START) & 0xFFFF) | (*((uint16*)esi) << 16);
+	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
+}
+
+/**
+ * rct2: 0x00698827 
+ * returns 1 on pickup (CF not set)
+ */
+int peep_can_be_picked_up(rct_peep* peep){
+	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+}

@@ -37,6 +37,7 @@
 #include "game.h"
 #include "gfx.h"
 #include "intro.h"
+#include "language.h"
 #include "map.h"
 #include "news_item.h"
 #include "object.h"
@@ -76,9 +77,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 {
 	print_launch_information();
 
-	// OpenRCT2 initialisation
-	language_open("data/language/english.txt");
-
 	// Begin RCT2
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
@@ -86,8 +84,9 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 	audio_init();
 	audio_get_devices();
-	RCT2_CALLPROC(0x0040502E); // get_dsound_devices()
+	get_dsound_devices();
 	config_init();
+	language_open(gGeneral_config.language);
 	rct2_init();
 	rct2_loop();
 	osinterface_free();
@@ -147,7 +146,7 @@ void rct2_quit() {
 
 void rct2_init()
 {
-	RCT2_GLOBAL(0x00F663AC, int) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);

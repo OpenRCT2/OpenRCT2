@@ -135,7 +135,7 @@ static void window_guest_list_find_groups();
 static int get_guest_face_sprite_small(rct_peep *peep);
 static int get_guest_face_sprite_large(rct_peep *peep);
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
-void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+
 /**
  * 
  *  rct2: 0x006992E3
@@ -190,18 +190,7 @@ static void window_guest_list_mouseup()
 	short widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -221,12 +210,7 @@ static void window_guest_list_resize()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->min_width = 350;
 	w->min_height = 330;
@@ -314,24 +298,7 @@ static void window_guest_list_dropdown()
 	short dropdownIndex, widgetIndex;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov dropdownIndex, ax
-	#else
-	__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -373,12 +340,7 @@ static void window_guest_list_scrollgetsize()
 	rct_window *w;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -446,22 +408,11 @@ static void window_guest_list_scrollgetsize()
 static void window_guest_list_scrollmousedown()
 {
 	int i, spriteIndex;
-	short y;
+	short x, y;
 	rct_window *w;
 	rct_peep *peep;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -505,21 +456,10 @@ static void window_guest_list_scrollmousedown()
 static void window_guest_list_scrollmouseover()
 {
 	int i;
-	short y;
+	short x, y;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov y, dx
-	#else
-	__asm__ ( "mov %[y], dx " : [y] "+m" (y) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_scrollmouse_get_registers(w, x, y);
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -546,12 +486,7 @@ static void window_guest_list_invalidate()
 {
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
+	window_get_register(w);
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
@@ -585,18 +520,7 @@ static void window_guest_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -659,18 +583,7 @@ static void window_guest_list_scrollpaint()
 	rct_peep_thought *thought;
 	uint32 argument_1, argument_2;
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov dpi, edi
-	#else
-	__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
-	#endif
-
+	window_paint_get_registers(w, dpi);
 
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
@@ -817,44 +730,6 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	return 1;
 }
 
-/**
- * rct2: 0x00698342
- * thought.item (eax)
- * thought.type (ebx)
- * argument_1 (esi & ebx)
- * argument_2 (esi+2)
- */
-void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2){
-	int esi = 0x9AC86C;
-
-	if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 1){
-		rct_ride* ride = &g_ride_list[thought.item];
-		esi = (int)(&(ride->var_04A));
-	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 2){
-		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_START;
-		}
-		else{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_START;
-		}
-	}
-	else if ((RCT2_ADDRESS(0x981DB1, uint16)[thought.type] & 0xFF) & 4){
-		if (thought.item < 0x20){
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM_SINGULAR_START;
-		}
-		else
-		{
-			RCT2_GLOBAL(0x9AC86C, uint16) = thought.item + STR_ITEM2_SINGULAR_START;
-		}
-	}
-	else{
-		esi = 0x9AC864; //No thought?
-	}	
-	*argument_1 = ((thought.type + STR_THOUGHT_START) & 0xFFFF) | (*((uint16*)esi) << 16);
-	*argument_2 = *((uint32*)(esi+2)); //Always 0 apart from on rides?
-}
-
 /** 
  * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
@@ -891,7 +766,7 @@ static void window_guest_list_find_groups()
 	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
-	int eax = RCT2_GLOBAL(0x00F663AC, uint32) & 0xFFFFFF00;
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 0xFFFFFF00;
 	if (_window_guest_list_selected_view == RCT2_GLOBAL(0x00F1EE02, uint32))
 		if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0 || eax == RCT2_GLOBAL(0x00F1AF1C, uint32))
 			return;
