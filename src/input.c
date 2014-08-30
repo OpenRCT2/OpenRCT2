@@ -530,11 +530,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		}
 		break;
 	default:
-		// comment check as it disables the rotate station/building button in construction window
-// 		if (!widget_is_enabled(w, widgetIndex))
-// 			break;
-		if (widget_is_disabled(w, widgetIndex))
-			break;
+ 		if (!widget_is_enabled(w, widgetIndex))
+ 			break;
 
 		sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2);
 		
