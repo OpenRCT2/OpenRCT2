@@ -432,6 +432,52 @@ MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int
 
 /**
 *
+*  rct2: 0x004015E7
+*/
+int sub_4015E7(int channel)
+{
+	char* buf1;
+	int buf1size;
+	char* buf2;
+	int buf2size;
+	int read;
+	int zero = 0;
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
+	int result = dsbuffer->lpVtbl->Lock(dsbuffer, 0, sound_channel->var_150, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0);
+	if (SUCCEEDED(result)) {
+		if (buf1size) {
+			mmio_read(sound_channel->hmmio, buf1size, buf1, &sound_channel->mmckinfo1, &read);
+			int r = read;
+			if (read < buf1size) {
+				if (sound_channel->var_164) {
+					char* b = buf1;
+					int d = buf1size;
+					do {
+						d -= r;
+						b += r;
+						sub_40153B(channel);
+						mmio_read(sound_channel->hmmio, d, b, &sound_channel->mmckinfo1, &read);
+						r = read;
+					} while(read < d);
+				} else {
+					sound_channel->var_168 = 1;
+					sound_channel->var_15C = read;
+					rct_audio_info* audio_info = sound_channel->hmem;
+					uint16 v = ((audio_info->var_E != 8) - 1) & 0x80;
+					memset(&buf1[read], v, buf1size - r);
+				}
+			}
+		}
+		result = dsbuffer->lpVtbl->Unlock(dsbuffer, buf1, buf1size, buf2, zero);
+		sound_channel->var_158 = 0;
+		sound_channel->playpos = 0;
+	}
+	return result;
+}
+
+/**
+*
 *  rct2: 0x004016FF
 */
 int sound_channel_load_file(int channel, char* filename, int offset)
@@ -465,7 +511,7 @@ int sound_channel_load_file(int channel, char* filename, int offset)
 	sound_channel->var_168 = 0;
 	sound_channel->var_15C = 0;
 	sound_channel->var_164 = 1;
-	RCT2_CALLPROC_1(0x004015E7, int, channel);
+	sub_4015E7(channel);
 	sound_channel->var_158 = offset;
 	sound_channel->var_160 = 0;
 	return 0;
@@ -1052,9 +1098,9 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
 			if (channels) {
 				if (channels == 2) {
-					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
-				} else {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
+				} else {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
 				}
 				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
 					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
