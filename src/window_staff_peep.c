@@ -213,7 +213,12 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_TAB_2) |
-	(1 << WIDX_TAB_3),
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_VIEWPORT) |  // Sweep footpaths & Inspect rides
+	(1 << WIDX_BTM_LABEL) | // Water gardens & Fix rides
+	(1 << WIDX_PICKUP) |    // Empty litter bins
+	(1 << WIDX_PATROL) |    // Mow grass
+	(1 << WIDX_LOCATE),     // Entertainer costume dropdown
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -620,7 +625,6 @@ void window_staff_peep_orders_mouseup()
 	case WIDX_BTM_LABEL:
 	case WIDX_PICKUP:
 	case WIDX_PATROL:
-	case WIDX_RENAME:
 		window_staff_peep_set_order(w, widgetIndex - 8);
 		break;
 	}
