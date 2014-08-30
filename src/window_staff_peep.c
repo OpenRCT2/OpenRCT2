@@ -50,7 +50,14 @@ enum WINDOW_STAFF_PEEP_WIDGET_IDX {
 	WIDX_PATROL,
 	WIDX_RENAME,
 	WIDX_LOCATE,
-	WIDX_FIRE
+	WIDX_FIRE,
+
+	WIDX_CHECKBOX_1 = 0x8,
+	WIDX_CHECKBOX_2,
+	WIDX_CHECKBOX_3,
+	WIDX_CHECKBOX_4,
+
+	WIDX_COSTUME = 0xD,
 };
 
 void window_staff_peep_emptysub(){};
@@ -213,7 +220,12 @@ uint32 window_staff_peep_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_TAB_2) |
-	(1 << WIDX_TAB_3),
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_CHECKBOX_1) |
+	(1 << WIDX_CHECKBOX_2) |
+	(1 << WIDX_CHECKBOX_3) |
+	(1 << WIDX_CHECKBOX_4) |
+	(1 << WIDX_COSTUME),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -616,12 +628,11 @@ void window_staff_peep_orders_mouseup()
 	case WIDX_TAB_3:
 		window_staff_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_VIEWPORT:
-	case WIDX_BTM_LABEL:
-	case WIDX_PICKUP:
-	case WIDX_PATROL:
-	case WIDX_RENAME:
-		window_staff_peep_set_order(w, widgetIndex - 8);
+	case WIDX_CHECKBOX_1:
+	case WIDX_CHECKBOX_2:
+	case WIDX_CHECKBOX_3:
+	case WIDX_CHECKBOX_4:
+		window_staff_peep_set_order(w, widgetIndex - WIDX_CHECKBOX_1);
 		break;
 	}
 }
