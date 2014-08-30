@@ -691,7 +691,7 @@ void window_staff_peep_stats_update(rct_window* w)
 	window_invalidate_by_id(0x697, w->number);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	if (peep->var_45 && 10) {
+	if (peep->var_45 & 0x10) {
 		peep->var_45 &= 0xEF;
 		window_invalidate(w);
 	}
