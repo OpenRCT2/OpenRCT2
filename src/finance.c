@@ -74,7 +74,7 @@ void finance_pay_wages()
 	rct_peep* peep;
 	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	FOR_ALL_STAFF(spriteIndex, peep)
@@ -89,7 +89,7 @@ void finance_pay_research()
 {
 	uint8 level;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
@@ -106,7 +106,7 @@ void finance_pay_interest()
 	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
@@ -127,7 +127,7 @@ void finance_pay_ride_upkeep()
 			ride->var_196 = 25855; // durability?
 
 		}
-		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)) {
+		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->var_158 -= upkeep;
@@ -183,6 +183,31 @@ void finance_init() {
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
 	sub_69E869();
+}
+
+/**
+*
+*  rct2: 0x0069E79A
+*/
+void finance_update_daily_profit()
+{
+	// 0x0135832C is related to savegames
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 7 * RCT2_GLOBAL(0x0135832C, money32);
+	RCT2_GLOBAL(0x0135832C, money32) = 0;
+
+	int32 eax = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	{
+
+	}
+
+	eax /= 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += eax;
+	RCT2_GLOBAL(0x1358334, money32) += eax;
+	RCT2_GLOBAL(0x1358338, money32) += 1;
+
+	//invalidate_window(al = 1C, bx = 0)
 }
 
 void sub_69E869()

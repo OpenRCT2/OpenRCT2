@@ -580,6 +580,7 @@ static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_align_tabs(rct_window *w);
 static void window_park_set_pressed_tab(rct_window *w);
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
+static void window_park_set_disabled_tabs(rct_window *w);
 
 /**
  * 
@@ -599,12 +600,22 @@ rct_window *window_park_open()
 	w->list_information_type = -1;
 	w->var_48C = -1;
 	w->var_492 = 0;
-	RCT2_CALLPROC_X(0x00667F8B, 0, 0, 0, 0, (int)w, 0, 0);
+	window_park_set_disabled_tabs(w);
 	w->colours[0] = 1;
 	w->colours[1] = 19;
 	w->colours[2] = 19;
 
 	return w;
+}
+
+/**
+ *
+ *  rct2: 0x00667F8B
+ */
+void window_park_set_disabled_tabs(rct_window *w)
+{
+	// Disable price tab if money is disabled
+	w->disabled_widgets = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? (1 << WIDX_TAB_4) : 0;
 }
 
 #pragma region Entrance page
@@ -2267,7 +2278,7 @@ static void window_park_set_page(rct_window *w, int page)
 	w->var_020 = RCT2_GLOBAL(0x0097BAE0 + (page * 4), uint32);
 	w->event_handlers = window_park_page_events[page];
 	w->widgets = window_park_page_widgets[page];
-	RCT2_CALLPROC_X(0x00667F8B, 0, 0, 0, 0, (int)w, 0, 0);
+	window_park_set_disabled_tabs(w);
 	window_invalidate(w);
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);

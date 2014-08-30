@@ -171,7 +171,7 @@ static void window_game_bottom_toolbar_mouseup()
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
 	case WIDX_MONEY:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
 			window_finances_open();
 		break;
 	case WIDX_GUESTS:
@@ -332,7 +332,7 @@ static void window_game_bottom_toolbar_invalidate()
 	}
 
 	// Hide money if there is no money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 1;
 		window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 17;
@@ -426,7 +426,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
 
 	// Draw money
-	if (!(RCT2_GLOBAL(0x0013573E4, uint32) & 0x800)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		RCT2_GLOBAL(0x013CE952, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
 		gfx_draw_string_centred(
 			dpi,

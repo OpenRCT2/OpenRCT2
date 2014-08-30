@@ -155,7 +155,7 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & (PARK_FLAGS_11 | PARK_FLAGS_PARK_FREE_ENTRY))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
 		return 0;
 	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) < MONEY(10, 00))
 		return 0;
@@ -205,7 +205,7 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 {
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY(0, 00))
 		return 0;
