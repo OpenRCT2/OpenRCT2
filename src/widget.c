@@ -946,12 +946,12 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 int widget_is_enabled(rct_window *w, int widgetIndex)
 {
-	return w->enabled_widgets & (1LL << widgetIndex);
+	return (w->enabled_widgets & (1LL << widgetIndex)) ? 1 : 0;
 }
 
 int widget_is_disabled(rct_window *w, int widgetIndex)
 {
-	return w->disabled_widgets & (1LL << widgetIndex);
+	return (w->disabled_widgets & (1LL << widgetIndex)) ? 1 : 0;
 }
 
 int widget_is_pressed(rct_window *w, int widgetIndex)

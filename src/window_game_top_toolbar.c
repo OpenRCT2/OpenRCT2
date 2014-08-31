@@ -170,6 +170,7 @@ void window_game_top_toolbar_open()
 		(1 << WIDX_RIDES) | 
 		(1 << WIDX_PARK) |
 		(1 << WIDX_STAFF) | 
+		(1 << WIDX_GUESTS) |
 		(1 << WIDX_CLEAR_SCENERY) |
 		(1ULL << WIDX_FASTFORWARD) | 
 		(1ULL << WIDX_RESEARCH);
