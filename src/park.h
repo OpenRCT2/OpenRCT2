@@ -59,4 +59,6 @@ void park_update_histories();
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
+void game_command_set_park_entrance_fee();
+
 #endif
