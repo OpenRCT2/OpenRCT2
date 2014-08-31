@@ -257,26 +257,27 @@ void init_scenery() {
 	for (int edi = 0; edi < 0x14; edi++) {
 		int esi = RCT2_ADDRESS(0x00F64F2C, uint32)[edi];
 		RCT2_GLOBAL(esi, uint16) = 0xFFFF;
-		if (edi != 13) {
-			uint32 ebp = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[edi];
+		if (edi == 13)
+			continue;
 
-			if (ebp != 0xFFFFFFFF) {
+		uint32 ebp = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[edi];
+		if (ebp == 0xFFFFFFFF)
+			continue;
 
-				for (int ebx = 0;; ebx++) {
-					if (ebx == RCT2_GLOBAL(ebp + 0x106, uint8))
-						break;
+		for (int ebx = 0;; ebx++) {
+			if (ebx >= RCT2_GLOBAL(ebp + 0x106, uint8))
+				break;
 
-					uint16 ax = RCT2_GLOBAL(ebp + ebx * 2 + 6, uint16);
-					if (RCT2_ADDRESS(0x01357BD0, sint32)[ax >> 5] & (1 << (ax & 0x1F))) {
-						RCT2_GLOBAL(esi, uint16) = ax;
-						esi += 2;
-						RCT2_GLOBAL(esi, uint16) = 0xFFFF;
-					}
-					else {
-						dword_F663A4 &= (1 << edi);
-					}
-				}
+			uint16 ax = RCT2_GLOBAL(ebp + ebx * 2 + 6, uint16);
 
+			uint32 ecx = RCT2_ADDRESS(0x01357BD0, uint32)[ax >> 5];
+			uint32 edx = 1 << (ax & 0x1F);
+			if (ecx & edx) {
+				RCT2_GLOBAL(esi, uint16) = ax;
+				esi += 2;
+				RCT2_GLOBAL(esi, uint16) = 0xFFFF;
+			} else {
+				dword_F663A4 |= (1 << edi);
 			}
 		}
 	}
@@ -584,10 +585,67 @@ void init_scenery() {
 		}
 	}
 
-	for (int esi = WIDX_SCENERY_TAB_1; esi < WIDX_SCENERY_LIST; esi++)
-		window_scenery_widgets[esi].type = 0;
+	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
+		window_scenery_widgets[widgetIndex].type = 0;
 
-	// todo: 0x006DFDF7
+	uint8 stuff[0x50];
+	int ebp = 0;
+
+	for (int ebx = 0; ebx < 0x13; ebx++) {
+		uint32 scenerySetAddress = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[edi];
+		if (scenerySetAddress == 0xFFFFFFFF)
+			continue;
+
+		stuff[ebp] = ebx;
+		stuff[ebp + 1] = RCT2_GLOBAL(scenerySetAddress + 0x108, uint8);
+
+		ebp += 4;
+		int prev_edi = ebp - 4;
+
+		while (true) {
+			if (prev_edi <= 0)
+				break;
+
+			prev_edi -= 4;
+			if (stuff[prev_edi + 5] >= stuff[prev_edi + 1])
+				break;
+
+			int eax = stuff[prev_edi + 4];
+			stuff[prev_edi + 4] = stuff[prev_edi];
+			stuff[prev_edi] = eax;
+		}
+	}
+
+	stuff[ebp] = 0x13;
+	ebp += 4;
+
+	uint16 cx = 3;
+	for (int ebx = 0; ebx < ebp; ebx += 4) {
+		uint32 tabIndex = stuff[ebx];
+		rct_widget* currentTab = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
+		int eax = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
+
+		if (cx != 3 || tabIndex == 0x13) {
+			if (RCT2_GLOBAL(eax, uint16) == 0xFFFF)
+				continue;
+
+			if (dword_F663A4 & (1 << tabIndex))
+				continue;
+		}
+
+		currentTab->type = WWT_TAB;
+		currentTab->left = cx;
+		currentTab->right = cx + 0x1E;
+		cx += 0x1F;
+
+		if (edi >= 0x13)
+			continue;
+
+		int sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[tabIndex];
+		currentTab->image = RCT2_GLOBAL(sceneryEntry + 2, uint32) | 0x20000000;
+	}
+
+	window_invalidate_by_id(WC_SCENERY, 0);
 }
 
 /*
