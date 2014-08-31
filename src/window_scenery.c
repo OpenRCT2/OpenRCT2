@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include <string.h>
+#include <stdbool.h>
 #include "addresses.h"
 #include "game.h"
 #include "map.h"
@@ -34,8 +35,58 @@
 #define WINDOW_SCENERY_HEIGHT 0x8E
 
 typedef struct {
-	rct_string_id name;
+	uint8 pad_02[4];
+	uint8 flags;		// 0x06
+	uint8 flags2;		// 0x07
+	uint8 pad_08[4];
+	uint16 price;		// 0x0C
+	uint8 pad_0E[12];
+	uint8 var_1A;		// 0x1A
+} rct_small_scenery_entry;
+
+typedef struct {
+	uint8 pad_02[5];
+	uint8 flags;		// 0x07
+	uint16 price;		// 0x08
+	uint8 pad_0A[6];
+	uint8 var_10;		// 0x10
+} rct_large_scenery_entry;
+
+
+typedef struct {
+	uint8 pad_02[5];
+	uint8 flags;		// 0x07
+	uint8 pad_08;
+	uint8 flags2;		// 0x09
+	uint16 price;		// 0x0A
+	uint8 var_0C;		// 0x0C
+} rct_wall_scenery_entry;
+
+typedef struct {
+	uint8 pad_02[8];
+	uint16 price;		// 0x0A
+	uint8 var_0C;		// 0x0C
+} rct_path_bit_scenery_entry;
+
+typedef struct {
 	uint16 var_02;
+	uint16 var_04;
+	uint8 var_06;
+	uint8 flags;		// 0x07
+	uint16 price;		// 0x08
+	uint8 var_0A;		// 0x0A
+} rct_banner_scenery_entry;
+
+typedef struct {
+	rct_string_id name;
+	union {
+		rct_small_scenery_entry small_scenery;
+		rct_large_scenery_entry large_scenery;
+		rct_wall_scenery_entry wall;
+		rct_path_bit_scenery_entry path_bit;
+		rct_banner_scenery_entry banner;
+	};
+	/*uint16 var_02;
 	uint16 var_04;
 	uint8 var_06;
 	uint8 var_07;
@@ -44,7 +95,19 @@ typedef struct {
 	uint16 var_0A;
 	uint16 var_0C;
 	uint16 var_0E;
+	uint16 var_10;
+	uint16 var_12;
+	uint16 var_14;
+	uint16 var_16;
+	uint16 var_18;
+	uint16 var_1A;*/
 } rct_scenery_entry;
+
+#define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
+#define g_largeSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)
+#define g_wallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)
+#define g_bannerSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES, rct_scenery_entry*)
+#define g_pathBitSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_scenery_entry*)
 
 enum {
 	WINDOW_SCENERY_TAB_1,
@@ -71,6 +134,7 @@ enum {
 
 static void window_scenery_emptysub() { }
 static void window_scenery_close();
+static void window_scenery_update(rct_window *w);
 static void window_scenery_invalidate();
 static void window_scenery_paint();
 static void window_scenery_tooltip();
@@ -82,7 +146,7 @@ static void* window_scenery_events[] = {
 	(void*)0x006E1A25,    // window_scenery_mousedown,
 	(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
-	(void*)0x006E1CD3,    // window_scenery_update,
+	/*window_scenery_update,/*/(void*)0x006E1CD3,    // window_scenery_update,
 	(void*)0x006E1B9F,	  // window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
@@ -177,6 +241,356 @@ static rct_widget window_scenery_widgets[] = {
 };
 
 /*
+* rct2: 0x006DFA00
+**/
+void init_scenery() {
+	uint32 edi = 0;
+	uint32 baseAddress = 0x00F64F7C;
+
+	for (int i = 0; i < 0x14; i++) {
+		RCT2_ADDRESS(0x00F64F2C, uint32)[i] = baseAddress;
+		baseAddress += 0x102;
+	}
+
+	uint32 dword_F663A4 = 0;
+
+	for (int edi = 0; edi < 0x14; edi++) {
+		int esi = RCT2_ADDRESS(0x00F64F2C, uint32)[edi];
+		RCT2_GLOBAL(esi, uint16) = 0xFFFF;
+		if (edi != 13) {
+			uint32 ebp = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[edi];
+
+			if (ebp != 0xFFFFFFFF) {
+
+				for (int ebx = 0;; ebx++) {
+					if (ebx == RCT2_GLOBAL(ebp + 0x106, uint8))
+						break;
+
+					uint16 ax = RCT2_GLOBAL(ebp + ebx * 2 + 6, uint16);
+					if (RCT2_ADDRESS(0x01357BD0, sint32)[ax >> 5] & (1 << (ax & 0x1F))) {
+						RCT2_GLOBAL(esi, uint16) = ax;
+						esi += 2;
+						RCT2_GLOBAL(esi, uint16) = 0xFFFF;
+					}
+					else {
+						dword_F663A4 &= (1 << edi);
+					}
+				}
+
+			}
+		}
+	}
+
+	// small scenery 
+	for (uint16 edi = 0; edi < 0xFC; edi++) {
+		if ((uint32)g_smallSceneryEntries[edi] == 0xFFFFFFFF)
+			continue;
+
+		rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[edi];
+
+		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi & 0x1F))) {
+			if (sceneryEntry->small_scenery.var_1A != 0xFF) {
+				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->small_scenery.var_1A];
+
+				bool found = false;
+				for (int ebx = 0; ebx < 0x80; ebx++) {
+					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+					{
+						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
+						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+						found = true;
+						break;
+					}
+				}
+
+				if (found == true)
+					continue;
+			}
+
+			bool found2 = false;
+
+			for (int ecx = 0; ecx < 0x13; ecx++) {
+				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+				int counter = 0;
+
+				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+				{
+					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
+						ecx = 0x13;
+						found2 = true;
+						break;
+					}
+
+					counter++;
+				}
+			}
+
+			if (found2 == true)
+				continue;
+
+			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+			for (int ecx = 0; ecx < 0x80; ecx++) {
+				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
+					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+					break;
+				}
+			}
+		}
+	}
+
+	// large scenery
+	for (int edi = 0x300; edi < 0x380; edi++) {
+		int largeSceneryIndex = edi - 0x300;
+
+		if ((uint32)g_largeSceneryEntries[largeSceneryIndex] == 0xFFFFFFFF)
+			continue;
+
+		rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[largeSceneryIndex];
+
+		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
+			if (sceneryEntry->large_scenery.var_10 != 0xFF) {
+				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->large_scenery.var_10];
+
+				bool found = false;
+				for (int ebx = 0; ebx < 0x80; ebx++) {
+					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+					{
+						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
+						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+						found = true;
+						break;
+					}
+				}
+
+				if (found == true)
+					continue;
+			}
+
+			bool found2 = false;
+
+			for (int ecx = 0; ecx < 0x13; ecx++) {
+				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+				int counter = 0;
+
+				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+				{
+					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
+						ecx = 0x13;
+						found2 = true;
+						break;
+					}
+
+					counter++;
+				}
+			}
+
+			if (found2 == true)
+				continue;
+
+			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+			for (int ecx = 0; ecx < 0x80; ecx++) {
+				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
+					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+					break;
+				}
+			}
+		}
+	}
+
+	// walls
+	for (int edi = 0x200; edi < 0x280; edi++) {
+		int wallSceneryIndex = edi - 0x200;
+
+		if ((uint32)g_wallSceneryEntries[wallSceneryIndex] == 0xFFFFFFFF)
+			continue;
+
+		rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[wallSceneryIndex];
+
+		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
+			if (sceneryEntry->wall.var_0C != 0xFF) {
+				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->wall.var_0C];
+
+				bool found = false;
+				for (int ebx = 0; ebx < 0x80; ebx++) {
+					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+					{
+						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
+						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+						found = true;
+						break;
+					}
+				}
+
+				if (found == true)
+					continue;
+			}
+
+			bool found2 = false;
+
+			for (int ecx = 0; ecx < 0x13; ecx++) {
+				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+				int counter = 0;
+
+				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+				{
+					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
+						ecx = 0x13;
+						found2 = true;
+						break;
+					}
+
+					counter++;
+				}
+			}
+
+			if (found2 == true)
+				continue;
+
+			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+			for (int ecx = 0; ecx < 0x80; ecx++) {
+				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
+					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+					break;
+				}
+			}
+		}
+	}
+
+	// banners
+	for (int edi = 0x400; edi < 0x420; edi++) {
+		int bannerIndex = edi - 0x400;
+
+		if ((uint32)g_bannerSceneryEntries[bannerIndex] == 0xFFFFFFFF)
+			continue;
+
+		rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[bannerIndex];
+
+		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
+			if (sceneryEntry->banner.var_0A != 0xFF) {
+				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->banner.var_0A];
+
+				bool found = false;
+				for (int ebx = 0; ebx < 0x80; ebx++) {
+					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+					{
+						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
+						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+						found = true;
+						break;
+					}
+				}
+
+				if (found == true)
+					continue;
+			}
+
+			bool found2 = false;
+
+			for (int ecx = 0; ecx < 0x13; ecx++) {
+				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+				int counter = 0;
+
+				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+				{
+					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
+						ecx = 0x13;
+						found2 = true;
+						break;
+					}
+
+					counter++;
+				}
+			}
+
+			if (found2 == true)
+				continue;
+
+			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+			for (int ecx = 0; ecx < 0x80; ecx++) {
+				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
+					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+					break;
+				}
+			}
+		}
+	}
+
+	// path bits
+	for (int edi = 0x100; edi < 0x10F; edi++) {
+		int bannerIndex = edi - 0x100;
+
+		if ((uint32)g_pathBitSceneryEntries[bannerIndex] == 0xFFFFFFFF)
+			continue;
+
+		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[bannerIndex];
+
+		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
+			if (sceneryEntry->path_bit.var_0C != 0xFF) {
+				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->path_bit.var_0C];
+
+				bool found = false;
+				for (int ebx = 0; ebx < 0x80; ebx++) {
+					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+					{
+						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
+						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+						found = true;
+						break;
+					}
+				}
+
+				if (found == true)
+					continue;
+			}
+
+			bool found2 = false;
+
+			for (int ecx = 0; ecx < 0x13; ecx++) {
+				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+				int counter = 0;
+
+				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+				{
+					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
+						ecx = 0x13;
+						found2 = true;
+						break;
+					}
+
+					counter++;
+				}
+			}
+
+			if (found2 == true)
+				continue;
+
+			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+			for (int ecx = 0; ecx < 0x80; ecx++) {
+				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
+					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+					break;
+				}
+			}
+		}
+	}
+
+	for (int esi = WIDX_SCENERY_TAB_1; esi < WIDX_SCENERY_LIST; esi++)
+		window_scenery_widgets[esi].type = 0;
+
+	// todo: 0x006DFDF7
+}
+
+/*
 * rct2: 0x006E0FEF
 **/
 void window_scenery_open()
@@ -188,7 +602,8 @@ void window_scenery_open()
 	if (window != NULL)
 		return;
 
-	RCT2_CALLPROC_EBPSAFE(0x006DFA00);
+	init_scenery();
+	//RCT2_CALLPROC_EBPSAFE(0x006DFA00);
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - WINDOW_SCENERY_WIDTH, 0x1D, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
 		(uint32*)window_scenery_events, WC_SCENERY, WF_2);
@@ -269,6 +684,23 @@ void window_scenery_close() {
 
 /**
 *
+*  rct2: 0x006E1CD3
+*/
+static void window_scenery_update(rct_window *w)
+{
+	rct_window* other = window_find_from_point(RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
+	if (other == w) {
+		int window_x = RCT2_GLOBAL(0x0142406C, int) - w->x + 0x1A;
+		int window_y = RCT2_GLOBAL(0x01424070, int) - w->y;
+
+		if (window_y >= 0x2C) {
+
+		}
+	}
+}
+
+/**
+*
 *  rct2: 0x006E1C05
 */
 void window_scenery_tooltip() {
@@ -306,7 +738,7 @@ void window_scenery_invalidate() {
 		edx = *RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SET_ENTRIES + (typeId & 0xFFFF) * 4, uint8*);
 	}
 
-	w->pressed_widgets = ((w->pressed_widgets & 0xFF00000F) | (1 << (typeId + 4))) & 0xBBFFFFFF;
+	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (typeId + 4))) & 0xBBFFFFFF;
 
 	if (RCT2_GLOBAL(0x00F64F19, uint8) != 1) { // repaint colored scenery tool is off
 		w->pressed_widgets |= 0x04000000;
@@ -323,8 +755,8 @@ void window_scenery_invalidate() {
 				byte_9DE478 = 9;
 			}
 
-			rct_scenery_entry* ebx = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)[typeId];
-			if (!(ebx->var_06 & 0x600)) {
+			rct_scenery_entry* ebx = g_smallSceneryEntries[typeId];
+			if (!(ebx->small_scenery.flags & 0x600)) {
 				byte_9DE448 = 6;
 			}
 			int i = 0;
@@ -351,39 +783,39 @@ void window_scenery_invalidate() {
 		rct_scenery_entry* sceneryEntry = NULL;
 
 		if (bp >= 0x400) {
-			sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_BANNER_ENTRIES, rct_scenery_entry*)[bp - 0x400];
+			sceneryEntry = g_bannerSceneryEntries[bp - 0x400];
 			
-			if (sceneryEntry->var_07 & 1)
+			if (sceneryEntry->banner.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
 		}
 		else if (bp >= 0x300) {
-			sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[bp - 0x300];
+			sceneryEntry = g_largeSceneryEntries[bp - 0x300];
 
-			if (sceneryEntry->var_07 & 1)
+			if (sceneryEntry->large_scenery.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
-			if (sceneryEntry->var_07 & 2)
+			if (sceneryEntry->large_scenery.flags & 2)
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON2].type = WWT_COLORBTN;
 		}
 		else if (bp >= 0x200) {
-			sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_ENTRIES, rct_scenery_entry*)[bp - 0x200];
-			if (sceneryEntry->var_07 & 1)
+			sceneryEntry = g_wallSceneryEntries[bp - 0x200];
+			if (sceneryEntry->wall.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
-			if (sceneryEntry->var_07 & 0x40) {
+			if (sceneryEntry->wall.flags & 0x40) {
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON2].type = WWT_COLORBTN;
 
-				if (sceneryEntry->var_09 & 1)
+				if (sceneryEntry->wall.flags2 & 1)
 					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
-				if (sceneryEntry->var_07 & 0x80)
+				if (sceneryEntry->wall.flags & 0x80)
 					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON3].type = WWT_COLORBTN;
 			}
 		}
 		else if (bp < 0x100) {
-			sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)[bp];
+			sceneryEntry = g_smallSceneryEntries[bp];
 			
-			if (sceneryEntry->var_06 & 0x600) {
+			if (sceneryEntry->small_scenery.flags & 0x600) {
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
 
-				if (sceneryEntry->var_07 & 0x8)
+				if (sceneryEntry->small_scenery.flags2 & 0x8)
 					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON2].type = WWT_COLORBTN;
 			}
 		}
@@ -450,20 +882,20 @@ void window_scenery_paint() {
 
 	rct_scenery_entry* sceneryEntry = NULL;
 	if (bp >= 0x400) {
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_BANNER_ENTRIES, rct_scenery_entry*)[bp - 0x400];
-		price = sceneryEntry->var_08;
+		sceneryEntry = g_bannerSceneryEntries[bp - 0x400];
+		price = sceneryEntry->banner.price;
 	} else if (bp >= 0x300) {
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[bp - 0x300];
-		price = sceneryEntry->var_08 * 10;
+		sceneryEntry = g_largeSceneryEntries[bp - 0x300];
+		price = sceneryEntry->large_scenery.price * 10;
 	} else if (bp >= 0x200) {
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_ENTRIES, rct_scenery_entry*)[bp - 0x200];
-		price = sceneryEntry->var_0A;
+		sceneryEntry = g_wallSceneryEntries[bp - 0x200];
+		price = sceneryEntry->wall.price;
 	} else if (bp >= 0x100) {
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_ENTRIES, rct_scenery_entry*)[bp - 0x100];
-		price = sceneryEntry->var_0A;
+		sceneryEntry = g_pathBitSceneryEntries[bp - 0x100];
+		price = sceneryEntry->path_bit.price;
 	} else {
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)[bp];
-		price = sceneryEntry->var_0C * 10;
+		sceneryEntry = g_smallSceneryEntries[bp];
+		price = sceneryEntry->small_scenery.price * 10;
 	}
 
 	if (w->scenery.var_480 == 0xFFFF && RCT2_GLOBAL(0x00F64EB4, uint32) != 0x80000000) {
