@@ -90,7 +90,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) = -1;
 	RCT2_GLOBAL(0x013573F8, sint16) = -1;
-	RCT2_GLOBAL(0x01357CF2, uint16) = 127;
+	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16) = 127;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = 2;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, uint16) = MONEY(50,00); // Cash per guest (average)
@@ -103,7 +103,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16) = MONEY(90, 00);
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16) = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
@@ -427,7 +427,7 @@ static int park_calculate_guest_generation_probability()
 		probability /= 4;
 
 	// Check if money is enabled
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		// Penalty for overpriced entrance fee relative to total ride value
 		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
 		if (entranceFee > totalRideValue) {
@@ -581,4 +581,40 @@ uint8 calculate_guest_initial_happiness(uint8 percentage) {
 void park_update_histories()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0066A231);
+}
+
+/**
+*
+*  rct2: 0x00669E30
+*/
+void game_command_set_park_entrance_fee()
+{
+	uint8 _bl;
+	uint16 new_fee;
+
+	#ifdef _MSC_VER
+		__asm mov _bl, bl
+	#else
+		__asm__("mov %[_bl], bl " : [_bl] "+m" (_bl));
+	#endif
+
+	#ifdef _MSC_VER
+		__asm mov new_fee, di
+	#else
+		__asm__("mov %[new_fee], di " : [new_fee] "+m" (new_fee));
+	#endif
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 0x10;
+
+	if (_bl & 1){
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = new_fee;
+
+		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+	}
+
+	#ifdef _MSC_VER
+		__asm mov ebx, 0
+	#else
+		__asm__("mov ebx, 0 ");
+	#endif
 }

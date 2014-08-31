@@ -21,6 +21,8 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include "rct2.h"
+
 typedef struct {
 	char name[256];
 } audio_device;
@@ -31,7 +33,7 @@ extern audio_device *gAudioDevices;
 void audio_init();
 void audio_quit();
 void audio_get_devices();
-
+void audio_init2(int device);
 
 #include <dsound.h>
 
@@ -55,10 +57,76 @@ typedef struct rct_sound {
 	struct rct_sound* next;
 } rct_sound;
 
-void get_dsound_devices();
-int sound_prepare(int sound_id, rct_sound *sound, int var_8, int var_c);
-void sound_play_panned(int sound_id, int x);
+typedef struct {
+	uint16 var_0;
+	uint16 channels;
+	uint32 samples;
+	uint32 var_8;
+	uint16 bytes;
+	uint16 bits;
+	uint16 var_E;
+} rct_audio_info;
+
+typedef struct {
+	uint32 var_0;
+	uint32 var_4;
+	char filename[0x108];			// 0x8
+	uint32 var_110;
+	uint32 var_114;
+	uint32 var_118;
+	HGLOBAL hmem;					// 0x11C
+	HMMIO hmmio;					// 0x120
+	MMCKINFO mmckinfo1;				// 0x124
+	MMCKINFO mmckinfo2;				// 0x138
+	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+	uint32 var_150;
+	uint32 playpos;					// 0x154
+	uint32 var_158;
+	uint32 var_15C;
+	uint32 var_160;
+	uint32 var_164;
+	uint32 var_168;
+} rct_sound_channel;
+
+typedef struct {
+	uint32 size;
+	WAVEFORMATEX format;
+	char* data;
+} rct_sound_info;
+
+typedef struct {
+	uint16 id;
+	uint16 var_2;
+	rct_sound sound1;		// 0x04
+	uint16 var_18;
+	uint8 pad_1A[0x06];
+	rct_sound sound2;		// 0x20
+	uint16 var_34;
+	uint8 pad_36[0x06];
+} rct_vehicle_sound;
+
+typedef struct {
+	uint16 id;
+	rct_sound sound;
+} rct_other_sound;
+
+int get_dsound_devices();
+int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
+void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
+int audio_release();
+MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
+MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
+MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
+int sub_40153B(int channel);
+int sub_4015E7(int channel);
+int audio_remove_timer();
+void audio_close();
+LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
+int unmap_sound_info();
+int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
+int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
+int sound_is_playing(rct_sound* sound);
 int sound_set_frequency(rct_sound* sound, int frequency);
 int sound_set_pan(rct_sound* sound, int pan);
 int sound_set_volume(rct_sound* sound, int volume);
@@ -66,9 +134,22 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
-void sound_stop(rct_sound *sound);
+int sound_channel_load_file(int channel, char* filename, int offset);
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
+int sound_stop(rct_sound *sound);
+int sound_stop_all();
+int unmap_file(LPCVOID base);
+int sound_channel_stop(int channel);
+rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);
+rct_sound* sound_begin();
+rct_sound* sound_next(rct_sound* sound);
 void pause_sounds();
+void stop_other_sounds();
+void stop_vehicle_sounds();
+void stop_ride_music();
+void stop_peep_sounds();
+void stop_title_music();
 void unpause_sounds();
 
 // 0x009AF59C probably does the same job

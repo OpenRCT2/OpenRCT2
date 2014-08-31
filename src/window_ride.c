@@ -304,6 +304,7 @@ rct_window *window_ride_open(int rideIndex)
 		ebx++;
 	}
 	RCT2_GLOBAL((int)w + 496, uint16) = ebx;
+	return w;
 }
 
 /**

@@ -203,7 +203,7 @@ typedef struct rct_window {
 	sint16 page;					// 0x48A
 	sint16 var_48C;
 	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
-	uint16 list_information_type;	// 0x490 0 for none
+	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
 	sint16 var_492;
 	uint32 var_494;
 	uint8 var_498[0x14];
@@ -340,6 +340,7 @@ enum {
 	WC_PEEP = 23,
 	WC_GUEST_LIST = 24,
 	WC_STAFF_LIST = 25,
+	WC_FIRE_PROMPT = 26,
 	WC_PARK_INFORMATION = 27,
 	WC_FINANCES = 28,
 	WC_TITLE_MENU = 29,
@@ -459,6 +460,8 @@ void window_research_open();
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
 void window_bubble_list_item(rct_window* w, int item_position);
+
+void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
 
 void window_new_ride_init_vars();
 

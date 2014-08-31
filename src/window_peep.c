@@ -58,7 +58,9 @@ enum WINDOW_PEEP_WIDGET_IDX {
 	WIDX_PICKUP,
 	WIDX_RENAME,
 	WIDX_LOCATE,
-	WIDX_TRACK
+	WIDX_TRACK,
+	
+	WIDX_RIDE_SCROLL = 10
 };
 
 void window_peep_emptysub(){};
@@ -77,21 +79,92 @@ rct_widget window_peep_overview_widgets[] = {
 	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},				// Label Thought marquee
 	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },				// Viewport
 	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},				// Label Action
-	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_RENAME,		1706},					// Pickup Button
-	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		0x1430,			1055},					// Rename Button
+	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		0x1436,			1706},					// Pickup Button
+	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		SPR_RENAME,		1055},					// Rename Button
 	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
 	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	SPR_TRACK_PEEP,	1930},					// Track Button
 	{ WIDGETS_END },
 };
 
+rct_widget window_peep_stats_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_rides_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WWT_SCROLL,	1, 3,	188,	57,	143,	2,			STR_NONE},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_finance_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_thoughts_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
+rct_widget window_peep_inventory_widgets[] = {
+	{WWT_FRAME,		0, 0,	191,	0,	156,	-1,			STR_NONE},
+	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,	1, 0,	191,	43,	156,	-1,			STR_NONE},
+	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	1938},
+	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	1940},
+	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	1941},
+	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	1942},
+	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	1943},
+	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	1944},
+	{WIDGETS_END},
+};
+
 //0x981D0C
 rct_widget *window_peep_page_widgets[] = {
 	window_peep_overview_widgets,
-	(rct_widget *)0x9AC45C,
-	(rct_widget *)0x9ac500,
-	(rct_widget *)0x9ac5b4,
-	(rct_widget *)0x9ac658,
-	(rct_widget *)0x9ac6FC
+	window_peep_stats_widgets,
+	window_peep_rides_widgets,
+	window_peep_finance_widgets,
+	window_peep_thoughts_widgets,
+	window_peep_inventory_widgets
 };
 
 void window_peep_set_page(rct_window* w, int page);
@@ -102,6 +175,8 @@ void window_peep_close();
 void window_peep_resize();
 void window_peep_overview_mouse_up();
 void window_peep_overview_paint();
+void window_peep_overview_invalidate();
+void window_peep_overview_viewport_init_wrapper();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
@@ -124,24 +199,179 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	(void*)0x696A6A,
-	(void*)0x697076,
+	window_peep_overview_viewport_init_wrapper,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696749, //Invalidate
+	window_peep_overview_invalidate, //Invalidate
 	window_peep_overview_paint, //Paint
-	(void*)0x69707C
+	window_peep_emptysub
+};
+
+static void* window_peep_stats_events[] = {
+	window_peep_emptysub,
+	(void*) 0x0069744F, //mouse_up
+	(void*) 0x00697488, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x006974ED,
+	(void*) 0x0069746A,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069707D, //invalidate
+	(void*) 0x0069711D, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_rides_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697795, //mouse_up
+	(void*) 0x006978F4, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697959,
+	(void*) 0x006977B0,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069784E,
+	(void*) 0x006978CC,
+	window_peep_emptysub,
+	(void*) 0x0069789C,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697844,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x0069757A, //invalidate
+	(void*) 0x00697637, //paint
+	(void*) 0x006976FC
+};
+
+static void* window_peep_finance_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697BDD, //mouse_up
+	(void*) 0x00697C16, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697C7B,
+	(void*) 0x00697BF8,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697968, //invalidate
+	(void*) 0x00697A08, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_thoughts_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00697E18, //mouse_up
+	(void*) 0x00697E33, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697ED2,
+	(void*) 0x00697EB4,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697C8A, //invalidate
+	(void*) 0x00697D2A, //paint
+	window_peep_emptysub
+};
+
+static void* window_peep_inventory_events[] = {
+	window_peep_emptysub,
+	(void*) 0x00698279, //mouse_up
+	(void*) 0x00698294, //resize
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00698333,
+	(void*) 0x00698315,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	window_peep_emptysub,
+	(void*) 0x00697EE1, //invalidate
+	(void*) 0x00697F81, //paint
+	window_peep_emptysub
 };
 
 //0x981D24
 void* window_peep_page_events[] = {
 	window_peep_overview_events,
-	(void*)0x982468,
-	(void*)0x9824d8,
-	(void*)0x982548,
-	(void*)0x9825b8,
-	(void*)0x982628
+	window_peep_stats_events,
+	window_peep_rides_events,
+	window_peep_finance_events,
+	window_peep_thoughts_events,
+	window_peep_inventory_events
 };
 
 //0x981D3C
@@ -172,8 +402,8 @@ uint32 window_peep_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3) |
 	(1 << WIDX_TAB_4) |
 	(1 << WIDX_TAB_5) |
-	(1 << WIDX_TAB_6), //|
-	//(1 << WIDX_?),
+	(1 << WIDX_TAB_6) |
+	(1 << WIDX_RIDE_SCROLL),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -270,7 +500,7 @@ void window_peep_disable_widgets(rct_window* w){
 		if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
 			window_invalidate(w);
 	}
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		disabled_widgets |= (1 << WIDX_TAB_4); //Disable finance tab if no money
 	}
 	w->disabled_widgets = disabled_widgets;
@@ -340,7 +570,6 @@ void window_peep_overview_mouse_up(){
 		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PICKUP:
-		//696ba6
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
@@ -360,7 +589,6 @@ void window_peep_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_RENAME:
-		//696e4d
 		window_show_textinput(w, (int)widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx);
 		break;
 	case WIDX_LOCATE:
@@ -413,6 +641,13 @@ void window_peep_set_page(rct_window* w, int page){
 	window_invalidate(w);
 	
 	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
+void window_peep_overview_viewport_init_wrapper(){
+	rct_window* w;
+	window_get_register(w);
+	
+	window_peep_viewport_init(w);
 }
 
 /* rct2: 0x0069883C */
@@ -534,7 +769,156 @@ void window_peep_overview_paint(){
 	//69861f
 	//69869b
 	//698661
+
+	// Draw the viewport no sound sprite
 	if (w->viewport){
 		window_draw_viewport(dpi, w);
+		rct_viewport* viewport = w->viewport;
+		if (viewport->flags & VIEWPORT_FLAG_SOUND_ON){
+			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+		}
 	}
+
+	// Draw the centered label
+	uint32 argument1, argument2;
+	rct_peep* peep = GET_PEEP(w->number);
+	get_arguments_from_action(peep, &argument1, &argument2);
+	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
+	int x = (widget->left + widget->right) / 2 + w->x;
+	int y = w->y + widget->top - 1;
+	int width = widget->right - widget->left;
+	gfx_draw_string_centred_clipped(dpi, 1191, (void*)0x13CE952, 0, x, y, width);
+
+	// Draw the marquee thought
+	widget = &w->widgets[WIDX_MARQUEE];
+	width = widget->right - widget->left - 3;
+	int left = widget->left + 2 + w->x;
+	int top = widget->top + w->y;
+	int height = widget->bottom - widget->top;
+	rct_drawpixelinfo* dpi_marquee = clip_drawpixelinfo(dpi, left, width, top, height);
+
+	if (!dpi_marquee)return;
+	int i = 0;
+	for (; i < PEEP_MAX_THOUGHTS; ++i){
+		if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE){
+			w->list_information_type = 0;
+			return;
+		}
+		if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
+			break;
+		}
+	}
+	if (i == PEEP_MAX_THOUGHTS){
+		w->list_information_type = 0;
+		return;
+	}
+
+	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
+
+	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	RCT2_GLOBAL(0x13CE952 + 8, uint16) = 0;
+
+	x = widget->right - widget->left - w->list_information_type;
+	gfx_draw_string_left(dpi_marquee, 1193, (void*)0x13CE952, 0, x, 0);
+}
+
+/* rct2: 0x696749*/
+void window_peep_overview_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+	
+	if (window_peep_page_widgets[w->page] != w->widgets){
+		w->widgets = window_peep_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+	
+	w->pressed_widgets &= ~(WIDX_TAB_1 | WIDX_TAB_2 |WIDX_TAB_3 |WIDX_TAB_4 |WIDX_TAB_5 |WIDX_TAB_6);
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+	
+	rct_peep* peep = GET_PEEP(w->number);
+	RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954,uint32) = peep->id;
+	
+	w->pressed_widgets &= ~(1<<WIDX_TRACK);
+	if (peep->flags & 0x8){
+		w->pressed_widgets |= (1<<WIDX_TRACK);
+	}
+	
+	window_peep_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].right =w->width - 1;
+	window_peep_overview_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+	
+	window_peep_overview_widgets[WIDX_TITLE].right = w->width - 2;
+	
+	window_peep_overview_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_overview_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_peep_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
+	window_peep_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+
+	window_peep_overview_widgets[WIDX_ACTION_LBL].top = w->height - 12;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].bottom = w->height - 3;
+	window_peep_overview_widgets[WIDX_ACTION_LBL].right = w->width - 24;
+	
+	window_peep_overview_widgets[WIDX_MARQUEE].right = w->width - 24;
+
+	window_peep_overview_widgets[WIDX_PICKUP].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_RENAME].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_LOCATE].right = w->width - 2;
+	window_peep_overview_widgets[WIDX_TRACK].right = w->width - 2;
+
+	window_peep_overview_widgets[WIDX_PICKUP].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_RENAME].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_LOCATE].left = w->width - 25;
+	window_peep_overview_widgets[WIDX_TRACK].left = w->width - 25;
+	
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
+}
+
+void window_peep_overview_tab_paint( rct_window* w, rct_drawpixelinfo* dpi){
+
+	if ( w->disabled_widgets & (1ULL<<WIDX_TAB_1) )return;
+
+	//ax
+	int x = w->widgets[WIDX_TAB_1].left + 1 + w->x;
+	//cx
+	int y = w->widgets[WIDX_TAB_1].top + 1 + w->y;
+	//bx
+	int width = w->widgets[WIDX_TAB_1].right - 1 - w->widgets[WIDX_TAB_1].left;
+	//dx
+	int height = w->widgets[WIDX_TAB_1].bottom - 1 - w->widgets[WIDX_TAB_1].top;
+
+	if (w->page == WINDOW_PEEP_OVERVIEW){
+		height++;
+	}
+
+	rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo( dpi, x, width, y, height );
+
+	if (!cliped_dpi) return;
+
+	int cx = 14;
+	int dx = 20;
+
+	//ebp
+	rct_peep* peep = GET_PEEP(w->number);
+	
+	
+	if (peep->type == 1 && peep->staff_type == 3)
+		dx++;
+	int eax = RCT2_GLOBAL(peep->sprite_type*8 + 0x982708, uint32);
+	int ebx = *(uint32*)eax;
+	ebx++;
+	eax = 0;
+	
+	if (w->page == WINDOW_PEEP_OVERVIEW){
+		int ax = *((uint16*)w + 496 / 2);
+		ax &= ~((1<<0)|(1<<1));
+	}
+	ebx += eax;
+	//698474
 }

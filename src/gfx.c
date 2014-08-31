@@ -2276,7 +2276,7 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 	}
 
 	int stickOutWidth = newDrawPixelInfo->x + newDrawPixelInfo->width - right;
-	if (stickOutWidth < 0) {
+	if (stickOutWidth > 0) {
 		newDrawPixelInfo->width -= stickOutWidth;
 		newDrawPixelInfo->pitch += stickOutWidth;
 	}
@@ -2290,7 +2290,7 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 	}
 
 	int bp = newDrawPixelInfo->y + newDrawPixelInfo->height - bottom;
-	if (bp < 0) {
+	if (bp > 0) {
 		newDrawPixelInfo->height -= bp;
 	}
 
