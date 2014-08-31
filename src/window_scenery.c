@@ -240,6 +240,49 @@ static rct_widget window_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
+
+void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 unknownVar) {
+	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1 << (index & 0x1F))) {
+		if (unknownVar != 0xFF) {
+			uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[unknownVar];
+
+			for (int ebx = 0; ebx < 0x80; ebx++) {
+				if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+				{
+					RCT2_ADDRESS(esi, uint16)[ebx] = index;
+					RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+					return;
+				}
+			}
+		}
+
+		for (int ecx = 0; ecx < 0x13; ecx++) {
+			int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+			int counter = 0;
+
+			while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+			{
+				if (RCT2_ADDRESS(baseEdx, uint16)[counter] == index) {
+					ecx = 0x13;
+					return;
+				}
+
+				counter++;
+			}
+		}
+
+		uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
+		for (int ecx = 0; ecx < 0x80; ecx++) {
+			if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+			{
+				RCT2_ADDRESS(edx, uint16)[ecx] = index;
+				RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+				break;
+			}
+		}
+	}
+}
+
 /*
 * rct2: 0x006DFA00
 **/
@@ -288,57 +331,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[edi];
-
-		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi & 0x1F))) {
-			if (sceneryEntry->small_scenery.var_1A != 0xFF) {
-				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->small_scenery.var_1A];
-
-				bool found = false;
-				for (int ebx = 0; ebx < 0x80; ebx++) {
-					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
-					{
-						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
-						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-					continue;
-			}
-
-			bool found2 = false;
-
-			for (int ecx = 0; ecx < 0x13; ecx++) {
-				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
-				int counter = 0;
-
-				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
-				{
-					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
-						ecx = 0x13;
-						found2 = true;
-						break;
-					}
-
-					counter++;
-				}
-			}
-
-			if (found2 == true)
-				continue;
-
-			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-			for (int ecx = 0; ecx < 0x80; ecx++) {
-				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
-				{
-					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
-					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
-					break;
-				}
-			}
-		}
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->small_scenery.var_1A);
 	}
 
 	// large scenery
@@ -349,57 +342,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[largeSceneryIndex];
-
-		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
-			if (sceneryEntry->large_scenery.var_10 != 0xFF) {
-				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->large_scenery.var_10];
-
-				bool found = false;
-				for (int ebx = 0; ebx < 0x80; ebx++) {
-					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
-					{
-						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
-						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-					continue;
-			}
-
-			bool found2 = false;
-
-			for (int ecx = 0; ecx < 0x13; ecx++) {
-				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
-				int counter = 0;
-
-				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
-				{
-					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
-						ecx = 0x13;
-						found2 = true;
-						break;
-					}
-
-					counter++;
-				}
-			}
-
-			if (found2 == true)
-				continue;
-
-			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-			for (int ecx = 0; ecx < 0x80; ecx++) {
-				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
-				{
-					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
-					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
-					break;
-				}
-			}
-		}
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->large_scenery.var_10);
 	}
 
 	// walls
@@ -410,57 +353,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[wallSceneryIndex];
-
-		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
-			if (sceneryEntry->wall.var_0C != 0xFF) {
-				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->wall.var_0C];
-
-				bool found = false;
-				for (int ebx = 0; ebx < 0x80; ebx++) {
-					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
-					{
-						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
-						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-					continue;
-			}
-
-			bool found2 = false;
-
-			for (int ecx = 0; ecx < 0x13; ecx++) {
-				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
-				int counter = 0;
-
-				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
-				{
-					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
-						ecx = 0x13;
-						found2 = true;
-						break;
-					}
-
-					counter++;
-				}
-			}
-
-			if (found2 == true)
-				continue;
-
-			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-			for (int ecx = 0; ecx < 0x80; ecx++) {
-				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
-				{
-					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
-					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
-					break;
-				}
-			}
-		}
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->wall.var_0C);
 	}
 
 	// banners
@@ -471,57 +364,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[bannerIndex];
-
-		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
-			if (sceneryEntry->banner.var_0A != 0xFF) {
-				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->banner.var_0A];
-
-				bool found = false;
-				for (int ebx = 0; ebx < 0x80; ebx++) {
-					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
-					{
-						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
-						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-					continue;
-			}
-
-			bool found2 = false;
-
-			for (int ecx = 0; ecx < 0x13; ecx++) {
-				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
-				int counter = 0;
-
-				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
-				{
-					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
-						ecx = 0x13;
-						found2 = true;
-						break;
-					}
-
-					counter++;
-				}
-			}
-
-			if (found2 == true)
-				continue;
-
-			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-			for (int ecx = 0; ecx < 0x80; ecx++) {
-				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
-				{
-					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
-					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
-					break;
-				}
-			}
-		}
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->banner.var_0A);
 	}
 
 	// path bits
@@ -532,57 +375,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[bannerIndex];
-
-		if (RCT2_ADDRESS(0x01357BD0, sint32)[edi >> 5] & (1 << (edi + 0x1F))) {
-			if (sceneryEntry->path_bit.var_0C != 0xFF) {
-				uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryEntry->path_bit.var_0C];
-
-				bool found = false;
-				for (int ebx = 0; ebx < 0x80; ebx++) {
-					if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
-					{
-						RCT2_ADDRESS(esi, uint16)[ebx] = edi;
-						RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-					continue;
-			}
-
-			bool found2 = false;
-
-			for (int ecx = 0; ecx < 0x13; ecx++) {
-				int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
-				int counter = 0;
-
-				while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
-				{
-					if (RCT2_ADDRESS(baseEdx, uint16)[counter] == edi) {
-						ecx = 0x13;
-						found2 = true;
-						break;
-					}
-
-					counter++;
-				}
-			}
-
-			if (found2 == true)
-				continue;
-
-			uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-			for (int ecx = 0; ecx < 0x80; ecx++) {
-				if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
-				{
-					RCT2_ADDRESS(edx, uint16)[ecx] = edi;
-					RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
-					break;
-				}
-			}
-		}
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->path_bit.var_0C);
 	}
 
 	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
