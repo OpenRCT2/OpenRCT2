@@ -344,3 +344,91 @@ void ride_check_all_reachable()
 	}
 }
 
+/**
+ * 
+ * rct2: 0x006CAF80
+ * ax result x
+ * bx result y
+ * dl ride index
+ * esi result map element
+ */
+rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
+{
+	rct_map_element *resultMapElement, *mapElement;
+	int foundSpecialTrackPiece;
+
+	resultMapElement = (rct_map_element*)-1;
+	foundSpecialTrackPiece = 0;
+
+	uint16 x, y;
+	for (x = 0; x < 256; x++) {
+		for (y = 0; y < 256; y++) {
+			// Iterate through map elements on tile
+			int tileIndex = (y << 8) | x;
+			mapElement = TILE_MAP_ELEMENT_POINTER(tileIndex);
+			do {
+				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+				if (rideIndex != mapElement->properties.track.ride_index)
+					continue;
+
+				// Found a track piece for target ride
+
+				// Check if its a ???
+				int specialTrackPiece = (
+					(mapElement->properties.track.type != 2 && mapElement->properties.track.type != 3) &&
+					(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10)
+				);
+
+				// Set result tile to this track piece if first found track or a ???
+				if (resultMapElement == (rct_map_element*)-1 || specialTrackPiece) {
+					resultMapElement = mapElement;
+
+					if (outX != NULL) *outX = x * 32;
+					if (outY != NULL) *outY = y * 32;
+				}
+
+				if (specialTrackPiece) {
+					foundSpecialTrackPiece = 1;
+					return resultMapElement;
+				}
+			} while (!(mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) && mapElement++);
+		}
+	}
+	return resultMapElement;
+}
+
+/**
+ * 
+ * rct2: 0x006CB02F
+ * ax result x
+ * bx result y
+ * esi input / output map element
+ */
+rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	esi = (int)startTrackElement;
+	eax = *outX;
+	ebx = 0;
+	ecx = *outY;
+	edx = 0;
+	edi = 0;
+	ebp = 0;
+	RCT2_CALLFUNC_X(0x006CB02F, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	if (outX != NULL) *outX = eax & 0xFFFF;
+	if (outY != NULL) *outY = ecx & 0xFFFF;
+	return (rct_map_element*)esi;
+}
+
+/**
+ * 
+ * rct2: 0x006CC056
+ */
+int ride_try_construct(rct_map_element *trackMapElement)
+{
+	// Success stored in carry flag which can't be accessed after call using is macro
+	RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
+	return 1;
+}
