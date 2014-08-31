@@ -38,14 +38,16 @@ typedef struct {
 	uint8 pad_02[4];
 	uint8 flags;		// 0x06
 	uint8 flags2;		// 0x07
-	uint8 pad_08[4];
+	uint8 pad_08[3];
+	uint8 tool_id;		// 0x0B
 	uint16 price;		// 0x0C
 	uint8 pad_0E[12];
 	uint8 var_1A;		// 0x1A
 } rct_small_scenery_entry;
 
 typedef struct {
-	uint8 pad_02[5];
+	uint8 pad_02[4];
+	uint8 tool_id;		// 0x06
 	uint8 flags;		// 0x07
 	uint16 price;		// 0x08
 	uint8 pad_0A[6];
@@ -54,7 +56,8 @@ typedef struct {
 
 
 typedef struct {
-	uint8 pad_02[5];
+	uint8 pad_02[4];
+	uint8 tool_id;		// 0x06
 	uint8 flags;		// 0x07
 	uint8 pad_08;
 	uint8 flags2;		// 0x09
@@ -63,7 +66,8 @@ typedef struct {
 } rct_wall_scenery_entry;
 
 typedef struct {
-	uint8 pad_02[8];
+	uint8 pad_02[7];
+	uint8 tool_id;		// 0x09
 	uint16 price;		// 0x0A
 	uint8 var_0C;		// 0x0C
 } rct_path_bit_scenery_entry;
@@ -146,7 +150,7 @@ static void* window_scenery_events[] = {
 	(void*)0x006E1A25,    // window_scenery_mousedown,
 	(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
-	/*window_scenery_update,/*/(void*)0x006E1CD3,    // window_scenery_update,
+	window_scenery_update,//(void*)0x006E1CD3,    // window_scenery_update,
 	(void*)0x006E1B9F,	  // window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
@@ -514,6 +518,21 @@ void window_scenery_open()
 }
 
 /*
+ * rct2: 0x0066DB3D
+*/
+bool window_scenery_is_tool_active() {
+	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
+	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, rct_windownumber);
+
+	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9)
+			return true;
+
+	return false;
+}
+
+
+/*
 * rct2: 0x006E1A73
 **/
 void window_scenery_close() {
@@ -525,12 +544,8 @@ void window_scenery_close() {
 	hide_gridlines();
 	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
 
-	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
-	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, rct_windownumber);
-
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9)
-			tool_cancel();
+	if (window_scenery_is_tool_active())
+		tool_cancel();
 }
 
 /**
@@ -544,10 +559,76 @@ static void window_scenery_update(rct_window *w)
 		int window_x = RCT2_GLOBAL(0x0142406C, int) - w->x + 0x1A;
 		int window_y = RCT2_GLOBAL(0x01424070, int) - w->y;
 
-		if (window_y >= 0x2C) {
+		if (window_y < 0x2C && window_x <= w->width) {
+			int widgetIndex = window_find_widget_from_point(w,
+				RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
 
+			if (widgetIndex >= 3) {
+				w->scenery.var_482++;
+				if (w->scenery.var_482 < 8) {
+					w->scenery.var_482 = 0;
+					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) != INPUT_STATE_SCROLL_LEFT) {
+						w->min_width = WINDOW_SCENERY_WIDTH;
+						w->max_width = WINDOW_SCENERY_WIDTH;
+						w->min_height = WINDOW_SCENERY_HEIGHT;
+						w->max_height = WINDOW_SCENERY_HEIGHT;
+					}
+				} else {
+					int windowHeight = w->scrolls[0].v_bottom - 1 + 0x3E;
+					if (windowHeight > 0x1C6)
+						windowHeight = 0x1C6;
+					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) < 0x258){
+						if (windowHeight > 0x176)
+							windowHeight = 0x176;
+					}
+
+					w->min_width = WINDOW_SCENERY_WIDTH;
+					w->max_width = WINDOW_SCENERY_WIDTH;
+					w->min_height = windowHeight;
+					w->max_height = windowHeight;
+				}
+			}
+		}
+	} else {
+		w->scenery.var_482 = 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) != INPUT_STATE_SCROLL_LEFT) {
+			w->min_width = WINDOW_SCENERY_WIDTH;
+			w->max_width = WINDOW_SCENERY_WIDTH;
+			w->min_height = WINDOW_SCENERY_HEIGHT;
+			w->max_height = WINDOW_SCENERY_HEIGHT;
 		}
 	}
+	
+	// todo
+	//if (window_scenery_is_tool_active())
+		//window_close(w);
+	
+	if (RCT2_GLOBAL(0x00F64F19, uint8) != 1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
+		return;
+	}
+
+	uint16 typeId = RCT2_GLOBAL(0x00F64EDC, uint8);
+	uint16 sceneryIndex = RCT2_ADDRESS(0x00F64EDD, uint16)[typeId];
+	if (sceneryIndex == 0xFFFF)
+		return;
+
+	if (sceneryIndex > 0x400) { // banner
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x18;
+	} else if (sceneryIndex > 0x300) { // large scenery
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+			g_largeSceneryEntries[sceneryIndex - 0x300]->large_scenery.tool_id;
+	} else if (sceneryIndex > 0x200) { // wall
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+			g_wallSceneryEntries[sceneryIndex - 0x200]->wall.tool_id;
+	} else if (sceneryIndex > 0x100) { // path bit
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+			g_pathBitSceneryEntries[sceneryIndex - 0x100]->path_bit.tool_id;
+	} else { // small scenery
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+			g_smallSceneryEntries[sceneryIndex]->small_scenery.tool_id;
+	}
+
 }
 
 /**
