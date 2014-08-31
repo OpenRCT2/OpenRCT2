@@ -21,6 +21,7 @@
 #include <string.h>
 #include "addresses.h"
 #include "game.h"
+#include "map.h"
 #include "ride.h"
 #include "string_ids.h"
 #include "sprite.h"
@@ -428,6 +429,34 @@ static void window_ride_align_tabs(rct_window *w)
 
 /**
  * 
+ * rct2: 0x006B4971
+ */
+static void window_ride_construct(rct_window *w)
+{
+	int rideIndex = w->number;
+
+	window_close_by_id(WC_RIDE_CONSTRUCTION | 0x80, rideIndex);
+	w = window_find_by_id(WC_RIDE, rideIndex);
+	if (w == NULL)
+		return;
+
+	rct_map_element *trackMapElement;
+	int trackX, trackY;
+
+	trackMapElement = sub_6CAF80(rideIndex, &trackX, &trackY);
+	if (trackMapElement == (rct_map_element*)-1) {
+		RCT2_CALLPROC_X(0x006CC3FB, 0, 0, 0, rideIndex, 0, 0, 0);
+	} else {
+		trackMapElement = ride_find_track_gap(trackMapElement, &trackX, &trackY);
+
+		w = window_get_main();
+		if (w != NULL && ride_try_construct(trackMapElement))
+			window_scroll_to_location(w, trackX, trackY, trackMapElement->base_height * 8);
+	}
+}
+
+/**
+ * 
  * rct2: 0x006AF17E
  */
 static void window_ride_main_mouseup()
@@ -454,6 +483,7 @@ static void window_ride_main_mouseup()
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_CONSTRUCTION:
+		window_ride_construct(w);
 		break;
 	case WIDX_RENAME:
 		break;
