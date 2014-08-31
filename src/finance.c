@@ -228,6 +228,8 @@ void finance_update_daily_profit()
 	current_profit = current_profit >> 2;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += current_profit;
+
+	// These are related to weekly profit graph
 	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
 	RCT2_GLOBAL(0x1358338, uint16) += 1;
 
