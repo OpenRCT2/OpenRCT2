@@ -500,7 +500,7 @@ void window_peep_disable_widgets(rct_window* w){
 		if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
 			window_invalidate(w);
 	}
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		disabled_widgets |= (1 << WIDX_TAB_4); //Disable finance tab if no money
 	}
 	w->disabled_widgets = disabled_widgets;

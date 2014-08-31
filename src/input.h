@@ -24,4 +24,6 @@
 void game_handle_input();
 void game_handle_keyboard_input();
 
+void store_mouse_input(int state);
+
 #endif

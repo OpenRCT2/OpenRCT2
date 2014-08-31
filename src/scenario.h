@@ -204,8 +204,8 @@ typedef struct {
 	money32 balance_history[128];
 
 	// SC6[11]
-	uint32 dword_0135832C;
-	uint32 current_profit;
+	money32 current_expenditure;
+	money32 current_profit;
 	uint32 dword_01358334;
 	uint16 word_01358338;
 	uint8 pad_0135833A[2];

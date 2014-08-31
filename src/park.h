@@ -35,11 +35,11 @@ enum {
 	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
 	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
 	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 8),
-	PARK_FLAGS_11 = (1 << 11),									// appears to be a copy of PARK_FLAGS_NO_MONEY
+	PARK_FLAGS_NO_MONEY = (1 << 11),
 	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
 	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
-	PARK_FLAGS_NO_MONEY = (1 << 17),
+	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
 	PARK_FLAGS_18 = (1 << 18)
 };
 
@@ -58,5 +58,7 @@ void park_update();
 void park_update_histories();
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
+
+void game_command_set_park_entrance_fee();
 
 #endif

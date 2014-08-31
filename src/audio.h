@@ -69,10 +69,20 @@ typedef struct {
 
 typedef struct {
 	uint32 var_0;
-	uint8 pad_4[0x118];
-	HMMIO hmmio;
-	HGLOBAL hmem;
-	uint8 pad_124[0x3C];
+	uint32 var_4;
+	char filename[0x108];			// 0x8
+	uint32 var_110;
+	uint32 var_114;
+	uint32 var_118;
+	HGLOBAL hmem;					// 0x11C
+	HMMIO hmmio;					// 0x120
+	MMCKINFO mmckinfo1;				// 0x124
+	MMCKINFO mmckinfo2;				// 0x138
+	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+	uint32 var_150;
+	uint32 playpos;					// 0x154
+	uint32 var_158;
+	uint32 var_15C;
 	uint32 var_160;
 	uint32 var_164;
 	uint32 var_168;
@@ -101,6 +111,18 @@ typedef struct {
 } rct_other_sound;
 
 int get_dsound_devices();
+int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
+void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
+int audio_release();
+MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
+MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
+MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
+int sub_40153B(int channel);
+int sub_4015E7(int channel);
+int audio_remove_timer();
+void audio_close();
+LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
+int unmap_sound_info();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
 int sound_play_panned(int sound_id, int x);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
@@ -112,6 +134,8 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
+int sound_channel_load_file(int channel, char* filename, int offset);
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
 int sound_stop(rct_sound *sound);
 int sound_stop_all();
 int unmap_file(LPCVOID base);

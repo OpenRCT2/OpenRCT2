@@ -57,7 +57,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(new_money);
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (RCT2_ADDRESS(0x00988E60, uint32)[type] & 1)
-		RCT2_GLOBAL(0x0135832C, money32) -= amount;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
 	
 
 	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money diry flag
@@ -74,7 +74,7 @@ void finance_pay_wages()
 	rct_peep* peep;
 	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	FOR_ALL_STAFF(spriteIndex, peep)
@@ -89,7 +89,7 @@ void finance_pay_research()
 {
 	uint8 level;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
@@ -106,7 +106,7 @@ void finance_pay_interest()
 	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
@@ -127,7 +127,7 @@ void finance_pay_ride_upkeep()
 			ride->var_196 = 25855; // durability?
 
 		}
-		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800)) {
+		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->var_154 -= upkeep;
@@ -158,11 +158,10 @@ void finance_init() {
 		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
 	}
 
-	RCT2_GLOBAL(0x0135832C, uint32) = 0;
-
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
 
-	RCT2_GLOBAL(0x01358334, uint32) = 0;
+	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
 	RCT2_GLOBAL(0x013573DC, money32) = MONEY(10000,00); // Cheat detection
@@ -183,6 +182,58 @@ void finance_init() {
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
 	sub_69E869();
+}
+
+/**
+*
+*  rct2: 0x0069E79A
+*/
+void finance_update_daily_profit()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 7 * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = 0; // Reset daily expenditure
+
+	money32 current_profit = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	{
+		// Staff costs
+		uint16 sprite_index;
+		rct_peep *peep;
+
+		FOR_ALL_STAFF(sprite_index, peep) {
+			uint8 staff_type = peep->staff_type;
+			current_profit -= wage_table[peep->staff_type];
+		}
+
+		// Research costs
+		uint8 level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+		current_profit -= research_cost_table[level];
+
+		// Loan costs
+		money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		current_profit -= current_loan / 600;
+
+		// Ride costs
+		rct_ride *ride;
+		int i;
+		FOR_ALL_RIDES(i, ride) {
+			if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1) {
+				current_profit -= 2 * ride->upkeep_cost;
+			}
+		}
+	}
+
+	// This is not equivalent to / 4 due to rounding of negative numbers
+	current_profit = current_profit >> 2;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += current_profit;
+
+	// These are related to weekly profit graph
+	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+	RCT2_GLOBAL(0x1358338, uint16) += 1;
+
+	window_invalidate_by_id(WC_FINANCES, 0);
 }
 
 void sub_69E869()

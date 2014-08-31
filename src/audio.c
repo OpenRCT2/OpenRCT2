@@ -189,6 +189,18 @@ int sound_load3dparameters()
 
 /**
 *
+*  rct2: 0x00404F3F
+*/
+int sound_load3dposition()
+{
+	/*if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 1))) {
+		return 1;
+	}*/
+	return 0;
+}
+
+/**
+*
 *  rct2: 0x00404932
 */
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits)
@@ -240,7 +252,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).vPosition.x = -1.0f;
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMaxDistance = 9.8999996f;
 			RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMinDistance = 0.25f;
-			if (RCT2_CALLFUNC(0x00404F3F, int)) {
+			if (sound_load3dposition()) {
 				if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->SetMinDistance(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), RCT2_GLOBAL(0x009A6084, DS3DBUFFER).flMinDistance, 1))) {
 					if (sound_load3dparameters()) {
 						return 1;
@@ -340,11 +352,485 @@ int map_sound_info(const char* filename)
 
 /**
 *
+*  rct2: 0x00405383
+*/
+MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read)
+{
+	MMIOINFO mmioinfo;
+	MMRESULT result;
+	result = mmioGetInfo(hmmio, &mmioinfo, 0);
+	if (result != 0) {
+		*read = 0;
+		return 1;
+	}
+	int size2 = size;
+	if (size > mmckinfo->cksize) {
+		size2 = mmckinfo->cksize;
+	}
+	int v8 = 0;
+	mmckinfo->cksize -= size2;
+	if (size2) {
+		while (1) {
+			HPSTR p = mmioinfo.pchEndRead;
+			if (mmioinfo.pchNext == mmioinfo.pchEndRead) {
+				result = mmioAdvance(hmmio, &mmioinfo, 0);
+				if (result != 0) {
+					*read = 0;
+					return result;
+				}
+				p = mmioinfo.pchEndRead;
+				if (mmioinfo.pchNext == mmioinfo.pchEndRead) {
+					break;
+				}
+			}
+			int q = p - mmioinfo.pchNext;
+			if (size2 - v8 < p - mmioinfo.pchNext) {
+				q = size2 - v8;
+			}
+			memcpy(&buffer[v8], mmioinfo.pchNext, q);
+			mmioinfo.pchNext += q;
+			v8 += q;
+			if (v8 >= size2) {
+				result = mmioSetInfo(hmmio, &mmioinfo, 0);
+				if (result != 0) {
+					*read = 0;
+					return result;
+				} else {
+					*read = size2;
+					return result;
+				}
+			}
+		}
+		*read = 0;
+		return 57603;
+	}
+	result = mmioSetInfo(hmmio, &mmioinfo, 0);
+	if (result != 0) {
+		*read = 0;
+		return result;
+	} else {
+		*read = size2;
+		return result;
+	}
+}
+
+/**
+*
+*  rct2: 0x00405465
+*/
+MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset)
+{
+	mmioSeek(*hmmio, mmckinfo2->dwDataOffset + 4, SEEK_SET);
+	mmckinfo1->ckid = 1635017060/*DATA*/;
+	MMRESULT result = mmioDescend(*hmmio, mmckinfo1, mmckinfo2, MMIO_FINDCHUNK);
+	if (!result) {
+		mmioSeek(*hmmio, offset, SEEK_CUR);
+		return 0;
+	}
+	return result;
+}
+
+/**
+*
+*  rct2: 0x004015E7
+*/
+int sub_4015E7(int channel)
+{
+	char* buf1;
+	int buf1size;
+	char* buf2;
+	int buf2size;
+	int read;
+	int zero = 0;
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
+	int result = dsbuffer->lpVtbl->Lock(dsbuffer, 0, sound_channel->var_150, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0);
+	if (SUCCEEDED(result)) {
+		if (buf1size) {
+			mmio_read(sound_channel->hmmio, buf1size, buf1, &sound_channel->mmckinfo1, &read);
+			int r = read;
+			if (read < buf1size) {
+				if (sound_channel->var_164) {
+					char* b = buf1;
+					int d = buf1size;
+					do {
+						d -= r;
+						b += r;
+						sub_40153B(channel);
+						mmio_read(sound_channel->hmmio, d, b, &sound_channel->mmckinfo1, &read);
+						r = read;
+					} while(read < d);
+				} else {
+					sound_channel->var_168 = 1;
+					sound_channel->var_15C = read;
+					rct_audio_info* audio_info = sound_channel->hmem;
+					uint16 v = ((audio_info->var_E != 8) - 1) & 0x80;
+					memset(&buf1[read], v, buf1size - r);
+				}
+			}
+		}
+		result = dsbuffer->lpVtbl->Unlock(dsbuffer, buf1, buf1size, buf2, zero);
+		sound_channel->var_158 = 0;
+		sound_channel->playpos = 0;
+	}
+	return result;
+}
+
+/**
+*
+*  rct2: 0x004016FF
+*/
+int sound_channel_load_file(int channel, char* filename, int offset)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	sound_channel->hmem;
+	sound_channel->hmmio;
+	if (mmio_open(filename, &sound_channel->hmmio, &sound_channel->hmem, &sound_channel->mmckinfo2)) {
+		return -100;
+	}
+	if (*(uint16*)sound_channel->hmem != 1) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -101;
+	}
+	if (mmio_seek(&sound_channel->hmmio, &sound_channel->mmckinfo1, &sound_channel->mmckinfo2, offset)) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -103;
+	}
+	sound_channel->var_150 = 120 * *((uint32*)sound_channel->hmem + 2) / 100;
+	DSBUFFERDESC bufferdesc;
+	memset(&bufferdesc, 0, sizeof(bufferdesc));
+	bufferdesc.dwFlags = RCT2_GLOBAL(0x009E1AA8, uint32) | DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY;
+	bufferdesc.dwBufferBytes = sound_channel->var_150;
+	bufferdesc.lpwfxFormat = sound_channel->hmem;
+	bufferdesc.dwSize = sizeof(bufferdesc);
+	int ret = RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel], 0);
+	if (FAILED(ret)) {
+		return -102;
+	}
+	sound_channel->dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
+	sound_channel->var_168 = 0;
+	sound_channel->var_15C = 0;
+	sound_channel->var_164 = 1;
+	sub_4015E7(channel);
+	sound_channel->var_158 = offset;
+	sound_channel->var_160 = 0;
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x00405222
+*/
+MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo)
+{
+	HGLOBAL* hmemold;
+	HGLOBAL hmemold2;
+	HMMIO hmmio1;
+	MMRESULT result;
+	MMCKINFO mmckinfo1;
+	rct_audio_info audio_info;
+
+	hmemold = hmem;
+	*hmem = 0;
+	hmmio1 = mmioOpenA(filename, 0, MMIO_ALLOCBUF);
+	if (hmmio1) {
+		result = mmioDescend(hmmio1, mmckinfo, 0, 0);
+		if (result != MMSYSERR_NOERROR) {
+			goto label20;
+		}
+		if (mmckinfo->ckid != 1179011410/*RIFF*/ || mmckinfo->fccType != 1163280727/*WAVE*/) {
+			result = 57601;
+			goto label20;
+		}
+		mmckinfo1.ckid = 544501094/*fmt*/;
+		result = mmioDescend(hmmio1, &mmckinfo1, mmckinfo, MMIO_FINDCHUNK);
+		if (result != MMSYSERR_NOERROR) {
+			goto label20;
+		}
+		if (mmckinfo1.cksize < 16) {
+		label19:
+			result = 57601;
+			goto label20;
+		}
+		if (mmioRead(hmmio1, (HPSTR)&audio_info, 16) == 16) {
+			if (audio_info.var_0 == 1) {
+				//strcpy(audio_info.var_0, "\x01");
+				hmem = 0;
+			label11:
+				hmemold2 = GlobalAlloc(0, (uint16)hmem + 18);
+				*hmemold = hmemold2;
+				if (!hmemold2) {
+					result = 57344;
+					goto label20;
+				}
+				memcpy(hmemold2, &audio_info, 16);
+				*((uint16*)*hmemold + 8) = (uint16)hmem;
+				if (!(uint16)hmem || mmioRead(hmmio1, (char*)*hmemold + 18, (uint16)hmem) == (uint16)hmem) {
+					result = mmioAscend(hmmio1, &mmckinfo1, 0);
+					if (!result) {
+						goto label24;
+					}
+					goto label20;
+				}
+				goto label19;
+			}
+			if (mmioRead(hmmio1, (HPSTR)&hmem, 2) == 2) {
+				goto label11;
+			}
+		}
+		result = 57602;
+		goto label20;
+	}
+	result = 57600;
+	label20:
+	if (*hmemold) {
+		GlobalFree(*hmemold);
+		*hmemold = 0;
+	}
+	if (hmmio1) {
+		mmioClose(hmmio1, 0);
+		hmmio1 = 0;
+	}
+	label24:
+	*hmmio = hmmio1;
+	return result;
+}
+
+/**
+*
+*  rct2: 0x00401822
+*/
+int mmio_open_channel(int channel, char* filename, LONG offset)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	LPMMCKINFO v4 = &sound_channel->mmckinfo2;
+	HMMIO* v5 = &sound_channel->hmmio;
+	if (mmio_open(filename, &sound_channel->hmmio, &sound_channel->hmem, &sound_channel->mmckinfo2)) {
+		return -100;
+	}
+	if (*(uint16*)sound_channel->hmem != 1) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -101;
+	}
+	if (mmio_seek(&sound_channel->hmmio, &sound_channel->mmckinfo1, &sound_channel->mmckinfo2, offset)) {
+		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		return -103;
+	}
+	sound_channel->var_158 = offset;
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x0040153B
+*/
+int sub_40153B(int channel)
+{
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	if (sound_channel->var_4) {
+		if (sound_channel->hmmio) {
+			sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+		}
+		if (mmio_open_channel(channel, sound_channel->filename, sound_channel->var_110)) {
+			return 0;
+		}
+		sound_channel->var_164 = sound_channel->var_114;
+		sound_channel->var_118 = sound_channel->var_110;
+		sound_channel->var_4 = 0;
+	} else {
+		int result = mmio_seek(&sound_channel->hmmio, &sound_channel->mmckinfo1, &sound_channel->mmckinfo2, sound_channel->var_118);
+		sound_channel->var_158 = sound_channel->var_118;
+		if (result) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+/**
+*
 *  rct2: 0x00401000
 */
-void sub_401000(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel)
+void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel)
 {
-	RCT2_CALLFUNC_6(0x00401000, void, UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR, int, uTimerID, uMsg, dwUser, dw1, dw2, channel);
+	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
+	DWORD status;
+	DWORD dwCurrentPlayCursor;
+	DWORD dwCurrentWriteCursor;
+	uint32 var1;
+	int var2;
+	int bufferlost = 0;
+	char* buf1;
+	int buf1size;
+	char* buf2;
+	int buf2size;
+	sound_channel->dsbuffer->lpVtbl->GetStatus(sound_channel->dsbuffer, &status);
+	if (status & DSBSTATUS_BUFFERLOST) {
+		if (FAILED(sound_channel->dsbuffer->lpVtbl->Restore(sound_channel->dsbuffer))) {
+			return;
+		}
+		sound_channel->playpos = 0;
+		bufferlost = 1;
+	}
+	sound_channel->dsbuffer->lpVtbl->GetCurrentPosition(sound_channel->dsbuffer, &dwCurrentPlayCursor, &dwCurrentWriteCursor);
+	if (dwCurrentPlayCursor != sound_channel->playpos || bufferlost) {
+		if (sound_channel->var_168 && !sound_channel->var_15C) {
+			if (!sound_channel->var_160) {
+				sound_channel->var_160 = 1;
+				if (!sound_channel->var_4) {
+					LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
+					sound_channel->var_0 = 0;
+					if (dsbuffer) {
+						dsbuffer->lpVtbl->Stop(dsbuffer);
+						dsbuffer->lpVtbl->Release(dsbuffer);
+						RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel] = 0;
+					}
+					if (sound_channel->hmmio) {
+						sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
+					}
+				}
+			}
+			return;
+		}
+		if (dwCurrentPlayCursor >= sound_channel->playpos) {
+			var1 = dwCurrentPlayCursor - sound_channel->playpos;
+		} else {
+			var1 = dwCurrentPlayCursor + sound_channel->var_150 - sound_channel->playpos;
+		}
+		if (bufferlost) {
+			var2 = 2 * sound_channel->var_150 / 6;
+		} else {
+			var2 = var1;
+		}
+		sound_channel->var_158 += var1;
+		if (sound_channel->var_168) {
+			uint32 var3 = sound_channel->var_15C;
+			uint32* var4 = &sound_channel->var_15C;
+			if (var3) {
+				if (var1 <= var3) {
+					*var4 = var3 - var1;
+				} else {
+					*var4 = 0;
+				}
+				if (SUCCEEDED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0))) {
+					uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
+					var5 &= 0x80;
+					memset(buf1, var5 + 128, buf1size);
+					if (buf2 && buf2size) {
+						uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
+						var5 &= 0x80;
+						memset(buf2, var5 + 128, buf2size);
+					}
+					sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
+					sound_channel->playpos += var2;
+					if (sound_channel->playpos >= sound_channel->var_150) {
+						sound_channel->playpos = sound_channel->playpos - sound_channel->var_150;
+					}
+					return;
+				}
+				// TimeFunc() could not lock DirectSoundBuffer
+				return;
+			}
+		}
+		if (FAILED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, &buf2size, 0))) {
+			// TimeFunc() could not lock DirectSoundBuffer
+			return;
+		}
+		if (buf1size) {
+			if (sound_channel->var_160) {
+				uint16 var5 = -(sound_channel->mmckinfo1.cksize != 8);
+				var5 &= 0x80;
+				memset(buf1, var5 + 128, buf1size);
+				goto label49;
+			}
+		}
+		int var7;
+		mmio_read(sound_channel->hmmio, buf1size, buf1, &sound_channel->mmckinfo1, &var7);
+		if (var7 < buf1size) {
+			if (!sound_channel->var_164) {
+				int s = sound_channel->mmckinfo1.cksize;
+				int t = buf1size - var7;
+				int v;
+				if (s == 8) {
+					v = 128;
+				} else {
+					if (s != 16) {
+						goto label42;
+					}
+					v = 0;
+				}
+				memset(&buf1[var7], v, t);
+			label42:
+				sound_channel->var_168 = 1;
+				if (dwCurrentPlayCursor <= sound_channel->playpos) {
+					sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
+				} else {
+					sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
+				}
+				goto label49;
+			}
+			char* v21 = buf1;
+			int v38 = buf1size;
+			do {
+				v38 -= var7;
+				v21 += var7;
+				sub_40153B(channel);
+				mmio_read(sound_channel->hmmio, v38, v21, &sound_channel->mmckinfo1, &var7);
+			} while(var7 < v38);
+		}
+	label49:
+		if (buf2size == 0 || sound_channel->var_160 != 0) {
+			if(buf2 != 0 && buf2size != 0 && sound_channel->var_160 != 0) {
+				int var5 = -(sound_channel->mmckinfo1.cksize != 8);
+				var5 &= 0x80;
+				memset(buf2, var5 + 128, buf2size);
+			}
+			goto label68;
+		}
+		mmio_read(sound_channel->hmmio, buf2size, buf2, &sound_channel->mmckinfo1, &var7);
+		if (var7 >= buf2size) {
+		label68:
+			sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
+			sound_channel->playpos += var2;
+			if (sound_channel->playpos >= sound_channel->var_150) {
+				sound_channel->playpos -= sound_channel->var_150;
+			}
+			if (bufferlost != 0) {
+				sound_channel->dsbuffer->lpVtbl->Play(sound_channel->dsbuffer, 0, 0, DSBPLAY_LOOPING);
+			}
+			return;
+		}
+		if (sound_channel->var_164 != 0) {
+			char* v26 = buf2;
+			int v27 = buf2size;
+			do {
+				v26 += var7;
+				v27 -= var7;
+				sub_40153B(channel);
+				mmio_read(sound_channel->hmmio, v27, v26, &sound_channel->mmckinfo1, &var7);
+			} while(var7 < v27);
+			goto label68;
+		}
+		int s = buf2size - var7;
+		int v;
+		if (sound_channel->hmem == (HGLOBAL)8) {
+			v = 128;
+		} else {
+			if (sound_channel->hmem != (HGLOBAL)16) {
+				goto label58;
+			}
+			v = 0;
+		}
+		memset(&buf2[var7], v, s);
+	label58:
+		sound_channel->var_168 = 1;
+		if (dwCurrentPlayCursor <= sound_channel->playpos) {
+			sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
+		} else {
+			sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
+		}
+		goto label68;
+	}
 }
 
 /**
@@ -357,7 +843,7 @@ int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DW
 		for (int i = 0; i < 4; i++) {
 			rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[i];
 			if(sound_channel->var_0){
-				sub_401000(uTimerID, uMsg, dwUser, dw1, dw2, i);
+				audio_timefunc(uTimerID, uMsg, dwUser, dw1, dw2, i);
 			}
 		}
 		return _InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
@@ -435,7 +921,7 @@ void audio_init2(int device)
 			}
 		}
 	}
-	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32) = RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B78, uint32) || RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B7C, uint32);
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= 1 << 4;
 		config_save();
@@ -612,9 +1098,9 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
 			if (channels) {
 				if (channels == 2) {
-					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
-				} else {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
+				} else {
+					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
 				}
 				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
 					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
@@ -1047,7 +1533,7 @@ int sound_channel_stop(int channel)
 	while (_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 1) != 1) {
 		Sleep(10);
 	}
-	if (sound_channel->hmem) {
+	if (sound_channel->hmmio) {
 		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
 	}
 
