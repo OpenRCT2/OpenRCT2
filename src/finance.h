@@ -41,6 +41,7 @@ void finance_pay_interest();
 void finance_pay_ride_upkeep();
 void finance_reset_history();
 void finance_init();
+void finance_update_daily_profit();
 void sub_69E869();
 
 #endif

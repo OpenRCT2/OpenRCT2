@@ -103,7 +103,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16) = MONEY(90, 00);
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16) = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_11 | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
@@ -427,7 +427,7 @@ static int park_calculate_guest_generation_probability()
 		probability /= 4;
 
 	// Check if money is enabled
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_11)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		// Penalty for overpriced entrance fee relative to total ride value
 		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
 		if (entranceFee > totalRideValue) {

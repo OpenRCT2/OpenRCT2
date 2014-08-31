@@ -1303,7 +1303,7 @@ void handle_shortcut_command(int shortcutIndex)
 		break;
 	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
 				window_finances_open();
 		break;
 	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
