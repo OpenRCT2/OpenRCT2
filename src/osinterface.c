@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <shlobj.h>
 #include <tchar.h>
-#include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
 
@@ -440,6 +439,179 @@ void osinterface_set_fullscreen_mode(int mode){
 	gGeneral_config.fullscreen_mode = mode;
 
 	config_save();
+}
+
+/**
+ * 
+ *  rct2: 0x00407E6E
+ */
+int osinterface_progressbar_create(char* title, int a2)
+{
+	DWORD style = WS_VISIBLE | WS_BORDER | WS_DLGFRAME;
+	if (a2) {
+		style = WS_VISIBLE | WS_BORDER | WS_DLGFRAME | PBS_SMOOTH;
+	}
+	int width = 340;
+	int height = GetSystemMetrics(SM_CYCAPTION) + 24;
+	HWND hwnd = CreateWindowExA(WS_EX_TOPMOST | WS_EX_DLGMODALFRAME, "msctls_progress32", title, style, (RCT2_GLOBAL(0x01423C08, sint32) - width) / 2, (RCT2_GLOBAL(0x01423C0C, sint32) - height) / 2, width, height, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE), 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND) = hwnd;
+	if (hwnd) {
+		RCT2_GLOBAL(0x009E2DFC, uint32) = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HFONT, HFONT)) {
+			SendMessageA(hwnd, WM_SETFONT, (WPARAM)RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HFONT, HFONT), 1);
+		}
+		SetWindowTextA(hwnd, title);
+		osinterface_progressbar_setmax(0xFF);
+		osinterface_progressbar_setpos(0);
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407F16
+ */
+int osinterface_progressbar_destroy()
+{
+	if (DestroyWindow(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND))) {
+		RCT2_GLOBAL(0x009E2DFC, uint32) = 0;
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407F2E
+ */
+LRESULT osinterface_progressbar_setmax(int max)
+{
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETRANGE, MAKEWPARAM(0, max), 0);
+	return SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETSTEP, 1, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F60
+ */
+LRESULT osinterface_progressbar_setpos(WPARAM wparam)
+{
+	return SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETPOS, wparam, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F78
+ */
+int osinterface_file_seek_from_begin(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_BEGIN);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F8B
+ */
+int osinterface_file_seek_from_current(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_CURRENT);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F9E
+ */
+int osinterface_file_seek_from_end(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_END);
+}
+
+/**
+ * 
+ *  rct2: 0x00407FB1
+ */
+int osinterface_file_read(HANDLE handle, void* data, int size)
+{
+	DWORD read;
+	BOOL result;
+	if (size == -1) {
+		DWORD current = SetFilePointer(handle, 0, 0, FILE_CURRENT);
+		DWORD remaining = SetFilePointer(handle, 0, 0, FILE_END) - current;
+		result = ReadFile(handle, data, remaining, &read, 0);
+	} else {
+		result = ReadFile(handle, data, size, &read, 0);
+	}
+	if (result) {
+		return read;
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00408024
+ */
+int osinterface_file_write(HANDLE handle, const void* data, int size)
+{
+	DWORD written;
+	if (WriteFile(handle, data, size, &written, 0)) {
+		return written;
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0040804A
+ */
+int osinterface_file_close(HANDLE handle)
+{
+	if (handle) {
+		return CloseHandle(handle);
+	} else {
+		return 1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00408060
+ */
+HANDLE osinterface_file_open(char* filename)
+{
+	return CreateFileA(filename, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x0040807D
+ */
+HANDLE osinterface_file_create(char* filename)
+{
+	return CreateFileA(filename, GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00408099
+ */
+int osinterface_file_move(char* srcfilename, char* dstfilename)
+{
+	return (MoveFileA(srcfilename, dstfilename) != 0) - 1;
+}
+
+/**
+ * 
+ *  rct2: 0x004080AF
+ */
+int osinterface_file_delete(char* filename)
+{
+	return (DeleteFileA(filename) != 0) - 1;
 }
 
 /**

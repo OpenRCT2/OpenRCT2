@@ -21,6 +21,8 @@
 #ifndef _SDL_INTERFACE_H_
 #define _SDL_INTERFACE_H_
 
+#include <windows.h>
+
 enum {
 	CURSOR_UP = 0,
 	CURSOR_DOWN = 1,
@@ -78,6 +80,9 @@ void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
 void osinterface_set_fullscreen_mode(int mode);
+
+LRESULT osinterface_progressbar_setmax(int max);
+LRESULT osinterface_progressbar_setpos(WPARAM wparam);
 
 void osinterface_set_cursor(char cursor);
 
