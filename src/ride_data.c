@@ -583,3 +583,97 @@ const uint8 rideUnknownData3[0x60] = {
 	10,	// 58 Mine Ride
 	10,	// 59 LIM Launched Roller Coaster
 };
+
+const rct_ride_name_convention RideNameConvention[96] = {
+	{ 1229,    1243,    1257,       0 }, // 00 Spiral Roller coaster
+	{ 1229,    1243,    1257,       0 }, // 01 Stand Up Coaster
+	{ 1229,    1243,    1257,       0 }, // 02 Suspended Swinging
+	{ 1229,    1243,    1257,       0 }, // 03 Inverted
+	{ 1229,    1243,    1257,       0 }, // 04 Steel Mini Coaster
+	{ 1229,    1243,    1257,       0 }, // 05 Mini Railroad
+	{ 1229,    1243,    1257,       0 }, // 06 Monorail
+	{ 1264,    1243,    1257,       0 }, // 07 Mini Suspended Coaster
+	{ 1236,    1250,    1250,       0 }, // 08 Bumper Boats
+	{ 1264,    1243,    1257,       0 }, // 09 Wooden Wild Mine/Mouse
+	{ 1264,    1243,    1257,       0 }, // 0a Steeplechase/Motorbike/Soap Box Derby
+	{ 1264,    1243,    1257,       0 }, // 0b Car Ride
+	{ 1264,    1243,    1257,       0 }, // 0c Launched Freefall
+	{ 1229,    1243,    1257,       0 }, // 0d Bobsleigh Coaster
+	{ 1292,    1243,    1257,       0 }, // 0e Observation Tower
+	{ 1229,    1243,    1257,       0 }, // 0f Looping Roller Coaster
+	{ 1236,    1243,    1257,       0 }, // 10 Dinghy Slide
+	{ 1229,    1243,    1257,       0 }, // 11 Mine Train Coaster
+	{ 1264,    1243,    1257,       0 }, // 12 Chairlift
+	{ 1229,    1243,    1257,       0 }, // 13 Corkscrew Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 14 Maze
+	{ 1229,    1271,    1257,       0 }, // 15 Spiral Slide
+	{ 1264,    1243,    1257,       0 }, // 16 Go Karts
+	{ 1236,    1243,    1257,       0 }, // 17 Log Flume
+	{ 1236,    1243,    1257,       0 }, // 18 River Rapids
+	{ 1264,    1271,    1257,       0 }, // 19 Bumper Cars
+	{ 1285,    1278,    1257,       0 }, // 1a Pirate Ship
+	{ 1285,    1278,    1257,       0 }, // 1b Swinging Inverter Ship
+	{ 1264,    1271,    1257,       0 }, // 1c Food Stall
+	{ 1264,    1271,    1257,       0 }, // 1d (none)
+	{ 1264,    1271,    1257,       0 }, // 1e Drink Stall
+	{ 1264,    1271,    1257,       0 }, // 1f (none)
+	{ 1264,    1271,    1257,       0 }, // 20 Shop (all types)
+	{ 1264,    1278,    1257,       0 }, // 21 Merry Go Round
+	{ 1264,    1271,    1257,       0 }, // 22 Balloon Stall (maybe)
+	{ 1264,    1271,    1257,       0 }, // 23 Information Kiosk
+	{ 1264,    1271,    1257,       0 }, // 24 Bathroom
+	{ 1299,    1278,    1257,       0 }, // 25 Ferris Wheel
+	{ 1264,    1278,    1257,       0 }, // 26 Motion Simulator
+	{ 1271,    1278,    1257,       0 }, // 27 3D Cinema
+	{ 1264,    1278,    1257,       0 }, // 28 Gravitron
+	{ 1306,    1278,    1257,       0 }, // 29 Space Rings
+	{ 1264,    1243,    1257,       0 }, // 2a Reverse Freefall Coaster
+	{ 1292,    1243,    1257,       0 }, // 2b Elevator
+	{ 1229,    1243,    1257,       0 }, // 2c Vertical Drop Roller Coaster
+	{ 1264,    1271,    1257,       0 }, // 2d ATM
+	{ 1278,    1278,    1257,       0 }, // 2e Twist
+	{ 1271,    1278,    1257,       0 }, // 2f Haunted House
+	{ 1264,    1271,    1257,       0 }, // 30 First Aid
+	{ 1271,    1278,    1257,       0 }, // 31 Circus Show
+	{ 1264,    1243,    1257,       0 }, // 32 Ghost Train
+	{ 1229,    1243,    1257,       0 }, // 33 Twister Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 34 Wooden Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 35 Side-Friction Roller Coaster
+	{ 1264,    1243,    1257,       0 }, // 36 Wild Mouse
+	{ 1229,    1243,    1257,       0 }, // 37 Multi Dimension Coaster
+	{ 1229,    1243,    1257,       0 }, // 38 (none)
+	{ 1229,    1243,    1257,       0 }, // 39 Flying Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 3a (none)
+	{ 1264,    1243,    1257,       0 }, // 3b Virginia Reel
+	{ 1236,    1243,    1257,       0 }, // 3c Splash Boats
+	{ 1264,    1243,    1257,       0 }, // 3d Mini Helicopters
+	{ 1229,    1243,    1257,       0 }, // 3e Lay-down Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 3f Suspended Monorail
+	{ 1229,    1243,    1257,       0 }, // 40 (none)
+	{ 1264,    1243,    1257,       0 }, // 41 Reverser Roller Coaster
+	{ 1264,    1243,    1257,       0 }, // 42 Heartline Twister Roller Coaster
+	{ 1313,    1320,    1257,       0 }, // 43 Mini Golf
+	{ 1229,    1243,    1257,       0 }, // 44 Giga Coaster
+	{ 1264,    1243,    1257,       0 }, // 45 Roto-Drop
+	{ 1264,    1271,    1257,       0 }, // 46 Flying Saucers
+	{ 1271,    1278,    1257,       0 }, // 47 Crooked House
+	{ 1264,    1243,    1257,       0 }, // 48 Monorail Cycles
+	{ 1229,    1243,    1257,       0 }, // 49 Compact Inverted Coaster
+	{ 1236,    1243,    1257,       0 }, // 4a Water Coaster
+	{ 1229,    1243,    1257,       0 }, // 4b Air Powered Vertical Coaster
+	{ 1264,    1243,    1257,       0 }, // 4c Inverted Hairpin Coaster
+	{ 1264,    1278,    1257,       0 }, // 4d Magic Carpet
+	{ 1236,    1243,    1250,       0 }, // 4e Submarine Ride
+	{ 1236,    1243,    1257,       0 }, // 4f River Rafts
+	{ 1264,    1271,    1257,       0 }, // 50 (none)
+	{ 1299,    1278,    1257,       0 }, // 51 Enterprise
+	{ 1264,    1271,    1257,       0 }, // 52 (none)
+	{ 1264,    1271,    1257,       0 }, // 53 (none)
+	{ 1264,    1271,    1257,       0 }, // 54 (none)
+	{ 1229,    1243,    1257,       0 }, // 55 (none)
+	{ 1229,    1243,    1257,       0 }, // 56 Inverted Impulse Coaster
+	{ 1264,    1243,    1257,       0 }, // 57 Mini Roller Coaster
+	{ 1229,    1243,    1257,       0 }, // 58 Mine Ride
+	{ 1264,    1243,    1257,       0 }, // 59 LIM Launched Roller Coaster
+	{ 1229,    1243,    1257,       0 }
+};

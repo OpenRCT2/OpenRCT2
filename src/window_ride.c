@@ -23,6 +23,7 @@
 #include "game.h"
 #include "map.h"
 #include "ride.h"
+#include "ride_data.h"
 #include "string_ids.h"
 #include "sprite.h"
 #include "sprites.h"
@@ -457,6 +458,66 @@ static void window_ride_construct(rct_window *w)
 
 /**
  * 
+ * rct2: 0x006AF3B3
+ */
+static void window_ride_locate(rct_window *w)
+{
+	rct_window *mainWindow;
+	int xy, x, y, z;
+
+	if (w->viewport->width == 0)
+		return;
+
+	xy = w->ride.var_482;
+	z = w->ride.var_486;
+	if (xy == -1)
+		return;
+
+	if (xy & 0x80000000) {
+		rct_sprite *sprite = &g_sprite_list[xy];
+		x = sprite->unknown.x;
+		y = sprite->unknown.y;
+		z = sprite->unknown.z;
+	} else {
+		x = (xy & ~0xC0000000) & 0xFFFF;
+		y = (xy & ~0xC0000000) >> 16;
+		z = z >> 16;
+	}
+
+	mainWindow = window_get_main();
+	if (mainWindow != NULL)
+		window_scroll_to_location(mainWindow, x, y, z);
+}
+
+/**
+ * 
+ * rct2: 0x006B486A
+ */
+static void window_ride_demolish(rct_window *w)
+{
+	rct_window *demolishWindow;
+	int x, y, screenWidth, screenHeight;
+
+	demolishWindow = window_bring_to_front_by_id(WC_DEMOLISH_RIDE_PROMPT, w->number);
+	if (demolishWindow != NULL)
+		return;
+
+	screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	x = screenWidth / 2 - 100;
+	y = max(28, screenHeight / 2 - 50);
+
+	demolishWindow = window_create(x, y, 200, 100, (uint32*)0x0098E2E4, WC_DEMOLISH_RIDE_PROMPT, 0);
+	demolishWindow->widgets = (rct_widget*)0x009AEBA0;
+	demolishWindow->enabled_widgets = 4 | 8 | 16;
+	window_init_scroll_widgets(demolishWindow);
+	demolishWindow->flags |= WF_TRANSPARENT;
+	demolishWindow->number = w->number;
+	demolishWindow->colours[0] = 154;
+}
+
+/**
+ * 
  * rct2: 0x006AF17E
  */
 static void window_ride_main_mouseup()
@@ -488,10 +549,151 @@ static void window_ride_main_mouseup()
 	case WIDX_RENAME:
 		break;
 	case WIDX_LOCATE:
+		window_ride_locate(w);
 		break;
 	case WIDX_DEMOLISH:
+		window_ride_demolish(w);
 		break;
 	}
+}
+
+/**
+ * 
+ * rct2: 0x006AF825
+ */
+static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
+{
+	rct_widget *dropdownWidget;
+	rct_ride *ride;
+	int numItems, currentItem, i, j, name;
+
+	dropdownWidget = widget - 1;
+	ride = GET_RIDE(w->number);
+
+	numItems = 1;
+	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x2000)) {
+		numItems += ride->var_0C7;
+		numItems += ride->var_0C8;
+	}
+
+	window_dropdown_show_text_custom_width(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		0,
+		numItems,
+		widget->right - dropdownWidget->left
+	);
+
+	// First item
+	gDropdownItemsFormat[0] = 1142;
+	gDropdownItemsArgs[0] = STR_OVERALL_VIEW;
+	currentItem = 1;
+
+	// Vehicles
+	name = RideNameConvention[ride->type].vehicle_name + 6;
+	for (i = 1; i <= ride->var_0C8; i++) {
+		gDropdownItemsFormat[currentItem] = 1142;
+		gDropdownItemsArgs[currentItem] = name | (currentItem << 16);
+		currentItem++;
+	}
+
+	// Stations
+	name = RideNameConvention[ride->type].station_name + 6;
+	for (i = 1; i <= ride->var_0C7; i++) {
+		gDropdownItemsFormat[currentItem] = 1142;
+		gDropdownItemsArgs[currentItem] = name | (i << 16);
+		currentItem++;
+	}
+
+	// Set highlighted item
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
+		j = 2;
+		for (i = 0; i < ride->var_0C8; i++) {
+			RCT2_GLOBAL(0x009DED34, uint32) |= j;
+			j <<= 1;
+		}
+	}
+
+	// Set checked item
+	gDropdownItemsChecked |= (1 << w->ride.var_480);
+}
+
+/**
+ * 
+ * rct2: 0x006AF64C
+ */
+static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
+{
+	rct_ride *ride;
+	int numItems, highlightedIndex, checkedIndex;
+
+	ride = GET_RIDE(w->number);
+
+	numItems = 0;
+	gDropdownItemsFormat[numItems] = 1142;
+	gDropdownItemsArgs[numItems] = STR_CLOSE_RIDE;
+	numItems++;
+
+	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800)) {
+		gDropdownItemsFormat[numItems] = 1142;
+		gDropdownItemsArgs[numItems] = STR_TEST_RIDE;
+		numItems++;
+	}
+
+	gDropdownItemsFormat[numItems] = 1142;
+	gDropdownItemsArgs[numItems] = STR_OPEN_RIDE;
+	numItems++;
+		
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1],
+		0,
+		numItems
+	);
+
+	checkedIndex = ride->status;
+	switch (ride->status) {
+	case RIDE_STATUS_CLOSED:
+		highlightedIndex = 0;
+		if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) || (ride->lifecycle_flags & RIDE_LIFECYCLE_11))
+			break;
+
+		highlightedIndex = 2;
+		if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800)
+			break;
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
+			break;
+
+		highlightedIndex = 1;
+		break;
+	case RIDE_STATUS_TESTING:
+		highlightedIndex = 2;
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
+			break;
+
+		highlightedIndex = 0;
+		break;
+	case RIDE_STATUS_OPEN:
+		highlightedIndex = 0;
+		break;
+	}
+
+	if (checkedIndex != RIDE_STATUS_CLOSED)
+		checkedIndex = 3 - checkedIndex;
+
+	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800) {
+		if (checkedIndex != 0)
+			checkedIndex--;
+		if (highlightedIndex != 0)
+			highlightedIndex--;
+	}
+
+	gDropdownItemsChecked |= (1 << checkedIndex);
+	RCT2_GLOBAL(0x009DEBA2, sint16) = highlightedIndex;
 }
 
 /**
@@ -500,7 +702,14 @@ static void window_ride_main_mouseup()
  */
 static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
-
+	switch (widgetIndex) {
+	case WIDX_VIEW_DROPDOWN:
+		window_ride_show_view_dropdown(w, widget);
+		break;
+	case WIDX_OPEN:
+		window_ride_show_open_dropdown(w, widget);
+		break;
+	}
 }
 
 /**

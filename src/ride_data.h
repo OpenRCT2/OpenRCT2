@@ -23,6 +23,14 @@
 
 #include <stdbool.h>
 #include "rct2.h"
+#include "string_ids.h"
+
+typedef struct {
+	rct_string_id vehicle_name;
+	rct_string_id structure_name;
+	rct_string_id station_name;
+	rct_string_id unk_name;
+} rct_ride_name_convention;
 
 extern const bool hasRunningTrack[0x60];
 extern const uint8 initialUpkeepCosts[0x60];
@@ -31,5 +39,7 @@ extern const uint8 costPerTrackPiece[0x60];
 extern const uint8 rideUnknownData1[0x60];
 extern const bool rideUnknownData2[0x60];
 extern const uint8 rideUnknownData3[0x60];
+
+extern const rct_ride_name_convention RideNameConvention[96];
 
 #endif

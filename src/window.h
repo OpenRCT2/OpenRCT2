@@ -160,6 +160,7 @@ typedef struct{
 typedef struct {
 	sint16 var_480;
 	sint32 var_482;
+	sint32 var_486;
 } ride_variables;
 
 /**
@@ -332,6 +333,7 @@ enum {
 	WC_SAVE_PROMPT = 14,
 	WC_RIDE_LIST = 15,
 	WC_CONSTRUCT_RIDE = 16,
+	WC_DEMOLISH_RIDE_PROMPT = 17,
 	WC_SCENERY = 18,
 	WC_OPTIONS = 19,
 	WC_FOOTPATH = 20,
