@@ -139,6 +139,7 @@ enum {
 static void window_scenery_emptysub() { }
 static void window_scenery_close();
 static void window_scenery_update(rct_window *w);
+static void window_scenery_event_07();
 static void window_scenery_invalidate();
 static void window_scenery_paint();
 static void window_scenery_tooltip();
@@ -151,7 +152,7 @@ static void* window_scenery_events[] = {
 	(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
 	window_scenery_update,//(void*)0x006E1CD3,    // window_scenery_update,
-	(void*)0x006E1B9F,	  // window_scenery_emptysub,
+	window_scenery_event_07, //(void*)0x006E1B9F,	  // window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,			   // window_scenery_tooldown
@@ -546,6 +547,20 @@ void window_scenery_close() {
 
 	if (window_scenery_is_tool_active())
 		tool_cancel();
+}
+
+/**
+*
+*  rct2: 0x006E1B9F
+*/
+static void window_scenery_event_07() {
+	rct_window *w;
+
+	window_get_register(w);
+
+	if (w->scenery.var_480 != 0xFFFF) {
+		w->scenery.var_480 = 0xFFFF;
+	}
 }
 
 /**
