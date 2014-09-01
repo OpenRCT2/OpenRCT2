@@ -201,7 +201,7 @@ void window_footpath_open()
 		(1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
 	window_init_scroll_widgets(window);
-	RCT2_CALLPROC_EBPSAFE(0x006EE65A);
+	window_push_others_right(window);
 	show_gridlines();
 	window->colours[0] = 24;
 	window->colours[1] = 24;
@@ -826,3 +826,4 @@ loc_6A78EF:
 loc_6A79B0:
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
 }
+
