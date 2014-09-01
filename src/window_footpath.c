@@ -120,6 +120,7 @@ static void window_footpath_tooldrag();
 static void window_footpath_toolup();
 static void window_footpath_invalidate();
 static void window_footpath_paint();
+static void sub_6EE65A(rct_window* w);
 
 static void* window_footpath_events[] = {
 	window_footpath_close,
@@ -201,7 +202,7 @@ void window_footpath_open()
 		(1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
 	window_init_scroll_widgets(window);
-	RCT2_CALLPROC_EBPSAFE(0x006EE65A);
+	sub_6EE65A(window); //RCT2_CALLPROC_EBPSAFE(0x006EE65A);
 	show_gridlines();
 	window->colours[0] = 24;
 	window->colours[1] = 24;
@@ -825,4 +826,38 @@ loc_6A78EF:
 
 loc_6A79B0:
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
+}
+
+static void sub_6EE65A(rct_window* window)
+{
+	uint16 ax = window->x;
+	uint16 bx = window->y;
+	uint16 cx = window->width;
+	uint16 dx = window->height;
+	cx += ax;
+	dx += bx;
+	for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+		if (w == window)
+			continue;
+		if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+			continue;
+		if (w->x >= cx)
+			continue;
+		if (w->x + w->width <= ax)
+			continue;
+		if (w->y >= dx)
+			continue;
+		if (w->y + w->height <= bx)
+			continue;
+		window_invalidate(w);
+		cx += 13;
+		if (cx >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+			continue;
+		cx -= 10;
+		cx -= w->x;
+		w->x += cx;
+		window_invalidate(w);
+		if (w->viewport != NULL)
+			w->viewport->x += cx;
+	}
 }
