@@ -36,49 +36,49 @@
 
 typedef struct {
 	uint8 pad_02[4];
-	uint8 flags;		// 0x06
-	uint8 flags2;		// 0x07
+	uint8 flags;			// 0x06
+	uint8 flags2;			// 0x07
 	uint8 pad_08[3];
-	uint8 tool_id;		// 0x0B
-	uint16 price;		// 0x0C
+	uint8 tool_id;			// 0x0B
+	uint16 price;			// 0x0C
 	uint8 pad_0E[12];
-	uint8 var_1A;		// 0x1A
+	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
 typedef struct {
 	uint8 pad_02[4];
-	uint8 tool_id;		// 0x06
-	uint8 flags;		// 0x07
-	uint16 price;		// 0x08
+	uint8 tool_id;			// 0x06
+	uint8 flags;			// 0x07
+	uint16 price;			// 0x08
 	uint8 pad_0A[6];
-	uint8 var_10;		// 0x10
+	uint8 scenery_tab_id;	// 0x10
 } rct_large_scenery_entry;
 
 
 typedef struct {
 	uint8 pad_02[4];
-	uint8 tool_id;		// 0x06
-	uint8 flags;		// 0x07
+	uint8 tool_id;			// 0x06
+	uint8 flags;			// 0x07
 	uint8 pad_08;
-	uint8 flags2;		// 0x09
-	uint16 price;		// 0x0A
-	uint8 var_0C;		// 0x0C
+	uint8 flags2;			// 0x09
+	uint16 price;			// 0x0A
+	uint8 scenery_tab_id;	// 0x0C
 } rct_wall_scenery_entry;
 
 typedef struct {
 	uint8 pad_02[7];
-	uint8 tool_id;		// 0x09
-	uint16 price;		// 0x0A
-	uint8 var_0C;		// 0x0C
+	uint8 tool_id;			// 0x09
+	uint16 price;			// 0x0A
+	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
 typedef struct {
 	uint16 var_02;
 	uint16 var_04;
 	uint8 var_06;
-	uint8 flags;		// 0x07
-	uint16 price;		// 0x08
-	uint8 var_0A;		// 0x0A
+	uint8 flags;			// 0x07
+	uint16 price;			// 0x08
+	uint8 scenery_tab_id;	// 0x0A
 } rct_banner_scenery_entry;
 
 typedef struct {
@@ -90,21 +90,6 @@ typedef struct {
 		rct_path_bit_scenery_entry path_bit;
 		rct_banner_scenery_entry banner;
 	};
-	/*uint16 var_02;
-	uint16 var_04;
-	uint8 var_06;
-	uint8 var_07;
-	uint8 var_08;
-	uint8 var_09;
-	uint16 var_0A;
-	uint16 var_0C;
-	uint16 var_0E;
-	uint16 var_10;
-	uint16 var_12;
-	uint16 var_14;
-	uint16 var_16;
-	uint16 var_18;
-	uint16 var_1A;*/
 } rct_scenery_entry;
 
 #define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
@@ -144,9 +129,10 @@ static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget*
 static void window_scenery_dropdown();
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07();
+static void window_scenery_scrollgetsize();
+static void window_scenery_tooltip();
 static void window_scenery_invalidate();
 static void window_scenery_paint();
-static void window_scenery_tooltip();
 
 static void* window_scenery_events[] = {
 	window_scenery_close, //(void*)0x006E1A73,    // window_scenery_close
@@ -164,7 +150,7 @@ static void* window_scenery_events[] = {
 	window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_emptysub,
-	(void*)0x006E1A91,	  // window_scenery_scrollgetsize,
+	window_scenery_scrollgetsize, //(void*)0x006E1A91,	  // window_scenery_scrollgetsize,
 	(void*)0x006E1C4A,	  // window_scenery_scrollmousedown,
 	window_scenery_emptysub,
 	(void*)0x006E1BB8,	  // window_scenery_scrollmouseover,
@@ -250,10 +236,10 @@ static rct_widget window_scenery_widgets[] = {
 };
 
 
-void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 unknownVar) {
+void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId) {
 	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1 << (index & 0x1F))) {
-		if (unknownVar != 0xFF) {
-			uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[unknownVar];
+		if (sceneryTabId != 0xFF) {
+			uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryTabId];
 
 			for (int ebx = 0; ebx < 0x80; ebx++) {
 				if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
@@ -340,7 +326,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[edi];
-		init_scenery_entry(sceneryEntry, edi, sceneryEntry->small_scenery.var_1A);
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->small_scenery.scenery_tab_id);
 	}
 
 	// large scenery
@@ -351,7 +337,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[largeSceneryIndex];
-		init_scenery_entry(sceneryEntry, edi, sceneryEntry->large_scenery.var_10);
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->large_scenery.scenery_tab_id);
 	}
 
 	// walls
@@ -362,7 +348,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[wallSceneryIndex];
-		init_scenery_entry(sceneryEntry, edi, sceneryEntry->wall.var_0C);
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->wall.scenery_tab_id);
 	}
 
 	// banners
@@ -373,7 +359,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[bannerIndex];
-		init_scenery_entry(sceneryEntry, edi, sceneryEntry->banner.var_0A);
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->banner.scenery_tab_id);
 	}
 
 	// path bits
@@ -384,7 +370,7 @@ void init_scenery() {
 			continue;
 
 		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[bannerIndex];
-		init_scenery_entry(sceneryEntry, edi, sceneryEntry->path_bit.var_0C);
+		init_scenery_entry(sceneryEntry, edi, sceneryEntry->path_bit.scenery_tab_id);
 	}
 
 	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
@@ -764,6 +750,31 @@ static void window_scenery_update(rct_window *w)
 			g_smallSceneryEntries[sceneryIndex]->small_scenery.tool_id;
 	}
 
+}
+
+void window_scenery_scrollgetsize() {
+	rct_window *w;
+
+	window_get_register(w);
+
+	uint32 sceneryTabId = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
+
+	int items = 0;
+	while (RCT2_ADDRESS(sceneryTabId, sint16)[items] != -1)
+		items++;
+	
+	items += 8;
+	int rows = items / 9;
+	if (rows == 0)
+		rows++;
+
+	int scrollHeight = rows * 80;
+
+#ifdef _MSC_VER
+	__asm mov edx, scrollHeight
+#else
+	__asm__("mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight));
+#endif
 }
 
 /**
