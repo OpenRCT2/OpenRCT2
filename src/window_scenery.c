@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "addresses.h"
+#include "audio.h"
 #include "game.h"
 #include "map.h"
 #include "gfx.h"
@@ -130,6 +131,7 @@ static void window_scenery_dropdown();
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07();
 static void window_scenery_scrollgetsize();
+static void window_scenery_scrollmousedown();
 static void window_scenery_tooltip();
 static void window_scenery_invalidate();
 static void window_scenery_paint();
@@ -151,7 +153,7 @@ static void* window_scenery_events[] = {
 	window_scenery_emptysub,
 	window_scenery_emptysub,
 	window_scenery_scrollgetsize, //(void*)0x006E1A91,	  // window_scenery_scrollgetsize,
-	(void*)0x006E1C4A,	  // window_scenery_scrollmousedown,
+	window_scenery_scrollmousedown,//(void*)0x006E1C4A,	  // window_scenery_scrollmousedown,
 	window_scenery_emptysub,
 	(void*)0x006E1BB8,	  // window_scenery_scrollmouseover,
 	window_scenery_emptysub,
@@ -614,11 +616,15 @@ static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	switch (widgetIndex) {
 	case WIDX_SCENERY_COLORBUTTON1:
 		eax = (RCT2_GLOBAL(0xF64F06, uint8) << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widgetIndex, 0xFFFFFFFF);
+		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
 		break;
 	case WIDX_SCENERY_COLORBUTTON2:
 		eax = (RCT2_GLOBAL(0xF64F07, uint8) << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widgetIndex, 0xFFFFFFFF);
+		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
+		break;
+	case WIDX_SCENERY_COLORBUTTON3:
+		eax = (RCT2_GLOBAL(0xF64F08, uint8) << 8) + 0x80 + w->colours[1];
+		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
 		break;
 	}
 
@@ -752,15 +758,19 @@ static void window_scenery_update(rct_window *w)
 
 }
 
+/**
+*
+*  rct2: 0x006E1A91
+*/
 void window_scenery_scrollgetsize() {
 	rct_window *w;
 
 	window_get_register(w);
 
-	uint32 sceneryTabId = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
+	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
 
 	int items = 0;
-	while (RCT2_ADDRESS(sceneryTabId, sint16)[items] != -1)
+	while (RCT2_ADDRESS(sceneryTabItems, sint16)[items] != -1)
 		items++;
 	
 	items += 8;
@@ -775,6 +785,40 @@ void window_scenery_scrollgetsize() {
 #else
 	__asm__("mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight));
 #endif
+}
+
+/**
+*
+*  rct2: 0x006E1C4A
+*/
+void window_scenery_scrollmousedown() {
+	short x, y;
+	rct_window *w;
+	rct_peep *peep;
+
+	window_scrollmouse_get_registers(w, x, y);
+
+	int tabSceneryIndex = x / 66 + (y / 80) * 9;
+	uint8 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
+	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
+
+	int itemCounter = 0;
+	sint16 sceneryIndex = 0;
+	while (itemCounter <= tabSceneryIndex) {
+		sceneryIndex = RCT2_ADDRESS(sceneryTabItems, sint16)[itemCounter];
+		if (sceneryIndex == -1)
+			return;
+
+		itemCounter++;
+	}
+
+	RCT2_ADDRESS(0x00F64EDD, uint16)[tabIndex] = sceneryIndex;
+
+	RCT2_GLOBAL(0x00F64F19, uint8) &= 0xFE;
+	sound_play_panned(4, (w->width >> 1) + w->x);
+	w->scenery.var_482 = 0xFFF0;
+	RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
+	window_invalidate(w);
 }
 
 /**
