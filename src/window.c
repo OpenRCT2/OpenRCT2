@@ -852,7 +852,7 @@ void window_push_others_right(rct_window* window)
                 window_invalidate(w);
                 if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
                         continue;
-                uint16 push_amount = window->x + window->height - w->x + 3;
+                uint16 push_amount = window->x + window->width - w->x + 3;
                 w->x += push_amount;
                 window_invalidate(w);
                 if (w->viewport != NULL)
