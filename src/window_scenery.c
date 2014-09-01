@@ -140,6 +140,7 @@ static void window_scenery_emptysub() { }
 static void window_scenery_close();
 static void window_scenery_mouseup();
 static void window_scenery_resize();
+static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
 static void window_scenery_dropdown();
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07();
@@ -151,7 +152,7 @@ static void* window_scenery_events[] = {
 	window_scenery_close, //(void*)0x006E1A73,    // window_scenery_close
 	window_scenery_mouseup, //(void*)0x006E19FC,    // window_scenery_mouseup
 	window_scenery_resize, //(void*)0x006E1E48,    // window_scenery_resize,
-	(void*)0x006E1A25,    // window_scenery_mousedown,
+	window_scenery_mousedown,//(void*)0x006E1A25,    // window_scenery_mousedown,
 	window_scenery_dropdown, //(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
 	window_scenery_update,//(void*)0x006E1CD3,    // window_scenery_update,
@@ -613,6 +614,32 @@ static void window_scenery_resize()
 	if (w->height > w->max_height) {
 		w->height = w->max_height;
 		window_invalidate(w);
+		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+	}
+}
+
+/**
+*
+*  rct2: 0x006E1A25
+*/
+static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget* widget) {
+	int eax;
+
+	switch (widgetIndex) {
+	case WIDX_SCENERY_COLORBUTTON1:
+		eax = (RCT2_GLOBAL(0xF64F06, uint8) << 8) + 0x80 + w->colours[1];
+		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widgetIndex, 0xFFFFFFFF);
+		break;
+	case WIDX_SCENERY_COLORBUTTON2:
+		eax = (RCT2_GLOBAL(0xF64F07, uint8) << 8) + 0x80 + w->colours[1];
+		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widgetIndex, 0xFFFFFFFF);
+		break;
+	}
+
+	if (widgetIndex >= WIDX_SCENERY_TAB_1 && widgetIndex <= WIDX_SCENERY_TAB_20) {
+		RCT2_GLOBAL(0x00F64EDC, uint8) = widgetIndex - WIDX_SCENERY_TAB_1;
+		window_invalidate(w);
+		RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
 		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
 	}
 }

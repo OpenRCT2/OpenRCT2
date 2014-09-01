@@ -260,7 +260,7 @@ static void window_staff_resize()
 *
 *  rct2: 0x006BD971
 */
-static void window_staff_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_staff_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
 	short newSelectedTab;
 	int eax;
