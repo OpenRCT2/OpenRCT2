@@ -1511,3 +1511,38 @@ void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id )
 		}
 	}
 }
+
+/**
+ * Finds overlapping windows and moves them if possible
+ * rct2: 0x006EE65A
+ */
+void window_move_overlapping(rct_window* window)
+{
+        uint16 cx = window->width + window->x;
+        uint16 dx = window->height + window->y;
+
+        for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+                if (w == window)
+                        continue;
+                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                        continue;
+                if (w->x >= cx)
+                        continue;
+                if (w->x + w->width <= window->x)
+                        continue;
+                if (w->y >= dx)
+                        continue;
+                if (w->y + w->height <= window->y)
+                        continue;
+                window_invalidate(w);
+                cx += 13;
+                if (cx >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+                        continue;
+                cx -= 10;
+                cx -= w->x;
+                w->x += cx;
+                window_invalidate(w);
+                if (w->viewport != NULL)
+                        w->viewport->x += cx;
+        }
+}
