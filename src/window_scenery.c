@@ -138,6 +138,7 @@ enum {
 
 static void window_scenery_emptysub() { }
 static void window_scenery_close();
+static void window_scenery_dropdown();
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07();
 static void window_scenery_invalidate();
@@ -149,7 +150,7 @@ static void* window_scenery_events[] = {
 	(void*)0x006E19FC,    // window_scenery_mouseup
 	(void*)0x006E1E48,    // window_scenery_resize,
 	(void*)0x006E1A25,    // window_scenery_mousedown,
-	(void*)0x006E1A54,    // window_scenery_dropdown,
+	window_scenery_dropdown, //(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
 	window_scenery_update,//(void*)0x006E1CD3,    // window_scenery_update,
 	window_scenery_event_07, //(void*)0x006E1B9F,	  // window_scenery_emptysub,
@@ -500,7 +501,7 @@ void window_scenery_open()
 	RCT2_GLOBAL(0x00F64F05, uint8) = 3;
 	RCT2_GLOBAL(0x00F64F12, uint8) = 0;
 	RCT2_GLOBAL(0x00F64F13, uint8) = 0;
-	window->scenery.var_480 = 0xFFFF;
+	window->scenery.var_480 = -1;
 	window->scenery.var_482 = 0;
 	window_push_others_below(window);
 	RCT2_GLOBAL(0x00F64F0D, uint8) = 0;
@@ -551,6 +552,31 @@ void window_scenery_close() {
 
 /**
 *
+*  rct2: 0x006E1A54
+*/
+static void window_scenery_dropdown() {
+	rct_window* w;
+	short widgetIndex, dropdownIndex;
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (dropdownIndex == -1)
+		return;
+
+	if (widgetIndex == WIDX_SCENERY_COLORBUTTON1) {
+		RCT2_GLOBAL(0x00F64F06, uint8) = dropdownIndex;
+	}
+	else if (widgetIndex == WIDX_SCENERY_COLORBUTTON2) {
+		RCT2_GLOBAL(0x00F64F07, uint8) = dropdownIndex;
+	}
+	else if (widgetIndex == WIDX_SCENERY_COLORBUTTON3) {
+		RCT2_GLOBAL(0x00F64F08, uint8) = dropdownIndex;
+	}
+
+	window_invalidate(w);
+}
+
+/**
+*
 *  rct2: 0x006E1B9F
 */
 static void window_scenery_event_07() {
@@ -558,8 +584,8 @@ static void window_scenery_event_07() {
 
 	window_get_register(w);
 
-	if (w->scenery.var_480 != 0xFFFF) {
-		w->scenery.var_480 = 0xFFFF;
+	if (w->scenery.var_480 != -1) {
+		w->scenery.var_480 = -1;
 	}
 }
 
@@ -815,7 +841,7 @@ void window_scenery_paint() {
 		selectedTab);
 	
 	uint16 bp = w->scenery.var_480;
-	if (bp == 0xFFFF) {
+	if (bp == -1) {
 		if (RCT2_GLOBAL(0x00F64F19, uint8) & 1)  // repaint colored scenery tool is on
 			return;
 
@@ -845,7 +871,7 @@ void window_scenery_paint() {
 		price = sceneryEntry->small_scenery.price * 10;
 	}
 
-	if (w->scenery.var_480 == 0xFFFF && RCT2_GLOBAL(0x00F64EB4, uint32) != 0x80000000) {
+	if (w->scenery.var_480 == -1 && RCT2_GLOBAL(0x00F64EB4, uint32) != 0x80000000) {
 		price = RCT2_GLOBAL(0x00F64EB4, uint32);
 	}
 
