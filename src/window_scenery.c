@@ -138,6 +138,8 @@ enum {
 
 static void window_scenery_emptysub() { }
 static void window_scenery_close();
+static void window_scenery_mouseup();
+static void window_scenery_resize();
 static void window_scenery_dropdown();
 static void window_scenery_update(rct_window *w);
 static void window_scenery_event_07();
@@ -147,8 +149,8 @@ static void window_scenery_tooltip();
 
 static void* window_scenery_events[] = {
 	window_scenery_close, //(void*)0x006E1A73,    // window_scenery_close
-	(void*)0x006E19FC,    // window_scenery_mouseup
-	(void*)0x006E1E48,    // window_scenery_resize,
+	window_scenery_mouseup, //(void*)0x006E19FC,    // window_scenery_mouseup
+	window_scenery_resize, //(void*)0x006E1E48,    // window_scenery_resize,
 	(void*)0x006E1A25,    // window_scenery_mousedown,
 	window_scenery_dropdown, //(void*)0x006E1A54,    // window_scenery_dropdown,
 	window_scenery_emptysub,
@@ -542,12 +544,77 @@ void window_scenery_close() {
 
 	window_get_register(w);
 
-	RCT2_CALLPROC_EBPSAFE(0x6E2712);
+	RCT2_CALLPROC_EBPSAFE(0x006E2712);
 	hide_gridlines();
 	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
 
 	if (window_scenery_is_tool_active())
 		tool_cancel();
+}
+
+/**
+*
+*  rct2: 0x006BD94C
+*/
+static void window_scenery_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_SCENERY_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_SCENERY_FLATBUTTON1:
+		RCT2_GLOBAL(0x00F64F05, uint8)++;
+		RCT2_GLOBAL(0x00F64F05, uint8) &= 3;
+		RCT2_CALLPROC_EBPSAFE(0x006E2712);
+		window_invalidate(w);
+		break;
+	case WIDX_SCENERY_FLATBUTTON2:
+		RCT2_GLOBAL(0x00F64F19, uint8) ^= 1;
+		window_invalidate(w);
+		break;
+	case WIDX_SCENERY_FLATBUTTON3:
+		RCT2_GLOBAL(0x00F64F1A, uint8) ^= 1;
+		window_invalidate(w);
+		break;
+	}
+}
+
+/**
+*
+*  rct2: 0x006E1E48
+*/
+static void window_scenery_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+		
+	if (w->width < w->min_width) {
+		w->width = w->min_width;
+		window_invalidate(w);
+	}
+
+	if (w->width > w->max_width) {
+		w->width = w->max_width;
+		window_invalidate(w);
+	}
+
+	if (w->height < w->min_height) {
+		w->height = w->min_height;
+		window_invalidate(w);
+		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+	}
+
+	if (w->height > w->max_height) {
+		w->height = w->max_height;
+		window_invalidate(w);
+		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+	}
 }
 
 /**
@@ -840,14 +907,14 @@ void window_scenery_paint() {
 		w->y + window_scenery_widgets[selectedTab].top,
 		selectedTab);
 	
-	uint16 bp = w->scenery.var_480;
+	sint16 bp = w->scenery.var_480;
 	if (bp == -1) {
 		if (RCT2_GLOBAL(0x00F64F19, uint8) & 1)  // repaint colored scenery tool is on
 			return;
 
 		bp = RCT2_ADDRESS(0x00F64EDD, uint16)[typeId];
 
-		if (bp == 0xFFFF)
+		if (bp == -1)
 			return;
 	}
 
