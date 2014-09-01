@@ -718,7 +718,58 @@ static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widge
  */
 static void window_ride_main_dropdown()
 {
+	rct_ride *ride;
+	rct_window *w;
+	int status;
+	short widgetIndex, dropdownIndex;
 
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	switch (widgetIndex) {
+	case WIDX_VIEW_DROPDOWN:
+		if (dropdownIndex == -1) {
+			dropdownIndex = w->ride.var_480;
+			ride = GET_RIDE(w->number);
+			dropdownIndex++;
+			if (dropdownIndex != 0 && dropdownIndex <= ride->var_0C8 && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+				dropdownIndex = ride->var_0C8 + 1;
+
+			if (dropdownIndex >= gDropdownNumItems)
+				dropdownIndex = 0;
+		}
+
+		w->ride.var_480 = dropdownIndex;
+		RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
+		window_invalidate(w);
+		break;
+	case WIDX_OPEN:
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
+		ride = GET_RIDE(w->number);
+		if ((RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x800) && dropdownIndex != 0)
+			dropdownIndex++;
+
+		switch (dropdownIndex) {
+		case 0:
+			status = RIDE_STATUS_CLOSED;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1004;
+			break;
+		case 1:
+			status = RIDE_STATUS_TESTING;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1003;
+			break;
+		case 2:
+			status = RIDE_STATUS_OPEN;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1002;
+			break;
+		}
+
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->overall_view;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->var_04C;
+		game_do_command(0, 1, 0, w->number | (status << 8), GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		break;
+	}
 }
 
 /**

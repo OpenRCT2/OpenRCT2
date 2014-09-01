@@ -44,13 +44,13 @@ static rct_widget window_dropdown_widgets[] = {
 	{ WIDGETS_END },
 };
 
-int _dropdown_num_items;
 int _dropdown_num_columns;
 int _dropdown_num_rows;
 int _dropdown_item_width;
 int _dropdown_item_height;
 int _dropdown_highlighted_index;
 
+int gDropdownNumItems;
 uint16 gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
 // Replaces 0x009DED38
@@ -149,7 +149,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 		_dropdown_item_height = flags & 0x3F;
 	
 	// Set the widgets
-	_dropdown_num_items = num_items;
+	gDropdownNumItems = num_items;
 	_dropdown_num_rows = num_items;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
 	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
@@ -175,7 +175,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
-	RCT2_GLOBAL(0x009DEBA0, sint16) = _dropdown_num_items;
+	RCT2_GLOBAL(0x009DEBA0, sint16) = gDropdownNumItems;
 	RCT2_GLOBAL(0x009DED44, sint32) = _dropdown_num_columns;
 	RCT2_GLOBAL(0x009DED48, sint32) = _dropdown_num_rows;
 	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
@@ -216,10 +216,10 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	// Set and calculate num items, rows and columns
 	_dropdown_item_width = itemWidth;
 	_dropdown_item_height = itemHeight;
-	_dropdown_num_items = numItems;
+	gDropdownNumItems = numItems;
 	_dropdown_num_columns = numColumns;
-	_dropdown_num_rows = _dropdown_num_items / _dropdown_num_columns;
-	if (_dropdown_num_items % _dropdown_num_columns != 0)
+	_dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
+	if (gDropdownNumItems % _dropdown_num_columns != 0)
 		_dropdown_num_rows++;
 
 	// Calculate position and size
@@ -253,7 +253,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
-	RCT2_GLOBAL(0x009DEBA0, sint16) = _dropdown_num_items;
+	RCT2_GLOBAL(0x009DEBA0, sint16) = gDropdownNumItems;
 	RCT2_GLOBAL(0x009DED44, sint32) = _dropdown_num_columns;
 	RCT2_GLOBAL(0x009DED48, sint32) = _dropdown_num_rows;
 	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
@@ -278,7 +278,7 @@ static void window_dropdown_paint()
 	_dropdown_highlighted_index = RCT2_GLOBAL(0x009DEBA2, sint16);
 	{
 		int i, cell_x, cell_y, l, t, r, b, item, image, colour;
-		for (i = 0; i < _dropdown_num_items; i++) {
+		for (i = 0; i < gDropdownNumItems; i++) {
 			cell_x = i % _dropdown_num_columns;
 			cell_y = i / _dropdown_num_columns;
 
