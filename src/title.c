@@ -262,7 +262,7 @@ void title_update()
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		title_update_showcase();
 		game_logic_update();
-		title_play_music();
+		start_title_music();//title_play_music();
 	}
 
 	RCT2_GLOBAL(0x009DE518, uint32) &= ~0x80;
@@ -304,9 +304,10 @@ void title_update()
  *
  *  rct2: 0x00678761
  */
+// this doesn't seem like it is 0x00678761, supposed to be 0x006BD0F8?
 static void title_play_music()
 {
-	// RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
+	RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
 
 	if (!(RCT2_GLOBAL(0x009AF284, uint32) & 1) || !(RCT2_GLOBAL(0x009AF59D, uint8) & 1)) {
 		if (RCT2_GLOBAL(0x009AF600, uint8) != 0)
@@ -325,8 +326,8 @@ static void title_play_music()
 		strcat(musicPath, "\\data\\css50.dat");
 	}
 
-	if (RCT2_CALLFUNC_3(0x0040194E, int, int, char*, int, 3, musicPath, 0)) // play music
-		RCT2_CALLPROC_5(0x00401999, int, int, int, int, int, 3, 1, 0, 0, 0);
+	if (sound_channel_load_file2(3, musicPath, 0)) // play music
+		sound_channel_play(3, 1, 0, 0, 0);
 
 	RCT2_GLOBAL(0x009AF600, uint8) = 1;
 }
