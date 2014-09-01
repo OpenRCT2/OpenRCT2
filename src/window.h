@@ -396,6 +396,7 @@ int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *heig
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
 
+void window_push_others_right(rct_window *w);
 void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
@@ -469,7 +470,6 @@ void window_staff_init_vars();
 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
-void window_move_overlapping(rct_window* window);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\

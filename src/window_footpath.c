@@ -201,7 +201,7 @@ void window_footpath_open()
 		(1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
 	window_init_scroll_widgets(window);
-	window_move_overlapping(window);
+	window_push_others_right(window);
 	show_gridlines();
 	window->colours[0] = 24;
 	window->colours[1] = 24;

@@ -829,6 +829,38 @@ rct_window *window_bring_to_front(rct_window *w)
 }
 
 /**
+ *
+ * rct2: 0x006EE65A
+ */
+void window_push_others_right(rct_window* window)
+{
+
+        for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+                if (w == window)
+                        continue;
+                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                        continue;
+                if (w->x >= window->x + window->width)
+                        continue;
+                if (w->x + w->width <= window->x)
+                        continue;
+                if (w->y >= window->y + window->height)
+                        continue;
+                if (w->y + w->height <= window->y)
+                        continue;
+
+                window_invalidate(w);
+                if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+                        continue;
+                uint16 push_amount = window->x + window->height - w->x + 3;
+                w->x += push_amount;
+                window_invalidate(w);
+                if (w->viewport != NULL)
+                        w->viewport->x += push_amount;
+        }
+}
+
+/**
  * 
  *  rct2: 0x006EE6EA
  */
@@ -870,6 +902,7 @@ void window_push_others_below(rct_window *w1)
 			w2->viewport->y += push_amount;
 	}
 }
+
 
 /**
  * 
@@ -1512,37 +1545,3 @@ void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id )
 	}
 }
 
-/**
- * Finds overlapping windows and moves them if possible
- * rct2: 0x006EE65A
- */
-void window_move_overlapping(rct_window* window)
-{
-        uint16 cx = window->width + window->x;
-        uint16 dx = window->height + window->y;
-
-        for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
-                if (w == window)
-                        continue;
-                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-                        continue;
-                if (w->x >= cx)
-                        continue;
-                if (w->x + w->width <= window->x)
-                        continue;
-                if (w->y >= dx)
-                        continue;
-                if (w->y + w->height <= window->y)
-                        continue;
-                window_invalidate(w);
-                cx += 13;
-                if (cx >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-                        continue;
-                cx -= 10;
-                cx -= w->x;
-                w->x += cx;
-                window_invalidate(w);
-                if (w->viewport != NULL)
-                        w->viewport->x += cx;
-        }
-}
