@@ -163,7 +163,7 @@ typedef struct {
 } ride_variables;
 
 typedef struct {
-	sint16 var_480;
+	sint16 selected_scenery_id;
 	sint32 var_482;
 } scenery_variables;
 
