@@ -199,5 +199,7 @@ int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);
 
+#define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
+#define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
 
 #endif
