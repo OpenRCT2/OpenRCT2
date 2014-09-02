@@ -120,7 +120,6 @@ static void window_footpath_tooldrag();
 static void window_footpath_toolup();
 static void window_footpath_invalidate();
 static void window_footpath_paint();
-static void sub_6CB70A(uint8 al);
 
 static void* window_footpath_events[] = {
 	window_footpath_close,
@@ -227,7 +226,7 @@ static void window_footpath_close()
 	window_get_register(w);
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
-	sub_6CB70A(0); //RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
+	viewport_set_visibility(0);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 	window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
@@ -678,7 +677,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 		eax = 3;
 		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
 			eax = 1;
-		sub_6CB70A((uint8)eax); //RCT2_CALLPROC_X(0x006CB70A, eax, 0, 0, 0, 0, 0, 0);
+		viewport_set_visibility((uint8)eax);
 	}
 
 	return cost;
@@ -828,45 +827,3 @@ loc_6A79B0:
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
 }
 
-static void sub_6CB70A(uint8 al)
-{
-	rct_window* window = window_get_main();
-
-	if(window != NULL) {
-		rct_viewport* edi = window->viewport;
-		uint32 invalidate = 0;
-
-		switch(al) {
-			case 0: { //Set all these flags to 0, and invalidate if any were active
-				uint16 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
-					VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
-					VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
-					VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
-					VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
-
-				invalidate += edi->flags & mask;
-				edi->flags &= ~mask;
-				break;
-			}
-			case 1: //6CB79D
-			case 4: //6CB7C4
-				//Set underground on, invalidate if it was off
-				invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-				edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-				break;
-			case 2: //6CB7EB
-				//Set track heights on, invalidate if off
-				invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-				edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
-				break;
-			case 3: //6CB7B1
-			case 5: //6CB7D8
-				//Set underground off, invalidate if it was on
-				invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-				edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-				break;
-		}
-		if (invalidate != 0)
-			window_invalidate(window);
-	}
-}

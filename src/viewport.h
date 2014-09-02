@@ -60,5 +60,6 @@ void show_land_rights();
 void hide_land_rights();
 void show_construction_rights();
 void hide_construction_rights();
+void viewport_set_visibility(uint8 mode);
 
 #endif

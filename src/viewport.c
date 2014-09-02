@@ -1039,3 +1039,50 @@ void hide_construction_rights()
 		}
 	}
 }
+
+/**
+ * 
+ * rct2: 0x006CB70A
+ */
+void viewport_set_visibility(uint8 mode)
+{
+        rct_window* window = window_get_main();
+
+        if(window != NULL) {
+                rct_viewport* edi = window->viewport;
+                uint32 invalidate = 0;
+
+                switch(mode) {
+                        case 0: { //Set all these flags to 0, and invalidate if any were active
+                                uint16 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
+                                        VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
+                                        VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
+                                        VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
+                                        VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
+
+                                invalidate += edi->flags & mask;
+                                edi->flags &= ~mask;
+                                break;
+                        }
+                        case 1: //6CB79D
+                        case 4: //6CB7C4
+                                //Set underground on, invalidate if it was off
+                                invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                                edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                                break;
+                        case 2: //6CB7EB
+                                //Set track heights on, invalidate if off
+                                invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+                                edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
+                                break;
+                        case 3: //6CB7B1
+                        case 5: //6CB7D8
+                                //Set underground off, invalidate if it was on
+                                invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                                edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                                break;
+                }
+                if (invalidate != 0)
+			window_invalidate(window);
+	}
+}
