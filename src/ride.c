@@ -427,13 +427,10 @@ rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *ou
  *
  * rct2: 0x006B4800
  */
-void ride_construct_new(uint8 ah, uint8 al)
+void ride_construct_new(int list_item)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edx = 0;
-	edx = ah;
-	edx << 8; //Set high byte
-	edx += al;//Set low byte
+	edx = list_item;
 	eax = 0;
 	ecx = 0;
 	ebx = 1;

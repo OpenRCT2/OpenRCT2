@@ -990,5 +990,5 @@ static void window_new_ride_select(rct_window *w)
 
 	// Show ride construction window
 	//RCT2_CALLPROC_X(0x006B4800, *((sint16*)&item), 0, 0, 0, 0, 0, 0);
-	ride_construct_new(item.type, item.entry_index);
+	ride_construct_new(*((sint16*)&item));
 }
