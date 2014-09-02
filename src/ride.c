@@ -437,10 +437,13 @@ void ride_construct_new(uint8 ah, uint8 al)
 	eax = 0;
 	ecx = 0;
 	ebx = 1;
+	edi = 0;
+	esi = 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
 
-	game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	esi = GAME_COMMAND_6;
+	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	if (ebx == 0x80000000) {
 		return;
 	}
@@ -452,12 +455,15 @@ void ride_construct_new(uint8 ah, uint8 al)
 
 	//TODO: replace with window_ride_main_open(eax)
 	// window_ride_main_open(eax);
-	RCT2_CALLPROC_X(0x006ACC28, eax, 0, 0, 0, 0, 0, 0);
-	window_widget_get_registers(w, widgetIndex);
+	RCT2_CALLFUNC_X(0x006ACC28, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	window_get_register(w);
 
+	ecx = w->classification;
+	edx = 0x13;
+	ebp = (int)w;
 	//TODO: replace with window_ride_main_mouseup() after ride-window_merge
 	// window_ride_main_mouseup();
-	RCT2_CALLPROC_X(0x006AF17E, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	RCT2_CALLFUNC_X(0x006AF17E, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	rct_window *ride_window = window_find_by_id(w->classification, w->number); //class here
 	window_close(ride_window);
 }
