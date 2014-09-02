@@ -21,6 +21,8 @@
 #ifndef _SDL_INTERFACE_H_
 #define _SDL_INTERFACE_H_
 
+#include "rct2.h"
+
 enum {
 	CURSOR_UP = 0,
 	CURSOR_DOWN = 1,
@@ -66,6 +68,16 @@ typedef struct {
 	int old;
 } openrct2_cursor;
 
+typedef struct {
+	uint32 installlevel;
+	char title[260];
+	char path[260];
+	uint32 var_20C;
+	uint8 pad_210[0x100];
+	char addon[15][0x80];
+	uint32 addons;			//0xB10
+} rct2_install_info;
+
 extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
@@ -78,6 +90,9 @@ void osinterface_free();
 void osinterface_update_palette(char* colours, int start_index, int num_colours);
 
 void osinterface_set_fullscreen_mode(int mode);
+
+void osinterface_progressbar_setmax(int max);
+void osinterface_progressbar_setpos(int pos);
 
 void osinterface_set_cursor(char cursor);
 

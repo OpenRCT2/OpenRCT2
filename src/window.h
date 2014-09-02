@@ -398,6 +398,7 @@ int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *heig
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
 
+void window_push_others_right(rct_window *w);
 void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
