@@ -23,6 +23,9 @@
 #include "addresses.h"
 #include "config.h"
 #include "rct2.h"
+#include "sprite.h"
+#include "viewport.h"
+#include "window.h"
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
@@ -193,7 +196,7 @@ int sound_load3dparameters()
 */
 int sound_load3dposition()
 {
-	/*if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER), 1))) {
+	/*if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetPosition(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, D3DVECTOR), 1))) {
 		return 1;
 	}*/
 	return 0;
@@ -732,7 +735,7 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 				return;
 			}
 		}
-		if (FAILED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, &buf2size, 0))) {
+		if (FAILED(sound_channel->dsbuffer->lpVtbl->Lock(sound_channel->dsbuffer, sound_channel->playpos, var2, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0))) {
 			// TimeFunc() could not lock DirectSoundBuffer
 			return;
 		}
@@ -1180,6 +1183,63 @@ int sound_play_panned(int sound_id, int x)
 
 /**
 *
+*  rct2: 0x00401B63
+*/
+int sub_401B63(int channel)
+{
+	if (RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel].var_0) {
+		return RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel].var_160 == 0;
+	} else {
+		return 0;
+	}
+}
+
+/**
+*
+*  rct2: 0x0040194E
+*/
+int sound_channel_load_file2(int channel, char* filename, int offset)
+{
+	if (!RCT2_GLOBAL(0x009E1AA4, int)) {
+		return 0;
+	}
+	if (sub_401B63(channel)) {
+		sound_channel_stop(channel);
+	}
+	if (!sound_channel_load_file(channel, filename, offset)) {
+		RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel].var_4 = 0;
+		return 1;
+	}
+	return 0;
+}
+
+/**
+*
+*  rct2: 0x006BD0F8
+*/
+void start_title_music()
+{
+	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
+		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			if (result) {
+				RCT2_GLOBAL(0x014241BC, uint32) = 1;
+				sound_channel_play(3, 1, 0, 0, 0);
+				RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			}
+			RCT2_GLOBAL(0x009AF600, uint8) = 1;
+		}
+	} else {
+		if (RCT2_GLOBAL(0x009AF600, uint8)) {
+			stop_title_music();
+		}
+	}
+}
+
+/**
+*
 *  rct2: 0x00401999
 */
 int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
@@ -1239,6 +1299,30 @@ int sound_channel_set_volume(int channel, int volume)
 
 	}
 	return 0;
+}
+
+/**
+*
+*  rct2: 0x006BB991
+*/
+void stop_completed_sounds()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1) {
+		for (int i = 0; i < 7; i++) {
+			rct_other_sound* other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
+			if (other_sound->id != (uint16)-1) {
+				RCT2_GLOBAL(0x014241BC, uint32) = 1;
+				int isplaying = sound_is_playing(&other_sound->sound);
+				RCT2_GLOBAL(0x014241BC, uint32) = 0;
+				if (!isplaying) {
+					RCT2_GLOBAL(0x014241BC, uint32) = 1;
+					sound_stop(&other_sound->sound);
+					RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					other_sound->id = (uint16)-1;
+				}
+			}
+		}
+	}
 }
 
 /**
@@ -1519,6 +1603,7 @@ void stop_title_music()
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		}
 	}
+	RCT2_GLOBAL(0x009AF600, uint8) = 0;
 }
 
 /**
