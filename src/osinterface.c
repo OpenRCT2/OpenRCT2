@@ -23,6 +23,7 @@
 #include <tchar.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
+#include <windows.h>
 
 #include "addresses.h"
 #include "config.h"
@@ -443,6 +444,77 @@ void osinterface_set_fullscreen_mode(int mode){
 
 /**
  * 
+ *  rct2: 0x00407978
+ */
+int osinterface_407978(rct2_install_info* install_info, char* source, char* font, uint8 charset)
+{
+	char subkey[MAX_PATH];
+	char subkey2[MAX_PATH];
+	strcpy(subkey, "Software\\Infogrames\\");
+	strcat(subkey, source);
+	strcpy(subkey2, "Software\\Fish Technology Group\\");
+	strcat(subkey2, source);
+	LOGFONTA lf;
+	memset(&lf, 0, sizeof(lf));
+	lf.lfCharSet = charset;
+	lf.lfHeight = 12;
+	lf.lfWeight = 400;
+	strcpy(lf.lfFaceName, font);
+	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
+	HKEY hkey;
+	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey, &hkey) != ERROR_SUCCESS && RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey2, &hkey) != ERROR_SUCCESS) {
+		return 0;
+	} else {
+		DWORD type;
+		DWORD size = 260;
+		RegQueryValueExA(hkey, "Title", 0, &type, install_info->title, &size);
+		size = 260;
+		RegQueryValueExA(hkey, "Path", 0, &type, install_info->path, &size);
+		install_info->var_20C = 235960;
+		size = 4;
+		RegQueryValueExA(hkey, "InstallLevel", 0, &type, (LPBYTE)&install_info->installlevel, &size);
+		for (int i = 0; i <= 15; i++) {
+			char name[100];
+			sprintf(name, "AddonPack%d", i);
+			size = sizeof(install_info->addon[i]);
+			if (RegQueryValueExA(hkey, name, 0, &type, install_info->addon[i], &size) == ERROR_SUCCESS) {
+				install_info->addons |= (1 << i);
+			}
+		}
+		RegCloseKey(hkey);
+		return 1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407D80
+ */
+int osinterface_get_cursor_pos(int* x, int* y)
+{
+	POINT point;
+	GetCursorPos(&point);
+	*x = point.x;
+	*y = point.y;
+}
+
+/**
+ * 
+ *  rct2: 0x00407E15
+ */
+int osinterface_print_window_message(UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	const char* msgname = "NULL";
+	// get the string representation of the msg id, from 190 different values in 0x009A61D8 - 0x009A8873
+	// not going to bother reading those since this function is going to be unused and taken out anyways
+	char temp[1024];
+	sprintf(temp, "Message id = %s (%i), wParam = 0x%x, lParam = 0x%x\n", msgname, msg, wparam, lparam);
+	OutputDebugStringA(temp);
+	return 1;
+}
+
+/**
+ * 
  *  rct2: 0x00407E6E
  */
 int osinterface_progressbar_create(char* title, int a2)
@@ -457,8 +529,8 @@ int osinterface_progressbar_create(char* title, int a2)
 	RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND) = hwnd;
 	if (hwnd) {
 		RCT2_GLOBAL(0x009E2DFC, uint32) = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HFONT, HFONT)) {
-			SendMessageA(hwnd, WM_SETFONT, (WPARAM)RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HFONT, HFONT), 1);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT)) {
+			SendMessageA(hwnd, WM_SETFONT, (WPARAM)RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT), 1);
 		}
 		SetWindowTextA(hwnd, title);
 		osinterface_progressbar_setmax(0xFF);
@@ -487,19 +559,19 @@ int osinterface_progressbar_destroy()
  * 
  *  rct2: 0x00407F2E
  */
-LRESULT osinterface_progressbar_setmax(int max)
+void osinterface_progressbar_setmax(int max)
 {
 	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETRANGE, MAKEWPARAM(0, max), 0);
-	return SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETSTEP, 1, 0);
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETSTEP, 1, 0);
 }
 
 /**
  * 
  *  rct2: 0x00407F60
  */
-LRESULT osinterface_progressbar_setpos(WPARAM wparam)
+void osinterface_progressbar_setpos(int pos)
 {
-	return SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETPOS, wparam, 0);
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETPOS, MAKEWPARAM(pos, 0), 0);
 }
 
 /**
