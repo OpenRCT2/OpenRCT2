@@ -497,6 +497,12 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 
+	#define window_textinput_get_registers(w, widgetIndex, result, text)				\
+		__asm mov result, cl															\
+		__asm mov widgetIndex, dx														\
+		__asm mov w, esi																\
+		__asm mov text, edi
+
 	#define window_paint_get_registers(w, dpi)											\
 		__asm mov w, esi																\
 		__asm mov dpi, edi
@@ -523,6 +529,12 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm__ ( "mov %[y], bx " : [y] "+m" (y) );										\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+
+	#define window_textinput_get_registers(w, widgetIndex, result, text)				\
+		__asm__ ( "mov %[result], cl " : [result] "+m" (result) );						\
+		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
+		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
 
 	#define window_paint_get_registers(w, dpi)											\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\

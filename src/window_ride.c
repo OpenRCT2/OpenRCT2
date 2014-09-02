@@ -407,25 +407,6 @@ static void window_ride_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-/**
- * 
- * rct2: 0x006AEC68
- */
-static void window_ride_align_tabs(rct_window *w)
-{
-	int i, x, tab_width;
-
-	x = w->widgets[WIDX_TAB_1].left;
-	tab_width = w->widgets[WIDX_TAB_1].right - w->widgets[WIDX_TAB_1].left;
-	for (i = 0; i < 7; i++) {
-		if (w->disabled_widgets & (1LL << (WIDX_TAB_1 + i)))
-			continue;
-		w->widgets[WIDX_TAB_1 + i].left = x;
-		w->widgets[WIDX_TAB_1 + i].right = x + tab_width;
-		x += tab_width + 1;
-	}
-}
-
 #pragma region Main
 
 /**
@@ -454,6 +435,19 @@ static void window_ride_construct(rct_window *w)
 		if (w != NULL && ride_try_construct(trackMapElement))
 			window_scroll_to_location(w, trackX, trackY, trackMapElement->base_height * 8);
 	}
+}
+
+/**
+ * 
+ * rct2: 0x006AF315
+ */
+static void window_ride_rename(rct_window *w)
+{
+	rct_ride *ride;
+
+	ride = GET_RIDE(w->number);
+	RCT2_GLOBAL(0x013CE962, uint32) = ride->var_04C;
+	window_show_textinput(w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, ride->var_04A);
 }
 
 /**
@@ -547,6 +541,7 @@ static void window_ride_main_mouseup()
 		window_ride_construct(w);
 		break;
 	case WIDX_RENAME:
+		window_ride_rename(w);
 		break;
 	case WIDX_LOCATE:
 		window_ride_locate(w);
@@ -787,15 +782,20 @@ static void window_ride_main_update(rct_window *w)
  */
 static void window_ride_main_textinput()
 {
+	uint8 result;
 	short widgetIndex;
 	rct_window *w;
+	char *text;
 
-	window_widget_get_registers(w, widgetIndex);
+	window_textinput_get_registers(w, widgetIndex, result, text);
 
-	if (widgetIndex != WIDX_RENAME)
+	if (widgetIndex != WIDX_RENAME || !result)
 		return;
 
-
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_RIDE_ATTRACTION;
+	game_do_command(1, (w->number << 8) | 1, 0, *((int*)(text +  0)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text +  8)), *((int*)(text +  4)));
+	game_do_command(2, (w->number << 8) | 1, 0, *((int*)(text + 12)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
+	game_do_command(0, (w->number << 8) | 1, 0, *((int*)(text + 24)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
 }
 
 /**
@@ -846,7 +846,7 @@ static void window_ride_main_invalidate()
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
 
-	window_ride_align_tabs(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 }
 
 /**
