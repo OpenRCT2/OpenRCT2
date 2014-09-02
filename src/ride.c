@@ -20,6 +20,7 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "game.h"
 #include "map.h"
 #include "news_item.h"
 #include "sprite.h"
@@ -420,6 +421,45 @@ rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *ou
 	if (outX != NULL) *outX = eax & 0xFFFF;
 	if (outY != NULL) *outY = ecx & 0xFFFF;
 	return (rct_map_element*)esi;
+}
+
+/**
+ *
+ * rct2: 0x006B4800
+ */
+void ride_construct_new(uint8 ah, uint8 al)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edx = 0;
+	edx = ah;
+	edx << 8; //Set high byte
+	edx += al;//Set low byte
+	eax = 0;
+	ecx = 0;
+	ebx = 1;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
+
+	game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (ebx == 0x80000000) {
+		return;
+	}
+
+	//Looks like edi became the ride index after the command.
+	eax = edi;
+	rct_window *w;
+	short widgetIndex;
+
+	//TODO: replace with window_ride_main_open(eax)
+	// window_ride_main_open(eax);
+	RCT2_CALLPROC_X(0x006ACC28, eax, 0, 0, 0, 0, 0, 0);
+	window_widget_get_registers(w, widgetIndex);
+
+	//TODO: replace with window_ride_main_mouseup() after ride-window_merge
+	// window_ride_main_mouseup();
+	RCT2_CALLPROC_X(0x006AF17E, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	rct_window *ride_window = window_find_by_id(w->classification, w->number); //class here
+	window_close(ride_window);
 }
 
 /**
