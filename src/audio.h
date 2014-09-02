@@ -22,6 +22,7 @@
 #define _AUDIO_H_
 
 #include "rct2.h"
+#include "sprite.h"
 
 typedef struct {
 	char name[256];
@@ -51,7 +52,8 @@ typedef struct {
  */
 typedef struct rct_sound {
 	LPDIRECTSOUNDBUFFER dsbuffer;
-	int id;
+	uint16 id;
+	uint16 var_8;
 	int has_caps;
 	int var_0C;
 	struct rct_sound* next;
@@ -99,16 +101,31 @@ typedef struct {
 	uint16 var_2;
 	rct_sound sound1;		// 0x04
 	uint16 var_18;
-	uint8 pad_1A[0x06];
+	uint16 var_1A;
+	uint16 var_1C;
+	uint16 var_1D;
 	rct_sound sound2;		// 0x20
 	uint16 var_34;
-	uint8 pad_36[0x06];
+	uint16 pad_36;
+	uint16 var_38;
+	uint16 var_3A;
 } rct_vehicle_sound;
 
 typedef struct {
 	uint16 id;
 	rct_sound sound;
 } rct_other_sound;
+
+typedef struct {
+	uint16 id;
+	uint8 var_2;
+	uint8 var_3;
+	uint8 var_4;
+	uint16 var_5;
+	uint8 var_7;
+	uint16 var_8;
+	uint16 next; // 0xA
+} rct_sound_unknown;
 
 int get_dsound_devices();
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
@@ -134,6 +151,7 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
+int sound_channel_load_file2(int channel, char* filename, int offset);
 int sound_channel_load_file(int channel, char* filename, int offset);
 void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
 int sound_stop(rct_sound *sound);
@@ -145,11 +163,13 @@ rct_sound* sound_remove(rct_sound* sound);
 rct_sound* sound_begin();
 rct_sound* sound_next(rct_sound* sound);
 void pause_sounds();
+void stop_completed_sounds();
 void stop_other_sounds();
 void stop_vehicle_sounds();
 void stop_ride_music();
 void stop_peep_sounds();
 void stop_title_music();
+void start_title_music();
 void unpause_sounds();
 
 // 0x009AF59C probably does the same job
