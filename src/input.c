@@ -36,6 +36,13 @@
 
 POINT _dragPosition;
 
+typedef struct {
+	uint32 x, y;
+	uint32 state; //1 = LeftDown 2 = LeftUp 3 = RightDown 4 = RightUp
+} rct_mouse_data;
+
+rct_mouse_data* mouse_buffer = RCT2_ADDRESS(RCT2_ADDRESS_INPUT_QUEUE, rct_mouse_data);
+
 static void game_get_next_input(int *x, int *y, int *state);
 static void input_mouseover(int x, int y, rct_window *w, int widgetIndex);
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
@@ -43,6 +50,7 @@ static void input_mouseover_widget_flatbutton_invalidate();
 void process_mouse_over(int x, int y);
 void sub_6ED801(int x, int y);
 void invalidate_scroll();
+static rct_mouse_data* get_mouse_input();
 
 #pragma region Scroll bar input
 
@@ -522,11 +530,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		}
 		break;
 	default:
-		// comment check as it disables the rotate station/building button in construction window
-// 		if (!widget_is_enabled(w, widgetIndex))
-// 			break;
-		if (widget_is_disabled(w, widgetIndex))
-			break;
+ 		if (!widget_is_enabled(w, widgetIndex))
+ 			break;
 
 		sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2);
 		
@@ -1298,7 +1303,7 @@ void handle_shortcut_command(int shortcutIndex)
 		break;
 	case SHORTCUT_SHOW_FINANCIAL_INFORMATION:
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0C))
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x800))
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
 				window_finances_open();
 		break;
 	case SHORTCUT_SHOW_RESEARCH_INFORMATION:
@@ -1557,18 +1562,17 @@ void game_handle_input()
  */
 static void game_get_next_input(int *x, int *y, int *state)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x00407074, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax == 0) {
+	rct_mouse_data* eax = get_mouse_input();
+	if (eax == NULL) {
 		*x = gCursorState.x;
 		*y = gCursorState.y;
 		*state = 0;
 		return;
 	}
 
-	*x = RCT2_GLOBAL(eax + 0, sint32);
-	*y = RCT2_GLOBAL(eax + 4, sint32);
-	*state = RCT2_GLOBAL(eax + 8, sint32);
+	*x = eax->x;
+	*y = eax->y;
+	*state = eax->state;
 
 	//int eax, ebx, ecx, edx, esi, edi, ebp;
 	//RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
@@ -1762,4 +1766,40 @@ void invalidate_scroll()
 	wind->scrolls[scroll_id / sizeof(rct_scroll)].flags &= 0xFF11;
 
 	window_invalidate_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16));
+}
+
+/**
+* rct2: 0x00406C96
+*/
+void store_mouse_input(int state)
+{
+	uint32 write_index = RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32);
+	uint32 next_write_index = (write_index + 1) % 64;
+
+	// check if the queue is full
+	if (next_write_index == RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32))
+		return;
+
+	rct_mouse_data* item = &mouse_buffer[write_index];
+	item->x = RCT2_GLOBAL(0x01424318, uint32);
+	item->y = RCT2_GLOBAL(0x0142431C, uint32);
+	item->state = state;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32) = next_write_index;
+}
+
+
+/**
+ * rct2: 0x00407074
+ */
+static rct_mouse_data* get_mouse_input()
+{
+	uint32 read_index = RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32);
+
+	// check if that location has been written to yet
+	if (read_index == RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_WRITE_INDEX, uint32))
+		return NULL;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32) = (read_index + 1) % 64;
+	return &mouse_buffer[read_index];
 }

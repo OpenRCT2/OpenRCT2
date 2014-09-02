@@ -29,6 +29,7 @@
 #include "news_item.h"
 #include "object.h"
 #include "osinterface.h"
+#include "park.h"
 #include "peep.h"
 #include "sawyercoding.h"
 #include "scenario.h"
@@ -942,7 +943,7 @@ static uint32 game_do_command_table[58] = {
 	0x006666E7,
 	0x00666A63,
 	0x006CD8CE,
-	0x00669E30,
+	(uint32)game_command_set_park_entrance_fee,
 	(uint32)game_command_update_staff_colour, // 40
 	0x006E519A,
 	0x006E5597,

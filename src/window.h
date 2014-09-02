@@ -340,6 +340,7 @@ enum {
 	WC_PEEP = 23,
 	WC_GUEST_LIST = 24,
 	WC_STAFF_LIST = 25,
+	WC_FIRE_PROMPT = 26,
 	WC_PARK_INFORMATION = 27,
 	WC_FINANCES = 28,
 	WC_TITLE_MENU = 29,
@@ -395,6 +396,7 @@ int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *heig
 rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number);
 rct_window *window_bring_to_front(rct_window *w);
 
+void window_push_others_right(rct_window *w);
 void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();

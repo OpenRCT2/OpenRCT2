@@ -125,10 +125,10 @@ static void window_about_mouseup()
 		window_close(w);
 		break;
 	case WIDX_MUSIC_CREDITS:
-		RCT2_CALLPROC_EBPSAFE(0x0066D4EC);
+		RCT2_CALLPROC_EBPSAFE(0x0066D55B);
 		break;
 	case WIDX_PUBLISHER_CREDITS:
-		RCT2_CALLPROC_EBPSAFE(0x0066D55B);
+		RCT2_CALLPROC_EBPSAFE(0x0066D4EC);
 		break;
 	}
 }

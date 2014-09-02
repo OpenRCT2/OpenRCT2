@@ -829,6 +829,38 @@ rct_window *window_bring_to_front(rct_window *w)
 }
 
 /**
+ *
+ * rct2: 0x006EE65A
+ */
+void window_push_others_right(rct_window* window)
+{
+
+        for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+                if (w == window)
+                        continue;
+                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+                        continue;
+                if (w->x >= window->x + window->width)
+                        continue;
+                if (w->x + w->width <= window->x)
+                        continue;
+                if (w->y >= window->y + window->height)
+                        continue;
+                if (w->y + w->height <= window->y)
+                        continue;
+
+                window_invalidate(w);
+                if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+                        continue;
+                uint16 push_amount = window->x + window->width - w->x + 3;
+                w->x += push_amount;
+                window_invalidate(w);
+                if (w->viewport != NULL)
+                        w->viewport->x += push_amount;
+        }
+}
+
+/**
  * 
  *  rct2: 0x006EE6EA
  */
@@ -870,6 +902,7 @@ void window_push_others_below(rct_window *w1)
 			w2->viewport->y += push_amount;
 	}
 }
+
 
 /**
  * 
@@ -1150,7 +1183,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_5))
 		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
 
-	//some code missing here? Between 006EB18C and 006EB260
+	//todo: some code missing here? Between 006EB18C and 006EB260
 
 	widgetIndex = 0;
 	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
@@ -1162,7 +1195,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 		widgetIndex++;
 	}
 
-	//something missing here too? Between 006EC32B and 006EC369
+	//todo: something missing here too? Between 006EC32B and 006EC369
 
 	if (w->flags & WF_WHITE_BORDER_MASK) {
 		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 2, 0x10);
@@ -1511,3 +1544,4 @@ void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id )
 		}
 	}
 }
+

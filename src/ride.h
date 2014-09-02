@@ -21,6 +21,7 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
+#include "map.h"
 #include "rct2.h"
 #include "string_ids.h"
 
@@ -381,5 +382,8 @@ void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_check_all_reachable();
+rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
+rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
+int ride_try_construct(rct_map_element *trackMapElement);
 
 #endif
