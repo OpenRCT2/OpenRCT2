@@ -20,6 +20,7 @@
 
 #include <windows.h>
 #include "addresses.h"
+#include "game.h"
 #include "map.h"
 #include "news_item.h"
 #include "sprite.h"
@@ -420,6 +421,48 @@ rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *ou
 	if (outX != NULL) *outX = eax & 0xFFFF;
 	if (outY != NULL) *outY = ecx & 0xFFFF;
 	return (rct_map_element*)esi;
+}
+
+/**
+ *
+ * rct2: 0x006B4800
+ */
+void ride_construct_new(int list_item)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edx = list_item;
+	eax = 0;
+	ecx = 0;
+	ebx = 1;
+	edi = 0;
+	esi = 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
+
+	esi = GAME_COMMAND_6;
+	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (ebx == 0x80000000) {
+		return;
+	}
+
+	//Looks like edi became the ride index after the command.
+	eax = edi;
+	rct_window *w;
+	short widgetIndex;
+
+	//TODO: replace with window_ride_main_open(eax)
+	// window_ride_main_open(eax);
+	RCT2_CALLFUNC_X(0x006ACC28, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	window_get_register(w);
+
+	ecx = w->classification;
+	edx = 0x13;
+	ebp = (int)w;
+	//TODO: replace with window_ride_main_mouseup() after ride-window_merge
+	// window_ride_main_mouseup();
+	RCT2_CALLFUNC_X(0x006AF17E, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	rct_window *ride_window = window_find_by_id(w->classification, w->number); //class here
+	window_close(ride_window);
 }
 
 /**
