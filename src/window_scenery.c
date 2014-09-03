@@ -27,6 +27,7 @@
 #include "gfx.h"
 #include "peep.h"
 #include "sprite.h"
+#include "scenery.h"
 #include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
@@ -34,99 +35,6 @@
 
 #define WINDOW_SCENERY_WIDTH 0x27A
 #define WINDOW_SCENERY_HEIGHT 0x8E
-
-typedef struct {
-	uint32 flags;			// 0x06
-	uint8 height;			// 0x0A
-	uint8 tool_id;			// 0x0B
-	uint16 price;			// 0x0C
-	uint8 pad_0E[12];
-	uint8 scenery_tab_id;	// 0x1A
-} rct_small_scenery_entry;
-
-typedef enum {
-	SMALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
-	SMALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
-	SMALL_SCENERY_FLAG3 = (1 << 2)	,	// 0x4
-	SMALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
-	SMALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
-	SMALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
-	SMALL_SCENERY_FLAG7 = (1 << 6),		// 0x40
-	SMALL_SCENERY_FLAG8 = (1 << 7),		// 0x80
-	SMALL_SCENERY_FLAG9 = (1 << 8),		// 0x100
-	SMALL_SCENERY_FLAG10 = (1 << 9),	// 0x200
-	SMALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 10),	// 0x400
-	SMALL_SCENERY_FLAG12 = (1 << 11),	// 0x800
-	SMALL_SCENERY_FLAG13 = (1 << 12),	// 0x1000
-	SMALL_SCENERY_FLAG14 = (1 << 13),	// 0x2000
-	SMALL_SCENERY_FLAG15 = (1 << 14),	// 0x4000
-	SMALL_SCENERY_FLAG16 = (1 << 15),	// 0x8000
-	SMALL_SCENERY_FLAG17 = (1 << 16),	// 0x10000
-	SMALL_SCENERY_FLAG18 = (1 << 17),	// 0x20000
-	SMALL_SCENERY_FLAG19 = (1 << 18),	// 0x40000
-	SMALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 19),	// 0x80000
-} SMALL_SCENERY_FLAGS;
-
-typedef struct {
-	uint8 tool_id;			// 0x06
-	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
-	uint8 pad_0A[6];
-	uint8 scenery_tab_id;	// 0x10
-} rct_large_scenery_entry;
-
-
-typedef struct {
-	uint8 tool_id;			// 0x06
-	uint8 flags;			// 0x07
-	uint8 height;			// 0x08
-	uint8 flags2;			// 0x09
-	uint16 price;			// 0x0A
-	uint8 scenery_tab_id;	// 0x0C
-} rct_wall_scenery_entry;
-
-typedef enum {
-	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
-	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
-	WALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
-	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
-	WALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
-	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
-	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
-	WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),			// 0x80
-} WALL_SCENERY_FLAGS;
-
-typedef struct {
-	uint8 pad_02[3];
-	uint8 tool_id;			// 0x09
-	uint16 price;			// 0x0A
-	uint8 scenery_tab_id;	// 0x0C
-} rct_path_bit_scenery_entry;
-
-typedef struct {
-	uint8 var_06;
-	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
-	uint8 scenery_tab_id;	// 0x0A
-} rct_banner_scenery_entry;
-
-typedef struct {
-	rct_string_id name;		// 0x00
-	uint32 image;			// 0x02
-	union {
-		rct_small_scenery_entry small_scenery;
-		rct_large_scenery_entry large_scenery;
-		rct_wall_scenery_entry wall;
-		rct_path_bit_scenery_entry path_bit;
-		rct_banner_scenery_entry banner;
-	};
-} rct_scenery_entry;
-
-#define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_largeSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_wallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_bannerSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_pathBitSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_scenery_entry*)
 
 enum {
 	WINDOW_SCENERY_TAB_1,
