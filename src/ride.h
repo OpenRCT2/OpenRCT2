@@ -385,6 +385,7 @@ void ride_update_favourited_stat();
 void ride_check_all_reachable();
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
+void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
 
 #endif
