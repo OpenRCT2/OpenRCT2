@@ -49,7 +49,9 @@ typedef struct {
 	uint32 var_008;
 	uint8 var_00C;
 	uint8 var_00D;
-	uint8 pad_00E[0x1A4];
+	uint8 pad_00E[0x5];
+	uint8 var_013;
+	uint8 pad_014[0x19E];
 	sint8 excitement_multipler;		// 0x1B2
 	sint8 intensity_multipler;		// 0x1B3
 	sint8 nausea_multipler;			// 0x1B4
@@ -74,8 +76,8 @@ typedef struct {
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
-	uint16 var_04A;
-	uint32 var_04C;
+	rct_string_id name;				// 0x04A
+	uint32 name_arguments;			// 0x04C probably just for when a ride hasn't been named (e.g. Crooked House 1)
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
@@ -149,7 +151,8 @@ typedef struct {
 	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
-	uint8 pad_1D4[0x20];
+	uint8 var_1D4;
+	uint8 pad_1D5[0x1F];
 	// Example value for wild mouse ride is d5 (before it's been constructed)
 	// I tried searching the IDA file for "1F4" but couldn't find places where
 	// this is written to.

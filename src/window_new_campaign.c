@@ -118,8 +118,8 @@ int ride_name_compare(const void *a, const void *b)
 	rideA = GET_RIDE(*((uint8*)a));
 	rideB = GET_RIDE(*((uint8*)b));
 
-	format_string(rideAName, rideA->var_04A, &rideA->var_04C);
-	format_string(rideBName, rideB->var_04A, &rideB->var_04C);
+	format_string(rideAName, rideA->name, &rideA->name_arguments);
+	format_string(rideBName, rideB->name, &rideB->name_arguments);
 
 	return _strcmpi(rideAName, rideBName);
 }
@@ -288,7 +288,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 
 					rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
 					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = (ride->var_04C << 16) | ride->var_04A;
+					gDropdownItemsArgs[i] = (ride->name_arguments << 16) | ride->name;
 					numItems++;
 				}
 
@@ -364,8 +364,8 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_RIDE;
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
 			rct_ride *ride = GET_RIDE(w->campaign.ride_id);
-			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->var_04A;
-			RCT2_GLOBAL(0x013CE952, uint32) = ride->var_04C;
+			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->name;
+			RCT2_GLOBAL(0x013CE952, uint32) = ride->name_arguments;
 		}
 		break;
 	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:

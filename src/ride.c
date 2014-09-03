@@ -242,16 +242,16 @@ void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			continue;
 		if (entrance != -1 && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
 			// name of ride is parameter of the format string
-			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
-			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;			
+			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;			
 			news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
 			ride->connected_message_throttle = 3;
 		}
 			
 		if (exit != -1 && !ride_entrance_exit_is_reachable(exit, ride, i)) {
 			// name of ride is parameter of the format string
-			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
-			RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
+			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
 			news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride_idx);
 			ride->connected_message_throttle = 3;
 		}
@@ -315,8 +315,8 @@ void ride_shop_connected(rct_ride* ride, int ride_idx)
     }    
     
 	// name of ride is parameter of the format string
-    RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
-	RCT2_GLOBAL(0x013CE954, uint32) = ride->var_04C;
+    RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
 	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
 
     ride->connected_message_throttle = 3;
