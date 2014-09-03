@@ -162,6 +162,9 @@
     <ClInclude Include="..\src\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\scenery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">

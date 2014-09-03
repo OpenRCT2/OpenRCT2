@@ -480,6 +480,21 @@ void window_scenery_close() {
 		tool_cancel();
 }
 
+int window_scenery_scrollgetsize_num() {
+	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
+
+	int items = 0;
+	while (RCT2_ADDRESS(sceneryTabItems, sint16)[items] != -1)
+		items++;
+
+	items += 8;
+	int rows = items / 9;
+	if (rows == 0)
+		rows++;
+
+	return rows * 80;
+}
+
 /**
 *
 *  rct2: 0x006BD94C
@@ -512,6 +527,36 @@ static void window_scenery_mouseup()
 	}
 }
 
+/*
+*
+*  rct2: 0x006E1EB4
+*/
+void window_scenery_update_scroll(rct_window *w) {
+	int scrollsize = window_scenery_scrollgetsize_num();
+	w->scrolls[0].v_bottom = scrollsize;
+
+	int typeId = RCT2_GLOBAL(0x00F64EDC, uint8);
+	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[typeId];
+
+	int itemIndex = 0;
+	sint16 sceneryId;
+	while ((sceneryId = RCT2_ADDRESS(sceneryTabItems, sint16)[itemIndex]) != -1) {
+		if (sceneryId == RCT2_ADDRESS(0x00F64EDD, uint16)[typeId])
+			break;
+		itemIndex++;
+	}
+
+	if (sceneryId == -1) {
+		itemIndex = 0;
+		sint16 sceneryId = RCT2_ADDRESS(sceneryTabItems, sint16)[itemIndex];
+		if (sceneryId != -1)
+			RCT2_ADDRESS(0x00F64EDD, uint16)[typeId] = sceneryId;
+	}
+
+	w->scrolls[0].v_top = (itemIndex / 9) * 80;
+	widget_scroll_update_thumbs(w, WIDX_SCENERY_LIST);
+}
+
 /**
 *
 *  rct2: 0x006E1E48
@@ -535,13 +580,13 @@ static void window_scenery_resize()
 	if (w->height < w->min_height) {
 		w->height = w->min_height;
 		window_invalidate(w);
-		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+		window_scenery_update_scroll(w);
 	}
 
 	if (w->height > w->max_height) {
 		w->height = w->max_height;
 		window_invalidate(w);
-		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+		window_scenery_update_scroll(w);
 	}
 }
 
@@ -571,7 +616,7 @@ static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget*
 		RCT2_GLOBAL(0x00F64EDC, uint8) = widgetIndex - WIDX_SCENERY_TAB_1;
 		window_invalidate(w);
 		RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
-		RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)w, 0, 0);
+		window_scenery_update_scroll(w);
 	}
 }
 
@@ -702,22 +747,7 @@ static void window_scenery_update(rct_window *w)
 *  rct2: 0x006E1A91
 */
 void window_scenery_scrollgetsize() {
-	rct_window *w;
-
-	window_get_register(w);
-
-	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
-
-	int items = 0;
-	while (RCT2_ADDRESS(sceneryTabItems, sint16)[items] != -1)
-		items++;
-	
-	items += 8;
-	int rows = items / 9;
-	if (rows == 0)
-		rows++;
-
-	int scrollHeight = rows * 80;
+	int scrollHeight = window_scenery_scrollgetsize_num();
 
 #ifdef _MSC_VER
 	__asm mov edx, scrollHeight
@@ -1116,15 +1146,14 @@ void window_scenery_scrollpaint()
 				gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 
 				if (sceneryEntry->small_scenery.flags & 0x200) {
-					imageId = ((sceneryEntry->image + sceneryRotation) | 0x40000004) +
+					imageId = ((sceneryEntry->image + sceneryRotation) + 0x40000004) +
 						((RCT2_GLOBAL(0x00F64F06, uint8) + 0x70) << 19);
 
 					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
-					//imageId = (sceneryEntry->image + sceneryRotation) + 4;
-					imageId = 4;
+					imageId = (sceneryEntry->image + sceneryRotation) + 4;
 					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
 
