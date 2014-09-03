@@ -2265,14 +2265,13 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 	newDrawPixelInfo->height = dpi->height;
 	newDrawPixelInfo->pitch = dpi->pitch;
 	newDrawPixelInfo->zoom_level = 0;
-	newDrawPixelInfo->var_0F = dpi->var_0F;
 
 	if (left > newDrawPixelInfo->x) {
-		uint16 newWidth = left - newDrawPixelInfo->x;
-		newDrawPixelInfo->width -= newWidth;
+		uint16 clippedFromLeft = left - newDrawPixelInfo->x;
+		newDrawPixelInfo->width -= clippedFromLeft;
 		newDrawPixelInfo->x = left;
-		newDrawPixelInfo->pitch += newWidth;
-		newDrawPixelInfo->bits += newWidth;
+		newDrawPixelInfo->pitch += clippedFromLeft;
+		newDrawPixelInfo->bits += clippedFromLeft;
 	}
 
 	int stickOutWidth = newDrawPixelInfo->x + newDrawPixelInfo->width - right;
@@ -2282,10 +2281,10 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 	}
 
 	if (top > newDrawPixelInfo->y) {
-		uint16 newHeight = top - newDrawPixelInfo->y;
-		newDrawPixelInfo->height = newHeight;
+		uint16 clippedFromTop = top - newDrawPixelInfo->y;
+		newDrawPixelInfo->height -= clippedFromTop;
 		newDrawPixelInfo->y = top;
-		int bitsPlus = (newDrawPixelInfo->pitch + newDrawPixelInfo->width) * newHeight;
+		uint32 bitsPlus = (newDrawPixelInfo->pitch + newDrawPixelInfo->width) * clippedFromTop;
 		newDrawPixelInfo->bits += bitsPlus;
 	}
 
