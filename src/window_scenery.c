@@ -1084,6 +1084,7 @@ void window_scenery_scrollpaint()
 
 				gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 					w->colours[1]);
+				rct2_free(clipdpi);
 			}
 		}
 		else if (currentSceneryGlobalId >= 0x100) {
