@@ -36,18 +36,38 @@
 #define WINDOW_SCENERY_HEIGHT 0x8E
 
 typedef struct {
-	uint8 pad_02[4];
-	uint8 flags;			// 0x06
-	uint8 flags2;			// 0x07
-	uint8 pad_08[3];
+	uint32 flags;			// 0x06
+	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
 	uint16 price;			// 0x0C
 	uint8 pad_0E[12];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
+typedef enum {
+	SMALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
+	SMALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
+	SMALL_SCENERY_FLAG3 = (1 << 2)	,	// 0x4
+	SMALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
+	SMALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
+	SMALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
+	SMALL_SCENERY_FLAG7 = (1 << 6),		// 0x40
+	SMALL_SCENERY_FLAG8 = (1 << 7),		// 0x80
+	SMALL_SCENERY_FLAG9 = (1 << 8),		// 0x100
+	SMALL_SCENERY_FLAG10 = (1 << 9),	// 0x200
+	SMALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 10),	// 0x400
+	SMALL_SCENERY_FLAG12 = (1 << 11),	// 0x800
+	SMALL_SCENERY_FLAG13 = (1 << 12),	// 0x1000
+	SMALL_SCENERY_FLAG14 = (1 << 13),	// 0x2000
+	SMALL_SCENERY_FLAG15 = (1 << 14),	// 0x4000
+	SMALL_SCENERY_FLAG16 = (1 << 15),	// 0x8000
+	SMALL_SCENERY_FLAG17 = (1 << 16),	// 0x10000
+	SMALL_SCENERY_FLAG18 = (1 << 17),	// 0x20000
+	SMALL_SCENERY_FLAG19 = (1 << 18),	// 0x40000
+	SMALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 19),	// 0x80000
+} SMALL_SCENERY_FLAGS;
+
 typedef struct {
-	uint8 pad_02[4];
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	uint16 price;			// 0x08
@@ -57,25 +77,33 @@ typedef struct {
 
 
 typedef struct {
-	uint8 pad_02[4];
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
-	uint8 pad_08;
+	uint8 height;			// 0x08
 	uint8 flags2;			// 0x09
 	uint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 } rct_wall_scenery_entry;
 
+typedef enum {
+	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
+	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
+	WALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
+	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
+	WALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
+	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
+	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
+	WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),			// 0x80
+} WALL_SCENERY_FLAGS;
+
 typedef struct {
-	uint8 pad_02[7];
+	uint8 pad_02[3];
 	uint8 tool_id;			// 0x09
 	uint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
 typedef struct {
-	uint16 var_02;
-	uint16 var_04;
 	uint8 var_06;
 	uint8 flags;			// 0x07
 	uint16 price;			// 0x08
@@ -83,7 +111,8 @@ typedef struct {
 } rct_banner_scenery_entry;
 
 typedef struct {
-	rct_string_id name;
+	rct_string_id name;		// 0x00
+	uint32 image;			// 0x02
 	union {
 		rct_small_scenery_entry small_scenery;
 		rct_large_scenery_entry large_scenery;
@@ -136,6 +165,7 @@ static void window_scenery_scrollmouseover();
 static void window_scenery_tooltip();
 static void window_scenery_invalidate();
 static void window_scenery_paint();
+static void window_scenery_scrollpaint();
 
 static void* window_scenery_events[] = {
 	window_scenery_close, //(void*)0x006E1A73,    // window_scenery_close
@@ -165,7 +195,7 @@ static void* window_scenery_events[] = {
 	window_scenery_emptysub,
 	window_scenery_invalidate, //(void*)0x006E118B,	  // window_scenery_invalidate,
 	window_scenery_paint,	  // (void*)0x006E1462,	  // window_scenery_paint, 
-	(void*)0x006E15ED,	  // window_scenery_scrollpaint,
+	window_scenery_scrollpaint,//(void*)0x006E15ED,	  // window_scenery_scrollpaint,
 };
 
 
@@ -242,25 +272,25 @@ static rct_widget window_scenery_widgets[] = {
 void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId) {
 	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1 << (index & 0x1F))) {
 		if (sceneryTabId != 0xFF) {
-			uint32 esi = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryTabId];
+			uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryTabId];
 
 			for (int ebx = 0; ebx < 0x80; ebx++) {
-				if (RCT2_ADDRESS(esi, uint16)[ebx] == 0xFFFF)
+				if (RCT2_ADDRESS(sceneryTabItems, uint16)[ebx] == 0xFFFF)
 				{
-					RCT2_ADDRESS(esi, uint16)[ebx] = index;
-					RCT2_ADDRESS(esi, uint16)[ebx + 1] = 0xFFFF;
+					RCT2_ADDRESS(sceneryTabItems, uint16)[ebx] = index;
+					RCT2_ADDRESS(sceneryTabItems, uint16)[ebx + 1] = 0xFFFF;
 					return;
 				}
 			}
 		}
 
 		for (int ecx = 0; ecx < 0x13; ecx++) {
-			int baseEdx = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+			int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
 			int counter = 0;
 
-			while (RCT2_ADDRESS(baseEdx, uint16)[counter] != 0xFFFF)
+			while (RCT2_ADDRESS(sceneryTabItems, uint16)[counter] != 0xFFFF)
 			{
-				if (RCT2_ADDRESS(baseEdx, uint16)[counter] == index) {
+				if (RCT2_ADDRESS(sceneryTabItems, uint16)[counter] == index) {
 					ecx = 0x13;
 					return;
 				}
@@ -296,8 +326,8 @@ void init_scenery() {
 	uint32 dword_F663A4 = 0;
 
 	for (int edi = 0; edi < 0x14; edi++) {
-		int esi = RCT2_ADDRESS(0x00F64F2C, uint32)[edi];
-		RCT2_GLOBAL(esi, uint16) = 0xFFFF;
+		int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[edi];
+		RCT2_GLOBAL(sceneryTabItems, uint16) = 0xFFFF;
 		if (edi == 13)
 			continue;
 
@@ -314,9 +344,9 @@ void init_scenery() {
 			uint32 ecx = RCT2_ADDRESS(0x01357BD0, uint32)[ax >> 5];
 			uint32 edx = 1 << (ax & 0x1F);
 			if (ecx & edx) {
-				RCT2_GLOBAL(esi, uint16) = ax;
-				esi += 2;
-				RCT2_GLOBAL(esi, uint16) = 0xFFFF;
+				RCT2_GLOBAL(sceneryTabItems, uint16) = ax;
+				sceneryTabItems += 2;
+				RCT2_GLOBAL(sceneryTabItems, uint16) = 0xFFFF;
 			} else {
 				dword_F663A4 |= (1 << edi);
 			}
@@ -414,10 +444,10 @@ void init_scenery() {
 	for (int ebx = 0; ebx < ebp; ebx += 4) {
 		uint32 tabIndex = stuff[ebx];
 		rct_widget* currentTab = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
-		int eax = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
+		int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
 
 		if (cx != 3 || tabIndex == 0x13) {
-			if (RCT2_GLOBAL(eax, uint16) == 0xFFFF)
+			if (RCT2_GLOBAL(sceneryTabItems, uint16) == 0xFFFF)
 				continue;
 
 			if (dword_F663A4 & (1 << tabIndex))
@@ -490,7 +520,7 @@ void window_scenery_open()
 	window_init_scroll_widgets(window);
 	RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)window, 0, 0);
 	show_gridlines();
-	RCT2_GLOBAL(0x00F64F05, uint8) = 3;
+	RCT2_GLOBAL(0x00F64F05, uint8) = 3; // rotation
 	RCT2_GLOBAL(0x00F64F12, uint8) = 0;
 	RCT2_GLOBAL(0x00F64F13, uint8) = 0;
 	window->scenery.selected_scenery_id = -1;
@@ -817,7 +847,7 @@ void window_scenery_scrollmousedown() {
 	window_scrollmouse_get_registers(w, x, y);
 
 	short sceneryId = get_scenery_id_by_cursor_pos(x, y);
-	if (sceneryId = -1)
+	if (sceneryId == -1)
 		return;
 
 	uint8 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
@@ -946,24 +976,24 @@ void window_scenery_invalidate() {
 		}
 		else if (bp >= 0x200) {
 			sceneryEntry = g_wallSceneryEntries[bp - 0x200];
-			if (sceneryEntry->wall.flags & 1)
+			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2))
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
-			if (sceneryEntry->wall.flags & 0x40) {
+			if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON2].type = WWT_COLORBTN;
 
 				if (sceneryEntry->wall.flags2 & 1)
-					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
-				if (sceneryEntry->wall.flags & 0x80)
+					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_EMPTY;
+				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
 					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON3].type = WWT_COLORBTN;
 			}
 		}
 		else if (bp < 0x100) {
 			sceneryEntry = g_smallSceneryEntries[bp];
-			
-			if (sceneryEntry->small_scenery.flags & 0x600) {
+
+			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
 				window_scenery_widgets[WIDX_SCENERY_COLORBUTTON1].type = WWT_COLORBTN;
 
-				if (sceneryEntry->small_scenery.flags2 & 0x8)
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
 					window_scenery_widgets[WIDX_SCENERY_COLORBUTTON2].type = WWT_COLORBTN;
 			}
 		}
@@ -1060,4 +1090,144 @@ void window_scenery_paint() {
 	RCT2_GLOBAL(0x013CE952, uint16) = sceneryEntry->name;
 	gfx_draw_string_left_clipped(dpi, 0x4A7, (void*)0x013CE952, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
+}
+
+/**
+*
+*  rct2: 0x006E15ED
+*/
+void window_scenery_scrollpaint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	gfx_clear(dpi, ((char*)0x0141FC48)[w->colours[1] * 8] * 0x1010101);
+
+	uint8 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
+	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
+
+	int sceneryTabItemIndex = 0;
+	sint16 currentSceneryGlobalId = -1;
+	sint16 left = 0, top = 0;
+	uint8 sceneryRotation = RCT2_GLOBAL(0x00F64F05, uint8);
+	while ((currentSceneryGlobalId = RCT2_ADDRESS(sceneryTabItems, sint16)[sceneryTabItemIndex]) != -1) {
+		uint16 sceneryTabIndex = RCT2_ADDRESS(0x00F64EDD, uint16)[currentSceneryGlobalId];
+				
+		if (RCT2_GLOBAL(0x00F64F19, uint8) == 1)
+		{
+			if (w->scenery.selected_scenery_id == currentSceneryGlobalId) {
+				gfx_fill_rect_inset(dpi, left, top, left + 65, top + 79, w->colours[1], 0x80);
+			}
+		} else {
+			if (sceneryTabIndex == currentSceneryGlobalId) {
+				gfx_fill_rect_inset(dpi, left, top, left + 65, top + 79, w->colours[1], 0xA0);
+			}
+			else if (w->scenery.selected_scenery_id == currentSceneryGlobalId) {
+				gfx_fill_rect_inset(dpi, left, top, left + 65, top + 79, w->colours[1], 0x80);
+			}
+		}
+
+		rct_scenery_entry* sceneryEntry;
+		if (currentSceneryGlobalId >= 0x400) {
+			sceneryEntry = g_bannerSceneryEntries[currentSceneryGlobalId - 0x400];
+			uint32 imageId = sceneryEntry->image + sceneryRotation * 2;
+			imageId |= (RCT2_GLOBAL(0x00F64F06, uint8) << 19) | 0x20000000;
+
+			gfx_draw_sprite(dpi, imageId, left + 0x21, top + 0x28, w->colours[1]);
+			gfx_draw_sprite(dpi, imageId + 1, left + 0x21, top + 0x28, w->colours[1]);
+		}
+		else if (currentSceneryGlobalId >= 0x300) {
+			sceneryEntry = g_largeSceneryEntries[currentSceneryGlobalId - 0x300];
+			uint32 imageId = sceneryEntry->image + sceneryRotation;
+			imageId |= (RCT2_GLOBAL(0x00F64F06, uint8) << 19) | 0x20000000;
+			imageId |= (RCT2_GLOBAL(0x00F64F07, uint8) << 24) | 0x80000000;
+
+			gfx_draw_sprite(dpi, imageId, left + 0x21, top, w->colours[1]);
+		}
+		else if (currentSceneryGlobalId >= 0x200) {
+			sceneryEntry = g_wallSceneryEntries[currentSceneryGlobalId - 0x200];
+			rct_drawpixelinfo* clipdpi = clip_drawpixelinfo(dpi, left + 1, 64, top + 1, 78);
+			if (clipdpi != NULL) {
+				uint32 imageId = sceneryEntry->image;
+				uint8 tertiaryColour = w->colours[1];
+
+				if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
+					imageId |= (RCT2_GLOBAL(0x00F64F06, uint8) << 19) | 0x20000000;
+
+					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
+						imageId |= (RCT2_GLOBAL(0x00F64F07, uint8) << 24) | 0x80000000;
+					}
+				}
+				else {
+					imageId |= (RCT2_GLOBAL(0x00F64F06, uint8) << 19) | 0x20000000;
+
+					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
+						imageId |= (RCT2_GLOBAL(0x00F64F07, uint8) << 24) | 0x80000000;
+
+						if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
+							imageId &= 0xDFFFFFFF;
+							tertiaryColour = RCT2_GLOBAL(0x00F64F08, uint8);
+						}
+							
+					}
+				}
+
+				gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+					w->colours[1]);
+			}
+		}
+		else if (currentSceneryGlobalId >= 0x100) {
+			sceneryEntry = g_pathBitSceneryEntries[currentSceneryGlobalId - 0x100];
+			uint32 imageId = sceneryEntry->image;
+
+			gfx_draw_sprite(dpi, imageId, left + 0x0B, top + 0x10, w->colours[1]);
+		} else {
+			sceneryEntry = g_smallSceneryEntries[currentSceneryGlobalId];
+			rct_drawpixelinfo* clipdpi = clip_drawpixelinfo(dpi, left + 1, 64, top + 1, 78);
+			if (clipdpi != NULL) {
+
+				uint32 imageId = sceneryEntry->image + sceneryRotation;
+
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_PRIMARY_COLOUR) {
+					imageId |= (RCT2_GLOBAL(0x00F64F06, uint8) << 19) | 0x20000000;
+
+					if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR) {
+						imageId |= (RCT2_GLOBAL(0x00F64F07, uint8) << 24) | 0x80000000;
+					}
+				}
+
+				uint16 spriteTop = (sceneryEntry->small_scenery.height / 4) + 0x2B;
+
+				if (sceneryEntry->small_scenery.flags == (SMALL_SCENERY_FLAG1 | SMALL_SCENERY_FLAG2)) {
+					spriteTop -= 0x0C;
+				}
+
+				gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+
+				if (sceneryEntry->small_scenery.flags & 0x200) {
+					imageId = ((sceneryEntry->image + sceneryRotation) | 0x40000004) +
+						((RCT2_GLOBAL(0x00F64F06, uint8) + 0x70) << 19);
+
+					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+				}
+
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
+					//imageId = (sceneryEntry->image + sceneryRotation) + 4;
+					imageId = 4;
+					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+				}
+
+				rct2_free(clipdpi);
+			}
+		}
+		
+		left += 66;
+		if (left >= 594) {
+			top += 80;
+			left = 0;
+		}
+		sceneryTabItemIndex++;
+	}
 }
