@@ -1250,8 +1250,8 @@ static void window_finances_marketing_paint()
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
 			ride = GET_RIDE(campaignRideIndex[i]);
-			RCT2_GLOBAL(0x013CE952, uint16) = ride->var_04A;
-			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_04C;
+			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
 			shopString = campaignRideIndex[i] + 2016; // STR_BALLOONS+
