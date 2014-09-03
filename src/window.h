@@ -158,7 +158,7 @@ typedef struct{
 } map_variables;
 
 typedef struct {
-	sint16 var_480;
+	sint16 view;
 	sint32 var_482;
 	sint32 var_486;
 } ride_variables;

@@ -163,6 +163,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 static void window_ride_emptysub() { }
 
 static void window_ride_main_mouseup();
+static void window_ride_main_resize();
 static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
 static void window_ride_main_dropdown();
 static void window_ride_main_update(rct_window *w);
@@ -181,7 +182,7 @@ static void window_ride_music_paint();
 static void* window_ride_main_events[] = {
 	window_ride_emptysub,
 	window_ride_main_mouseup,
-	window_ride_emptysub,
+	window_ride_main_resize,
 	window_ride_main_mousedown,
 	window_ride_main_dropdown,
 	window_ride_emptysub,
@@ -342,7 +343,7 @@ void window_ride_main_open(int rideIndex)
 	w->pressed_widgets = 0;
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 	window_init_scroll_widgets(w);
-	w->ride.var_480 = 0;
+	w->ride.view = 0;
 	RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
@@ -408,6 +409,15 @@ static void window_ride_anchor_border_widgets(rct_window *w)
 }
 
 #pragma region Main
+
+/**
+ * 
+ * rct2: 0x006AF994
+ */
+static void window_ride_init_viewport(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
+}
 
 /**
  * 
@@ -554,6 +564,21 @@ static void window_ride_main_mouseup()
 
 /**
  * 
+ * rct2: 0x006AF4A2
+ */
+static void window_ride_main_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->flags |= WF_RESIZABLE;
+	window_set_resize(w, 316, 180, 500, 450);
+	window_ride_init_viewport(w);
+}
+
+/**
+ * 
  * rct2: 0x006AF825
  */
 static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
@@ -567,8 +592,8 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 
 	numItems = 1;
 	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x2000)) {
-		numItems += ride->var_0C7;
-		numItems += ride->var_0C8;
+		numItems += ride->num_stations;
+		numItems += ride->num_vehicles;
 	}
 
 	window_dropdown_show_text_custom_width(
@@ -588,7 +613,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 
 	// Vehicles
 	name = RideNameConvention[ride->type].vehicle_name + 6;
-	for (i = 1; i <= ride->var_0C8; i++) {
+	for (i = 1; i <= ride->num_vehicles; i++) {
 		gDropdownItemsFormat[currentItem] = 1142;
 		gDropdownItemsArgs[currentItem] = name | (currentItem << 16);
 		currentItem++;
@@ -596,7 +621,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 
 	// Stations
 	name = RideNameConvention[ride->type].station_name + 6;
-	for (i = 1; i <= ride->var_0C7; i++) {
+	for (i = 1; i <= ride->num_stations; i++) {
 		gDropdownItemsFormat[currentItem] = 1142;
 		gDropdownItemsArgs[currentItem] = name | (i << 16);
 		currentItem++;
@@ -605,14 +630,14 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 	// Set highlighted item
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 		j = 2;
-		for (i = 0; i < ride->var_0C8; i++) {
+		for (i = 0; i < ride->num_vehicles; i++) {
 			RCT2_GLOBAL(0x009DED34, uint32) |= j;
 			j <<= 1;
 		}
 	}
 
 	// Set checked item
-	gDropdownItemsChecked |= (1 << w->ride.var_480);
+	gDropdownItemsChecked |= (1 << w->ride.view);
 }
 
 /**
@@ -723,17 +748,17 @@ static void window_ride_main_dropdown()
 	switch (widgetIndex) {
 	case WIDX_VIEW_DROPDOWN:
 		if (dropdownIndex == -1) {
-			dropdownIndex = w->ride.var_480;
+			dropdownIndex = w->ride.view;
 			ride = GET_RIDE(w->number);
 			dropdownIndex++;
-			if (dropdownIndex != 0 && dropdownIndex <= ride->var_0C8 && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-				dropdownIndex = ride->var_0C8 + 1;
+			if (dropdownIndex != 0 && dropdownIndex <= ride->num_vehicles && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+				dropdownIndex = ride->num_vehicles + 1;
 
 			if (dropdownIndex >= gDropdownNumItems)
 				dropdownIndex = 0;
 		}
 
-		w->ride.var_480 = dropdownIndex;
+		w->ride.view = dropdownIndex;
 		RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
 		window_invalidate(w);
 		break;
@@ -773,7 +798,42 @@ static void window_ride_main_dropdown()
  */
 static void window_ride_main_update(rct_window *w)
 {
+	rct_ride *ride;
+	int vehicleIndex;
+	uint16 vehicleSpriteIndex;
+	rct_vehicle *vehicle;
 
+	// Update tab animation
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_1);
+
+	// Update status
+	ride = GET_RIDE(w->number);
+	if (!(ride->var_14D & 4)) {
+		if (w->ride.view == 0)
+			return;
+
+		if (w->ride.view <= ride->num_vehicles) {
+			vehicleIndex = w->ride.view - 1;
+			vehicleSpriteIndex = ride->vehicles[vehicleIndex];
+			if (vehicleSpriteIndex == 0xFFFF)
+				return;
+
+			vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
+			if (
+				vehicle->status != 4 &&
+				vehicle->status != 22 &&
+				vehicle->status != 10 &&
+				vehicle->status != 7
+			) {
+				return;
+			}
+		}
+	}
+
+	ride->var_14D &= ~4;
+	widget_invalidate(WC_RIDE, w->number, WIDX_STATUS);
 }
 
 /**
@@ -851,16 +911,197 @@ static void window_ride_main_invalidate()
 
 /**
  * 
+ * rct2: 0x006AF10A
+ */
+static rct_string_id window_ride_get_status_overall_view(rct_window *w, void *arguments)
+{
+	int formatSecondary, argument;
+	rct_string_id stringId;
+
+	ride_get_status(w->number, &formatSecondary, &argument);
+	RCT2_GLOBAL((int)arguments + 0, uint16) = formatSecondary;
+	RCT2_GLOBAL((int)arguments + 2, uint32) = argument;
+	stringId = STR_LOSS;
+	if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
+		stringId = STR_COST;
+
+	return stringId;
+}
+
+/**
+ * 
+ * rct2: 0x006AEFEF
+ */
+static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *arguments)
+{
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+	int vehicleIndex;
+	uint16 vehicleSpriteIndex;
+	rct_string_id stringId;
+
+	ride = GET_RIDE(w->number);
+
+	vehicleIndex = w->ride.view - 1;
+	vehicleSpriteIndex = ride->vehicles[vehicleIndex];
+	if (vehicleSpriteIndex == 0xFFFF)
+		return 0;
+
+	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
+	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
+		int ax = vehicle->var_36 / 4;
+		if (ax == 216 || ax == 123 || ax == 9 || ax == 63 || ax == 147 || ax == 155) {
+			if (!(RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
+				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
+				return 1191;
+			}
+		}
+	}
+
+	stringId = STR_MOVING_TO_END_OF + vehicle->status;
+
+	// Get speed in mph
+	RCT2_GLOBAL((int)arguments + 2, uint16) = (abs(vehicle->velocity) * 9) >> 18;
+
+	if (ride->type == RIDE_TYPE_MINI_GOLF)
+		return 0;
+
+	if ((RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x100) && stringId > 1104)
+		stringId += 23;
+
+	RCT2_GLOBAL((int)arguments + 4, uint16) = RideNameConvention[ride->type].station_name;
+	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->var_4B + 1;
+	if (ride->num_stations > 1)
+		RCT2_GLOBAL((int)arguments + 4, uint16) += 6;
+
+	RCT2_GLOBAL((int)arguments + 0, uint16) = stringId;
+	return stringId != 1106 && stringId != 1107 ? 1191 : 1192;
+}
+
+/**
+ * 
+ * rct2: 0x006AEF65
+ */
+static rct_string_id window_ride_get_status_station(rct_window *w, void *arguments)
+{
+	rct_ride *ride;
+	int stationIndex, count, queueLength;
+	rct_string_id stringId;
+
+	ride = GET_RIDE(w->number);
+
+	count = w->ride.view - ride->num_vehicles - 1;
+	stationIndex = -1;
+	do {
+		stationIndex++;
+		if (ride->station_starts[stationIndex] != 0xFFFF)
+			count--;
+	} while (count >= 0);
+
+	stringId = 0;
+
+	// Entrance / exit
+	if (ride->status == RIDE_STATUS_CLOSED) {
+		if (ride->entrances[stationIndex] == 0xFFFF)
+			stringId = STR_NO_ENTRANCE;
+		else if (ride->exits[stationIndex] == 0xFFFF)
+			stringId = STR_NO_EXIT;
+	} else {
+		if (ride->entrances[stationIndex] == 0xFFFF)
+			stringId = STR_EXIT_ONLY;
+	}
+
+	// Queue length
+	if (stringId == 0) {
+		queueLength = ride->queue_length[stationIndex];
+		RCT2_GLOBAL((int)arguments + 2, uint16) = queueLength;
+		stringId = STR_QUEUE_EMPTY;
+		if (queueLength == 1)
+			stringId++;
+		else if (queueLength > 1)
+			stringId += 2;
+	}
+
+	RCT2_GLOBAL((int)arguments + 0, uint16) = stringId;
+	return 1191;
+}
+
+/**
+ * 
+ * rct2: 0x006AEE73
+ */
+static rct_string_id window_ride_get_status(rct_window *w, void *arguments)
+{
+	rct_ride *ride = GET_RIDE(w->number);
+
+	if (w->ride.view == 0)
+		return window_ride_get_status_overall_view(w, arguments);
+	if (w->ride.view <= ride->num_vehicles)
+		return window_ride_get_status_vehicle(w, arguments);
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+		return window_ride_get_status_overall_view(w, arguments);
+	return window_ride_get_status_station(w, arguments);
+}
+
+/**
+ * 
  * rct2: 0x006AEE73
  */
 static void window_ride_main_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
+	rct_ride *ride;
+	rct_widget *widget;
+	rct_string_id stringId;
 
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+	// window_ride_draw_tabs(w);
+
+	// Viewport and ear icon
+	if (w->viewport != NULL) {
+		window_draw_viewport(dpi, w);
+		if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+	}
+
+	// View dropdown
+	ride = GET_RIDE(w->number);
+	stringId = STR_OVERALL_VIEW;
+	if (w->ride.view != 0) {
+		stringId = RideNameConvention[ride->type].vehicle_name + 6;
+		if (w->ride.view > ride->num_vehicles) {
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = w->ride.view - ride->num_vehicles;
+			stringId = RideNameConvention[ride->type].station_name + 6;
+		} else {
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = w->ride.view;
+		}
+	}
+	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
+
+	widget = &window_ride_main_widgets[WIDX_VIEW];
+	gfx_draw_string_centred(
+		dpi,
+		1193,
+		w->x + (widget->left + widget->right - 11) / 2,
+		w->y + widget->top,
+		0,
+		(void*)0x013CE952
+	);
+
+	// Status
+	widget = &window_ride_main_widgets[WIDX_STATUS];
+	gfx_draw_string_centred_clipped(
+		dpi,
+		window_ride_get_status(w, (void*)0x013CE952),
+		(void*)0x013CE952,
+		0,
+		w->x + (widget->left + widget->right) / 2,
+		w->y + widget->top - 1,
+		widget->right - widget->left
+	);
 }
 
 #pragma endregion

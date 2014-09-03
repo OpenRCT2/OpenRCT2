@@ -70,7 +70,7 @@ typedef struct {
 	uint16 pad_002;
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
-	uint16 car_colours[32];			// 0x006
+	uint16 vehicle_colours[32];		// 0x006
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
@@ -83,12 +83,12 @@ typedef struct {
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
-	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
-	uint8 pad_088[0x3F];
+	uint16 vehicles[32];			// 0x086 Points to the first car in the train
+	uint8 pad_C6;
 
 	// Not sure if these should be uint or sint.
-	uint8 var_0C7;
-	uint8 var_0C8;
+	uint8 num_stations;				// 0x0C7
+	uint8 num_vehicles;				// 0x0C8
 	uint8 var_0C9;
 
 	uint8 pad_0CA[0x1A];
@@ -387,5 +387,6 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
+void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 
 #endif
