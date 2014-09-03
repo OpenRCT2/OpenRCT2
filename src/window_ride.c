@@ -28,6 +28,7 @@
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
+#include "window_ride.h"
 
 #pragma region Widgets
 
