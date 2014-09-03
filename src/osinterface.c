@@ -21,9 +21,9 @@
 #include <stdio.h>
 #include <shlobj.h>
 #include <tchar.h>
-#include <windows.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
+#include <windows.h>
 
 #include "addresses.h"
 #include "config.h"
@@ -440,6 +440,250 @@ void osinterface_set_fullscreen_mode(int mode){
 	gGeneral_config.fullscreen_mode = mode;
 
 	config_save();
+}
+
+/**
+ * 
+ *  rct2: 0x00407978
+ */
+int osinterface_407978(rct2_install_info* install_info, char* source, char* font, uint8 charset)
+{
+	char subkey[MAX_PATH];
+	char subkey2[MAX_PATH];
+	strcpy(subkey, "Software\\Infogrames\\");
+	strcat(subkey, source);
+	strcpy(subkey2, "Software\\Fish Technology Group\\");
+	strcat(subkey2, source);
+	LOGFONTA lf;
+	memset(&lf, 0, sizeof(lf));
+	lf.lfCharSet = charset;
+	lf.lfHeight = 12;
+	lf.lfWeight = 400;
+	strcpy(lf.lfFaceName, font);
+	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
+	HKEY hkey;
+	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey, &hkey) != ERROR_SUCCESS && RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey2, &hkey) != ERROR_SUCCESS) {
+		return 0;
+	} else {
+		DWORD type;
+		DWORD size = 260;
+		RegQueryValueExA(hkey, "Title", 0, &type, install_info->title, &size);
+		size = 260;
+		RegQueryValueExA(hkey, "Path", 0, &type, install_info->path, &size);
+		install_info->var_20C = 235960;
+		size = 4;
+		RegQueryValueExA(hkey, "InstallLevel", 0, &type, (LPBYTE)&install_info->installlevel, &size);
+		for (int i = 0; i <= 15; i++) {
+			char name[100];
+			sprintf(name, "AddonPack%d", i);
+			size = sizeof(install_info->addon[i]);
+			if (RegQueryValueExA(hkey, name, 0, &type, install_info->addon[i], &size) == ERROR_SUCCESS) {
+				install_info->addons |= (1 << i);
+			}
+		}
+		RegCloseKey(hkey);
+		return 1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407D80
+ */
+int osinterface_get_cursor_pos(int* x, int* y)
+{
+	POINT point;
+	GetCursorPos(&point);
+	*x = point.x;
+	*y = point.y;
+}
+
+/**
+ * 
+ *  rct2: 0x00407E15
+ */
+int osinterface_print_window_message(UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	const char* msgname = "NULL";
+	// get the string representation of the msg id, from 190 different values in 0x009A61D8 - 0x009A8873
+	// not going to bother reading those since this function is going to be unused and taken out anyways
+	char temp[1024];
+	sprintf(temp, "Message id = %s (%i), wParam = 0x%x, lParam = 0x%x\n", msgname, msg, wparam, lparam);
+	OutputDebugStringA(temp);
+	return 1;
+}
+
+/**
+ * 
+ *  rct2: 0x00407E6E
+ */
+int osinterface_progressbar_create(char* title, int a2)
+{
+	DWORD style = WS_VISIBLE | WS_BORDER | WS_DLGFRAME;
+	if (a2) {
+		style = WS_VISIBLE | WS_BORDER | WS_DLGFRAME | PBS_SMOOTH;
+	}
+	int width = 340;
+	int height = GetSystemMetrics(SM_CYCAPTION) + 24;
+	HWND hwnd = CreateWindowExA(WS_EX_TOPMOST | WS_EX_DLGMODALFRAME, "msctls_progress32", title, style, (RCT2_GLOBAL(0x01423C08, sint32) - width) / 2, (RCT2_GLOBAL(0x01423C0C, sint32) - height) / 2, width, height, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE), 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND) = hwnd;
+	if (hwnd) {
+		RCT2_GLOBAL(0x009E2DFC, uint32) = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT)) {
+			SendMessageA(hwnd, WM_SETFONT, (WPARAM)RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT), 1);
+		}
+		SetWindowTextA(hwnd, title);
+		osinterface_progressbar_setmax(0xFF);
+		osinterface_progressbar_setpos(0);
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407F16
+ */
+int osinterface_progressbar_destroy()
+{
+	if (DestroyWindow(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND))) {
+		RCT2_GLOBAL(0x009E2DFC, uint32) = 0;
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00407F2E
+ */
+void osinterface_progressbar_setmax(int max)
+{
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETRANGE, MAKEWPARAM(0, max), 0);
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETSTEP, 1, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F60
+ */
+void osinterface_progressbar_setpos(int pos)
+{
+	SendMessageA(RCT2_GLOBAL(RCT2_ADDRESS_PROGRESSBAR_HWND, HWND), PBM_SETPOS, MAKEWPARAM(pos, 0), 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F78
+ */
+int osinterface_file_seek_from_begin(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_BEGIN);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F8B
+ */
+int osinterface_file_seek_from_current(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_CURRENT);
+}
+
+/**
+ * 
+ *  rct2: 0x00407F9E
+ */
+int osinterface_file_seek_from_end(HANDLE handle, int offset)
+{
+	return SetFilePointer(handle, offset, 0, FILE_END);
+}
+
+/**
+ * 
+ *  rct2: 0x00407FB1
+ */
+int osinterface_file_read(HANDLE handle, void* data, int size)
+{
+	DWORD read;
+	BOOL result;
+	if (size == -1) {
+		DWORD current = SetFilePointer(handle, 0, 0, FILE_CURRENT);
+		DWORD remaining = SetFilePointer(handle, 0, 0, FILE_END) - current;
+		result = ReadFile(handle, data, remaining, &read, 0);
+	} else {
+		result = ReadFile(handle, data, size, &read, 0);
+	}
+	if (result) {
+		return read;
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00408024
+ */
+int osinterface_file_write(HANDLE handle, const void* data, int size)
+{
+	DWORD written;
+	if (WriteFile(handle, data, size, &written, 0)) {
+		return written;
+	} else {
+		return -1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0040804A
+ */
+int osinterface_file_close(HANDLE handle)
+{
+	if (handle) {
+		return CloseHandle(handle);
+	} else {
+		return 1;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00408060
+ */
+HANDLE osinterface_file_open(char* filename)
+{
+	return CreateFileA(filename, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x0040807D
+ */
+HANDLE osinterface_file_create(char* filename)
+{
+	return CreateFileA(filename, GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00408099
+ */
+int osinterface_file_move(char* srcfilename, char* dstfilename)
+{
+	return (MoveFileA(srcfilename, dstfilename) != 0) - 1;
+}
+
+/**
+ * 
+ *  rct2: 0x004080AF
+ */
+int osinterface_file_delete(char* filename)
+{
+	return (DeleteFileA(filename) != 0) - 1;
 }
 
 /**

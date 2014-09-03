@@ -226,7 +226,7 @@ static void window_footpath_close()
 	window_get_register(w);
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
-	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
+	viewport_set_visibility(0);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 	window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
@@ -677,7 +677,7 @@ static int window_footpath_set_provisional_path(int type, int x, int y, int z, i
 		eax = 3;
 		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
 			eax = 1;
-		RCT2_CALLPROC_X(0x006CB70A, eax, 0, 0, 0, 0, 0, 0);
+		viewport_set_visibility((uint8)eax);
 	}
 
 	return cost;
