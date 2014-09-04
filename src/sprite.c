@@ -105,3 +105,47 @@ void reset_0x69EBE4(){
 		}
 	}
 }
+
+/*
+* rct2: 0x0069EC6B
+* bl: unclear what this does
+*/
+rct_sprite *create_sprite(uint8 bl)
+{
+	int ecx = 0xA;
+
+	if ((bl & 2 != 0))
+	{
+		// 69EC96;
+		uint16 cx = 0x12C - RCT2_GLOBAL(0x13573CE, uint16);
+		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
+		{
+			return NULL;
+		}
+
+		ecx = 6;
+	}
+	else if (RCT2_GLOBAL(0x13573C8, uint16) <= 0)
+	{
+		return NULL;
+	}
+
+	rct_unk_sprite *sprite = &g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)];
+
+	RCT2_CALLPROC_X(0x0069ED0B, 0, 0, ecx, 0, (int)sprite, 0, 0);
+
+	sprite->x = SPRITE_LOCATION_NULL;
+	sprite->y = SPRITE_LOCATION_NULL;
+	sprite->z = 0;
+	sprite->name_string_idx = 0;
+	sprite->var_14 = 0x10;
+	sprite->pad_09 = 0x14;
+	sprite->var_15 = 0x8;
+	sprite->pad_0C[0] = 0x0;
+	sprite->var_16 = SPRITE_LOCATION_NULL;
+
+	sprite->var_02 = RCT2_GLOBAL(0xF3EF60, uint16);
+	RCT2_GLOBAL(0xF3EF60, uint16) = sprite->sprite_index;
+
+	return sprite;
+}
