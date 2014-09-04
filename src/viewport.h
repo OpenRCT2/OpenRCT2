@@ -47,10 +47,13 @@ enum {
 extern rct_viewport* g_viewport_list;
 
 void viewport_init_all();
+void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
+
+void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation);
 
 void screen_pos_to_map_pos(short *x, short *y);
 

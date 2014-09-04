@@ -221,8 +221,8 @@ void viewport_update_pointers()
 	*vp = NULL;
 }
 
-void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
-	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
+void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
+	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, (int*)&z, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 
 	sint16 start_x = *x;
 	sint16 start_y = *y;
@@ -262,6 +262,7 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 		}
 		break;
 	}
+	*z = height;
 }
 
 /**
@@ -296,11 +297,12 @@ void viewport_update_position(rct_window *window)
 
 	sint16 x = viewport->view_width / 2 + window->saved_view_x;
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
+	sint16 z;
 
 	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	sub_689174(&x, &y, curr_rotation);
+	sub_689174(&x, &y, &z, curr_rotation);
 	
-	RCT2_CALLPROC_X(0x006E7A15, x, y, 0, 0, (int)window, (int)viewport, 0);
+	RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
 
 	//Clamp to the map minimum value
 	int at_map_edge = 0;
