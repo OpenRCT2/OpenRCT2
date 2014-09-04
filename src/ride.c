@@ -448,7 +448,6 @@ void ride_construct_new(int list_item)
 	//Looks like edi became the ride index after the command.
 	eax = edi;
 	rct_window *w;
-	short widgetIndex;
 
 	//TODO: replace with window_ride_main_open(eax)
 	// window_ride_main_open(eax);

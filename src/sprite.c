@@ -114,7 +114,7 @@ rct_sprite *create_sprite(uint8 bl)
 {
 	int ecx = 0xA;
 
-	if ((bl & 2 != 0))
+	if ((bl & 2) != 0)
 	{
 		// 69EC96;
 		uint16 cx = 0x12C - RCT2_GLOBAL(0x13573CE, uint16);
@@ -130,7 +130,7 @@ rct_sprite *create_sprite(uint8 bl)
 		return NULL;
 	}
 
-	rct_unk_sprite *sprite = &g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)];
+	rct_unk_sprite *sprite = &(g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)]).unknown;
 
 	RCT2_CALLPROC_X(0x0069ED0B, 0, 0, ecx, 0, (int)sprite, 0, 0);
 
@@ -147,5 +147,5 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->var_02 = RCT2_GLOBAL(0xF3EF60, uint16);
 	RCT2_GLOBAL(0xF3EF60, uint16) = sprite->sprite_index;
 
-	return sprite;
+	return (rct_sprite*)sprite;
 }

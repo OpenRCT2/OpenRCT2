@@ -111,10 +111,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx, _edx, _edi, _ebp;
+	int _eax, _ebx, _ecx = _cx, _edx;
 	_ebx = _bl;
 
-	rct_peep* newPeep = create_sprite(_bl);
+	rct_peep* newPeep = &(create_sprite(_bl)->peep);
 
 	if (newPeep == NULL)
 	{
