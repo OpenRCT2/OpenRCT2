@@ -173,6 +173,7 @@ static void window_ride_main_invalidate();
 static void window_ride_main_paint();
 
 static void window_ride_music_mouseup();
+static void window_ride_music_resize();
 static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
 static void window_ride_music_dropdown();
 static void window_ride_music_update(rct_window *w);
@@ -215,7 +216,7 @@ static void* window_ride_main_events[] = {
 static void* window_ride_music_events[] = {
 	window_ride_emptysub,
 	window_ride_music_mouseup,
-	window_ride_emptysub,
+	window_ride_music_resize,
 	window_ride_music_mousedown,
 	window_ride_music_dropdown,
 	window_ride_emptysub,
@@ -1293,13 +1294,99 @@ static void window_ride_main_paint()
 
 #pragma region Music
 
+const uint8 MusicStyleOrder[] = {
+	MUSIC_STYLE_GENTLE,
+	MUSIC_STYLE_SUMMER,
+	MUSIC_STYLE_WATER,
+	MUSIC_STYLE_RAGTIME,
+	MUSIC_STYLE_TECHNO,
+	MUSIC_STYLE_MECHANICAL,
+	MUSIC_STYLE_MODERN,
+	MUSIC_STYLE_WILD_WEST,
+	MUSIC_STYLE_PIRATES,
+	MUSIC_STYLE_ROCK,
+	MUSIC_STYLE_ROCK_STYLE_2,
+	MUSIC_STYLE_ROCK_STYLE_3,
+	MUSIC_STYLE_FANTASY,
+	MUSIC_STYLE_HORROR,
+	MUSIC_STYLE_TOYLAND,
+	MUSIC_STYLE_CANDY_STYLE,
+	MUSIC_STYLE_ROMAN_FANFARE,
+	MUSIC_STYLE_ORIENTAL,
+	MUSIC_STYLE_MARTIAN,
+	MUSIC_STYLE_SPACE,
+	MUSIC_STYLE_JUNGLE_DRUMS,
+	MUSIC_STYLE_JURASSIC,
+	MUSIC_STYLE_EGYPTIAN,
+	MUSIC_STYLE_DODGEMS_BEAT,
+	MUSIC_STYLE_SNOW,
+	MUSIC_STYLE_ICE,
+	MUSIC_STYLE_MEDIEVAL,
+	MUSIC_STYLE_URBAN,
+	MUSIC_STYLE_ORGAN
+};
+
+static uint8 window_ride_current_music_style_order[42];
+
+/**
+ * 
+ * rct2: 0x006B215D
+ */
+static void window_ride_toggle_music(rct_window *w)
+{
+	rct_ride *ride = GET_RIDE(w->number);
+
+	int activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+	game_do_command(0, (activateMusic << 8) | 1, 0, (6 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+}
+
 /**
  * 
  * rct2: 0x006B1ED7
  */
 static void window_ride_music_mouseup()
 {
+	short widgetIndex;
+	rct_window *w;
 
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_PLAY_MUSIC:
+		window_ride_toggle_music(w);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AF4A2
+ */
+static void window_ride_music_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->flags |= WF_RESIZABLE;
+	window_set_resize(w, 316, 81, 316, 81);
 }
 
 /**
@@ -1308,7 +1395,44 @@ static void window_ride_music_mouseup()
  */
 static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
+	rct_widget *dropdownWidget;
+	int i;
 
+	if (widgetIndex != WIDX_MUSIC_DROPDOWN)
+		return;
+
+	dropdownWidget = widget - 1;
+	rct_ride *ride = GET_RIDE(w->number);
+
+	int numItems = 0;
+	if (ride->type == RIDE_TYPE_MERRY_GO_ROUND) {
+		window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_FAIRGROUND_ORGAN;		 
+	} else {
+		for (i = 0; i < countof(MusicStyleOrder); i++)
+			window_ride_current_music_style_order[numItems++] = MusicStyleOrder[i];
+
+		if (RCT2_GLOBAL(0x009AF164, uint32) != 0)
+			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
+		if (RCT2_GLOBAL(0x009AF16E, uint32) != 0)
+			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
+	}
+
+	window_dropdown_show_text_custom_width(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		0,
+		numItems,
+		widget->right - dropdownWidget->left
+	);
+
+	for (i = 0; i < numItems; i++) {
+		gDropdownItemsFormat[i] = 1142;
+		if (window_ride_current_music_style_order[i] == ride->music)
+			gDropdownItemsChecked = (1 << i);
+		gDropdownItemsArgs[i] = STR_MUSIC_STYLE_START + window_ride_current_music_style_order[i];
+	}
 }
 
 /**
@@ -1317,7 +1441,19 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
  */
 static void window_ride_music_dropdown()
 {
+	rct_window *w;
+	rct_ride *ride;
+	uint8 musicStyle;
+	short widgetIndex, dropdownIndex;
 
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (widgetIndex != WIDX_MUSIC_DROPDOWN || dropdownIndex == -1)
+		return;
+
+	ride = GET_RIDE(w->number);
+	musicStyle = window_ride_current_music_style_order[dropdownIndex];
+	game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_11, 0, 0);
 }
 
 /**
@@ -1326,7 +1462,9 @@ static void window_ride_music_dropdown()
  */
 static void window_ride_music_update(rct_window *w)
 {
-
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_6);
 }
 
 /**
@@ -1335,7 +1473,41 @@ static void window_ride_music_update(rct_window *w)
  */
 static void window_ride_music_invalidate()
 {
+	rct_window *w;
+	rct_widget *widgets;
+	int isMusicActivated;
 
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	rct_ride *ride = GET_RIDE(w->number);
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	// Set selected music
+	window_ride_music_widgets[WIDX_MUSIC].image = STR_MUSIC_STYLE_START + ride->music;
+
+	// Set music activated
+	isMusicActivated = ride->lifecycle_flags & (RIDE_LIFECYCLE_MUSIC);
+	if (isMusicActivated) {
+		w->pressed_widgets |= (1 << WIDX_PLAY_MUSIC);
+		w->disabled_widgets &= ~(1 << WIDX_MUSIC);
+		w->disabled_widgets &= ~(1 << WIDX_MUSIC_DROPDOWN);
+	} else {
+		w->pressed_widgets &= ~(1 << WIDX_PLAY_MUSIC);
+		w->disabled_widgets |= (1 << WIDX_MUSIC);
+		w->disabled_widgets |= (1 << WIDX_MUSIC_DROPDOWN);
+	}
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 }
 
 /**
@@ -1350,6 +1522,7 @@ static void window_ride_music_paint()
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
 }
 
 #pragma endregion
