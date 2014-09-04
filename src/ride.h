@@ -58,6 +58,7 @@ typedef struct {
 	uint8 pad_1B5[0x09];
 	uint8 category[2];				// 0x1BE
 	uint8 shop_item;				// 0x1C0
+	uint8 shop_item_secondary;		// 0x1C1
 } rct_ride_type;
 
 /**
@@ -124,13 +125,14 @@ typedef struct {
 	uint16 var_14A;
 	uint8 pad_14C;
 	uint8 var_14D;
-	uint8 pad_14E[0x06];
+	uint8 pad_14E[0x02];
+	uint32 total_customers;			// 0x150
 	uint32 var_154;
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
 	uint8 pad_15C[0x24];
-	uint16 build_date;				
+	sint16 build_date;				// 0x180
 	sint16 upkeep_cost;				// 0x182
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x06];
@@ -140,7 +142,9 @@ typedef struct {
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
 	uint8 var_199;
-	uint8 pad_19A[0x14];
+	uint8 pad_19A[0xA];
+	uint32 var_1A4;
+	uint8 pad_1A8[6];
 	uint8 var_1AE;
 	uint8 connected_message_throttle;
 	uint32 pad_1B0;

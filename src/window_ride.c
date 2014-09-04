@@ -42,7 +42,8 @@ enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_MEASUREMENTS,
 	WINDOW_PARK_PAGE_GRAPHS,
 	WINDOW_PARK_PAGE_INCOME,
-	WINDOW_PARK_PAGE_CUSTOMER
+	WINDOW_PARK_PAGE_CUSTOMER,
+	WINDOW_PARK_PAGE_COUNT
 };
 
 #pragma region Widgets
@@ -75,7 +76,11 @@ enum {
 
 	WIDX_PLAY_MUSIC = 14,
 	WIDX_MUSIC,
-	WIDX_MUSIC_DROPDOWN
+	WIDX_MUSIC_DROPDOWN,
+
+	WIDX_SHOW_GUESTS_THOUGHTS = 14,
+	WIDX_SHOW_GUESTS_ON_RIDE,
+	WIDX_SHOW_GUESTS_QUEUING
 };
 
 // 0x009ADC34
@@ -130,6 +135,29 @@ static rct_widget window_ride_music_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// 0x009AE9C8
+static rct_widget window_ride_customer_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,							STR_WINDOW_TITLE_TIP										},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP										},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_VIEW_OF_RIDE_ATTRACTION_TIP								},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP							},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_OPERATING_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_MAINTENANCE_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_COLOUR_SCHEME_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_SOUND_AND_MUSIC_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_MEASUREMENTS_AND_TEST_DATA_TIP							},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,						STR_GRAPHS_TIP												},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,						STR_INCOME_AND_COSTS_TIP									},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,						STR_CUSTOMER_INFORMATION_TIP								},
+
+	{ WWT_FLATBTN,			1,	289,	312,	54,		77,		5184,							STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP		},
+	{ WWT_FLATBTN,			1,	289,	312,	78,		101,	5186,							STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP					},
+	{ WWT_FLATBTN,			1,	289,	312,	102,	125,	5185,							STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP		},
+	{ WIDGETS_END },
+};
+
 static rct_widget *window_ride_page_widgets[] = {
 	window_ride_main_widgets,
 	(rct_widget*)0x009ADDA8,
@@ -140,7 +168,7 @@ static rct_widget *window_ride_page_widgets[] = {
 	(rct_widget*)0x009AE5DC,
 	(rct_widget*)0x009AE710,
 	(rct_widget*)0x009AE844,
-	(rct_widget*)0x009AE9C8
+	window_ride_customer_widgets
 };
 
 const uint64 window_ride_page_enabled_widgets[] = {
@@ -179,6 +207,12 @@ static void window_ride_music_dropdown();
 static void window_ride_music_update(rct_window *w);
 static void window_ride_music_invalidate();
 static void window_ride_music_paint();
+
+static void window_ride_customer_mouseup();
+static void window_ride_customer_resize();
+static void window_ride_customer_update(rct_window *w);
+static void window_ride_customer_invalidate();
+static void window_ride_customer_paint();
 
 // 0x0098DFD4
 static void* window_ride_main_events[] = {
@@ -244,6 +278,38 @@ static void* window_ride_music_events[] = {
 	window_ride_emptysub
 };
 
+// 0x0098DE84
+static void* window_ride_customer_events[] = {
+	window_ride_emptysub,
+	window_ride_customer_mouseup,
+	window_ride_customer_resize,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_customer_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_customer_invalidate,
+	window_ride_customer_paint,
+	window_ride_emptysub
+};
+
 static uint32* window_ride_page_events[] = {
 	(uint32*)window_ride_main_events,
 	(uint32*)0x0098E204,
@@ -254,7 +320,7 @@ static uint32* window_ride_page_events[] = {
 	(uint32*)0x0098DE14,
 	(uint32*)0x0098DF64,
 	(uint32*)0x0098DEF4,
-	(uint32*)0x0098DE84
+	(uint32*)window_ride_customer_events
 };
 
 #pragma endregion
@@ -565,7 +631,7 @@ static void window_ride_set_page(rct_window *w, int page)
 static void window_ride_set_pressed_tab(rct_window *w)
 {
 	int i;
-	for (i = 0; i < 7; i++)
+	for (i = 0; i < WINDOW_PARK_PAGE_COUNT; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
@@ -1523,6 +1589,233 @@ static void window_ride_music_paint()
 
 	window_draw_widgets(w, dpi);
 	window_ride_draw_tab_images(dpi, w);
+}
+
+#pragma endregion
+
+#pragma region Customer
+
+/**
+ * 
+ * rct2: 0x006AD986
+ */
+static void window_ride_customer_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_SHOW_GUESTS_THOUGHTS:
+		RCT2_CALLPROC_X(0x006993BA, 2, w->number, 0, 0, 0, 0, 0);
+		break;
+	case WIDX_SHOW_GUESTS_ON_RIDE:
+		RCT2_CALLPROC_X(0x006993BA, 0, w->number, 0, 0, 0, 0, 0);
+		break;
+	case WIDX_SHOW_GUESTS_QUEUING:
+		RCT2_CALLPROC_X(0x006993BA, 1, w->number, 0, 0, 0, 0, 0);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006ADA29
+ */
+static void window_ride_customer_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->flags |= WF_RESIZABLE;
+	window_set_resize(w, 316, 139, 316, 139);
+}
+
+/**
+ * 
+ * rct2: 0x006AD9DD
+ */
+static void window_ride_customer_update(rct_window *w)
+{
+	rct_ride *ride;
+
+	w->var_492++;
+	if (w->var_492 >= 24)
+		w->var_492 = 0;
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_10);
+
+	ride = GET_RIDE(w->number);
+	if (ride->var_14D & 1) {
+		ride->var_14D &= ~1;
+		window_invalidate(w);
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AD5F8
+ */
+static void window_ride_customer_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	rct_ride *ride = GET_RIDE(w->number);
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) * 0x20000) {
+		window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WWT_FLATBTN;
+		window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WWT_FLATBTN;
+		window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WWT_FLATBTN;
+	} else {
+		window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WWT_EMPTY;
+		window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WWT_EMPTY;
+	}
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006AD6CD
+ */
+static void window_ride_customer_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_ride *ride;
+	int x, y;
+	uint8 shopItem;
+	sint16 popularity, satisfaction, queueTime, age;
+	sint32 customersPerHour;
+	rct_string_id stringId;
+	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
+
+	ride = GET_RIDE(w->number);
+	x = w->x + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+	// Customers per hour
+	customersPerHour = ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A + ride->var_12C +
+					   ride->var_12E + ride->age + ride->running_cost + ride->var_134 + ride->var_136;
+	customersPerHour *= 12;
+	gfx_draw_string_left(dpi, STR_CUSTOMERS_PER_HOUR, &customersPerHour, 0, x, y);
+	y += 10;
+
+	// Popularity
+	popularity = ride->var_158 & 0xFF;
+	if (popularity == 255) {
+		stringId = STR_POPULARITY_UNKNOWN;
+	} else {
+		stringId = STR_POPULARITY_PERCENT;
+		popularity *= 4;
+	}
+	gfx_draw_string_left(dpi, stringId, &popularity, 0, x, y);
+	y += 10;
+
+	// Satisfaction
+	satisfaction = ride->var_14A & 0xFF;
+	if (satisfaction == 255) {
+		stringId = STR_SATISFACTION_UNKNOWN;
+	} else {
+		stringId = STR_SATISFACTION_PERCENT;
+		satisfaction *= 5;
+	}
+	gfx_draw_string_left(dpi, stringId, &satisfaction, 0, x, y);
+	y += 10;
+
+	// Queue time
+	queueTime = ride_get_max_queue_time(ride);
+	stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
+	y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, 0);
+	y += 5;
+
+	// Primary shop items sold
+	shopItem = rideEntries[ride->subtype]->shop_item;
+	if (shopItem != 0xFF) {
+		stringId = 2016 + shopItem;
+		if (stringId >= 2048)
+			stringId += 96;
+
+		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_1A4;
+		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
+		y += 10;
+	}
+	
+	// Secondary shop items sold / on-ride photos sold
+	shopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
+		RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
+		rideEntries[ride->subtype]->shop_item_secondary;
+	if (shopItem != 0xFF) {
+		stringId = 2016 + shopItem;
+		if (stringId >= 2048)
+			stringId += 96;
+
+		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_1A4;
+		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
+		y += 10;
+	}
+
+	// Total customers
+	gfx_draw_string_left(dpi, STR_TOTAL_CUSTOMERS, &ride->total_customers, 0, x, y);
+	y += 10;
+
+	// Guests favourite
+	if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
+		stringId = ride->guests_favourite == 1 ?
+			STR_FAVOURITE_RIDE_OF_GUEST :
+			STR_FAVOURITE_RIDE_OF_GUESTS;
+		gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, 0, x, y);
+		y += 10;
+	}
+	y += 2;
+
+	// Age
+	age = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date) / 8;
+	stringId = age == 0 ?
+		STR_BUILT_THIS_YEAR :
+		age == 1 ?
+			STR_BUILT_LAST_YEAR :
+			STR_BUILT_YEARS_AGO;
+	gfx_draw_string_left(dpi, stringId, &age, 0, x, y);
 }
 
 #pragma endregion
