@@ -36,7 +36,7 @@ typedef struct {
 typedef enum {
 	SMALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
 	SMALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
-	SMALL_SCENERY_FLAG3 = (1 << 2),	// 0x4
+	SMALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
 	SMALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
 	SMALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
 	SMALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
