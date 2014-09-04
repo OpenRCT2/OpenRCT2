@@ -113,19 +113,19 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
 		x = y - x;
-		y = y / 2 + start_x / 2 - z;
+		y = (y + start_x) / 2 - z;
 		break;
 	case 1:
 		x = -y - x;
-		y = y / 2 - start_x / 2 - z;
+		y = (y - start_x) / 2 - z;
 		break;
 	case 2:
 		x = -y + x;
-		y = -y / 2 - start_x / 2 - z;
+		y = (-y - start_x) / 2 - z;
 		break;
 	case 3:
 		x = y + x;
-		y = -y / 2 + start_x / 2 - z;
+		y = (-y + start_x) / 2 - z;
 		break;
 	}
 
