@@ -410,6 +410,53 @@ rct_peep *peep_generate(int x, int y, int z)
 	return (rct_peep*)esi;
 }
 
+/*
+* rct2: 69EC6B
+* bl: unclear what this does
+*/
+rct_peep *peep_create(uint8 bl)
+{
+	rct_peep *peep = NULL;
+
+	int ecx = 0xA;
+
+	if ((bl & 2 != 0))
+	{
+		// 69EC96;
+		uint16 cx = 0x12C - RCT2_GLOBAL(0x13573CE, uint16);
+		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
+		{
+			return NULL;
+		}
+
+		ecx = 6;
+	}
+	else if (RCT2_GLOBAL(0x13573C8, uint16) <= 0)
+	{
+		return NULL;
+	}
+
+	peep = &g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)];
+
+	RCT2_CALLPROC_X(0x0069ED0B, 0, 0, ecx, 0, (int)peep, 0, 0);
+
+	peep->x = SPRITE_LOCATION_NULL;
+	peep->y = SPRITE_LOCATION_NULL;
+	peep->z = 0;
+	peep->name_string_idx = 0; 
+	peep->var_14 = 0x10;  
+	peep->var_09 = 0x14; 
+	peep->var_15 = 0x8;  
+	peep->var_0C = 0x0;
+	peep->var_16 = SPRITE_LOCATION_NULL;
+
+	uint16 oldGlobal = RCT2_GLOBAL(0xF3EF60, uint16);
+	RCT2_GLOBAL(0xF3EF60, uint16) = peep->sprite_index;
+	peep->var_02 = oldGlobal;
+
+	return peep;
+}
+
 /**
 * rct2: 0x00698B0D
 * peep.sprite_index (eax)
