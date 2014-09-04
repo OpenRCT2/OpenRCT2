@@ -692,8 +692,6 @@ static void window_scenery_update(rct_window *w)
 							windowHeight = 0x176;
 					}
 
-					printf("update: %d\n", w->scrolls[0].v_bottom);
-
 					w->min_width = WINDOW_SCENERY_WIDTH;
 					w->max_width = WINDOW_SCENERY_WIDTH;
 					w->min_height = windowHeight;
@@ -748,8 +746,6 @@ static void window_scenery_update(rct_window *w)
 */
 void window_scenery_scrollgetsize() {
 	int scrollHeight = window_scenery_scrollgetsize_num();
-
-	printf("scrollgetsize: %d\n", scrollHeight);
 
 #ifdef _MSC_VER
 	__asm mov edx, scrollHeight
