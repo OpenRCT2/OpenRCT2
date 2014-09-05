@@ -36,13 +36,21 @@ enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_LITTER = 3,
 };
 
+enum {
+	SPRITE_LINKEDLIST_OFFSET_VEHICLE = 2,
+	SPRITE_LINKEDLIST_OFFSET_PEEP = 4,
+	SPRITE_LINKEDLIST_OFFSET_FLOATING_TEXT = 6,
+	SPRITE_LINKEDLIST_OFFSET_FLOATING_LITTER = 8,
+	SPRITE_LINKEDLIST_OFFSET_FLOATING_UNKNOWN = 10
+};
+
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01;
 	uint16 var_02;
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
-	uint8 var_08;
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 pad_09;
 	uint16 sprite_index;			// 0x0A
 	uint8 pad_0C[2];
@@ -66,7 +74,7 @@ typedef struct {
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
-	uint8 var_08;
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 pad_09;
 	uint16 sprite_index;			// 0x0A
 	uint8 pad_0B[0x19];
@@ -92,5 +100,6 @@ void create_balloon(int x, int y, int z, int colour);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
+void move_sprite_to_list(rct_sprite *sprite, int ecx);
 
 #endif
