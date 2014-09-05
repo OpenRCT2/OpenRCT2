@@ -540,3 +540,11 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 
 	return NULL;
 }
+
+int ride_get_total_length(rct_ride *ride)
+{
+	int i, totalLength = 0;
+	for (i = 0; i < ride->num_stations; i++)
+		totalLength += ride->length[i];
+	return totalLength;
+}

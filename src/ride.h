@@ -95,17 +95,21 @@ typedef struct {
 	uint8 num_vehicles;				// 0x0C8
 	uint8 var_0C9;
 
-	uint8 pad_0CA[0x1A];
-
-	sint32 var_0E4;
-	sint32 var_0E8;
-	sint32 var_0EC;
-	sint32 var_0F0;
-	uint8 pad_0F4[0x20];
-	uint8 var_114;
-	// Track length? Number of track segments?
-	uint8 var_115;
-	uint8 pad_116[0x0E];
+	uint8 pad_0CA[0xE];
+	sint32 max_speed;				// 0x0D8
+	sint32 average_speed;			// 0x0DC
+	uint8 pad_0E0[0x4];
+	sint32 length[4];				// 0x0E4
+	uint16 time[4];					// 0x0F4
+	fixed16_2dp maxPositiveVerticalGs;	// 0x0FC
+	fixed16_2dp maxNegativeVerticalGs;	// 0x0FE
+	fixed16_2dp maxLateralGs;			// 0x100
+	uint8 pad_102[0x12];
+	uint8 inversions;				// 0x114 (???X XXXX) holes for mini golf
+	uint8 drops;					// 0x115 (??XX XXXX)
+	uint8 pad_116;
+	uint8 highest_drop_height;		// 0x117
+	uint8 pad_118[0x0C];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -118,9 +122,9 @@ typedef struct {
 	sint16 var_136;
 	money16 price;					// 0x138
 	uint8 pad_13A[0x06];
-	sint16 excitement;				// 0x140
-	sint16 intensity;				// 0x142
-	uint16 nausea;					// 0x144
+	ride_rating excitement;			// 0x140
+	ride_rating intensity;			// 0x142
+	ride_rating nausea;				// 0x144
 	uint16 reliability;				// 0x146
 	uint16 pad_148;
 	uint16 var_14A;
@@ -169,7 +173,7 @@ typedef struct {
 	// Example value for wild mouse ride is d5 (before it's been constructed)
 	// I tried searching the IDA file for "1F4" but couldn't find places where
 	// this is written to.
-	uint16 var_1F4;
+	uint16 totalAirTime;			// 0x1F4
 	uint8 pad_1F6[0x0a];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
@@ -459,5 +463,6 @@ void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
+int ride_get_total_length(rct_ride *ride);
 
 #endif

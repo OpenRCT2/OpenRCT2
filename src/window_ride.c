@@ -83,6 +83,12 @@ enum {
 	WIDX_MUSIC,
 	WIDX_MUSIC_DROPDOWN,
 
+	WIDX_SAVE_TRACK_DESIGN = 14,
+	WIDX_SELECT_NEARBY_SCENERY,
+	WIDX_RESET_SELECTION,
+	WIDX_SAVE_DESIGN,
+	WIDX_CANCEL_DESIGN,
+
 	WIDX_SHOW_GUESTS_THOUGHTS = 14,
 	WIDX_SHOW_GUESTS_ON_RIDE,
 	WIDX_SHOW_GUESTS_QUEUING
@@ -163,6 +169,31 @@ static rct_widget window_ride_music_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// 0x009AE5DC
+static rct_widget window_ride_measurements_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE									},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,							STR_WINDOW_TITLE_TIP						},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP						},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,					STR_NONE									},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_VIEW_OF_RIDE_ATTRACTION_TIP				},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP			},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_OPERATING_OPTIONS_TIP					},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_MAINTENANCE_OPTIONS_TIP					},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_COLOUR_SCHEME_OPTIONS_TIP				},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_SOUND_AND_MUSIC_OPTIONS_TIP				},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_MEASUREMENTS_AND_TEST_DATA_TIP			},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,						STR_GRAPHS_TIP								},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,						STR_INCOME_AND_COSTS_TIP					},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,						STR_CUSTOMER_INFORMATION_TIP				},
+
+	{ WWT_FLATBTN,			1,	288,	311,	164,	187,	5183,							STR_SAVE_TRACK_DESIGN						},
+	{ WWT_DROPDOWN_BUTTON,	1,	4,		157,	128,	139,	STR_SELECT_NEARBY_SCENERY,		STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	158,	311,	128,	139,	STR_RESET_SELECTION,			STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	4,		157,	178,	189,	STR_DESIGN_SAVE,				STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	158,	311,	178,	189,	STR_DESIGN_CANCEL,				STR_NONE									},
+	{ WIDGETS_END },
+};
+
 // 0x009AE9C8
 static rct_widget window_ride_customer_widgets[] = {
 	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
@@ -193,7 +224,7 @@ static rct_widget *window_ride_page_widgets[] = {
 	window_ride_maintenance_widgets,
 	(rct_widget*)0x009AE2A4,
 	window_ride_music_widgets,
-	(rct_widget*)0x009AE5DC,
+	window_ride_measurements_widgets,
 	(rct_widget*)0x009AE710,
 	(rct_widget*)0x009AE844,
 	window_ride_customer_widgets
@@ -243,6 +274,17 @@ static void window_ride_music_dropdown();
 static void window_ride_music_update(rct_window *w);
 static void window_ride_music_invalidate();
 static void window_ride_music_paint();
+
+static void window_ride_measurements_close();
+static void window_ride_measurements_mouseup();
+static void window_ride_measurements_resize();
+static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_measurements_dropdown();
+static void window_ride_measurements_update(rct_window *w);
+static void window_ride_measurements_tooldown();
+static void window_ride_measurements_toolabort();
+static void window_ride_measurements_invalidate();
+static void window_ride_measurements_paint();
 
 static void window_ride_customer_mouseup();
 static void window_ride_customer_resize();
@@ -346,6 +388,38 @@ static void* window_ride_music_events[] = {
 	window_ride_emptysub
 };
 
+// 0x0098DE14
+static void* window_ride_measurements_events[] = {
+	window_ride_emptysub,
+	window_ride_measurements_mouseup,
+	window_ride_measurements_resize,
+	window_ride_measurements_mousedown,
+	window_ride_measurements_dropdown,
+	window_ride_emptysub,
+	window_ride_measurements_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_measurements_tooldown,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_measurements_toolabort,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_measurements_invalidate,
+	window_ride_measurements_paint,
+	window_ride_emptysub
+};
+
 // 0x0098DE84
 static void* window_ride_customer_events[] = {
 	window_ride_emptysub,
@@ -385,7 +459,7 @@ static uint32* window_ride_page_events[] = {
 	(uint32*)window_ride_maintenance_events,
 	(uint32*)0x0098E044,
 	(uint32*)window_ride_music_events,
-	(uint32*)0x0098DE14,
+	(uint32*)window_ride_measurements_events,
 	(uint32*)0x0098DF64,
 	(uint32*)0x0098DEF4,
 	(uint32*)window_ride_customer_events
@@ -1948,6 +2022,437 @@ static void window_ride_music_paint()
 
 	window_draw_widgets(w, dpi);
 	window_ride_draw_tab_images(dpi, w);
+}
+
+#pragma endregion
+
+#pragma region Measurements
+
+/**
+ * 
+ * rct2: 0x006D3026
+ */
+static void window_ride_measurements_design_reset()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006D3026);
+}
+
+/**
+ * 
+ * rct2: 0x006D303D
+ */
+static void window_ride_measurements_design_select_nearby_scenery()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006D303D);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4CD
+ */
+static void window_ride_measurements_design_save(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006D2804, 1, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4DA
+ */
+static void window_ride_measurements_design_cancel()
+{
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
+		RCT2_CALLPROC_X(0x006D2804, 0, 0, 0, 0, 0, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4DA
+ */
+static void window_ride_measurements_close()
+{
+	window_ride_measurements_design_cancel();
+}
+
+/**
+ * 
+ * rct2: 0x006AD478
+ */
+static void window_ride_measurements_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_SELECT_NEARBY_SCENERY:
+		window_ride_measurements_design_select_nearby_scenery();
+		break;
+	case WIDX_RESET_SELECTION:
+		window_ride_measurements_design_reset();
+		break;
+	case WIDX_SAVE_DESIGN:
+		window_ride_measurements_design_save(w);
+		break;
+	case WIDX_CANCEL_DESIGN:
+		window_ride_measurements_design_cancel();
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AD564
+ */
+static void window_ride_measurements_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 316, 202, 316, 202);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4AB
+ */
+static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
+		return;
+
+	rct_ride *ride = GET_RIDE(w->number);
+
+	gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
+	gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1],
+		0,
+		2
+	);
+	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+		RCT2_GLOBAL(0x009DED34, uint32) |= 2;
+}
+
+/**
+ * 
+ * rct2: 0x006AD4B2
+ */
+static void window_ride_measurements_dropdown()
+{
+	rct_window *w;
+	short widgetIndex, dropdownIndex;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
+		return;
+
+	if (dropdownIndex == -1)
+		dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
+	if (dropdownIndex == 0)
+		RCT2_CALLPROC_X(0x006D264D, 0, 0, 0, 0, (int)w, 0, 0);
+	else
+		RCT2_CALLPROC_X(0x006D27A3, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006AD5DD
+ */
+static void window_ride_measurements_update(rct_window *w)
+{
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_7);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4EB
+ */
+static void window_ride_measurements_tooldown()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	RCT2_CALLPROC_X(0x006D2AE7, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4DA
+ */
+static void window_ride_measurements_toolabort(rct_window *w)
+{
+	window_ride_measurements_design_cancel();
+}
+
+/**
+ * 
+ * rct2: 0x006ACDBC
+ */
+static void window_ride_measurements_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	rct_ride *ride = GET_RIDE(w->number);
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
+	window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_EMPTY;
+	if ((RCT2_GLOBAL(0x009DEA6F, uint8) & 1) && RCT2_GLOBAL(0x00F64DE8, uint8) == w->number) {
+		window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].type = WWT_DROPDOWN_BUTTON;
+		window_ride_measurements_widgets[WIDX_RESET_SELECTION].type = WWT_DROPDOWN_BUTTON;
+		window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_DROPDOWN_BUTTON;
+		window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WWT_DROPDOWN_BUTTON;
+	} else {
+		window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].type = WWT_EMPTY;
+		window_ride_measurements_widgets[WIDX_RESET_SELECTION].type = WWT_EMPTY;
+		window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_EMPTY;
+		window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WWT_EMPTY;
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_19)) {
+			if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x10000000) {
+				window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
+				w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
+				if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
+					if (ride->excitement != -1) {
+						w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
+						window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
+					}
+				}
+			}
+		}
+	}
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006ACF07
+ */
+static void window_ride_measurements_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_widget *widget;
+	rct_ride *ride;
+	rct_string_id stringId;
+	int x, y, i, numTimes, numLengths;
+	sint16 holes, maxSpeed, averageSpeed, drops, highestDropHeight, inversions, time;
+	sint32 maxPositiveVerticalGs, maxNegativeVerticalGs, maxLateralGs, totalAirTime, length;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
+
+	if (window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type == WWT_DROPDOWN_BUTTON) {
+		widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
+
+		x = w->x + (widget->right - widget->left) / 2;
+		y = w->y + widget->top + 40;
+		gfx_draw_string_centred_wrapped(dpi, NULL, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, 0);
+
+		x = w->x + 4;
+		y = w->y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
+		gfx_fill_rect_inset(dpi, x, y, w->x + 312, y + 1, w->colours[1], 0x20);
+	} else {
+		ride = GET_RIDE(w->number);
+		
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_19)
+			gfx_draw_sprite(dpi, 23225, w->x + w->width - 53, w->y + w->height - 73, 0);
+
+		x = w->x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+		y = w->y + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
+			// Excitement
+			RCT2_GLOBAL(0x013CE952 + 0, uint32) = ride->excitement;
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_RATING_LOW + min(ride->excitement >> 8, 5);
+			stringId = ride->excitement == -1 ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
+			gfx_draw_string_left(dpi, stringId, (void*)0x013CE952, 0, x, y);
+			y += 10;
+
+			// Intensity
+			RCT2_GLOBAL(0x013CE952 + 0, uint32) = ride->intensity;
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_RATING_LOW + min(ride->intensity >> 8, 5);
+
+			stringId = STR_INTENSITY_RATING;
+			if (ride->excitement == -1)
+				stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
+			else if (ride->intensity >= RIDE_RATING(10,00))
+				stringId = STR_INTENSITY_RATING_RED;
+
+			gfx_draw_string_left(dpi, stringId, (void*)0x013CE952, 0, x, y);
+			y += 10;
+
+			// Nausea
+			RCT2_GLOBAL(0x013CE952 + 0, uint32) = ride->nausea;
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_RATING_LOW + min(ride->nausea >> 8, 5);
+			stringId = ride->excitement == -1 ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
+			gfx_draw_string_left(dpi, stringId, (void*)0x013CE952, 0, x, y);
+			y += 20;
+
+			// Horizontal rule
+			gfx_fill_rect_inset(dpi, x, y - 6, x + 303, y - 5, w->colours[1], 0x20);
+
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS)) {
+				if (ride->type == RIDE_TYPE_MINI_GOLF) {
+					// Holes
+					holes = ride->inversions & 0x1F;
+					gfx_draw_string_left(dpi, STR_HOLES, &holes, 0, x, y);
+					y += 10;
+				} else {
+					// Max speed
+					maxSpeed = (ride->max_speed * 9) >> 18;
+					gfx_draw_string_left(dpi, STR_MAX_SPEED, &maxSpeed, 0, x, y);
+					y += 10;
+
+					// Average speed
+					averageSpeed = (ride->average_speed * 9) >> 18;
+					gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &averageSpeed, 0, x, y);
+					y += 10;
+
+					// Ride time
+					numTimes = 0;
+					for (i = 0; i < ride->num_stations; i++) {
+						time = ride->time[numTimes];
+						if (time != 0) {
+							RCT2_GLOBAL(0x013CE952 + 0 + (numTimes * 4), uint16) = 1343;
+							RCT2_GLOBAL(0x013CE952 + 2 + (numTimes * 4), uint16) = time;
+							numTimes++;
+						}
+					}
+					if (numTimes == 0) {
+						RCT2_GLOBAL(0x013CE952 + 0, uint16) = 1343;
+						RCT2_GLOBAL(0x013CE952 + 2, uint16) = 0;
+						numTimes++;
+					}
+					RCT2_GLOBAL(0x013CE94E + (numTimes * 4), uint16) = 1342;
+					RCT2_GLOBAL(0x013CE952 + 0 + (numTimes * 4), uint16) = 0;
+					RCT2_GLOBAL(0x013CE952 + 2 + (numTimes * 4), uint16) = 0;
+					RCT2_GLOBAL(0x013CE952 + 4 + (numTimes * 4), uint16) = 0;
+					RCT2_GLOBAL(0x013CE952 + 6 + (numTimes * 4), uint16) = 0;
+					gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, (void*)0x013CE952, 0, x, y, 308);
+					y += 10;
+				}
+
+				// Ride length
+				numLengths = 0;
+				for (i = 0; i < ride->num_stations; i++) {
+					length = ride->length[numLengths];
+					if (length != 0) {
+						length >>= 16;
+						RCT2_GLOBAL(0x013CE952 + 0 + (numLengths * 4), uint16) = 1346;
+						RCT2_GLOBAL(0x013CE952 + 2 + (numLengths * 4), uint16) = (length & 0xFFFF);
+						numLengths++;
+					}
+				}
+				if (numLengths == 0) {
+					RCT2_GLOBAL(0x013CE952 + 0, uint16) = 1346;
+					RCT2_GLOBAL(0x013CE952 + 2, uint16) = 0;
+					numLengths++;
+				}
+				RCT2_GLOBAL(0x013CE94E + (numLengths * 4), uint16) = 1345;
+				RCT2_GLOBAL(0x013CE952 + 0 + (numLengths * 4), uint16) = 0;
+				RCT2_GLOBAL(0x013CE952 + 2 + (numLengths * 4), uint16) = 0;
+				RCT2_GLOBAL(0x013CE952 + 4 + (numLengths * 4), uint16) = 0;
+				RCT2_GLOBAL(0x013CE952 + 6 + (numLengths * 4), uint16) = 0;
+				gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, (void*)0x013CE952, 0, x, y, 308);
+				y += 10;
+
+				if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x80) {
+					// Max. positive vertical G's
+					maxPositiveVerticalGs = ride->maxPositiveVerticalGs;
+					stringId = maxPositiveVerticalGs >= FIXED_2DP(5,00) ?
+						STR_MAX_POSITIVE_VERTICAL_G_RED : STR_MAX_POSITIVE_VERTICAL_G;
+					gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, 0, x, y);
+					y += 10;
+
+					// Max. negative vertical G's
+					maxNegativeVerticalGs = ride->maxNegativeVerticalGs;
+					stringId = maxNegativeVerticalGs <= -FIXED_2DP(2,00) ?
+						STR_MAX_NEGATIVE_VERTICAL_G_RED : STR_MAX_NEGATIVE_VERTICAL_G;
+					gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, 0, x, y);
+					y += 10;
+
+					// Max lateral G's
+					maxLateralGs = ride->maxLateralGs;
+					stringId = maxLateralGs >= FIXED_2DP(2,80) ?
+						STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
+					gfx_draw_string_left(dpi, stringId, &maxLateralGs, 0, x, y);
+					y += 10;
+
+					// Total 'air' time
+					totalAirTime = ride->totalAirTime * 3;
+					gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &totalAirTime, 0, x, y);
+					y += 10;
+				}
+
+				if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x400) {
+					// Drops
+					drops = ride->drops & 0x3F;
+					gfx_draw_string_left(dpi, STR_DROPS, &drops, 0, x, y);
+					y += 10;
+
+					// Highest drop height
+					highestDropHeight = (ride->highest_drop_height * 3) / 4;
+					gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, 0, x, y);
+					y += 10;
+				}
+
+				if (ride->type != RIDE_TYPE_MINI_GOLF) {
+					// Inversions
+					inversions = ride->inversions & 0x1F;
+					if (inversions != 0) {
+						gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, 0, x, y);
+						y += 10;
+					}
+				}
+			}
+		} else {
+			gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, 0, x, y);
+		}
+	}
 }
 
 #pragma endregion

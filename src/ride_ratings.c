@@ -56,9 +56,9 @@ void crooked_house_excitement(rct_ride *ride)
 	ride->var_14D |= 2;
 
 	// clear all bits except lowest 5
-	ride->var_114 &= 0x1f;
+	ride->inversions &= 0x1F;
 	// set 6th,7th,8th bits
-	ride->var_114 |= 0xE0;
+	ride->inversions |= 0xE0;
 }
 
 /**
@@ -75,27 +75,22 @@ uint16 compute_upkeep(rct_ride *ride)
 	uint16 upkeep = initialUpkeepCosts[ride->type];
 
 	uint16 trackCost = costPerTrackPiece[ride->type];
-	uint8 dl = ride->var_115;
+	uint8 dl = ride->drops;
 
 	dl = dl >> 6;
 	dl = dl & 3;
 	upkeep += trackCost * dl;
 
-	uint32 cuml = ride->var_0E4;
-	cuml += ride->var_0E8;
-	cuml += ride->var_0EC;
-	cuml += ride->var_0F0;
-	cuml = cuml >> 0x10;
+	uint32 totalLength = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
 
 	// The data originally here was 20's and 0's. The 20's all represented
 	// rides that had tracks. The 0's were fixed rides like crooked house or
 	// bumper cars.
 	// Data source is 0x0097E3AC
 	if (hasRunningTrack[ride->type]) {
-		cuml = cuml * 20;
+		totalLength *= 20;
 	}
-	cuml = cuml >> 0x0A;
-	upkeep += (uint16)cuml;
+	upkeep += (uint16)(totalLength >> 10);
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
 		// The original code read from a table starting at 0x0097E3AE and
@@ -184,7 +179,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
 	// more detail: https://gist.github.com/kevinburke/d951e74e678b235eef3e
 	uint16 ridetype_var = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
 	if (ridetype_var & 0x80) {
-		uint16 ax = ride->var_1F4;
+		uint16 ax = ride->totalAirTime;
 		if (rideType->var_008 & 0x800) {
 			// 65e86e
 			ax = ax - 96;
