@@ -132,13 +132,13 @@ typedef struct {
 	uint8 var_14D;
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
-	uint32 var_154;
+	money32 total_profit;			// 0x154
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
 	uint8 pad_15C[0x24];
 	sint16 build_date;				// 0x180
-	sint16 upkeep_cost;				// 0x182
+	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x06];
 	uint8 var_18C;
@@ -157,9 +157,9 @@ typedef struct {
 	uint32 var_1A4;
 	uint8 pad_1A8[6];
 	uint8 var_1AE;
-	uint8 connected_message_throttle;
-	uint32 pad_1B0;
-	sint32 profit;					// 0x1B4
+	uint8 connected_message_throttle;	// 0x1AF
+	money32 income_per_hour;		// 0x1B0
+	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 var_1BC;
 	uint8 pad_1BD[0x0B];
@@ -173,7 +173,7 @@ typedef struct {
 	// Example value for wild mouse ride is d5 (before it's been constructed)
 	// I tried searching the IDA file for "1F4" but couldn't find places where
 	// this is written to.
-	uint16 totalAirTime;			// 0x1F4
+	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6[0x0a];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];

@@ -179,7 +179,7 @@ rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
 	// more detail: https://gist.github.com/kevinburke/d951e74e678b235eef3e
 	uint16 ridetype_var = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
 	if (ridetype_var & 0x80) {
-		uint16 ax = ride->totalAirTime;
+		uint16 ax = ride->total_air_time;
 		if (rideType->var_008 & 0x800) {
 			// 65e86e
 			ax = ax - 96;

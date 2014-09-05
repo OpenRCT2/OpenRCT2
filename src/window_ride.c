@@ -2502,7 +2502,7 @@ static void window_ride_measurements_paint()
 					y += 10;
 
 					// Total 'air' time
-					totalAirTime = ride->totalAirTime * 3;
+					totalAirTime = ride->total_air_time * 3;
 					gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &totalAirTime, 0, x, y);
 					y += 10;
 				}
@@ -2544,7 +2544,7 @@ static void window_ride_measurements_paint()
  */
 static void window_ride_income_toggle_primary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006ADEFD, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2553,7 +2553,7 @@ static void window_ride_income_toggle_primary_price(rct_window *w)
  */
 static void window_ride_income_toggle_secondary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006AE06E, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2562,7 +2562,7 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
  */
 static void window_ride_income_increase_primary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006AE1E4, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2571,7 +2571,7 @@ static void window_ride_income_increase_primary_price(rct_window *w)
  */
 static void window_ride_income_decrease_primary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006AE237, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2580,7 +2580,7 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
  */
 static void window_ride_income_increase_secondary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006AE269, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2589,7 +2589,7 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
  */
 static void window_ride_income_decrease_secondary_price(rct_window *w)
 {
-
+	RCT2_CALLPROC_X(0x006AE28D, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -2623,7 +2623,7 @@ static void window_ride_income_mouseup()
 		window_ride_income_toggle_primary_price(w);
 		break;
 	case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
-		window_ride_income_toggle_primary_price(w);
+		window_ride_income_toggle_secondary_price(w);
 		break;
 	}
 }
@@ -2808,11 +2808,83 @@ static void window_ride_income_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id stringId;
+	money32 profit, costPerHour;
+	int x, y, primaryItem, secondaryItem;
 
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_ride_draw_tab_images(dpi, w);
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	x = w->x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 29;
+
+	// Primary item profit / loss per item sold
+	primaryItem = (sint8)rideEntry->shop_item;
+	if (primaryItem != -1) {
+		profit = ride->price;
+
+		stringId = STR_PROFIT_PER_ITEM_SOLD;
+		profit -= primaryItem < 32 ?
+			RCT2_GLOBAL(0x00982164 + (primaryItem * 8), uint16) :
+			RCT2_GLOBAL(0x00982144 + (primaryItem * 8), uint16);
+		if (profit < 0) {
+			profit *= -1;
+			stringId = STR_LOSS_PER_ITEM_SOLD;
+		}
+
+		gfx_draw_string_left(dpi, stringId, &profit, 0, x, y);
+	}
+	y += 39;
+
+	// Secondary item profit / loss per item sold
+	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+		secondaryItem = (sint8)rideEntry->shop_item_secondary;
+
+	if (secondaryItem != -1) {
+		profit = ride->price_secondary;
+
+		stringId = STR_PROFIT_PER_ITEM_SOLD;
+		profit -= primaryItem < 32 ?
+			RCT2_GLOBAL(0x00982164 + (primaryItem * 8), uint16) :
+			RCT2_GLOBAL(0x00982144 + (primaryItem * 8), uint16);
+		if (profit < 0) {
+			profit *= -1;
+			stringId = STR_LOSS_PER_ITEM_SOLD;
+		}
+
+		gfx_draw_string_left(dpi, stringId, &profit, 0, x, y);
+	}
+	y += 15;
+
+	// Income per hour
+	if (ride->income_per_hour != MONEY32_UNDEFINED) {
+		gfx_draw_string_left(dpi, STR_INCOME_PER_HOUR, &ride->income_per_hour, 0, x, y);
+		y += 10;
+	}
+
+	// Running cost per hour
+	costPerHour = ride->upkeep_cost * 16;
+	stringId = ride->upkeep_cost == 0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+	gfx_draw_string_left(dpi, stringId, &costPerHour, 0, x, y);
+	y += 10;
+
+	// Profit per hour
+	if (ride->profit != MONEY32_UNDEFINED) {
+		gfx_draw_string_left(dpi, STR_PROFIT_PER_HOUR, &ride->profit, 0, x, y);
+		y += 10;
+	}
+	y += 5;
+
+	// Total profit
+	gfx_draw_string_left(dpi, STR_TOTAL_PROFIT, &ride->total_profit, 0, x, y);
 }
 
 #pragma endregion
