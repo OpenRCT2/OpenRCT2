@@ -146,7 +146,7 @@ typedef struct {
 	uint16 mechanic;				// 0x18E
 	uint8 pad_190[0x03];
 	uint8 breakdown_reason;			// 0x193
-	uint8 pad_194[2];
+	money16 price_secondary;		// 0x194
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;

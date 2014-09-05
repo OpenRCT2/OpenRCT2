@@ -89,6 +89,17 @@ enum {
 	WIDX_SAVE_DESIGN,
 	WIDX_CANCEL_DESIGN,
 
+	WIDX_PRIMARY_PRICE_LABEL = 14,
+	WIDX_PRIMARY_PRICE,
+	WIDX_PRIMARY_PRICE_INCREASE,
+	WIDX_PRIMARY_PRICE_DECREASE,
+	WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK,
+	WIDX_SECONDARY_PRICE_LABEL,
+	WIDX_SECONDARY_PRICE,
+	WIDX_SECONDARY_PRICE_INCREASE,
+	WIDX_SECONDARY_PRICE_DECREASE,
+	WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK,
+
 	WIDX_SHOW_GUESTS_THOUGHTS = 14,
 	WIDX_SHOW_GUESTS_ON_RIDE,
 	WIDX_SHOW_GUESTS_QUEUING
@@ -194,6 +205,36 @@ static rct_widget window_ride_measurements_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// 0x009AE844
+static rct_widget window_ride_income_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,							STR_WINDOW_TITLE_TIP										},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP										},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_VIEW_OF_RIDE_ATTRACTION_TIP								},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP							},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_OPERATING_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_MAINTENANCE_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_COLOUR_SCHEME_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_SOUND_AND_MUSIC_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_MEASUREMENTS_AND_TEST_DATA_TIP							},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,						STR_GRAPHS_TIP												},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,						STR_INCOME_AND_COSTS_TIP									},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,						STR_CUSTOMER_INFORMATION_TIP								},
+
+	{ WWT_24,				1,	5,		144,	50,		61,		0xFFFFFFFF,						STR_NONE													},
+	{ WWT_SPINNER,			1,	147,	308,	50,		61,		1429,							STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	51,		55,		STR_NUMERIC_UP,					STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	56,		60,		STR_NUMERIC_DOWN,				STR_NONE													},
+	{ WWT_CHECKBOX,			1,	5,		310,	61,		72,		STR_SAME_PRICE_THROUGHOUT_PARK,	STR_SAME_PRICE_THROUGHOUT_PARK_TIP							},
+	{ WWT_24,				1,	5,		144,	89,		100,	0xFFFFFFFF,						STR_NONE													},
+	{ WWT_SPINNER,			1,	147,	308,	89,		100,	1799,							STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	90,		94,		STR_NUMERIC_UP,					STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	95,		99,		STR_NUMERIC_DOWN,				STR_NONE													},
+	{ WWT_CHECKBOX,			1,	5,		310,	100,	111,	STR_SAME_PRICE_THROUGHOUT_PARK,	STR_SAME_PRICE_THROUGHOUT_PARK_TIP							},
+	{ WIDGETS_END },
+};
+
 // 0x009AE9C8
 static rct_widget window_ride_customer_widgets[] = {
 	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
@@ -226,7 +267,7 @@ static rct_widget *window_ride_page_widgets[] = {
 	window_ride_music_widgets,
 	window_ride_measurements_widgets,
 	(rct_widget*)0x009AE710,
-	(rct_widget*)0x009AE844,
+	window_ride_income_widgets,
 	window_ride_customer_widgets
 };
 
@@ -285,6 +326,13 @@ static void window_ride_measurements_tooldown();
 static void window_ride_measurements_toolabort();
 static void window_ride_measurements_invalidate();
 static void window_ride_measurements_paint();
+
+static void window_ride_income_mouseup();
+static void window_ride_income_resize();
+static void window_ride_income_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_income_update(rct_window *w);
+static void window_ride_income_invalidate();
+static void window_ride_income_paint();
 
 static void window_ride_customer_mouseup();
 static void window_ride_customer_resize();
@@ -420,6 +468,38 @@ static void* window_ride_measurements_events[] = {
 	window_ride_emptysub
 };
 
+// 0x0098DEF4
+static void* window_ride_income_events[] = {
+	window_ride_emptysub,
+	window_ride_income_mouseup,
+	window_ride_income_resize,
+	window_ride_income_mousedown,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_income_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_income_invalidate,
+	window_ride_income_paint,
+	window_ride_emptysub
+};
+
 // 0x0098DE84
 static void* window_ride_customer_events[] = {
 	window_ride_emptysub,
@@ -461,7 +541,7 @@ static uint32* window_ride_page_events[] = {
 	(uint32*)window_ride_music_events,
 	(uint32*)window_ride_measurements_events,
 	(uint32*)0x0098DF64,
-	(uint32*)0x0098DEF4,
+	(uint32*)window_ride_income_events,
 	(uint32*)window_ride_customer_events
 };
 
@@ -2452,6 +2532,287 @@ static void window_ride_measurements_paint()
 			gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, 0, x, y);
 		}
 	}
+}
+
+#pragma endregion
+
+#pragma region Income
+
+/**
+ * 
+ * rct2: 0x006ADEFD
+ */
+static void window_ride_income_toggle_primary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006AE06E
+ */
+static void window_ride_income_toggle_secondary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006AE1E4
+ */
+static void window_ride_income_increase_primary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006AE237
+ */
+static void window_ride_income_decrease_primary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006AE269
+ */
+static void window_ride_income_increase_secondary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006AE28D
+ */
+static void window_ride_income_decrease_secondary_price(rct_window *w)
+{
+
+}
+
+/**
+ * 
+ * rct2: 0x006ADEA9
+ */
+static void window_ride_income_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK:
+		window_ride_income_toggle_primary_price(w);
+		break;
+	case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
+		window_ride_income_toggle_primary_price(w);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AE2F8
+ */
+static void window_ride_income_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 316, 177, 316, 177);
+}
+
+/**
+ * 
+ * rct2: 0x006ADED4
+ */
+static void window_ride_income_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	switch (widgetIndex) {
+	case WIDX_PRIMARY_PRICE_INCREASE:
+		window_ride_income_increase_primary_price(w);
+		break;
+	case WIDX_PRIMARY_PRICE_DECREASE:
+		window_ride_income_decrease_primary_price(w);
+		break;
+	case WIDX_SECONDARY_PRICE_INCREASE:
+		window_ride_income_increase_secondary_price(w);
+		break;
+	case WIDX_SECONDARY_PRICE_DECREASE:
+		window_ride_income_decrease_secondary_price(w);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AE2BF
+ */
+static void window_ride_income_update(rct_window *w)
+{
+	rct_ride *ride;
+
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_9);
+
+	ride = GET_RIDE(w->number);
+	if (ride->var_14D & 2) {
+		ride->var_14D &= ~2;
+		window_invalidate(w);
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006ADAA3
+ */
+static void window_ride_income_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id stringId;
+	int primaryItem, secondaryItem;
+
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	rct_ride *ride = GET_RIDE(w->number);
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	rideEntry = rideEntries[ride->subtype];
+
+	// Primary item
+	w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
+	if (
+		!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) &&
+		rideEntry->shop_item == 255 &&
+		ride->type != RIDE_TYPE_BATHROOM
+	) {
+		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
+	}
+
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = STR_RIDE_INCOME_ADMISSION_PRICE;
+	window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].image = STR_ON_RIDE_PHOTO_PRICE;
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_EMPTY;
+	
+	window_ride_income_widgets[WIDX_PRIMARY_PRICE].image = 1429;
+	RCT2_GLOBAL(0x013CE952 + 6, money32) = ride->price;
+	if (ride->price == 0)
+		window_ride_income_widgets[WIDX_PRIMARY_PRICE].image = STR_FREE;
+
+	primaryItem = 31;
+	if (ride->type != RIDE_TYPE_BATHROOM) {
+		if ((primaryItem = (sint8)rideEntry->shop_item) != -1) {
+			window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
+			if (primaryItem < 32) {
+				if (RCT2_GLOBAL(0x01358838, uint32) & (1 << primaryItem))
+					w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+
+				if (primaryItem != 31)
+					window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 1960 + primaryItem;
+			} else {
+				primaryItem -= 32;
+				if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << primaryItem))
+					w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+
+				window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2100 + primaryItem;
+			}
+		}
+	}
+
+	// Get secondary item
+	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)) {
+		if ((secondaryItem = (sint8)rideEntry->shop_item_secondary) != -1) {
+			// Set secondary item label
+			stringId = 1960 + secondaryItem;
+			if (stringId >= 1992)
+				stringId += 108;
+
+			window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].image = stringId;
+		}
+	}
+
+	if (secondaryItem == -1) {
+		// Hide secondary item widgets
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_EMPTY;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_EMPTY;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_INCREASE].type = WWT_EMPTY;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_DECREASE].type = WWT_EMPTY;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_EMPTY;
+	} else {
+		// Set same price throughout park checkbox
+		w->pressed_widgets &= ~(1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+		if (secondaryItem < 32) {
+			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << secondaryItem))
+				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+		} else {
+			secondaryItem -= 32;
+			if (RCT2_GLOBAL(0x0135884C, uint32) & (1 << secondaryItem))
+				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+		}
+
+		// Show widgets
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_24;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_SPINNER;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_DECREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
+
+		// Set secondary item price
+		window_ride_income_widgets[WIDX_SECONDARY_PRICE].image = 1799;
+		RCT2_GLOBAL(0x013CE952 + 10, money32) = ride->price_secondary;
+		if (ride->price_secondary == 0)
+			window_ride_income_widgets[WIDX_SECONDARY_PRICE].image = STR_FREE;
+	}
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006ADCE5
+ */
+static void window_ride_income_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
 }
 
 #pragma endregion
