@@ -736,13 +736,15 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	// checkbox
-	gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+	if (widget->type != WWT_24) {
+		// checkbox
+		gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
 
-	// fill it when checkbox is pressed
-	if (widget_is_pressed(w, widgetIndex)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-		gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
+		// fill it when checkbox is pressed
+		if (widget_is_pressed(w, widgetIndex)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
+		}
 	}
 
 	// draw the text
