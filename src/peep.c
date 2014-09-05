@@ -26,6 +26,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "sprite.h"
+#include "staff.h"
 #include "window.h"
 
 static void peep_update(rct_peep *peep);
@@ -586,4 +587,13 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
  */
 int peep_can_be_picked_up(rct_peep* peep){
 	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+}
+
+int peep_is_mechanic(rct_peep *peep)
+{
+	return (
+		peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP &&
+		peep->type == PEEP_TYPE_STAFF &&
+		peep->staff_type == STAFF_TYPE_MECHANIC
+	);
 }

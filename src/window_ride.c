@@ -1434,7 +1434,16 @@ static void window_ride_main_paint()
  */
 static void window_ride_locate_mechanic(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006B1AE4, 0, 0, 0, 0, (int)w, 0, 0);
+	rct_peep *peep;
+	rct_ride *ride = GET_RIDE(w->number);
+
+	peep = ride_get_assigned_mechanic(ride);
+	if (peep != NULL) {
+		window_staff_peep_open(peep);
+	} else {
+		// Presumebly looks for the closest mechanic
+		RCT2_CALLPROC_X(0x006B1B3E, 0, w->number * 0x260, 0, 0, (int)w, 0, 0);
+	}
 }
 
 /**
@@ -1443,7 +1452,17 @@ static void window_ride_locate_mechanic(rct_window *w)
  */
 static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, int x, int y, int value, int unk)
 {
-	RCT2_CALLPROC_X(0x006B7D08, value, 0, x, y, (int)w, (int)dpi, unk);
+	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
+	if (unk & (1 << 31)) {
+		unk &= ~(1 << 31);
+		if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0 && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8))
+			return;
+	}
+
+	value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
+	if (value > 2) {
+		gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 8, unk, 0);
+	}
 }
 
 /**
@@ -1685,11 +1704,7 @@ static void window_ride_maintenance_paint()
 				gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, 0);
 			} else {
 				mechanicSprite = &(g_sprite_list[ride->mechanic].peep);
-				if (
-					mechanicSprite->sprite_identifier == SPRITE_IDENTIFIER_PEEP &&
-					mechanicSprite->type == PEEP_TYPE_STAFF &&
-					mechanicSprite->staff_type == STAFF_TYPE_MECHANIC
-				) {
+				if (peep_is_mechanic(mechanicSprite)) {
 					RCT2_GLOBAL(0x013CE952 + 0, uint16) = mechanicSprite->name_string_idx;
 					RCT2_GLOBAL(0x013CE952 + 2, uint32) = mechanicSprite->id;
 					gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x + 4, y, 280, stringId, 0);

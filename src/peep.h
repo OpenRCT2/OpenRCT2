@@ -445,5 +445,6 @@ void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
 void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+int peep_is_mechanic(rct_peep *peep);
 
 #endif

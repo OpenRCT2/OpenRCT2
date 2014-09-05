@@ -22,6 +22,7 @@
 #define _RIDE_H_
 
 #include "map.h"
+#include "peep.h"
 #include "rct2.h"
 #include "string_ids.h"
 
@@ -457,5 +458,6 @@ rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *ou
 void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
+rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 
 #endif

@@ -23,6 +23,7 @@
 #include "game.h"
 #include "map.h"
 #include "news_item.h"
+#include "staff.h"
 #include "sprite.h"
 #include "ride.h"
 #include "sprite.h"
@@ -519,4 +520,23 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 			*formatSecondary = STR_OPEN;
 		}
 	}
+}
+
+rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
+{
+	rct_peep *peep;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		if (
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING ||
+			ride->mechanic_status == 3 ||
+			ride->mechanic_status == 4
+		) {
+			peep = &(g_sprite_list[ride->mechanic].peep);
+			if (peep_is_mechanic(peep))
+				return peep;
+		}
+	}
+
+	return NULL;
 }
