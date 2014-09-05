@@ -317,40 +317,50 @@ void init_scenery() {
 	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
 		window_scenery_widgets[widgetIndex].type = 0;
 
-	uint8 stuff[0x50];
-	int ebp = 0;
+	uint8 indices[0x13];
+	uint8 ids[0x13];
+	int usedValues = 0;
 
 	for (int ebx = 0; ebx < 0x13; ebx++) {
-		uint32 scenerySetAddress = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[edi];
+		uint32 scenerySetAddress = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[ebx];
 		if (scenerySetAddress == 0xFFFFFFFF)
 			continue;
 
-		stuff[ebp] = ebx;
-		stuff[ebp + 1] = RCT2_GLOBAL(scenerySetAddress + 0x108, uint8);
+		indices[usedValues] = ebx;
+		ids[usedValues] = RCT2_GLOBAL(scenerySetAddress + 0x108, uint8);
 
-		ebp += 4;
-		int prev_edi = ebp - 4;
-
-		while (true) {
-			if (prev_edi <= 0)
-				break;
-
-			prev_edi -= 4;
-			if (stuff[prev_edi + 5] >= stuff[prev_edi + 1])
-				break;
-
-			int eax = stuff[prev_edi + 4];
-			stuff[prev_edi + 4] = stuff[prev_edi];
-			stuff[prev_edi] = eax;
-		}
+		usedValues++;
 	}
 
-	stuff[ebp] = 0x13;
-	ebp += 4;
+	while (true) {
+		bool finished = true;
+		for (int ebx = 1; ebx < usedValues; ebx++) {
+			if (ids[ebx - 1] > ids[ebx]) {
+				uint8 tmp = ids[ebx - 1];
+				ids[ebx - 1] = ids[ebx];
+				ids[ebx] = tmp;
+				tmp = indices[ebx - 1];
+				indices[ebx - 1] = indices[ebx];
+				indices[ebx] = tmp;
+				finished = false;
+			}
+		}
+
+		if (finished)
+			break;
+	}
+
+	
+	/*for (int ebx = 0; ebx * 4 < ebp; ebx++) {
+		printf("%d : %d : %d\n", stuff[ebx * 4], ebx, stuff[ebx * 4 + 1]);
+	}*/
+
+	indices[usedValues] = 0x13;
+	usedValues++;
 
 	uint16 cx = 3;
-	for (int ebx = 0; ebx < ebp; ebx += 4) {
-		uint32 tabIndex = stuff[ebx];
+	for (int ebx = 0; ebx < usedValues; ebx ++) {
+		uint32 tabIndex = indices[ebx];
 		rct_widget* currentTab = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
 		int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
 
@@ -367,7 +377,7 @@ void init_scenery() {
 		currentTab->right = cx + 0x1E;
 		cx += 0x1F;
 
-		if (edi >= 0x13)
+		if (tabIndex >= 0x13)
 			continue;
 
 		int sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, uint32)[tabIndex];
@@ -855,8 +865,12 @@ void window_scenery_invalidate() {
 
 	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (typeId + 4))) & 0xBBFFFFFF;
 
-	if (RCT2_GLOBAL(0x00F64F19, uint8) == 1) { // repaint colored scenery tool is off
+	if (RCT2_GLOBAL(0x00F64F19, uint8) == 1) { // repaint colored scenery tool is on
 		w->pressed_widgets |= 0x04000000;
+	}
+
+	if (RCT2_GLOBAL(0x00F64F1A, uint8) == 1) { // build cluster tool is on
+		w->pressed_widgets |= 0x040000000;
 	}
 		
 	window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
