@@ -49,12 +49,15 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint16 pad_14;
+	uint8 var_14;					// 0x14
+	uint8 var_15;					// 0x15
 	sint16 var_16; //x related
 	sint16 var_18; //y related
 	sint16 var_1A; //x related
 	sint16 var_1C; //y related
-	uint8  sprite_direction; //direction of sprite?
+	uint8  sprite_direction; //direction of sprite? 0x1e
+	uint8 pad_1F[3]; // 0x1f
+	uint16 name_string_idx;			// 0x22
 } rct_unk_sprite;
 
 typedef struct {
@@ -86,6 +89,7 @@ typedef union {
 extern rct_sprite* g_sprite_list;
 
 void create_balloon(int x, int y, int z, int colour);
+rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
 
