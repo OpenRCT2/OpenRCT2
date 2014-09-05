@@ -580,7 +580,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		height += RCT2_GLOBAL(ebp + 0x24, sint8);
 
 		RCT2_GLOBAL(0x00F43480, uint32) = ride->var_1D4;
-		colour = (ride->vehicle_colours[1] << 24) | (ride->vehicle_colours[0] << 19);
+		colour = ((ride->vehicle_colours[0] & 0xFF00) << 16) | ((ride->vehicle_colours[0] & 0xFF) << 19);
 		spriteIndex = 32;
 		if (w->page == WINDOW_PARK_PAGE_VEHICLE)
 			spriteIndex += w->frame_no;
@@ -1273,12 +1273,11 @@ static void window_ride_main_invalidate()
 	window_ride_set_pressed_tab(w);
 
 	rct_ride *ride = GET_RIDE(w->number);
-	w->disabled_widgets &= 0xFFB7FFFF;
-	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)) {
-		w->disabled_widgets |= 0x00400000;
-	}
+	w->disabled_widgets &= ~((1 << 22) | (1 << 19));
+	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
+		w->disabled_widgets |= (1 << 22);
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_19)
-		w->disabled_widgets |= 0x80000;
+		w->disabled_widgets |= (1 << 19);
 
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
