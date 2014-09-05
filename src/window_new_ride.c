@@ -25,6 +25,7 @@
 #include "news_item.h"
 #include "ride.h"
 #include "string_ids.h"
+#include "scenery.h"
 #include "track.h"
 #include "widget.h"
 #include "window.h"
@@ -761,8 +762,7 @@ static void window_new_ride_paint()
 					rideEntry->name :
 					(typeId & 0xFF00) + 2;
 			} else {
-				uint8 *sceneryEntry = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SET_ENTRIES + (typeId & 0xFFFF) * 4, uint8*);
-				stringId = RCT2_GLOBAL(sceneryEntry, uint16);
+				stringId = g_scenerySetEntries[typeId]->name;
 			}
 		}
 	}
@@ -798,8 +798,7 @@ static void window_new_ride_paint()
 				rideEntry->name :
 				(typeId & 0xFF00) + 2;
 		} else {
-			uint8 *sceneryEntry = RCT2_GLOBAL(0x009ADA90 + (typeId & 0xFFFF) * 4, uint8*);
-			stringId = RCT2_GLOBAL(sceneryEntry, uint16);
+			stringId = g_scenerySetEntries[typeId]->name;
 		}
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, STR_RESEARCH_RIDE_LABEL, 0);
 	}

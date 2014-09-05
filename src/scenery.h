@@ -111,10 +111,20 @@ typedef struct {
 	};
 } rct_scenery_entry;
 
+typedef struct {
+	rct_string_id name;				// 0x00
+	uint32 image;					// 0x02
+	uint16 scenery_entries[0x80];	// 0x06
+	uint8 entry_count;				// 0x106
+	uint8 pad_107;
+	uint8 var_108;					// 0x108, order?
+} rct_scenery_set_entry;
+
 #define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
 #define g_largeSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)
 #define g_wallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)
 #define g_bannerSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES, rct_scenery_entry*)
 #define g_pathBitSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_scenery_entry*)
+#define g_scenerySetEntries RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, rct_scenery_set_entry*)
 
 #endif
