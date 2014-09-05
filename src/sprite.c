@@ -132,7 +132,7 @@ rct_sprite *create_sprite(uint8 bl)
 
 	rct_unk_sprite *sprite = &(g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)]).unknown;
 
-	move_sprite_to_list(sprite, linkedListTypeOffset);
+	move_sprite_to_list((rct_sprite *)sprite, linkedListTypeOffset);
 
 	sprite->x = SPRITE_LOCATION_NULL;
 	sprite->y = SPRITE_LOCATION_NULL;
@@ -159,7 +159,7 @@ rct_sprite *create_sprite(uint8 bl)
 */
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 {
-	rct_unk_sprite *unkSprite = sprite;
+	rct_unk_sprite *unkSprite = &sprite->unknown;
 
 	// No need to move if the sprite is already in the desired list
 	if (unkSprite->linked_list_type_offset == cl)

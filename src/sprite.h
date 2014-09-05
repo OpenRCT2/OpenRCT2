@@ -100,6 +100,6 @@ void create_balloon(int x, int y, int z, int colour);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
-void move_sprite_to_list(rct_sprite *sprite, int ecx);
+void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 
 #endif
