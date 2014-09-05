@@ -176,30 +176,27 @@ static rct_widget window_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static sint16 window_scenery_tab_entries[0x13][0x81];
 
 void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId) {
 	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1 << (index & 0x1F))) {
 		if (sceneryTabId != 0xFF) {
-			uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[sceneryTabId];
-
-			for (int ebx = 0; ebx < 0x80; ebx++) {
-				if (RCT2_ADDRESS(sceneryTabItems, uint16)[ebx] == 0xFFFF)
+			for (int i = 0; i < 0x80; i++) {
+				if (window_scenery_tab_entries[sceneryTabId][i] == -1)
 				{
-					RCT2_ADDRESS(sceneryTabItems, uint16)[ebx] = index;
-					RCT2_ADDRESS(sceneryTabItems, uint16)[ebx + 1] = 0xFFFF;
+					window_scenery_tab_entries[sceneryTabId][i] = index;
+					window_scenery_tab_entries[sceneryTabId][i + 1] = -1;
 					return;
 				}
 			}
 		}
 
-		for (int ecx = 0; ecx < 0x13; ecx++) {
-			int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[ecx];
+		for (int i = 0; i < 0x13; i++) {
 			int counter = 0;
 
-			while (RCT2_ADDRESS(sceneryTabItems, uint16)[counter] != 0xFFFF)
+			while (window_scenery_tab_entries[i][counter] != -1)
 			{
-				if (RCT2_ADDRESS(sceneryTabItems, uint16)[counter] == index) {
-					ecx = 0x13;
+				if (window_scenery_tab_entries[i][counter] == index) {
 					return;
 				}
 
@@ -207,12 +204,11 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
 			}
 		}
 
-		uint32 edx = RCT2_GLOBAL(0x00F64F78, uint32);
-		for (int ecx = 0; ecx < 0x80; ecx++) {
-			if (RCT2_ADDRESS(edx, uint16)[ecx] == 0xFFFF)
+		for (int i = 0; i < 0x80; i++) {
+			if (window_scenery_tab_entries[0x13][i] == -1)
 			{
-				RCT2_ADDRESS(edx, uint16)[ecx] = index;
-				RCT2_ADDRESS(edx, uint16)[ecx + 1] = 0xFFFF;
+				window_scenery_tab_entries[0x13][i] = index;
+				window_scenery_tab_entries[0x13][i + 1] = -1;
 				break;
 			}
 		}
@@ -223,18 +219,10 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
 * rct2: 0x006DFA00
 **/
 void init_scenery() {
-	uint32 baseAddress = 0x00F64F7C;
-
-	for (int i = 0; i < 0x14; i++) {
-		RCT2_ADDRESS(0x00F64F2C, uint32)[i] = baseAddress;
-		baseAddress += 0x102;
-	}
-
 	bool enabledScenerySets[0x13] = { false };
 
 	for (int scenerySetIndex = 0; scenerySetIndex < 0x14; scenerySetIndex++) {
-		int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[scenerySetIndex];
-		RCT2_GLOBAL(sceneryTabItems, uint16) = 0xFFFF;
+		window_scenery_tab_entries[scenerySetIndex][0] = -1;
 		if (scenerySetIndex == 0x13)
 			continue;
 
@@ -242,14 +230,15 @@ void init_scenery() {
 		if ((uint32)scenerySetEntry == 0xFFFFFFFF)
 			continue;
 
+		int sceneryTabEntryCount = 0;
+
 		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
 			uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
 			uint32 ecx = RCT2_ADDRESS(0x01357BD0, uint32)[sceneryEntryId >> 5];
 			uint32 edx = 1 << (sceneryEntryId & 0x1F);
 			if (ecx & edx) {
-				RCT2_GLOBAL(sceneryTabItems, uint16) = sceneryEntryId;
-				sceneryTabItems += 2;
-				RCT2_GLOBAL(sceneryTabItems, uint16) = 0xFFFF;
+				window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
+				window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
 			} else {
 				enabledScenerySets[scenerySetIndex] = true;
 			}
@@ -352,10 +341,9 @@ void init_scenery() {
 	for (int ebx = 0; ebx < usedValues; ebx ++) {
 		uint32 tabIndex = tabIndexes[ebx];
 		rct_widget* tabWidget = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
-		int sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
 
 		if (left != 3 || tabIndex == 0x13) {
-			if (RCT2_GLOBAL(sceneryTabItems, uint16) == 0xFFFF)
+			if (window_scenery_tab_entries[tabIndex][0] == -1)
 				continue;
 
 			if (enabledScenerySets[tabIndex])
@@ -480,10 +468,8 @@ void window_scenery_close() {
 }
 
 int window_scenery_scrollgetsize_num() {
-	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[RCT2_GLOBAL(0x00F64EDC, uint8)];
-
 	int items = 0;
-	while (RCT2_ADDRESS(sceneryTabItems, sint16)[items] != -1)
+	while (window_scenery_tab_entries[RCT2_GLOBAL(0x00F64EDC, uint8)][items] != -1)
 		items++;
 
 	items += 8;
@@ -535,11 +521,10 @@ void window_scenery_update_scroll(rct_window *w) {
 	w->scrolls[0].v_bottom = scrollsize;
 
 	int typeId = RCT2_GLOBAL(0x00F64EDC, uint8);
-	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[typeId];
 
 	int itemIndex = 0;
 	sint16 sceneryId;
-	while ((sceneryId = RCT2_ADDRESS(sceneryTabItems, sint16)[itemIndex]) != -1) {
+	while ((sceneryId = window_scenery_tab_entries[typeId][itemIndex]) != -1) {
 		if (sceneryId == RCT2_ADDRESS(0x00F64EDD, uint16)[typeId])
 			break;
 		itemIndex++;
@@ -547,7 +532,7 @@ void window_scenery_update_scroll(rct_window *w) {
 
 	if (sceneryId == -1) {
 		itemIndex = 0;
-		sint16 sceneryId = RCT2_ADDRESS(sceneryTabItems, sint16)[itemIndex];
+		sint16 sceneryId = window_scenery_tab_entries[typeId][itemIndex];
 		if (sceneryId != -1)
 			RCT2_ADDRESS(0x00F64EDD, uint16)[typeId] = sceneryId;
 	}
@@ -756,12 +741,11 @@ void window_scenery_scrollgetsize() {
 short get_scenery_id_by_cursor_pos(short x, short y) {
 	int tabSceneryIndex = x / 66 + (y / 80) * 9;
 	uint8 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
-	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
 
 	int itemCounter = 0;
 	sint16 sceneryId = 0;
 	while (itemCounter <= tabSceneryIndex) {
-		sceneryId = RCT2_ADDRESS(sceneryTabItems, sint16)[itemCounter];
+		sceneryId = window_scenery_tab_entries[tabIndex][itemCounter];
 		if (sceneryId == -1)
 			return -1;
 
@@ -1049,13 +1033,12 @@ void window_scenery_scrollpaint()
 	gfx_clear(dpi, ((char*)0x0141FC48)[w->colours[1] * 8] * 0x1010101);
 
 	uint8 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
-	uint32 sceneryTabItems = RCT2_ADDRESS(0x00F64F2C, uint32)[tabIndex];
 
 	int sceneryTabItemIndex = 0;
 	sint16 currentSceneryGlobalId = -1;
 	sint16 left = 0, top = 0;
 	uint8 sceneryRotation = RCT2_GLOBAL(0x00F64F05, uint8);
-	while ((currentSceneryGlobalId = RCT2_ADDRESS(sceneryTabItems, sint16)[sceneryTabItemIndex]) != -1) {
+	while ((currentSceneryGlobalId = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex]) != -1) {
 		uint16 sceneryTabIndex = RCT2_ADDRESS(0x00F64EDD, uint16)[tabIndex];
 				
 		if (RCT2_GLOBAL(0x00F64F19, uint8) == 1)
