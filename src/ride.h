@@ -137,12 +137,18 @@ typedef struct {
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x06];
 	uint8 var_18C;
-	uint8 pad_18D[0x09];
+	uint8 mechanic_status;			// 0x18D
+	uint16 mechanic;				// 0x18E
+	uint8 pad_190[0x03];
+	uint8 breakdown_reason;			// 0x193
+	uint8 pad_194[2];
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
 	uint8 var_199;
-	uint8 pad_19A[0xA];
+	uint8 inspection_interval;		// 0x19A
+	uint8 last_inspection;			// 0x19B
+	uint8 pad_19C[0x8];
 	uint32 var_1A4;
 	uint8 pad_1A8[6];
 	uint8 var_1AE;
@@ -395,6 +401,24 @@ enum {
 	MUSIC_STYLE_PIRATES,
 	MUSIC_STYLE_ROCK_STYLE_3,
 	MUSIC_STYLE_CANDY_STYLE
+};
+
+enum {
+	BREAKDOWN_NONE = 255,
+	BREAKDOWN_SAFETY_CUT_OUT = 0,
+	BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
+	BREAKDOWN_RESTRAINTS_STUCK_OPEN,
+	BREAKDOWN_DOORS_STUCK_CLOSED,
+	BREAKDOWN_DOORS_STUCK_OPEN,
+	BREAKDOWN_VEHICLE_MALFUNCTION,
+	BREAKDOWN_BRAKES_FAILURE,
+	BREAKDOWN_CONTROL_FAILURE
+};
+
+enum {
+	RIDE_MECHANIC_STATUS_CALLING = 1,
+	RIDE_MECHANIC_STATUS_HEADING = 2,
+	RIDE_MECHANIC_STATUS_FIXING = 3,
 };
 
 #define MAX_RIDES 255
