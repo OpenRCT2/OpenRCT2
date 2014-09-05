@@ -324,7 +324,7 @@ void news_item_open_subject(int type, int subject) {
 				}
 				RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
 				// Open scenery window
-				RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+				window_scenery_open();
 			}
 		}
 		// Switch to new scenery tab

@@ -337,7 +337,7 @@ static void window_all_wheel_input()
  * @param width (bx)
  * @param height (ebx >> 16)
  * @param events (edx)
- * @param flags (ch)
+ * @param flags (ecx >> 8)
  * @param class (cl)
  */
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
