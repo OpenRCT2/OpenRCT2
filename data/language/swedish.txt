@@ -1042,135 +1042,135 @@ STR_1037    :Ladda Landskap
 STR_1038    :Omvandla sparat spel till scenario
 STR_1039    :Installera ny bandesign
 STR_1040    :Spara Spel
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
-STR_1044    :RollerCoaster Tycoon 2 Scenario File
-STR_1045    :RollerCoaster Tycoon 2 Landscape File
-STR_1046    :RollerCoaster Tycoon 2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}åkturer/attraktioner in park
-STR_1054    :{SMALLFONT}{BLACK}Name Åktur/attraktion
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Åktur/attraktion name
-STR_1058    :Enter new name for this Åktur/attraktion:-
-STR_1059    :Can't rename Åktur/attraktion...
-STR_1060    :Invalid Åktur/attraktion name
-STR_1061    :Normal mode
-STR_1062    :Continuous circuit mode
-STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
-STR_1065    :Shuttle mode
-STR_1066    :Boat hire mode
-STR_1067    :Upward launch
-STR_1068    :Rotating lift mode
-STR_1069    :Station to station mode
-STR_1070    :Single Åktur per admission
-STR_1071    :Unlimited åkturer per admission
-STR_1072    :Maze mode
-STR_1073    :Race mode
-STR_1074    :Bumper-car mode
-STR_1075    :Swing mode
-STR_1076    :Shop Stånd mode
-STR_1077    :Rotation mode
-STR_1078    :Forward rotation
-STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
-STR_1082    :Space rings mode
-STR_1083    :Beginners mode
-STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill Åkturrs{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
-STR_1088    :Intense mode
-STR_1089    :Berserk mode
-STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
-STR_1092    :Downward launch
-STR_1093    :Crooked house mode
-STR_1094    :Freefall drop mode
-STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
-STR_1097    :Powered launch block sectioned mode
-STR_1098    :Moving to end of {POP16}{STRINGID}
-STR_1099    :Waiting for passengers at {POP16}{STRINGID}
-STR_1100    :Waiting to depart {POP16}{STRINGID}
-STR_1101    :Departing {POP16}{STRINGID}
-STR_1102    :Traveling at {VELOCITY}
-STR_1103    :Arriving at {POP16}{STRINGID}
-STR_1104    :Unloading passengers at {POP16}{STRINGID}
-STR_1105    :Traveling at {VELOCITY}
-STR_1106    :Crashing!
-STR_1107    :Crashed!
-STR_1108    :Traveling at {VELOCITY}
-STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
-STR_1112    :Operating
+STR_1041    :Spara Scenario
+STR_1042    :Spara Landskap
+STR_1043    :RollerCoaster Tycoon 2 Sparat Spel
+STR_1044    :RollerCoaster Tycoon 2 Sparat Scenario
+STR_1045    :RollerCoaster Tycoon 2 Sparat Landskap
+STR_1046    :RollerCoaster Tycoon 2 Sparad Bandesign
+STR_1047    :Misslyckades med att spara spelet!
+STR_1048    :Misslyckades med att spara scenario!
+STR_1049    :Misslyckades med att spara landskap!
+STR_1050    :Misslyckades att ladda...{NEWLINE}Filen innehåller ogiltig data!
+STR_1051    :Dölj Stödpelare
+STR_1052    :Dölj Besökare
+STR_1053    :{SMALLFONT}{BLACK}Åkturer/attraktioner i parken
+STR_1054    :{SMALLFONT}{BLACK}Namnge åktur/attraktion
+STR_1055    :{SMALLFONT}{BLACK}Namnge person
+STR_1056    :{SMALLFONT}{BLACK}Namnge anställd
+STR_1057    :Åkturens/attraktionens namn
+STR_1058    :Skriv in ett nytt namn för den här åkturen/attraktionen:-
+STR_1059    :Kan inte namnge åktur/attraktion...
+STR_1060    :Ogiltigt åktur/attraktionsnamn
+STR_1061    :Normalt läge
+STR_1062    :Flervarvsläge
+STR_1063    :Reverse-Incline launched shuttle mode TODO
+STR_1064    :Accelererad start
+STR_1065    :Pendlarläge
+STR_1066    :Uthyrning
+STR_1067    :Uppskjut
+STR_1068    :Roterande hiss
+STR_1069    :Station till station
+STR_1070    :En åktur per biljett
+STR_1071    :Oändligt med åkturer per biljett
+STR_1072    :Labyrint
+STR_1073    :Rallyläge
+STR_1074    :Krockbilar
+STR_1075    :Svängläge
+STR_1076    :Stånd
+STR_1077    :Rotationsläge
+STR_1078    :Rotation framåt
+STR_1079    :Rotation bakåt
+STR_1080    :Film: {ENDQUOTES}Glödande Glajjor{ENDQUOTES}
+STR_1081    :3D-film: {ENDQUOTES}Mussvansar{ENDQUOTES}
+STR_1082    :Rymdringar
+STR_1083    :Nybörjarläge
+STR_1084    :LIM-accelererad start
+STR_1085    :Film: {ENDQUOTES}Spänning i Farten{ENDQUOTES}
+STR_1086    :3D film: {ENDQUOTES}Stormjägarna{ENDQUOTES}
+STR_1087    :3D film: {ENDQUOTES}Rymdrädarna{ENDQUOTES}
+STR_1088    :Intensivt läge
+STR_1089    :Berserkläge
+STR_1090    :Spökhuset
+STR_1091    :Circusvisning
+STR_1092    :Nedåtriktad start
+STR_1093    :Snea huset
+STR_1094    :Fritt fall
+STR_1095    :Blockavdelat flervarvsläge
+STR_1096    :Motoriserad start
+STR_1097    :Blockavdelad motoriserad start
+STR_1098    :Rör sig mot slutet av {POP16}{STRINGID}
+STR_1099    :Väntar på passagerare vid {POP16}{STRINGID}
+STR_1100    :Väntar på avgång vid {POP16}{STRINGID}
+STR_1101    :Avgår {POP16}{STRINGID}
+STR_1102    :Åker i {VELOCITY}
+STR_1103    :Anländer vid {POP16}{STRINGID}
+STR_1104    :Släpper av passagerare vid {POP16}{STRINGID}
+STR_1105    :Åker i {VELOCITY}
+STR_1106    :Kraschar!
+STR_1107    :Kraschat!
+STR_1108    :Åker i {VELOCITY}
+STR_1109    :Svingar
+STR_1110    :Roterar
+STR_1111    :Roterar
+STR_1112    :Pågår
 STR_1113    :Showing film
 STR_1114    :Rotating
-STR_1115    :Operating
-STR_1116    :Operating
-STR_1117    :Doing circus show
-STR_1118    :Operating
-STR_1119    :Waiting for cable lift
-STR_1120    :Traveling at {VELOCITY}
-STR_1121    :Stopping
-STR_1122    :Waiting for passengers
-STR_1123    :Waiting to start
-STR_1124    :Starting
-STR_1125    :Operating
-STR_1126    :Stopping
-STR_1127    :Unloading passengers
-STR_1128    :Stopped by block brakes
-STR_1129    :All vehicles in same colors
-STR_1130    :Different colors per {STRINGID}
-STR_1131    :Different colors per vehicle
-STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vehicle {POP16}{COMMA16}
+STR_1115    :Pågår
+STR_1116    :Pågår
+STR_1117    :Circusshow pågår
+STR_1118    :Pågår
+STR_1119    :Väntar på linbanevagn
+STR_1120    :Åker i {VELOCITY}
+STR_1121    :Stoppar
+STR_1122    :Väntar på passagerare
+STR_1123    :Väntar på att starta
+STR_1124    :Startar
+STR_1125    :Pågår
+STR_1126    :Stoppar
+STR_1127    :Släpper av passagerare
+STR_1128    :Stoppad av bromsblock
+STR_1129    :Alla fordon i samma färg
+STR_1130    :Olika färg per {STRINGID}
+STR_1131    :Olika färg per fordon
+STR_1132    :Fordon {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Fordon {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Select main color
-STR_1137    :{SMALLFONT}{BLACK}Select additional color 1
-STR_1138    :{SMALLFONT}{BLACK}Select additional color 2
-STR_1139    :{SMALLFONT}{BLACK}Select support structure color
-STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
-STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1136    :{SMALLFONT}{BLACK}Välj huvudfärg
+STR_1137    :{SMALLFONT}{BLACK}Välj andra färg
+STR_1138    :{SMALLFONT}{BLACK}Välj tredje färg
+STR_1139    :{SMALLFONT}{BLACK}Välj färg för stödpelare
+STR_1140    :{SMALLFONT}{BLACK}Välj färgpalett för fordon
+STR_1141    :{SMALLFONT}{BLACK}Välj vilket fordon/tåg som ska modifieras
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this Åktur/attraktion...
-STR_1145    :Can't build/move exit for this Åktur/attraktion...
-STR_1146    :Entrance not yet built
-STR_1147    :Exit not yet built
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
-STR_1151    :Full load
-STR_1152    :Any load
-STR_1153    :Height Marks on Åktur Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+STR_1144    :Kan inte bygga/flytta ingången för den här åkturen/attraktionen...
+STR_1145    :Kan inte bygga/flytta utgången för den här åkturen/attraktionen...
+STR_1146    :Ingången är inte byggd
+STR_1147    :Utgången är inte byggd
+STR_1148    :En kvarts fullt
+STR_1149    :Halvfullt
+STR_1150    :Trekvarts fullt
+STR_1151    :Fullt
+STR_1152    :Minst en person
+STR_1153    :Höjdmarkeringar på Åkturer
+STR_1154    :Höjdmarkeringar på Land
+STR_1155    :Höjdmarkeringar på Väg
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place dekorationer, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1158    :Kan inte ta bort detta...
+STR_1159    :{SMALLFONT}{BLACK}Placera dekorationer, trädgårdar, och andra tillbehör
+STR_1160    :{SMALLFONT}{BLACK}Skapa/justera sjöar och vatten
+STR_1161    :Kan inte placera detta här...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Höger-Click to Modify)
 STR_1164    :{STRINGID}{NEWLINE}(Höger-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1166    :Kan inte sänka vattennivån...
+STR_1167    :Kan inte höja vattennivån...
+STR_1168    :Inställningar
+STR_1169    :(Inga) TODO: Ingen?
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
