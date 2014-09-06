@@ -700,30 +700,29 @@ static void window_scenery_update(rct_window *w)
 	if (!window_scenery_is_scenery_tool_active())
 		window_close(w);
 	
-	if (RCT2_GLOBAL(0x00F64F19, uint8) != 1) {
+	if (RCT2_GLOBAL(0x00F64F19, uint8) == 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
-		return;
-	}
+	} else {
+		uint16 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
+		sint16 tabSelectedSceneryId = RCT2_ADDRESS(0x00F64EDD, sint16)[tabIndex];
 
-	uint16 tabIndex = RCT2_GLOBAL(0x00F64EDC, uint8);
-	sint16 tabSelectedSceneryId = RCT2_ADDRESS(0x00F64EDD, sint16)[tabIndex];
-	if (tabSelectedSceneryId == -1)
-		return;
-
-	if (tabSelectedSceneryId > 0x400) { // banner
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x18;
-	} else if (tabSelectedSceneryId > 0x300) { // large scenery
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
-			g_largeSceneryEntries[tabSelectedSceneryId - 0x300]->large_scenery.tool_id;
-	} else if (tabSelectedSceneryId > 0x200) { // wall
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
-			g_wallSceneryEntries[tabSelectedSceneryId - 0x200]->wall.tool_id;
-	} else if (tabSelectedSceneryId > 0x100) { // path bit
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
-			g_pathBitSceneryEntries[tabSelectedSceneryId - 0x100]->path_bit.tool_id;
-	} else { // small scenery
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
-			g_smallSceneryEntries[tabSelectedSceneryId]->small_scenery.tool_id;
+		if (tabSelectedSceneryId != -1) {
+			if (tabSelectedSceneryId > 0x400) { // banner
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x18;
+			} else if (tabSelectedSceneryId > 0x300) { // large scenery
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+					g_largeSceneryEntries[tabSelectedSceneryId - 0x300]->large_scenery.tool_id;
+			} else if (tabSelectedSceneryId > 0x200) { // wall
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+					g_wallSceneryEntries[tabSelectedSceneryId - 0x200]->wall.tool_id;
+			} else if (tabSelectedSceneryId > 0x100) { // path bit
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+					g_pathBitSceneryEntries[tabSelectedSceneryId - 0x100]->path_bit.tool_id;
+			} else { // small scenery
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+					g_smallSceneryEntries[tabSelectedSceneryId]->small_scenery.tool_id;
+			}
+		}
 	}
 }
 
