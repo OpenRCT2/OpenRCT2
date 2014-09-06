@@ -1,5 +1,5 @@
-/*****************************************************************************
-* Copyright (c) 2014 Maciek Baron, Daniel Tar
+﻿/*****************************************************************************
+* Copyright (c) 2014 Maciek Baron, Dániel Tar
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -171,11 +171,7 @@ void window_staff_open()
 	window->colours[2] = 4;
 }
 
-void window_staff_cancel_tools() {
-	rct_window *w;
-
-	window_get_register(w);
-
+void window_staff_cancel_tools(rct_window *w) {
 	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
 	int toolWindowNumber = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber);
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
@@ -264,7 +260,7 @@ static void window_staff_resize()
 *
 *  rct2: 0x006BD971
 */
-static void window_staff_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_staff_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
 	short newSelectedTab;
 	int eax;
