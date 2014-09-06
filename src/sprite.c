@@ -112,7 +112,7 @@ void reset_0x69EBE4(){
 */
 rct_sprite *create_sprite(uint8 bl)
 {
-	enum SPRITE_LINKEDLIST_OFFSET linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_FLOATING_UNKNOWN; // cl
+	SPRITE_LINKEDLIST_OFFSET linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_UNKNOWN; // cl
 
 	if ((bl & 2) != 0)
 	{
