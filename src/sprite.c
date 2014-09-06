@@ -112,7 +112,7 @@ void reset_0x69EBE4(){
 */
 rct_sprite *create_sprite(uint8 bl)
 {
-	int linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_FLOATING_UNKNOWN; // cl
+	enum SPRITE_LINKEDLIST_OFFSET linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_FLOATING_UNKNOWN; // cl
 
 	if ((bl & 2) != 0)
 	{
@@ -132,7 +132,7 @@ rct_sprite *create_sprite(uint8 bl)
 
 	rct_unk_sprite *sprite = &(g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)]).unknown;
 
-	move_sprite_to_list((rct_sprite *)sprite, linkedListTypeOffset);
+	move_sprite_to_list((rct_sprite *)sprite, (uint8)linkedListTypeOffset);
 
 	sprite->x = SPRITE_LOCATION_NULL;
 	sprite->y = SPRITE_LOCATION_NULL;
