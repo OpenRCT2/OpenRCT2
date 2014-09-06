@@ -45,6 +45,7 @@
     <ClInclude Include="..\src\ride_ratings.h" />
     <ClInclude Include="..\src\sawyercoding.h" />
     <ClInclude Include="..\src\scenario.h" />
+    <ClInclude Include="..\src\scenery.h" />
     <ClInclude Include="..\src\screenshot.h" />
     <ClInclude Include="..\src\sprite.h" />
     <ClInclude Include="..\src\sprites.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="..\src\window_tooltip.c" />
     <ClCompile Include="..\src\window_water.c" />
     <ClCompile Include="..\src\staff.c" />
+    <ClCompile Include="..\src\window_scenery.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />

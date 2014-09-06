@@ -113,19 +113,19 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
 		x = y - x;
-		y = y / 2 + start_x / 2 - z;
+		y = (y + start_x) / 2 - z;
 		break;
 	case 1:
 		x = -y - x;
-		y = y / 2 - start_x / 2 - z;
+		y = (y - start_x) / 2 - z;
 		break;
 	case 2:
 		x = -y + x;
-		y = -y / 2 - start_x / 2 - z;
+		y = (-y - start_x) / 2 - z;
 		break;
 	case 3:
 		x = y + x;
-		y = -y / 2 + start_x / 2 - z;
+		y = (-y + start_x) / 2 - z;
 		break;
 	}
 
@@ -221,8 +221,8 @@ void viewport_update_pointers()
 	*vp = NULL;
 }
 
-void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
-	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, &ecx, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
+void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
+	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, (int*)&z, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 
 	sint16 start_x = *x;
 	sint16 start_y = *y;
@@ -262,6 +262,7 @@ void sub_689174(sint16* x, sint16* y, uint8 curr_rotation){
 		}
 		break;
 	}
+	*z = height;
 }
 
 /**
@@ -296,11 +297,12 @@ void viewport_update_position(rct_window *window)
 
 	sint16 x = viewport->view_width / 2 + window->saved_view_x;
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
+	sint16 z;
 
 	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	sub_689174(&x, &y, curr_rotation);
+	sub_689174(&x, &y, &z, curr_rotation);
 	
-	RCT2_CALLPROC_X(0x006E7A15, x, y, 0, 0, (int)window, (int)viewport, 0);
+	RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
 
 	//Clamp to the map minimum value
 	int at_map_edge = 0;
@@ -1037,5 +1039,52 @@ void hide_construction_rights()
 				window_invalidate(mainWindow);
 			}
 		}
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006CB70A
+ */
+void viewport_set_visibility(uint8 mode)
+{
+        rct_window* window = window_get_main();
+
+        if(window != NULL) {
+                rct_viewport* edi = window->viewport;
+                uint32 invalidate = 0;
+
+                switch(mode) {
+                        case 0: { //Set all these flags to 0, and invalidate if any were active
+                                uint16 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
+                                        VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
+                                        VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
+                                        VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
+                                        VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
+
+                                invalidate += edi->flags & mask;
+                                edi->flags &= ~mask;
+                                break;
+                        }
+                        case 1: //6CB79D
+                        case 4: //6CB7C4
+                                //Set underground on, invalidate if it was off
+                                invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                                edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                                break;
+                        case 2: //6CB7EB
+                                //Set track heights on, invalidate if off
+                                invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+                                edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
+                                break;
+                        case 3: //6CB7B1
+                        case 5: //6CB7D8
+                                //Set underground off, invalidate if it was on
+                                invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                                edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                                break;
+                }
+                if (invalidate != 0)
+			window_invalidate(window);
 	}
 }

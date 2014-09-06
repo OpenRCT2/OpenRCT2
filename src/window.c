@@ -21,7 +21,9 @@
 #include <string.h>
 #include "addresses.h"
 #include "audio.h"
+#include "game.h"
 #include "gfx.h"
+#include "map.h"
 #include "osinterface.h"
 #include "rct2.h"
 #include "widget.h"
@@ -963,7 +965,49 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
  */
 void window_rotate_camera(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, (int)w, 0, 0);
+
+	rct_viewport *viewport = w->viewport;
+	if (viewport == NULL)
+		return;
+
+	sint16 x = (viewport->width >> 1) + viewport->x;
+	sint16 y = (viewport->height >> 1) + viewport->y;
+	sint16 z;
+
+	uint8 rot = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+
+	int ecx, edx, esi, edi = (int)viewport, ebp;
+	//has something to do with checking if middle of the viewport is obstructed
+	RCT2_CALLFUNC_X(0x00688972, (int*)&x, (int*)&y, &ecx, &edx, &esi, &edi, &ebp);
+	rct_viewport *other = (rct_viewport*)edi;
+
+	// other != viewport probably triggers on viewports in ride or guest window?
+	// x is 0x8000 if middle of viewport is obstructed by another window?
+	if (x == (sint16)SPRITE_LOCATION_NULL || other != viewport){
+		x = (viewport->view_width >> 1) + viewport->view_x;
+		y = (viewport->view_height >> 1) + viewport->view_y;
+
+		sub_689174(&x, &y, &z, rot);
+	} else {
+		z = map_element_height(x, y);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (rot + 1) % 4;
+
+	int new_x, new_y;
+	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
+
+	w->saved_view_x = new_x;
+	w->saved_view_y = new_y;
+	viewport->view_x = new_x;
+	viewport->view_y = new_y;
+
+	window_invalidate(w);
+
+	RCT2_CALLPROC_EBPSAFE(0x00688956);
+
+	sub_0x0069E9A7();
 }
 
 /**

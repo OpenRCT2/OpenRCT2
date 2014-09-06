@@ -111,14 +111,12 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx, _edx, _esi, _edi, _ebp;
-	_esi = 0;
+	int _eax, _ebx, _ecx = _cx, _edx;
 	_ebx = _bl;
-	RCT2_CALLFUNC_X(0x0069EC6B, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
-	rct_peep* newPeep = (rct_peep*)_esi;
 
-	//if ((newPeep = create_peep_sprite(_bl)) == NULL)
-	if (_esi == 0)
+	rct_peep* newPeep = &(create_sprite(_bl)->peep);
+
+	if (newPeep == NULL)
 	{
 		*ebx = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_PEOPLE_IN_GAME;
