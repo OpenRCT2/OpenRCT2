@@ -60,16 +60,6 @@ typedef struct rct_sound {
 } rct_sound;
 
 typedef struct {
-	uint16 var_0;
-	uint16 channels;
-	uint32 samples;
-	uint32 var_8;
-	uint16 bytes;
-	uint16 bits;
-	uint16 var_E;
-} rct_audio_info;
-
-typedef struct {
 	uint32 var_0;
 	uint32 var_4;
 	char filename[0x108];			// 0x8

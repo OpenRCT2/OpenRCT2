@@ -215,14 +215,14 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 		}
 		dsdevice = &RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, rct_dsdevice*)[device];
 	}
-	memset(&RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info), 0, sizeof(rct_audio_info));
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).var_0 = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).channels = channels;
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).samples = samples;
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).var_8 = samples * RCT2_GLOBAL(0x01425B4C, uint16);
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).bytes = bits * channels / 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).bits = bits;
-	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, rct_audio_info).var_E = 0;
+	memset(&RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX), 0, sizeof(WAVEFORMATEX));
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).wFormatTag = 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).nChannels = channels;
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).nSamplesPerSec = samples;
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).nAvgBytesPerSec = samples * RCT2_GLOBAL(0x01425B4C, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).nBlockAlign = bits * channels / 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).wBitsPerSample = bits;
+	RCT2_GLOBAL(RCT2_ADDRESS_AUDIO_INFO, WAVEFORMATEX).cbSize = 0;
 	DSBUFFERDESC bufferdesc;
 	memset(&bufferdesc, 0, sizeof(bufferdesc));
 	bufferdesc.dwSize = sizeof(bufferdesc);
@@ -466,8 +466,8 @@ int sub_4015E7(int channel)
 				} else {
 					sound_channel->var_168 = 1;
 					sound_channel->var_15C = read;
-					rct_audio_info* audio_info = sound_channel->hmem;
-					uint16 v = ((audio_info->var_E != 8) - 1) & 0x80;
+					LPWAVEFORMATEX waveformat = sound_channel->hmem;
+					uint16 v = ((waveformat->nBlockAlign != 8) - 1) & 0x80;
 					memset(&buf1[read], v, buf1size - r);
 				}
 			}
@@ -531,7 +531,7 @@ MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmcki
 	HMMIO hmmio1;
 	MMRESULT result;
 	MMCKINFO mmckinfo1;
-	rct_audio_info audio_info;
+	WAVEFORMATEX waveformat;
 
 	hmemold = hmem;
 	*hmem = 0;
@@ -555,8 +555,8 @@ MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmcki
 			result = 57601;
 			goto label20;
 		}
-		if (mmioRead(hmmio1, (HPSTR)&audio_info, 16) == 16) {
-			if (audio_info.var_0 == 1) {
+		if (mmioRead(hmmio1, (HPSTR)&waveformat, 16) == 16) {
+			if (waveformat.wFormatTag == 1) {
 				//strcpy(audio_info.var_0, "\x01");
 				hmem = 0;
 			label11:
@@ -566,7 +566,7 @@ MMRESULT mmio_open(char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmcki
 					result = 57344;
 					goto label20;
 				}
-				memcpy(hmemold2, &audio_info, 16);
+				memcpy(hmemold2, &waveformat, 16);
 				*((uint16*)*hmemold + 8) = (uint16)hmem;
 				if (!(uint16)hmem || mmioRead(hmmio1, (char*)*hmemold + 18, (uint16)hmem) == (uint16)hmem) {
 					result = mmioAscend(hmmio1, &mmckinfo1, 0);
