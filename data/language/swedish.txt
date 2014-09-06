@@ -69,7 +69,7 @@ STR_0064    :Åktur
 STR_0065    :Hängande balkbana
 STR_0066    :Åktur
 STR_0067    :Åktur
-STR_0068    :Heartline-rollbana
+STR_0068    :Skruvbana
 STR_0069    :Åktur
 STR_0070    :Åktur
 STR_0071    :Åktur
@@ -515,23 +515,23 @@ STR_0510    :
 STR_0511    :
 STR_0512    :
 STR_0513    :
-STR_0514    :Trains suspended beneath the Berg- och dalbana track swing out to the side around corners
+STR_0514    :Hängande tåg under banan svingar ut åt sidan i svängar
 STR_0515    :
-STR_0516    :A gentle Berg- och dalbana for people who haven't yet got the courage to face the larger Åkturs
-STR_0517    :Passengers Åktur in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a Balkbana track
-STR_0519    :Passengers Åktur in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0516    :En snäll berg- och dalbana för de som inte har mod nog att utmana större åkturer
+STR_0517    :Passagerare åker i miniaturtåg på en smal tågräls
+STR_0518    :Passagerare åker i elektriska tåg på en balkbana
+STR_0519    :Passagerare åker i små vagnar som hänger under en enkelspårig bana, fritt svingande från sida till sida i svängar
 STR_0520    :
 STR_0521    :
 STR_0522    :
-STR_0523    :Åkturrs travel slowly in powered vehicles along a track-based route
+STR_0523    :Passagerare åker sakta i motoriserade fordon på en spår-baserad väg
 STR_0524    :
 STR_0525    :
 STR_0526    :
-STR_0527    :A smooth steel-tracked Berg- och dalbana capable of vertical loops
+STR_0527    :En mjuk berg- och dalbana byggd av stål som kan göra vertikala loopar
 STR_0528    :
 STR_0529    :
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the Åktur to the other and back again
+STR_0530    :Vagnar hänger från en stålkabel som kör kontinuerligt från ena sidan åkturen till den andra, och sedan tillbaka igen
 STR_0531    :
 STR_0532    :
 STR_0533    :
@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :Vagnen acceleras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
 STR_0555    :
 STR_0556    :
 STR_0557    :
@@ -564,22 +564,22 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Sitting in comfortable trains with only simple lap restraints Åkturrs enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden Berg- och dalbana capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual Berg- och dalbana cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, Åkturrs are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0563    :Sittandes i bekväma vagnar njuter passagerare av enorma nedförsbackar och spännande svängar, samt mycket tid flygandes över topparna
+STR_0564    :Den här berg- och dalbanan i trä är snabb, tuff, högljudd, och ger en känsla av att tappa kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
+STR_0565    :En enkel berg- och dalbana i trä som bara har snälla backar och svängar. Vagnarna hålls på banan med sidofriktion på hjulen och gravitation
+STR_0566    :Individuella vagnar åker runt i en tät sicksack-bana med skarpa svängar och korta branta nedförsbackar
+STR_0567    :Passagerare sitter i säten på varsin sida av banan och vänds upp och ner medans de åker i branta fall och olika inversioner
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, Åkturrs experience the feeling of flight as they swoop through the air
+STR_0569    :Hängandes i speciella selar får passagerare känna på känslan av att flyga runt i luften
 STR_0570    :
 STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana tranporterar folk runt om i parken
 STR_0576    :
 STR_0577    :
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsbackar och skruvar
 STR_0579    :
 STR_0580    :
 STR_0581    :
@@ -587,7 +587,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Boat shaped cars run on Berg- och dalbana track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0586    :Båtformade vagnar åker på berg- och dalbanespår med snurriga svängar och branta nedförsbackar, men plumsar då och då ner i lugna vattensektioner
 STR_0587    :
 STR_0588    :
 STR_0589    :
@@ -600,265 +600,265 @@ STR_0595    :
 STR_0596    :
 STR_0597    :
 STR_0598    :
-STR_0599    :A compact Berg- och dalbana with individual cars and smooth twisting drops
+STR_0599    :En kompakt berg- och dalbana med individuella vagnar och mjuka snurrade nedförsbackar
 STR_0600    :
 STR_0601    :
 STR_0602    :
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
-STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
+STR_0603    :Gäst {INT32}
+STR_0604    :Gäst {INT32}
+STR_0605    :Gäst {INT32}
+STR_0606    :Gäst {INT32}
+STR_0607    :Gäst {INT32}
+STR_0608    :Gäst {INT32}
+STR_0609    :Gäst {INT32}
+STR_0610    :Gäst {INT32}
+STR_0611    :Gäst {INT32}
+STR_0612    :Gäst {INT32}
+STR_0613    :Gäst {INT32}
+STR_0614    :Gäst {INT32}
+STR_0615    :Gäst {INT32}
+STR_0616    :Gäst {INT32}
+STR_0617    :Gäst {INT32}
+STR_0618    :Gäst {INT32}
+STR_0619    :Gäst {INT32}
+STR_0620    :Gäst {INT32}
+STR_0621    :Gäst {INT32}
+STR_0622    :Gäst {INT32}
+STR_0623    :Gäst {INT32}
+STR_0624    :Gäst {INT32}
+STR_0625    :Gäst {INT32}
+STR_0626    :Gäst {INT32}
+STR_0627    :Gäst {INT32}
+STR_0628    :Gäst {INT32}
+STR_0629    :Gäst {INT32}
+STR_0630    :Gäst {INT32}
+STR_0631    :Gäst {INT32}
+STR_0632    :Gäst {INT32}
+STR_0633    :Gäst {INT32}
+STR_0634    :Gäst {INT32}
+STR_0635    :Gäst {INT32}
+STR_0636    :Gäst {INT32}
+STR_0637    :Gäst {INT32}
+STR_0638    :Gäst {INT32}
+STR_0639    :Gäst {INT32}
+STR_0640    :Gäst {INT32}
+STR_0641    :Gäst {INT32}
+STR_0642    :Gäst {INT32}
+STR_0643    :Gäst {INT32}
+STR_0644    :Gäst {INT32}
+STR_0645    :Gäst {INT32}
+STR_0646    :Gäst {INT32}
+STR_0647    :Gäst {INT32}
+STR_0648    :Gäst {INT32}
+STR_0649    :Gäst {INT32}
+STR_0650    :Gäst {INT32}
+STR_0651    :Gäst {INT32}
+STR_0652    :Gäst {INT32}
+STR_0653    :Gäst {INT32}
+STR_0654    :Gäst {INT32}
+STR_0655    :Gäst {INT32}
+STR_0656    :Gäst {INT32}
+STR_0657    :Gäst {INT32}
+STR_0658    :Gäst {INT32}
+STR_0659    :Gäst {INT32}
+STR_0660    :Gäst {INT32}
+STR_0661    :Gäst {INT32}
+STR_0662    :Gäst {INT32}
+STR_0663    :Gäst {INT32}
+STR_0664    :Gäst {INT32}
+STR_0665    :Gäst {INT32}
+STR_0666    :Gäst {INT32}
+STR_0667    :Gäst {INT32}
+STR_0668    :Gäst {INT32}
+STR_0669    :Gäst {INT32}
+STR_0670    :Gäst {INT32}
+STR_0671    :Gäst {INT32}
+STR_0672    :Gäst {INT32}
+STR_0673    :Gäst {INT32}
+STR_0674    :Gäst {INT32}
+STR_0675    :Gäst {INT32}
+STR_0676    :Gäst {INT32}
+STR_0677    :Gäst {INT32}
+STR_0678    :Gäst {INT32}
+STR_0679    :Gäst {INT32}
+STR_0680    :Gäst {INT32}
+STR_0681    :Gäst {INT32}
+STR_0682    :Gäst {INT32}
+STR_0683    :Gäst {INT32}
+STR_0684    :Gäst {INT32}
+STR_0685    :Gäst {INT32}
+STR_0686    :Gäst {INT32}
+STR_0687    :Gäst {INT32}
+STR_0688    :Gäst {INT32}
+STR_0689    :Gäst {INT32}
+STR_0690    :Gäst {INT32}
+STR_0691    :Gäst {INT32}
+STR_0692    :Gäst {INT32}
+STR_0693    :Gäst {INT32}
+STR_0694    :Gäst {INT32}
+STR_0695    :Gäst {INT32}
+STR_0696    :Gäst {INT32}
+STR_0697    :Gäst {INT32}
+STR_0698    :Gäst {INT32}
+STR_0699    :Gäst {INT32}
+STR_0700    :Gäst {INT32}
+STR_0701    :Gäst {INT32}
+STR_0702    :Gäst {INT32}
+STR_0703    :Gäst {INT32}
+STR_0704    :Gäst {INT32}
+STR_0705    :Gäst {INT32}
+STR_0706    :Gäst {INT32}
+STR_0707    :Gäst {INT32}
+STR_0708    :Gäst {INT32}
+STR_0709    :Gäst {INT32}
+STR_0710    :Gäst {INT32}
+STR_0711    :Gäst {INT32}
+STR_0712    :Gäst {INT32}
+STR_0713    :Gäst {INT32}
+STR_0714    :Gäst {INT32}
+STR_0715    :Gäst {INT32}
+STR_0716    :Gäst {INT32}
+STR_0717    :Gäst {INT32}
+STR_0718    :Gäst {INT32}
+STR_0719    :Gäst {INT32}
+STR_0720    :Gäst {INT32}
+STR_0721    :Gäst {INT32}
+STR_0722    :Gäst {INT32}
+STR_0723    :Gäst {INT32}
+STR_0724    :Gäst {INT32}
+STR_0725    :Gäst {INT32}
+STR_0726    :Gäst {INT32}
+STR_0727    :Gäst {INT32}
+STR_0728    :Gäst {INT32}
+STR_0729    :Gäst {INT32}
+STR_0730    :Gäst {INT32}
+STR_0731    :Gäst {INT32}
+STR_0732    :Gäst {INT32}
+STR_0733    :Gäst {INT32}
+STR_0734    :Gäst {INT32}
+STR_0735    :Gäst {INT32}
+STR_0736    :Gäst {INT32}
+STR_0737    :Gäst {INT32}
+STR_0738    :Gäst {INT32}
+STR_0739    :Gäst {INT32}
+STR_0740    :Gäst {INT32}
+STR_0741    :Gäst {INT32}
+STR_0742    :Gäst {INT32}
+STR_0743    :Gäst {INT32}
+STR_0744    :Gäst {INT32}
+STR_0745    :Gäst {INT32}
+STR_0746    :Gäst {INT32}
+STR_0747    :Gäst {INT32}
+STR_0748    :Gäst {INT32}
+STR_0749    :Gäst {INT32}
+STR_0750    :Gäst {INT32}
+STR_0751    :Gäst {INT32}
+STR_0752    :Gäst {INT32}
+STR_0753    :Gäst {INT32}
+STR_0754    :Gäst {INT32}
+STR_0755    :Gäst {INT32}
+STR_0756    :Gäst {INT32}
+STR_0757    :Gäst {INT32}
+STR_0758    :Gäst {INT32}
+STR_0759    :Gäst {INT32}
+STR_0760    :Gäst {INT32}
+STR_0761    :Gäst {INT32}
+STR_0762    :Gäst {INT32}
+STR_0763    :Gäst {INT32}
+STR_0764    :Gäst {INT32}
+STR_0765    :Gäst {INT32}
+STR_0766    :Gäst {INT32}
+STR_0767    :Gäst {INT32}
+STR_0768    :Vaktmästare {INT32}
+STR_0769    :Mekaniker {INT32}
+STR_0770    :Säkerhetsvakt {INT32}
+STR_0771    :Underhållare {INT32}
+STR_0772    :Namnlös park{POP16}{POP16}
+STR_0773    :Namnlös park{POP16}{POP16}
+STR_0774    :Namnlös park{POP16}{POP16}
+STR_0775    :Namnlös park{POP16}{POP16}
+STR_0776    :Namnlös park{POP16}{POP16}
+STR_0777    :Namnlös park{POP16}{POP16}
+STR_0778    :Skylt
+STR_0779    :1
+STR_0780    :2
+STR_0781    :3
+STR_0782    :4
+STR_0783    :5
+STR_0784    :6
+STR_0785    :7
+STR_0786    :8
+STR_0787    :9
+STR_0788    :10
+STR_0789    :11
+STR_0790    :12
+STR_0791    :13
+STR_0792    :14
+STR_0793    :15
+STR_0794    :16
+STR_0795    :17
+STR_0796    :18
+STR_0797    :19
+STR_0798    :20
+STR_0799    :21
+STR_0800    :22
+STR_0801    :23
+STR_0802    :24
+STR_0803    :25
+STR_0804    :26
+STR_0805    :27
+STR_0806    :28
+STR_0807    :29
+STR_0808    :30
+STR_0809    :31
 STR_0810    :Jan
 STR_0811    :Feb
 STR_0812    :Mar
 STR_0813    :Apr
-STR_0814    :May
+STR_0814    :Maj
 STR_0815    :Jun
 STR_0816    :Jul
 STR_0817    :Aug
 STR_0818    :Sep
-STR_0819    :Oct
+STR_0819    :Okt
 STR_0820    :Nov
 STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0822    :Kan inte komma åt grafikfilen
+STR_0823    :Saknad eller otillgänglig datafil
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
-STR_0836    :Unable to start game in a minimized state
-STR_0837    :Unable to initialize graphics system
-STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-inStånd RollerCoaster Tycoon 2% and re-inStånd with the correct CD Key Code
+STR_0825    :Det valda namnet används redan
+STR_0826    :För många namn är definierade
+STR_0827    :Inte nog pengar - det behövs {CURRENCY2DP}
+STR_0828    :{SMALLFONT}{BLACK}Stäng fönster
+STR_0829    :{SMALLFONT}{BLACK}Fönstertitel - Drag för att flytta fönstret
+STR_0830    :{SMALLFONT}{BLACK}Zooma in
+STR_0831    :{SMALLFONT}{BLACK}Zooma ut
+STR_0832    :{SMALLFONT}{BLACK}Rotera vyn 90{DEGREE} medurs
+STR_0833    :{SMALLFONT}{BLACK}Pausa spelet
+STR_0834    :{SMALLFONT}{BLACK}Inställningar
+STR_0835    :Spelet kunde inte starta
+STR_0836    :Kan inte starta spelet minimerat
+STR_0837    :Kan inte initiera grafiksystemet
+STR_0838    :CD-nyckeln {INT32} är inte giltig för RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Var god avinstallera RollerCoaster Tycoon 2% och återinstallera med rätt CD-nyckel
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
-STR_0842    :640x480 full screen
-STR_0843    :800x600 full screen
-STR_0844    :1024x768 full screen
-STR_0845    :1152x864 full screen
-STR_0846    :1280x1024 full screen
-STR_0847    :About 'RollerCoaster Tycoon 2'
+STR_0841    :Skrivbordsfönster
+STR_0842    :640x480 helskärm
+STR_0843    :800x600 helskärm
+STR_0844    :1024x768 helskärm
+STR_0845    :1152x864 helskärm
+STR_0846    :1280x1024 helskärm
+STR_0847    :Om 'RollerCoaster Tycoon 2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:-
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alla rättigheter förbehålls
+STR_0851    :{WINDOW_COLOUR_2}Designat och programmerat av Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Grafik av Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Ljud och musik av Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Ytterligare ljud inspelade av David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representation av Jacqui Lyons från Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Tack till:-
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, och John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
 STR_0860    :{WINDOW_COLOUR_2}
@@ -1740,7 +1740,7 @@ STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
-STR_1739    :Race won by guest {INT32}
+STR_1739    :Race won by Gäst {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on Åktur:
