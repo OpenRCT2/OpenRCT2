@@ -1029,19 +1029,19 @@ STR_1024    :{COMMA16} vagn per tåg
 STR_1025    :{COMMA16} vagnar per tåg
 STR_1026    :Stationsplattformen är för lång!
 STR_1027    :{SMALLFONT}{BLACK}Hitta detta på huvudvyn
-STR_1028    :Off edge of map!
-STR_1029    :Cannot build partly above and partly below water!
-STR_1030    :Can only build this underwater!
-STR_1031    :Can't build this underwater!
-STR_1032    :Can only build this on water!
-STR_1033    :Can only build this above ground!
-STR_1034    :Can only build this on land!
-STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :InStånd new track design
-STR_1040    :Save Game
+STR_1028    :Utanför kartan!
+STR_1029    :Kan inte bygga både ovan och under vatten samtidigt!
+STR_1030    :Kan endast bygga detta under vatten!
+STR_1031    :Kan inte bygga detta under vatten!
+STR_1032    :Kan endast bygga detta på vatten!
+STR_1033    :Kan endast bygga detta ovanför land!
+STR_1034    :Kan endast bygga detta på land!
+STR_1035    :Lokala myndigheter tillåter inte konstruktion ovanför trähöjd!
+STR_1036    :Ladda Spel
+STR_1037    :Ladda Landskap
+STR_1038    :Omvandla sparat spel till scenario
+STR_1039    :Installera ny bandesign
+STR_1040    :Spara Spel
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
 STR_1043    :RollerCoaster Tycoon 2 Saved Game
