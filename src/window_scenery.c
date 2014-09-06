@@ -441,12 +441,12 @@ void window_scenery_open()
 /*
  * rct2: 0x0066DB3D
 */
-bool window_scenery_is_tool_active() {
+bool window_scenery_is_scenery_tool_active() {
 	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
 	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, rct_windownumber);
 
 	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9)
+		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
 			return true;
 
 	return false;
@@ -465,7 +465,7 @@ void window_scenery_close() {
 	hide_gridlines();
 	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
 
-	if (window_scenery_is_tool_active())
+	if (window_scenery_is_scenery_tool_active())
 		tool_cancel();
 }
 
@@ -697,9 +697,8 @@ static void window_scenery_update(rct_window *w)
 
 	gfx_invalidate_screen();
 	
-	// todo
-	//if (window_scenery_is_tool_active())
-		//window_close(w);
+	if (!window_scenery_is_scenery_tool_active())
+		window_close(w);
 	
 	if (RCT2_GLOBAL(0x00F64F19, uint8) != 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
