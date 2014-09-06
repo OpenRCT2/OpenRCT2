@@ -619,13 +619,13 @@ static void window_scenery_dropdown() {
 		return;
 
 	if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON) {
-		RCT2_GLOBAL(0x00F64F06, uint8) = dropdownIndex;
+		RCT2_GLOBAL(0x00F64F06, uint8) = (uint8)dropdownIndex;
 	}
 	else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON) {
-		RCT2_GLOBAL(0x00F64F07, uint8) = dropdownIndex;
+		RCT2_GLOBAL(0x00F64F07, uint8) = (uint8)dropdownIndex;
 	}
 	else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON) {
-		RCT2_GLOBAL(0x00F64F08, uint8) = dropdownIndex;
+		RCT2_GLOBAL(0x00F64F08, uint8) = (uint8)dropdownIndex;
 	}
 
 	window_invalidate(w);
