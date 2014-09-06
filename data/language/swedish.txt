@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Ride
-STR_0003    :Ride
-STR_0004    :Suspended Swinging Coaster
-STR_0005    :Ride
-STR_0006    :Junior Roller Coaster
-STR_0007    :Miniature Railway
-STR_0008    :Monorail
-STR_0009    :Mini Suspended Coaster
-STR_0010    :Ride
-STR_0011    :Ride
-STR_0012    :Ride
-STR_0013    :Car Ride
-STR_0014    :Ride
-STR_0015    :Ride
-STR_0016    :Ride
-STR_0017    :Looping Roller Coaster
-STR_0018    :Ride
-STR_0019    :Ride
-STR_0020    :Chairlift
-STR_0021    :Ride
-STR_0022    :Ride
-STR_0023    :Ride
-STR_0024    :Ride
-STR_0025    :Ride
-STR_0026    :Ride
-STR_0027    :Ride
-STR_0028    :Ride
-STR_0029    :Ride
-STR_0030    :Stall
-STR_0031    :Stall
-STR_0032    :Stall
-STR_0033    :Stall
-STR_0034    :Stall
-STR_0035    :Ride
-STR_0036    :Stall
+STR_0002    :Åktur
+STR_0003    :Åktur
+STR_0004    :Hängande svängande bana
+STR_0005    :Åktur
+STR_0006    :Junior berg- och dalbana
+STR_0007    :Miniatur-tåg
+STR_0008    :Balkbana
+STR_0009    :Liten hängande bana
+STR_0010    :Åktur
+STR_0011    :Åktur
+STR_0012    :Åktur
+STR_0013    :Bilåktur
+STR_0014    :Åktur
+STR_0015    :Åktur
+STR_0016    :Åktur
+STR_0017    :Loopande berg- och dalbana
+STR_0018    :Åktur
+STR_0019    :Åktur
+STR_0020    :Stolslift
+STR_0021    :Åktur
+STR_0022    :Åktur
+STR_0023    :Åktur
+STR_0024    :Åktur
+STR_0025    :Åktur
+STR_0026    :Åktur
+STR_0027    :Åktur
+STR_0028    :Åktur
+STR_0029    :Åktur
+STR_0030    :Stånd
+STR_0031    :Stånd
+STR_0032    :Stånd
+STR_0033    :Stånd
+STR_0034    :Stånd
+STR_0035    :Åktur
+STR_0036    :Stånd
 STR_0037    :Kiosk
-STR_0038    :Restroom
-STR_0039    :Ride
-STR_0040    :Ride
-STR_0041    :Ride
-STR_0042    :Ride
-STR_0043    :Ride
-STR_0044    :Reverse Freefall Coaster
+STR_0038    :Toalett
+STR_0039    :Åktur
+STR_0040    :Åktur
+STR_0041    :Åktur
+STR_0042    :Åktur
+STR_0043    :Åktur
+STR_0044    :Bakvänd fritt fall-bana
 STR_0045    :Lift
-STR_0046    :Ride
-STR_0047    :Ride
-STR_0048    :Ride
-STR_0049    :Ride
-STR_0050    :Ride
-STR_0051    :Ride
-STR_0052    :Ride
-STR_0053    :Hyper-Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
-STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Ride
-STR_0059    :Aerial Inverted Roller Coaster
-STR_0060    :Ride
-STR_0061    :Ride
-STR_0062    :Ride
-STR_0063    :Ride
-STR_0064    :Ride
-STR_0065    :Suspended Monorail
-STR_0066    :Ride
-STR_0067    :Ride
-STR_0068    :Heartline Twister Coaster
-STR_0069    :Ride
-STR_0070    :Ride
-STR_0071    :Ride
-STR_0072    :Ride
-STR_0073    :Ride
-STR_0074    :Ride
-STR_0075    :Ride
-STR_0076    :Water Coaster
-STR_0077    :Ride
-STR_0078    :Ride
-STR_0079    :Ride
-STR_0080    :Ride
-STR_0081    :Ride
-STR_0082    :Ride
-STR_0083    :Ride
-STR_0084    :Ride
-STR_0085    :Ride
-STR_0086    :Ride
-STR_0087    :Ride
-STR_0088    :Ride
-STR_0089    :Mini Roller Coaster
-STR_0090    :Ride
-STR_0091    :Ride
-STR_0092    :Ride
+STR_0046    :Åktur
+STR_0047    :Åktur
+STR_0048    :Åktur
+STR_0049    :Åktur
+STR_0050    :Åktur
+STR_0051    :Åktur
+STR_0052    :Åktur
+STR_0053    :Hyper-snurr berg- och dalbana
+STR_0054    :Berg- och dalbana i trä
+STR_0055    :Sidofriktion berg- och dalbana
+STR_0056    :Vilda Musen
+STR_0057    :Flerdimensionell berg- och dalbana
+STR_0058    :Åktur
+STR_0059    :Inverterad berg- och dalbana
+STR_0060    :Åktur
+STR_0061    :Åktur
+STR_0062    :Åktur
+STR_0063    :Åktur
+STR_0064    :Åktur
+STR_0065    :Hängande balkbana
+STR_0066    :Åktur
+STR_0067    :Åktur
+STR_0068    :Heartline-rollbana
+STR_0069    :Åktur
+STR_0070    :Åktur
+STR_0071    :Åktur
+STR_0072    :Åktur
+STR_0073    :Åktur
+STR_0074    :Åktur
+STR_0075    :Åktur
+STR_0076    :Vattenbana
+STR_0077    :Åktur
+STR_0078    :Åktur
+STR_0079    :Åktur
+STR_0080    :Åktur
+STR_0081    :Åktur
+STR_0082    :Åktur
+STR_0083    :Åktur
+STR_0084    :Åktur
+STR_0085    :Åktur
+STR_0086    :Åktur
+STR_0087    :Åktur
+STR_0088    :Åktur
+STR_0089    :Mini berg- och dalbana
+STR_0090    :Åktur
+STR_0091    :Åktur
+STR_0092    :Åktur
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -515,23 +515,23 @@ STR_0510    :
 STR_0511    :
 STR_0512    :
 STR_0513    :
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
+STR_0514    :Trains suspended beneath the Berg- och dalbana track swing out to the side around corners
 STR_0515    :
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0516    :A gentle Berg- och dalbana for people who haven't yet got the courage to face the larger Åkturs
+STR_0517    :Passengers Åktur in miniature trains along a narrow-gauge railway track
+STR_0518    :Passengers travel in electric trains along a Balkbana track
+STR_0519    :Passengers Åktur in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
 STR_0520    :
 STR_0521    :
 STR_0522    :
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
+STR_0523    :Åkturrs travel slowly in powered vehicles along a track-based route
 STR_0524    :
 STR_0525    :
 STR_0526    :
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
+STR_0527    :A smooth steel-tracked Berg- och dalbana capable of vertical loops
 STR_0528    :
 STR_0529    :
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
+STR_0530    :Cars hang from a steel cable which runs continuously from one end of the Åktur to the other and back again
 STR_0531    :
 STR_0532    :
 STR_0533    :
@@ -564,13 +564,13 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_0563    :Sitting in comfortable trains with only simple lap restraints Åkturrs enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0565    :A simple wooden Berg- och dalbana capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
+STR_0566    :Individual Berg- och dalbana cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
+STR_0567    :Sitting in seats suspended either side of the track, Åkturrs are pitched head-over-heels while they plunge down steep drops and travel through various inversions
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :Riding in special harnesses below the track, Åkturrs experience the feeling of flight as they swoop through the air
 STR_0570    :
 STR_0571    :
 STR_0572    :
@@ -587,7 +587,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0586    :Boat shaped cars run on Berg- och dalbana track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_0587    :
 STR_0588    :
 STR_0589    :
@@ -600,7 +600,7 @@ STR_0595    :
 STR_0596    :
 STR_0597    :
 STR_0598    :
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0599    :A compact Berg- och dalbana with individual cars and smooth twisting drops
 STR_0600    :
 STR_0601    :
 STR_0602    :
@@ -839,7 +839,7 @@ STR_0834    :{SMALLFONT}{BLACK}Disk and game options
 STR_0835    :Game initialization failed
 STR_0836    :Unable to start game in a minimized state
 STR_0837    :Unable to initialize graphics system
-STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
+STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-inStånd RollerCoaster Tycoon 2% and re-inStånd with the correct CD Key Code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0841    :Desktop window
@@ -889,7 +889,7 @@ STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :Quit Game
 STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
+STR_0888    :Quit Berg- och dalbana Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :Screenshot
@@ -935,15 +935,15 @@ STR_0930    :'S' Bend (right)
 STR_0931    :Vertical Loop (left)
 STR_0932    :Vertical Loop (right)
 STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
+STR_0934    :Åktur entrance in the way
+STR_0935    :Åktur exit in the way
 STR_0936    :Park entrance in the way
 STR_0937    :{SMALLFONT}{BLACK}View options
 STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
 STR_0939    :Underground/Inside View
 STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Rides
+STR_0942    :See-Through Åkturs
 STR_0943    :See-Through Scenery
 STR_0944    :Save
 STR_0945    :Don't Save
@@ -975,31 +975,31 @@ STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
 STR_0972    :Cancel
 STR_0973    :OK
-STR_0974    :Rides
-STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
+STR_0974    :Åkturs
+STR_0975    :Shops and Stånds
+STR_0976    :Toaletts and Information Kiosks
+STR_0977    :New Transport Åkturs
+STR_0978    :New Gentle Åkturs
+STR_0979    :New Berg- och dalbanas
+STR_0980    :New Thrill Åkturs
+STR_0981    :New Water Åkturs
+STR_0982    :New Shops & Stånds
 STR_0983    :Research & Development
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :Too many Åkturs/attractions
+STR_0988    :Can't create new Åktur/attraction...
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Construction
 STR_0991    :Station platform
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
+STR_0992    :{SMALLFONT}{BLACK}Demolish entire Åktur/attraction
+STR_0993    :Demolish Åktur/attraction
 STR_0994    :Demolish
 STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
 STR_0996    :Overall view
 STR_0997    :{SMALLFONT}{BLACK}View selection
-STR_0998    :No more stations allowed on this ride
+STR_0998    :No more stations allowed on this Åktur
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
@@ -1009,8 +1009,8 @@ STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
+STR_1008    :{SMALLFONT}{BLACK}Open, close, or test Åktur/attraction
+STR_1009    :{SMALLFONT}{BLACK}Open or close all Åkturs/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
 STR_1011    :Close all
 STR_1012    :Open all
@@ -1040,7 +1040,7 @@ STR_1035    :Local authority won't allow construction above tree-height!
 STR_1036    :Load Game
 STR_1037    :Load Landscape
 STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
+STR_1039    :InStånd new track design
 STR_1040    :Save Game
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
@@ -1054,14 +1054,14 @@ STR_1049    :Landscape save failed!
 STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
 STR_1051    :Invisible Supports
 STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
+STR_1053    :{SMALLFONT}{BLACK}Åkturs/attractions in park
+STR_1054    :{SMALLFONT}{BLACK}Name Åktur/attraction
 STR_1055    :{SMALLFONT}{BLACK}Name person
 STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:-
-STR_1059    :Can't rename ride/attraction...
-STR_1060    :Invalid ride/attraction name
+STR_1057    :Åktur/attraction name
+STR_1058    :Enter new name for this Åktur/attraction:-
+STR_1059    :Can't rename Åktur/attraction...
+STR_1060    :Invalid Åktur/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode
@@ -1071,13 +1071,13 @@ STR_1066    :Boat hire mode
 STR_1067    :Upward launch
 STR_1068    :Rotating lift mode
 STR_1069    :Station to station mode
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
+STR_1070    :Single Åktur per admission
+STR_1071    :Unlimited Åkturs per admission
 STR_1072    :Maze mode
 STR_1073    :Race mode
 STR_1074    :Bumper-car mode
 STR_1075    :Swing mode
-STR_1076    :Shop stall mode
+STR_1076    :Shop Stånd mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
@@ -1086,7 +1086,7 @@ STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
+STR_1085    :Film: {ENDQUOTES}Thrill Åkturrs{ENDQUOTES}
 STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
 STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
 STR_1088    :Intense mode
@@ -1145,8 +1145,8 @@ STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
 STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this ride/attraction...
-STR_1145    :Can't build/move exit for this ride/attraction...
+STR_1144    :Can't build/move entrance for this Åktur/attraction...
+STR_1145    :Can't build/move exit for this Åktur/attraction...
 STR_1146    :Entrance not yet built
 STR_1147    :Exit not yet built
 STR_1148    :Quarter load
@@ -1154,7 +1154,7 @@ STR_1149    :Half load
 STR_1150    :Three-quarter load
 STR_1151    :Full load
 STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
+STR_1153    :Height Marks on Åktur Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
@@ -1200,8 +1200,8 @@ STR_1195    :Test Run
 STR_1196    :Open
 STR_1197    :Broken Down
 STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on ride
-STR_1200    :{COMMA16} people on ride
+STR_1199    :{COMMA16} person on Åktur
+STR_1200    :{COMMA16} people on Åktur
 STR_1201    :Nobody in queue line
 STR_1202    :1 person in queue line
 STR_1203    :{COMMA16} people in queue line
@@ -1224,12 +1224,12 @@ STR_1219    :{BLACK}{SMALLDOWN}
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport rides
-STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK}Roller coasters
-STR_1226    :{SMALLFONT}{BLACK}Thrill rides
-STR_1227    :{SMALLFONT}{BLACK}Water rides
-STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
+STR_1223    :{SMALLFONT}{BLACK}Transport Åkturs
+STR_1224    :{SMALLFONT}{BLACK}Gentle Åkturs
+STR_1225    :{SMALLFONT}{BLACK}Berg- och dalbanas
+STR_1226    :{SMALLFONT}{BLACK}Thrill Åkturs
+STR_1227    :{SMALLFONT}{BLACK}Water Åkturs
+STR_1228    :{SMALLFONT}{BLACK}Shops & Stånds
 STR_1229    :train
 STR_1230    :trains
 STR_1231    :Train
@@ -1342,10 +1342,10 @@ STR_1337    :{STRINGID} - Exit{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
 STR_1339    :{BLACK}No test results yet...
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1341    :{WINDOW_COLOUR_2}Åktur time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}Åktur length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
 STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
@@ -1393,7 +1393,7 @@ STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}View of ride/attraction
+STR_1392    :{SMALLFONT}{BLACK}View of Åktur/attraction
 STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
 STR_1394    :{SMALLFONT}{BLACK}Operating options
 STR_1395    :{SMALLFONT}{BLACK}Maintenance options
@@ -1403,8 +1403,8 @@ STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
 STR_1400    :Entrance
 STR_1401    :Exit
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
+STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to Åktur/attraction
+STR_1403    :{SMALLFONT}{BLACK}Build or move exit from Åktur/attraction
 STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
 STR_1405    :{SMALLFONT}{BLACK}Mirror image
 STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
@@ -1413,7 +1413,7 @@ STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
 STR_1410    :Vertical Tower
 STR_1411    :{STRINGID} in the way
-STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
+STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of Åktur
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocity
@@ -1449,7 +1449,7 @@ STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
 STR_1446    :Looking at scenery
 STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1448    :Watching new Åktur being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
@@ -1470,10 +1470,10 @@ STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
 STR_1468    :Staff
-STR_1469    :Ride must start and end with stations
+STR_1469    :Åktur must start and end with stations
 STR_1470    :Station not long enough
 STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
+STR_1472    :{SMALLFONT}{BLACK}Speed of this Åktur
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
 STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1522,7 +1522,7 @@ STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
@@ -1556,7 +1556,7 @@ STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watc
 STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
 STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
 STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
 STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
 STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
@@ -1585,9 +1585,9 @@ STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
 STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
 STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
 STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
@@ -1617,9 +1617,9 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
 STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
 STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
 STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
@@ -1651,14 +1651,14 @@ STR_1646    :
 STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new Åktur being built!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Nice Åktur! But not as good as the Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin Åktur!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
-STR_1657    :{WINDOW_COLOUR_2}Preferred ride
+STR_1657    :{WINDOW_COLOUR_2}Preferred Åktur
 STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
@@ -1743,16 +1743,16 @@ STR_1738    :Can't change number of laps...
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed !
-STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
-STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1742    :{WINDOW_COLOUR_2}Max. people on Åktur:
+STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this Åktur at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
 STR_1746    :Can't change this...
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1748    :{SMALLFONT}{BLACK}Time limit for Åktur
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
-STR_1751    :Can't change time limit for ride...
+STR_1751    :Can't change time limit for Åktur...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
 STR_1754    :{BLACK}{COMMA16} guests
@@ -1766,7 +1766,7 @@ STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
 STR_1762    :Waterfalls
 STR_1763    :Rapids
 STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
+STR_1765    :On-Åktur photo section
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings...
@@ -1774,8 +1774,8 @@ STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-ride photo section allowed per ride
-STR_1774    :Only one cable lift hill allowed per ride
+STR_1773    :Only one on-Åktur photo section allowed per Åktur
+STR_1774    :Only one cable lift hill allowed per Åktur
 STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Music:
@@ -1798,7 +1798,7 @@ STR_1793    :Heading to {STRINGID} for an inspection
 STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this ride
+STR_1797    :This option cannot be changed for this Åktur
 STR_1798    :Whirlpool
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Safety cut-out
@@ -1824,9 +1824,9 @@ STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
-STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
-STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this Åktur/attraction
+STR_1824    :{SMALLFONT}{BLACK}Show guests on this Åktur/attraction
+STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this Åktur/attraction
 STR_1826    :Status
 STR_1827    :Popularity
 STR_1828    :Satisfaction
@@ -1845,13 +1845,13 @@ STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY} per hour
 STR_1842    :Favorite of: {COMMA16} guest
 STR_1843    :Favorite of: {COMMA16} guests
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1844    :{SMALLFONT}{BLACK}Select information type to show in Åktur/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} guests
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
 STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
+STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this Åktur
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
 STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
 STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
@@ -1877,8 +1877,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Åkturs
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Åkturs
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
 STR_1879    :Every 10 minutes
 STR_1880    :Every 20 minutes
@@ -1891,19 +1891,19 @@ STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
+STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this Åktur
 STR_1891    :No {STRINGID} in park yet!
 STR_1892    :RollerCoaster Tycoon 2
 STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:-
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
+STR_1895    :{SMALLFONT}{BLACK}Build new Åktur/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
-STR_1897    :{WINDOW_COLOUR_2}Ride construction
-STR_1898    :{WINDOW_COLOUR_2}Ride running costs
+STR_1897    :{WINDOW_COLOUR_2}Åktur construction
+STR_1898    :{WINDOW_COLOUR_2}Åktur running costs
 STR_1899    :{WINDOW_COLOUR_2}Land purchase
 STR_1900    :{WINDOW_COLOUR_2}Landscaping
 STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
-STR_1902    :{WINDOW_COLOUR_2}Ride tickets
+STR_1902    :{WINDOW_COLOUR_2}Åktur tickets
 STR_1903    :{WINDOW_COLOUR_2}Shop sales
 STR_1904    :{WINDOW_COLOUR_2}Shop stock
 STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
@@ -1942,7 +1942,7 @@ STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this messag
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
 STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
-STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
+STR_1941    :{SMALLFONT}{BLACK}Show which Åkturs this guest has been on
 STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
 STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
 STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
@@ -1957,14 +1957,14 @@ STR_1952    :Profit Graph
 STR_1953    :Marketing
 STR_1954    :Research Funding
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per Åktur
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits...
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
 STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
 STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_1963    :{WINDOW_COLOUR_2}On-Åktur Photo price:
 STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
 STR_1965    :{WINDOW_COLOUR_2}Drink price:
 STR_1966    :{WINDOW_COLOUR_2}Burger price:
@@ -1992,7 +1992,7 @@ STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :Balloon
 STR_1989    :Cuddly Toy
 STR_1990    :Park Map
-STR_1991    :On-Ride Photo
+STR_1991    :On-Åktur Photo
 STR_1992    :Umbrella
 STR_1993    :Drink
 STR_1994    :Burger
@@ -2020,7 +2020,7 @@ STR_2015    :Empty Bottle
 STR_2016    :Balloons
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
-STR_2019    :On-Ride Photos
+STR_2019    :On-Åktur Photos
 STR_2020    :Umbrellas
 STR_2021    :Drinks
 STR_2022    :Burgers
@@ -2048,7 +2048,7 @@ STR_2043    :Empty Bottles
 STR_2044    :a Balloon
 STR_2045    :a Cuddly Toy
 STR_2046    :a Park Map
-STR_2047    :an On-Ride Photo
+STR_2047    :an On-Åktur Photo
 STR_2048    :an Umbrella
 STR_2049    :a Drink
 STR_2050    :a Burger
@@ -2076,7 +2076,7 @@ STR_2071    :an Empty Bottle
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
 STR_2074    :Map of {STRINGID}
-STR_2075    :On-Ride Photo of {STRINGID}
+STR_2075    :On-Åktur Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
@@ -2101,9 +2101,9 @@ STR_2096    :Fried Chicken
 STR_2097    :Lemonade
 STR_2098    :Empty Box
 STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_2100    :{WINDOW_COLOUR_2}On-Åktur Photo price:
+STR_2101    :{WINDOW_COLOUR_2}On-Åktur Photo price:
+STR_2102    :{WINDOW_COLOUR_2}On-Åktur Photo price:
 STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
 STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
 STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
@@ -2123,9 +2123,9 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
+STR_2122    :On-Åktur Photo
+STR_2123    :On-Åktur Photo
+STR_2124    :On-Åktur Photo
 STR_2125    :Pretzel
 STR_2126    :Hot Chocolate
 STR_2127    :Iced Tea
@@ -2145,9 +2145,9 @@ STR_2140    :Empty Drink Carton
 STR_2141    :Empty Juice Cup
 STR_2142    :Roast Sausage
 STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
+STR_2144    :On-Åktur Photos
+STR_2145    :On-Åktur Photos
+STR_2146    :On-Åktur Photos
 STR_2147    :Pretzels
 STR_2148    :Hot Chocolates
 STR_2149    :Iced Teas
@@ -2167,9 +2167,9 @@ STR_2162    :Empty Drink Cartons
 STR_2163    :Empty Juice cups
 STR_2164    :Roast Sausages
 STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
+STR_2166    :an On-Åktur Photo
+STR_2167    :an On-Åktur Photo
+STR_2168    :an On-Åktur Photo
 STR_2169    :a Pretzel
 STR_2170    :a Hot Chocolate
 STR_2171    :an Iced Tea
@@ -2189,9 +2189,9 @@ STR_2184    :an Empty Drink Carton
 STR_2185    :an Empty Juice Cup
 STR_2186    :a Roast Sausage
 STR_2187    :an Empty Bowl
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
+STR_2188    :On-Åktur Photo of {STRINGID}
+STR_2189    :On-Åktur Photo of {STRINGID}
+STR_2190    :On-Åktur Photo of {STRINGID}
 STR_2191    :Pretzel
 STR_2192    :Hot Chocolate
 STR_2193    :Iced Tea
@@ -2219,7 +2219,7 @@ STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
-STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has Stånded
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
@@ -2249,17 +2249,17 @@ STR_2244    :September
 STR_2245    :October
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Can't demolish ride/attraction...
-STR_2249    :{BABYBLUE}New ride/attraction now available:-{NEWLINE}{STRINGID}
+STR_2248    :Can't demolish Åktur/attraction...
+STR_2249    :{BABYBLUE}New Åktur/attraction now available:-{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:-{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
-STR_2253    :Transport Rides
-STR_2254    :Gentle Rides
-STR_2255    :Roller Coasters
-STR_2256    :Thrill Rides
-STR_2257    :Water Rides
-STR_2258    :Shops & Stalls
+STR_2253    :Transport Åkturs
+STR_2254    :Gentle Åkturs
+STR_2255    :Berg- och dalbanas
+STR_2256    :Thrill Åkturs
+STR_2257    :Water Åkturs
+STR_2258    :Shops & Stånds
 STR_2259    :Scenery & Themeing
 STR_2260    :No funding
 STR_2261    :Minimum funding
@@ -2273,18 +2273,18 @@ STR_2268    :Last development
 STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
-STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}Åktur/attraction:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
 STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
 STR_2276    :{SMALLFONT}{BLACK}Show research & development status
 STR_2277    :Unknown
-STR_2278    :Transport Ride
-STR_2279    :Gentle Ride
-STR_2280    :Roller Coaster
-STR_2281    :Thrill Ride
-STR_2282    :Water Ride
-STR_2283    :Shop/Stall
+STR_2278    :Transport Åktur
+STR_2279    :Gentle Åktur
+STR_2280    :Berg- och dalbana
+STR_2281    :Thrill Åktur
+STR_2282    :Water Åktur
+STR_2283    :Shop/Stånd
 STR_2284    :Scenery/Themeing
 STR_2285    :Initial research
 STR_2286    :Designing
@@ -2293,13 +2293,13 @@ STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Select scenario for new game
-STR_2292    :{WINDOW_COLOUR_2}Rides been on:
+STR_2292    :{WINDOW_COLOUR_2}Åkturs been on:
 STR_2293    :{BLACK} Nothing
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} Åktur
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} Åkturs
 STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
 STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
 STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
@@ -2310,19 +2310,19 @@ STR_2305    :Track design files
 STR_2306    :Save track design
 STR_2307    :Select {STRINGID} design
 STR_2308    :{STRINGID} Track Designs
-STR_2309    :Install New Track Design
+STR_2309    :InStånd New Track Design
 STR_2310    :Build custom design
 STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
+STR_2314    :{WINDOW_COLOUR_2}Åktur length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
 STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
 STR_2318    :Low
 STR_2319    :Medium
 STR_2320    :High
-STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
+STR_2321    :{WINDOW_COLOUR_2}Number of Åkturs/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
@@ -2356,8 +2356,8 @@ STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Åkturs fixed: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Åkturs inspected: {BLACK}{COMMA16}
 STR_2357    :House
 STR_2358    :Units
 STR_2359    :Real Values
@@ -2391,23 +2391,23 @@ STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
-STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
+STR_2390    :{BLACK}To have 10 different types of Berg- och dalbanas operating in your park, each with an excitement value of at least 6.00
 STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
-STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
-STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
+STR_2392    :{BLACK}To achieve a monthly income from Åktur tickets of at least {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}To have 10 different types of Berg- och dalbanas operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
+STR_2394    :{BLACK}To finish building all 5 of the partially built Berg- och dalbanas in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
 STR_2397    :None
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
-STR_2401    :Build the best ride you can
-STR_2402    :Build 10 roller coasters
+STR_2401    :Build the best Åktur you can
+STR_2402    :Build 10 Berg- och dalbanas
 STR_2403    :Number of guests in park
-STR_2404    :Monthly income from ride tickets
-STR_2405    :Build 10 roller coasters of a given length
-STR_2406    :Finish building 5 roller coasters
+STR_2404    :Monthly income from Åktur tickets
+STR_2405    :Build 10 Berg- och dalbanas of a given length
+STR_2406    :Finish building 5 Berg- och dalbanas
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
@@ -2416,23 +2416,23 @@ STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
 STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(Not Selected)
-STR_2415    :{WINDOW_COLOUR_2}Ride:
+STR_2415    :{WINDOW_COLOUR_2}Åktur:
 STR_2416    :{WINDOW_COLOUR_2}Item:
 STR_2417    :{WINDOW_COLOUR_2}Length of time:
 STR_2418    :Free entry to {STRINGID}
-STR_2419    :Free ride on {STRINGID}
+STR_2419    :Free Åktur on {STRINGID}
 STR_2420    :Half-price entry to {STRINGID}
 STR_2421    :Free {STRINGID}
 STR_2422    :Advertising campaign for {STRINGID}
 STR_2423    :Advertising campaign for {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
+STR_2425    :{WINDOW_COLOUR_2}Vouchers for free Åkturs on a particular Åktur
 STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
 STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
 STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
+STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular Åktur
 STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
+STR_2431    :{BLACK}Vouchers for free Åktur on {STRINGID}
 STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
 STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
@@ -2448,7 +2448,7 @@ STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
-STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
+STR_2447    :{YELLOW}Your marketing campaign for free Åkturs on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
 STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
 STR_2450    :{YELLOW}Your advertising campaign for the park has finished
@@ -2471,14 +2471,14 @@ STR_2466    :{SMALLFONT}{BLACK}Show park statistics
 STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
 STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
 STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
+STR_2470    :{SMALLFONT}{BLACK}Research new transport Åkturs
+STR_2471    :{SMALLFONT}{BLACK}Research new gentle Åkturs
+STR_2472    :{SMALLFONT}{BLACK}Research new Berg- och dalbanas
+STR_2473    :{SMALLFONT}{BLACK}Research new thrill Åkturs
+STR_2474    :{SMALLFONT}{BLACK}Research new water Åkturs
+STR_2475    :{SMALLFONT}{BLACK}Research new shops and Stånds
 STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
-STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
+STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this Åktur/attraction
 STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
 STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
 STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
@@ -2505,21 +2505,21 @@ STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
 STR_2502    :Remove base land toggle
 STR_2503    :Remove vertical land toggle
-STR_2504    :See-through rides toggle
+STR_2504    :See-through Åkturs toggle
 STR_2505    :See-through scenery toggle
 STR_2506    :Invisible supports toggle
 STR_2507    :Invisible people toggle
 STR_2508    :Height marks on land toggle
-STR_2509    :Height marks on ride tracks toggle
+STR_2509    :Height marks on Åktur tracks toggle
 STR_2510    :Height marks on paths toggle
 STR_2511    :Adjust land
 STR_2512    :Adjust water
 STR_2513    :Build scenery
 STR_2514    :Build paths
-STR_2515    :Build new ride
+STR_2515    :Build new Åktur
 STR_2516    :Show financial information
 STR_2517    :Show research information
-STR_2518    :Show rides list
+STR_2518    :Show Åkturs list
 STR_2519    :Show park information
 STR_2520    :Show guest list
 STR_2521    :Show staff list
@@ -2764,7 +2764,7 @@ STR_2759    :???
 # New strings used in the cheats window previously these were ???
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
-STR_2762    :Pay For Rides
+STR_2762    :Pay For Åkturs
 STR_2763    :???
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
@@ -2799,7 +2799,7 @@ STR_2792    :Please enter your name for the scenario chart:-
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
-STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2796    :{SMALLFONT}{BLACK}Sort the Åktur list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
 STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
@@ -2814,12 +2814,12 @@ STR_2807    :{RED}Guests are complaining about the amount of litter in your park
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
 STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
 STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
+STR_2811    :{RED}Guests are complaining because they can't find the Toaletts in your park
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
 STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
 STR_2815    :{WINDOW_COLOUR_2}Tidiest park award
-STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best roller coasters
+STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best Berg- och dalbanas
 STR_2817    :{WINDOW_COLOUR_2}Best value park award
 STR_2818    :{WINDOW_COLOUR_2}Most beautiful park award
 STR_2819    :{WINDOW_COLOUR_2}Worst value park award
@@ -2827,16 +2827,16 @@ STR_2820    :{WINDOW_COLOUR_2}Safest park award
 STR_2821    :{WINDOW_COLOUR_2}Best staff award
 STR_2822    :{WINDOW_COLOUR_2}Best park food award
 STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park restrooms award
+STR_2824    :{WINDOW_COLOUR_2}Best park Toaletts award
 STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
-STR_2826    :{WINDOW_COLOUR_2}Best water rides award
-STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
-STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride color schemes award
+STR_2826    :{WINDOW_COLOUR_2}Best water Åkturs award
+STR_2827    :{WINDOW_COLOUR_2}Best custom-designed Åkturs award
+STR_2828    :{WINDOW_COLOUR_2}Most dazzling Åktur color schemes award
 STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
-STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
+STR_2830    :{WINDOW_COLOUR_2}Best gentle Åktur award
 STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
 STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
+STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best Berg- och dalbanas'!
 STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
 STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
 STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
@@ -2844,21 +2844,21 @@ STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park i
 STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
 STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
 STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
+STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best Toalett facilities in the country'!
 STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
-STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
+STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water Åkturs in the country'!
+STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed Åkturs'!
 STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
 STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
-STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
+STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle Åkturs'!
 STR_2848    :{WINDOW_COLOUR_2}No recent awards
-STR_2849    :New scenario installed successfully
-STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
-STR_2852    :Track design already installed
+STR_2849    :New scenario inStånded successfully
+STR_2850    :New track design inStånded successfully
+STR_2851    :Scenario already inStånded
+STR_2852    :Track design already inStånded
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
-STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
+STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the Åktur exit
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
 STR_2858    :Can't start marketing campaign...
@@ -2900,7 +2900,7 @@ STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble)
 STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
 STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Åktur:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2900    :{WINDOW_COLOUR_2}
@@ -2978,8 +2978,8 @@ STR_2971    :Main color scheme
 STR_2972    :Alternative color scheme 1
 STR_2973    :Alternative color scheme 2
 STR_2974    :Alternative color scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
+STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint Åktur with
+STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this Åktur using the selected color scheme
 STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:-
 STR_2979    :Can't name staff member...
@@ -3049,8 +3049,8 @@ STR_3042    :Pirates style
 STR_3043    :Rock style 3
 STR_3044    :Candy style
 STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
-STR_3047    :Local authority forbids demolition or modifications to this ride
+STR_3046    :This Åktur cannot be modified
+STR_3047    :Local authority forbids demolition or modifications to this Åktur
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf hole A
 STR_3050    :Golf hole B
@@ -3065,7 +3065,7 @@ STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
 STR_3061    :Wooden fences
-STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
+STR_3062    :{SMALLFONT}{BLACK}Standard Berg- och dalbana track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
 STR_3064    :Beginner Parks
 STR_3065    :Challenging Parks
@@ -3095,7 +3095,7 @@ STR_3088    :Pagoda entrance
 STR_3089    :Space entrance
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
-STR_3092    :You are not allowed to move or modify the station for this ride!
+STR_3092    :You are not allowed to move or modify the station for this Åktur!
 STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
@@ -3107,8 +3107,8 @@ STR_3100    :{SMALLFONT}{BLACK}Select second color
 STR_3101    :{SMALLFONT}{BLACK}Select third color
 STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
 STR_3103    :Can't re-paint this...
-STR_3104    :{SMALLFONT}{BLACK}List rides
-STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
+STR_3104    :{SMALLFONT}{BLACK}List Åkturs
+STR_3105    :{SMALLFONT}{BLACK}List shops and Stånds
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
 STR_3107    :Close
 STR_3108    :Test
@@ -3119,14 +3119,14 @@ STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
 STR_3113    :Select a different design
 STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
 STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until Åktur has been tested and statistics have been generated)
 STR_3117    :{BLACK}Calling mechanic...
-STR_3118    :{BLACK}{STRINGID} is heading for the ride
-STR_3119    :{BLACK}{STRINGID} is fixing the ride
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3118    :{BLACK}{STRINGID} is heading for the Åktur
+STR_3119    :{BLACK}{STRINGID} is fixing the Åktur
+STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing Åktur
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favorite Åktur of: {BLACK}{COMMA16} guest
+STR_3123    :{WINDOW_COLOUR_2}Favorite Åktur of: {BLACK}{COMMA16} guests
 STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
@@ -3138,16 +3138,16 @@ STR_3131    :Cancel
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
+STR_3135    :{RED}(Vehicle design unavailable - Åktur performance may be affected)
 STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3141    :Multi-circuit per Åktur not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
+STR_3144    :{SMALLFONT}{BLACK}Show Åkturs and Stånds on map
 STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
 STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
 STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
@@ -3166,7 +3166,7 @@ STR_3159    :list
 STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
 STR_3161    :RollerCoaster Tycoon 2: Checking object files...
 STR_3162    :Unable to allocate enough memory
-STR_3163    :Installing new data: 
+STR_3163    :InStånding new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
@@ -3182,12 +3182,12 @@ STR_3175    :This object is always required
 STR_3176    :Unable to select this object
 STR_3177    :Unable to de-select this object
 STR_3178    :At least one path object must be selected
-STR_3179    :At least one ride vehicle/attraction object must be selected
+STR_3179    :At least one Åktur vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
 STR_3181    :Object Selection - {STRINGID}
 STR_3182    :Park entrance type must be selected
 STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
+STR_3184    :Åktur Vehicles/Attractions
 STR_3185    :Small Scenery
 STR_3186    :Large Scenery
 STR_3187    :Walls/Fences
@@ -3210,7 +3210,7 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :Berg- och dalbana Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
@@ -3259,17 +3259,17 @@ STR_3252    :Can't increase maximum loan size any further!
 STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
+STR_3256    :Guests prefer less intense Åkturs
+STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense Åkturs only
+STR_3258    :Guests prefer more intense Åkturs
+STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense Åkturs only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
 STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
 STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
 STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
 STR_3264    :Can't increase this any further!
 STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and Åkturs
 STR_3267    :Forbid tree removal
 STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
 STR_3269    :Forbid landscape changes
@@ -3282,13 +3282,13 @@ STR_3275    :Guest generation higher difficult level
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
-STR_3279    :Free park entry / Pay per ride
-STR_3280    :Pay to enter park / Free rides
+STR_3279    :Free park entry / Pay per Åktur
+STR_3280    :Pay to enter park / Free Åkturs
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
 STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3283    :{SMALLFONT}{BLACK}Select Åkturs to be preserved
 STR_3284    :Objective Selection
-STR_3285    :Preserved Rides
+STR_3285    :Preserved Åkturs
 STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
 STR_3288    :{SMALLFONT}{BLACK}Select climate
@@ -3315,7 +3315,7 @@ STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
+STR_3312    :{WINDOW_COLOUR_2}Åkturs/attractions under a preservation order:
 STR_3313    :Scenario Name
 STR_3314    :Enter name for scenario:-
 STR_3315    :Park/Scenario Details
@@ -3324,7 +3324,7 @@ STR_3317    :No details yet
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
-STR_3321    :New objects installed successfully
+STR_3321    :New objects inStånded successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
 STR_3324    :Requires Add-On Pack: 
@@ -3338,8 +3338,8 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
+STR_3335    :Berg- och dalbana Designer - Select Åktur Types & Vehicles
+STR_3336    :Track Designs Manager - Select Åktur Type
 STR_3337    :Six Flags Park
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
@@ -3347,10 +3347,10 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :Berg- och dalbana Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
+STR_3347    :Åktur is too large, contains too many elements, or scenery is too spread out
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
@@ -3369,28 +3369,28 @@ STR_3362    :Forced Software Buffer Mixing
 STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
-STR_3366    :{BLACK}= Ride
-STR_3367    :{BLACK}= Food Stall
-STR_3368    :{BLACK}= Drink Stall
-STR_3369    :{BLACK}= Souvenir Stall
+STR_3366    :{BLACK}= Åktur
+STR_3367    :{BLACK}= Food Stånd
+STR_3368    :{BLACK}= Drink Stånd
+STR_3369    :{BLACK}= Souvenir Stånd
 STR_3370    :{BLACK}= Info. Kiosk
 STR_3371    :{BLACK}= First Aid
 STR_3372    :{BLACK}= A.T.M.
-STR_3373    :{BLACK}= Restroom
+STR_3373    :{BLACK}= Toalett
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
-STR_3378    :Install
+STR_3376    :InStånd new track design...
+STR_3377    :{SMALLFONT}{BLACK}InStånd a new track design file
+STR_3378    :InStånd
 STR_3379    :Cancel
-STR_3380    :Unable to install this track design...
+STR_3380    :Unable to inStånd this track design...
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
 STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
+STR_3386    :Custom Åkturs Tutorial
+STR_3387    :Berg- och dalbana Building Tutorial
 STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
@@ -3399,47 +3399,47 @@ STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving th
 STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
 STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
 STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
+STR_3396    :{SMALLFONT}{BLACK}Let's build a simple Åktur to get the park started...
+STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the Åktur will be built. We'll move the pointer to select the position then click to build it...
+STR_3398    :{SMALLFONT}{BLACK}Åkturs need an entrance and an exit. We'll move the pointer to a square on the edge of the Åktur and then click to build first the entrance and then the exit...
+STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new Åktur...
+STR_3400    :{SMALLFONT}{BLACK}For the path to the Åktur entrance we'll use a special 'queue line' path...
 STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
+STR_3402    :{SMALLFONT}{BLACK}Right, lets open the Åktur! To open the Åktur we click the flag icon on the Åktur window and select 'open'...
 STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
 STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
 STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
+STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed Åktur...
 STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
+STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the Åktur...
 STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
 STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
 STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
 STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
 STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
+STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the Åktur entrance and exit...
+STR_3415    :{SMALLFONT}{BLACK}Let's test our Åktur to check it works...
 STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
+STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the Åktur...
+STR_3418    :{SMALLFONT}{BLACK}Our new Åktur isn't very exciting - Perhaps we should add some scenery?
 STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
 STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
+STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the Åktur...
+STR_3422    :{SMALLFONT}{BLACK}Let's build a Berg- och dalbana !
 STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
 STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
+STR_3425    :{SMALLFONT}{BLACK}Berg- och dalbana trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
 STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
+STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The Åkturrs will be flung to the sides by the lateral G forces as the train hurtles around...
+STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the Åktur - Åkturrs will be pushed down into their seats instead of flung to the sides...
 STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
 STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
 STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
 STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
 STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
+STR_3434    :{SMALLFONT}{BLACK}Let's test the Åktur and see if it works!
+STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new Berg- och dalbana...
+STR_3436    :{SMALLFONT}{BLACK}While waiting for our first Åkturrs, we could customize the Åktur a bit...
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
