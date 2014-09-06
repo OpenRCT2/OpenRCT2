@@ -878,83 +878,83 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Berg- och dalbana Designer
-STR_0889    :Quit Track Designs Manager
+STR_0877    :För lågt !
+STR_0878    :För högt !
+STR_0879    :Kan inte sänka landnivån här...
+STR_0880    :Kan inte höja landnivån här...
+STR_0881    :Ett objekt är i vägen
+STR_0882    :Spara Spelet
+STR_0883    :Ladda Spelet
+STR_0884    :Ladda Landskap
+STR_0885    :Spara Landskap
+STR_0886    :Avsluta Spelet
+STR_0887    :Avsluta Scenarioskaparen
+STR_0888    :Avsluta Berg- och Dalbanabyggaren
+STR_0889    :Avsluta Spårredigeraren
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
-STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
-STR_0908    :Roll/Banking
-STR_0909    :Seat Rot.
-STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
-STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :Can't remove this...
-STR_0927    :Can't construct this here...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Åktur entrance in the way
-STR_0935    :Åktur exit in the way
-STR_0936    :Park entrance in the way
-STR_0937    :{SMALLFONT}{BLACK}View options
-STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
-STR_0940    :Remove Base Land
-STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Åkturs
-STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0891    :Skärmdump
+STR_0892    :Skärmdumpen sparades som '{STRINGID}'
+STR_0893    :Skärmdumpen misslyckades!
+STR_0894    :Landskapens minnesområde är fullt !
+STR_0895    :Kan inte bygga både ovan och under jord samtidigt
+STR_0896    :{POP16}{POP16}{STRINGID} Construction TODO
+STR_0897    :Riktning
+STR_0898    :{SMALLFONT}{BLACK}Vänsterkurva
+STR_0899    :{SMALLFONT}{BLACK}Högerkurva
+STR_0900    :{SMALLFONT}{BLACK}Vänsterkurva (liten radie)
+STR_0901    :{SMALLFONT}{BLACK}Högerkurva (liten radie)
+STR_0902    :{SMALLFONT}{BLACK}Vänsterkurva (väldigt liten radie)
+STR_0903    :{SMALLFONT}{BLACK}Högerkurva (väldigt liten radie)
+STR_0904    :{SMALLFONT}{BLACK}Vänsterkurva (stpr radie)
+STR_0905    :{SMALLFONT}{BLACK}Högerkurva (stor radie)
+STR_0906    :{SMALLFONT}{BLACK}Rakt
+STR_0907    :Sluttning
+STR_0908    :Lutning
+STR_0909    :Säteslutning
+STR_0910    :{SMALLFONT}{BLACK}Lutning för Vänsterkurva
+STR_0911    :{SMALLFONT}{BLACK}Lutning för Högerkurva
+STR_0912    :{SMALLFONT}{BLACK}Ingen lutning
+STR_0913    :{SMALLFONT}{BLACK}Tidigare sektion
+STR_0914    :{SMALLFONT}{BLACK}Nästa sektion
+STR_0915    :{SMALLFONT}{BLACK}Bygg den valda sektionen
+STR_0916    :{SMALLFONT}{BLACK}Ta bort den valda sektionen
+STR_0917    :{SMALLFONT}{BLACK}Vertikalt nedåt
+STR_0918    :{SMALLFONT}{BLACK}Brant nedförsbacke
+STR_0919    :{SMALLFONT}{BLACK}Nedförsbacke
+STR_0920    :{SMALLFONT}{BLACK}Platt
+STR_0921    :{SMALLFONT}{BLACK}Uppförsbacke
+STR_0922    :{SMALLFONT}{BLACK}Brant uppförsbacke
+STR_0923    :{SMALLFONT}{BLACK}Vertikalt uppåt
+STR_0924    :{SMALLFONT}{BLACK}Helix nedåt
+STR_0925    :{SMALLFONT}{BLACK}Helix uppåt
+STR_0926    :Kan inte ta bort det här...
+STR_0927    :Kan inte bygga här...
+STR_0928    :{SMALLFONT}{BLACK}Kedjor, för att dra upp vagnar för backar
+STR_0929    :'S'-Böj (vänster)
+STR_0930    :'S'-Böj (höger)
+STR_0931    :Vertikal Loop (vänster)
+STR_0932    :Vertikal Loop (höger)
+STR_0933    :Höj eller sänk landnivån först
+STR_0934    :En åkturs ingång är i vägen
+STR_0935    :En åkturs utgång är i vägen
+STR_0936    :Parkingången är i vägen
+STR_0937    :{SMALLFONT}{BLACK}Visa inställningar
+STR_0938    :{SMALLFONT}{BLACK}Justera landnivån och sluttning
+STR_0939    :Underjordsvy
+STR_0940    :Dölj terräng
+STR_0941    :Dölj vertikala sidor
+STR_0942    :Genomskinliga Åkturer
+STR_0943    :Genomskinliga Dekorationer
+STR_0944    :Spara
+STR_0945    :Spara inte
+STR_0946    :Avbryt
+STR_0947    :Spara innan du laddar ?
+STR_0948    :Spara innan du avslutar ?
+STR_0949    :Spara innan du avslutar ?
+STR_0950    :Ladda Spelet
+STR_0951    :Avsluta Spelet
+STR_0952    :Avsluta Spelet
+STR_0953    :Ladda Landskap
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
 STR_0956    :-180{DEGREE}
@@ -1160,12 +1160,12 @@ STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
+STR_1159    :{SMALLFONT}{BLACK}Place dekorationer, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
 STR_1161    :Can't position this here...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(Höger-Click to Modify)
+STR_1164    :{STRINGID}{NEWLINE}(Höger-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Can't lower water level here...
 STR_1167    :Can't raise water level here...
@@ -1366,24 +1366,24 @@ STR_1361    :Can't change speed...
 STR_1362    :Can't change launch speed...
 STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
+STR_1365    :In-line Twist (vänster)
+STR_1366    :In-line Twist (höger)
 STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (left)
-STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
+STR_1368    :Half Corkscrew (vänster)
+STR_1369    :Half Corkscrew (höger)
+STR_1370    :Barrel Roll (vänster)
+STR_1371    :Barrel Roll (höger)
 STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (left)
-STR_1374    :Large Half Loop (right)
+STR_1373    :Large Half Loop (vänster)
+STR_1374    :Large Half Loop (höger)
 STR_1375    :Upper Transfer
 STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
+STR_1377    :Heartline Roll (vänster)
+STR_1378    :Heartline Roll (höger)
+STR_1379    :Reverser (vänster)
+STR_1380    :Reverser (höger)
+STR_1381    :Curved Lift Hill (vänster)
+STR_1382    :Curved Lift Hill (höger)
 STR_1383    :Quarter Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
@@ -1407,7 +1407,7 @@ STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to Åktur/attraction
 STR_1403    :{SMALLFONT}{BLACK}Build or move exit from Åktur/attraction
 STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
 STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
+STR_1406    :{SMALLFONT}{BLACK}Toggle dekorationer on/off (if available for this design)
 STR_1407    :{WINDOW_COLOUR_2}Build this...
 STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
@@ -1447,7 +1447,7 @@ STR_1442    :Emptying litter bin
 STR_1443    :Watering gardens
 STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
+STR_1446    :Looking at dekorationer
 STR_1447    :Leaving the park
 STR_1448    :Watching new Åktur being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
@@ -1515,7 +1515,7 @@ STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{
 STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
 STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Great dekorationer!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
@@ -1680,10 +1680,10 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1679    :Helix up (vänster)
+STR_1680    :Helix up (höger)
+STR_1681    :Helix down (vänster)
+STR_1682    :Helix down (höger)
 STR_1683    :Base size 2 x 2
 STR_1684    :Base size 4 x 4
 STR_1685    :Base size 2 x 4
@@ -1728,8 +1728,8 @@ STR_1723    :Can't open park...
 STR_1724    :Can't close park...
 STR_1725    :Can't buy land...
 STR_1726    :Land not for sale!
-STR_1727    :Construction rights not for sale!
-STR_1728    :Can't buy construction rights here...
+STR_1727    :Construction högers not for sale!
+STR_1728    :Can't buy construction högers here...
 STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed - - 
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1935,8 +1935,8 @@ STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest -
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
 STR_1932    :{STRINGID} is on {STRINGID}
 STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has left {STRINGID}
-STR_1935    :{STRINGID} has left the park
+STR_1934    :{STRINGID} has vänster {STRINGID}
+STR_1935    :{STRINGID} has vänster the park
 STR_1936    :{STRINGID} has bought {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
@@ -2251,7 +2251,7 @@ STR_2246    :November
 STR_2247    :December
 STR_2248    :Can't demolish Åktur/attraction...
 STR_2249    :{BABYBLUE}New Åktur/attraction now available:-{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}New scenery/themeing now available:-{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}New dekorationer/themeing now available:-{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
 STR_2253    :Transport Åkturs
@@ -2260,7 +2260,7 @@ STR_2255    :Berg- och dalbanas
 STR_2256    :Thrill Åkturs
 STR_2257    :Water Åkturs
 STR_2258    :Shops & Stånds
-STR_2259    :Scenery & Themeing
+STR_2259    :Dekorationer & Themeing
 STR_2260    :No funding
 STR_2261    :Minimum funding
 STR_2262    :Normal funding
@@ -2274,7 +2274,7 @@ STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Åktur/attraction:{NEWLINE}{BLACK}{STRINGID}
-STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}Dekorationer/themeing:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
 STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
 STR_2276    :{SMALLFONT}{BLACK}Show research & development status
@@ -2285,7 +2285,7 @@ STR_2280    :Berg- och dalbana
 STR_2281    :Thrill Åktur
 STR_2282    :Water Åktur
 STR_2283    :Shop/Stånd
-STR_2284    :Scenery/Themeing
+STR_2284    :Dekorationer/Themeing
 STR_2285    :Initial research
 STR_2286    :Designing
 STR_2287    :Completing design
@@ -2327,7 +2327,7 @@ STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
-STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
+STR_2326    :{SMALLFONT}{BLACK}Buy construction högers to allow construction above or below land outside the park
 STR_2327    :Options
 STR_2328    :{WINDOW_COLOUR_2}Currency:
 STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
@@ -2477,7 +2477,7 @@ STR_2472    :{SMALLFONT}{BLACK}Research new Berg- och dalbanas
 STR_2473    :{SMALLFONT}{BLACK}Research new thrill Åkturs
 STR_2474    :{SMALLFONT}{BLACK}Research new water Åkturs
 STR_2475    :{SMALLFONT}{BLACK}Research new shops and Stånds
-STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
+STR_2476    :{SMALLFONT}{BLACK}Research new dekorationer and themeing
 STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this Åktur/attraction
 STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
 STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
@@ -2506,7 +2506,7 @@ STR_2501    :Underground view toggle
 STR_2502    :Remove base land toggle
 STR_2503    :Remove vertical land toggle
 STR_2504    :See-through Åkturs toggle
-STR_2505    :See-through scenery toggle
+STR_2505    :See-through dekorationer toggle
 STR_2506    :Invisible supports toggle
 STR_2507    :Invisible people toggle
 STR_2508    :Height marks on land toggle
@@ -2514,7 +2514,7 @@ STR_2509    :Height marks on Åktur tracks toggle
 STR_2510    :Height marks on paths toggle
 STR_2511    :Adjust land
 STR_2512    :Adjust water
-STR_2513    :Build scenery
+STR_2513    :Build dekorationer
 STR_2514    :Build paths
 STR_2515    :Build new Åktur
 STR_2516    :Show financial information
@@ -2563,9 +2563,9 @@ STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
 STR_2561    :Home
-STR_2562    :Left
+STR_2562    :Vänster
 STR_2563    :Up
-STR_2564    :Right
+STR_2564    :Höger
 STR_2565    :Down
 STR_2566    :Select
 STR_2567    :Print
@@ -3105,7 +3105,7 @@ STR_3098    :Can't change lift hill speed...
 STR_3099    :{SMALLFONT}{BLACK}Select color
 STR_3100    :{SMALLFONT}{BLACK}Select second color
 STR_3101    :{SMALLFONT}{BLACK}Select third color
-STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
+STR_3102    :{SMALLFONT}{BLACK}Re-paint colored dekorationer on landscape
 STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}List Åkturs
 STR_3105    :{SMALLFONT}{BLACK}List shops and Stånds
@@ -3132,15 +3132,15 @@ STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
-STR_3129    :Save Track Design with Scenery
+STR_3129    :Save Track Design with Dekorationer
 STR_3130    :Save
 STR_3131    :Cancel
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
+STR_3132    :{BLACK}Click items of dekorationer to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
-STR_3134    :{RED}(Design includes scenery which is unavailable)
+STR_3134    :{RED}(Design includes dekorationer which is unavailable)
 STR_3135    :{RED}(Vehicle design unavailable - Åktur performance may be affected)
 STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
-STR_3137    :Select Nearby Scenery
+STR_3137    :Select Nearby Dekorationer
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
@@ -3148,11 +3148,11 @@ STR_3141    :Multi-circuit per Åktur not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
 STR_3144    :{SMALLFONT}{BLACK}Show Åkturs and Stånds on map
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} right fast
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} left/right
+STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster
+STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} höger
+STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster fast
+STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} höger fast
+STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster/höger
 STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
 STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
 STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
@@ -3188,13 +3188,13 @@ STR_3181    :Object Selection - {STRINGID}
 STR_3182    :Park entrance type must be selected
 STR_3183    :Water type must be selected
 STR_3184    :Åktur Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
+STR_3185    :Small Dekorationer
+STR_3186    :Large Dekorationer
 STR_3187    :Walls/Fences
 STR_3188    :Path Signs
 STR_3189    :Footpaths
 STR_3190    :Path Extras
-STR_3191    :Scenery Groups
+STR_3191    :Dekorationer Groups
 STR_3192    :Park Entrance
 STR_3193    :Water
 STR_3194    :Scenario Description
@@ -3221,13 +3221,13 @@ STR_3214    :Can't increase map size any further
 STR_3215    :Too close to edge of map
 STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
 STR_3217    :Land Owned
-STR_3218    :Construction Rights Owned
+STR_3218    :Construction Högers Owned
 STR_3219    :Land For Sale
-STR_3220    :Construction Rights For Sale
+STR_3220    :Construction Högers For Sale
 STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
+STR_3222    :{SMALLFONT}{BLACK}Set construction högers only to be owned by the park
 STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
+STR_3224    :{SMALLFONT}{BLACK}Set construction högers to be available to purchase by the park
 STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
 STR_3226    :{SMALLFONT}{BLACK}Build park entrance
 STR_3227    :Too many park entrances!
@@ -3281,7 +3281,7 @@ STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
 STR_3275    :Guest generation higher difficult level
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction högers:
 STR_3279    :Free park entry / Pay per Åktur
 STR_3280    :Pay to enter park / Free Åkturs
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
@@ -3350,7 +3350,7 @@ STR_3343    :Convert Saved Game to Scenario
 STR_3344    :Berg- och dalbana Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
-STR_3347    :Åktur is too large, contains too many elements, or scenery is too spread out
+STR_3347    :Åktur is too large, contains too many elements, or dekorationer is too spread out
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
@@ -3368,7 +3368,7 @@ STR_3361    :Too many track designs of this type - Some will not be listed.
 STR_3362    :Forced Software Buffer Mixing
 STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
 STR_3364    :Advanced
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of dekorationer in addition to dekorationer groups
 STR_3366    :{BLACK}= Åktur
 STR_3367    :{BLACK}= Food Stånd
 STR_3368    :{BLACK}= Drink Stånd
@@ -3378,7 +3378,7 @@ STR_3371    :{BLACK}= First Aid
 STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Toalett
 STR_3374    :Warning: Too many objects selected!
-STR_3375    :Not all objects in this scenery group could be selected
+STR_3375    :Not all objects in this dekorationer group could be selected
 STR_3376    :InStånd new track design...
 STR_3377    :{SMALLFONT}{BLACK}InStånd a new track design file
 STR_3378    :InStånd
@@ -3392,7 +3392,7 @@ STR_3385    :Beginners Tutorial
 STR_3386    :Custom Åkturs Tutorial
 STR_3387    :Berg- och dalbana Building Tutorial
 STR_3388    :Unable to switch to selected mode
-STR_3389    :Unable to select additional item of scenery...
+STR_3389    :Unable to select additional item of dekorationer...
 STR_3390    :Too many items selected
 STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
 STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
@@ -3405,25 +3405,25 @@ STR_3398    :{SMALLFONT}{BLACK}Åkturs need an entrance and an exit. We'll move t
 STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new Åktur...
 STR_3400    :{SMALLFONT}{BLACK}For the path to the Åktur entrance we'll use a special 'queue line' path...
 STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the Åktur! To open the Åktur we click the flag icon on the Åktur window and select 'open'...
+STR_3402    :{SMALLFONT}{BLACK}Höger, lets open the Åktur! To open the Åktur we click the flag icon on the Åktur window and select 'open'...
 STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
+STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Höger - Let's open it...
+STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some dekorationer...
 STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed Åktur...
 STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
 STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the Åktur...
 STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
 STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
+STR_3411    :{SMALLFONT}{BLACK}We'll select a Vänsterkurva...
 STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
 STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
 STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the Åktur entrance and exit...
 STR_3415    :{SMALLFONT}{BLACK}Let's test our Åktur to check it works...
 STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
 STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the Åktur...
-STR_3418    :{SMALLFONT}{BLACK}Our new Åktur isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
+STR_3418    :{SMALLFONT}{BLACK}Our new Åktur isn't very exciting - Perhaps we should add some dekorationer?
+STR_3419    :{SMALLFONT}{BLACK}To build dekorationer above other dekorationer or in mid-air, hold down the SHIFT key and move the mouse to select the height...
+STR_3420    :{SMALLFONT}{BLACK}Some types of dekorationer can be re-painted after it's built...
 STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the Åktur...
 STR_3422    :{SMALLFONT}{BLACK}Let's build a Berg- och dalbana !
 STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
@@ -3440,9 +3440,9 @@ STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow
 STR_3434    :{SMALLFONT}{BLACK}Let's test the Åktur and see if it works!
 STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new Berg- och dalbana...
 STR_3436    :{SMALLFONT}{BLACK}While waiting for our first Åkturrs, we could customize the Åktur a bit...
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here...
-STR_3439    :Clear Scenery
+STR_3437    :{SMALLFONT}{BLACK}Clear large areas of dekorationer from landscape
+STR_3438    :Unable to remove all dekorationer from here...
+STR_3439    :Clear Dekorationer
 STR_3440    :Page 1
 STR_3441    :Page 2
 STR_3442    :Page 3
