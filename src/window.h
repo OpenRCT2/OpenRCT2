@@ -162,6 +162,11 @@ typedef struct {
 	sint32 var_482;
 } ride_variables;
 
+typedef struct {
+	sint16 selected_scenery_id;
+	sint16 hover_counter;
+} scenery_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -199,6 +204,7 @@ typedef struct rct_window {
 		news_variables news;
 		map_variables map;
 		ride_variables ride;
+		scenery_variables scenery;
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;
@@ -457,6 +463,7 @@ void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
 void window_research_open();
+void window_scenery_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
