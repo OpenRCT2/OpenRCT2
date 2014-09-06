@@ -362,7 +362,7 @@ void Mixer::MixChannel(Channel& channel, Uint8* data, int length)
 				}
 				channel.offset = 0;
 			}
-		} while(loaded < length || (loaded < length && channel.loop != 0 && channel.offset == 0));
+		} while(loaded < length && channel.loop != 0);
 	}
 }
 
