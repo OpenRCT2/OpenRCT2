@@ -1156,7 +1156,7 @@ STR_1151    :Fullt
 STR_1152    :Minst en person
 STR_1153    :Höjdmarkeringar på Åkturer
 STR_1154    :Höjdmarkeringar på Land
-STR_1155    :Höjdmarkeringar på Väg
+STR_1155    :Höjdmarkeringar på Gångvägar
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kan inte ta bort detta...
@@ -1174,247 +1174,247 @@ STR_1169    :(Inga) TODO: Ingen?
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
-STR_1174    :Banner sign in the way
-STR_1175    :Can't build this on sloped footpath
-STR_1176    :Can't build footpath here...
-STR_1177    :Can't remove footpath from here...
-STR_1178    :Land slope unsuitable
-STR_1179    :Footpath in the way
-STR_1180    :Can't build this underwater!
-STR_1181    :Footpaths
-STR_1182    :Type
-STR_1183    :Direction
-STR_1184    :Slope
-STR_1185    :{SMALLFONT}{BLACK}Direction
-STR_1186    :{SMALLFONT}{BLACK}Slope down
-STR_1187    :{SMALLFONT}{BLACK}Level
-STR_1188    :{SMALLFONT}{BLACK}Slope up
-STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
-STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
+STR_1173    :{SMALLFONT}{BLACK}Bygg gångvägar och köer
+STR_1174    :En skylt är i vägen
+STR_1175    :Kan inte bygga på en sluttande gångväg
+STR_1176    :Kan inte bygga gångväg här...
+STR_1177    :Kan inte ta bort gångvägen här...
+STR_1178    :Markens sluttning är inte lämplig
+STR_1179    :Gånvägen är i vägen
+STR_1180    :Kan inte bygga det här under vatten!
+STR_1181    :Gångvägar
+STR_1182    :Sort
+STR_1183    :Riktning
+STR_1184    :Sluttning
+STR_1185    :{SMALLFONT}{BLACK}Riktning
+STR_1186    :{SMALLFONT}{BLACK}Sluttning nedåt
+STR_1187    :{SMALLFONT}{BLACK}Platt
+STR_1188    :{SMALLFONT}{BLACK}Sluttning uppåt
+STR_1189    :{SMALLFONT}{BLACK}Bygg den valda gångvägssektionen
+STR_1190    :{SMALLFONT}{BLACK}Ta bort gångvägssektion
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on Åktur
-STR_1200    :{COMMA16} people on Åktur
-STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
-STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
-STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
-STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
-STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
-STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
-STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronize with adjacent stations
-STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronize departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1194    :Stängd
+STR_1195    :Testkörning
+STR_1196    :Öppen
+STR_1197    :Trasig
+STR_1198    :Kraschad!
+STR_1199    :{COMMA16} person på åkturen
+STR_1200    :{COMMA16} personer på åkturen
+STR_1201    :Ingen i kön
+STR_1202    :1 person i kön
+STR_1203    :{COMMA16} personer i kön
+STR_1204    :{COMMA16} minut kötid
+STR_1205    :{COMMA16} minuter kötid
+STR_1206    :{WINDOW_COLOUR_2}Vänta på:
+STR_1207    :{WINDOW_COLOUR_2}Lämna om ett annat tåg anländer till stationen
+STR_1208    :{WINDOW_COLOUR_2}Lämna om en annan båt lägger an vid stationen
+STR_1209    :{SMALLFONT}{BLACK}Välj om tåget ska invänta passagerare innan avgång
+STR_1210    :{SMALLFONT}{BLACK}Välj om avgång ska ske då ett annat fordon anländer
+STR_1211    :{WINDOW_COLOUR_2}Minsta väntetid:
+STR_1212    :{WINDOW_COLOUR_2}Högsta väntetid:
+STR_1213    :{SMALLFONT}{BLACK}Välj minste väntetid innan avgång
+STR_1214    :{SMALLFONT}{BLACK}Välj högsta väntetid innan avgång
+STR_1215    :{WINDOW_COLOUR_2}Synkronisera med närliggande stationer
+STR_1216    :{SMALLFONT}{BLACK}Välj om avgången ska synkroniseras med alla närliggande stationer (för 'rally')
+STR_1217    :{COMMA16} sekunder
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :Exit only
-STR_1221    :No entrance
-STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport åkturer
-STR_1224    :{SMALLFONT}{BLACK}Gentle åkturer
-STR_1225    :{SMALLFONT}{BLACK}Berg- och dalbanas
-STR_1226    :{SMALLFONT}{BLACK}Thrill åkturer
-STR_1227    :{SMALLFONT}{BLACK}Water åkturer
-STR_1228    :{SMALLFONT}{BLACK}Shops & Stånds
-STR_1229    :train
-STR_1230    :trains
-STR_1231    :Train
-STR_1232    :Trains
-STR_1233    :{COMMA16} train
-STR_1234    :{COMMA16} trains
-STR_1235    :Train {COMMA16}
-STR_1236    :boat
-STR_1237    :boats
-STR_1238    :Boat
-STR_1239    :Boats
-STR_1240    :{COMMA16} boat
-STR_1241    :{COMMA16} boats
-STR_1242    :Boat {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
-STR_1250    :docking platform
-STR_1251    :docking platforms
-STR_1252    :Docking platform
-STR_1253    :Docking platforms
-STR_1254    :{COMMA16} docking platform
-STR_1255    :{COMMA16} docking platforms
-STR_1256    :Docking platform {COMMA16}
+STR_1220    :Endast utgång
+STR_1221    :Ingen ingång
+STR_1222    :Ingen utgång
+STR_1223    :{SMALLFONT}{BLACK}Transportåkturer
+STR_1224    :{SMALLFONT}{BLACK}Lugna åkturer
+STR_1225    :{SMALLFONT}{BLACK}Berg- och dalbanor
+STR_1226    :{SMALLFONT}{BLACK}Spännande åkturer
+STR_1227    :{SMALLFONT}{BLACK}Vattenåkturer
+STR_1228    :{SMALLFONT}{BLACK}Affärer & stånd
+STR_1229    :tåg
+STR_1230    :tåg
+STR_1231    :Tåg
+STR_1232    :Tåg
+STR_1233    :{COMMA16} tåg
+STR_1234    :{COMMA16} tåg
+STR_1235    :Tåg {COMMA16}
+STR_1236    :båt
+STR_1237    :båtar
+STR_1238    :Båt
+STR_1239    :Båtar
+STR_1240    :{COMMA16} båt
+STR_1241    :{COMMA16} båtar
+STR_1242    :Båt {COMMA16}
+STR_1243    :spår
+STR_1244    :spår
+STR_1245    :Spår
+STR_1246    :Spår
+STR_1247    :{COMMA16} spår
+STR_1248    :{COMMA16} spår
+STR_1249    :Spår {COMMA16}
+STR_1250    :brygga
+STR_1251    :bryggor
+STR_1252    :Brygga
+STR_1253    :Bryggor
+STR_1254    :{COMMA16} brygga
+STR_1255    :{COMMA16} bryggor
+STR_1256    :Brygga {COMMA16}
 STR_1257    :station
-STR_1258    :stations
+STR_1258    :stationer
 STR_1259    :Station
-STR_1260    :Stations
+STR_1260    :Stationer
 STR_1261    :{COMMA16} station
-STR_1262    :{COMMA16} stations
+STR_1262    :{COMMA16} stationer
 STR_1263    :Station {COMMA16}
-STR_1264    :car
-STR_1265    :cars
-STR_1266    :Car
-STR_1267    :Cars
-STR_1268    :{COMMA16} car
-STR_1269    :{COMMA16} cars
-STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
-STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
+STR_1264    :bil
+STR_1265    :bilar
+STR_1266    :Bil
+STR_1267    :Bilar
+STR_1268    :{COMMA16} bil
+STR_1269    :{COMMA16} bilar
+STR_1270    :Bil {COMMA16}
+STR_1271    :byggnad
+STR_1272    :byggnader
+STR_1273    :Byggnad
+STR_1274    :Byggnader
+STR_1275    :{COMMA16} byggnad
+STR_1276    :{COMMA16} byggnader
+STR_1277    :Byggnad {COMMA16}
+STR_1278    :struktur
+STR_1279    :strukturer
+STR_1280    :Struktur
+STR_1281    :Strukturer
+STR_1282    :{COMMA16} struktur
+STR_1283    :{COMMA16} strukturer
+STR_1284    :Struktur {COMMA16}
+STR_1285    :skepp
+STR_1286    :skepp
+STR_1287    :Skepp
+STR_1288    :Skepp
+STR_1289    :{COMMA16} skepp
+STR_1290    :{COMMA16} skepp
+STR_1291    :Skepp {COMMA16}
+STR_1292    :kabin
+STR_1293    :kabiner
+STR_1294    :Kabin
+STR_1295    :Kabiner
+STR_1296    :{COMMA16} kabin
+STR_1297    :{COMMA16} kabiner
+STR_1298    :Kabin {COMMA16}
+STR_1299    :hjul
+STR_1300    :hjul
+STR_1301    :Hjul
+STR_1302    :Hjul
+STR_1303    :{COMMA16} hjul
+STR_1304    :{COMMA16} hjul
+STR_1305    :Hjul {COMMA16}
 STR_1306    :ring
-STR_1307    :rings
+STR_1307    :ringar
 STR_1308    :Ring
-STR_1309    :Rings
+STR_1309    :Ringar
 STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
+STR_1311    :{COMMA16} ringar
 STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
-STR_1328    :Level land required
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1313    :spelare
+STR_1314    :spelare
+STR_1315    :Spelare
+STR_1316    :Spelare
+STR_1317    :{COMMA16} spelare
+STR_1318    :{COMMA16} spelare
+STR_1319    :Spelare {COMMA16}
+STR_1320    :bana
+STR_1321    :bana
+STR_1322    :Banor
+STR_1323    :Banor
+STR_1324    :{COMMA16} bana
+STR_1325    :{COMMA16} banor
+STR_1326    :Bana {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Rotera objekt 90{DEGREE}
+STR_1328    :Platt land krävs
+STR_1329    :{WINDOW_COLOUR_2}Starthastighet:
+STR_1330    :{SMALLFONT}{BLACK}Maxhastighet när tåget lämnar stationen
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet...
-STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Åktur time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1335    :{STRINGID} - Ingång{POP16}{POP16}
+STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Ingång
+STR_1337    :{STRINGID} - Utgång{POP16}{POP16}
+STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Utgång
+STR_1339    :{BLACK}Inga testresultat än...
+STR_1340    :{WINDOW_COLOUR_2}Maxhastighet: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Åktid: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Åktur length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}Åkturens längd: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
-STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical G's: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :Can't change speed...
-STR_1362    :Can't change launch speed...
-STR_1363    :Too high for supports!
-STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (vänster)
-STR_1366    :In-line Twist (höger)
-STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (vänster)
-STR_1369    :Half Corkscrew (höger)
-STR_1370    :Barrel Roll (vänster)
-STR_1371    :Barrel Roll (höger)
-STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (vänster)
-STR_1374    :Large Half Loop (höger)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (vänster)
-STR_1378    :Heartline Roll (höger)
-STR_1379    :Reverser (vänster)
-STR_1380    :Reverser (höger)
-STR_1381    :Curved Lift Hill (vänster)
-STR_1382    :Curved Lift Hill (höger)
-STR_1383    :Quarter Loop
+STR_1347    :{WINDOW_COLOUR_2}Genomsnittshastighet: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Max positiva vertikala G-krafter: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Max positiva vertikala G-krafter: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Max negativa vertikala G-krafter: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Max negativa vertikala G-krafter: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Max laterala G-krafter: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Max laterala G-krafter: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Högsta fallhöjd: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Fall: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Inversioner: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Hål: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}Total 'flyg'-tid: {BLACK}{COMMA2DP32}secs
+STR_1359    :{WINDOW_COLOUR_2}Kötod: {BLACK}{COMMA16} minute
+STR_1360    :{WINDOW_COLOUR_2}Kötid: {BLACK}{COMMA16} minutes
+STR_1361    :Kan inte ändra hastighet...
+STR_1362    :Kan inte ändra starthastighet...
+STR_1363    :För högt för stödpelare!
+STR_1364    :Stödpelarna kan inte förlängas mer!
+STR_1365    :Tvist (vänster)
+STR_1366    :Tvist (höger)
+STR_1367    :Halvloop
+STR_1368    :Halv Korkskruv (vänster)
+STR_1369    :Halv Korkskruv (höger)
+STR_1370    :Roll (vänster)
+STR_1371    :Roll (höger)
+STR_1372    :Uppskjutskulle
+STR_1373    :Stor Halvloop (vänster)
+STR_1374    :Stor Halvloop (höger)
+STR_1375    :Övre Vidarekoppling
+STR_1376    :Nedre Vidarekoppling
+STR_1377    :Heartline-Roll (vänster)
+STR_1378    :Heartline-Roll (höger)
+STR_1379    :Omvändare (vänster)
+STR_1380    :Omvändare (höger)
+STR_1381    :Kurvad Uppskjutskulle (vänster)
+STR_1382    :Kurvad Uppskjutskulle (höger)
+STR_1383    :Kvarts Loop
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
-STR_1387    :Can't change land type...
+STR_1385    :{SMALLFONT}{BLACK}Andra bankonfigurationer
+STR_1386    :Speciell...
+STR_1387    :Kan inte byta terrängtyp...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}View of Åktur/attraktion
-STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
+STR_1392    :{SMALLFONT}{BLACK}Åkturs/attraktions-vy
+STR_1393    :{SMALLFONT}{BLACK}Fordondetaljer och inställningar
 STR_1394    :{SMALLFONT}{BLACK}Operating options
-STR_1395    :{SMALLFONT}{BLACK}Maintenance options
-STR_1396    :{SMALLFONT}{BLACK}Color scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
-STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
-STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to Åktur/attraktion
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from Åktur/attraktion
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle dekorationer on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this...
-STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
-STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
-STR_1411    :{STRINGID} in the way
-STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of Åktur
-STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
+STR_1395    :{SMALLFONT}{BLACK}Underhållsinställningar
+STR_1396    :{SMALLFONT}{BLACK}Färginställningar
+STR_1397    :{SMALLFONT}{BLACK}Ljud- och musikinställningar
+STR_1398    :{SMALLFONT}{BLACK}Mätvärden och testdata
+STR_1399    :{SMALLFONT}{BLACK}Grafer
+STR_1400    :Ingång
+STR_1401    :Utgång
+STR_1402    :{SMALLFONT}{BLACK}Bygg eller flytta ingången till åkturen/attraktionen
+STR_1403    :{SMALLFONT}{BLACK}Bygg eller flytta utgången till åkturen/attraktionen
+STR_1404    :{SMALLFONT}{BLACK}Rotera 90{DEGREE}
+STR_1405    :{SMALLFONT}{BLACK}Spegla
+STR_1406    :{SMALLFONT}{BLACK}Dölj/visa dekorationer (om de finns på designen)
+STR_1407    :{WINDOW_COLOUR_2}Bygg detta...
+STR_1408    :{WINDOW_COLOUR_2}Kostnad: {BLACK}{CURRENCY}
+STR_1409    :Ingång/utgång-Platform
+STR_1410    :Vertikalt Torn
+STR_1411    :{STRINGID} är i vägen
+STR_1412    :{WINDOW_COLOUR_3}Den här sortens åktur kan inte spara data
+STR_1413    :{WINDOW_COLOUR_3}Sparning av data börjar när nästa {STRINGID} lämnar {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocity
 STR_1416    :{WINDOW_COLOUR_2}Altitude
