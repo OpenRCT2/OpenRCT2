@@ -1532,19 +1532,19 @@ STR_1527    :{SMALLFONT}{OPENQUOTES}Sockervadden från {STRINGID} var verkligen v
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}Pizzan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This donut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}Popcornen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Varmkorven från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Tentakeln från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Hatten från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Kanderat äpplet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}T-shirten från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Donuten från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Kaffet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}Friterade kycklingen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Saften från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -1552,60 +1552,60 @@ STR_1547    :
 STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}Det känns som att någon iakttar mig{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för Jag tänker inte betala så mycket för a balloon from {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en karta från {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett paraply från {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en dricka från {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en hamburgare från {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för pommes frites från {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en glass från {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sockervadd från {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för pizza from {STRINGID}{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a donut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för popcorn från {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en varmkorv från {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för tentakel från {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en hatt från {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en T-shirt från {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en donut från {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en kaffe från {STRINGID}{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för friterad kyckling från {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för saft från {STRINGID}{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Pretzeln från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Varma chokladen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Istéet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Struvan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Solglasögonen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Biffnudlarna från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}De stekta nudlarna från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Wontonsoppan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Köttbullssoppan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Fruktjuicen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Sojamjölken från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Sujeonggwan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Mackan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Kakan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Ugnskorven från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1617,27 +1617,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-Åktur photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en pretzel från {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för varm choklad från {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för isté från {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en struva från {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för solglasögon från {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för biffnudlar från {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för stekta nudlar från {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för wontonsoppa från {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för köttbullssoppa från {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för fruktjuice från {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sojamjölk från {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sujeonggwa från {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en macka från {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en kaka från {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en ugnskorv från {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1649,13 +1649,13 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new Åktur being built!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Nice Åktur! But not as good as the Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin Åktur!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
+STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Dom bygger en ny åktur!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Najs åktur! Men inte lika bra som Fenixen...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}Jag är så taggad - Det är en Intamin-åktur!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
 STR_1657    :{WINDOW_COLOUR_2}Preferred Åktur
