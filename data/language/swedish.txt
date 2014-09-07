@@ -1443,7 +1443,7 @@ STR_1438    :Sitter
 STR_1439    :(välj plats)
 STR_1440    :Klipper gräset
 STR_1441    :Sopar gångvägen
-STR_1442    :Tömmer skräpkorgen
+STR_1442    :Tömmer sopkorgen
 STR_1443    :Vattnar trädgården
 STR_1444    :Kollar på {STRINGID}
 STR_1445    :Kollar på konstruktionen av {STRINGID}
@@ -1469,7 +1469,7 @@ STR_1464    :Helix uppåt (liten)
 STR_1465    :Helix uppåt (stor)
 STR_1466    :Helix nedåt (liten)
 STR_1467    :Helix nedåt (stor)
-STR_1468    :Anställda
+STR_1468    :Personal
 STR_1469    :Åkturen måste påbörjas och avslutas med stationer
 STR_1470    :Stationen är inte lång nog
 STR_1471    :{WINDOW_COLOUR_2}Hastighet:
@@ -1656,245 +1656,245 @@ STR_1651    :{SMALLFONT}{OPENQUOTES}Najs åktur! Men inte lika bra som Fenixen...
 STR_1652    :{SMALLFONT}{OPENQUOTES}Jag är så taggad - Det är en Intamin-åktur!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
-STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
-STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
-STR_1657    :{WINDOW_COLOUR_2}Preferred Åktur
-STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
-STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
-STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
+STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
+STR_1656    :{SMALLFONT}{BLACK}Bygg en bro eller tunnel
+STR_1657    :{WINDOW_COLOUR_2}Favoritåktur
+STR_1658    :{WINDOW_COLOUR_2}intensitet: {BLACK}mindre än {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}intensitet: {BLACK}mellan {COMMA16} och {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}intensitet: {BLACK}mer än {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Tolerans för illamående: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Glädje:
+STR_1663    :{WINDOW_COLOUR_2}Illamående:
+STR_1664    :{WINDOW_COLOUR_2}Energi:
 STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
-STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
-STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
-STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
-STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
-STR_1673    :Spinning Control Toggle Track
-STR_1674    :Brake speed
+STR_1666    :{WINDOW_COLOUR_2}Törst:
+STR_1667    :{WINDOW_COLOUR_2}Blåsa:
+STR_1668    :{WINDOW_COLOUR_2}Tillfredställdhet: {BLACK}Okänd
+STR_1669    :{WINDOW_COLOUR_2}Tillfredställdhet: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}Totalt antal kunder: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}Total vinst: {BLACK}{CURRENCY2DP}
+STR_1672    :Bromsar
+STR_1673    :Spinning Control Toggle Track TODO
+STR_1674    :Bromshastighet
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (vänster)
-STR_1680    :Helix up (höger)
-STR_1681    :Helix down (vänster)
-STR_1682    :Helix down (höger)
-STR_1683    :Base size 2 x 2
-STR_1684    :Base size 4 x 4
-STR_1685    :Base size 2 x 4
-STR_1686    :Base size 5 x 1
-STR_1687    :Water splash
-STR_1688    :Base size 4 x 1
-STR_1689    :Block brakes
+STR_1676    :{SMALLFONT}{BLACK}Sätt hastighetsgräns för bromsar
+STR_1677    :{WINDOW_COLOUR_2}Popularitet: {BLACK}Okänd
+STR_1678    :{WINDOW_COLOUR_2}Popularitet: {BLACK}{COMMA16}%
+STR_1679    :Helix uppåt (vänster)
+STR_1680    :Helix uppåt (höger)
+STR_1681    :Helix nedåt (vänster)
+STR_1682    :Helix nedåt (höger)
+STR_1683    :Basstorlek 2 x 2
+STR_1684    :Basstorlek 4 x 4
+STR_1685    :Basstorlek 2 x 4
+STR_1686    :Basstorlek 5 x 1
+STR_1687    :Vattenplums
+STR_1688    :Basstorlek 4 x 1
+STR_1689    :Blockbromsar
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
-STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
-STR_1697    :Cannot place these on queue line area
-STR_1698    :Can only place these on queue area
-STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
-STR_1704    :Can't hire new staff...
-STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
-STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
-STR_1707    :Too many staff in game
-STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
-STR_1709    :Sack staff
-STR_1710    :Yes
-STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
-STR_1716    :Invalid name for park
-STR_1717    :Can't rename park...
-STR_1718    :Park Name
-STR_1719    :Enter name for park:-
-STR_1720    :{SMALLFONT}{BLACK}Name park
-STR_1721    :Park closed
-STR_1722    :Park open
-STR_1723    :Can't open park...
-STR_1724    :Can't close park...
-STR_1725    :Can't buy land...
-STR_1726    :Land not for sale!
-STR_1727    :Construction högers not for sale!
-STR_1728    :Can't buy construction högers here...
-STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1691    :{WINDOW_COLOUR_2}  Kostnad: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Kostnad: {BLACK}från {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}Gäster
+STR_1694    :{SMALLFONT}{BLACK}Personal
+STR_1695    :{SMALLFONT}{BLACK}Inkomst och utgifter
+STR_1696    :{SMALLFONT}{BLACK}Kundinformation
+STR_1697    :Kan inte placera dessa i ett köområde
+STR_1698    :Kan endast placera dessa i ett köområde
+STR_1699    :För mycket folk i spelet
+STR_1700    :Anställ ny Vaktmästare
+STR_1701    :Anställ ny Mekaniker
+STR_1702    :Anställ ny Säkerhetsvakt
+STR_1703    :Anställ ny Underhållare
+STR_1704    :Kan inte anställa ny personal...
+STR_1705    :{SMALLFONT}{BLACK}Sparka den här personalen
+STR_1706    :{SMALLFONT}{BLACK}Flytta den här personen till en ny plats
+STR_1707    :För mycket personal i spelet
+STR_1708    :{SMALLFONT}{BLACK}Bestäm patrullområde för den här personalen
+STR_1709    :Sparka personal
+STR_1710    :Ja
+STR_1711    :{WINDOW_COLOUR_1}Är du säker på att du vill sparka {STRINGID}?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sopa gångvägar
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Vattna trädgårdar
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Töm sopkorgar
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Klipp gräs
+STR_1716    :Ogiltigt parknamn
+STR_1717    :Kan inte namnge park...
+STR_1718    :Parknamn
+STR_1719    :Skriv in namn på parken:-
+STR_1720    :{SMALLFONT}{BLACK}Namnge park
+STR_1721    :Parken är stängd
+STR_1722    :Parken är öppen
+STR_1723    :Kan inte öppna parken...
+STR_1724    :Kan inte stänga parken...
+STR_1725    :Kan inte köpa mark...
+STR_1726    :Marken är inte till salu!
+STR_1727    :Bygglov är inte till salu!
+STR_1728    :Kan inte få bygglov här...
+STR_1729    :Marken ägs inte av parken!
+STR_1730    :{RED}Stängd - - 
 STR_1731    :{WHITE}{STRINGID} - - 
-STR_1732    :Build
-STR_1733    :Mode
-STR_1734    :{WINDOW_COLOUR_2}Number of laps:
-STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
+STR_1732    :Bygg
+STR_1733    :Läge
+STR_1734    :{WINDOW_COLOUR_2}Antal varv:
+STR_1735    :{SMALLFONT}{BLACK}Antal varv
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
-STR_1738    :Can't change number of laps...
-STR_1739    :Race won by Gäst {INT32}
-STR_1740    :Race won by {STRINGID}
+STR_1738    :Kan inte ändra antal varv...
+STR_1739    :Gäst {INT32} vann rallyt
+STR_1740    :{STRINGID} vann rallyt
 STR_1741    :Not yet constructed !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on Åktur:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this Åktur at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
 STR_1746    :Can't change this...
-STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for Åktur
+STR_1747    :{WINDOW_COLOUR_2}Tidsgräns:
+STR_1748    :{SMALLFONT}{BLACK}Tidsgräns för åkturen
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
-STR_1751    :Can't change time limit for Åktur...
-STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
-STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
-STR_1756    :{WINDOW_COLOUR_2}Admission price:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Build mode
-STR_1759    :{SMALLFONT}{BLACK}Move mode
-STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
-STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
-STR_1762    :Waterfalls
-STR_1763    :Rapids
-STR_1764    :Log Bumps
-STR_1765    :On-Åktur photo section
-STR_1766    :Reverser turntable
-STR_1767    :Spinning tunnel
-STR_1768    :Can't change number of swings...
-STR_1769    :{WINDOW_COLOUR_2}Number of swings:
-STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
+STR_1751    :Kan inte ändra tidsgränsen för åkturen...
+STR_1752    :{SMALLFONT}{BLACK}Visa lista över individuella gäster i parken
+STR_1753    :{SMALLFONT}{BLACK}Visa sammanfattning av alla gäster i parken
+STR_1754    :{BLACK}{COMMA16} gäster
+STR_1755    :{BLACK}{COMMA16} gäst
+STR_1756    :{WINDOW_COLOUR_2}Biljettpris:
+STR_1757    :{WINDOW_COLOUR_2}Tillförlitlighet: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Byggläge
+STR_1759    :{SMALLFONT}{BLACK}Flyttläge
+STR_1760    :{SMALLFONT}{BLACK}Fyll-i-läge
+STR_1761    :{SMALLFONT}{BLACK}Bygg labyrint i denna riktning
+STR_1762    :Vattenfall
+STR_1763    :Strider
+STR_1764    :Stockar
+STR_1765    :Fotosektion
+STR_1766    :Omvändare
+STR_1767    :Snurrande tunnel
+STR_1768    :Kan inte ändra antalet gungningar...
+STR_1769    :{WINDOW_COLOUR_2}Antal gungningar:
+STR_1770    :{SMALLFONT}{BLACK}Antal hela gungningar
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-Åktur photo section allowed per Åktur
-STR_1774    :Only one cable lift hill allowed per Åktur
-STR_1775    :Off
-STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1773    :Bara en fotosektion tillåten per åktur
+STR_1774    :Bara en uppskjutsbacke tillåten per åktur
+STR_1775    :Av
+STR_1776    :På
+STR_1777    :{WINDOW_COLOUR_2}Musik:
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
-STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
-STR_1791    :{WINDOW_COLOUR_2}Uniform color:
-STR_1792    :Responding to {STRINGID} breakdown call
-STR_1793    :Heading to {STRINGID} for an inspection
-STR_1794    :Fixing {STRINGID}
-STR_1795    :Answering radio call
-STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this Åktur
-STR_1798    :Whirlpool
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantdräkt
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romersk dräkt
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilladräkt
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snögubbedräkt
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Riddardräkt
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautdräkt
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditdräkt
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffdräkt
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratdräkt
+STR_1790    :{SMALLFONT}{BLACK}Välj uniformfärg för den här sortens personal
+STR_1791    :{WINDOW_COLOUR_2}Uniformfärg:
+STR_1792    :Svarar på radioanrop om {STRINGID}
+STR_1793    :På väg till {STRINGID} för en inspektion
+STR_1794    :Fixar {STRINGID}
+STR_1795    :Svarar på radioanrop
+STR_1796    :Har gått sönder och behöver fixas
+STR_1797    :Denna inställning kan inte ändras på den här åkturen
+STR_1798    :Strömvirvel
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Safety cut-out
-STR_1801    :Restraints stuck closed
-STR_1802    :Restraints stuck open
-STR_1803    :Doors stuck closed
-STR_1804    :Doors stuck open
-STR_1805    :Vehicle malfunction
-STR_1806    :Brakes failure
-STR_1807    :Control failure
-STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
-STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
-STR_1810    :{WINDOW_COLOUR_2}Carrying:
-STR_1811    :Can't build this here...
+STR_1800    :Nödstopp
+STR_1801    :Byglarna kan ej fällas ner
+STR_1802    :Byglarna kan ej fällas upp
+STR_1803    :Dörrarna går inte att öppna
+STR_1804    :Dörrarna går inte att stänga
+STR_1805    :Fordonshaveri
+STR_1806    :Bromsfel
+STR_1807    :Kontrollfel
+STR_1808    :{WINDOW_COLOUR_2}Senaste haveri: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}Nuvarande haveri: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}Bär på:
+STR_1811    :Kan inte bygga detta här...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
-STR_1813    :Miscellaneous Objects
-STR_1814    :Actions
-STR_1815    :Thoughts
-STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
+STR_1813    :Diverse Saker
+STR_1814    :Handlingar
+STR_1815    :Tankar
+STR_1816    :{SMALLFONT}{BLACK}Välj informationstyp som ska visas i gästlistan
 STR_1817    :({COMMA16})
-STR_1818    :{WINDOW_COLOUR_2}All guests
-STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
-STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this Åktur/attraktion
-STR_1824    :{SMALLFONT}{BLACK}Show guests on this Åktur/attraktion
-STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this Åktur/attraktion
+STR_1818    :{WINDOW_COLOUR_2}Alla gäster
+STR_1819    :{WINDOW_COLOUR_2}Alla gäster (sammanfattat)
+STR_1820    :{WINDOW_COLOUR_2}Gäster {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Gäster som tänker {STRINGID}
+STR_1822    :{WINDOW_COLOUR_2}Guests som tänker på {POP16}{STRINGID}
+STR_1823    :{SMALLFONT}{BLACK}Visa gästers tankar om den här åkturen/attraktionen
+STR_1824    :{SMALLFONT}{BLACK}Visa gäster på den här åkturen/attraktionen
+STR_1825    :{SMALLFONT}{BLACK}Visa gäster som köar till den här åkturen/attraktionen
 STR_1826    :Status
-STR_1827    :Popularity
-STR_1828    :Satisfaction
-STR_1829    :Profit
-STR_1830    :Queue length
-STR_1831    :Queue time
-STR_1832    :Reliability
-STR_1833    :Down-time
-STR_1834    :Guests favorite
-STR_1835    :Popularity: Unknown
-STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
-STR_1839    :Reliability: {COMMA16}%
-STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY} per hour
-STR_1842    :Favorite of: {COMMA16} guest
-STR_1843    :Favorite of: {COMMA16} guests
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in Åktur/attraktion list
+STR_1827    :Popularitet
+STR_1828    :Tillfredsställdhet
+STR_1829    :Vinst
+STR_1830    :Kölängd
+STR_1831    :Kötid
+STR_1832    :Tillförlitlighet
+STR_1833    :Dötid
+STR_1834    :Gästernas favorit
+STR_1835    :Popularitet: Okänd
+STR_1836    :Popularitet: {COMMA16}%
+STR_1837    :Tillfredsställdhet: Okänd
+STR_1838    :Tillfredsställdhet: {COMMA16}%
+STR_1839    :Tillförlitlighet: {COMMA16}%
+STR_1840    :Dötid: {COMMA16}%
+STR_1841    :Vinst: {CURRENCY} per timme
+STR_1842    :{COMMA16} gästs favorit
+STR_1843    :{COMMA16} gästers favorit
+STR_1844    :{SMALLFONT}{BLACK}Välj informationstyp som ska visas i åkturs/attraktions-listan
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
-STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this Åktur
-STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
-STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_1859    :Handymen
-STR_1860    :Mechanics
-STR_1861    :Security Guards
-STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
-STR_1866    :Entertainer
+STR_1846    :{COMMA16} gäster
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gäster
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gäster
+STR_1849    :{WINDOW_COLOUR_2}Spela musik
+STR_1850    :{SMALLFONT}{BLACK}Välj om musik ska spelas på denna åktur
+STR_1851    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}{CURRENCY2DP} per timme
+STR_1852    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}Okänd
+STR_1853    :{WINDOW_COLOUR_2}Byggd: {BLACK}Detta år
+STR_1854    :{WINDOW_COLOUR_2}Byggd: {BLACK}Förra året
+STR_1855    :{WINDOW_COLOUR_2}Byggd: {BLACK}{COMMA16} År sen
+STR_1856    :{WINDOW_COLOUR_2}Vinst per styck: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Förlust per styck: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Kostnad: {BLACK}{CURRENCY} per månad
+STR_1859    :Vaktmästare
+STR_1860    :Mekaniker
+STR_1861    :Säkerhetsvakter
+STR_1862    :Underhållare
+STR_1863    :Vaktmästare
+STR_1864    :Mekaniker
+STR_1865    :Säkerhetsvakt
+STR_1866    :Underhållare
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
-STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
-STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
+STR_1868    :Kan inte ändra antal rotationer...
+STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
+STR_1870    :{SMALLFONT}{BLACK}Antal hela rotationer
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
-STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
+STR_1873    :{WINDOW_COLOUR_2}Inkomst: {BLACK}{CURRENCY} per timme
+STR_1874    :{WINDOW_COLOUR_2}Vinst: {BLACK}{CURRENCY} per timme
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect åkturer
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix åkturer
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
-STR_1886    :Inspecting {STRINGID}
-STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
-STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
-STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this Åktur
-STR_1891    :No {STRINGID} in park yet!
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspektera åkturer
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fixa åkturer
+STR_1878    :{WINDOW_COLOUR_2}Inspektion:
+STR_1879    :Var 10:e minut
+STR_1880    :Var 20:e minut
+STR_1881    :Var 30:e minut
+STR_1882    :Var 45:e minut
+STR_1883    :Varje timme
+STR_1884    :Varannan timme
+STR_1885    :Aldrig
+STR_1886    :Inspekterar {STRINGID}
+STR_1887    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}{COMMA16} minuter
+STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timmar
+STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
+STR_1891    :Ingen {STRINGID} i parken än!
 STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:-
+STR_1893    :Var god sätt in din RollerCoaster Tycoon 2-skiva i följande CD-läsare:-
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
