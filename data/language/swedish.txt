@@ -929,7 +929,7 @@ STR_0924    :{SMALLFONT}{BLACK}Helix nedåt
 STR_0925    :{SMALLFONT}{BLACK}Helix uppåt
 STR_0926    :Kan inte ta bort det här...
 STR_0927    :Kan inte bygga här...
-STR_0928    :{SMALLFONT}{BLACK}Kedjor, för att dra upp vagnar för backar
+STR_0928    :{SMALLFONT}{BLACK}Lyftkedjor, för att dra upp vagnar för backar
 STR_0929    :'S'-Böj (vänster)
 STR_0930    :'S'-Böj (höger)
 STR_0931    :Vertikal Loop (vänster)
@@ -1063,7 +1063,7 @@ STR_1058    :Skriv in ett nytt namn för den här åkturen/attraktionen:-
 STR_1059    :Kan inte namnge åktur/attraktion...
 STR_1060    :Ogiltigt åktur/attraktionsnamn
 STR_1061    :Normalt läge
-STR_1062    :Flervarvsläge
+STR_1062    :Kontinuerligt banläge
 STR_1063    :Reverse-Incline launched shuttle mode TODO
 STR_1064    :Accelererad start
 STR_1065    :Pendlarläge
@@ -1096,7 +1096,7 @@ STR_1091    :Circusvisning
 STR_1092    :Nedåtriktad start
 STR_1093    :Snea huset
 STR_1094    :Fritt fall
-STR_1095    :Blockavdelat flervarvsläge
+STR_1095    :Blockavdelat kontinuerligt banläge
 STR_1096    :Motoriserad start
 STR_1097    :Blockavdelad motoriserad start
 STR_1098    :Rör sig mot slutet av {POP16}{STRINGID}
@@ -1416,119 +1416,119 @@ STR_1411    :{STRINGID} är i vägen
 STR_1412    :{WINDOW_COLOUR_3}Den här sortens åktur kan inte spara data
 STR_1413    :{WINDOW_COLOUR_3}Sparning av data börjar när nästa {STRINGID} lämnar {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
-STR_1416    :{WINDOW_COLOUR_2}Altitude
+STR_1415    :{WINDOW_COLOUR_2}Hastighet
+STR_1416    :{WINDOW_COLOUR_2}Höjd
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Queue line path
-STR_1424    :{SMALLFONT}{BLACK}Footpath
-STR_1425    :Footpath
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1422    :{SMALLFONT}{BLACK}Sparar data från {POP16}{STRINGID}
+STR_1423    :{SMALLFONT}{BLACK}Kö
+STR_1424    :{SMALLFONT}{BLACK}Gångväg
+STR_1425    :Gångväg
+STR_1426    :Kö
+STR_1427    :{WINDOW_COLOUR_2}Kunder: {BLACK}{COMMA32} per timme
+STR_1428    :{WINDOW_COLOUR_2}Biljettpris:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
-STR_1431    :Walking
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
-STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at dekorationer
-STR_1447    :Leaving the park
-STR_1448    :Watching new Åktur being constructed
+STR_1430    :Gratis
+STR_1431    :Vandrar
+STR_1432    :På väg mot {STRINGID}
+STR_1433    :Köar till {STRINGID}
+STR_1434    :Drunknar
+STR_1435    :På {STRINGID}
+STR_1436    :I {STRINGID}
+STR_1437    :Vid {STRINGID}
+STR_1438    :Sitter
+STR_1439    :(välj plats)
+STR_1440    :Klipper gräset
+STR_1441    :Sopar gångvägen
+STR_1442    :Tömmer skräpkorgen
+STR_1443    :Vattnar trädgården
+STR_1444    :Kollar på {STRINGID}
+STR_1445    :Kollar på konstruktionen av {STRINGID}
+STR_1446    :Kollar på dekorationer
+STR_1447    :Lämnar parken
+STR_1448    :Kollar på konstruktionen av en ny åktur
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:-
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
-STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
-STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
-STR_1462    :Too steep for lift hill
-STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
-STR_1468    :Staff
-STR_1469    :Åktur must start and end with stations
-STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this Åktur
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
+STR_1452    :Gästens namn
+STR_1453    :Skriv in namn för den här gästen:-
+STR_1454    :Kan inte namnge gäst...
+STR_1455    :Ogiltigt gästnamn
+STR_1456    :{WINDOW_COLOUR_2}Spenderade pengar: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Pengar i fickan: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Tid i parken: {BLACK}{REALTIME}
+STR_1459    :Banstil
+STR_1460    :{SMALLFONT}{BLACK}'U'-formad öppen bana
+STR_1461    :{SMALLFONT}{BLACK}'O'-formad stängd bana
+STR_1462    :För brant för uppskjutsbacke
+STR_1463    :Gäster
+STR_1464    :Helix uppåt (liten)
+STR_1465    :Helix uppåt (stor)
+STR_1466    :Helix nedåt (liten)
+STR_1467    :Helix nedåt (stor)
+STR_1468    :Anställda
+STR_1469    :Åkturen måste påbörjas och avslutas med stationer
+STR_1470    :Stationen är inte lång nog
+STR_1471    :{WINDOW_COLOUR_2}Hastighet:
+STR_1472    :{SMALLFONT}{BLACK}Den här åkturens hastighet
+STR_1473    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}Inte tillgänglig
+STR_1475    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}Inte tillgänglig
+STR_1477    :{WINDOW_COLOUR_2}Intensitetsnivå: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}Inte tillgänglig
+STR_1480    :{SMALLFONT}{OPENQUOTES}Jag har inte råd med {STRINGID}{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}Jag har spenderat alla mina pengar{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}Jag mår illa{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}Jag mår riktigt illa{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}Jag vill åka något mer spännande än {STRINGID}{ENDQUOTES}
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} ser för intensiv ut för mig{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}Jag är inte klar med min {STRINGID} än{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Bara att kolla på {STRINGID} får mig att må illa{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för {STRINGID}{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}Jag vill gå hem{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} är verkligen värd{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}Jag har redan {STRINGID}{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}Jag har inte råd med {STRINGID}{ENDQUOTES}
+STR_1493    :{SMALLFONT}{OPENQUOTES}Jag är inte hungrig{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}Jag är inte törstig{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Hjälp! Jag drunknar!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}Jag har tappat bort mig!{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} var superkul{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}Jag har köat till {STRINGID} i åratal{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}Jag är trött{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}Jag är hungrig{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}Jag är törstig{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}Jag måste gå på toa{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}Jag kan inte hitta {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för att använda {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}Jag tänker inte åka {STRINGID} när det regnar{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}Nedskräpningen här är hemsk{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}Jag kan inte hitta parkutgången{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}Jag vill hoppa av {STRINGID}{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}Jag vill ut ur {STRINGID}{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}Jag tänker inte åka {STRINGID} - Det är inte säkert nog{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}Den här gångvägen är vidrig{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}Det är för mycket folk här{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great dekorationer!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-Åktur photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Snygga dekorationer!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}Den här parken är verkligen ren och fin{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Fontänerna är fantastiska{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}Musiken här är trevlig{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Ballongen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Kramdjuret från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Kartan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Paraplyt från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Drickan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Hamburgaren från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Pommes fritesen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Glassen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Sockervadden från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
