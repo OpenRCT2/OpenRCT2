@@ -1895,322 +1895,322 @@ STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på 
 STR_1891    :Ingen {STRINGID} i parken än!
 STR_1892    :RollerCoaster Tycoon 2
 STR_1893    :Var god sätt in din RollerCoaster Tycoon 2-skiva i följande CD-läsare:-
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new Åktur/attraktion
-STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
-STR_1897    :{WINDOW_COLOUR_2}Åktur construction
-STR_1898    :{WINDOW_COLOUR_2}Åktur running costs
-STR_1899    :{WINDOW_COLOUR_2}Land purchase
-STR_1900    :{WINDOW_COLOUR_2}Landscaping
-STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
-STR_1902    :{WINDOW_COLOUR_2}Åktur tickets
-STR_1903    :{WINDOW_COLOUR_2}Shop sales
-STR_1904    :{WINDOW_COLOUR_2}Shop stock
-STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
-STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
-STR_1907    :{WINDOW_COLOUR_2}Staff wages
-STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
-STR_1910    :{WINDOW_COLOUR_2}Loan interest
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
+STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
+STR_1897    :{WINDOW_COLOUR_2}Åkturskonstruktioner
+STR_1898    :{WINDOW_COLOUR_2}Åktursunderhållskonstnader
+STR_1899    :{WINDOW_COLOUR_2}Markinköp
+STR_1900    :{WINDOW_COLOUR_2}Landscaping TODO
+STR_1901    :{WINDOW_COLOUR_2}Parkinträde
+STR_1902    :{WINDOW_COLOUR_2}Åktursbiljetter
+STR_1903    :{WINDOW_COLOUR_2}Sålda varor
+STR_1904    :{WINDOW_COLOUR_2}Affärslager
+STR_1905    :{WINDOW_COLOUR_2}Såld mat/dryck
+STR_1906    :{WINDOW_COLOUR_2}Mat/dryck-lager
+STR_1907    :{WINDOW_COLOUR_2}Löner
+STR_1908    :{WINDOW_COLOUR_2}Marknadsföring
+STR_1909    :{WINDOW_COLOUR_2}Forskning
+STR_1910    :{WINDOW_COLOUR_2}Låneränta
+STR_1911    :{BLACK} på {COMMA16}% per år
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}Loan:
+STR_1916    :{WINDOW_COLOUR_2}Lån:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Can't borrow any more money!
-STR_1919    :Not enough cash available!
-STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
-STR_1925    :Can't place person here...
+STR_1918    :Kan inte låna mer pengar!
+STR_1919    :Inte nog med pengar tillgängliga!
+STR_1920    :Kan inte betala tillbaka lån!
+STR_1921    :{SMALLFONT}{BLACK}Starta ett nytt spel
+STR_1922    :{SMALLFONT}{BLACK}Fortsätt spela ett sparat spel
+STR_1923    :{SMALLFONT}{BLACK}Visa handledning
+STR_1924    :{SMALLFONT}{BLACK}Avsluta
+STR_1925    :Kan inte placera personen här...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} has broken down
-STR_1928    :{RED}{STRINGID} has crashed!
-STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
-STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
-STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
-STR_1932    :{STRINGID} is on {STRINGID}
-STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has vänster {STRINGID}
-STR_1935    :{STRINGID} has vänster the park
-STR_1936    :{STRINGID} has bought {STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
-STR_1938    :{SMALLFONT}{BLACK}Show view of guest
-STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
-STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
-STR_1941    :{SMALLFONT}{BLACK}Show which åkturer this guest has been on
-STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
-STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
-STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
-STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
-STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
-STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
-STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
-STR_1949    :Financial Summary
-STR_1950    :Financial Graph
-STR_1951    :Park Value Graph
-STR_1952    :Profit Graph
-STR_1953    :Marketing
-STR_1954    :Research Funding
-STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per Åktur
+STR_1927    :{YELLOW}{STRINGID} har gått sönder
+STR_1928    :{RED}{STRINGID} har kraschat!
+STR_1929    :{RED}{STRINGID} har fortfarande inte blivit fixad{NEWLINE}Kolla var dina mekaniker är och överväg att organisera dom bättre
+STR_1930    :{SMALLFONT}{BLACK}Aktivera/inaktivera spårning av denna gäst - (Om spårning är på så kommer gästens handlingar att visas i meddelandeområdet)
+STR_1931    :{STRINGID} har ställt sig i kö till {STRINGID}
+STR_1932    :{STRINGID} är på {STRINGID}
+STR_1933    :{STRINGID} är i {STRINGID}
+STR_1934    :{STRINGID} har lämnat {STRINGID}
+STR_1935    :{STRINGID} has lämnat parken
+STR_1936    :{STRINGID} har köpt {STRINGID}
+STR_1937    :{SMALLFONT}{BLACK}Visa information om meddelandets ämne TODO
+STR_1938    :{SMALLFONT}{BLACK}Visa gästvyn
+STR_1939    :{SMALLFONT}{BLACK}Visa personalvyn
+STR_1940    :{SMALLFONT}{BLACK}Visa glädje, energi, hunger etc. för denna gäst
+STR_1941    :{SMALLFONT}{BLACK}Visa vilka åkturer denna gäst har varit på
+STR_1942    :{SMALLFONT}{BLACK}Visa ekonomisk information om denna gäst
+STR_1943    :{SMALLFONT}{BLACK}Visa gästens nyliga tankar
+STR_1944    :{SMALLFONT}{BLACK}Visa produkter som gästen bär på
+STR_1945    :{SMALLFONT}{BLACK}Visa order och inställningar för personal
+STR_1946    :{SMALLFONT}{BLACK}Välj dräkt för den här underhållaren
+STR_1947    :{SMALLFONT}{BLACK}Visa områden som patrulleras av den valda personaltypen, och hitta den närmsta personalen
+STR_1948    :{SMALLFONT}{BLACK}Anställ ny personal av den valda typen
+STR_1949    :Ekonomisk Sammanfattning
+STR_1950    :Ekonomigraf
+STR_1951    :Parkvärdesgraf
+STR_1952    :Vinstgraf
+STR_1953    :Marknadsföring
+STR_1954    :Forskningsbidrag
+STR_1955    :{WINDOW_COLOUR_2}Antal varv:
+STR_1956    :{SMALLFONT}{BLACK}Antal varv per åk
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Can't change number of circuits...
-STR_1960    :{WINDOW_COLOUR_2}Balloon price:
-STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
-STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Åktur Photo price:
-STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
-STR_1965    :{WINDOW_COLOUR_2}Drink price:
-STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Fries price:
-STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1959    :Kan inte ändra antal varv...
+STR_1960    :{WINDOW_COLOUR_2}Pris på Ballong:
+STR_1961    :{WINDOW_COLOUR_2}Pris på Mjukisdjur:
+STR_1962    :{WINDOW_COLOUR_2}Pris på Karta:
+STR_1963    :{WINDOW_COLOUR_2}Pris på Åktursfoto:
+STR_1964    :{WINDOW_COLOUR_2}Pris på Paraply:
+STR_1965    :{WINDOW_COLOUR_2}Pris på Dricka:
+STR_1966    :{WINDOW_COLOUR_2}Pris på Hamburgare:
+STR_1967    :{WINDOW_COLOUR_2}Pris på Pommes frites:
+STR_1968    :{WINDOW_COLOUR_2}Pris på Glass:
+STR_1969    :{WINDOW_COLOUR_2}Pris på Sockervadd:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1973    :{WINDOW_COLOUR_2}Pris på Pizza:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
-STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
-STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
-STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Candy Apple price:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Donut price:
-STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1975    :{WINDOW_COLOUR_2}Pris på Popcorn:
+STR_1976    :{WINDOW_COLOUR_2}Pris på Varmkorv:
+STR_1977    :{WINDOW_COLOUR_2}Pris på Tentakel:
+STR_1978    :{WINDOW_COLOUR_2}Pris på Hatt:
+STR_1979    :{WINDOW_COLOUR_2}Pris på Kanderat Äpple:
+STR_1980    :{WINDOW_COLOUR_2}Pris på T-Shirt:
+STR_1981    :{WINDOW_COLOUR_2}Pris på Donut:
+STR_1982    :{WINDOW_COLOUR_2}Pris på Kaffe:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
-STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1984    :{WINDOW_COLOUR_2}Pris på Friterad Kyckling:
+STR_1985    :{WINDOW_COLOUR_2}Pris på Saft:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Åktur Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Fries
-STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
+STR_1988    :Ballong
+STR_1989    :Mjukisdjur
+STR_1990    :Karta
+STR_1991    :Åktursfoto
+STR_1992    :Paraply
+STR_1993    :Dricka
+STR_1994    :Hamburgare
+STR_1995    :Pommes Frites
+STR_1996    :Glass
+STR_1997    :Sockervadd
+STR_1998    :Tom Mugg
+STR_1999    :Skräp
+STR_2000    :Tom Förpackning
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Kupong
 STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2004    :Varmkorv
+STR_2005    :Tentakel
+STR_2006    :Hatt
+STR_2007    :Kanderat Äpple
 STR_2008    :T-Shirt
 STR_2009    :Donut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
-STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
-STR_2019    :On-Åktur Photos
-STR_2020    :Umbrellas
-STR_2021    :Drinks
-STR_2022    :Burgers
-STR_2023    :Fries
-STR_2024    :Ice Creams
-STR_2025    :Cotton Candy
-STR_2026    :Empty Cans
-STR_2027    :Rubbish
-STR_2028    :Empty Burger Boxes
-STR_2029    :Pizzas
-STR_2030    :Vouchers
+STR_2010    :Kaffe
+STR_2011    :Tom Mugg
+STR_2012    :Friterad Kyckling
+STR_2013    :Saft
+STR_2014    :Tom Låda
+STR_2015    :Tomflaska
+STR_2016    :Ballonger
+STR_2017    :Mjukisdjur
+STR_2018    :Kartor
+STR_2019    :Åktursfoton
+STR_2020    :Paraplyn
+STR_2021    :Drickor
+STR_2022    :Hamburgare
+STR_2023    :Pommes Frites
+STR_2024    :Glassar
+STR_2025    :Sockervadd
+STR_2026    :Tomburkar
+STR_2027    :Skräp
+STR_2028    :Tomma Förpackningar
+STR_2029    :Pizzor
+STR_2030    :Kuponger
 STR_2031    :Popcorn
-STR_2032    :Hot Dogs
-STR_2033    :Tentacles
-STR_2034    :Hats
-STR_2035    :Candy Apples
+STR_2032    :Varmkorvar
+STR_2033    :Tentakler
+STR_2034    :Hattar
+STR_2035    :Kanderade Äpplen
 STR_2036    :T-Shirts
 STR_2037    :Donuts
-STR_2038    :Coffees
-STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
-STR_2042    :Empty Boxes
-STR_2043    :Empty Bottles
-STR_2044    :a Balloon
-STR_2045    :a Cuddly Toy
-STR_2046    :a Park Map
-STR_2047    :an On-Åktur Photo
-STR_2048    :an Umbrella
-STR_2049    :a Drink
-STR_2050    :a Burger
-STR_2051    :some Fries
-STR_2052    :an Ice Cream
-STR_2053    :some Cotton Candy
-STR_2054    :an Empty Can
-STR_2055    :some Rubbish
-STR_2056    :an Empty Burger Box
-STR_2057    :a Pizza
-STR_2058    :a Voucher
-STR_2059    :some Popcorn
-STR_2060    :a Hot Dog
-STR_2061    :a Tentacle
-STR_2062    :a Hat
-STR_2063    :a Candy Apple
-STR_2064    :a T-Shirt
-STR_2065    :a Donut
-STR_2066    :a Coffee
-STR_2067    :an Empty Cup
-STR_2068    :some Fried Chicken
-STR_2069    :some Lemonade
-STR_2070    :an Empty Box
-STR_2071    :an Empty Bottle
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :Map of {STRINGID}
-STR_2075    :On-Åktur Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
-STR_2077    :Drink
-STR_2078    :Burger
-STR_2079    :Fries
-STR_2080    :Ice Cream
-STR_2081    :Cotton Candy
-STR_2082    :Empty Can
-STR_2083    :Rubbish
-STR_2084    :Empty Burger Box
+STR_2038    :Kaffekoppar
+STR_2039    :Tomma Muggar
+STR_2040    :Friterad Kyckling
+STR_2041    :Saft
+STR_2042    :Tomma Lådor
+STR_2043    :Tomflaskor
+STR_2044    :en Ballong
+STR_2045    :ett Mjukisdjur
+STR_2046    :en Karta
+STR_2047    :ett Åktursfoto
+STR_2048    :ett Paraply
+STR_2049    :en Dricka
+STR_2050    :en Hamburgare
+STR_2051    :Pommes Frites
+STR_2052    :en Glass
+STR_2053    :Sockervadd
+STR_2054    :en Tomburk
+STR_2055    :Skräp
+STR_2056    :en Tom Förpackning
+STR_2057    :en Pizza
+STR_2058    :en Kupong
+STR_2059    :Popcorn
+STR_2060    :en Varmkorv
+STR_2061    :en Tentakel
+STR_2062    :en Hatt
+STR_2063    :ett Kanderat Äpple
+STR_2064    :en T-Shirt
+STR_2065    :en Donut
+STR_2066    :en Kaffe
+STR_2067    :en Tom Mugg
+STR_2068    :Friterad Kyckling
+STR_2069    :Saft
+STR_2070    :en Tom Låda
+STR_2071    :en Tomflaska
+STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ballong
+STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Mjukisdjur
+STR_2074    :Karta över {STRINGID}
+STR_2075    :Åktursfoto från {STRINGID}
+STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Paraply
+STR_2077    :Dricka
+STR_2078    :Hamburgare
+STR_2079    :Pommes Frites
+STR_2080    :Glass
+STR_2081    :Sockervadd
+STR_2082    :Tomburk
+STR_2083    :Skräp
+STR_2084    :Tom Förpackning
 STR_2085    :Pizza
-STR_2086    :Voucher for {STRINGID}
+STR_2086    :Kupong för {STRINGID}
 STR_2087    :Popcorn
-STR_2088    :Hot Dog
-STR_2089    :Tentacle
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Candy Apple
+STR_2088    :Varmkorv
+STR_2089    :Tentakel
+STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hatt
+STR_2091    :Kanderat Äpple
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
 STR_2093    :Donut
-STR_2094    :Coffee
-STR_2095    :Empty Cup
-STR_2096    :Fried Chicken
-STR_2097    :Lemonade
-STR_2098    :Empty Box
-STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Åktur Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Åktur Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Åktur Photo price:
-STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
-STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
-STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
-STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
-STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
-STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
-STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
-STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
-STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
-STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
-STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
-STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
-STR_2116    :{WINDOW_COLOUR_2}Cookie price:
+STR_2094    :Kaffe
+STR_2095    :Tom Mugg
+STR_2096    :Friterad Kyckling
+STR_2097    :Saft
+STR_2098    :Tom Låda
+STR_2099    :Tomflaska
+STR_2100    :{WINDOW_COLOUR_2}Pris på Åktursfoto:
+STR_2101    :{WINDOW_COLOUR_2}Pris på Åktursfoto:
+STR_2102    :{WINDOW_COLOUR_2}Pris på Åktursfoto:
+STR_2103    :{WINDOW_COLOUR_2}Pris på Pretzel:
+STR_2104    :{WINDOW_COLOUR_2}Pris på Varm Choklad:
+STR_2105    :{WINDOW_COLOUR_2}Pris på Isté:
+STR_2106    :{WINDOW_COLOUR_2}Pris på Struva:
+STR_2107    :{WINDOW_COLOUR_2}Pris på Solglasögon:
+STR_2108    :{WINDOW_COLOUR_2}Pris på Biffnudlar:
+STR_2109    :{WINDOW_COLOUR_2}Pris på Stekta Nudlar:
+STR_2110    :{WINDOW_COLOUR_2}Pris på Wontonsoppa:
+STR_2111    :{WINDOW_COLOUR_2}Pris på Köttbullssoppa:
+STR_2112    :{WINDOW_COLOUR_2}Pris på Fruktjuice:
+STR_2113    :{WINDOW_COLOUR_2}Pris på Sojamjölk:
+STR_2114    :{WINDOW_COLOUR_2}Pris på Sujeonggwa:
+STR_2115    :{WINDOW_COLOUR_2}Pris på Macka:
+STR_2116    :{WINDOW_COLOUR_2}Pris på Kaka:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}Pris på Ugnskorv:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Åktur Photo
-STR_2123    :On-Åktur Photo
-STR_2124    :On-Åktur Photo
+STR_2122    :Åktursfoto
+STR_2123    :Åktursfoto
+STR_2124    :Åktursfoto
 STR_2125    :Pretzel
-STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
-STR_2128    :Funnel Cake
-STR_2129    :Sunglasses
-STR_2130    :Beef Noodles
-STR_2131    :Fried Rice Noodles
-STR_2132    :Wonton Soup
-STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
-STR_2137    :Sub Sandwich
-STR_2138    :Cookie
-STR_2139    :Empty Bowl
-STR_2140    :Empty Drink Carton
-STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
-STR_2143    :Empty Bowl
-STR_2144    :On-Åktur Photos
-STR_2145    :On-Åktur Photos
-STR_2146    :On-Åktur Photos
+STR_2126    :Varm Choklad
+STR_2127    :Isté
+STR_2128    :Struva
+STR_2129    :Solglasögon
+STR_2130    :Biffnudlar
+STR_2131    :Stekta Nudlar
+STR_2132    :Wontonsoppa
+STR_2133    :Köttbullssoppa
+STR_2134    :Fruktjuice
+STR_2135    :Sojamjölk
+STR_2136    :Sujeonggwa
+STR_2137    :Macka
+STR_2138    :Kaka
+STR_2139    :Tom Skål
+STR_2140    :Tomma Tetrapak
+STR_2141    :Tom Juiceförpackning
+STR_2142    :Ugnskorv
+STR_2143    :Tom Skål
+STR_2144    :Åktursfoton
+STR_2145    :Åktursfoton
+STR_2146    :Åktursfoton
 STR_2147    :Pretzels
-STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
-STR_2150    :Funnel Cakes
-STR_2151    :Sunglasses
-STR_2152    :Beef Noodles
-STR_2153    :Fried Rice Noodles
-STR_2154    :Wonton Soups
-STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
-STR_2159    :Sub Sandwiches
-STR_2160    :Cookies
-STR_2161    :Empty Bowls
-STR_2162    :Empty Drink Cartons
-STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
-STR_2165    :Empty Bowls
-STR_2166    :an On-Åktur Photo
-STR_2167    :an On-Åktur Photo
-STR_2168    :an On-Åktur Photo
-STR_2169    :a Pretzel
-STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
-STR_2172    :a Funnel Cake
-STR_2173    :a pair of Sunglasses
-STR_2174    :some Beef Noodles
-STR_2175    :some Fried Rice Noodles
-STR_2176    :some Wonton Soup
-STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
-STR_2183    :an Empty Bowl
-STR_2184    :an Empty Drink Carton
-STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
-STR_2187    :an Empty Bowl
-STR_2188    :On-Åktur Photo of {STRINGID}
-STR_2189    :On-Åktur Photo of {STRINGID}
-STR_2190    :On-Åktur Photo of {STRINGID}
+STR_2148    :Muggar Varm Choklad
+STR_2149    :Istéer
+STR_2150    :Struvor
+STR_2151    :Solglasögon
+STR_2152    :Biffnudlar
+STR_2153    :Friterade Nudlar
+STR_2154    :Wontonsoppor
+STR_2155    :Köttbullssoppor
+STR_2156    :Fruktjuicer
+STR_2157    :Glas Sojamjölk
+STR_2158    :Sujeonggwas
+STR_2159    :Mackor
+STR_2160    :Kakor
+STR_2161    :Tomma Skålar
+STR_2162    :Tomma Tetrapak
+STR_2163    :Tomma Juiceförpackningar
+STR_2164    :Ugnskorvar
+STR_2165    :Tomma Skålar
+STR_2166    :ett Åktursfoto
+STR_2167    :ett Åktursfoto
+STR_2168    :ett Åktursfoto
+STR_2169    :en Pretzel
+STR_2170    :en Varm Choklad
+STR_2171    :en Isté
+STR_2172    :en Struva
+STR_2173    :ett par Solglasögon
+STR_2174    :Biffnudlar
+STR_2175    :Stekta Nudlar
+STR_2176    :Wontonsoppa
+STR_2177    :Köttbullssoppa
+STR_2178    :en Fruktjuice
+STR_2179    :Sojamjölk
+STR_2180    :Sujeonggwa
+STR_2181    :en Macka
+STR_2182    :en Kaka
+STR_2183    :en Tom Skål
+STR_2184    :en Tom Tetrapak
+STR_2185    :en Tom Juiceförpackning
+STR_2186    :en Ugnskorv
+STR_2187    :en Tom Skål
+STR_2188    :Åktursfoto från {STRINGID}
+STR_2189    :Åktursfoto från {STRINGID}
+STR_2190    :Åktursfoto från {STRINGID}
 STR_2191    :Pretzel
-STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
-STR_2194    :Funnel Cake
-STR_2195    :Sunglasses
-STR_2196    :Beef Noodles
-STR_2197    :Fried Rice Noodles
-STR_2198    :Wonton Soup
-STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
-STR_2203    :Sub Sandwich
-STR_2204    :Cookie
-STR_2205    :Empty Bowl
-STR_2206    :Empty Drink Carton
-STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
-STR_2209    :Empty Bowl
+STR_2192    :Varm Choklad
+STR_2193    :Isté
+STR_2194    :Struva
+STR_2195    :Solglasögon
+STR_2196    :Biffnudlar
+STR_2197    :Stekta Nudlar
+STR_2198    :Wontonsoppa
+STR_2199    :Köttbollssoppa
+STR_2200    :Fruktjuice
+STR_2201    :Sojamjölk
+STR_2202    :Sujeonggwa
+STR_2203    :Macka
+STR_2204    :Kaka
+STR_2205    :Tom Skål
+STR_2206    :Tom Tetrapak
+STR_2207    :Tom Juiceförpackning
+STR_2208    :Ugnskorv
+STR_2209    :Tom Skål
 STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
 STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
 STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
