@@ -307,6 +307,9 @@ void check_cmdline_arg()
 	else if (!_stricmp(processed_arg + last_period, "sc6"))
 	{
 		//TODO: scenario install
+		rct_scenario_basic scenarioBasic;
+		strcpy(scenarioBasic.path, processed_arg);
+		scenario_load_and_play_from_path(scenarioBasic.path);
 	}
 	else if (!_stricmp(processed_arg + last_period, "td6") || !_stricmp(processed_arg + last_period, "td4"))
 	{
