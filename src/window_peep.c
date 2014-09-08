@@ -752,6 +752,64 @@ void window_peep_viewport_init(rct_window* w){
 	window_invalidate(w);
 }
 
+/* rct2: 0x6983dd */
+void winodw_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1<<WIDX_TAB_1))
+		return;
+	
+	rct_widget* widget = &w->widgets[WIDX_TAB_1];
+	int width = widget->right - widget->left - 1;
+	int height = widget->bottom - widget->top - 1;
+	int x = widget->left + 1 + w->x;
+	int y = widget->top + 1 + w->y;
+	if (w->page == WINDOW_PEEP_OVERVIEW) height++;
+	
+	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(dpi, x, width, y, height );
+	if (!clip_dpi) return;
+	
+	x = 14;
+	y = 20;
+	
+	rct_peep* peep = GET_PEEP(w->number);
+	
+	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+	                y++;
+	
+	int ebx = *(RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2]) + 1;
+	
+	int eax = 0;
+	
+	if (w->page == WINDOW_PEEP_OVERVIEW){
+		eax = *((uint16*)w + 496 / 2);
+		eax &= 0xFFFC;
+	}
+	ebx += eax;
+	
+	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trouser_colour << 24) | 0xA0000000;
+	gfx_draw_sprite( clip_dpi, sprite_id, x, y, 0);
+	
+	// If holding a balloon
+	if (ebx >= 0x2A1D && ebx < 0x2A3D){
+		ebx += 32;
+		ebx |= (peep->balloon_colour << 19) | 0x20000000;
+		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+	}
+	
+	// If holding umbrella
+	if (ebx >= 0x2BBD && ebx < 0x2BDD){
+		ebx += 32;
+		ebx |= (peep->umbrella_colour << 19) | 0x20000000;
+		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+	}
+	
+	// If wearing hat
+	if (ebx >= 0x29DD && ebx < 0x29FD){
+		ebx += 32;
+		ebx |= (peep->hat_colour << 19) | 0x20000000;
+		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+	}
+}
+
 /* rct2: 0x696887 */
 void window_peep_overview_paint(){
 	rct_window *w;
@@ -763,6 +821,7 @@ void window_peep_overview_paint(){
 	return;
 
 	window_draw_widgets(w, dpi);
+	window_peep_overview_tab_paint(w, dpi);
 	//6983dd
 	//698597
 	//6985d8
