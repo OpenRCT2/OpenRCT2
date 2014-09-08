@@ -26,6 +26,7 @@
 #include "rct2.h"
 #include "ride.h"
 #include "sprite.h"
+#include "sprites.h"
 #include "window.h"
 
 static void peep_update(rct_peep *peep);
@@ -586,4 +587,75 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
  */
 int peep_can_be_picked_up(rct_peep* peep){
 	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+}
+
+/**
+*  Function split into large and small sprite
+*  rct2: 0x00698721
+*/
+int get_peep_face_sprite_small(rct_peep *peep)
+{
+	int sprite;
+	sprite = SPR_PEEP_SMALL_FACE_ANGRY;
+
+	if (peep->var_F3) return sprite;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_SICK;
+
+	if (peep->nausea > 200) return sprite;
+	sprite--; //VERY_SICK
+
+	if (peep->nausea > 170) return sprite;
+	sprite--; //SICK
+
+	if (peep->nausea > 140) return sprite;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_TIRED;
+
+	if (peep->energy < 46) return sprite;
+	sprite--; //TIRED
+
+	if (peep->energy < 70) return sprite;
+	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+
+	//There are 7 different happiness based faces
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
+}
+
+/**
+*  Function split into large and small sprite
+*  rct2: 0x00698721
+*/
+int get_peep_face_sprite_large(rct_peep* peep){
+	int sprite;
+	sprite = SPR_PEEP_LARGE_FACE_ANGRY;
+
+	if (peep->var_F3) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_SICK;
+
+	if (peep->nausea > 200) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_SICK;
+
+	if (peep->nausea > 170) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_SICK;
+
+	if (peep->nausea > 140) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_TIRED;
+
+	if (peep->energy < 46) return sprite;
+	sprite--; //TIRED
+
+	if (peep->energy < 70) return sprite;
+	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_UNHAPPY;
+
+	//There are 7 different happiness based faces
+	for (int i = 37; peep->happiness >= i; i += 37)
+	{
+		sprite++;
+	}
+
+	return sprite;
 }

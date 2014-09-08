@@ -24,6 +24,7 @@
 #include "ride.h"
 #include "peep.h"
 #include "string_ids.h"
+#include "staff.h"
 #include "sprite.h"
 #include "sprites.h"
 #include "viewport.h"
@@ -752,8 +753,11 @@ void window_peep_viewport_init(rct_window* w){
 	window_invalidate(w);
 }
 
-/* rct2: 0x6983dd */
-void winodw_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+/**
+ * rct2: 0x6983dd 
+ * used by window_staff as well
+ */
+void window_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1<<WIDX_TAB_1))
 		return;
 	
@@ -780,12 +784,12 @@ void winodw_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int eax = 0;
 	
 	if (w->page == WINDOW_PEEP_OVERVIEW){
-		eax = *((uint16*)w + 496 / 2);
+		eax = w->var_494>>16;
 		eax &= 0xFFFC;
 	}
 	ebx += eax;
 	
-	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trouser_colour << 24) | 0xA0000000;
+	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
 	gfx_draw_sprite( clip_dpi, sprite_id, x, y, 0);
 	
 	// If holding a balloon
@@ -810,6 +814,35 @@ void winodw_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	}
 }
 
+/* rct2: 0x6983dd */
+void window_peep_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_2))
+		return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_2];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	rct_peep* peep = GET_PEEP(w->number);
+	int image_id = get_peep_face_sprite_large(peep);
+	if (w->page == WINDOW_PEEP_STATS){
+		// If currently viewing this tab animate tab
+		// if it is very sick or angry.
+		switch (image_id){
+		case SPR_PEEP_LARGE_FACE_VERY_VERY_SICK:
+			image_id += (w->frame_no / 4) & 0xF;
+			break;
+		case SPR_PEEP_LARGE_FACE_VERY_SICK:
+			image_id += (w->frame_no / 8) & 0x3;
+			break;
+		case SPR_PEEP_LARGE_FACE_ANGRY:
+			image_id += (w->frame_no / 8) & 0x3;
+			break;
+		}
+	}
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
 /* rct2: 0x696887 */
 void window_peep_overview_paint(){
 	rct_window *w;
@@ -817,11 +850,12 @@ void window_peep_overview_paint(){
 	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
-	return;
+	//RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+	//return;
 
 	window_draw_widgets(w, dpi);
 	window_peep_overview_tab_paint(w, dpi);
+	window_peep_stats_tab_paint(w, dpi);
 	//6983dd
 	//698597
 	//6985d8
@@ -937,47 +971,4 @@ void window_peep_overview_invalidate(){
 	window_peep_overview_widgets[WIDX_TRACK].left = w->width - 25;
 	
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
-}
-
-void window_peep_overview_tab_paint( rct_window* w, rct_drawpixelinfo* dpi){
-
-	if ( w->disabled_widgets & (1ULL<<WIDX_TAB_1) )return;
-
-	//ax
-	int x = w->widgets[WIDX_TAB_1].left + 1 + w->x;
-	//cx
-	int y = w->widgets[WIDX_TAB_1].top + 1 + w->y;
-	//bx
-	int width = w->widgets[WIDX_TAB_1].right - 1 - w->widgets[WIDX_TAB_1].left;
-	//dx
-	int height = w->widgets[WIDX_TAB_1].bottom - 1 - w->widgets[WIDX_TAB_1].top;
-
-	if (w->page == WINDOW_PEEP_OVERVIEW){
-		height++;
-	}
-
-	rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo( dpi, x, width, y, height );
-
-	if (!cliped_dpi) return;
-
-	int cx = 14;
-	int dx = 20;
-
-	//ebp
-	rct_peep* peep = GET_PEEP(w->number);
-	
-	
-	if (peep->type == 1 && peep->staff_type == 3)
-		dx++;
-	int eax = RCT2_GLOBAL(peep->sprite_type*8 + 0x982708, uint32);
-	int ebx = *(uint32*)eax;
-	ebx++;
-	eax = 0;
-	
-	if (w->page == WINDOW_PEEP_OVERVIEW){
-		int ax = *((uint16*)w + 496 / 2);
-		ax &= ~((1<<0)|(1<<1));
-	}
-	ebx += eax;
-	//698474
 }
