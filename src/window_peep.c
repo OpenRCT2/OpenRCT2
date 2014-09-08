@@ -814,7 +814,7 @@ void window_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	}
 }
 
-/* rct2: 0x6983dd */
+/* rct2: 0x69869b */
 void window_peep_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_2))
 		return;
