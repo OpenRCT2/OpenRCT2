@@ -185,7 +185,7 @@ void ride_update_favourited_stat()
 		ride->guests_favourite = 0;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->var_08 != 4)
+		if (peep->linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
 			return;
 		if (peep->favourite_ride != 0xff) {
 			ride = &g_ride_list[peep->favourite_ride];

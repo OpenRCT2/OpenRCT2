@@ -308,7 +308,7 @@ typedef struct {
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
-	uint8 var_08;
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
 	uint16 sprite_index;			// 0x0A
 	uint16 var_0C;
