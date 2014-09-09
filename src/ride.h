@@ -164,7 +164,8 @@ typedef struct {
 	uint8 var_1BC;
 	uint8 pad_1BD[0x0B];
 	uint8 music;
-	uint8 pad_1C9[0x04];
+	uint8 pad_1C9[0x03];
+	uint8 num_block_brakes;			// 0x1CC
 	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
