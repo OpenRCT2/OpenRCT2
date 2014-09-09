@@ -180,6 +180,7 @@ void window_peep_overview_paint();
 void window_peep_overview_invalidate();
 void window_peep_overview_viewport_init_wrapper();
 void window_peep_overview_update(rct_window* w);
+void window_peep_overview_text_input();
 
 static void* window_peep_overview_events[] = {
 	window_peep_close,
@@ -191,17 +192,17 @@ static void* window_peep_overview_events[] = {
 	window_peep_overview_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696A5F,
-	(void*)0x696A54,
+	(void*)0x696A5F,//tool_update
+	(void*)0x696A54,//tool_down
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696A49,
+	(void*)0x696A49,//tool_abort
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696A6A,
+	window_peep_overview_text_input,//text_input
 	window_peep_overview_viewport_init_wrapper,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -1064,4 +1065,24 @@ void window_peep_overview_update(rct_window* w){
 		}
 	}
 	
+}
+
+/* rct2:0x696A6A */
+void window_peep_overview_text_input(){
+	short widgetIndex;
+	rct_window *w;
+	char _cl;
+	uint32* text;
+
+	window_text_input_get_registers(w, widgetIndex, _cl, text);
+
+	if (widgetIndex != WIDX_RENAME)return;
+
+	if (!_cl) return;
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = 0x5AE;
+
+	game_do_command(1, 1, w->number, *text, 22, *(text + 2), *(text + 1));
+	game_do_command(2, 1, 0, *(text + 3), 22, *(text + 5), *(text + 4));
+	game_do_command(0, 1, 0, *(text + 6), 22, *(text + 8), *(text + 7));
 }
