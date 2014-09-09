@@ -897,7 +897,7 @@ STR_0892    :Skärmdumpen sparades som '{STRINGID}'
 STR_0893    :Skärmdumpen misslyckades!
 STR_0894    :Landskapens minnesområde är fullt !
 STR_0895    :Kan inte bygga både ovan och under jord samtidigt
-STR_0896    :{POP16}{POP16}{STRINGID} Construction TODO
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
 STR_0897    :Riktning
 STR_0898    :{SMALLFONT}{BLACK}Vänsterkurva
 STR_0899    :{SMALLFONT}{BLACK}Högerkurva
@@ -991,7 +991,7 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :För många åkturer/attraktioner
 STR_0988    :Kan inte skapa ny åktur/attraktion...
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Construction TODO
+STR_0990    :{SMALLFONT}{BLACK}Konstruktion
 STR_0991    :Stationsplattform
 STR_0992    :{SMALLFONT}{BLACK}Riv hela åkturen/attraktionen
 STR_0993    :Riv åktur/attraktion
@@ -1742,7 +1742,7 @@ STR_1737    :{COMMA16}
 STR_1738    :Kan inte ändra antal varv...
 STR_1739    :Gäst {INT32} vann rallyt
 STR_1740    :{STRINGID} vann rallyt
-STR_1741    :Not yet constructed !
+STR_1741    :Inte byggt än !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on Åktur:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this Åktur at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1945,7 +1945,7 @@ STR_1940    :{SMALLFONT}{BLACK}Visa glädje, energi, hunger etc. för denna gäst
 STR_1941    :{SMALLFONT}{BLACK}Visa vilka åkturer denna gäst har varit på
 STR_1942    :{SMALLFONT}{BLACK}Visa ekonomisk information om denna gäst
 STR_1943    :{SMALLFONT}{BLACK}Visa gästens nyliga tankar
-STR_1944    :{SMALLFONT}{BLACK}Visa produkter som gästen bär på
+STR_1944    :{SMALLFONT}{BLACK}Visa souvenirer som gästen bär på
 STR_1945    :{SMALLFONT}{BLACK}Visa order och inställningar för personal
 STR_1946    :{SMALLFONT}{BLACK}Välj dräkt för den här underhållaren
 STR_1947    :{SMALLFONT}{BLACK}Visa områden som patrulleras av den valda personaltypen, och hitta den närmsta personalen
@@ -2211,205 +2211,205 @@ STR_2206    :Tom Tetrapak
 STR_2207    :Tom Juiceförpackning
 STR_2208    :Ugnskorv
 STR_2209    :Tom Skål
-STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
-STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
-STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
-STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
-STR_2214    :Construction not possible while game is paused!
+STR_2210    :{SMALLFONT}{BLACK}Visa en lista över alla vaktmästare
+STR_2211    :{SMALLFONT}{BLACK}Visa en lista över alla mekaniker
+STR_2212    :{SMALLFONT}{BLACK}Visa en lista över alla säkerhetsvakter
+STR_2213    :{SMALLFONT}{BLACK}Visa en lista över alla underhållare
+STR_2214    :Konstruktion är inte möjligt när spelet är pausat!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
-STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has Stånded
-STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
-STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
+STR_2218    :{RED}{STRINGID} på {STRINGID} har inte kommit tillbaka till {STRINGID} än!{NEWLINE}Kolla om den är fast
+STR_2219    :{RED}{COMMA16} personer har dött i en olycka på {STRINGID}
+STR_2220    :{WINDOW_COLOUR_2}Parkomdöme: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}Parkomdöme: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA16}
-STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
-STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
-STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
-STR_2227    :{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Last month's profit from food/drink and{NEWLINE}merchandise sales: {BLACK}{CURRENCY}
-STR_2229    :Slope up to vertical
-STR_2230    :Vertical track
-STR_2231    :Holding brake for drop
-STR_2232    :Cable lift hill
-STR_2233    :{SMALLFONT}{BLACK}Park information
-STR_2234    :Recent Messages
+STR_2223    :{WINDOW_COLOUR_2}Antal gäster: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}Pengar: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Pengar: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}Företagsvärde: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Förra månadens vinst från mat/dricka och{NEWLINE}souvenirer: {BLACK}{CURRENCY}
+STR_2229    :Uppförsbacke till vertikalt
+STR_2230    :Vertikalt
+STR_2231    :Stoppbroms för nedförsbacke
+STR_2232    :Upplyftsbacke
+STR_2233    :{SMALLFONT}{BLACK}Parkinformation
+STR_2234    :Nyliga meddelanden
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :January
-STR_2237    :February
-STR_2238    :March
+STR_2236    :Januari
+STR_2237    :Februari
+STR_2238    :Mars
 STR_2239    :April
-STR_2240    :May
-STR_2241    :June
-STR_2242    :July
-STR_2243    :August
+STR_2240    :Maj
+STR_2241    :Juni
+STR_2242    :Juli
+STR_2243    :Augusti
 STR_2244    :September
-STR_2245    :October
+STR_2245    :Oktober
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Can't demolish Åktur/attraktion...
-STR_2249    :{BABYBLUE}New Åktur/attraktion now available:-{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}New dekorationer/themeing now available:-{NEWLINE}{STRINGID}
-STR_2251    :Can only be built on paths!
-STR_2252    :Can only be built across paths!
-STR_2253    :Transport åkturer
-STR_2254    :Gentle åkturer
-STR_2255    :Berg- och dalbanas
-STR_2256    :Thrill åkturer
-STR_2257    :Water åkturer
-STR_2258    :Shops & Stånds
-STR_2259    :Dekorationer & Themeing
-STR_2260    :No funding
-STR_2261    :Minimum funding
-STR_2262    :Normal funding
-STR_2263    :Maximum funding
-STR_2264    :Research funding
-STR_2265    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_2266    :Research priorities
-STR_2267    :Currently in development
-STR_2268    :Last development
-STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
-STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
-STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
+STR_2248    :Kan inte riva åktur/attraktion...
+STR_2249    :{BABYBLUE}Ny åktur/attraktion är nu tillgänglig:-{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}Nya dekorationer/teman är nu tillgängliga:-{NEWLINE}{STRINGID}
+STR_2251    :Kan bara byggas på gångvägar!
+STR_2252    :Kan bara byggas över gångvägar!
+STR_2253    :Transportåkturer
+STR_2254    :Lugna Åkturer
+STR_2255    :Berg- och Dalbanor
+STR_2256    :Spännande Åkturer
+STR_2257    :Vattenåkturer
+STR_2258    :Affärer & Stånd
+STR_2259    :Dekorationer & Teman
+STR_2260    :Ingen finansiering
+STR_2261    :Minimal finansiering
+STR_2262    :Normal finansiering
+STR_2263    :Maximal finansiering
+STR_2264    :Forskningsfinansiering
+STR_2265    :{WINDOW_COLOUR_2}Kostnad: {BLACK}{CURRENCY} per månad
+STR_2266    :Forskningsprioriteringar
+STR_2267    :Under utveckling
+STR_2268    :Tidigare utveckling
+STR_2269    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}Status: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}Slutfört: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Åktur/attraktion:{NEWLINE}{BLACK}{STRINGID}
-STR_2273    :{WINDOW_COLOUR_2}Dekorationer/themeing:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
-STR_2277    :Unknown
-STR_2278    :Transport Åktur
-STR_2279    :Gentle Åktur
-STR_2280    :Berg- och dalbana
-STR_2281    :Thrill Åktur
-STR_2282    :Water Åktur
-STR_2283    :Shop/Stånd
-STR_2284    :Dekorationer/Themeing
-STR_2285    :Initial research
-STR_2286    :Designing
-STR_2287    :Completing design
-STR_2288    :Unknown
+STR_2273    :{WINDOW_COLOUR_2}Dekorationer/teman:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}Visa detaljer kring denna uppfinning eller utveckling
+STR_2275    :{SMALLFONT}{BLACK}Visa finansiering och inställningar för forskning & utveckling
+STR_2276    :{SMALLFONT}{BLACK}Visa status för forskning och utveckling
+STR_2277    :Okänd
+STR_2278    :Transportåktur
+STR_2279    :Lugn Åktur
+STR_2280    :Berg- och Dalbana
+STR_2281    :Spännande Åktur
+STR_2282    :Vattenåktur
+STR_2283    :Affär/Stånd
+STR_2284    :Dekorationer/Teman
+STR_2285    :Inledande forskning
+STR_2286    :Design
+STR_2287    :Slutför design
+STR_2288    :Okänd
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
-STR_2291    :Select scenario for new game
-STR_2292    :{WINDOW_COLOUR_2}åkturer been on:
-STR_2293    :{BLACK} Nothing
-STR_2294    :{SMALLFONT}{BLACK}Change base land style
-STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
-STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} Åktur
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} åkturer
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drinks
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenir
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenirs
-STR_2305    :Track design files
-STR_2306    :Save track design
-STR_2307    :Select {STRINGID} design
-STR_2308    :{STRINGID} Track Designs
-STR_2309    :InStånd New Track Design
-STR_2310    :Build custom design
-STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2314    :{WINDOW_COLOUR_2}Åktur length: {BLACK}{STRINGID}
-STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
-STR_2318    :Low
-STR_2319    :Medium
-STR_2320    :High
-STR_2321    :{WINDOW_COLOUR_2}Number of åkturer/attraktioner: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
-STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
-STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
-STR_2326    :{SMALLFONT}{BLACK}Buy construction högers to allow construction above or below land outside the park
-STR_2327    :Options
-STR_2328    :{WINDOW_COLOUR_2}Currency:
-STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
-STR_2330    :{WINDOW_COLOUR_2}Temperature:
-STR_2331    :{WINDOW_COLOUR_2}Height Labels:
-STR_2332    :Units
-STR_2333    :Sound
+STR_2291    :Välj scenario för nytt spel
+STR_2292    :{WINDOW_COLOUR_2}har åkt åkturerna:
+STR_2293    :{BLACK} Ingenting
+STR_2294    :{SMALLFONT}{BLACK}Ändra basterrängens stil
+STR_2295    :{SMALLFONT}{BLACK}Ändra vertikala kanter på terrängen
+STR_2296    :{BLACK}Betalade {CURRENCY2DP}{WINDOW_COLOUR_2} för att gå in i parken
+STR_2297    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} åktur
+STR_2298    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} åkturer
+STR_2299    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} matprodukt
+STR_2300    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} matprodukter
+STR_2301    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} dricka
+STR_2302    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} drickor
+STR_2303    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} souvenir
+STR_2304    :{BLACK}Spenderade {CURRENCY2DP}{WINDOW_COLOUR_2} på {BLACK}{COMMA16} souvenirer
+STR_2305    :Bandesignfiler
+STR_2306    :Spara bandesign
+STR_2307    :Välj designen {STRINGID}
+STR_2308    :{STRINGID} Bandesigns
+STR_2309    :Installera ny bandesign
+STR_2310    :Bygg egen design
+STR_2311    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}{COMMA2DP32} (approx.)
+STR_2312    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}{COMMA2DP32} (approx.)
+STR_2313    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}{COMMA2DP32} (approx.)
+STR_2314    :{WINDOW_COLOUR_2}Åkturslängd: {BLACK}{STRINGID}
+STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}ca {CURRENCY}
+STR_2316    :{WINDOW_COLOUR_2}Storlek: {BLACK}{COMMA16} x {COMMA16} blocks
+STR_2317    :{WINDOW_COLOUR_2}Ljudkvalitet:
+STR_2318    :Låg
+STR_2319    :Mellan
+STR_2320    :Hög
+STR_2321    :{WINDOW_COLOUR_2}Antal åkturer/attraktioner: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
+STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m{SQUARED}
+STR_2324    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}sq.ft.
+STR_2325    :{SMALLFONT}{BLACK}Köp land för att utöka parken
+STR_2326    :{SMALLFONT}{BLACK}Köp bygglov för att tillåta konstruktion över eller under land utanför parken
+STR_2327    :Inställningar
+STR_2328    :{WINDOW_COLOUR_2}Valuta:
+STR_2329    :{WINDOW_COLOUR_2}Avstånd och Hastighet:
+STR_2330    :{WINDOW_COLOUR_2}Temperatur:
+STR_2331    :{WINDOW_COLOUR_2}Höjdmarkeringar:
+STR_2332    :Enheter
+STR_2333    :Ljud
 STR_2334    :Pounds ({POUND})
-STR_2335    :Dollars ($)
+STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
 STR_2341    :Guilders (Dfl.)
-STR_2342    :Krona (kr)
+STR_2342    :Kronor (kr)
 STR_2343    :Euros ({EURO})
-STR_2344    :Imperial
-STR_2345    :Metric
-STR_2346    :Display
-STR_2347    :{RED}{STRINGID} has drowned!
-STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
-STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
-STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}åkturer fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}åkturer inspected: {BLACK}{COMMA16}
-STR_2357    :House
-STR_2358    :Units
-STR_2359    :Real Values
-STR_2360    :{WINDOW_COLOUR_2}Display Resolution:
-STR_2361    :Landscape Smoothing
-STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
-STR_2363    :Gridlines on Landscape
-STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
-STR_2365    :The bank refuses to increase your loan!
+STR_2344    :Brittiska
+STR_2345    :Meter
+STR_2346    :Visning
+STR_2347    :{RED}{STRINGID} har drunknat!
+STR_2348    :{SMALLFONT}{BLACK}Visa statistik för personal
+STR_2349    :{WINDOW_COLOUR_2}Lön: {BLACK}{CURRENCY} per månad
+STR_2350    :{WINDOW_COLOUR_2}Anställd: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Klippta gräsmattor: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Vattnade trädgårdar: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Svepta sopor: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Tömda sopkorgar: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}åkturer fixade: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}åkturer inspekterade: {BLACK}{COMMA16}
+STR_2357    :Hus
+STR_2358    :Enheter
+STR_2359    :Riktiga Värden
+STR_2360    :{WINDOW_COLOUR_2}Skärmupplösning:
+STR_2361    :Terrängutjämning
+STR_2362    :{SMALLFONT}{BLACK}Sätt på/av terrängkantsutjämning
+STR_2363    :Rutmönster på terräng
+STR_2364    :{SMALLFONT}{BLACK}Sätt på/av rutmönster på terrängen
+STR_2365    :Banken vägrar att utöka ditt lån!
 STR_2366    :Celsius ({DEGREE}C)
 STR_2367    :Fahrenheit (F)
-STR_2368    :None
-STR_2369    :Low
-STR_2370    :Average
-STR_2371    :High
-STR_2372    :Low
-STR_2373    :Medium
-STR_2374    :High
-STR_2375    :Very high
-STR_2376    :Extreme
-STR_2377    :Ultra-Extreme
-STR_2378    :{SMALLFONT}{BLACK}Adjust smaller area of land
-STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
-STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
-STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
+STR_2368    :Ingen
+STR_2369    :Låg
+STR_2370    :Mellan
+STR_2371    :Hög
+STR_2372    :Låg
+STR_2373    :Mellan
+STR_2374    :Hög
+STR_2375    :Väldigt hög
+STR_2376    :Exttrem
+STR_2377    :Ultra-Extrem
+STR_2378    :{SMALLFONT}{BLACK}Justera ett mindre landområde
+STR_2379    :{SMALLFONT}{BLACK}Justera ett större landområde
+STR_2380    :{SMALLFONT}{BLACK}Justera ett mindre vattenområde
+STR_2381    :{SMALLFONT}{BLACK}Justera ett större vattenområde
 STR_2382    :Land
-STR_2383    :Water
-STR_2384    :{WINDOW_COLOUR_2}Your objective:
-STR_2385    :{BLACK}None
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
-STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
-STR_2388    :{BLACK}Have Fun!
-STR_2389    :{BLACK}Build the best {STRINGID} you can!
-STR_2390    :{BLACK}To have 10 different types of Berg- och dalbanas operating in your park, each with an excitement value of at least 6.00
-STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
-STR_2392    :{BLACK}To achieve a monthly income from Åktur tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of Berg- och dalbanas operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
-STR_2394    :{BLACK}To finish building all 5 of the partially built Berg- och dalbanas in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
-STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
-STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
-STR_2397    :None
-STR_2398    :Number of guests at a given date
-STR_2399    :Park value at a given date
-STR_2400    :Have fun
-STR_2401    :Build the best Åktur you can
-STR_2402    :Build 10 Berg- och dalbanas
-STR_2403    :Number of guests in park
-STR_2404    :Monthly income from Åktur tickets
-STR_2405    :Build 10 Berg- och dalbanas of a given length
-STR_2406    :Finish building 5 Berg- och dalbanas
-STR_2407    :Repay loan and achieve a given park value
-STR_2408    :Monthly profit from food/merchandise
+STR_2383    :Vatten
+STR_2384    :{WINDOW_COLOUR_2}Ditt uppdrag:
+STR_2385    :{BLACK}Inget
+STR_2386    :{BLACK}Att ha minst {COMMA16} gäster i parken tills {MONTHYEAR}, med ett parkomdöme över 600
+STR_2387    :{BLACK}Att uppnå ett parkvärde över {POP16}{POP16}{CURRENCY} tills {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2388    :{BLACK}Ha Kul!
+STR_2389    :{BLACK}Bygg den bästa {STRINGID} du kan!
+STR_2390    :{BLACK}Att ha 10 olika sorters berg- och dalbanor i din park, alla med en glädjenivå över 6.00
+STR_2391    :{BLACK}Att ha minst {COMMA16} gäster i din park. Du får inte låta parkomdömet gå under 700!
+STR_2392    :{BLACK}Att få en månadsinkomst från åktursbiljetter på minst {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}Att ha 10 olika sorters berg- och dalbanor i din park, alla ska vara längre än {LENGTH}, och med en glädjenivå över 7.00
+STR_2394    :{BLACK}Att bygga klart alla 5 delvis byggda berg- och dalbanor i parken, designade så att de alla får en glädjenivå över {POP16}{POP16}{COMMA2DP32}
+STR_2395    :{BLACK}Att betala tillbaka ditt lån och uppnå ett parkvärde över {POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}Att få en månadsinkomst från mat, dricka och souvenirer på minst {POP16}{POP16}{CURRENCY}
+STR_2397    :Inga
+STR_2398    :Antal gäster vid ett visst datum
+STR_2399    :Parkvärde vid ett visst datum
+STR_2400    :Ha kul
+STR_2401    :Bygg den bästa åkturen du kan
+STR_2402    :Bygg 10 berg- och dalbanor
+STR_2403    :Antal gäster i parken
+STR_2404    :Månadsinkomst från åktursbiljetter
+STR_2405    :Bygg 10 berg- och dalbanor med en viss längd
+STR_2406    :Bygg klart 5 berg- och dalbanor
+STR_2407    :Betala tillbaka lån och uppnå ett visst parkvärde
+STR_2408    :Månadsinkomst från mat/souvenirer
 STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
 STR_2410    :{BLACK}None
 STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
