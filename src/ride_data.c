@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 #include "rct2.h"
+#include "ride.h"
 #include "ride_data.h"
 
 const bool hasRunningTrack[0x60] = {
@@ -676,4 +677,98 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1229,    1243,    1257,       0 }, // 58 Mine Ride
 	{ 1264,    1243,    1257,       0 }, // 59 LIM Launched Roller Coaster
 	{ 1229,    1243,    1257,       0 }
+};
+
+const uint8 RideAvailableModes[] = {
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 00 Spiral Roller coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 01 Stand Up Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 02 Suspended Swinging
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 03 Inverted
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 04 Steel Mini Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 05 Mini Railroad
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 06 Monorail
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 07 Mini Suspended Coaster
+	RIDE_MODE_BOAT_HIRE, 0xFF,																																// 08 Bumper Boats
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 09 Wooden Wild Mine/Mouse
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 0A Steeplechase/Motorbike/Soap Box Derby
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 0B Car Ride
+	RIDE_MODE_UPWARD_LAUNCH, RIDE_MODE_DOWNWARD_LAUNCH, 0xFF,																								// 0C Launched Freefall
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 0D Bobsleigh Coaster
+	RIDE_MODE_ROTATING_LIFT, 0xFF,																															// 0E Observation Tower
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, RIDE_MODE_POWERED_LAUNCH, 0xFF,	// 0F Looping Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 10 Dinghy Slide
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 11 Mine Train Coaster
+	RIDE_MODE_STATION_TO_STATION, 0xFF,																														// 12 Chairlift
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0x23, 2, 0xFF,																// 13 Corkscrew Roller Coaster
+	RIDE_MODE_MAZE, 0xFF,																																	// 14 Maze
+	RIDE_MODE_SINGLE_RIDE_PER_ADMISSION, RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION, 0xFF,																		// 15 Spiral Slide
+	RIDE_MODE_RACE, RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																										// 16 Go Karts
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 17 Log Flume
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 18 River Rapids
+	RIDE_MODE_BUMPERCAR, 0xFF,																																// 19 Bumper Cars
+	RIDE_MODE_SWING, 0xFF,																																	// 1A Pirate Ship
+	RIDE_MODE_SWING, 0xFF,																																	// 1B Swinging Inverter Ship
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 1C Food Stall
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 1D (none)
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 1E Drink Stall
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 1F (none)
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 20 Shop (all types)
+	RIDE_MODE_ROTATION, 0xFF,																																// 21 Merry Go Round
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 22 Balloon Stall (maybe)
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 23 Information Kiosk
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 24 Bathroom
+	RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, 0xFF,																							// 25 Ferris Wheel
+	RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_FILM_THRILL_RIDERS, 0xFF,																					// 26 Motion Simulator
+	RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, 0xFF,													// 27 3D Cinema
+	RIDE_MODE_BEGINNERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, 0xFF,																						// 28 Gravitron
+	RIDE_MODE_SPACE_RINGS, 0xFF,																															// 29 Space Rings
+	RIDE_MODE_LIM_POWERED_LAUNCH, 0xFF,																														// 2A Reverse Freefall Coaster
+	RIDE_MODE_SHUTTLE, 0xFF,																																// 2B Elevator
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 2C Vertical Drop Roller Coaster
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 2D ATM
+	RIDE_MODE_ROTATION, 0xFF,																																// 2E Twist
+	RIDE_MODE_HAUNTED_HOUSE, 0xFF,																															// 2F Haunted House
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 30 First Aid
+	RIDE_MODE_CIRCUS_SHOW, 0xFF,																															// 31 Circus Show
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 32 Ghost Train
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 33 Twister Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 34 Wooden Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 35 Side-Friction Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 36 Wild Mouse
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 37 Multi Dimension Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 38 (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 39 Flying Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 3A (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 3B Virginia Reel
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 3C Splash Boats
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 3D Mini Helicopters
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 3E Lay-down Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 3F Suspended Monorail
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 40 (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 41 Reverser Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 42 Heartline Twister Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 43 Mini Golf
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 44 Giga Coaster
+	RIDE_MODE_FREEFALL_DROP, 0xFF,																															// 45 Roto-Drop
+	RIDE_MODE_BUMPERCAR, 0xFF,																																// 46 Flying Saucers
+	RIDE_MODE_CROOKED_HOUSE, 0xFF,																															// 47 Crooked House
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 48 Monorail Cycles
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 2, 0xFF,																	// 49 Compact Inverted Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 4A Water Coaster
+	RIDE_MODE_POWERED_LAUNCH, 0xFF,																															// 4B Air Powered Vertical Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 4C Inverted Hairpin Coaster
+	RIDE_MODE_SWING, 0xFF,																																	// 4D Magic Carpet
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 4E Submarine Ride
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 4F River Rafts
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 50 (none)
+	RIDE_MODE_ROTATION, 0xFF,																																// 51 Enterprise
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 52 (none)
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 53 (none)
+	RIDE_MODE_SHOP_STALL, 0xFF,																																// 54 (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 55 (none)
+	RIDE_MODE_POWERED_LAUNCH, 0xFF,																															// 56 Inverted Impulse Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 57 Mini Roller Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 58 Mine Ride
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 LIM Launched Roller Coaster
+	RIDE_MODE_POWERED_LAUNCH_35, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF																				// 60 (none)
 };

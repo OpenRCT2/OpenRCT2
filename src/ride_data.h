@@ -41,5 +41,6 @@ extern const bool rideUnknownData2[0x60];
 extern const uint8 rideUnknownData3[0x60];
 
 extern const rct_ride_name_convention RideNameConvention[96];
+extern const uint8 RideAvailableModes[];
 
 #endif

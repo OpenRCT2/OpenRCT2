@@ -1696,6 +1696,156 @@ static void window_ride_main_paint()
 
 #pragma region Operating
 
+static void set_operating_setting(int rideNumber, uint8 setting, uint8 value)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+	game_do_command(0, (value << 8) | 1, 0, (setting << 8) | rideNumber, GAME_COMMAND_11, 0, 0);
+}
+
+static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
+{
+	rct_ride *ride = GET_RIDE(w->number);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1362;
+	if (ride->mode == RIDE_MODE_STATION_TO_STATION)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1361;
+	if (ride->mode == RIDE_MODE_RACE)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1738;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1746;
+	if (ride->mode == RIDE_MODE_BUMPERCAR)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1751;
+	if (ride->mode == RIDE_MODE_SWING)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1768;
+	if (ride->mode == RIDE_MODE_ROTATION)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
+	if (
+		ride->mode == RIDE_MODE_ROTATION ||
+		ride->mode == RIDE_MODE_FORWARD_ROTATION ||
+		ride->mode == RIDE_MODE_BACKWARD_ROTATION
+	)
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
+
+	game_do_command(0, (value << 8) | 1, 0, (4 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006B11D5
+ */
+static void window_ride_mode_tweak_increase(rct_window *w)
+{
+	rct_ride *ride = GET_RIDE(w->number);
+	uint8 value = ride->var_0D0;
+	if (value < RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8))
+		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+
+	window_ride_mode_tweak_set(w, value);
+}
+
+/**
+ * 
+ * rct2: 0x006B120A
+ */
+static void window_ride_mode_tweak_decrease(rct_window *w)
+{
+	rct_ride *ride = GET_RIDE(w->number);
+	uint8 value = ride->var_0D0;
+	if (value > RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8))
+		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+
+	window_ride_mode_tweak_set(w, value);
+}
+
+/**
+ * 
+ * rct2: 0x006B1631
+ */
+static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
+{
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_widget *dropdownWidget;
+	rct_ride *ride;
+	const uint8 *availableModes, *mode;
+	int i, numAvailableModes;
+
+	dropdownWidget = widget - 1;
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	// Seek to available modes for this ride
+	availableModes = RideAvailableModes;
+	for (i = 0; i < ride->type; i++) {
+		while (*(availableModes++) != 255) { }
+	}
+
+	// Count number of available modes
+	mode = availableModes;
+	numAvailableModes = -1;	
+	do {
+		numAvailableModes++;
+	} while (*(mode++) != 255);
+
+	// ?
+	if (rideEntry->var_008 & 0x8000)
+		numAvailableModes--;
+
+	// ?
+	if (rideEntry->var_008 & 0x20000) {
+		availableModes += 2;
+		numAvailableModes -= 2;
+	}
+
+	// Create dropdown list
+	for (i = 0; i < numAvailableModes; i++) {
+		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsArgs[i] = STR_RIDE_MODE_START + availableModes[i];
+	}
+	window_dropdown_show_text_custom_width(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		0,
+		numAvailableModes,
+		widget->right - dropdownWidget->left
+	);
+
+	// Set checked item
+	for (i = 0; i < numAvailableModes; i++)
+		if (ride->mode == availableModes[i])
+			gDropdownItemsChecked = 1 << i;
+}
+
+/**
+ * 
+ * rct2: 0x006B15C0
+ */
+static void window_ride_load_dropdown(rct_window *w, rct_widget *widget)
+{
+	rct_widget *dropdownWidget;
+	int i;
+
+	dropdownWidget = widget - 1;
+	rct_ride *ride = GET_RIDE(w->number);
+
+	for (i = 0; i < 5; i++) {
+		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsArgs[i] = STR_QUARTER_LOAD + i;
+	}
+	window_dropdown_show_text_custom_width(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		0,
+		5,
+		widget->right - dropdownWidget->left
+	);
+
+	gDropdownItemsChecked = (1 << (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK));
+}
+
 /**
  * 
  * rct2: 0x006B10A7
@@ -1704,8 +1854,11 @@ static void window_ride_operating_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
+	rct_ride *ride;
 
 	window_widget_get_registers(w, widgetIndex);
+
+	ride = GET_RIDE(w->number);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -1724,14 +1877,19 @@ static void window_ride_operating_mouseup()
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_LOAD_CHECKBOX:
+		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_LOAD);
 		break;
 	case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
+		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
 		break;
 	case WIDX_MINIMUM_LENGTH_CHECKBOX:
+		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
 		break;
 	case WIDX_MAXIMUM_LENGTH_CHECKBOX:
+		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
 		break;
 	case WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX:
+		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
 		break;
 	}
 }
@@ -1755,30 +1913,44 @@ static void window_ride_operating_resize()
  */
 static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
+	rct_ride *ride = GET_RIDE(w->number);
+
 	switch (widgetIndex) {
 	case WIDX_MODE_TWEAK_INCREASE:
+		window_ride_mode_tweak_increase(w);
 		break;
 	case WIDX_MODE_TWEAK_DECREASE:
+		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
+		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8)));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
+		set_operating_setting(w->number, 8, max(RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8), ride->lift_hill_speed - 1));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
+		set_operating_setting(w->number, 2, min(ride->min_waiting_time + 1, 250));
 		break;
 	case WIDX_MINIMUM_LENGTH_DECREASE:
+		set_operating_setting(w->number, 2, max(0, ride->min_waiting_time - 1));
 		break;
 	case WIDX_MAXIMUM_LENGTH_INCREASE:
+		set_operating_setting(w->number, 3, min(ride->max_waiting_time + 1, 250));
 		break;
 	case WIDX_MAXIMUM_LENGTH_DECREASE:
+		set_operating_setting(w->number, 3, max(0, ride->max_waiting_time - 1));
 		break;
 	case WIDX_MODE_DROPDOWN:
+		window_ride_mode_dropdown(w, widget);
 		break;
 	case WIDX_LOAD_DROPDOWN:
+		window_ride_load_dropdown(w, widget);
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
+		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, 7));
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
+		set_operating_setting(w->number, 9, max(1, ride->num_circuits - 1));
 		break;
 	}
 }
@@ -1791,13 +1963,28 @@ static void window_ride_operating_dropdown()
 {
 	rct_window *w;
 	short widgetIndex, dropdownIndex;
+	rct_ride *ride;
+	const uint8 *availableModes;
+	int i;
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
+	if (dropdownIndex == -1)
+		return;
+
+	ride = GET_RIDE(w->number);
+
 	switch (widgetIndex) {
 	case WIDX_MODE_DROPDOWN:
+		// Seek to available modes for this ride
+		availableModes = RideAvailableModes;
+		for (i = 0; i < ride->type; i++) {
+			while (*(availableModes++) != 255) { }
+		}
+		set_operating_setting(w->number, 0, availableModes[dropdownIndex]);
 		break;
 	case WIDX_LOAD_DROPDOWN:
+		set_operating_setting(w->number, 1, (ride->depart_flags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
 		break;
 	}
 }
