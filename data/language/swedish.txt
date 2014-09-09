@@ -2410,51 +2410,51 @@ STR_2405    :Bygg 10 berg- och dalbanor med en viss längd
 STR_2406    :Bygg klart 5 berg- och dalbanor
 STR_2407    :Betala tillbaka lån och uppnå ett visst parkvärde
 STR_2408    :Månadsinkomst från mat/souvenirer
-STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
-STR_2410    :{BLACK}None
-STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
-STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
-STR_2413    :{BLACK}({CURRENCY2DP} per week)
-STR_2414    :(Not Selected)
+STR_2409    :{WINDOW_COLOUR_2}Aktiva kampanjer
+STR_2410    :{BLACK}Inga
+STR_2411    :{WINDOW_COLOUR_2}Tillgängliga kampanjer
+STR_2412    :{SMALLFONT}{BLACK}Påbörja kampanj
+STR_2413    :{BLACK}({CURRENCY2DP} per vecka)
+STR_2414    :(Ej Vald)
 STR_2415    :{WINDOW_COLOUR_2}Åktur:
-STR_2416    :{WINDOW_COLOUR_2}Item:
-STR_2417    :{WINDOW_COLOUR_2}Length of time:
-STR_2418    :Free entry to {STRINGID}
-STR_2419    :Free Åktur on {STRINGID}
-STR_2420    :Half-price entry to {STRINGID}
-STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
-STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free åkturer on a particular Åktur
-STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
-STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
-STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular Åktur
-STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free Åktur on {STRINGID}
-STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
-STR_2433    :{BLACK}Vouchers for free {STRINGID}
-STR_2434    :{BLACK}Advertising campaign for {STRINGID}
-STR_2435    :{BLACK}Advertising campaign for {STRINGID}
-STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
-STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
-STR_2447    :{YELLOW}Your marketing campaign for free åkturer on {STRINGID} has finished
-STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
-STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
-STR_2450    :{YELLOW}Your advertising campaign for the park has finished
-STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
-STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
+STR_2416    :{WINDOW_COLOUR_2}Produkt:
+STR_2417    :{WINDOW_COLOUR_2}Varaktighet:
+STR_2418    :Gratis entré till {STRINGID}
+STR_2419    :Gratisåk på {STRINGID}
+STR_2420    :Halva priset på entré till {STRINGID}
+STR_2421    :Gratis {STRINGID}
+STR_2422    :Kampanj för {STRINGID}
+STR_2423    :Kampanj för {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Kuponger för gratis entré till parken
+STR_2425    :{WINDOW_COLOUR_2}Kuponger för gratisåk på en specifik åktur
+STR_2426    :{WINDOW_COLOUR_2}Kuponger för halva priset på entré till parken
+STR_2427    :{WINDOW_COLOUR_2}Kuponger för gratis mat eller dricka
+STR_2428    :{WINDOW_COLOUR_2}Kampanj för parken
+STR_2429    :{WINDOW_COLOUR_2}Kampanj för en specifik åktur
+STR_2430    :{BLACK}Kuponger för gratis entré till {STRINGID}
+STR_2431    :{BLACK}Kuponger för gratisåk på {STRINGID}
+STR_2432    :{BLACK}Kuponger för halva priset på entré till {STRINGID}
+STR_2433    :{BLACK}Kuponger för gratis {STRINGID}
+STR_2434    :{BLACK}Kampanj för {STRINGID}
+STR_2435    :{BLACK}Kampanj för {STRINGID}
+STR_2436    :1 vecka
+STR_2437    :2 veckor
+STR_2438    :3 veckor
+STR_2439    :4 veckor
+STR_2440    :5 veckor
+STR_2441    :6 veckor
+STR_2442    :{BLACK}({STRINGID} återstår)
+STR_2443    :{WINDOW_COLOUR_2}Kostnad per vecka: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Totalkostnad: {BLACK}{CURRENCY2DP}
+STR_2445    :Starta kampanjen
+STR_2446    :{YELLOW}Din kampanj för gratis entré till parken har slutförts
+STR_2447    :{YELLOW}Din kampanj för gratis åkturer på {STRINGID} har slutförts
+STR_2448    :{YELLOW}Din kampanj för halva priset på entré till parken har slutförts
+STR_2449    :{YELLOW}Din kampank för gratis {STRINGID} har slutförts
+STR_2450    :{YELLOW}Din kampanj för parken har slutförts
+STR_2451    :{YELLOW}Din kampanj för {STRINGID} har slutförts
+STR_2452    :{WINDOW_COLOUR_2}Pengar (utan lån): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Pengar (utan lån): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
