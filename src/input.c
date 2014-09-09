@@ -549,6 +549,64 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	}
 }
 
+/* rct2: 0x6E8DA7 */
+void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget ){
+	RCT2_GLOBAL(0x1420054, uint16) = x;
+	RCT2_GLOBAL(0x1420056, uint16) = y;
+
+	w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
+	if (!w){
+		RCT2_GLOBAL(0x9DE51D, uint8) = 0;
+	}
+
+	switch (state){
+	case 0:
+	{
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+		int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+		if (!w) {
+			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			return;
+			//jmp to 0x6E9103? Will never happen
+		}
+		if (eax != w->classification || ebx != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
+			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			return;
+			//jmp to 0x6E9103
+		}
+		if (w->disabled_widgets & (1ULL << widgetIndex)){
+			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			return;
+			//jmp to 0x6E9103
+		}
+
+		if (RCT2_GLOBAL(0x9DE528, uint16) != 0) RCT2_GLOBAL(0x9DE528, uint16)++;
+
+		if (w->var_020 & (1ULL << widgetIndex)){
+			if (RCT2_GLOBAL(0x9DE528, uint16) >= 0x10){
+				if (!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3)){
+					RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
+				}
+			}
+		}
+
+		if (RCT2_GLOBAL(0x9DE518, uint32) & 1) return;
+
+		RCT2_GLOBAL(0x9DE518, uint32) |= 1;
+		eax |= 0x80;
+		eax |= (widgetIndex & 0xFF) << 8;
+		window_invalidate_by_id(eax, ebx);
+	}
+		break;
+	case 2:
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		break;
+	case 3:
+		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		break;
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E8655
@@ -612,7 +670,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 		break;
 	case INPUT_STATE_WIDGET_PRESSED:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
+		//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_DRAGGING:
 		// RCT2_CALLPROC_X(0x006E8C5C, x, y, state, widgetIndex, w, widget, 0);
@@ -728,7 +787,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	}
 	case INPUT_STATE_DROPDOWN_ACTIVE:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
+		//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
 		//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
