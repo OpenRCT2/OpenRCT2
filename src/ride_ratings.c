@@ -136,13 +136,13 @@ uint16 compute_upkeep(rct_ride *ride)
 	// flume/rapids, 10 for roller coaster, 28 for giga coaster
 	upkeep += rideUnknownData3[ride->type] * ride->num_stations;
 
-	if (ride->mode == RIDE_MODE_REVERSE_INCLINED_SHUTTLE) {
+	if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 		upkeep += 30;
 	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH) {
 		upkeep += 160;
 	} else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH) {
 		upkeep += 320;
-	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH2 || 
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH_35 || 
 			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		upkeep += 220;
 	}
@@ -239,7 +239,7 @@ ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensit
  */
 void sub_655FD6(rct_ride *ride)
 {
-    uint8 al = ride->var_1CD;
+    uint8 al = ride->lift_hill_speed;
     // No idea what this address is; maybe like compensation of some kind? The
     // maximum possible value?
     // List of ride names/values is here: 

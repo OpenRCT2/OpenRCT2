@@ -75,14 +75,14 @@ enum {
 	WIDX_LOCATE,
 	WIDX_DEMOLISH,
 
-	WIDX_OPERATE_UNK_14 = 14,
-	WIDX_OPERATION_UNK_14_INCREASE,
-	WIDX_OPERATION_UNK_14_DECREASE,
+	WIDX_MODE_TWEAK = 14,
+	WIDX_MODE_TWEAK_INCREASE,
+	WIDX_MODE_TWEAK_DECREASE,
 	WIDX_LIFT_HILL_SPEED,
 	WIDX_LIFT_HILL_SPEED_INCREASE,
 	WIDX_LIFT_HILL_SPEED_DECREASE,
-	WIDX_WAIT_FOR_PASSENGERS,
-	WIDX_OPERATE_UNK_21,
+	WIDX_LOAD_CHECKBOX,
+	WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
 	WIDX_MINIMUM_LENGTH_CHECKBOX,
 	WIDX_MINIMUM_LENGTH,
 	WIDX_MINIMUM_LENGTH_INCREASE,
@@ -92,12 +92,12 @@ enum {
 	WIDX_MAXIMUM_LENGTH_INCREASE,
 	WIDX_MAXIMUM_LENGTH_DECREASE,
 	WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
-	WIDX_OPERATE_UNK_31,
-	WIDX_OPERATE_UNK_32,
-	WIDX_OPERATE_UNK_33,
-	WIDX_OPERATE_UNK_34,
-	WIDX_OPERATE_UNK_35,
-	WIDX_OPERATE_UNK_36,
+	WIDX_MODE_TWEAK_LABEL,
+	WIDX_LIFT_HILL_SPEED_LABEL,
+	WIDX_MODE,
+	WIDX_MODE_DROPDOWN,
+	WIDX_LOAD,
+	WIDX_LOAD_DROPDOWN,
 	WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL,
 	WIDX_OPERATE_NUMBER_OF_CIRCUITS,
 	WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
@@ -1723,9 +1723,9 @@ static void window_ride_operating_mouseup()
 	case WIDX_TAB_10:
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_WAIT_FOR_PASSENGERS:
+	case WIDX_LOAD_CHECKBOX:
 		break;
-	case WIDX_OPERATE_UNK_21:
+	case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
 		break;
 	case WIDX_MINIMUM_LENGTH_CHECKBOX:
 		break;
@@ -1756,9 +1756,9 @@ static void window_ride_operating_resize()
 static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
-	case WIDX_OPERATION_UNK_14_INCREASE:
+	case WIDX_MODE_TWEAK_INCREASE:
 		break;
-	case WIDX_OPERATION_UNK_14_DECREASE:
+	case WIDX_MODE_TWEAK_DECREASE:
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
 		break;
@@ -1772,9 +1772,9 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		break;
 	case WIDX_MAXIMUM_LENGTH_DECREASE:
 		break;
-	case WIDX_OPERATE_UNK_34:
+	case WIDX_MODE_DROPDOWN:
 		break;
-	case WIDX_OPERATE_UNK_36:
+	case WIDX_LOAD_DROPDOWN:
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
 		break;
@@ -1795,9 +1795,9 @@ static void window_ride_operating_dropdown()
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	switch (widgetIndex) {
-	case WIDX_OPERATE_UNK_34:
+	case WIDX_MODE_DROPDOWN:
 		break;
-	case WIDX_OPERATE_UNK_36:
+	case WIDX_LOAD_DROPDOWN:
 		break;
 	}
 }
@@ -1829,6 +1829,9 @@ static void window_ride_operating_invalidate()
 {
 	rct_window *w;
 	rct_widget *widgets;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id format, caption, tooltip;
 
 	window_get_register(w);
 
@@ -1840,11 +1843,186 @@ static void window_ride_operating_invalidate()
 
 	window_ride_set_pressed_tab(w);
 
-	rct_ride *ride = GET_RIDE(w->number);
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 
-	// TODO lots of widget setup
+	// Widget setup
+	w->pressed_widgets &= ~0x44700000;
+
+	// Lift hill speed
+	if ((rideEntry->var_1B6 & RCT2_ADDRESS(0x01357444, uint32)[ride->type]) & 8) {
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_24;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_DROPDOWN_BUTTON;
+		RCT2_GLOBAL(0x013CE966, uint16) = ride->lift_hill_speed;
+	} else {
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_EMPTY;
+	}
+
+	// Number of circuits
+	if (ride_can_have_multiple_circuits(ride)) {
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_24;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_DROPDOWN_BUTTON;
+		RCT2_GLOBAL(0x013CE968, uint16) = ride->num_circuits;
+	} else {
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_EMPTY;
+	}
+	
+	// Leave if another vehicle arrives at station
+	if (
+		(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10) &&
+		ride->num_vehicles > 1 &&
+		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED &&
+		ride->mode != RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+	) {
+		window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WWT_CHECKBOX;
+		window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
+		window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].image = RideNameConvention[ride->type].vehicle_name == 1236 ?
+			STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES :
+			STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+	} else {
+		window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WWT_EMPTY;
+	}
+
+	// Synchronise with adjacent stations
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x20) {
+		window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WWT_CHECKBOX;
+		window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].image = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
+		window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
+	} else {
+		window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WWT_EMPTY;
+	}
+
+	// Mode
+	window_ride_operating_widgets[WIDX_MODE].image = STR_RIDE_MODE_START + ride->mode;
+
+	// Waiting
+	window_ride_operating_widgets[WIDX_LOAD].image = STR_QUARTER_LOAD + (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x4000) {
+		window_ride_operating_widgets[WIDX_LOAD_CHECKBOX].type = WWT_CHECKBOX;
+		window_ride_operating_widgets[WIDX_LOAD].type = WWT_DROPDOWN;
+		window_ride_operating_widgets[WIDX_LOAD_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WWT_CHECKBOX;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH].type = WWT_SPINNER;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WWT_DROPDOWN_BUTTON;
+
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WWT_CHECKBOX;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH].type = WWT_SPINNER;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_DROPDOWN_BUTTON;
+
+		RCT2_GLOBAL(0x013CE952 + 10, uint16) = 1217;
+		RCT2_GLOBAL(0x013CE95E, uint16) = ride->min_waiting_time;
+		RCT2_GLOBAL(0x013CE960, uint16) = 1217;
+		RCT2_GLOBAL(0x013CE962, uint16) = ride->max_waiting_time;
+
+		if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
+			w->pressed_widgets |= (1 << WIDX_LOAD_CHECKBOX);
+	} else {
+		window_ride_operating_widgets[WIDX_LOAD_CHECKBOX].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_LOAD].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_LOAD_DROPDOWN].type = WWT_EMPTY;
+
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WWT_EMPTY;
+
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_EMPTY;
+	}
+
+	if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
+		w->pressed_widgets |= (1 << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+		w->pressed_widgets |= (1 << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
+	if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+		w->pressed_widgets |= (1 << WIDX_MINIMUM_LENGTH_CHECKBOX);
+	if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
+		w->pressed_widgets |= (1 << WIDX_MAXIMUM_LENGTH_CHECKBOX);
+
+	// Mode specific functionality
+	RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
+	switch (ride->mode) {
+	case RIDE_MODE_POWERED_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH_35:
+	case RIDE_MODE_UPWARD_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
+		format = 1331;
+		caption = STR_LAUNCH_SPEED;
+		tooltip = STR_LAUNCH_SPEED_TIP;
+	case RIDE_MODE_STATION_TO_STATION:
+		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
+		caption = STR_SPEED;
+		tooltip = STR_SPEED_TIP;
+		break;
+	case RIDE_MODE_RACE:
+		RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
+		format = 1736;
+		caption = STR_NUMBER_OF_LAPS;
+		tooltip = STR_NUMBER_OF_LAPS_TIP;
+		break;
+	case RIDE_MODE_BUMPERCAR:
+		format = 1749;
+		caption = STR_TIME_LIMIT;
+		tooltip = STR_TIME_LIMIT_TIP;
+		break;
+	case RIDE_MODE_SWING:
+		format = 1771;
+		caption = STR_NUMBER_OF_SWINGS;
+		tooltip = STR_NUMBER_OF_SWINGS_TIP;
+		break;
+	case RIDE_MODE_ROTATION:
+	case RIDE_MODE_FORWARD_ROTATION:
+	case RIDE_MODE_BACKWARD_ROTATION:
+		format = 1871;
+		caption = STR_NUMBER_OF_ROTATIONS;
+		tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
+		break;
+	default:
+		format = 1736;
+		caption = STR_MAX_PEOPLE_ON_RIDE;
+		tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000))
+			format = 0;
+		break;
+	}
+
+	if (format != 0) {
+		if (ride->type == RIDE_TYPE_TWIST)
+			RCT2_GLOBAL(0x013CE964, uint16) *= 3;
+
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_24;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].image = caption;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].tooltip = tooltip;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK].type = WWT_SPINNER;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK].image = format;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_DECREASE].type = WWT_DROPDOWN_BUTTON;
+		w->pressed_widgets &= ~(1 << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+	} else {
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_INCREASE].type = WWT_EMPTY;
+		window_ride_operating_widgets[WIDX_MODE_TWEAK_DECREASE].type = WWT_EMPTY;
+	}
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -1868,6 +2046,7 @@ static void window_ride_operating_paint()
 
 	ride = GET_RIDE(w->number);
 
+	// Horizontal rule between mode settings and depart settings
 	gfx_fill_rect_inset(
 		dpi,
 		w->x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4,
@@ -1878,11 +2057,11 @@ static void window_ride_operating_paint()
 		0x20
 	);
 
-	if (ride->mode == 34 || ride->mode == 36) {
+	// Number of block sections
+	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		blockSections = ride->num_block_brakes + ride->num_stations;
 		gfx_draw_string_left(dpi, STR_BLOCK_SECTIONS, &blockSections, 0, w->x + 21, ride->mode == 36 ? w->y + 76 : w->y + 61);
 	}
-
 }
 
 #pragma endregion

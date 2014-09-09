@@ -548,3 +548,24 @@ int ride_get_total_length(rct_ride *ride)
 		totalLength += ride->length[i];
 	return totalLength;
 }
+
+int ride_can_have_multiple_circuits(rct_ride *ride)
+{
+	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x200))
+		return 0;
+
+	// Only allow circuit or launch modes
+	if (
+		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT &&
+		ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
+		ride->mode != RIDE_MODE_POWERED_LAUNCH
+	) {
+		return 0;
+	}
+	
+	// Must have no more than one vehicle and one station
+	if (ride->num_vehicles > 1 || ride->num_stations > 1)
+		return 0;
+
+	return 1;
+}

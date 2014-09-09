@@ -56,7 +56,9 @@ typedef struct {
 	sint8 excitement_multipler;		// 0x1B2
 	sint8 intensity_multipler;		// 0x1B3
 	sint8 nausea_multipler;			// 0x1B4
-	uint8 pad_1B5[0x09];
+	uint8 pad_1B5;
+	uint32 var_1B6;
+	uint8 pad_1BA[0x04];
 	uint8 category[2];				// 0x1BE
 	uint8 shop_item;				// 0x1C0
 	uint8 shop_item_secondary;		// 0x1C1
@@ -88,14 +90,17 @@ typedef struct {
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
-	uint8 pad_C6;
+	uint8 depart_flags;				// 0x0C6
 
 	// Not sure if these should be uint or sint.
 	uint8 num_stations;				// 0x0C7
 	uint8 num_vehicles;				// 0x0C8
 	uint8 var_0C9;
-
-	uint8 pad_0CA[0xE];
+	uint8 pad_0CA[0x4];
+	uint8 min_waiting_time;			// 0x0CE
+	uint8 max_waiting_time;			// 0x0CF
+	uint8 var_0D0;
+	uint8 pad_0D1[0x7];
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
 	uint8 pad_0E0[0x4];
@@ -166,7 +171,7 @@ typedef struct {
 	uint8 music;
 	uint8 pad_1C9[0x03];
 	uint8 num_block_brakes;			// 0x1CC
-	uint8 var_1CD;
+	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 var_1D4;
@@ -175,7 +180,9 @@ typedef struct {
 	// I tried searching the IDA file for "1F4" but couldn't find places where
 	// this is written to.
 	uint16 total_air_time;			// 0x1F4
-	uint8 pad_1F6[0x0a];
+	uint8 pad_1F6;
+	uint8 num_circuits;				// 0x1F7
+	uint8 pad_1F8[0x8];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
@@ -319,9 +326,9 @@ enum {
 };
 
 enum {
-	RIDE_MODE_NORMAL = 0,
+	RIDE_MODE_NORMAL,
 	RIDE_MODE_CONTINUOUS_CIRCUIT,
-	RIDE_MODE_REVERSE_INCLINED_SHUTTLE,
+	RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
 	RIDE_MODE_POWERED_LAUNCH,						// RCT1 style?
 	RIDE_MODE_SHUTTLE,
 	RIDE_MODE_BOAT_HIRE,
@@ -342,7 +349,7 @@ enum {
 	RIDE_MODE_3D_FILM_MOUSE_TAILS,
 	RIDE_MODE_SPACE_RINGS,
 	RIDE_MODE_BEGINNERS,
-	RIDE_MODE_LIM_POWERED_LAUNCH,                  // 0x17
+	RIDE_MODE_LIM_POWERED_LAUNCH,
 	RIDE_MODE_FILM_THRILL_RIDERS,
 	RIDE_MODE_3D_FILM_STORM_CHASERS,
 	RIDE_MODE_3D_FILM_SPACE_RAIDERS,
@@ -354,7 +361,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH2,						// 0x23. RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH_35,					// RCT2 style?
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 
@@ -427,6 +434,15 @@ enum {
 	RIDE_MECHANIC_STATUS_FIXING = 3,
 };
 
+enum {
+	RIDE_DEPART_WAIT_FOR_LOAD_MASK = 7,
+	RIDE_DEPART_WAIT_FOR_LOAD = 1 << 3,
+	RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES = 1 << 4,
+	RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS = 1 << 5,
+	RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH = 1 << 6,
+	RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH = 1 << 7
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -465,5 +481,6 @@ int ride_try_construct(rct_map_element *trackMapElement);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
+int ride_can_have_multiple_circuits(rct_ride *ride);
 
 #endif
