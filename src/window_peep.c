@@ -778,7 +778,7 @@ void window_peep_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	rct_peep* peep = GET_PEEP(w->number);
 	
 	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
-	                y++;
+		y++;
 	
 	int ebx = *(RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2]) + 1;
 	
