@@ -589,73 +589,96 @@ int peep_can_be_picked_up(rct_peep* peep){
 	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
 }
 
-/**
-*  Function split into large and small sprite
-*  rct2: 0x00698721
-*/
-int get_peep_face_sprite_small(rct_peep *peep)
-{
-	int sprite;
-	sprite = SPR_PEEP_SMALL_FACE_ANGRY;
+enum{
+	PEEP_FACE_OFFSET_ANGRY = 0,
+	PEEP_FACE_OFFSET_VERY_VERY_SICK,
+	PEEP_FACE_OFFSET_VERY_SICK,
+	PEEP_FACE_OFFSET_SICK,
+	PEEP_FACE_OFFSET_VERY_TIRED,
+	PEEP_FACE_OFFSET_TIRED,
+	PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY,
+	PEEP_FACE_OFFSET_VERY_UNHAPPY,
+	PEEP_FACE_OFFSET_UNHAPPY,
+	PEEP_FACE_OFFSET_NORMAL,
+	PEEP_FACE_OFFSET_HAPPY,
+	PEEP_FACE_OFFSET_VERY_HAPPY,
+	PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
+};
 
-	if (peep->var_F3) return sprite;
-	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_SICK;
+const int face_sprite_small[] = {
+	SPR_PEEP_SMALL_FACE_ANGRY,
+	SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
+	SPR_PEEP_SMALL_FACE_VERY_SICK,
+	SPR_PEEP_SMALL_FACE_SICK,
+	SPR_PEEP_SMALL_FACE_VERY_TIRED,
+	SPR_PEEP_SMALL_FACE_TIRED,
+	SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
+	SPR_PEEP_SMALL_FACE_VERY_UNHAPPY,
+	SPR_PEEP_SMALL_FACE_UNHAPPY,
+	SPR_PEEP_SMALL_FACE_NORMAL,
+	SPR_PEEP_SMALL_FACE_HAPPY,
+	SPR_PEEP_SMALL_FACE_VERY_HAPPY,
+	SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
+};
 
-	if (peep->nausea > 200) return sprite;
-	sprite--; //VERY_SICK
+const int face_sprite_large[] = {
+	SPR_PEEP_LARGE_FACE_ANGRY,
+	SPR_PEEP_LARGE_FACE_VERY_VERY_SICK,
+	SPR_PEEP_LARGE_FACE_VERY_SICK,
+	SPR_PEEP_LARGE_FACE_SICK,
+	SPR_PEEP_LARGE_FACE_VERY_TIRED,
+	SPR_PEEP_LARGE_FACE_TIRED,
+	SPR_PEEP_LARGE_FACE_VERY_VERY_UNHAPPY,
+	SPR_PEEP_LARGE_FACE_VERY_UNHAPPY,
+	SPR_PEEP_LARGE_FACE_UNHAPPY,
+	SPR_PEEP_LARGE_FACE_NORMAL,
+	SPR_PEEP_LARGE_FACE_HAPPY,
+	SPR_PEEP_LARGE_FACE_VERY_HAPPY,
+	SPR_PEEP_LARGE_FACE_VERY_VERY_HAPPY,
+};
 
-	if (peep->nausea > 170) return sprite;
-	sprite--; //SICK
+int get_face_sprite_offset(rct_peep *peep){
 
-	if (peep->nausea > 140) return sprite;
-	sprite = SPR_PEEP_SMALL_FACE_VERY_TIRED;
+	// ANGRY
+	if (peep->var_F3) return PEEP_FACE_OFFSET_ANGRY;
 
-	if (peep->energy < 46) return sprite;
-	sprite--; //TIRED
+	// VERY_VERY_SICK
+	if (peep->nausea > 200) return PEEP_FACE_OFFSET_VERY_VERY_SICK;
 
-	if (peep->energy < 70) return sprite;
-	sprite = SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+	// VERY_SICK
+	if (peep->nausea > 170) return PEEP_FACE_OFFSET_VERY_SICK;
 
+	// SICK
+	if (peep->nausea > 140) return PEEP_FACE_OFFSET_SICK;
+
+	// VERY_TIRED
+	if (peep->energy < 46) return PEEP_FACE_OFFSET_VERY_TIRED;
+
+	// TIRED
+	if (peep->energy < 70) return PEEP_FACE_OFFSET_TIRED;
+
+	int offset = PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY;
 	//There are 7 different happiness based faces
 	for (int i = 37; peep->happiness >= i; i += 37)
 	{
-		sprite++;
+		offset++;
 	}
 
-	return sprite;
+	return offset;
 }
 
 /**
 *  Function split into large and small sprite
 *  rct2: 0x00698721
 */
-int get_peep_face_sprite_large(rct_peep* peep){
-	int sprite;
-	sprite = SPR_PEEP_LARGE_FACE_ANGRY;
+int get_peep_face_sprite_small(rct_peep *peep){
+	return face_sprite_small[get_face_sprite_offset(peep)];
+}
 
-	if (peep->var_F3) return sprite;
-	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_SICK;
-
-	if (peep->nausea > 200) return sprite;
-	sprite = SPR_PEEP_LARGE_FACE_VERY_SICK;
-
-	if (peep->nausea > 170) return sprite;
-	sprite = SPR_PEEP_LARGE_FACE_SICK;
-
-	if (peep->nausea > 140) return sprite;
-	sprite = SPR_PEEP_LARGE_FACE_VERY_TIRED;
-
-	if (peep->energy < 46) return sprite;
-	sprite--; //TIRED
-
-	if (peep->energy < 70) return sprite;
-	sprite = SPR_PEEP_LARGE_FACE_VERY_VERY_UNHAPPY;
-
-	//There are 7 different happiness based faces
-	for (int i = 37; peep->happiness >= i; i += 37)
-	{
-		sprite++;
-	}
-
-	return sprite;
+/**
+*  Function split into large and small sprite
+*  rct2: 0x00698721
+*/
+int get_peep_face_sprite_large(rct_peep *peep){
+	return face_sprite_large[get_face_sprite_offset(peep)];
 }

@@ -23,6 +23,7 @@
 #include "map.h"
 #include "ride.h"
 #include "peep.h"
+#include "scenario.h"
 #include "string_ids.h"
 #include "staff.h"
 #include "sprite.h"
@@ -1039,7 +1040,7 @@ void window_peep_overview_update(rct_window* w){
 	var_496++;
 	var_496 %= 24;
 	w->var_494 &= 0x0000FFFF;
-	w->var_494 |= var_496;
+	w->var_494 |= var_496 << 16;
 
 
 	window_invalidate_by_id( 0x497, w->number);
@@ -1047,18 +1048,18 @@ void window_peep_overview_update(rct_window* w){
 	
 	w->list_information_type += 2;
 
-	if (w->var_494 & 0xFFFF == 0xFFFF)
-		w->var_494&=0xFFFF0000;
+	if ((w->var_494 & 0xFFFF) == 0xFFFF)
+		w->var_494 &= 0xFFFF0000;
 	else
 		w->var_494++;
 
-	if (w->var_494 & 0xFFFF >= 3840){
-		if (w->var_494 & 0x3FF){
-			//call 6e37dc
-			if (ax <= 0x2AAA){
+	// Create the "I have the strangest feeling I am being watched thought"
+	if ((w->var_494 & 0xFFFF) >= 3840){
+		if (!(w->var_494 & 0x3FF)){
+			int rand = scenario_rand() & 0xFFFF;
+			if (rand <= 0x2AAA){
 				rct_peep* peep = GET_PEEP(w->number);
-				ax = 0xFF47;
-				//call 699F5A
+				RCT2_CALLPROC_X(0x699F5A, 0xFF47, 0, 0, 0, (int)peep, 0, 0);
 			}
 		}
 	}
