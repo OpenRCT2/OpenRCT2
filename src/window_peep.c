@@ -1044,8 +1044,8 @@ void window_peep_overview_update(rct_window* w){
 	w->var_494 |= var_496 << 16;
 
 
-	window_invalidate_by_id( 0x497, w->number);
-	window_invalidate_by_id( 0x597, w->number);
+	window_invalidate_by_id((WIDX_TAB_1 << 8) | 0x80 | WC_PEEP, w->number);
+	window_invalidate_by_id((WIDX_TAB_2 << 8) | 0x80 | WC_PEEP, w->number);
 	
 	w->list_information_type += 2;
 
