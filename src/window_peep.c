@@ -843,25 +843,84 @@ void window_peep_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
+/* rct2: 0x69861F */
+void window_peep_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_3)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_3];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = SPR_TAB_RIDE_0;
+
+	if ( w->page == WINDOW_PEEP_RIDES ){
+		image_id += (w->frame_no / 4) & 0xF;		
+	}
+	
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
+/* rct2: 0x698597 */
+void window_peep_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_4)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_4];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = SPR_TAB_FINANCES_SUMMARY_0;
+
+	if ( w->page == WINDOW_PEEP_FINANCE ){
+		image_id += (w->frame_no / 2) & 0x7;		
+	}
+	
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
+/* rct2: 0x6985D8 */
+void window_peep_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_5)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_5];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = 5269;
+
+	if ( w->page == WINDOW_PEEP_THOUGHTS ){
+		image_id += (w->frame_no / 2) & 0x7;		
+	}
+	
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
+/* rct2: 0x698661 */
+void window_peep_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_6)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_6];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = 5326;
+	
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
 /* rct2: 0x696887 */
 void window_peep_overview_paint(){
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	//rct_widget *labelWidget;
 
 	window_paint_get_registers(w, dpi);
-	//RCT2_CALLPROC_X(0x696887, 0, 0, 0, 0, (int)w, (int)dpi, 0);
-	//return;
 
 	window_draw_widgets(w, dpi);
 	window_peep_overview_tab_paint(w, dpi);
 	window_peep_stats_tab_paint(w, dpi);
-	//6983dd
-	//698597
-	//6985d8
-	//69861f
-	//69869b
-	//698661
+	window_peep_rides_tab_paint(w, dpi);
+	window_peep_finance_tab_paint(w, dpi);
+	window_peep_thoughts_tab_paint(w, dpi);
+	window_peep_inventory_tab_paint(w, dpi);
 
 	// Draw the viewport no sound sprite
 	if (w->viewport){
