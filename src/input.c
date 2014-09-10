@@ -556,25 +556,27 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 
 	w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
 	if (!w){
-		RCT2_GLOBAL(0x9DE51D, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
+		return;
 	}
+
+	rct_windowclass cursor_w_class;
+	rct_windownumber cursor_w_number;
 
 	switch (state){
 	case 0:
 	{
-		int eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
-		int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
-		if (!w) {
-			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-			return;
-			//jmp to 0x6E9103? Will never happen
-		}
-		if (eax != w->classification || ebx != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
+		cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+		cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+
+		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
+			break;
 			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 			return;
 			//jmp to 0x6E9103
 		}
 		if (w->disabled_widgets & (1ULL << widgetIndex)){
+			break;
 			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 			return;
 			//jmp to 0x6E9103
@@ -582,29 +584,66 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 
 		if (RCT2_GLOBAL(0x9DE528, uint16) != 0) RCT2_GLOBAL(0x9DE528, uint16)++;
 
-		if (w->var_020 & (1ULL << widgetIndex)){
-			if (RCT2_GLOBAL(0x9DE528, uint16) >= 0x10){
-				if (!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3)){
-					RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
-				}
-			}
+		if (w->var_020 & (1ULL << widgetIndex) &&
+			RCT2_GLOBAL(0x9DE528, uint16) >= 0x10 &&
+			(!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3))){
+			RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
 		}
 
 		if (RCT2_GLOBAL(0x9DE518, uint32) & 1) return;
 
 		RCT2_GLOBAL(0x9DE518, uint32) |= 1;
-		eax |= 0x80;
-		eax |= (widgetIndex & 0xFF) << 8;
-		window_invalidate_by_id(eax, ebx);
+		widget_invalidate(cursor_w_class, cursor_w_number, widgetIndex);
+		return;
 	}
 		break;
 	case 2:
 		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-		break;
+		return;
 	case 3:
 		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-		break;
+		return;
 	}
+
+	//6e9103
+	RCT2_GLOBAL(0x9DE528, uint16) = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) != 5){
+		// Hold down widget and drag outside of area??
+		if (RCT2_GLOBAL(0x9DE518, uint32) & 1){
+			RCT2_GLOBAL(0x9DE518, uint32) &= 0xFFFE;
+			widget_invalidate(cursor_w_class, cursor_w_number, RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8));
+		}
+		return;
+	}
+
+	if (!w) return;
+
+	if (w->classification != WC_DROPDOWN) return;
+
+	int left = x - w->x;
+	if (left < 0) return;
+	if (left >= w->width) return;
+
+	int top = y - w->y - 2;
+	if (top < 0) return;
+
+	// _dropdown_item_height
+	int row_no = top / RCT2_GLOBAL(0x9DED3C,uint8);
+	// _dropdown_no_items
+	if (row_no >= RCT2_GLOBAL(0x009DEBA0, sint16)) return;
+
+	left -= 2;
+	if (left < 0) return;
+	// _dropdown_item_width
+	int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
+	// _dropdown_no_columns
+	if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)) return;
+	// _dropdown_no_rows
+	if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)) return;
+
+	int item_no = row_no * RCT2_GLOBAL(0x009DED44, sint32); //6e91be
+
+	//6e9141
 }
 
 /**
@@ -816,7 +855,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		}
 		else if (state == 2){
 			
-			RCT2_GLOBAL(0x9DE51D, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
 			if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 3))){
 				w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
