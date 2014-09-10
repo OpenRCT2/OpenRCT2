@@ -106,9 +106,9 @@ typedef struct {
 	uint8 pad_0E0[0x4];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
-	fixed16_2dp maxPositiveVerticalGs;	// 0x0FC
-	fixed16_2dp maxNegativeVerticalGs;	// 0x0FE
-	fixed16_2dp maxLateralGs;			// 0x100
+	fixed16_2dp max_positive_vertical_g;	// 0x0FC
+	fixed16_2dp max_negative_vertical_g;	// 0x0FE
+	fixed16_2dp max_lateral_g;		// 0x100
 	uint8 pad_102[0x12];
 	uint8 inversions;				// 0x114 (???X XXXX) holes for mini golf
 	uint8 drops;					// 0x115 (??XX XXXX)
@@ -176,9 +176,6 @@ typedef struct {
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 var_1D4;
 	uint8 pad_1D5[0x1F];
-	// Example value for wild mouse ride is d5 (before it's been constructed)
-	// I tried searching the IDA file for "1F4" but couldn't find places where
-	// this is written to.
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7

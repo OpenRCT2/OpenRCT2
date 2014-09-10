@@ -107,6 +107,27 @@ enum {
 	WIDX_INSPECTION_INTERVAL_DROPDOWN,
 	WIDX_LOCATE_MECHANIC,
 
+	WIDX_TRACK_PREVIEW = 14,
+	WIDX_TRACK_COLOUR_SCHEME,
+	WIDX_TRACK_COLOUR_SCHEME_DROPDOWN,
+	WIDX_TRACK_MAIN_COLOUR,
+	WIDX_TRACK_ADDITIONAL_COLOUR,
+	WIDX_TRACK_SUPPORT_COLOUR,
+	WIDX_COLOUR_20,
+	WIDX_COLOUR_21,
+	WIDX_PAINT_INDIVIDUAL_AREA,
+	WIDX_ENTRANCE_PREVIEW,
+	WIDX_STATION_STYLE,
+	WIDX_STATION_STYLE_DROPDOWN,
+	WIDX_VEHICLE_PREVIEW,
+	WIDX_VEHICLE_COLOUR_SCHEME,
+	WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN,
+	WIDX_VEHICLE_COLOUR_INDEX,
+	WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN,
+	WIDX_VEHICLE_MAIN_COLOUR,
+	WIDX_VEHICLE_ADDITIONAL_COLOUR_1,
+	WIDX_VEHICLE_ADDITIONAL_COLOUR_2,
+
 	WIDX_PLAY_MUSIC = 14,
 	WIDX_MUSIC,
 	WIDX_MUSIC_DROPDOWN,
@@ -232,6 +253,46 @@ static rct_widget window_ride_maintenance_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// 0x009AE2A4
+static rct_widget window_ride_colour_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,							STR_WINDOW_TITLE_TIP										},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP										},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_VIEW_OF_RIDE_ATTRACTION_TIP								},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP							},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_OPERATING_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_MAINTENANCE_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_COLOUR_SCHEME_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_SOUND_AND_MUSIC_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_MEASUREMENTS_AND_TEST_DATA_TIP							},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,						STR_GRAPHS_TIP												},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,						STR_INCOME_AND_COSTS_TIP									},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,						STR_CUSTOMER_INFORMATION_TIP								},
+
+	{ WWT_SPINNER,			1,	3,		70,		47,		93,		0xFFFFFFFF,						STR_NONE													},
+	{ WWT_DROPDOWN,			1,	74,		312,	49,		60,		872,							STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	50,		59,		876,							STR_COLOUR_SCHEME_TO_CHANGE_TIP								},
+	{ WWT_COLORBTN,			1,	79,		90,		74,		85,		0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
+	{ WWT_COLORBTN,			1,	99,		110,	74,		85,		0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
+	{ WWT_COLORBTN,			1,	119,	130,	74,		85,		0xFFFFFFFF,						STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP						},
+	{ WWT_DROPDOWN,			1,	74,		312,	49,		60,		0xFFFFFFFF,						STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	50,		59,		876,							STR_NONE													},
+	{ WWT_FLATBTN,			1,	289,	312,	68,		91,		5173,							STR_PAINT_INDIVIDUAL_AREA_TIP								},
+	{ WWT_SPINNER,			1,	245,	312,	101,	147,	0xFFFFFFFF,						STR_NONE													},
+	{ WWT_DROPDOWN,			1,	3,		241,	103,	114,	0,								STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	230,	240,	104,	113,	876,							STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP				},
+	{ WWT_SCROLL,			1,	3,		70,		157,	203,	0,								STR_NONE													},
+	{ WWT_DROPDOWN,			1,	74,		312,	157,	168,	868,							STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	158,	167,	876,							STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP						},
+	{ WWT_DROPDOWN,			1,	74,		312,	173,	184,	0xFFFFFFFF,						STR_NONE													},
+	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	174,	183,	876,							STR_SELECT_VEHICLE_TO_MODIFY_TIP							},
+	{ WWT_COLORBTN,			1,	79,		90,		190,	201,	0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
+	{ WWT_COLORBTN,			1,	99,		110,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
+	{ WWT_COLORBTN,			1,	119,	130,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_2_TIP							},
+	{ WIDGETS_END },
+};
+
 // 0x009AE4C8
 static rct_widget window_ride_music_widgets[] = {
 	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE									},
@@ -338,7 +399,7 @@ static rct_widget *window_ride_page_widgets[] = {
 	(rct_widget*)0x009ADDA8,
 	window_ride_operating_widgets,
 	window_ride_maintenance_widgets,
-	(rct_widget*)0x009AE2A4,
+	window_ride_colour_widgets,
 	window_ride_music_widgets,
 	window_ride_measurements_widgets,
 	(rct_widget*)0x009AE710,
@@ -390,6 +451,19 @@ static void window_ride_maintenance_dropdown();
 static void window_ride_maintenance_update(rct_window *w);
 static void window_ride_maintenance_invalidate();
 static void window_ride_maintenance_paint();
+
+static void window_ride_colour_close();
+static void window_ride_colour_mouseup();
+static void window_ride_colour_resize();
+static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_colour_dropdown();
+static void window_ride_colour_update(rct_window *w);
+static void window_ride_colour_toolupdate();
+static void window_ride_colour_tooldown();
+static void window_ride_colour_tooldrag();
+static void window_ride_colour_invalidate();
+static void window_ride_colour_paint();
+static void window_ride_colour_scrollpaint();
 
 static void window_ride_music_mouseup();
 static void window_ride_music_resize();
@@ -517,6 +591,38 @@ static void* window_ride_maintenance_events[] = {
 	window_ride_maintenance_invalidate,
 	window_ride_maintenance_paint,
 	window_ride_emptysub
+};
+
+// 0x0098E044
+static void* window_ride_colour_events[] = {
+	window_ride_colour_close,
+	window_ride_colour_mouseup,
+	window_ride_colour_resize,
+	window_ride_colour_mousedown,
+	window_ride_colour_dropdown,
+	window_ride_emptysub,
+	window_ride_colour_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_colour_toolupdate,
+	window_ride_colour_tooldown,
+	window_ride_colour_tooldrag,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_colour_invalidate,
+	window_ride_colour_paint,
+	window_ride_colour_scrollpaint
 };
 
 // 0x0098E194
@@ -652,7 +758,7 @@ static uint32* window_ride_page_events[] = {
 	(uint32*)0x0098E204,
 	(uint32*)window_ride_operating_events,
 	(uint32*)window_ride_maintenance_events,
-	(uint32*)0x0098E044,
+	(uint32*)window_ride_colour_events,
 	(uint32*)window_ride_music_events,
 	(uint32*)window_ride_measurements_events,
 	(uint32*)0x0098DF64,
@@ -2543,6 +2649,174 @@ static void window_ride_maintenance_paint()
 
 #pragma endregion
 
+#pragma region Colour
+
+/**
+ * 
+ * rct2: 0x006B04FA
+ */
+static void window_ride_colour_close()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) != w->number)
+		return;
+
+	tool_cancel();
+}
+
+/**
+ * 
+ * rct2: 0x006B02A1
+ */
+static void window_ride_colour_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_PAINT_INDIVIDUAL_AREA:
+		tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, 23);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B0AB6
+ */
+static void window_ride_colour_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 316, 207, 316, 207);
+}
+
+/**
+ * 
+ * rct2: 0x006B02C6
+ */
+static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_widget *widget) { }
+
+/**
+ * 
+ * rct2: 0x006B0331
+ */
+static void window_ride_colour_dropdown() { }
+
+/**
+ * 
+ * rct2: 0x006B0A8F
+ */
+static void window_ride_colour_update(rct_window *w)
+{
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_5);
+	widget_invalidate(WC_RIDE, w->number, WIDX_VEHICLE_PREVIEW);
+}
+
+/**
+ * 
+ * rct2: 0x006B04E5
+ */
+static void window_ride_colour_toolupdate() { }
+
+/**
+ * 
+ * rct2: 0x006B04EC
+ */
+static void window_ride_colour_tooldown() { }
+
+/**
+ * 
+ * rct2: 0x006B04F3
+ */
+static void window_ride_colour_tooldrag() { }
+
+/**
+ * 
+ * rct2: 0x006AFB36
+ */
+static void window_ride_colour_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_ride *ride;
+
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	// TODO widget setup
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006AFF3E
+ */
+static void window_ride_colour_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
+}
+
+/**
+ * 
+ * rct2: 0x006B0192
+ */
+static void window_ride_colour_scrollpaint() { }
+
+#pragma endregion
+
 #pragma region Music
 
 const uint8 MusicStyleOrder[] = {
@@ -3155,21 +3429,21 @@ static void window_ride_measurements_paint()
 
 				if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x80) {
 					// Max. positive vertical G's
-					maxPositiveVerticalGs = ride->maxPositiveVerticalGs;
+					maxPositiveVerticalGs = ride->max_positive_vertical_g;
 					stringId = maxPositiveVerticalGs >= FIXED_2DP(5,00) ?
 						STR_MAX_POSITIVE_VERTICAL_G_RED : STR_MAX_POSITIVE_VERTICAL_G;
 					gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, 0, x, y);
 					y += 10;
 
 					// Max. negative vertical G's
-					maxNegativeVerticalGs = ride->maxNegativeVerticalGs;
+					maxNegativeVerticalGs = ride->max_negative_vertical_g;
 					stringId = maxNegativeVerticalGs <= -FIXED_2DP(2,00) ?
 						STR_MAX_NEGATIVE_VERTICAL_G_RED : STR_MAX_NEGATIVE_VERTICAL_G;
 					gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, 0, x, y);
 					y += 10;
 
 					// Max lateral G's
-					maxLateralGs = ride->maxLateralGs;
+					maxLateralGs = ride->max_lateral_g;
 					stringId = maxLateralGs >= FIXED_2DP(2,80) ?
 						STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
 					gfx_draw_string_left(dpi, stringId, &maxLateralGs, 0, x, y);
