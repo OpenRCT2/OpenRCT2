@@ -2665,8 +2665,8 @@ static int window_ride_has_track_colour(rct_ride *ride, int trackColour)
 	uint32 unk_2 = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
 
 	switch (trackColour) {
-	case 0: return ((unk_1 & 1) && (unk_2 & 1)) || !(unk_2 & 0x20000);
-	case 1: return ((unk_1 & 2) && (unk_2 & 2)) || !(unk_2 & 0x20000);
+	case 0: return ((unk_1 & 1) && !(unk_2 & 0x20000)) || (unk_2 & 1);
+	case 1: return ((unk_1 & 2) && !(unk_2 & 0x20000)) || (unk_2 & 2);
 	case 2: return unk_2 & 4;
 	default: return 0;
 	}
@@ -2794,6 +2794,7 @@ static void window_ride_colour_invalidate()
 	rct_ride *ride;
 	track_colour trackColour;
 	vehicle_colour vehicleColour;
+	int vehicleColourSchemeType;
 
 	window_get_register(w);
 
@@ -2884,21 +2885,68 @@ static void window_ride_colour_invalidate()
 		!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000) &&
 		(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x4000000)
 	) {
-		window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WWT_SCROLL;
-		window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_DROPDOWN;
-		window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLORBTN;
+		vehicleColourSchemeType = ride->colour_scheme_type & 3;
+		if (vehicleColourSchemeType == 0)
+			w->var_48C = 0;
 
 		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
-		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
-		window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = window_ride_get_colour_button_image(vehicleColour.additional_1);
-		window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = window_ride_get_colour_button_image(vehicleColour.additional_2);
 
+		window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WWT_SCROLL;
+		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLORBTN;
+		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
+		
 		RCT2_CALLPROC_X(0x006DE4CD, (ride->var_0C9 << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
 
-		// mov edx, 0x00F64E38
-		// xor eax, eax
-		// loc_6AFDEE:
+		uint8 *unk;
+		uint32 unk_eax = 0;
+		for (unk = (uint8*)0x00F64E38; *unk != 0xFF; unk++) {
+			unk_eax |= RCT2_GLOBAL((int)rideEntry + 0x2E + (*unk * 101), uint16);
+			unk_eax = ror32(unk_eax, 16);
+			unk_eax |= RCT2_GLOBAL((int)rideEntry + 0x2C + (*unk * 101), uint16);
+			unk_eax = ror32(unk_eax, 16);
+		}
+
+		// Additional colours
+		if (unk_eax & 1) {
+			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_COLORBTN;
+			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = window_ride_get_colour_button_image(vehicleColour.additional_1);
+			if (unk_eax & 0x2000000) {
+				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_COLORBTN;
+				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = window_ride_get_colour_button_image(vehicleColour.additional_2);
+			} else {
+				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
+			}
+		} else {
+			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_EMPTY;
+			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
+		}
+
+		// Vehicle colour scheme type
+		if (
+			!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000) &&
+			(ride->num_stations | ride->num_vehicles) > 1
+		) {
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_DROPDOWN;
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+
+			RCT2_GLOBAL(0x013CE952 +  6, uint16) = STR_ALL_VEHICLES_IN_SAME_COLOURS + vehicleColourSchemeType;
+			RCT2_GLOBAL(0x013CE952 +  8, uint16) = RideNameConvention[ride->type].vehicle_name;
+			RCT2_GLOBAL(0x013CE952 + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
+			RCT2_GLOBAL(0x013CE952 + 12, uint16) = w->var_48C + 1;
+		} else {
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_EMPTY;
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
+		}
+
+		// Vehicle index
+		if (vehicleColourSchemeType != 0) {
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WWT_DROPDOWN;
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].image = vehicleColourSchemeType == 1 ? 1134 : 1132;
+		} else {
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WWT_EMPTY;
+			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WWT_EMPTY;
+		}
 	} else {
 		window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WWT_EMPTY;
 		window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_EMPTY;
