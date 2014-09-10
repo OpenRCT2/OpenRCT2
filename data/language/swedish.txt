@@ -2762,23 +2762,23 @@ STR_2757    :???
 STR_2758    :???
 STR_2759    :???
 # New strings used in the cheats window previously these were ???
-STR_2760    :+5K Money
-STR_2761    :Pay For Entrance
-STR_2762    :Pay For åkturer
+STR_2760    :+5K Pengar
+STR_2761    :Betala För Entré
+STR_2762    :Betala För Åktyrer
 STR_2763    :???
-STR_2764    :Happy Guests
-STR_2765    :Large Tram
+STR_2764    :Glada Gäster
+STR_2765    :Large Tram TODO
 STR_2766    :???
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
-STR_2769    :Open Park
-STR_2770    :Close Park
-STR_2771    :Slower Gamespeed
-STR_2772    :Faster Gamespeed
-STR_2773    :Windowed
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2767    :Frys Klimat
+STR_2768    :Avfrys klimat
+STR_2769    :Öppna Park
+STR_2770    :Stäng Park
+STR_2771    :Långsammare Spekhastighet
+STR_2772    :Snabbare Spelhastighet
+STR_2773    :Windowed TODO
+STR_2774    :Fullskärm
+STR_2775    :Fullskärm (skrivbord)
+STR_2776    :Språk
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
@@ -2787,71 +2787,71 @@ STR_2780    :???
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
-STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
-STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
-STR_2790    :Enter name into scenario chart
-STR_2791    :Enter name
-STR_2792    :Please enter your name for the scenario chart:-
-STR_2793    :{SMALLFONT}(Completed by {STRINGID})
-STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
-STR_2795    :Sort
-STR_2796    :{SMALLFONT}{BLACK}Sort the Åktur list into order using the information type displayed
-STR_2797    :Scroll view when pointer at screen edge
-STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
-STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
-STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
-STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
-STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
-STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
-STR_2805    :{SMALLFONT}{BLACK}Show map of park
-STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
-STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
-STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can't find the Toaletts in your park
-STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
-STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
-STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
-STR_2815    :{WINDOW_COLOUR_2}Tidiest park award
-STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best Berg- och dalbanas
-STR_2817    :{WINDOW_COLOUR_2}Best value park award
-STR_2818    :{WINDOW_COLOUR_2}Most beautiful park award
-STR_2819    :{WINDOW_COLOUR_2}Worst value park award
-STR_2820    :{WINDOW_COLOUR_2}Safest park award
-STR_2821    :{WINDOW_COLOUR_2}Best staff award
-STR_2822    :{WINDOW_COLOUR_2}Best park food award
-STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park Toaletts award
-STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
-STR_2826    :{WINDOW_COLOUR_2}Best water åkturer award
-STR_2827    :{WINDOW_COLOUR_2}Best custom-designed åkturer award
-STR_2828    :{WINDOW_COLOUR_2}Most dazzling Åktur color schemes award
-STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
-STR_2830    :{WINDOW_COLOUR_2}Best gentle Åktur award
-STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
-STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best Berg- och dalbanas'!
-STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
-STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
-STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
-STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park in the country'!
-STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
-STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
-STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best Toalett facilities in the country'!
-STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water åkturer in the country'!
-STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed åkturer'!
-STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
-STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
-STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle åkturer'!
-STR_2848    :{WINDOW_COLOUR_2}No recent awards
+STR_2784    :Ändra snabbtangenter
+STR_2785    :{WINDOW_COLOUR_2}Välj ny snabbtangent för:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2786    :{SMALLFONT}{BLACK}Klicka på en beskrivning för att välja en ny snabbtangent
+STR_2787    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}Grattis !{NEWLINE}{BLACK}Du uppnådde ditt mål med ett företagsvärde på {CURRENCY} !
+STR_2789    :{WINDOW_COLOUR_2}Du har misslyckats med ditt mål !
+STR_2790    :Skriv in namn i scenario chart TODO
+STR_2791    :Skriv in namn
+STR_2792    :Var god skriv in ditt namn i scenario chart TODO:-
+STR_2793    :{SMALLFONT}(Avklarad av {STRINGID})
+STR_2794    :{WINDOW_COLOUR_2}Avklarad av: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med ett företagsvärde på: {BLACK}{CURRENCY}
+STR_2795    :Sortera
+STR_2796    :{SMALLFONT}{BLACK}Sortera åkturslistan i ordning enligt den valda informationstypen
+STR_2797    :Flytta vyn när muspekaren är vid skärmens kant
+STR_2798    :{SMALLFONT}{BLACK}Välj om vyn ska förflyttas när muspekaren är vid skärmens kant
+STR_2799    :{SMALLFONT}{BLACK}Visa eller ändra kontrolltangentstilldelningar
+STR_2800    :{WINDOW_COLOUR_2}Totalt antal inträden: {BLACK}{COMMA32}
+STR_2801    :{WINDOW_COLOUR_2}Inkomst från inträden: {BLACK}{CURRENCY2DP}
+STR_2802    :Karta
+STR_2803    :{SMALLFONT}{BLACK}Markera dessa gäster på kartan
+STR_2804    :{SMALLFONT}{BLACK}Markera denna personal på kartan
+STR_2805    :{SMALLFONT}{BLACK}Visa karta över parken
+STR_2806    :{RED}Gäster klagar på gångvägarnas snuskiga tillstånd{NEWLINE}Kolla var dina vaktmästare är och överväg att organisera dom bättre
+STR_2807    :{RED}Gäster klagar på mängden skräp i din park{NEWLINE}Kolla var dina vaktmästare är och överväg att organisera dom bättre
+STR_2808    :{RED}Gäster klagar på vandalismen i din park{NEWLINE}Kolla var dina säkerhetsvakter är och överväg att organisera dom bättre
+STR_2809    :{RED}Gäster är hungriga och kan inte hitta någonstans att köpa mat
+STR_2810    :{RED}Gäster är törstiga och kan inte hitta någonstans att köpa dricka
+STR_2811    :{RED}Gäster klagar för att dom inte kan hitta toaletterna i din park
+STR_2812    :{RED}Gäster tappar bort sig eller fastnar{NEWLINE}Kolla om din vägplaneringar behöver förbättras för att hjälpa gästerna att hitta
+STR_2813    :{RED}Ditt parkinträde är för dyrt!{NEWLINE}Sänk ditt inträde eller höj värdet på parken för att attrahera fler gäster
+STR_2814    :{WINDOW_COLOUR_2}Utmärkelse för mest ostädade park
+STR_2815    :{WINDOW_COLOUR_2}Utmärkelse för mest välstädade park
+STR_2816    :{WINDOW_COLOUR_2}Utmärkelse för parken med bäst berg- och dalbanor
+STR_2817    :{WINDOW_COLOUR_2}Utmärkelse för mest värda park
+STR_2818    :{WINDOW_COLOUR_2}Utmärkelse för vackraste parken
+STR_2819    :{WINDOW_COLOUR_2}Utmärkelse för mest ovärda park
+STR_2820    :{WINDOW_COLOUR_2}Utmärkelse för säkraste parken
+STR_2821    :{WINDOW_COLOUR_2}Utmärkelse för bästa personal
+STR_2822    :{WINDOW_COLOUR_2}Utmärkelse för bästa maten
+STR_2823    :{WINDOW_COLOUR_2}Utmärkelse för sämsta maten
+STR_2824    :{WINDOW_COLOUR_2}Utmärkelse för bästa toaletterna
+STR_2825    :{WINDOW_COLOUR_2}Utmärkelse för mest besvikna gäster
+STR_2826    :{WINDOW_COLOUR_2}Utmärkelse för bästa vattenåkturer
+STR_2827    :{WINDOW_COLOUR_2}Utmärkelse för bästa egendesignade åkturer
+STR_2828    :{WINDOW_COLOUR_2}Utmärkelse för finast färger på åkturer
+STR_2829    :{WINDOW_COLOUR_2}Utmärkelse för mest förvirrande vägplanering
+STR_2830    :{WINDOW_COLOUR_2}Utmärkelse för mest lugna åktur
+STR_2831    :{TOPAZ}Din park har fått en utmärkelse för 'Den mest ostädade parken i landet'!
+STR_2832    :{TOPAZ}Din park har fått en utmärkelse för 'Den mest välstädade parken i landet'!
+STR_2833    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst berg- och dalbanor'!
+STR_2834    :{TOPAZ}Din park har fått en utmärkelse för 'Den mest värda parken i landet'!
+STR_2835    :{TOPAZ}Din park har fått en utmärkelse för 'Den vackraste parken i landet'!
+STR_2836    :{TOPAZ}Din park har fått en utmärkelse för 'Den mest ovärda parken i landet'!
+STR_2837    :{TOPAZ}Din park har fått en utmärkelse för 'Den säkraste parken i landet'!
+STR_2838    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst personal'!
+STR_2839    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst mat i landet'!
+STR_2840    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med sämst mat i landet'!
+STR_2841    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst toaletter i landet'!
+STR_2842    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med mest besvikna gäster i landet'!
+STR_2843    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst vattenåkturer i landet'!
+STR_2844    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst egendesignade åkturer'!
+STR_2845    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med finast färgval på åkturer'!
+STR_2846    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med mest förvirrande vägplanering'!
+STR_2847    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst lugna åkturer'!
+STR_2848    :{WINDOW_COLOUR_2}Inga nyliga utmärkelser
 STR_2849    :New scenario inStånded successfully
 STR_2850    :New track design inStånded successfully
 STR_2851    :Scenario already inStånded
