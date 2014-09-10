@@ -2852,21 +2852,21 @@ STR_2845    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med finast färgv
 STR_2846    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med mest förvirrande vägplanering'!
 STR_2847    :{TOPAZ}Din park har fått en utmärkelse för 'Parken med bäst lugna åkturer'!
 STR_2848    :{WINDOW_COLOUR_2}Inga nyliga utmärkelser
-STR_2849    :New scenario inStånded successfully
-STR_2850    :New track design inStånded successfully
-STR_2851    :Scenario already inStånded
-STR_2852    :Track design already inStånded
-STR_2853    :Forbidden by the local authority!
-STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
-STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the Åktur exit
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
-STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
-STR_2860    :Infogrames Interactive credits...
+STR_2849    :Nytt scenario installerat
+STR_2850    :Ny bandesign installerad
+STR_2851    :Scenario redan installerat
+STR_2852    :Bandesign redan installerad
+STR_2853    :Förbjuden av lokala myndigheter!
+STR_2854    :{RED}Gästar kan inte komma fram till ingången till {STRINGID} !{NEWLINE}Bygg en gångväg till ingången
+STR_2855    :{RED}{STRINGID} har ingen gångväg från sin utgång !{NEWLINE}Bygg en gångväg från åkturens utgång
+STR_2856    :{WINDOW_COLOUR_2}Handledning
+STR_2857    :{WINDOW_COLOUR_2}(Tryck ner en tangent eller musknapp för att ta kontroll)
+STR_2858    :Kan inte påbörja kampanj...
+STR_2859    :En annan instans av RollerCoaster Tycoon 2 körs redan
+STR_2860    :Om Infogrames Interactive...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :Music acknowledgements...
-STR_2863    :Music acknowledgements
+STR_2862    :Om Musik...
+STR_2863    :Om Musik
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
@@ -2974,31 +2974,31 @@ STR_2967    :
 STR_2968    :
 STR_2969    :Use of this product is subject to the terms of a license agreement
 STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
-STR_2971    :Main color scheme
-STR_2972    :Alternative color scheme 1
-STR_2973    :Alternative color scheme 2
-STR_2974    :Alternative color scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint Åktur with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this Åktur using the selected color scheme
-STR_2977    :Staff member name
-STR_2978    :Enter new name for this member of staff:-
-STR_2979    :Can't name staff member...
-STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
-STR_2982    :Banner text
-STR_2983    :Enter new text for this banner:-
-STR_2984    :Can't set new text for banner...
-STR_2985    :Banner
-STR_2986    :{SMALLFONT}{BLACK}Change text on banner
-STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
-STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
-STR_2989    :{SMALLFONT}{BLACK}Select main color
-STR_2990    :{SMALLFONT}{BLACK}Select text color
-STR_2991    :Sign
-STR_2992    :Sign text
-STR_2993    :Enter new text for this sign:-
-STR_2994    :{SMALLFONT}{BLACK}Change text on sign
-STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2971    :Huvudfärg
+STR_2972    :Andra färg
+STR_2973    :Tredje färg
+STR_2974    :Fjärde färg
+STR_2975    :{SMALLFONT}{BLACK}Välj vilken färgpalett som ska ändras eller användas för målning av en åktur
+STR_2976    :{SMALLFONT}{BLACK}Måla ett enstaka område på denna åktur med den valda färgpaletten
+STR_2977    :Personalnamn
+STR_2978    :Skriv in nytt namn på personal:-
+STR_2979    :Kan inte namnge personal...
+STR_2980    :För många banderoller i spelet
+STR_2981    :{RED}Tillträde förbjudet - - 
+STR_2982    :Banderolltext
+STR_2983    :Skriv in ny text för denna banderoll:-
+STR_2984    :Kan inte sätta ny text på banderollen...
+STR_2985    :Banderoll
+STR_2986    :{SMALLFONT}{BLACK}Byt text på banderoll
+STR_2987    :{SMALLFONT}{BLACK}Sätt denna banderoll som en 'Tillträde förbjudet'-banderoll för gäster
+STR_2988    :{SMALLFONT}{BLACK}Riv denna banderoll
+STR_2989    :{SMALLFONT}{BLACK}Välj huvudfärg
+STR_2990    :{SMALLFONT}{BLACK}Välj textfärg
+STR_2991    :Banderoll
+STR_2992    :Skylttext
+STR_2993    :Skriv in ny text för denna skylt:-
+STR_2994    :{SMALLFONT}{BLACK}Byt text på skylt
+STR_2995    :{SMALLFONT}{BLACK}Riv denna skylt
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -3013,41 +3013,41 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :Unable to load file...
-STR_3011    :File contains invalid data
-STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
+STR_3010    :Kan inte ladda fil...
+STR_3011    :Filen innehåller ogiltig data
+STR_3012    :Dodgems beat-stil
+STR_3013    :Marknadsplatsorgel-stil
+STR_3014    :Romersk stil
+STR_3015    :Orientalisk stil
+STR_3016    :Marsiansk stil
+STR_3017    :Jungeltrumme-stil
+STR_3018    :Egyptisk stil
+STR_3019    :Leksakslands-stil
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Custom music 1
-STR_3036    :Custom music 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
+STR_3021    :Rymd-stil
+STR_3022    :Skräck-stil
+STR_3023    :Techno-stil
+STR_3024    :Lugn stil
+STR_3025    :Sommar-stil
+STR_3026    :Vatten-stil
+STR_3027    :Vilda västern-stil
+STR_3028    :Jurassic-stil
+STR_3029    :Rock-stil
+STR_3030    :Ragtime-stil
+STR_3031    :Fantasi-stil
+STR_3032    :Rock-stil 2
+STR_3033    :Is-stil
+STR_3034    :Snö-stil
+STR_3035    :Egen musik 1
+STR_3036    :Egen musik 2
+STR_3037    :Medeltids-stil
+STR_3038    :Stads-stil
+STR_3039    :Orgel-stil
+STR_3040    :Mekanisk-stil
+STR_3041    :Modern-stil
+STR_3042    :Pirat-stil
+STR_3043    :Rock-stil 3
+STR_3044    :Godis-stil
 STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
 STR_3046    :This Åktur cannot be modified
 STR_3047    :Local authority forbids demolition or modifications to this Åktur
