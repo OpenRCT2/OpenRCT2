@@ -167,6 +167,16 @@ void trackmanager_load()
 
 /**
  *
+ *  rct2: 0x006758C0
+ */
+void editor_load_landscape(const char *path)
+{
+	strcpy((char *)0x0141EF68, path);
+	RCT2_CALLPROC_EBPSAFE(0x006758C0);
+}
+
+/**
+ *
  *  rct2: 0x0068ABEC
  */
 static void set_all_land_owned()

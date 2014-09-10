@@ -100,7 +100,7 @@ void game_increase_game_speed();
 void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
-int game_load_save();
+int game_load_save(const char *path);
 void game_pause_toggle();
 char save_game();
 void rct2_exit();
