@@ -569,3 +569,21 @@ int ride_can_have_multiple_circuits(rct_ride *ride)
 
 	return 1;
 }
+
+track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
+{
+	track_colour result;
+	result.main = ride->track_colour_main[colourScheme];
+	result.additional = ride->track_colour_additional[colourScheme];
+	result.supports = ride->track_colour_supports[colourScheme];
+	return result;
+}
+
+vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
+{
+	vehicle_colour result;
+	result.main = ride->vehicle_colours[vehicleIndex] & 0xFF;
+	result.additional_1 = ride->vehicle_colours[vehicleIndex] >> 8;
+	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
+	return result;
+}

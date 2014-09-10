@@ -166,16 +166,17 @@ typedef struct {
 	money32 income_per_hour;		// 0x1B0
 	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 var_1BC;
-	uint8 pad_1BD[0x0B];
-	uint8 music;
-	uint8 pad_1C9[0x03];
+	uint8 track_colour_main[4];		// 0x1BC
+	uint8 track_colour_additional[4];	// 0x1C0
+	uint8 track_colour_supports[4];	// 0x1C4
+	uint8 music;					// 0x1C8
+	uint8 entrance_style;			// 0x1C9
+	uint8 pad_1CA[0x02];
 	uint8 num_block_brakes;			// 0x1CC
 	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
-	uint8 var_1D4;
-	uint8 pad_1D5[0x1F];
+	uint8 vehicle_colours_extended[32];	// 0x1D4
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7
@@ -440,6 +441,25 @@ enum {
 	RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH = 1 << 7
 };
 
+enum {
+	RIDE_COLOUR_SCHEME_MAIN,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_1,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_2,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_3
+};
+
+typedef struct {
+	uint8 main;
+	uint8 additional;
+	uint8 supports;
+} track_colour;
+
+typedef struct {
+	uint8 main;
+	uint8 additional_1;
+	uint8 additional_2;
+} vehicle_colour;
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -479,5 +499,7 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
 int ride_can_have_multiple_circuits(rct_ride *ride);
+track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
+vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 
 #endif
