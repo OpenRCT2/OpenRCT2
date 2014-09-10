@@ -3232,168 +3232,168 @@ STR_3225    :{SMALLFONT}{BLACK}Aktivera/inaktivera generering av en slumpmässig 
 STR_3226    :{SMALLFONT}{BLACK}Bygg parkentré
 STR_3227    :För många parkentréer!
 STR_3228    :{SMALLFONT}{BLACK}Sätt startpositioner för besökare
-STR_3229    :Block Brakes cannot be used directly after station
-STR_3230    :Block Brakes cannot be used directly after each other
-STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
-STR_3238    :No Money
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
-STR_3244    :Forbid marketing campaigns
-STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3229    :Blockbromsar kan inte användas direkt efter en station
+STR_3230    :Blockbromsar kan inte användas direkt efter varandra
+STR_3231    :Blockbromsar kan inte användas efter toppen av en uppskjutsbacke
+STR_3232    :Inställningar - Finansiella
+STR_3233    :Inställningar - Gäster
+STR_3234    :Inställningar - Parken
+STR_3235    :{SMALLFONT}{BLACK}Visa finansiella inställningar
+STR_3236    :{SMALLFONT}{BLACK}Visa gästinställningar
+STR_3237    :{SMALLFONT}{BLACK}Visa parkinställningar
+STR_3238    :Inga pengar
+STR_3239    :{SMALLFONT}{BLACK}Gör detta till en 'inga pengar'-park utan finansiella begränsningar
+STR_3240    :{WINDOW_COLOUR_2}Startpengar:
+STR_3241    :{WINDOW_COLOUR_2}Startlån:
+STR_3242    :{WINDOW_COLOUR_2}Maxlån:
+STR_3243    :{WINDOW_COLOUR_2}Årlig ränta:
+STR_3244    :Förbjud kampanjer
+STR_3245    :{SMALLFONT}{BLACK}Förbjud kampanjer och marknadsföring
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Can't increase initial cash any further!
-STR_3249    :Can't reduce initial cash any further!
-STR_3250    :Can't increase initial loan any further!
-STR_3251    :Can't reduce initial loan any further!
-STR_3252    :Can't increase maximum loan size any further!
-STR_3253    :Can't reduce maximum loan size any further!
-STR_3254    :Can't increase interest rate any further!
-STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense åkturer
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense åkturer only
-STR_3258    :Guests prefer more intense åkturer
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense åkturer only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
-STR_3264    :Can't increase this any further!
-STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and åkturer
-STR_3267    :Forbid tree removal
-STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
-STR_3269    :Forbid landscape changes
-STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
-STR_3271    :Forbid high construction
-STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
-STR_3273    :Park rating higher difficult level
-STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation higher difficult level
-STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction högers:
-STR_3279    :Free park entry / Pay per Åktur
-STR_3280    :Pay to enter park / Free åkturer
-STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select åkturer to be preserved
-STR_3284    :Objective Selection
-STR_3285    :Preserved åkturer
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
-STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
-STR_3294    :Change...
-STR_3295    :{SMALLFONT}{BLACK}Change name of park
-STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
-STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
-STR_3298    :{WINDOW_COLOUR_2}Park Name: {BLACK}{STRINGID}
-STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
-STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
-STR_3301    :{WINDOW_COLOUR_2}Objective Date:
+STR_3248    :Kan inte höja startpengar mer!
+STR_3249    :Kan inte sänka startpengar mer!
+STR_3250    :Kan inte höja startlån mer!
+STR_3251    :Kan inte sänka startlån mer!
+STR_3252    :Kan inte höja maxlån mer!
+STR_3253    :Kan inte sänka maxlån mer!
+STR_3254    :Kan inte höja räntan mer!
+STR_3255    :Kan inte sänka räntan mer!
+STR_3256    :Gäster föredrar mindre intensiva åkturer
+STR_3257    :{SMALLFONT}{BLACK}Välj om gäster ska föredra mindre intensiva åkturer endast
+STR_3258    :Gäster föredrar mer intensiva åkturer
+STR_3259    :{SMALLFONT}{BLACK}Välj om gäster ska föredra mer intensiva åkturer endast
+STR_3260    :{WINDOW_COLOUR_2}Pengar per gäst (genomsnitt):
+STR_3261    :{WINDOW_COLOUR_2}Gästers startglädje:
+STR_3262    :{WINDOW_COLOUR_2}Gästers starthunger:
+STR_3263    :{WINDOW_COLOUR_2}Gästers starttörst:
+STR_3264    :Kan inte höja detta mer!
+STR_3265    :Kan inte sänka detta mer!
+STR_3266    :{SMALLFONT}{BLACK}Välj hur den här parken tar betalt för entré och åkturer
+STR_3267    :Förbjud borttagning av träd
+STR_3268    :{SMALLFONT}{BLACK}Förbjud borttagning av höga träd
+STR_3269    :Förbjud terrängändringar
+STR_3270    :{SMALLFONT}{BLACK}Förbjud alla terrängändringar
+STR_3271    :Förbjud höga konstruktioner
+STR_3272    :{SMALLFONT}{BLACK}Förbjud alla höga konstruktioner
+STR_3273    :Svårare parkomdöme
+STR_3274    :{SMALLFONT}{BLACK}Gör så att bra parkomdöme är svårare att få
+STR_3275    :Svårare gäster
+STR_3276    :{SMALLFONT}{BLACK}Gör så att det blir svårare att få gäster
+STR_3277    :{WINDOW_COLOUR_2}Kostnad för att köpa mark:
+STR_3278    :{WINDOW_COLOUR_2}Kostnad för att köpa bygglov:
+STR_3279    :Gratis parkentré / Betala per åktur
+STR_3280    :Betala för parkentré / Gratis åkturer
+STR_3281    :{WINDOW_COLOUR_2}Entrépris:
+STR_3282    :{SMALLFONT}{BLACK}Välj uppdrag och parknamn
+STR_3283    :{SMALLFONT}{BLACK}Välj åkturer som ska bevaras
+STR_3284    :Uppdragsval
+STR_3285    :Bevarade åkturer
+STR_3286    :{SMALLFONT}{BLACK}Välj uppdrag för detta scenario
+STR_3287    :{WINDOW_COLOUR_2}Uppdrag:
+STR_3288    :{SMALLFONT}{BLACK}Välj klimat
+STR_3289    :{WINDOW_COLOUR_2}Klimat:
+STR_3290    :Svalt och blött
+STR_3291    :Varmt
+STR_3292    :Hett och torrt
+STR_3293    :Kallt
+STR_3294    :Byt...
+STR_3295    :{SMALLFONT}{BLACK}Byt namn på parken
+STR_3296    :{SMALLFONT}{BLACK}Byt namn på scenario
+STR_3297    :{SMALLFONT}{BLACK}Byt detaljer om parken / scenariot
+STR_3298    :{WINDOW_COLOUR_2}Parknamn: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}Park- och Scenariodetaljer:
+STR_3300    :{WINDOW_COLOUR_2}Scenarionamn: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Uppdragsdatum:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
-STR_3303    :{WINDOW_COLOUR_2}Number of guests:
-STR_3304    :{WINDOW_COLOUR_2}Park value:
-STR_3305    :{WINDOW_COLOUR_2}Monthly income:
-STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
-STR_3307    :{WINDOW_COLOUR_2}Minimum length:
-STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
+STR_3303    :{WINDOW_COLOUR_2}Antal gäster:
+STR_3304    :{WINDOW_COLOUR_2}Parkvärde:
+STR_3305    :{WINDOW_COLOUR_2}Månadsinkomst:
+STR_3306    :{WINDOW_COLOUR_2}Månadsvinst:
+STR_3307    :{WINDOW_COLOUR_2}Minimilängd:
+STR_3308    :{WINDOW_COLOUR_2}Glädjenivå:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}åkturer/attraktioner under a preservation order:
-STR_3313    :Scenario Name
-STR_3314    :Enter name for scenario:-
-STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:-
-STR_3317    :No details yet
-STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
-STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
-STR_3320    :Unable to save scenario file...
-STR_3321    :New objects inStånded successfully
-STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: 
-STR_3325    :Requires an Add-On Pack
-STR_3326    :{WINDOW_COLOUR_2}(no image)
-STR_3327    :Starting positions for people not set
-STR_3328    :Can't advance to next editor stage...
-STR_3329    :Park entrance not yet built
-STR_3330    :Park must own some land
-STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
-STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
-STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Berg- och dalbana Designer - Select Åktur Types & Vehicles
-STR_3336    :Track Designs Manager - Select Åktur Type
+STR_3312    :{WINDOW_COLOUR_2}Åkturer/attraktioner som måste bevaras:
+STR_3313    :Scenarionamn
+STR_3314    :Skriv in namn för scenario:-
+STR_3315    :Park- och Scenariodetails
+STR_3316    :Skriv in en beskriving för detta scenario:-
+STR_3317    :Inga detaljer än
+STR_3318    :{SMALLFONT}{BLACK}Välj vilken grupp detta scenario hör till
+STR_3319    :{WINDOW_COLOUR_2}Scenariogrupp:
+STR_3320    :Kan inte spara scenariofil...
+STR_3321    :Nya objekt installerade
+STR_3322    :{WINDOW_COLOUR_2}Uppdrag: {BLACK}{STRINGID}
+STR_3323    :Saknar objektdata, ID: 
+STR_3324    :Kräver Add-On Pack: 
+STR_3325    :Kräver ett Add-On Pack
+STR_3326    :{WINDOW_COLOUR_2}(ingen bild)
+STR_3327    :Startpositioner för besökare är inte bestämda
+STR_3328    :Kan inte gå vidare till nästa steg...
+STR_3329    :Parkentrén är inte byggd än
+STR_3330    :Parken måste äga någon mark
+STR_3331    :Vägen från parkentrén till kartkanten är antingen inte komplett eller för komplex - Vägen måste ha en konstant bredd med så få korsningar och hörn som möjligt
+STR_3332    :Parkentrén är åt fel håll eller har ingen väg som leder till kartkanten
+STR_3333    :Exportera plug-in-objekt med sparade spel
+STR_3334    :{SMALLFONT}{BLACK}Välj om plug-in objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera denna data
+STR_3335    :Berg- och dalbane-designer - Välj Åkturstyp & Fordon
+STR_3336    :Bandesign-hanterare - Välj Åkturstype
 STR_3337    :Six Flags Park
-STR_3338    :{BLACK}Custom-designed layout
-STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
-STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Game tools
+STR_3338    :{BLACK}Egendesignad layout
+STR_3339    :{BLACK}{COMMA16} design tillgängliga, eller egendesignad layout
+STR_3340    :{BLACK}{COMMA16} designer tillgängliga, eller egendesignad layout
+STR_3341    :{SMALLFONT}{BLACK}Spelverktyg
 STR_3342    :Scenario Editor
-STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Berg- och dalbana Designer
-STR_3345    :Track Designs Manager
-STR_3346    :Can't save track design...
-STR_3347    :Åktur is too large, contains too many elements, or dekorationer is too spread out
-STR_3348    :Rename
-STR_3349    :Delete
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:-
-STR_3352    :Can't rename track design...
-STR_3353    :New name contains invalid characters
-STR_3354    :Another file exists with this name, or file is write-protected
-STR_3355    :File is write-protected or locked
-STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
-STR_3358    :Can't delete track design...
-STR_3359    :{BLACK}No track designs of this type
-STR_3360    :Warning!
-STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :Forced Software Buffer Mixing
-STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
-STR_3364    :Advanced
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of dekorationer in addition to dekorationer groups
+STR_3343    :Konvertera Sparat Spel till Scenario
+STR_3344    :Berg- och dalbane-designer
+STR_3345    :Bandesign-hanterare
+STR_3346    :Kan inte spara bandesign...
+STR_3347    :Åkturen är för stor, innehåller för många delar, eller så är dekorationerna för utspridda
+STR_3348    :Döp om
+STR_3349    :Ta bort
+STR_3350    :Bandesignnamn
+STR_3351    :Skriv in nytt namn på denna bandesign:-
+STR_3352    :Kan inte namnge bandesign...
+STR_3353    :Det nya namnet innehåller ogiltiga bokstäver eller symboler
+STR_3354    :En annan fil finns redan med detta namn, eller så är filen skrivskyddad
+STR_3355    :Filen är skrivskyddad eller låst
+STR_3356    :Ta bort fil
+STR_3357    :{WINDOW_COLOUR_2}Är du säker på att du permanent vill ta bort {STRINGID} ?
+STR_3358    :Kan inte ta bort bandesign...
+STR_3359    :{BLACK}Inga bandesigner av denna typ
+STR_3360    :Varning!
+STR_3361    :För många bandesigner av denna typ - Vissa kommer inte att visas.
+STR_3362    :Tvingad Mjukvarubuffermixning
+STR_3363    :{SMALLFONT}{BLACK}Välj detta för att förbättra prestanda om spelet pausas kort då ljud spelas eller om det blir interferens
+STR_3364    :Avancerat
+STR_3365    :{SMALLFONT}{BLACK}Tillåt urval av individuella dekorationer utöver dekorationsgrupper
 STR_3366    :{BLACK}= Åktur
-STR_3367    :{BLACK}= Food Stånd
-STR_3368    :{BLACK}= Drink Stånd
-STR_3369    :{BLACK}= Souvenir Stånd
-STR_3370    :{BLACK}= Info. Kiosk
-STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= A.T.M.
+STR_3367    :{BLACK}= Matstånd
+STR_3368    :{BLACK}= Drickstånd
+STR_3369    :{BLACK}= Souvenirstånd
+STR_3370    :{BLACK}= Infokiosk
+STR_3371    :{BLACK}= Första Hjälpen
+STR_3372    :{BLACK}= Bankomat
 STR_3373    :{BLACK}= Toalett
-STR_3374    :Warning: Too many objects selected!
-STR_3375    :Not all objects in this dekorationer group could be selected
-STR_3376    :InStånd new track design...
-STR_3377    :{SMALLFONT}{BLACK}InStånd a new track design file
-STR_3378    :InStånd
-STR_3379    :Cancel
-STR_3380    :Unable to inStånd this track design...
-STR_3381    :File is not compatible or contains invalid data
-STR_3382    :File copy failed
-STR_3383    :Select new name for track design
-STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom åkturer Tutorial
-STR_3387    :Berg- och dalbana Building Tutorial
-STR_3388    :Unable to switch to selected mode
-STR_3389    :Unable to select additional item of dekorationer...
-STR_3390    :Too many items selected
+STR_3374    :Varning: För många markerade objekt!
+STR_3375    :Inte alla objekt i denna dekorationsgrupp kunde markeras
+STR_3376    :Installera ny bandesign...
+STR_3377    :{SMALLFONT}{BLACK}Installera en ny bandesignfil
+STR_3378    :Installera
+STR_3379    :Avbryt
+STR_3380    :Kan inte installera denna bandesign...
+STR_3381    :Filen är inte kompatibel eller så innehåller den ogiltig data
+STR_3382    :Filkopiering misslyckades
+STR_3383    :Välj nytt namn på denna bandesign
+STR_3384    :En existerande bandesign har redan detta namn - Var god välj ett nytt namn för denna design:
+STR_3385    :Handledning för Nybörjare
+STR_3386    :Handledning för Egna åkturer
+STR_3387    :Handledning för byggande av Berg- och dalbanor
+STR_3388    :Kan inte byta till det valda läget
+STR_3389    :Kan inte markera fler dekorationer...
+STR_3390    :För många saker markerade
 STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
 STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
 STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
@@ -3441,12 +3441,12 @@ STR_3434    :{SMALLFONT}{BLACK}Let's test the Åktur and see if it works!
 STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new Berg- och dalbana...
 STR_3436    :{SMALLFONT}{BLACK}While waiting for our first Åkturrs, we could customize the Åktur a bit...
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of dekorationer from landscape
-STR_3438    :Unable to remove all dekorationer from here...
-STR_3439    :Clear Dekorationer
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
-STR_3445    :Set Patrol Area
-STR_3446    :Cancel Patrol Area
+STR_3438    :Kan inte ta bort alla dekorationer härifrån...
+STR_3439    :Rensa Dekorationer
+STR_3440    :Sida 1
+STR_3441    :Sida 2
+STR_3442    :Sida 3
+STR_3443    :Sida 4
+STR_3444    :Sida 5
+STR_3445    :Sätt Patrullområde
+STR_3446    :Avbryt Patrullområde
