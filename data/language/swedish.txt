@@ -2764,7 +2764,7 @@ STR_2759    :???
 # New strings used in the cheats window previously these were ???
 STR_2760    :+5K Pengar
 STR_2761    :Betala För Entré
-STR_2762    :Betala För Åktyrer
+STR_2762    :Betala För Åkturer
 STR_2763    :???
 STR_2764    :Glada Gäster
 STR_2765    :Large Tram TODO
@@ -3048,190 +3048,190 @@ STR_3041    :Modern-stil
 STR_3042    :Pirat-stil
 STR_3043    :Rock-stil 3
 STR_3044    :Godis-stil
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This Åktur cannot be modified
-STR_3047    :Local authority forbids demolition or modifications to this Åktur
-STR_3048    :Marketing campaigns forbidden by local authority
-STR_3049    :Golf hole A
-STR_3050    :Golf hole B
-STR_3051    :Golf hole C
-STR_3052    :Golf hole D
-STR_3053    :Golf hole E
-STR_3054    :Loading...
-STR_3055    :White
-STR_3056    :Translucent
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
-STR_3058    :Brick walls
-STR_3059    :Hedges
-STR_3060    :Ice blocks
-STR_3061    :Wooden fences
-STR_3062    :{SMALLFONT}{BLACK}Standard Berg- och dalbana track
-STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
-STR_3064    :Beginner Parks
-STR_3065    :Challenging Parks
-STR_3066    :Expert Parks
-STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_3068    :Other Parks
-STR_3069    :Top Section
-STR_3070    :Slope to Level
-STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
-STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
-STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
-STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
-STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
-STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
-STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (gray)
-STR_3082    :Castle entrance (brown)
-STR_3083    :Jungle entrance
-STR_3084    :Log cabin entrance
-STR_3085    :Classical/Roman entrance
-STR_3086    :Abstract entrance
-STR_3087    :Snow/Ice entrance
-STR_3088    :Pagoda entrance
-STR_3089    :Space entrance
-STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
-STR_3091    :You are not allowed to remove this section!
-STR_3092    :You are not allowed to move or modify the station for this Åktur!
-STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
+STR_3045    :{SMALLFONT}{BLACK}Välj musikstil som ska spelas
+STR_3046    :Denna åktur kan inte modifieras
+STR_3047    :Lokala myndigheter har förbjudit rivning och modifikation av denna Åktur
+STR_3048    :Kampanjer är förbjudna av lokala myndigheter
+STR_3049    :Golfhål A
+STR_3050    :Golfhål B
+STR_3051    :Golfhål C
+STR_3052    :Golfhål D
+STR_3053    :Golfhål E
+STR_3054    :Laddar...
+STR_3055    :Vit
+STR_3056    :Genomskinlig
+STR_3057    :{WINDOW_COLOUR_2}Konstruktionsmarkör:
+STR_3058    :Tegelstensväggar
+STR_3059    :Häckar
+STR_3060    :Isblock
+STR_3061    :Trästaket
+STR_3062    :{SMALLFONT}{BLACK}Standard berg- och dalbane-spår
+STR_3063    :{SMALLFONT}{BLACK}Vattenkanal (spår under vatten)
+STR_3064    :Nybörjarparker
+STR_3065    :Utmanande Parker
+STR_3066    :Expertparker
+STR_3067    :{OPENQUOTES}Riktiga{ENDQUOTES} Parker
+STR_3068    :Andra Parker
+STR_3069    :Toppsektion
+STR_3070    :Sluttning till platt
+STR_3071    :{WINDOW_COLOUR_2}Samma pris genom parken
+STR_3072    :{SMALLFONT}{BLACK}Välj om det här priset ska användas genom hela parken
+STR_3073    :{RED}VARNING: Ditt parkomdöme har gått under 700 !{NEWLINE}Om du inte har höjt parkomdömet inom 4 veckor kommer din park att stängas
+STR_3074    :{RED}VARNING: Ditt parkomdöme är fortfarande under 700 !{NEWLINE}Du har 3 veckor på dig att höja parkomdömet
+STR_3075    :{RED}VARNING: Ditt parkomdöme är fortfarande under 700 !{NEWLINE}Du har bara 2 veckor på dig att höja parkomdömet, annars kommer din park att stängas
+STR_3076    :{RED}SISTA VARNING: Ditt parkomdöme är fortfarande under 700 !{NEWLINE}Om bara 7 dagar kommer din park att stängas om du inte kan höja parkomdömet
+STR_3077    :{RED}STÄNGNINGSNOTIS: Din park har blivit stängd !
+STR_3078    :Vanlig ingång
+STR_3079    :Träingång
+STR_3080    :Tältingång
+STR_3081    :Slottsingång (grå)
+STR_3082    :Slottsingång (brun)
+STR_3083    :Jungelingång
+STR_3084    :Timmerstugeingång
+STR_3085    :Klassisk/romersk ingång
+STR_3086    :Abstrakt ingång
+STR_3087    :Snö/is-ingång
+STR_3088    :Pagodaingång
+STR_3089    :Rymdingång
+STR_3090    :{SMALLFONT}{BLACK}Välj stil för ingången, utgången och stationen
+STR_3091    :Du får inte ta bort den här sektionen!
+STR_3092    :Du får inte flytta eller modifiera stationen för den här åkturen!
+STR_3093    :{WINDOW_COLOUR_2}Favorit: {BLACK}{STRINGID}
 STR_3094    :N/A
-STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
+STR_3095    :{WINDOW_COLOUR_2}Upplyftskedjehastighet:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3098    :Can't change lift hill speed...
-STR_3099    :{SMALLFONT}{BLACK}Select color
-STR_3100    :{SMALLFONT}{BLACK}Select second color
-STR_3101    :{SMALLFONT}{BLACK}Select third color
-STR_3102    :{SMALLFONT}{BLACK}Re-paint colored dekorationer on landscape
-STR_3103    :Can't re-paint this...
-STR_3104    :{SMALLFONT}{BLACK}List åkturer
-STR_3105    :{SMALLFONT}{BLACK}List shops and Stånds
-STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
-STR_3108    :Test
-STR_3109    :Open
-STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
-STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until Åktur has been tested and statistics have been generated)
-STR_3117    :{BLACK}Calling mechanic...
-STR_3118    :{BLACK}{STRINGID} is heading for the Åktur
-STR_3119    :{BLACK}{STRINGID} is fixing the Åktur
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing Åktur
-STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favorite Åktur of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favorite Åktur of: {BLACK}{COMMA16} guests
-STR_3124    :Broken {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
-STR_3128    :Save Track Design
-STR_3129    :Save Track Design with Dekorationer
-STR_3130    :Save
-STR_3131    :Cancel
-STR_3132    :{BLACK}Click items of dekorationer to select them to be saved with track design...
-STR_3133    :Unable to build this on a slope
-STR_3134    :{RED}(Design includes dekorationer which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Åktur performance may be affected)
-STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
-STR_3137    :Select Nearby Dekorationer
-STR_3138    :Reset Selection
-STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per Åktur not possible with cable lift hill
-STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show åkturer and Stånds on map
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} höger
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster fast
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} höger fast
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} vänster/höger
-STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
-STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
-STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
-STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
-STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
+STR_3097    :{SMALLFONT}{BLACK}Välj upplyftskedjehastighet
+STR_3098    :Kan inte byta upplyftskedjehastighet...
+STR_3099    :{SMALLFONT}{BLACK}Välj huvudfärg
+STR_3100    :{SMALLFONT}{BLACK}Välj andra färg
+STR_3101    :{SMALLFONT}{BLACK}Välj tredje färg
+STR_3102    :{SMALLFONT}{BLACK}Måla om färgade dekorationer
+STR_3103    :Kan inte måla om detta...
+STR_3104    :{SMALLFONT}{BLACK}Lista åkturer
+STR_3105    :{SMALLFONT}{BLACK}Lista affärer och stånd
+STR_3106    :{SMALLFONT}{BLACK}Lista informationskiosker och andra gästfaciliteter
+STR_3107    :Stäng
+STR_3108    :Testa
+STR_3109    :Öppna
+STR_3110    :{WINDOW_COLOUR_2}Blocksektioner: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Klicka på en design för att bygga den
+STR_3112    :{SMALLFONT}{BLACK}Klicka på en design för att byta namn eller ta bort den
+STR_3113    :Välj en annan design
+STR_3114    :{SMALLFONT}{BLACK}Gå tillbaka till menyn för att välja design
+STR_3115    :{SMALLFONT}{BLACK}Spara bandesign
+STR_3116    :{SMALLFONT}{BLACK}Spara bandesign (Inte möjligt innan åkturen har blivit testad och statistik har genererats)
+STR_3117    :{BLACK}Ringer mekaniker...
+STR_3118    :{BLACK}{STRINGID} är på väg till åkturen
+STR_3119    :{BLACK}{STRINGID} fixar åkturen
+STR_3120    :{SMALLFONT}{BLACK}Hitta närmsta tillgängliga mekaniker, eller mekanikern som fixar åkturen
+STR_3121    :Kan inte hitta en mekaniker, eller så är alla i närheten upptagna
+STR_3122    :{BLACK}{COMMA16} gästs {WINDOW_COLOUR_2}favoritåktur
+STR_3123    :{BLACK}{COMMA16} gästers {WINDOW_COLOUR_2}favoritåktur
+STR_3124    :Trasig {STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}Glädjefaktor: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intensitetsfaktor: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Illamåendefaktor: {BLACK}+{COMMA16}%
+STR_3128    :Spara Bandesign
+STR_3129    :Spara Bandesign med Dekorationer
+STR_3130    :Spara
+STR_3131    :Avbryt
+STR_3132    :{BLACK}Klicka på dekorationer för att markera dom för sparning med bandesignen...
+STR_3133    :Kan inte bygga detta på en sluttning
+STR_3134    :{RED}(Designen inkluderar dekorationer som är otillgängliga)
+STR_3135    :{RED}(Fordonstyp otillgänglig - Åktursbeteende kan påverkas)
+STR_3136    :Varning: Denna design kommer att byggas med en alternativ fordonstyp och kanske inte beter sig som väntat
+STR_3137    :Välj Närliggande Dekorationer
+STR_3138    :Återställ Markering
+STR_3139    :Uppskjuts fungerar inte i detta körläge
+STR_3140    :Uppskjutsbacken måste börja direkt efter en station
+STR_3141    :Kontinuerligt banläge går inte att kombinera med uppskjutsbacke
+STR_3142    :{WINDOW_COLOUR_2}Kapacitet: {BLACK}{STRINGID}
+STR_3143    :{SMALLFONT}{BLACK}Visa besökare på kartan
+STR_3144    :{SMALLFONT}{BLACK}Visa åkturer och stånd på kartan
+STR_3145    :{SMALLFONT}{BLACK}Flytta {STRINGID} vänster
+STR_3146    :{SMALLFONT}{BLACK}Flytta {STRINGID} höger
+STR_3147    :{SMALLFONT}{BLACK}Flytta {STRINGID} vänster snabbt
+STR_3148    :{SMALLFONT}{BLACK}Flytta {STRINGID} höger snabbt
+STR_3149    :{SMALLFONT}{BLACK}Flytta {STRINGID} vänster/höger
+STR_3150    :{SMALLFONT}{BLACK}Flytta {STRINGID} upp
+STR_3151    :{SMALLFONT}{BLACK}Flytta {STRINGID} ner
+STR_3152    :{SMALLFONT}{BLACK}Flytta {STRINGID} upp snabbt
+STR_3153    :{SMALLFONT}{BLACK}Flytta {STRINGID} ner snabbt
+STR_3154    :{SMALLFONT}{BLACK}Flytta {STRINGID} upp/ner
 STR_3155    :
 STR_3156    :
-STR_3157    :map
-STR_3158    :graph
-STR_3159    :list
-STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
-STR_3161    :RollerCoaster Tycoon 2: Checking object files...
-STR_3162    :Unable to allocate enough memory
-STR_3163    :InStånding new data: 
-STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
+STR_3157    :karta
+STR_3158    :graf
+STR_3159    :lista
+STR_3160    :RollerCoaster Tycoon 2: Startar för första gången...
+STR_3161    :RollerCoaster Tycoon 2: Kollar objektfiler...
+STR_3162    :Kan inte allokera nog minne
+STR_3163    :Installerar ny data: 
+STR_3164    :{BLACK}{COMMA16} valda (av max {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
-STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
+STR_3167    :{WINDOW_COLOUR_2}Inkluderar: {BLACK}{COMMA16} objects
 STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
-STR_3169    :Data for the following object not found: 
-STR_3170    :Not enough space for graphics
-STR_3171    :Too many objects of this type selected
-STR_3172    :The following object must be selected first: 
-STR_3173    :This object is currently in use
-STR_3174    :This object is required by another object
-STR_3175    :This object is always required
-STR_3176    :Unable to select this object
-STR_3177    :Unable to de-select this object
-STR_3178    :At least one path object must be selected
-STR_3179    :At least one Åktur vehicle/attraktion object must be selected
-STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
-STR_3184    :Åktur Vehicles/attraktioner
-STR_3185    :Small Dekorationer
-STR_3186    :Large Dekorationer
-STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
-STR_3190    :Path Extras
-STR_3191    :Dekorationer Groups
-STR_3192    :Park Entrance
-STR_3193    :Water
-STR_3194    :Scenario Description
-STR_3195    :Invention List
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
-STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
-STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
-STR_3205    :Objective Selection
-STR_3206    :Save Scenario
-STR_3207    :Berg- och dalbana Designer
-STR_3208    :Track Designs Manager
-STR_3209    :Back to Previous Step:
-STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3169    :Data för detta objekt hittades ej: 
+STR_3170    :Inte nog plats för grafik
+STR_3171    :För många objekt av denna typ är markerade
+STR_3172    :Följande objekt måste markeras först: 
+STR_3173    :Detta objekt används just nu
+STR_3174    :Detta objekt behövs av ett annat objekt
+STR_3175    :Detta objekt behövs alltid
+STR_3176    :Kan inte markera detta objekt
+STR_3177    :Kan inte avmarkera detta objekt
+STR_3178    :Minst ett gångvägsobjekt måste markeras
+STR_3179    :Minst ett åktursfordon eller attraktionsobject måste markeras
+STR_3180    :Ogiltig markering
+STR_3181    :Objektmarkering - {STRINGID}
+STR_3182    :Parkentrén måste markeras
+STR_3183    :Vattentyp måste markeras
+STR_3184    :Åktursfordon/attraktioner
+STR_3185    :Små Dekorationer
+STR_3186    :Stora Dekorationer
+STR_3187    :Väggar/Staket
+STR_3188    :Gångvägsskyltar
+STR_3189    :Gångvägar
+STR_3190    :Gångvägsdetaljer
+STR_3191    :Dekorationsgrupper
+STR_3192    :Parkentré
+STR_3193    :Vatten
+STR_3194    :Scenariobeskrivning
+STR_3195    :Uppfinningslista
+STR_3196    :{WINDOW_COLOUR_2}Forskningsgrupp: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Saker som är inventerade vid spelets början:
+STR_3198    :{WINDOW_COLOUR_2}Saker som ska inventeras under spelets gång:
+STR_3199    :Slumpvis Ordning
+STR_3200    :{SMALLFONT}{BLACK}Slumpa listan av saker som ska inventeras under spelets gång
+STR_3201    :Välj Objekt
+STR_3202    :Terrängeditor
+STR_3203    :Bygg upp uppfinningslista
+STR_3204    :Välj Inställningar
+STR_3205    :Välj Uppdrag
+STR_3206    :Spara Scenario
+STR_3207    :Berg- och dalbane-designer
+STR_3208    :Bandesignhanterare
+STR_3209    :Tillbaka till tidigare steg:
+STR_3210    :Vidare till nästa steg:
+STR_3211    :{WINDOW_COLOUR_2}Kartstorlek:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
-STR_3213    :Can't decrease map size any further
-STR_3214    :Can't increase map size any further
-STR_3215    :Too close to edge of map
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
-STR_3217    :Land Owned
-STR_3218    :Construction Högers Owned
-STR_3219    :Land For Sale
-STR_3220    :Construction Högers For Sale
-STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction högers only to be owned by the park
-STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction högers to be available to purchase by the park
-STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Build park entrance
-STR_3227    :Too many park entrances!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3213    :Kan inte minska kartstorleken mer
+STR_3214    :Kan inte utöka kartstorleken mer
+STR_3215    :För nära kanten av kartan
+STR_3216    :{SMALLFONT}{BLACK}Välj parkägd mark etc.
+STR_3217    :Ägd Mark
+STR_3218    :Bygglov innehas
+STR_3219    :Mark Till Salu
+STR_3220    :Bygglov Till Salu
+STR_3221    :{SMALLFONT}{BLACK}Välj att marken ska ägas av parken
+STR_3222    :{SMALLFONT}{BLACK}Välj att bara bygglov ska ägas av parken
+STR_3223    :{SMALLFONT}{BLACK}Välj att mark ska vara tillgängligt för köp
+STR_3224    :{SMALLFONT}{BLACK}Välj att bygglov ska vara tillgängligt för köp
+STR_3225    :{SMALLFONT}{BLACK}Aktivera/inaktivera generering av en slumpmässig samling object runt den valda positionen
+STR_3226    :{SMALLFONT}{BLACK}Bygg parkentré
+STR_3227    :För många parkentréer!
+STR_3228    :{SMALLFONT}{BLACK}Sätt startpositioner för besökare
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
