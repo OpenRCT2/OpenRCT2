@@ -33,6 +33,7 @@
 #include "widget.h"
 #include "window.h"
 #include "window_tooltip.h"
+#include "window_dropdown.h"
 
 POINT _dragPosition;
 
@@ -616,6 +617,7 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		return;
 	}
 
+	//6e9141
 	if (!w) return;
 
 	if (w->classification != WC_DROPDOWN) return;
@@ -641,9 +643,18 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	// _dropdown_no_rows
 	if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)) return;
 
-	int item_no = row_no * RCT2_GLOBAL(0x009DED44, sint32); //6e91be
+	// _dropdown_no_columns
+	int item_no = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
+	// _dropdown_no_items
+	if (item_no >= RCT2_GLOBAL(0x009DEBA0, sint16)) return;
 
-	//6e9141
+	if (item_no < 32 && gDropdownItemsChecked & (1 << item_no))return;
+
+	if (gDropdownItemsFormat[item_no] == 0)return;
+
+	// _dropdown_highlighted_index
+	RCT2_GLOBAL(0x009DEBA2, sint16) = item_no;
+	window_invalidate_by_id(WC_DROPDOWN, 0);
 }
 
 /**
