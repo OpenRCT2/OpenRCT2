@@ -937,7 +937,7 @@ STR_0932    :Vertikal Loop (höger)
 STR_0933    :Höj eller sänk landnivån först
 STR_0934    :En åkturer ingång är i vägen
 STR_0935    :En åkturer utgång är i vägen
-STR_0936    :Parkingången är i vägen
+STR_0936    :Parkentrén är i vägen
 STR_0937    :{SMALLFONT}{BLACK}Visa inställningar
 STR_0938    :{SMALLFONT}{BLACK}Justera landnivån och sluttning
 STR_0939    :Underjordsvy
@@ -1018,7 +1018,7 @@ STR_1013    :Stäng parken
 STR_1014    :Öppna parken
 STR_1015    :Åkturen kan inte köras med fler än en stationsplattform i detta läge
 STR_1016    :Åkturen kan inte köras med mindre än två stationer i detta läge
-STR_1017    :Kan inte byta läge...
+STR_1017    :Kan inte byta körläge...
 STR_1018    :Kan inte göra förändringar...
 STR_1019    :Kan inte göra förändringar...
 STR_1020    :Kan inte göra förändringar...
@@ -2458,74 +2458,74 @@ STR_2453    :{WINDOW_COLOUR_2}Pengar (utan lån): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
-STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
-STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
-STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
-STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
-STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
-STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
-STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
-STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
-STR_2466    :{SMALLFONT}{BLACK}Show park statistics
-STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
-STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
-STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport åkturer
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle åkturer
-STR_2472    :{SMALLFONT}{BLACK}Research new Berg- och dalbanas
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill åkturer
-STR_2474    :{SMALLFONT}{BLACK}Research new water åkturer
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and Stånds
-STR_2476    :{SMALLFONT}{BLACK}Research new dekorationer and themeing
-STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this Åktur/attraktion
-STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
-STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
-STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
-STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
-STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
-STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
-STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
-STR_2485    :Controls
-STR_2486    :General
-STR_2487    :Show 'real' names of guests
-STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
-STR_2489    :Shortcut keys...
-STR_2490    :Keyboard shortcuts
-STR_2491    :Reset keys
-STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
-STR_2493    :Close top-most window
-STR_2494    :Close all floating windows
-STR_2495    :Cancel construction mode
-STR_2496    :Pause game
-STR_2497    :Zoom view out
-STR_2498    :Zoom view in
-STR_2499    :Rotate view
-STR_2500    :Rotate construction object
-STR_2501    :Underground view toggle
-STR_2502    :Remove base land toggle
-STR_2503    :Remove vertical land toggle
-STR_2504    :See-through åkturer toggle
-STR_2505    :See-through dekorationer toggle
-STR_2506    :Invisible supports toggle
-STR_2507    :Invisible people toggle
-STR_2508    :Height marks on land toggle
-STR_2509    :Height marks on Åktur tracks toggle
-STR_2510    :Height marks on paths toggle
-STR_2511    :Adjust land
-STR_2512    :Adjust water
-STR_2513    :Build dekorationer
-STR_2514    :Build paths
-STR_2515    :Build new Åktur
-STR_2516    :Show financial information
-STR_2517    :Show research information
-STR_2518    :Show åkturer list
-STR_2519    :Show park information
-STR_2520    :Show guest list
-STR_2521    :Show staff list
-STR_2522    :Show recent messages
-STR_2523    :Show map
-STR_2524    :Screenshot
+STR_2457    :{SMALLFONT}{BLACK}Show financial accounts TODO
+STR_2458    :{SMALLFONT}{BLACK}Visa graf med pengar (utan lån) över tid
+STR_2459    :{SMALLFONT}{BLACK}Visa graf med parkvärde över tid
+STR_2460    :{SMALLFONT}{BLACK}Visa graf med veckovis vinst
+STR_2461    :{SMALLFONT}{BLACK}Visa kampanjer
+STR_2462    :{SMALLFONT}{BLACK}Visa parkentrén
+STR_2463    :{SMALLFONT}{BLACK}Visa graf med parkomdömen över tid
+STR_2464    :{SMALLFONT}{BLACK}Visa graf med gästantal över tid
+STR_2465    :{SMALLFONT}{BLACK}Visa parkinträdespris och information
+STR_2466    :{SMALLFONT}{BLACK}Visa parkstatistik
+STR_2467    :{SMALLFONT}{BLACK}Visa uppdrag
+STR_2468    :{SMALLFONT}{BLACK}Visa nyliga utmärkelser som denna park har blivit tilldelad
+STR_2469    :{SMALLFONT}{BLACK}Välj nivå på forskning och utveckling
+STR_2470    :{SMALLFONT}{BLACK}Forska fram nya transportåkturer
+STR_2471    :{SMALLFONT}{BLACK}Forska fram nya lugna åkturer
+STR_2472    :{SMALLFONT}{BLACK}Forska fram nya berg- och dalbanor
+STR_2473    :{SMALLFONT}{BLACK}Forska fram nya spännande åkturer
+STR_2474    :{SMALLFONT}{BLACK}Forska fram nya vattenåkturer
+STR_2475    :{SMALLFONT}{BLACK}Forska fram nya affärer och stånd
+STR_2476    :{SMALLFONT}{BLACK}Forska fram nya dekorationer and teman
+STR_2477    :{SMALLFONT}{BLACK}Välj körläge för denna åktur/attraktion
+STR_2478    :{SMALLFONT}{BLACK}Visa graf med hastighet över tid
+STR_2479    :{SMALLFONT}{BLACK}Visa graf med höjd över tid
+STR_2480    :{SMALLFONT}{BLACK}Visa graf med vertikal acceleration över tid
+STR_2481    :{SMALLFONT}{BLACK}Visa graf med lateral acceleration över tid
+STR_2482    :{SMALLFONT}{BLACK}Vinst: {CURRENCY} per vecka,  Parkvärde: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}Veckovis vinst: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Veckovis vinst: {RED}{CURRENCY2DP}
+STR_2485    :Kontroller
+STR_2486    :Allmänt
+STR_2487    :Visa 'riktiga' namn på gäster
+STR_2488    :{SMALLFONT}{BLACK}Byt mellan 'riktiga' namn och gästnummer
+STR_2489    :Snabbtangenter...
+STR_2490    :Snabbtangenter
+STR_2491    :Återställ snabbtangenter
+STR_2492    :{SMALLFONT}{BLACK}Återställ alla snabbtangenter till standardinställningar
+STR_2493    :Stäng fönstret som är längst fram
+STR_2494    :Stäng alla fönster
+STR_2495    :Avbryt konstruktionsläget
+STR_2496    :Pausa spelet
+STR_2497    :Zooma ut
+STR_2498    :Zooma in
+STR_2499    :Rotera vyn
+STR_2500    :Rotera konstruktionsobjektet
+STR_2501    :Underjordsvy
+STR_2502    :Dölj terräng
+STR_2503    :Dölj vertikal terräng
+STR_2504    :Genomskinliga åkturer
+STR_2505    :Genomskinliga dekorationer
+STR_2506    :Dölj stödpelare
+STR_2507    :Dölj besökare
+STR_2508    :Höjdmarkeringar på terräng
+STR_2509    :Höjdmarkeringar på åktursbanor
+STR_2510    :Höjdmarkeringar på gångvägar
+STR_2511    :Justera land
+STR_2512    :Justera vatten
+STR_2513    :Bygg dekorationer
+STR_2514    :Bygg gångvägar
+STR_2515    :Bygg ny åktur
+STR_2516    :Visa finansiell information
+STR_2517    :Visa forskningsinformation
+STR_2518    :Visa lista över åkturer
+STR_2519    :Visa parkinformation
+STR_2520    :Visa gästlista
+STR_2521    :Visa personallista
+STR_2522    :Visa nyliga meddelanden
+STR_2523    :Visa karta
+STR_2524    :Skärmdump
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -2558,15 +2558,15 @@ STR_2553    :???
 STR_2554    :???
 STR_2555    :???
 STR_2556    :???
-STR_2557    :Spacebar
+STR_2557    :Mellanslag
 STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
 STR_2561    :Home
 STR_2562    :Vänster
-STR_2563    :Up
+STR_2563    :Upp
 STR_2564    :Höger
-STR_2565    :Down
+STR_2565    :Ner
 STR_2566    :Select
 STR_2567    :Print
 STR_2568    :Execute
