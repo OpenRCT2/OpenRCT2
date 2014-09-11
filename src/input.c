@@ -552,11 +552,13 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 
 /* rct2: 0x6E8DA7 */
 void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget ){
+	//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+	//return;
 	RCT2_GLOBAL(0x1420054, uint16) = x;
 	RCT2_GLOBAL(0x1420056, uint16) = y;
 
-	w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
-	if (!w){
+	rct_window* temp_w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
+	if (!temp_w){
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 		return;
 	}
@@ -570,7 +572,7 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 		cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 
-		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
+		if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
 			break;
 			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 			return;
@@ -604,6 +606,8 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	case 3:
 		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		return;
+	default:
+		return;
 	}
 
 	//6e9103
@@ -617,7 +621,6 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		return;
 	}
 
-	//6e9141
 	if (!w) return;
 
 	if (w->classification != WC_DROPDOWN) return;
