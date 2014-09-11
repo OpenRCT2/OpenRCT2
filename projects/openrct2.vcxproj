@@ -140,6 +140,7 @@
     <ClCompile Include="..\src\window_water.c" />
     <ClCompile Include="..\src\staff.c" />
     <ClCompile Include="..\src\window_scenery.c" />
+    <ClCompile Include="..\src\window_credits.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
