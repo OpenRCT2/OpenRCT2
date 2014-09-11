@@ -995,7 +995,7 @@ STR_0990    :{SMALLFONT}{BLACK}Konstruktion
 STR_0991    :Stationsplattform
 STR_0992    :{SMALLFONT}{BLACK}Riv hela åkturen/attraktionen
 STR_0993    :Riv åktur/attraktion
-STR_0994    :Demolish TODO
+STR_0994    :Riv
 STR_0995    :{WINDOW_COLOUR_1}Är du säker på att du vill riva {STRINGID} fullständigt?
 STR_0996    :Översiktsvy
 STR_0997    :{SMALLFONT}{BLACK}Visa markering
@@ -1170,7 +1170,7 @@ STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Kan inte sänka vattennivån...
 STR_1167    :Kan inte höja vattennivån...
 STR_1168    :Inställningar
-STR_1169    :(Inga) TODO: Ingen?
+STR_1169    :(Inga)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
@@ -1901,7 +1901,7 @@ STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
 STR_1897    :{WINDOW_COLOUR_2}Åkturskonstruktioner
 STR_1898    :{WINDOW_COLOUR_2}Åktursunderhållskonstnader
 STR_1899    :{WINDOW_COLOUR_2}Markinköp
-STR_1900    :{WINDOW_COLOUR_2}Landscaping TODO
+STR_1900    :{WINDOW_COLOUR_2}Terrängmodifiering
 STR_1901    :{WINDOW_COLOUR_2}Parkinträde
 STR_1902    :{WINDOW_COLOUR_2}Åktursbiljetter
 STR_1903    :{WINDOW_COLOUR_2}Sålda varor
@@ -1938,7 +1938,7 @@ STR_1933    :{STRINGID} är i {STRINGID}
 STR_1934    :{STRINGID} har lämnat {STRINGID}
 STR_1935    :{STRINGID} has lämnat parken
 STR_1936    :{STRINGID} har köpt {STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}Visa information om meddelandets ämne TODO
+STR_1937    :{SMALLFONT}{BLACK}Visa information om meddelandets ämne
 STR_1938    :{SMALLFONT}{BLACK}Visa gästvyn
 STR_1939    :{SMALLFONT}{BLACK}Visa personalvyn
 STR_1940    :{SMALLFONT}{BLACK}Visa glädje, energi, hunger etc. för denna gäst
@@ -2458,7 +2458,7 @@ STR_2453    :{WINDOW_COLOUR_2}Pengar (utan lån): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Show financial accounts TODO
+STR_2457    :{SMALLFONT}{BLACK}Visa finansiella konton
 STR_2458    :{SMALLFONT}{BLACK}Visa graf med pengar (utan lån) över tid
 STR_2459    :{SMALLFONT}{BLACK}Visa graf med parkvärde över tid
 STR_2460    :{SMALLFONT}{BLACK}Visa graf med veckovis vinst
@@ -2767,7 +2767,7 @@ STR_2761    :Betala För Entré
 STR_2762    :Betala För Åkturer
 STR_2763    :???
 STR_2764    :Glada Gäster
-STR_2765    :Large Tram TODO
+STR_2765    :Stort Tåg
 STR_2766    :???
 STR_2767    :Frys Klimat
 STR_2768    :Avfrys klimat
@@ -2775,7 +2775,7 @@ STR_2769    :Öppna Park
 STR_2770    :Stäng Park
 STR_2771    :Långsammare Spekhastighet
 STR_2772    :Snabbare Spelhastighet
-STR_2773    :Windowed TODO
+STR_2773    :Fönster
 STR_2774    :Fullskärm
 STR_2775    :Fullskärm (skrivbord)
 STR_2776    :Språk
