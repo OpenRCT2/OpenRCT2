@@ -86,7 +86,7 @@ void window_music_credits_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_PUBLISHER_CREDITS, 0);
+	window = window_bring_to_front_by_id(WC_MUSIC_CREDITS, 0);
 	if (window != NULL)
 		return;
 
@@ -96,7 +96,7 @@ void window_music_credits_open()
 		510,
 		314,
 		(uint32*)window_music_credits_events,
-		WC_PUBLISHER_CREDITS,
+		WC_MUSIC_CREDITS,
 		0
 		);
 
