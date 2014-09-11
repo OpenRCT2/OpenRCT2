@@ -706,15 +706,15 @@ static void window_scenery_update(rct_window *w)
 		sint16 tabSelectedSceneryId = window_scenery_selected_scenery_by_tab[tabIndex];
 
 		if (tabSelectedSceneryId != -1) {
-			if (tabSelectedSceneryId > 0x400) { // banner
+			if (tabSelectedSceneryId >= 0x400) { // banner
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x18;
-			} else if (tabSelectedSceneryId > 0x300) { // large scenery
+			} else if (tabSelectedSceneryId >= 0x300) { // large scenery
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
 					g_largeSceneryEntries[tabSelectedSceneryId - 0x300]->large_scenery.tool_id;
-			} else if (tabSelectedSceneryId > 0x200) { // wall
+			} else if (tabSelectedSceneryId >= 0x200) { // wall
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
 					g_wallSceneryEntries[tabSelectedSceneryId - 0x200]->wall.tool_id;
-			} else if (tabSelectedSceneryId > 0x100) { // path bit
+			} else if (tabSelectedSceneryId >= 0x100) { // path bit
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
 					g_pathBitSceneryEntries[tabSelectedSceneryId - 0x100]->path_bit.tool_id;
 			} else { // small scenery
