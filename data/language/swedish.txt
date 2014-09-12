@@ -1064,7 +1064,8 @@ STR_1059    :Kan inte namnge åktur/attraktion...
 STR_1060    :Ogiltigt åktur/attraktionsnamn
 STR_1061    :Normalt läge
 STR_1062    :Kontinuerligt banläge
-STR_1063    :Reverse-Incline launched shuttle mode TODO
+#TODO
+STR_1063    :Reverse-Incline launched shuttle mode
 STR_1064    :Accelererad start
 STR_1065    :Pendlarläge
 STR_1066    :Uthyrning
@@ -1674,7 +1675,8 @@ STR_1669    :{WINDOW_COLOUR_2}Tillfredställdhet: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Totalt antal kunder: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Total vinst: {BLACK}{CURRENCY2DP}
 STR_1672    :Bromsar
-STR_1673    :Spinning Control Toggle Track TODO
+#TODO
+STR_1673    :Spinning Control Toggle Track
 STR_1674    :Bromshastighet
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Sätt hastighetsgräns för bromsar
@@ -2793,9 +2795,11 @@ STR_2786    :{SMALLFONT}{BLACK}Klicka på en beskrivning för att välja en ny s
 STR_2787    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Grattis !{NEWLINE}{BLACK}Du uppnådde ditt mål med ett företagsvärde på {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}Du har misslyckats med ditt mål !
-STR_2790    :Skriv in namn i scenario chart TODO
+#TODO, scenario chart?
+STR_2790    :Skriv in namn i scenario chart
 STR_2791    :Skriv in namn
-STR_2792    :Var god skriv in ditt namn i scenario chart TODO:-
+#TODO
+STR_2792    :Var god skriv in ditt namn i scenario chart:-
 STR_2793    :{SMALLFONT}(Avklarad av {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Avklarad av: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med ett företagsvärde på: {BLACK}{CURRENCY}
 STR_2795    :Sortera
