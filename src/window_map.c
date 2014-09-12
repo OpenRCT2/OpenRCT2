@@ -207,18 +207,7 @@ static void window_map_mouseup()
 	sint16 var_idx;
 	rct_window* var_w;
 
-	// move value of dx and esi into respective variables
-#ifdef _MSC_VER
-	__asm mov var_idx, dx;
-#else
-	__asm__("mov %[var_idx], dx " :[var_idx] "+m" (var_idx));
-#endif
-
-#ifdef _MSC_VER
-	__asm mov var_w, esi;
-#else
-	__asm__("mov %[var_w], esi " :[var_w] "+m" (var_w));
-#endif
+	window_widget_get_registers(var_w, var_idx);
 	
 	switch (var_idx)
 	{
