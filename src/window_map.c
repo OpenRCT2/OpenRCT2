@@ -24,6 +24,8 @@
 #include "string_ids.h"
 #include "widget.h"
 #include "window.h"
+#include "window_scenery.h"
+#include "viewport.h"
 
 enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -201,28 +203,146 @@ static void window_map_close()
 */
 static void window_map_mouseup()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068CFC1);
-	/*short widgetIndex;
-	rct_window *w;
+	//RCT2_CALLPROC_EBPSAFE(0x0068CFC1);
+	sint16 var_idx;
+	rct_window* var_w;
 
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-
-	switch (widgetIndex) {
+	window_widget_get_registers(var_w, var_idx);
+	
+	switch (var_idx)
+	{
 	case WIDX_CLOSE:
-		window_close(w);
+	{
+		window_close(var_w);
 		break;
-	}*/
+	}
+	case WIDX_SET_LAND_RIGHTS:
+	{
+		window_invalidate(var_w);
+		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+			break;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		RCT2_GLOBAL(0xF1AD61, sint8) = 2;
+		show_gridlines();
+		show_land_rights();
+		show_construction_rights();
+		break;
+	}
+	case WIDX_LAND_OWNED_CHECKBOX:
+	{
+		RCT2_GLOBAL(0xF1AD61, sint8) ^= 2;
+
+		if (RCT2_GLOBAL(0xF1AD61, sint8) & 2)
+			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF2;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_LAND_SALE_CHECKBOX:
+	{
+		RCT2_GLOBAL(0xF1AD61, sint8) ^= 8;
+
+		if (RCT2_GLOBAL(0xF1AD61, sint8) & 8)
+			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF8;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
+	{
+		RCT2_GLOBAL(0xF1AD61, sint8) ^= 1;
+
+		if (RCT2_GLOBAL(0xF1AD61, sint8) & 1)
+			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF1;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
+	{
+		RCT2_GLOBAL(0xF1AD61, sint8) ^= 4;
+
+		if (RCT2_GLOBAL(0xF1AD61, sint8) & 4)
+			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF4;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_LAND_TOOL_SMALLER:
+	{
+		--RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < 1)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_LAND_TOOL_LARGER:
+	{
+		++RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 7;
+
+		window_invalidate(var_w);
+		break;
+	}
+	case WIDX_BUILD_PARK_ENTRANCE:
+	{
+		window_invalidate(var_w);
+		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+			break;
+
+		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
+		
+		if (!(RCT2_GLOBAL(0x9DE518, sint32) & (1 << 6))) // Remove?
+			RCT2_GLOBAL(0x9DE518, sint32) |= (1 << 6);
+
+		show_gridlines();
+		show_land_rights();
+		show_construction_rights();
+		break;
+	}
+	case WIDX_ROTATE_90:
+	{
+		
+		++window_scenery_rotation;
+		window_scenery_rotation &= 3;
+		break;
+	}
+	case WIDX_PEOPLE_STARTING_POSITION:
+	{
+		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+			break;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) != -1 && RCT2_GLOBAL(0x13573F8, sint16) != -1)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+
+		show_gridlines();
+		show_land_rights();
+		show_construction_rights();
+		break;
+	}
+	default:
+	{
+		if (var_idx >= WIDX_PEOPLE_TAB && var_idx <= WIDX_RIDES_TAB)
+		{
+			var_idx -= WIDX_PEOPLE_TAB;
+			if (var_idx == var_w->selected_tab)
+				break;
+
+			var_w->selected_tab = var_idx;
+			var_w->list_information_type = 0;
+		}
+		break;
+	}
+	}
+	
+	return;
 }
 
 /**
