@@ -330,8 +330,8 @@ enum {
 	WC_TOOLTIP = 5,
 	WC_DROPDOWN = 6,
 	WC_ABOUT = 8,
-	WC_MUSIC_CREDITS = 9,
-	WC_PUBLISHER_CREDITS = 10,
+	WC_PUBLISHER_CREDITS = 9,
+	WC_MUSIC_CREDITS = 10,
 	WC_ERROR = 11,
 	WC_RIDE = 12,
 	WC_RIDE_CONSTRUCTION = 13,
@@ -464,6 +464,7 @@ void window_banner_open();
 void window_cheats_open();
 void window_research_open();
 void window_scenery_open();
+void window_music_credits_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

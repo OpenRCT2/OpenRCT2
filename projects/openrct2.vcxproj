@@ -59,6 +59,7 @@
     <ClInclude Include="..\src\window.h" />
     <ClInclude Include="..\src\window_dropdown.h" />
     <ClInclude Include="..\src\window_error.h" />
+    <ClInclude Include="..\src\window_scenery.h" />
     <ClInclude Include="..\src\window_tooltip.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\src\staff.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="..\src\window_water.c" />
     <ClCompile Include="..\src\staff.c" />
     <ClCompile Include="..\src\window_scenery.c" />
+    <ClCompile Include="..\src\window_credits.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe" />
