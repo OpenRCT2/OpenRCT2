@@ -557,8 +557,8 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	RCT2_GLOBAL(0x1420054, uint16) = x;
 	RCT2_GLOBAL(0x1420056, uint16) = y;
 
-	rct_window* temp_w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
-	if (!temp_w){
+	rct_window* cursor_w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber));
+	if (!cursor_w){
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 		return;
 	}
@@ -572,18 +572,11 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 		cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 
-		if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
+		if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32))
 			break;
-			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-			return;
-			//jmp to 0x6E9103
-		}
-		if (w->disabled_widgets & (1ULL << widgetIndex)){
+
+		if (w->disabled_widgets & (1ULL << widgetIndex))
 			break;
-			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-			return;
-			//jmp to 0x6E9103
-		}
 
 		if (RCT2_GLOBAL(0x9DE528, uint16) != 0) RCT2_GLOBAL(0x9DE528, uint16)++;
 
@@ -601,10 +594,38 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	}
 		break;
 	case 2:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
+			//6e8e04
+			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			return;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
+		RCT2_GLOBAL(0x9DE53C, uint16) = 0;
+		RCT2_GLOBAL(0x9DE536,uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+		cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+		cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+
+		if (!w)
+			break;
+
+		int mid_point_x = (widget->left + widget->right) / 2 + w->x;
+		sound_play_panned(5, mid_point_x);
+		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32))
+			break;
+		
+		if (w->disabled_widgets & (1ULL << widgetIndex))
+			break;
+
+		widget_invalidate(cursor_w_class, cursor_w_number, widgetIndex);
+		window_event_helper(w, widgetIndex, WE_MOUSE_UP);
 		return;
 	case 3:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
+			//6e8e04
+			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+			return;
+		}
 		return;
 	default:
 		return;
@@ -651,7 +672,8 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	// _dropdown_no_items
 	if (item_no >= RCT2_GLOBAL(0x009DEBA0, sint16)) return;
 
-	if (item_no < 32 && gDropdownItemsChecked & (1 << item_no))return;
+	// _dropdown_unknown?? highlighted?
+	if (item_no < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << item_no))return;
 
 	if (gDropdownItemsFormat[item_no] == 0)return;
 
