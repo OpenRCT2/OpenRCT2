@@ -593,12 +593,82 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		return;
 	}
 		break;
+	case 3:
 	case 2:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
+			cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+			cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 			//6e8e04
+			if (w) {
+				if (w->classification == WC_DROPDOWN){
+					int left = x - w->x;
+					if (left < 0); //6e8fb7;
+					if (left >= w->width); //6e8fb7;
+
+					int top = y - w->y - 2;
+					if (top < 0); //6e8fb7;
+
+					// _dropdown_item_height
+					int row_no = top / RCT2_GLOBAL(0x9DED3C, uint8);
+					// _dropdown_no_items
+					if (row_no >= RCT2_GLOBAL(0x009DEBA0, sint16)); //6e8fb7;
+
+					left -= 2;
+					if (left < 0); //6e8fb7;
+					// _dropdown_item_width
+					int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
+					// _dropdown_no_columns
+					if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)); //6e8fb7;
+					// _dropdown_no_rows
+					if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)); //6e8fb7;
+
+					// _dropdown_no_columns
+					int item_no = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
+					// _dropdown_no_items
+					if (item_no >= RCT2_GLOBAL(0x009DEBA0, sint16)); //6e8fb7;
+
+					// _dropdown_unknown?? highlighted?
+					if (item_no < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << item_no)); //6e8fb7;
+
+					if (gDropdownItemsFormat[item_no] == 0); //6e8fb7;
+				}
+				else{
+					//6e8ed3
+
+					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32));
+						//6e8fb7 ax = -1
+					if (RCT2_GLOBAL(0x9DE518, uint32) & 2){
+						if (!(RCT2_GLOBAL(0x9DE518, uint32) & 4)){
+							RCT2_GLOBAL(0x9DE518, uint32) |= (1 << 2);
+							return;
+						}
+					}
+				}
+				//6e8f1a
+				rct_window* temp_w = window_find_by_id(cursor_w_class, cursor_w_number);
+				if (!temp_w);//6e8fb7
+
+				window_close_by_id(WC_DROPDOWN, 0);
+				temp_w = window_find_by_id(cursor_w_class, cursor_w_number);
+				if (RCT2_GLOBAL(0x9DE518, uint32) & 1){
+					RCT2_GLOBAL(0x9DE518, uint32) &= 0xFFFE;
+					widget_invalidate(cursor_w_class, cursor_w_number, RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8));
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
+				RCT2_GLOBAL(0x9DE53C, uint16) = 0;
+				RCT2_GLOBAL(0x9DE536, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+				window_event_helper(w, widgetIndex, WE_DROPDOWN);
+
+				//6e8fb7
+				window_close_by_id(WC_DROPDOWN, 0);
+			}
 			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 			return;
 		}
+		if (state == 3) return;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
 		RCT2_GLOBAL(0x9DE53C, uint16) = 0;
@@ -619,13 +689,6 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 
 		widget_invalidate(cursor_w_class, cursor_w_number, widgetIndex);
 		window_event_helper(w, widgetIndex, WE_MOUSE_UP);
-		return;
-	case 3:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
-			//6e8e04
-			RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-			return;
-		}
 		return;
 	default:
 		return;
