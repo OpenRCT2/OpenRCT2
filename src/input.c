@@ -48,7 +48,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex);
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
 static void input_mouseover_widget_flatbutton_invalidate();
 void process_mouse_over(int x, int y);
-void sub_6ED801(int x, int y);
+void process_mouse_tool(int x, int y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 
@@ -1546,7 +1546,7 @@ void game_handle_input()
 				// RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
 				process_mouse_over(eax, ebx);
 				//RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
-				sub_6ED801(eax, ebx);
+				process_mouse_tool(eax, ebx);
 				//RCT2_CALLPROC_EBPSAFE(0x006ED801);
 			}
 		}
@@ -1601,15 +1601,17 @@ static void game_get_next_input(int *x, int *y, int *state)
  *
  *  rct2: 0x006ED801
  */
-void sub_6ED801(int x, int y){
-	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+void process_mouse_tool(int x, int y)
+{
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3))
+	{
 		rct_window* w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16));
-		if (w == NULL){
+
+		if (!w)
 			tool_cancel();
-		}
-		else{
+		else
 			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], x, y, 0, RCT2_GLOBAL(0x9DE546, uint16), (int)w, 0, 0);
-		}
+
 	}
 }
 

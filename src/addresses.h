@@ -421,6 +421,8 @@
 
 #define RCT2_ADDRESS_INPUT_QUEUE					0x01424340
 
+#define RCT2_ADDRESS_COMMON_FORMAT_ARGS             0x013CE952
+
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
 	#ifdef _MSC_VER

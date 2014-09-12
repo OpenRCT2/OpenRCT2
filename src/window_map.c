@@ -84,6 +84,9 @@ static void window_map_scrollmousedown();
 static void window_map_invalidate();
 static void window_map_paint();
 static void window_map_scrollpaint();
+static void window_map_tooltip();
+
+static void window_map_set_bounds(rct_window* w);
 
 static void window_map_init_map();
 static void sub_68C990();
@@ -111,7 +114,7 @@ static void* window_map_events[] = {
 	window_map_emptysub,
 	window_map_emptysub,
 	window_map_emptysub,
-	(void*)0x0068D140,
+	window_map_tooltip,
 	window_map_emptysub,
 	window_map_emptysub,
 	window_map_invalidate,
@@ -160,8 +163,10 @@ void window_map_open()
 		(1 << WIDX_ROTATE_90) |
 		(1 << WIDX_PEOPLE_STARTING_POSITION);
 	w->var_020 |= 0x300;
-
 	window_init_scroll_widgets(w);
+
+	window_map_set_bounds(w);
+
 	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 
 	window_map_init_map();
@@ -452,6 +457,15 @@ static void window_map_paint()
 	gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
 }
 
+/*
+*
+*  rct2: 0x0068D140
+*/
+static void window_map_tooltip()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 0xC55;
+}
+
 /**
 *
 *  rct2: 0x0068CF23
@@ -547,4 +561,17 @@ static void sub_68C990()
 	w_map->scrolls[0].h_left = cx;
 	w_map->scrolls[0].v_top = dx;
 	widget_scroll_update_thumbs(w, WIDX_MAP);
+}
+
+/**
+* ref. by: window_map_scrollmousedown
+*  rct2: 0x0068D7DC
+*/
+void window_map_set_bounds(rct_window* w)
+{
+	w->flags |= WF_RESIZABLE; // (1 << 8)
+	w->min_width = 245;
+	w->max_width = 800;
+	w->min_height = 259;
+	w->max_height = 560;
 }
