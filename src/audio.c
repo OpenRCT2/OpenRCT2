@@ -447,7 +447,7 @@ int sub_4015E7(int channel)
 	int zero = 0;
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
-	int result = dsbuffer->lpVtbl->Lock(dsbuffer, 0, sound_channel->var_150, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0);
+	int result = dsbuffer->lpVtbl->Lock(dsbuffer, 0, sound_channel->bufsize, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0);
 	if (SUCCEEDED(result)) {
 		if (buf1size) {
 			mmio_read(sound_channel->hmmio, buf1size, buf1, &sound_channel->mmckinfo1, &read);
@@ -499,11 +499,11 @@ int sound_channel_load_file(int channel, char* filename, int offset)
 		sound_channel_free(&sound_channel->hmmio, &sound_channel->hmem);
 		return -103;
 	}
-	sound_channel->var_150 = 120 * *((uint32*)sound_channel->hmem + 2) / 100;
+	sound_channel->bufsize = 120 * *((uint32*)sound_channel->hmem + 2) / 100;
 	DSBUFFERDESC bufferdesc;
 	memset(&bufferdesc, 0, sizeof(bufferdesc));
 	bufferdesc.dwFlags = RCT2_GLOBAL(0x009E1AA8, uint32) | DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY;
-	bufferdesc.dwBufferBytes = sound_channel->var_150;
+	bufferdesc.dwBufferBytes = sound_channel->bufsize;
 	bufferdesc.lpwfxFormat = sound_channel->hmem;
 	bufferdesc.dwSize = sizeof(bufferdesc);
 	int ret = RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel], 0);
@@ -698,10 +698,10 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 		if (dwCurrentPlayCursor >= sound_channel->playpos) {
 			var1 = dwCurrentPlayCursor - sound_channel->playpos;
 		} else {
-			var1 = dwCurrentPlayCursor + sound_channel->var_150 - sound_channel->playpos;
+			var1 = dwCurrentPlayCursor + sound_channel->bufsize - sound_channel->playpos;
 		}
 		if (bufferlost) {
-			var2 = 2 * sound_channel->var_150 / 6;
+			var2 = 2 * sound_channel->bufsize / 6;
 		} else {
 			var2 = var1;
 		}
@@ -726,8 +726,8 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 					}
 					sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
 					sound_channel->playpos += var2;
-					if (sound_channel->playpos >= sound_channel->var_150) {
-						sound_channel->playpos = sound_channel->playpos - sound_channel->var_150;
+					if (sound_channel->playpos >= sound_channel->bufsize) {
+						sound_channel->playpos = sound_channel->playpos - sound_channel->bufsize;
 					}
 					return;
 				}
@@ -768,7 +768,7 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 				if (dwCurrentPlayCursor <= sound_channel->playpos) {
 					sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
 				} else {
-					sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
+					sound_channel->var_15C = sound_channel->playpos + sound_channel->bufsize - dwCurrentPlayCursor;
 				}
 				goto label49;
 			}
@@ -795,8 +795,8 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 		label68:
 			sound_channel->dsbuffer->lpVtbl->Unlock(sound_channel->dsbuffer, buf1, buf1size, buf2, buf2size);
 			sound_channel->playpos += var2;
-			if (sound_channel->playpos >= sound_channel->var_150) {
-				sound_channel->playpos -= sound_channel->var_150;
+			if (sound_channel->playpos >= sound_channel->bufsize) {
+				sound_channel->playpos -= sound_channel->bufsize;
 			}
 			if (bufferlost != 0) {
 				sound_channel->dsbuffer->lpVtbl->Play(sound_channel->dsbuffer, 0, 0, DSBPLAY_LOOPING);
@@ -830,7 +830,7 @@ void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, D
 		if (dwCurrentPlayCursor <= sound_channel->playpos) {
 			sound_channel->var_15C = sound_channel->playpos - dwCurrentPlayCursor;
 		} else {
-			sound_channel->var_15C = sound_channel->playpos + sound_channel->var_150 - dwCurrentPlayCursor;
+			sound_channel->var_15C = sound_channel->playpos + sound_channel->bufsize - dwCurrentPlayCursor;
 		}
 		goto label68;
 	}

@@ -349,3 +349,33 @@ static void window_dropdown_paint()
 		}
 	}
 }
+
+/* New function based on 6e914e 
+ * returns -1 if index is invalid
+ */
+int dropdown_index_from_point(int x, int y, rct_window* w){
+	int top = y - w->y - 2;
+	if (top < 0) return -1;
+
+	int left = x - w->x;
+	if (left >= w->width) return -1;
+	left -= 2;
+	if (left < 0) return -1;
+
+	// _dropdown_item_width
+	int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
+	// _dropdown_no_columns
+	if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)) return -1;	
+	
+	// _dropdown_item_height
+	int row_no = top / RCT2_GLOBAL(0x9DED3C, uint8);
+	// _dropdown_no_rows
+	if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)) return -1;
+
+	// _dropdown_no_columns
+	int dropdown_index = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
+	// _dropdown_no_items
+	if (dropdown_index >= RCT2_GLOBAL(0x009DEBA0, sint16)) return -1;
+
+	return dropdown_index;
+}
