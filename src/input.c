@@ -598,47 +598,21 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
 			cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 			cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
-			//6e8e04
 			if (w) {
 				int dropdown_index = 0;
 
 				if (w->classification == WC_DROPDOWN){
-					int left = x - w->x;
-					if (left < 0); //6e8fb7;
-					if (left >= w->width); //6e8fb7;
-
-					int top = y - w->y - 2;
-					if (top < 0); //6e8fb7;
-
-					// _dropdown_item_height
-					int row_no = top / RCT2_GLOBAL(0x9DED3C, uint8);
-					// _dropdown_no_items
-					if (row_no >= RCT2_GLOBAL(0x009DEBA0, sint16)); //6e8fb7;
-
-					left -= 2;
-					if (left < 0); //6e8fb7;
-					// _dropdown_item_width
-					int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
-					// _dropdown_no_columns
-					if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)); //6e8fb7;
-					// _dropdown_no_rows
-					if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)); //6e8fb7;
-
-					// _dropdown_no_columns
-					dropdown_index = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
-					// _dropdown_no_items
-					if (dropdown_index >= RCT2_GLOBAL(0x009DEBA0, sint16)); //6e8fb7;
+					dropdown_index = dropdown_index_from_point(x, y, w);
+					if (dropdown_index == -1)goto dropdown_cleanup;
 
 					// _dropdown_unknown?? highlighted?
-					if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index)); //6e8fb7;
+					if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))goto dropdown_cleanup;
 
-					if (gDropdownItemsFormat[dropdown_index] == 0); //6e8fb7;
+					if (gDropdownItemsFormat[dropdown_index] == 0)goto dropdown_cleanup;
 				}
 				else{
-					//6e8ed3
-
-					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32));
-						//6e8fb7 
+					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32))
+						goto dropdown_cleanup;
 					dropdown_index = -1;
 					if (RCT2_GLOBAL(0x9DE518, uint32) & 2){
 						if (!(RCT2_GLOBAL(0x9DE518, uint32) & 4)){
@@ -647,9 +621,8 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 						}
 					}
 				}
-				//6e8f1a
 				rct_window* temp_w = window_find_by_id(cursor_w_class, cursor_w_number);
-				if (!temp_w);//6e8fb7
+				if (!temp_w) goto dropdown_cleanup;
 
 				window_close_by_id(WC_DROPDOWN, 0);
 				temp_w = window_find_by_id(cursor_w_class, cursor_w_number);
@@ -659,20 +632,20 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 				}
 
 				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
-				RCT2_GLOBAL(0x9DE53C, uint16) = 0;
-				RCT2_GLOBAL(0x9DE536, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 				RCT2_CALLPROC_X(temp_w->event_handlers[WE_DROPDOWN], dropdown_index, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint8), (int)w, 0, 0);
 			}
-			//6e8fb7
+		dropdown_cleanup:
 			window_close_by_id(WC_DROPDOWN, 0);
 		}
 		if (state == 3) return;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
-		RCT2_GLOBAL(0x9DE53C, uint16) = 0;
-		RCT2_GLOBAL(0x9DE536,uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
 		cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
 		cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 
@@ -694,7 +667,6 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		return;
 	}
 
-	//6e9103
 	RCT2_GLOBAL(0x9DE528, uint16) = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) != 5){
 		// Hold down widget and drag outside of area??
@@ -709,39 +681,17 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 
 	if (w->classification != WC_DROPDOWN) return;
 
-	int left = x - w->x;
-	if (left < 0) return;
-	if (left >= w->width) return;
-
-	int top = y - w->y - 2;
-	if (top < 0) return;
-
-	// _dropdown_item_height
-	int row_no = top / RCT2_GLOBAL(0x9DED3C,uint8);
-	// _dropdown_no_items
-	if (row_no >= RCT2_GLOBAL(0x009DEBA0, sint16)) return;
-
-	left -= 2;
-	if (left < 0) return;
-	// _dropdown_item_width
-	int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
-	// _dropdown_no_columns
-	if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)) return;
-	// _dropdown_no_rows
-	if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)) return;
-
-	// _dropdown_no_columns
-	int item_no = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
-	// _dropdown_no_items
-	if (item_no >= RCT2_GLOBAL(0x009DEBA0, sint16)) return;
+	int dropdown_index = dropdown_index_from_point(x, y, w);
+	
+	if (dropdown_index == -1) return;
 
 	// _dropdown_unknown?? highlighted?
-	if (item_no < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << item_no))return;
+	if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))return;
 
-	if (gDropdownItemsFormat[item_no] == 0)return;
+	if (gDropdownItemsFormat[dropdown_index] == 0)return;
 
 	// _dropdown_highlighted_index
-	RCT2_GLOBAL(0x009DEBA2, sint16) = item_no;
+	RCT2_GLOBAL(0x009DEBA2, sint16) = dropdown_index;
 	window_invalidate_by_id(WC_DROPDOWN, 0);
 }
 
