@@ -33,7 +33,7 @@ struct AudioFormat {
 	int BytesPerSample() const { return (SDL_AUDIO_BITSIZE(format)) / 8; };
 	int freq;
 	SDL_AudioFormat format;
-	Uint8 channels;
+	int channels;
 };
 
 class Sample
@@ -41,19 +41,19 @@ class Sample
 public:
 	Sample();
 	~Sample();
-	bool Load(char* filename);
-	bool LoadCSS1(char* filename, unsigned int offset);
+	bool Load(const char* filename);
+	bool LoadCSS1(const char* filename, unsigned int offset);
 	void Unload();
 	bool Convert(AudioFormat format);
-	const Uint8* Data();
-	int Length();
+	const uint8* Data();
+	unsigned long Length();
 
 	friend class Stream;
 
 private:
 	AudioFormat format;
-	Uint8* data;
-	Uint32 length;
+	uint8* data;
+	unsigned long length;
 	bool issdlwav;
 };
 
@@ -61,8 +61,8 @@ class Stream
 {
 public:
 	Stream();
-	int GetSome(int offset, const Uint8** data, int length);
-	int Length();
+	unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
+	unsigned long Length();
 	void SetSource_Sample(Sample& sample);
 	const AudioFormat* Format();
 
@@ -84,14 +84,17 @@ public:
 	void Play(Stream& stream, int loop);
 	void SetRate(double rate);
 	void SetVolume(int volume);
+	void SetPan(float pan);
 
 	friend class Mixer;
 
 private:
 	int loop;
-	int offset;
+	unsigned long offset;
 	double rate;
 	int volume;
+	float volume_l, volume_r;
+	float pan;
 	SpeexResamplerState* resampler;
 	Stream* stream;
 };
@@ -99,16 +102,19 @@ private:
 class Mixer
 {
 public:
-	void Init(char* device);
+	void Init(const char* device);
 	void Close();
 
 private:
-	static void SDLCALL Callback(void* arg, Uint8* data, int length);
-	void MixChannel(Channel& channel, Uint8* buffer, int length);
+	static void SDLCALL Callback(void* arg, uint8* data, int length);
+	void MixChannel(Channel& channel, uint8* buffer, int length);
+	void EffectPanS16(Channel& channel, sint16* data, int length);
+	void EffectPanU8(Channel& channel, uint8* data, int length);
 	bool MustConvert(Stream& stream);
-	bool Convert(SDL_AudioCVT& cvt, const Uint8* data, int length, Uint8** dataout);
+	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
 	SDL_AudioDeviceID deviceid;
 	AudioFormat format;
+	uint8* effectbuffer;
 	Sample css1samples[63];
 	Stream css1streams[63];
 	Channel channels[10];
@@ -118,7 +124,7 @@ extern "C"
 {
 #endif
 
-void Mixer_Init(char* device);
+void Mixer_Init(const char* device);
 
 #ifdef __cplusplus
 }

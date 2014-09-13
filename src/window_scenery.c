@@ -777,7 +777,7 @@ void window_scenery_scrollmousedown() {
 	RCT2_ADDRESS(0x00F64EDD, sint16)[tabIndex] = sceneryId;
 
 	RCT2_GLOBAL(0x00F64F19, uint8) &= 0xFE;
-	sound_play_panned(4, (w->width >> 1) + w->x);
+	sound_play_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
 	w->scenery.hover_counter = -16;
 	RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
 	window_invalidate(w);

@@ -108,12 +108,10 @@ typedef struct {
 
 typedef struct {
 	uint16 id;
-	uint8 var_2;
-	uint8 var_3;
-	uint8 var_4;
-	uint16 var_5;
-	uint8 var_7;
-	uint16 var_8;
+	sint16 var_2;
+	sint16 var_4;
+	uint16 frequency; // 0x6
+	sint16 var_8;
 	uint16 next; // 0xA
 } rct_sound_unknown;
 
@@ -131,7 +129,7 @@ void audio_close();
 LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
 int unmap_sound_info();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
-int sound_play_panned(int sound_id, int x);
+int sound_play_panned(int sound_id, int ebx, uint16 x, uint16 y, uint16 z);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
 int sound_is_playing(rct_sound* sound);
 int sound_set_frequency(rct_sound* sound, int frequency);
@@ -229,7 +227,8 @@ typedef enum {
 	SOUND_TRAM = 59,
 	SOUND_DOOR_OPEN = 60,
 	SOUND_DOOR_CLOSE = 61,
-	SOUND_62 = 62
+	SOUND_62 = 62,
+	SOUND_MAXID
 } RCT2_SOUND;
 
 #endif

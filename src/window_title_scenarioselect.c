@@ -243,7 +243,7 @@ static void window_scenarioselect_scrollmousedown()
 		if (y >= 0)
 			continue;
 
-		sound_play_panned(SOUND_CLICK_1, w->width / 2 + w->x);
+		sound_play_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
 		scenario_load_and_play(scenario);
 		break;
 	}

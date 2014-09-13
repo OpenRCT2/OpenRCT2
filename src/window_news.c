@@ -150,7 +150,7 @@ static void window_news_update(rct_window *w)
 		return;
 
 	window_invalidate(w);
-	sound_play_panned(SOUND_CLICK_2, w->x + (w->width / 2));
+	sound_play_panned(SOUND_CLICK_2, w->x + (w->width / 2), 0, 0, 0);
 
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 	j = w->news.var_480;
@@ -255,7 +255,7 @@ static void window_news_scrollmousedown()
 		w->news.var_482 = buttonIndex;
 		w->news.var_484 = 4;
 		window_invalidate(w);
-		sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2));
+		sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	}
 }
 
