@@ -351,7 +351,7 @@ typedef struct {
 	uint8 pad_41[0x2];
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 var_45;
+	uint8 var_45;					//		Some sort of flags?
 	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58

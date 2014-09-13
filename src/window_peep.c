@@ -221,7 +221,8 @@ void window_peep_mouse_up();
 void window_peep_unknown_05();
 
 void window_peep_stats_resize();
-
+void window_peep_stats_update();
+void window_peep_stats_invalidate();
 
 static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
@@ -230,7 +231,7 @@ static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_unknown_05,
-	(void*) 0x0069746A,
+	window_peep_stats_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -249,7 +250,7 @@ static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x0069707D, //invalidate
+	window_peep_stats_invalidate, //invalidate
 	(void*) 0x0069711D, //paint
 	window_peep_emptysub
 };
@@ -1300,4 +1301,46 @@ void window_peep_unknown_05(){
 	window_get_register(w);
 
 	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
+}
+
+/* rct2: 0x69746A */
+void window_peep_stats_update(){
+	rct_window* w;
+	window_get_register(w);
+
+	w->frame_no++;
+	rct_peep* peep = GET_PEEP(w->number);
+	peep->var_45 &= ~(1<<1);
+
+	window_invalidate(w);
+}
+
+/* rct2: 0x69707D */
+void window_peep_stats_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (w->widgets != window_peep_page_widgets[w->page]) {
+		w->widgets = window_peep_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	window_peep_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_stats_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+	window_peep_stats_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_stats_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_peep_stats_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_stats_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
