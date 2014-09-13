@@ -330,8 +330,8 @@ enum {
 	WC_TOOLTIP = 5,
 	WC_DROPDOWN = 6,
 	WC_ABOUT = 8,
-	WC_MUSIC_CREDITS = 9,
-	WC_PUBLISHER_CREDITS = 10,
+	WC_PUBLISHER_CREDITS = 9,
+	WC_MUSIC_CREDITS = 10,
 	WC_ERROR = 11,
 	WC_RIDE = 12,
 	WC_RIDE_CONSTRUCTION = 13,
@@ -464,6 +464,7 @@ void window_banner_open();
 void window_cheats_open();
 void window_research_open();
 void window_scenery_open();
+void window_music_credits_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
@@ -507,31 +508,31 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm mov dpi, edi
 #else
 	#define window_get_register(w)														\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_widget_get_registers(w, widgetIndex)									\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
-		__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#dropdownIndex"], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_scrollmouse_get_registers(w, x, y)									\
-		__asm__ ( "mov %[x], cx " : [x] "+m" (x) );										\
-		__asm__ ( "mov %[y], dx " : [y] "+m" (y) );										\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );										\
+		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_tool_get_registers(w, widgetIndex, x, y)								\
-		__asm__ ( "mov %[x], ax " : [x] "+m" (x) );										\
-		__asm__ ( "mov %[y], bx " : [y] "+m" (y) );										\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#x"], ax " : [x] "+m" (x) );										\
+		__asm__ ( "mov %["#y"], bx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_paint_get_registers(w, dpi)											\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
+		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
 #endif
 
 #endif

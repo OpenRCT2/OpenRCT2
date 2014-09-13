@@ -165,6 +165,9 @@
     <ClInclude Include="..\src\mixer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\window_scenery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -389,8 +392,8 @@
     <ClCompile Include="..\src\window_ride.c">
       <Filter>Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mixer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\window_credits.c">
+      <Filter>Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\libspeex\resample.c">
       <Filter>Source Files</Filter>

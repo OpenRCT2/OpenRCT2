@@ -71,7 +71,7 @@ typedef struct {
 	MMCKINFO mmckinfo1;				// 0x124
 	MMCKINFO mmckinfo2;				// 0x138
 	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
-	uint32 var_150;
+	uint32 bufsize;
 	uint32 playpos;					// 0x154
 	uint32 var_158;
 	uint32 var_15C;

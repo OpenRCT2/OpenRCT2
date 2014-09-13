@@ -658,7 +658,8 @@ void window_invalidate(rct_window *window)
 /**
  * 
  *  rct2: 0x006EC3AC
- *
+ * See also widget_invalidate that will probably be used
+ * when cls is > 0x7F.
  * @param cls (ax)
  * @param number (bx)
  */

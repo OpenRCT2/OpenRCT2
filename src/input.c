@@ -33,6 +33,7 @@
 #include "widget.h"
 #include "window.h"
 #include "window_tooltip.h"
+#include "window_dropdown.h"
 
 POINT _dragPosition;
 
@@ -48,7 +49,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex);
 static void input_mouseover_widget_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
 static void input_mouseover_widget_flatbutton_invalidate();
 void process_mouse_over(int x, int y);
-void sub_6ED801(int x, int y);
+void process_mouse_tool(int x, int y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 
@@ -549,6 +550,145 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	}
 }
 
+/* rct2: 0x6E8DA7 */
+void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget ){
+	//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+	//return;
+	RCT2_GLOBAL(0x1420054, uint16) = x;
+	RCT2_GLOBAL(0x1420056, uint16) = y;
+
+	rct_windowclass cursor_w_class;
+	rct_windownumber cursor_w_number;
+	cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
+	cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
+	int cursor_widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+
+	rct_window* cursor_w = window_find_by_id(cursor_w_class, cursor_w_number);
+	if (!cursor_w){
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
+		return;
+	}
+
+
+
+	switch (state){
+	case 0:
+		if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
+			break;
+
+		if (w->disabled_widgets & (1ULL << widgetIndex))
+			break;
+
+		if (RCT2_GLOBAL(0x9DE528, uint16) != 0) RCT2_GLOBAL(0x9DE528, uint16)++;
+
+		if (w->var_020 & (1ULL << widgetIndex) &&
+			RCT2_GLOBAL(0x9DE528, uint16) >= 0x10 &&
+			(!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3))){
+			RCT2_CALLPROC_WE_MOUSE_DOWN(w->event_handlers[WE_MOUSE_DOWN], widgetIndex, w, widget);
+		}
+
+		if (RCT2_GLOBAL(0x9DE518, uint32) & 1) return;
+
+		RCT2_GLOBAL(0x9DE518, uint32) |= 1;
+		widget_invalidate(cursor_w_class, cursor_w_number, widgetIndex);
+		return;
+	case 3:
+	case 2:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
+			if (w) {
+				int dropdown_index = 0;
+
+				if (w->classification == WC_DROPDOWN){
+					dropdown_index = dropdown_index_from_point(x, y, w);
+					if (dropdown_index == -1)goto dropdown_cleanup;
+
+					// _dropdown_unknown?? highlighted?
+					if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))goto dropdown_cleanup;
+
+					// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
+					if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)goto dropdown_cleanup;
+				}
+				else{
+					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
+						goto dropdown_cleanup;
+					dropdown_index = -1;
+					if (RCT2_GLOBAL(0x9DE518, uint32) & 2){
+						if (!(RCT2_GLOBAL(0x9DE518, uint32) & 4)){
+							RCT2_GLOBAL(0x9DE518, uint32) |= (1 << 2);
+							return;
+						}
+					}
+				}
+
+				window_close_by_id(WC_DROPDOWN, 0);
+				cursor_w = window_find_by_id(cursor_w_class, cursor_w_number);
+				if (RCT2_GLOBAL(0x9DE518, uint32) & 1){
+					RCT2_GLOBAL(0x9DE518, uint32) &= 0xFFFE;
+					widget_invalidate(cursor_w_class, cursor_w_number, cursor_widgetIndex);
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = cursor_widgetIndex;
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = cursor_w_class;
+				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = cursor_w_number;
+				RCT2_CALLPROC_X(cursor_w->event_handlers[WE_DROPDOWN], dropdown_index, 0, 0, cursor_widgetIndex, (int)cursor_w, 0, 0);
+			}
+		dropdown_cleanup:
+			window_close_by_id(WC_DROPDOWN, 0);
+		}
+		if (state == 3) return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = cursor_widgetIndex;
+
+		if (!w)
+			break;
+
+		int mid_point_x = (widget->left + widget->right) / 2 + w->x;
+		sound_play_panned(5, mid_point_x, 0, 0, 0);
+		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
+			break;
+		
+		if (w->disabled_widgets & (1ULL << widgetIndex))
+			break;
+
+		widget_invalidate(cursor_w_class, cursor_w_number, widgetIndex);
+		window_event_helper(w, widgetIndex, WE_MOUSE_UP);
+	default:
+		return;
+	}
+
+	RCT2_GLOBAL(0x9DE528, uint16) = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) != 5){
+		// Hold down widget and drag outside of area??
+		if (RCT2_GLOBAL(0x9DE518, uint32) & 1){
+			RCT2_GLOBAL(0x9DE518, uint32) &= 0xFFFE;
+			widget_invalidate(cursor_w_class, cursor_w_number, cursor_widgetIndex);
+		}
+		return;
+	}
+
+	if (!w) return;
+
+	if (w->classification == WC_DROPDOWN){
+		int dropdown_index = dropdown_index_from_point(x, y, w);
+
+		if (dropdown_index == -1) return;
+
+		// _dropdown_unknown?? highlighted?
+		if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))return;
+
+		// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
+		if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)return;
+
+		// _dropdown_highlighted_index
+		RCT2_GLOBAL(0x009DEBA2, sint16) = dropdown_index;
+		window_invalidate_by_id(WC_DROPDOWN, 0);
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E8655
@@ -612,7 +752,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 		break;
 	case INPUT_STATE_WIDGET_PRESSED:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
+		//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_DRAGGING:
 		// RCT2_CALLPROC_X(0x006E8C5C, x, y, state, widgetIndex, w, widget, 0);
@@ -728,7 +869,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	}
 	case INPUT_STATE_DROPDOWN_ACTIVE:
-		RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
+		//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
 		//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
@@ -756,7 +898,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		}
 		else if (state == 2){
 			
-			RCT2_GLOBAL(0x9DE51D, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
 			if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 3))){
 				w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber));
@@ -1546,7 +1688,7 @@ void game_handle_input()
 				// RCT2_CALLPROC_X(0x006E8655, eax, ebx, 0, 0, 0, 0, 0); // window_process_mouse_input
 				process_mouse_over(eax, ebx);
 				//RCT2_CALLPROC_X(0x006ED833, eax, ebx, 0, 0, 0, 0, 0);
-				sub_6ED801(eax, ebx);
+				process_mouse_tool(eax, ebx);
 				//RCT2_CALLPROC_EBPSAFE(0x006ED801);
 			}
 		}
@@ -1601,15 +1743,17 @@ static void game_get_next_input(int *x, int *y, int *state)
  *
  *  rct2: 0x006ED801
  */
-void sub_6ED801(int x, int y){
-	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+void process_mouse_tool(int x, int y)
+{
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3))
+	{
 		rct_window* w = window_find_by_id(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8), RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16));
-		if (w == NULL){
+
+		if (!w)
 			tool_cancel();
-		}
-		else{
+		else
 			RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], x, y, 0, RCT2_GLOBAL(0x9DE546, uint16), (int)w, 0, 0);
-		}
+
 	}
 }
 

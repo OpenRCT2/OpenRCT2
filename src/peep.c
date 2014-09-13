@@ -65,7 +65,7 @@ void peep_update_all()
 			peep_update(peep);
 		} else {
 			RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, i, (int)peep, 0, 0);
-			if (peep->var_08 == 4)
+			if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
 				peep_update(peep);
 		}
 
