@@ -217,9 +217,11 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub
 };
 
+void window_peep_not_overview_mouse_up();
+
 static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
-	(void*) 0x0069744F, //mouse_up
+	window_peep_not_overview_mouse_up, //mouse_up
 	(void*) 0x00697488, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -250,7 +252,7 @@ static void* window_peep_stats_events[] = {
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
-	(void*) 0x00697795, //mouse_up
+	window_peep_not_overview_mouse_up, //mouse_up
 	(void*) 0x006978F4, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -281,7 +283,7 @@ static void* window_peep_rides_events[] = {
 
 static void* window_peep_finance_events[] = {
 	window_peep_emptysub,
-	(void*) 0x00697BDD, //mouse_up
+	window_peep_not_overview_mouse_up, //mouse_up
 	(void*) 0x00697C16, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -312,7 +314,7 @@ static void* window_peep_finance_events[] = {
 
 static void* window_peep_thoughts_events[] = {
 	window_peep_emptysub,
-	(void*) 0x00697E18, //mouse_up
+	window_peep_not_overview_mouse_up, //mouse_up
 	(void*) 0x00697E33, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -343,7 +345,7 @@ static void* window_peep_thoughts_events[] = {
 
 static void* window_peep_inventory_events[] = {
 	window_peep_emptysub,
-	(void*) 0x00698279, //mouse_up
+	window_peep_not_overview_mouse_up, //mouse_up
 	(void*) 0x00698294, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -608,6 +610,7 @@ void window_peep_overview_mouse_up(){
 	}
 }
 
+/* rct2: 0x696AA0 */
 void window_peep_set_page(rct_window* w, int page){
 	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
 	{
@@ -1252,4 +1255,27 @@ void window_peep_overview_tool_abort(){
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+}
+
+/* rct2:0x69744F, 0x697795, 0x697BDD, 0x697E18, 0x698279
+ * This is a combination of 5 functions that were identical
+ */
+void window_peep_not_overview_mouse_up(){
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex){
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	}
 }
