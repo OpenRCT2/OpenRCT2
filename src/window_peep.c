@@ -223,6 +223,7 @@ void window_peep_unknown_05();
 void window_peep_stats_resize();
 void window_peep_stats_update();
 void window_peep_stats_invalidate();
+void window_peep_stats_paint();
 
 static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
@@ -251,7 +252,7 @@ static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_stats_invalidate, //invalidate
-	(void*) 0x0069711D, //paint
+	window_peep_stats_paint, //paint
 	window_peep_emptysub
 };
 
@@ -1343,4 +1344,39 @@ void window_peep_stats_invalidate(){
 	window_peep_stats_widgets[WIDX_CLOSE].right = w->width - 3;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
+}
+
+/* rct2: 0x0069711D */
+void window_peep_stats_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_peep_overview_tab_paint(w, dpi);
+	window_peep_stats_tab_paint(w, dpi);
+	window_peep_rides_tab_paint(w, dpi);
+	window_peep_finance_tab_paint(w, dpi);
+	window_peep_thoughts_tab_paint(w, dpi);
+	window_peep_inventory_tab_paint(w, dpi);
+
+	//ebx
+	rct_peep* peep = GET_PEEP(w->number);
+
+	// Not sure why this is not stats widgets
+	//cx
+	int x = w->x + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	//dx
+	int y = w->y + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+	gfx_draw_string_left(dpi, 1662, (void*)0x13CE952, 0, x, y);
+
+	int happiness = peep->happiness;
+	if (happiness < 10)happiness = 10;
+	int ebp = 14;
+	if (happiness < 50){
+		ebp |= 0x80000000;
+	}
+	RCT2_CALLPROC_X(0x6974FC, happiness, (int)peep, x, y, (int)w, (int)dpi, ebp);
 }
