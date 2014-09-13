@@ -217,15 +217,19 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub
 };
 
-void window_peep_not_overview_mouse_up();
+void window_peep_mouse_up();
+void window_peep_unknown_05();
+
+void window_peep_stats_resize();
+
 
 static void* window_peep_stats_events[] = {
 	window_peep_emptysub,
-	window_peep_not_overview_mouse_up, //mouse_up
-	(void*) 0x00697488, //resize
+	window_peep_mouse_up, //mouse_up
+	window_peep_stats_resize, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x006974ED,
+	window_peep_unknown_05,
 	(void*) 0x0069746A,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -252,11 +256,11 @@ static void* window_peep_stats_events[] = {
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
-	window_peep_not_overview_mouse_up, //mouse_up
+	window_peep_mouse_up, //mouse_up
 	(void*) 0x006978F4, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697959,
+	window_peep_unknown_05,
 	(void*) 0x006977B0,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -283,11 +287,11 @@ static void* window_peep_rides_events[] = {
 
 static void* window_peep_finance_events[] = {
 	window_peep_emptysub,
-	window_peep_not_overview_mouse_up, //mouse_up
+	window_peep_mouse_up, //mouse_up
 	(void*) 0x00697C16, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697C7B,
+	window_peep_unknown_05,
 	(void*) 0x00697BF8,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -314,11 +318,11 @@ static void* window_peep_finance_events[] = {
 
 static void* window_peep_thoughts_events[] = {
 	window_peep_emptysub,
-	window_peep_not_overview_mouse_up, //mouse_up
+	window_peep_mouse_up, //mouse_up
 	(void*) 0x00697E33, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697ED2,
+	window_peep_unknown_05,
 	(void*) 0x00697EB4,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -345,11 +349,11 @@ static void* window_peep_thoughts_events[] = {
 
 static void* window_peep_inventory_events[] = {
 	window_peep_emptysub,
-	window_peep_not_overview_mouse_up, //mouse_up
+	window_peep_mouse_up, //mouse_up
 	(void*) 0x00698294, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00698333,
+	window_peep_unknown_05,
 	(void*) 0x00698315,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -1260,7 +1264,7 @@ void window_peep_overview_tool_abort(){
 /* rct2:0x69744F, 0x697795, 0x697BDD, 0x697E18, 0x698279
  * This is a combination of 5 functions that were identical
  */
-void window_peep_not_overview_mouse_up(){
+void window_peep_mouse_up(){
 	short widgetIndex;
 	rct_window* w;
 	window_widget_get_registers(w, widgetIndex);
@@ -1278,4 +1282,22 @@ void window_peep_not_overview_mouse_up(){
 		window_peep_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	}
+}
+
+/* rct2: 0x697488 */
+void window_peep_stats_resize(){
+	rct_window* w;
+	window_get_register(w);
+
+	window_set_resize(w, 192, 162, 192, 162);
+}
+
+/* rct2: 0x6974ED, 0x00697959, 0x00697C7B, 0x00697ED2, 0x00698333 
+ * This is a combination of 5 functions that were identical
+ */
+void window_peep_unknown_05(){
+	rct_window* w;
+	window_get_register(w);
+
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
 }

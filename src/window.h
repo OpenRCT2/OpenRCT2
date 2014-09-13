@@ -234,7 +234,12 @@ typedef enum {
 	WE_RESIZE = 2,
 	WE_MOUSE_DOWN = 3,
 	WE_DROPDOWN = 4,
-	WE_UNKNOWN_05 = 5,
+	WE_UNKNOWN_05 = 5, 
+	// Unknown 05: Used to update tabs that are not being animated
+	// see window_peep. When the overview tab is not highlighted the
+	// items being carried such as hats/balloons still need to be shown
+	// and removed. Probably called after anything that affects items
+	// being carried.
 	WE_UPDATE = 6,
 	WE_UNKNOWN_07 = 7,
 	WE_UNKNOWN_08 = 8,
