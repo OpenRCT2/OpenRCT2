@@ -184,6 +184,7 @@ void window_peep_overview_update(rct_window* w);
 void window_peep_overview_text_input();
 void window_peep_overview_tool_update();
 void window_peep_overview_tool_down();
+void window_peep_overview_tool_abort();
 
 static void* window_peep_overview_events[] = {
 	window_peep_overview_close,
@@ -199,7 +200,7 @@ static void* window_peep_overview_events[] = {
 	window_peep_overview_tool_down,//tool_down
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696A49,//tool_abort
+	window_peep_overview_tool_abort,//tool_abort
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -584,7 +585,7 @@ void window_peep_overview_mouse_up(){
 			return;
 		}
 		
-		w->var_48C = peep->sprite_identifier;
+		w->var_48C = peep->x;
 
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -1222,4 +1223,33 @@ void window_peep_overview_tool_down(){
 	RCT2_CALLPROC_X(0x00693B58, 0, 0, 0, 0, (int)peep, 0, 0);
 	tool_cancel();
 	RCT2_GLOBAL(0x9DE550, sint32) = -1;
+}
+
+/* rct2: 0x696A49 */
+void window_peep_overview_tool_abort(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	if (widgetIndex != WIDX_PICKUP) return;
+
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep->state != PEEP_STATE_PICKED) return;
+
+	RCT2_CALLPROC_X(0x0069E9D3, w->var_48C, 0, peep->y, peep->z + 8, (int)peep, 0, 0);
+	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+	if (peep->x != 0x8000){
+		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 0;
+		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->var_71 = 0xFF;
+		peep->var_6D = 0;
+		peep->var_70 = 0;
+		peep->var_6E = 0;
+		peep->var_C4 = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 }
