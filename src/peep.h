@@ -342,7 +342,7 @@ typedef struct {
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	uint8 happiness_growth_rate;	// 0x3B
+	sint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
 	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E

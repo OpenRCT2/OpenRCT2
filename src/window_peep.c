@@ -32,6 +32,7 @@
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
+#include "window_error.h"
 
 enum WINDOW_PEEP_PAGE {
 	WINDOW_PEEP_OVERVIEW,
@@ -182,6 +183,7 @@ void window_peep_overview_viewport_init_wrapper();
 void window_peep_overview_update(rct_window* w);
 void window_peep_overview_text_input();
 void window_peep_overview_tool_update();
+void window_peep_overview_tool_down();
 
 static void* window_peep_overview_events[] = {
 	window_peep_overview_close,
@@ -194,7 +196,7 @@ static void* window_peep_overview_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_overview_tool_update,//tool_update
-	(void*)0x696A54,//tool_down
+	window_peep_overview_tool_down,//tool_down
 	window_peep_emptysub,
 	window_peep_emptysub,
 	(void*)0x696A49,//tool_abort
@@ -1138,4 +1140,86 @@ void window_peep_overview_tool_update(){
 
 	ebx |= ebp | ecx | 0xA0000000;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
+}
+
+/* rct2: 0x664F72 */
+int sub_664F72(int x, int y, int edx){
+	if (x > 0x1FFF || y > 0x1FFF){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+		return 1;
+	}
+
+	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
+	if (map_element->properties.surface.ownership & 0x20) return 0;
+	if (!(map_element->properties.surface.ownership & 0x10)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+		return 1;
+	}
+
+	edx >>= 3;
+	if ((edx & 0xFF) < map_element->base_height)return 0;
+	edx = (edx & 0xFF) - 2;
+	if (edx > map_element->base_height)return 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+	return 1;
+}
+
+/* rct2: 0x696A54 */
+void window_peep_overview_tool_down(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex != WIDX_PICKUP) return;
+
+	int eax = x, ebx = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+	ebx += 16;
+	RCT2_CALLFUNC_X(0x689726, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	if (eax == 0x8000)return;
+
+	eax += 16;
+	ecx = ebx + 16;
+	edx = ((uint8*)edx)[2] * 8 + 16;
+	int _eax = eax & 0xFFE0, _ebx = ebx & 0xFFE0;
+	if (sub_664F72(eax & 0xFFE0, ebx & 0xFFE0, edx)){
+		window_error_open(0x785,-1);
+		return;
+	}
+	int _edx = edx>>3;
+	_edx &= 0xFFFF00FF;
+	_edx |= edx << 8;
+	_edx += 0x100;
+	int flags = RCT2_CALLPROC_X(0x68B93A, eax & 0xFFE0, 0xF, ebx & 0xFFE0, _edx, (int)w, 0, 0);
+
+	if (flags & 0x100){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x3A5 ){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x49B){
+				window_error_open(0x785, -1);
+				return;
+			}
+		}
+	}
+
+	rct_peep* peep = GET_PEEP(w->number);
+	RCT2_CALLPROC_X(0x0069E9D3, eax, 0, ebx, edx, (int)peep, 0, 0);
+	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep->state = 0;
+	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep->var_71 = 0xFF;
+	peep->var_6D = 0;
+	peep->var_70 = 0;
+	peep->var_6E = 0xFF;
+	peep->var_C4 = 0;
+
+	peep->happiness_growth_rate -= 10;
+	if (peep->happiness_growth_rate < 0)peep->happiness_growth_rate = 0;
+
+	RCT2_CALLPROC_X(0x00693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+	tool_cancel();
+	RCT2_GLOBAL(0x9DE550, sint32) = -1;
 }
