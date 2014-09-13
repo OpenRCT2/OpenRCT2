@@ -508,31 +508,31 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm mov dpi, edi
 #else
 	#define window_get_register(w)														\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_widget_get_registers(w, widgetIndex)									\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
-		__asm__ ( "mov %[dropdownIndex], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#dropdownIndex"], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_scrollmouse_get_registers(w, x, y)									\
-		__asm__ ( "mov %[x], cx " : [x] "+m" (x) );										\
-		__asm__ ( "mov %[y], dx " : [y] "+m" (y) );										\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );										\
+		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_tool_get_registers(w, widgetIndex, x, y)								\
-		__asm__ ( "mov %[x], ax " : [x] "+m" (x) );										\
-		__asm__ ( "mov %[y], bx " : [y] "+m" (y) );										\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
+		__asm__ ( "mov %["#x"], ax " : [x] "+m" (x) );										\
+		__asm__ ( "mov %["#y"], bx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_paint_get_registers(w, dpi)											\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %[dpi], edi " : [dpi] "+m" (dpi) );
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
+		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
 #endif
 
 #endif
