@@ -173,26 +173,27 @@ void window_peep_set_page(rct_window* w, int page);
 void window_peep_disable_widgets(rct_window* w);
 void window_peep_viewport_init(rct_window* w);
 
-void window_peep_close();
-void window_peep_resize();
+void window_peep_overview_close();
+void window_peep_overview_resize();
 void window_peep_overview_mouse_up();
 void window_peep_overview_paint();
 void window_peep_overview_invalidate();
 void window_peep_overview_viewport_init_wrapper();
 void window_peep_overview_update(rct_window* w);
 void window_peep_overview_text_input();
+void window_peep_overview_tool_update();
 
 static void* window_peep_overview_events[] = {
-	window_peep_close,
+	window_peep_overview_close,
 	window_peep_overview_mouse_up,
-	window_peep_resize,
+	window_peep_overview_resize,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_overview_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*)0x696A5F,//tool_update
+	window_peep_overview_tool_update,//tool_update
 	(void*)0x696A54,//tool_down
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -511,7 +512,7 @@ void window_peep_disable_widgets(rct_window* w){
 }
 
 /* rct2: 0x00696A75 */
-void window_peep_close(){
+void window_peep_overview_close(){
 	rct_window* w;
 	
 	window_get_register(w);
@@ -524,7 +525,7 @@ void window_peep_close(){
 }
 
 /* rct2: 0x00696FBE */
-void window_peep_resize(){
+void window_peep_overview_resize(){
 	rct_window* w;
 	
 	window_get_register(w);
@@ -532,7 +533,7 @@ void window_peep_resize(){
 	window_peep_disable_widgets(w);
 	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
 	
-	window_invalidate_by_id(0xA97, w->number);
+	widget_invalidate(WC_PEEP, w->number, WIDX_MARQUEE);
 	
 	window_set_resize(w, 192, 159, 500, 450);
 	
@@ -1043,9 +1044,8 @@ void window_peep_overview_update(rct_window* w){
 	w->var_494 &= 0x0000FFFF;
 	w->var_494 |= var_496 << 16;
 
-
-	window_invalidate_by_id((WIDX_TAB_1 << 8) | 0x80 | WC_PEEP, w->number);
-	window_invalidate_by_id((WIDX_TAB_2 << 8) | 0x80 | WC_PEEP, w->number);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
 	
 	w->list_information_type += 2;
 
@@ -1085,4 +1085,57 @@ void window_peep_overview_text_input(){
 	game_do_command(1, 1, w->number, *text, 22, *(text + 2), *(text + 1));
 	game_do_command(2, 1, 0, *(text + 3), 22, *(text + 5), *(text + 4));
 	game_do_command(0, 1, 0, *(text + 6), 22, *(text + 8), *(text + 7));
+}
+
+/* rct2: 0x696A5F */
+void window_peep_overview_tool_update(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex != WIDX_PICKUP) return;
+
+	RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	int temp_y = y + 16;
+
+	int eax = x, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+	RCT2_CALLFUNC_X(0x689726, &eax, &temp_y, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax != 0x8000){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
+		RCT2_CALLPROC_X(0x0068AAE1, eax, temp_y, 0, 0, (int)w, 0, 0);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	eax = x;
+	int ebx = y;
+	edx = 0;
+	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if ((ebx & 0xFF) == 0) return;
+
+	x--;
+	y += 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, uint16) = y;
+	w->var_492++;
+	if (w->var_492 >= 48)w->var_492 = 0;
+	
+	rct_peep* peep;
+	peep = GET_PEEP(w->number);
+	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
+	ebx += w->var_492 >> 2;
+
+	ebp = peep->tshirt_colour << 19;
+	ecx = peep->trousers_colour << 24;
+
+	ebx |= ebp | ecx | 0xA0000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
 }
