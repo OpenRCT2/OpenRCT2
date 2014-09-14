@@ -260,6 +260,8 @@ void window_peep_rides_resize();
 void window_peep_rides_update();
 void window_peep_rides_tooltip();
 void window_peep_rides_scroll_get_size();
+void window_peep_rides_scroll_mouse_down();
+void window_peep_rides_scroll_mouse_over();
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
@@ -278,9 +280,9 @@ static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_rides_scroll_get_size, //scroll_get_size
-	(void*) 0x006978CC, //scroll_mouse_down
+	window_peep_rides_scroll_mouse_down, //scroll_mouse_down
 	window_peep_emptysub,
-	(void*) 0x0069789C, //scroll_mouse_over
+	window_peep_rides_scroll_mouse_over, //scroll_mouse_over
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -1592,4 +1594,35 @@ void window_peep_rides_scroll_get_size(){
 #else
 	__asm__("mov edx, %[height] " : [height] "+m" (height));
 #endif
+}
+
+/* rct2: 0x006978CC */
+void window_peep_rides_scroll_mouse_down(){
+	int index;
+	short x, y;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, x, y);
+
+	index = y / 10;
+	if (index >= w->no_list_items) return;
+
+	window_ride_main_open(w->list_item_positions[index]);
+}
+
+/* rct2: 0x0069789C */
+void window_peep_rides_scroll_mouse_over(){
+	int index;
+	short x, y;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, x, y);
+
+	index = y / 10;
+	if (index >= w->no_list_items)return;
+
+	if (index == w->selected_list_item)return;
+	w->selected_list_item = index;
+
+	window_invalidate(w);
 }
