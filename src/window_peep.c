@@ -264,6 +264,7 @@ void window_peep_rides_scroll_mouse_down();
 void window_peep_rides_scroll_mouse_over();
 void window_peep_rides_invalidate();
 void window_peep_rides_paint();
+void window_peep_rides_scroll_paint();
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
@@ -293,7 +294,7 @@ static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
 	window_peep_rides_invalidate, //invalidate
 	window_peep_rides_paint, //paint
-	(void*) 0x006976FC  //scroll_paint
+	window_peep_rides_scroll_paint  //scroll_paint
 };
 
 static void* window_peep_finance_events[] = {
@@ -1701,4 +1702,36 @@ void window_peep_rides_paint(){
 	RCT2_GLOBAL(0x13CE954, uint32) = ride_string_arguments;
 
 	gfx_draw_string_left_clipped(dpi, 3093, (void*)0x13CE952, 0, x, y, w->width - 14);
+}
+
+/* rct2: 0x006976FC */
+void window_peep_rides_scroll_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	// ax
+	int left = dpi->x;
+	// bx
+	int right = dpi->x + dpi->width - 1;
+	// cx
+	int top = dpi->y;
+	// dx
+	int bottom = dpi->y + dpi->height - 1;
+
+	int colour = RCT2_ADDRESS(0x141FC48, uint8)[w->colours[1] * 8];
+	gfx_fill_rect(dpi, left, top, right, bottom, colour);
+
+	for (int list_index = 0; list_index < w->no_list_items; list_index++){
+		int y = list_index * 10;
+		int string_format = 1191;
+		if (list_index == w->selected_list_item){
+			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+			string_format = 1193;
+		}
+		rct_ride* ride = GET_RIDE(w->list_item_positions[list_index]);
+
+		gfx_draw_string_left(dpi, string_format, (void*)&ride->name, 0, 0, y - 1);
+	}
 }
