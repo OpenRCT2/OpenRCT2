@@ -252,7 +252,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + sizeof(newsItem) >= (rct_news_item*)0x13CB1CC)
+		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC)
 			news_item_close_current();
 		else
 			newsItem++;
