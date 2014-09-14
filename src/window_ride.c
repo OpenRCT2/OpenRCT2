@@ -2650,6 +2650,22 @@ static void window_ride_maintenance_paint()
 
 #pragma region Colour
 
+const uint8 window_ride_entrance_style_list[] = {
+	RIDE_ENTRANCE_STYLE_PLAIN,
+	RIDE_ENTRANCE_STYLE_CANVAS_TENT,
+	RIDE_ENTRANCE_STYLE_WOODEN,
+	RIDE_ENTRANCE_STYLE_CASTLE_BROWN,
+	RIDE_ENTRANCE_STYLE_CASTLE_GREY,
+	RIDE_ENTRANCE_STYLE_LOG_CABIN,
+	RIDE_ENTRANCE_STYLE_JUNGLE,
+	RIDE_ENTRANCE_STYLE_LOG_CABIN,
+	RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN,
+	RIDE_ENTRANCE_STYLE_ABSTRACT,
+	RIDE_ENTRANCE_STYLE_SNOW_ICE,
+	RIDE_ENTRANCE_STYLE_PAGODA,
+	RIDE_ENTRANCE_STYLE_SPACE
+};
+
 static uint32 window_ride_get_colour_button_image(int colour)
 {
 	return 0x60000000 | (colour << 19) | 5059;
@@ -2740,13 +2756,193 @@ static void window_ride_colour_resize()
  * 
  * rct2: 0x006B02C6
  */
-static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_widget *widget) { }
+static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	rct_ride *ride;
+	uint16 colourSchemeIndex;
+	vehicle_colour vehicleColour;
+	rct_widget *dropdownWidget;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	int i, numItems;
+	rct_string_id stringId;
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+	colourSchemeIndex = *((uint16*)&w->var_494);
+	dropdownWidget = widget - 1;
+
+	switch (widgetIndex) {
+	case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
+		for (i = 0; i < 4; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_MAIN_COLOUR_SCHEME + i;
+		}
+
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0,
+			4,
+			widget->right - dropdownWidget->left
+		);
+
+		gDropdownItemsChecked = 1 << colourSchemeIndex;
+		break;
+	case WIDX_TRACK_MAIN_COLOUR:
+		window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_main[colourSchemeIndex]);
+		break;
+	case WIDX_TRACK_ADDITIONAL_COLOUR:
+		window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_additional[colourSchemeIndex]);
+		break;
+	case WIDX_TRACK_SUPPORT_COLOUR:
+		window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_supports[colourSchemeIndex]);
+		break;
+	case WIDX_MAZE_STYLE_DROPDOWN:
+		for (i = 0; i < 4; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_BRICK_WALLS + i;
+		}
+
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0,
+			4,
+			widget->right - dropdownWidget->left
+		);
+
+		gDropdownItemsChecked = 1 << ride->track_colour_supports[colourSchemeIndex];
+		break;
+	case WIDX_ENTRANCE_STYLE_DROPDOWN:
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0x80,
+			countof(window_ride_entrance_style_list),
+			widget->right - dropdownWidget->left
+		);
+
+		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_PLAIN_ENTRANCE + window_ride_entrance_style_list[i];
+
+			if (ride->entrance_style == window_ride_entrance_style_list[i])
+				gDropdownItemsChecked = 1 << i;
+		}
+		break;
+	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0,
+			rideEntry->var_010 > 1 ? 3 : 2,
+			widget->right - dropdownWidget->left
+		);
+
+		for (i = 0; i < 3; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = (RideNameConvention[ride->type].vehicle_name << 16) | (STR_ALL_VEHICLES_IN_SAME_COLOURS + i);
+		}
+		gDropdownItemsChecked = 1 << (ride->colour_scheme_type & 3);
+		break;
+	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
+		numItems = ride->num_vehicles;
+		if ((ride->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
+			numItems = ride->var_0C9;
+
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0x80,
+			numItems,
+			widget->right - dropdownWidget->left
+		);
+
+		stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN ? 1135 : 1133;
+		for (i = 0; i < 32; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = ((sint64)(i + 1) << 32) | ((RideNameConvention[ride->type].vehicle_name + 2) << 16) | stringId;
+		}
+		gDropdownItemsChecked = 1 << w->var_48C;
+		break;
+	case WIDX_VEHICLE_MAIN_COLOUR:
+		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+		window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.main);
+		break;
+	case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
+		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+		window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_1);
+		break;
+	case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
+		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
+		window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_2);
+		break;
+	}
+}
 
 /**
  * 
  * rct2: 0x006B0331
  */
-static void window_ride_colour_dropdown() { }
+static void window_ride_colour_dropdown()
+{
+	rct_window *w;
+	short widgetIndex, dropdownIndex;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (dropdownIndex == -1)
+		return;
+
+	switch (widgetIndex) {
+	case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
+		*((uint16*)&w->var_494) = dropdownIndex;
+		window_invalidate(w);
+		break;
+	case WIDX_TRACK_MAIN_COLOUR:
+		game_do_command(0, (0 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, *((uint16*)&w->var_494), 0);
+		break;
+	case WIDX_TRACK_ADDITIONAL_COLOUR:
+		game_do_command(0, (1 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, *((uint16*)&w->var_494), 0);
+		break;
+	case WIDX_TRACK_SUPPORT_COLOUR:
+		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, *((uint16*)&w->var_494), 0);
+		break;
+	case WIDX_MAZE_STYLE_DROPDOWN:
+		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, *((uint16*)&w->var_494), 0);
+		break;
+	case WIDX_ENTRANCE_STYLE_DROPDOWN:
+		game_do_command(0, (6 << 8) | 1, 0, (window_ride_entrance_style_list[dropdownIndex] << 8) | w->number, GAME_COMMAND_0, 0, 0);
+		break;
+	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
+		game_do_command(0, (5 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, 0, 0);
+		w->var_48C = 0;
+		break;
+	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
+		w->var_48C = dropdownIndex;
+		window_invalidate(w);
+		break;
+	case WIDX_VEHICLE_MAIN_COLOUR:
+		game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, w->var_48C, 0);
+		break;
+	case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
+		game_do_command(0, (3 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, w->var_48C, 0);
+		break;
+	case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
+		game_do_command(0, (7 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_0, w->var_48C, 0);
+		break;
+	}
+}
 
 /**
  * 
@@ -2808,6 +3004,10 @@ static void window_ride_colour_invalidate()
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 
+	// Track colours
+	int colourScheme = *((uint16*)&w->var_494);
+	trackColour = ride_get_track_colour(ride, colourScheme);
+
 	// Maze style
 	if (ride->type == RIDE_TYPE_MAZE) {
 		window_ride_colour_widgets[WIDX_MAZE_STYLE].type = WWT_DROPDOWN;
@@ -2828,10 +3028,6 @@ static void window_ride_colour_invalidate()
 		window_ride_colour_widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
 		window_ride_colour_widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WWT_EMPTY;
 	}
-
-	// Track colours
-	int colourScheme = *((uint16*)&w->var_494);
-	trackColour = ride_get_track_colour(ride, colourScheme);
 	
 	// Track main colour
 	if (window_ride_has_track_colour(ride, 0)) {
@@ -2995,19 +3191,21 @@ static void window_ride_colour_paint()
 		y = w->y + widget->top;
 
 		// Track
-		spriteIndex = 14222 + (ride->type * 2);
-		spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
-		spriteIndex |= 0xA0000000;
-		if (spriteIndex == 14262)
+		if (ride->type == RIDE_TYPE_MAZE) {
 			spriteIndex = 21990 + trackColour.supports;
+			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+		} else {
+			spriteIndex = 14222 + (ride->type * 2);
+			spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
+			spriteIndex |= 0xA0000000;
+			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
 
-		gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
-
-		// Supports
-		spriteIndex = 14222 + (ride->type * 2) + 1;
-		spriteIndex |= trackColour.supports << 19;
-		spriteIndex |= 0x20000000;
-		gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+			// Supports
+			spriteIndex = 14222 + (ride->type * 2) + 1;
+			spriteIndex |= trackColour.supports << 19;
+			spriteIndex |= 0x20000000;
+			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+		}
 	} else {
 		x = w->x + (widget->left + widget->right) / 2 - 8;
 		y = w->y + (widget->bottom + widget->top) / 2 - 6;

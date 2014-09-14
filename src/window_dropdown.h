@@ -37,5 +37,6 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 flags, int numItems, int itemWidth, int itemHeight, int numColumns);
 void window_dropdown_close();
 int dropdown_index_from_point(int x, int y, rct_window* w);
+void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour);
 
 #endif

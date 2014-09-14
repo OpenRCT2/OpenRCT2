@@ -379,3 +379,16 @@ int dropdown_index_from_point(int x, int y, rct_window* w){
 
 	return dropdown_index;
 }
+
+/**
+ *  rct2: 0x006ED43D
+ * al: dropdown colour
+ * ah: selected colour
+ * esi: window
+ * edi: widget
+ * ebp: unknown
+ */
+void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour)
+{
+	RCT2_CALLPROC_X(0x006ED43D, (selectedColour << 8) | dropdownColour, 0, 0, 0, (int)w, (int)widget, 0xFFFFFFFF);
+}
