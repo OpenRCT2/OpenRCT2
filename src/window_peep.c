@@ -256,14 +256,17 @@ static void* window_peep_stats_events[] = {
 	window_peep_emptysub
 };
 
+void window_peep_rides_resize();
+void window_peep_rides_update();
+
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
 	window_peep_mouse_up, //mouse_up
-	(void*) 0x006978F4, //resize
+	window_peep_rides_resize, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_unknown_05,
-	(void*) 0x006977B0,
+	window_peep_rides_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -1468,7 +1471,7 @@ void window_peep_stats_paint(){
 	// Time in park
 	y += 11;
 	if (peep->time_in_park != -1){
-		int eax = RCT2_GLOBAL(0xF663AC, uint32);
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 		eax -= peep->time_in_park;
 		eax >>= 11;
 		RCT2_GLOBAL(0x13CE952, uint16) = eax & 0xFFFF;
@@ -1500,4 +1503,48 @@ void window_peep_stats_paint(){
 	int nausea_tolerance = peep->nausea_tolerance & 0x3;
 	RCT2_GLOBAL(0x13CE952, uint16) = nausea_tolerance + 2368;
 	gfx_draw_string_left(dpi, 1661, (void*)0x13CE952, 0, x, y);
+}
+
+/* rct2: 0x006978F4 */
+void window_peep_rides_resize(){
+	rct_window* w;
+	window_get_register(w);
+
+	window_set_resize(w, 192, 128, 500, 400);
+}
+
+/* rct2: 0x6977B0 */
+void window_peep_rides_update(){
+	rct_window* w;
+	window_get_register(w);
+
+	w->frame_no++;
+
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_3);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	// Every 2048 ticks do a full window_invalidate
+	int number_of_ticks = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+	if (!(number_of_ticks & 0x7FF)) window_invalidate(w);
+
+	uint8 curr_list_position = 0;
+	for (uint8 ride_id = 0; ride_id < 255; ++ride_id){
+		// Offset to the ride_id bit in peep_rides_been_on
+		uint8 ride_id_bit = ride_id & 0x3;
+		uint8 ride_id_offset = ride_id / 8;
+		if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit)){
+			rct_ride* ride = GET_RIDE(ride_id);
+			if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0){
+				w->list_item_positions[curr_list_position] = ride_id;
+				curr_list_position++;
+			}
+		}
+	}
+	// If there are new items
+	if (w->no_list_items != curr_list_position){
+		w->no_list_items = curr_list_position;
+		window_invalidate(w);
+	}
 }

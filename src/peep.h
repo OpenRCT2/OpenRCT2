@@ -376,7 +376,9 @@ typedef struct {
 	uint8 pad_77;
 	uint8 var_78;
 	uint8 pad_79[0x03];
-	uint8 rides_been_on[32];		// 0x7C
+	uint8 rides_been_on[32];		// 0x7C 
+	// 255 bit bitmap of every ride the peep has been on see
+	// window_peep_rides_update for how to use.
 	uint32 id;						// 0x9C
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
