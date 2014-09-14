@@ -258,6 +258,8 @@ static void* window_peep_stats_events[] = {
 
 void window_peep_rides_resize();
 void window_peep_rides_update();
+void window_peep_rides_tooltip();
+void window_peep_rides_scroll_get_size();
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
@@ -275,19 +277,19 @@ static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x0069784E,
-	(void*) 0x006978CC,
+	window_peep_rides_scroll_get_size, //scroll_get_size
+	(void*) 0x006978CC, //scroll_mouse_down
 	window_peep_emptysub,
-	(void*) 0x0069789C,
+	(void*) 0x0069789C, //scroll_mouse_over
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697844,
+	window_peep_rides_tooltip, //tooltip
 	window_peep_emptysub,
 	window_peep_emptysub,
 	(void*) 0x0069757A, //invalidate
 	(void*) 0x00697637, //paint
-	(void*) 0x006976FC
+	(void*) 0x006976FC  //scroll_paint
 };
 
 static void* window_peep_finance_events[] = {
@@ -1547,4 +1549,47 @@ void window_peep_rides_update(){
 		w->no_list_items = curr_list_position;
 		window_invalidate(w);
 	}
+}
+
+/* rct2: 0x697844 */
+void window_peep_rides_tooltip(){
+	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+}
+
+/* rct2: 0x69784E */
+void window_peep_rides_scroll_get_size(){
+	rct_window *w;
+
+	window_get_register(w);
+
+	int height = w->no_list_items * 10;
+
+	if (w->selected_list_item != -1){
+		w->selected_list_item = -1;
+		window_invalidate(w);
+	}
+
+	int visable_height = height 
+		- window_peep_rides_widgets[WIDX_RIDE_SCROLL].bottom 
+		+ window_peep_rides_widgets[WIDX_RIDE_SCROLL].top
+		+ 21;
+
+	if (visable_height < 0) visable_height = 0;
+
+	if (visable_height < w->scrolls[0].v_top){
+		w->scrolls[0].v_top = visable_height;
+		window_invalidate(w);
+	}
+
+#ifdef _MSC_VER
+	__asm mov ecx, 0
+#else
+	__asm__("mov ecx, 0 ");
+#endif
+
+#ifdef _MSC_VER
+	__asm mov edx, height
+#else
+	__asm__("mov edx, %[height] " : [height] "+m" (height));
+#endif
 }
