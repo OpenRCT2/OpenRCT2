@@ -333,14 +333,19 @@ static void* window_peep_finance_events[] = {
 	window_peep_emptysub
 };
 
+void window_peep_thoughts_resize();
+void window_peep_thoughts_update();
+void window_peep_thoughts_invalidate();
+void window_peep_thoughts_paint();
+
 static void* window_peep_thoughts_events[] = {
 	window_peep_emptysub,
 	window_peep_mouse_up, //mouse_up
-	(void*) 0x00697E33, //resize
+	window_peep_thoughts_resize, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_unknown_05,
-	(void*) 0x00697EB4,
+	window_peep_thoughts_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -359,8 +364,8 @@ static void* window_peep_thoughts_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697C8A, //invalidate
-	(void*) 0x00697D2A, //paint
+	window_peep_thoughts_invalidate, //invalidate
+	window_peep_thoughts_paint, //paint
 	window_peep_emptysub
 };
 
@@ -1805,7 +1810,6 @@ void window_peep_finance_paint(){
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	// Not sure why this is not stats widgets
 	//cx
 	int x = w->x + window_peep_finance_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	//dx
@@ -1869,5 +1873,106 @@ void window_peep_finance_paint(){
 	}
 	else{
 		gfx_draw_string_left(dpi, 2303, (void*)0x13CE952, 0, x, y);
+	}
+}
+
+/* rct2: 0x00697E33 */
+void window_peep_thoughts_resize(){
+	rct_window* w;
+	window_get_register(w);
+
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep->var_45 & 1){
+		peep->var_45 &=~(1 << 0);
+		window_invalidate(w);
+	}
+
+	window_set_resize(w, 192, 159, 500, 450);
+}
+
+/* rct2: 0x00697EB4 */
+void window_peep_thoughts_update(){
+	rct_window* w;
+	window_get_register(w);
+
+	w->frame_no++;
+
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_5);
+}
+
+/* rct2: 0x00697C8A */
+void window_peep_thoughts_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (window_peep_page_widgets[w->page] != w->widgets){
+		w->widgets = window_peep_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	window_peep_thoughts_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_thoughts_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+	window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_thoughts_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_peep_thoughts_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_thoughts_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
+}
+
+/* rct2: 0x00697D2A */
+void window_peep_thoughts_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_peep_overview_tab_paint(w, dpi);
+	window_peep_stats_tab_paint(w, dpi);
+	window_peep_rides_tab_paint(w, dpi);
+	window_peep_finance_tab_paint(w, dpi);
+	window_peep_thoughts_tab_paint(w, dpi);
+	window_peep_inventory_tab_paint(w, dpi);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	//cx
+	int x = w->x + window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	//dx
+	int y = w->y + window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+	gfx_draw_string_left(dpi, 1654, (void*)0, 0, x, y);
+
+	y += 10;
+	for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought){
+		if (thought->type == PEEP_THOUGHT_TYPE_NONE) return;
+		if (thought->var_2 == 0) continue;
+
+		uint32 argument1, argument2;
+		get_arguments_from_thought(*thought, &argument1, &argument2);
+		RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+		RCT2_GLOBAL(0x13CE956, uint32) = argument2;
+
+		int width = window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].right 
+			- window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
+			- 8;
+
+		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1191, 0);
+
+		// If this is the last visable line end drawing.
+		if (y > w->y + window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
 	}
 }
