@@ -262,6 +262,8 @@ void window_peep_rides_tooltip();
 void window_peep_rides_scroll_get_size();
 void window_peep_rides_scroll_mouse_down();
 void window_peep_rides_scroll_mouse_over();
+void window_peep_rides_invalidate();
+void window_peep_rides_paint();
 
 static void* window_peep_rides_events[] = {
 	window_peep_emptysub,
@@ -289,8 +291,8 @@ static void* window_peep_rides_events[] = {
 	window_peep_rides_tooltip, //tooltip
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x0069757A, //invalidate
-	(void*) 0x00697637, //paint
+	window_peep_rides_invalidate, //invalidate
+	window_peep_rides_paint, //paint
 	(void*) 0x006976FC  //scroll_paint
 };
 
@@ -1625,4 +1627,78 @@ void window_peep_rides_scroll_mouse_over(){
 	w->selected_list_item = index;
 
 	window_invalidate(w);
+}
+
+/* rct2: 0x0069757A */
+void window_peep_rides_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+	if (window_peep_page_widgets[w->page] != w->widgets){
+		w->widgets = window_peep_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	int width = w->width;
+	int height = w->height;
+
+	window_peep_rides_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_rides_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+	window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_rides_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_peep_rides_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_rides_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_peep_rides_widgets[WIDX_RIDE_SCROLL].right = w->width - 4;
+	window_peep_rides_widgets[WIDX_RIDE_SCROLL].bottom = w->height - 15;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
+}
+
+/* rct2: 0x00697637 */
+void window_peep_rides_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_peep_overview_tab_paint(w, dpi);
+	window_peep_stats_tab_paint(w, dpi);
+	window_peep_rides_tab_paint(w, dpi);
+	window_peep_finance_tab_paint(w, dpi);
+	window_peep_thoughts_tab_paint(w, dpi);
+	window_peep_inventory_tab_paint(w, dpi);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	//cx
+	int x = w->x + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2;
+	//dx
+	int y = w->y + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
+
+	gfx_draw_string_left(dpi, 2292, (void*)0, 0, x, y);
+
+	y = w->y + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
+
+	int ride_string_id = 3094; 
+	int ride_string_arguments = 0;
+	if (peep->favourite_ride != 0xFF){
+		rct_ride* ride = GET_RIDE(peep->favourite_ride);
+		ride_string_arguments = ride->name_arguments;
+		ride_string_id = ride->name;
+	}
+	RCT2_GLOBAL(0x13CE952, uint16) = ride_string_id;
+	RCT2_GLOBAL(0x13CE954, uint32) = ride_string_arguments;
+
+	gfx_draw_string_left_clipped(dpi, 3093, (void*)0x13CE952, 0, x, y, w->width - 14);
 }
