@@ -1370,6 +1370,7 @@ void window_peep_stats_paint(){
 	//dx
 	int y = w->y + window_peep_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
+	//Happiness
 	gfx_draw_string_left(dpi, 1662, (void*)0x13CE952, 0, x, y);
 
 	int happiness = peep->happiness;
@@ -1379,4 +1380,124 @@ void window_peep_stats_paint(){
 		ebp |= 0x80000000;
 	}
 	RCT2_CALLPROC_X(0x6974FC, happiness, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	//Energy
+	y += 10;
+	gfx_draw_string_left(dpi, 1664, (void*)0x13CE952, 0, x, y);
+
+	int energy = ((peep->energy - 32) * 85) / 32;
+	ebp = 14;
+	if (energy < 50){
+		ebp |= 0x80000000;
+	}
+	if (energy < 10)energy = 10;
+	RCT2_CALLPROC_X(0x6974FC, energy, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	//Hunger
+	y += 10;
+	gfx_draw_string_left(dpi, 1665, (void*)0x13CE952, 0, x, y);
+
+	int hunger = peep->hunger;
+	if (hunger > 190) hunger = 190;
+
+	hunger -= 32;
+	if (hunger < 0) hunger = 0;
+	hunger *= 51;
+	hunger /= 32;
+	hunger = 0xFF & ~hunger;
+
+	ebp = 28;
+	if (hunger > 170){
+		ebp |= 0x80000000;
+	}
+	RCT2_CALLPROC_X(0x6974FC, hunger, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	//Thirst
+	y += 10;
+	gfx_draw_string_left(dpi, 1666, (void*)0x13CE952, 0, x, y);
+
+	int thirst = peep->thirst;
+	if (thirst > 190) thirst = 190;
+
+	thirst -= 32;
+	if (thirst < 0) thirst = 0;
+	thirst *= 51;
+	thirst /= 32;
+	thirst = 0xFF & ~thirst;
+
+	ebp = 28;
+	if (thirst > 170){
+		ebp |= 0x80000000;
+	}
+	RCT2_CALLPROC_X(0x6974FC, thirst, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	//Nausea
+	y += 10;
+	gfx_draw_string_left(dpi, 1663, (void*)0x13CE952, 0, x, y);
+
+	int nausea = peep->nausea - 32;
+
+	if (nausea  < 0) nausea = 0;
+	nausea *= 36;
+	nausea /= 32;
+
+	ebp = 28;
+	if (nausea > 120){
+		ebp |= 0x80000000;
+	}
+	RCT2_CALLPROC_X(0x6974FC, nausea, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	//Bathroom
+	y += 10;
+	gfx_draw_string_left(dpi, 1667, (void*)0x13CE952, 0, x, y);
+
+	int bathroom = peep->bathroom - 32;
+	if (bathroom > 210) bathroom = 210;
+
+	bathroom -= 32;
+	if (bathroom < 0) bathroom = 0;
+	bathroom *= 45;
+	bathroom /= 32;
+
+	ebp = 28;
+	if (bathroom > 160){
+		ebp |= 0x80000000;
+	}
+	RCT2_CALLPROC_X(0x6974FC, bathroom, (int)peep, x, y, (int)w, (int)dpi, ebp);
+
+	// Time in park
+	y += 11;
+	if (peep->time_in_park != -1){
+		int eax = RCT2_GLOBAL(0xF663AC, uint32);
+		eax -= peep->time_in_park;
+		eax >>= 11;
+		RCT2_GLOBAL(0x13CE952, uint16) = eax & 0xFFFF;
+		gfx_draw_string_left(dpi, 1458, (void*)0x13CE952, 0, x, y);
+	}
+
+	y += 19;
+	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
+
+	// Preferred Ride
+	gfx_draw_string_left(dpi, 1657, (void*)0, 0, x, y);
+	y += 10;
+
+	// Intensity
+	int intensity = peep->intensity / 16;
+	RCT2_GLOBAL(0x13CE952, uint16) = intensity;
+	int string_id = 1658;
+	if (peep->intensity & 0xF){
+		RCT2_GLOBAL(0x13CE952, uint16) = peep->intensity & 0xF;
+		RCT2_GLOBAL(0x13CE954, uint16) = intensity;
+		string_id = 1659;
+		if (intensity == 15) string_id = 1660;
+	}
+
+	gfx_draw_string_left(dpi, string_id, (void*)0x13CE952, 0, x + 4, y);
+
+	// Nausea tolerance
+	y += 10;
+	int nausea_tolerance = peep->nausea_tolerance & 0x3;
+	RCT2_GLOBAL(0x13CE952, uint16) = nausea_tolerance + 2368;
+	gfx_draw_string_left(dpi, 1661, (void*)0x13CE952, 0, x, y);
 }

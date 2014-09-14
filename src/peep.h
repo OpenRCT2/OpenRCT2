@@ -380,8 +380,8 @@ typedef struct {
 	uint32 id;						// 0x9C
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
-	uint8 var_A8;					// 0xA8
-	sint32 time_in_park;			// 0xA9
+	sint32 time_in_park;			// 0xA8
+	uint8 var_AC;					// 0xAC
 	uint8 var_AD;					// creation/hire time?
 	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0

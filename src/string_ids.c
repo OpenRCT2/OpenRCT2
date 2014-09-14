@@ -1508,7 +1508,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		}
 
 		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "sec:" : "secs:");
+		strcpy(*dest, value % 60 == 1 ? "sec" : "secs");
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_REALTIME:
@@ -1523,7 +1523,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		}
 
 		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "min:" : "mins:");
+		strcpy(*dest, value % 60 == 1 ? "min" : "mins");
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_LENGTH:
