@@ -330,7 +330,7 @@ typedef struct {
 	uint8 ride_measurements[0x25860];
 	uint32 dword_13B0E6C;
 	uint16 word_13B0E70;
-	uint32 dword_13B0E72[0x6600];
+	uint32 dword_13B0E72[0x6600]; // 512 bytes per staff peep
 	uint8 byte_13CA672[116];
 	uint8 byte_13CA6E6[84];
 	uint8 byte_13CA73A[4];

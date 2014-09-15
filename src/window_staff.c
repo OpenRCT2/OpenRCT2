@@ -626,7 +626,7 @@ void window_staff_scrollpaint()
 				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 175, y - 1, 305);
 
 				// True if a patrol path is set for the worker
-				if (RCT2_ADDRESS(0x013CA672, uint8)[peep->var_C5] & 2) {
+				if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2) {
 					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1, 0);
 				}
 

@@ -24,6 +24,7 @@
 #include "rct2.h"
 
 #define STAFF_MAX_COUNT 0xC8
+#define STAFF_TYPE_COUNT 0x04
 
 enum STAFF_TYPE {
 	STAFF_TYPE_HANDYMAN,
@@ -37,5 +38,6 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 void update_staff_colour(uint8 staff_type, uint16 color);
 uint16 hire_new_staff_member(uint8 staff_type);
+void sub_6C0C3F();
 
 #endif
