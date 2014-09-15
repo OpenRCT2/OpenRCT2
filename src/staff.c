@@ -222,7 +222,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 		newPeep->staff_id = newStaffId;
 
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[newStaffId] = RCT2_STAFF_MODE_NORMAL;
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[newStaffId] = STAFF_MODE_WALK;
 
 		for (int edi = 0; edi < 0x80; edi++) {
 			int addr = 0x013B0E72 + (newStaffId << 9) + edi * 4;
