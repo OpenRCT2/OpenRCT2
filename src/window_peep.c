@@ -369,14 +369,19 @@ static void* window_peep_thoughts_events[] = {
 	window_peep_emptysub
 };
 
+void window_peep_inventory_resize();
+void window_peep_inventory_update();
+void window_peep_inventory_invalidate();
+void window_peep_inventory_paint();
+
 static void* window_peep_inventory_events[] = {
 	window_peep_emptysub,
 	window_peep_mouse_up, //mouse_up
-	(void*) 0x00698294, //resize
+	window_peep_inventory_resize, //resize
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_unknown_05,
-	(void*) 0x00698315,
+	window_peep_inventory_update,
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
@@ -395,8 +400,8 @@ static void* window_peep_inventory_events[] = {
 	window_peep_emptysub,
 	window_peep_emptysub,
 	window_peep_emptysub,
-	(void*) 0x00697EE1, //invalidate
-	(void*) 0x00697F81, //paint
+	window_peep_inventory_invalidate, //invalidate
+	window_peep_inventory_paint, //paint
 	window_peep_emptysub
 };
 
@@ -1743,7 +1748,7 @@ void window_peep_rides_scroll_paint(){
 	}
 }
 
-/* rct2: 0x006C1B2F */
+/* rct2: 0x00697C16 */
 void window_peep_finance_resize(){
 	rct_window* w;
 	window_get_register(w);
@@ -1974,5 +1979,195 @@ void window_peep_thoughts_paint(){
 
 		// If this is the last visable line end drawing.
 		if (y > w->y + window_peep_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
+	}
+}
+
+
+/* rct2: 0x00698294 */
+void window_peep_inventory_resize(){
+	rct_window* w;
+	window_get_register(w);
+
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep->var_45 & (1<<3)){
+		peep->var_45 &= ~(1 << 3);
+		window_invalidate(w);
+	}
+
+	window_set_resize(w, 192, 159, 500, 450);
+}
+
+/* rct2: 0x00698315 */
+void window_peep_inventory_update(){
+	rct_window* w;
+	window_get_register(w);
+
+	w->frame_no++;
+
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_6);
+}
+
+/* rct2: 0x00697EE1 */
+void window_peep_inventory_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (window_peep_page_widgets[w->page] != w->widgets){
+		w->widgets = window_peep_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	window_peep_inventory_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_peep_inventory_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+	window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+
+	window_peep_inventory_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_peep_inventory_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_peep_inventory_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
+}
+
+/* rct2: 0x00697F81 */
+void window_peep_inventory_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_peep_overview_tab_paint(w, dpi);
+	window_peep_stats_tab_paint(w, dpi);
+	window_peep_rides_tab_paint(w, dpi);
+	window_peep_finance_tab_paint(w, dpi);
+	window_peep_thoughts_tab_paint(w, dpi);
+	window_peep_inventory_tab_paint(w, dpi);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	//cx
+	int x = w->x + window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	//dx
+	int y = w->y + window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].top + 2;
+
+	int max_y = w->y + w->height - 22;
+	int no_items = 0;
+
+	gfx_draw_string_left(dpi, 1810, (void*)0, 0, x, y);
+
+	y += 10;
+
+	for (int i = 0; y < max_y && i < 28; ++i){
+		int item_flag = 1 << i;
+		if (!(peep->item_standard_flags & item_flag))continue;
+		no_items++;
+
+		RCT2_GLOBAL(0x13CE952, uint32) = 5061 + i;
+
+		switch (item_flag){
+		case PEEP_ITEM_TSHIRT:
+			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->tshirt_colour << 19;
+			break;
+		case PEEP_ITEM_HAT:
+			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->hat_colour << 19;
+			break;
+		case PEEP_ITEM_BALLOON:
+			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->balloon_colour << 19;
+			break;
+		case PEEP_ITEM_UMBRELLA:
+			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->umbrella_colour << 19;
+			break;
+		}
+
+		int string_format = 2072 + i;
+		if (string_format >= 2104) string_format += 84; //??? i is never 32
+
+		RCT2_GLOBAL(0x13CE956, uint16) = string_format;
+		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
+		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
+		rct_ride* ride;
+
+		switch (item_flag){
+		case PEEP_ITEM_PHOTO:
+			ride = GET_RIDE(peep->photo1_ride_ref);
+			RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
+			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
+			break;
+		case PEEP_ITEM_VOUCHER:
+			RCT2_GLOBAL(0x13CE958, uint16) = peep->var_F0 + 2418;
+			RCT2_GLOBAL(0x13CE95A, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
+			RCT2_GLOBAL(0x13CE95C, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
+
+			if (peep->var_F0 == 0 || peep->var_F0 == 2)break;
+
+			int voucher_id = peep->var_F1 + 1988;
+			if (voucher_id >= 2020) voucher_id += 102;
+
+			RCT2_GLOBAL(0x13CE95A, uint16) = voucher_id;
+
+			if (peep->var_F0 == 3)break;
+			ride = GET_RIDE(peep->var_F1);
+			RCT2_GLOBAL(0x13CE95A, uint16) = ride->name;
+			RCT2_GLOBAL(0x13CE95C, uint32) = ride->name_arguments;
+			break;
+		}
+
+		int width = window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].right
+			- window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].left
+			- 8;
+
+		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1875, 0);
+	}
+
+	for (int i = 0; y < max_y && i < 22; ++i){
+		int item_flag = 1 << i;
+
+		if (!(peep->item_extra_flags & item_flag))continue;
+		no_items++;
+
+		RCT2_GLOBAL(0x13CE952, uint32) = 5089 + i;
+		RCT2_GLOBAL(0x13CE956, uint16) = 2188;
+		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
+		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
+
+		if (i < 3){
+			int ride_id = 0;
+			switch (item_flag){
+			case PEEP_ITEM_PHOTO2:
+				ride_id = peep->photo2_ride_ref;
+				break;
+			case PEEP_ITEM_PHOTO3:
+				ride_id = peep->photo3_ride_ref;
+				break;
+			case PEEP_ITEM_PHOTO4:
+				ride_id = peep->photo4_ride_ref;
+				break;
+			}
+
+			rct_ride* ride = GET_RIDE(ride_id);
+			RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
+			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
+		}
+
+		int width = window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].right
+			- window_peep_inventory_widgets[WIDX_PAGE_BACKGROUND].left
+			- 8;
+
+		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1875, 0);
+	}
+
+	if (!no_items){
+		gfx_draw_string_left(dpi, 2293, (void*)0, 0, x, y);
 	}
 }

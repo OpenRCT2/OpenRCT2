@@ -406,8 +406,8 @@ typedef struct {
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
 	uint8 pad_EF;
-	uint8 var_F0;
-	uint8 var_F1;
+	uint8 var_F0; //voucher_type
+	uint8 var_F1; //voucher_type arguments i.e. ride_id
 	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 pad_F4[0x02];
