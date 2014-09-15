@@ -925,7 +925,7 @@ static uint32 game_do_command_table[58] = {
 	0x006A67C0,
 	0x00663CCD, // 20
 	0x006B53E9,
-	0x00698D6C,
+	0x00698D6C, // text input
 	0x0068C542,
 	0x0068C6D1,
 	0x0068BC01,

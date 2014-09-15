@@ -223,6 +223,7 @@ static void window_scenarioselect_scrollgetsize()
 
 }
 
+/* rct2: 0x6780FE */
 static void window_scenarioselect_scrollmousedown()
 {
 	int i;
@@ -249,6 +250,7 @@ static void window_scenarioselect_scrollmousedown()
 	}
 }
 
+/* rct2: 0x678162 */
 static void window_scenarioselect_scrollmouseover()
 {
 	int i;

@@ -1819,7 +1819,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 		int half_width = gfx_get_string_width(buffer) / 2;
 		gfx_draw_string(dpi, buffer, 0xFE, x - half_width, line_y);
 
-		buffer += strlen(buffer) + 1;
+		buffer += get_string_length(buffer) + 1;
         line_y += line_height;
 	}
 
@@ -1874,7 +1874,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 
 	for (int line = 0; line <= num_lines; ++line) {
 		gfx_draw_string(dpi, buffer, 0xFE, x, line_y);
-		buffer += strlen(buffer) + 1;
+		buffer += get_string_length(buffer) + 1;
         line_y += line_height;
 	} 
 

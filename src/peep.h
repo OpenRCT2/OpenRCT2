@@ -296,10 +296,10 @@ enum PEEP_ITEM {
 };
 
 typedef struct {
-	uint8 type;
-	uint8 item;
-	uint8 var_2;
-	uint8 var_3;
+	uint8 type;		//0
+	uint8 item;		//1
+	uint8 var_2;	//2
+	uint8 var_3;	//3
 } rct_peep_thought;
 
 typedef struct {
@@ -332,7 +332,7 @@ typedef struct {
 	uint8 pad_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	uint8 staff_type;				// 0x2F
+	uint8 staff_type;				// 0x2F Also used for no_of_rides
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
 	uint16 var_32;
@@ -342,7 +342,7 @@ typedef struct {
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	uint8 happiness_growth_rate;	// 0x3B
+	sint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
 	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E
@@ -351,7 +351,7 @@ typedef struct {
 	uint8 pad_41[0x2];
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 var_45;
+	uint8 var_45;					//		Some sort of flags?
 	money16 paid_on_drink;			// 0x46
 	uint8 pad_48[0x10];
 	uint32 item_extra_flags;		// 0x58
@@ -376,17 +376,19 @@ typedef struct {
 	uint8 pad_77;
 	uint8 var_78;
 	uint8 pad_79[0x03];
-	uint8 rides_been_on[32];		// 0x7C
+	uint8 rides_been_on[32];		// 0x7C 
+	// 255 bit bitmap of every ride the peep has been on see
+	// window_peep_rides_update for how to use.
 	uint32 id;						// 0x9C
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
-	uint8 var_A8;					// 0xA8
-	sint32 time_in_park;			// 0xA9
+	sint32 time_in_park;			// 0xA8
+	uint8 var_AC;					// 0xAC
 	uint8 var_AD;					// creation/hire time?
 	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
-	uint8 var_C5;
+	uint8 staff_id;
 	uint8 var_C6;
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
@@ -404,8 +406,8 @@ typedef struct {
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
 	uint8 pad_EF;
-	uint8 var_F0;
-	uint8 var_F1;
+	uint8 var_F0; //voucher_type
+	uint8 var_F1; //voucher_type arguments i.e. ride_id
 	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 pad_F4[0x02];
@@ -445,5 +447,8 @@ void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
 void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+int get_peep_face_sprite_small(rct_peep *peep);
+int get_peep_face_sprite_large(rct_peep *peep);
+
 
 #endif

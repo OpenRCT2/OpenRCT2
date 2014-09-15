@@ -870,7 +870,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 	int column = x / 116;
 	int row = y / 116;
-	if (row >= 5)
+	if (column >= 5)
 		return result;
 
 	int index = column + (row * 5);

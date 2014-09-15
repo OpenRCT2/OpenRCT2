@@ -34,6 +34,7 @@
 #include "audio.h"
 #include "sprite.h"
 #include "string_ids.h"
+#include "staff.h"
 
 static void set_all_land_owned();
 
@@ -182,10 +183,11 @@ static void set_all_land_owned()
 */
 void sub_6BD3A4() {
 	for (short i = 0; i < 200; i++) {
-		RCT2_ADDRESS(0x013CA672, uint8)[i] = 0;
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
 	}
 	for (short i = 200; i < 204; i++) {
-		RCT2_ADDRESS(0x013CA672, uint8)[i] = 1;
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
 	}
-	RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+	//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+	sub_6C0C3F();
 }
