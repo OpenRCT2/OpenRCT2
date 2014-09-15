@@ -52,7 +52,9 @@ typedef struct {
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30
 	uint8 var_31;
-	uint8 pad_32[0x0C];
+	uint8 pad_32[0x02];
+	uint16 var_34;
+	uint8 pad_36[0x08];
 	uint16 next_vehicle_on_train;	// 0x3E
 	uint32 var_40;
 	uint16 var_44;
@@ -77,6 +79,8 @@ typedef struct {
 
 void vehicle_update_all();
 int sub_6BC2F3(rct_vehicle* vehicle);
+void sub_6BB9FF(rct_vehicle* vehicle);
+void vehicle_sounds_update();
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

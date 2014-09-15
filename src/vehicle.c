@@ -63,8 +63,8 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 							}
 							rct_sound_unknown* j = RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*) - 1;
 							while (j >= i) {
-								*(j + 1) = *j;
 								j--;
+								*(j + 1) = *j;
 							}
 							i->next = v9;
 							rct_widthheight v12;
@@ -78,7 +78,7 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 								v14 = 64;
 							}
 							rct_widthheight v15;
-							i->var_2 = (((v12.width << 16) / v14) - 0x8000) >> 4;
+							i->pan = (((((uint32)v12.width << 16) / v14) - 0x8000) >> 4);
 							v15.width = 0;
 							v15.height = (RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height / 2) + (RCT2_GLOBAL(0x009AF5A4, rct_widthheight).height / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
 							v15.height >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
@@ -88,7 +88,7 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 							if (v18 < 64) {
 								v18 = 64;
 							}
-							i->var_4 = (sint16)((v15.both / v18) - 0x8000) >> 4;
+							i->var_4 = (sint16)(((v15.both / v18) - 0x8000) >> 4);
 							sint32 v19 = vehicle->var_28;
 
 							int testaddr = (vehicle->var_31 * 0x65);
@@ -151,6 +151,308 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 		}
 	}
 	return result + 300;
+}
+
+/**
+*
+*  rct2: 0x006BBC6B
+*/
+void vehicle_sounds_update()
+{
+	uint16 result;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
+		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+		rct_viewport* viewport = (rct_viewport*)-1;
+		for (window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); window >= RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); window--) {
+			viewport = window->viewport;
+			if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
+				break;
+			}
+		}
+		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
+		if (viewport != (rct_viewport*)-1) {
+			if (window) {
+				RCT2_GLOBAL(0x00F438A4, rct_viewport*) = window->viewport;
+				RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
+				RCT2_GLOBAL(0x00F438AC, uint8) = 0;
+				if (viewport->zoom) {
+					RCT2_GLOBAL(0x00F438AC, uint8) = 35;
+					if (viewport->zoom != 1) {
+						RCT2_GLOBAL(0x00F438AC, uint8) = 70;
+					}
+				}
+			}
+		//label12:
+			RCT2_GLOBAL(0x00F438B0, rct_sound_unknown**) = &RCT2_GLOBAL(0x00F438B4, rct_sound_unknown*);
+			for (uint16 i = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
+				sub_6BB9FF(&g_sprite_list[i].vehicle);
+			}
+			RCT2_ADDRESS_VEHICLE_SOUND_LIST;
+			for (rct_vehicle_sound* vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound); vehicle_sound != &RCT2_GLOBAL(0x009AF42C, rct_vehicle_sound); vehicle_sound++) {
+				if (vehicle_sound->id != (uint16)-1) {
+					for (rct_sound_unknown* sound_unknown = &RCT2_GLOBAL(0x00F438B4, rct_sound_unknown); sound_unknown != RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*); sound_unknown++) {
+						if (vehicle_sound->id == sound_unknown->id) {
+							goto label26;
+						}
+					}
+					if (vehicle_sound->sound1_id != (uint16)-1) {
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_stop(&vehicle_sound->sound1);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+					if (vehicle_sound->sound2_id != (uint16)-1) {
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_stop(&vehicle_sound->sound2);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+					vehicle_sound->id = (uint16)-1;
+				}
+			label26:
+				1;
+			}
+
+			for (rct_sound_unknown* sound_unknown = &RCT2_GLOBAL(0x00F438B4, rct_sound_unknown); sound_unknown != RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*); sound_unknown++) {
+				label28:
+				result = (uint16)-1;
+				sint16 v = sound_unknown->var_4;
+				if (v < 0) {
+					v = -v;
+				}
+				if (v > 0xFFF) {
+					v = 0xFFF;
+				}
+				v -= 0x800;
+				if (v > 0) {
+					v -= 0x400;
+					v = -v;
+					(uint16)v /= 4;
+					result = MAKEWORD(LOBYTE(v), HIBYTE(result));
+					if (HIBYTE(v) != 0) {
+						result = MAKEWORD(0xFF, HIBYTE(result));
+						if (HIBYTE(v) < 0) {
+							result = MAKEWORD(0, HIBYTE(result));
+						}
+					}
+				}
+
+				sint16 w = sound_unknown->pan;
+				if (w < 0) {
+					w = -w;
+				}
+				if (w > 0xFFF) {
+					w = 0xFFF;
+				}
+				w -= 0x800;
+				if (w > 0) {
+					w -= 0x400;
+					w = -w;
+					(uint16)w /= 4;
+					result = MAKEWORD(LOBYTE(result), LOBYTE(w));
+					if (HIBYTE(w) != 0) {
+						result = MAKEWORD(LOBYTE(result), 0xFF);
+						if (HIBYTE(w) < 0) {
+							result = MAKEWORD(LOBYTE(result), 0);
+						}
+					}
+				}
+
+				if (LOBYTE(result) >= HIBYTE(result)) {
+					result = MAKEWORD(HIBYTE(result), HIBYTE(result));
+				}
+				result = MAKEWORD(LOBYTE(result) - RCT2_GLOBAL(0x00F438AC, uint8), HIBYTE(result));
+				if (!LOBYTE(result)) {
+					result = MAKEWORD(0, HIBYTE(result));
+				}
+
+				rct_vehicle_sound* vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound);
+				while (sound_unknown->id != vehicle_sound->id) {
+					vehicle_sound++;
+					if (vehicle_sound >= &RCT2_GLOBAL(0x009AF42C, rct_vehicle_sound)) {
+						vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound);
+						int i = 0;
+						while (vehicle_sound->id != (uint16)-1) {
+							vehicle_sound++;
+							i++;
+							if (i >= RCT2_GLOBAL(0x009AAC75, sint8)) {
+								(int)sound_unknown += sound_unknown->next;
+								goto label28;
+							}
+						}
+						vehicle_sound->id = sound_unknown->id;
+						vehicle_sound->sound1_id = (uint16)-1;
+						vehicle_sound->sound2_id = (uint16)-1;
+						vehicle_sound->var_2 = 0x30;
+						break;
+					}
+				}
+
+				uint8 v21 = LOBYTE(sound_unknown->var_8);
+				uint8 v22 = LOBYTE(vehicle_sound->var_2);
+				if (v22 != v21) {
+					if (v22 < v21) {
+						v22 += 4;
+					} else {
+						v22 -= 4;
+					}
+				}
+				vehicle_sound->var_2 = v22;
+				result = MAKEWORD(LOBYTE(result) - v22, HIBYTE(result));
+				if (!result) {
+					result = MAKEWORD(0, HIBYTE(result));
+				}
+				// do sound1 stuff, track noise
+				RCT2_ADDRESS_SPRITE_LIST;
+				rct_sprite* sprite = &g_sprite_list[sound_unknown->id];
+				sint16 volume = sprite->vehicle.var_BC;
+				volume *= LOBYTE(result);
+				(uint16)volume /= 8;
+				volume -= 0x1FFF;
+				if (volume < -10000) {
+					volume = -10000;
+				}
+				if (sprite->vehicle.var_BB == (uint8)-1) {
+					if (vehicle_sound->sound1_id != (uint16)-1) {
+						vehicle_sound->sound1_id = -1;
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_stop(&vehicle_sound->sound1);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+				} else {
+					if (vehicle_sound->sound1_id == (uint16)-1) {
+						goto label69;
+					}
+					if (sprite->vehicle.var_BB != vehicle_sound->sound1_id) {
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_stop(&vehicle_sound->sound1);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					label69:
+						vehicle_sound->sound1_id = sprite->vehicle.var_BB;
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_prepare(sprite->vehicle.var_BB, &vehicle_sound->sound1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						vehicle_sound->sound1_pan = sound_unknown->pan;
+						vehicle_sound->sound1_volume = volume;
+						vehicle_sound->sound1_freq = sound_unknown->frequency;
+						uint16 frequency = sound_unknown->frequency;
+						if (RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.var_BB] & 2) {
+							frequency = (frequency / 2) + 4000;
+						}
+						uint8 looping = RCT2_ADDRESS(0x009AF51E, uint8)[2 * sprite->vehicle.var_BB];
+						int pan = sound_unknown->pan;
+						if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
+							pan = 0;
+						}
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_play(&vehicle_sound->sound1, looping, volume, pan, frequency);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						goto label87;
+					}
+					if (volume != vehicle_sound->sound1_volume) {
+						vehicle_sound->sound1_volume = volume;
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_set_volume(&vehicle_sound->sound1, volume);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+					if (sound_unknown->pan != vehicle_sound->sound1_pan) {
+						vehicle_sound->sound1_pan = sound_unknown->pan;
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_set_pan(&vehicle_sound->sound1, sound_unknown->pan);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && sound_unknown->frequency != vehicle_sound->sound1_freq) {
+						vehicle_sound->sound1_freq = sound_unknown->frequency;
+						uint16 frequency = sound_unknown->frequency;
+						if (RCT2_GLOBAL(0x009AF51F, uint8*)[2 * sprite->vehicle.var_BB] & 2) {
+							frequency = (frequency / 2) + 4000;
+						}
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_set_frequency(&vehicle_sound->sound1, frequency);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+					}
+				label87: // do sound2 stuff, screams
+					sprite = &g_sprite_list[sound_unknown->id];
+					volume = sprite->vehicle.var_BE;
+					volume *= LOBYTE(result);
+					(uint16)volume /= 8;
+					volume -= 0x1FFF;
+					if (volume < -10000) {
+						volume = -10000;
+					}
+					if (sprite->vehicle.var_BD == (uint8)-1) {
+						if (vehicle_sound->sound2_id != (uint16)-1) {
+							vehicle_sound->sound2_id = -1;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_stop(&vehicle_sound->sound2);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						}
+					} else {
+						if (vehicle_sound->sound2_id == (uint16)-1) {
+							goto label93;
+						}
+						if (sprite->vehicle.var_BD != vehicle_sound->sound2_id) {
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_stop(&vehicle_sound->sound2);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						label93:
+							vehicle_sound->sound2_id = sprite->vehicle.var_BD;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_prepare(sprite->vehicle.var_BD, &vehicle_sound->sound2, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+							vehicle_sound->sound2_pan = sound_unknown->pan;
+							vehicle_sound->sound2_volume = volume;
+							vehicle_sound->sound2_freq = sound_unknown->frequency;
+							uint16 frequency = sound_unknown->frequency;
+							if (RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.var_BD] & 1) {
+								frequency = 12649;
+							}
+							frequency = (frequency * 2) - 3248;
+							if (frequency > 25700) {
+								frequency = 25700;
+							}
+							uint8 looping = RCT2_ADDRESS(0x009AF51E, uint8)[2 * sprite->vehicle.var_BD];
+							int pan = sound_unknown->pan;
+							if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
+								pan = 0;
+							}
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_play(&vehicle_sound->sound2, looping, volume, pan, frequency);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+							goto label114;
+						}
+						if (volume != vehicle_sound->sound2_volume) {
+							vehicle_sound->sound2_volume = volume;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_set_volume(&vehicle_sound->sound2, volume);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						}
+						if (sound_unknown->pan != vehicle_sound->sound2_pan) {
+							vehicle_sound->sound2_pan = sound_unknown->pan;
+							if (RCT2_GLOBAL(0x009AAC6D, uint8)) {
+								RCT2_GLOBAL(0x014241BC, uint32) = 1;
+								sound_set_pan(&vehicle_sound->sound2, sound_unknown->pan);
+								RCT2_GLOBAL(0x014241BC, uint32) = 0;
+							}
+						}
+						if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && sound_unknown->frequency != vehicle_sound->sound2_freq) {
+							vehicle_sound->sound2_freq = sound_unknown->frequency;
+							if (!(RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.var_BD] & 1)) {
+								uint16 frequency = (sound_unknown->frequency * 2) - 3248;
+								if (frequency > 25700) {
+									frequency = 25700;
+								}
+								RCT2_GLOBAL(0x014241BC, uint32) = 1;
+								sound_set_frequency(&vehicle_sound->sound2, frequency);
+								RCT2_GLOBAL(0x014241BC, uint32) = 0;
+							}
+						}
+					label114:
+						1;
+					}
+				}
+			}
+		}
+	}
 }
 
 /**

@@ -115,8 +115,8 @@ private:
 	SDL_AudioDeviceID deviceid;
 	AudioFormat format;
 	uint8* effectbuffer;
-	Sample css1samples[63];
-	Stream css1streams[63];
+	Sample css1samples[SOUND_MAXID];
+	Stream css1streams[SOUND_MAXID];
 	Channel channels[10];
 };
 

@@ -168,6 +168,12 @@
     <ClInclude Include="..\src\window_scenery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\scenery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -398,6 +404,15 @@
     <ClCompile Include="..\libspeex\resample.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\mixer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_scenery.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hook.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -426,5 +441,6 @@
     <Text Include="..\data\language\spanish_sp.txt">
       <Filter>Data\Language</Filter>
     </Text>
+    <Text Include="..\data\language\swedish.txt" />
   </ItemGroup>
 </Project>

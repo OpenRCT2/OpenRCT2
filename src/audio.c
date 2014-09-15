@@ -1586,12 +1586,12 @@ void stop_vehicle_sounds()
 		for (int i = 0; i < 7; i++) {
 			rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 			if (vehicle_sound->id != 0xFFFF) {
-				if (vehicle_sound->var_18 != 0xFFFF) {
+				if (vehicle_sound->sound1_id != 0xFFFF) {
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
 					sound_stop(&vehicle_sound->sound1);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;
 				}
-				if (vehicle_sound->var_34 != 0xFFFF) {
+				if (vehicle_sound->sound2_id != 0xFFFF) {
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
 					sound_stop(&vehicle_sound->sound2);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;

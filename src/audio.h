@@ -90,15 +90,15 @@ typedef struct {
 	uint16 id;
 	uint16 var_2;
 	rct_sound sound1;		// 0x04
-	uint16 var_18;
-	uint16 var_1A;
-	uint16 var_1C;
-	uint16 var_1D;
+	uint16 sound1_id;		// 0x18
+	sint16 sound1_volume;	// 0x1A
+	sint16 sound1_pan;		// 0x1C
+	uint16 sound1_freq;
 	rct_sound sound2;		// 0x20
-	uint16 var_34;
-	uint16 pad_36;
-	uint16 var_38;
-	uint16 var_3A;
+	uint16 sound2_id;		// 0x34
+	sint16 sound2_volume;	// 0x36
+	sint16 sound2_pan;		// 0x38
+	uint16 sound2_freq;		// 0x3A
 } rct_vehicle_sound;
 
 typedef struct {
@@ -108,11 +108,11 @@ typedef struct {
 
 typedef struct {
 	uint16 id;
-	sint16 var_2;
+	sint16 pan;			// 0x2
 	sint16 var_4;
-	uint16 frequency; // 0x6
+	uint16 frequency;	// 0x6
 	sint16 var_8;
-	uint16 next; // 0xA
+	uint16 next;		// 0xA
 } rct_sound_unknown;
 
 int get_dsound_devices();
