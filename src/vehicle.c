@@ -226,7 +226,7 @@ void vehicle_sounds_update()
 				if (v > 0) {
 					v -= 0x400;
 					v = -v;
-					(uint16)v /= 4;
+					v = (uint16)v / 4;
 					result = MAKEWORD(LOBYTE(v), HIBYTE(result));
 					if (HIBYTE(v) != 0) {
 						result = MAKEWORD(0xFF, HIBYTE(result));
@@ -247,7 +247,7 @@ void vehicle_sounds_update()
 				if (w > 0) {
 					w -= 0x400;
 					w = -w;
-					(uint16)w /= 4;
+					w = (uint16)w / 4;
 					result = MAKEWORD(LOBYTE(result), LOBYTE(w));
 					if (HIBYTE(w) != 0) {
 						result = MAKEWORD(LOBYTE(result), 0xFF);
@@ -275,7 +275,7 @@ void vehicle_sounds_update()
 							vehicle_sound++;
 							i++;
 							if (i >= RCT2_GLOBAL(0x009AAC75, sint8)) {
-								(int)sound_unknown += sound_unknown->next;
+								sound_unknown = (rct_sound_unknown*)((int)sound_unknown + sound_unknown->next);
 								goto label28;
 							}
 						}
@@ -306,7 +306,7 @@ void vehicle_sounds_update()
 				rct_sprite* sprite = &g_sprite_list[sound_unknown->id];
 				sint16 volume = sprite->vehicle.var_BC;
 				volume *= LOBYTE(result);
-				(uint16)volume /= 8;
+				volume = (uint16)volume / 8;
 				volume -= 0x1FFF;
 				if (volume < -10000) {
 					volume = -10000;
@@ -374,7 +374,7 @@ void vehicle_sounds_update()
 					sprite = &g_sprite_list[sound_unknown->id];
 					volume = sprite->vehicle.var_BE;
 					volume *= LOBYTE(result);
-					(uint16)volume /= 8;
+					volume = (uint16)volume / 8;
 					volume -= 0x1FFF;
 					if (volume < -10000) {
 						volume = -10000;
