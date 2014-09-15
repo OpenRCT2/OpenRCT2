@@ -574,8 +574,8 @@ void window_staff_peep_overview_dropdown()
 		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_MODE_ARRAY + edi, uint16) &= 0xFD; // bug??
 
 		window_invalidate(w);
-		RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
-		//sub_6C0C3F();
+		//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+		sub_6C0C3F();
 	}
 	else {
 		if (!tool_set(w, widgetIndex, 22)) {
