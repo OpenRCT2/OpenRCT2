@@ -235,7 +235,12 @@ typedef enum {
 	WE_RESIZE = 2,
 	WE_MOUSE_DOWN = 3,
 	WE_DROPDOWN = 4,
-	WE_UNKNOWN_05 = 5,
+	WE_UNKNOWN_05 = 5, 
+	// Unknown 05: Used to update tabs that are not being animated
+	// see window_peep. When the overview tab is not highlighted the
+	// items being carried such as hats/balloons still need to be shown
+	// and removed. Probably called after anything that affects items
+	// being carried.
 	WE_UPDATE = 6,
 	WE_UNKNOWN_07 = 7,
 	WE_UNKNOWN_08 = 8,
@@ -493,6 +498,12 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm mov dropdownIndex, ax														\
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
+	
+	#define window_text_input_get_registers(w, widgetIndex, _cl, text)					\
+		__asm mov widgetIndex, dx														\
+		__asm mov _cl, cl																\
+		__asm mov w, esi																\
+		__asm mov text, edi
 
 	#define window_scrollmouse_get_registers(w, x, y)									\
 		__asm mov x, cx																	\
@@ -526,6 +537,12 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 		__asm__ ( "mov %["#dropdownIndex"], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
 		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
+
+	#define window_text_input_get_registers(w, widgetIndex, _cl, text)					\
+		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (_cl) );								\
+		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
+		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
 
 	#define window_scrollmouse_get_registers(w, x, y)									\
 		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );										\

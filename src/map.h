@@ -195,6 +195,7 @@ typedef struct {
 
 void map_init();
 void map_update_tile_pointers();
+rct_map_element *map_get_surface_element_at(int x, int y);
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);

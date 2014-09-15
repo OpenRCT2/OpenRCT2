@@ -492,6 +492,7 @@ const bool rideUnknownData2[0x60] = {
 	true,	// 59 LIM Launched Roller Coaster
 };
 
+/* Data at 0x0097E3B8 */
 const uint8 rideUnknownData3[0x60] = {
 	10,	// 00 Spiral Roller coaster
 	10,	// 01 Stand Up Coaster

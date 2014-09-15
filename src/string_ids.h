@@ -30,6 +30,7 @@ void error_string_quit(int error, rct_string_id format);
 
 char format_get_code(const char *token);
 const char *format_get_token(char code);
+int get_string_length(char* buffer);
 
 enum {
 	// Font format codes
