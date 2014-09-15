@@ -234,7 +234,7 @@ static int window_wheel_input(rct_window *w, int wheel)
 			continue;
 
 		// Originally always checked first scroll view, bug maybe?
-		scroll = &w->scrolls[i * sizeof(rct_scroll)];
+		scroll = &w->scrolls[i];
 		if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 			window_scroll_wheel_input(w, i, wheel);
 			return 1;
@@ -308,7 +308,7 @@ static void window_all_wheel_input()
 			if (widgetIndex != -1) {
 				widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
-					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8) * sizeof(rct_scroll)];
+					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
 						return;
