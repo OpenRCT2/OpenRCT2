@@ -113,7 +113,7 @@ void marketing_set_guest_campaign(rct_peep *peep, int campaign)
 		peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
 		peep->var_F0 = 1;
 		peep->var_F1 = RCT2_ADDRESS(0x01358116, uint8)[campaign];
-		peep->var_C5 = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->staff_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
 		peep->var_C6 = 240;
 		break;
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
@@ -128,7 +128,7 @@ void marketing_set_guest_campaign(rct_peep *peep, int campaign)
 	case ADVERTISING_CAMPAIGN_PARK:
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE:
-		peep->var_C5 = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->staff_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
 		peep->var_C6 = 240;
 		break;
 	}

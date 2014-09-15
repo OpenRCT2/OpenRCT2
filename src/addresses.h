@@ -423,6 +423,8 @@
 
 #define RCT2_ADDRESS_COMMON_FORMAT_ARGS             0x013CE952
 
+#define RCT2_ADDRESS_STAFF_MODE_ARRAY               0x013CA672
+
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
 	#ifdef _MSC_VER

@@ -28,6 +28,7 @@
 #include "widget.h"
 #include "window.h"
 #include "window_dropdown.h"
+#include "staff.h"
 
 enum WINDOW_STAFF_PEEP_PAGE {
 	WINDOW_STAFF_PEEP_OVERVIEW,
@@ -543,7 +544,7 @@ void window_staff_peep_overview_mousedown(int widgetIndex, rct_window* w, rct_wi
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Disable clear patrol area if no area is set.
-	if (!(RCT2_ADDRESS(0x013CA672, uint8)[peep->var_C5] & 2)) {
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
 		RCT2_GLOBAL(0x009DED34, sint32) |= 1 << 1;
 	}
 }
@@ -563,17 +564,18 @@ void window_staff_peep_overview_dropdown()
 	// Clear patrol
 	if (dropdownIndex == 1) {
 		rct_peep* peep = GET_PEEP(w->number);
-		int edi = peep->var_C5;
+		int edi = peep->staff_id;
 		int ebx = edi << 9;
 
 		for (int i = 0; i < 128; i++)
 		{
 			RCT2_GLOBAL(0x13B0E72 + ebx + i * 4, uint32) = 0;
 		}
-		RCT2_GLOBAL(0x13CA672 + edi, uint16) &= 0xFD; // bug??
+		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_MODE_ARRAY + edi, uint16) &= 0xFD; // bug??
 
 		window_invalidate(w);
-		RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+		//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+		sub_6C0C3F();
 	}
 	else {
 		if (!tool_set(w, widgetIndex, 22)) {
