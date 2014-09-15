@@ -333,7 +333,7 @@ void window_staff_peep_disable_widgets(rct_window* w)
 }
 
 /**
- * Same as window_peep_close.
+ * Same as window_peep_overview_close.
  * rct2: 0x006BDFF8
  */
 void window_staff_peep_overview_close()

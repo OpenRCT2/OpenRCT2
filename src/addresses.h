@@ -440,7 +440,7 @@ static void RCT2_CALLPROC_EBPSAFE(int address)
 	#endif
 }
 
-static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
 	#ifdef _MSC_VER
 	__asm {
@@ -453,6 +453,7 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 		mov edi, _edi
 		mov ebp, _ebp
 		call [esp]
+		lahf
 		add esp, 4
 	}
 	#else
@@ -469,6 +470,7 @@ static void RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx,
 		mov edi, %[_edi] 	\n\
 		mov ebp, %[_ebp] 	\n\
 		call [esp] 	\n\
+		lahf \n\
 		add esp, 4 	\n\
 		pop ebp \n\
 		pop ebx \n\

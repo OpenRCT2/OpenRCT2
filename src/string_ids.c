@@ -1508,7 +1508,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		}
 
 		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "sec:" : "secs:");
+		strcpy(*dest, value % 60 == 1 ? "sec" : "secs");
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_REALTIME:
@@ -1523,7 +1523,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		}
 
 		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "min:" : "mins:");
+		strcpy(*dest, value % 60 == 1 ? "min" : "mins");
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_LENGTH:
@@ -1691,4 +1691,59 @@ void reset_saved_strings() {
 	for (int i = 0; i < 1024; i++) {
 		RCT2_ADDRESS(0x135A8F4, uint8)[i * 32] = 0;
 	}
+}
+
+/**
+*  Return the length of the string in buffer.
+*  note you can't use strlen as there can be inline sprites!
+*
+* buffer (esi)
+*/
+int get_string_length(char* buffer)
+{
+	// Length of string
+	int length = 0;
+
+	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
+		length++;
+		if (*curr_char >= 0x20) {
+			continue;
+		}
+		switch (*curr_char) {
+		case FORMAT_MOVE_X:
+		case FORMAT_ADJUST_PALETTE:
+		case 3:
+		case 4:
+			curr_char++;
+			length++;
+			break;
+		case FORMAT_NEWLINE:
+		case FORMAT_NEWLINE_SMALLER:
+		case FORMAT_TINYFONT:
+		case FORMAT_BIGFONT:
+		case FORMAT_MEDIUMFONT:
+		case FORMAT_SMALLFONT:
+		case FORMAT_OUTLINE:
+		case FORMAT_OUTLINE_OFF:
+		case FORMAT_WINDOW_COLOUR_1:
+		case FORMAT_WINDOW_COLOUR_2:
+		case FORMAT_WINDOW_COLOUR_3:
+		case 0x10:
+			continue;
+		case FORMAT_INLINE_SPRITE:
+			length += 4;
+			curr_char += 4;
+			break;
+		default:
+			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
+				length += 2;
+				curr_char += 2;
+				continue;
+			}
+			length += 4;
+			curr_char += 4;//never happens?
+			break;
+		}
+	}
+	return length;
 }
