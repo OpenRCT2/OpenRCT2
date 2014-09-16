@@ -442,6 +442,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			widget->right - widget->left - 2
 		);
 	} else {
+		colour &= ~(1 << 7);
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
 		gfx_draw_string_centred_clipped(
