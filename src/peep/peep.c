@@ -185,7 +185,6 @@ static void peep_update(rct_peep *peep)
 			}
 			rct_ride* ride = GET_RIDE(peep->current_ride);
 			if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
-				//6918b9
 				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 				peep->state = 1;
@@ -203,6 +202,7 @@ static void peep_update(rct_peep *peep)
 					peep->var_2C = 0;
 					return;
 				}
+				//Give up queueing for the ride
 				peep->sprite_direction ^= (1 << 4);
 				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -210,12 +210,12 @@ static void peep_update(rct_peep *peep)
 				peep->state = 1;
 				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 			}
-			//6918CD
+
 			RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 			if (peep->var_71 < 0xFE)return;
 			if (peep->sprite_type == 0){
-				//6919A8
-				if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+					if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+					// Look at watch
 					peep->var_71 = 1;
 					peep->var_72 = 0;
 					peep->var_70 = 0;
@@ -253,6 +253,7 @@ static void peep_update(rct_peep *peep)
 					case 0x2D:
 					case 0x2E:
 					case 0x2F:
+						// Look at watch
 						peep->var_71 = 1;
 						peep->var_72 = 0;
 						peep->var_70 = 0;
@@ -265,6 +266,7 @@ static void peep_update(rct_peep *peep)
 			if (peep->var_7A < 4300) return;
 
 			if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
+				//Give up queueing for the ride
 				peep->sprite_direction ^= (1 << 4);
 				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
