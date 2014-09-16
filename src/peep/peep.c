@@ -175,9 +175,107 @@ static void peep_update(rct_peep *peep)
 		RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
 	} else {
 		// loc_68FD2F
-		RCT2_CALLPROC_X(0x0068FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
-		switch (peep->state) {
 
+		switch (peep->state) {
+		case PEEP_STATE_QUEUING:
+			//69185d
+			if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x40){
+				RCT2_CALLPROC_X(0x691A23, 0, 0, 0, 0, (int)peep, 0, 0);
+				return;
+			}
+			rct_ride* ride = GET_RIDE(peep->current_ride);
+			if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
+				//6918b9
+				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep->state = 1;
+				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+				return;
+			}
+
+			if (peep->var_2C != 0xA){
+				if (peep->var_74 == 0xFFFF){
+					//Happens every time peep goes onto ride.
+					peep->var_36 = 0;
+					RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+					peep->state = PEEP_STATE_QUEUING_FRONT;
+					RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+					peep->var_2C = 0;
+					return;
+				}
+				peep->sprite_direction ^= (1 << 4);
+				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep->state = 1;
+				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			}
+			//6918CD
+			RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+			if (peep->var_71 < 0xFE)return;
+			if (peep->sprite_type == 0){
+				//6919A8
+				if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+					peep->var_71 = 1;
+					peep->var_72 = 0;
+					peep->var_70 = 0;
+					RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+				}
+				if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+				{
+					//Create the ive been waiting in line ages thought
+					RCT2_CALLPROC_X(0x699F5A, (peep->current_ride << 8) | PEEP_THOUGHT_TYPE_QUEUING_AGES, 0, 0, 0, (int)peep, 0, 0);
+				}
+			}
+			else{
+				if (!(peep->var_7A & 0x3F) && peep->var_71 == 0xFE && peep->var_6F == 2){
+					switch (peep->sprite_type){
+					case 0xF:
+					case 0x10:
+					case 0x11:
+					case 0x12:
+					case 0x14:
+					case 0x16:
+					case 0x18:
+					case 0x1F:
+					case 0x20:
+					case 0x21:
+					case 0x22:
+					case 0x23:
+					case 0x24:
+					case 0x25:
+					case 0x27:
+					case 0x29:
+					case 0x2A:
+					case 0x2B:
+					case 0x2C:
+					case 0x2D:
+					case 0x2E:
+					case 0x2F:
+						peep->var_71 = 1;
+						peep->var_72 = 0;
+						peep->var_70 = 0;
+						RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+						RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+						break;
+					}
+				}
+			}
+			if (peep->var_7A < 4300) return;
+
+			if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
+				peep->sprite_direction ^= (1 << 4);
+				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep->state = 1;
+				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			}
+			break;
+		default:		
+			RCT2_CALLPROC_X(0x0068FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
 		}
 	}
 }

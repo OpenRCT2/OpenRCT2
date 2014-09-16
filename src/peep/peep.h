@@ -371,16 +371,17 @@ typedef struct {
 	uint8 current_seat;				// 0x6C
 	uint8 var_6D;					// 0x6D
 	uint8 var_6E;					// 0x6E
-	uint8 pad_6F;
+	uint8 var_6F;
 	uint8 var_70;
 	uint8 var_71;
 	uint8 var_72;
 	uint8 var_73;
-	uint16 pad_74;
+	uint16 var_74;
 	uint8 var_76;
 	uint8 pad_77;
 	uint8 var_78;
-	uint8 pad_79[0x03];
+	uint8 pad_79;
+	uint16 var_7A; // time waiting in line possibly
 	uint8 rides_been_on[32];		// 0x7C 
 	// 255 bit bitmap of every ride the peep has been on see
 	// window_peep_rides_update for how to use.
