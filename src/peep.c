@@ -178,31 +178,31 @@ void peep_problem_warnings_update()
 			break;
 
 		case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
-			if (peep->guest_peep_varC5 == -1){
+			if (peep->guest_heading_to_ride_id == -1){
 				hunger_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_peep_varC5];
+			ride = &g_ride_list[peep->guest_heading_to_ride_id];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000))
 				hunger_counter++;
 			break;
 
 		case PEEP_THOUGHT_TYPE_THIRSTY:
-			if (peep->guest_peep_varC5 == -1){
+			if (peep->guest_heading_to_ride_id == -1){
 				thirst_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_peep_varC5];
+			ride = &g_ride_list[peep->guest_heading_to_ride_id];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x1000000))
 				thirst_counter++;
 			break;
 
 		case PEEP_THOUGHT_TYPE_BATHROOM:
-			if (peep->guest_peep_varC5 == -1){
+			if (peep->guest_heading_to_ride_id == -1){
 				bathroom_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_peep_varC5];
+			ride = &g_ride_list[peep->guest_heading_to_ride_id];
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x2000000))
 				bathroom_counter++;
 			break;
@@ -448,8 +448,8 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		break;
 	case PEEP_STATE_WALKING:
 	case 0x14:
-		if (peep->guest_peep_varC5 != 0xFF){
-			ride = g_ride_list[peep->guest_peep_varC5];
+		if (peep->guest_heading_to_ride_id != 0xFF){
+			ride = g_ride_list[peep->guest_heading_to_ride_id];
 			*argument_1 = STR_HEADING_FOR | (ride.name << 16);
 			*argument_2 = ride.name_arguments;
 		}

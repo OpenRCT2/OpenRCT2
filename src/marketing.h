@@ -33,6 +33,13 @@ enum {
 	ADVERTISING_CAMPAIGN_COUNT
 };
 
+enum{
+	VOUCHER_TYPE_PARK_ENTRY_FREE,
+	VOUCHER_TYPE_RIDE_FREE,
+	VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE,
+	VOUCHER_TYPE_FOOD_OR_DRINK_FREE,
+};
+
 extern const money16 AdvertisingCampaignPricePerWeek[6];
 
 int marketing_get_campaign_guest_generation_probability(int campaign);
