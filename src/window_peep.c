@@ -1840,8 +1840,8 @@ void window_peep_finance_paint(){
 	// Paid on rides
 	y += 10;
 	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_rides;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->staff_type;
-	if (peep->staff_type != 1){
+	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_rides;
+	if (peep->no_of_rides != 1){
 		gfx_draw_string_left(dpi, 2298, (void*)0x13CE952, 0, x, y);
 	}
 	else{
