@@ -106,6 +106,142 @@ void peep_update_all()
 }
 
 /**
+ * rct2: 0x690028
+ */
+void peep_update_drowning(rct_peep* peep){
+	if (peep->var_71 == 11){
+		RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (peep->var_71 == 11) return;
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
+			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+			RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+			news_item_add_to_queue(NEWS_ITEM_BLANK, 2347, peep->x | (peep->y << 16));
+		}
+		RCT2_GLOBAL(0x135882E, uint16) += 25;
+		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
+			RCT2_GLOBAL(0x135882E, uint16) = 1000;
+		}
+		if (peep->type == PEEP_TYPE_STAFF){
+			RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+			return;
+		}
+		if (peep->var_2A == 0){
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+			RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
+		}
+		if (peep->state == PEEP_STATE_ENTERING_PARK){
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+		}
+		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+
+	RCT2_CALLPROC_X(0x690028, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+/**
+ * rct2: 0x69185D
+ */
+void peep_update_queuing(rct_peep* peep){
+
+	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x40){
+		RCT2_CALLPROC_X(0x691A23, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+	if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
+		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 1;
+		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+
+	if (peep->var_2C != 0xA){
+		if (peep->var_74 == 0xFFFF){
+			//Happens every time peep goes onto ride.
+			peep->var_36 = 0;
+			RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep->state = PEEP_STATE_QUEUING_FRONT;
+			RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep->var_2C = 0;
+			return;
+		}
+		//Give up queueing for the ride
+		peep->sprite_direction ^= (1 << 4);
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 1;
+		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+
+	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+	if (peep->var_71 < 0xFE)return;
+	if (peep->sprite_type == 0){
+		if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+			// Look at watch
+			peep->var_71 = 1;
+			peep->var_72 = 0;
+			peep->var_70 = 0;
+			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		}
+		if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+		{
+			//Create the ive been waiting in line ages thought
+			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
+		}
+	}
+	else{
+		if (!(peep->var_7A & 0x3F) && peep->var_71 == 0xFE && peep->var_6F == 2){
+			switch (peep->sprite_type){
+			case 0xF:
+			case 0x10:
+			case 0x11:
+			case 0x12:
+			case 0x14:
+			case 0x16:
+			case 0x18:
+			case 0x1F:
+			case 0x20:
+			case 0x21:
+			case 0x22:
+			case 0x23:
+			case 0x24:
+			case 0x25:
+			case 0x27:
+			case 0x29:
+			case 0x2A:
+			case 0x2B:
+			case 0x2C:
+			case 0x2D:
+			case 0x2E:
+			case 0x2F:
+				// Look at watch
+				peep->var_71 = 1;
+				peep->var_72 = 0;
+				peep->var_70 = 0;
+				RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+				break;
+			}
+		}
+	}
+	if (peep->var_7A < 4300) return;
+
+	if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
+		//Give up queueing for the ride
+		peep->sprite_direction ^= (1 << 4);
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 1;
+		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+}
+
+/**
  *
  *  rct2: 0x0068FC1E
  */
@@ -177,104 +313,79 @@ static void peep_update(rct_peep *peep)
 		// loc_68FD2F
 
 		switch (peep->state) {
-		case PEEP_STATE_QUEUING:
-			//69185d
-			if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x40){
-				RCT2_CALLPROC_X(0x691A23, 0, 0, 0, 0, (int)peep, 0, 0);
-				return;
-			}
-			rct_ride* ride = GET_RIDE(peep->current_ride);
-			if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
-				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
-				peep->state = 1;
-				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
-				return;
-			}
-
-			if (peep->var_2C != 0xA){
-				if (peep->var_74 == 0xFFFF){
-					//Happens every time peep goes onto ride.
-					peep->var_36 = 0;
-					RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
-					peep->state = PEEP_STATE_QUEUING_FRONT;
-					RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
-					peep->var_2C = 0;
-					return;
-				}
-				//Give up queueing for the ride
-				peep->sprite_direction ^= (1 << 4);
-				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
-				peep->state = 1;
-				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
-			}
-
-			RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
-			if (peep->var_71 < 0xFE)return;
-			if (peep->sprite_type == 0){
-					if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
-					// Look at watch
-					peep->var_71 = 1;
-					peep->var_72 = 0;
-					peep->var_70 = 0;
-					RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-				}
-				if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
-				{
-					//Create the ive been waiting in line ages thought
-					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
-				}
-			}
-			else{
-				if (!(peep->var_7A & 0x3F) && peep->var_71 == 0xFE && peep->var_6F == 2){
-					switch (peep->sprite_type){
-					case 0xF:
-					case 0x10:
-					case 0x11:
-					case 0x12:
-					case 0x14:
-					case 0x16:
-					case 0x18:
-					case 0x1F:
-					case 0x20:
-					case 0x21:
-					case 0x22:
-					case 0x23:
-					case 0x24:
-					case 0x25:
-					case 0x27:
-					case 0x29:
-					case 0x2A:
-					case 0x2B:
-					case 0x2C:
-					case 0x2D:
-					case 0x2E:
-					case 0x2F:
-						// Look at watch
-						peep->var_71 = 1;
-						peep->var_72 = 0;
-						peep->var_70 = 0;
-						RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-						RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-						break;
-					}
-				}
-			}
-			if (peep->var_7A < 4300) return;
-
-			if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
-				//Give up queueing for the ride
-				peep->sprite_direction ^= (1 << 4);
-				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
-				peep->state = 1;
-				RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
-			}
+		case PEEP_STATE_DROWNING:
+			peep_update_drowning(peep);
 			break;
+		case PEEP_STATE_1:
+			RCT2_CALLPROC_X(0x006902A2, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_QUEUING_FRONT:
+			RCT2_CALLPROC_X(0x00691A24, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_ON_RIDE:
+			RCT2_CALLPROC_X(0x00691A2F, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_LEAVING_RIDE:
+			RCT2_CALLPROC_X(0x00691A30, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_WALKING:
+			RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_QUEUING:
+			peep_update_queuing(peep);
+			break;
+		case PEEP_STATE_ENTERING_RIDE:
+			RCT2_CALLPROC_X(0x00691A24, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_SITTING:
+			RCT2_CALLPROC_X(0x0069152B, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_PICKED:
+			RCT2_CALLPROC_X(0x00690009, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_PATROLLING:
+			RCT2_CALLPROC_X(0x006BF1FD, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_MOWING:
+			RCT2_CALLPROC_X(0x006BF567, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_SWEEPING:
+			RCT2_CALLPROC_X(0x006BF641, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_ENTERING_PARK:
+			RCT2_CALLPROC_X(0x00691451, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_LEAVING_PARK:
+			RCT2_CALLPROC_X(0x006914CD, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_ANSWERING:
+			RCT2_CALLPROC_X(0x006C0CB8, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_FIXING:
+			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_BUYING:
+			RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_WATCHING:
+			RCT2_CALLPROC_X(0x006916D6, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_EMPTYING_BIN:
+			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_20:
+			RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_WATERING:
+			RCT2_CALLPROC_X(0x006916D6, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_HEADING_TO_INSPECTION:
+			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+		case PEEP_STATE_INSPECTING:
+			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
+			break;
+			//There shouldnt be any more
 		default:		
 			RCT2_CALLPROC_X(0x0068FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
@@ -570,11 +681,11 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	rct_ride ride;
 
 	switch (peep->state){
-	case 0:
+	case PEEP_STATE_DROWNING:
 		*argument_1 = peep->var_71 == 0xB ? STR_DROWNING : STR_WALKING;
 		*argument_2 = 0;
 		break;
-	case 1:
+	case PEEP_STATE_1:
 		*argument_1 = STR_WALKING;
 		*argument_2 = 0;
 		break;
@@ -595,7 +706,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		*argument_2 = ride.name_arguments;
 		break;
 	case PEEP_STATE_WALKING:
-	case 0x14:
+	case PEEP_STATE_20:
 		if (peep->guest_heading_to_ride_id != 0xFF){
 			ride = g_ride_list[peep->guest_heading_to_ride_id];
 			*argument_1 = STR_HEADING_FOR | (ride.name << 16);
@@ -889,14 +1000,17 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 	
 	for (int i = 0; i < PEEP_MAX_THOUGHTS; ++i){
 		rct_peep_thought* thought = &peep->thoughts[i];
+		// Remove the oldest thought by setting it to NONE.
 		if (thought->type == PEEP_THOUGHT_TYPE_NONE) break;
 
 		if (thought->type == thought_type && thought->item == thought_arguments){
+			// If the thought type has not changed then we need to move
+			// it to the top of the thought list. This is done by first removing the
+			// existing thought and placing it at the top.
 			memmove(thought, thought + 1, sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
 			break;
 		}
 	}
-
 
 	memmove(&peep->thoughts[1], &peep->thoughts[0], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - 1));
 
