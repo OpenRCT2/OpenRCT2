@@ -458,7 +458,6 @@ static void window_ride_colour_resize();
 static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
 static void window_ride_colour_dropdown();
 static void window_ride_colour_update(rct_window *w);
-static void window_ride_colour_toolupdate();
 static void window_ride_colour_tooldown();
 static void window_ride_colour_tooldrag();
 static void window_ride_colour_invalidate();
@@ -604,7 +603,7 @@ static void* window_ride_colour_events[] = {
 	window_ride_colour_update,
 	window_ride_emptysub,
 	window_ride_emptysub,
-	window_ride_colour_toolupdate,
+	window_ride_emptysub,
 	window_ride_colour_tooldown,
 	window_ride_colour_tooldrag,
 	window_ride_emptysub,
@@ -2684,6 +2683,42 @@ static int window_ride_has_track_colour(rct_ride *ride, int trackColour)
 	}
 }
 
+static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
+{
+	rct_map_element *mapElement;
+	uint8 newColourScheme;
+
+	newColourScheme = (uint8)(*((uint16*)&w->var_494));
+
+	// Get map coordinates from point
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	edx = -5;
+	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	x = eax & 0xFFFF;
+	y = ecx & 0xFFFF;
+	mapElement = (rct_map_element*)edx;
+
+	if ((ebx & 0xFF) != 3)
+		return;
+	if (mapElement->properties.track.ride_index != w->number)
+		return;
+	if ((mapElement->properties.track.colour & 3) == newColourScheme)
+		return;
+
+	RCT2_CALLPROC_X(
+		0x006C683D,
+		x,
+		((mapElement->type & 3) << 8) | mapElement->properties.track.type,
+		y,
+		mapElement->base_height << 3,
+		newColourScheme,
+		0,
+		4
+	);
+}
+
 /**
  * 
  * rct2: 0x006B04FA
@@ -2958,21 +2993,33 @@ static void window_ride_colour_update(rct_window *w)
 
 /**
  * 
- * rct2: 0x006B04E5
- */
-static void window_ride_colour_toolupdate() { }
-
-/**
- * 
  * rct2: 0x006B04EC
  */
-static void window_ride_colour_tooldown() { }
+static void window_ride_colour_tooldown()
+{
+	rct_window *w;
+	short widgetIndex, x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	
+	if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
+		window_ride_set_track_colour_scheme(w, x, y);
+}
 
 /**
  * 
  * rct2: 0x006B04F3
  */
-static void window_ride_colour_tooldrag() { }
+static void window_ride_colour_tooldrag()
+{
+	rct_window *w;
+	short widgetIndex, x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	
+	if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
+		window_ride_set_track_colour_scheme(w, x, y);
+}
 
 /**
  * 
