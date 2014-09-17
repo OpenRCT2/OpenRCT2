@@ -125,46 +125,48 @@ void window_save_prompt_open()
 
 	// Check if window is already open
 	window = window_bring_to_front_by_id(WC_SAVE_PROMPT, 0);
-	if (window == NULL) {
-		if (prompt_mode == PM_QUIT) {
-			widgets = window_quit_prompt_widgets;
-			enabled_widgets =
-				(1 << WQIDX_CLOSE) |
-				(1 << WQIDX_OK) |
-				(1 << WQIDX_CANCEL);
-			x = 177;
-			y = 34;
-		} else {
-			widgets = window_save_prompt_widgets;
-			enabled_widgets =
-				(1 << WIDX_CLOSE) |
-				(1 << WIDX_SAVE) |
-				(1 << WIDX_DONT_SAVE) |
-				(1 << WIDX_CANCEL);
-			x = 260;
-			y = 50;
-		}
+	if (window){
+		window_close(window);
+	}
 
-		window = window_create(
-			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - x/2,
-			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - y/2),
+	if (prompt_mode == PM_QUIT) {
+		widgets = window_quit_prompt_widgets;
+		enabled_widgets =
+			(1 << WQIDX_CLOSE) |
+			(1 << WQIDX_OK) |
+			(1 << WQIDX_CANCEL);
+		x = 177;
+		y = 34;
+	} else {
+		widgets = window_save_prompt_widgets;
+		enabled_widgets =
+			(1 << WIDX_CLOSE) |
+			(1 << WIDX_SAVE) |
+			(1 << WIDX_DONT_SAVE) |
+			(1 << WIDX_CANCEL);
+		x = 260;
+		y = 50;
+	}
+
+	window = window_create(
+			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - x / 2,
+			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - y / 2),
 			x,
 			y,
 			(uint32*)window_save_prompt_events,
 			WC_SAVE_PROMPT,
 			WF_TRANSPARENT | WF_STICK_TO_FRONT
-		);
+			);
 
-		window->widgets = widgets;
-		window->enabled_widgets = enabled_widgets;
-		window_init_scroll_widgets(window);
-		window->colours[0] = 154;
+	window->widgets = widgets;
+	window->enabled_widgets = enabled_widgets;
+	window_init_scroll_widgets(window);
+	window->colours[0] = 154;
 
-		// Pause the game
-		RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
-		pause_sounds();
-		window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
-	}
+	// Pause the game
+	RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
+	pause_sounds();
+	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
 
 	stringId = prompt_mode + STR_LOAD_GAME;
 	if (stringId == STR_LOAD_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)

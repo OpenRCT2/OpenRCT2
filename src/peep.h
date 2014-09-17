@@ -332,7 +332,10 @@ typedef struct {
 	uint8 pad_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	uint8 staff_type;				// 0x2F Also used for no_of_rides
+	union{							// 0x2F
+		uint8 staff_type;
+		uint8 no_of_rides;
+	};
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
 	uint16 var_32;
@@ -388,7 +391,11 @@ typedef struct {
 	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
-	uint8 staff_id;
+	union							// 0xC5
+	{
+		uint8 staff_id;
+		uint8 guest_heading_to_ride_id;
+	};
 	uint8 var_C6;
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
@@ -406,8 +413,8 @@ typedef struct {
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
 	uint8 pad_EF;
-	uint8 var_F0; //voucher_type
-	uint8 var_F1; //voucher_type arguments i.e. ride_id
+	uint8 voucher_type;				// 0xF0
+	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
 	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 pad_F4[0x02];

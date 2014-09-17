@@ -107,28 +107,28 @@ void marketing_set_guest_campaign(rct_peep *peep, int campaign)
 	switch (campaign) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
 		peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
-		peep->var_F0 = 0;
+		peep->voucher_type = VOUCHER_TYPE_PARK_ENTRY_FREE;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
-		peep->var_F0 = 1;
-		peep->var_F1 = RCT2_ADDRESS(0x01358116, uint8)[campaign];
-		peep->staff_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->voucher_type = VOUCHER_TYPE_RIDE_FREE;
+		peep->voucher_arguments = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->guest_heading_to_ride_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
 		peep->var_C6 = 240;
 		break;
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
 		peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
-		peep->var_F0 = 2;
+		peep->voucher_type = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
 		break;
 	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
 		peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
-		peep->var_F0 = 3;
-		peep->var_F1 = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->voucher_type = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
+		peep->voucher_arguments = RCT2_ADDRESS(0x01358116, uint8)[campaign];
 		break;
 	case ADVERTISING_CAMPAIGN_PARK:
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE:
-		peep->staff_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
+		peep->guest_heading_to_ride_id = RCT2_ADDRESS(0x01358116, uint8)[campaign];
 		peep->var_C6 = 240;
 		break;
 	}

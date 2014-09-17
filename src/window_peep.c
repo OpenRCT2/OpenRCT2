@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "map.h"
+#include "marketing.h"
 #include "ride.h"
 #include "peep.h"
 #include "scenario.h"
@@ -1839,8 +1840,8 @@ void window_peep_finance_paint(){
 	// Paid on rides
 	y += 10;
 	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_rides;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->staff_type;
-	if (peep->staff_type != 1){
+	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_rides;
+	if (peep->no_of_rides != 1){
 		gfx_draw_string_left(dpi, 2298, (void*)0x13CE952, 0, x, y);
 	}
 	else{
@@ -2105,19 +2106,19 @@ void window_peep_inventory_paint(){
 			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
 			break;
 		case PEEP_ITEM_VOUCHER:
-			RCT2_GLOBAL(0x13CE958, uint16) = peep->var_F0 + 2418;
+			RCT2_GLOBAL(0x13CE958, uint16) = peep->voucher_type + 2418;
 			RCT2_GLOBAL(0x13CE95A, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
 			RCT2_GLOBAL(0x13CE95C, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
 
-			if (peep->var_F0 == 0 || peep->var_F0 == 2)break;
+			if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE || peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)break;
 
-			int voucher_id = peep->var_F1 + 1988;
+			int voucher_id = peep->voucher_arguments + 1988;
 			if (voucher_id >= 2020) voucher_id += 102;
 
 			RCT2_GLOBAL(0x13CE95A, uint16) = voucher_id;
 
-			if (peep->var_F0 == 3)break;
-			ride = GET_RIDE(peep->var_F1);
+			if (peep->voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)break;
+			ride = GET_RIDE(peep->voucher_arguments);
 			RCT2_GLOBAL(0x13CE95A, uint16) = ride->name;
 			RCT2_GLOBAL(0x13CE95C, uint32) = ride->name_arguments;
 			break;
