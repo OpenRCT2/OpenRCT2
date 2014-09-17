@@ -892,13 +892,8 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 		if (thought->type == PEEP_THOUGHT_TYPE_NONE) break;
 
 		if (thought->type == thought_type && thought->item == thought_arguments){
-			for (int j = i; j < PEEP_MAX_THOUGHTS; ++j){
-				if (j == PEEP_MAX_THOUGHTS - 1){
-					peep->thoughts[j].type = PEEP_THOUGHT_TYPE_NONE;
-					break;
-				}
-				peep->thoughts[j] = peep->thoughts[j + 1];
-			}
+			memmove(thought, thought + 1, sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
+			break;
 		}
 	}
 
