@@ -21,10 +21,6 @@
 #ifndef _HOOK_H_
 #define _HOOK_H_
 
-extern void* g_hooktableaddress;
-extern int g_hooktableoffset;
-extern int g_maxhooks;
-
 enum REGISTER_ARGS {
 	EAX = 1 << 0,
 	EBX = 1 << 1,
