@@ -225,7 +225,7 @@ static void peep_update(rct_peep *peep)
 				if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
 				{
 					//Create the ive been waiting in line ages thought
-					RCT2_CALLPROC_X(0x699F5A, (peep->current_ride << 8) | PEEP_THOUGHT_TYPE_QUEUING_AGES, 0, 0, 0, (int)peep, 0, 0);
+					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
 				}
 			}
 			else{
@@ -868,4 +868,47 @@ int peep_is_mechanic(rct_peep *peep)
 		peep->type == PEEP_TYPE_STAFF &&
 		peep->staff_type == STAFF_TYPE_MECHANIC
 	);
+}
+
+/**
+ * rct2: 0x699F5A
+ * al:thought_type
+ * ah:thought_arguments
+ * esi: peep
+ */
+void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments){
+	int var_71 = RCT2_ADDRESS(0x981DB0, uint16)[thought_type];
+
+	if (var_71 != 0xFF && peep->var_71 >= 254){
+			peep->var_71 = var_71;
+			peep->var_72 = 0;
+			peep->var_70 = 0;
+			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+	
+	for (int i = 0; i < PEEP_MAX_THOUGHTS; ++i){
+		rct_peep_thought* thought = &peep->thoughts[i];
+		if (thought->type == PEEP_THOUGHT_TYPE_NONE) break;
+
+		if (thought->type == thought_type && thought->item == thought_arguments){
+			for (int j = i; j < PEEP_MAX_THOUGHTS; ++j){
+				if (j == PEEP_MAX_THOUGHTS - 1){
+					peep->thoughts[j].type = PEEP_THOUGHT_TYPE_NONE;
+					break;
+				}
+				peep->thoughts[j] = peep->thoughts[j + 1];
+			}
+		}
+	}
+
+
+	memmove(&peep->thoughts[1], &peep->thoughts[0], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - 1));
+
+	peep->thoughts[0].type = thought_type;
+	peep->thoughts[0].item = thought_arguments;
+	peep->thoughts[0].var_2 = 0;
+	peep->thoughts[0].var_3 = 0;
+
+	peep->var_45 |= (1 << 0);
 }

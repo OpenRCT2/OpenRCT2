@@ -1098,7 +1098,8 @@ void window_guest_overview_update(rct_window* w){
 			int rand = scenario_rand() & 0xFFFF;
 			if (rand <= 0x2AAA){
 				rct_peep* peep = GET_PEEP(w->number);
-				RCT2_CALLPROC_X(0x699F5A, 0xFF00 | PEEP_THOUGHT_TYPE_WATCHED, 0, 0, 0, (int)peep, 0, 0);
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+				//RCT2_CALLPROC_X(0x699F5A, 0xFF00 | PEEP_THOUGHT_TYPE_WATCHED, 0, 0, 0, (int)peep, 0, 0);
 			}
 		}
 	}

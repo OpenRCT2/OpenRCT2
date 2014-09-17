@@ -495,4 +495,12 @@ int peep_check_easteregg_name(int index, rct_peep *peep);
 int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
 
+/**
+* rct2: 0x699F5A
+* al:thought_type
+* ah:thought_arguments
+* esi: peep
+*/
+void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
+
 #endif
