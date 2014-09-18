@@ -110,6 +110,7 @@ void peep_update_all()
  */
 void peep_update_drowning(rct_peep* peep){
 	if (peep->var_71 == 11){
+		// Check to see if we are ready to drown.
 		RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->var_71 == 11) return;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
@@ -135,7 +136,10 @@ void peep_update_drowning(rct_peep* peep){
 		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
+	RCT2_GLOBAL(0xF1AEC4, sint32) = -1;
+	rct_map_element *map_element = TILE_MAP_ELEMENT_POINTER((peep->y / 32) * 256 + (peep->x / 32));
 
+	if (map_element->type & 0x3C)
 	RCT2_CALLPROC_X(0x690028, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
