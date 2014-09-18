@@ -154,9 +154,10 @@ void map_update_tile_pointers()
 
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
+ *
  *  ax: x
  *  cx: y
- *  dx: return
+ *  dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)
