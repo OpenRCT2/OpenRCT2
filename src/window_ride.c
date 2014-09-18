@@ -75,6 +75,14 @@ enum {
 	WIDX_LOCATE,
 	WIDX_DEMOLISH,
 
+	WIDX_VEHICLE_TYPE = 14,
+	WIDX_VEHICLE_TYPE_DROPDOWN,
+	WIDX_VEHICLE_TRAINS_PREVIEW,
+	WIDX_VEHICLE_TRAINS,
+	WIDX_VEHICLE_TRAINS_DROPDOWN,
+	WIDX_VEHICLE_CARS_PER_TRAIN,
+	WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN,
+
 	WIDX_MODE_TWEAK = 14,
 	WIDX_MODE_TWEAK_INCREASE,
 	WIDX_MODE_TWEAK_DECREASE,
@@ -180,6 +188,33 @@ static rct_widget window_ride_main_widgets[] = {
 	{ WWT_FLATBTN,			1,	291,	314,	94,		117,	SPR_RENAME,						STR_NAME_RIDE_TIP							},
 	{ WWT_FLATBTN,			1,	291,	314,	118,	141,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP						},
 	{ WWT_FLATBTN,			1,	291,	314,	142,	165,	SPR_DEMOLISH,					STR_DEMOLISH_RIDE_TIP						},
+	{ WIDGETS_END },
+};
+
+// 0x009ADDA8
+static rct_widget window_ride_vehicle_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,								STR_NONE										},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,										STR_WINDOW_TITLE_TIP							},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,								STR_CLOSE_WINDOW_TIP							},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,								STR_NONE										},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,									STR_VIEW_OF_RIDE_ATTRACTION_TIP					},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,									STR_VEHICLE_DETAILS_AND_OPTIONS_TIP				},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,									STR_OPERATING_OPTIONS_TIP						},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,									STR_MAINTENANCE_OPTIONS_TIP						},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,									STR_COLOUR_SCHEME_OPTIONS_TIP					},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,									STR_SOUND_AND_MUSIC_OPTIONS_TIP					},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,									STR_MEASUREMENTS_AND_TEST_DATA_TIP				},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,									STR_GRAPHS_TIP									},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,									STR_INCOME_AND_COSTS_TIP						},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,									STR_CUSTOMER_INFORMATION_TIP					},
+
+	{ WWT_DROPDOWN,			1,	7,		308,	50,		61,		0xFFFFFFFF,									STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	51,		60,		876,										STR_NONE										},
+	{ WWT_SCROLL,			1,	7,		308,	141,	183,	0,											STR_NONE										},
+	{ WWT_DROPDOWN,			1,	7,		151,	190,	201,	1021,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	191,	200,	876,										STR_NONE										},
+	{ WWT_DROPDOWN,			1,	164,	308,	190,	201,	1022,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	200,	876,										STR_NONE										},
 	{ WIDGETS_END },
 };
 
@@ -396,7 +431,7 @@ static rct_widget window_ride_customer_widgets[] = {
 
 static rct_widget *window_ride_page_widgets[] = {
 	window_ride_main_widgets,
-	(rct_widget*)0x009ADDA8,
+	window_ride_vehicle_widgets,
 	window_ride_operating_widgets,
 	window_ride_maintenance_widgets,
 	window_ride_colour_widgets,
@@ -435,6 +470,15 @@ static void window_ride_main_textinput();
 static void window_ride_main_unknown_14();
 static void window_ride_main_invalidate();
 static void window_ride_main_paint();
+
+static void window_ride_vehicle_mouseup();
+static void window_ride_vehicle_resize();
+static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_vehicle_dropdown();
+static void window_ride_vehicle_update(rct_window *w);
+static void window_ride_vehicle_invalidate();
+static void window_ride_vehicle_paint();
+static void window_ride_vehicle_scrollpaint();
 
 static void window_ride_operating_mouseup();
 static void window_ride_operating_resize();
@@ -526,6 +570,38 @@ static void* window_ride_main_events[] = {
 	window_ride_main_invalidate,
 	window_ride_main_paint,
 	window_ride_emptysub
+};
+
+// 0x0098E204
+static void* window_ride_vehicle_events[] = {
+	window_ride_emptysub,
+	window_ride_vehicle_mouseup,
+	window_ride_vehicle_resize,
+	window_ride_vehicle_mousedown,
+	window_ride_vehicle_dropdown,
+	window_ride_emptysub,
+	window_ride_vehicle_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_vehicle_invalidate,
+	window_ride_vehicle_paint,
+	window_ride_vehicle_scrollpaint
 };
 
 // 0x0098E0B4
@@ -754,7 +830,7 @@ static void* window_ride_customer_events[] = {
 
 static uint32* window_ride_page_events[] = {
 	(uint32*)window_ride_main_events,
-	(uint32*)0x0098E204,
+	(uint32*)window_ride_vehicle_events,
 	(uint32*)window_ride_operating_events,
 	(uint32*)window_ride_maintenance_events,
 	(uint32*)window_ride_colour_events,
@@ -864,7 +940,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		y = (widget->bottom - widget->top) - 12;
 
 		ride = GET_RIDE(w->number);
-		RCT2_CALLPROC_X(0x006DE4CD, (ride->var_0C9 << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
+		RCT2_CALLPROC_X(0x006DE4CD, (ride->num_cars_per_train << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
 
 		rideEntry = rideEntries[ride->subtype];
 		if (rideEntry->var_008 & 1) {
@@ -1794,6 +1870,309 @@ static void window_ride_main_paint()
 		w->y + widget->top - 1,
 		widget->right - widget->left
 	);
+}
+
+#pragma endregion
+
+#pragma region Vehicle
+
+#define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
+
+/**
+ * 
+ * rct2: 0x006B272D
+ */
+static void window_ride_vehicle_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+	rct_ride *ride;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	ride = GET_RIDE(w->number);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B2ABB
+ */
+static void window_ride_vehicle_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 316, 208, 316, 208);
+}
+
+/**
+ * 
+ * rct2: 0x006B2748
+ */
+static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	rct_widget *dropdownWidget = widget - 1;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id stringId;
+	int i, minCars, maxCars, cars;
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	switch (widgetIndex) {
+	case WIDX_VEHICLE_TYPE_DROPDOWN:
+		break;
+	case WIDX_VEHICLE_TRAINS_DROPDOWN:
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0x80,
+			ride->var_0CC,
+			widget->right - dropdownWidget->left
+		);
+
+		stringId = RideNameConvention[ride->type].vehicle_name + 4;
+		for (i = 0; i < 32; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = ((i + 1) << 16) | (i == 0 ? stringId : stringId + 1);
+		}
+
+		gDropdownItemsChecked = (1 << (ride->num_vehicles - 1));
+		break;
+	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
+		minCars = (ride->var_0CD >> 4);
+		maxCars = (ride->var_0CD & 0x0F);
+
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0x80,
+			maxCars - minCars + 1,
+			widget->right - dropdownWidget->left
+		);
+
+		for (i = 0; i < 12; i++) {
+			cars = minCars + i;
+
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = 1024;
+			if (cars - rideEntry->var_012 > 1)
+				gDropdownItemsArgs[i]++;
+			gDropdownItemsArgs[i] |= (cars - rideEntry->var_012) << 16;
+		}
+
+		gDropdownItemsChecked = (1 << (ride->num_cars_per_train - minCars));
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B2767
+ */
+static void window_ride_vehicle_dropdown()
+{
+	rct_window *w;
+	short widgetIndex, dropdownIndex;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (dropdownIndex == -1)
+		return;
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	switch (widgetIndex) {
+	case WIDX_VEHICLE_TYPE_DROPDOWN:
+		break;
+	case WIDX_VEHICLE_TRAINS_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1020;
+		game_do_command(0, (0 << 8) | 1, 0, ((dropdownIndex + 1) << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		break;
+	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1019;
+		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->var_00F + dropdownIndex) << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B2AA1
+ */
+static void window_ride_vehicle_update(rct_window *w)
+{
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_2);
+}
+
+/**
+ * 
+ * rct2: 0x006B222C
+ */
+static void window_ride_vehicle_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id stringId;
+	int carsPerTrain;
+	
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	// Widget setup
+	carsPerTrain = ride->num_cars_per_train - rideEntry->var_012;
+
+	// Vehicle type
+	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
+	if (var_496(w) > 1 || (w->enabled_widgets & (1 << WIDX_TAB_10))) {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
+		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
+	} else {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_DROPDOWN;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		w->enabled_widgets |= (1 << WIDX_VEHICLE_TYPE);
+	}
+
+	// Trains
+	if (rideEntry->var_011 > 1) {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_DROPDOWN;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+	} else {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DROPDOWN].type = WWT_EMPTY;
+	}
+
+	// Cars per train
+	if (rideEntry->var_012 + 1 < rideEntry->var_010) {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = carsPerTrain > 1 ? 1023 : 1022;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_DROPDOWN;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+	} else {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN].type = WWT_EMPTY;
+	}
+
+	RCT2_GLOBAL(0x013CE952 + 6, uint16) = carsPerTrain;
+	stringId = RideNameConvention[ride->type].vehicle_name + 4;
+	if (ride->num_vehicles > 1)
+		stringId++;
+	RCT2_GLOBAL(0x013CE952 + 8, uint16) = stringId;
+	RCT2_GLOBAL(0x013CE952 + 10, uint16) = ride->num_vehicles;
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006B23DC
+ */
+static void window_ride_vehicle_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_string_id stringId;
+	int x, y;
+	sint16 factor;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
+
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
+	x = w->x + 8;
+	y = w->y + 64;
+
+	// Description
+	y += gfx_draw_string_left_wrapped(dpi, &rideEntry->description, x, y, 300, 1191, 0);
+	y += 5;
+
+	// Capacity
+	stringId = rideEntry->description + 1;
+	gfx_draw_string_left(dpi, 3142, &stringId, 0, x, y);
+	y += 15;
+
+	if ((rideEntry->var_008 & 0x2000) || var_496(w) > 1) {
+		// Excitement Factor
+		factor = rideEntry->excitement_multipler;
+		gfx_draw_string_left(dpi, 3125, &factor, 0, x, y);
+		y += 10;
+
+		// Intensity Factor
+		factor = rideEntry->intensity_multipler;
+		gfx_draw_string_left(dpi, 3126, &factor, 0, x, y);
+		y += 10;
+
+		// Nausea Factor
+		factor = rideEntry->nausea_multipler;
+		gfx_draw_string_left(dpi, 3127, &factor, 0, x, y);
+		y += 10;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B2502
+ */
+static void window_ride_vehicle_scrollpaint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	// Background
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
 }
 
 #pragma endregion
@@ -2891,7 +3270,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
 		numItems = ride->num_vehicles;
 		if ((ride->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
-			numItems = ride->var_0C9;
+			numItems = ride->num_cars_per_train;
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -3134,7 +3513,7 @@ static void window_ride_colour_invalidate()
 		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLORBTN;
 		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
 		
-		RCT2_CALLPROC_X(0x006DE4CD, (ride->var_0C9 << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
+		RCT2_CALLPROC_X(0x006DE4CD, (ride->num_cars_per_train << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
 
 		uint8 *unk;
 		uint32 unk_eax = 0;
@@ -3324,7 +3703,7 @@ static void window_ride_colour_scrollpaint()
 	// ?
 	x = dpi->x + (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
 	y = dpi->y + vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15;
-	RCT2_CALLPROC_X(0x006DE4CD, (ride->var_0C9 << 8) | ride->subtype, (int)ride, x, y, (int)w, (int)dpi, 0);
+	RCT2_CALLPROC_X(0x006DE4CD, (ride->num_cars_per_train << 8) | ride->subtype, (int)ride, x, y, (int)w, (int)dpi, 0);
 
 	// ?
 	colour = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ?

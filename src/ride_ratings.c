@@ -129,7 +129,7 @@ uint16 compute_upkeep(rct_ride *ride)
 
 	// either set to 3 or 0, extra boosts for some rides including mini golf
 	if (rideUnknownData2[ride->type]) {
-		upkeep += 3 * ride->var_0C9;
+		upkeep += 3 * ride->num_cars_per_train;
 	}
 
 	// slight upkeep boosts for some rides - 5 for mini railroad, 10 for log

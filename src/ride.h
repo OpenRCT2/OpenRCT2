@@ -50,9 +50,11 @@ typedef struct {
 	uint32 var_008;
 	uint8 var_00C;
 	uint8 var_00D;
-	uint8 pad_00E[2];
+	uint8 pad_00E;
+	uint8 var_00F;
 	uint8 var_010;
-	uint8 pad_011[2];
+	uint8 var_011;
+	uint8 var_012;
 	uint8 var_013;
 	uint8 pad_014[0x19E];
 	sint8 excitement_multipler;		// 0x1B2
@@ -97,8 +99,10 @@ typedef struct {
 	// Not sure if these should be uint or sint.
 	uint8 num_stations;				// 0x0C7
 	uint8 num_vehicles;				// 0x0C8
-	uint8 var_0C9;
-	uint8 pad_0CA[0x4];
+	uint8 num_cars_per_train;		// 0x0C9
+	uint8 pad_0CA[0x2];
+	uint8 var_0CC;
+	uint8 var_0CD;
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	uint8 var_0D0;
