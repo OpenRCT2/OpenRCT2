@@ -2142,7 +2142,7 @@ static void window_ride_vehicle_paint()
 	gfx_draw_string_left(dpi, 3142, &stringId, 0, x, y);
 	y += 15;
 
-	if ((rideEntry->var_008 & 0x2000) || var_496(w) > 1) {
+	if (!(rideEntry->var_008 & 0x2000) || var_496(w) > 1) {
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
 		gfx_draw_string_left(dpi, 3125, &factor, 0, x, y);
@@ -2160,6 +2160,15 @@ static void window_ride_vehicle_paint()
 	}
 }
 
+typedef struct {
+	short x;
+	short y;
+	int sprite_index;
+	int tertiary_colour;
+} unkpaintstruct;
+
+unkpaintstruct _sprites_to_draw[144];
+
 /**
  * 
  * rct2: 0x006B2502
@@ -2168,11 +2177,88 @@ static void window_ride_vehicle_scrollpaint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
+	rct_ride *ride;
+	rct_ride_type *rideEntry, **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_widget *widget;
+	int x, y, startX, startY, i, j, vehicleColourIndex, spriteIndex, ebp;
+	unkpaintstruct *nextSpriteToDraw, *current, tmp;
+	vehicle_colour vehicleColour;
 
 	window_paint_get_registers(w, dpi);
 
+	ride = GET_RIDE(w->number);
+	rideEntry = rideEntries[ride->subtype];
+
 	// Background
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
+
+	RCT2_CALLPROC_X(0x006DE4CD, (ride->num_cars_per_train << 8) | ride->subtype, 0, 0, 0, 0, 0, 0);
+
+	widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+	startX = max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
+	startY = widget->bottom - widget->top - 4;
+
+	ebp = (int)rideEntry + (RCT2_ADDRESS(0x00F64E38, uint8)[0] * 101);
+	startY += RCT2_GLOBAL(ebp + 0x24, sint8);
+
+	// For each train
+	for (i = 0; i < ride->num_vehicles; i++) {
+		nextSpriteToDraw = _sprites_to_draw;
+		x = startX;
+		y = startY;
+
+		// For each car in train
+		for (j = 0; j < ride->num_cars_per_train; j++) {
+			int ebp = (int)rideEntry + (RCT2_ADDRESS(0x00F64E38, uint8)[j] * 101);
+			x += RCT2_GLOBAL(ebp + 0x1E, uint32) / 17432;
+			y -= (RCT2_GLOBAL(ebp + 0x1E, uint32) / 2) / 17432;
+
+			// Get colour of vehicle
+			switch (ride->colour_scheme_type & 3) {
+			case VEHICLE_COLOUR_SCHEME_SAME:
+				vehicleColourIndex = 0;
+				break;
+			case VEHICLE_COLOUR_SCHEME_PER_TRAIN:
+				vehicleColourIndex = i;
+				break;
+			case VEHICLE_COLOUR_SCHEME_PER_VEHICLE:
+				vehicleColourIndex = j;
+				break;
+			}
+			vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
+
+			spriteIndex = 16;
+			if (RCT2_GLOBAL(ebp + 0x2C, uint16) & 0x800)
+				spriteIndex /= 2;
+
+			spriteIndex &= RCT2_GLOBAL(ebp + 0x1A, uint16);
+			spriteIndex *= RCT2_GLOBAL(ebp + 0x30, uint16);
+			spriteIndex += RCT2_GLOBAL(ebp + 0x32, uint32);
+			spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
+			spriteIndex |= 0x80000000;
+
+			nextSpriteToDraw->x = x;
+			nextSpriteToDraw->y = y;
+			nextSpriteToDraw->sprite_index = spriteIndex;
+			nextSpriteToDraw->tertiary_colour = vehicleColour.additional_2;
+			nextSpriteToDraw++;
+
+			x += RCT2_GLOBAL(ebp + 0x1E, uint32) / 17432;
+			y -= (RCT2_GLOBAL(ebp + 0x1E, uint32) / 2) / 17432;
+		}
+
+		if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
+			tmp = *(nextSpriteToDraw - 1);
+			*(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
+			*(nextSpriteToDraw - 2) = tmp;
+		}
+
+		current = nextSpriteToDraw;
+		while (--current >= _sprites_to_draw)
+			gfx_draw_sprite(dpi, current->sprite_index, current->x, current->y, current->tertiary_colour);
+
+		startX += 36;
+	}
 }
 
 #pragma endregion
