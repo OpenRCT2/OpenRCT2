@@ -1088,6 +1088,12 @@ void window_scenery_scrollpaint()
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 						imageId |= (window_scenery_secondary_colour << 24) | 0x80000000;
 					}
+					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+						tertiaryColour);
+
+					imageId = (sceneryEntry->image + 0x40000006) | (window_scenery_primary_colour << 19);
+					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+						tertiaryColour);
 				}
 				else {
 					imageId |= (window_scenery_primary_colour << 19) | 0x20000000;
@@ -1100,11 +1106,17 @@ void window_scenery_scrollpaint()
 							tertiaryColour = window_scenery_tertiary_colour;
 						}
 							
+					}				
+					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+					tertiaryColour);
+
+					if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
+						gfx_draw_sprite(clipdpi, imageId + 1, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+							tertiaryColour);
 					}
 				}
 
-				gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
-					tertiaryColour);
+
 				rct2_free(clipdpi);
 			}
 		}

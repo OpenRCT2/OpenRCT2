@@ -25,6 +25,22 @@
 
 static void tiles_init();
 
+int map_element_get_terrain(rct_map_element *element)
+{
+	int terrain = (element->properties.surface.terrain >> 5) & 7;
+	if (element->type & 1)
+		terrain |= (1 << 3);
+	return terrain;
+}
+
+int map_element_get_terrain_edge(rct_map_element *element)
+{
+	int terrain_edge = (element->properties.surface.slope >> 5) & 7;
+	if (element->type & 128)
+		terrain_edge |= (1 << 3);
+	return terrain_edge;
+}
+
 void map_element_set_terrain(rct_map_element *element, int terrain)
 {
 	// Bit 3 for terrain is stored in element.type bit 0
@@ -40,7 +56,7 @@ void map_element_set_terrain(rct_map_element *element, int terrain)
 
 void map_element_set_terrain_edge(rct_map_element *element, int terrain)
 {
-	// Bit 3 for terrain is stored in element.type bit 0
+	// Bit 3 for terrain is stored in element.type bit 7
 	if (terrain & 8)
 		element->type |= 128;
 	else
@@ -48,7 +64,7 @@ void map_element_set_terrain_edge(rct_map_element *element, int terrain)
 
 	// Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
 	element->properties.surface.slope &= ~0xE0;
-	element->properties.surface.slope = (terrain & 7) << 5;
+	element->properties.surface.slope |= (terrain & 7) << 5;
 }
 
 rct_map_element *map_get_surface_element_at(int x, int y)
@@ -138,9 +154,10 @@ void map_update_tile_pointers()
 
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
+ *
  *  ax: x
  *  cx: y
- *  dx: return
+ *  dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)

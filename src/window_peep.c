@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "game.h"
 #include "map.h"
+#include "marketing.h"
 #include "ride.h"
 #include "peep.h"
 #include "scenario.h"
@@ -1178,7 +1179,7 @@ void window_peep_overview_tool_update(){
 }
 
 /* rct2: 0x664F72 */
-int sub_664F72(int x, int y, int edx){
+int sub_664F72(int x, int y, int z){
 	if (x > 0x1FFF || y > 0x1FFF){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
 		return 1;
@@ -1191,10 +1192,10 @@ int sub_664F72(int x, int y, int edx){
 		return 1;
 	}
 
-	edx >>= 3;
-	if ((edx & 0xFF) < map_element->base_height)return 0;
-	edx = (edx & 0xFF) - 2;
-	if (edx > map_element->base_height)return 0;
+	z >>= 3;
+	if ((z & 0xFF) < map_element->base_height)return 0;
+	z = (z & 0xFF) - 2;
+	if (z > map_element->base_height)return 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
 	return 1;
@@ -1210,25 +1211,32 @@ void window_peep_overview_tool_down(){
 
 	if (widgetIndex != WIDX_PICKUP) return;
 
-	int eax = x, ebx = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	ebx += 16;
-	RCT2_CALLFUNC_X(0x689726, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+	dest_y += 16;
+	RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
 
-	if (eax == 0x8000)return;
+	if (dest_x == 0x8000)return;
 
-	eax += 16;
-	ecx = ebx + 16;
-	edx = ((uint8*)edx)[2] * 8 + 16;
-	int _eax = eax & 0xFFE0, _ebx = ebx & 0xFFE0;
-	if (sub_664F72(eax & 0xFFE0, ebx & 0xFFE0, edx)){
+	// Set the coordinate of destination to be exactly 
+	// in the middle of a tile.
+	dest_x += 16;
+	dest_y += 16;
+	// Set the tile coordinate to top left of tile
+	int tile_y = dest_y & 0xFFE0;
+	int tile_x = dest_x & 0xFFE0;
+
+	int dest_z = ((uint8*)edx)[2] * 8 + 16;
+
+	if (sub_664F72(tile_x, tile_y, dest_z)){
 		window_error_open(0x785,-1);
 		return;
 	}
-	int _edx = edx>>3;
+
+	int _edx = dest_z >> 3;
 	_edx &= 0xFFFF00FF;
-	_edx |= edx << 8;
+	_edx |= dest_z << 8;
 	_edx += 0x100;
-	int flags = RCT2_CALLPROC_X(0x68B93A, eax & 0xFFE0, 0xF, ebx & 0xFFE0, _edx, (int)w, 0, 0);
+	int flags = RCT2_CALLPROC_X(0x68B93A, tile_x, 0xF, tile_y, _edx, (int)w, 0, 0);
 
 	if (flags & 0x100){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x3A5 ){
@@ -1240,7 +1248,7 @@ void window_peep_overview_tool_down(){
 	}
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_CALLPROC_X(0x0069E9D3, eax, 0, ebx, edx, (int)peep, 0, 0);
+	RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
 	peep->state = 0;
@@ -1839,8 +1847,8 @@ void window_peep_finance_paint(){
 	// Paid on rides
 	y += 10;
 	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_rides;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->staff_type;
-	if (peep->staff_type != 1){
+	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_rides;
+	if (peep->no_of_rides != 1){
 		gfx_draw_string_left(dpi, 2298, (void*)0x13CE952, 0, x, y);
 	}
 	else{
@@ -2105,19 +2113,19 @@ void window_peep_inventory_paint(){
 			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
 			break;
 		case PEEP_ITEM_VOUCHER:
-			RCT2_GLOBAL(0x13CE958, uint16) = peep->var_F0 + 2418;
+			RCT2_GLOBAL(0x13CE958, uint16) = peep->voucher_type + 2418;
 			RCT2_GLOBAL(0x13CE95A, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
 			RCT2_GLOBAL(0x13CE95C, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
 
-			if (peep->var_F0 == 0 || peep->var_F0 == 2)break;
+			if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE || peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)break;
 
-			int voucher_id = peep->var_F1 + 1988;
+			int voucher_id = peep->voucher_arguments + 1988;
 			if (voucher_id >= 2020) voucher_id += 102;
 
 			RCT2_GLOBAL(0x13CE95A, uint16) = voucher_id;
 
-			if (peep->var_F0 == 3)break;
-			ride = GET_RIDE(peep->var_F1);
+			if (peep->voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)break;
+			ride = GET_RIDE(peep->voucher_arguments);
 			RCT2_GLOBAL(0x13CE95A, uint16) = ride->name;
 			RCT2_GLOBAL(0x13CE95C, uint32) = ride->name_arguments;
 			break;
