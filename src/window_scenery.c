@@ -774,7 +774,7 @@ void window_scenery_scrollmousedown() {
 	window_scenery_selected_scenery_by_tab[tabIndex] = sceneryId;
 
 	window_scenery_is_repaint_scenery_tool_on &= 0xFE;
-	sound_play_panned(4, (w->width >> 1) + w->x);
+	sound_play_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
 	w->scenery.hover_counter = -16;
 	RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
 	window_invalidate(w);

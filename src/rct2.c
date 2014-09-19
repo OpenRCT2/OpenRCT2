@@ -39,6 +39,7 @@
 #include "intro.h"
 #include "language.h"
 #include "map.h"
+#include "mixer.h"
 #include "news_item.h"
 #include "object.h"
 #include "osinterface.h"
@@ -88,6 +89,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	config_init();
 	language_open(gGeneral_config.language);
 	rct2_init();
+	Mixer_Init(NULL);
 	rct2_loop();
 	osinterface_free();
 	exit(0);

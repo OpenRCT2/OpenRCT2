@@ -730,7 +730,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// bp = 0x009DEA62
 		// dx = 0x009DEA60
 		// cx = 0x009DEA5E
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001);
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 	}
 }
 

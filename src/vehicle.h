@@ -25,10 +25,10 @@
 
 typedef union {
 	struct {
-		uint16 width;
-		uint16 height;
+		sint16 width;
+		sint16 height;
 	};
-	uint32 both;
+	sint32 both;
 } rct_widthheight;
 
 typedef struct {
@@ -52,24 +52,38 @@ typedef struct {
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30
 	uint8 var_31;
-	uint8 pad_32[0x04];
+	uint8 pad_32[0x02];
+	uint16 var_34;
 	sint16 var_36;
 	uint8 pad_38[0x06];
 	uint16 next_vehicle_on_train;	// 0x3E
-	uint8 pad_40[0x08];
+	uint32 var_40;
+	uint16 var_44;
+	uint16 var_46;
 	uint16 var_48;
 	uint8 pad_4A;
 	uint8 var_4B;
 	uint8 pad_4C[0x4];
 	uint8 status;
 	uint8 var_51;
-	uint8 pad_52[0x2E];
+	uint16 peep;					// 0x52
+	uint8 pad_54[0x2C];
+	uint16 var_80;
+	uint8 pad_82[0x31];
+	uint8 var_B3;
+	uint8 pad_B4[0x07];
 	uint8 var_BB;
 	uint8 var_BC;
 	uint8 var_BD;
-	uint8 pad_BE[0x0E];
+	uint8 var_BE;
+	sint8 var_BF;
+	uint8 pad_C0[0x02];
+	uint8 speed;					// 0xC2
+	uint8 pad_C3[0x09];
 	uint8 var_CC;
-	uint8 pad_CD[0x09];
+	uint8 var_CD;
+	uint8 var_CE;
+	uint8 pad_CF[0x07];
 	uint8 var_D6;
 } rct_vehicle;
 
@@ -108,6 +122,9 @@ enum {
 };
 
 void vehicle_update_all();
+int sub_6BC2F3(rct_vehicle* vehicle);
+void sub_6BB9FF(rct_vehicle* vehicle);
+void vehicle_sounds_update();
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

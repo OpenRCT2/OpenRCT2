@@ -133,7 +133,7 @@ typedef struct general_configuration {
 	uint16 language;
 } general_configuration_t;
 
-static const struct { char *key; int value; } _currencyLookupTable[] = {
+static const struct { const char *key; int value; } _currencyLookupTable[] = {
 	{ "GBP", CURRENCY_POUNDS },
 	{ "USD", CURRENCY_DOLLARS },
 	{ "FRF", CURRENCY_FRANC },
