@@ -654,7 +654,7 @@ int osinterface_file_close(HANDLE handle)
  * 
  *  rct2: 0x00408060
  */
-HANDLE osinterface_file_open(char* filename)
+HANDLE osinterface_file_open(const char* filename)
 {
 	return CreateFileA(filename, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS | FILE_ATTRIBUTE_NORMAL, 0);
 }
@@ -663,7 +663,7 @@ HANDLE osinterface_file_open(char* filename)
  * 
  *  rct2: 0x0040807D
  */
-HANDLE osinterface_file_create(char* filename)
+HANDLE osinterface_file_create(const char* filename)
 {
 	return CreateFileA(filename, GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 }
@@ -672,7 +672,7 @@ HANDLE osinterface_file_create(char* filename)
  * 
  *  rct2: 0x00408099
  */
-int osinterface_file_move(char* srcfilename, char* dstfilename)
+int osinterface_file_move(const char* srcfilename, const char* dstfilename)
 {
 	return (MoveFileA(srcfilename, dstfilename) != 0) - 1;
 }
@@ -681,7 +681,7 @@ int osinterface_file_move(char* srcfilename, char* dstfilename)
  * 
  *  rct2: 0x004080AF
  */
-int osinterface_file_delete(char* filename)
+int osinterface_file_delete(const char* filename)
 {
 	return (DeleteFileA(filename) != 0) - 1;
 }

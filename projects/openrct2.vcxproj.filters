@@ -162,10 +162,16 @@
     <ClInclude Include="..\src\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\scenery.h">
+    <ClInclude Include="..\src\mixer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\window_scenery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scenery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -386,9 +392,6 @@
     <ClCompile Include="..\src\staff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\window_scenery.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\input.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -397,6 +400,18 @@
     </ClCompile>
     <ClCompile Include="..\src\window_credits.c">
       <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libspeex\resample.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mixer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_scenery.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hook.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
