@@ -394,7 +394,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	sound_play_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
+	sound_play_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
 }
 
 /**
@@ -681,4 +681,38 @@ int get_peep_face_sprite_small(rct_peep *peep){
 */
 int get_peep_face_sprite_large(rct_peep *peep){
 	return face_sprite_large[get_face_sprite_offset(peep)];
+}
+
+/**
+*
+*  rct2: 0x0069A5A0
+* tests if a peep's name matches a cheat code, normally returns using a register flag
+* @param index (eax)
+* @param ride (esi)
+*/
+int peep_check_cheatcode(int index, rct_peep *peep)
+{
+	char* str = RCT2_ADDRESS(RCT2_ADDRESS_EASTEREGG_NAMES, char*)[index];
+	char* dst = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	format_string(dst, peep->name_string_idx, &peep->id);
+
+	// strtoupper:
+	int i = 0;
+	while(dst[i]) {
+		if (dst[i] >= 0x61 && dst[i] <= 0x7A) {
+			dst[i] -= 0x20;
+		}
+		i++;
+	}
+
+	// check for match, characters are -1 to obfuscate the cheat codes
+	i = 0;
+	while(str[i] + 1) {
+		if (str[i] + 1 != dst[i]) {
+			return 0;
+		}
+		i++;
+	}
+
+	return 1;
 }

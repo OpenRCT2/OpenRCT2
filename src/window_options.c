@@ -33,6 +33,7 @@
 #include "config.h"
 #include "gfx.h"
 #include "language.h"
+#include "mixer.h"
 #include "osinterface.h"
 #include "sprites.h"
 #include "string_ids.h"
@@ -503,6 +504,9 @@ static void window_options_dropdown()
 	switch (widgetIndex) {
 	case WIDX_SOUND_DROPDOWN:
 		audio_init2(dropdownIndex);
+		if (dropdownIndex < gAudioDeviceCount) {
+			Mixer_Init(gAudioDevices[dropdownIndex].name);
+		}
 		/*#ifdef _MSC_VER
 		__asm movzx ax, dropdownIndex		
 		#else

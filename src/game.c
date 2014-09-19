@@ -383,7 +383,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
 	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
+	vehicle_sounds_update();//RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
 	peep_update_crowd_noise();
 	climate_update_sound();
 	news_item_update_current();
