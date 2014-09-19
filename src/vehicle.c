@@ -259,9 +259,10 @@ void vehicle_sounds_update()
 				if (LOBYTE(result) >= HIBYTE(result)) {
 					result = MAKEWORD(HIBYTE(result), HIBYTE(result));
 				}
-				result = MAKEWORD(LOBYTE(result) - RCT2_GLOBAL(0x00F438AC, uint8), HIBYTE(result));
-				if (!LOBYTE(result)) {
+				if (LOBYTE(result) < RCT2_GLOBAL(0x00F438AC, uint8)) {
 					result = MAKEWORD(0, HIBYTE(result));
+				} else {
+					result = MAKEWORD(LOBYTE(result) - RCT2_GLOBAL(0x00F438AC, uint8), HIBYTE(result));
 				}
 
 				rct_vehicle_sound* vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound);
@@ -296,9 +297,10 @@ void vehicle_sounds_update()
 					}
 				}
 				vehicle_sound->var_2 = v22;
-				result = MAKEWORD(LOBYTE(result) - v22, HIBYTE(result));
-				if (!result) {
+				if (LOBYTE(result) < v22) {
 					result = MAKEWORD(0, HIBYTE(result));
+				} else {
+					result = MAKEWORD(LOBYTE(result) - v22, HIBYTE(result));
 				}
 				// do sound1 stuff, track noise
 				RCT2_ADDRESS_SPRITE_LIST;

@@ -25,6 +25,7 @@
 #include "news_item.h"
 #include "sprite.h"
 #include "ride.h"
+#include "scenario.h"
 #include "sprite.h"
 #include "peep.h"
 #include "window.h"
@@ -473,4 +474,52 @@ int ride_try_construct(rct_map_element *trackMapElement)
 	// Success stored in carry flag which can't be accessed after call using is macro
 	RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
 	return 1;
+}
+
+/**
+*
+*  rct2: 0x006AC988
+* set the speed of the gokart type vehicle at the start to a random value or alter if peep name is a cheat code
+* @param ride (esi)
+*/
+void ride_init_vehicle_speed(rct_ride *ride)
+{
+	int ecx = -1;
+	while (1) {
+		ecx++;
+		if (ecx >= ride->var_0C8) {
+			break;
+		}
+		rct_vehicle *vehicle = &g_sprite_list[ride->train_car_map[ecx]].vehicle;
+		vehicle->var_48 &= (1 << 6);
+		uint8 r = scenario_rand();
+		r = 0xC;
+		r &= 0xF;
+		r -= 8;
+
+		int testaddr = (vehicle->var_31 * 0x65);
+		testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
+		uint8 test = ((uint8*)testaddr)[0x76];
+		r += test;
+
+		vehicle->speed = r;
+		if (vehicle->var_B3) {
+			rct_peep *peep = &g_sprite_list[vehicle->peep].peep;
+			if (peep_check_cheatcode(0, peep)) { // MICHAEL SCHUMACHER
+				vehicle->speed += 35;
+			}
+			if (peep_check_cheatcode(1, peep)) { // JACQUES VILLENEUVE
+				vehicle->speed += 25;
+			}
+			if (peep_check_cheatcode(2, peep)) { // DAMON HILL
+				vehicle->speed += 55;
+			}
+			if (peep_check_cheatcode(4, peep)) { // CHRIS SAWYER
+				vehicle->speed += 14;
+			}
+			if (peep_check_cheatcode(3, peep)) { // MR BEAN
+				vehicle->speed = 9;
+			}
+		}
+	}
 }

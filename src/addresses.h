@@ -41,6 +41,8 @@
 #define RCT2_CALLPROC_4(address, a1, a2, a3, a4, v1, v2, v3, v4)			RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, v1, v2, v3, v4)
 #define RCT2_CALLPROC_5(address, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	RCT2_CALLFUNC_5(address, void, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 
+#define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
+
 #define RCT2_ADDRESS_RIDE_PROPERTIES				0x00997C9D
 #define RCT2_ADDRESS_LAND_TOOL_SIZE					0x009A9800
 #define RCT2_ADDRESS_SAVE_PROMPT_MODE				0x009A9802

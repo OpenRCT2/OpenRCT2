@@ -81,7 +81,9 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[0xC];
+	uint8 pad_05E[4];
+	uint8 var_62[4];
+	uint8 pad_66[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -90,11 +92,12 @@ typedef struct {
 
 	// Not sure if these should be uint or sint.
 	uint8 var_0C7;
-	uint8 var_0C8;
+	uint8 var_0C8;					// Number of train cars?
 	uint8 var_0C9;
 
-	uint8 pad_0CA[0x1A];
-
+	uint8 pad_0CA[0x06];
+	uint8 var_0D0;
+	uint8 pad_0D1[0x13];
 	sint32 var_0E4;
 	sint32 var_0E8;
 	sint32 var_0EC;
@@ -147,7 +150,9 @@ typedef struct {
 	sint32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
 	uint8 var_1BC;
-	uint8 pad_1BD[0x10];
+	uint8 pad_1BD[0xD];
+	uint16 var_1CA;
+	uint8 var_1CC;
 	uint8 var_1CD;
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
@@ -389,5 +394,6 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
+void ride_init_vehicle_speed(rct_ride *ride);
 
 #endif

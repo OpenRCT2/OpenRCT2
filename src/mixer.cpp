@@ -205,7 +205,7 @@ Channel::~Channel()
 	}
 }
 
-void Channel::Play(Stream& stream, int loop = 0)
+void Channel::Play(Stream& stream, int loop = MIXER_LOOP_NONE)
 {
 	Channel::stream = &stream;
 	Channel::loop = loop;

@@ -449,6 +449,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
 int get_peep_face_sprite_small(rct_peep *peep);
 int get_peep_face_sprite_large(rct_peep *peep);
+int peep_check_cheatcode(int index, rct_peep *peep);
 
 
 #endif

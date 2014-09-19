@@ -577,15 +577,15 @@ MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO
 				//strcpy(audio_info.var_0, "\x01");
 				hmem = 0;
 			label11:
-				hmemold2 = GlobalAlloc(0, (uint16)hmem + 18);
+				hmemold2 = GlobalAlloc(0, hmem + 18);
 				*hmemold = hmemold2;
 				if (!hmemold2) {
 					result = 57344;
 					goto label20;
 				}
 				memcpy(hmemold2, &waveformat, 16);
-				*((uint16*)*hmemold + 8) = (uint16)hmem;
-				if (!(uint16)hmem || mmioRead(hmmio1, (char*)*hmemold + 18, (uint16)hmem) == (uint16)hmem) {
+				*((uint16*)*hmemold + 8) = hmem;
+				if (!hmem || mmioRead(hmmio1, (char*)*hmemold + 18, hmem) == hmem) {
 					result = mmioAscend(hmmio1, &mmckinfo1, 0);
 					if (!result) {
 						goto label24;
@@ -1151,16 +1151,22 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 /**
 *
 *  rct2: 0x006BB76E
+*
+* @param sound_id (eax)
+* @param ebx (ebx)
+* @param x (cx)
+* @param y (dx)
+* @param z (bp)
 */
-int sound_play_panned(int sound_id, int ebx, uint16 x, uint16 y, uint16 z)
+int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 {
 	int result = 0;
 	if (RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
 		int volume = 0;
 		if (ebx == 0x8001) {
-			uint16 x2 = x & 0xFFE0; // round by 32
-			uint16 y2 = y & 0xFFE0;
+			sint16 x2 = x & 0xFFE0; // round by 32
+			sint16 y2 = y & 0xFFE0;
 			if (x2 < 0x1FFF && y2 < 0x1FFF) {
 				rct_map_element* mapelement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[((y2 * 256 + x2) & 0xFFFF) / 8];
 				while (mapelement->type & MAP_ELEMENT_TYPE_MASK) {
@@ -1170,76 +1176,75 @@ int sound_play_panned(int sound_id, int ebx, uint16 x, uint16 y, uint16 z)
 					RCT2_GLOBAL(0x00F438AD, uint8) = 10;
 				}
 			}
-			uint16 v11;
-			uint16 v12;
+			sint16 v11;
+			sint16 v12;
 			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
 				case MAP_ELEMENT_DIRECTION_WEST:
-					v11 = x - y;
+					v11 = y - x;
 					v12 = ((y + x) / 2) - z;
 					break;
 				case MAP_ELEMENT_DIRECTION_NORTH:
-					v11 = -y - x;
-					v12 = ((x - y) / 2) - z;
+					v11 = -x - y;
+					v12 = ((y - x) / 2) - z;
 					break;
 				case MAP_ELEMENT_DIRECTION_EAST:
-					v11 = y - x;
-					v12 = ((-x - y) / 2) - z;
+					v11 = x - y;
+					v12 = ((-y - x) / 2) - z;
 					break;
 				case MAP_ELEMENT_DIRECTION_SOUTH:
-					v11 = x + y;
-					v12 = ((y - x) / 2) - z;
+					v11 = y + x;
+					v12 = ((x - y) / 2) - z;
 					break;
 			}
 			rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
 			while (1) {
 				window--;
-				if (window < RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_LIST, rct_window*)) {
+				if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
 					break;
 				}
 				rct_viewport* viewport = window->viewport;
 				if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-					uint16 v15 = v12 - viewport->view_y;
-					uint16 v16 = v11 - viewport->view_x;
-					int x = viewport->x + (v16 / viewport->zoom);
-					volume = RCT2_GLOBAL(0x0099282C, int*)[sound_id] + ((-1024 * viewport->zoom - 1) << RCT2_GLOBAL(0x00F438AD, uint8)) + 1;
+					sint16 v15 = v12 - viewport->view_y;
+					sint16 v16 = v11 - viewport->view_x;
+					ebx = viewport->x + (v16 >> viewport->zoom);
+					volume = RCT2_ADDRESS(0x0099282C, int)[sound_id] + ((-1024 * viewport->zoom - 1) << RCT2_GLOBAL(0x00F438AD, uint8)) + 1;
 					if (v15 < 0 || v15 >= viewport->view_height || v16 < 0 || v16 >= viewport->view_width || volume < -10000) {
 						return sound_id;
 					}
 				}
 			}
-		} else {
-			int i = 0;
-			rct_other_sound* other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
-			while (other_sound->id != 0xFFFF) {
-				i++;
-				other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
-				if (i > RCT2_GLOBAL(0x009AAC76, uint8)) { // too many sounds playing
-					return sound_id;
-				}
-			}
-			other_sound->id = sound_id;
-			int pan;
-			if (ebx == 0x8000) {
-				pan = 0;
-			} else {
-				int x2 = ebx << 16;
-				uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-				if (screenwidth < 64) {
-					screenwidth = 64;
-				}
-				pan = ((x2 / screenwidth) - 0x8000) >> 4;
-			}
-			if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
-				pan = 0;
-			}
-
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			sound_prepare(sound_id, &other_sound->sound, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			result = sound_play(&other_sound->sound, 0, volume, pan, 0);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		}
+		int i = 0;
+		rct_other_sound* other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
+		while (other_sound->id != 0xFFFF) {
+			i++;
+			other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
+			if (i > RCT2_GLOBAL(0x009AAC76, uint8)) { // too many sounds playing
+				return sound_id;
+			}
+		}
+		other_sound->id = sound_id;
+		int pan;
+		if (ebx == 0x8000) {
+			pan = 0;
+		} else {
+			int x2 = ebx << 16;
+			uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+			if (screenwidth < 64) {
+				screenwidth = 64;
+			}
+			pan = ((x2 / screenwidth) - 0x8000) >> 4;
+		}
+		if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
+			pan = 0;
+		}
+
+		RCT2_GLOBAL(0x014241BC, uint32) = 1;
+		sound_prepare(sound_id, &other_sound->sound, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
+		RCT2_GLOBAL(0x014241BC, uint32) = 0;
+		RCT2_GLOBAL(0x014241BC, uint32) = 1;
+		result = sound_play(&other_sound->sound, 0, volume, pan, 0);
+		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 	}
 	return result;
 }

@@ -157,7 +157,7 @@ void audio_close();
 LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
 int unmap_sound_info();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
-int sound_play_panned(int sound_id, int ebx, uint16 x, uint16 y, uint16 z);
+int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
 int sound_is_playing(rct_sound* sound);
 int sound_set_frequency(rct_sound* sound, int frequency);

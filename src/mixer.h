@@ -23,6 +23,9 @@
 
 #include "rct2.h"
 
+#define MIXER_LOOP_NONE			0
+#define MIXER_LOOP_INFINITE		-1
+
 #ifdef __cplusplus
 
 extern "C" {

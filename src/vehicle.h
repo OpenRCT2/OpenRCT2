@@ -63,17 +63,24 @@ typedef struct {
 	uint8 pad_4A[0x06];
 	uint8 var_50;
 	uint8 var_51;
-	uint8 pad_52[0x2E];
+	uint16 peep;					// 0x52
+	uint8 pad_54[0x2C];
 	uint16 var_80;
-	uint8 pad_82[0x39];
+	uint8 pad_82[0x31];
+	uint8 var_B3;
+	uint8 pad_B4[0x07];
 	uint8 var_BB;
 	uint8 var_BC;
 	uint8 var_BD;
 	uint8 var_BE;
 	sint8 var_BF;
-	uint8 pad_C0[0x0C];
+	uint8 pad_C0[0x02];
+	uint8 speed;					// 0xC2
+	uint8 pad_C3[0x09];
 	uint8 var_CC;
-	uint8 pad_CD[0x09];
+	uint8 var_CD;
+	uint8 var_CE;
+	uint8 pad_CF[0x07];
 	uint8 var_D6;
 } rct_vehicle;
 
