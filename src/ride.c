@@ -600,10 +600,10 @@ void ride_init_vehicle_speed(rct_ride *ride)
 	int ecx = -1;
 	while (1) {
 		ecx++;
-		if (ecx >= ride->var_0C8) {
+		if (ecx >= ride->num_vehicles) {
 			break;
 		}
-		rct_vehicle *vehicle = &g_sprite_list[ride->train_car_map[ecx]].vehicle;
+		rct_vehicle *vehicle = &g_sprite_list[ride->vehicles[ecx]].vehicle;
 		vehicle->var_48 &= (1 << 6);
 		uint8 r = scenario_rand();
 		r = 0xC;

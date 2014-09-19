@@ -48,7 +48,7 @@ typedef struct {
 	rct_widthheight view;			// 0x1A
 	uint16 var_1E;
 	uint8 pad_20[0x08];
-	sint32 velocity;
+	sint32 velocity;				// 0x28
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30
 	uint8 var_31;
