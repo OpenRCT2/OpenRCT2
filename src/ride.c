@@ -641,3 +641,16 @@ rct_ride_type *ride_get_entry(rct_ride *ride)
 {
 	return GET_RIDE_ENTRY(ride->subtype);
 }
+
+uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
+{
+	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
+	uint8 *entryIndexList = typeToRideEntryIndexMap;
+	while (rideType > 0) {
+		do {
+			entryIndexList++;
+		} while (*(entryIndexList - 1) != 255);
+		rideType--;
+	}
+	return entryIndexList;
+}

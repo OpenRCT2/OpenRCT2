@@ -33,6 +33,8 @@
 #include "window.h"
 #include "window_dropdown.h"
 
+#define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
+
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_MAIN,
 	WINDOW_PARK_PAGE_VEHICLE,
@@ -1020,6 +1022,9 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 rct_window *window_ride_open(int rideIndex)
 {
 	rct_window *w;
+	rct_ride *ride;
+	uint8 *rideEntryIndexPtr;
+	int numSubTypes, quadIndex, bitIndex;
 
 	w = window_create_auto_pos(316, 180, window_ride_page_events[0], WC_RIDE, 0x400);
 	w->widgets = window_ride_page_widgets[0];
@@ -1042,27 +1047,18 @@ rct_window *window_ride_open(int rideIndex)
 	w->colours[1] = 26;
 	w->colours[2] = 11;
 
-	rct_ride *ride = &g_ride_list[rideIndex];
-	uint8 *edx = (uint8*)0x009E32F8;
-	if (ride->type != RIDE_TYPE_NULL) {
-		int rideType = ride->type;
-		do {
-			edx++;
-			if (*(edx - 1) != 0xFF)
-				continue;
-		} while (rideType-- != 0);
-	}
-
-	int eax, ebx = 0, ecx;
-	while (*edx != 0xFF) {
-		eax = *edx++;
-		ecx = eax >> 5;
-		eax &= 0x1F;
-		if (!(RCT2_ADDRESS(0x001357424, uint32)[ecx] & (1 << eax)))
+	ride = GET_RIDE(rideIndex);
+	numSubTypes = 0;
+	rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
+	for (; *rideEntryIndexPtr != 0xFF; rideEntryIndexPtr++) {
+		quadIndex = *rideEntryIndexPtr >> 5;
+		bitIndex = *rideEntryIndexPtr & 0x1F;
+		if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
 			continue;
-		ebx++;
+
+		numSubTypes++;
 	}
-	RCT2_GLOBAL((int)w + 496, uint16) = ebx;
+	var_496(w) = numSubTypes;
 	return w;
 }
 
@@ -1876,8 +1872,6 @@ static void window_ride_main_paint()
 
 #pragma region Vehicle
 
-#define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
-
 /**
  * 
  * rct2: 0x006B272D
@@ -1932,15 +1926,52 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 {
 	rct_widget *dropdownWidget = widget - 1;
 	rct_ride *ride;
-	rct_ride_type *rideEntry;
+	rct_ride_type *rideEntry, *currentRideEntry;
 	rct_string_id stringId;
-	int i, minCars, maxCars, cars;
+	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex;
+	uint8 *rideEntryIndexPtr, *currentRideEntryIndex;
 
 	ride = GET_RIDE(w->number);
 	rideEntry = ride_get_entry(ride);
 
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
+		rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
+		currentRideEntryIndex;
+
+		selectedIndex = -1;
+		numItems = 0;
+		for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+			rideEntryIndex = *currentRideEntryIndex;
+			currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+			if (currentRideEntry->var_008 & 0x3000)
+				continue;
+
+			quadIndex = rideEntryIndex >> 5;
+			bitIndex = rideEntryIndex & 0x1F;
+			if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+				continue;
+
+			if (ride->subtype == rideEntryIndex)
+				selectedIndex = numItems;
+
+			gDropdownItemsFormat[numItems] = 1142;
+			gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+
+			numItems++;
+		}
+
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			0x80,
+			numItems,
+			widget->right - dropdownWidget->left
+		);
+
+		gDropdownItemsChecked = (1 << selectedIndex);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		window_dropdown_show_text_custom_width(
@@ -2011,6 +2042,10 @@ static void window_ride_vehicle_dropdown()
 
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
+		dropdownIndex = (gDropdownItemsArgs[dropdownIndex] >> 16) & 0xFFFF;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1018;
+		game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_9, 0, 0);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1020;
@@ -2068,7 +2103,7 @@ static void window_ride_vehicle_invalidate()
 
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
-	if (var_496(w) > 1 || (w->enabled_widgets & (1 << WIDX_TAB_10))) {
+	if (var_496(w) <= 1 && (w->enabled_widgets & (1 << WIDX_TAB_10))) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
