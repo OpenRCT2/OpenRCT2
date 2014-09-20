@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <assert.h>
 #include <windows.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
@@ -105,19 +106,22 @@ void peep_update_all()
 	}
 }
 
-int sub_6A7B84(int x, int y, int path_type){
-	if (path_type == PATH_ROAD || path_type == PATH_TILE) return 0;
-
-	switch (path_type & 3){
-	case PATH_QUEUE:
-		return (31 - (x & 31)) / 2;
-	case PATH_TARMAC:
-		return (y & 31) / 2;
-	case PATH_DIRT:
-		return (x & 31) / 2;
-	case PATH_CRAZY:
-		return (31 - (y & 31)) / 2;
+/** New function removes peep from 
+ * park existance. Works with staff.
+ */
+void peep_remove(rct_peep* peep){
+	if (peep->type == PEEP_TYPE_STAFF){
+		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
 	}
+	if (peep->var_2A == 0){
+		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+		RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
+	}
+	if (peep->state == PEEP_STATE_ENTERING_PARK){
+		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+	}
+	RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /**
@@ -138,62 +142,47 @@ void peep_update_falling(rct_peep* peep){
 		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
 			RCT2_GLOBAL(0x135882E, uint16) = 1000;
 		}
-		if (peep->type == PEEP_TYPE_STAFF){
-			RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
-			return;
-		}
-		if (peep->var_2A == 0){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-			RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
-		}
-		if (peep->state == PEEP_STATE_ENTERING_PARK){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
-		}
-		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_remove(peep);
 		return;
 	}
 
 	// If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-	RCT2_GLOBAL(0xF1AEC4, sint32) = -1;
-	rct_map_element *map_element = TILE_MAP_ELEMENT_POINTER((peep->y / 32) * 256 + (peep->x / 32));
+
+	rct_map_element *map_element = TILE_MAP_ELEMENT_POINTER((peep->y / 32) * 256 + (peep->x /32));
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
 
-	for (; !(map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE); map_element++){
-		if (map_element->type != MAP_ELEMENT_TYPE_SURFACE){
-			if (map_element->type == MAP_ELEMENT_TYPE_PATH){
-				int edx = sub_6A7B84(peep->x, peep->y, map_element->properties.path.type);
-				edx += map_element->base_height * 8;
+	for (int final_element = 0; !final_element; map_element++){
+		final_element = map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 
-				if (edx < peep->z - 1) continue;
-				if (edx - 4 > peep->z) continue;
-				
-				saved_height = edx;
-				saved_map = map_element;
-				RCT2_GLOBAL(0xF1AEC8, sint16) = edx;
-				RCT2_GLOBAL(0xF1AEC4, rct_map_element*) = map_element;
-				break;
-			}
-			continue;
-		}
-		if (map_element->properties.surface.terrain & 0x1F){
-			int height = (map_element->properties.surface.terrain & 0x1F) * 16;
-			int ebp = height - 4;
-			ebp -= peep->z;
-			if (ebp >= 0){
-				if (ebp < 24){
+		// If a path check if we are on it
+		if (map_element->type == MAP_ELEMENT_TYPE_PATH){
+			int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
+				+ map_element->base_height * 8;
+
+			if (height < peep->z - 1 || height - 4 > peep->z) continue;
+
+			saved_height = height;
+			saved_map = map_element;
+			break;
+		} // If a surface get the height and see if we are on it
+		else if (map_element->type == MAP_ELEMENT_TYPE_SURFACE){
+			// If the surface is water check to see if we could be drowning
+			if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK){
+				int height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
+
+				if (height - 4 >= peep->z && height < peep->z + 20){
 					// Looks like we are drowning!
 					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 					RCT2_CALLPROC_X(0x0069E9D3, peep->x, 0, peep->y, height, (int)peep, 0, 0);
 					// Drop balloon if held
 					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
 						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-						if (peep->sprite_type == 19){
-							if (peep->x != 0x8000){
-								create_balloon(peep->x, peep->y, height, peep->balloon_colour);
-								peep->var_45 |= (1 << 3);
-								RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
-							}
+
+						if (peep->sprite_type == 19 && peep->x != 0x8000){
+							create_balloon(peep->x, peep->y, height, peep->balloon_colour);
+							peep->var_45 |= (1 << 3);
+							RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 						}
 					}
 
@@ -209,31 +198,20 @@ void peep_update_falling(rct_peep* peep){
 					return;
 				}
 			}
-		}
-		int map_height = map_element_height(0xFFFF & peep->x, 0xFFFF & peep->y) & 0xFFFF;
-		if (map_height < peep->z)continue;
-		if (map_height - 4 > peep->z) continue;
-		saved_height = map_height;
-		saved_map = map_element;
-		RCT2_GLOBAL(0xF1AEC8, sint16) = map_height;
-		RCT2_GLOBAL(0xF1AEC4, rct_map_element*) = map_element;
+			int map_height = map_element_height(0xFFFF & peep->x, 0xFFFF & peep->y) & 0xFFFF;
+			if (map_height < peep->z || map_height - 4 > peep->z) continue;
+			saved_height = map_height;
+			saved_map = map_element;
+		} // If not a path or surface go see next element
+		else continue;
 	}
 
+	// This will be null if peep is falling
 	if (saved_map == NULL){
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->z <= 1){
-			if (peep->type == PEEP_TYPE_STAFF){
-				RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
-				return;
-			}
-			if (peep->var_2A == 0){
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-				RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
-			}
-			if (peep->state == PEEP_STATE_ENTERING_PARK){
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
-			}
-			RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+			// Remove peep if it has gone to the void
+			peep_remove(peep);
 			return;
 		}
 		RCT2_CALLPROC_X(0x0069E9D3, peep->x, 0, peep->y, peep->z - 2, (int)peep, 0, 0);
@@ -247,21 +225,16 @@ void peep_update_falling(rct_peep* peep){
 
 	peep->next_x = peep->x & 0xFFE0;
 	peep->next_y = peep->y & 0xFFE0;
-	peep->next_z = saved_map->base_height << 8;
+	peep->next_z = saved_map->base_height;
 
 	int edx = saved_map->properties.surface.slope & 0x7;
 	if (saved_map->type != MAP_ELEMENT_TYPE_PATH){
 		edx = 8;
 	}
-	peep->next_z = (peep->next_z & 0xFF00) + edx;
+	peep->next_z += edx << 8;
 	RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 	peep->state = PEEP_STATE_1;
 	RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
-	return;
-
-
-	//69014C
-	RCT2_CALLPROC_X(0x690028, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /**
