@@ -624,7 +624,7 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
-		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
+		sub_69E9D3(0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
 		peep->state = 9;
 		peep->var_2C = 0;
@@ -1224,7 +1224,7 @@ void window_guest_overview_tool_down(){
 	}
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
+	sub_69E9D3(dest_x, dest_y, dest_z, (rct_sprite*)peep);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 	peep_decrement_num_riders(peep);
 	peep->state = 0;
@@ -1255,7 +1255,7 @@ void window_guest_overview_tool_abort(){
 	rct_peep* peep = GET_PEEP(w->number);
 	if (peep->state != PEEP_STATE_PICKED) return;
 
-	RCT2_CALLPROC_X(0x0069E9D3, w->var_48C, 0, peep->y, peep->z + 8, (int)peep, 0, 0);
+	sub_69E9D3( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 	if (peep->x != 0x8000){

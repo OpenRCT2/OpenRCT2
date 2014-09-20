@@ -156,16 +156,14 @@ void peep_window_state_update(rct_peep* peep){
  * park existance. Works with staff.
  */
 void peep_remove(rct_peep* peep){
-	if (peep->type == PEEP_TYPE_STAFF){
-		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
-		return;
-	}
-	if (peep->var_2A == 0){
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-		RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
-	}
-	if (peep->state == PEEP_STATE_ENTERING_PARK){
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+	if (peep->type == PEEP_TYPE_GUEST){
+		if (peep->var_2A == 0){
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+			RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
+		}
+		if (peep->state == PEEP_STATE_ENTERING_PARK){
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+		}
 	}
 	RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
 }
@@ -220,7 +218,7 @@ void peep_update_falling(rct_peep* peep){
 				if (height - 4 >= peep->z && height < peep->z + 20){
 					// Looks like we are drowning!
 					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-					RCT2_CALLPROC_X(0x0069E9D3, peep->x, 0, peep->y, height, (int)peep, 0, 0);
+					sub_69E9D3(peep->x, peep->y, height, (rct_sprite*)peep);
 					// Drop balloon if held
 					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
 						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
@@ -260,13 +258,13 @@ void peep_update_falling(rct_peep* peep){
 			peep_remove(peep);
 			return;
 		}
-		RCT2_CALLPROC_X(0x0069E9D3, peep->x, 0, peep->y, peep->z - 2, (int)peep, 0, 0);
+		sub_69E9D3(peep->x, peep->y, peep->z - 2, (rct_sprite*)peep);
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
 	
 	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-	RCT2_CALLPROC_X(0x0069E9D3, peep->x, 0, peep->y, saved_height, (int)peep, 0, 0);
+	sub_69E9D3(peep->x, peep->y, saved_height, (rct_sprite*)peep);
 	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 	peep->next_x = peep->x & 0xFFE0;

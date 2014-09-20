@@ -210,3 +210,74 @@ void texteffect_update_all()
 {
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);
 }
+
+/**
+ *  rct2: 0x0069E9D3
+ * ax: x
+ * cx: y
+ * dx: z
+ */
+void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
+	int new_position = x;
+	if ((uint16)x == 0x8000)new_position = 0x10000;
+	else{
+		new_position &= 0x1FE0;
+		new_position = (y >> 5) | (new_position << 3);
+	}
+
+	int current_position = sprite->unknown.x;
+	if ((uint16)sprite->unknown.x == 0x8000)current_position = 0x10000;
+	else{
+		current_position &= 0x1FE0;
+		current_position = (sprite->unknown.y >> 5) | (current_position << 3);
+	}
+
+	if (new_position != current_position){
+		uint16* sprite_idx = &RCT2_ADDRESS(0xF1EF60, uint16)[current_position];
+		rct_sprite* sprite2 = &g_sprite_list[*sprite_idx];
+		while (sprite != sprite2){
+			sprite_idx = &sprite2->unknown.var_02;
+			sprite2 = &g_sprite_list[*sprite_idx];
+		}
+		*sprite_idx = sprite->unknown.var_02;
+
+		int temp_sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[new_position];
+		RCT2_ADDRESS(0xF1EF60, uint16)[new_position] = sprite->unknown.sprite_index;
+		sprite->unknown.var_02 = temp_sprite_idx;
+	}
+
+	if (x == 0x8000){
+		sprite->unknown.var_16 = 0x8000;
+		sprite->unknown.x = x;
+		sprite->unknown.y = y;
+		sprite->unknown.z = z;
+		return;
+	}
+	int new_x = x, new_y = y, start_x = x;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	case 0:
+		new_x = new_y - new_x;
+		new_y = (new_y + start_x) / 2 - z;
+		break;
+	case 1:
+		new_x = -new_y - new_x;
+		new_y = (new_y - start_x) / 2 - z;
+		break;
+	case 2:
+		new_x = -new_y + new_x;
+		new_y = (-new_y - start_x) / 2 - z;
+		break;
+	case 3:
+		new_x = new_y + new_x;
+		new_y = (-new_y + start_x) / 2 - z;
+		break;
+	}
+
+	sprite->unknown.var_16 = new_x - sprite->unknown.var_14;
+	sprite->unknown.var_1A = new_x + sprite->unknown.var_14;
+	sprite->unknown.var_18 = new_y - sprite->unknown.pad_09;
+	sprite->unknown.var_1C = new_y + sprite->unknown.var_15;
+	sprite->unknown.x = x;
+	sprite->unknown.y = y;
+	sprite->unknown.z = z;
+}
