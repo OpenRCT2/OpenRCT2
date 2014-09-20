@@ -501,6 +501,7 @@ extern rct_ride* g_ride_list;
 /** Helper macros until rides are stored in this module. */
 #define GET_RIDE(x) (&g_ride_list[x])
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
+#define GET_RIDE_ENTRY(x) RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_type**)[x]
 
 /**
  * Helper macro loop for enumerating through all the non null rides.
@@ -528,5 +529,6 @@ int ride_get_total_length(rct_ride *ride);
 int ride_can_have_multiple_circuits(rct_ride *ride);
 track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
+rct_ride_type *ride_get_entry(rct_ride *ride);
 
 #endif

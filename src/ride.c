@@ -636,3 +636,8 @@ void ride_init_vehicle_speed(rct_ride *ride)
 		}
 	}
 }
+
+rct_ride_type *ride_get_entry(rct_ride *ride)
+{
+	return GET_RIDE_ENTRY(ride->subtype);
+}
