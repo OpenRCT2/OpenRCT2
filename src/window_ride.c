@@ -148,6 +148,12 @@ enum {
 	WIDX_SAVE_DESIGN,
 	WIDX_CANCEL_DESIGN,
 
+	WIDX_GRAPH = 14,
+	WIDX_GRAPH_VELOCITY,
+	WIDX_GRAPH_ALTITUDE,
+	WIDX_GRAPH_VERTICAL,
+	WIDX_GRAPH_LATERAL,
+
 	WIDX_PRIMARY_PRICE_LABEL = 14,
 	WIDX_PRIMARY_PRICE,
 	WIDX_PRIMARY_PRICE_INCREASE,
@@ -378,6 +384,31 @@ static rct_widget window_ride_measurements_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// 0x009AE710
+static rct_widget window_ride_graphs_widgets[] = {
+	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_CAPTION,			0,	1,		314,	1,		14,		0x3DD,							STR_WINDOW_TITLE_TIP										},
+	{ WWT_CLOSEBOX,			0,	303,	313,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP										},
+	{ WWT_RESIZE,			1,	0,		315,	43,		179,	0x0FFFFFFFF,					STR_NONE													},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_VIEW_OF_RIDE_ATTRACTION_TIP								},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,						STR_VEHICLE_DETAILS_AND_OPTIONS_TIP							},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_OPERATING_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_MAINTENANCE_OPTIONS_TIP									},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_COLOUR_SCHEME_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_SOUND_AND_MUSIC_OPTIONS_TIP								},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_MEASUREMENTS_AND_TEST_DATA_TIP							},
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x2000144E,						STR_GRAPHS_TIP												},
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x2000144E,						STR_INCOME_AND_COSTS_TIP									},
+	{ WWT_TAB,				1,	282,	312,	17,		43,		0x2000144E,						STR_CUSTOMER_INFORMATION_TIP								},
+
+	{ WWT_SCROLL,			1,	3,		308,	46,		157,	1,								STR_LOGGING_DATA_FROM_TIP									},
+	{ WWT_DROPDOWN_BUTTON,	1,	3,		75,		163,	176,	1415,							STR_SHOW_GRAPH_OF_VELOCITY_AGAINST_TIME_TIP					},
+	{ WWT_DROPDOWN_BUTTON,	1,	76,		148,	163,	176,	1416,							STR_SHOW_GRAPH_OF_ALTITUDE_AGAINST_TIME_TIP					},
+	{ WWT_DROPDOWN_BUTTON,	1,	149,	221,	163,	176,	1417,							STR_SHOW_GRAPH_OF_VERTICAL_ACCELERATION_AGAINST_TIME_TIP	},
+	{ WWT_DROPDOWN_BUTTON,	1,	222,	294,	163,	176,	1418,							STR_SHOW_GRAPH_OF_LATERAL_ACCELERATION_AGAINST_TIME_TIP 	},
+	{ WIDGETS_END },
+};
+
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
 	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE													},
@@ -439,7 +470,7 @@ static rct_widget *window_ride_page_widgets[] = {
 	window_ride_colour_widgets,
 	window_ride_music_widgets,
 	window_ride_measurements_widgets,
-	(rct_widget*)0x009AE710,
+	window_ride_graphs_widgets,
 	window_ride_income_widgets,
 	window_ride_customer_widgets
 };
@@ -528,6 +559,17 @@ static void window_ride_measurements_tooldown();
 static void window_ride_measurements_toolabort();
 static void window_ride_measurements_invalidate();
 static void window_ride_measurements_paint();
+
+static void window_ride_graphs_mouseup();
+static void window_ride_graphs_resize();
+static void window_ride_graphs_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_ride_graphs_update(rct_window *w);
+static void window_ride_graphs_scrollgetheight();
+static void window_ride_graphs_15();
+static void window_ride_graphs_tooltip();
+static void window_ride_graphs_invalidate();
+static void window_ride_graphs_paint();
+static void window_ride_graphs_scrollpaint();
 
 static void window_ride_income_mouseup();
 static void window_ride_income_resize();
@@ -766,6 +808,38 @@ static void* window_ride_measurements_events[] = {
 	window_ride_emptysub
 };
 
+// 0x0098DF64
+static void* window_ride_graphs_events[] = {
+	window_ride_emptysub,
+	window_ride_graphs_mouseup,
+	window_ride_graphs_resize,
+	window_ride_graphs_mousedown,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_graphs_update,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_graphs_scrollgetheight,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_graphs_15,
+	window_ride_graphs_tooltip,
+	window_ride_emptysub,
+	window_ride_emptysub,
+	window_ride_graphs_invalidate,
+	window_ride_graphs_paint,
+	window_ride_graphs_scrollpaint
+};
+
 // 0x0098DEF4
 static void* window_ride_income_events[] = {
 	window_ride_emptysub,
@@ -838,7 +912,7 @@ static uint32* window_ride_page_events[] = {
 	(uint32*)window_ride_colour_events,
 	(uint32*)window_ride_music_events,
 	(uint32*)window_ride_measurements_events,
-	(uint32*)0x0098DF64,
+	(uint32*)window_ride_graphs_events,
 	(uint32*)window_ride_income_events,
 	(uint32*)window_ride_customer_events
 };
@@ -4524,6 +4598,325 @@ static void window_ride_measurements_paint()
 			gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, 0, x, y);
 		}
 	}
+}
+
+#pragma endregion
+
+#pragma region Graphs
+
+enum {
+	GRAPH_VELOCITY,
+	GRAPH_ALTITUDE,
+	GRAPH_VERTICAL,
+	GRAPH_LATERAL
+};
+
+/**
+ * 
+ * rct2: 0x006B66D9
+ */
+rct_ride_measurement *ride_get_measurement(int rideIndex)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edx = rideIndex;
+
+	RCT2_CALLFUNC_X(0x006B66D9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	eax &= 0xFFFF;
+
+	if ((eax & 0xFF) < 10) {
+		eax &= 0xFF;
+		return GET_RIDE_MEASUREMENT(eax);
+	} else {
+		return NULL;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AE8A6
+ */
+static void window_ride_set_graph(rct_window *w, int type)
+{
+	if ((w->list_information_type & 0xFF) == type) {
+		w->list_information_type ^= 0x8000;
+	} else {
+		w->list_information_type &= 0xFF00;
+		w->list_information_type |= type;
+	}
+	window_invalidate(w);
+}
+
+/**
+ * 
+ * rct2: 0x006AE85D
+ */
+static void window_ride_graphs_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+	case WIDX_TAB_4:
+	case WIDX_TAB_5:
+	case WIDX_TAB_6:
+	case WIDX_TAB_7:
+	case WIDX_TAB_8:
+	case WIDX_TAB_9:
+	case WIDX_TAB_10:
+		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AE8DA
+ */
+static void window_ride_graphs_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 316, 180, 500, 450);
+}
+
+/**
+ * 
+ * rct2: 0x006AE878
+ */
+static void window_ride_graphs_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	switch (widgetIndex) {
+	case WIDX_GRAPH_VELOCITY:
+		window_ride_set_graph(w, GRAPH_VELOCITY);
+		break;
+	case WIDX_GRAPH_ALTITUDE:
+		window_ride_set_graph(w, GRAPH_ALTITUDE);
+		break;
+	case WIDX_GRAPH_VERTICAL:
+		window_ride_set_graph(w, GRAPH_VERTICAL);
+		break;
+	case WIDX_GRAPH_LATERAL:
+		window_ride_set_graph(w, GRAPH_LATERAL);
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006AE95D
+ */
+static void window_ride_graphs_update(rct_window *w)
+{
+	rct_widget *widget;
+	rct_ride_measurement *measurement;
+	int x;
+
+	w->frame_no++;
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_8);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	widget_invalidate(WC_RIDE, w->number, WIDX_GRAPH);
+
+	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
+	x = w->scrolls[0].h_left;
+	if (!(w->list_information_type & 0x8000)) {
+		measurement = ride_get_measurement(w->number);
+		x = measurement == NULL ?
+			0 :
+			measurement->var_08 - (((widget->right - widget->left) / 4) * 3);
+	}
+
+	w->scrolls[0].h_left = clamp(0, x, w->scrolls[0].h_right - ((widget->right - widget->left) - 2));
+	widget_scroll_update_thumbs(w, WIDX_GRAPH);
+}
+
+/**
+ * 
+ * rct2: 0x006AEA75
+ */
+static void window_ride_graphs_scrollgetheight()
+{
+	rct_window *w;
+	rct_ride_measurement *measurement;
+	int width, height;
+
+	window_get_register(w);
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	// Set minimum size
+	width = window_ride_graphs_widgets[WIDX_GRAPH].right - window_ride_graphs_widgets[WIDX_GRAPH].left - 2;
+	height = 0;
+
+	// Get measurement size
+	measurement = ride_get_measurement(w->number);
+	if (measurement != NULL)
+		width = max(width, measurement->var_06);
+
+	// Return size
+	#ifdef _MSC_VER
+	__asm mov ecx, width
+	#else
+	__asm__ ( "mov ecx, 0 "  );
+	#endif
+
+	#ifdef _MSC_VER
+	__asm mov edx, height
+	#else
+	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
+	#endif
+}
+
+/**
+ * 
+ * rct2: 0x006AE953
+ */
+static void window_ride_graphs_15()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->list_information_type |= 0x8000;
+}
+
+/**
+ * 
+ * rct2: 0x006AEA05
+ */
+static void window_ride_graphs_tooltip()
+{
+	rct_window *w;
+	short unused, widgetIndex, result;
+	rct_ride *ride;
+	rct_ride_measurement *measurement;
+
+	window_dropdown_get_registers(w, unused, widgetIndex);
+
+	result = -1;
+	if (widgetIndex == WIDX_GRAPH) {
+		RCT2_GLOBAL(0x013CE952, uint16) = 3158;
+		measurement = ride_get_measurement(w->number);
+		if (measurement != NULL && (measurement->var_01 & 1)) {
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->var_0A + 1;
+			ride = GET_RIDE(w->number);
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].vehicle_name + 6;
+			result = 0;
+		}
+	}
+
+	#ifdef _MSC_VER
+		__asm mov ax, result
+	#else
+		__asm__ ( "mov ax, %[result] " : [result] "+m" (result) );
+	#endif
+}
+
+/**
+ * 
+ * rct2: 0x006AE372
+ */
+static void window_ride_graphs_invalidate()
+{
+	rct_window *w;
+	rct_widget *widgets;
+	rct_ride *ride;
+	int x, y;
+
+	window_get_register(w);
+
+	widgets = window_ride_page_widgets[w->page];
+	if (w->widgets != widgets) {
+		w->widgets = widgets;
+		window_init_scroll_widgets(w);
+	}
+
+	window_ride_set_pressed_tab(w);
+
+	ride = GET_RIDE(w->number);
+
+	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+
+	// Set pressed graph button type
+	w->pressed_widgets &= ~(1 << WIDX_GRAPH_VELOCITY);
+	w->pressed_widgets &= ~(1 << WIDX_GRAPH_ALTITUDE);
+	w->pressed_widgets &= ~(1 << WIDX_GRAPH_VERTICAL);
+	w->pressed_widgets &= ~(1 << WIDX_GRAPH_LATERAL);
+	w->pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + (w->list_information_type & 0xFF)));
+	
+	// Hide graph buttons that are not applicable
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x80) {
+		window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].type = WWT_DROPDOWN_BUTTON;
+		window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].type = WWT_DROPDOWN_BUTTON;
+	} else {
+		window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].type = WWT_EMPTY;
+		window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].type = WWT_EMPTY;
+	}
+
+	// Anchor graph widget
+	x = w->width - 4;
+	y = w->height - 18;
+
+	window_ride_graphs_widgets[WIDX_GRAPH].right = x;
+	window_ride_graphs_widgets[WIDX_GRAPH].bottom = y;
+	y += 3;
+	window_ride_graphs_widgets[WIDX_GRAPH_VELOCITY].top = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_ALTITUDE].top = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].top = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].top = y;
+	y += 11;
+	window_ride_graphs_widgets[WIDX_GRAPH_VELOCITY].bottom = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_ALTITUDE].bottom = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].bottom = y;
+	window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].bottom = y;
+
+	window_ride_anchor_border_widgets(w);
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+}
+
+/**
+ * 
+ * rct2: 0x006AE4BC
+ */
+static void window_ride_graphs_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_ride_draw_tab_images(dpi, w);
+}
+
+/**
+ * 
+ * rct2: 0x006AE4C7
+ */
+static void window_ride_graphs_scrollpaint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_ride_measurement *measurement;
+
+	window_paint_get_registers(w, dpi);
+
+	gfx_clear(dpi, RCT2_GLOBAL(0x0141FC9D, uint8) * 0x01010101);
+
+	measurement = ride_get_measurement(w->number);
+	if (measurement == NULL)
+		return;
 }
 
 #pragma endregion

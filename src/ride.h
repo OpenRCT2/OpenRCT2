@@ -197,7 +197,12 @@ typedef struct {
  */
 typedef struct {
 	uint8 var_00;
-	uint8 pad_01[0x4B0B];
+	uint8 var_01;
+	uint8 pad_02[4];
+	uint16 var_06;
+	uint16 var_08;
+	uint16 var_0A;
+	uint8 pad_0C[0x4B00];
 } rct_ride_measurement;
 
 enum {
