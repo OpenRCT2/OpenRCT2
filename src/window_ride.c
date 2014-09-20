@@ -4615,7 +4615,7 @@ enum {
  * 
  * rct2: 0x006B66D9
  */
-rct_ride_measurement *ride_get_measurement(int rideIndex)
+rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	edx = rideIndex;
@@ -4627,6 +4627,8 @@ rct_ride_measurement *ride_get_measurement(int rideIndex)
 		eax &= 0xFF;
 		return GET_RIDE_MEASUREMENT(eax);
 	} else {
+		if (message != NULL)
+			*message = eax;
 		return NULL;
 	}
 }
@@ -4730,10 +4732,10 @@ static void window_ride_graphs_update(rct_window *w)
 	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
 	x = w->scrolls[0].h_left;
 	if (!(w->list_information_type & 0x8000)) {
-		measurement = ride_get_measurement(w->number);
+		measurement = ride_get_measurement(w->number, NULL);
 		x = measurement == NULL ?
 			0 :
-			measurement->var_08 - (((widget->right - widget->left) / 4) * 3);
+			measurement->current_item - (((widget->right - widget->left) / 4) * 3);
 	}
 
 	w->scrolls[0].h_left = clamp(0, x, w->scrolls[0].h_right - ((widget->right - widget->left) - 2));
@@ -4759,9 +4761,9 @@ static void window_ride_graphs_scrollgetheight()
 	height = 0;
 
 	// Get measurement size
-	measurement = ride_get_measurement(w->number);
+	measurement = ride_get_measurement(w->number, NULL);
 	if (measurement != NULL)
-		width = max(width, measurement->var_06);
+		width = max(width, measurement->num_items);
 
 	// Return size
 	#ifdef _MSC_VER
@@ -4800,18 +4802,21 @@ static void window_ride_graphs_tooltip()
 	short unused, widgetIndex, result;
 	rct_ride *ride;
 	rct_ride_measurement *measurement;
+	rct_string_id stringId;
 
 	window_dropdown_get_registers(w, unused, widgetIndex);
 
 	result = -1;
 	if (widgetIndex == WIDX_GRAPH) {
 		RCT2_GLOBAL(0x013CE952, uint16) = 3158;
-		measurement = ride_get_measurement(w->number);
+		measurement = ride_get_measurement(w->number, &stringId);
 		if (measurement != NULL && (measurement->var_01 & 1)) {
 			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->var_0A + 1;
 			ride = GET_RIDE(w->number);
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].vehicle_name + 6;
 			result = 0;
+		} else {
+			result = stringId;
 		}
 	}
 
@@ -4909,14 +4914,112 @@ static void window_ride_graphs_scrollpaint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_ride_measurement *measurement;
+	rct_widget *widget;
+	int x, y, width, time, listType, colour, top, bottom, tmp;
+	rct_string_id stringId;
 
 	window_paint_get_registers(w, dpi);
 
 	gfx_clear(dpi, RCT2_GLOBAL(0x0141FC9D, uint8) * 0x01010101);
 
-	measurement = ride_get_measurement(w->number);
-	if (measurement == NULL)
+	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
+	listType = w->list_information_type & 0xFF;
+	measurement = ride_get_measurement(w->number, &stringId);
+	if (measurement == NULL) {
+		// No measurement message
+		x = (widget->right - widget->left) / 2;
+		y = (widget->bottom - widget->top) / 2 - 5;
+		width = widget->right - widget->left - 2;
+		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, width, stringId, 0);
 		return;
+	}
+
+	// Vertical grid lines
+	time = 0;
+	for (x = 0; x < dpi->x + dpi->width; x += 80) {
+		if (x + 80 >= dpi->x) {
+			gfx_fill_rect(dpi, x +  0, dpi->y, x +  0, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FCA0, uint8));
+			gfx_fill_rect(dpi, x + 16, dpi->y, x + 16, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
+			gfx_fill_rect(dpi, x + 32, dpi->y, x + 32, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
+			gfx_fill_rect(dpi, x + 48, dpi->y, x + 48, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
+			gfx_fill_rect(dpi, x + 64, dpi->y, x + 64, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
+		}
+		time += 5;
+	}
+
+	// Horizontal grid lines
+	y = widget->bottom - widget->top - 13;
+	short yUnit = RCT2_GLOBAL(0x0098DD9A + (listType * 8), uint16);
+	short ax = RCT2_GLOBAL(0x0098DD9E + (listType * 8), uint16);
+	short yUnitInterval = RCT2_GLOBAL(0x0098DD9C + (listType * 8), uint16);
+	short yInterval = RCT2_GLOBAL(0x0098DD98 + (listType * 8), uint16);
+
+	// Scale modifier
+	if (ax == 1420) {
+		short unk = RCT2_GLOBAL(0x01359208, uint16);
+		yUnit -= RCT2_GLOBAL(0x01359208, uint16);
+		unk *= 2;
+		yUnit -= unk;
+	}
+
+	for (y = widget->bottom - widget->top - 13; y >= 8; y -= yInterval, yUnit += yUnitInterval) {
+		// Minor / major line
+		colour = yUnit == 0 ?
+			RCT2_GLOBAL(0x0141FCA0, uint8) :
+			RCT2_GLOBAL(0x0141FC9F, uint8);
+
+		gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width - 1, y, colour);
+
+		// Scale modifier
+		if (ax == 1420)
+			yUnit /= 2;
+
+		gfx_draw_string_left(dpi, ax, &yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
+	}
+
+	// Time marks
+	x = 0;
+	time = 0;
+	for (x = 0; x < dpi->x + dpi->width; x += 80) {
+		if (x + 80 >= dpi->x)
+			gfx_draw_string_left(dpi, 1414, &time, 0, x + 2, 1);
+		time += 5;
+	}
+
+	// Plot
+	x = dpi->x;
+	for (width = 0; width < dpi->width; width++, x++) {
+		if (x < 0 || x >= measurement->num_items - 1)
+			continue;
+
+		switch (listType) {
+		case GRAPH_VELOCITY:
+			top = measurement->velocity[x] / 2;
+			bottom = measurement->velocity[x + 1] / 2;
+			break;
+		case GRAPH_ALTITUDE:
+			top = measurement->altitude[x];
+			bottom = measurement->altitude[x + 1];
+			break;
+		case GRAPH_VERTICAL:
+			top = measurement->vertical[x] + 39;
+			bottom = measurement->vertical[x + 1] + 39;
+			break;
+		case GRAPH_LATERAL:
+			top = measurement->lateral[x] + 52;
+			bottom = measurement->lateral[x + 1] + 52;
+			break;
+		}
+
+		top = widget->bottom - widget->top - top - 13;
+		bottom = widget->bottom - widget->top - bottom - 13;
+		if (top > bottom) {
+			tmp = top;
+			top = bottom;
+			bottom = tmp;
+		}
+		gfx_fill_rect(dpi, x, top, x, bottom, x > measurement->current_item ? 17 : 21);
+	}
 }
 
 #pragma endregion

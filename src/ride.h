@@ -191,6 +191,8 @@ typedef struct {
 	uint8 pad_208[0x58];
 } rct_ride;
 
+#define RIDE_MEASUREMENT_MAX_ITEMS 4800
+
 /**
  * Ride measurement structure.
  * size: 0x04B0C
@@ -199,10 +201,13 @@ typedef struct {
 	uint8 var_00;
 	uint8 var_01;
 	uint8 pad_02[4];
-	uint16 var_06;
-	uint16 var_08;
+	uint16 num_items;							// 0x0006
+	uint16 current_item;						// 0x0008
 	uint16 var_0A;
-	uint8 pad_0C[0x4B00];
+	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
+	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
+	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
+	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
 
 enum {
