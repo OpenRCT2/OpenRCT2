@@ -107,6 +107,20 @@ void peep_update_all()
 }
 
 /**
+*  rct2: 0x0069A409
+* Decreases rider count if on/entering a ride.
+*/
+void peep_decrement_num_riders(rct_peep* peep){
+	if (peep->state == PEEP_STATE_ON_RIDE 
+		|| peep->state == PEEP_STATE_ENTERING_RIDE){
+
+		rct_ride* ride = GET_RIDE(peep->current_ride);
+		ride->num_riders--;
+		ride->var_14D |= 0xC;
+	}
+}
+
+/**
  *  rct2: 0x0069A42F
  * Call after changing a peeps state to insure that
  * all relevant windows update. Note also increase ride
@@ -264,7 +278,7 @@ void peep_update_falling(rct_peep* peep){
 		edx = 8;
 	}
 	peep->next_z += edx << 8;
-	RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
 	peep_window_state_update(peep);
 }
@@ -281,7 +295,7 @@ void peep_update_queuing(rct_peep* peep){
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 	if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 1;
 		peep_window_state_update(peep);
 		return;
@@ -291,7 +305,7 @@ void peep_update_queuing(rct_peep* peep){
 		if (peep->var_74 == 0xFFFF){
 			//Happens every time peep goes onto ride.
 			peep->var_36 = 0;
-			RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
 			peep_window_state_update(peep);
 			peep->var_2C = 0;
@@ -301,7 +315,7 @@ void peep_update_queuing(rct_peep* peep){
 		peep->sprite_direction ^= (1 << 4);
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 1;
 		peep_window_state_update(peep);
 	}
@@ -365,7 +379,7 @@ void peep_update_queuing(rct_peep* peep){
 		peep->sprite_direction ^= (1 << 4);
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 1;
 		peep_window_state_update(peep);
 	}

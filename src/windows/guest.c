@@ -625,7 +625,7 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 9;
 		peep->var_2C = 0;
 		peep_window_state_update(peep);
@@ -1226,7 +1226,7 @@ void window_guest_overview_tool_down(){
 	rct_peep* peep = GET_PEEP(w->number);
 	RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_decrement_num_riders(peep);
 	peep->state = 0;
 	peep_window_state_update(peep);
 	peep->var_71 = 0xFF;
@@ -1259,7 +1259,7 @@ void window_guest_overview_tool_abort(){
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 	if (peep->x != 0x8000){
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 0;
 		peep_window_state_update(peep);
 		peep->var_71 = 0xFF;
