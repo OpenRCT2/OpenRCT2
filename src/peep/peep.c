@@ -106,6 +106,38 @@ void peep_update_all()
 	}
 }
 
+/**
+ *  rct2: 0x0069A42F
+ * Call after changing a peeps state to insure that
+ * all relevant windows update. Note also increase ride
+ * count if on/entering a ride.
+ */
+void peep_window_state_update(rct_peep* peep){
+	
+	rct_window* w = window_find_by_id(WC_PEEP, peep->sprite_index);
+	if (w){
+		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	}
+
+	if (peep->type == PEEP_TYPE_GUEST){
+		// Update action label
+		widget_invalidate(WC_PEEP, peep->sprite_index, 12);
+
+		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
+			rct_ride* ride = GET_RIDE(peep->current_ride);
+			ride->num_riders++;
+			ride->var_14D |= 0xC;
+		}
+
+		window_invalidate_by_id(WC_GUEST_LIST,0);
+	}
+	else{
+		// Update action label
+		widget_invalidate(WC_PEEP, peep->sprite_index, 9);
+		window_invalidate_by_id(WC_STAFF_LIST, 0);
+	}
+}
+
 /** New function removes peep from 
  * park existance. Works with staff.
  */
@@ -194,7 +226,7 @@ void peep_update_falling(rct_peep* peep){
 
 					RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
 					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-					RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+					peep_window_state_update(peep);
 					return;
 				}
 			}
@@ -234,7 +266,7 @@ void peep_update_falling(rct_peep* peep){
 	peep->next_z += edx << 8;
 	RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 	peep->state = PEEP_STATE_1;
-	RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_window_state_update(peep);
 }
 
 /**
@@ -251,7 +283,7 @@ void peep_update_queuing(rct_peep* peep){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 1;
-		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 		return;
 	}
 
@@ -261,7 +293,7 @@ void peep_update_queuing(rct_peep* peep){
 			peep->var_36 = 0;
 			RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
-			RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_window_state_update(peep);
 			peep->var_2C = 0;
 			return;
 		}
@@ -271,7 +303,7 @@ void peep_update_queuing(rct_peep* peep){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 1;
-		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 	}
 
 	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -335,7 +367,7 @@ void peep_update_queuing(rct_peep* peep){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x69A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 1;
-		RCT2_CALLPROC_X(0x69A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 	}
 }
 

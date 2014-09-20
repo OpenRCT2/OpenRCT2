@@ -628,7 +628,7 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 9;
 		peep->var_2C = 0;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:
 		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id);
@@ -1228,7 +1228,7 @@ void window_guest_overview_tool_down(){
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
 	peep->state = 0;
-	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_window_state_update(peep);
 	peep->var_71 = 0xFF;
 	peep->var_6D = 0;
 	peep->var_70 = 0;
@@ -1261,7 +1261,7 @@ void window_guest_overview_tool_abort(){
 	if (peep->x != 0x8000){
 		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 0;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 		peep->var_71 = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;
