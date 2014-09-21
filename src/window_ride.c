@@ -493,6 +493,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 #pragma region Events
 
 static void window_ride_emptysub() { }
+static void window_ride_init_viewport(rct_window *w);
 
 static void window_ride_main_mouseup();
 static void window_ride_main_resize();
