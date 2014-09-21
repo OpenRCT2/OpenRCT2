@@ -26,6 +26,7 @@
 #include "staff.h"
 #include "sprite.h"
 #include "ride.h"
+#include "ride_data.h"
 #include "scenario.h"
 #include "sprite.h"
 #include "peep.h"
@@ -699,7 +700,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 		verticalG = clamp(-127, verticalG / 8, 127);
 		lateralG = clamp(-127, lateralG / 8, 127);
 
-		if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
 			verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
 			lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
 		}
@@ -711,7 +712,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
 	altitude = min(vehicle->z / 8, 255);
 
-	if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
 		velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
 		altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
 	}
@@ -719,7 +720,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	measurement->velocity[measurement->current_item] = velocity & 0xFF;
 	measurement->altitude[measurement->current_item] = altitude & 0xFF;
 
-	if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
 		measurement->current_item++;
 		measurement->num_items = max(measurement->num_items, measurement->current_item);
 	}
@@ -770,5 +771,76 @@ void ride_measurements_update()
 			}
 
 		}
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B66D9
+ */
+rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
+{
+	rct_ride *ride;
+	rct_ride_measurement *measurement;
+	uint32 lruTicks;
+	int i, lruIndex;
+
+	ride = GET_RIDE(rideIndex);
+
+	// Check if ride type supports data logging
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x200)) {
+		if (message != NULL) *message = STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE;
+		return NULL;
+	}
+
+	// Check if a measurement already exists for this ride
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == i)
+			goto use_measurement;
+	}
+
+	// Find a free measurement
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == 255)
+			goto new_measurement;
+	}
+
+	// Use last recently used measurement for some other ride
+	lruIndex = 0;
+	lruTicks = 0xFFFFFFFF;
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+
+		if (measurement->last_use_tick <= lruTicks) {
+			lruTicks = measurement->last_use_tick;
+			lruIndex = i;
+		}
+	}
+
+	i = lruIndex;
+	measurement = GET_RIDE_MEASUREMENT(i);
+	ride->measurement_index = 255;
+
+new_measurement:
+	measurement->ride_index = rideIndex;
+	ride->measurement_index = i;
+	measurement->flags = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x80)
+		measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
+	measurement->num_items = 0;
+	measurement->current_item = 0;
+
+use_measurement:
+	measurement->last_use_tick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	if (measurement->flags & 1) {
+		if (message != NULL) *message = 0;
+		return measurement;
+	} else {
+		RCT2_GLOBAL(0x013CE952, uint16) = RideNameConvention[ride->type].vehicle_name;
+		RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].station_name;
+		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
+		return NULL;
 	}
 }

@@ -4614,28 +4614,6 @@ enum {
 
 /**
  * 
- * rct2: 0x006B66D9
- */
-rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edx = rideIndex;
-
-	RCT2_CALLFUNC_X(0x006B66D9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	eax &= 0xFFFF;
-
-	if ((eax & 0xFF) < 10) {
-		eax &= 0xFF;
-		return GET_RIDE_MEASUREMENT(eax);
-	} else {
-		if (message != NULL)
-			*message = eax;
-		return NULL;
-	}
-}
-
-/**
- * 
  * rct2: 0x006AE8A6
  */
 static void window_ride_set_graph(rct_window *w, int type)

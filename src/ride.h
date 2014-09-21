@@ -106,7 +106,9 @@ typedef struct {
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	uint8 var_0D0;
-	uint8 pad_0D1[0x7];
+	uint8 pad_0D1[0x3];
+	uint8 measurement_index;		// 0x0D4
+	uint8 pad_0D5[0x3];
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
 	uint8 pad_0E0[0x4];
@@ -199,8 +201,8 @@ typedef struct {
  */
 typedef struct {
 	uint8 ride_index;							// 0x0000
-	uint8 flags;
-	uint8 pad_02[4];
+	uint8 flags;								// 0x0001
+	uint32 last_use_tick;						// 0x0002
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
 	uint8 vehicle_index;						// 0x000A
@@ -549,5 +551,6 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void ride_measurements_update();
+rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
 
 #endif
