@@ -491,3 +491,21 @@ static void vehicle_update(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006D77F2, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
+
+/**
+ * 
+ *  rct2: 0x006D73D0
+ * ax: verticalG
+ * dx: lateralG
+ * esi: vehicle
+ */
+void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	esi = (int)vehicle;
+	RCT2_CALLFUNC_X(0x006D73D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	
+	if (verticalG != NULL) *verticalG = (sint16)(eax & 0xFFFF);
+	if (lateralG != NULL) *lateralG = (sint16)(edx & 0xFFFF);
+}

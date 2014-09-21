@@ -154,7 +154,7 @@ void ride_init_all()
 
 	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
 		ride_measurement = GET_RIDE_MEASUREMENT(i);
-		ride_measurement->var_00 = 0xFF;
+		ride_measurement->ride_index = 255;
 	}
 }
 
@@ -653,4 +653,124 @@ uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
 		rideType--;
 	}
 	return entryIndexList;
+}
+
+
+
+/**
+ *  rct2: 0x006B64F2
+ */
+void ride_measurement_update(rct_ride_measurement *measurement)
+{
+	uint16 spriteIndex;
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+	int unk, velocity, altitude, verticalG, lateralG;
+
+	ride = GET_RIDE(measurement->ride_index);
+	spriteIndex = ride->vehicles[measurement->vehicle_index];
+	if (spriteIndex == SPRITE_INDEX_NULL)
+		return;
+
+	vehicle = &(g_sprite_list[spriteIndex].vehicle);
+
+	if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING) {
+		if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_STOPPING)
+			return;
+
+		measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+		if (measurement->var_0B == vehicle->var_4B)
+			measurement->current_item = 0;
+	}
+
+	if (vehicle->status == VEHICLE_STATUS_UNLOADING_PASSENGERS) {
+		measurement->flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
+		return;
+	}
+
+	unk = (vehicle->var_36 / 4) & 0xFF;
+	if (unk == 216 || unk == 123 || unk == 9 || unk == 63 || unk == 147 || unk == 155)
+		if (vehicle->velocity == 0)
+			return;
+
+	if (measurement->current_item >= RIDE_MEASUREMENT_MAX_ITEMS)
+		return;
+
+	if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES) {
+		vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
+		verticalG = clamp(-127, verticalG / 8, 127);
+		lateralG = clamp(-127, lateralG / 8, 127);
+
+		if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+			verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
+			lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
+		}
+
+		measurement->vertical[measurement->current_item] = verticalG & 0xFF;
+		measurement->lateral[measurement->current_item] = lateralG & 0xFF;
+	}
+
+	velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
+	altitude = min(vehicle->z / 8, 255);
+
+	if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+		velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
+		altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
+	}
+
+	measurement->velocity[measurement->current_item] = velocity & 0xFF;
+	measurement->altitude[measurement->current_item] = altitude & 0xFF;
+
+	if (RCT2_GLOBAL(0x00F663AC, uint32) & 1) {
+		measurement->current_item++;
+		measurement->num_items = max(measurement->num_items, measurement->current_item);
+	}
+}
+
+/**
+ *  rct2: 0x006B6456
+ */
+void ride_measurements_update()
+{
+	rct_ride *ride;
+	rct_ride_measurement *measurement;
+	rct_vehicle *vehicle;
+	int i, j;
+	uint16 spriteIndex;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+		return;
+
+	// For each ride measurement
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == 255)
+			continue;
+
+		ride = GET_RIDE(measurement->ride_index);
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+			continue;
+
+		if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING) {
+			ride_measurement_update(measurement);
+		} else {
+			// For each vehicle
+			for (j = 0; j < ride->num_vehicles; j++) {
+				spriteIndex = ride->vehicles[j];
+				if (spriteIndex == SPRITE_INDEX_NULL)
+					continue;
+
+				vehicle = &(g_sprite_list[spriteIndex].vehicle);
+				if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_STOPPING) {
+					measurement->vehicle_index = j;
+					measurement->var_0B = vehicle->var_4B;
+					measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
+					measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+					ride_measurement_update(measurement);
+					break;
+				}
+			}
+
+		}
+	}
 }

@@ -4811,8 +4811,8 @@ static void window_ride_graphs_tooltip()
 	if (widgetIndex == WIDX_GRAPH) {
 		RCT2_GLOBAL(0x013CE952, uint16) = 3158;
 		measurement = ride_get_measurement(w->number, &stringId);
-		if (measurement != NULL && (measurement->var_01 & 1)) {
-			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->var_0A + 1;
+		if (measurement != NULL && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->vehicle_index + 1;
 			ride = GET_RIDE(w->number);
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].vehicle_name + 6;
 			result = 0;

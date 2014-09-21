@@ -198,12 +198,13 @@ typedef struct {
  * size: 0x04B0C
  */
 typedef struct {
-	uint8 var_00;
-	uint8 var_01;
+	uint8 ride_index;							// 0x0000
+	uint8 flags;
 	uint8 pad_02[4];
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
-	uint16 var_0A;
+	uint8 vehicle_index;						// 0x000A
+	uint8 var_0B;
 	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
@@ -497,6 +498,12 @@ typedef struct {
 	uint8 additional_2;
 } vehicle_colour;
 
+enum {
+	RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,
+	RIDE_MEASUREMENT_FLAG_UNLOADING = 1 << 1,
+	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -541,5 +548,6 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
+void ride_measurements_update();
 
 #endif
