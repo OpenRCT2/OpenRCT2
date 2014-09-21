@@ -395,7 +395,7 @@ static int park_calculate_guest_generation_probability()
 				continue;
 			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 				continue;
-			if (ride->var_0E4 < 0x2580000)
+			if (ride->length[0] < (600 << 16))
 				continue;
 			if (ride->excitement < RIDE_RATING(6,00))
 				continue;
