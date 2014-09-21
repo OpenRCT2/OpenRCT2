@@ -3442,7 +3442,16 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 		gDropdownItemsChecked = 1 << ride->track_colour_supports[colourSchemeIndex];
 		break;
-	case WIDX_ENTRANCE_STYLE_DROPDOWN:
+	case WIDX_ENTRANCE_STYLE_DROPDOWN:		
+		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_PLAIN_ENTRANCE + window_ride_entrance_style_list[i];
+
+			if (ride->entrance_style == window_ride_entrance_style_list[i])
+				gDropdownItemsChecked = 1 << i;
+		}
+		int checked = gDropdownItemsChecked;
+
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
 			w->y + dropdownWidget->top,
@@ -3453,15 +3462,14 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_PLAIN_ENTRANCE + window_ride_entrance_style_list[i];
-
-			if (ride->entrance_style == window_ride_entrance_style_list[i])
-				gDropdownItemsChecked = 1 << i;
-		}
+		gDropdownItemsChecked = checked;
 		break;
-	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
+	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:		
+		for (i = 0; i < 3; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = (RideNameConvention[ride->type].vehicle_name << 16) | (STR_ALL_VEHICLES_IN_SAME_COLOURS + i);
+		}
+
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
 			w->y + dropdownWidget->top,
@@ -3472,16 +3480,18 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		for (i = 0; i < 3; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = (RideNameConvention[ride->type].vehicle_name << 16) | (STR_ALL_VEHICLES_IN_SAME_COLOURS + i);
-		}
 		gDropdownItemsChecked = 1 << (ride->colour_scheme_type & 3);
 		break;
 	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
 		numItems = ride->num_vehicles;
 		if ((ride->colour_scheme_type & 3) != VEHICLE_COLOUR_SCHEME_PER_TRAIN)
 			numItems = ride->num_cars_per_train;
+
+		stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN ? 1135 : 1133;
+		for (i = 0; i < 32; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = ((sint64)(i + 1) << 32) | ((RideNameConvention[ride->type].vehicle_name + 2) << 16) | stringId;
+		}
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -3493,11 +3503,6 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN ? 1135 : 1133;
-		for (i = 0; i < 32; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = ((sint64)(i + 1) << 32) | ((RideNameConvention[ride->type].vehicle_name + 2) << 16) | stringId;
-		}
 		gDropdownItemsChecked = 1 << w->var_48C;
 		break;
 	case WIDX_VEHICLE_MAIN_COLOUR:
@@ -3753,20 +3758,18 @@ static void window_ride_colour_invalidate()
 		// Vehicle colour scheme type
 		if (
 			!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000) &&
-			(ride->num_stations | ride->num_vehicles) > 1
+			(ride->num_cars_per_train | ride->num_vehicles) > 1
 		) {
 			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_DROPDOWN;
 			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-
-			RCT2_GLOBAL(0x013CE952 +  6, uint16) = STR_ALL_VEHICLES_IN_SAME_COLOURS + vehicleColourSchemeType;
-			RCT2_GLOBAL(0x013CE952 +  8, uint16) = RideNameConvention[ride->type].vehicle_name;
-			RCT2_GLOBAL(0x013CE952 + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
-			RCT2_GLOBAL(0x013CE952 + 12, uint16) = w->var_48C + 1;
 		} else {
 			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_EMPTY;
 			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
 		}
-
+		RCT2_GLOBAL(0x013CE952 +  6, uint16) = STR_ALL_VEHICLES_IN_SAME_COLOURS + vehicleColourSchemeType;
+		RCT2_GLOBAL(0x013CE952 +  8, uint16) = RideNameConvention[ride->type].vehicle_name;
+		RCT2_GLOBAL(0x013CE952 + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
+		RCT2_GLOBAL(0x013CE952 + 12, uint16) = w->var_48C + 1;
 		// Vehicle index
 		if (vehicleColourSchemeType != 0) {
 			window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WWT_DROPDOWN;
