@@ -590,48 +590,46 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 }
 
 /**
-*
-*  rct2: 0x006AC988
-* set the speed of the gokart type vehicle at the start to a random value or alter if peep name is a cheat code
-* @param ride (esi)
-*/
+ *
+ *  rct2: 0x006AC988
+ * set the speed of the go kart type vehicle at the start to a random value or alter if peep name is an easter egg
+ * @param ride (esi)
+ */
 void ride_init_vehicle_speed(rct_ride *ride)
 {
-	int ecx = -1;
-	while (1) {
-		ecx++;
-		if (ecx >= ride->num_vehicles) {
-			break;
-		}
-		rct_vehicle *vehicle = &g_sprite_list[ride->vehicles[ecx]].vehicle;
-		vehicle->var_48 &= (1 << 6);
-		uint8 r = scenario_rand();
-		r = 0xC;
-		r &= 0xF;
-		r -= 8;
+	rct_ride_type *rideEntry;
+	rct_vehicle *vehicle;
+	uint8 *unk;
+	int i;
 
-		int testaddr = (vehicle->var_31 * 0x65);
-		testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
-		uint8 test = ((uint8*)testaddr)[0x76];
-		r += test;
+	for (i = 0; i < ride->num_vehicles; i++) {
+		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
+		vehicle->var_48 &= ~(1 << 6);
 
-		vehicle->speed = r;
+		rideEntry = GET_RIDE_ENTRY(vehicle->var_D6);
+		unk = (uint8*)((int)rideEntry + (vehicle->var_31 * 0x65));
+
+		vehicle->speed = (scenario_rand() & 16) - 8 + RCT2_GLOBAL(unk + 0x76, uint8);
+
 		if (vehicle->var_B3) {
 			rct_peep *peep = &g_sprite_list[vehicle->peep].peep;
-			if (peep_check_cheatcode(0, peep)) { // MICHAEL SCHUMACHER
+
+			switch (peep_get_easteregg_name_id(peep)) {
+			case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
 				vehicle->speed += 35;
-			}
-			if (peep_check_cheatcode(1, peep)) { // JACQUES VILLENEUVE
+				break;
+			case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
 				vehicle->speed += 25;
-			}
-			if (peep_check_cheatcode(2, peep)) { // DAMON HILL
+				break;
+			case EASTEREGG_PEEP_NAME_DAMON_HILL:
 				vehicle->speed += 55;
-			}
-			if (peep_check_cheatcode(4, peep)) { // CHRIS SAWYER
+				break;
+			case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
 				vehicle->speed += 14;
-			}
-			if (peep_check_cheatcode(3, peep)) { // MR BEAN
+				break;
+			case EASTEREGG_PEEP_NAME_MR_BEAN:
 				vehicle->speed = 9;
+				break;
 			}
 		}
 	}
