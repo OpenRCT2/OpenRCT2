@@ -89,7 +89,7 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 								v18 = 64;
 							}
 							i->var_4 = (sint16)(((v15.both / v18) - 0x8000) >> 4);
-							sint32 v19 = vehicle->var_28;
+							sint32 v19 = vehicle->velocity;
 
 							int testaddr = (vehicle->var_31 * 0x65);
 							testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
@@ -138,7 +138,7 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 	do {
 		result += vehicle_temp->var_46;
 	} while (vehicle_temp->next_vehicle_on_train != (uint16)-1 && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)));
-	sint32 v4 = vehicle->var_28;
+	sint32 v4 = vehicle->velocity;
 	if (v4 < 0) {
 		v4 = -v4;
 	}

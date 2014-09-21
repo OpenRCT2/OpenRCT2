@@ -717,7 +717,7 @@ void window_peep_viewport_init(rct_window* w){
 
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
-				rct_vehicle* train = GET_VEHICLE(ride->train_car_map[peep->current_train]);
+				rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
 				int car = peep->current_car;
 
 				for (; car != 0; car--){

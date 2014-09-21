@@ -279,19 +279,6 @@ void window_new_ride_init_vars() {
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_INFORMATION_TYPE, uint8) = 0;
 }
 
-uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
-{
-	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
-	uint8 *entryIndexList = typeToRideEntryIndexMap;
-	while (rideType > 0) {
-		do {
-			entryIndexList++;
-		} while (*(entryIndexList - 1) != 255);
-		rideType--;
-	}
-	return entryIndexList;
-}
-
 /**
  *
  *  rct2: 0x006B6F3E

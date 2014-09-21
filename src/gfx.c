@@ -2072,7 +2072,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 		// Control codes
 		switch (al) {
 		case FORMAT_MOVE_X://Start New Line at start+buffer x, same y. (Overwrite?)
-			max_x = x + *++buffer;
+			max_x = x + (uint8)*++buffer;
 			break;
 		case FORMAT_ADJUST_PALETTE:
 			al = *++buffer;

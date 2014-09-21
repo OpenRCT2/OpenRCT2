@@ -866,30 +866,7 @@ static void window_park_entrance_textinput()
 	rct_window *w;
 	char *text;
 
-	#ifdef _MSC_VER
-	__asm mov result, cl
-	#else
-	__asm__ ( "mov %[result], cl " : [result] "+m" (result) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov widgetIndex, dx
-	#else
-	__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov text, edi
-	#else
-	__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
-	#endif
-
+	window_textinput_get_registers(w, widgetIndex, result, text);
 
 	if (widgetIndex == WIDX_RENAME) {
 		if (result) {

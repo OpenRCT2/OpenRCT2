@@ -212,7 +212,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find the first car of the train peep is on
-		vehicle = &(g_sprite_list[ride->train_car_map[peep->current_train]]).vehicle;
+		vehicle = &(g_sprite_list[ride->vehicles[peep->current_train]]).vehicle;
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
 			vehicle = &(g_sprite_list[vehicle->next_vehicle_on_train]).vehicle;
