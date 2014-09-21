@@ -474,10 +474,12 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 }
 
 /** At least 5 colourful rides and more than half of the rides are colourful. */
+const uint8 dazzling_ride_colours[] = { 5, 14, 20, 30 };
 static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activeAwardTypes)
 {
-	int i, countedRides, colourfulRides;
+	int i, j, countedRides, colourfulRides;
 	rct_ride *ride;
+	uint8 mainTrackColour;
 
 	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
 		return 0;
@@ -489,8 +491,14 @@ static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activ
 			continue;
 
 		countedRides++;
-		if (ride->var_1BC == 5 || ride->var_1BC == 14 || ride->var_1BC == 20 || ride->var_1BC == 30)
-			colourfulRides++;
+
+		mainTrackColour = ride->track_colour_main[0];
+		for (j = 0; j < countof(dazzling_ride_colours); j++) {
+			if (mainTrackColour == dazzling_ride_colours[j]) {
+				colourfulRides++;
+				break;
+			}
+		}
 	}
 
 	return (colourfulRides >= 5 && colourfulRides >= countedRides - colourfulRides);

@@ -22,6 +22,7 @@
 #define _RIDE_H_
 
 #include "map.h"
+#include "peep.h"
 #include "rct2.h"
 #include "string_ids.h"
 
@@ -49,15 +50,22 @@ typedef struct {
 	uint32 var_008;
 	uint8 var_00C;
 	uint8 var_00D;
-	uint8 pad_00E[0x5];
+	uint8 pad_00E;
+	uint8 var_00F;
+	uint8 var_010;
+	uint8 var_011;
+	uint8 var_012;
 	uint8 var_013;
 	uint8 pad_014[0x19E];
 	sint8 excitement_multipler;		// 0x1B2
 	sint8 intensity_multipler;		// 0x1B3
 	sint8 nausea_multipler;			// 0x1B4
-	uint8 pad_1B5[0x09];
+	uint8 pad_1B5;
+	uint32 var_1B6;
+	uint8 pad_1BA[0x04];
 	uint8 category[2];				// 0x1BE
 	uint8 shop_item;				// 0x1C0
+	uint8 shop_item_secondary;		// 0x1C1
 } rct_ride_type;
 
 /**
@@ -72,7 +80,7 @@ typedef struct {
 	uint16 pad_002;
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
-	uint16 car_colours[32];			// 0x006
+	uint16 vehicle_colours[32];		// 0x006
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
@@ -81,32 +89,38 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[4];
-	uint8 var_62[4];
-	uint8 pad_66[4];
+	uint8 pad_05E[0xC];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
-	uint16 train_car_map[1];		// 0x086 Points to the first car in the train
-	uint8 pad_088[0x3F];
+	uint16 vehicles[32];			// 0x086 Points to the first car in the train
+	uint8 depart_flags;				// 0x0C6
 
 	// Not sure if these should be uint or sint.
-	uint8 var_0C7;
-	uint8 var_0C8;					// Number of train cars?
-	uint8 var_0C9;
-
-	uint8 pad_0CA[0x06];
+	uint8 num_stations;				// 0x0C7
+	uint8 num_vehicles;				// 0x0C8
+	uint8 num_cars_per_train;		// 0x0C9
+	uint8 pad_0CA[0x2];
+	uint8 var_0CC;
+	uint8 var_0CD;
+	uint8 min_waiting_time;			// 0x0CE
+	uint8 max_waiting_time;			// 0x0CF
 	uint8 var_0D0;
-	uint8 pad_0D1[0x13];
-	sint32 var_0E4;
-	sint32 var_0E8;
-	sint32 var_0EC;
-	sint32 var_0F0;
-	uint8 pad_0F4[0x20];
-	uint8 var_114;
-	// Track length? Number of track segments?
-	uint8 var_115;
-	uint8 pad_116[0x0E];
+	uint8 pad_0D1[0x7];
+	sint32 max_speed;				// 0x0D8
+	sint32 average_speed;			// 0x0DC
+	uint8 pad_0E0[0x4];
+	sint32 length[4];				// 0x0E4
+	uint16 time[4];					// 0x0F4
+	fixed16_2dp max_positive_vertical_g;	// 0x0FC
+	fixed16_2dp max_negative_vertical_g;	// 0x0FE
+	fixed16_2dp max_lateral_g;		// 0x100
+	uint8 pad_102[0x12];
+	uint8 inversions;				// 0x114 (???X XXXX) holes for mini golf
+	uint8 drops;					// 0x115 (??XX XXXX)
+	uint8 pad_116;
+	uint8 highest_drop_height;		// 0x117
+	uint8 pad_118[0x0C];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -119,53 +133,65 @@ typedef struct {
 	sint16 var_136;
 	money16 price;					// 0x138
 	uint8 pad_13A[0x06];
-	sint16 excitement;				// 0x140
-	sint16 intensity;				// 0x142
-	uint16 nausea;					// 0x144
+	ride_rating excitement;			// 0x140
+	ride_rating intensity;			// 0x142
+	ride_rating nausea;				// 0x144
 	uint16 reliability;				// 0x146
 	uint16 pad_148;
 	uint16 var_14A;
 	uint8 pad_14C;
 	uint8 var_14D;
-	uint8 pad_14E[0x06];
-	uint32 var_154;
+	uint8 pad_14E[0x02];
+	uint32 total_customers;			// 0x150
+	money32 total_profit;			// 0x154
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
 	uint8 pad_15C[0x24];
-	uint16 build_date;				
-	sint16 upkeep_cost;				// 0x182
+	sint16 build_date;				// 0x180
+	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x06];
 	uint8 var_18C;
-	uint8 pad_18D[0x09];
+	uint8 mechanic_status;			// 0x18D
+	uint16 mechanic;				// 0x18E
+	uint8 pad_190[0x03];
+	uint8 breakdown_reason;			// 0x193
+	money16 price_secondary;		// 0x194
 	uint16 var_196;
 	// used in computing excitement, nausea, etc
 	uint8 var_198;
 	uint8 var_199;
-	uint8 pad_19A[0x14];
+	uint8 inspection_interval;		// 0x19A
+	uint8 last_inspection;			// 0x19B
+	uint8 pad_19C[0x8];
+	uint32 var_1A4;
+	uint8 pad_1A8[6];
 	uint8 var_1AE;
-	uint8 connected_message_throttle;
-	uint32 pad_1B0;
-	sint32 profit;					// 0x1B4
+	uint8 connected_message_throttle;	// 0x1AF
+	money32 income_per_hour;		// 0x1B0
+	money32 profit;					// 0x1B4
 	uint8 queue_time[4];			// 0x1B8
-	uint8 var_1BC;
-	uint8 pad_1BD[0xD];
-	uint16 var_1CA;
-	uint8 var_1CC;
-	uint8 var_1CD;
+	uint8 track_colour_main[4];		// 0x1BC
+	uint8 track_colour_additional[4];	// 0x1C0
+	uint8 track_colour_supports[4];	// 0x1C4
+	uint8 music;					// 0x1C8
+	uint8 entrance_style;			// 0x1C9
+	uint8 pad_1CA[0x02];
+	uint8 num_block_brakes;			// 0x1CC
+	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
-	uint8 var_1D4;
-	uint8 pad_1D5[0x1F];
-	// Example value for wild mouse ride is d5 (before it's been constructed)
-	// I tried searching the IDA file for "1F4" but couldn't find places where
-	// this is written to.
-	uint16 var_1F4;
-	uint8 pad_1F6[0x0a];
+	uint8 vehicle_colours_extended[32];	// 0x1D4
+	uint16 total_air_time;			// 0x1F4
+	uint8 pad_1F6;
+	uint8 num_circuits;				// 0x1F7
+	uint8 pad_1F8[0x8];
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
+
+#define RIDE_MEASUREMENT_MAX_ITEMS 4800
 
 /**
  * Ride measurement structure.
@@ -173,7 +199,15 @@ typedef struct {
  */
 typedef struct {
 	uint8 var_00;
-	uint8 pad_01[0x4B0B];
+	uint8 var_01;
+	uint8 pad_02[4];
+	uint16 num_items;							// 0x0006
+	uint16 current_item;						// 0x0008
+	uint16 var_0A;
+	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
+	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
+	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
+	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
 
 enum {
@@ -184,7 +218,7 @@ enum {
 
 // Constants used by the lifecycle_flags property at 0x1D0
 enum {
-	RIDE_LIFECYCLE_ON_TRACK = 1,
+	RIDE_LIFECYCLE_ON_TRACK = 1 << 0,
 	RIDE_LIFECYCLE_TESTED = 1 << 1,
 	RIDE_LIFECYCLE_TEST_IN_PROGRESS = 1 << 2,
 	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
@@ -194,13 +228,14 @@ enum {
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
 
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
-
+	RIDE_LIFECYCLE_11 = 1 << 11,
 	RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
 	RIDE_LIFECYCLE_MUSIC = 1 << 13,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
 
-	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17
+	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
+	RIDE_LIFECYCLE_19 = 1 << 19
 };
 
 enum {
@@ -305,9 +340,9 @@ enum {
 };
 
 enum {
-	RIDE_MODE_NORMAL = 0,
+	RIDE_MODE_NORMAL,
 	RIDE_MODE_CONTINUOUS_CIRCUIT,
-	RIDE_MODE_REVERSE_INCLINED_SHUTTLE,
+	RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
 	RIDE_MODE_POWERED_LAUNCH,						// RCT1 style?
 	RIDE_MODE_SHUTTLE,
 	RIDE_MODE_BOAT_HIRE,
@@ -328,7 +363,7 @@ enum {
 	RIDE_MODE_3D_FILM_MOUSE_TAILS,
 	RIDE_MODE_SPACE_RINGS,
 	RIDE_MODE_BEGINNERS,
-	RIDE_MODE_LIM_POWERED_LAUNCH,                  // 0x17
+	RIDE_MODE_LIM_POWERED_LAUNCH,
 	RIDE_MODE_FILM_THRILL_RIDERS,
 	RIDE_MODE_3D_FILM_STORM_CHASERS,
 	RIDE_MODE_3D_FILM_SPACE_RAIDERS,
@@ -340,7 +375,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH2,						// 0x23. RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH_35,					// RCT2 style?
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 
@@ -359,6 +394,109 @@ enum {
 	RIDE_GROUP_SHOP
 };
 
+enum {
+	MUSIC_STYLE_DODGEMS_BEAT,
+	MUSIC_STYLE_FAIRGROUND_ORGAN,
+	MUSIC_STYLE_ROMAN_FANFARE,
+	MUSIC_STYLE_ORIENTAL,
+	MUSIC_STYLE_MARTIAN,
+	MUSIC_STYLE_JUNGLE_DRUMS,
+	MUSIC_STYLE_EGYPTIAN,
+	MUSIC_STYLE_TOYLAND,
+	MUSIC_STYLE_8,
+	MUSIC_STYLE_SPACE,
+	MUSIC_STYLE_HORROR,
+	MUSIC_STYLE_TECHNO,
+	MUSIC_STYLE_GENTLE,
+	MUSIC_STYLE_SUMMER,
+	MUSIC_STYLE_WATER,
+	MUSIC_STYLE_WILD_WEST,
+	MUSIC_STYLE_JURASSIC,
+	MUSIC_STYLE_ROCK,
+	MUSIC_STYLE_RAGTIME,
+	MUSIC_STYLE_FANTASY,
+	MUSIC_STYLE_ROCK_STYLE_2,
+	MUSIC_STYLE_ICE,
+	MUSIC_STYLE_SNOW,
+	MUSIC_STYLE_CUSTOM_MUSIC_1,
+	MUSIC_STYLE_CUSTOM_MUSIC_2,
+	MUSIC_STYLE_MEDIEVAL,
+	MUSIC_STYLE_URBAN,
+	MUSIC_STYLE_ORGAN,
+	MUSIC_STYLE_MECHANICAL,
+	MUSIC_STYLE_MODERN,
+	MUSIC_STYLE_PIRATES,
+	MUSIC_STYLE_ROCK_STYLE_3,
+	MUSIC_STYLE_CANDY_STYLE
+};
+
+enum {
+	BREAKDOWN_NONE = 255,
+	BREAKDOWN_SAFETY_CUT_OUT = 0,
+	BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
+	BREAKDOWN_RESTRAINTS_STUCK_OPEN,
+	BREAKDOWN_DOORS_STUCK_CLOSED,
+	BREAKDOWN_DOORS_STUCK_OPEN,
+	BREAKDOWN_VEHICLE_MALFUNCTION,
+	BREAKDOWN_BRAKES_FAILURE,
+	BREAKDOWN_CONTROL_FAILURE
+};
+
+enum {
+	RIDE_MECHANIC_STATUS_CALLING = 1,
+	RIDE_MECHANIC_STATUS_HEADING = 2,
+	RIDE_MECHANIC_STATUS_FIXING = 3,
+};
+
+enum {
+	RIDE_DEPART_WAIT_FOR_LOAD_MASK = 7,
+	RIDE_DEPART_WAIT_FOR_LOAD = 1 << 3,
+	RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES = 1 << 4,
+	RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS = 1 << 5,
+	RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH = 1 << 6,
+	RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH = 1 << 7
+};
+
+enum {
+	RIDE_COLOUR_SCHEME_MAIN,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_1,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_2,
+	RIDE_COLOUR_SCHEME_ADDITIONAL_3
+};
+
+enum {
+	VEHICLE_COLOUR_SCHEME_SAME,
+	VEHICLE_COLOUR_SCHEME_PER_TRAIN,
+	VEHICLE_COLOUR_SCHEME_PER_VEHICLE
+};
+
+enum {
+	RIDE_ENTRANCE_STYLE_PLAIN,
+	RIDE_ENTRANCE_STYLE_WOODEN,
+	RIDE_ENTRANCE_STYLE_CANVAS_TENT,
+	RIDE_ENTRANCE_STYLE_CASTLE_GREY,
+	RIDE_ENTRANCE_STYLE_CASTLE_BROWN,
+	RIDE_ENTRANCE_STYLE_JUNGLE,
+	RIDE_ENTRANCE_STYLE_LOG_CABIN,
+	RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN,
+	RIDE_ENTRANCE_STYLE_ABSTRACT,
+	RIDE_ENTRANCE_STYLE_SNOW_ICE,
+	RIDE_ENTRANCE_STYLE_PAGODA,
+	RIDE_ENTRANCE_STYLE_SPACE
+};
+
+typedef struct {
+	uint8 main;
+	uint8 additional;
+	uint8 supports;
+} track_colour;
+
+typedef struct {
+	uint8 main;
+	uint8 additional_1;
+	uint8 additional_2;
+} vehicle_colour;
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -373,6 +511,7 @@ extern rct_ride* g_ride_list;
 /** Helper macros until rides are stored in this module. */
 #define GET_RIDE(x) (&g_ride_list[x])
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
+#define GET_RIDE_ENTRY(x) RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_type*)[x]
 
 /**
  * Helper macro loop for enumerating through all the non null rides.
@@ -394,6 +533,13 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(int list_item);
 int ride_try_construct(rct_map_element *trackMapElement);
-void ride_init_vehicle_speed(rct_ride *ride);
+void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
+rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
+int ride_get_total_length(rct_ride *ride);
+int ride_can_have_multiple_circuits(rct_ride *ride);
+track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
+vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
+rct_ride_type *ride_get_entry(rct_ride *ride);
+uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 
 #endif

@@ -419,13 +419,7 @@ void scenario_objective8_check()
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
 
-			// this calculates the length, no idea why it's done so complicated though.
-			uint8 limit = ride->var_0C7;
-			uint32 sum = 0;
-			for (int j = 0; j < limit; ++j) {
-				sum += ((uint32*)&ride->var_0E4)[j];
-			}
-			if ((sum >> 16) > (uint32)objective_length) {
+			if ((ride_get_total_length(ride) >> 16) > objective_length) {
 				type_already_counted[subtype_id]++;
 				rcs++;
 			}

@@ -23,6 +23,7 @@
 #include "game.h"
 #include "map.h"
 #include "news_item.h"
+#include "staff.h"
 #include "sprite.h"
 #include "ride.h"
 #include "scenario.h"
@@ -477,6 +478,118 @@ int ride_try_construct(rct_map_element *trackMapElement)
 }
 
 /**
+ * 
+ *  rct2: 0x006AF561
+ */
+void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
+{
+	rct_ride *ride = &g_ride_list[rideIndex];
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
+		*formatSecondary = STR_CRASHED;
+		return;
+	}
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		*formatSecondary = STR_BROKEN_DOWN;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_CLOSED) {
+		*formatSecondary = STR_CLOSED;
+		return;
+	}
+	if (ride->status == RIDE_STATUS_TESTING) {
+		*formatSecondary = STR_TEST_RUN;
+		return;
+	}
+	rct_peep *peep = GET_PEEP(ride->race_winner);
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+		if (peep->name_string_idx == STR_GUEST) {
+			*argument = peep->id;
+			*formatSecondary = STR_RACE_WON_BY_GUEST;
+		} else {
+			*argument = peep->name_string_idx;
+			*formatSecondary = STR_RACE_WON_BY;
+		}
+	} else {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x20000)) {
+			*argument = ride->num_riders;
+			*formatSecondary = STR_PERSON_ON_RIDE;
+			if(*argument != 1)
+				*formatSecondary = STR_PEOPLE_ON_RIDE;
+
+		} else {
+			*formatSecondary = STR_OPEN;
+		}
+	}
+}
+
+rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
+{
+	rct_peep *peep;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		if (
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING ||
+			ride->mechanic_status == 3 ||
+			ride->mechanic_status == 4
+		) {
+			peep = &(g_sprite_list[ride->mechanic].peep);
+			if (peep_is_mechanic(peep))
+				return peep;
+		}
+	}
+
+	return NULL;
+}
+
+int ride_get_total_length(rct_ride *ride)
+{
+	int i, totalLength = 0;
+	for (i = 0; i < ride->num_stations; i++)
+		totalLength += ride->length[i];
+	return totalLength;
+}
+
+int ride_can_have_multiple_circuits(rct_ride *ride)
+{
+	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x200))
+		return 0;
+
+	// Only allow circuit or launch modes
+	if (
+		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT &&
+		ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
+		ride->mode != RIDE_MODE_POWERED_LAUNCH
+	) {
+		return 0;
+	}
+	
+	// Must have no more than one vehicle and one station
+	if (ride->num_vehicles > 1 || ride->num_stations > 1)
+		return 0;
+
+	return 1;
+}
+
+track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
+{
+	track_colour result;
+	result.main = ride->track_colour_main[colourScheme];
+	result.additional = ride->track_colour_additional[colourScheme];
+	result.supports = ride->track_colour_supports[colourScheme];
+	return result;
+}
+
+vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
+{
+	vehicle_colour result;
+	result.main = ride->vehicle_colours[vehicleIndex] & 0xFF;
+	result.additional_1 = ride->vehicle_colours[vehicleIndex] >> 8;
+	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
+	return result;
+}
+
+/**
 *
 *  rct2: 0x006AC988
 * set the speed of the gokart type vehicle at the start to a random value or alter if peep name is a cheat code
@@ -487,10 +600,10 @@ void ride_init_vehicle_speed(rct_ride *ride)
 	int ecx = -1;
 	while (1) {
 		ecx++;
-		if (ecx >= ride->var_0C8) {
+		if (ecx >= ride->num_vehicles) {
 			break;
 		}
-		rct_vehicle *vehicle = &g_sprite_list[ride->train_car_map[ecx]].vehicle;
+		rct_vehicle *vehicle = &g_sprite_list[ride->vehicles[ecx]].vehicle;
 		vehicle->var_48 &= (1 << 6);
 		uint8 r = scenario_rand();
 		r = 0xC;
@@ -522,4 +635,22 @@ void ride_init_vehicle_speed(rct_ride *ride)
 			}
 		}
 	}
+}
+
+rct_ride_type *ride_get_entry(rct_ride *ride)
+{
+	return GET_RIDE_ENTRY(ride->subtype);
+}
+
+uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
+{
+	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
+	uint8 *entryIndexList = typeToRideEntryIndexMap;
+	while (rideType > 0) {
+		do {
+			entryIndexList++;
+		} while (*(entryIndexList - 1) != 255);
+		rideType--;
+	}
+	return entryIndexList;
 }

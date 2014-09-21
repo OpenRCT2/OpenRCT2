@@ -717,7 +717,7 @@ void window_peep_viewport_init(rct_window* w){
 
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
-				rct_vehicle* train = GET_VEHICLE(ride->train_car_map[peep->current_train]);
+				rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
 				int car = peep->current_car;
 
 				for (; car != 0; car--){
@@ -1379,6 +1379,33 @@ void window_peep_stats_invalidate(){
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
+/**
+*
+*  rct2: 0x0066ECC1
+* 
+*  ebp: colour, contains flag 0x80000000 for blinking
+*/
+void window_peep_stats_bars_paint(int value, int x, int y, rct_window *w, rct_drawpixelinfo *dpi, int colour){
+	//RCT2_CALLPROC_X(0x6974FC, value, 0, x, y, (int)w, (int)dpi, colour);
+
+	value *= 0x76;
+	value >>= 8;
+
+	gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], 0x30);
+
+	int blink_flag = colour & (1 << 0x1F); //0x80000000
+	colour &= ~(1 << 0x1F);
+	if (!blink_flag ||
+		RCT2_GLOBAL(0x009DEA6E, uint8) != 0 ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8) == 0)
+	{
+		if (value <= 2)
+			return;
+		gfx_fill_rect_inset(dpi, x + 0x3C, y + 2, x + 0x3C + value - 1, y + 8, colour, 0);
+	}
+
+}
+
 /* rct2: 0x0069711D */
 void window_peep_stats_paint(){
 	rct_window *w;
@@ -1412,7 +1439,7 @@ void window_peep_stats_paint(){
 	if (happiness < 50){
 		ebp |= 0x80000000;
 	}
-	RCT2_CALLPROC_X(0x6974FC, happiness, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(happiness, x, y, w, dpi, ebp);
 
 	//Energy
 	y += 10;
@@ -1424,7 +1451,7 @@ void window_peep_stats_paint(){
 		ebp |= 0x80000000;
 	}
 	if (energy < 10)energy = 10;
-	RCT2_CALLPROC_X(0x6974FC, energy, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(energy, x, y, w, dpi, ebp);
 
 	//Hunger
 	y += 10;
@@ -1443,7 +1470,7 @@ void window_peep_stats_paint(){
 	if (hunger > 170){
 		ebp |= 0x80000000;
 	}
-	RCT2_CALLPROC_X(0x6974FC, hunger, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(hunger, x, y, w, dpi, ebp);
 
 	//Thirst
 	y += 10;
@@ -1462,7 +1489,7 @@ void window_peep_stats_paint(){
 	if (thirst > 170){
 		ebp |= 0x80000000;
 	}
-	RCT2_CALLPROC_X(0x6974FC, thirst, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(thirst, x, y, w, dpi, ebp);
 
 	//Nausea
 	y += 10;
@@ -1478,7 +1505,7 @@ void window_peep_stats_paint(){
 	if (nausea > 120){
 		ebp |= 0x80000000;
 	}
-	RCT2_CALLPROC_X(0x6974FC, nausea, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(nausea, x, y, w, dpi, ebp);
 
 	//Bathroom
 	y += 10;
@@ -1496,7 +1523,7 @@ void window_peep_stats_paint(){
 	if (bathroom > 160){
 		ebp |= 0x80000000;
 	}
-	RCT2_CALLPROC_X(0x6974FC, bathroom, (int)peep, x, y, (int)w, (int)dpi, ebp);
+	window_peep_stats_bars_paint(bathroom, x, y, w, dpi, ebp);
 
 	// Time in park
 	y += 11;

@@ -27,6 +27,7 @@
 #include "ride.h"
 #include "sprite.h"
 #include "sprites.h"
+#include "staff.h"
 #include "window.h"
 
 static void peep_update(rct_peep *peep);
@@ -715,4 +716,13 @@ int peep_check_cheatcode(int index, rct_peep *peep)
 	}
 
 	return 1;
+}
+
+int peep_is_mechanic(rct_peep *peep)
+{
+	return (
+		peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP &&
+		peep->type == PEEP_TYPE_STAFF &&
+		peep->staff_type == STAFF_TYPE_MECHANIC
+	);
 }
