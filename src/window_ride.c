@@ -1805,7 +1805,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
 		int ax = vehicle->var_36 / 4;
 		if (ax == 216 || ax == 123 || ax == 9 || ax == 63 || ax == 147 || ax == 155) {
-			if (!(RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
+			if ((RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
 				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return 1191;
 			}
@@ -1820,7 +1820,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	if (ride->type == RIDE_TYPE_MINI_GOLF)
 		return 0;
 
-	if ((RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x100) && stringId > 1104)
+	if ((RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x100) && stringId <= 1104)
 		stringId += 23;
 
 	RCT2_GLOBAL((int)arguments + 4, uint16) = RideNameConvention[ride->type].station_name;
