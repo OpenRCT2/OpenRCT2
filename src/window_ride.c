@@ -1201,6 +1201,7 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->enabled_widgets = window_ride_page_enabled_widgets[page];
 	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[page];
 	w->event_handlers = window_ride_page_events[page];
+	w->pressed_widgets = 0;
 	w->widgets = window_ride_page_widgets[page];
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 	window_invalidate(w);
