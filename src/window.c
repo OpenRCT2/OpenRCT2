@@ -720,6 +720,7 @@ void window_init_scroll_widgets(rct_window *w)
 		}
 
 		scroll = &w->scrolls[scroll_index];
+		scroll->flags = 0;
 		window_get_scroll_size(w, scroll_index, &width, &height);
 		scroll->h_left = 0;
 		scroll->h_right = width + 1;
