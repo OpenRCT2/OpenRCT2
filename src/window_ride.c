@@ -1170,7 +1170,7 @@ void window_ride_main_open(int rideIndex)
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 	window_init_scroll_widgets(w);
 	w->ride.view = 0;
-	RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_init_viewport(w);
 }
 
 /**
@@ -1243,6 +1243,63 @@ static void window_ride_anchor_border_widgets(rct_window *w)
  */
 static void window_ride_init_viewport(rct_window *w)
 {
+	if (w->page != WINDOW_PARK_PAGE_MAIN) return;
+
+	rct_ride* ride = GET_RIDE(w->number);
+	int eax = w->viewport_focus_coordinates.var_480 - 1;
+
+	if (eax < 0){
+		//6afa80
+		int x = (ride->overall_view & 0xFF) << 5;
+		int y = (ride->overall_view & 0xFF00) >> 3;
+		x += 16;
+		y += 16;
+		int z = map_element_height(x, y) & 0xFFFF;
+		char flags = 0x40;
+		int zoom = 1;
+		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x8000)){
+			zoom = 0;
+		}
+		//6afad0
+	}
+	else{
+		if (eax < ride->num_vehicles){
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
+				w->viewport_focus_coordinates.var_480 = 0;
+				//6afa80
+			}
+			int sprite_index = ride->vehicles[eax];
+
+			rct_ride_type* ride_entry = ride_get_entry(ride);
+			if (ride_entry->var_013 != 0){
+				rct_vehicle* vehicle = GET_VEHICLE(sprite_index);
+				sprite_index = vehicle->next_vehicle_on_train;
+			}
+			char flags = 0xC0;
+			int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			//6afad0
+		}
+		eax -= ride->num_vehicles;
+		if (eax >= ride->num_stations){
+			w->viewport_focus_coordinates.var_480 = 0;
+			//6afa80
+		}
+		int stationIndex = -1;
+		int count = eax;
+		do {
+			stationIndex++;
+			if (ride->station_starts[stationIndex] != 0xFFFF)
+				count--;
+		} while (count >= 0);
+
+		eax = ride->station_starts[stationIndex];
+		int x = (eax & 0xFF) << 5;
+		int y = (eax & 0xFF00) >> 3;
+		int z = ride->station_heights[stationIndex] << 3;
+		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	}
+	//6afad0
 	RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
@@ -1601,7 +1658,7 @@ static void window_ride_main_dropdown()
 		}
 
 		w->ride.view = dropdownIndex;
-		RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
+		window_ride_init_viewport(w);
 		window_invalidate(w);
 		break;
 	case WIDX_OPEN:
