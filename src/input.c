@@ -933,7 +933,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
 						if (!(eax & 0x10)){//If not station track
 							//Open ride window in overview mode.
-							RCT2_CALLPROC_X(0x6ACC28, map_element->properties.track.ride_index, ebx, ecx, (int)map_element, esi, edi, ebp);
+							window_ride_main_open(map_element->properties.track.ride_index);
 							break;
 						}
 					}
