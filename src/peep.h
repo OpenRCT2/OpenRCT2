@@ -426,6 +426,35 @@ typedef struct {
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
+enum {
+	EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
+	EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE,
+	EASTEREGG_PEEP_NAME_DAMON_HILL,
+	EASTEREGG_PEEP_NAME_MR_BEAN,
+	EASTEREGG_PEEP_NAME_CHRIS_SAWYER,
+	EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW,
+	EASTEREGG_PEEP_NAME_MELANIE_WARN,
+	EASTEREGG_PEEP_NAME_SIMON_FOSTER,
+	EASTEREGG_PEEP_NAME_JOHN_WARDLEY,
+	EASTEREGG_PEEP_NAME_LISA_STIRLING,
+	EASTEREGG_PEEP_NAME_DONALD_MACRAE,
+	EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN,
+	EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN,
+	EASTEREGG_PEEP_NAME_CORINA_MASSOURA,
+	EASTEREGG_PEEP_NAME_CAROL_YOUNG,
+	EASTEREGG_PEEP_NAME_MIA_SHERIDAN,
+	EASTEREGG_PEEP_NAME_KATIE_RODGER,
+	EASTEREGG_PEEP_NAME_EMMA_GARRELL,
+	EASTEREGG_PEEP_NAME_JOANNE_BARTON,
+	EASTEREGG_PEEP_NAME_FELICITY_ANDERSON,
+	EASTEREGG_PEEP_NAME_KATIE_SMITH,
+	EASTEREGG_PEEP_NAME_EILIDH_BELL,
+	EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
+	EASTEREGG_PEEP_NAME_ANDY_HINE,
+	EASTEREGG_PEEP_NAME_ELISSA_WHITE,
+	EASTEREGG_PEEP_NAME_DAVID_ELLIS
+};
+
 /** Helper macro until rides are stored in this module. */
 #define GET_PEEP(sprite_index) &(g_sprite_list[sprite_index].peep)
 
@@ -456,7 +485,8 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
 int get_peep_face_sprite_small(rct_peep *peep);
 int get_peep_face_sprite_large(rct_peep *peep);
-int peep_check_cheatcode(int index, rct_peep *peep);
+int peep_check_easteregg_name(int index, rct_peep *peep);
+int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
 
 #endif

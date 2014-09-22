@@ -89,7 +89,9 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[0xC];
+	uint8 pad_05E[0x4];
+	uint8 var_062[4];
+	uint8 pad_066[0x4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -106,7 +108,9 @@ typedef struct {
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	uint8 var_0D0;
-	uint8 pad_0D1[0x7];
+	uint8 pad_0D1[0x3];
+	uint8 measurement_index;		// 0x0D4
+	uint8 pad_0D5[0x3];
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
 	uint8 pad_0E0[0x4];
@@ -120,7 +124,8 @@ typedef struct {
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
-	uint8 pad_118[0x0C];
+	uint32 var_118;
+	uint8 pad_11C[0x08];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -177,7 +182,7 @@ typedef struct {
 	uint8 track_colour_supports[4];	// 0x1C4
 	uint8 music;					// 0x1C8
 	uint8 entrance_style;			// 0x1C9
-	uint8 pad_1CA[0x02];
+	uint16 var_1CA;
 	uint8 num_block_brakes;			// 0x1CC
 	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
@@ -198,12 +203,13 @@ typedef struct {
  * size: 0x04B0C
  */
 typedef struct {
-	uint8 var_00;
-	uint8 var_01;
-	uint8 pad_02[4];
+	uint8 ride_index;							// 0x0000
+	uint8 flags;								// 0x0001
+	uint32 last_use_tick;						// 0x0002
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
-	uint16 var_0A;
+	uint8 vehicle_index;						// 0x000A
+	uint8 var_0B;
 	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
@@ -497,6 +503,12 @@ typedef struct {
 	uint8 additional_2;
 } vehicle_colour;
 
+enum {
+	RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,
+	RIDE_MEASUREMENT_FLAG_UNLOADING = 1 << 1,
+	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -541,5 +553,7 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
+void ride_measurements_update();
+rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
 
 #endif

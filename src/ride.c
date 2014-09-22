@@ -26,6 +26,7 @@
 #include "staff.h"
 #include "sprite.h"
 #include "ride.h"
+#include "ride_data.h"
 #include "scenario.h"
 #include "sprite.h"
 #include "peep.h"
@@ -154,7 +155,7 @@ void ride_init_all()
 
 	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
 		ride_measurement = GET_RIDE_MEASUREMENT(i);
-		ride_measurement->var_00 = 0xFF;
+		ride_measurement->ride_index = 255;
 	}
 }
 
@@ -590,48 +591,46 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 }
 
 /**
-*
-*  rct2: 0x006AC988
-* set the speed of the gokart type vehicle at the start to a random value or alter if peep name is a cheat code
-* @param ride (esi)
-*/
+ *
+ *  rct2: 0x006AC988
+ * set the speed of the go kart type vehicle at the start to a random value or alter if peep name is an easter egg
+ * @param ride (esi)
+ */
 void ride_init_vehicle_speed(rct_ride *ride)
 {
-	int ecx = -1;
-	while (1) {
-		ecx++;
-		if (ecx >= ride->num_vehicles) {
-			break;
-		}
-		rct_vehicle *vehicle = &g_sprite_list[ride->vehicles[ecx]].vehicle;
-		vehicle->var_48 &= (1 << 6);
-		uint8 r = scenario_rand();
-		r = 0xC;
-		r &= 0xF;
-		r -= 8;
+	rct_ride_type *rideEntry;
+	rct_vehicle *vehicle;
+	uint8 *unk;
+	int i;
 
-		int testaddr = (vehicle->var_31 * 0x65);
-		testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
-		uint8 test = ((uint8*)testaddr)[0x76];
-		r += test;
+	for (i = 0; i < ride->num_vehicles; i++) {
+		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
+		vehicle->var_48 &= ~(1 << 6);
 
-		vehicle->speed = r;
+		rideEntry = GET_RIDE_ENTRY(vehicle->var_D6);
+		unk = (uint8*)((int)rideEntry + (vehicle->var_31 * 0x65));
+
+		vehicle->speed = (scenario_rand() & 16) - 8 + RCT2_GLOBAL(unk + 0x76, uint8);
+
 		if (vehicle->var_B3) {
 			rct_peep *peep = &g_sprite_list[vehicle->peep].peep;
-			if (peep_check_cheatcode(0, peep)) { // MICHAEL SCHUMACHER
+
+			switch (peep_get_easteregg_name_id(peep)) {
+			case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
 				vehicle->speed += 35;
-			}
-			if (peep_check_cheatcode(1, peep)) { // JACQUES VILLENEUVE
+				break;
+			case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
 				vehicle->speed += 25;
-			}
-			if (peep_check_cheatcode(2, peep)) { // DAMON HILL
+				break;
+			case EASTEREGG_PEEP_NAME_DAMON_HILL:
 				vehicle->speed += 55;
-			}
-			if (peep_check_cheatcode(4, peep)) { // CHRIS SAWYER
+				break;
+			case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
 				vehicle->speed += 14;
-			}
-			if (peep_check_cheatcode(3, peep)) { // MR BEAN
+				break;
+			case EASTEREGG_PEEP_NAME_MR_BEAN:
 				vehicle->speed = 9;
+				break;
 			}
 		}
 	}
@@ -653,4 +652,195 @@ uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
 		rideType--;
 	}
 	return entryIndexList;
+}
+
+
+
+/**
+ *  rct2: 0x006B64F2
+ */
+void ride_measurement_update(rct_ride_measurement *measurement)
+{
+	uint16 spriteIndex;
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+	int unk, velocity, altitude, verticalG, lateralG;
+
+	ride = GET_RIDE(measurement->ride_index);
+	spriteIndex = ride->vehicles[measurement->vehicle_index];
+	if (spriteIndex == SPRITE_INDEX_NULL)
+		return;
+
+	vehicle = &(g_sprite_list[spriteIndex].vehicle);
+
+	if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING) {
+		if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_STOPPING)
+			return;
+
+		measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+		if (measurement->var_0B == vehicle->var_4B)
+			measurement->current_item = 0;
+	}
+
+	if (vehicle->status == VEHICLE_STATUS_UNLOADING_PASSENGERS) {
+		measurement->flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
+		return;
+	}
+
+	unk = (vehicle->var_36 / 4) & 0xFF;
+	if (unk == 216 || unk == 123 || unk == 9 || unk == 63 || unk == 147 || unk == 155)
+		if (vehicle->velocity == 0)
+			return;
+
+	if (measurement->current_item >= RIDE_MEASUREMENT_MAX_ITEMS)
+		return;
+
+	if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES) {
+		vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
+		verticalG = clamp(-127, verticalG / 8, 127);
+		lateralG = clamp(-127, lateralG / 8, 127);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+			verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
+			lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
+		}
+
+		measurement->vertical[measurement->current_item] = verticalG & 0xFF;
+		measurement->lateral[measurement->current_item] = lateralG & 0xFF;
+	}
+
+	velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
+	altitude = min(vehicle->z / 8, 255);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+		velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
+		altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
+	}
+
+	measurement->velocity[measurement->current_item] = velocity & 0xFF;
+	measurement->altitude[measurement->current_item] = altitude & 0xFF;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+		measurement->current_item++;
+		measurement->num_items = max(measurement->num_items, measurement->current_item);
+	}
+}
+
+/**
+ *  rct2: 0x006B6456
+ */
+void ride_measurements_update()
+{
+	rct_ride *ride;
+	rct_ride_measurement *measurement;
+	rct_vehicle *vehicle;
+	int i, j;
+	uint16 spriteIndex;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+		return;
+
+	// For each ride measurement
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == 255)
+			continue;
+
+		ride = GET_RIDE(measurement->ride_index);
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+			continue;
+
+		if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING) {
+			ride_measurement_update(measurement);
+		} else {
+			// For each vehicle
+			for (j = 0; j < ride->num_vehicles; j++) {
+				spriteIndex = ride->vehicles[j];
+				if (spriteIndex == SPRITE_INDEX_NULL)
+					continue;
+
+				vehicle = &(g_sprite_list[spriteIndex].vehicle);
+				if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_STOPPING) {
+					measurement->vehicle_index = j;
+					measurement->var_0B = vehicle->var_4B;
+					measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
+					measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+					ride_measurement_update(measurement);
+					break;
+				}
+			}
+
+		}
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006B66D9
+ */
+rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
+{
+	rct_ride *ride;
+	rct_ride_measurement *measurement;
+	uint32 lruTicks;
+	int i, lruIndex;
+
+	ride = GET_RIDE(rideIndex);
+
+	// Check if ride type supports data logging
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x200)) {
+		if (message != NULL) *message = STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE;
+		return NULL;
+	}
+
+	// Check if a measurement already exists for this ride
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == i)
+			goto use_measurement;
+	}
+
+	// Find a free measurement
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == 255)
+			goto new_measurement;
+	}
+
+	// Use last recently used measurement for some other ride
+	lruIndex = 0;
+	lruTicks = 0xFFFFFFFF;
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+
+		if (measurement->last_use_tick <= lruTicks) {
+			lruTicks = measurement->last_use_tick;
+			lruIndex = i;
+		}
+	}
+
+	i = lruIndex;
+	measurement = GET_RIDE_MEASUREMENT(i);
+	ride->measurement_index = 255;
+
+new_measurement:
+	measurement->ride_index = rideIndex;
+	ride->measurement_index = i;
+	measurement->flags = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x80)
+		measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
+	measurement->num_items = 0;
+	measurement->current_item = 0;
+
+use_measurement:
+	measurement->last_use_tick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	if (measurement->flags & 1) {
+		if (message != NULL) *message = 0;
+		return measurement;
+	} else {
+		RCT2_GLOBAL(0x013CE952, uint16) = RideNameConvention[ride->type].vehicle_name;
+		RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].station_name;
+		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
+		return NULL;
+	}
 }

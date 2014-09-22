@@ -39,6 +39,28 @@
 
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
+// converted from uint16 values at 0x009A41EC - 0x009A4230
+// these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
+float window_scroll_locations[][2] = {
+	0.5f,	0.5f,
+	0.75f,	0.5f,
+	0.25f,	0.5f,
+	0.5f,	0.75f,
+	0.5f,	0.25f,
+	0.75f,	0.75f,
+	0.75f,	0.25f,
+	0.25f,	0.75f,
+	0.25f,	0.25f,
+	0.125f,	0.5f,
+	0.875f,	0.5f,
+	0.5f,	0.125f,
+	0.5f,	0.875f,
+	0.875f,	0.125f,
+	0.875f,	0.875f,
+	0.125f,	0.875f,
+	0.125f,	0.125f,
+};
+
 static void window_all_wheel_input();
 static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
 
@@ -720,6 +742,7 @@ void window_init_scroll_widgets(rct_window *w)
 		}
 
 		scroll = &w->scrolls[scroll_index];
+		scroll->flags = 0;
 		window_get_scroll_size(w, scroll_index, &width, &height);
 		scroll->h_left = 0;
 		scroll->h_right = width + 1;
@@ -952,12 +975,87 @@ void window_scroll_to_viewport(rct_window *w)
 }
 
 /**
- * 
- *  rct2: 0x006E7C9C
- */
+*
+*  rct2: 0x006E7C9C
+* @param w (esi)
+* @param x (eax)
+* @param y (ecx)
+* @param z (edx)
+*/
 void window_scroll_to_location(rct_window *w, int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x006E7C9C, x, 0, y, z, (int)w, 0, 0);
+	if (w->viewport) {
+		sint16 height = map_element_height(x, y);
+		if (z < height - 16) {
+			if (!(w->viewport->flags & 1 << 0)) {
+				w->viewport->flags |= 1 << 0;
+				window_invalidate(w);
+			}
+		} else {
+			if (w->viewport->flags & 1 << 0) {
+				w->viewport->flags &= ~(1 << 0);
+				window_invalidate(w);
+			}
+		}
+		sint16 sx;
+		sint16 sy;
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
+			case 0:
+				sx = y - x;
+				sy = ((x + y) / 2) - z;
+				break;
+			case 1:
+				sx = -y - x;
+				sy = ((-x + y) / 2) - z;
+				break;
+			case 2:
+				sx = -y + x;
+				sy = ((-x - y) / 2) - z;
+				break;
+			case 3:
+				sx = y + x;
+				sy = ((x - y) / 2) - z;
+				break;
+		}
+		int i = 0;
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+			int found = 0;
+			while (!found) {
+				sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
+				sint16 y2 = w->viewport->y + (sint16)(w->viewport->height * window_scroll_locations[i][1]);
+				rct_window* w2 = w;
+				while (1) {
+					w2++;
+					if (w2 >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)) {
+						found = 1;
+						break;
+					}
+					sint16 x1 = w2->x - 10;
+					sint16 y1 = w2->y - 10;
+					if (x2 >= x1 && x2 <= w2->width + x1 + 20) {
+						if (y2 >= y1 && y2 <= w2->height + y1 + 20) {
+							// window is covering this area, try the next one
+							i++;
+							found = 0;
+							break;
+						}
+					}
+				}
+				if (i >= countof(window_scroll_locations)) {
+					i = 0;
+					found = 1;
+				}
+			}
+		}
+		// rct2: 0x006E7C76
+		if (w->viewport_target_sprite == -1) {
+			if (!(w->flags & WF_2)) {
+				w->saved_view_x = sx - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
+				w->saved_view_y = sy - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);
+				w->flags |= WF_SCROLLING_TO_LOCATION;
+			}
+		}
+	}
 }
 
 /**

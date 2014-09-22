@@ -32,6 +32,35 @@
 
 static void peep_update(rct_peep *peep);
 
+const char *gPeepEasterEggNames[] = {
+	"MICHAEL SCHUMACHER",
+	"JACQUES VILLENEUVE",
+	"DAMON HILL",
+	"MR BEAN",
+	"CHRIS SAWYER",
+	"KATIE BRAYSHAW",
+	"MELANIE WARN",
+	"SIMON FOSTER",
+	"JOHN WARDLEY",
+	"LISA STIRLING",
+	"DONALD MACRAE",
+	"KATHERINE MCGOWAN",
+	"FRANCES MCGOWAN",
+	"CORINA MASSOURA",
+	"CAROL YOUNG",
+	"MIA SHERIDAN",
+	"KATIE RODGER",
+	"EMMA GARRELL",
+	"JOANNE BARTON",
+	"FELICITY ANDERSON",
+	"KATIE SMITH",
+	"EILIDH BELL",
+	"NANCY STILLWAGON",
+	"ANDY HINE",
+	"ELISSA WHITE",
+	"DAVID ELLIS"
+};
+
 int peep_get_staff_count()
 {
 	uint16 spriteIndex;
@@ -669,53 +698,49 @@ int get_face_sprite_offset(rct_peep *peep){
 }
 
 /**
-*  Function split into large and small sprite
-*  rct2: 0x00698721
-*/
+ *  Function split into large and small sprite
+ *  rct2: 0x00698721
+ */
 int get_peep_face_sprite_small(rct_peep *peep){
 	return face_sprite_small[get_face_sprite_offset(peep)];
 }
 
 /**
-*  Function split into large and small sprite
-*  rct2: 0x00698721
-*/
+ *  Function split into large and small sprite
+ *  rct2: 0x00698721
+ */
 int get_peep_face_sprite_large(rct_peep *peep){
 	return face_sprite_large[get_face_sprite_offset(peep)];
 }
 
 /**
-*
-*  rct2: 0x0069A5A0
-* tests if a peep's name matches a cheat code, normally returns using a register flag
-* @param index (eax)
-* @param ride (esi)
-*/
-int peep_check_cheatcode(int index, rct_peep *peep)
+ *
+ *  rct2: 0x0069A5A0
+ * tests if a peep's name matches a cheat code, normally returns using a register flag
+ * @param index (eax)
+ * @param ride (esi)
+ */
+int peep_check_easteregg_name(int index, rct_peep *peep)
 {
-	char* str = RCT2_ADDRESS(RCT2_ADDRESS_EASTEREGG_NAMES, char*)[index];
-	char* dst = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
-	format_string(dst, peep->name_string_idx, &peep->id);
+	char buffer[256];
 
-	// strtoupper:
-	int i = 0;
-	while(dst[i]) {
-		if (dst[i] >= 0x61 && dst[i] <= 0x7A) {
-			dst[i] -= 0x20;
-		}
-		i++;
-	}
+	format_string(buffer, peep->name_string_idx, &peep->id);
+	return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
+}
 
-	// check for match, characters are -1 to obfuscate the cheat codes
-	i = 0;
-	while(str[i] + 1) {
-		if (str[i] + 1 != dst[i]) {
-			return 0;
-		}
-		i++;
-	}
+int peep_get_easteregg_name_id(rct_peep *peep)
+{
+	char buffer[256];
+	int i;
+	
+	format_string(buffer, peep->name_string_idx, &peep->id);
 
-	return 1;
+	for (i = 0; i < countof(gPeepEasterEggNames); i++)
+		if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
+			return i;
+
+	return -1;
+
 }
 
 int peep_is_mechanic(rct_peep *peep)

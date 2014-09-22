@@ -809,6 +809,9 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	if (scroll->flags & VSCROLLBAR_VISIBLE)
 		r -= 11;
 
+	b++;
+	r++;
+
 	// Create a new inner scroll dpi
 	scroll_dpi = *dpi;
 

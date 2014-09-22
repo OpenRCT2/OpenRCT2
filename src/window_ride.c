@@ -1201,6 +1201,7 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->enabled_widgets = window_ride_page_enabled_widgets[page];
 	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[page];
 	w->event_handlers = window_ride_page_events[page];
+	w->pressed_widgets = 0;
 	w->widgets = window_ride_page_widgets[page];
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 	window_invalidate(w);
@@ -3908,11 +3909,11 @@ static void window_ride_colour_scrollpaint()
 	vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
 
 	// Background colour
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, 12);
 
 	// ?
-	x = dpi->x + (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
-	y = dpi->y + vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15;
+	x = (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
+	y = vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15;
 	RCT2_CALLPROC_X(0x006DE4CD, (ride->num_cars_per_train << 8) | ride->subtype, (int)ride, x, y, (int)w, (int)dpi, 0);
 
 	// ?
@@ -4613,28 +4614,6 @@ enum {
 
 /**
  * 
- * rct2: 0x006B66D9
- */
-rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edx = rideIndex;
-
-	RCT2_CALLFUNC_X(0x006B66D9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	eax &= 0xFFFF;
-
-	if ((eax & 0xFF) < 10) {
-		eax &= 0xFF;
-		return GET_RIDE_MEASUREMENT(eax);
-	} else {
-		if (message != NULL)
-			*message = eax;
-		return NULL;
-	}
-}
-
-/**
- * 
  * rct2: 0x006AE8A6
  */
 static void window_ride_set_graph(rct_window *w, int type)
@@ -4810,8 +4789,8 @@ static void window_ride_graphs_tooltip()
 	if (widgetIndex == WIDX_GRAPH) {
 		RCT2_GLOBAL(0x013CE952, uint16) = 3158;
 		measurement = ride_get_measurement(w->number, &stringId);
-		if (measurement != NULL && (measurement->var_01 & 1)) {
-			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->var_0A + 1;
+		if (measurement != NULL && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
+			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->vehicle_index + 1;
 			ride = GET_RIDE(w->number);
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].vehicle_name + 6;
 			result = 0;

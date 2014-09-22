@@ -22,15 +22,16 @@
 #include "audio.h"
 #include "climate.h"
 #include "config.h"
-#include "rct2.h"
-#include "game.h"
 #include "finance.h"
+#include "game.h"
 #include "input.h"
 #include "news_item.h"
 #include "object.h"
 #include "osinterface.h"
 #include "park.h"
 #include "peep.h"
+#include "rct2.h"
+#include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
 #include "screenshot.h"
@@ -379,9 +380,9 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
 	park_update();
-	RCT2_CALLPROC_EBPSAFE(0x00684C7A);
-	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
-	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
+	RCT2_CALLPROC_EBPSAFE(0x00684C7A);	// update research
+	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);	// update ride ratings
+	ride_measurements_update();
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
 	vehicle_sounds_update();//RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
 	peep_update_crowd_noise();
