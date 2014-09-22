@@ -56,7 +56,7 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 					if (t8 >= RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width && t9 >= RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height) {
 						uint16 v9 = sub_6BC2F3(vehicle);
 						rct_sound_unknown* i;
-						for (i = RCT2_ADDRESS(0x00F438B4, rct_sound_unknown); i < RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*) && v9 <= i->next; i++);
+						for (i = RCT2_ADDRESS(0x00F438B4, rct_sound_unknown); i < RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*) && v9 <= i->var_A; i++);
 						if (i < RCT2_ADDRESS(0x00F43908, rct_sound_unknown)) { // 0x00F43908 is end of rct_sound_unknown list, which has 7 elements, not to be confused with variable at 0x00F43908
 							if (RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*) < RCT2_ADDRESS(0x00F43908, rct_sound_unknown)) {
 								RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*)++;
@@ -66,7 +66,7 @@ void sub_6BB9FF(rct_vehicle* vehicle)
 								j--;
 								*(j + 1) = *j;
 							}
-							i->next = v9;
+							i->var_A = v9;
 							rct_widthheight v12;
 							v12.height = vehicle->var_16.height;
 							v12.width = ((uint16)RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width / 2) + ((uint16)RCT2_GLOBAL(0x009AF5A4, rct_widthheight).width / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
@@ -211,8 +211,11 @@ void vehicle_sounds_update()
 				1;
 			}
 
-			for (rct_sound_unknown* sound_unknown = &RCT2_GLOBAL(0x00F438B4, rct_sound_unknown); sound_unknown != RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*); sound_unknown++) {
-				label28:
+			for (rct_sound_unknown* sound_unknown = &RCT2_GLOBAL(0x00F438B4, rct_sound_unknown); ; sound_unknown++) {
+			label28:
+				if (sound_unknown >= RCT2_GLOBAL(0x00F438B0, rct_sound_unknown*)) {
+					return;
+				}
 				result = (uint16)-1;
 				sint16 v = sound_unknown->var_4;
 				if (v < 0) {
@@ -269,13 +272,13 @@ void vehicle_sounds_update()
 				while (sound_unknown->id != vehicle_sound->id) {
 					vehicle_sound++;
 					if (vehicle_sound >= &RCT2_GLOBAL(0x009AF42C, rct_vehicle_sound)) {
-						vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound);
+						vehicle_sound = &RCT2_GLOBAL(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound); 
 						int i = 0;
 						while (vehicle_sound->id != (uint16)-1) {
 							vehicle_sound++;
 							i++;
-							if (i >= RCT2_GLOBAL(0x009AAC75, sint8)) {
-								sound_unknown = (rct_sound_unknown*)((int)sound_unknown + sound_unknown->next);
+							if (i >= RCT2_GLOBAL(0x009AAC75, uint8)) {
+								sound_unknown = (rct_sound_unknown*)((int)sound_unknown + 10);
 								goto label28;
 							}
 						}
