@@ -1249,45 +1249,29 @@ static void window_ride_init_viewport(rct_window *w)
 	rct_ride* ride = GET_RIDE(w->number);
 	int eax = w->viewport_focus_coordinates.var_480 - 1;
 
-	if (eax < 0){
-		//6afa80
-		int x = (ride->overall_view & 0xFF) << 5;
-		int y = (ride->overall_view & 0xFF00) >> 3;
-		x += 16;
-		y += 16;
-		int z = map_element_height(x, y) & 0xFFFF;
-		char flags = 0x40;
-		int zoom = 1;
-		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-		if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x8000)){
-			zoom = 0;
-		}
-		//6afad0
-	}
-	else{
-		if (eax < ride->num_vehicles){
-			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
-				w->viewport_focus_coordinates.var_480 = 0;
-				//6afa80
-			}
-			int sprite_index = ride->vehicles[eax];
+	union{
+		sprite_focus sprite;
+		coordinate_focus coordinate;
+	} focus;
 
-			rct_ride_type* ride_entry = ride_get_entry(ride);
-			if (ride_entry->var_013 != 0){
-				rct_vehicle* vehicle = GET_VEHICLE(sprite_index);
-				sprite_index = vehicle->next_vehicle_on_train;
-			}
-			char flags = 0xC0;
-			int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-			//6afad0
+	focus.sprite.sprite_id = -1;
+	focus.coordinate.zoom = 0;
+	focus.coordinate.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	
+
+	if (eax >= 0 && eax < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
+		focus.sprite.sprite_id = ride->vehicles[eax];
+
+		rct_ride_type* ride_entry = ride_get_entry(ride);
+		if (ride_entry->var_013 != 0){
+			rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
+			focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
 		}
-		eax -= ride->num_vehicles;
-		if (eax >= ride->num_stations){
-			w->viewport_focus_coordinates.var_480 = 0;
-			//6afa80
-		}
+		focus.sprite.type |= 0xC0;
+	}
+	else if (eax >= ride->num_vehicles && eax < (ride->num_vehicles + ride->num_stations)){
 		int stationIndex = -1;
-		int count = eax;
+		int count = eax - ride->num_vehicles;
 		do {
 			stationIndex++;
 			if (ride->station_starts[stationIndex] != 0xFFFF)
@@ -1295,13 +1279,85 @@ static void window_ride_init_viewport(rct_window *w)
 		} while (count >= 0);
 
 		eax = ride->station_starts[stationIndex];
-		int x = (eax & 0xFF) << 5;
-		int y = (eax & 0xFF00) >> 3;
-		int z = ride->station_heights[stationIndex] << 3;
-		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		
+		focus.coordinate.x = (eax & 0xFF) << 5;
+		focus.coordinate.y = (eax & 0xFF00) >> 3;
+		focus.coordinate.z = ride->station_heights[stationIndex] << 3;
+		focus.sprite.type |= 0x40;
 	}
-	//6afad0
-	RCT2_CALLPROC_X(0x006AF994, 0, 0, 0, 0, (int)w, 0, 0);
+	else{
+		if (eax > 0){
+			w->viewport_focus_coordinates.var_480 = 0;
+		}
+		focus.coordinate.x = (ride->overall_view & 0xFF) << 5;
+		focus.coordinate.y = (ride->overall_view & 0xFF00) >> 3;
+		focus.coordinate.x += 16;
+		focus.coordinate.y += 16;
+		focus.coordinate.z = map_element_height(focus.coordinate.x, focus.coordinate.y) & 0xFFFF;
+		focus.sprite.type |= 0x40;
+		focus.coordinate.zoom = 1;
+		if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x8000){
+			focus.coordinate.zoom = 0;
+		}
+	}
+	focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
+
+	uint16 viewport_flags = 0;
+
+	if (w->viewport != 0){
+		if (focus.coordinate.x == w->viewport_focus_coordinates.x &&
+			focus.coordinate.y == w->viewport_focus_coordinates.y &&
+			focus.coordinate.z == w->viewport_focus_coordinates.z &&
+			focus.coordinate.rotation == w->viewport_focus_coordinates.rotation &&
+			focus.coordinate.zoom == w->viewport_focus_coordinates.zoom )
+			return;
+		viewport_flags = w->viewport->flags;
+		w->viewport->width = 0;
+		w->viewport = 0;
+
+		viewport_update_pointers();
+	}
+	else{
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+	}
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	w->viewport_focus_coordinates.x = focus.coordinate.x;
+	w->viewport_focus_coordinates.y = focus.coordinate.y;
+	w->viewport_focus_coordinates.z = focus.coordinate.z;
+	w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
+	w->viewport_focus_coordinates.zoom = focus.coordinate.zoom;
+
+	//rct2: 0x006aec9c only used here so brought it into the function
+	if (!w->viewport && ride->overall_view != 0xFFFF){
+		rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+
+		int x = view_widget->left + 1 + w->x;
+		int y = view_widget->top + 1 + w->y;
+		int width = view_widget->right - view_widget->left - 1;
+		int height = view_widget->bottom - view_widget->top - 1;
+		viewport_create(
+			w, 
+			x, 
+			y, 
+			width, 
+			height, 
+			focus.coordinate.zoom,
+			focus.coordinate.x, 
+			focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, 
+			focus.coordinate.z, 
+			focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, 
+			focus.sprite.sprite_id);
+
+		w->flags |= WF_2;
+		window_invalidate(w);
+	}
+	if (w->viewport){
+		w->viewport->flags = viewport_flags;
+		window_invalidate(w);
+	}
 }
 
 /**
@@ -1363,7 +1419,7 @@ static void window_ride_locate(rct_window *w)
 		return;
 
 	if (xy & 0x80000000) {
-		rct_sprite *sprite = &g_sprite_list[xy];
+		rct_sprite *sprite = &g_sprite_list[xy & 0xFFFF];
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;
