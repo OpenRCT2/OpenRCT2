@@ -282,11 +282,48 @@ void peep_update_falling(rct_peep* peep){
 }
 
 /**
+ * rct2: 0x0069152B 
+ */
+void peep_update_sitting(rct_peep* peep){
+	if (peep->var_2C == 0){
+		if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+		//691541
+
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+		int ebx = peep->var_37 & 0x7;
+		int x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
+		int y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+		int z = peep->z;		
+		
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_69E9D3(x, y, z, (rct_sprite*)peep);
+
+		peep->sprite_direction = ((peep->var_37 + 2) & 3) * 8;
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->var_71 = 254;
+		peep->var_6F = 7;
+		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		peep->var_2C++;
+
+		*((uint16*)&peep->current_car) = (129 - peep->energy) * 16 + 50;
+		
+	}
+	else if (peep->var_2C == 1){
+		//6915C0
+		RCT2_CALLPROC_X(0x0069152B, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+
+}
+
+/**
  * rct2: 0x69185D
  */
 void peep_update_queuing(rct_peep* peep){
-
-	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x40){
+	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000){
 		RCT2_CALLPROC_X(0x691A23, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
@@ -389,8 +426,8 @@ void peep_update_queuing(rct_peep* peep){
  */
 static void peep_update(rct_peep *peep)
 {
-	// RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0); return;
-
+	//RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0); return;
+	//return;
 	int i, j;
 
 	if (peep->type == PEEP_TYPE_GUEST) {
@@ -453,7 +490,8 @@ static void peep_update(rct_peep *peep)
 		RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
 	} else {
 		// loc_68FD2F
-
+		//RCT2_CALLPROC_X(0x68FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
+		//return;
 		switch (peep->state) {
 		case PEEP_STATE_FALLING:
 			peep_update_falling(peep);
@@ -465,7 +503,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x00691A24, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_ON_RIDE:
-			RCT2_CALLPROC_X(0x00691A2F, 0, 0, 0, 0, (int)peep, 0, 0);
+			// No action
 			break;
 		case PEEP_STATE_LEAVING_RIDE:
 			RCT2_CALLPROC_X(0x00691A30, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -480,7 +518,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x00691A24, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_SITTING:
-			RCT2_CALLPROC_X(0x0069152B, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_sitting(peep);
 			break;
 		case PEEP_STATE_PICKED:
 			RCT2_CALLPROC_X(0x00690009, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -516,16 +554,16 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_20:
-			RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_WATERING:
-			RCT2_CALLPROC_X(0x006916D6, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x006BF7E6, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_HEADING_TO_INSPECTION:
-			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x006C16D7, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_INSPECTING:
-			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 			//There shouldnt be any more
 		default:		
