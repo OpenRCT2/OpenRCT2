@@ -1062,7 +1062,7 @@ static void input_mouseover(int x, int y, rct_window *w, int widgetIndex)
 {
 	rct_windowclass windowClass = 255;
 	rct_windownumber windowNumber = 0;
-	rct_widget *widget;
+	rct_widget *widget = NULL;
 
 	if (w != NULL) {
 		windowClass = w->classification;

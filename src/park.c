@@ -467,7 +467,7 @@ static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 
 static rct_peep *park_generate_new_guest()
 {
-	rct_peep *peep;
+	rct_peep *peep = NULL;
 	rct2_peep_spawn spawn;
 	get_random_peep_spawn(&spawn);
 
