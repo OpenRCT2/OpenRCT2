@@ -29,6 +29,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 
 enum {
 	WINDOW_STAFF_TAB_HANDYMEN,
@@ -263,7 +264,6 @@ static void window_staff_resize()
 static void window_staff_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
 	short newSelectedTab;
-	int eax;
 
 	switch (widgetIndex) {
 	case WIDX_STAFF_HANDYMEN_TAB:
@@ -279,8 +279,7 @@ static void window_staff_mousedown(int widgetIndex, rct_window* w, rct_widget* w
 		window_staff_cancel_tools(w);
 		break;
 	case WIDX_STAFF_UNIFORM_COLOR_PICKER:
-		eax = (RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)] << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
+		window_dropdown_show_colour(w, widget, w->colours[1], RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)]);
 		break;
 	}
 

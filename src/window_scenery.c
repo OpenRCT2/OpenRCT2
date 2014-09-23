@@ -32,6 +32,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "window_dropdown.h"
 #include "window_scenery.h"
 
 enum {
@@ -580,20 +581,15 @@ static void window_scenery_resize()
 *  rct2: 0x006E1A25
 */
 static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget* widget) {
-	int eax;
-
 	switch (widgetIndex) {
 	case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
-		eax = (window_scenery_primary_colour << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
+		window_dropdown_show_colour(w, widget, w->colours[1], window_scenery_primary_colour);
 		break;
 	case WIDX_SCENERY_SECONDARY_COLOUR_BUTTON:
-		eax = (window_scenery_secondary_colour << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
+		window_dropdown_show_colour(w, widget, w->colours[1], window_scenery_secondary_colour);
 		break;
 	case WIDX_SCENERY_TERTIARY_COLOUR_BUTTON:
-		eax = (window_scenery_tertiary_colour << 8) + 0x80 + w->colours[1];
-		RCT2_CALLPROC_X(0x006ED43D, eax, 0, 0, widgetIndex, (int)w, (int)widget, 0xFFFFFFFF);
+		window_dropdown_show_colour(w, widget, w->colours[1], window_scenery_tertiary_colour);
 		break;
 	}
 

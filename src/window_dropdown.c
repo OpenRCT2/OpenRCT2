@@ -380,6 +380,11 @@ int dropdown_index_from_point(int x, int y, rct_window* w){
 	return dropdown_index;
 }
 
+void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour)
+{
+	window_dropdown_show_colour_available(w, widget, dropdownColour, selectedColour, 0xFFFFFFFF);
+}
+
 /**
  *  rct2: 0x006ED43D
  * al: dropdown colour
@@ -388,7 +393,38 @@ int dropdown_index_from_point(int x, int y, rct_window* w){
  * edi: widget
  * ebp: unknown
  */
-void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour)
+void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour,
+	uint32 availableColours)
 {
-	RCT2_CALLPROC_X(0x006ED43D, (selectedColour << 8) | dropdownColour, 0, 0, 0, (int)w, (int)widget, 0xFFFFFFFF);
+	int i, numItems;
+	
+	// Count number of available colours
+	numItems = 0;
+	for (i = 0; i < 32; i++)
+		if (availableColours & (1 << i))
+			numItems++;
+
+	// Show dropdown
+	window_dropdown_show_image(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		dropdownColour,
+		0x80,
+		numItems,
+		12,
+		12,
+		gAppropriateImageDropdownItemsPerRow[numItems]
+	);
+
+	// Set items
+	for (i = 0; i < 32; i++) {
+		if (availableColours & (1 << i)) {
+			if (selectedColour == i)
+				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+
+			gDropdownItemsFormat[i] = 0xFFFE;
+			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
+		}
+	}
 }

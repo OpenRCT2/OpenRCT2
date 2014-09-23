@@ -38,5 +38,6 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 void window_dropdown_close();
 int dropdown_index_from_point(int x, int y, rct_window* w);
 void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour);
+void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour, uint32 availableColours);
 
 #endif
