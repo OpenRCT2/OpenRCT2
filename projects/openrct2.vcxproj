@@ -190,7 +190,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(SolutionDir)..\libspeex;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>

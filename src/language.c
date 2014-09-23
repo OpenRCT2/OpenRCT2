@@ -134,7 +134,8 @@ static int language_open_file(const char *filename)
 
 	language_strings = calloc(STR_COUNT, sizeof(char*));
 
-	char *dst, *token;
+	char *dst = NULL;
+	char *token = NULL;
 	char tokenBuffer[64];
 	int i, stringIndex = 0, mode = 0, string_no;
 	for (i = 0; i < language_buffer_size; i++) {
