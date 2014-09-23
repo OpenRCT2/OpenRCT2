@@ -577,7 +577,7 @@ MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO
 				//strcpy(audio_info.var_0, "\x01");
 				hmem = 0;
 			label11:
-				hmemold2 = GlobalAlloc(0, (SIZE_T)hmem + 18);
+				hmemold2 = GlobalAlloc(0, (SIZE_T)(hmem + 18));
 				*hmemold = hmemold2;
 				if (!hmemold2) {
 					result = 57344;
@@ -1179,19 +1179,19 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 			sint16 v11;
 			sint16 v12;
 			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-				case MAP_ELEMENT_DIRECTION_WEST:
+				case 0:
 					v11 = y - x;
 					v12 = ((y + x) / 2) - z;
 					break;
-				case MAP_ELEMENT_DIRECTION_NORTH:
+				case 1:
 					v11 = -x - y;
 					v12 = ((y - x) / 2) - z;
 					break;
-				case MAP_ELEMENT_DIRECTION_EAST:
+				case 2:
 					v11 = x - y;
 					v12 = ((-y - x) / 2) - z;
 					break;
-				case MAP_ELEMENT_DIRECTION_SOUTH:
+				case 3:
 					v11 = y + x;
 					v12 = ((x - y) / 2) - z;
 					break;

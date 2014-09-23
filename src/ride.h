@@ -89,7 +89,9 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[0xC];
+	uint8 pad_05E[0x4];
+	uint8 var_062[4];
+	uint8 pad_066[0x4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -122,7 +124,8 @@ typedef struct {
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
-	uint8 pad_118[0x0C];
+	uint32 var_118;
+	uint8 pad_11C[0x08];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -179,7 +182,7 @@ typedef struct {
 	uint8 track_colour_supports[4];	// 0x1C4
 	uint8 music;					// 0x1C8
 	uint8 entrance_style;			// 0x1C9
-	uint8 pad_1CA[0x02];
+	uint16 var_1CA;
 	uint8 num_block_brakes;			// 0x1CC
 	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE

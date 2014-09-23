@@ -113,7 +113,7 @@ typedef struct {
 	sint16 var_4;
 	uint16 frequency;	// 0x6
 	sint16 var_8;
-	uint16 next;		// 0xA
+	uint16 var_A;		// 0xA
 } rct_sound_unknown;
 
 typedef struct {
