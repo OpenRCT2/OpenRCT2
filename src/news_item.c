@@ -291,7 +291,7 @@ void news_item_open_subject(int type, int subject) {
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
-		RCT2_CALLPROC_X(0x006ACC28, subject, 0, 0, 0, 0, 0, 0);
+		window_ride_main_open(subject);
 		break;
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:

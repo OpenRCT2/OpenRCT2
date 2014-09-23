@@ -104,7 +104,7 @@ typedef struct{
 	sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
 	sint16 z; //0x486
 	uint8 rotation;//0x488
-	uint8 pad_489;
+	uint8 zoom;//0x489
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
@@ -115,7 +115,7 @@ typedef struct{
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
 	uint16 pad_486; 
 	uint8 rotation; //0x488
-	uint8 pad_489;
+	uint8 zoom; //0x489
 } sprite_focus;
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0
@@ -123,7 +123,7 @@ enum{
 	VIEWPORT_FOCUS_TYPE_COORDINATE = (1<<6),
 	VIEWPORT_FOCUS_TYPE_SPRITE = (1<<7)
 };
-#define VIEWPORT_FOCUS_Y_MASK 0x3FFF;
+#define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
 
 typedef struct{
