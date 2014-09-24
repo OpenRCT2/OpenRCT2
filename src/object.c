@@ -30,15 +30,7 @@
  */
 int object_load(int groupIndex, rct_object_entry *entry)
 {
-	RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry);
-	#ifdef _MSC_VER
-	__asm jb fail
-	#else
-	__asm__ goto ( "jb %l0" : : : : fail );
-	#endif
-	return 1;
-fail:
-	return 0;
+	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x100);
 }
 
 /**
@@ -122,15 +114,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	if (type == 10){
 		if (eax == 0) return object_scenario_load_custom_text((char*)esi);
 	}
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp);
-	#ifdef _MSC_VER
-	__asm jb success
-	#else
-	__asm__ goto ( "jb %l0" : : : : success );
-	#endif
-	return 0;
-success:
-	return 1;
+	return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x400;
 }
 
 /**

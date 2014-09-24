@@ -46,7 +46,7 @@ typedef struct {
 } rct_object_entry_extended;
 
 void object_list_load();
-void object_read_and_load_entries(FILE *file);
+int object_read_and_load_entries(FILE *file);
 int object_load_packed();
 void object_unload_all();
 
