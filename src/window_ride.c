@@ -4460,10 +4460,11 @@ static void window_ride_measurements_update(rct_window *w)
 static void window_ride_measurements_tooldown()
 {
 	rct_window *w;
+	short x, y, widgetIndex;
 
-	window_get_register(w);
+	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006D2AE7, 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(0x006D2AE7, x, y, 0, widgetIndex, (int)w, 0, 0);
 }
 
 /**

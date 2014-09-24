@@ -732,7 +732,12 @@ int game_load_save()
 		}
 	}
 
-	object_read_and_load_entries(file);
+	if (!object_read_and_load_entries(file)){
+		fclose(file);
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	};
 
 	// Read flags (16 bytes)
 	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);

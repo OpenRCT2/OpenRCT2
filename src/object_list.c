@@ -157,7 +157,7 @@ static int check_object_entry(rct_object_entry *entry)
  * 
  *  rct2: 0x006AA0C6
  */
-void object_read_and_load_entries(FILE *file)
+int object_read_and_load_entries(FILE *file)
 {
 	object_unload_all();
 
@@ -185,13 +185,14 @@ void object_read_and_load_entries(FILE *file)
 		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
 			free(entries);
-
+			memcpy((char*)0x13CE952, entries[i].name, 8);
 			object_unload_all();
-			return;
+			return 0;
 		}
 	}
 
 	free(entries);
+	return 1;
 }
 
 /**
