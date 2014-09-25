@@ -20,6 +20,7 @@
 
 #include <memory.h>
 #include <stdio.h>
+#include <string.h>
 #include "addresses.h"
 #include "object.h"
 #include "sawyercoding.h"
@@ -30,6 +31,42 @@
  */
 int object_load(int groupIndex, rct_object_entry *entry)
 {
+	RCT2_GLOBAL(0xF42B64, uint32) = groupIndex;
+
+	//part of 6a9866
+	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	if (!(RCT2_GLOBAL(0xF42B6C, uint32))){
+		RCT2_GLOBAL(0xF42BD9, uint8) = 0;
+		return 1;
+	}
+
+	if (!(installedObject->flags & 0xF0)){
+		if (entry->flags != installedObject->flags || 
+			entry->checksum != installedObject->checksum || 
+			strncmp( entry->name, installedObject->name,8 )){
+			//6a9c06
+		}
+	}
+	else{
+		if ((entry->flags & 0xF0) != (installedObject->flags & 0xF0) ||
+			strncmp(entry->name, installedObject->name, 8)){
+			//6a9c06
+		}
+		int eax = installedObject->flags >> 4;
+		if ((eax & 0xFF) != 8){
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16)&(1 << eax))){
+				//6a9c06
+			}
+		}
+	}
+	installedObject++;//
+	char* object_path = RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char);
+	int star_pos = strchr(object_path, '*') - object_path;
+	object_path = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	strncpy(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), star_pos);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char) + star_pos, installedObject);
+	//6a991f
 	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x100);
 }
 
