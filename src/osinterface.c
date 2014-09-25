@@ -168,8 +168,8 @@ static void osinterface_create_window()
 		width = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, sint16);
 		height = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, sint16);
 
-		width = 640;
-		height = 480;
+		width = 1024;
+		height = 768;
 	}
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;

@@ -39,6 +39,7 @@
 #include "intro.h"
 #include "language.h"
 #include "map.h"
+#include "mapgen.h"
 #include "mixer.h"
 #include "news_item.h"
 #include "object.h"
@@ -280,14 +281,19 @@ int rct2_open_file(const char *path)
 
 	if (_stricmp(extension, "sv6")) {
 		game_load_save(path);
+		return 1;
 	} else if (!_stricmp(extension, "sc6")) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
+		return 1;
 	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
+		return 1;
 	}
+
+	return 0;
 }
 
 void check_cmdline_arg()
@@ -306,6 +312,9 @@ void check_cmdline_arg()
 		if (_stricmp(argv[0], "edit") == 0) {
 			if (argc >= 1)
 				editor_load_landscape(argv[1]);
+		} else if (_stricmp(argv[0], "gen") == 0) {
+			editor_load();
+			mapgen_generate();
 		} else {
 			rct2_open_file(argv[0]);
 		}

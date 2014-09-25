@@ -33,6 +33,8 @@
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\language.h" />
     <ClInclude Include="..\src\map.h" />
+    <ClInclude Include="..\src\mapgen.h" />
+    <ClInclude Include="..\src\map_helpers.h" />
     <ClInclude Include="..\src\marketing.h" />
     <ClInclude Include="..\src\mixer.h" />
     <ClInclude Include="..\src\news_item.h" />
@@ -85,6 +87,8 @@
     <ClCompile Include="..\src\intro.c" />
     <ClCompile Include="..\src\language.c" />
     <ClCompile Include="..\src\map.c" />
+    <ClCompile Include="..\src\mapgen.c" />
+    <ClCompile Include="..\src\map_helpers.c" />
     <ClCompile Include="..\src\marketing.c" />
     <ClCompile Include="..\src\mixer.cpp" />
     <ClCompile Include="..\src\news_item.c" />
