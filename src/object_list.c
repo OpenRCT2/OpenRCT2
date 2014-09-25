@@ -184,9 +184,12 @@ int object_read_and_load_entries(FILE *file)
 		// Load the obect
 		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
-			free(entries);
+			//Destroy progress bar
+
 			memcpy((char*)0x13CE952, entries[i].name, 8);
+			free(entries);
 			object_unload_all();
+			RCT2_GLOBAL(0x14241BC, uint32) = 0;
 			return 0;
 		}
 	}
@@ -201,7 +204,7 @@ int object_read_and_load_entries(FILE *file)
  */
 int object_load_packed()
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
 	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return eax;
 }
