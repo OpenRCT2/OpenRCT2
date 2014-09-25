@@ -28,7 +28,7 @@ int map_smooth(int l, int t, int r, int b)
 	for (y = t; y < b; y++) {
 		for (x = l; x < r; x++) {
 			mapElement = map_get_surface_element_at(x, y);
-			mapElement->properties.surface.slope = 0;
+			mapElement->properties.surface.slope &= ~0x1F;
 
 			// Raise to edge height - 2
 			highest = mapElement->base_height;
@@ -131,7 +131,7 @@ int map_smooth(int l, int t, int r, int b)
 
 				// Raise
 				if (mapElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
-					mapElement->properties.surface.slope = 0;
+					mapElement->properties.surface.slope &= ~0x1F;
 					mapElement->base_height = mapElement->clearance_height += 2;
 				}
 			}

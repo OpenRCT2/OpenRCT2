@@ -26,6 +26,7 @@
 #include "game.h"
 #include "input.h"
 #include "map.h"
+#include "mapgen.h"
 #include "osinterface.h"
 #include "sprite.h"
 #include "tutorial.h"
@@ -1546,6 +1547,11 @@ void handle_shortcut(int key)
 			handle_shortcut_command(i);
 			break;
 		}
+	}
+
+	if (key == SDL_SCANCODE_R) {
+		mapgen_generate();
+		gfx_invalidate_screen();
 	}
 }
 
