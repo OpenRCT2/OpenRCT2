@@ -694,14 +694,13 @@ static void load_landscape()
  * 
  *  rct2: 0x00675E1B
  */
-int game_load_save()
+int game_load_save(const char *path)
 {
 	rct_window *mainWindow;
 	FILE *file;
-	char *path;
 	int i, j;
 
-	path = (char*)0x0141EF68;
+	strcpy((char*)0x0141EF68, path);
 	file = fopen(path, "rb");
 	if (file == NULL) {
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
@@ -831,7 +830,7 @@ static void load_game()
 		}
 		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
-		if (game_load_save()) {
+		if (game_load_save((char *)0x0141EF68)) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
 		} else {

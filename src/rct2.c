@@ -66,6 +66,8 @@ static void rct2_loop();
 static void rct2_update();
 static void rct2_update_2();
 
+PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc);
+
 static int _finished;
 static jmp_buf _end_update_jump;
 
@@ -269,51 +271,47 @@ void rct2_update()
 		rct2_update_2();
 }
 
+int rct2_open_file(const char *path)
+{
+	char *extension = strrchr(path, '.');
+	if (extension == NULL)
+		return 0;
+	extension++;
+
+	if (_stricmp(extension, "sv6")) {
+		game_load_save(path);
+	} else if (!_stricmp(extension, "sc6")) {
+		// TODO scenario install
+		rct_scenario_basic scenarioBasic;
+		strcpy(scenarioBasic.path, path);
+		scenario_load_and_play_from_path(scenarioBasic.path);
+	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
+		// TODO track design install
+	}
+}
+
 void check_cmdline_arg()
 {
-	if(RCT2_GLOBAL(0x009AC310, uint32) == 0xFFFFFFFF)
+	int argc;
+	char **argv;
+	char *args;
+
+	args = RCT2_GLOBAL(0x009AC310, char*);
+	if (args == (char*)0xFFFFFFFF)
 		return;
+	RCT2_GLOBAL(0x009AC310, char*) = (char*)0xFFFFFFFF;
 
-	char *arg = RCT2_GLOBAL(0x009AC310, char *);
-	char processed_arg[255];
-	int len, i, j;
-	int quote = 0;
-	int last_period = 0;
-
-	RCT2_GLOBAL(0x009AC310, uint32) = 0xFFFFFFFF;
-	len = strlen(arg);
-
-	for(i = 0, j = 0; i < len; i ++)
-	{
-		if(arg[i] == '\"')
-		{
-			if(quote)
-				quote = 0;
-			else
-				quote = 1;
-			continue;
+	argv = CommandLineToArgvA(args, &argc);
+	if (argc > 0) {
+		if (_stricmp(argv[0], "edit") == 0) {
+			if (argc >= 1)
+				editor_load_landscape(argv[1]);
+		} else {
+			rct2_open_file(argv[0]);
 		}
-		if(arg[i] == ' ' && !quote)
-			break;
-		if(arg[i] == '.')
-			last_period = i;
-		processed_arg[j ++] = arg[i];
 	}
-	processed_arg[j ++] = 0;
 
-	if (!_stricmp(processed_arg + last_period, "sv6"))
-	{
-		strcpy((char*)0x00141EF68, processed_arg);
-		game_load_save();
-	}
-	else if (!_stricmp(processed_arg + last_period, "sc6"))
-	{
-		//TODO: scenario install
-	}
-	else if (!_stricmp(processed_arg + last_period, "td6") || !_stricmp(processed_arg + last_period, "td4"))
-	{
-		//TODO: track design install
-	}
+	LocalFree(argv);
 }
 
 // rct2: 0x00407DB0
@@ -604,4 +602,87 @@ void *rct2_realloc(void *block, size_t numBytes)
 void rct2_free(void *block)
 {
 	RCT2_CALLPROC_1(0x004068DE, void*, block);
+}
+
+/**
+ * http://alter.org.ua/en/docs/win/args/
+ */
+PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
+{
+	PCHAR* argv;
+	PCHAR  _argv;
+	ULONG   len;
+	ULONG   argc;
+	CHAR   a;
+	ULONG   i, j;
+
+	BOOLEAN  in_QM;
+	BOOLEAN  in_TEXT;
+	BOOLEAN  in_SPACE;
+
+	len = strlen(CmdLine);
+	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
+
+	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
+		i + (len + 2)*sizeof(CHAR));
+
+	_argv = (PCHAR)(((PUCHAR)argv) + i);
+
+	argc = 0;
+	argv[argc] = _argv;
+	in_QM = FALSE;
+	in_TEXT = FALSE;
+	in_SPACE = TRUE;
+	i = 0;
+	j = 0;
+
+	while (a = CmdLine[i]) {
+		if (in_QM) {
+			if (a == '\"') {
+				in_QM = FALSE;
+			} else {
+				_argv[j] = a;
+				j++;
+			}
+		} else {
+			switch (a) {
+			case '\"':
+				in_QM = TRUE;
+				in_TEXT = TRUE;
+				if (in_SPACE) {
+					argv[argc] = _argv + j;
+					argc++;
+				}
+				in_SPACE = FALSE;
+				break;
+			case ' ':
+			case '\t':
+			case '\n':
+			case '\r':
+				if (in_TEXT) {
+					_argv[j] = '\0';
+					j++;
+				}
+				in_TEXT = FALSE;
+				in_SPACE = TRUE;
+				break;
+			default:
+				in_TEXT = TRUE;
+				if (in_SPACE) {
+					argv[argc] = _argv + j;
+					argc++;
+				}
+				_argv[j] = a;
+				j++;
+				in_SPACE = FALSE;
+				break;
+			}
+		}
+		i++;
+	}
+	_argv[j] = '\0';
+	argv[argc] = NULL;
+
+	(*_argc) = argc;
+	return argv;
 }
