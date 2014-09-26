@@ -2389,3 +2389,18 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args,
 	if (text_palette[2] != 0)
 		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
 }
+
+void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+{
+	char buffer[128];
+	int width;
+
+	format_string(buffer, format, args);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	width = gfx_get_string_width(buffer);
+	x -= width / 2;
+	gfx_draw_string(dpi, buffer, colour, x, y);
+	gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
+	if (text_palette[2] != 0)
+		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
+}
