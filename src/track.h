@@ -90,6 +90,6 @@ enum {
 	TRACK_CORKSCREW_DOWN = 224
 };
 
-void track_load_list(int edx);
+void track_load_list(ride_list_item item);
 
 #endif

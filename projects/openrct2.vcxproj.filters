@@ -168,6 +168,12 @@
     <ClInclude Include="..\src\window_scenery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mixer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -399,6 +405,18 @@
       <Filter>Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\window_publisher_credits.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libspeex\resample.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hook.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mixer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_track_list.c">
       <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>

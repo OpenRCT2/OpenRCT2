@@ -32,11 +32,6 @@
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 
-typedef struct {
-	uint8 type;
-	uint8 entry_index;
-} ride_list_item;
-
 #pragma region Ride type view order
 
 /**
@@ -874,7 +869,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 static int get_num_track_designs(ride_list_item item)
 {
-	track_load_list(*((uint16*)&item));
+	track_load_list(item);
 
 	uint8 *trackDesignList = (uint8*)0x00F441EC;
 	int count = 0;
@@ -964,12 +959,11 @@ static void window_new_ride_select(rct_window *w)
 
 	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (item.type * 8), uint32);
 	if (rideTypeFlags & 0x10000000) {
-		track_load_list(*((sint16*)&item));
+		track_load_list(item);
 
 		uint8 *trackDesignList = (uint8*)0x00F441EC;
 		if (*trackDesignList != 0) {
-			// Show track design list
-			RCT2_CALLPROC_X(0x006CF1A2, *((sint16*)&item), 0, 0, 0, 0, 0, 0);
+			window_track_list_open(item);
 			return;
 		}
 	}

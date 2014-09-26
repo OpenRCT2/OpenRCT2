@@ -143,6 +143,7 @@
     <ClCompile Include="..\src\window_title_scenarioselect.c" />
     <ClCompile Include="..\src\window_game_top_toolbar.c" />
     <ClCompile Include="..\src\window_tooltip.c" />
+    <ClCompile Include="..\src\window_track_list.c" />
     <ClCompile Include="..\src\window_water.c" />
     <ClCompile Include="..\src\staff.c" />
     <ClCompile Include="..\src\window_scenery.c" />

@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "ride.h"
 #include "track.h"
 
 /**
@@ -220,7 +221,7 @@ const rct_trackdefinition gTrackDefinitions[] = {
  *
  *  rct2: 0x006CED50
  */
-void track_load_list(int edx)
+void track_load_list(ride_list_item item)
 {
-    RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, edx, 0, 0, 0);
+    RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }

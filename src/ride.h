@@ -40,6 +40,14 @@ typedef struct {
 } rating_tuple;
 
 /**
+ * Couples a ride type and subtype together.
+ */
+typedef struct {
+	uint8 type;
+	uint8 entry_index;
+} ride_list_item;
+
+/**
  * Ride type structure.
  * size: unknown
  */

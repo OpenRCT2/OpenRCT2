@@ -183,7 +183,7 @@ void scenario_load_and_play(const rct_scenario_basic *scenario)
 	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
 	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
 
-	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
+	window_close_construction_windows();
 
 	subsitute_path(
 		RCT2_ADDRESS(0x0141EF68, char),
