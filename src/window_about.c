@@ -128,7 +128,7 @@ static void window_about_mouseup()
 		window_music_credits_open();
 		break;
 	case WIDX_PUBLISHER_CREDITS:
-		RCT2_CALLPROC_EBPSAFE(0x0066D4EC);
+		window_publisher_credits_open();
 		break;
 	}
 }

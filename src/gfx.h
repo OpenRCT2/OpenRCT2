@@ -98,5 +98,6 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 
 void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
+void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 
 #endif

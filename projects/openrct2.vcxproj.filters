@@ -395,7 +395,10 @@
     <ClCompile Include="..\src\window_ride.c">
       <Filter>Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\window_credits.c">
+    <ClCompile Include="..\src\window_music_credits.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\window_publisher_credits.c">
       <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
