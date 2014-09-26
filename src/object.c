@@ -45,97 +45,80 @@ int object_load(int groupIndex, rct_object_entry *entry)
 		return 1;
 	}
 	for (int i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
-		if (!(installedObject->flags & 0xF0)){
-			if (entry->flags != installedObject->flags ||
-				entry->checksum != installedObject->checksum ||
-				strncmp(entry->name, installedObject->name, 8)){
-				//6a9c06
-			}
-		}
-		else{
-			if ((entry->flags & 0xF0) != (installedObject->flags & 0xF0) ||
-				strncmp(entry->name, installedObject->name, 8)){
-				//6a9c06
-			}
-			int eax = installedObject->flags >> 4;
-			if ((eax & 0xFF) != 8){
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16)&(1 << eax))){
-					//6a9c06
-				}
-			}
-		}
+		if (object_entry_compare(installedObject, entry)){
 
-		char path[260];
-		char *objectPath = (char*)installedObject + 16;
-		subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
-		rct_object_entry openedEntry;
-		FILE *file = fopen(path, "rb");
-		if (file != NULL) {
-			fread(&openedEntry, sizeof(rct_object_entry), 1, file);
-			if (object_entry_compare(&openedEntry, entry)) {
+			char path[260];
+			char *objectPath = (char*)installedObject + 16;
+			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+			rct_object_entry openedEntry;
+			FILE *file = fopen(path, "rb");
+			if (file != NULL) {
+				fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+				if (object_entry_compare(&openedEntry, entry)) {
 
-				// Get chunk size
-				char *pos = (char*)installedObject + 16;
-				do {
-					pos++;
-				} while (*(pos - 1) != 0);
+					// Get chunk size
+					char *pos = (char*)installedObject + 16;
+					do {
+						pos++;
+					} while (*(pos - 1) != 0);
 
-				// Read chunk
-				int chunkSize = *((uint32*)pos);
-				char *chunk;
-				if (chunkSize == 0xFFFFFFFF) {
-					chunk = malloc(0x600000);
-					chunkSize = sawyercoding_read_chunk(file, chunk);
-					chunk = realloc(chunk, chunkSize);
-				}
-				else {
-					chunk = malloc(chunkSize);
-					sawyercoding_read_chunk(file, chunk);
-				}
-				fclose(file);
+					// Read chunk
+					int chunkSize = *((uint32*)pos);
+					char *chunk;
+					//if (chunkSize == 0xFFFFFFFF) {
+						chunk = malloc(0x600000);
+						chunkSize = sawyercoding_read_chunk(file, chunk);
+						chunk = realloc(chunk, chunkSize);
+					//}
+					//else {
+					//	chunk = malloc(chunkSize);
+					//	chunkSize = sawyercoding_read_chunk(file, chunk);
+					//}
+					fclose(file);
 
-				// Calculate and check checksum
-				if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
-					RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
-					free(chunk);
-					return 0;
-				}
+					// Calculate and check checksum
+					if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
+						RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
+						free(chunk);
+						return 0;
+					}
 
-				if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
-					RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-					free(chunk);
-					return 0;
-				}
+					if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
+						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
+						free(chunk);
+						return 0;
+					}
 
-				int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
+					int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
 
-				if (yyy >= 0x4726E){
-					RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
-					free(chunk);
-					return 0;
-				}
-
-				int ebp = RCT2_GLOBAL(0xF42B84, uint16) & 0xF;
-				int esi = RCT2_ADDRESS(0x98D97C, uint32)[ebp * 2];
-				int ecx = RCT2_GLOBAL(0xF42B64, sint32);
-				if (ecx == -1){
-					for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
-						if ((ecx + 1) >= RCT2_ADDRESS(0x98DA00, uint16)[ebp]){
-							RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
-							free(chunk);
-							return 0;
+					if (yyy >= 0x4726E){
+						RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
+						free(chunk);
+						return 0;
+					}
+					//B84 is openedEntry
+					int ebp = openedEntry.flags & 0x0F;
+					int esi = RCT2_ADDRESS(0x98D97C, uint32)[ebp * 2];
+					int ecx = groupIndex;
+					if (ecx == -1){
+						for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
+							if ((ecx + 1) >= RCT2_ADDRESS(0x98DA00, uint16)[ebp]){
+								RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
+								free(chunk);
+								return 0;
+							}
 						}
 					}
-				}
-				((sint32*)esi)[ecx] = chunk;
+					((sint32*)esi)[ecx] = chunk;
 
-				int* edx = ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2];
-				memcpy(edx, (int*)0xF42B84, 20);
-				if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)return 1;
-				object_paint(ecx, 0, ecx, ebp, 0, (int)chunk, 0, 0);
-				return 1;
+					int* edx = ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2];
+					memcpy(edx, (int*)&openedEntry, 20);
+					if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)return 1;
+					object_paint(ecx, 0, ecx, ebp, 0, (int)chunk, 0, 0);
+					return 1;
+				}
+				fclose(file);
 			}
-			fclose(file);
 		}
 		installedObject = object_get_next(installedObject);
 	}
