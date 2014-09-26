@@ -47,8 +47,8 @@ typedef struct {
 typedef struct {
 	uint8 type;
 	uint8 age;
-	uint8 colour;
-	uint8 unused;
+	uint8 colour_1;
+	uint8 colour_2;
 } rct_map_element_scenery_properties;
 
 typedef struct {

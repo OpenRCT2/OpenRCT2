@@ -22,13 +22,14 @@
 	#define _USE_MATH_DEFINES
 #endif
 #include <math.h>
-#include <memory.h>
+#include <string.h>
 #include <time.h>
 #include "addresses.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
 
+static void mapgen_place_trees();
 static void mapgen_set_water_level(int height);
 static void mapgen_blob(int cx, int cy, int size, int height);
 static void mapgen_smooth_height(int iterations);
@@ -45,6 +46,16 @@ void mapgen_generate()
 {
 	int i, x, y, mapSize, baseTerrain;
 	rct_map_element *mapElement;
+
+	/*
+	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
+	for (i = 0; i < MAX_MAP_ELEMENTS; i++) {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) {
+			i = i;
+		}
+		mapElement++;
+	}
+	*/
 
 	map_init();
 
@@ -97,6 +108,101 @@ void mapgen_generate()
 
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 	mapgen_set_water_level(6 + (rand() % 4) * 2);
+	mapgen_place_trees();
+}
+
+const uint8 GrassTrees[] = { 21, 22, 27, 31, 42, 69, 71, 82, 84, 94, 95, 109 };
+const uint8 DesertTrees[] = { 15, 16, 17, 19, 72, 81, 90, 91 };
+
+static void mapgen_place_tree(int type, int x, int y)
+{
+	uint8 baseHeight;
+	rct_map_element *mapElement, *surfaceElement, *nextFreeElement;
+
+	nextFreeElement = RCT2_GLOBAL(0x0140E9A4, rct_map_element*);
+
+	// Get first element of the tile
+	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+
+	// Find the last element
+	while (!(mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE)) {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE)
+			surfaceElement = mapElement;
+		mapElement++;
+	}
+
+	// Shift elements for a free space
+	memmove(mapElement + 2, mapElement + 1, (int)nextFreeElement - (int)mapElement);
+
+	baseHeight = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
+
+	mapElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
+	mapElement++;
+
+	mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (rand() % 3);
+	mapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE | (1 | 2 | 4 | 8);
+	mapElement->base_height = baseHeight;
+	mapElement->clearance_height = baseHeight + 15;
+	mapElement->properties.scenery.type = type;
+	mapElement->properties.scenery.age = 0;
+	mapElement->properties.scenery.colour_1 = 26;
+	mapElement->properties.scenery.colour_2 = 18;
+
+	map_update_tile_pointers();
+}
+
+static void mapgen_place_trees()
+{
+	int x, y, mapSize, i, rindex, type;
+	rct_map_element *mapElement;
+
+	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+
+	int availablePositionsCount = 0;
+	struct { int x; int y; } tmp, *pos, *availablePositions;
+	availablePositions = malloc(256 * 256 * sizeof(tmp));
+
+	// Create list of available tiles
+	for (y = 1; y < mapSize - 1; y++) {
+		for (x = 1; x < mapSize - 1; x++) {
+			mapElement = map_get_surface_element_at(x, y);
+
+			// Exclude water tiles
+			if ((mapElement->properties.surface.terrain & 0x1F) != 0)
+				continue;
+
+			pos = &availablePositions[availablePositionsCount++];
+			pos->x = x;
+			pos->y = y;
+		}
+	}
+
+	// Shuffle list
+	for (i = 0; i < availablePositionsCount; i++) {
+		rindex = rand() % availablePositionsCount;
+		if (rindex == i)
+			continue;
+
+		tmp = availablePositions[i];
+		availablePositions[i] = availablePositions[rindex];
+		availablePositions[rindex] = tmp;
+	}
+
+	// Place trees
+	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	for (i = 0; i < min(availablePositionsCount, 2048 + (rand() % 10000)); i++) {
+		pos = &availablePositions[i];
+
+		mapElement = map_get_surface_element_at(x, y);
+		if (map_element_get_terrain(mapElement) == TERRAIN_SAND)
+			type = DesertTrees[rand() % countof(DesertTrees)];
+		else
+			type = GrassTrees[rand() % countof(GrassTrees)];
+
+		mapgen_place_tree(type, pos->x, pos->y);
+	}
+
+	free(availablePositions);
 }
 
 static void mapgen_set_water_level(int waterLevel)
@@ -109,8 +215,8 @@ static void mapgen_set_water_level(int waterLevel)
 	for (y = 1; y < mapSize - 1; y++) {
 		for (x = 1; x < mapSize - 1; x++) {
 			mapElement = map_get_surface_element_at(x, y);
-			if (mapElement->base_height <= waterLevel)
-				mapElement->properties.surface.terrain |= (waterLevel - 5);
+			if (mapElement->base_height < waterLevel)
+				mapElement->properties.surface.terrain |= (waterLevel  / 2);
 		}
 	}
 }

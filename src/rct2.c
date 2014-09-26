@@ -314,7 +314,7 @@ void check_cmdline_arg()
 				editor_load_landscape(argv[1]);
 		} else if (_stricmp(argv[0], "gen") == 0) {
 			editor_load();
-			mapgen_generate();
+			// mapgen_generate();
 		} else {
 			rct2_open_file(argv[0]);
 		}
