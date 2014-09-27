@@ -103,6 +103,13 @@ int sawyercoding_read_chunk_variable(FILE *file, uint8 **dst_buffer)
 		decode_chunk_rotate(src_buffer, chunkHeader.length);
 		memcpy(*dst_buffer, src_buffer, chunkHeader.length);
 		break;
+	case CHUNK_ENCODING_RLECOMPRESSED:
+		chunkHeader.length = decode_chunk_rle_variable(src_buffer, dst_buffer, chunkHeader.length);
+		chunkHeader.length = decode_chunk_repeat(*dst_buffer, chunkHeader.length);
+		break;
+	case 0:
+		memcpy(*dst_buffer, src_buffer, chunkHeader.length);
+		break;
 	default:
 		// For now this is temp function
 		free(src_buffer);

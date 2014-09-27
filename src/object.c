@@ -65,14 +65,14 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					// Read chunk
 					int chunkSize = *((uint32*)pos);
 					char *chunk;
-
+					
 					if (chunkSize == 0xFFFFFFFF) {
-						chunk = malloc(0x600000);
+						chunk = rct2_malloc(0x600000);
 						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
-						chunk = realloc(chunk, chunkSize);
+						chunk = rct2_realloc(chunk, chunkSize);
 					}
 					else {
-						chunk = malloc(chunkSize);
+						chunk = rct2_malloc(chunkSize);
 						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
 					}
 					fclose(file);
@@ -85,9 +85,9 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					}
 
 					if (object_paint(openedEntry.flags & 0x0F, 2, 0, openedEntry.flags & 0x0F, 0, (int)chunk, 0, 0)) {
-						//RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-						//free(chunk);
-						//return 0;
+						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
+						free(chunk);
+						return 0;
 					}
 
 					int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
@@ -110,9 +110,9 @@ int object_load(int groupIndex, rct_object_entry *entry)
 							}
 						}
 					}
-					((sint32*)esi)[ecx] = chunk;
+					((char**)esi)[ecx] = chunk;
 
-					int* edx = ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2];
+					int* edx = (int*)( ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2]);
 					memcpy(edx, (int*)&openedEntry, 20);
 					if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)return 1;
 					object_paint(ecx, 0, ecx, ebp, 0, (int)chunk, 0, 0);
@@ -124,7 +124,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 		installedObject = object_get_next(installedObject);
 	}
 	//6a991f
-	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x100);
+	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
 }
 
 /**
@@ -208,7 +208,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	if (type == 10){
 		if (eax == 0) return object_scenario_load_custom_text((char*)esi);
 	}
-	return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x400;
+	return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
 }
 
 /**
@@ -309,7 +309,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 {
 	char *pos = (char*)entry;
 
-	// Skip 
+	// Skip sizeof(rct_object_entry)
 	pos += 16;
 
 	// Skip filename
@@ -325,7 +325,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 		pos++;
 	} while (*(pos - 1) != 0);
 
-	// Skip 
+	// Skip size of chunk
 	pos += 4;
 
 	// Skip 
