@@ -96,16 +96,66 @@ static void* window_track_list_events[] = {
 static ride_list_item _window_track_list_item;
 
 /**
- *
+ * 
+ * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
  *  rct2: 0x006D1DEC
  */
-static rct_track_design *track_get_info(int index, void** preview)
+static rct_track_design *track_get_info(int index, uint8** preview)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = index;
-	RCT2_CALLFUNC_X(0x006D1DEC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (preview != NULL) *preview = (void*)esi;
-	return (rct_track_design*)edi;
+	rct_track_design *trackDesign;
+	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	int i;
+
+	trackDesign = NULL;
+
+	// Check if track design has already been loaded
+	for (i = 0; i < 4; i++) {
+		if (index == RCT2_ADDRESS(0x00F44109, uint32)[i]) {
+			trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+			break;
+		}
+	}
+
+	if (trackDesign == NULL) {
+		// Load track design
+		i = RCT2_GLOBAL(0x00F44119, uint32);
+		RCT2_GLOBAL(0x00F44119, uint32)++;
+		if (RCT2_GLOBAL(0x00F44119, uint32) >= 4)
+			RCT2_GLOBAL(0x00F44119, uint32) = 0;
+
+		RCT2_ADDRESS(0x00F44109, uint32)[i] = index;
+		subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
+		if (!RCT2_CALLPROC_X(0x0067726A, 0, 0, 0, 0, 0, 0, 0)) {
+			if (preview != NULL) *preview = NULL;
+			return NULL;
+		}
+
+		trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+
+		memcpy(trackDesign, (void*)0x009D8178, 163);
+		RCT2_CALLPROC_EBPSAFE(0x006D1EF0);
+
+		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
+		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+	}
+
+	// Set preview to correct preview image based on rotation
+	if (preview != NULL)
+		*preview = trackDesign->preview[RCT2_GLOBAL(0x00F440AE, uint8)];
+
+	return trackDesign;
+}
+
+void window_track_list_format_name(char *dst, const char *src, char colour)
+{
+	if (colour != 0)
+		*dst++ = colour;
+	*dst++ = FORMAT_OPENQUOTES;
+	while (*src != '.' && *src != 0) {
+		*dst++ = *src++;
+	}
+	*dst++ = FORMAT_ENDQUOTES;
+	*dst = 0;
 }
 
 /**
@@ -160,7 +210,6 @@ void window_track_list_open(ride_list_item item)
 static void window_track_list_select(rct_window *w, int index)
 {
 	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
-	char *src, *dst;
 	rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
@@ -180,18 +229,14 @@ static void window_track_list_select(rct_window *w, int index)
 
 	trackDesignItem = trackDesignList + (index * 128);;
 	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
-	dst = (char*)0x009BC313;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8))
-		*dst++ = FORMAT_WHITE;
-	*dst++ = FORMAT_OPENQUOTES;
-
-	while (*src != '.' && *src != 0) {
-		*dst++ = *src++;
-	}
-
-	*dst++ = FORMAT_ENDQUOTES;
-	*dst = 0;
+	window_track_list_format_name(
+		(char*)0x009BC313,
+		trackDesignItem,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8 ?
+			0 :
+			FORMAT_WHITE
+	);
 
 	subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
@@ -414,14 +459,12 @@ static void window_track_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
-	int trackIndex, x, y, colour, gForces, airTime;
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
 	rct_track_design *trackDesign;
-	fixed32_2dp rating;
+	uint8 *image, *trackDesignList = (uint8*)0x00F441EC;
 	uint16 holes, speed, drops, dropHeight, inversions;
-	void *image;
+	fixed32_2dp rating;
+	int trackIndex, x, y, colour, gForces, airTime;
 	rct_g1_element tmpElement, *subsituteElement, *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
-	char *src, *dst;
 
 	window_paint_get_registers(w, dpi);
 
@@ -443,7 +486,7 @@ static void window_track_list_paint()
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	trackDesign = track_get_info(trackIndex, &image);
-	if (image == (void*)0xFFFFFFFF)
+	if (trackDesign == NULL)
 		return;
 
 	subsituteElement = &g1Elements[0];
@@ -478,15 +521,7 @@ static void window_track_list_paint()
 	}
 
 	// Track design name
-	src = trackDesignList + (trackIndex * 128);
-	dst = (char*)0x009BC677;
-	*dst++ = FORMAT_WINDOW_COLOUR_1;
-	*dst++ = FORMAT_OPENQUOTES;
-	while (*src != '.' && *src != 0) {
-		*dst++ = *src++;
-	}
-	*dst++ = FORMAT_ENDQUOTES;
-	*dst = 0;
+	window_track_list_format_name((char*)0x009BC677, trackDesignList + (trackIndex * 128), FORMAT_WINDOW_COLOUR_1);
 	gfx_draw_string_centred_clipped(dpi, 3165, NULL, 0, x, y, 368);
 
 	// Information
@@ -607,9 +642,8 @@ static void window_track_list_scrollpaint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_string_id stringId, stringId2;
-	int i, j, x, y, colour;
+	int i, x, y, colour;
 	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
-	char *trackName, *ch;
 
 	window_paint_get_registers(w, dpi);
 
@@ -654,18 +688,8 @@ static void window_track_list_scrollpaint()
 				stringId = 1191;
 			}
 
-			// Get name of track
-			trackName = ch = (char*)0x009BC678;
-			*ch++ = FORMAT_OPENQUOTES;
-			for (j = 0; j < 128; j++) {
-				if (trackDesignItem[j] == '.')
-					break;
-				*ch++ = trackDesignItem[j];
-			}
-			*ch++ = FORMAT_ENDQUOTES;
-			*ch = 0;
-
 			// Draw track name
+			window_track_list_format_name((char*)0x009BC678, trackDesignItem, 0);
 			stringId2 = 3165;
 			gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
 		}
