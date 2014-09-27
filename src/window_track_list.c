@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
 #include <memory.h>
 #include "addresses.h"
+#include "audio.h"
 #include "editor.h"
 #include "ride.h"
 #include "sprites.h"
@@ -97,6 +97,19 @@ static ride_list_item _window_track_list_item;
 
 /**
  *
+ *  rct2: 0x006D1DEC
+ */
+static rct_track_design *track_get_info(int index, void** preview)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = index;
+	RCT2_CALLFUNC_X(0x006D1DEC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (preview != NULL) *preview = (void*)esi;
+	return (rct_track_design*)edi;
+}
+
+/**
+ *
  *  rct2: 0x006CF1A2
  */
 void window_track_list_open(ride_list_item item)
@@ -140,9 +153,65 @@ void window_track_list_open(ride_list_item item)
 	RCT2_GLOBAL(0x00F440AE, uint8) = 2;
 }
 
+/**
+ *
+ *  rct2: 0x006CFB82
+ */
 static void window_track_list_select(rct_window *w, int index)
 {
-	RCT2_CALLPROC_X(0x006CFB82, 0, index, 0, 0, (int)w, 0, 0);
+	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	char *src, *dst;
+	rct_track_design *trackDesign;
+
+	w->track_list.var_480 = index;
+
+	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8) && index == 0) {
+		window_close(w);
+		ride_construct_new(_window_track_list_item);
+		return;
+	}
+
+	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
+		RCT2_GLOBAL(0x00F44152, uint8) = 1;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8))
+		index--;
+
+	trackDesignItem = trackDesignList + (index * 128);;
+	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
+	dst = (char*)0x009BC313;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8))
+		*dst++ = FORMAT_WHITE;
+	*dst++ = FORMAT_OPENQUOTES;
+
+	while (*src != '.' && *src != 0) {
+		*dst++ = *src++;
+	}
+
+	*dst++ = FORMAT_ENDQUOTES;
+	*dst = 0;
+
+	subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8) {
+		window_track_manage_open();
+		return;
+	}
+
+	if (!RCT2_CALLPROC_X(0x0067726A, 0, 0, 0, 0, 0, 0, 0)) {
+		w->track_list.var_480 = 0xFFFF;
+		window_invalidate(w);
+		return;
+	}
+
+	trackDesign = track_get_info(index, NULL);
+	if (trackDesign->var_06 & 4)
+		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
+
+	window_close(w);
+	window_track_place_open();
 }
 
 static int window_track_list_get_list_item_index_from_position(int x, int y)
@@ -334,19 +403,6 @@ static void window_track_list_invalidate()
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_EMPTY;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_EMPTY;
 	}
-}
-
-/**
- *
- *  rct2: 0x006D1DEC
- */
-static rct_track_design *track_get_info(int index, void** preview)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = index;
-	RCT2_CALLFUNC_X(0x006D1DEC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (preview != NULL) *preview = (void*)esi;
-	return (rct_track_design*)edi;
 }
 
 /**

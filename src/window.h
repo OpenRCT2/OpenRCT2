@@ -480,6 +480,7 @@ void window_finances_research_open();
 void window_new_campaign_open(sint16 campaignType);
 void window_ride_main_open(int rideIndex);
 void window_ride_list_open();
+void window_track_place_open();
 void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
@@ -487,6 +488,7 @@ void window_research_open();
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
+void window_track_manage_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
