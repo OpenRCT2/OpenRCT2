@@ -38,5 +38,6 @@ enum {
 
 int sawyercoding_validate_checksum(FILE *file);
 int sawyercoding_read_chunk(FILE *file, uint8 *buffer);
+int sawyercoding_read_chunk_variable(FILE *file, uint8 **buffer);
 
 #endif

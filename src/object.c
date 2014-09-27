@@ -65,15 +65,16 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					// Read chunk
 					int chunkSize = *((uint32*)pos);
 					char *chunk;
-					//if (chunkSize == 0xFFFFFFFF) {
+
+					if (chunkSize == 0xFFFFFFFF) {
 						chunk = malloc(0x600000);
-						chunkSize = sawyercoding_read_chunk(file, chunk);
+						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
 						chunk = realloc(chunk, chunkSize);
-					//}
-					//else {
-					//	chunk = malloc(chunkSize);
-					//	chunkSize = sawyercoding_read_chunk(file, chunk);
-					//}
+					}
+					else {
+						chunk = malloc(chunkSize);
+						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
+					}
 					fclose(file);
 
 					// Calculate and check checksum
@@ -83,10 +84,10 @@ int object_load(int groupIndex, rct_object_entry *entry)
 						return 0;
 					}
 
-					if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
-						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-						free(chunk);
-						return 0;
+					if (object_paint(openedEntry.flags & 0x0F, 2, 0, openedEntry.flags & 0x0F, 0, (int)chunk, 0, 0)) {
+						//RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
+						//free(chunk);
+						//return 0;
 					}
 
 					int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);

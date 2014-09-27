@@ -68,6 +68,85 @@ int sawyercoding_validate_checksum(FILE *file)
 	return checksum == fileChecksum;
 }
 
+int decode_chunk_rle_variable(uint8 *src_buffer, uint8** dst_buffer, int src_length);
+/**
+*
+*  rct2: 0x0067685F
+* buffer (esi)
+* this is a temp function
+*/
+int sawyercoding_read_chunk_variable(FILE *file, uint8 **dst_buffer)
+{
+	sawyercoding_chunk_header chunkHeader;
+
+	// Read chunk header
+	if (fread(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file) != 1) {
+		RCT2_ERROR("Unable to read chunk header!");
+		return -1;
+	}
+
+	uint8* src_buffer = malloc(chunkHeader.length);
+	// Read chunk data
+	if (fread(src_buffer, chunkHeader.length, 1, file) != 1) {
+		free(src_buffer);
+		RCT2_ERROR("Unable to read chunk data!");
+		return -1;
+	}
+
+
+	// Decode chunk data
+	switch (chunkHeader.encoding) {
+	case CHUNK_ENCODING_RLE:
+		chunkHeader.length = decode_chunk_rle_variable(src_buffer, dst_buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_ROTATE:
+		decode_chunk_rotate(src_buffer, chunkHeader.length);
+		memcpy(*dst_buffer, src_buffer, chunkHeader.length);
+		break;
+	default:
+		// For now this is temp function
+		free(src_buffer);
+		RCT2_ERROR("Unable to read chunk data!");
+		return -1;
+		break;
+	}
+
+	free(src_buffer);
+	// Set length
+	RCT2_GLOBAL(0x009E3828, uint32) = chunkHeader.length;
+	return chunkHeader.length;
+}
+
+/**
+*  Temp function
+*  rct2: 0x0067693A
+*/
+int decode_chunk_rle_variable(uint8* src_buffer, uint8 **dst_buffer, int src_length)
+{
+	int i, j, count;
+	unsigned char *src, *dst, rleCodeByte;
+
+	src = src_buffer;
+	dst = *dst_buffer;
+
+	for (i = 0; i < src_length; i++) {
+		rleCodeByte = src[i];
+		if (rleCodeByte & 128) {
+			i++;
+			count = 257 - rleCodeByte;
+			for (j = 0; j < count; j++)
+				*dst++ = src[i];
+		}
+		else {
+			for (j = 0; j <= rleCodeByte; j++)
+				*dst++ = src[++i];
+		}
+	}
+
+	// Return final size
+	return dst - *dst_buffer;
+}
+
 /**
  * 
  *  rct2: 0x0067685F
