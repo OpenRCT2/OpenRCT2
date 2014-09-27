@@ -228,9 +228,40 @@ static void window_track_list_scrollmousedown()
 static void window_track_list_scrollmouseover()
 {
 	rct_window *w;
-	short x, y;
+	short i, x, y;
+	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
 
 	window_scrollmouse_get_registers(w, x, y);
+
+	if (w->track_list.var_484 & 1)
+		return;
+	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+		return;
+
+	i = 0;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8)) {
+		y -= 10;
+		if (y < 0) {
+			if (w->track_list.var_482 != i) {
+				w->track_list.var_482 = i;
+				window_invalidate(w);
+			}
+			return;
+		}
+		i++;
+	}
+
+	for (trackDesignItem = trackDesignList; *trackDesignItem != 0; trackDesignItem += 128) {
+		y -= 10;
+		if (y < 0) {
+			if (w->track_list.var_482 != i) {
+				w->track_list.var_482 = i;
+				window_invalidate(w);
+			}
+			break;
+		}
+		i++;
+	}
 }
 
 /**
@@ -308,11 +339,71 @@ static void window_track_list_scrollpaint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int colour;
+	rct_string_id stringId, stringId2;
+	int i, j, x, y, colour;
+	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	char *trackName, *ch;
 
 	window_paint_get_registers(w, dpi);
 
 	colour = RCT2_GLOBAL(0x00141FC48 + (w->colours[0] * 8), uint8);
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
+
+	i = 0;
+	x = 0;
+	y = 0;
+
+	trackDesignItem = trackDesignList;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+		if (*trackDesignItem == 0) {
+			// No track designs
+			gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, NULL, 0, x, y - 1);
+			return;
+		}
+	} else {
+		// Build custom track item
+		if (i == w->track_list.var_482) {
+			// Highlight
+			gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
+			stringId = 1193;
+		} else {
+			stringId = 1191;
+		}
+
+		stringId2 = STR_BUILD_CUSTOM_DESIGN;
+		gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
+		y += 10;
+	}
+
+	i++;
+	while (*trackDesignItem != 0) {
+		if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
+			if (i == w->track_list.var_482) {
+				// Highlight
+				gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
+				stringId = 1193;
+			} else {
+				stringId = 1191;
+			}
+
+			// Get name of track
+			trackName = ch = (char*)0x009BC678;
+			*ch++ = FORMAT_OPENQUOTES;
+			for (j = 0; j < 128; j++) {
+				if (trackDesignItem[j] == '.')
+					break;
+				*ch++ = trackDesignItem[j];
+			}
+			*ch++ = FORMAT_ENDQUOTES;
+			*ch = 0;
+
+			// Draw track name
+			stringId2 = 3165;
+			gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
+		}
+		y += 10;
+		i++;
+		trackDesignItem += 128;
+	}
 }
