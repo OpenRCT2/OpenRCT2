@@ -80,13 +80,13 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					// Calculate and check checksum
 					if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
-						free(chunk);
+						rct2_free(chunk);
 						return 0;
 					}
 
 					if (object_paint(openedEntry.flags & 0x0F, 2, 0, openedEntry.flags & 0x0F, 0, (int)chunk, 0, 0)) {
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-						free(chunk);
+						rct2_free(chunk);
 						return 0;
 					}
 
@@ -94,7 +94,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 
 					if (yyy >= 0x4726E){
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
-						free(chunk);
+						rct2_free(chunk);
 						return 0;
 					}
 					//B84 is openedEntry
@@ -105,7 +105,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 						for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
 							if ((ecx + 1) >= RCT2_ADDRESS(0x98DA00, uint16)[ebp]){
 								RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
-								free(chunk);
+								rct2_free(chunk);
 								return 0;
 							}
 						}
@@ -124,6 +124,8 @@ int object_load(int groupIndex, rct_object_entry *entry)
 		installedObject = object_get_next(installedObject);
 	}
 	//6a991f
+	object_load(groupIndex, entry);
+
 	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
 }
 
@@ -159,7 +161,7 @@ static int object_entry_compare(rct_object_entry *a, rct_object_entry *b)
 	return 1;
 }
 
-static int object_calculate_checksum(rct_object_entry *entry, char *data, int dataLength)
+int object_calculate_checksum(rct_object_entry *entry, char *data, int dataLength)
 {
 	int i;
 	char *eee = (char*)entry;

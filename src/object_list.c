@@ -166,7 +166,7 @@ int object_read_and_load_entries(FILE *file)
 
 	// Read all the object entries
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(file, (uint8*)entries);
+	sawyercoding_read_chunk_variable(file, (uint8**)&entries);
 
 	// Load each object
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
@@ -202,10 +202,58 @@ int object_read_and_load_entries(FILE *file)
  * 
  *  rct2: 0x006AA2B7
  */
-int object_load_packed()
+int object_load_packed(FILE *file)
 {
-	int eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	object_unload_all();
+
+	rct_object_entry* entry = RCT2_ADDRESS(0xF42B84, rct_object_entry);
+
+	fread((void*)entry, 16, 1, file);
+
+	uint8* chunk = rct2_malloc(0x600000);
+	uint32 chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
+	chunk = rct2_realloc(chunk, chunkSize);
+	if (chunk == NULL){
+		return 0;
+	}
+
+	if (object_calculate_checksum(entry, chunk, chunkSize) != entry->checksum){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	if (object_paint(entry->flags & 0x0F, 2, 0, entry->flags & 0x0F, 0, (int)chunk, 0, 0)) {
+		rct2_free(chunk);
+		return 0;
+	}
+
+	int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
+
+	if (yyy >= 0x4726E){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	int type = entry->flags & 0x0F;
+	int ecx = 0;
+
+	for (; ecx < RCT2_ADDRESS(0x98DA00, uint16)[type]; ecx++){
+		if (RCT2_ADDRESS(0x98D97C, uint32*)[type * 2][ecx] == -1){
+			break;
+		}
+	}
+
+	if (ecx == RCT2_ADDRESS(0x98DA00, uint16)[type]){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	RCT2_ADDRESS(0x98D97C, uint8**)[type * 2][ecx] = chunk;
+	int* edx = (int*)(ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
+	memcpy(edx, (int*)entry, 20);
+	//6aa429
+	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+	//RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return eax;
 }
 

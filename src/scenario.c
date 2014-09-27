@@ -109,7 +109,7 @@ void scenario_load(const char *path)
 			if (s6Header->num_packed_objects > 0) {
 				j = 0;
 				for (i = 0; i < s6Header->num_packed_objects; i++)
-					j += object_load_packed();
+					j += object_load_packed(file);
 				if (j > 0)
 					object_list_load();
 			}
