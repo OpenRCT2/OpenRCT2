@@ -1697,5 +1697,5 @@ void window_close_construction_windows()
 	window_close_by_id(WC_RIDE_CONSTRUCTION, 0);
 	window_close_by_id(WC_FOOTPATH, 0);
 	window_close_by_id(WC_TRACK_DESIGN_LIST, 0);
-	window_close_by_id(WC_34, 0);
+	window_close_by_id(WC_TRACK_DESIGN_PLACE, 0);
 }
