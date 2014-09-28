@@ -33,6 +33,45 @@ typedef struct {
 	uint8 pad[2];
 } rct_trackdefinition;
 
+#define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
+
+/**
+ * Track design structure.
+ * size: 0x4E72B
+ */
+typedef struct {
+	uint8 type;										// 0x00
+	uint8 pad_01;
+	money32 cost;									// 0x02
+	uint8 var_06;
+	uint8 var_07;
+	uint8 pad_08[0x42];
+	uint8 total_air_time;							// 0x4A
+	uint8 pad_4B[0x06];
+	uint8 max_speed;								// 0x51
+	uint8 average_speed;							// 0x52
+	uint16 ride_length;								// 0x53
+	uint8 max_positive_vertical_g;					// 0x55
+	uint8 max_negitive_vertical_g;					// 0x56
+	uint8 max_lateral_g;							// 0x57
+	union {
+		uint8 inversions;							// 0x58
+		uint8 holes;								// 0x58
+	};
+	uint8 drops;									// 0x59
+	uint8 highest_drop_height;						// 0x5A
+	uint8 excitement;								// 0x5B
+	uint8 intensity;								// 0x5C
+	uint8 nausea;									// 0x5D
+	uint8 pad_5E[0x0E];
+	uint32 var_6C;
+	uint8 pad_70[0x10];
+	uint8 space_required_x;							// 0x80
+	uint8 space_required_y;							// 0x81
+	uint8 pad_82[0x21];
+	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
+} rct_track_design;
+
 enum {
 	TRACK_NONE = 0,
 
@@ -90,6 +129,8 @@ enum {
 	TRACK_CORKSCREW_DOWN = 224
 };
 
-void track_load_list(int edx);
+void track_load_list(ride_list_item item);
+int sub_67726A(const char *path);
+rct_track_design *track_get_info(int index, uint8** preview);
 
 #endif

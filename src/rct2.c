@@ -161,7 +161,10 @@ void rct2_init()
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	object_list_load();
 	scenario_load_list();
-	track_load_list(253);
+
+	ride_list_item item = { 253, 0 };
+	track_load_list(item);
+
 	gfx_load_g1();
 	//RCT2_CALLPROC_EBPSAFE(0x006C19AC); //Load character widths
 	gfx_load_character_widths();

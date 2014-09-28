@@ -25,6 +25,7 @@
 #include "park.h"
 #include "peep.h"
 #include "rct2.h"
+#include "ride.h"
 
 struct rct_window;
 union rct_window_event;
@@ -168,6 +169,12 @@ typedef struct {
 	sint16 hover_counter;
 } scenery_variables;
 
+typedef struct {
+	uint16 var_480;
+	uint16 var_482;
+	uint16 var_484;
+} track_list_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -206,6 +213,7 @@ typedef struct rct_window {
 		map_variables map;
 		ride_variables ride;
 		scenery_variables scenery;
+		track_list_variables track_list;
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;
@@ -361,6 +369,7 @@ enum {
 	WC_RECENT_NEWS = 31,
 	WC_SCENARIO_SELECT = 32,
 	WC_TRACK_DESIGN_LIST = 33,
+	WC_TRACK_DESIGN_PLACE = 34,
 	WC_NEW_CAMPAIGN = 35,
 	WC_KEYBOARD_SHORTCUT_LIST = 36,
 	WC_CHANGE_KEYBOARD_SHORTCUT = 37,
@@ -371,6 +380,8 @@ enum {
 	WC_EDITOR_INVENTION_LIST = 43,
 	WC_EDITOR_SCENARIO_OPTIONS = 45,
 	WC_EDTIOR_OBJECTIVE_OPTIONS = 46,
+	WC_47,
+	WC_48,
 	WC_CLEAR_SCENERY = 50,
 	WC_MANAGE_TRACK_DESIGN = 89,
 	WC_CHEATS = 110,
@@ -433,6 +444,8 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 int tool_set(rct_window *w, int widgetIndex, int tool);
 void tool_cancel();
 
+void window_close_construction_windows();
+
 // Open window functions
 void window_main_open();
 void window_resize_gui(int width, int height);
@@ -447,6 +460,7 @@ void window_title_exit_open();
 void window_title_logo_open();
 void window_news_open();
 void window_scenarioselect_open();
+void window_track_list_open(ride_list_item item);
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
@@ -466,6 +480,7 @@ void window_finances_research_open();
 void window_new_campaign_open(sint16 campaignType);
 void window_ride_main_open(int rideIndex);
 void window_ride_list_open();
+void window_track_place_open();
 void window_new_ride_open();
 void window_banner_open();
 void window_cheats_open();
@@ -473,6 +488,7 @@ void window_research_open();
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
+void window_track_manage_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
