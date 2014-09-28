@@ -18,8 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
+#include <windows.h>
 #include "addresses.h"
 #include "ride.h"
+#include "osinterface.h"
 #include "track.h"
 
 /**
@@ -224,4 +227,204 @@ const rct_trackdefinition gTrackDefinitions[] = {
 void track_load_list(ride_list_item item)
 {
     RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00676EBA
+ */
+static uint8 sub_676EBA()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x00676EBA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax & 0xFF;
+}
+
+/**
+ *
+ *  rct2: 0x00676EAF
+ */
+static void sub_676EAF(uint8 *esi, int ecx)
+{
+	do {
+		*esi++ = sub_676EBA();
+	} while (--ecx != 0);
+}
+
+/**
+ *
+ *  rct2: 0x0067726A
+ * path: 0x0141EF68
+ */
+int sub_67726A(const char *path)
+{
+	HANDLE *hFile;
+	const char *ch;
+	char trackFilename[MAX_PATH], *dst;
+	int i;
+	uint8* edi;
+
+	RCT2_GLOBAL(0x009AAC54, uint8) = 1;
+	
+	// Get filename
+	ch = strrchr(path, '\\');
+	ch = ch == NULL ? path : ch + 1;
+	dst = trackFilename;
+	while (*ch != 0 && *ch != '.') {
+		*dst++ = *ch++;
+	}
+	*dst = 0;
+
+	hFile = osinterface_file_open(path);
+	if (hFile == INVALID_HANDLE_VALUE)
+		return 0;
+
+	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
+	if (!RCT2_CALLPROC_X(0x006770C1, 0, 0, 0, 0, 0, 0, 0)) {
+		CloseHandle(hFile);
+		return 0;
+	}
+
+	RCT2_CALLPROC_EBPSAFE(0x00676E7A);
+	memset((void*)0x009D81D8, 0, 67);
+	sub_676EAF((void*)0x009D8178, 32);
+
+	uint8 al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	if (al >= 2)
+		sub_676EAF((void*)0x009D8198, 40);
+
+	sub_676EAF((void*)0x009D81C0, 24);
+	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	if (al != 0)
+		sub_676EAF((void*)0x009D81D8, al == 1 ? 140 : 67);
+
+	sub_676EAF((void*)0x009D821B, 24572);
+	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	if (al < 2) {
+		if (RCT2_GLOBAL(0x009D8178, uint8) == 20) {
+			edi = (uint8*)0x009D821B;
+			while (*edi != 0) {
+				edi += 4;
+			}
+			edi += 4;
+			memset(edi, 255, (uint8*)0x009DE217 - edi);
+		} else {
+			edi = (uint8*)0x009D821B;
+			while (*edi != 255) {
+				edi += 2;
+			}
+			edi++;
+			memset(edi, 255, (uint8*)0x009DE217 - edi);
+		}
+	}
+
+	CloseHandle(hFile);
+
+	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	if (al > 2)
+		return 0;
+
+	if (al <= 1) {
+		edi = (uint8*)0x009D8180;
+		for (i = 0; i < 67; i++)
+			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+
+		edi = (uint8*)0x009D81D8;
+		for (i = 0; i < 12; i++)
+			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+
+		RCT2_GLOBAL(0x009D81D2, uint8) >>= 1;
+		if (!RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
+			RCT2_GLOBAL(0x009D8178, uint8) = 255;
+
+		if (RCT2_GLOBAL(0x009D8178, uint8) == 4)
+			RCT2_GLOBAL(0x009D8178, uint8) = 255;
+
+		if (RCT2_GLOBAL(0x009D8178, uint8) == 0)
+			RCT2_GLOBAL(0x009D8178, uint8) = 52;
+
+		if (RCT2_GLOBAL(0x009D8178, uint8) == 19) {
+			if (RCT2_GLOBAL(0x009D817E, uint8) == 3)
+				RCT2_GLOBAL(0x009D817E, uint8) = 35;
+			if (RCT2_GLOBAL(0x009D8179, uint8) == 79) {
+				if (RCT2_GLOBAL(0x009D817E, uint8) == 2)
+					RCT2_GLOBAL(0x009D817E, uint8) = 1;
+			}
+		}
+
+		int unk1 = RCT2_GLOBAL(0x009D8179, uint8);
+		if (RCT2_GLOBAL(0x009D8178, uint8) == 20) {
+			unk1 = 0x0097F66C;
+		} else {
+			if (unk1 == 3 && RCT2_GLOBAL(0x009D8178, uint8) == 3)
+				unk1 = 80;
+			unk1 = 0x0097F0DC + (unk1 * 16);
+		}
+
+		memcpy((void*)0x009D81E8, (void*)unk1, 16);
+		for (i = 0; i < 32; i++)
+			RCT2_ADDRESS(0x009D81FA, uint8)[i] = RCT2_ADDRESS(0x009D8181, uint8)[i * 2];
+
+		RCT2_GLOBAL(0x009D81F8, uint8) = 255;
+		RCT2_GLOBAL(0x009D81F9, uint8) = 255;
+		RCT2_GLOBAL(0x009D821A, uint8) = 5;
+	}
+
+	RCT2_GLOBAL(0x009D81C8, uint8) = min(
+		RCT2_GLOBAL(0x009D81C8, uint8),
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (RCT2_GLOBAL(0x009D8178, uint8) * 8), uint8)
+	);
+
+	return 1;
+}
+
+/**
+ * 
+ * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
+ *  rct2: 0x006D1DEC
+ */
+rct_track_design *track_get_info(int index, uint8** preview)
+{
+	rct_track_design *trackDesign;
+	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	int i;
+
+	trackDesign = NULL;
+
+	// Check if track design has already been loaded
+	for (i = 0; i < 4; i++) {
+		if (index == RCT2_ADDRESS(0x00F44109, uint32)[i]) {
+			trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+			break;
+		}
+	}
+
+	if (trackDesign == NULL) {
+		// Load track design
+		i = RCT2_GLOBAL(0x00F44119, uint32);
+		RCT2_GLOBAL(0x00F44119, uint32)++;
+		if (RCT2_GLOBAL(0x00F44119, uint32) >= 4)
+			RCT2_GLOBAL(0x00F44119, uint32) = 0;
+
+		RCT2_ADDRESS(0x00F44109, uint32)[i] = index;
+		subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
+		if (!sub_67726A((char*)0x0141EF68)) {
+			if (preview != NULL) *preview = NULL;
+			return NULL;
+		}
+
+		trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+
+		memcpy(trackDesign, (void*)0x009D8178, 163);
+		RCT2_CALLPROC_EBPSAFE(0x006D1EF0);
+
+		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
+		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+	}
+
+	// Set preview to correct preview image based on rotation
+	if (preview != NULL)
+		*preview = trackDesign->preview[RCT2_GLOBAL(0x00F440AE, uint8)];
+
+	return trackDesign;
 }

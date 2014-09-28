@@ -95,57 +95,6 @@ static void* window_track_list_events[] = {
 
 static ride_list_item _window_track_list_item;
 
-/**
- * 
- * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
- *  rct2: 0x006D1DEC
- */
-static rct_track_design *track_get_info(int index, uint8** preview)
-{
-	rct_track_design *trackDesign;
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
-	int i;
-
-	trackDesign = NULL;
-
-	// Check if track design has already been loaded
-	for (i = 0; i < 4; i++) {
-		if (index == RCT2_ADDRESS(0x00F44109, uint32)[i]) {
-			trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
-			break;
-		}
-	}
-
-	if (trackDesign == NULL) {
-		// Load track design
-		i = RCT2_GLOBAL(0x00F44119, uint32);
-		RCT2_GLOBAL(0x00F44119, uint32)++;
-		if (RCT2_GLOBAL(0x00F44119, uint32) >= 4)
-			RCT2_GLOBAL(0x00F44119, uint32) = 0;
-
-		RCT2_ADDRESS(0x00F44109, uint32)[i] = index;
-		subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
-		if (!RCT2_CALLPROC_X(0x0067726A, 0, 0, 0, 0, 0, 0, 0)) {
-			if (preview != NULL) *preview = NULL;
-			return NULL;
-		}
-
-		trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
-
-		memcpy(trackDesign, (void*)0x009D8178, 163);
-		RCT2_CALLPROC_EBPSAFE(0x006D1EF0);
-
-		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
-		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
-	}
-
-	// Set preview to correct preview image based on rotation
-	if (preview != NULL)
-		*preview = trackDesign->preview[RCT2_GLOBAL(0x00F440AE, uint8)];
-
-	return trackDesign;
-}
-
 void window_track_list_format_name(char *dst, const char *src, char colour)
 {
 	if (colour != 0)
