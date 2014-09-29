@@ -45,6 +45,8 @@ typedef struct {
 	uint32 extended;
 } rct_object_entry_extended;
 
+int object_entry_group_counts[];
+
 void object_list_load();
 int object_read_and_load_entries(FILE *file);
 int object_load_packed(FILE *file);

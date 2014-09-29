@@ -141,7 +141,7 @@ static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length)
 	}
 	
 	// Return final size
-	return (char*)dst - buffer;
+	return dst - dst_buffer;
 }
 
 /**

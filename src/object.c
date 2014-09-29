@@ -21,7 +21,9 @@
 #include <memory.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "addresses.h"
+#include "string_ids.h"
 #include "object.h"
 #include "sawyercoding.h"
 
@@ -127,6 +129,98 @@ int object_load(int groupIndex, rct_object_entry *entry)
 	// Installed Object can not be found.
 	return 0;
 	//return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
+}
+
+/**
+*
+*  rct2: 0x006AA2B7
+*/
+int object_load_packed(FILE *file)
+{
+	object_unload_all();
+
+	rct_object_entry* entry = RCT2_ADDRESS(0xF42B84, rct_object_entry);
+
+	fread((void*)entry, 16, 1, file);
+
+	uint8* chunk = rct2_malloc(0x600000);
+	uint32 chunkSize = sawyercoding_read_chunk(file, chunk);
+	chunk = rct2_realloc(chunk, chunkSize);
+	if (chunk == NULL){
+		return 0;
+	}
+
+	if (object_calculate_checksum(entry, chunk, chunkSize) != entry->checksum){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	if (object_paint(entry->flags & 0x0F, 2, 0, entry->flags & 0x0F, 0, (int)chunk, 0, 0)) {
+		rct2_free(chunk);
+		return 0;
+	}
+
+	int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
+
+	if (yyy >= 0x4726E){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	int type = entry->flags & 0x0F;
+
+	// ecx
+	int entryGroupIndex = 0;
+
+	for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
+		if (RCT2_ADDRESS(0x98D97C, uint32*)[type * 2][entryGroupIndex] == -1){
+			break;
+		}
+	}
+
+	if (entryGroupIndex == object_entry_group_counts[type]){
+		rct2_free(chunk);
+		return 0;
+	}
+
+	RCT2_ADDRESS(0x98D97C, uint8**)[type * 2][entryGroupIndex] = chunk;
+	int* edx = (int*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
+	memcpy(edx, (int*)entry, 20);
+
+	//esi
+	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	if (RCT2_GLOBAL(0xF42B6C, uint32)){
+		for (uint32 i = 0; i < RCT2_GLOBAL(0xF42B6C, uint32); ++i){
+			if (!object_entry_compare(entry, installedObject)){
+				object_unload_all();
+				return 0;
+			}
+			installedObject = object_get_next(installedObject);
+		}
+	}
+
+	//Installing new data
+	//format_string(0x141ED68, 3163, 0);
+	//Code for updating progress bar removed.
+
+	char path[260];
+	char *objectPath = (char*)installedObject + 16;
+	for (int i = 0; i < 8; ++i){
+		if (entry->name[i] != ' ')
+			objectPath[i] = toupper(entry->name[i]);
+		else
+			objectPath[i] = '\0';
+	}
+	objectPath[8] = '\0';
+	strcat(objectPath, ".DAT");
+	
+	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	//create file
+	//6aa48C
+	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+	//RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
 }
 
 /**
