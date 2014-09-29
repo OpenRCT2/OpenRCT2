@@ -34,6 +34,7 @@ typedef struct {
 	uint32 var_10;
 } rct_plugin_header;
 
+// 98DA00
 int object_entry_group_counts[] = {
 	128,	// rides
 	252,	// small scenery
@@ -235,21 +236,23 @@ int object_load_packed(FILE *file)
 	}
 
 	int type = entry->flags & 0x0F;
-	int ecx = 0;
+	
+	// ecx
+	int entryGroupIndex = 0;
 
-	for (; ecx < RCT2_ADDRESS(0x98DA00, uint16)[type]; ecx++){
-		if (RCT2_ADDRESS(0x98D97C, uint32*)[type * 2][ecx] == -1){
+	for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
+		if (RCT2_ADDRESS(0x98D97C, uint32*)[type * 2][entryGroupIndex] == -1){
 			break;
 		}
 	}
 
-	if (ecx == RCT2_ADDRESS(0x98DA00, uint16)[type]){
+	if (entryGroupIndex == object_entry_group_counts[type]){
 		rct2_free(chunk);
 		return 0;
 	}
 
-	RCT2_ADDRESS(0x98D97C, uint8**)[type * 2][ecx] = chunk;
-	int* edx = (int*)(ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
+	RCT2_ADDRESS(0x98D97C, uint8**)[type * 2][entryGroupIndex] = chunk;
+	int* edx = (int*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
 	memcpy(edx, (int*)entry, 20);
 	//6aa429
 	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
