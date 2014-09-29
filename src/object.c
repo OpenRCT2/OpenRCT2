@@ -68,12 +68,12 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					
 					if (chunkSize == 0xFFFFFFFF) {
 						chunk = rct2_malloc(0x600000);
-						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
+						chunkSize = sawyercoding_read_chunk(file, chunk);
 						chunk = rct2_realloc(chunk, chunkSize);
 					}
 					else {
 						chunk = rct2_malloc(chunkSize);
-						chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
+						chunkSize = sawyercoding_read_chunk(file, chunk);
 					}
 					fclose(file);
 
@@ -124,9 +124,9 @@ int object_load(int groupIndex, rct_object_entry *entry)
 		installedObject = object_get_next(installedObject);
 	}
 	//6a991f
-	object_load(groupIndex, entry);
-
-	return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
+	// Installed Object can not be found.
+	return 0;
+	//return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
 }
 
 /**
