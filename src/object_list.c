@@ -211,7 +211,7 @@ int object_load_packed(FILE *file)
 	fread((void*)entry, 16, 1, file);
 
 	uint8* chunk = rct2_malloc(0x600000);
-	uint32 chunkSize = sawyercoding_read_chunk_variable(file, &chunk);
+	uint32 chunkSize = sawyercoding_read_chunk(file, chunk);
 	chunk = rct2_realloc(chunk, chunkSize);
 	if (chunk == NULL){
 		return 0;
