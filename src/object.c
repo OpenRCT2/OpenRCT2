@@ -25,6 +25,7 @@
 #include "addresses.h"
 #include "string_ids.h"
 #include "object.h"
+#include "osinterface.h"
 #include "sawyercoding.h"
 
 int object_entry_compare(rct_object_entry *a, rct_object_entry *b);
@@ -205,17 +206,33 @@ int object_load_packed(FILE *file)
 	//Code for updating progress bar removed.
 
 	char path[260];
-	char *objectPath = (char*)installedObject + 16;
+	char objectPath[13] = { 0 };
 	for (int i = 0; i < 8; ++i){
 		if (entry->name[i] != ' ')
 			objectPath[i] = toupper(entry->name[i]);
 		else
 			objectPath[i] = '\0';
 	}
-	objectPath[8] = '\0';
-	strcat(objectPath, ".DAT");
-	
+
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	char* last_char = path + strlen(path);
+	strcat(path, ".DAT");
+	for (; osinterface_file_exists(path);){
+		for (char* curr_char = last_char - 1;; --curr_char){
+			if (*curr_char == '\\'){
+				subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");
+				char* last_char = path + strlen(path);
+				break;
+			}
+			if (*curr_char < '0') *curr_char = '0';
+			else if (*curr_char == '9') *curr_char = 'A';
+			else if (*curr_char == 'Z') *curr_char = '0';
+			else (*curr_char)++;
+			if (*curr_char != '0') break;
+		}
+	}
+
+
 	//create file
 	//6aa48C
 	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
