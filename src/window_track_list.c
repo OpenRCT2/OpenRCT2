@@ -93,7 +93,7 @@ static void* window_track_list_events[] = {
 	(uint32*)window_track_list_scrollpaint
 };
 
-static ride_list_item _window_track_list_item;
+ride_list_item _window_track_list_item;
 
 void window_track_list_format_name(char *dst, const char *src, char colour)
 {
