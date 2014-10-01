@@ -106,7 +106,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					int ecx = groupIndex;
 					if (ecx == -1){
 						for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
-							if ((ecx + 1) >= RCT2_ADDRESS(0x98DA00, uint16)[ebp]){
+							if ((ecx + 1) >= object_entry_group_counts[ebp]){
 								RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
 								rct2_free(chunk);
 								return 0;
@@ -137,21 +137,28 @@ int object_load(int groupIndex, rct_object_entry *entry)
  *  ebp : entry
  */
 int sub_6A9F42(FILE *file, rct_object_entry* entry){
-	int eax = 0, entryGroupIndex = 0, type = 0, edx = 0, edi = 0, ebp = (int)entry, esi = 0;
-	RCT2_CALLFUNC_X(0x6A9FBE, &eax, &entryGroupIndex, &type, &edx, &esi, &edi, &ebp);
+	int eax = 0, entryGroupIndex = 0, type = 0, edx = 0, edi = 0, ebp = (int)entry, chunk = 0;
+	RCT2_CALLFUNC_X(0x6A9DA2, &eax, &entryGroupIndex, &type, &edx, &chunk, &edi, &ebp);
 	if (eax == 0) return 0;
 
-	object_paint(type, 1, entryGroupIndex, type, edx, esi, edi, ebp);
+	object_paint(type, 1, entryGroupIndex, type, edx, chunk, edi, ebp);
 	
-	RCT2_GLOBAL(0x9E3CBD, uint8) = RCT2_ADDRESS(0x98DA2C, uint8)[type];
+
 	rct_object_entry* installed_entry = (rct_object_entry*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
 
 	fwrite((void*)installed_entry, 1, 16, file);
 
 	//This increases the pointer of installed_entry by 16
 	//it also adds together what it jumps over?
-	RCT2_CALLPROC_X(0x6762D1, 0, 0, 16, 0, (int)installed_entry, 0, 0);
-	//6a9f8f
+	//RCT2_CALLPROC_X(0x6762D1, 0, 0, 16, 0, (int)installed_entry, 0, 0);
+
+	sawyercoding_chunk_header chunkHeader;	
+	// Encoding type
+	RCT2_GLOBAL(0x9E3CBD, uint8) = object_entry_group_encoding[type];
+	chunkHeader.encoding = object_entry_group_encoding[type];
+	chunkHeader.length = *(uint32*)(((uint8*)installed_entry + 16));
+
+	sawyercoding_write_chunk(file, (uint8*)chunk, chunkHeader);
 	//Function not finished as it requires completing swayer_encoding
 }
 
@@ -209,7 +216,8 @@ int object_load_packed(FILE *file)
 
 	RCT2_ADDRESS(0x98D97C, uint8**)[type * 2][entryGroupIndex] = chunk;
 	int* edx = (int*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
-	memcpy(edx, (int*)entry, 20);
+	memcpy(edx, (int*)entry, 16);
+	*(edx + 4) = chunkSize;
 
 	//esi
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
@@ -262,20 +270,20 @@ int object_load_packed(FILE *file)
 	// The following section cannot be finished until 6A9F42 is finished
 	// Run the game once with vanila rct2 to not reach this part of code.
 	RCT2_ERROR("Function not finished. Please run this save once with vanila rct2.");
-	//FILE* obj_file = fopen(path, "+w");
-	//if (!obj_file){
+	FILE* obj_file = fopen(path, "w");
+	if (obj_file){
 		// Removed progress bar code
-		//sub_6A9F42(obj_file, entry);
-		//fclose(obj_file);
+		sub_6A9F42(obj_file, entry);
+		fclose(obj_file);
 		// Removed progress bar code
-	//	object_unload_all();
+		object_unload_all();
 		// Removed progress bar code
-	//	return 1;
-	//}
-	//else{
+		return 1;
+	}
+	else{
 		object_unload_all();
 		return 0;
-	//}
+	}
 	//create file
 	//6aa48C
 	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;

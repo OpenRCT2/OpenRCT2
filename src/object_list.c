@@ -49,6 +49,21 @@ int object_entry_group_counts[] = {
 	1		// scenario text
 };
 
+// 98DA2C
+int object_entry_group_encoding[] = {
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_ROTATE
+};
+
 struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[] = {
 	(void**)(0x009ACFA4            ), (rct_object_entry_extended*)(0x00F3F03C             ),	// rides
 	(void**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	

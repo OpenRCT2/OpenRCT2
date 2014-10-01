@@ -188,3 +188,29 @@ static void decode_chunk_rotate(char *buffer, int length)
 		code = (code + 2) % 8;
 	}
 }
+
+/**
+*
+*  rct2: 0x006762E1
+* 
+*/
+int sawyercoding_write_chunk(FILE *file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
+	
+	switch (chunkHeader.encoding){
+	case CHUNK_ENCODING_NONE:
+		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
+		fwrite(buffer, 1, chunkHeader.length, file);
+		break;
+	case CHUNK_ENCODING_RLE:
+		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_RLECOMPRESSED:
+		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		//chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_ROTATE:
+		//memcpy(buffer, src_buffer, chunkHeader.length);
+		//decode_chunk_rotate(buffer, chunkHeader.length);
+		break;
+	}
+}
