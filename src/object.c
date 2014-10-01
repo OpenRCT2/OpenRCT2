@@ -132,6 +132,29 @@ int object_load(int groupIndex, rct_object_entry *entry)
 	//return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
 }
 
+/** rct2: 0x006a9f42 
+ *  ebx : file
+ *  ebp : entry
+ */
+int sub_6A9F42(FILE *file, rct_object_entry* entry){
+	int eax = 0, entryGroupIndex = 0, type = 0, edx = 0, edi = 0, ebp = (int)entry, esi = 0;
+	RCT2_CALLFUNC_X(0x6A9FBE, &eax, &entryGroupIndex, &type, &edx, &esi, &edi, &ebp);
+	if (eax == 0) return 0;
+
+	object_paint(type, 1, entryGroupIndex, type, edx, esi, edi, ebp);
+	
+	RCT2_GLOBAL(0x9E3CBD, uint8) = RCT2_ADDRESS(0x98DA2C, uint8)[type];
+	rct_object_entry* installed_entry = (rct_object_entry*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
+
+	fwrite((void*)installed_entry, 1, 16, file);
+
+	//This increases the pointer of installed_entry by 16
+	//it also adds together what it jumps over?
+	RCT2_CALLPROC_X(0x6762D1, 0, 0, 16, 0, (int)installed_entry, 0, 0);
+	//6a9f8f
+	//Function not finished as it requires completing swayer_encoding
+}
+
 /**
 *
 *  rct2: 0x006AA2B7
@@ -193,7 +216,7 @@ int object_load_packed(FILE *file)
 
 	if (RCT2_GLOBAL(0xF42B6C, uint32)){
 		for (uint32 i = 0; i < RCT2_GLOBAL(0xF42B6C, uint32); ++i){
-			if (!object_entry_compare(entry, installedObject)){
+			if (object_entry_compare(entry, installedObject)){
 				object_unload_all();
 				return 0;
 			}
@@ -217,6 +240,8 @@ int object_load_packed(FILE *file)
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 	char* last_char = path + strlen(path);
 	strcat(path, ".DAT");
+
+	// 
 	for (; osinterface_file_exists(path);){
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
@@ -232,7 +257,25 @@ int object_load_packed(FILE *file)
 		}
 	}
 
+	// Removed progress bar code
 
+	// The following section cannot be finished until 6A9F42 is finished
+	// Run the game once with vanila rct2 to not reach this part of code.
+	RCT2_ERROR("Function not finished. Please run this save once with vanila rct2.");
+	//FILE* obj_file = fopen(path, "+w");
+	//if (!obj_file){
+		// Removed progress bar code
+		//sub_6A9F42(obj_file, entry);
+		//fclose(obj_file);
+		// Removed progress bar code
+	//	object_unload_all();
+		// Removed progress bar code
+	//	return 1;
+	//}
+	//else{
+		object_unload_all();
+		return 0;
+	//}
 	//create file
 	//6aa48C
 	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
