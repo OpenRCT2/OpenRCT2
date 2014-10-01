@@ -1088,3 +1088,27 @@ void viewport_set_visibility(uint8 mode)
 			window_invalidate(window);
 	}
 }
+
+/**
+ *
+ *  rct2: 0x00685ADC
+ * screenX: eax
+ * screenY: ebx
+ * flags: edx
+ * x: ax
+ * y: cx
+ * z: bl
+ * mapElement: edx
+ */
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	edx = flags;
+	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (x != NULL) *x = *((uint8*)&eax);
+	if (y != NULL) *y = *((uint8*)&ecx);
+	if (z != NULL) *z = *((uint8*)&ebx);
+	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
+}

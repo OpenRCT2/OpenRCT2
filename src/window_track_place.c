@@ -18,12 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <string.h>
 #include "addresses.h"
+#include "game.h"
 #include "sprites.h"
 #include "string_ids.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+
+#define TRACK_MINI_PREVIEW_WIDTH	168
+#define TRACK_MINI_PREVIEW_HEIGHT	78
+#define TRACK_MINI_PREVIEW_SIZE		(TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT)
 
 enum {
 	WIDX_BACKGROUND,
@@ -87,6 +93,108 @@ static void* window_track_place_events[] = {
 	window_track_place_emptysub
 };
 
+static uint8 *_window_track_place_mini_preview;
+static sint16 _window_track_place_last_x;
+static sint16 _window_track_place_last_y;
+
+static uint8 _window_track_place_last_was_valid;
+static sint16 _window_track_place_last_valid_x;
+static sint16 _window_track_place_last_valid_y;
+static sint16 _window_track_place_last_valid_z;
+static money32 _window_track_place_last_cost;
+
+/**
+ *
+ *  rct2: 0x006D182E
+ */
+static void window_track_place_clear_mini_preview()
+{
+	memset(_window_track_place_mini_preview, 220, TRACK_MINI_PREVIEW_SIZE);
+}
+
+/**
+ *
+ *  rct2: 0x006D1845
+ */
+static void window_track_place_draw_mini_preview()
+{
+	RCT2_GLOBAL(0x00F44168, uint8*) = _window_track_place_mini_preview;
+	RCT2_CALLPROC_EBPSAFE(0x006D1845);
+}
+
+/**
+ *
+ *  rct2: 0x0068A15E
+ */
+static short sub_68A15E(int x, int y, short *ax, short *bx)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	RCT2_CALLFUNC_X(0x0068A15E, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*ax = *((short*)&eax);
+	*bx = *((short*)&ebx);
+}
+
+/**
+ * Seems to highlight the surface tiles to match the track layout at the given position but also returns some Z value.
+ *  rct2: 0x006D01B3
+ */
+static int sub_6D01B3(int bl, int x, int y, int z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = bl;
+	ecx = y;
+	edx = z;
+	esi = 0;
+	edi = 0;
+	ebp = 0;
+	RCT2_CALLFUNC_X(0x006D01B3,  &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return *((short*)&ebx);
+}
+
+/**
+ *
+ *  rct2: 0x006D017F
+ */
+static void window_track_place_clear_provisional()
+{
+	if (_window_track_place_last_was_valid) {
+		sub_6D01B3(
+			(RCT2_GLOBAL(0x00F440EB, uint8) << 8) | 6,
+			_window_track_place_last_valid_x,
+			_window_track_place_last_valid_y,
+			_window_track_place_last_valid_z
+		);
+		_window_track_place_last_was_valid = 0;
+	}
+}
+
+static int sub_6D17C6(int x, int y)
+{
+	rct_map_element *mapElement;
+	int z;
+	
+	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	z = mapElement->base_height * 8;
+
+	// Increase Z above slope
+	if (mapElement->properties.surface.slope & 0x0F) {
+		z += 16;
+
+		// Increase Z above double slope
+		if (mapElement->properties.surface.slope & 0x10)
+			z += 16;
+	}
+
+	// Increase Z above water
+	if (mapElement->properties.surface.terrain & 0x1F)
+		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
+	
+	return z + sub_6D01B3(3, x, y, z);
+}
+
 /**
  *
  *  rct2: 0x006CFCA0
@@ -96,8 +204,9 @@ void window_track_place_open()
 	rct_window *w;
 
 	window_close_construction_windows();
-	RCT2_GLOBAL(0x00F44168, void*) = rct2_malloc(13104);
-	RCT2_CALLPROC_EBPSAFE(0x006D182E);
+
+	_window_track_place_mini_preview = malloc(TRACK_MINI_PREVIEW_SIZE);
+	window_track_place_clear_mini_preview();
 
 	w = window_create(0, 29, 200, 124, (uint32*)window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
 	w->widgets = window_track_place_widgets;
@@ -110,10 +219,10 @@ void window_track_place_open()
 	RCT2_GLOBAL(0x009DE518, uint32) |= 6;
 	window_push_others_right(w);
 	show_gridlines();
-	RCT2_GLOBAL(0x00F440D9, uint32) |= 0x80000000;
-	RCT2_GLOBAL(0x00F440DD, uint16) = 0xFFFF;
+	_window_track_place_last_cost = MONEY32_UNDEFINED;
+	_window_track_place_last_x = 0xFFFF;
 	RCT2_GLOBAL(0x00F440AE, uint8) = (-RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
-	RCT2_CALLPROC_EBPSAFE(0x006D1845);
+	window_track_place_draw_mini_preview();
 }
 
 /**
@@ -122,12 +231,12 @@ void window_track_place_open()
  */
 static void window_track_place_close()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006D017F);
+	window_track_place_clear_provisional();
 	viewport_set_visibility(0);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~6;
 	hide_gridlines();
-	rct2_free(RCT2_GLOBAL(0x00F44168, void*));
+	free(_window_track_place_mini_preview);
 }
 
 /**
@@ -146,18 +255,18 @@ static void window_track_place_mouseup()
 		window_close(w);
 		break;
 	case WIDX_ROTATE:
-		RCT2_CALLPROC_EBPSAFE(0x006D017F);
+		window_track_place_clear_provisional();
 		RCT2_GLOBAL(0x00F440AE, uint16) = (RCT2_GLOBAL(0x00F440AE, uint16) + 1) & 3;
 		window_invalidate(w);
-		RCT2_GLOBAL(0x00F440DD, uint16) = 0xFFFF;
-		RCT2_CALLPROC_EBPSAFE(0x006D1845);
+		_window_track_place_last_x = 0xFFFF;
+		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
 		RCT2_CALLPROC_EBPSAFE(0x006D2436);
 		RCT2_GLOBAL(0x00F440AE, uint16) = (-RCT2_GLOBAL(0x00F440AE, uint16)) & 3;
 		window_invalidate(w);
-		RCT2_GLOBAL(0x00F440DD, uint16) = 0xFFFF;
-		RCT2_CALLPROC_EBPSAFE(0x006D1845);
+		_window_track_place_last_x = 0xFFFF;
+		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_SELECT_DIFFERENT_DESIGN:
 		window_close(w);
@@ -185,10 +294,67 @@ static void window_track_place_toolupdate()
 {
 	rct_window *w;
 	short widgetIndex, x, y;
+	int i, z;
+	money32 cost;
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006CFF2D, x, y, 0, widgetIndex, (int)w, 0, 0);
+	RCT2_CALLPROC_X(0x006CFF2D, x, y, 0, widgetIndex, (int)w, 0, 0); return;
+
+	// BUG: After placing layout, path tiles aren't connected, even though they were in the provisional appearance
+
+	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
+
+	// Get the tool map position
+	sub_68A15E(x, y, &x, &y);
+	if (x == (short)0x8000) {
+		window_track_place_clear_provisional();
+		return;
+	}
+
+	// Check if tool map position has changed since last update
+	if (x == _window_track_place_last_x && y == _window_track_place_last_y) {
+		sub_6D01B3(0, x, y, 0);
+		return;
+	}
+
+	cost = MONEY32_UNDEFINED;
+
+	// Get base Z position
+	z = sub_6D17C6(x, y);
+	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+		window_track_place_clear_provisional();
+		
+		// Try increasing Z until a feasible placement is found
+		for (i = 0; i < 7; i++) {
+			int eax, ebx, ecx, edx, esi, edi, ebp;
+
+			eax = x;
+			ebx = 105;
+			ecx = y;
+			edi = z;
+			cost = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			if (cost != MONEY32_UNDEFINED) {
+				RCT2_GLOBAL(0x00F440EB, uint16) = *((short*)&edi);
+				_window_track_place_last_valid_x = x;
+				_window_track_place_last_valid_y = y;
+				_window_track_place_last_valid_z = z;
+				_window_track_place_last_was_valid = 1;
+				break;
+			}
+			z += 8;
+		}
+	}
+
+	_window_track_place_last_x = x;
+	_window_track_place_last_y = y;
+	if (cost != _window_track_place_last_cost) {
+		_window_track_place_last_cost = cost;
+		widget_invalidate(WC_TRACK_DESIGN_PLACE, 0, WIDX_PRICE);
+	}
+	
+	sub_6D01B3(0, x, y, z);
 }
 
 /**
@@ -211,7 +377,7 @@ static void window_track_place_tooldown()
  */
 static void window_track_place_toolabort()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006D017F);
+	window_track_place_clear_provisional();
 }
 
 /**
@@ -220,7 +386,7 @@ static void window_track_place_toolabort()
  */
 static void window_track_place_unknown14()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006D1845);
+	window_track_place_draw_mini_preview();
 }
 
 /**
@@ -242,9 +408,9 @@ static void window_track_place_paint()
 	if (clippedDpi != NULL) {
 		subsituteElement = &g1Elements[0];
 		tmpElement = *subsituteElement;
-		subsituteElement->offset = RCT2_GLOBAL(0x00F44168, uint8*);
-		subsituteElement->width = 168;
-		subsituteElement->height = 78;
+		subsituteElement->offset = _window_track_place_mini_preview;
+		subsituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
+		subsituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
 		subsituteElement->x_offset = 0;
 		subsituteElement->y_offset = 0;
 		subsituteElement->flags = 0;
@@ -252,10 +418,8 @@ static void window_track_place_paint()
 		*subsituteElement = tmpElement;
 	}
 
-	if (RCT2_GLOBAL(0x00F440D9, money32) == 0x80000000)
-		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-		return;
-
-	gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, (money32*)0x00F440D9);
+	// Price
+	if (_window_track_place_last_cost != MONEY32_UNDEFINED)
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+			gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, &_window_track_place_last_cost);
 }

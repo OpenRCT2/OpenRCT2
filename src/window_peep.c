@@ -1153,11 +1153,11 @@ void window_peep_overview_tool_update(){
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
-	eax = x;
-	int ebx = y;
-	edx = 0;
-	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if ((ebx & 0xFF) == 0) return;
+
+	int ebx;
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
+	if (ebx == 0)
+		return;
 
 	x--;
 	y += 16;
