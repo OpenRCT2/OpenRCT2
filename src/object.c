@@ -292,7 +292,7 @@ void object_unload(int groupIndex, rct_object_entry_extended *entry)
 	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
 }
 
-static int object_entry_compare(rct_object_entry *a, rct_object_entry *b)
+int object_entry_compare(rct_object_entry *a, rct_object_entry *b)
 {
 	if (a->flags & 0xF0) {
 		if ((a->flags & 0x0F) != (b->flags & 0x0F))
