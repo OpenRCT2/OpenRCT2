@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include "addresses.h"
+#include "audio.h"
 #include "game.h"
 #include "sprites.h"
 #include "string_ids.h"
@@ -126,7 +127,7 @@ static void window_track_place_draw_mini_preview()
  *
  *  rct2: 0x0068A15E
  */
-static short sub_68A15E(int x, int y, short *ax, short *bx)
+static void sub_68A15E(int x, int y, short *ax, short *bx)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
@@ -299,10 +300,6 @@ static void window_track_place_toolupdate()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006CFF2D, x, y, 0, widgetIndex, (int)w, 0, 0); return;
-
-	// BUG: After placing layout, path tiles aren't connected, even though they were in the provisional appearance
-
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
 
@@ -364,11 +361,60 @@ static void window_track_place_toolupdate()
 static void window_track_place_tooldown()
 {
 	rct_window *w;
-	short widgetIndex, x, y;
+	short widgetIndex, x, y, z;
+	int i;
+	money32 cost;
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006CFF34, x, y, 0, widgetIndex, (int)w, 0, 0);
+	window_track_place_clear_provisional();
+	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
+
+	sub_68A15E(x, y, &x, &y);
+	if (x == (short)0x8000)
+		return;
+	
+	// Try increasing Z until a feasible placement is found
+	z = sub_6D17C6(x, y);
+	for (i = 0; i < 7; i++) {
+		RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+		int eax, ebx, ecx, edx, esi, edi, ebp;
+		eax = x;
+		ebx = 1;
+		ecx = y;
+		edi = z;
+		cost = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+		if (cost != MONEY32_UNDEFINED) {
+			window_close_by_id(WC_ERROR, 0);
+			sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+
+			int rideIndex = edi & 0xFF;
+			RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+			if (RCT2_GLOBAL(0x00F4414E, uint8) & 1) {
+				window_ride_main_open(rideIndex);
+				window_close(w);
+			} else {
+				RCT2_CALLPROC_X(0x006CC3FB, 0, 0, 0, rideIndex, 0, 0, 0);
+				w = window_find_by_id(0x80 | WC_RIDE_CONSTRUCTION, 0);
+				RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 29, (int)w, 0, 0);
+			}
+			return;
+		}
+
+		// Check if player did not have enough funds
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == 827)
+			break;
+
+		z += 8;
+	}
+
+	// Unable to build track
+	sound_play_panned(SOUND_ERROR, 0x8001, x, y, z);
 }
 
 /**

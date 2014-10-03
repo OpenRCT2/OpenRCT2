@@ -1103,8 +1103,8 @@ void viewport_set_visibility(uint8 mode)
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
+	eax = screenX;
+	ebx = screenY;
 	edx = flags;
 	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	if (x != NULL) *x = *((uint8*)&eax);
