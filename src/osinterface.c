@@ -276,14 +276,15 @@ void osinterface_update_palette(char* colours, int start_index, int num_colours)
 		exit(1);
 	}
 
-	for (i = start_index; i < start_index + num_colours; i++) {
-		base[i].r = colours[(i * 4) + 2];
-		base[i].g = colours[(i * 4) + 1];
-		base[i].b = colours[(i * 4) + 0];
+	for (i = 0; i < 256; i++) {
+		base[i].r = colours[2];
+		base[i].g = colours[1];
+		base[i].b = colours[0];
 		base[i].a = 0;
+		colours += 4;
 	}
 
-	if (SDL_SetPaletteColors(_palette, &base[start_index], start_index, num_colours)) {
+	if (SDL_SetPaletteColors(_palette, base, 0, 256)) {
 		RCT2_ERROR("SDL_SetPaletteColors failed %s", SDL_GetError());
 		exit(1);
 	}
