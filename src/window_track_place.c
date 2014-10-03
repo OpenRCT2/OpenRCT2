@@ -172,7 +172,11 @@ static void window_track_place_clear_provisional()
 	}
 }
 
-static int sub_6D17C6(int x, int y)
+/**
+ *
+ *  rct2: 0x006D17C6
+ */
+static int window_track_place_get_base_z(int x, int y)
 {
 	rct_map_element *mapElement;
 	int z;
@@ -194,6 +198,21 @@ static int sub_6D17C6(int x, int y)
 		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
 	
 	return z + sub_6D01B3(3, x, y, z);
+}
+
+static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	money32 result;
+
+	eax = x;
+	ebx = bl;
+	ecx = y;
+	edi = z;
+	result = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	if (cost != NULL) *cost = result;
+	if (rideIndex != NULL) *rideIndex = edi & 0xFF;
 }
 
 /**
@@ -297,6 +316,7 @@ static void window_track_place_toolupdate()
 	short widgetIndex, x, y;
 	int i, z;
 	money32 cost;
+	uint8 rideIndex;
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
@@ -319,21 +339,15 @@ static void window_track_place_toolupdate()
 	cost = MONEY32_UNDEFINED;
 
 	// Get base Z position
-	z = sub_6D17C6(x, y);
+	z = window_track_place_get_base_z(x, y);
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		window_track_place_clear_provisional();
 		
 		// Try increasing Z until a feasible placement is found
 		for (i = 0; i < 7; i++) {
-			int eax, ebx, ecx, edx, esi, edi, ebp;
-
-			eax = x;
-			ebx = 105;
-			ecx = y;
-			edi = z;
-			cost = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			window_track_place_attempt_placement(x, y, z, 105, &cost, &rideIndex);
 			if (cost != MONEY32_UNDEFINED) {
-				RCT2_GLOBAL(0x00F440EB, uint16) = *((short*)&edi);
+				RCT2_GLOBAL(0x00F440EB, uint16) = rideIndex;
 				_window_track_place_last_valid_x = x;
 				_window_track_place_last_valid_y = y;
 				_window_track_place_last_valid_z = z;
@@ -364,6 +378,7 @@ static void window_track_place_tooldown()
 	short widgetIndex, x, y, z;
 	int i;
 	money32 cost;
+	uint8 rideIndex;
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
@@ -376,24 +391,16 @@ static void window_track_place_tooldown()
 		return;
 	
 	// Try increasing Z until a feasible placement is found
-	z = sub_6D17C6(x, y);
+	z = window_track_place_get_base_z(x, y);
 	for (i = 0; i < 7; i++) {
 		RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		eax = x;
-		ebx = 1;
-		ecx = y;
-		edi = z;
-		cost = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
+		window_track_place_attempt_placement(x, y, z, 1, &cost, &rideIndex);
 		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 		if (cost != MONEY32_UNDEFINED) {
 			window_close_by_id(WC_ERROR, 0);
 			sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
 
-			int rideIndex = edi & 0xFF;
 			RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 			if (RCT2_GLOBAL(0x00F4414E, uint8) & 1) {
 				window_ride_main_open(rideIndex);
