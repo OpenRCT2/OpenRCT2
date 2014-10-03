@@ -24,6 +24,7 @@
 #include "game.h"
 #include "sprites.h"
 #include "string_ids.h"
+#include "track.h"
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
@@ -114,13 +115,212 @@ static void window_track_place_clear_mini_preview()
 }
 
 /**
+ * Size: 0x0A
+ */
+typedef struct {
+	uint8 var_00;
+	sint16 x;
+	sint16 y;
+	uint8 pad_05[3];
+	uint8 var_08;
+	uint8 unk_09;
+} rct_preview_track;
+
+/**
+ * Size: 0x04
+ */
+typedef struct {
+	union {
+		uint32 all;
+		struct {
+			sint8 x;
+			sint8 y;
+			uint8 unk_2;
+			uint8 type;
+		};
+	};
+} rct_preview_maze;
+
+#define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
+
+/**
  *
  *  rct2: 0x006D1845
  */
 static void window_track_place_draw_mini_preview()
 {
-	RCT2_GLOBAL(0x00F44168, uint8*) = _window_track_place_mini_preview;
-	RCT2_CALLPROC_EBPSAFE(0x006D1845);
+	rct_track_design *design = (rct_track_design*)0x009D8178;
+	uint8 *pixel, colour, *trackPtr, bits;
+	int i, rotation, pass, x, y, pixelX, pixelY, originX, originY, minX, minY, maxX, maxY;
+	rct_preview_maze *mazeBlock;
+	rct_preview_track *trackBlock;
+
+	window_track_place_clear_mini_preview();
+
+	minX = 0;
+	minY = 0;
+	maxX = 0;
+	maxY = 0;
+
+	// First pass is used to determine the width and height of the image so it can centre it
+	for (pass = 0; pass < 2; pass++) {
+		originX = 0;
+		originY = 0;
+		if (pass == 1) {
+			originX -= ((maxX + minX) >> 6) << 5;
+			originY -= ((maxY + minY) >> 6) << 5;
+		}
+
+		if (design->type != RIDE_TYPE_MAZE) {
+			#pragma region Track
+
+			rotation = RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			trackPtr = design->preview[0];
+
+			while (*trackPtr != 255) {
+				int trackType = *trackPtr;
+				if (trackType == 101)
+					trackType = 255;
+
+				// Station track is a lighter colour
+				colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
+
+				// Follow a single track piece shape
+				trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[trackType];
+				while (trackBlock->var_00 != 255) {
+					x = originX;
+					y = originY;
+					
+					switch (rotation & 3) {
+					case 0:
+						x += trackBlock->x;
+						y += trackBlock->y;
+						break;
+					case 1:
+						x += trackBlock->y;
+						y -= trackBlock->x;
+						break;
+					case 2:
+						x -= trackBlock->x;
+						y -= trackBlock->y;
+						break;
+					case 3:
+						x -= trackBlock->y;
+						y += trackBlock->x;
+						break;
+					}
+
+					if (pass == 0) {
+						minX = min(minX, x);
+						maxX = max(maxX, x);
+						minY = min(minY, y);
+						maxY = max(maxY, y);
+					} else {
+						pixelX = 80 + ((y / 32) - (x / 32)) * 4;
+						pixelY = 38 + ((y / 32) + (x / 32)) * 2;
+						if (pixelX <= 160 && pixelY <= 75) {
+							pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
+
+							bits = trackBlock->var_08 << (rotation & 3);
+							bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
+
+							for (i = 0; i < 4; i++) {
+								if (bits & 1) pixel[338 + i] = colour;
+								if (bits & 2) pixel[168 + i] = colour;
+								if (bits & 4) pixel[  2 + i] = colour;
+								if (bits & 8) pixel[172 + i] = colour;
+							}
+						}
+					}
+					trackBlock++;
+				}
+
+				// Change rotation and next position based on track curvature
+				rotation &= 3;
+				trackType *= 10;
+				switch (rotation) {
+				case 0:
+					originX += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originY += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					break;
+				case 1:
+					originX += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originY -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					break;
+				case 2:
+					originX -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originY -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					break;
+				case 3:
+					originX -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originY += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					break;
+				}
+				rotation += RCT2_ADDRESS(0x009968BC, uint8)[trackType] - RCT2_ADDRESS(0x009968BB, uint8)[trackType];
+				rotation &= 3;
+				if (RCT2_ADDRESS(0x009968BC, uint8)[trackType] & 4)
+					rotation |= 4;
+				if (!(rotation & 4)) {
+					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
+					originY += RCT2_GLOBAL(0x00993CCE + (rotation * 4), sint16);
+				}
+				trackPtr += 2;
+			}
+
+			#pragma endregion
+		} else {
+			#pragma region Maze
+
+			rotation = (RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
+			mazeBlock = (rct_preview_maze*)design->preview[0];
+			while (mazeBlock->all != 0) {
+				x = mazeBlock->x * 32;
+				y = mazeBlock->y * 32;
+				switch (rotation) {
+				case 1:
+					x = -x;
+					swap(x, y);
+					break;
+				case 2:
+					x = -x;
+					y = -y;
+					break;
+				case 3:
+					x = -x;
+					swap(x, y);
+					break;
+				}
+				x += originX;
+				y += originY;
+
+				// Entrance or exit is a lighter colour
+				colour = mazeBlock->type == 8 || mazeBlock->type == 128 ? 222 : 218;
+
+				if (pass == 0) {
+					minX = min(minX, x);
+					maxX = max(maxX, x);
+					minY = min(minY, y);
+					maxY = max(maxY, y);
+				} else {
+					pixelX = 80 + ((y / 32) - (x / 32)) * 4;
+					pixelY = 38 + ((y / 32) + (x / 32)) * 2;
+					if (pixelX <= 160 && pixelY <= 75) {
+						pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
+
+						for (i = 0; i < 4; i++) {
+							pixel[338 + i] = colour;
+							pixel[168 + i] = colour;
+							pixel[  2 + i] = colour;
+							pixel[172 + i] = colour;
+						}
+					}
+				}
+				mazeBlock++;
+			}
+
+			#pragma endregion
+		}
+	}
 }
 
 /**
