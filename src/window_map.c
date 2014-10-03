@@ -338,7 +338,14 @@ static void window_map_mouseup()
 */
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068D040);
+	// The normal map window doesn't have widget 8 or 9.
+	// I assume these widgets refer to the Scenario Editor's map window.
+	if (widgetIndex == 8) {
+		RCT2_CALLPROC_EBPSAFE(0x0068D641);
+	}
+	else if (widgetIndex == 9) {
+		RCT2_CALLPROC_EBPSAFE(0x0068D6B4);
+	}
 }
 
 /**
