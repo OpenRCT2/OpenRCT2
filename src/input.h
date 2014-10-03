@@ -23,6 +23,7 @@
 
 void game_handle_input();
 void game_handle_keyboard_input();
+void handle_shortcut_command(int shortcutIndex);
 
 void store_mouse_input(int state);
 
