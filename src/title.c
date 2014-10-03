@@ -290,7 +290,7 @@ void title_update()
 	// RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
 	game_handle_input();
 
-	update_water_animation();
+	update_palette_effects();
 	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
