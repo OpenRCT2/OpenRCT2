@@ -28,6 +28,8 @@ static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length);
 static int decode_chunk_repeat(char *buffer, int length);
 static void decode_chunk_rotate(char *buffer, int length);
 
+int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length);
+void encode_chunk_rotate(char *buffer, int length);
 /**
  * 
  *  rct2: 0x00676FD2
@@ -195,22 +197,88 @@ static void decode_chunk_rotate(char *buffer, int length)
 * 
 */
 int sawyercoding_write_chunk(FILE *file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
-	
+	uint8* dst_buffer;
+
 	switch (chunkHeader.encoding){
 	case CHUNK_ENCODING_NONE:
 		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
 		fwrite(buffer, 1, chunkHeader.length, file);
 		break;
 	case CHUNK_ENCODING_RLE:
-		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		dst_buffer = malloc(0x600000);
+		chunkHeader.length = encode_chunk_rle(buffer, dst_buffer, chunkHeader.length);
+		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
+		fwrite(dst_buffer, 1, chunkHeader.length, file);
+		free(dst_buffer);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
 		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
 		//chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
-		//memcpy(buffer, src_buffer, chunkHeader.length);
-		//decode_chunk_rotate(buffer, chunkHeader.length);
+		encode_chunk_rotate(buffer, chunkHeader.length);
+		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
+		fwrite(buffer, 1, chunkHeader.length, file);
 		break;
+	}
+
+	return chunkHeader.length;
+}
+
+/**
+* Ensure dst_buffer is bigger than src_buffer then resize afterwards
+* returns length of dst_buffer
+*/
+int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
+{
+	char* src = src_buffer;
+	char* dst = dst_buffer;
+	char* end_src = src + length;
+	uint8 count = 0;
+	char* src_norm_start = src;
+
+	while (src < end_src - 1){
+
+		if ((count && *src == src[1]) || count > 126){
+			*dst++ = count;
+			for (; count != 0; --count){
+				*dst++ = *src_norm_start++;
+			}
+		}
+		if (*src == src[1]){
+			for (; (count < 127) && ((src + count) < end_src); count++){
+				if (*src != src[count]) break;
+			}
+			*dst++ = 257 - count;
+			*dst++ = *src;
+			src += count;
+			src_norm_start = src;
+			count = 0;
+		}
+		else{
+			count++;
+			src++;
+		}
+	}
+	if (src == end_src - 1)count++;
+	if (count){
+		*dst++ = count;
+		for (; count != 0; --count){
+			*dst++ = *src_norm_start++;
+		}
+	}
+	return dst - dst_buffer;
+}
+
+/**
+*
+*
+*/
+void encode_chunk_rotate(char *buffer, int length)
+{
+	int i, code = 1;
+	for (i = 0; i < length; i++) {
+		buffer[i] = rol8(buffer[i], code);
+		code = (code + 2) % 8;
 	}
 }
