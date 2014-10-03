@@ -22,6 +22,7 @@
 #define _TRACK_H_
 
 #include "rct2.h"
+#include "ride.h"
 
 typedef struct {
 	uint8 type;

@@ -615,16 +615,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
 
-	// Get map coordinates from point
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	edx = -34;
-	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	x = eax & 0xFFFF;
-	z = ebx & 0xFF;
-	y = ecx & 0xFFFF;
-	mapElement = (rct_map_element*)edx;
+	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement);
 
 	if (z == 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
@@ -697,17 +688,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7831);
 
-	// Get map coordinates from point
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	edx = -34;
-	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	x = eax & 0xFFFF;
-	z = ebx & 0xFF;
-	y = ecx & 0xFFFF;
-	mapElement = (rct_map_element*)edx;
-
+	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement);
 	if (z == 0)
 		return;
 

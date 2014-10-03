@@ -398,6 +398,9 @@ enum PROMPT_MODE {
 // rct2: 0x01420078
 extern rct_window* g_window_list;
 
+// rct2: 0x00F635EE
+extern ride_list_item _window_track_list_item;
+
 void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
