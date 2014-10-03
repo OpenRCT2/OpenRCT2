@@ -34,6 +34,7 @@ extern audio_device *gAudioDevices;
 void audio_init();
 void audio_quit();
 void audio_get_devices();
+void audio_init1();
 void audio_init2(int device);
 
 #include <dsound.h>
@@ -84,8 +85,8 @@ typedef struct {
 typedef struct {
 	uint32 size;
 	WAVEFORMATEX format;
-	char* data;
-} rct_sound_info;
+	uint8* data;
+} rct_sound_effect;
 
 typedef struct {
 	uint16 id;
@@ -155,7 +156,7 @@ void sub_6BC6D8();
 int audio_remove_timer();
 void audio_close();
 LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
-int unmap_sound_info();
+int unmap_sound_effects();
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);

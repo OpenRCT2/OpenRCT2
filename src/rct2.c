@@ -170,7 +170,7 @@ void rct2_init()
 	gfx_load_character_widths();
 	
 	osinterface_init();
-	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
+	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
