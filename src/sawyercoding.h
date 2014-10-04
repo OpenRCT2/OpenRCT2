@@ -37,7 +37,8 @@ enum {
 };
 
 int sawyercoding_validate_checksum(FILE *file);
+int sawyercoding_calculate_checksum(uint8* buffer, uint32 length);
 int sawyercoding_read_chunk(FILE *file, uint8 *buffer);
-int sawyercoding_write_chunk(FILE *file, uint8 *buffer, sawyercoding_chunk_header chunkHeader);
+int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader);
 
 #endif

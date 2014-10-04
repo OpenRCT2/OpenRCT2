@@ -30,6 +30,20 @@ static void decode_chunk_rotate(char *buffer, int length);
 
 int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length);
 void encode_chunk_rotate(char *buffer, int length);
+
+int sawyercoding_calculate_checksum(uint8* buffer, uint32 length){
+	int checksum = 0;
+	do {
+		int bufferSize = min(length , 1024);
+
+		for (int i = 0; i < bufferSize; i++)
+			checksum += buffer[i];
+		length -= bufferSize;
+	} while (length != 0);
+
+	return checksum;
+}
+
 /**
  * 
  *  rct2: 0x00676FD2
@@ -196,33 +210,41 @@ static void decode_chunk_rotate(char *buffer, int length)
 *  rct2: 0x006762E1
 * 
 */
-int sawyercoding_write_chunk(FILE *file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
-	uint8* dst_buffer;
+int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
+	uint8* encode_buffer;
 
 	switch (chunkHeader.encoding){
 	case CHUNK_ENCODING_NONE:
-		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
-		fwrite(buffer, 1, chunkHeader.length, file);
+		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+		dst_file += sizeof(sawyercoding_chunk_header);
+		memcpy(dst_file, buffer, chunkHeader.length);
+		//fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
+		//fwrite(buffer, 1, chunkHeader.length, file);
 		break;
 	case CHUNK_ENCODING_RLE:
-		dst_buffer = malloc(0x600000);
-		chunkHeader.length = encode_chunk_rle(buffer, dst_buffer, chunkHeader.length);
-		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
-		fwrite(dst_buffer, 1, chunkHeader.length, file);
-		free(dst_buffer);
+		encode_buffer = malloc(0x600000);
+		chunkHeader.length = encode_chunk_rle(buffer, encode_buffer, chunkHeader.length);
+		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+		dst_file += sizeof(sawyercoding_chunk_header);
+		memcpy(dst_file, encode_buffer, chunkHeader.length);
+
+		free(encode_buffer);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
+		RCT2_ERROR("This has not been implemented");
+		return -1;
 		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
 		//chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
 		encode_chunk_rotate(buffer, chunkHeader.length);
-		fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
-		fwrite(buffer, 1, chunkHeader.length, file);
+		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+		dst_file += sizeof(sawyercoding_chunk_header);
+		memcpy(dst_file, buffer, chunkHeader.length);
 		break;
 	}
 
-	return chunkHeader.length;
+	return chunkHeader.length + sizeof(sawyercoding_chunk_header);
 }
 
 /**
@@ -239,14 +261,14 @@ int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 
 	while (src < end_src - 1){
 
-		if ((count && *src == src[1]) || count > 126){
-			*dst++ = count;
+		if ((count && *src == src[1]) || count > 120){
+			*dst++ = count - 1;
 			for (; count != 0; --count){
 				*dst++ = *src_norm_start++;
 			}
 		}
 		if (*src == src[1]){
-			for (; (count < 127) && ((src + count) < end_src); count++){
+			for (; (count < 120) && ((src + count) < end_src); count++){
 				if (*src != src[count]) break;
 			}
 			*dst++ = 257 - count;
@@ -262,7 +284,7 @@ int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 	}
 	if (src == end_src - 1)count++;
 	if (count){
-		*dst++ = count;
+		*dst++ = count - 1;
 		for (; count != 0; --count){
 			*dst++ = *src_norm_start++;
 		}

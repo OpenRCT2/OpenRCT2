@@ -145,21 +145,22 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 	
 
 	rct_object_entry* installed_entry = (rct_object_entry*)(entryGroupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[type * 2]);
+	uint8* dst_buffer = malloc(0x600000);
+	memcpy(dst_buffer, (void*)installed_entry, 16);
 
-	fwrite((void*)installed_entry, 1, 16, file);
-
-	//This increases the pointer of installed_entry by 16
-	//it also adds together what it jumps over?
-	//RCT2_CALLPROC_X(0x6762D1, 0, 0, 16, 0, (int)installed_entry, 0, 0);
+	uint32 size_dst = 16;
 
 	sawyercoding_chunk_header chunkHeader;	
-	// Encoding type
+	// Encoding type (not used anymore)
 	RCT2_GLOBAL(0x9E3CBD, uint8) = object_entry_group_encoding[type];
+
 	chunkHeader.encoding = object_entry_group_encoding[type];
 	chunkHeader.length = *(uint32*)(((uint8*)installed_entry + 16));
 
-	sawyercoding_write_chunk(file, (uint8*)chunk, chunkHeader);
-	//Function not finished as it requires completing swayer_encoding
+	size_dst += sawyercoding_write_chunk_buffer(dst_buffer+16, (uint8*)chunk, chunkHeader);
+	fwrite(dst_buffer, 1, size_dst, file);
+
+	free(dst_buffer);
 }
 
 /**
@@ -270,7 +271,7 @@ int object_load_packed(FILE *file)
 	// The following section cannot be finished until 6A9F42 is finished
 	// Run the game once with vanila rct2 to not reach this part of code.
 	RCT2_ERROR("Function not finished. Please run this save once with vanila rct2.");
-	FILE* obj_file = fopen(path, "w");
+	FILE* obj_file = fopen(path, "wb");
 	if (obj_file){
 		// Removed progress bar code
 		sub_6A9F42(obj_file, entry);
