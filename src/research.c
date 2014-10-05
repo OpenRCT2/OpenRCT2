@@ -24,7 +24,32 @@
 #include "rct2.h"
 #include "window.h"
 
+typedef struct {
+	sint32 var_0;
+	uint8 category;
+} rct_research_item;
+
 const int _researchRate[] = { 0, 160, 250, 400 };
+
+// 0x00EE787C
+uint8 gResearchUncompletedCategories;
+
+/**
+ *
+ *  rct2: 0x00684BAE
+ */
+void research_update_uncompleted_types()
+{
+	int uncompletedResearchTypes = 0;
+	rct_research_item *researchItem = (rct_research_item*)0x001358844;
+	while (researchItem->var_0 != -1)
+		researchItem++;
+	researchItem++;
+	for (; researchItem->var_0 != -2; researchItem++)
+		uncompletedResearchTypes |= (1 << researchItem->category);
+
+	gResearchUncompletedCategories = uncompletedResearchTypes;
+}
 
 /**
  *
@@ -94,11 +119,10 @@ void research_update()
 			break;
 		case RESEARCH_STAGE_COMPLETING_DESIGN:
 			RCT2_CALLPROC_X(0x006848D4, RCT2_GLOBAL(0x013580E0, uint32), 0, 0, 0, 0, 0, 0);
-			RCT2_CALLPROC_EBPSAFE(0x006848D4);
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
 			research_calculate_expected_date();
-			RCT2_CALLPROC_EBPSAFE(0x00684BAE);
+			research_update_uncompleted_types();
 			window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
 			window_invalidate_by_id(WC_RESEARCH, 0);
 			break;

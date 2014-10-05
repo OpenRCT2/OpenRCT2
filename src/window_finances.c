@@ -24,6 +24,7 @@
 #include "game.h"
 #include "graph.h"
 #include "marketing.h"
+#include "research.h"
 #include "ride.h"
 #include "scenario.h"
 #include "string_ids.h"
@@ -535,7 +536,7 @@ void window_finances_open()
 		w->colours[0] = 1;
 		w->colours[1] = 19;
 		w->colours[2] = 19;
-		RCT2_CALLPROC_EBPSAFE(0x00684BAE);
+		research_update_uncompleted_types();
 	}
 
 	w->page = 0;
@@ -1434,7 +1435,7 @@ static void window_finances_research_invalidate()
 	
 	// Checkboxes
 	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
-	int uncompletedResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_UNCOMPLETED_RESEARCH_TYPES, uint16);
+	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;
 		int widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);

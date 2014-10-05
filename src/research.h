@@ -35,6 +35,9 @@ enum {
 	RESEARCH_STAGE_UNKNOWN
 };
 
+extern uint8 gResearchUncompletedCategories;
+
+void research_update_uncompleted_types();
 void research_update();
 
 #endif
