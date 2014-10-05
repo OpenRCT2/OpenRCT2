@@ -2404,3 +2404,18 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
 	if (text_palette[2] != 0)
 		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
 }
+
+/**
+ *
+ * rct2: 0x006C1DB7
+ *
+ * left     : cx
+ * top      : dx
+ * numLines : bp
+ * text     : esi
+ * dpi      : edi
+ */
+void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
+{
+	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, x, y, (int)text, (int)dpi, numLines);
+}

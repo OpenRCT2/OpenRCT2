@@ -21,6 +21,8 @@
 #ifndef _WINDOW_ERROR_H_
 #define _WINDOW_ERROR_H_
 
-void window_error_open(int stringId, int edx);
+#include "string_ids.h"
+
+void window_error_open(rct_string_id title, rct_string_id message);
 
 #endif

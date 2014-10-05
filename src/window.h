@@ -175,6 +175,10 @@ typedef struct {
 	uint16 var_484;
 } track_list_variables;
 
+typedef struct {
+	uint16 var_480;
+} error_variables;
+
 /**
  * Window structure
  * size: 0x4C0
@@ -214,6 +218,7 @@ typedef struct rct_window {
 		ride_variables ride;
 		scenery_variables scenery;
 		track_list_variables track_list;
+		error_variables error;
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;

@@ -19,13 +19,184 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "audio.h"
+#include "string_ids.h"
+#include "widget.h"
+#include "window.h"
 #include "window_error.h"
+
+enum {
+	WIDX_BACKGROUND
+};
+
+static rct_widget window_error_widgets[] = {
+	{ WWT_IMGBTN, 0, 0, 199, 0, 41, 0xFFFFFFFF, STR_NONE },
+	{ WIDGETS_END }
+};
+
+static void window_error_emptysub() { }
+static void window_error_unknown5();
+static void window_error_paint();
+
+static void* window_error_events[] = {
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_unknown5,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_emptysub,
+	(uint32*)window_error_paint,
+	(uint32*)window_error_emptysub
+};
+
+static char _window_error_text[512];
+static uint16 _window_error_num_lines;
+
+/**
+ * 
+ *  rct2: 0x006C23B1
+ */
+int sub_6C23B1(char *text)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	esi = (int)text;
+	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return *((sint16*)&ecx);
+}
 
 /**
  * 
  *  rct2: 0x0066792F
+ *
+ * bx: title
+ * dx: message
  */
-void window_error_open(int stringId, int edx)
+void window_error_open(rct_string_id title, rct_string_id message)
 {
-	RCT2_CALLPROC_X(0x0066792F, 0, stringId, 0, edx, 0, 0, 0);
+	char *dst, *args;
+	int numLines, fontHeight, x, y, width, height, maxY;
+	rct_window *w;
+
+	window_close_by_id(WC_ERROR, 0);
+	dst = _window_error_text;
+	args = (char*)0x0013CE952;
+
+	// Format the title
+	*dst++ = FORMAT_BLACK;
+	if (title != (rct_string_id)STR_NONE) {
+		format_string(dst, title, args);
+		dst += get_string_length(dst);
+	}
+
+	// Format the message
+	if (message != (rct_string_id)STR_NONE) {
+		*dst++ = FORMAT_NEWLINE;
+		format_string(dst, message, args);
+		dst += get_string_length(dst);
+	}
+
+	// Check if there is any text to display
+	if (dst == _window_error_text + 1)
+		return;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	width = sub_6C23B1(_window_error_text);
+	width = min(196, width);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gfx_wrap_string(_window_error_text, width + 1, &numLines, &fontHeight);
+
+	_window_error_num_lines = numLines;
+	width = width + 3;
+	height = (numLines + 1) * 10 + 4;
+
+	window_error_widgets[WIDX_BACKGROUND].right = width;
+	window_error_widgets[WIDX_BACKGROUND].bottom = height;
+
+	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
+	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+
+	y = RCT2_GLOBAL(0x01424070, sint32) + 26;
+	y = max(22, y);
+	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height;
+	if (y > maxY) {
+		y = y - height - 40;
+		y = min(y, maxY);
+	}
+		
+	w = window_create(x, y, width, height, (uint32*)window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+	w->widgets = window_error_widgets;
+	w->error.var_480 = 0;
+	if (!(RCT2_GLOBAL(0x009A8C29, uint8) & 1))
+		sound_play_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00667BFE
+ */
+static void window_error_unknown5()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->error.var_480++;
+	if (w->error.var_480 >= 8)
+		window_close(w);
+}
+
+/**
+ * 
+ *  rct2: 0x00667AA3
+ */
+static void window_error_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	int t, l, r, b;
+
+	window_paint_get_registers(w, dpi);
+
+	l = w->x;
+	t = w->y;
+	r = w->x + w->width - 1;
+	b = w->y + w->height - 1;
+
+	gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x200002D);
+	gfx_fill_rect(dpi, l, t, r, b, 0x200008B);
+
+	gfx_fill_rect(dpi, l, t + 2, l, b - 2, 0x200002F);
+	gfx_fill_rect(dpi, r, t + 2, r, b - 2, 0x200002F);
+	gfx_fill_rect(dpi, l + 2, b, r - 2, b, 0x200002F);
+	gfx_fill_rect(dpi, l + 2, t, r - 2, t, 0x200002F);
+
+	gfx_fill_rect(dpi, r + 1, t + 1, r + 1, t + 1, 0x200002F);
+	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, t + 1, 0x200002F);
+	gfx_fill_rect(dpi, l + 1, b - 1, l + 1, b - 1, 0x200002F);
+	gfx_fill_rect(dpi, r - 1, b - 1, r - 1, b - 1, 0x200002F);
+
+	l = w->x + (w->width + 1) / 2 - 1;
+	t = w->y + 1;
+	draw_string_centred_raw(dpi, l, t, _window_error_num_lines, _window_error_text);
 }

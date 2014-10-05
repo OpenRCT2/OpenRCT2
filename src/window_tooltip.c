@@ -213,5 +213,7 @@ static void window_tooltip_paint()
 	gfx_draw_pixel(dpi, right - 1, bottom - 1, 0x0200002F);
 	
 	// Text
-	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, w->x + ((w->width + 1) / 2) - 1, w->y + 1, 0x0141FE44, (int)dpi, RCT2_GLOBAL(0x01420044, uint16));
+	left = w->x + ((w->width + 1) / 2) - 1;
+	top = w->y + 1;
+	draw_string_centred_raw(dpi, left, top, RCT2_GLOBAL(0x01420044, uint16), (char*)0x0141FE44);
 }
