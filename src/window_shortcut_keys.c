@@ -18,6 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include "addresses.h"
+#include "config.h"
 #include "window.h"
 #include "widget.h"
 
@@ -43,10 +45,14 @@ static rct_widget window_shortcut_widgets[] = {
 };
 
 void window_shortcut_emptysub() { }
+static void window_shortcut_mouseup();
+static void window_shortcut_paint();
+static void window_shortcut_tooltip();
+static void window_shortcut_scrollgetsize();
 
 static void* window_options_events[] = {
 	window_shortcut_emptysub,
-	(void*)0x6E39E4,
+	window_shortcut_mouseup,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
@@ -60,18 +66,18 @@ static void* window_options_events[] = {
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
-	(void*)0x6E3A07,
+	window_shortcut_scrollgetsize,
 	(void*)0x6E3A3E,
 	window_shortcut_emptysub,
 	(void*)0x6E3A16,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
-	(void*)0x6E3A0C,
+	window_shortcut_tooltip,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
-	(void*)0x6E38E0,
+	window_shortcut_paint,
 	(void*)0x6E38E6
 };
 
@@ -98,4 +104,69 @@ void window_shortcut_keys_open()
 	w->colours[2] = 7;
 	w->no_list_items = 32;
 	w->selected_list_item = -1;
+}
+
+/**
+*
+*  rct2: 0x006E39E4
+*/
+static void window_shortcut_mouseup()
+{
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex){
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_RESET:
+		config_reset_shortcut_keys();
+		config_save();
+		window_invalidate(w);
+		break;
+	}
+}
+
+/**
+*
+*  rct2: 0x006E38E0
+*/
+static void window_shortcut_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+}
+
+/**
+*
+*  rct2: 0x006E3A0C
+*/
+static void window_shortcut_tooltip()
+{
+	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+}
+
+/**
+*
+*  rct2: 0x006E3A07
+*/
+static void window_shortcut_scrollgetsize()
+{
+	int y;
+	rct_window *w;
+	window_get_register(w);
+
+	y = 32 * 10;
+
+#ifdef _MSC_VER
+	__asm mov edx, y
+#else
+	__asm__("mov edx, %[y] " : [y] "+m" (y));
+#endif
 }
