@@ -19,11 +19,44 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "date.h"
 #include "research.h"
 #include "rct2.h"
 #include "window.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
+
+/**
+ *
+ *  rct2: 0x00684D2A
+ */
+static void research_calculate_expected_date()
+{
+	int progress = RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16);
+	int progressStage = RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8);
+	int researchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	int currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	int expectedDay, expectedMonth, dayQuotient, dayRemainder, progressRemaining, daysRemaining;
+
+	if (progressStage == RESEARCH_STAGE_INITIAL_RESEARCH || researchLevel == RESEARCH_FUNDING_NONE) {
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) = 255;
+	} else {
+		progressRemaining = progressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
+		progressRemaining -= progress;
+		daysRemaining = (progressRemaining / _researchRate[researchLevel]) * 128;
+
+		expectedDay = currentDay + (daysRemaining & 0xFFFF);
+		dayQuotient = expectedDay / 0x10000;
+		dayRemainder = expectedDay % 0x10000;
+		
+		expectedMonth = date_get_month(currentMonth + dayQuotient + (daysRemaining >> 16));
+		expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) = expectedDay;
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8) = expectedMonth;
+	}
+}
 
 /**
  *
@@ -37,7 +70,7 @@ void research_update()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & editorScreenFlags)
 		return;
 
-	if (RCT2_GLOBAL(0x00F663AC, uint32) & 0x1F)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) % 32 != 0)
 		return;
 
 	researchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
@@ -50,12 +83,12 @@ void research_update()
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)) {
 		case RESEARCH_STAGE_INITIAL_RESEARCH:
 			RCT2_CALLPROC_EBPSAFE(0x00684BE5);
-			RCT2_CALLPROC_EBPSAFE(0x00684D2A);
+			research_calculate_expected_date();
 			break;
 		case RESEARCH_STAGE_DESIGNING:
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_COMPLETING_DESIGN;
-			RCT2_CALLPROC_EBPSAFE(0x00684D2A);
+			research_calculate_expected_date();
 			window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
 			window_invalidate_by_id(WC_RESEARCH, 0);
 			break;
@@ -64,7 +97,7 @@ void research_update()
 			RCT2_CALLPROC_EBPSAFE(0x006848D4);
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
-			RCT2_CALLPROC_EBPSAFE(0x00684D2A);
+			research_calculate_expected_date();
 			RCT2_CALLPROC_EBPSAFE(0x00684BAE);
 			window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
 			window_invalidate_by_id(WC_RESEARCH, 0);
