@@ -282,6 +282,29 @@ void peep_update_falling(rct_peep* peep){
 }
 
 /**
+ * rct2: 0x00691677
+ */
+void peep_try_get_up_from_sitting(rct_peep* peep){
+	// Eats all food first
+	if (peep_has_food(peep))return;
+
+	(*((uint16*)&peep->current_car))--;
+	// Checks time we have been sitting on seat
+	if (*((uint16*)&peep->current_car)) return;
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_WALKING;
+	peep_window_state_update(peep);
+
+	int x = (peep->x & 0xFFE0) + 16;
+	int y = (peep->y & 0xFFE0) + 16;
+	peep->var_32 = x;
+	peep->var_34 = y;
+	peep->var_36 = 5;
+	RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+/**
  * rct2: 0x0069152B 
  */
 void peep_update_sitting(rct_peep* peep){
@@ -308,15 +331,75 @@ void peep_update_sitting(rct_peep* peep){
 
 		peep->var_2C++;
 
+		// Sets time to sit on seat
 		*((uint16*)&peep->current_car) = (129 - peep->energy) * 16 + 50;
-		
 	}
 	else if (peep->var_2C == 1){
-		//6915C0
-		RCT2_CALLPROC_X(0x0069152B, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (peep->var_71 < 0xFE){
+			RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
+			if (peep->var_71 != 0xFF) return;
+
+			peep->var_71 = 0xFE;
+			peep_try_get_up_from_sitting(peep);
+			return;
+		}
+		
+		if ((peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_WALKING;
+			peep_window_state_update(peep);
+
+			int x = (peep->x & 0xFFE0) + 16;
+			int y = (peep->y & 0xFFE0) + 16;
+			peep->var_32 = x;
+			peep->var_34 = y;
+			peep->var_36 = 5;
+			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+			return;
+		}
+		
+		if (peep->sprite_type == 0x15){
+			peep_try_get_up_from_sitting(peep);
+			return;
+		}
+
+		if (peep_has_food(peep)){
+			if ((scenario_rand() & 0xFFFF) > 1310){
+				peep_try_get_up_from_sitting(peep);
+				return;
+			}
+			peep->var_71 = 4;
+			peep->var_72 = 0;
+			peep->var_70 = 0;
+			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			return;
+		}
+
+		int rand = scenario_rand();
+		if ((rand & 0xFFFF) > 131){
+			peep_try_get_up_from_sitting(peep);
+			return;
+		}
+		if (peep->sprite_type == 0x13 || peep->sprite_type == 0x1E){
+			peep_try_get_up_from_sitting(peep);
+			return;
+		}
+
+		peep->var_71 = 5;
+		if (rand & 0x80000000){
+			peep->var_71 = 6;
+		}
+
+		if (rand & 0x40000000){
+			peep->var_71 = 4;
+		}
+		peep->var_72 = 0;
+		peep->var_70 = 0;
+		RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
-
 }
 
 /**
@@ -1159,6 +1242,43 @@ int peep_is_mechanic(rct_peep *peep)
 		peep->type == PEEP_TYPE_STAFF &&
 		peep->staff_type == STAFF_TYPE_MECHANIC
 	);
+}
+
+/* To simplify check of 0x36BA3E0 and 0x11FF78 
+ * returns 0 on no food.
+ */
+int peep_has_food(rct_peep* peep){
+	return (peep->item_standard_flags &(
+		PEEP_ITEM_DRINK |
+		PEEP_ITEM_BURGER |
+		PEEP_ITEM_FRIES |
+		PEEP_ITEM_ICE_CREAM |
+		PEEP_ITEM_COTTON_CANDY |
+		PEEP_ITEM_PIZZA |
+		PEEP_ITEM_POPCORN |
+		PEEP_ITEM_HOT_DOG |
+		PEEP_ITEM_TENTACLE |
+		PEEP_ITEM_CANDY_APPLE |
+		PEEP_ITEM_DONUT |
+		PEEP_ITEM_COFFEE |
+		PEEP_ITEM_CHICKEN |
+		PEEP_ITEM_LEMONADE)) ||
+		(peep->item_extra_flags &(
+		PEEP_ITEM_PRETZEL |
+		PEEP_ITEM_CHOCOLATE |
+		PEEP_ITEM_ICED_TEA |
+		PEEP_ITEM_FUNNEL_CAKE |
+		PEEP_ITEM_BEEF_NOODLES |
+		PEEP_ITEM_FRIED_RICE_NOODLES |
+		PEEP_ITEM_WONTON_SOUP |
+		PEEP_ITEM_MEATBALL_SOUP |
+		PEEP_ITEM_FRUIT_JUICE |
+		PEEP_ITEM_SOYBEAN_MILK |
+		PEEP_ITEM_SU_JONGKWA |
+		PEEP_ITEM_SUB_SANDWICH |
+		PEEP_ITEM_COOKIE |
+		PEEP_ITEM_ROAST_SAUSAGE
+		));
 }
 
 /**

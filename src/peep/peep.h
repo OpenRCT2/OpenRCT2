@@ -494,6 +494,8 @@ int get_peep_face_sprite_large(rct_peep *peep);
 int peep_check_easteregg_name(int index, rct_peep *peep);
 int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
+int peep_has_food(rct_peep* peep);
+
 void peep_window_state_update(rct_peep* peep);
 void peep_decrement_num_riders(rct_peep* peep);
 /**
