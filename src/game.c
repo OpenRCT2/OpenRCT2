@@ -31,6 +31,7 @@
 #include "park.h"
 #include "peep.h"
 #include "rct2.h"
+#include "research.h"
 #include "ride.h"
 #include "sawyercoding.h"
 #include "scenario.h"
@@ -494,7 +495,7 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
 	park_update();
-	RCT2_CALLPROC_EBPSAFE(0x00684C7A);	// update research
+	research_update();
 	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);	// update ride ratings
 	ride_measurements_update();
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);

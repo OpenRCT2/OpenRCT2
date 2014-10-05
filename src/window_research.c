@@ -339,9 +339,9 @@ static void window_research_development_paint()
 
 	// Research type
 	stringId = STR_RESEARCH_UNKNOWN;
-	if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
 		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(0x013580E6, uint8);
-		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 1) {
 			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
 			if (typeId >= 0x10000) {
 				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
@@ -357,13 +357,13 @@ static void window_research_development_paint()
 	y += 25;
 
 	// Progress
-	stringId = 2285 + RCT2_GLOBAL(0x01357CF3, uint8);
+	stringId = 2285 + RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8);
 	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
 	y += 15;
 
 	// Expected
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
-	if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
 		uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
 		if (expectedDay != 255) {
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
