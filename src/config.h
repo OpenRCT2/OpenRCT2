@@ -153,6 +153,11 @@ static const struct { const char *key; int value; } _currencyLookupTable[] = {
 	{ "\xB5", CURRENCY_EUROS }
 };
 
+typedef struct shortcut_entry{
+	uint8 shortcut;
+	uint8 key;
+}shortcut_entry;
+
 //typedef struct hotkey_configuration{
 
 //};

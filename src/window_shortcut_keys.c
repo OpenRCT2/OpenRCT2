@@ -26,6 +26,9 @@
 #define WW 340
 #define WH 240
 
+#define WW_C 250
+#define WH_C 60
+
 enum WINDOW_SHORTCUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -34,7 +37,13 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 	WIDX_RESET
 };
 
-// 9DE48C
+enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
+	WIDX_CHANGE_BACKGROUND,
+	WIDX_CHANGE_TITLE,
+	WIDX_CHANGE_CLOSE,
+};
+
+// 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,		STR_NONE },
 	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
@@ -44,13 +53,24 @@ static rct_widget window_shortcut_widgets[] = {
 	{ WIDGETS_END }
 };
 
+// 0x9DE4E0
+static rct_widget window_shortcut_change_widgets[] = {
+	{ WWT_FRAME,			0,	0,			WW_C - 1,	0,		WH_C - 1,	STR_NONE,		STR_NONE },
+	{ WWT_CAPTION,			0,	1,			WW_C - 2,	1,		14,			STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW_C-13,	WW_C - 3,	2,		13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
+	{ WIDGETS_END }
+};
+
 void window_shortcut_emptysub() { }
 static void window_shortcut_mouseup();
 static void window_shortcut_paint();
 static void window_shortcut_tooltip();
 static void window_shortcut_scrollgetsize();
+static void window_shortcut_scrollmousedown();
+static void window_shortcut_scrollmouseover();
+static void window_shortcut_scrollpaint();
 
-static void* window_options_events[] = {
+static void* window_shortcut_events[] = {
 	window_shortcut_emptysub,
 	window_shortcut_mouseup,
 	window_shortcut_emptysub,
@@ -67,9 +87,9 @@ static void* window_options_events[] = {
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_scrollgetsize,
-	(void*)0x6E3A3E,
+	window_shortcut_scrollmousedown,
 	window_shortcut_emptysub,
-	(void*)0x6E3A16,
+	window_shortcut_scrollmouseover,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
@@ -78,8 +98,44 @@ static void* window_options_events[] = {
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
 	window_shortcut_paint,
-	(void*)0x6E38E6
+	window_shortcut_scrollpaint
 };
+
+static void window_shortcut_change_mouseup();
+static void window_shortcut_change_paint();
+
+//0x9A3F7C
+static void* window_shortcut_change_events[] = {
+	window_shortcut_emptysub,
+	window_shortcut_change_mouseup,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_emptysub,
+	window_shortcut_change_paint,
+	window_shortcut_emptysub
+};
+
 
 /**
  *
@@ -93,7 +149,7 @@ void window_shortcut_keys_open()
 
 	if (w) return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)0x9A3F0C, WC_KEYBOARD_SHORTCUT_LIST, 0);
+	w = window_create_auto_pos(WW, WH, (uint32*)window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
 
 	w->widgets = window_shortcut_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
@@ -169,4 +225,130 @@ static void window_shortcut_scrollgetsize()
 #else
 	__asm__("mov edx, %[y] " : [y] "+m" (y));
 #endif
+}
+
+/**
+*
+*  rct2: 0x006E3A3E
+*/
+static void window_shortcut_scrollmousedown()
+{
+	short x, y;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, x, y);
+
+	int selected_item = y / 10;
+
+	if (selected_item >= w->no_list_items)return;
+
+	// Move this to window_shortcut_change_open
+	window_close_by_id(WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+	// Save the item we are selecting for new window
+	RCT2_GLOBAL(0x9DE511, uint8) = selected_item;
+	rct_window* change_w = window_create_auto_pos(WW_C, WH_C, (uint32*)window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+
+	w->widgets = window_shortcut_change_widgets;
+	w->enabled_widgets = (1 << 2);
+	window_init_scroll_widgets(w);
+	w->colours[0] = 7;
+	w->colours[1] = 7;
+	w->colours[2] = 7;
+
+}
+
+/**
+*
+*  rct2: 0x006E3A16
+*/
+static void window_shortcut_scrollmouseover()
+{
+	short x, y;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, x, y);
+
+	int selected_item = y / 10;
+
+	if (selected_item >= w->no_list_items)return;
+	
+	w->selected_list_item = selected_item;
+}
+
+/**
+ * 
+ *  rct2: 0x006E38E6
+ */
+static void window_shortcut_scrollpaint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
+
+	for (int i = 0; i < w->no_list_items; ++i){
+		int y = i * 10;
+		int format = STR_BLACK_STRING;
+		if (i == w->selected_list_item){
+			format = STR_WINDOW_COLOUR_2_STRING;
+			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+		}
+
+		RCT2_GLOBAL(0x13CE954, uint16) = i + 2493;
+		RCT2_GLOBAL(0x13CE956, uint16) = 0;
+		RCT2_GLOBAL(0x13CE958, uint16) = 0;
+
+		
+		shortcut_entry sc_entry = RCT2_ADDRESS(RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS, shortcut_entry)[i];
+
+		if (sc_entry.shortcut != 255){
+			RCT2_GLOBAL(0x13CE958, uint16) = sc_entry.shortcut + 2525;
+			if (sc_entry.key){
+				RCT2_GLOBAL(0x13CE956, uint16) = 2782;
+				if (sc_entry.key != 1){
+					RCT2_GLOBAL(0x13CE956, uint16) = 2783;
+				}
+			}
+		}
+		RCT2_GLOBAL(0x13CE952, uint16) = 2781;
+
+		gfx_draw_string_left(dpi, format, (void*)0x13CE952, 0, 0, y - 1);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006E3AE0
+ */
+static void window_shortcut_change_mouseup(){
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex){
+	case WIDX_CHANGE_CLOSE:
+		window_close(w);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006E3A9F
+ */
+static void window_shortcut_change_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+
+	int x = w->x + 125;
+	int y = w->y + 30;
+
+	RCT2_GLOBAL(0x13CE952, uint16) = 2493 + RCT2_GLOBAL(0x9DE511, uint8);
+	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
 }
