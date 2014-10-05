@@ -431,6 +431,9 @@
     <ClCompile Include="..\src\research.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\window_shortcut_keys.c">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">

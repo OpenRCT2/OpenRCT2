@@ -286,7 +286,7 @@ static void window_options_mouseup()
 		window_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HOTKEY_DROPDOWN:
-		RCT2_CALLPROC_EBPSAFE(0x006E3884);
+		window_shortcut_keys_open();
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) ^= 1;

@@ -136,6 +136,7 @@
     <ClCompile Include="..\src\window_ride.c" />
     <ClCompile Include="..\src\window_ride_list.c" />
     <ClCompile Include="..\src\window_save_prompt.c" />
+    <ClCompile Include="..\src\window_shortcut_keys.c" />
     <ClCompile Include="..\src\window_staff.c" />
     <ClCompile Include="..\src\window_staff_peep.c" />
     <ClCompile Include="..\src\window_title_exit.c" />

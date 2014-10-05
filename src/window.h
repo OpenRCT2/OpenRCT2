@@ -476,6 +476,7 @@ void window_staff_open();
 void window_guest_list_open();
 void window_map_open();
 void window_options_open();
+void window_shortcut_keys_open();
 void window_peep_open(rct_peep* peep);
 void window_staff_peep_open(rct_peep* peep);
 void window_park_awards_open();
