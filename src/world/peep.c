@@ -19,16 +19,16 @@
 *****************************************************************************/
 
 #include <windows.h>
-#include "addresses.h"
-#include "audio.h"
-#include "news_item.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../ride/ride.h"
+#include "../sprites.h"
 #include "peep.h"
-#include "rct2.h"
-#include "ride.h"
 #include "sprite.h"
-#include "sprites.h"
 #include "staff.h"
-#include "window.h"
 
 static void peep_update(rct_peep *peep);
 

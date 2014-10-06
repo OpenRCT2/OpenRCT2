@@ -19,16 +19,16 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "game.h"
-#include "map.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../world/map.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,

@@ -18,16 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "game.h"
-#include "rct2.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "tutorial.h"
-#include "widget.h"
-#include "window.h"
-#include "audio.h"
-#include "config.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../sprites.h"
+#include "../config.h"
+#include "../tutorial.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,

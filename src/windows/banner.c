@@ -19,12 +19,12 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "config.h"
-#include "string_ids.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../config.h"
+#include "../localisation/localisation.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_BACKGROUND,

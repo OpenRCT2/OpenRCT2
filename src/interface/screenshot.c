@@ -19,19 +19,18 @@
  *****************************************************************************/
 #pragma pack(1)
 
-#include <lodepng.h>
-#include <stdio.h>
-#include "osinterface.h"
-#include "addresses.h"
-#include "config.h"
-#include "gfx.h"
-#include "game.h"
-#include "rct2.h"
-#include "screenshot.h"
-#include "string_ids.h"
-#include "window_error.h"
-
 #include <windows.h> // For MAX_PATH
+#include <lodepng/lodepng.h>
+#include <stdio.h>
+#include "../platform/osinterface.h"
+#include "../addresses.h"
+#include "../config.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../windows/error.h"
+#include "screenshot.h"
+
 
 
 static int screenshot_dump_bmp();

@@ -21,7 +21,7 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 #define MIXER_LOOP_NONE			0
 #define MIXER_LOOP_INFINITE		-1

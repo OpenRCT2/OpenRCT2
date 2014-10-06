@@ -18,22 +18,22 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "addresses.h"
-#include "game.h"
-#include "map.h"
-#include "marketing.h"
-#include "ride.h"
-#include "peep.h"
-#include "scenario.h"
-#include "string_ids.h"
-#include "staff.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
-#include "window_error.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../world/map.h"
+#include "../management/marketing.h"
+#include "../ride/ride.h"
+#include "../world/peep.h"
+#include "../scenario.h"
+#include "../localisation/localisation.h"
+#include "../world/staff.h"
+#include "../world/sprite.h"
+#include "../sprites.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
+#include "error.h"
 
 enum WINDOW_PEEP_PAGE {
 	WINDOW_PEEP_OVERVIEW,

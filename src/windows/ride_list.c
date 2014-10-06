@@ -19,15 +19,15 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "game.h"
-#include "ride.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../ride/ride.h"
+#include "../localisation/localisation.h"
+#include "../world/sprite.h"
+#include "../sprites.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 enum {
 	PAGE_RIDES,

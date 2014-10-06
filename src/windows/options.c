@@ -28,19 +28,18 @@
 
 #include <stdint.h>
 
-#include "addresses.h"
-#include "audio.h"
-#include "config.h"
-#include "gfx.h"
-#include "language.h"
-#include "mixer.h"
-#include "osinterface.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../audio/mixer.h"
+#include "../config.h"
+#include "../drawing/drawing.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../platform/osinterface.h"
+#include "dropdown.h"
 
 enum {
 	WINDOW_OPTIONS_PAGE_DISPLAY,

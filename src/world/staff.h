@@ -21,7 +21,7 @@
 #ifndef _STAFF_H_
 #define _STAFF_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 #define STAFF_MAX_COUNT 0xC8
 #define STAFF_TYPE_COUNT 0x04

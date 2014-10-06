@@ -21,7 +21,7 @@
 #ifndef _WINDOW_DROPDOWN_H_
 #define _WINDOW_DROPDOWN_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 #define DROPDOWN_SEPARATOR 0
 

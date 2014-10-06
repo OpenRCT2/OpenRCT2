@@ -21,11 +21,11 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include "gfx.h"
-#include "park.h"
-#include "peep.h"
-#include "rct2.h"
-#include "ride.h"
+#include "../common.h"
+#include "../drawing/drawing.h"
+#include "../ride/ride.h"
+#include "../world/park.h"
+#include "../world/peep.h"
 
 struct rct_window;
 union rct_window_event;

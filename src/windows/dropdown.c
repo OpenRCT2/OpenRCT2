@@ -20,13 +20,13 @@
 
 #include <windows.h>
 #include <memory.h>
-#include "addresses.h"
-#include "scenario.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../scenario.h"
+#include "../sprites.h"
+#include "dropdown.h"
 
 int gAppropriateImageDropdownItemsPerRow[] = {
 	1, 1, 1, 1, 2, 2, 3, 3, 4,

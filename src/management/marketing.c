@@ -18,13 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
+#include "../addresses.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
 #include "marketing.h"
 #include "news_item.h"
-#include "rct2.h"
-#include "ride.h"
-#include "string_ids.h"
-#include "window.h"
 
 const money16 AdvertisingCampaignPricePerWeek[] = {
 	MONEY(50,00),	// PARK_ENTRY_FREE,

@@ -22,8 +22,7 @@
 #define _RIDE_DATA_H_
 
 #include <stdbool.h>
-#include "rct2.h"
-#include "string_ids.h"
+#include "../common.h"
 
 typedef struct {
 	rct_string_id vehicle_name;

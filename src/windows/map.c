@@ -19,13 +19,13 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
-#include "window_scenery.h"
-#include "viewport.h"
+#include "../addresses.h"
+#include "../sprites.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../windows/scenery.h"
+#include "../interface/viewport.h"
 
 enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,

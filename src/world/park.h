@@ -21,7 +21,7 @@
 #ifndef _PARK_H_
 #define _PARK_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 #define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
 #define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)

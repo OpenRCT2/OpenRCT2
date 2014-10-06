@@ -20,11 +20,11 @@
 
 #include <windows.h>
 #include <memory.h>
-#include "addresses.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
-#include "gfx.h"
+#include "../addresses.h"
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 enum {
 	WIDX_BACKGROUND

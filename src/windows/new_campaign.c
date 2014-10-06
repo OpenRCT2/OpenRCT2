@@ -19,14 +19,14 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "game.h"
-#include "marketing.h"
-#include "ride.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../management/marketing.h"
+#include "../ride/ride.h"
+#include "dropdown.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 

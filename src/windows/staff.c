@@ -19,17 +19,17 @@
 *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "game.h"
-#include "gfx.h"
-#include "peep.h"
-#include "staff.h"
-#include "sprite.h"
-#include "string_ids.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../drawing/drawing.h"
+#include "../world/peep.h"
+#include "../world/staff.h"
+#include "../world/sprite.h"
+#include "../localisation/localisation.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 enum {
 	WINDOW_STAFF_TAB_HANDYMEN,

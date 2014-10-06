@@ -21,10 +21,9 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
-#include "map.h"
-#include "peep.h"
-#include "rct2.h"
-#include "string_ids.h"
+#include "../common.h"
+#include "../world/map.h"
+#include "../world/peep.h"
 
 typedef fixed16_2dp ride_rating;
 

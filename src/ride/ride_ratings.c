@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
+#include "../addresses.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"

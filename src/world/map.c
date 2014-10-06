@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
+#include "../addresses.h"
+#include "../localisation/date.h"
 #include "climate.h"
-#include "date.h"
 #include "map.h"
 
 static void tiles_init();

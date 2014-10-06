@@ -21,13 +21,13 @@
 #ifndef _SPRITE_H_
 #define _SPRITE_H_
 
-#include "rct2.h"
+#include "../common.h"
+#include "../ride/vehicle.h"
+#include "peep.h"
 
 #define SPRITE_INDEX_NULL    0xFFFF
 #define SPRITE_LOCATION_NULL 0x8000
 
-#include "peep.h"
-#include "vehicle.h"
 
 enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_VEHICLE = 0,

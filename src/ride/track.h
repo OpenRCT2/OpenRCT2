@@ -21,7 +21,7 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 
-#include "rct2.h"
+#include "../common.h"
 #include "ride.h"
 
 typedef struct {

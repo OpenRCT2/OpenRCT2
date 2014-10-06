@@ -19,14 +19,14 @@
 *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "date.h"
-#include "scenario.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../scenario.h"
+#include "../sprites.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 enum {
 	WIDX_BACKGROUND,

@@ -20,9 +20,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "addresses.h"
-#include "language.h"
-#include "string_ids.h"
+#include "../addresses.h"
+#include "localisation.h"
 
 const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED

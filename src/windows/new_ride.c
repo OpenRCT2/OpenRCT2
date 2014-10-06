@@ -19,16 +19,16 @@
 *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "game.h"
-#include "news_item.h"
-#include "ride.h"
-#include "string_ids.h"
-#include "scenery.h"
-#include "track.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../management/news_item.h"
+#include "../ride/ride.h"
+#include "../localisation/localisation.h"
+#include "../world/scenery.h"
+#include "../ride/track.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 

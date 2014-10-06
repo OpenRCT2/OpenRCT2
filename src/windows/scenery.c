@@ -20,20 +20,20 @@
 
 #include <string.h>
 #include <stdbool.h>
-#include "addresses.h"
-#include "audio.h"
-#include "game.h"
-#include "map.h"
-#include "gfx.h"
-#include "peep.h"
-#include "sprite.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../world/map.h"
+#include "../drawing/drawing.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
+#include "../world/scenery.h"
+#include "../localisation/localisation.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 #include "scenery.h"
-#include "string_ids.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
-#include "window_scenery.h"
 
 enum {
 	WINDOW_SCENERY_TAB_1,

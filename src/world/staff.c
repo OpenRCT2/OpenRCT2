@@ -18,15 +18,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "staff.h"
-#include "addresses.h"
-#include "rct2.h"
-#include "game.h"
-#include "finance.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../interface/viewport.h"
+#include "../localisation/string_ids.h"
+#include "../management/finance.h"
 #include "peep.h"
 #include "sprite.h"
-#include "string_ids.h"
-#include "viewport.h"
+#include "staff.h"
 
 /**
 *

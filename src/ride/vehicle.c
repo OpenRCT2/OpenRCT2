@@ -18,12 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "audio.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../interface/viewport.h"
+#include "../world/sprite.h"
 #include "ride.h"
-#include "sprite.h"
 #include "vehicle.h"
-#include "viewport.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
 

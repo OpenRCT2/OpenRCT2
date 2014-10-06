@@ -19,14 +19,14 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "game.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
-#include "viewport.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../sprites.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
+#include "../interface/viewport.h"
 
 enum {
 	WIDX_PAUSE,

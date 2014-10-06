@@ -21,7 +21,7 @@
 #ifndef _PEEP_H_
 #define _PEEP_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 #define PEEP_MAX_THOUGHTS 5
 

@@ -18,14 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
+#include "../addresses.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
+#include "../scenario.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
 #include "award.h"
 #include "news_item.h"
-#include "peep.h"
-#include "ride.h"
-#include "scenario.h"
-#include "sprite.h"
-#include "window.h"
 
 #define NEGATIVE 0
 #define POSITIVE 1

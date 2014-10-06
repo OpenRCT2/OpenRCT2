@@ -18,17 +18,17 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "addresses.h"
-#include "finance.h"
-#include "game.h"
-#include "news_item.h"
-#include "ride.h"
-#include "scenery.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../management/finance.h"
+#include "../management/news_item.h"
+#include "../ride/ride.h"
+#include "../sprites.h"
+#include "../world/scenery.h"
+#include "dropdown.h"
 
 enum {
 	WINDOW_RESEARCH_PAGE_DEVELOPMENT,

@@ -19,19 +19,19 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "game.h"
-#include "map.h"
-#include "ride.h"
-#include "ride_data.h"
-#include "staff.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../world/map.h"
+#include "../ride/ride.h"
+#include "../ride/ride_data.h"
+#include "../world/staff.h"
+#include "../localisation/localisation.h"
+#include "../world/sprite.h"
+#include "../sprites.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
 

@@ -19,14 +19,14 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "news_item.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../management/news_item.h"
+#include "../localisation/localisation.h"
+#include "../world/sprite.h"
+#include "../sprites.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,

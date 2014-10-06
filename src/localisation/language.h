@@ -21,8 +21,7 @@
 #ifndef _LANGUAGE_H_
 #define _LANGUAGE_H_
 
-#include "rct2.h"
-#include "string_ids.h"
+#include "../common.h"
 
 enum {
 	LANGUAGE_UNDEFINED,

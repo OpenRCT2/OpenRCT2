@@ -21,19 +21,19 @@
 #include <SDL_keycode.h>
 #include <windows.h>
 #include "addresses.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "config.h"
 #include "game.h"
 #include "input.h"
-#include "map.h"
-#include "osinterface.h"
-#include "sprite.h"
+#include "interface/viewport.h"
+#include "interface/widget.h"
+#include "interface/window.h"
+#include "platform/osinterface.h"
 #include "tutorial.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_tooltip.h"
-#include "window_dropdown.h"
+#include "windows/tooltip.h"
+#include "windows/dropdown.h"
+#include "world/map.h"
+#include "world/sprite.h"
 
 POINT _dragPosition;
 

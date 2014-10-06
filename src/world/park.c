@@ -19,19 +19,19 @@
  *****************************************************************************/
 
 #include <windows.h>
-#include "addresses.h"
-#include "award.h"
-#include "finance.h"
-#include "map.h"
-#include "marketing.h"
-#include "news_item.h"
+#include "../addresses.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../management/award.h"
+#include "../management/finance.h"
+#include "../management/marketing.h"
+#include "../management/news_item.h"
+#include "../ride/ride.h"
+#include "../scenario.h"
+#include "../world/map.h"
 #include "park.h"
 #include "peep.h"
-#include "ride.h"
-#include "scenario.h"
 #include "sprite.h"
-#include "string_ids.h"
-#include "window.h"
 
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.

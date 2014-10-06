@@ -20,17 +20,17 @@
 
 #include <windows.h>
 #include <string.h>
-#include "addresses.h"
-#include "climate.h"
-#include "date.h"
-#include "news_item.h"
-#include "park.h"
-#include "peep.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../management/news_item.h"
+#include "../sprites.h"
+#include "../world/climate.h"
+#include "../world/park.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,

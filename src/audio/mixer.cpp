@@ -23,8 +23,8 @@
 #include <string.h>
 
 extern "C" {
+#include "../config.h"
 #include "audio.h"
-#include "config.h"
 }
 #include "mixer.h"
 

@@ -18,13 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "game.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "widget.h"
-#include "window.h"
-#include "rct2.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../sprites.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },

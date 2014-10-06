@@ -18,13 +18,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "addresses.h"
+#include "../addresses.h"
+#include "../interface/window.h"
+#include "../ride/ride.h"
+#include "../world/park.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
 #include "finance.h"
-#include "sprite.h"
-#include "park.h"
-#include "peep.h"
-#include "ride.h"
-#include "window.h"
 
 // Monthly staff wages
 const money32 wage_table[4] = {

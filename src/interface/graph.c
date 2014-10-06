@@ -18,10 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "date.h"
+#include "../addresses.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "graph.h"
-#include "string_ids.h"
 
 static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY)
 {

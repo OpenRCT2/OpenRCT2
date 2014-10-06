@@ -19,15 +19,14 @@
  *****************************************************************************/
 
 #include <SDL.h>
+#include "../addresses.h"
+#include "../config.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../platform/osinterface.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "audio.h"
-#include "addresses.h"
-#include "config.h"
-#include "map.h"
-#include "osinterface.h"
-#include "rct2.h"
-#include "sprite.h"
-#include "viewport.h"
-#include "window.h"
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;

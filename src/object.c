@@ -23,10 +23,10 @@
 #include <string.h>
 #include <ctype.h>
 #include "addresses.h"
-#include "string_ids.h"
+#include "localisation/localisation.h"
 #include "object.h"
-#include "osinterface.h"
-#include "sawyercoding.h"
+#include "platform/osinterface.h"
+#include "util/sawyercoding.h"
 
 int object_entry_compare(rct_object_entry *a, rct_object_entry *b);
 int object_calculate_checksum(rct_object_entry *entry, char *data, int dataLength);

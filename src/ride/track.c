@@ -20,9 +20,9 @@
 
 #include <string.h>
 #include <windows.h>
-#include "addresses.h"
+#include "../addresses.h"
+#include "../platform/osinterface.h"
 #include "ride.h"
-#include "osinterface.h"
 #include "track.h"
 
 /**

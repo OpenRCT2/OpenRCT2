@@ -19,17 +19,16 @@
 *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "game.h"
-#include "gfx.h"
-#include "map.h"
-#include "osinterface.h"
-#include "rct2.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../drawing/drawing.h"
+#include "../platform/osinterface.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "widget.h"
 #include "window.h"
 #include "viewport.h"
-#include "sprite.h"
 
 #define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)

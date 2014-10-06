@@ -25,15 +25,14 @@
 #include <SDL_syswm.h>
 #include <windows.h>
 
-#include "addresses.h"
-#include "config.h"
-#include "gfx.h"
-#include "input.h"
+#include "../addresses.h"
+#include "../config.h"
+#include "../cursors.h"
+#include "../drawing/drawing.h"
+#include "../input.h"
+#include "../interface/screenshot.h"
+#include "../interface/window.h"
 #include "osinterface.h"
-#include "screenshot.h"
-#include "window.h"
-#include "rct2.h"
-#include "cursors.h"
 
 typedef void(*update_palette_func)(char*, int, int);
 

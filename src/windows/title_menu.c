@@ -18,15 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "editor.h"
-#include "game.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "tutorial.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../editor.h"
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../tutorial.h"
+#include "dropdown.h"
 
 enum {
 	WIDX_START_NEW_GAME,

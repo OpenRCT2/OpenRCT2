@@ -21,8 +21,7 @@
 #ifndef _WINDOW_TOOLTIP_H_
 #define _WINDOW_TOOLTIP_H_
 
-#include "rct2.h"
-#include "window.h"
+#include "../interface/window.h"
 
 void window_tooltip_reset(int x, int y);
 void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y);

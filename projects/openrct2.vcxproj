@@ -28,10 +28,16 @@
     <Text Include="..\data\language\swedish.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\lib\libspeex\resample.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\config.c" />
-    <ClCompile Include="..\src\drawing\gfx.c" />
+    <ClCompile Include="..\src\drawing\drawing.c" />
+    <ClCompile Include="..\src\drawing\line.c" />
+    <ClCompile Include="..\src\drawing\rect.c" />
+    <ClCompile Include="..\src\drawing\sprite.c" />
+    <ClCompile Include="..\src\drawing\string.c" />
     <ClCompile Include="..\src\editor.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
@@ -45,14 +51,19 @@
     <ClCompile Include="..\src\localisation\currency.c" />
     <ClCompile Include="..\src\localisation\date.c" />
     <ClCompile Include="..\src\localisation\language.c" />
-    <ClCompile Include="..\src\localisation\string_ids.c" />
+    <ClCompile Include="..\src\localisation\localisation.c" />
+    <ClCompile Include="..\src\localisation\real_names.c" />
     <ClCompile Include="..\src\management\award.c" />
     <ClCompile Include="..\src\management\finance.c" />
     <ClCompile Include="..\src\management\marketing.c" />
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
+    <ClCompile Include="..\src\platform\shared.c" />
+    <ClCompile Include="..\src\platform\unix.c" />
     <ClCompile Include="..\src\platform\osinterface.c" />
+    <ClCompile Include="..\src\platform\osx.c" />
+    <ClCompile Include="..\src\platform\windows.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride\ride.c" />
     <ClCompile Include="..\src\ride\ride_data.c" />
@@ -111,12 +122,20 @@
     <ClCompile Include="..\src\world\staff.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\lib\libspeex\arch.h" />
+    <ClInclude Include="..\lib\libspeex\config.h" />
+    <ClInclude Include="..\lib\libspeex\os_support.h" />
+    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h" />
+    <ClInclude Include="..\lib\libspeex\speex\speex_types.h" />
+    <ClInclude Include="..\lib\libspeex\stack_alloc.h" />
+    <ClInclude Include="..\lib\lodepng\lodepng.h" />
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio\audio.h" />
     <ClInclude Include="..\src\audio\mixer.h" />
+    <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\cursors.h" />
-    <ClInclude Include="..\src\drawing\gfx.h" />
+    <ClInclude Include="..\src\drawing\drawing.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
@@ -128,8 +147,10 @@
     <ClInclude Include="..\src\interface\window.h" />
     <ClInclude Include="..\src\intro.h" />
     <ClInclude Include="..\src\localisation\currency.h" />
-	<ClInclude Include="..\src\localisation\date.h" />
+    <ClInclude Include="..\src\localisation\date.h" />
+    <ClInclude Include="..\src\localisation\format_codes.h" />
     <ClInclude Include="..\src\localisation\language.h" />
+    <ClInclude Include="..\src\localisation\localisation.h" />
     <ClInclude Include="..\src\localisation\string_ids.h" />
     <ClInclude Include="..\src\management\award.h" />
     <ClInclude Include="..\src\management\finance.h" />
@@ -137,6 +158,7 @@
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\platform\osinterface.h" />
+    <ClInclude Include="..\src\platform\platform.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\ride\ride.h" />
     <ClInclude Include="..\src\ride\ride_data.h" />
@@ -197,8 +219,8 @@
     <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(SolutionDir)..\libspeex;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\sdl\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -230,6 +252,7 @@
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -18,19 +18,19 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "addresses.h"
-#include "date.h"
-#include "finance.h"
-#include "game.h"
-#include "graph.h"
-#include "marketing.h"
-#include "ride.h"
-#include "scenario.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../interface/graph.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../management/finance.h"
+#include "../management/marketing.h"
+#include "../ride/ride.h"
+#include "../scenario.h"
+#include "../sprites.h"
+#include "dropdown.h"
 
 enum {
 	WINDOW_FINANCES_PAGE_SUMMARY,

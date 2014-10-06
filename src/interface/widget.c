@@ -21,9 +21,9 @@
 #include <windows.h>
 #include <memory.h>
 #include <stdlib.h>
-#include "addresses.h"
-#include "gfx.h"
-#include "sprites.h"
+#include "../addresses.h"
+#include "../drawing/drawing.h"
+#include "../sprites.h"
 #include "widget.h"
 #include "window.h"
 

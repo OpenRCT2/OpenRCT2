@@ -21,7 +21,7 @@
 #ifndef _RIDE_RATINGS_H_
 #define _RIDE_RATINGS_H_
 
-#include "rct2.h"
+#include "../common.h"
 #include "ride.h"
 
 void crooked_house_excitement(rct_ride *ride);

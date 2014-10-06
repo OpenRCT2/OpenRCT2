@@ -20,16 +20,16 @@
 
 #include <string.h>
 #include <assert.h>
-#include "addresses.h"
-#include "game.h"
-#include "peep.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "ride.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../world/peep.h"
+#include "../localisation/localisation.h"
+#include "../world/sprite.h"
+#include "../sprites.h"
+#include "../ride/ride.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 enum {
 	PAGE_INDIVIDUAL,

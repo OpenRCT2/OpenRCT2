@@ -19,18 +19,18 @@
  *****************************************************************************/
 
 #include <windows.h>
-#include "addresses.h"
-#include "game.h"
-#include "map.h"
-#include "news_item.h"
-#include "staff.h"
-#include "sprite.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../scenario.h"
+#include "../world/map.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
+#include "../world/staff.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "scenario.h"
-#include "sprite.h"
-#include "peep.h"
-#include "window.h"
 
 #pragma region Ride classification table
 

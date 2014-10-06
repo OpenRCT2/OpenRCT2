@@ -29,29 +29,27 @@
 #include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
-#include "audio.h"
-#include "climate.h"
+#include "audio/audio.h"
+#include "audio/mixer.h"
 #include "config.h"
-#include "date.h"
+#include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
-#include "gfx.h"
+#include "interface/viewport.h"
 #include "intro.h"
-#include "language.h"
-#include "map.h"
-#include "mixer.h"
-#include "news_item.h"
+#include "localisation/date.h"
+#include "localisation/localisation.h"
+#include "management/news_item.h"
 #include "object.h"
-#include "osinterface.h"
-#include "park.h"
-#include "rct2.h"
-#include "ride.h"
+#include "platform/osinterface.h"
+#include "ride/ride.h"
+#include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
-#include "track.h"
-#include "viewport.h"
-#include "sprite.h"
-#include "string_ids.h"
+#include "world/map.h"
+#include "world/park.h"
+#include "world/climate.h"
+#include "world/sprite.h"
 
 typedef struct tm tm_t;
 
@@ -68,11 +66,6 @@ static void rct2_update_2();
 
 static int _finished;
 static jmp_buf _end_update_jump;
-
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-{
-	return TRUE;
-}
 
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

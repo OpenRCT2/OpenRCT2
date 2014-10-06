@@ -21,18 +21,18 @@
 #include <windows.h>
 #include <string.h>
 #include <limits.h>
-#include "addresses.h"
-#include "park.h"
-#include "peep.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "climate.h"
-#include "ride.h"
-#include "scenario.h"
-#include "game.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
+#include "../scenario.h"
+#include "../sprites.h"
+#include "../world/climate.h"
+#include "../world/park.h"
+#include "../world/peep.h"
+#include "../world/sprite.h"
 
 //#define WW 200
 //#define WH 128

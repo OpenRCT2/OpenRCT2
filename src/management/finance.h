@@ -21,7 +21,7 @@
 #ifndef _FINANCE_H_
 #define _FINANCE_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 typedef int rct_expenditure_type;
 

@@ -21,8 +21,7 @@
 #ifndef _SCENERY_H_
 #define _SCENERY_H_
 
-#include "rct2.h"
-#include "string_ids.h"
+#include "../common.h"
 
 typedef struct {
 	uint32 flags;			// 0x06

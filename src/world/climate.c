@@ -18,13 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "audio.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../drawing/drawing.h"
+#include "../localisation/date.h"
+#include "../scenario.h"
 #include "climate.h"
-#include "date.h"
-#include "gfx.h"
-#include "rct2.h"
-#include "scenario.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,

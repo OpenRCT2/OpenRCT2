@@ -19,16 +19,16 @@
  *****************************************************************************/
 
 #include <memory.h>
-#include "addresses.h"
-#include "audio.h"
-#include "editor.h"
-#include "ride.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "track.h"
-#include "widget.h"
-#include "window.h"
-#include "window_error.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../editor.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../ride/ride.h"
+#include "../ride/track.h"
+#include "../sprites.h"
+#include "error.h"
 
 enum {
 	WIDX_BACKGROUND,

@@ -21,7 +21,7 @@
 #ifndef _AWARD_H_
 #define _AWARD_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 typedef struct {
 	uint16 time;

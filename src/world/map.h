@@ -21,7 +21,7 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 typedef struct {
 	uint8 slope; //4

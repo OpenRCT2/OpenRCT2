@@ -21,8 +21,8 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
-#include "rct2.h"
-#include "sprite.h"
+#include "../common.h"
+#include "../world/sprite.h"
 
 typedef struct {
 	char name[256];

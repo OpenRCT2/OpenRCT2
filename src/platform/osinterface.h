@@ -22,7 +22,7 @@
 #define _SDL_INTERFACE_H_
 
 #include <windows.h>
-#include "rct2.h"
+#include "../common.h"
 
 enum {
 	CURSOR_UP = 0,

@@ -20,8 +20,7 @@
 
 #include <windows.h>
 #include <string.h>
-#include "addresses.h"
-#include "rct2.h"
+#include "../addresses.h"
 #include "sawyercoding.h"
 
 static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length);

@@ -9,7 +9,6 @@
  */
 
 #include <stdbool.h>
-#include "rct2.h"
 #include "ride.h"
 #include "ride_data.h"
 

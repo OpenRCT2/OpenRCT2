@@ -19,15 +19,15 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "game.h"
-#include "sprites.h"
-#include "string_ids.h"
-#include "track.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../sprites.h"
+#include "../localisation/localisation.h"
+#include "../ride/track.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78

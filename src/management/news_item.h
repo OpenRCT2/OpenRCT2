@@ -21,10 +21,7 @@
 #ifndef _NEWS_ITEM_H_
 #define _NEWS_ITEM_H_
 
-#include "rct2.h"
-#include "map.h"
-#include "string_ids.h"
-
+#include "../common.h"
 
 enum {
 	NEWS_ITEM_NULL,

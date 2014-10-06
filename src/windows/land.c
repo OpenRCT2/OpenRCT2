@@ -18,13 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "addresses.h"
-#include "map.h"
-#include "string_ids.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "window_dropdown.h"
+#include "../addresses.h"
+#include "../world/map.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "dropdown.h"
 
 enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_BACKGROUND,

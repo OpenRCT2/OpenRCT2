@@ -21,7 +21,7 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 typedef union {
 	struct {

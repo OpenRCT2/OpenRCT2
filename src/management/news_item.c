@@ -19,15 +19,14 @@
  *****************************************************************************/
 
 #include <string.h>
-#include "addresses.h"
-#include "audio.h"
-#include "date.h"
+#include "../addresses.h"
+#include "../audio/audio.h"
+#include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
+#include "../world/sprite.h"
 #include "news_item.h"
-#include "rct2.h"
-#include "ride.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "window.h"
 
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();

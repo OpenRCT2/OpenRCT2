@@ -21,7 +21,7 @@
 #ifndef _CLIMATE_H_
 #define _CLIMATE_H_
 
-#include "rct2.h"
+#include "../common.h"
 
 enum {
 	CLIMATE_COOL_AND_WET,

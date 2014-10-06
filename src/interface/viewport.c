@@ -19,13 +19,13 @@
  *****************************************************************************/
 
 #include <assert.h>
-#include "addresses.h"
-#include "config.h"
-#include "gfx.h"
-#include "map.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
+#include "../addresses.h"
+#include "../config.h"
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "viewport.h"
 #include "window.h"
 
