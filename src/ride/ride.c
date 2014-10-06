@@ -24,11 +24,11 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
+#include "../peep/peep.h"
+#include "../peep/staff.h"
 #include "../scenario.h"
 #include "../world/map.h"
-#include "../world/peep.h"
 #include "../world/sprite.h"
-#include "../world/staff.h"
 #include "ride.h"
 #include "ride_data.h"
 

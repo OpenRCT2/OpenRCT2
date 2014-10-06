@@ -56,6 +56,9 @@
     <Filter Include="Libraries\libspeex\speex">
       <UniqueIdentifier>{209155b8-2f61-4e25-ab86-c8aa36357abd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Peep">
+      <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -131,13 +134,7 @@
     <ClCompile Include="..\src\world\park.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\world\peep.c">
-      <Filter>Source\World</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\world\sprite.c">
-      <Filter>Source\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\world\staff.c">
       <Filter>Source\World</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\about.c">
@@ -365,6 +362,12 @@
     <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\libspeex</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\peep\peep.c">
+      <Filter>Source\Peep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\peep\staff.c">
+      <Filter>Source\Peep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -409,16 +412,10 @@
     <ClInclude Include="..\src\world\park.h">
       <Filter>Source\World</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\world\peep.h">
-      <Filter>Source\World</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\world\scenery.h">
       <Filter>Source\World</Filter>
     </ClInclude>
     <ClInclude Include="..\src\world\sprite.h">
-      <Filter>Source\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\world\staff.h">
       <Filter>Source\World</Filter>
     </ClInclude>
     <ClInclude Include="..\src\windows\dropdown.h">
@@ -546,6 +543,12 @@
     </ClInclude>
     <ClInclude Include="..\lib\libspeex\speex\speex_types.h">
       <Filter>Libraries\libspeex\speex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\peep\peep.h">
+      <Filter>Source\Peep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\peep\staff.h">
+      <Filter>Source\Peep</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

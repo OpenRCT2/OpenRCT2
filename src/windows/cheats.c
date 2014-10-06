@@ -26,12 +26,12 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
-#include "../world/peep.h"
 #include "../world/sprite.h"
 
 //#define WW 200

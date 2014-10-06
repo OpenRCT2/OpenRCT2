@@ -23,8 +23,8 @@
 #include "../interface/viewport.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
+#include "../world/sprite.h"
 #include "peep.h"
-#include "sprite.h"
 #include "staff.h"
 
 /**

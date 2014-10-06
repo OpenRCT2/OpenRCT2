@@ -21,16 +21,16 @@
 #include <string.h>
 #include "../addresses.h"
 #include "../game.h"
-#include "../world/map.h"
-#include "../ride/ride.h"
-#include "../ride/ride_data.h"
-#include "../world/staff.h"
-#include "../localisation/localisation.h"
-#include "../world/sprite.h"
-#include "../sprites.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../peep/staff.h"
+#include "../ride/ride.h"
+#include "../ride/ride_data.h"
+#include "../sprites.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "dropdown.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)

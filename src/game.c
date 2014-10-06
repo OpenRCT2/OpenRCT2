@@ -31,6 +31,8 @@
 #include "management/finance.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "peep/peep.h"
+#include "peep/staff.h"
 #include "platform/osinterface.h"
 #include "ride/ride.h"
 #include "ride/vehicle.h"
@@ -42,9 +44,7 @@
 #include "windows/tooltip.h"
 #include "world/climate.h"
 #include "world/park.h"
-#include "world/peep.h"
 #include "world/sprite.h"
-#include "world/staff.h"
 
 int gGameSpeed = 1;
 

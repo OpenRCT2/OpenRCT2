@@ -20,9 +20,9 @@
 
 #include "../addresses.h"
 #include "../interface/window.h"
+#include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../world/park.h"
-#include "../world/peep.h"
 #include "../world/sprite.h"
 #include "finance.h"
 

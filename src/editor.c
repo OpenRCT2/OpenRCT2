@@ -30,11 +30,11 @@
 #include "management/finance.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "peep/staff.h"
 #include "ride/ride.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/sprite.h"
-#include "world/staff.h"
 
 static void set_all_land_owned();
 

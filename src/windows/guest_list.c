@@ -22,13 +22,13 @@
 #include <assert.h>
 #include "../addresses.h"
 #include "../game.h"
-#include "../world/peep.h"
-#include "../localisation/localisation.h"
-#include "../world/sprite.h"
-#include "../sprites.h"
-#include "../ride/ride.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../peep/peep.h"
+#include "../ride/ride.h"
+#include "../sprites.h"
+#include "../world/sprite.h"
 #include "dropdown.h"
 
 enum {

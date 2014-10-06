@@ -22,8 +22,8 @@
 #define _RIDE_H_
 
 #include "../common.h"
+#include "../peep/peep.h"
 #include "../world/map.h"
-#include "../world/peep.h"
 
 typedef fixed16_2dp ride_rating;
 

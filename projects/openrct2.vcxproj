@@ -59,6 +59,8 @@
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
+    <ClCompile Include="..\src\peep\peep.c" />
+    <ClCompile Include="..\src\peep\staff.c" />
     <ClCompile Include="..\src\platform\shared.c" />
     <ClCompile Include="..\src\platform\unix.c" />
     <ClCompile Include="..\src\platform\osinterface.c" />
@@ -117,9 +119,7 @@
     <ClCompile Include="..\src\world\climate.c" />
     <ClCompile Include="..\src\world\map.c" />
     <ClCompile Include="..\src\world\park.c" />
-    <ClCompile Include="..\src\world\peep.c" />
     <ClCompile Include="..\src\world\sprite.c" />
-    <ClCompile Include="..\src\world\staff.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\libspeex\arch.h" />
@@ -157,6 +157,8 @@
     <ClInclude Include="..\src\management\marketing.h" />
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\object.h" />
+    <ClInclude Include="..\src\peep\peep.h" />
+    <ClInclude Include="..\src\peep\staff.h" />
     <ClInclude Include="..\src\platform\osinterface.h" />
     <ClInclude Include="..\src\platform\platform.h" />
     <ClInclude Include="..\src\rct2.h" />
@@ -178,10 +180,8 @@
     <ClInclude Include="..\src\world\climate.h" />
     <ClInclude Include="..\src\world\map.h" />
     <ClInclude Include="..\src\world\park.h" />
-    <ClInclude Include="..\src\world\peep.h" />
     <ClInclude Include="..\src\world\scenery.h" />
     <ClInclude Include="..\src\world\sprite.h" />
-    <ClInclude Include="..\src\world\staff.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>

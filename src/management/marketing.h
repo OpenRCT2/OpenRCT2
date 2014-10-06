@@ -22,7 +22,7 @@
 #define _MARKETING_H_
 
 #include "../common.h"
-#include "../world/peep.h"
+#include "../peep/peep.h"
 
 enum {
 	ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,

@@ -26,8 +26,8 @@
 #include "../management/news_item.h"
 #include "../ride/ride.h"
 #include "../sprites.h"
+#include "../world/sprite.h"
 #include "peep.h"
-#include "sprite.h"
 #include "staff.h"
 
 static void peep_update(rct_peep *peep);

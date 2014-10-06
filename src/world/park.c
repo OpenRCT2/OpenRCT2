@@ -26,11 +26,11 @@
 #include "../management/finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
+#include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
 #include "../world/map.h"
 #include "park.h"
-#include "peep.h"
 #include "sprite.h"
 
 /**

@@ -26,10 +26,10 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../management/news_item.h"
+#include "../peep/peep.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
-#include "../world/peep.h"
 #include "../world/sprite.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
