@@ -33,7 +33,7 @@ void error_string_quit(int error, rct_string_id format);
 int get_string_length(char* buffer);
 
 // Real name data
-extern const char real_name_initials[];
-extern const char *real_names[];
+extern const char real_name_initials[16];
+extern const char *real_names[1024];
 
 #endif
