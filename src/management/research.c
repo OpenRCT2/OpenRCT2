@@ -23,12 +23,10 @@
 #include "../localisation/date.h"
 #include "research.h"
 
-typedef struct {
-	sint32 var_0;
-	uint8 category;
-} rct_research_item;
-
 const int _researchRate[] = { 0, 160, 250, 400 };
+
+// 0x01358844[500]
+extern rct_research_item *gResearchItems = (rct_research_item*)RCT2_RESEARCH_ITEMS;
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
@@ -40,11 +38,11 @@ uint8 gResearchUncompletedCategories;
 void research_update_uncompleted_types()
 {
 	int uncompletedResearchTypes = 0;
-	rct_research_item *researchItem = (rct_research_item*)0x001358844;
-	while (researchItem->var_0 != -1)
+	rct_research_item *researchItem = gResearchItems;
+	while (researchItem->entryIndex != -1)
 		researchItem++;
 	researchItem++;
-	for (; researchItem->var_0 != -2; researchItem++)
+	for (; researchItem->entryIndex != -2; researchItem++)
 		uncompletedResearchTypes |= (1 << researchItem->category);
 
 	gResearchUncompletedCategories = uncompletedResearchTypes;
@@ -82,6 +80,63 @@ static void research_calculate_expected_date()
 	}
 }
 
+static void research_invalidate_related_windows()
+{
+	window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
+	window_invalidate_by_id(WC_RESEARCH, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00684BE5
+ */
+static void research_next_design()
+{
+	rct_research_item *firstUnresearchedItem, *researchItem, tmp;
+	int ignoreActiveResearchTypes;
+	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+
+	// Skip already researched items
+	firstUnresearchedItem = gResearchItems;
+	while (firstUnresearchedItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR)
+		firstUnresearchedItem++;
+
+	ignoreActiveResearchTypes = 0;
+	researchItem = firstUnresearchedItem;
+	for (;;) {
+		researchItem++;
+		if (researchItem->entryIndex == -2) {
+			if (!ignoreActiveResearchTypes) {
+				ignoreActiveResearchTypes = 1;
+				researchItem = firstUnresearchedItem;
+				continue;
+			} else {
+				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_INITIAL_RESEARCH;
+				research_invalidate_related_windows();
+				return;
+			}
+		} else if (ignoreActiveResearchTypes || (activeResearchTypes & (1 << researchItem->category))) {
+			break;
+		}
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32) = researchItem->entryIndex;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8) = researchItem->category;
+	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_DESIGNING;
+
+	// Bubble research item up until it is above the researched items seperator
+	do {
+		tmp = *researchItem;
+		*researchItem = *(researchItem - 1);
+		*(researchItem - 1) = tmp;
+		researchItem--;
+	} while ((researchItem + 1)->entryIndex != RESEARCHED_ITEMS_SEPERATOR);
+
+	research_invalidate_related_windows();
+}
+
 /**
  *
  *  rct2: 0x00684C7A
@@ -106,24 +161,22 @@ void research_update()
 	} else {
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)) {
 		case RESEARCH_STAGE_INITIAL_RESEARCH:
-			RCT2_CALLPROC_EBPSAFE(0x00684BE5);
+			research_next_design();
 			research_calculate_expected_date();
 			break;
 		case RESEARCH_STAGE_DESIGNING:
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_COMPLETING_DESIGN;
 			research_calculate_expected_date();
-			window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
-			window_invalidate_by_id(WC_RESEARCH, 0);
+			research_invalidate_related_windows();
 			break;
 		case RESEARCH_STAGE_COMPLETING_DESIGN:
-			RCT2_CALLPROC_X(0x006848D4, RCT2_GLOBAL(0x013580E0, uint32), 0, 0, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x006848D4, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32), 0, 0, 0, 0, 0, 0);
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
 			research_calculate_expected_date();
 			research_update_uncompleted_types();
-			window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
-			window_invalidate_by_id(WC_RESEARCH, 0);
+			research_invalidate_related_windows();
 			break;
 		}
 	}

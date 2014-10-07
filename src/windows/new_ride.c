@@ -735,9 +735,9 @@ static void window_new_ride_paint()
 	// Research type
 	rct_string_id stringId = STR_RESEARCH_UNKNOWN;
 	if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
-		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(0x013580E6, uint8);
+		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
 		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
-			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
+			uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
 			if (typeId >= 0x10000) {
 				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
 				stringId = rideEntry->var_008 & 0x1000 ?

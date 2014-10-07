@@ -23,6 +23,14 @@
 
 #include "../common.h"
 
+typedef struct {
+	// Bit 16 (0: scenery entry, 1: ride entry)
+	sint32 entryIndex;
+	uint8 category;
+} rct_research_item;
+
+#define RESEARCHED_ITEMS_SEPERATOR -1
+
 enum {
 	RESEARCH_FUNDING_NONE,
 	RESEARCH_FUNDING_MINIMUM,
@@ -37,6 +45,7 @@ enum {
 	RESEARCH_STAGE_UNKNOWN
 };
 
+extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
 
 void research_update_uncompleted_types();
