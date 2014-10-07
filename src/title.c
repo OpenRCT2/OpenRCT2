@@ -108,7 +108,7 @@ void title_load()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	map_update_tile_pointers(); //RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
 	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	viewport_init_all();

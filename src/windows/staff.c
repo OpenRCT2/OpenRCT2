@@ -1,5 +1,5 @@
-﻿/*****************************************************************************
-* Copyright (c) 2014 Maciek Baron, Dániel Tar
+/*****************************************************************************
+* Copyright (c) 2014 Ted John, Duncan Frost
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -18,637 +18,694 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <string.h>
 #include "../addresses.h"
 #include "../game.h"
-#include "../drawing/drawing.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
 
-enum {
-	WINDOW_STAFF_TAB_HANDYMEN,
-	WINDOW_STAFF_TAB_MECHANICS,
-	WINDOW_STAFF_TAB_SECURITY,
-	WINDOW_STAFF_TAB_ENTERTAINERS
-} WINDOW_STAFF_LIST_TAB;
-
-static void window_staff_emptysub() { }
-static void window_staff_close();
-static void window_staff_mouseup();
-static void window_staff_resize();
-static void window_staff_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_staff_dropdown();
-static void window_staff_update(rct_window *w);
-static void window_staff_tooldown();
-static void window_staff_toolabort();
-static void window_staff_scrollgetsize();
-static void window_staff_scrollmousedown();
-static void window_staff_scrollmouseover();
-static void window_staff_tooltip();
-static void window_staff_invalidate();
-static void window_staff_paint();
-static void window_staff_scrollpaint();
-
-static void* window_staff_events[] = {
-	window_staff_close,
-	window_staff_mouseup,
-	window_staff_resize,
-	window_staff_mousedown,
-	window_staff_dropdown,
-	window_staff_emptysub,
-	window_staff_update,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	(void*)0x006BD990,			   // window_staff_tooldown
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_toolabort,
-	window_staff_emptysub,
-	window_staff_scrollgetsize,
-	window_staff_scrollmousedown,
-	window_staff_emptysub,
-	window_staff_scrollmouseover,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_tooltip,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_invalidate,
-	window_staff_paint,
-	window_staff_scrollpaint,
+enum WINDOW_STAFF_PAGE {
+	WINDOW_STAFF_OVERVIEW,
+	WINDOW_STAFF_OPTIONS,
+	WINDOW_STAFF_STATISTICS,
 };
 
-enum WINDOW_STAFF_LIST_WIDGET_IDX {
-	WIDX_STAFF_BACKGROUND,
-	WIDX_STAFF_TITLE,
-	WIDX_STAFF_CLOSE,
-	WIDX_STAFF_TAB_CONTENT_PANEL,
-	WIDX_STAFF_HANDYMEN_TAB,
-	WIDX_STAFF_MECHANICS_TAB,
-	WIDX_STAFF_SECURITY_TAB,
-	WIDX_STAFF_ENTERTAINERS_TAB,
-	WIDX_STAFF_LIST,
-	WIDX_STAFF_UNIFORM_COLOR_PICKER,
-	WIDX_STAFF_HIRE_BUTTON,
-	WIDX_STAFF_SHOW_PATROL_AREA_BUTTON,
-	WIDX_STAFF_MAP,
+enum WINDOW_STAFF_WIDGET_IDX {
+	WIDX_BACKGROUND,
+	WIDX_TITLE,
+	WIDX_CLOSE,
+	WIDX_RESIZE,
+	WIDX_TAB_1,
+	WIDX_TAB_2,
+	WIDX_TAB_3,
+	WIDX_TAB_4,
+	WIDX_VIEWPORT,
+	WIDX_BTM_LABEL,
+	WIDX_PICKUP,
+	WIDX_PATROL,
+	WIDX_RENAME,
+	WIDX_LOCATE,
+	WIDX_FIRE,
+
+	WIDX_CHECKBOX_1 = 0x8,
+	WIDX_CHECKBOX_2,
+	WIDX_CHECKBOX_3,
+	WIDX_CHECKBOX_4,
+
+	WIDX_COSTUME = 0xD,
 };
 
-static rct_widget window_staff_widgets[] = {
-		{ WWT_FRAME, 0, 0, 319, 0, 269, 0x0FFFFFFFF, STR_NONE },							// panel / background
-		{ WWT_CAPTION, 0, 1, 318, 1, 14, STR_STAFF, STR_WINDOW_TITLE_TIP },					// title bar
-		{ WWT_CLOSEBOX, 0, 307, 317, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },			// close button
-		{ WWT_RESIZE, 1, 0, 319, 43, 269, 0x0FFFFFFFF, STR_NONE },							// tab content panel
-		{ WWT_TAB, 1, 3, 33, 17, 43, 0x02000144E, STR_STAFF_HANDYMEN_TAB_TIP },				// handymen tab
-		{ WWT_TAB, 1, 34, 64, 17, 43, 0x02000144E, STR_STAFF_MECHANICS_TAB_TIP },			// mechanics tab
-		{ WWT_TAB, 1, 65, 95, 17, 43, 0x02000144E, STR_STAFF_SECURITY_TAB_TIP },			// security guards tab
-		{ WWT_TAB, 1, 96, 126, 17, 43, 0x02000144E, STR_STAFF_ENTERTAINERS_TAB_TIP },		// entertainers tab
-		{ WWT_SCROLL, 1, 3, 316, 72, 266, 3, STR_NONE },									// staff list
-		{ WWT_COLORBTN, 1, 130, 141, 58, 69, STR_NONE, STR_UNIFORM_COLOUR_TIP },			// uniform color picker
-		{ WWT_DROPDOWN_BUTTON, 0, 165, 309, 17, 29, STR_NONE, STR_HIRE_STAFF_TIP },			// hire button
-		{ WWT_FLATBTN, 1, 267, 290, 46, 69, 5175, STR_SHOW_PATROL_AREA_TIP },				// show staff patrol area tool
-		{ WWT_FLATBTN, 1, 291, 314, 46, 69, 5192, STR_SHOW_STAFF_ON_MAP_TIP },				// show staff on map button
-		{ WIDGETS_END },
+void window_staff_emptysub(){};
+
+rct_widget window_staff_overview_widgets[] = { 
+	{ WWT_FRAME,	0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,	188,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, 177, 187,	2,		13,		0x338,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,		1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,		1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WWT_VIEWPORT,	1, 3,	164,	47,		166,	0x0FFFFFFFF,	STR_NONE},				// Viewport
+	{ WWT_12,		1, 3,	164,	167,	177,	0x0FFFFFFFF,	STR_NONE },				// Label at bottom of viewport
+	{ WWT_FLATBTN,	1, 165,	188,	45,		68,		0x1436,			1706},					// Pickup Button
+	{ WWT_FLATBTN,	1, 165, 188,	69,		92,		0x1437,			1708},					// Patrol Button
+	{ WWT_FLATBTN,	1, 165, 188,	93,		116,	0x1430,			1056},					// Rename Button
+	{ WWT_FLATBTN,	1, 165, 188,	117,	140,	0x142F,			1027},					// Locate Button
+	{ WWT_FLATBTN,	1, 165, 188,	141,	164,	0x142D,			1705},					// Fire Button
+	{ WIDGETS_END },
 };
 
-static uint16 _window_staff_selected_type_count = 0;
-// TODO: These are still referenced in non-decompiled code
-//static int _window_staff_highlighted_index;
-//static int _window_staff_selected_tab;
+rct_widget *window_staff_page_widgets[] = {
+	window_staff_overview_widgets,
+	(rct_widget *)0x9AF910,
+	(rct_widget *)0x9AF9F4
+};
 
-/*
-* rct2: 0x006BD39C
-**/
-void window_staff_init_vars()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = WINDOW_STAFF_TAB_HANDYMEN;
-}
+void window_staff_set_page(rct_window* w, int page);
+void window_staff_disable_widgets(rct_window* w);
 
-/*
-* rct2: 0x006BD3CC
-**/
-void window_staff_open()
-{
-	rct_window* window;
+void window_staff_overview_close();
+void window_staff_overview_mouseup();
+void window_staff_overview_resize();
+void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_overview_dropdown();
+void window_staff_overview_update(rct_window* w);
 
-	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_STAFF_LIST, 0);
-	if (window != NULL)
-		return;
+void window_staff_orders_mouseup();
+void window_staff_orders_update(rct_window* w);
 
-	window = window_create_auto_pos(320, 270, (uint32*)window_staff_events, WC_STAFF_LIST, 0x0400);
-	window->widgets = window_staff_widgets;
-	window->enabled_widgets =
-		(1 << WIDX_STAFF_CLOSE) |
-		(1 << WIDX_STAFF_HANDYMEN_TAB) |
-		(1 << WIDX_STAFF_MECHANICS_TAB) |
-		(1 << WIDX_STAFF_SECURITY_TAB) |
-		(1 << WIDX_STAFF_ENTERTAINERS_TAB) |
-		(1 << WIDX_STAFF_HIRE_BUTTON) |
-		(1 << WIDX_STAFF_UNIFORM_COLOR_PICKER) |
-		(1 << WIDX_STAFF_SHOW_PATROL_AREA_BUTTON) |
-		(1 << WIDX_STAFF_MAP);
+void window_staff_stats_mouseup();
+void window_staff_stats_resize();
+void window_staff_stats_update(rct_window* w);
 
-	window_init_scroll_widgets(window);
-	RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
-	window->list_information_type = 0;
+// 0x992AEC
+static void* window_staff_overview_events[] = {
+	window_staff_overview_close,
+	window_staff_overview_mouseup,
+	window_staff_overview_resize,
+	window_staff_overview_mousedown,
+	window_staff_overview_dropdown,
+	window_staff_emptysub,
+	window_staff_overview_update,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BDFD8,
+	(void*)0x6BDFC3,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BDFAE,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BDFED,
+	(void*)0x6BE5FC,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BDD91, //Invalidate
+	(void*)0x6BDEAF, //Paint
+	window_staff_emptysub
+};
 
-	window_staff_widgets[WIDX_STAFF_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
-	window->min_width = 320;
-	window->min_height = 270;
-	window->max_width = 500;
-	window->max_height = 450;
-	window->flags |= WF_RESIZABLE;
-	window->colours[0] = 1;
-	window->colours[1] = 4;
-	window->colours[2] = 4;
-}
+// 0x992B5C
+static void* window_staff_orders_events[] = {
+	window_staff_emptysub,
+	window_staff_orders_mouseup,
+	window_staff_stats_resize,
+	(void*)0x6BE802,
+	(void*)0x6BE809,
+	(void*)0x6BE9DA,
+	window_staff_orders_update,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BE62B, //Invalidate
+	(void*)0x6BE7C6, //Paint
+	window_staff_emptysub
+};
 
-void window_staff_cancel_tools(rct_window *w) {
-	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
-	int toolWindowNumber = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber);
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-			tool_cancel();
-}
+// 0x992BCC
+static void* window_staff_stats_events[] = {
+	window_staff_emptysub,
+	window_staff_stats_mouseup,
+	window_staff_stats_resize,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BEC80,
+	window_staff_stats_update,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	window_staff_emptysub,
+	(void*)0x6BE9E9, //Invalidate
+	(void*)0x6BEA86, //Paint
+	window_staff_emptysub
+};
 
-/*
-* rct2: 0x006BD9B1
-**/
-void window_staff_close() {
-	rct_window *w;
+void* window_staff_page_events[] = {
+	window_staff_overview_events,
+	window_staff_orders_events,
+	window_staff_stats_events
+};
 
-	window_get_register(w);
+uint32 window_staff_page_enabled_widgets[] = {
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_PICKUP) |
+	(1 << WIDX_PATROL) |
+	(1 << WIDX_RENAME) |
+	(1 << WIDX_LOCATE) |
+	(1 << WIDX_FIRE),
 
-	window_staff_cancel_tools(w);
-}
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3) |
+	(1 << WIDX_CHECKBOX_1) |
+	(1 << WIDX_CHECKBOX_2) |
+	(1 << WIDX_CHECKBOX_3) |
+	(1 << WIDX_CHECKBOX_4) |
+	(1 << WIDX_COSTUME),
+
+	(1 << WIDX_CLOSE) |
+	(1 << WIDX_TAB_1) |
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_TAB_3)
+};
 
 /**
 *
-*  rct2: 0x006BD94C
+*  rct2: 0x006BEE98
 */
-static void window_staff_mouseup()
+void window_staff_open(rct_peep* peep)
 {
-	short widgetIndex;
-	rct_window *w;
-	uint16 newStaffId;
+	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
+	if (w == NULL) {
+		w = window_create_auto_pos(190, 180, (uint32*)window_staff_overview_events, WC_PEEP, (uint16)0x400);
 
-	window_widget_get_registers(w, widgetIndex);
+		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
+		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
+		w->number = peep->sprite_index;
+		w->page = 0;
+		w->viewport_focus_coordinates.y = 0;
+		w->frame_no = 0;
 
-	switch (widgetIndex) {
-	case WIDX_STAFF_CLOSE:
-		window_close(w);
-		break;
-	case WIDX_STAFF_HIRE_BUTTON:
-		newStaffId = hire_new_staff_member(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
+		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
 
-		if (newStaffId == 0xFFFF) {
-			rct_window* window = window_find_by_id(WC_STAFF_LIST, 0);
-			window_invalidate(window);
-		} else {
-			window_staff_peep_open(&g_sprite_list[newStaffId].peep);
-		}
+		window_staff_disable_widgets(w);
 
-		break;
-	case WIDX_STAFF_SHOW_PATROL_AREA_BUTTON:
-		RCT2_CALLPROC_X(0x006BD9FF, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		w->min_width = 190;
+		w->min_height = 180;
+		w->max_width = 500;
+		w->max_height = 450;
 
-		// TODO: The code below works, but due to some funny things, when clicking again on the show patrol area button to disable the tool,
-		// the mouseup event is getting called when it should not be
-		//tool_set(w, WIDX_STAFF_SHOW_PATROL_AREA_BUTTON, 0x0C);
-		//show_gridlines();
-		//RCT2_GLOBAL(0x009DEA50, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) | 0x8000;
-		//gfx_invalidate_screen();
-		break;
-	case WIDX_STAFF_MAP:
-		window_map_open();
-		break;
+		w->flags = 1 << 8;
+
+		w->colours[0] = 1;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
+	}
+	w->page = 0;
+	window_invalidate(w);
+
+	w->widgets = window_staff_overview_widgets;
+	w->enabled_widgets = window_staff_page_enabled_widgets[0];
+	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
+	w->event_handlers = window_staff_page_events[0];
+	w->pressed_widgets = 0;
+	window_staff_disable_widgets(w);
+	window_init_scroll_widgets(w);
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
+		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
 	}
 }
 
 /**
-*
-*  rct2: 0x006BDD5D
+* rct2: 0x006BED21
+* Disable the staff pickup if not in pickup state.
 */
-static void window_staff_resize()
+void window_staff_disable_widgets(rct_window* w)
 {
-	rct_window *w;
+	rct_peep* peep = &g_sprite_list[w->number].peep;
+
+	int eax = 0 | 0x80;
+
+	if (peep->staff_type == 2) {
+		eax |= 0x20;
+	}
+
+	//RCT2_CALLFUNC_X(0x698827, 0, 0, 0, 0, 0, 0, 0);
+	// sub_698827
+	// This is here due to needing the Carry Flag.
+
+	int CF = 0;
+	int res = RCT2_GLOBAL(0x982004 + peep->state, uint8) & 1;
+
+	if (res == 0) {
+		CF = 1;
+	}
+	else {
+		eax = eax & eax;
+	}
+
+	// end sub_698827
+
+	int a = 0;
+
+	// pop esi
+	if (CF == 1 && w->page == 0) {
+		eax |= 0x400; //or      eax, 400h
+
+		a = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
+
+	}
+
+	if (a == 0) {
+		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
+		if (CF == 1) {
+			window_invalidate(w);
+		}
+	}
+
+	w->disabled_widgets = eax;
+}
+
+/**
+ * Same as window_peep_overview_close.
+ * rct2: 0x006BDFF8
+ */
+void window_staff_overview_close()
+{
+	rct_window* w;
 
 	window_get_register(w);
 
-	w->min_width = 320;
-	w->min_height = 270;
+	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+			tool_cancel();
+	}
+}
+
+/** rct2: 0x6C0A77 */
+void window_staff_fire(rct_window* w)
+{
+	// Check if the confirm window already exists.
+	if (window_bring_to_front_by_id(0x1A, w->number)) {
+		return;
+	}
+
+	// Find center of the screen.
+	int screen_height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	int screen_width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	int x = screen_width/2 - 100;
+	int y = screen_height/2 - 50;
+
+	rct_window* window_prompt = window_create(x, y, 200, 100, (uint32*)0x992C3C, 0x1A, 0);
+	window_prompt->widgets = (rct_widget*)0x9AFB4C;
+	window_prompt->enabled_widgets |= 0x4;
+	window_prompt->enabled_widgets |= 0x8;
+	window_prompt->enabled_widgets |= 0x10;
+
+	window_init_scroll_widgets(window_prompt);
+
+	window_prompt->flags |= 0x10;
+	window_prompt->number = w->number;
+	window_prompt->colours[0] = 0x9A;
+}
+
+/**
+ * Mostly similar to window_peep_set_page.
+ * rct2: 0x006BE023
+ */
+void window_staff_set_page(rct_window* w, int page)
+{
+	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	{
+		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
+			tool_cancel();
+	
+	}
+	
+	int listen = 0;
+	if (page == WINDOW_STAFF_OVERVIEW && w->page == WINDOW_STAFF_OVERVIEW && w->viewport){
+		if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			listen = 1;
+	}
+
+	
+	w->page = page;
+	w->frame_no = 0;
+
+	rct_viewport* viewport = w->viewport;
+	w->viewport = 0;
+	if (viewport){
+		viewport->width = 0;
+	}
+
+	w->enabled_widgets = window_staff_page_enabled_widgets[page];
+	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
+	w->event_handlers = window_staff_page_events[page];
+	w->pressed_widgets = 0;
+	w->widgets = window_staff_page_widgets[page];
+
+	window_staff_disable_widgets(w);
+	window_invalidate(w);
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	window_init_scroll_widgets(w);
+	window_invalidate(w);
+
+	if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+}
+
+/** rct2: 0x006BDF55 */
+void window_staff_overview_mouseup()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+	rct_peep* peep = GET_PEEP(w->number);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_LOCATE: // 0xD
+		window_scroll_to_viewport(w);
+		break;
+	case WIDX_PICKUP: // 0xA
+		// 0x6BE236
+		if (tool_set(w, widgetIndex, 7)) {
+			return;
+		}
+
+		w->var_48C = peep->sprite_identifier;
+
+		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 9;
+		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		break;
+	case WIDX_FIRE: // 0xE
+		window_staff_fire(w);
+		break;
+	case WIDX_RENAME: // 0xC
+		// 6BE4BC
+		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
+		break;
+	}
+}
+
+/** rct2: 0x006BE558 */
+void window_staff_overview_resize()
+{
+	rct_window* w;
+	window_get_register(w);
+
+	window_staff_disable_widgets(w);
+
+	w->min_width = 190;
+	w->max_width = 500;
+	w->min_height = 180;
+	w->max_height = 450;
+
 	if (w->width < w->min_width) {
 		w->width = w->min_width;
 		window_invalidate(w);
 	}
+
+	if (w->width > w->max_width) {
+		window_invalidate(w);
+		w->width = w->max_width;
+	}
+
 	if (w->height < w->min_height) {
 		w->height = w->min_height;
 		window_invalidate(w);
 	}
-}
 
-
-/**
-*
-*  rct2: 0x006BD971
-*/
-static void window_staff_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
-{
-	short newSelectedTab;
-
-	switch (widgetIndex) {
-	case WIDX_STAFF_HANDYMEN_TAB:
-	case WIDX_STAFF_MECHANICS_TAB:
-	case WIDX_STAFF_SECURITY_TAB:
-	case WIDX_STAFF_ENTERTAINERS_TAB:
-		newSelectedTab = widgetIndex - WIDX_STAFF_HANDYMEN_TAB;;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) == newSelectedTab)
-			break;
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) = (uint8)newSelectedTab;
+	if (w->height > w->max_height) {
 		window_invalidate(w);
-		w->scrolls[0].v_top = 0;
-		window_staff_cancel_tools(w);
-		break;
-	case WIDX_STAFF_UNIFORM_COLOR_PICKER:
-		window_dropdown_show_colour(w, widget, w->colours[1], RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)]);
-		break;
+		w->height = w->max_height;
 	}
 
+	rct_viewport* viewport = w->viewport;
 
+	if (viewport) {
+		int new_width = w->width - 30;
+		int new_height = w->height - 62;
+
+		// Update the viewport size
+		if (viewport->width != new_width || viewport->height != new_height) {
+			viewport->width = new_width;
+			viewport->height = new_height;
+			viewport->view_width = new_width << viewport->zoom;
+			viewport->view_height = new_height << viewport->zoom;
+		}
+	}
+
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
-/**
-*
-*  rct2: 0x006BD9A6
-*/
-static void window_staff_dropdown()
+/** 
+ * Handle the dropdown of patrol button.
+ * rct2: 0x006BDF98
+ */
+void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
-	rct_window* w;
+	if (widgetIndex != WIDX_PATROL) {
+		return;
+	}
+
+	// Dropdown names
+	gDropdownItemsFormat[0] = 0xD75;
+	gDropdownItemsFormat[1] = 0xD76;
+
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;;
+	int extray = widget->bottom - widget->top + 1;
+	window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
+	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	// Disable clear patrol area if no area is set.
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
+		RCT2_GLOBAL(0x009DED34, sint32) |= 1 << 1;
+	}
+}
+
+/** rct2: 0x006BDFA3 */
+void window_staff_overview_dropdown()
+{
 	short widgetIndex, dropdownIndex;
+	rct_window* w;
+
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-	if (widgetIndex == WIDX_STAFF_UNIFORM_COLOR_PICKER && dropdownIndex != -1) {
-		update_staff_colour(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8), dropdownIndex);
+	if (widgetIndex != WIDX_PATROL) {
+		return;
 	}
-}
 
-/**
-*
-*  rct2: 0x006BDCEA
-*/
-void window_staff_update(rct_window *w)
-{
-	int spriteIndex;
-	rct_peep *peep;
+	// Clear patrol
+	if (dropdownIndex == 1) {
+		rct_peep* peep = GET_PEEP(w->number);
+		int edi = peep->staff_id;
+		int ebx = edi << 9;
 
-	w->list_information_type++;
-	if (w->list_information_type >= 24) {
-		w->list_information_type = 0;
-	} else {
-		widget_invalidate(WC_GUEST_LIST, 0, WIDX_STAFF_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
-		RCT2_GLOBAL(0x009AC861, uint16) |= 2;
-		FOR_ALL_PEEPS(spriteIndex, peep) {
-			if (peep->type == PEEP_TYPE_STAFF) {
-				peep->var_0C &= 0xFDFF;
+		for (int i = 0; i < 128; i++)
+		{
+			RCT2_GLOBAL(0x13B0E72 + ebx + i * 4, uint32) = 0;
+		}
+		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_MODE_ARRAY + edi, uint16) &= 0xFD; // bug??
 
-				if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)) {
-					peep->var_0C &= 0x200;
-				}
-			}
+		window_invalidate(w);
+		//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+		sub_6C0C3F();
+	}
+	else {
+		if (!tool_set(w, widgetIndex, 22)) {
+			show_gridlines();
+			RCT2_GLOBAL(0x009DEA50, sint16) = w->number;
+			window_invalidate(w);
 		}
 	}
 }
 
 /**
-*
-*  rct2: 0x006BD99B
-*/
-void window_staff_toolabort() {
-	short widgetIndex;
-	rct_window *w;
+ * Update the animation frame of the tab icon.
+ * rct2: 0x6BE602 
+ */
+void window_staff_overview_update(rct_window* w)
+{
+	int var_496 = RCT2_GLOBAL((int)w + 0x496, uint16);
+	var_496++;
+	if (var_496 >= 24) {
+		var_496 = 0;
+	}
+	RCT2_GLOBAL((int)w + 0x496, uint16) = var_496;
+	window_invalidate_by_id(0x497, w->number);
+}
 
+/** rct2: 0x006BE814 */
+void window_staff_set_order(rct_window* w, int order_id)
+{
+	int eax = 1 << order_id;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	int ax = peep->var_C6 ^ eax;
+	int flags = (ax << 8) | 1;
+
+	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+}
+
+/** rct2: 0x006BE7DB */
+void window_staff_orders_mouseup()
+{
+	short widgetIndex;
+	rct_window* w;
 	window_widget_get_registers(w, widgetIndex);
 
-	if (widgetIndex == WIDX_STAFF_SHOW_PATROL_AREA_BUTTON) {
-		hide_gridlines();
-		tool_cancel();
-		RCT2_GLOBAL(0x009DEA50, sint16) = 0xFFFF;
-		gfx_invalidate_screen();
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	case WIDX_CHECKBOX_1:
+	case WIDX_CHECKBOX_2:
+	case WIDX_CHECKBOX_3:
+	case WIDX_CHECKBOX_4:
+		window_staff_set_order(w, widgetIndex - WIDX_CHECKBOX_1);
+		break;
 	}
 }
 
-/**
-*
-*  rct2: 0x006BDBE6
-*/
-void window_staff_scrollgetsize() {
-	int spriteIndex;
-	rct_peep *peep;
-	rct_window *w;
+/** rct2: 0x006BE960 */
+void window_staff_orders_update(rct_window* w)
+{
+	w->frame_no++;
+	window_invalidate_by_id(0x597, w->number);
+}
 
+/** rct2: 0x006BEBCF */
+void window_staff_stats_mouseup()
+{
+	short widgetIndex;
+	rct_window* w;
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_TAB_1:
+	case WIDX_TAB_2:
+	case WIDX_TAB_3:
+		window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
+		break;
+	}
+}
+
+/** rct2: 0x006BEC1B and rct2: 0x006BE975 */
+void window_staff_stats_resize()
+{
+	rct_window* w;
 	window_get_register(w);
 
-	uint16 staffCount = 0;
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8))
-			staffCount++;
-	}
-
-	_window_staff_selected_type_count = staffCount;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
-		window_invalidate(w);
-	}
+	w->min_width = 190;
+	w->max_width = 190; 
+	w->min_height = 119;
+	w->max_height = 119;
 	
-	int scrollHeight = staffCount * 10;
-	int i = scrollHeight - window_staff_widgets[WIDX_STAFF_LIST].bottom + window_staff_widgets[WIDX_STAFF_LIST].top + 21;
-	if (i < 0)
-		i = 0;
-	if (i < w->scrolls[0].v_top) {
-		w->scrolls[0].v_top = i;
+	if (w->width < w->min_width) {
+		w->width = w->min_width;
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 420
-	#else
-	__asm__("mov ecx, 420 ");
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, scrollHeight
-	#else
-	__asm__("mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight));
-	#endif
-}
-
-/**
-*
-*  rct2: 0x006BDC9A
-*/
-void window_staff_scrollmousedown() {
-	int i, spriteIndex;
-	short x, y;
-	rct_window *w;
-	rct_peep *peep;
-
-	window_scrollmouse_get_registers(w, x, y);
-
-	i = y / 10;
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type != PEEP_TYPE_STAFF)
-			continue;
-
-		if (peep->staff_type != RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8))
-			continue;
-
-		if (i == 0) {
-			window_staff_peep_open(peep);
-			break;
-		}
-
-		i--;
+	if (w->width > w->max_width) {
+		window_invalidate(w);
+		w->width = w->max_width;
 	}
-}
 
-/**
-*
-*  rct2: 0x006BDC6B
-*/
-void window_staff_scrollmouseover() {
-	int i;
-	short x, y;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, x, y);
-
-	i = y / 10;
-	if (i != RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = i;
+	if (w->height < w->min_height) {
+		w->height = w->min_height;
 		window_invalidate(w);
 	}
+
+	if (w->height > w->max_height) {
+		window_invalidate(w);
+		w->height = w->max_height;
+	}
 }
 
-/**
-*
-*  rct2: 0x006BDC90
-*/
-void window_staff_tooltip()
+/** rct2: 0x006BEBEA */
+void window_staff_stats_update(rct_window* w)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
-}
+	w->frame_no++;
+	window_invalidate_by_id(0x697, w->number);
 
-/**
-*
-*  rct2: 0x006BD477
-*/
-void window_staff_invalidate()
-{
-	rct_window *w;
-
-	window_get_register(w);
-
-	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
-	uint8 tabIndex = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
-	uint8 widgetIndex = tabIndex + 4;
-
-	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
-	window_staff_widgets[WIDX_STAFF_HIRE_BUTTON].image = STR_HIRE_HANDYMAN + tabIndex;
-	window_staff_widgets[WIDX_STAFF_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
-	
-	if (tabIndex < 3) {
-		window_staff_widgets[WIDX_STAFF_UNIFORM_COLOR_PICKER].type = WWT_COLORBTN;
-		window_staff_widgets[WIDX_STAFF_UNIFORM_COLOR_PICKER].image =
-			((uint32)RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] << 19) +
-			0x600013C3;
-	}
-
-	window_staff_widgets[WIDX_STAFF_BACKGROUND].right = w->width - 1;
-	window_staff_widgets[WIDX_STAFF_BACKGROUND].bottom = w->height - 1;
-	window_staff_widgets[WIDX_STAFF_TAB_CONTENT_PANEL].right = w->width - 1;
-	window_staff_widgets[WIDX_STAFF_TAB_CONTENT_PANEL].bottom = w->height - 1;
-	window_staff_widgets[WIDX_STAFF_TITLE].right = w->width - 2;
-	window_staff_widgets[WIDX_STAFF_CLOSE].left = w->width - 2 - 0x0B;
-	window_staff_widgets[WIDX_STAFF_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
-	window_staff_widgets[WIDX_STAFF_LIST].right = w->width - 4;
-	window_staff_widgets[WIDX_STAFF_LIST].bottom = w->height - 0x0F;
-}
-
-/**
-*
-*  rct2: 0x006BD533
-*/
-void window_staff_paint() {
-	int i;
-	uint8 selectedTab;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
-	// Widgets
-	window_draw_widgets(w, dpi);
-
-	selectedTab = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
-
-	// Handymen tab image
-	i = (selectedTab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
-	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982710, int), int)[0] + 1;
-	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19;
-	gfx_draw_sprite(
-		dpi,
-		i,
-		(window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].left + window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_HANDYMEN_TAB].bottom - 6 + w->y, 0
-		);
-
-	// Handymen tab image
-	i = (selectedTab == 1 ? w->list_information_type & 0x0FFFFFFFC : 0);
-	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982718, int), int)[0] + 1;
-	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 19;
-	gfx_draw_sprite(
-		dpi,
-		i,
-		(window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].left + window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_MECHANICS_TAB].bottom - 6 + w->y, 0
-		);
-
-	// Security tab image
-	i = (selectedTab == 2 ? w->list_information_type & 0x0FFFFFFFC : 0);
-	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982720, int), int)[0] + 1;
-	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) << 19;
-	gfx_draw_sprite(
-		dpi,
-		i,
-		(window_staff_widgets[WIDX_STAFF_SECURITY_TAB].left + window_staff_widgets[WIDX_STAFF_SECURITY_TAB].right) / 2 + w->x,
-		window_staff_widgets[WIDX_STAFF_SECURITY_TAB].bottom - 6 + w->y, 0
-	);
-
-	rct_drawpixelinfo* sprite_dpi = clip_drawpixelinfo(
-		dpi,
-		window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].left + w->x + 1,
-		window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].right - window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].left - 1,
-		window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].top + w->y + 1,
-		window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].bottom - window_staff_widgets[WIDX_STAFF_ENTERTAINERS_TAB].top - 1
-		);
-		
-	
-
-	if (sprite_dpi != NULL) {
-		// Entertainers tab image
-		i = (selectedTab == 3 ? w->list_information_type & 0x0FFFFFFFC : 0);
-		i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982738, int), int)[0] + 1;
-		gfx_draw_sprite(
-			sprite_dpi,
-			i,
-			0x0F,
-			0x17, 0
-			);
-		rct2_free(sprite_dpi);
-	}
-
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(0x013CE952, uint32) = RCT2_ADDRESS(0x00992A00, uint16)[selectedTab];
-		gfx_draw_string_left(dpi, 1858, (void*)0x013CE952, 0, w->x + 0xA5, w->y + 0x20);
-	}
-
-	if (selectedTab < 3) {
-		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, 0, w->x + 6, window_staff_widgets[WIDX_STAFF_UNIFORM_COLOR_PICKER].top + w->y + 1);
-	}
-
-	int staffTypeStringId = 1859 + selectedTab;
-	// If the number of staff for a given type is 1, we use the singular forms of the names
-	if (_window_staff_selected_type_count == 1) {
-		staffTypeStringId += 4;
-	}
-
-	RCT2_GLOBAL(0x013CE952, uint16) = _window_staff_selected_type_count;
-	RCT2_GLOBAL(0x013CE952 + 2, uint16) = staffTypeStringId;
-
-	gfx_draw_string_left(dpi, STR_STAFF_LIST_COUNTER, (void*)0x013CE952, 0, w->x + 4, window_staff_widgets[WIDX_STAFF_LIST].bottom + w->y + 2);
-}
-
-/**
-*
-*  rct2: 0x006BD785
-*/
-void window_staff_scrollpaint()
-{
-	int spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-	uint32 argument_1, argument_2;
-	uint8 selectedTab;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-	rct_peep *peep;
-
-	window_paint_get_registers(w, dpi);
-
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
-
-	y = 0;
-	i = 0;
-	selectedTab = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == selectedTab) {
-			if (y > dpi->y + dpi->height) {
-				break;
-			}
-
-			if (y + 11 >= dpi->y) {
-				int format = 0x4A7;
-
-				if (i == RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
-					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-					format = 0x4A9;
-				}
-
-				RCT2_GLOBAL(0x013CE952, uint16) = peep->name_string_idx;
-				RCT2_GLOBAL(0x013CE952 + 2, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 107);
-
-				get_arguments_from_action(peep, &argument_1, &argument_2);
-				RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
-				RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 175, y - 1, 305);
-
-				// True if a patrol path is set for the worker
-				if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2) {
-					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1, 0);
-				}
-
-				staffOrderIcon_x = 0x7D;
-				if (peep->staff_type != 3) {
-					staffOrders = peep->var_C6;
-					staffOrderSprite = RCT2_ADDRESS(0x00992A08, uint32)[selectedTab];
-
-					while (staffOrders != 0) {
-						if (staffOrders & 1) {
-							gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y - 1, 0);
-						}
-						staffOrders = staffOrders >> 1;
-						staffOrderIcon_x += 9;
-						staffOrderSprite++;
-					}
-				} else {
-					gfx_draw_sprite(dpi, peep->sprite_type - 4 + 0x13FE, staffOrderIcon_x, y - 1, 0);
-				}
-			}
-
-			y += 10;
-			i++;
-		}
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep->var_45 & 0x10) {
+		peep->var_45 &= 0xEF;
+		window_invalidate(w);
 	}
 }

@@ -472,12 +472,12 @@ void window_track_list_open(ride_list_item item);
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
-void window_staff_open();
+void window_staff_list_open();
 void window_guest_list_open();
 void window_map_open();
 void window_options_open();
-void window_peep_open(rct_peep* peep);
-void window_staff_peep_open(rct_peep* peep);
+void window_guest_open(rct_peep* peep);
+void window_staff_open(rct_peep* peep);
 void window_park_awards_open();
 void window_park_entrance_open();
 void window_park_guests_open();
@@ -506,7 +506,7 @@ void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
 
 void window_new_ride_init_vars();
 
-void window_staff_init_vars();
+void window_staff_list_init_vars();
 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);

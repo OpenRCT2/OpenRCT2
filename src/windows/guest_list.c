@@ -426,7 +426,7 @@ static void window_guest_list_scrollmousedown()
 
 			if (i == 0) {
 				// Open guest window
-				window_peep_open(peep);
+				window_guest_open(peep);
 				
 				break;
 			} else {

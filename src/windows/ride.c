@@ -3074,7 +3074,7 @@ static void window_ride_locate_mechanic(rct_window *w)
 
 	peep = ride_get_assigned_mechanic(ride);
 	if (peep != NULL) {
-		window_staff_peep_open(peep);
+		window_staff_open(peep);
 	} else {
 		// Presumebly looks for the closest mechanic
 		RCT2_CALLPROC_X(0x006B1B3E, 0, w->number * 0x260, 0, 0, (int)w, 0, 0);

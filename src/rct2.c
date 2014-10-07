@@ -181,7 +181,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 
 	title_load();
 

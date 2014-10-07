@@ -919,7 +919,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 						RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
 					}
 					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
-						window_peep_open(&spr->peep);
+						window_guest_open(&spr->peep);
 					}
 					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
 						//Unknown for now

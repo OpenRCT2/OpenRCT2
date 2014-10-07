@@ -63,7 +63,7 @@ void editor_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -112,7 +112,7 @@ void trackdesigner_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();
@@ -150,7 +150,7 @@ void trackmanager_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();

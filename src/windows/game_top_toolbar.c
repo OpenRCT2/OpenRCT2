@@ -281,7 +281,7 @@ static void window_game_top_toolbar_mouseup()
 		window_park_entrance_open();
 		break;
 	case WIDX_STAFF:
-		window_staff_open();
+		window_staff_list_open();
 		break;
 	case WIDX_GUESTS:
 		window_guest_list_open();

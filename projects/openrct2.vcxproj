@@ -28,8 +28,18 @@
     <Text Include="..\data\language\swedish.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\lib\libspeex\resample.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClInclude Include="..\lib\libspeex\arch.h" />
+    <ClInclude Include="..\lib\libspeex\config.h" />
+    <ClInclude Include="..\lib\libspeex\os_support.h" />
+    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h" />
+    <ClInclude Include="..\lib\libspeex\speex\speex_types.h" />
+    <ClInclude Include="..\lib\libspeex\stack_alloc.h" />
+    <ClInclude Include="..\lib\lodepng\lodepng.h" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\config.c" />
@@ -99,15 +109,15 @@
     <ClCompile Include="..\src\windows\new_ride.c" />
     <ClCompile Include="..\src\windows\options.c" />
     <ClCompile Include="..\src\windows\park.c" />
-    <ClCompile Include="..\src\windows\peep.c" />
+    <ClCompile Include="..\src\windows\guest.c" />
     <ClCompile Include="..\src\windows\publisher_credits.c" />
     <ClCompile Include="..\src\windows\research.c" />
     <ClCompile Include="..\src\windows\ride.c" />
     <ClCompile Include="..\src\windows\ride_list.c" />
     <ClCompile Include="..\src\windows\save_prompt.c" />
     <ClCompile Include="..\src\windows\scenery.c" />
+    <ClCompile Include="..\src\windows\staff_list.c" />
     <ClCompile Include="..\src\windows\staff.c" />
-    <ClCompile Include="..\src\windows\staff_peep.c" />
     <ClCompile Include="..\src\windows\title_exit.c" />
     <ClCompile Include="..\src\windows\title_logo.c" />
     <ClCompile Include="..\src\windows\title_menu.c" />
@@ -123,13 +133,6 @@
     <ClCompile Include="..\src\world\sprite.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\lib\libspeex\arch.h" />
-    <ClInclude Include="..\lib\libspeex\config.h" />
-    <ClInclude Include="..\lib\libspeex\os_support.h" />
-    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h" />
-    <ClInclude Include="..\lib\libspeex\speex\speex_types.h" />
-    <ClInclude Include="..\lib\libspeex\stack_alloc.h" />
-    <ClInclude Include="..\lib\lodepng\lodepng.h" />
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio\audio.h" />
     <ClInclude Include="..\src\audio\mixer.h" />

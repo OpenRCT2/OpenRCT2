@@ -197,9 +197,6 @@
     <ClCompile Include="..\src\windows\park.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\windows\peep.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\windows\publisher_credits.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -216,12 +213,6 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\scenery.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\windows\staff.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\windows\staff_peep.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\title_exit.c">
@@ -356,12 +347,6 @@
     <ClCompile Include="..\src\localisation\localisation.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c">
-      <Filter>Libraries\lodepng</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\peep\peep.c">
       <Filter>Source\Peep</Filter>
     </ClCompile>
@@ -370,6 +355,25 @@
     </ClCompile>
     <ClCompile Include="..\src\management\research.c">
       <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\staff_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\staff.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\guest.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
