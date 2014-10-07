@@ -289,47 +289,19 @@ void window_staff_open(rct_peep* peep)
 void window_staff_disable_widgets(rct_window* w)
 {
 	rct_peep* peep = &g_sprite_list[w->number].peep;
+	uint64 disabled_widgets = 0;
 
-	int eax = 0 | 0x80;
-
-	if (peep->staff_type == 2) {
-		eax |= 0x20;
-	}
-
-	//RCT2_CALLFUNC_X(0x698827, 0, 0, 0, 0, 0, 0, 0);
-	// sub_698827
-	// This is here due to needing the Carry Flag.
-
-	int CF = 0;
-	int res = RCT2_GLOBAL(0x982004 + peep->state, uint8) & 1;
-
-	if (res == 0) {
-		CF = 1;
-	}
-	else {
-		eax = eax & eax;
-	}
-
-	// end sub_698827
-
-	int a = 0;
-
-	// pop esi
-	if (CF == 1 && w->page == 0) {
-		eax |= 0x400; //or      eax, 400h
-
-		a = w->disabled_widgets & (1 << 0xA); //bt      dword ptr[esi + 10h], 0Ah
-
-	}
-
-	if (a == 0) {
-		CF = w->disabled_widgets & (1 << 0xA); //bt      dword ptr [esi+10h], 0Ah
-		if (CF == 1) {
+	if (peep_can_be_picked_up(peep)){
+		if (w->disabled_widgets & (1 << WIDX_PICKUP))
 			window_invalidate(w);
-		}
+	}
+	else{
+		disabled_widgets = (1 << WIDX_PICKUP);
+		if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+			window_invalidate(w);
 	}
 
-	w->disabled_widgets = eax;
+	w->disabled_widgets = disabled_widgets;
 }
 
 /**
@@ -347,33 +319,6 @@ void window_staff_overview_close()
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 	}
-}
-
-/** rct2: 0x6C0A77 */
-void window_staff_fire(rct_window* w)
-{
-	// Check if the confirm window already exists.
-	if (window_bring_to_front_by_id(0x1A, w->number)) {
-		return;
-	}
-
-	// Find center of the screen.
-	int screen_height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	int screen_width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int x = screen_width/2 - 100;
-	int y = screen_height/2 - 50;
-
-	rct_window* window_prompt = window_create(x, y, 200, 100, (uint32*)0x992C3C, 0x1A, 0);
-	window_prompt->widgets = (rct_widget*)0x9AFB4C;
-	window_prompt->enabled_widgets |= 0x4;
-	window_prompt->enabled_widgets |= 0x8;
-	window_prompt->enabled_widgets |= 0x10;
-
-	window_init_scroll_widgets(window_prompt);
-
-	window_prompt->flags |= 0x10;
-	window_prompt->number = w->number;
-	window_prompt->colours[0] = 0x9A;
 }
 
 /**
@@ -461,7 +406,7 @@ void window_staff_overview_mouseup()
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_FIRE: // 0xE
-		window_staff_fire(w);
+		window_staff_fire_open(peep);
 		break;
 	case WIDX_RENAME: // 0xC
 		// 6BE4BC
