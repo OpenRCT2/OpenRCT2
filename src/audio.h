@@ -31,6 +31,8 @@ typedef struct {
 extern int gAudioDeviceCount;
 extern audio_device *gAudioDevices;
 
+#define AUDIO_MAX_VEHICLE_SOUNDS 50
+
 void audio_init();
 void audio_quit();
 void audio_get_devices();
@@ -101,12 +103,10 @@ typedef struct {
 	sint16 sound2_volume;	// 0x36
 	sint16 sound2_pan;		// 0x38
 	uint16 sound2_freq;		// 0x3A
-} rct_vehicle_sound;
 
-typedef struct {
-	uint16 id;
-	rct_sound sound;
-} rct_other_sound;
+	void* sound1_channel;
+	void* sound2_channel;
+} rct_vehicle_sound;
 
 typedef struct {
 	uint16 id;
@@ -115,7 +115,12 @@ typedef struct {
 	uint16 frequency;	// 0x6
 	sint16 var_8;
 	uint16 var_A;		// 0xA
-} rct_sound_unknown;
+} rct_vehicle_sound_params;
+
+typedef struct {
+	uint16 id;
+	rct_sound sound;
+} rct_other_sound;
 
 typedef struct {
 	uint8 id;
@@ -140,6 +145,10 @@ typedef struct {
 	uint8 pathid;	//0x8
 	uint8 var_9;
 } rct_music_info3;
+
+extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
 int get_dsound_devices();
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
