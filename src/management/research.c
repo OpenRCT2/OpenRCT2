@@ -21,6 +21,8 @@
 #include "../addresses.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../world/scenery.h"
+#include "news_item.h"
 #include "research.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
@@ -139,6 +141,72 @@ static void research_next_design()
 
 /**
  *
+ *  rct2: 0x006848D4
+ */
+void research_finish_item(sint32 entryIndex)
+{
+	int i, ebx, ecx, rideEntryIndex, subSceneryEntryIndex;
+	rct_ride_type *rideEntry, *rideEntry2;
+	rct_scenery_set_entry *scenerySetEntry;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = entryIndex;
+	research_invalidate_related_windows();
+	if (entryIndex >= 0x10000) {
+		// Ride
+		ecx = (entryIndex >> 8) & 0xFF;
+		rideEntryIndex = entryIndex & 0xFF;
+		rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+		RCT2_ADDRESS(0x01357404, uint32)[ecx >> 5] |= (1 << (ecx & 0x1F));
+		RCT2_ADDRESS(0x01357444, uint32)[ecx] = RCT2_ADDRESS(0x0097C468, uint32)[ecx];
+		RCT2_ADDRESS(0x01357644, uint32)[ecx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ecx];
+		if (RCT2_GLOBAL(0x0097D4F2 + (ecx * 8), uint16) & 8) {
+			ebx = RCT2_GLOBAL(0x0097D4F5 + (ecx * 8), uint8);
+			RCT2_ADDRESS(0x01357444, uint32)[ebx] = RCT2_ADDRESS(0x0097C468, uint32)[ebx];
+			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
+		}
+		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1 << (rideEntryIndex & 0x1F);
+		if (!(rideEntry->var_008 & 0x2000)) {
+			for (i = 0; i < 128; i++) {
+				rideEntry2 = GET_RIDE_ENTRY(i);
+				if (rideEntry2 == (rct_ride_type*)-1)
+					continue;
+				if (rideEntry2->var_008 & 0x2000)
+					continue;
+
+				if (rideEntry2->var_00C == ecx || rideEntry2->var_00D == ecx || rideEntry2->var_00E == ecx)
+					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
+			}
+		}
+
+		// I don't think 0x009AC06C is ever not 0, so probably redundant
+		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
+			RCT2_GLOBAL(0x013CE952, rct_string_id) = rideEntry->var_008 & 0x1000 ?
+				rideEntry->name : ecx + 2;
+			news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
+		}
+
+		research_invalidate_related_windows();
+	} else {
+		// Scenery
+		scenerySetEntry = g_scenerySetEntries[entryIndex & 0xFFFF];
+		for (i = 0; i < scenerySetEntry->entry_count; i++) {
+			subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1 << (subSceneryEntryIndex & 0x1F);
+		}
+
+		// I don't think 0x009AC06C is ever not 0, so probably redundant
+		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
+			RCT2_GLOBAL(0x013CE952, rct_string_id) = scenerySetEntry->name;
+			news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
+		}
+
+		research_invalidate_related_windows();
+		init_scenery();
+	}
+}
+
+/**
+ *
  *  rct2: 0x00684C7A
  */
 void research_update()
@@ -171,7 +239,7 @@ void research_update()
 			research_invalidate_related_windows();
 			break;
 		case RESEARCH_STAGE_COMPLETING_DESIGN:
-			RCT2_CALLPROC_X(0x006848D4, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32), 0, 0, 0, 0, 0, 0);
+			research_finish_item(RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, sint32));
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
 			research_calculate_expected_date();

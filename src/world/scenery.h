@@ -126,4 +126,6 @@ typedef struct {
 #define g_pathBitSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_scenery_entry*)
 #define g_scenerySetEntries RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, rct_scenery_set_entry*)
 
+void init_scenery();
+
 #endif

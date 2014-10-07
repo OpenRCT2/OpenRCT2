@@ -57,7 +57,7 @@ typedef struct {
 	uint32 var_008;
 	uint8 var_00C;
 	uint8 var_00D;
-	uint8 pad_00E;
+	uint8 var_00E;
 	uint8 var_00F;
 	uint8 var_010;
 	uint8 var_011;
