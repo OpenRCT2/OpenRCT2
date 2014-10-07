@@ -21,7 +21,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "object.h"
-#include "sawyercoding.h"
+#include "util/sawyercoding.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721

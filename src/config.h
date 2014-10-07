@@ -21,9 +21,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include "currency.h"
-#include "rct2.h"
 #include <windows.h> // for MAX_PATH
+#include "common.h"
+#include "localisation/currency.h"
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),

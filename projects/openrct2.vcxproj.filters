@@ -1,442 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Windows">
-      <UniqueIdentifier>{611458dc-7dd2-4c37-af0f-306cf9d85fb9}</UniqueIdentifier>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{29bd2abb-0a50-4c58-9031-bee3f966b249}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data">
+    <Filter Include="Libraries\lodepng">
+      <UniqueIdentifier>{e9219aff-1bb5-4065-8204-427a97344a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\libspeex">
+      <UniqueIdentifier>{3c824fc4-8242-4127-a4b4-248435ff9058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4c8348c7-dfe9-4368-9d87-29733fe5950a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Audio">
+      <UniqueIdentifier>{8e15cd5b-d7a7-4bda-a58a-e1158ad6ffb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Data">
       <UniqueIdentifier>{ee2e3a6f-1209-407b-8000-a6a4b88d28d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data\Language">
+    <Filter Include="Source\Data\Language">
       <UniqueIdentifier>{b344ca0f-b412-4924-be08-54bb6f83c3dd}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\addresses.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\intro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\osinterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\rct2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\title.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\gfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\string_ids.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\peep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\news_item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\viewport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\sprites.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scenario.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ride.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ride_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ride_ratings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\park.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\date.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\climate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\window_dropdown.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tutorial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\editor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\sawyercoding.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\track.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\window_tooltip.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\window_error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\screenshot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\finance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\marketing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\award.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\currency.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\cursors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\graph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\language.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\staff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scenery.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\window_scenery.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\hook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mixer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\research.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\game.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\intro.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\osinterface.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\rct2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\title.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\audio.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\gfx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\peep.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\news_item.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\viewport.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_main.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_title_menu.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_title_logo.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_title_exit.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\widget.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_title_scenarioselect.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scenario.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\string_ids.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\config.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\park.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ride.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ride_data.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ride_ratings.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\map.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\date.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\climate.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_dropdown.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tutorial.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\editor.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\sawyercoding.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\object.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_game_bottom_toolbar.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_game_top_toolbar.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_land.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_water.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_park.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_cheats.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\util.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_clear_scenery.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_ride_list.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\track.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_tooltip.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_error.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\screenshot.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_about.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lodepng\lodepng.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_footpath.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_save_prompt.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_news.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_guest_list.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\finance.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_finances.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_staff.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_banner.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_new_ride.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_options.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_map.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scenario_list.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\object_list.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\vehicle.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\sprite.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\marketing.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\award.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_peep.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\currency.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\graph.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_new_campaign.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\language.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_research.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_staff_peep.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\staff.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_scenery.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\input.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_ride.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_music_credits.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_publisher_credits.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libspeex\resample.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\hook.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mixer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_track_list.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_track_manage.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_track_place.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\research.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_shortcut_keys.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\window_shortcut_key_change.c">
-      <Filter>Windows</Filter>
-    </ClCompile>
+    <Filter Include="Source\Drawing">
+      <UniqueIdentifier>{8a9b8831-4ba9-4104-b13f-949981e10c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Management">
+      <UniqueIdentifier>{97950d17-f655-49bb-85f4-309feb332b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Interface">
+      <UniqueIdentifier>{9ac1caf2-4edc-4237-b441-16cc8923d9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Localisation">
+      <UniqueIdentifier>{7f7d04b9-188e-4086-a2a2-5b7b2eb2310b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Platform">
+      <UniqueIdentifier>{22415bda-c4d8-425c-bd06-4c5bbdffe6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Ride">
+      <UniqueIdentifier>{3af99868-3e47-4832-bf01-409aec0b08e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Util">
+      <UniqueIdentifier>{2f881d9d-1f7e-40bf-ad3d-92db3a31ce90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World">
+      <UniqueIdentifier>{6c8e1ad1-9d13-41f8-a9db-64501ad65503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Windows">
+      <UniqueIdentifier>{81716f5d-b396-4a82-a450-76fee56d982b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\libspeex\speex">
+      <UniqueIdentifier>{209155b8-2f61-4e25-ab86-c8aa36357abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Peep">
+      <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -445,28 +67,510 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\data\language\dutch.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\english_uk.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\english_us.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\french.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\hungarian.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\polish.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\spanish_sp.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
     <Text Include="..\data\language\swedish.txt">
-      <Filter>Data\Language</Filter>
+      <Filter>Source\Data\Language</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\management\award.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\management\finance.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\management\marketing.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\management\news_item.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\audio\audio.c">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\audio\mixer.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\graph.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\screenshot.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\viewport.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\widget.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\window.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\climate.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\map.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\park.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\sprite.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\about.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\banner.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\cheats.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\clear_scenery.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\dropdown.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\error.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\finances.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\footpath.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\game_bottom_toolbar.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\game_top_toolbar.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\guest_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\land.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\main.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\map.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\music_credits.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\new_campaign.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\new_ride.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\news.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\options.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\park.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\publisher_credits.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\research.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\ride.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\ride_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\save_prompt.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\scenery.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_exit.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_logo.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_menu.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_scenarioselect.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\tooltip.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\track_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\track_manage.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\track_place.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\water.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\currency.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\language.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\osinterface.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\ride.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\ride_data.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\ride_ratings.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\track.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\vehicle.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\sawyercoding.c">
+      <Filter>Source\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\util.c">
+      <Filter>Source\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\editor.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\game.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hook.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\intro.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\object.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\object_list.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rct2.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scenario.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scenario_list.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\title.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tutorial.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\date.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\rect.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\string.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\line.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\sprite.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\drawing.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\real_names.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\windows.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\osx.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\unix.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\shared.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\localisation.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\peep\peep.c">
+      <Filter>Source\Peep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\peep\staff.c">
+      <Filter>Source\Peep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\management\research.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\staff_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\staff.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\guest.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\shortcut_key_change.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\shortcut_keys.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\management\award.h">
+      <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\management\finance.h">
+      <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\management\marketing.h">
+      <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\management\news_item.h">
+      <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\audio\audio.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\audio\mixer.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\graph.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\screenshot.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\viewport.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\widget.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\window.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\climate.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\map.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\park.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\scenery.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\sprite.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\windows\dropdown.h">
+      <Filter>Source\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\windows\error.h">
+      <Filter>Source\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\windows\scenery.h">
+      <Filter>Source\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\windows\tooltip.h">
+      <Filter>Source\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\currency.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\language.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\string_ids.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\osinterface.h">
+      <Filter>Source\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\ride.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\ride_data.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\ride_ratings.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\track.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\vehicle.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\sawyercoding.h">
+      <Filter>Source\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\util.h">
+      <Filter>Source\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\addresses.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\config.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cursors.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\editor.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hook.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\intro.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\object.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\rct2.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scenario.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sprites.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\title.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tutorial.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\date.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\drawing.h">
+      <Filter>Source\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\localisation.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\platform\platform.h">
+      <Filter>Source\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\format_codes.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\lodepng\lodepng.h">
+      <Filter>Libraries\lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\arch.h">
+      <Filter>Libraries\libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\config.h">
+      <Filter>Libraries\libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\os_support.h">
+      <Filter>Libraries\libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\stack_alloc.h">
+      <Filter>Libraries\libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h">
+      <Filter>Libraries\libspeex\speex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\libspeex\speex\speex_types.h">
+      <Filter>Libraries\libspeex\speex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\peep\peep.h">
+      <Filter>Source\Peep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\peep\staff.h">
+      <Filter>Source\Peep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\management\research.h">
+      <Filter>Source\Management</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

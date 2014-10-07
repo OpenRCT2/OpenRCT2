@@ -91,6 +91,8 @@ typedef fixed32_1dp money32;
 
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
+typedef unsigned short rct_string_id;
+
 void rct2_finish();
 
 enum {

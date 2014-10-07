@@ -21,19 +21,19 @@
 #include <SDL_keycode.h>
 #include <windows.h>
 #include "addresses.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "config.h"
 #include "game.h"
 #include "input.h"
-#include "map.h"
-#include "osinterface.h"
-#include "sprite.h"
+#include "interface/viewport.h"
+#include "interface/widget.h"
+#include "interface/window.h"
+#include "platform/osinterface.h"
 #include "tutorial.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "window_tooltip.h"
-#include "window_dropdown.h"
+#include "windows/tooltip.h"
+#include "windows/dropdown.h"
+#include "world/map.h"
+#include "world/sprite.h"
 
 POINT _dragPosition;
 
@@ -919,7 +919,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 						RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
 					}
 					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
-						window_peep_open(&spr->peep);
+						window_guest_open(&spr->peep);
 					}
 					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
 						//Unknown for now

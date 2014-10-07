@@ -23,11 +23,8 @@
 #include <ctype.h>
 #include "addresses.h"
 #include "config.h"
-#include "language.h"
-#include "rct2.h"
-
-
-#include "osinterface.h"
+#include "localisation/localisation.h"
+#include "platform/osinterface.h"
 
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];

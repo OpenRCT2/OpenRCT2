@@ -19,22 +19,22 @@
  *****************************************************************************/
 
 #include "addresses.h"
-#include "date.h"
+#include "audio/audio.h"
+#include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
-#include "gfx.h"
-#include "map.h"
-#include "news_item.h"
+#include "interface/window.h"
+#include "interface/viewport.h"
+#include "localisation/date.h"
+#include "localisation/localisation.h"
+#include "management/finance.h"
+#include "management/news_item.h"
 #include "object.h"
-#include "park.h"
-#include "ride.h"
-#include "window.h"
-#include "viewport.h"
-#include "finance.h"
-#include "audio.h"
-#include "sprite.h"
-#include "string_ids.h"
-#include "staff.h"
+#include "peep/staff.h"
+#include "ride/ride.h"
+#include "world/map.h"
+#include "world/park.h"
+#include "world/sprite.h"
 
 static void set_all_land_owned();
 
@@ -63,7 +63,7 @@ void editor_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -112,7 +112,7 @@ void trackdesigner_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();
@@ -150,7 +150,7 @@ void trackmanager_load()
 	finance_init();
 	date_reset();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();
