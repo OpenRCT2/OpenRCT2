@@ -23,6 +23,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "map.h"
+#include "mixer.h"
 #include "osinterface.h"
 #include "rct2.h"
 #include "sprite.h"
@@ -31,6 +32,9 @@
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
+rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
 void audio_init(int i)
 {
@@ -941,8 +945,8 @@ void audio_init1()
 void audio_init2(int device)
 {
 	audio_close();
-	for (int i = 0; i < 7; i++) {
-		rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
+	for (int i = 0; i < countof(gVehicleSoundList); i++) {
+		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];//&RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
 	}
 	for (int i = 0; i < 7; i++) {
@@ -1643,18 +1647,26 @@ void stop_other_sounds()
 void stop_vehicle_sounds()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
-		for (int i = 0; i < 7; i++) {
-			rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
+		for (int i = 0; i < countof(gVehicleSoundList); i++) {
+			rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];//&RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 			if (vehicle_sound->id != 0xFFFF) {
 				if (vehicle_sound->sound1_id != 0xFFFF) {
+#ifdef USE_MIXER
+					Mixer_Stop_Channel(vehicle_sound->sound1_channel);
+#else
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
 					sound_stop(&vehicle_sound->sound1);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 				}
 				if (vehicle_sound->sound2_id != 0xFFFF) {
+#ifdef USE_MIXER
+					Mixer_Stop_Channel(vehicle_sound->sound2_channel);
+#else
 					RCT2_GLOBAL(0x014241BC, uint32) = 1;
 					sound_stop(&vehicle_sound->sound2);
 					RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 				}
 			}
 			vehicle_sound->id = 0xFFFF;
@@ -1747,6 +1759,35 @@ void unpause_sounds()
 {
 	RCT2_GLOBAL(0x009AF59C, uint8)--;
 	g_sounds_disabled = 0;
+}
+
+/**
+*  Update zoom based volume attenuation for ride music
+*  rct2: 0x006BC348
+*/
+void sub_6BC348()
+{
+	RCT2_GLOBAL(0x009AF42C, void*) = &RCT2_GLOBAL(0x009AF430, void*);
+	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+	rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+	while (1) {
+		window--;
+		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
+			break;
+		}
+		if (window->viewport && window->viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
+			RCT2_GLOBAL(0x00F438A4, rct_viewport*) = window->viewport;
+			RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
+			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
+			if (window->viewport->zoom) {
+				RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
+				if (window->viewport->zoom != 1) {
+					RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
+				}
+			}
+			return;
+		}
+	}
 }
 
 /**

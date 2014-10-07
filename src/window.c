@@ -1331,8 +1331,8 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	widgetIndex = 0;
 	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		// Check if widget is outside the draw region
-		if (w->x + widget->left < dpi->x + dpi->width && w->x + widget->right > dpi->x)
-			if (w->y + widget->top < dpi->y + dpi->height && w->y + widget->bottom > dpi->y)
+		if (w->x + widget->left < dpi->x + dpi->width && w->x + widget->right >= dpi->x)
+			if (w->y + widget->top < dpi->y + dpi->height && w->y + widget->bottom >= dpi->y)
 				widget_draw(dpi, w, widgetIndex);
 
 		widgetIndex++;
