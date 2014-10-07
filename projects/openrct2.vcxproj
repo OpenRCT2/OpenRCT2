@@ -57,6 +57,7 @@
     <ClCompile Include="..\src\management\finance.c" />
     <ClCompile Include="..\src\management\marketing.c" />
     <ClCompile Include="..\src\management\news_item.c" />
+    <ClCompile Include="..\src\management\research.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\peep\peep.c" />
@@ -156,6 +157,7 @@
     <ClInclude Include="..\src\management\finance.h" />
     <ClInclude Include="..\src\management\marketing.h" />
     <ClInclude Include="..\src\management\news_item.h" />
+    <ClInclude Include="..\src\management\research.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\peep\peep.h" />
     <ClInclude Include="..\src\peep\staff.h" />

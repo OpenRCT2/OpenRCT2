@@ -72,10 +72,10 @@ typedef struct {
 	uint8 pad_82[0x31];
 	uint8 var_B3;
 	uint8 pad_B4[0x07];
-	uint8 var_BB;
-	uint8 var_BC;
-	uint8 var_BD;
-	uint8 var_BE;
+	uint8 sound1_id;				// 0xBB
+	uint8 sound1_volume;			// 0xBC
+	uint8 sound2_id;				// 0xBD
+	uint8 sound2_volume;			// 0xBE
 	sint8 var_BF;
 	uint8 pad_C0[0x02];
 	uint8 speed;					// 0xC2

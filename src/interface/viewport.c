@@ -1107,8 +1107,8 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 	ebx = screenY;
 	edx = flags;
 	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (x != NULL) *x = *((uint8*)&eax);
-	if (y != NULL) *y = *((uint8*)&ecx);
+	if (x != NULL) *x = *((uint16*)&eax);
+	if (y != NULL) *y = *((uint16*)&ecx);
 	if (z != NULL) *z = *((uint8*)&ebx);
 	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
 }

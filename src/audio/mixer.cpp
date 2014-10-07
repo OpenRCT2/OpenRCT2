@@ -127,8 +127,9 @@ bool Sample::Convert(AudioFormat format)
 		data = cvt.buf;
 		length = cvt.len_cvt;
 		Sample::format = format;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 const uint8* Sample::Data()
@@ -275,12 +276,42 @@ void Mixer::Close()
 	delete[] effectbuffer;
 }
 
+void Mixer::Lock()
+{
+	SDL_LockAudioDevice(deviceid);
+}
+
+void Mixer::Unlock()
+{
+	SDL_UnlockAudioDevice(deviceid);
+}
+
+Channel* Mixer::Play(Stream& stream, int loop)
+{
+	Lock();
+	Channel* newchannel = new (std::nothrow) Channel();
+	if (newchannel) {
+		newchannel->Play(stream, loop);
+		channels.push_back(newchannel);
+	}
+	Unlock();
+	return newchannel;
+}
+
+void Mixer::Stop(Channel& channel)
+{
+	Lock();
+	channels.remove(&channel);
+	delete &channel;
+	Unlock();
+}
+
 void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 {
 	Mixer* mixer = (Mixer*)arg;
 	memset(stream, 0, length);
-	for (int i = 0; i < 10; i++) {
-		mixer->MixChannel(mixer->channels[i], stream, length);
+	for (std::list<Channel*>::iterator i = mixer->channels.begin(); i != mixer->channels.end(); i++){
+		mixer->MixChannel(*(*i), stream, length);
 	}
 }
 
@@ -437,4 +468,40 @@ bool Mixer::Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, 
 void Mixer_Init(const char* device)
 {
 	gMixer.Init(device);
+}
+
+void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate)
+{
+	if (id >= SOUND_MAXID) {
+		return 0;
+	}
+	gMixer.Lock();
+	Channel* channel = gMixer.Play(gMixer.css1streams[id], loop);
+	if (channel) {
+		channel->SetVolume(volume);
+		channel->SetPan(pan);
+		channel->SetRate(rate);
+	}
+	gMixer.Unlock();
+	return channel;
+}
+
+void Mixer_Stop_Channel(void* channel)
+{
+	gMixer.Stop(*(Channel*)channel);
+}
+
+void Mixer_Channel_Volume(void* channel, int volume)
+{
+	((Channel*)channel)->SetVolume(volume);
+}
+
+void Mixer_Channel_Pan(void* channel, float pan)
+{
+	((Channel*)channel)->SetPan(pan);
+}
+
+void Mixer_Channel_Rate(void* channel, double rate)
+{
+	((Channel*)channel)->SetRate(rate);
 }

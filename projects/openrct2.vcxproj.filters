@@ -368,6 +368,9 @@
     <ClCompile Include="..\src\peep\staff.c">
       <Filter>Source\Peep</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\management\research.c">
+      <Filter>Source\Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -549,6 +552,9 @@
     </ClInclude>
     <ClInclude Include="..\src\peep\staff.h">
       <Filter>Source\Peep</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\management\research.h">
+      <Filter>Source\Management</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
