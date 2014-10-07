@@ -1891,7 +1891,7 @@ static rct_string_id window_ride_get_status_overall_view(rct_window *w, void *ar
 	RCT2_GLOBAL((int)arguments + 2, uint32) = argument;
 	stringId = STR_LOSS;
 	if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
-		stringId = STR_COST;
+		stringId = STR_BLACK_STRING;
 
 	return stringId;
 }
