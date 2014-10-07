@@ -31,7 +31,7 @@ typedef struct {
 extern int gAudioDeviceCount;
 extern audio_device *gAudioDevices;
 
-#define AUDIO_MAX_VEHICLE_SOUNDS 50
+#define AUDIO_MAX_VEHICLE_SOUNDS 14
 
 void audio_init();
 void audio_quit();

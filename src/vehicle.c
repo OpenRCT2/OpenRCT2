@@ -364,7 +364,7 @@ void vehicle_sounds_update()
 						vehicle_sound->sound1_id = sprite->vehicle.sound1_id;
 #ifndef USE_MIXER
 						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_prepare(sprite->vehicle.var_BB, &vehicle_sound->sound1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
+						sound_prepare(sprite->vehicle.sound1_id, &vehicle_sound->sound1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
 						RCT2_GLOBAL(0x014241BC, uint32) = 0;
 #endif
 						vehicle_sound->sound1_pan = vehicle_sound_params->pan;
@@ -461,7 +461,7 @@ void vehicle_sounds_update()
 						vehicle_sound->sound2_id = sprite->vehicle.sound2_id;
 #ifndef USE_MIXER
 						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_prepare(sprite->vehicle.var_BD, &vehicle_sound->sound2, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
+						sound_prepare(sprite->vehicle.sound2_id, &vehicle_sound->sound2, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
 						RCT2_GLOBAL(0x014241BC, uint32) = 0;
 #endif
 						vehicle_sound->sound2_pan = vehicle_sound_params->pan;
