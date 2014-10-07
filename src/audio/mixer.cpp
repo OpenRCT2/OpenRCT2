@@ -272,6 +272,11 @@ void Mixer::Init(const char* device)
 
 void Mixer::Close()
 {
+	Lock();
+	while (channels.begin() != channels.end()) {
+		Stop(*(*channels.begin()));
+	}
+	Unlock();
 	SDL_CloseAudioDevice(deviceid);
 	delete[] effectbuffer;
 }
@@ -329,7 +334,11 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 			int samplesize = format.channels * format.BytesPerSample();
 			int samples = length / samplesize;
 			int samplesloaded = loaded / samplesize;
-			int samplestoread = (int)ceil((samples - samplesloaded) * channel.rate);
+			double rate = 1;
+			if (format.format == AUDIO_S16SYS) {
+				rate = channel.rate;
+			}
+			int samplestoread = (int)ceil((samples - samplesloaded) * rate);
 			int lengthloaded = 0;
 			if (channel.offset < channel.stream->Length()) {
 				bool mustconvert = false;
@@ -363,11 +372,10 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				}
 
 				bool effectbufferloaded = false;
-
-				if (channel.rate != 1 && format.format == AUDIO_S16SYS) {
+				if (rate != 1 && format.format == AUDIO_S16SYS) {
 					int in_len = (int)(ceil((double)lengthloaded / samplesize));
 					int out_len = samples + 20; // needs some extra, otherwise resampler sometimes doesn't process all the input samples
-					speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / channel.rate)));
+					speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
 					speex_resampler_process_interleaved_int(channel.resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
 					effectbufferloaded = true;
 					tomix = effectbuffer;
@@ -386,7 +394,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 							break;
 						case AUDIO_U8:
 							EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
-						break;
+							break;
 					}
 				}
 
@@ -493,15 +501,21 @@ void Mixer_Stop_Channel(void* channel)
 
 void Mixer_Channel_Volume(void* channel, int volume)
 {
+	gMixer.Lock();
 	((Channel*)channel)->SetVolume(volume);
+	gMixer.Unlock();
 }
 
 void Mixer_Channel_Pan(void* channel, float pan)
 {
+	gMixer.Lock();
 	((Channel*)channel)->SetPan(pan);
+	gMixer.Unlock();
 }
 
 void Mixer_Channel_Rate(void* channel, double rate)
 {
+	gMixer.Lock();
 	((Channel*)channel)->SetRate(rate);
+	gMixer.Unlock();
 }

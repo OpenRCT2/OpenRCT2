@@ -359,10 +359,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\lodepng</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\libspeex</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
@@ -373,6 +369,22 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\guest.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\shortcut_key_change.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\shortcut_keys.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>

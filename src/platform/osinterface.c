@@ -69,6 +69,17 @@ void osinterface_init()
 	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
+int osinterface_scancode_to_rct_keycode(int sdl_key){
+	char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
+
+	// Until we reshufle the text files to use the new positions 
+	// this will suffice to move the majority to the correct positions.
+	// Note any special buttons PgUp PgDwn are mapped wrong.
+	if (keycode >= 'a' && keycode <= 'z')keycode = toupper(keycode);
+
+	return keycode;
+}
+
 /**
  *  This is not quite the same as the below function as we don't want to
  *  derfererence the cursor before the function.

@@ -2526,6 +2526,7 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
+### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???

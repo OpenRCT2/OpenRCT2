@@ -116,6 +116,8 @@
     <ClCompile Include="..\src\windows\ride_list.c" />
     <ClCompile Include="..\src\windows\save_prompt.c" />
     <ClCompile Include="..\src\windows\scenery.c" />
+    <ClCompile Include="..\src\windows\shortcut_keys.c" />
+    <ClCompile Include="..\src\windows\shortcut_key_change.c" />
     <ClCompile Include="..\src\windows\staff_list.c" />
     <ClCompile Include="..\src\windows\staff.c" />
     <ClCompile Include="..\src\windows\title_exit.c" />

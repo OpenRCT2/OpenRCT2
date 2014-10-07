@@ -112,5 +112,6 @@ int osinterface_directory_exists(const char *path);
 int osinterface_ensure_directory_exists(const char *path);
 
 char osinterface_get_path_separator();
+int osinterface_scancode_to_rct_keycode(int sdl_key);
 
 #endif
