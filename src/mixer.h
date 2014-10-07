@@ -21,13 +21,17 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
+#include <SDL.h>
 #include "rct2.h"
+
+#define USE_MIXER
 
 #define MIXER_LOOP_NONE			0
 #define MIXER_LOOP_INFINITE		-1
 
 #ifdef __cplusplus
 
+#include <list>
 extern "C" {
 #include <speex/speex_resampler.h>
 }
@@ -107,6 +111,12 @@ class Mixer
 public:
 	void Init(const char* device);
 	void Close();
+	void Lock();
+	void Unlock();
+	Channel* Play(Stream& stream, int loop);
+	void Stop(Channel& channel);
+
+	Stream css1streams[SOUND_MAXID];
 
 private:
 	static void SDLCALL Callback(void* arg, uint8* data, int length);
@@ -119,8 +129,7 @@ private:
 	AudioFormat format;
 	uint8* effectbuffer;
 	Sample css1samples[SOUND_MAXID];
-	Stream css1streams[SOUND_MAXID];
-	Channel channels[10];
+	std::list<Channel*> channels;
 };
 
 extern "C"
@@ -128,6 +137,15 @@ extern "C"
 #endif
 
 void Mixer_Init(const char* device);
+void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate);
+void Mixer_Stop_Channel(void* channel);
+void Mixer_Channel_Volume(void* channel, int volume);
+void Mixer_Channel_Pan(void* channel, float pan);
+void Mixer_Channel_Rate(void* channel, double rate);
+
+static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (pow(10, (float)volume / 2000))); };
+static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };
+static double DStoMixerRate(int frequency) { return (double)frequency / 22050; };
 
 #ifdef __cplusplus
 }
