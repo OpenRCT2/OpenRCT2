@@ -472,6 +472,36 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
 }
 
 /**
+ * Draws i formatted text string centred at i specified position.
+ *  rct2: 0x006C1D6C
+ * dpi (edi)
+ * format (bx)
+ * x (cx)
+ * y (dx)
+ * colour (al)
+ * args (esi)
+ */
+void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
+{
+	char* buffer;
+	short text_width;
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	format_string(buffer, format, args);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+
+	// Measure text width
+	text_width = gfx_get_string_width(buffer);
+
+	// Draw the text centred
+	if (text_width <= 0xFFFF) {
+		x -= text_width / 2;
+		gfx_draw_string(dpi, buffer, colour, x, y);
+	}
+}
+
+/**
  * 
  *  rct2: 0x006C1E53
  * dpi (edi)

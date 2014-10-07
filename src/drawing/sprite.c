@@ -397,3 +397,181 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 	}
 	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }
+
+/*
+* rct: 0x0067A46E
+* image_id (ebx) and also (0x00EDF81C)
+* palette_pointer (0x9ABDA4)
+* unknown_pointer (0x9E3CDC)
+* dpi (edi)
+* x (cx)
+* y (dx)
+*/
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
+	int image_element = 0x7FFFF&image_id;
+	int image_type = (image_id & 0xE0000000) >> 28;
+	
+	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+
+	//Zooming code has been integrated into main code.
+	//if (dpi->zoom_level >= 1){ //These have not been tested
+	//	//something to do with zooming
+	//	if (dpi->zoom_level == 1){
+	//		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
+	//		return;
+	//	}
+	//	if (dpi->zoom_level == 2){
+	//		RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
+	//		return;
+	//	}
+	//	RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
+	//	return;
+	//}
+	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
+		rct_drawpixelinfo zoomed_dpi = {
+			.bits = dpi->bits,
+			.x = dpi->x >> 1,
+			.y = dpi->y >> 1,
+			.height = dpi->height>>1,
+			.width = dpi->width>>1,
+			.pitch = dpi->pitch,
+			.zoom_level = dpi->zoom_level - 1
+		};
+		gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+		return;
+	}
+
+	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
+		return;
+	}
+
+	//Its used super often so we will define it to a seperate variable.
+	int zoom_level = dpi->zoom_level;
+	int zoom_amount = 1 << zoom_level;
+	int zoom_mask = 0xFFFFFFFF << zoom_level;
+
+	//This will be the height of the drawn image
+	int height = g1_source->height;
+	//This is the start y coordinate on the destination
+	sint16 dest_start_y = ((y + g1_source->y_offset)&zoom_mask) - dpi->y;
+	//This is the start y coordinate on the source
+	int source_start_y = 0;
+
+	if (dest_start_y < 0){
+		//If the destination y is negative reduce the height of the
+		//image as we will cut off the bottom
+		height += dest_start_y;
+		//If the image is no longer visible nothing to draw
+		if (height <= 0){
+			return;
+		}
+		//The source image will start a further up the image
+		source_start_y -= dest_start_y;
+		//The destination start is now reset to 0
+		dest_start_y = 0;
+	}
+
+	int dest_end_y = dest_start_y + height;
+
+	if (dest_end_y > dpi->height){
+		//If the destination y is outside of the drawing
+		//image reduce the height of the image
+		height -= dest_end_y - dpi->height;
+	}
+	//If the image no longer has anything to draw
+	if (height <= 0)return;
+
+	dest_start_y /= zoom_amount;
+	dest_end_y /= zoom_amount;
+
+	//This will be the width of the drawn image
+	int width = g1_source->width;
+	//This is the source start x coordinate
+	int source_start_x = 0;
+	//This is the destination start x coordinate
+	sint16 dest_start_x = ((x + g1_source->x_offset) & zoom_mask) - dpi->x;
+
+	if (dest_start_x < 0){
+		//If the destination is negative reduce the width
+		//image will cut off the side
+		width += dest_start_x;
+		//If there is no image to draw
+		if (width <= 0){
+			return;
+		}
+		//The source start will also need to cut off the side
+		source_start_x -= dest_start_x;
+		//Reset the destination to 0
+		dest_start_x = 0;
+	}
+
+	int dest_end_x = dest_start_x + width;
+
+	if (dest_end_x > dpi->width){
+		//If the destination x is outside of the drawing area
+		//reduce the image width.
+		width -= dest_end_x - dpi->width;
+		//If there is no image to draw.
+		if (width <= 0)return;
+	}
+
+	dest_start_x /= zoom_amount;
+	dest_end_x /= zoom_amount;
+
+	uint8* dest_pointer = (uint8*)dpi->bits;
+	//Move the pointer to the start point of the destination
+	dest_pointer += ((dpi->width / zoom_amount) + dpi->pitch)*dest_start_y + dest_start_x;
+	
+	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		//We have to use a different method to move the source pointer for
+		//rle encoded sprites so that will be handled within this function
+		gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
+		return;
+	}
+	uint8* source_pointer = g1_source->offset;
+	//Move the pointer to the start point of the source
+	source_pointer += g1_source->width*source_start_y + source_start_x;
+
+	if (!(g1_source->flags & 0x02)){
+		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+		return;
+	}
+	//0x67A60A Not tested
+	int total_no_pixels = g1_source->width*g1_source->height;
+	source_pointer = g1_source->offset;
+	uint8* new_source_pointer_start = malloc(total_no_pixels);
+	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
+	int ebx, ecx;
+	while (total_no_pixels>0){
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0){
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
+			continue;
+		}
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
+		int eax = ((int)no_pixels)<<8;
+		ecx = -ecx;//Odd
+		eax = eax & 0xFF00 + *(source_pointer+1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx = (uint32)new_source_pointer - eax;
+		eax = (uint32)source_pointer;
+		source_pointer = (uint8*)ebx;
+		ebx = eax;
+		eax = 0;
+		memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer += ecx;
+		source_pointer = (uint8*)ebx;
+	}
+	source_pointer = new_source_pointer_start + g1_source->width*source_start_y + source_start_x;
+	gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+	free(new_source_pointer_start);
+	return;
+}

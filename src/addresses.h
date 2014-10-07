@@ -41,6 +41,16 @@
 #define RCT2_CALLPROC_4(address, a1, a2, a3, a4, v1, v2, v3, v4)			RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, v1, v2, v3, v4)
 #define RCT2_CALLPROC_5(address, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	RCT2_CALLFUNC_5(address, void, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 
+#pragma region Memory locations
+
+// The following memory locations represent memory in RCT2 that is still used
+// by OpenRCT2. Only when the memory is no longer needed due to them being
+// stored in a new C module or changed behaviour of code that used them.
+// This generally can happen once all functions that referenced the location
+// are implemented in C. Sometimes memory locations are still used even if
+// they aren't directly referenced, for example when a game is saved and
+// loaded, large chunks of data is read and written to.
+
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
 #define RCT2_ADDRESS_RIDE_PROPERTIES				0x00997C9D
@@ -435,6 +445,24 @@
 #define RCT2_ADDRESS_COMMON_FORMAT_ARGS             0x013CE952
 
 #define RCT2_ADDRESS_STAFF_MODE_ARRAY               0x013CA672
+
+#pragma endregion
+
+#pragma region Obsolete
+
+// The following addresses relate to memory locations that no longer used by
+// OpenRCT2. This may be due to the data at those locations being stored in
+// the new C modules or changed behaviour of code that used them.
+
+#define RCT2_ADDRESS_Y_RELATED_GLOBAL_1				0x9E3D12	//uint16
+#define RCT2_ADDRESS_Y_END_POINT_GLOBAL				0x9ABDAC	//sint16
+#define RCT2_ADDRESS_Y_START_POINT_GLOBAL			0xEDF808	//sint16
+#define RCT2_ADDRESS_X_RELATED_GLOBAL_1				0x9E3D10	//uint16
+#define RCT2_ADDRESS_X_END_POINT_GLOBAL				0x9ABDA8	//sint16
+#define RCT2_ADDRESS_X_START_POINT_GLOBAL			0xEDF80C	//sint16
+#define RCT2_ADDRESS_DPI_LINE_LENGTH_GLOBAL			0x9ABDB0	//uint16 width+pitch
+
+#pragma endregion
 
 static void RCT2_CALLPROC_EBPSAFE(int address)
 {
