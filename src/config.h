@@ -154,8 +154,8 @@ static const struct { const char *key; int value; } _currencyLookupTable[] = {
 };
 
 typedef struct shortcut_entry{
-	uint8 shortcut;
 	uint8 key;
+	uint8 modifier;
 }shortcut_entry;
 
 //typedef struct hotkey_configuration{

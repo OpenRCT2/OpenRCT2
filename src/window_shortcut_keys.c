@@ -22,6 +22,7 @@
 #include "config.h"
 #include "window.h"
 #include "widget.h"
+#include "osinterface.h"
 
 #define WW 340
 #define WH 240
@@ -237,23 +238,36 @@ static void window_shortcut_scrollpaint()
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		RCT2_GLOBAL(0x13CE954, uint16) = i + 2493;
+		RCT2_GLOBAL(0x13CE954, uint16) = i + STR_SHORTCUT_DESCRIPTION_0;
 		RCT2_GLOBAL(0x13CE956, uint16) = 0;
 		RCT2_GLOBAL(0x13CE958, uint16) = 0;
 
-		
-		shortcut_entry sc_entry = RCT2_ADDRESS(RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS, shortcut_entry)[i];
+		// This is the original version that will not take into account remapped keys.
+		//shortcut_entry sc_entry = RCT2_ADDRESS(RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS, shortcut_entry)[i];
+		//if (sc_entry.key != 255){
+		//	RCT2_GLOBAL(0x13CE958, uint16) = sc_entry.key + 2525;
+		//	if (sc_entry.modifier){
+		//		RCT2_GLOBAL(0x13CE956, uint16) = 2782;
+		//		if (sc_entry.key != 1){
+		//			RCT2_GLOBAL(0x13CE956, uint16) = 2783;
+		//		}
+		//	}
+		//}
 
-		if (sc_entry.shortcut != 255){
-			RCT2_GLOBAL(0x13CE958, uint16) = sc_entry.shortcut + 2525;
-			if (sc_entry.key){
-				RCT2_GLOBAL(0x13CE956, uint16) = 2782;
-				if (sc_entry.key != 1){
-					RCT2_GLOBAL(0x13CE956, uint16) = 2783;
-				}
+		uint16 shortcut_entry = gShortcutKeys[i];
+		if (shortcut_entry != 0xFFFF){
+			RCT2_GLOBAL(0x13CE958, uint16) = STR_INDIVIDUAL_KEYS_BASE + osinterface_scancode_to_rct_keycode(shortcut_entry & 0xFF);
+			//Display the modifer
+			if (shortcut_entry & 0x100){
+				RCT2_GLOBAL(0x13CE956, uint16) = STR_SHIFT_PLUS;
+			}
+			else if (shortcut_entry & 0x200){
+				RCT2_GLOBAL(0x13CE956, uint16) = STR_CTRL_PLUS;
 			}
 		}
-		RCT2_GLOBAL(0x13CE952, uint16) = 2781;
+		
+
+		RCT2_GLOBAL(0x13CE952, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
 
 		gfx_draw_string_left(dpi, format, (void*)0x13CE952, 0, 0, y - 1);
 	}
