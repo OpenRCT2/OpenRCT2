@@ -27,12 +27,14 @@
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "audio.h"
+#include "mixer.h"
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+void* gMusicChannels[4];
 
 void audio_init(int i)
 {
@@ -166,7 +168,7 @@ void audio_close()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1) {
 		stop_other_sounds();
-		stop_peep_sounds();
+		stop_crowd_sound();
 		stop_title_music();
 		if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
 			stop_ride_music();
@@ -1279,13 +1281,16 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 		if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
 			pan = 0;
 		}
-
+#ifdef USE_MIXER
+		Mixer_Play_Effect(sound_id, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 1);
+#else
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
 		sound_prepare(sound_id, &other_sound->sound, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(0x014241BC, uint32) = 1;
 		result = sound_play(&other_sound->sound, 0, volume, pan, 0);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 	}
 	return result;
 }
@@ -1330,6 +1335,9 @@ void start_title_music()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
+#ifdef USE_MIXER
+			gMusicChannels[3] = Mixer_Play_Music(gMusicChannels[3], PATH_ID_CSS17);
+#else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
@@ -1338,6 +1346,7 @@ void start_title_music()
 				sound_channel_play(3, 1, 0, 0, 0);
 				RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			}
+#endif
 			RCT2_GLOBAL(0x009AF600, uint8) = 1;
 		}
 	} else {
@@ -1605,7 +1614,7 @@ void pause_sounds()
 		stop_other_sounds();
 		stop_vehicle_sounds();
 		stop_ride_music();
-		stop_peep_sounds();
+		stop_crowd_sound();
 	}
 	g_sounds_disabled = 1;
 }
@@ -1695,13 +1704,20 @@ void stop_ride_music()
 *
 *  rct2: 0x006BD07F
 */
-void stop_peep_sounds()
+void stop_crowd_sound()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
+#ifdef USE_MIXER
+			if (gMusicChannels[2]) {
+				Mixer_Stop_Channel(gMusicChannels[2]);
+				gMusicChannels[2] = 0;
+			}
+#else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			sound_channel_stop(2);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
 		}
 	}
@@ -1715,9 +1731,16 @@ void stop_title_music()
 {
 	if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
 		if (RCT2_GLOBAL(0x009AF600, uint8) != 0) {
+#ifdef USE_MIXER
+			if (gMusicChannels[3]) {
+				Mixer_Stop_Channel(gMusicChannels[3]);
+				gMusicChannels[3] = 0;
+			}
+#else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			sound_channel_stop(3);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 		}
 	}
 	RCT2_GLOBAL(0x009AF600, uint8) = 0;
@@ -1794,7 +1817,7 @@ void sub_6BC348()
 */
 void sub_6BC6D8()
 {
-	int edi;
+	rct_music_info* edi;
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
 		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
@@ -1810,7 +1833,7 @@ void sub_6BC6D8()
 								v8++;
 								if (v9 >= music_info->volume) {
 									v9 = music_info->volume;
-									edi = (int)music_info;
+									edi = music_info;
 								}
 							}
 						}
@@ -1819,7 +1842,7 @@ void sub_6BC6D8()
 					if (v8 <= 1) {
 						break;
 					}
-					edi = -1;
+					edi->id = -1;
 				}
 
 				while (1) {
@@ -1831,7 +1854,7 @@ void sub_6BC6D8()
 							v8++;
 							if (v9 >= music_info->volume) {
 								v9 = music_info->volume;
-								edi = (int)music_info;
+								edi = music_info;
 							}
 						}
 						music_info++;
@@ -1839,9 +1862,8 @@ void sub_6BC6D8()
 					if (v8 <= 2) {
 						break;
 					}
-					edi = -1;
+					edi->id = -1;
 				}
-
 				rct_music_info2* music_info2 = &RCT2_GLOBAL(0x009AF46C, rct_music_info2);
 				int channel = 0;
 				do {
@@ -1922,9 +1944,7 @@ void sub_6BC6D8()
 										RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 									}
 								}
-								
 								return;
-								
 							}
 						}
 
@@ -1949,7 +1969,6 @@ void sub_6BC6D8()
 
 					}
 				}
-
 			}
 		}
 	}

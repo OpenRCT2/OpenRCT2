@@ -149,6 +149,7 @@ typedef struct {
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+extern void* gMusicChannels[4];
 
 int get_dsound_devices();
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
@@ -193,7 +194,7 @@ void stop_completed_sounds();
 void stop_other_sounds();
 void stop_vehicle_sounds();
 void stop_ride_music();
-void stop_peep_sounds();
+void stop_crowd_sound();
 void stop_title_music();
 void start_title_music();
 void unpause_sounds();

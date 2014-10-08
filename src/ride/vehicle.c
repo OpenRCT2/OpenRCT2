@@ -380,7 +380,7 @@ void vehicle_sounds_update()
 							pan = 0;
 						}
 #ifdef USE_MIXER
-						vehicle_sound->sound1_channel = Mixer_Play_Effect(sprite->vehicle.sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency));
+						vehicle_sound->sound1_channel = Mixer_Play_Effect(sprite->vehicle.sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
 #else
 						RCT2_GLOBAL(0x014241BC, uint32) = 1;
 						sound_play(&vehicle_sound->sound1, looping, volume, pan, frequency);
@@ -481,7 +481,7 @@ void vehicle_sounds_update()
 							pan = 0;
 						}
 #ifdef USE_MIXER
-						vehicle_sound->sound2_channel = Mixer_Play_Effect(sprite->vehicle.sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency));
+						vehicle_sound->sound2_channel = Mixer_Play_Effect(sprite->vehicle.sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
 #else
 						RCT2_GLOBAL(0x014241BC, uint32) = 1;
 						sound_play(&vehicle_sound->sound2, looping, volume, pan, frequency);
