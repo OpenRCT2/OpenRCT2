@@ -21,22 +21,21 @@
 #include <windows.h>
 #include <string.h>
 #include "addresses.h"
-#include "award.h"
-#include "date.h"
-#include "finance.h"
 #include "game.h"
-#include "map.h"
-#include "marketing.h"
-#include "news_item.h"
+#include "interface/viewport.h"
+#include "localisation/date.h"
+#include "localisation/localisation.h"
+#include "management/award.h"
+#include "management/finance.h"
+#include "management/marketing.h"
+#include "management/news_item.h"
 #include "object.h"
-#include "park.h"
-#include "rct2.h"
-#include "ride.h"
-#include "sawyercoding.h"
+#include "ride/ride.h"
 #include "scenario.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "viewport.h"
+#include "util/sawyercoding.h"
+#include "world/map.h"
+#include "world/park.h"
+#include "world/sprite.h"
 
 /**
  * Loads only the basic information from a scenario.
@@ -109,7 +108,7 @@ int scenario_load(const char *path)
 			if (s6Header->num_packed_objects > 0) {
 				j = 0;
 				for (i = 0; i < s6Header->num_packed_objects; i++)
-					j += object_load_packed();
+					j += object_load_packed(file);
 				if (j > 0)
 					object_list_load();
 			}
@@ -192,7 +191,7 @@ int scenario_load_and_play_from_path(const char *path)
 	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
 	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
 
-	RCT2_CALLPROC_EBPSAFE(0x006CBCC3);
+	window_close_construction_windows();
 
 	if (!scenario_load(path))
 		return 0;
@@ -425,13 +424,7 @@ void scenario_objective8_check()
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
 
-			// this calculates the length, no idea why it's done so complicated though.
-			uint8 limit = ride->pad_088[63];
-			uint32 sum = 0;
-			for (int j = 0; j < limit; ++j) {
-				sum += ((uint32*)&ride->pad_088[92])[j];
-			}
-			if ((sum >> 16) > (uint32)objective_length) {
+			if ((ride_get_total_length(ride) >> 16) > objective_length) {
 				type_already_counted[subtype_id]++;
 				rcs++;
 			}

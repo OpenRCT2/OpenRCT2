@@ -84,12 +84,14 @@ typedef fixed32_1dp money32;
 // would write FIXED_2DP(3,65)
 #define FIXED_XDP(x, whole, fraction)	((whole) * (10 * x) + (fraction))
 #define FIXED_1DP(whole, fraction)		FIXED_XDP(1, whole, fraction)
-#define FIXED_2DP(whole, fraction)		FIXED_XDP(2, whole, fraction)
+#define FIXED_2DP(whole, fraction)		FIXED_XDP(10, whole, fraction)
 
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
 #define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
 
 #define MONEY32_UNDEFINED				((money32)0x80000000)
+
+typedef unsigned short rct_string_id;
 
 void rct2_finish();
 

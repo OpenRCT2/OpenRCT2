@@ -176,14 +176,15 @@ typedef struct {
 	uint8 guests_in_park_history[32];
 
 	// SC6[10]
-	uint16 word_01357CF2;
-	uint32 word_01357CF4;
+	uint8 active_research_types;
+	uint8 research_progress_stage;
+	uint32 dword_01357CF4;
 	uint8 byte_01357CF8[1000];
-	uint32 dword_013580E0[32];
-	uint16 word_013580E4[16];
-	uint8 byte_013580E6;
-	uint8 byte_013580E7;
-	uint8 byte_013580E8;
+	uint32 dword_013580E0;
+	uint16 research_progress;
+	uint8 next_research_category;
+	uint8 next_research_expected_day;
+	uint8 next_research_expected_month;
 	uint8 byte_013580E9;
 	uint16 park_size;
 	uint16 guest_generation_probability;
@@ -330,7 +331,7 @@ typedef struct {
 	uint8 ride_measurements[0x25860];
 	uint32 dword_13B0E6C;
 	uint16 word_13B0E70;
-	uint32 dword_13B0E72[0x6600];
+	uint32 dword_13B0E72[0x6600]; // 512 bytes per staff peep
 	uint8 byte_13CA672[116];
 	uint8 byte_13CA6E6[84];
 	uint8 byte_13CA73A[4];

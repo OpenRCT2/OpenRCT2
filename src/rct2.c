@@ -29,28 +29,27 @@
 #include <shlobj.h>
 #include <SDL.h>
 #include "addresses.h"
-#include "audio.h"
-#include "climate.h"
+#include "audio/audio.h"
+#include "audio/mixer.h"
 #include "config.h"
-#include "date.h"
+#include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
-#include "gfx.h"
+#include "interface/viewport.h"
 #include "intro.h"
-#include "language.h"
-#include "map.h"
-#include "news_item.h"
+#include "localisation/date.h"
+#include "localisation/localisation.h"
+#include "management/news_item.h"
 #include "object.h"
-#include "osinterface.h"
-#include "park.h"
-#include "rct2.h"
-#include "ride.h"
+#include "platform/osinterface.h"
+#include "ride/ride.h"
+#include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
-#include "track.h"
-#include "viewport.h"
-#include "sprite.h"
-#include "string_ids.h"
+#include "world/map.h"
+#include "world/park.h"
+#include "world/climate.h"
+#include "world/sprite.h"
 
 typedef struct tm tm_t;
 
@@ -70,11 +69,6 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc);
 static int _finished;
 static jmp_buf _end_update_jump;
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
-{
-	return TRUE;
-}
-
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	print_launch_information();
@@ -90,6 +84,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	config_init();
 	language_open(gGeneral_config.language);
 	rct2_init();
+	Mixer_Init(NULL);
 	rct2_loop();
 	osinterface_free();
 	exit(0);
@@ -161,13 +156,16 @@ void rct2_init()
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	object_list_load();
 	scenario_load_list();
-	track_load_list(253);
+
+	ride_list_item item = { 253, 0 };
+	track_load_list(item);
+
 	gfx_load_g1();
 	//RCT2_CALLPROC_EBPSAFE(0x006C19AC); //Load character widths
 	gfx_load_character_widths();
 	
 	osinterface_init();
-	RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
+	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
@@ -185,7 +183,7 @@ void rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 
 	title_load();
 

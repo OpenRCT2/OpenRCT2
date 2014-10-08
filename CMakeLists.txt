@@ -24,11 +24,14 @@ set (ORCT2_RESOURCE_DIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/)
 project(${PROJECT})
 
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
+add_definitions(-DHAVE_CONFIG_H)
 
-# include lodepng header
-include_directories("lodepng/")
+# include lib
+include_directories("lib/")
+# include speex header
+include_directories("lib/libspeex/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "lodepng/*.c")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/*.c")
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is

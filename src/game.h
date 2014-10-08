@@ -32,7 +32,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_7,
 	GAME_COMMAND_SET_RIDE_OPEN, // 8
 	GAME_COMMAND_9,
-	GAME_COMMAND_10,
+	GAME_COMMAND_SET_RIDE_NAME,
 	GAME_COMMAND_11,
 	GAME_COMMAND_12,
 	GAME_COMMAND_13,
@@ -90,8 +90,7 @@ void game_create_windows();
 void game_update();
 void game_logic_update();
 void sub_0x0069E9A7(); 
-void update_rain_animation();
-void update_water_animation();
+void update_palette_effects();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *edi, int *esi, int *ebp);

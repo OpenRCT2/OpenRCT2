@@ -21,7 +21,7 @@
 #include <windows.h>
 #include "addresses.h"
 #include "object.h"
-#include "sawyercoding.h"
+#include "util/sawyercoding.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -34,6 +34,7 @@ typedef struct {
 	uint32 var_10;
 } rct_plugin_header;
 
+// 98DA00
 int object_entry_group_counts[] = {
 	128,	// rides
 	252,	// small scenery
@@ -46,6 +47,21 @@ int object_entry_group_counts[] = {
 	1,		// park entrance
 	1,		// water
 	1		// scenario text
+};
+
+// 98DA2C
+int object_entry_group_encoding[] = {
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_RLE,
+	CHUNK_ENCODING_ROTATE
 };
 
 struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[] = {
@@ -157,7 +173,7 @@ static int check_object_entry(rct_object_entry *entry)
  * 
  *  rct2: 0x006AA0C6
  */
-void object_read_and_load_entries(FILE *file)
+int object_read_and_load_entries(FILE *file)
 {
 	object_unload_all();
 
@@ -184,26 +200,21 @@ void object_read_and_load_entries(FILE *file)
 		// Load the obect
 		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
-			free(entries);
+			//Destroy progress bar
 
+			memcpy((char*)0x13CE952, entries[i].name, 8);
+			free(entries);
 			object_unload_all();
-			return;
+			RCT2_GLOBAL(0x14241BC, uint32) = 0;
+			return 0;
 		}
 	}
 
 	free(entries);
+	return 1;
 }
 
-/**
- * 
- *  rct2: 0x006AA2B7
- */
-int object_load_packed()
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax;
-}
+
 
 /**
  * 

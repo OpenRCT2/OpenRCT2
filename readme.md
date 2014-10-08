@@ -53,6 +53,8 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 
 # 2 Building the source code
 
+Alternatively, a third-party offers [downloadable precompiled builds](https://openrct2.com/download). However, building the project is always recommended.
+
 ## 2.1 Prerequisites
 ### Windows:
 - Windows XP / Vista / 7 / 8

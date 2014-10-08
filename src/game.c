@@ -19,112 +19,35 @@
  *****************************************************************************/
  
 #include "addresses.h"
-#include "audio.h"
-#include "climate.h"
+#include "audio/audio.h"
 #include "config.h"
-#include "rct2.h"
 #include "game.h"
-#include "finance.h"
 #include "input.h"
-#include "news_item.h"
+#include "localisation/localisation.h"
+#include "interface/screenshot.h"
+#include "interface/viewport.h"
+#include "interface/widget.h"
+#include "interface/window.h"
+#include "management/finance.h"
+#include "management/news_item.h"
+#include "management/research.h"
 #include "object.h"
-#include "osinterface.h"
-#include "park.h"
-#include "peep.h"
-#include "sawyercoding.h"
+#include "peep/peep.h"
+#include "peep/staff.h"
+#include "platform/osinterface.h"
+#include "ride/ride.h"
+#include "ride/vehicle.h"
 #include "scenario.h"
-#include "screenshot.h"
-#include "sprite.h"
-#include "string_ids.h"
 #include "title.h"
 #include "tutorial.h"
-#include "vehicle.h"
-#include "viewport.h"
-#include "widget.h"
-#include "window.h"
-#include "staff.h"
-#include "window_error.h"
-#include "window_tooltip.h"
-
+#include "util/sawyercoding.h"
+#include "windows/error.h"
+#include "windows/tooltip.h"
+#include "world/climate.h"
+#include "world/park.h"
+#include "world/sprite.h"
 
 int gGameSpeed = 1;
-
-typedef void(*draw_rain_func)(int left, int top, int width, int height);
-
-/**
-*
-*  rct2: 0x00684114
-*/
-void draw_light_rain(int left, int top, int width, int height){
-	int x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 8;
-	int y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 3) + 7;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-
-	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x18;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 4) + 0x0D;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-}
-
-/**
-*
-*  rct2: 0x0068416D
-*/
-void draw_heavy_rain(int left, int top, int width, int height){
-	int x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int);
-	int y_start = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 5;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-
-	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x10;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 6) + 5;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-
-	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 8;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 3) + 7;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-
-	x_start = -RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) + 0x18;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) * 4) + 0x0D;
-	y_start = -y_start;
-
-	x_start += left;
-	y_start += top;
-
-	gfx_draw_rain(left, top, width, height, x_start, y_start);
-}
-
-/**
-*
-*  rct2: 0x009AC058
-*/
-const draw_rain_func draw_rain_function[] = {
-	NULL,
-	&draw_light_rain,	// Light rain
-	&draw_heavy_rain	// Heavy rain 
-};
 
 /**
  * 
@@ -139,147 +62,129 @@ void game_create_windows()
 }
 
 /**
- * 
- *  rct2: 0x006838BD
- */
-void update_water_animation()
-{
-	RCT2_CALLPROC_EBPSAFE(0x006838BD);
-}
-
-/**
 *
-*  rct2: 0x00684383
+*  rct2: 0x006838BD
 */
-void call_draw_rain_func(rct_window* w, short left, short right, short top, short bottom, uint32 draw_rain_func)
+void update_palette_effects()
 {
-	rct_viewport* vp = w->viewport;
-	if (vp == NULL) {
-		return;
-	}
-
-	left = max(left, vp->x);
-	right = min(right, vp->width);
-
-	top = max(top, vp->y);
-	bottom = min(bottom, vp->height);
-
-	if (left >= right || top >= bottom) {
-		return;
-	}
-
-	int width = right - left;
-	int height = bottom - top;
-
-	draw_rain_function[draw_rain_func](left, top, width, height);
-}
-
-/**
-*
-*  rct2: 0x006842AF
-*  From 0x00684383 on: split into call_draw_rain_func
-*/
-void draw_rain_window(rct_window* original_w, short left, short right, short top, short bottom, uint32 draw_rain_func)
-{
-	rct_window* newWindow = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
-
-	rct_window* w = original_w + 1; // Start from second window
-	for (; ; w++) {
-		if (w >= newWindow) {
-			// Loop ended, draw rain for original_w
-			call_draw_rain_func(original_w, left, right, top, bottom, draw_rain_func);
-			return;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 1) {
+		// change palette to lighter color during lightning
+		int palette = 1532;
+		if (RCT2_GLOBAL(0x009ADAE0, sint32) != -1) {
+			palette = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 2, int);
+		}
+		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
+		int xoffset = g1_element.x_offset;
+		xoffset = xoffset * 4;
+		for (int i = 0; i < g1_element.width; i++) {
+			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
+			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
+			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
+		}
+		RCT2_GLOBAL(0x014241BC, uint32) = 2;
+		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+		RCT2_GLOBAL(0x014241BC, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
+	} else {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
+			// change palette back to normal after lightning
+			int palette = 1532;
+			if (RCT2_GLOBAL(0x009ADAE0, sint32) != -1) {
+				palette = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 2, int);
+			}
+			rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
+			int xoffset = g1_element.x_offset;
+			xoffset = xoffset * 4;
+			for (int i = 0; i < g1_element.width; i++) {
+				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
+				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
+				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
+			}
 		}
 
-		if (right <= w->x || bottom <= w->y) {
-			continue;
+		// animate the water/lava/chain movement palette
+		int q = 0;
+		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
+		if (weather_colour != -1) {
+			q = 1;
+			if (weather_colour != 0x2000031) {
+				q = 2;
+			}
+		}
+		uint32 j = RCT2_GLOBAL(0x009DE584, uint32);
+		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
+		int p = 1533;
+		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
+			p = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 0x6, int);
+		}
+		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		uint8* vs = &g1_element.offset[j * 3];
+		uint8* vd = RCT2_ADDRESS(0x01424A18, uint8);
+		int n = 5;
+		for (int i = 0; i < n; i++) {
+			vd[0] = vs[0];
+			vd[1] = vs[1];
+			vd[2] = vs[2];
+			vs += 9;
+			if (vs >= &g1_element.offset[9 * n]) {
+				vs -= 9 * n;
+			}
+			vd += 4;
 		}
 
-		if (RCT_WINDOW_RIGHT(w) <= left || RCT_WINDOW_BOTTOM(w) <= top) {
-			continue;
+		p = 1536;
+		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
+			p = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 0xA, int);
+		}
+		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		vs = &g1_element.offset[j * 3];
+		n = 5;
+		for (int i = 0; i < n; i++) {
+			vd[0] = vs[0];
+			vd[1] = vs[1];
+			vd[2] = vs[2];
+			vs += 9;
+			if (vs >= &g1_element.offset[9 * n]) {
+				vs -= 9 * n;
+			}
+			vd += 4;
 		}
 
-		if (left >= w->x) {
-			break;
+		j = ((uint16)(RCT2_GLOBAL(0x009DE584, uint32) * -960) * 3) >> 16;
+		p = 1539;
+		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		vs = &g1_element.offset[j * 3];
+		vd += 12;
+		n = 3;
+		for (int i = 0; i < n; i++) {
+			vd[0] = vs[0];
+			vd[1] = vs[1];
+			vd[2] = vs[2];
+			vs += 3;
+			if (vs >= &g1_element.offset[3 * n]) {
+				vs -= 3 * n;
+			}
+			vd += 4;
 		}
 
-		draw_rain_window(original_w, left, w->x, top, bottom, draw_rain_func);
-
-		left = w->x;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
-		return;
+		RCT2_GLOBAL(0x014241BC, uint32) = 2;
+		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
+		RCT2_GLOBAL(0x014241BC, uint32) = 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
+			RCT2_GLOBAL(0x014241BC, uint32) = 2;
+			osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
+		}
 	}
-
-	sint16 w_right = RCT_WINDOW_RIGHT(w);
-	if (right > w_right) {
-		draw_rain_window(original_w, left, w_right, top, bottom, draw_rain_func);
-
-		left = w_right;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
-		return;
-	}
-
-	if (top < w->y) {
-		draw_rain_window(original_w, left, right, top, w->y, draw_rain_func);
-
-		top = w->y;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
-		return;
-	}
-
-	sint16 w_bottom = RCT_WINDOW_BOTTOM(w);
-	if (bottom > w_bottom) {
-		draw_rain_window(original_w, left, right, top, w_bottom, draw_rain_func);
-
-		top = w_bottom;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
-		return;
+	if (RCT2_GLOBAL(0x009E2C4C, uint32) == 2 || RCT2_GLOBAL(0x009E2C4C, uint32) == 1) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, uint32) != 8) {
+			RCT2_GLOBAL(0x009E2C78, int) = 1;
+		}
 	}
 }
 
-/**
-*
-*  rct2: 0x00684266
-*/
-void draw_rain_animation(uint32 draw_rain_func)
-{
-	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	short left = screenDPI->x;
-	short right = left + screenDPI->width;
-	short top = screenDPI->y;
-	short bottom = top + screenDPI->height;
 
-	rct_window* newWindow = (RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*));
-
-	for (rct_window* w = g_window_list; w < newWindow; w++) {
-		draw_rain_window(w, left, right, top, bottom, draw_rain_func);
-	}
-}
-
-/**
- * 
- *  rct2: 0x00684218
- */
-void update_rain_animation()
-{
-	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
-		return;
-
-	// Draw picked-up peep
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) != 0xFFFFFFFF) {
-		gfx_draw_sprite(
-			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
-		);
-	}
-
-	// Get rain draw function and draw rain
-	uint32 draw_rain_func = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8);
-	if (draw_rain_func > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
-		draw_rain_animation(draw_rain_func);
-}
 
 void game_update()
 {
@@ -349,7 +254,7 @@ void game_update()
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
 
-	update_water_animation();
+	update_palette_effects();
 	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
@@ -379,11 +284,11 @@ void game_logic_update()
 	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
 	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
 	park_update();
-	RCT2_CALLPROC_EBPSAFE(0x00684C7A);
-	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
-	RCT2_CALLPROC_EBPSAFE(0x006B6456);	// update ride measurements
+	research_update();
+	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);	// update ride ratings
+	ride_measurements_update();
 	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-	RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
+	vehicle_sounds_update();//RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
 	peep_update_crowd_noise();
 	climate_update_sound();
 	news_item_update_current();
@@ -724,13 +629,18 @@ int game_load_save(const char *path)
 		if (s6Header->num_packed_objects > 0) {
 			j = 0;
 			for (i = 0; i < s6Header->num_packed_objects; i++)
-				j += object_load_packed();
+				j += object_load_packed(file);
 			if (j > 0)
 				object_list_load();
 		}
 	}
 
-	object_read_and_load_entries(file);
+	if (!object_read_and_load_entries(file)){
+		fclose(file);
+		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		return 0;
+	};
 
 	// Read flags (16 bytes)
 	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
@@ -924,7 +834,7 @@ static uint32 game_do_command_table[58] = {
 	0x006A67C0,
 	0x00663CCD, // 20
 	0x006B53E9,
-	0x00698D6C,
+	0x00698D6C, // text input
 	0x0068C542,
 	0x0068C6D1,
 	0x0068BC01,

@@ -22,23 +22,22 @@
 #include <string.h>
 #include <time.h>
 #include "addresses.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "config.h"
-#include "climate.h"
-#include "date.h"
-#include "game.h"
-#include "gfx.h"
-#include "intro.h"
-#include "map.h"
-#include "news_item.h"
-#include "park.h"
-#include "rct2.h"
-#include "ride.h"
-#include "scenario.h"
-#include "sprite.h"
-#include "string_ids.h"
-#include "viewport.h"
+#include "drawing/drawing.h"
 #include "editor.h"
+#include "localisation/date.h"
+#include "localisation/localisation.h"
+#include "game.h"
+#include "interface/viewport.h"
+#include "intro.h"
+#include "management/news_item.h"
+#include "ride/ride.h"
+#include "scenario.h"
+#include "world/climate.h"
+#include "world/map.h"
+#include "world/park.h"
+#include "world/sprite.h"
 
 static const int gOldMusic = 0;
 static const int gRandomShowcase = 0;
@@ -109,7 +108,7 @@ void title_load()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
-	window_staff_init_vars();
+	window_staff_list_init_vars();
 	map_update_tile_pointers(); //RCT2_CALLPROC_EBPSAFE(0x0068AFFD);
 	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	viewport_init_all();
@@ -290,7 +289,7 @@ void title_update()
 	// RCT2_CALLPROC_EBPSAFE(0x006EA627); // window_manager_handle_input();
 	game_handle_input();
 
-	update_water_animation();
+	update_palette_effects();
 	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
