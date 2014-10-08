@@ -90,7 +90,6 @@ void game_create_windows();
 void game_update();
 void game_logic_update();
 void sub_0x0069E9A7(); 
-void update_rain_animation();
 void update_palette_effects();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);

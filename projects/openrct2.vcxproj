@@ -45,6 +45,7 @@
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
     <ClCompile Include="..\src\drawing\line.c" />
+    <ClCompile Include="..\src\drawing\rain.c" />
     <ClCompile Include="..\src\drawing\rect.c" />
     <ClCompile Include="..\src\drawing\sprite.c" />
     <ClCompile Include="..\src\drawing\string.c" />

@@ -356,7 +356,6 @@
     <ClCompile Include="..\src\management\research.c">
       <Filter>Source\Management</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\staff_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -369,10 +368,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -381,9 +376,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\lodepng</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\libspeex</Filter>
@@ -398,6 +390,29 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\drawing\rain.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c">
+      <Filter>Libraries\lodepng</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
   </ItemGroup>
