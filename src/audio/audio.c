@@ -1336,7 +1336,7 @@ void start_title_music()
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gMusicChannels[3] = Mixer_Play_Music(gMusicChannels[3], PATH_ID_CSS17);
+			gMusicChannels[3] = Mixer_Play_Music(PATH_ID_CSS17);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
