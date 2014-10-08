@@ -26,6 +26,7 @@
 #include "../management/finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
+#include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
@@ -76,9 +77,7 @@ void park_init()
 	for (i = 0; i < 20; i++)
 		RCT2_ADDRESS(0x01358102, uint8)[i] = 0;
 
-	RCT2_GLOBAL(0x01358844, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x01358849, uint32) = 0xFFFFFFFE;
-	RCT2_GLOBAL(0x0135884E, uint32) = 0xFFFFFFFD;
+	research_reset_items();
 	finance_init();
 
 	for (i = 0; i < 2; i++)

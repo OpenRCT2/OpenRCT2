@@ -35,6 +35,17 @@ uint8 gResearchUncompletedCategories;
 
 /**
  *
+ *  rct2: 0x006671AD, part of 0x00667132
+ */
+void research_reset_items()
+{
+	gResearchItems[0].entryIndex = RESEARCHED_ITEMS_SEPERATOR;
+	gResearchItems[1].entryIndex = RESEARCHED_ITEMS_END;
+	gResearchItems[2].entryIndex = -3;
+}
+
+/**
+ *
  *  rct2: 0x00684BAE
  */
 void research_update_uncompleted_types()
@@ -107,7 +118,7 @@ static void research_next_design()
 	researchItem = firstUnresearchedItem;
 	for (;;) {
 		researchItem++;
-		if (researchItem->entryIndex == -2) {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) {
 			if (!ignoreActiveResearchTypes) {
 				ignoreActiveResearchTypes = 1;
 				researchItem = firstUnresearchedItem;

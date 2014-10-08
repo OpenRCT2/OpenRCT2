@@ -197,7 +197,8 @@ static void* window_research_page_events[] = {
 static uint32 window_research_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
-	(1 << WIDX_TAB_2),
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_LAST_DEVELOPMENT_BUTTON),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |

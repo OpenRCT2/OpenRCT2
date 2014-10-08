@@ -30,6 +30,7 @@ typedef struct {
 } rct_research_item;
 
 #define RESEARCHED_ITEMS_SEPERATOR -1
+#define RESEARCHED_ITEMS_END -2
 
 enum {
 	RESEARCH_FUNDING_NONE,
@@ -48,6 +49,7 @@ enum {
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
 
+void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
 
