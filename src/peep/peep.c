@@ -21,6 +21,7 @@
 #include <windows.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../audio/mixer.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
@@ -376,14 +377,26 @@ void peep_update_crowd_noise()
 		// Check if crowd noise is already playing
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
 			// Load and play crowd noise
+#ifdef USE_MIXER
+			gMusicChannels[2] = Mixer_Play_Music(gMusicChannels[2], PATH_ID_CSS2);
+			if (gMusicChannels[2]) {
+				Mixer_Channel_Volume(gMusicChannels[2], DStoMixerVolume(volume));
+				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
+			}
+#else
 			if (sound_channel_load_file2(2, (char*)get_file_path(PATH_ID_CSS2), 0)) {
 				sound_channel_play(2, 1, volume, 0, 0);
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
 			}
+#endif
 		} else {
 			// Alter crowd noise volume
 			if (RCT2_GLOBAL(0x009AF5FC, uint32) != volume) {
+#ifdef USE_MIXER
+				Mixer_Channel_Volume(gMusicChannels[2], DStoMixerVolume(volume));
+#else
 				sound_channel_set_volume(2, volume);//RCT2_CALLPROC_2(0x00401AD3, int, int, 2, volume);
+#endif
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
 			}
 		}
