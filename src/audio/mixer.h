@@ -150,7 +150,7 @@ void Mixer_Channel_Volume(void* channel, int volume);
 void Mixer_Channel_Pan(void* channel, float pan);
 void Mixer_Channel_Rate(void* channel, double rate);
 int Mixer_Channel_IsPlaying(void* channel);
-void* Mixer_Play_Music(void* channel, int pathid);
+void* Mixer_Play_Music(int pathid);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };

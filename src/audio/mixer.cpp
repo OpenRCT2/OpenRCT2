@@ -563,10 +563,10 @@ int Mixer_Channel_IsPlaying(void* channel)
 	return ((Channel*)channel)->IsPlaying();
 }
 
-void* Mixer_Play_Music(void* channel, int pathid)
+void* Mixer_Play_Music(int pathid)
 {
-	if (!(Channel*)channel && gMixer.LoadMusic(pathid)) {
+	if (gMixer.LoadMusic(pathid)) {
 		return gMixer.Play(gMixer.musicstreams[pathid], MIXER_LOOP_INFINITE, false);
 	}
-	return channel;
+	return 0;
 }

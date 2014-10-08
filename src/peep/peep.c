@@ -339,7 +339,7 @@ void peep_update_crowd_noise()
 	visiblePeeps = 0;
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_16 == 0x8000)
+		if (peep->var_16 == (sint16)0x8000)
 			continue;
 		if (viewport->view_x > peep->var_1A)
 			continue;
@@ -362,7 +362,12 @@ void peep_update_crowd_noise()
 	if (visiblePeeps < 0) {
 		// Mute crowd noise
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
+#ifdef USE_MIXER
+			Mixer_Stop_Channel(gMusicChannels[2]);
+			gMusicChannels[2] = 0;
+#else
 			sound_channel_stop(2); //RCT2_CALLPROC_1(0x00401A05, int, 2);
+#endif
 			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
 		}
 	} else {
@@ -378,7 +383,7 @@ void peep_update_crowd_noise()
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
 			// Load and play crowd noise
 #ifdef USE_MIXER
-			gMusicChannels[2] = Mixer_Play_Music(gMusicChannels[2], PATH_ID_CSS2);
+			gMusicChannels[2] = Mixer_Play_Music(PATH_ID_CSS2);
 			if (gMusicChannels[2]) {
 				Mixer_Channel_Volume(gMusicChannels[2], DStoMixerVolume(volume));
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
