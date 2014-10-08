@@ -367,7 +367,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -377,9 +376,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
@@ -415,6 +411,14 @@
       <Filter>Libraries\lodepng</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\cmdline.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\openrct2.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -599,6 +603,12 @@
     </ClInclude>
     <ClInclude Include="..\src\management\research.h">
       <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cmdline.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\openrct2.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

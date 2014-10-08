@@ -58,59 +58,11 @@ void print_launch_information();
 void rct2_init_directories();
 void rct2_startup_checks();
 
-
-static void rct2_init();
-static void rct2_loop();
 static void rct2_update();
 static void rct2_update_2();
 
-PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc);
-
 static int _finished;
 static jmp_buf _end_update_jump;
-
-__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	print_launch_information();
-
-	// Begin RCT2
-	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
-	get_system_info();
-
-	audio_init();
-	audio_get_devices();
-	get_dsound_devices();
-	config_init();
-	language_open(gGeneral_config.language);
-	rct2_init();
-	Mixer_Init(NULL);
-	rct2_loop();
-	osinterface_free();
-	exit(0);
-
-	return 0;
-}
-
-void print_launch_information()
-{
-	char buffer[32];
-	time_t timer;
-	tm_t* tmInfo;
-
-	// Print version information
-	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
-	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
-
-	// Print current time
-	time(&timer);
-	tmInfo = localtime(&timer);
-	strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
-	printf("Time: %s\n", buffer);
-
-	// TODO Print other potential information (e.g. user, hardware)
-}
 
 void rct2_loop()
 {
@@ -286,30 +238,6 @@ int rct2_open_file(const char *path)
 	}
 }
 
-void check_cmdline_arg()
-{
-	int argc;
-	char **argv;
-	char *args;
-
-	args = RCT2_GLOBAL(0x009AC310, char*);
-	if (args == (char*)0xFFFFFFFF)
-		return;
-	RCT2_GLOBAL(0x009AC310, char*) = (char*)0xFFFFFFFF;
-
-	argv = CommandLineToArgvA(args, &argc);
-	if (argc > 0) {
-		if (_stricmp(argv[0], "edit") == 0) {
-			if (argc >= 1)
-				editor_load_landscape(argv[1]);
-		} else {
-			rct2_open_file(argv[0]);
-		}
-	}
-
-	LocalFree(argv);
-}
-
 // rct2: 0x00407DB0
 int check_mutex()
 {
@@ -425,7 +353,7 @@ void rct2_update_2()
 
 	// TODO: screenshot countdown process
 
-	check_cmdline_arg();
+	// check_cmdline_arg();
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();
@@ -598,87 +526,4 @@ void *rct2_realloc(void *block, size_t numBytes)
 void rct2_free(void *block)
 {
 	RCT2_CALLPROC_1(0x004068DE, void*, block);
-}
-
-/**
- * http://alter.org.ua/en/docs/win/args/
- */
-PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
-{
-	PCHAR* argv;
-	PCHAR  _argv;
-	ULONG   len;
-	ULONG   argc;
-	CHAR   a;
-	ULONG   i, j;
-
-	BOOLEAN  in_QM;
-	BOOLEAN  in_TEXT;
-	BOOLEAN  in_SPACE;
-
-	len = strlen(CmdLine);
-	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
-
-	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR));
-
-	_argv = (PCHAR)(((PUCHAR)argv) + i);
-
-	argc = 0;
-	argv[argc] = _argv;
-	in_QM = FALSE;
-	in_TEXT = FALSE;
-	in_SPACE = TRUE;
-	i = 0;
-	j = 0;
-
-	while (a = CmdLine[i]) {
-		if (in_QM) {
-			if (a == '\"') {
-				in_QM = FALSE;
-			} else {
-				_argv[j] = a;
-				j++;
-			}
-		} else {
-			switch (a) {
-			case '\"':
-				in_QM = TRUE;
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				in_SPACE = FALSE;
-				break;
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\r':
-				if (in_TEXT) {
-					_argv[j] = '\0';
-					j++;
-				}
-				in_TEXT = FALSE;
-				in_SPACE = TRUE;
-				break;
-			default:
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				_argv[j] = a;
-				j++;
-				in_SPACE = FALSE;
-				break;
-			}
-		}
-		i++;
-	}
-	_argv[j] = '\0';
-	argv[argc] = NULL;
-
-	(*_argc) = argc;
-	return argv;
 }

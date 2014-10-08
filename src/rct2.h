@@ -21,6 +21,7 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -268,6 +269,8 @@ static const struct file_to_check
 	{ PATH_ID_END,          0 }
 };
 
+void rct2_init();
+void rct2_loop();
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
@@ -282,5 +285,7 @@ void *rct2_malloc(size_t numBytes);
 void *rct2_realloc(void *block, size_t numBytes);
 void rct2_free(void *block);
 void rct2_quit();
+
+int rct2_open_file(const char *path);
 
 #endif

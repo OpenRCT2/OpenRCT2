@@ -42,6 +42,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
+    <ClCompile Include="..\src\cmdline.c" />
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
     <ClCompile Include="..\src\drawing\line.c" />
@@ -71,6 +72,7 @@
     <ClCompile Include="..\src\management\research.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
+    <ClCompile Include="..\src\openrct2.c" />
     <ClCompile Include="..\src\peep\peep.c" />
     <ClCompile Include="..\src\peep\staff.c" />
     <ClCompile Include="..\src\platform\shared.c" />
@@ -139,6 +141,7 @@
     <ClInclude Include="..\src\addresses.h" />
     <ClInclude Include="..\src\audio\audio.h" />
     <ClInclude Include="..\src\audio\mixer.h" />
+    <ClInclude Include="..\src\cmdline.h" />
     <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\cursors.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\management\research.h" />
     <ClInclude Include="..\src\object.h" />
+    <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />
     <ClInclude Include="..\src\peep\staff.h" />
     <ClInclude Include="..\src\platform\osinterface.h" />
