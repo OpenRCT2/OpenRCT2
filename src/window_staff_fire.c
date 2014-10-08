@@ -118,9 +118,11 @@ static void window_staff_fire_mouseup(){
 
 	window_widget_get_registers(w, widgetIndex);
 
+	rct_peep* peep = &g_sprite_list[w->number].peep;
+	
 	switch (widgetIndex){
 	case WIDX_YES:
-		//6c0b5b
+		game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_31, 0, 0);
 		break;
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:
