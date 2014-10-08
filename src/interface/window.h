@@ -507,6 +507,7 @@ void window_bubble_list_item(rct_window* w, int item_position);
 void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
 
 void window_new_ride_init_vars();
+void window_new_ride_focus(ride_list_item rideItem);
 
 void window_staff_list_init_vars();
 

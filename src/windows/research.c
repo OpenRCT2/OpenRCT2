@@ -197,7 +197,8 @@ static void* window_research_page_events[] = {
 static uint32 window_research_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
-	(1 << WIDX_TAB_2),
+	(1 << WIDX_TAB_2) |
+	(1 << WIDX_LAST_DEVELOPMENT_BUTTON),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -341,9 +342,9 @@ static void window_research_development_paint()
 	// Research type
 	stringId = STR_RESEARCH_UNKNOWN;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
-		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(0x013580E6, uint8);
+		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 1) {
-			uint32 typeId = RCT2_GLOBAL(0x013580E0, uint32);
+			uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
 			if (typeId >= 0x10000) {
 				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
 				stringId = rideEntry->var_008 & 0x1000 ?

@@ -282,9 +282,8 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
  * rct2: 0x0066EBE6
  *
  **/
-void news_item_open_subject(int type, int subject) {
-
-	int eax;
+void news_item_open_subject(int type, int subject)
+{
 	rct_peep* peep;
 	rct_window* window;
 
@@ -301,14 +300,15 @@ void news_item_open_subject(int type, int subject) {
 		window_finances_open();
 		break;
 	case NEWS_ITEM_RESEARCH:
-
 		if (subject >= 0x10000) {
 			// Open ride list window
-			RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
-			eax = (subject & 0xFF00) >> 8;
-			eax += (subject & 0xFF) << 8;
+			window_new_ride_open();
+
 			// Switch to right tab and scroll to ride location
-			RCT2_CALLPROC_X(0x006B3EBA, eax, 0, subject, 0, 0, 0, 0);
+			ride_list_item rideItem;
+			rideItem.type = subject >> 8;
+			rideItem.entry_index = subject & 0xFF;
+			window_new_ride_focus(rideItem);
 			break;
 		}
 
@@ -322,13 +322,12 @@ void news_item_open_subject(int type, int subject) {
 					RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
 				}
 				RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
-				// Open scenery window
-				RCT2_CALLPROC_EBPSAFE(0x006E0FEF);
+				window_scenery_open();
 			}
 		}
+		
 		// Switch to new scenery tab
 		RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
-
 		break;
 	case NEWS_ITEM_PEEPS:
 		// Open guest list to right tab
