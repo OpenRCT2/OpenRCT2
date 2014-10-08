@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../audio/mixer.h"
 #include "../drawing/drawing.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
@@ -52,8 +53,10 @@ static const rct_weather_transition* climate_transitions[4];
 // Sound data
 static int _rainVolume = 1;
 static rct_sound _rainSoundInstance;
+static void* _rainSoundChannel;
 static unsigned int _lightningTimer, _thunderTimer;
 static rct_sound _thunderSoundInstance[MAX_THUNDER_INSTANCES];
+static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
 static int _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
 static unsigned int _thunderSoundId;
 static int _thunderVolume;
@@ -203,21 +206,43 @@ static void climate_update_rain_sound()
 	if (_climateCurrentWeatherEffect == 1 || _climateCurrentWeatherEffect == 2) {
 		if (_rainVolume == 1) {
 			// Start playing the rain sound
+#ifdef USE_MIXER
+			_rainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+#else
 			if (sound_prepare(SOUND_RAIN_1, &_rainSoundInstance, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32)))
 				sound_play(&_rainSoundInstance, 1, -4000, 0, 0);
+#endif
 			_rainVolume = -4000;
 		} else {
 			// Increase rain sound
 			_rainVolume = min(-1400, _rainVolume + 80);
+#ifdef USE_MIXER
+			if (_rainSoundChannel) {
+				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			}
+#else
 			sound_set_volume(&_rainSoundInstance, _rainVolume);
+#endif
 		}
 	} else if (_rainVolume != 1) {
 		// Decrease rain sound
 		_rainVolume -= 80;
 		if (_rainVolume > -4000) {
+#ifdef USE_MIXER
+			if (_rainSoundChannel) {
+				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			}
+#else
 			sound_set_volume(&_rainSoundInstance, _rainVolume);
+#endif
 		} else {
+#ifdef USE_MIXER
+			if (_rainSoundChannel) {
+				Mixer_Stop_Channel(_rainSoundChannel);
+			}
+#else
 			sound_stop(&_rainSoundInstance);
+#endif
 			_rainVolume = 1;
 		}
 	}
@@ -247,10 +272,17 @@ static void climate_update_thunder_sound()
 		if (_thunderStatus[i] == THUNDER_STATUS_NULL)
 			continue;
 
+#ifdef USE_MIXER
+		if (!Mixer_Channel_IsPlaying(_thunderSoundChannels[i])) {
+			Mixer_Stop_Channel(_thunderSoundChannels[i]);
+			_thunderStatus[i] = THUNDER_STATUS_NULL;
+		}
+#else
 		if (!sound_is_playing(&_thunderSoundInstance[i])) {
 			sound_stop(&_thunderSoundInstance[i]);
 			_thunderStatus[i] = THUNDER_STATUS_NULL;
 		}
+#endif
 	}
 }
 
@@ -293,12 +325,20 @@ static void climate_update_thunder()
 
 static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan)
 {
+#ifdef USE_MIXER
+	_thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
+	if (_thunderSoundChannels[instanceIndex]) {
+		_thunderStatus[instanceIndex] = THUNDER_STATUS_PLAYING;
+		return 1;
+	}
+#else
 	if (sound_prepare(soundId, &_thunderSoundInstance[instanceIndex], 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32))) {
 		sound_play(&_thunderSoundInstance[instanceIndex], 0, volume, pan, 0);
 
 		_thunderStatus[instanceIndex] = THUNDER_STATUS_PLAYING;
 		return 1;
 	}
+#endif
 
 	return 0;
 }

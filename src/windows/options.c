@@ -504,11 +504,13 @@ static void window_options_dropdown()
 	case WIDX_SOUND_DROPDOWN:
 		audio_init2(dropdownIndex);
 		if (dropdownIndex < gAudioDeviceCount) {
+#ifdef USE_MIXER
 			int devicenum = dropdownIndex;
 			if (devicenum == 0) {
 				devicenum = 1;
 			}
 			Mixer_Init(gAudioDevices[devicenum].name);
+#endif
 		}
 		/*#ifdef _MSC_VER
 		__asm movzx ax, dropdownIndex		

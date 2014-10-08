@@ -51,6 +51,7 @@ public:
 	bool Load(const char* filename);
 	bool LoadCSS1(const char* filename, unsigned int offset);
 	void Unload();
+	bool Loaded();
 	bool Convert(AudioFormat format);
 	const uint8* Data();
 	unsigned long Length();
@@ -92,6 +93,7 @@ public:
 	void SetRate(double rate);
 	void SetVolume(int volume);
 	void SetPan(float pan);
+	bool IsPlaying();
 
 	friend class Mixer;
 
@@ -102,6 +104,8 @@ private:
 	int volume;
 	float volume_l, volume_r;
 	float pan;
+	bool done;
+	bool deleteondone;
 	SpeexResamplerState* resampler;
 	Stream* stream;
 };
@@ -113,10 +117,12 @@ public:
 	void Close();
 	void Lock();
 	void Unlock();
-	Channel* Play(Stream& stream, int loop);
+	Channel* Play(Stream& stream, int loop, bool deleteondone);
 	void Stop(Channel& channel);
+	bool LoadMusic(int pathid);
 
 	Stream css1streams[SOUND_MAXID];
+	Stream musicstreams[PATH_ID_END];
 
 private:
 	static void SDLCALL Callback(void* arg, uint8* data, int length);
@@ -129,6 +135,7 @@ private:
 	AudioFormat format;
 	uint8* effectbuffer;
 	Sample css1samples[SOUND_MAXID];
+	Sample musicsamples[PATH_ID_END];
 	std::list<Channel*> channels;
 };
 
@@ -137,13 +144,15 @@ extern "C"
 #endif
 
 void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate);
+void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int volume);
 void Mixer_Channel_Pan(void* channel, float pan);
 void Mixer_Channel_Rate(void* channel, double rate);
+int Mixer_Channel_IsPlaying(void* channel);
+void* Mixer_Play_Music(int pathid);
 
-static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (pow(10, (float)volume / 2000))); };
+static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };
 static double DStoMixerRate(int frequency) { return (double)frequency / 22050; };
 

@@ -109,6 +109,11 @@ void Sample::Unload()
 	length = 0;
 }
 
+bool Sample::Loaded()
+{
+	return data != 0;
+}
+
 bool Sample::Convert(AudioFormat format)
 {
 	if(Sample::format.format != format.format || Sample::format.channels != format.channels || Sample::format.freq != format.freq){
@@ -193,9 +198,11 @@ const AudioFormat* Stream::Format()
 
 Channel::Channel()
 {
-	rate = 1;
 	resampler = 0;
+	SetRate(1);
 	SetVolume(SDL_MIX_MAXVOLUME);
+	SetPan(0.5f);
+	done = true;
 }
 
 Channel::~Channel()
@@ -211,6 +218,7 @@ void Channel::Play(Stream& stream, int loop = MIXER_LOOP_NONE)
 	Channel::stream = &stream;
 	Channel::loop = loop;
 	offset = 0;
+	done = false;
 }
 
 void Channel::SetRate(double rate)
@@ -243,6 +251,11 @@ void Channel::SetPan(float pan)
 	}
 	volume_l = (float)sin((1.0 - Channel::pan) * M_PI / 2.0);
 	volume_r = (float)sin(Channel::pan * M_PI / 2.0);
+}
+
+bool Channel::IsPlaying()
+{
+	return !done;
 }
 
 void Mixer::Init(const char* device)
@@ -291,12 +304,13 @@ void Mixer::Unlock()
 	SDL_UnlockAudioDevice(deviceid);
 }
 
-Channel* Mixer::Play(Stream& stream, int loop)
+Channel* Mixer::Play(Stream& stream, int loop, bool deleteondone)
 {
 	Lock();
 	Channel* newchannel = new (std::nothrow) Channel();
 	if (newchannel) {
 		newchannel->Play(stream, loop);
+		newchannel->deleteondone = deleteondone;
 		channels.push_back(newchannel);
 	}
 	Unlock();
@@ -311,18 +325,39 @@ void Mixer::Stop(Channel& channel)
 	Unlock();
 }
 
+bool Mixer::LoadMusic(int pathid)
+{
+	if (pathid >= PATH_ID_END) {
+		return false;
+	}
+	if (!musicsamples[pathid].Loaded()) {
+		const char* filename = get_file_path(pathid);
+		musicstreams[pathid].SetSource_Sample(musicsamples[pathid]);
+		return musicsamples[pathid].Load(filename);
+	} else {
+		return true;
+	}
+}
+
 void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 {
 	Mixer* mixer = (Mixer*)arg;
 	memset(stream, 0, length);
-	for (std::list<Channel*>::iterator i = mixer->channels.begin(); i != mixer->channels.end(); i++){
+	std::list<Channel*>::iterator i = mixer->channels.begin();
+	while (i != mixer->channels.end()) {
 		mixer->MixChannel(*(*i), stream, length);
+		if ((*i)->done && (*i)->deleteondone) {
+			delete (*i);
+			i = mixer->channels.erase(i);
+		} else {
+			i++;
+		}
 	}
 }
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
-	if (channel.stream) {
+	if (channel.stream && !channel.done) {
 		if (!channel.resampler) {
 			channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
 		}
@@ -422,6 +457,9 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				channel.offset = 0;
 			}
 		} while(loaded < length && channel.loop != 0);
+		if (channel.loop == 0 && channel.offset >= channel.stream->Length()) {
+			channel.done = true;
+		}
 	}
 }
 
@@ -478,13 +516,13 @@ void Mixer_Init(const char* device)
 	gMixer.Init(device);
 }
 
-void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate)
+void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone)
 {
 	if (id >= SOUND_MAXID) {
 		return 0;
 	}
 	gMixer.Lock();
-	Channel* channel = gMixer.Play(gMixer.css1streams[id], loop);
+	Channel* channel = gMixer.Play(gMixer.css1streams[id], loop, deleteondone != 0);
 	if (channel) {
 		channel->SetVolume(volume);
 		channel->SetPan(pan);
@@ -518,4 +556,17 @@ void Mixer_Channel_Rate(void* channel, double rate)
 	gMixer.Lock();
 	((Channel*)channel)->SetRate(rate);
 	gMixer.Unlock();
+}
+
+int Mixer_Channel_IsPlaying(void* channel)
+{
+	return ((Channel*)channel)->IsPlaying();
+}
+
+void* Mixer_Play_Music(int pathid)
+{
+	if (gMixer.LoadMusic(pathid)) {
+		return gMixer.Play(gMixer.musicstreams[pathid], MIXER_LOOP_INFINITE, false);
+	}
+	return 0;
 }
