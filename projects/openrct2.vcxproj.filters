@@ -368,7 +368,6 @@
     <ClCompile Include="..\src\windows\guest.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -383,9 +382,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
@@ -422,6 +418,10 @@
       <Filter>Libraries\argparse</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\world\fountain.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

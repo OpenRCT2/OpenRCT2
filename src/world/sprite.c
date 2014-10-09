@@ -201,3 +201,12 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 	--(RCT2_GLOBAL(0x13573C8 + oldListTypeOffset, uint16));
 	++(RCT2_GLOBAL(0x13573C8 + cl, uint16));
 }
+
+/**
+ *
+ *  rct: 0x00672AA4
+ */
+void texteffect_update_all()
+{
+	RCT2_CALLPROC_EBPSAFE(0x00672AA4);
+}

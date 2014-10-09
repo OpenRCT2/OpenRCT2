@@ -36,6 +36,7 @@
 #include "peep/staff.h"
 #include "platform/osinterface.h"
 #include "ride/ride.h"
+#include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
 #include "scenario.h"
 #include "title.h"
@@ -277,18 +278,18 @@ void game_logic_update()
 	sub_68B089();
 	scenario_update();
 	climate_update();
-	RCT2_CALLPROC_EBPSAFE(0x006646E1);
-	RCT2_CALLPROC_EBPSAFE(0x006A876D);
+	fountain_update_all();
+	sub_6A876D();
 	peep_update_all();
 	vehicle_update_all();
-	RCT2_CALLPROC_EBPSAFE(0x00672AA4);	// update text effects
-	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);	// update rides
+	texteffect_update_all();
+	ride_update_all();
 	park_update();
 	research_update();
-	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);	// update ride ratings
+	ride_ratings_update_all();
 	ride_measurements_update();
-	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-	vehicle_sounds_update();//RCT2_CALLPROC_EBPSAFE(0x006BBC6B);	// vehicle and scream sounds
+	map_invalidate_animations();
+	vehicle_sounds_update();
 	peep_update_crowd_noise();
 	climate_update_sound();
 	news_item_update_current();

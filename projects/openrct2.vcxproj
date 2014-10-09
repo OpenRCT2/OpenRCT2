@@ -137,6 +137,7 @@
     <ClCompile Include="..\src\windows\track_place.c" />
     <ClCompile Include="..\src\windows\water.c" />
     <ClCompile Include="..\src\world\climate.c" />
+    <ClCompile Include="..\src\world\fountain.c" />
     <ClCompile Include="..\src\world\map.c" />
     <ClCompile Include="..\src\world\park.c" />
     <ClCompile Include="..\src\world\sprite.c" />

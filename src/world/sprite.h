@@ -101,5 +101,6 @@ rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
+void texteffect_update_all();
 
 #endif

@@ -201,8 +201,14 @@ void ride_update_favourited_stat()
 	window_invalidate_by_id(WC_RIDE_LIST, 0);
 }
 
-
-
+/**
+ *
+ *  rct2: 0x006ABE4C
+ */
+void ride_update_all()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006ABE4C);
+}
 
 /**
  * rct2: 0x006B7C59

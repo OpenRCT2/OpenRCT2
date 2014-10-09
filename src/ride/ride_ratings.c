@@ -24,6 +24,14 @@
 #include "ride_ratings.h"
 
 /**
+ *  rct2: 0x006B5A2A
+ */
+void ride_ratings_update_all()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
+}
+
+/**
  * rct2: 0x0065C4D4
  *
  * Compute excitement, intensity, etc. for a crooked house ride.

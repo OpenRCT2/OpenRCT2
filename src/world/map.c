@@ -23,7 +23,11 @@
 #include "climate.h"
 #include "map.h"
 
+int _sub_6A876D_save_x;
+int _sub_6A876D_save_y;
+
 static void tiles_init();
+static void sub_6A87BB(int x, int y);
 
 int map_element_get_terrain(rct_map_element *element)
 {
@@ -112,8 +116,8 @@ void map_init()
 	}
 
 	RCT2_GLOBAL(0x013B0E70, sint16) = 0;
-	RCT2_GLOBAL(0x013CE774, sint16) = 0;
-	RCT2_GLOBAL(0x013CE776, sint16) = 0;
+	_sub_6A876D_save_x = 0;
+	_sub_6A876D_save_y = 0;
 	RCT2_GLOBAL(0x01358830, sint16) = 4768;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = 5054;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
@@ -380,3 +384,52 @@ int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
     return 0;
 }
 
+/**
+ *
+ *  rct2: 0x0068AFAD
+ */
+void map_invalidate_animations()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
+}
+
+/**
+ *
+ *  rct2: 0x006A876D
+ */
+void sub_6A876D()
+{
+	int i, x, y;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+		return;
+
+	// Presumebly sub_6A87BB is too computationally expensive to call for every
+	// tile every update, so word_13CE774 and word_13CE776 store the x and y
+	// progress. A maximum of 128 calls is done per update.
+	x = _sub_6A876D_save_x;
+	y = _sub_6A876D_save_y;
+	for (i = 0; i < 128; i++) {
+		sub_6A87BB(x, y);
+
+		// Next x, y tile
+		x += 32;
+		if (x >= 8192) {
+			x = 0;
+			y += 32;
+			if (y >= 8192)
+				y = 0;
+		}
+	}
+	_sub_6A876D_save_x = x;
+	_sub_6A876D_save_y = y;
+}
+
+/**
+ *
+ *  rct2: 0x006A87BB
+ */
+static void sub_6A87BB(int x, int y)
+{
+	RCT2_CALLPROC_X(0x006A87BB, x, 0, y, 0, 0, 0, 0);
+}

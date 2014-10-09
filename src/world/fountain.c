@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Kevin Burke
+ * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,18 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _RIDE_RATINGS_H_
-#define _RIDE_RATINGS_H_
-
+#include "../addresses.h"
+#include "../game.h"
 #include "../common.h"
-#include "ride.h"
 
-void ride_ratings_update_all();
-void crooked_house_excitement(rct_ride *ride);
-void sub_655FD6(rct_ride *ride);
-ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity);
-rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
-	ride_rating intensity, ride_rating nausea);
-uint16 compute_upkeep(rct_ride *ride);
+/**
+ *
+ *  rct2: 0x006646E1
+ */
+void fountain_update_all()
+{
+	int ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ignoreScreenFlags)
+		return;
 
-#endif
+	// Probably not just fountains... may include scenery aging and grass growth.
+	RCT2_CALLPROC_EBPSAFE(0x006646EE);
+}
