@@ -32,6 +32,11 @@
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
 
+/** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
+int _finished;
+
+static void openrct2_loop();
+
 /**
  * Launches the game, after command line arguments have been parsed and processed.
  */
@@ -76,9 +81,42 @@ void openrct2_launch()
 		break;
 	}
 
-	rct2_loop();
+	openrct2_loop();
 	osinterface_free();
 
 	// HACK Some threads are still running which causes the game to not terminate. Investigation required!
 	exit(gExitCode);
+}
+
+/**
+ * Run the main game loop until the finished flag is set at 40fps (25ms interval).
+ */
+static void openrct2_loop()
+{
+	uint32 currentTick, ticksElapsed, lastTick = 0;
+
+	_finished = 0;
+	do {
+		currentTick = SDL_GetTicks();
+		ticksElapsed = currentTick - lastTick;
+		if (ticksElapsed < 25) {
+			if (ticksElapsed < 15)
+				SDL_Delay(15 - ticksElapsed);
+			continue;
+		}
+
+		lastTick = currentTick;
+
+		osinterface_process_messages();
+		rct2_update();
+		osinterface_draw();
+	} while (!_finished);
+}
+
+/**
+ * Causes the OpenRCT2 game loop to finish.
+ */
+void openrct2_finish()
+{
+	_finished = 1;
 }

@@ -34,5 +34,6 @@ extern int gOpenRCT2StartupAction;
 extern char gOpenRCT2StartupActionPath[512];
 
 void openrct2_launch();
+void openrct2_finish();
 
 #endif

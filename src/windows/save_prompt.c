@@ -20,12 +20,13 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../openrct2.h"
 #include "../sprites.h"
-#include "../config.h"
 #include "../tutorial.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
@@ -236,7 +237,7 @@ static void window_save_prompt_mouseup()
 	if (prompt_mode == PM_QUIT) {
 		switch (widgetIndex) {
 			case WQIDX_OK:
-				rct2_finish();
+				openrct2_finish();
 				break;
 			case WQIDX_CLOSE:
 			case WQIDX_CANCEL:

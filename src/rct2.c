@@ -40,6 +40,7 @@
 #include "localisation/localisation.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "openrct2.h"
 #include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
@@ -58,39 +59,16 @@ void print_launch_information();
 void rct2_init_directories();
 void rct2_startup_checks();
 
-static void rct2_update();
 static void rct2_update_2();
 
-static int _finished;
 static jmp_buf _end_update_jump;
-
-void rct2_loop()
-{
-	int last_tick = 0;
-
-	_finished = 0;
-	do {
-		if (SDL_GetTicks() - last_tick < 25)
-			continue;
-		last_tick = SDL_GetTicks();
-
-		osinterface_process_messages();
-		rct2_update();
-		osinterface_draw();
-	} while (!_finished);
-}
-
-void rct2_finish()
-{
-	_finished = 1;
-}
 
 void rct2_quit() {
 	if (gGeneral_config.confirmation_prompt) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
 		window_save_prompt_open();
 	} else
-		rct2_finish();
+		openrct2_finish();
 }
 
 void rct2_init()

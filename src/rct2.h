@@ -95,8 +95,6 @@ typedef fixed32_1dp money32;
 
 typedef unsigned short rct_string_id;
 
-void rct2_finish();
-
 enum {
 	SCREEN_FLAGS_PLAYING = 0,
 	SCREEN_FLAGS_TITLE_DEMO = 1,
@@ -271,7 +269,7 @@ static const struct file_to_check
 };
 
 void rct2_init();
-void rct2_loop();
+void rct2_update();
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
