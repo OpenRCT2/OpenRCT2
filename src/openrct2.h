@@ -18,15 +18,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _EDITOR_H_
-#define _EDITOR_H_
+#ifndef _OPENRCT2_H_
+#define _OPENRCT2_H_
 
-void editor_load();
-void editor_convert_save_to_scenario();
-void trackdesigner_load();
-void trackmanager_load();
-void editor_load_landscape(const char *path);
+#include "common.h"
 
-void sub_6BD3A4();
+enum {
+	STARTUP_ACTION_INTRO,
+	STARTUP_ACTION_TITLE,
+	STARTUP_ACTION_OPEN,
+	STARTUP_ACTION_EDIT
+};
+
+extern int gOpenRCT2StartupAction;
+extern char gOpenRCT2StartupActionPath[512];
+
+void openrct2_launch();
 
 #endif

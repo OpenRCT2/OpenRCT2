@@ -18,15 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _EDITOR_H_
-#define _EDITOR_H_
+#ifndef _CMDLINE_H_
+#define _CMDLINE_H_
 
-void editor_load();
-void editor_convert_save_to_scenario();
-void trackdesigner_load();
-void trackmanager_load();
-void editor_load_landscape(const char *path);
+#include "common.h"
 
-void sub_6BD3A4();
+/** The exit code for OpenRCT2 when it exits. */
+extern int gExitCode;
+
+int cmdline_run(char *argv[], int argc);
 
 #endif

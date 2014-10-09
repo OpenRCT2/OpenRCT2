@@ -59,6 +59,9 @@
     <Filter Include="Source\Peep">
       <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries\argparse">
+      <UniqueIdentifier>{7e9587b2-333f-42ca-8a56-b77070828b17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -367,7 +370,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -377,9 +379,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
@@ -415,6 +414,17 @@
       <Filter>Libraries\lodepng</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\cmdline.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\openrct2.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\argparse\argparse.c">
+      <Filter>Libraries\argparse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -599,6 +609,15 @@
     </ClInclude>
     <ClInclude Include="..\src\management\research.h">
       <Filter>Source\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cmdline.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\openrct2.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\argparse\argparse.h">
+      <Filter>Libraries\argparse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

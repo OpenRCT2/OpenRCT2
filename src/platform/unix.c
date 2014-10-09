@@ -21,12 +21,18 @@
 #ifndef _WIN32
 #ifndef __APPLE__
 
+#include "../cmdline.h"
+#include "../openrct2.h"
+
 /**
  * Unix, linux and fallback entry point to OpenRCT2.
  */
 // int main(char *argv[], int argc)
 // {
-//     return 0;
+//     if (cmdline_run(argv, argc))
+//       openrct2_launch();
+// 
+//     return gExitCode;
 // }
 
 char platform_get_path_separator()

@@ -12,5 +12,6 @@
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>"C:\Users\Ted\Documents\OpenRCT2\scenarios\RCT Forest Frontiers.SC6"</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

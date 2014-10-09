@@ -58,57 +58,11 @@ void print_launch_information();
 void rct2_init_directories();
 void rct2_startup_checks();
 
-
-static void rct2_init();
-static void rct2_loop();
 static void rct2_update();
 static void rct2_update_2();
 
 static int _finished;
 static jmp_buf _end_update_jump;
-
-__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	print_launch_information();
-
-	// Begin RCT2
-	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
-	get_system_info();
-
-	audio_init();
-	audio_get_devices();
-	get_dsound_devices();
-	config_init();
-	language_open(gGeneral_config.language);
-	rct2_init();
-	Mixer_Init(NULL);
-	rct2_loop();
-	osinterface_free();
-	exit(0);
-
-	return 0;
-}
-
-void print_launch_information()
-{
-	char buffer[32];
-	time_t timer;
-	tm_t* tmInfo;
-
-	// Print version information
-	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
-	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
-
-	// Print current time
-	time(&timer);
-	tmInfo = localtime(&timer);
-	strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
-	printf("Time: %s\n", buffer);
-
-	// TODO Print other potential information (e.g. user, hardware)
-}
 
 void rct2_loop()
 {
@@ -265,51 +219,26 @@ void rct2_update()
 		rct2_update_2();
 }
 
-void check_cmdline_arg()
+int rct2_open_file(const char *path)
 {
-	if(RCT2_GLOBAL(0x009AC310, uint32) == 0xFFFFFFFF)
-		return;
+	char *extension = strrchr(path, '.');
+	if (extension == NULL)
+		return 0;
+	extension++;
 
-	char *arg = RCT2_GLOBAL(0x009AC310, char *);
-	char processed_arg[255];
-	int len, i, j;
-	int quote = 0;
-	int last_period = 0;
+	if (_stricmp(extension, "sv6") == 0) {
+		game_load_save(path);
+		return 1;
+	} else if (_stricmp(extension, "sc6") == 0) {
+		// TODO scenario install
+		rct_scenario_basic scenarioBasic;
+		strcpy(scenarioBasic.path, path);
+		scenario_load_and_play_from_path(scenarioBasic.path);
+	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
+		// TODO track design install
+	}
 
-	RCT2_GLOBAL(0x009AC310, uint32) = 0xFFFFFFFF;
-	len = strlen(arg);
-
-	for(i = 0, j = 0; i < len; i ++)
-	{
-		if(arg[i] == '\"')
-		{
-			if(quote)
-				quote = 0;
-			else
-				quote = 1;
-			continue;
-		}
-		if(arg[i] == ' ' && !quote)
-			break;
-		if(arg[i] == '.')
-			last_period = i;
-		processed_arg[j ++] = arg[i];
-	}
-	processed_arg[j ++] = 0;
-
-	if (!_stricmp(processed_arg + last_period, "sv6"))
-	{
-		strcpy((char*)0x00141EF68, processed_arg);
-		game_load_save();
-	}
-	else if (!_stricmp(processed_arg + last_period, "sc6"))
-	{
-		//TODO: scenario install
-	}
-	else if (!_stricmp(processed_arg + last_period, "td6") || !_stricmp(processed_arg + last_period, "td4"))
-	{
-		//TODO: track design install
-	}
+	return 0;
 }
 
 // rct2: 0x00407DB0
@@ -427,7 +356,7 @@ void rct2_update_2()
 
 	// TODO: screenshot countdown process
 
-	check_cmdline_arg();
+	// check_cmdline_arg();
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();

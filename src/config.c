@@ -74,21 +74,23 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 
 general_configuration_t gGeneral_config;
 general_configuration_t gGeneral_config_default = {
-	0,		// play_intro
-	1,		// confirmation_prompt
-	SCREENSHOT_FORMAT_PNG, // screenshot_format
-	"",		// game_path
-	MEASUREMENT_FORMAT_IMPERIAL, // measurement_format
-	TEMPERATURE_FORMAT_F,		 // temperature_format
-	CURRENCY_POUNDS,		// currency_format
-	0,		// construction_marker_colour
-	1,		// edge_scrolling
-	0,		// always_show_gridlines
-	1,		// landscape_smoothing
-	0,		// show_height_as_units
-	1,		// save_plugin_data
-	0,		// fullscreen mode (default: windowed)
-	LANGUAGE_ENGLISH_UK
+	0,								// play_intro
+	1,								// confirmation_prompt
+	SCREENSHOT_FORMAT_PNG,			// screenshot_format
+	"",								// game_path
+	MEASUREMENT_FORMAT_IMPERIAL,	// measurement_format
+	TEMPERATURE_FORMAT_F,			// temperature_format
+	CURRENCY_POUNDS,				// currency_format
+	0,								// construction_marker_colour
+	1,								// edge_scrolling
+	0,								// always_show_gridlines
+	1,								// landscape_smoothing
+	0,								// show_height_as_units
+	1,								// save_plugin_data
+	0,								// fullscreen mode (default: windowed)
+	-1,								// window_width
+	-1,								// window_height
+	LANGUAGE_ENGLISH_UK				// language
 };
 sound_configuration_t gSound_config;
 

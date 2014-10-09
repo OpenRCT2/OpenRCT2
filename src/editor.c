@@ -78,7 +78,7 @@ void editor_load()
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
-	rct2_endupdate();
+	// rct2_endupdate();
 }
 
 /**
@@ -164,6 +164,16 @@ void trackmanager_load()
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
 	rct2_endupdate();
+}
+
+/**
+ *
+ *  rct2: 0x006758C0
+ */
+void editor_load_landscape(const char *path)
+{
+	strcpy((char *)0x0141EF68, path);
+	RCT2_CALLPROC_EBPSAFE(0x006758C0);
 }
 
 /**
