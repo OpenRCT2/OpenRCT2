@@ -22,14 +22,27 @@
 #ifdef _MSC_VER
 #include <time.h>
 #endif
+#include <argparse/argparse.h>
+#include "addresses.h"
 #include "cmdline.h"
 #include "openrct2.h"
+#include "platform/osinterface.h"
 
 typedef struct tm tm_t;
+typedef struct argparse_option argparse_option_t;
+typedef struct argparse argparse_t;
 
 int gExitCode = 0;
 
 static void print_launch_information();
+
+static const char *const usage[] = {
+	"openrct2 <command> [options] [<args>]",
+	"openrct2 <path> [options]",
+	"openrct2 intro [options]",
+	"openrct2 edit [path] [options]",
+	NULL
+};
 
 /**
  * A shared entry point to OpenRCT2. The command lines must be parsed before any further action is done. Invalid command lines
@@ -38,19 +51,49 @@ static void print_launch_information();
  */
 int cmdline_run(char *argv[], int argc)
 {
-	print_launch_information();
+	// For argparse's sake, add virtual first argument process path
+	argc++;
+	argv--;
 
-	if (argc > 0) {
-		if (_stricmp(argv[0], "edit") == 0) {
+	// 
+	int version = 0, width = 0, height = 0;
+
+	argparse_option_t options[] = {
+		OPT_HELP(),
+		OPT_BOOLEAN('v', "version", &version, "show version information and exit"),
+		OPT_END()
+	};
+
+	argparse_t argparse;
+	argparse_init(&argparse, options, usage, 0);
+	argc = argparse_parse(&argparse, argc, argv);
+
+	if (version) {
+		printf("%s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
+		printf("%s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+		printf("%s\n", OPENRCT2_TIMESTAMP);
+		return 0;
+	}
+
+	if (argc != 0) {
+		if (_stricmp(argv[0], "intro") == 0) {
+			gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+		} else if (_stricmp(argv[0], "edit") == 0) {
 			gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
 			if (argc >= 2)
 				strcpy(gOpenRCT2StartupActionPath, argv[1]);
 		} else {
-			gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
-			strcpy(gOpenRCT2StartupActionPath, argv[0]);
+			if (osinterface_file_exists(argv[0])) {
+				gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+				strcpy(gOpenRCT2StartupActionPath, argv[0]);
+			} else {
+				fprintf(stderr, "error: %s does not exist\n", argv[0]);
+				return 0;
+			}
 		}
 	}
 
+	print_launch_information();
 	return 1;
 }
 
@@ -73,27 +116,3 @@ static void print_launch_information()
 
 	// TODO Print other potential information (e.g. user, hardware)
 }
-
-//void check_cmdline_arg()
-//{
-//	int argc;
-//	char **argv;
-//	char *args;
-//
-//	args = RCT2_GLOBAL(0x009AC310, char*);
-//	if (args == (char*)0xFFFFFFFF)
-//		return;
-//	RCT2_GLOBAL(0x009AC310, char*) = (char*)0xFFFFFFFF;
-//
-//	argv = CommandLineToArgvA(args, &argc);
-//	if (argc > 0) {
-//		if (_stricmp(argv[0], "edit") == 0) {
-//			if (argc >= 1)
-//				editor_load_landscape(argv[1]);
-//		} else {
-//			rct2_open_file(argv[0]);
-//		}
-//	}
-//
-//	LocalFree(argv);
-//}

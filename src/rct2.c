@@ -226,16 +226,19 @@ int rct2_open_file(const char *path)
 		return 0;
 	extension++;
 
-	if (_stricmp(extension, "sv6")) {
+	if (_stricmp(extension, "sv6") == 0) {
 		game_load_save(path);
-	} else if (!_stricmp(extension, "sc6")) {
+		return 1;
+	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
-	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
+	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
 		// TODO track design install
 	}
+
+	return 0;
 }
 
 // rct2: 0x00407DB0

@@ -178,11 +178,11 @@ static void osinterface_create_window()
 		osinterface_load_cursors();
 		RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
-		width = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, sint16);
-		height = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, sint16);
+		width = gGeneral_config.window_width;
+		height = gGeneral_config.window_height;
 
-		width = 640;
-		height = 480;
+		if (width == -1) width = 640;
+		if (height == -1) height = 480;
 	}
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;

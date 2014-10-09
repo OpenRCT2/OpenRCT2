@@ -59,8 +59,6 @@ void openrct2_launch()
 
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
-
-		// TODO fix, crashes on first game logic update
 		break;
 	case STARTUP_ACTION_EDIT:
 		if (strlen(gOpenRCT2StartupActionPath) == 0)
