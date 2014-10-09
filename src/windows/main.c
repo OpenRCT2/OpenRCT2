@@ -82,7 +82,7 @@ void window_main_open()
 	window->widgets = window_main_widgets;
 
 	viewport_create(window, window->x, window->y, window->width, window->height, 0,0x0FFF,0x0FFF, 0, 0x1, -1);
-	window->viewport->flags |= 0x0400;
+	window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
@@ -97,7 +97,8 @@ void window_main_open()
  * This function immediately jumps to 0x00685BE1 this is the second function
  * decompiled.
  */
-void window_main_paint(){
+void window_main_paint()
+{
 	rct_window* w;
 	rct_drawpixelinfo* dpi;
 

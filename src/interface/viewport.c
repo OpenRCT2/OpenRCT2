@@ -173,9 +173,8 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	viewport->zoom = zoom;
 	viewport->flags = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS, uint8) & 1){
+	if (gGeneral_config.always_show_gridlines)
 		viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-	}
 	w->viewport = viewport;
 
 	if (flags & VIEWPORT_FOCUS_TYPE_SPRITE){
@@ -958,7 +957,7 @@ void hide_gridlines()
 	RCT2_GLOBAL(0x009E32B0, uint8)--;
 	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
 		if ((mainWindow = window_get_main()) != NULL) {
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES)) {
+			if (!gGeneral_config.always_show_gridlines) {
 				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
 				window_invalidate(mainWindow);
 			}

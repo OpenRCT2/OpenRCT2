@@ -82,7 +82,7 @@ void rct2_init()
 	rct2_startup_checks();
 	config_reset_shortcut_keys();
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
-	config_load();
+	// config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 	object_list_load();
 	scenario_load_list();
@@ -91,9 +91,7 @@ void rct2_init()
 	track_load_list(item);
 
 	gfx_load_g1();
-	//RCT2_CALLPROC_EBPSAFE(0x006C19AC); //Load character widths
 	gfx_load_character_widths();
-	
 	osinterface_init();
 	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();

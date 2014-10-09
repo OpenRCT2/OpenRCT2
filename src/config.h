@@ -166,6 +166,4 @@ typedef struct shortcut_entry{
 extern general_configuration_t gGeneral_config;
 extern sound_configuration_t gSound_config;
 
-void config_init();
-
 #endif

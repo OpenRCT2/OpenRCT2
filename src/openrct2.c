@@ -42,7 +42,7 @@ static void openrct2_loop();
  */
 void openrct2_launch()
 {
-	config_init();
+	config_load();
 
 	// TODO add configuration option to allow multiple instances
 	if (!platform_lock_single_instance()) {

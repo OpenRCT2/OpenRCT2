@@ -119,138 +119,6 @@ void config_reset_shortcut_keys()
 	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
 }
 
-/**
- *  Reads the config file data/config.cfg
- *  rct2: 0x006752D5
- */
-void config_load()
-{
-	FILE *fp=NULL;
-
-	const char *path = get_file_path(PATH_ID_GAMECFG);
-
-	fp = fopen(path, "rb");
-
-	if (fp != NULL) {
-		// Read and check magic number
-		fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, fp);
-
-		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
-			// Read options
-			fread((void*)0x009AAC5C, 1, 2155, fp);
-			fclose(fp);
-
-			//general configuration
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
-			
-			// always show gridlines
-			if (gGeneral_config.always_show_gridlines){
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-			}
-			else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-			}
-
-			// landscape smoothing
-			if (!gGeneral_config.landscape_smoothing){
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-			}
-			else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-			}
-			
-			// show height as units
-			if (gGeneral_config.show_height_as_units){
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-			}
-			else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-			}
-
-			// save plugin data
-			if (gGeneral_config.save_plugin_data){
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
-			}
-			else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SAVE_PLUGIN_DATA;
-			}
-
-			//sound configuration
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
-
-			// Line below is temporaraly disabled until all config is in the new format.
-			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
-			//	return;
-			
-			
-			RCT2_GLOBAL(0x009AB4C6, sint8) = 1; // no idea on what this does
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 2) * 256;
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-			RCT2_GLOBAL(0x009AA00D, sint8) = 0;
-		}
-	
-	}
-	
-	/* TODO: CLEANUP
-
-			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
-				return;
-			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = 1; 
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
-		}
-	
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x4000000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x8000000)
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
-	}
-	*/
-
-
-	RCT2_GLOBAL(0x009AAC75, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
-	RCT2_GLOBAL(0x009AAC76, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
-}
-
-
-/**
- *  Save configuration to the data/config.cfg file
- *  rct2: 0x00675487
- */
-void config_save()
-{
-	FILE *fp=NULL;
-	char *configIniPath = osinterface_get_orct2_homefolder();;
-
-	fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
-	if (fp != NULL){
-		fwrite(&MagicNumber, 4, 1, fp);
-		fwrite((void*)0x009AAC5C, 2155, 1, fp);
-		fclose(fp);
-	}
-
-	sprintf(configIniPath, "%s%c%s", configIniPath, osinterface_get_path_separator(), "config.ini");
-	config_save_ini(configIniPath);
-}
-
 void config_save_ini(char *path)
 {
 	FILE *fp = NULL;
@@ -383,15 +251,47 @@ void config_write_ini_general(FILE *fp)
 	else
 		fprintf(fp, "fullscreen_mode = borderless_fullscreen\n");
 
+	if (gGeneral_config.window_width != -1)
+		fprintf(fp, "window_width = %d\n", gGeneral_config.window_width);
+	if (gGeneral_config.window_height != -1)
+		fprintf(fp, "window_height = %d\n", gGeneral_config.window_height);
+
 	fprintf(fp, "language = %d\n", gGeneral_config.language);
 }
 
 /**
- * Initilise the settings.
+ * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
+ * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
+ */
+void config_apply_to_old_addresses()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gGeneral_config.construction_marker_colour;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
+
+	int configFlags = 0;
+	if (gGeneral_config.always_show_gridlines)
+		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+	if (!gGeneral_config.landscape_smoothing)
+		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+	if (gGeneral_config.show_height_as_units)
+		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+	if (gGeneral_config.save_plugin_data)
+		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
+}
+
+/**
+ * Initialise the settings.
  * It checks if the OpenRCT2 folder exists and creates it if it does not
  * parsing of the config file is done in config_parse_settings
  */
-void config_init()
+void config_load()
 {	
 	char *path = osinterface_get_orct2_homefolder();
 	FILE* fp;
@@ -420,6 +320,18 @@ void config_init()
 	}
 
 	free(path);
+
+	config_apply_to_old_addresses();
+}
+
+void config_save()
+{
+	char *configIniPath = osinterface_get_orct2_homefolder();;
+
+	sprintf(configIniPath, "%s%c%s", configIniPath, osinterface_get_path_separator(), "config.ini");
+	config_save_ini(configIniPath);
+
+	config_apply_to_old_addresses();
 }
 
 /**
@@ -470,7 +382,6 @@ static void config_create_default(char *path)
 	config_save_ini(path);
 }
 
-
 /**
  * Parse settings and set the game veriables
  * @param fp file pointer to the settings file
@@ -509,7 +420,6 @@ static void config_parse_settings(FILE *fp)
 	free(value);
 	free(section);
 }
-
 
 static void config_sound(char *setting, char *value){
 	if (strcmp(setting, "sound_quality") == 0){
@@ -623,6 +533,12 @@ static void config_general(char *setting, char *value){
 		}
 		else
 			gGeneral_config.fullscreen_mode = 2;
+	}
+	else if (strcmp(setting, "window_width") == 0) {
+		gGeneral_config.window_width = atoi(value);
+	}
+	else if (strcmp(setting, "window_height") == 0) {
+		gGeneral_config.window_height = atoi(value);
 	}
 	else if (strcmp(setting, "language") == 0) {
 		gGeneral_config.language = atoi(value);
@@ -823,3 +739,134 @@ static void config_error(char *msg){
 
 }
 
+#pragma region Obsolete
+
+// The following functions are related to the original configuration file. This has now been replaced with a new configuration
+// INI file located in the user's OpenRCT2 home directory.
+
+/**
+ *  Reads the config file data/config.cfg
+ *  rct2: 0x006752D5
+ */
+void config_dat_load()
+{
+	FILE *fp=NULL;
+
+	const char *path = get_file_path(PATH_ID_GAMECFG);
+
+	fp = fopen(path, "rb");
+
+	if (fp != NULL) {
+		// Read and check magic number
+		fread(RCT2_ADDRESS(0x013CE928, void), 1, 4, fp);
+
+		if (RCT2_GLOBAL(0x013CE928, int) == MagicNumber) {
+			// Read options
+			fread((void*)0x009AAC5C, 1, 2155, fp);
+			fclose(fp);
+
+			//general configuration
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
+			
+			// always show gridlines
+			if (gGeneral_config.always_show_gridlines){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+			}
+
+			// landscape smoothing
+			if (!gGeneral_config.landscape_smoothing){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+			}
+			
+			// show height as units
+			if (gGeneral_config.show_height_as_units){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+			}
+
+			// save plugin data
+			if (gGeneral_config.save_plugin_data){
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+			}
+			else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SAVE_PLUGIN_DATA;
+			}
+
+			//sound configuration
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
+
+			// Line below is temporaraly disabled until all config is in the new format.
+			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
+			//	return;
+			
+			
+			RCT2_GLOBAL(0x009AB4C6, sint8) = 1; // no idea on what this does
+
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 2) * 256;
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+			RCT2_GLOBAL(0x009AA00D, sint8) = 0;
+		}
+	
+	}
+	
+	/* TODO: CLEANUP
+
+			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
+				return;
+			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = 1; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
+		}
+	
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x4000000) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) > 0x8000000)
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
+	}
+	*/
+
+
+	RCT2_GLOBAL(0x009AAC75, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
+	RCT2_GLOBAL(0x009AAC76, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
+	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
+}
+
+/**
+ *  Save configuration to the data/config.cfg file
+ *  rct2: 0x00675487
+ */
+void config_dat_save()
+{
+	FILE *fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
+	if (fp != NULL){
+		fwrite(&MagicNumber, 4, 1, fp);
+		fwrite((void*)0x009AAC5C, 2155, 1, fp);
+		fclose(fp);
+	}
+}
+
+#pragma endregion
