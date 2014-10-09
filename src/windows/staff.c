@@ -450,7 +450,7 @@ void window_staff_overview_mouseup()
 			return;
 		}
 
-		w->var_48C = peep->sprite_identifier;
+		w->var_48C = peep->x;
 
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
