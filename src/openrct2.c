@@ -26,6 +26,7 @@
 #include "editor.h"
 #include "localisation/localisation.h"
 #include "openrct2.h"
+#include "platform/platform.h"
 #include "platform/osinterface.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
@@ -36,11 +37,18 @@ char gOpenRCT2StartupActionPath[512] = { 0 };
  */
 void openrct2_launch()
 {
+	config_init();
+
+	// TODO add configuration option to allow multiple instances
+	if (!platform_lock_single_instance()) {
+		fprintf(stderr, "OpenRCT2 is already running.\n");
+		return;
+	}
+
 	get_system_info();
 	audio_init();
 	audio_get_devices();
 	get_dsound_devices();
-	config_init();
 	language_open(gGeneral_config.language);
 	rct2_init();
 	Mixer_Init(NULL);

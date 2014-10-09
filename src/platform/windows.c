@@ -25,6 +25,9 @@
 #include "../cmdline.h"
 #include "../openrct2.h"
 
+// The name of the mutex used to prevent multiple instances of the game from running
+#define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+
 LPSTR *CommandLineToArgvA(LPSTR lpCmdLine, int *argc);
 
 /**
@@ -79,6 +82,11 @@ char platform_get_path_separator()
 	return '\\';
 }
 
+int platform_file_exists(const char *path)
+{
+	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+}
+
 int platform_directory_exists(const char *path)
 {
 	DWORD dwAttrib = GetFileAttributes(path);
@@ -91,6 +99,26 @@ int platform_ensure_directory_exists(const char *path)
 		return 1;
 
 	return CreateDirectory(path, NULL);
+}
+
+int platform_lock_single_instance()
+{
+	HANDLE mutex, status;
+
+	// Check if operating system mutex exists
+	mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+	if (mutex == NULL) {
+		// Create new mutex
+		status = CreateMutex(NULL, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+		if (status == NULL)
+			fprintf(stderr, "unable to create mutex\n");
+
+		return 1;
+	} else {
+		// Already running
+		CloseHandle(mutex);
+		return 0;
+	}
 }
 
 /**

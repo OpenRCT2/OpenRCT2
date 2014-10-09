@@ -20,11 +20,11 @@
 
 #include <math.h>
 #include <SDL.h>
-#include <string.h>
 
 extern "C" {
-#include "../config.h"
-#include "audio.h"
+	#include "../config.h"
+	#include "../platform/platform.h"
+	#include "audio.h"
 }
 #include "mixer.h"
 

@@ -18,13 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <stdio.h>
 #include <SDL_keycode.h>
 #include <ctype.h>
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"
 #include "platform/osinterface.h"
+#include "platform/platform.h"
 
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
@@ -399,7 +399,7 @@ void config_init()
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
 
 	if (strcmp(path, "") != 0){
-		if (!osinterface_ensure_directory_exists(path)) {
+		if (!platform_ensure_directory_exists(path)) {
 			config_error("Could not create config file (do you have write access to your documents folder?)");
 			return;
 		}
@@ -443,7 +443,7 @@ static int config_find_rct2_path(char *resultPath)
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
-		if ( osinterface_directory_exists(searchLocations[i]) ) {
+		if (platform_directory_exists(searchLocations[i]) ) {
 			strcpy(resultPath, searchLocations[i]);
 			return 1;
 		}

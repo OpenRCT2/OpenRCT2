@@ -20,7 +20,6 @@
 
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
-#include <string.h>
 #include <setjmp.h>
 #ifdef _MSC_VER
 #include <time.h>
@@ -42,6 +41,7 @@
 #include "management/news_item.h"
 #include "object.h"
 #include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/track.h"
 #include "scenario.h"
@@ -147,7 +147,7 @@ void rct2_init()
 void rct2_init_directories()
 {
 	// check install directory
-	if ( !osinterface_directory_exists(gGeneral_config.game_path) ) {
+	if (!platform_directory_exists(gGeneral_config.game_path) ) {
 		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
 		exit(-1);
 	}
@@ -186,13 +186,6 @@ void subsitute_path(char *dest, const char *path, const char *filename)
 // rct2: 0x00674B42
 void rct2_startup_checks()
 {
-	// Check if game is already running
-	if (check_mutex())
-	{
-		RCT2_ERROR("Game is already running");
-		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xB2B, 0, 0, 0, 0, 0); // exit_with_error
-	}
-
 	// Check data files
 	check_file_paths();
 	check_files_integrity();
@@ -238,24 +231,6 @@ int rct2_open_file(const char *path)
 		// TODO track design install
 	}
 
-	return 0;
-}
-
-// rct2: 0x00407DB0
-int check_mutex()
-{
-	const char * const mutex_name = "RollerCoaster Tycoon 2_GSKMUTEX"; // rct2 @ 0x009AAC3D + 0x009A8B50
-
-	HANDLE mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, mutex_name);
-
-	if (mutex != NULL)
-	{
-		// Already running
-		CloseHandle(mutex);
-		return 1;
-	}
-
-	HANDLE status = CreateMutex(NULL, FALSE, mutex_name);
 	return 0;
 }
 

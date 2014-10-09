@@ -19,19 +19,16 @@
  *****************************************************************************/
 #pragma pack(1)
 
-#include <windows.h> // For MAX_PATH
 #include <lodepng/lodepng.h>
-#include <stdio.h>
-#include "../platform/osinterface.h"
 #include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../windows/error.h"
 #include "screenshot.h"
-
-
 
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
@@ -63,7 +60,7 @@ void screenshot_check()
 static int screenshot_get_next_path(char *path, char *extension)
 {
 	char *screenshotPath = osinterface_get_orct2_homesubfolder("screenshot");
-	if (!osinterface_ensure_directory_exists(screenshotPath)) {
+	if (!platform_ensure_directory_exists(screenshotPath)) {
 		free(screenshotPath);
 
 		fprintf(stderr, "Unable to save screenshots in OpenRCT2 screenshot directory.\n");
@@ -77,7 +74,7 @@ static int screenshot_get_next_path(char *path, char *extension)
 		// Glue together path and filename
 		sprintf(path, "%s%cSCR%d%s", screenshotPath, osinterface_get_path_separator(), i, extension);
 
-		if (!osinterface_file_exists(path)) {
+		if (!platform_file_exists(path)) {
 			return i;
 		}
 	}

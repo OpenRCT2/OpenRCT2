@@ -21,10 +21,15 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
 
 // Platform specific definitions
 char platform_get_path_separator();
+int platform_file_exists(const char *path);
 int platform_directory_exists(const char *path);
 int platform_ensure_directory_exists(const char *path);
+int platform_lock_single_instance();
 
 #endif

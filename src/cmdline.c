@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <string.h>
 #ifdef _MSC_VER
 #include <time.h>
 #endif
@@ -26,7 +25,7 @@
 #include "addresses.h"
 #include "cmdline.h"
 #include "openrct2.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 
 typedef struct tm tm_t;
 typedef struct argparse_option argparse_option_t;
@@ -83,7 +82,7 @@ int cmdline_run(char *argv[], int argc)
 			if (argc >= 2)
 				strcpy(gOpenRCT2StartupActionPath, argv[1]);
 		} else {
-			if (osinterface_file_exists(argv[0])) {
+			if (platform_file_exists(argv[0])) {
 				gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
 				strcpy(gOpenRCT2StartupActionPath, argv[0]);
 			} else {

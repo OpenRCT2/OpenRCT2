@@ -21,8 +21,7 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
-#include <stdio.h>
-#include "rct2.h"
+#include "common.h"
 
 /**
  * Object entry structure.

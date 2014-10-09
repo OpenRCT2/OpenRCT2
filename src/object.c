@@ -18,14 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <memory.h>
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #include "addresses.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "util/sawyercoding.h"
 
 int object_entry_compare(rct_object_entry *a, rct_object_entry *b);
@@ -251,7 +249,7 @@ int object_load_packed(FILE *file)
 	strcat(path, ".DAT");
 
 	// 
-	for (; osinterface_file_exists(path);){
+	for (; platform_file_exists(path);){
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
 				subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");

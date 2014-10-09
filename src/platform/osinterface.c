@@ -851,25 +851,6 @@ char *osinterface_get_orct2_homesubfolder(const char *subFolder)
 	return path;
 }
 
-int osinterface_file_exists(const char *path)
-{
-	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
-}
-
-int osinterface_directory_exists(const char *path)
-{
-	DWORD dwAttrib = GetFileAttributes(path);
-	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
-}
-
-int osinterface_ensure_directory_exists(const char *path)
-{
-	if (osinterface_directory_exists(path))
-		return 1;
-
-	return CreateDirectory(path, NULL);
-}
-
 char osinterface_get_path_separator()
 {
 	return '\\';

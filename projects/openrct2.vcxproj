@@ -36,7 +36,9 @@
     <ClInclude Include="..\lib\libspeex\speex\speex_types.h" />
     <ClInclude Include="..\lib\libspeex\stack_alloc.h" />
     <ClInclude Include="..\lib\lodepng\lodepng.h" />
-    <ClCompile Include="..\lib\argparse\argparse.c" />
+    <ClCompile Include="..\lib\argparse\argparse.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>

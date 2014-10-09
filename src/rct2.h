@@ -25,6 +25,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef signed char sint8;
 typedef signed short sint16;
