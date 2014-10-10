@@ -303,3 +303,46 @@ void encode_chunk_rotate(char *buffer, int length)
 		code = (code + 2) % 8;
 	}
 }
+
+int sawyercoding_decode_sv4(char *src, char *dst, int length)
+{
+	// (0 to length - 4): RLE chunk
+	// (length - 4 to length): checksum
+	return decode_chunk_rle(src, dst, length - 4);
+}
+
+int sawyercoding_decode_sc4(char *src, char *dst, int length)
+{
+	int decodedLength, i;
+	uint32 *code;
+
+	// Uncompress
+	decodedLength = decode_chunk_rle(src, dst, length - 4);
+
+	// Decode
+	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)
+		dst[i] = dst[i] ^ 0x9C;
+
+	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8350); i += 4) {
+		dst[i + 1] = ror8(dst[i + 1], 3);
+
+		code = (uint32*)&dst[i];
+		*code = rol32(*code, 9);
+	}
+
+	return decodedLength;
+}
+
+int sawyercoding_encode_sv4(char *src, char *dst, int length)
+{
+	int encodedLength, checksum;
+
+	// Encode
+	encodedLength = encode_chunk_rle(src, dst, length);
+
+	// Append checksum
+	checksum = sawyercoding_calculate_checksum(dst, encodedLength);
+	*((uint32*)&dst[encodedLength]) = checksum;
+
+	return encodedLength + 4;
+}

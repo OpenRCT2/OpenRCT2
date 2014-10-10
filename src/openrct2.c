@@ -28,6 +28,7 @@
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "platform/osinterface.h"
+#include "util/sawyercoding.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };

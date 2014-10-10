@@ -136,6 +136,7 @@
     <ClCompile Include="..\src\windows\track_manage.c" />
     <ClCompile Include="..\src\windows\track_place.c" />
     <ClCompile Include="..\src\windows\water.c" />
+    <ClCompile Include="..\src\world\banner.c" />
     <ClCompile Include="..\src\world\climate.c" />
     <ClCompile Include="..\src\world\fountain.c" />
     <ClCompile Include="..\src\world\map.c" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\src\windows\error.h" />
     <ClInclude Include="..\src\windows\scenery.h" />
     <ClInclude Include="..\src\windows\tooltip.h" />
+    <ClInclude Include="..\src\world\banner.h" />
     <ClInclude Include="..\src\world\climate.h" />
     <ClInclude Include="..\src\world\map.h" />
     <ClInclude Include="..\src\world\park.h" />

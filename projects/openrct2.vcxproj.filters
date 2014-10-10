@@ -382,15 +382,11 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\lodepng</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\libspeex</Filter>
@@ -420,6 +416,10 @@
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\fountain.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
   </ItemGroup>
@@ -615,6 +615,9 @@
     </ClInclude>
     <ClInclude Include="..\lib\argparse\argparse.h">
       <Filter>Libraries\argparse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\banner.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
