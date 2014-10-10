@@ -30,6 +30,9 @@
 #include "../world/sprite.h"
 #include "dropdown.h"
 
+#define WW 190
+#define WH 180
+
 enum WINDOW_STAFF_PAGE {
 	WINDOW_STAFF_OVERVIEW,
 	WINDOW_STAFF_OPTIONS,
@@ -64,53 +67,53 @@ enum WINDOW_STAFF_WIDGET_IDX {
 void window_staff_emptysub(){};
 
 rct_widget window_staff_overview_widgets[] = { 
-	{ WWT_FRAME,	0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,	0, 1,	188,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,	1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,		1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,		1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
-	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
-	{ WWT_VIEWPORT,	1, 3,	164,	47,		166,	0x0FFFFFFFF,	STR_NONE},				// Viewport
-	{ WWT_12,		1, 3,	164,	167,	177,	0x0FFFFFFFF,	STR_NONE },				// Label at bottom of viewport
-	{ WWT_FLATBTN,	1, 165,	188,	45,		68,		0x1436,			1706},					// Pickup Button
-	{ WWT_FLATBTN,	1, 165, 188,	69,		92,		0x1437,			1708},					// Patrol Button
-	{ WWT_FLATBTN,	1, 165, 188,	93,		116,	0x1430,			1056},					// Rename Button
-	{ WWT_FLATBTN,	1, 165, 188,	117,	140,	0x142F,			1027},					// Locate Button
-	{ WWT_FLATBTN,	1, 165, 188,	141,	164,	0x142D,			1705},					// Fire Button
+	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,			17,			43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,		1, 34,		64,			17,			43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,		1, 65,		95,			17,			43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,		1, 96,		126,		17,			43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,0x0FFFFFFFF,	STR_NONE},				// Viewport
+	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	0x0FFFFFFFF,	STR_NONE },				// Label at bottom of viewport
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		0x1436,			1706},					// Pickup Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		0x1437,			1708},					// Patrol Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	0x1430,			1056},					// Rename Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	0x142F,			1027},					// Locate Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	0x142D,			1705},					// Fire Button
 	{ WIDGETS_END },
 };
 
 //0x9AF910
-rct_widget window_staff_stats_widgets[] = { 
-	{ WWT_FRAME,			0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,			0, 1,	188,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX,			0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,			1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,				1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,				1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,				1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
-	{ WWT_TAB,				1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
-	{ WWT_CHECKBOX,			1, 5,	184,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 1
-	{ WWT_CHECKBOX,			1, 5,	184,	67,		78,		0x0FFFFFFFF,	STR_NONE },				// Checkbox 2
-	{ WWT_CHECKBOX,			1, 5,	184,	84,		95,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 3
-	{ WWT_CHECKBOX,			1, 5,	184,	101,	112,	0x0FFFFFFFF,	STR_NONE},				// Checkbox 4
-	{ WWT_DROPDOWN,			1, 5,	184,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Costume Dropdown
-	{ WWT_DROPDOWN_BUTTON,	1, 173, 183,	51,		60,		876,			1946},					// Costume Dropdown Button
+rct_widget window_staff_options_widgets[] = { 
+	{ WWT_FRAME,			0, 0,		WW - 1,	0,		WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,				1, 3,		33,		17,		43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,				1, 34,		64,		17,		43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,				1, 65,		95,		17,		43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,				1, 96,		126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 1
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		0x0FFFFFFFF,	STR_NONE },				// Checkbox 2
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 3
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	0x0FFFFFFFF,	STR_NONE},				// Checkbox 4
+	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Costume Dropdown
+	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		876,			1946},					// Costume Dropdown Button
 	{ WIDGETS_END },
 };
 
 //0x9AF9F4
-rct_widget window_staff_options_widgets[] = { 
-	{ WWT_FRAME,			0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,			0, 1,	188,	1,		14,		865,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX,			0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,			1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,				1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,				1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,				1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
-	{ WWT_TAB,				1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
+rct_widget window_staff_stats_widgets[] = { 
+	{ WWT_FRAME,	0, 0,		WW - 1,	0,	WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,		17,	43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,		1, 34,		64,		17,	43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,		1, 65,		95,		17,	43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,		1, 96,		126,	17,	43,		0x2000144E,		STR_NONE},				// Tab 4
 	{ WIDGETS_END },
 };
 
@@ -137,6 +140,7 @@ void window_staff_orders_update(rct_window* w);
 void window_staff_stats_mouseup();
 void window_staff_stats_resize();
 void window_staff_stats_update(rct_window* w);
+void window_staff_stats_invalidate();
 
 // 0x992AEC
 static void* window_staff_overview_events[] = {
@@ -229,7 +233,7 @@ static void* window_staff_stats_events[] = {
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BE9E9, //Invalidate
+	window_staff_stats_invalidate, //Invalidate
 	(void*)0x6BEA86, //Paint
 	window_staff_emptysub
 };
@@ -425,11 +429,10 @@ void window_staff_overview_mouseup()
 	case WIDX_TAB_3:
 		window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_LOCATE: // 0xD
+	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
 		break;
-	case WIDX_PICKUP: // 0xA
-		// 0x6BE236
+	case WIDX_PICKUP:
 		if (tool_set(w, widgetIndex, 7)) {
 			return;
 		}
@@ -444,11 +447,10 @@ void window_staff_overview_mouseup()
 		peep->state = 9;
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
-	case WIDX_FIRE: // 0xE
+	case WIDX_FIRE:
 		window_staff_fire_prompt_open(peep);
 		break;
-	case WIDX_RENAME: // 0xC
-		// 6BE4BC
+	case WIDX_RENAME:
 		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
 		break;
 	}
@@ -516,8 +518,8 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	}
 
 	// Dropdown names
-	gDropdownItemsFormat[0] = 0xD75;
-	gDropdownItemsFormat[1] = 0xD76;
+	gDropdownItemsFormat[0] = 3446;
+	gDropdownItemsFormat[1] = 3447;
 
 	int x = widget->left + w->x;
 	int y = widget->top + w->y;;
@@ -582,17 +584,15 @@ void window_staff_overview_update(rct_window* w)
 		var_496 = 0;
 	}
 	RCT2_GLOBAL((int)w + 0x496, uint16) = var_496;
-	window_invalidate_by_id(0x497, w->number);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
 }
 
 /** rct2: 0x006BE814 */
 void window_staff_set_order(rct_window* w, int order_id)
 {
-	int eax = 1 << order_id;
-
 	rct_peep* peep = GET_PEEP(w->number);
 
-	int ax = peep->var_C6 ^ eax;
+	int ax = peep->staff_orders ^ (1 << order_id);
 	int flags = (ax << 8) | 1;
 
 	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
@@ -627,7 +627,7 @@ void window_staff_orders_mouseup()
 void window_staff_orders_update(rct_window* w)
 {
 	w->frame_no++;
-	window_invalidate_by_id(0x597, w->number);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
 }
 
 /** rct2: 0x006BEBCF */
@@ -700,4 +700,35 @@ void window_staff_unknown_05(){
 	window_get_register(w);
 
 	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
+}
+
+/* rct2: 0x006BE9E9 */
+void window_staff_stats_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (window_staff_page_widgets[w->page] != w->widgets){
+		w->widgets = window_staff_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_staff_stats_widgets[WIDX_RESIZE].right = w->width - 1;
+	window_staff_stats_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+	window_staff_stats_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_staff_stats_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_staff_stats_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }

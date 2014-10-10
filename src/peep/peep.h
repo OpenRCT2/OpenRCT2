@@ -396,7 +396,10 @@ typedef struct {
 		uint8 staff_id;
 		uint8 guest_heading_to_ride_id;
 	};
-	uint8 var_C6;
+	union{
+		uint8 staff_orders;			// 0xC6
+		uint8 var_C6;
+	};
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
 	uint32 var_CC;
