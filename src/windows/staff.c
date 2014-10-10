@@ -53,12 +53,12 @@ enum WINDOW_STAFF_WIDGET_IDX {
 	WIDX_LOCATE,
 	WIDX_FIRE,
 
-	WIDX_CHECKBOX_1 = 0x8,
+	WIDX_CHECKBOX_1 = 8,
 	WIDX_CHECKBOX_2,
 	WIDX_CHECKBOX_3,
 	WIDX_CHECKBOX_4,
-
-	WIDX_COSTUME = 0xD,
+	WIDX_COSTUME_BOX,
+	WIDX_COSTUME_BTN,
 };
 
 void window_staff_emptysub(){};
@@ -66,7 +66,7 @@ void window_staff_emptysub(){};
 rct_widget window_staff_overview_widgets[] = { 
 	{ WWT_FRAME,	0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
 	{ WWT_CAPTION,	0, 1,	188,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, 177, 187,	2,		13,		0x338,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_CLOSEBOX, 0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
 	{ WWT_RESIZE,	1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
 	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
 	{ WWT_TAB,		1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
@@ -82,10 +82,42 @@ rct_widget window_staff_overview_widgets[] = {
 	{ WIDGETS_END },
 };
 
+//0x9AF910
+rct_widget window_staff_stats_widgets[] = { 
+	{ WWT_FRAME,			0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,			0, 1,	188,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX,			0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,			1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,				1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,				1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,				1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,				1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WWT_CHECKBOX,			1, 5,	184,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 1
+	{ WWT_CHECKBOX,			1, 5,	184,	67,		78,		0x0FFFFFFFF,	STR_NONE },				// Checkbox 2
+	{ WWT_CHECKBOX,			1, 5,	184,	84,		95,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 3
+	{ WWT_CHECKBOX,			1, 5,	184,	101,	112,	0x0FFFFFFFF,	STR_NONE},				// Checkbox 4
+	{ WWT_DROPDOWN,			1, 5,	184,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Costume Dropdown
+	{ WWT_DROPDOWN_BUTTON,	1, 173, 183,	51,		60,		876,			1946},					// Costume Dropdown Button
+	{ WIDGETS_END },
+};
+
+//0x9AF9F4
+rct_widget window_staff_options_widgets[] = { 
+	{ WWT_FRAME,			0, 0,	189,	0,		179,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,			0, 1,	188,	1,		14,		865,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX,			0, 177, 187,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,			1, 0,	189,	43,		179,	0x0FFFFFFFF,	STR_NONE },				// Resize
+	{ WWT_TAB,				1, 3,	33,		17,		43,		0x2000144E,		1939 },					// Tab 1
+	{ WWT_TAB,				1, 34,	64,		17,		43,		0x2000144E,		1945},					// Tab 2
+	{ WWT_TAB,				1, 65,	95,		17,		43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,				1, 96,	126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WIDGETS_END },
+};
+
 rct_widget *window_staff_page_widgets[] = {
 	window_staff_overview_widgets,
-	(rct_widget *)0x9AF910,
-	(rct_widget *)0x9AF9F4
+	window_staff_options_widgets,
+	window_staff_stats_widgets
 };
 
 void window_staff_set_page(rct_window* w, int page);
@@ -227,7 +259,7 @@ uint32 window_staff_page_enabled_widgets[] = {
 	(1 << WIDX_CHECKBOX_2) |
 	(1 << WIDX_CHECKBOX_3) |
 	(1 << WIDX_CHECKBOX_4) |
-	(1 << WIDX_COSTUME),
+	(1 << WIDX_COSTUME_BTN),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
