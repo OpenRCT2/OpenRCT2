@@ -27,6 +27,7 @@
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../ride/ride.h"
+#include "../scenario.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "peep.h"
