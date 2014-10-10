@@ -18,14 +18,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "addresses.h"
-#include "peep.h"
-#include "string_ids.h"
-#include "sprite.h"
-#include "sprites.h"
-#include "widget.h"
-#include "window.h"
-#include "staff.h"
+#include "../addresses.h"
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../peep/peep.h"
+#include "../peep/staff.h"
+#include "../sprites.h"
+#include "../world/sprite.h"
 
 #define WW 200
 #define WH 100
@@ -84,7 +85,7 @@ static void* window_staff_fire_events[] = {
 	window_staff_fire_emptysub
 };
 /** Based off of rct2: 0x6C0A77 */
-void window_staff_fire_open(rct_peep* peep){
+void window_staff_fire_prompt_open(rct_peep* peep){
 	// Check if the confirm window already exists.
 	if (window_bring_to_front_by_id(WC_FIRE_PROMPT, peep->sprite_index)) {
 		return;
@@ -122,7 +123,7 @@ static void window_staff_fire_mouseup(){
 	
 	switch (widgetIndex){
 	case WIDX_YES:
-		game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_31, 0, 0);
+		game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
 		break;
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:
@@ -150,5 +151,5 @@ static void window_staff_fire_paint(){
 	int x = w->x + WW / 2;
 	int y = w->y + (WH / 2) - 3;
 	
-	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, 196, STR_FIRE_STAFF_ID, 0);
+	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, WW - 4, STR_FIRE_STAFF_ID, 0);
 }

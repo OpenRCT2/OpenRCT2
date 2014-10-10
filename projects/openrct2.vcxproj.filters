@@ -422,6 +422,9 @@
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\staff_fire_prompt.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

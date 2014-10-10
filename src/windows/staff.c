@@ -406,7 +406,7 @@ void window_staff_overview_mouseup()
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_FIRE: // 0xE
-		window_staff_fire_open(peep);
+		window_staff_fire_prompt_open(peep);
 		break;
 	case WIDX_RENAME: // 0xC
 		// 6BE4BC
