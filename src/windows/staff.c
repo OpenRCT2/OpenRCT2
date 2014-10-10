@@ -90,6 +90,7 @@ rct_widget *window_staff_page_widgets[] = {
 
 void window_staff_set_page(rct_window* w, int page);
 void window_staff_disable_widgets(rct_window* w);
+void window_staff_unknown_05();
 
 void window_staff_overview_close();
 void window_staff_overview_mouseup();
@@ -144,7 +145,7 @@ static void* window_staff_orders_events[] = {
 	window_staff_stats_resize,
 	(void*)0x6BE802,
 	(void*)0x6BE809,
-	(void*)0x6BE9DA,
+	window_staff_unknown_05,
 	window_staff_orders_update,
 	window_staff_emptysub,
 	window_staff_emptysub,
@@ -176,7 +177,7 @@ static void* window_staff_stats_events[] = {
 	window_staff_stats_resize,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BEC80,
+	window_staff_unknown_05,
 	window_staff_stats_update,
 	window_staff_emptysub,
 	window_staff_emptysub,
@@ -289,16 +290,22 @@ void window_staff_open(rct_peep* peep)
 void window_staff_disable_widgets(rct_window* w)
 {
 	rct_peep* peep = &g_sprite_list[w->number].peep;
-	uint64 disabled_widgets = 0;
+	uint64 disabled_widgets = (1 << WIDX_TAB_4);
 
-	if (peep_can_be_picked_up(peep)){
-		if (w->disabled_widgets & (1 << WIDX_PICKUP))
-			window_invalidate(w);
+	if (peep->staff_type == STAFF_TYPE_SECURITY){
+		disabled_widgets |= (1 << WIDX_TAB_2);
 	}
-	else{
-		disabled_widgets = (1 << WIDX_PICKUP);
-		if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
-			window_invalidate(w);
+
+	if (w->page == WINDOW_STAFF_OVERVIEW){
+		if (peep_can_be_picked_up(peep)){
+			if (w->disabled_widgets & (1 << WIDX_PICKUP))
+				window_invalidate(w);
+		}
+		else{
+			disabled_widgets |= (1 << WIDX_PICKUP);
+			if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+				window_invalidate(w);
+		}
 	}
 
 	w->disabled_widgets = disabled_widgets;
@@ -653,4 +660,12 @@ void window_staff_stats_update(rct_window* w)
 		peep->var_45 &= 0xEF;
 		window_invalidate(w);
 	}
+}
+
+/* rct2: 0x6BEC80, 0x6BE9DA */
+void window_staff_unknown_05(){
+	rct_window* w;
+	window_get_register(w);
+
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
 }
