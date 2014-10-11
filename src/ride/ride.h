@@ -164,7 +164,9 @@ typedef struct {
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
-	uint8 pad_15C[0x24];
+	uint8 pad_15C[2];
+	uint16 maze_tiles;
+	uint8 pad_160[0x20];
 	sint16 build_date;				// 0x180
 	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184

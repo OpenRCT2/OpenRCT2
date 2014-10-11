@@ -604,6 +604,26 @@ static int sub_65E72D(rct_ride *ride)
 	return edx & 0xFFFF;
 }
 
+static rating_tuple sub_65DDD1(rct_ride *ride)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edi = (int)ride;
+	RCT2_CALLFUNC_X(0x0065DDD1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	rating_tuple rating = { ebx, ecx, ebp };
+	return rating;
+}
+
+static rating_tuple sub_65E1C2(rct_ride *ride)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edi = (int)ride;
+	RCT2_CALLFUNC_X(0x0065E1C2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	rating_tuple rating = { ebx, ecx, ebp };
+	return rating;
+}
+
 /**
  * Calculates a score based on the surrounding scenery.
  *  rct2: 0x0065E557
@@ -655,18 +675,26 @@ static int ride_ratings_get_scenery_score(rct_ride *ride)
 
 #pragma region Ride rating calculation functions
 
-static void ride_ratings_calculate_crooked_house(rct_ride *ride)
+static void ride_ratings_calculate_maze(rct_ride *ride)
 {
 	rating_tuple ratings;
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 5;
+	ride->var_198 = 8;
 	sub_655FD6(ride);
 
-	ratings.excitement	= RIDE_RATING(2,15);
-	ratings.intensity	= RIDE_RATING(0,62);
-	ratings.nausea		= RIDE_RATING(0,34);
+	// Base ratings
+	ratings.excitement =	RIDE_RATING(1,30);
+	ratings.intensity =		RIDE_RATING(0,50);
+	ratings.nausea =		RIDE_RATING(0,00);
+
+	// Apply size factor
+	int unk = min(ride->maze_tiles, 100);
+	ratings.excitement += unk;
+	ratings.intensity += unk / 2;
+	
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 22310) >> 16;
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -677,7 +705,7 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 	ride->var_14D |= 2;
 
 	ride->inversions &= 0x1F;
-	ride->inversions |= 0xE0;
+	ride->inversions |= 0 << 5;
 }
 
 static void ride_ratings_calculate_food_stall(rct_ride *ride)
@@ -736,6 +764,32 @@ static void ride_ratings_calculate_bathroom(rct_ride *ride)
 	ride->var_14D |= 2;
 }
 
+static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 16;
+	sub_655FD6(ride);
+
+	int unk = ride->var_0D0 * 25;
+	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 41831) >> 16);
+	ratings.intensity	= unk + RIDE_RATING(0,25);
+	ratings.nausea		= unk + RIDE_RATING(0,30);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
 static void ride_ratings_calculate_elevator(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -774,10 +828,118 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 		ride->excitement /= 4;
 }
 
+static void ride_ratings_calculate_haunted_house(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 8;
+	sub_655FD6(ride);
+
+	ratings.excitement	= RIDE_RATING(3,41);
+	ratings.intensity	= RIDE_RATING(1,53);
+	ratings.nausea		= RIDE_RATING(0,10);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0xE0;
+}
+
+static void ride_ratings_calculate_mini_golf(rct_ride *ride)
+{
+	rating_tuple ratings, unkRating;
+
+	// RCT2_CALLPROC_X(0x0065BF97, 0, 0, 0, 0, 0, (int)ride, 0); return;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+
+	ride->var_198 = 0;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement =	RIDE_RATING(1,50);
+	ratings.intensity =		RIDE_RATING(0,90);
+	ratings.nausea =		RIDE_RATING(0,00);
+
+	// Apply length factor
+	int length = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
+	ratings.excitement += (min(6000, length) * 873) >> 16;
+
+	// Apply ?
+	unkRating = sub_65DDD1(ride);
+	ratings.excitement += (unkRating.excitement * 14860) >> 16;
+
+	// Apply ?
+	unkRating = sub_65E1C2(ride);
+	ratings.excitement += (unkRating.excitement * 5140) >> 16;
+	ratings.intensity += (unkRating.intensity * 6553) >> 16;
+	ratings.nausea += (unkRating.nausea * 4681) >> 16;
+
+	// Apply ?
+	ratings.excitement += (sub_65E277() * 15657) >> 16;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 27887) >> 16;
+
+	// Apply golf holes factor
+	ratings.excitement += (ride->inversions & 0x1F) * 5;
+
+	// Apply no golf holes penalty
+	if ((ride->inversions & 0x1F) == 0) {
+		ratings.excitement /= 8;
+		ratings.intensity /= 2;
+		ratings.nausea /= 2;
+	}
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
 static void ride_ratings_calculate_first_aid(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_crooked_house(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 5;
+	sub_655FD6(ride);
+
+	ratings.excitement	= RIDE_RATING(2,15);
+	ratings.intensity	= RIDE_RATING(0,62);
+	ratings.nausea		= RIDE_RATING(0,34);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0xE0;
 }
 
 #pragma endregion
@@ -806,7 +968,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// MINE_TRAIN_COASTER
 	NULL,											// CHAIRLIFT
 	NULL,											// CORKSCREW_ROLLER_COASTER
-	NULL,											// MAZE
+	ride_ratings_calculate_maze,					// MAZE
 	NULL,											// SPIRAL_SLIDE
 	NULL,											// GO_KARTS
 	NULL,											// LOG_FLUME
@@ -823,7 +985,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// 22
 	ride_ratings_calculate_information_kiosk,		// INFORMATION_KIOSK
 	ride_ratings_calculate_bathroom,				// BATHROOM
-	NULL,											// FERRIS_WHEEL
+	ride_ratings_calculate_ferris_wheel,			// FERRIS_WHEEL
 	NULL,											// MOTION_SIMULATOR
 	NULL,											// 3D_CINEMA
 	NULL,											// TOP_SPIN
@@ -833,7 +995,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// VERTICAL_DROP_ROLLER_COASTER
 	NULL,											// ATM
 	NULL,											// TWIST
-	NULL,											// HAUNTED_HOUSE
+	ride_ratings_calculate_haunted_house,			// HAUNTED_HOUSE
 	ride_ratings_calculate_first_aid,				// FIRST_AID
 	NULL,											// CIRCUS_SHOW
 	NULL,											// GHOST_TRAIN
@@ -853,7 +1015,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// 40
 	NULL,											// REVERSER_ROLLER_COASTER
 	NULL,											// HEARTLINE_TWISTER_COASTER
-	NULL,											// MINI_GOLF
+	ride_ratings_calculate_mini_golf,				// MINI_GOLF
 	NULL,											// GIGA_COASTER
 	NULL,											// ROTO_DROP
 	NULL,											// FLYING_SAUCERS
