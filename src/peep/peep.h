@@ -332,9 +332,9 @@ typedef struct {
 	uint8 pad_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	union{							// 0x2F
-		uint8 staff_type;
-		uint8 no_of_rides;
+	union{							
+		uint8 staff_type;			// 0x2F
+		uint8 no_of_rides;			// 0x2F
 	};
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31

@@ -133,14 +133,22 @@ void window_staff_overview_resize();
 void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
 void window_staff_overview_dropdown();
 void window_staff_overview_update(rct_window* w);
+void window_staff_overview_invalidate();
+void window_staff_overview_paint();
+void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-void window_staff_orders_mouseup();
-void window_staff_orders_update(rct_window* w);
+void window_staff_options_mouseup();
+void window_staff_options_update(rct_window* w);
+void window_staff_options_invalidate();
+void window_staff_options_paint();
+void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 void window_staff_stats_mouseup();
 void window_staff_stats_resize();
 void window_staff_stats_update(rct_window* w);
 void window_staff_stats_invalidate();
+void window_staff_stats_paint();
+void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // 0x992AEC
 static void* window_staff_overview_events[] = {
@@ -169,20 +177,20 @@ static void* window_staff_overview_events[] = {
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BDD91, //Invalidate
-	(void*)0x6BDEAF, //Paint
+	window_staff_overview_invalidate, //Invalidate
+	window_staff_overview_paint, //Paint
 	window_staff_emptysub
 };
 
 // 0x992B5C
-static void* window_staff_orders_events[] = {
+static void* window_staff_options_events[] = {
 	window_staff_emptysub,
-	window_staff_orders_mouseup,
+	window_staff_options_mouseup,
 	window_staff_stats_resize,
 	(void*)0x6BE802,
 	(void*)0x6BE809,
 	window_staff_unknown_05,
-	window_staff_orders_update,
+	window_staff_options_update,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
@@ -201,8 +209,8 @@ static void* window_staff_orders_events[] = {
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BE62B, //Invalidate
-	(void*)0x6BE7C6, //Paint
+	window_staff_options_invalidate, //Invalidate
+	window_staff_options_paint, //Paint
 	window_staff_emptysub
 };
 
@@ -234,13 +242,13 @@ static void* window_staff_stats_events[] = {
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_stats_invalidate, //Invalidate
-	(void*)0x6BEA86, //Paint
+	window_staff_stats_paint, //Paint
 	window_staff_emptysub
 };
 
 void* window_staff_page_events[] = {
 	window_staff_overview_events,
-	window_staff_orders_events,
+	window_staff_options_events,
 	window_staff_stats_events
 };
 
@@ -599,7 +607,7 @@ void window_staff_set_order(rct_window* w, int order_id)
 }
 
 /** rct2: 0x006BE7DB */
-void window_staff_orders_mouseup()
+void window_staff_options_mouseup()
 {
 	short widgetIndex;
 	rct_window* w;
@@ -624,7 +632,7 @@ void window_staff_orders_mouseup()
 }
 
 /** rct2: 0x006BE960 */
-void window_staff_orders_update(rct_window* w)
+void window_staff_options_update(rct_window* w)
 {
 	w->frame_no++;
 	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
@@ -731,4 +739,318 @@ void window_staff_stats_invalidate(){
 	window_staff_stats_widgets[WIDX_CLOSE].right = w->width - 3;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
+}
+
+
+/* rct2: 0x006BE62B */
+void window_staff_options_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (window_staff_page_widgets[w->page] != w->widgets){
+		w->widgets = window_staff_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	switch (peep->staff_type){
+	case STAFF_TYPE_ENTERTAINER:
+		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
+		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_DROPDOWN_BUTTON;
+		window_staff_options_widgets[WIDX_COSTUME_BOX].image = 1779 + peep->sprite_type - 4;
+		break;
+	case STAFF_TYPE_HANDYMAN:
+		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_1].image = 1712;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].image = 1713;
+		window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_3].image = 1714;
+		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_4].image = 1715;
+		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
+		w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
+		w->pressed_widgets |= peep->staff_orders << WIDX_CHECKBOX_1;
+		break;
+	case STAFF_TYPE_MECHANIC:
+		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_1].image = 1876;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].image = 1877;
+		window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
+		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
+		w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
+		w->pressed_widgets |= peep->staff_orders << WIDX_CHECKBOX_1;
+		break;
+	case STAFF_TYPE_SECURITY:
+		// Security guards don't have an options screen.
+		break;
+	}
+
+	window_staff_options_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_staff_options_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_staff_options_widgets[WIDX_RESIZE].right = w->width - 1;
+	window_staff_options_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+	window_staff_options_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_staff_options_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_staff_options_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
+}
+
+/* rct2: 0x006BDD91 */
+void window_staff_overview_invalidate(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (window_staff_page_widgets[w->page] != w->widgets){
+		w->widgets = window_staff_page_widgets[w->page];
+		window_init_scroll_widgets(w);
+	}
+
+	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+	
+	rct_peep* peep = GET_PEEP(w->number);
+
+	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+
+	window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_staff_overview_widgets[WIDX_RESIZE].right = w->width - 1;
+	window_staff_overview_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+	window_staff_overview_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_staff_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
+	window_staff_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+
+	window_staff_overview_widgets[WIDX_BTM_LABEL].right = w->width - 26;
+	window_staff_overview_widgets[WIDX_BTM_LABEL].top = w->height - 13;
+	window_staff_overview_widgets[WIDX_BTM_LABEL].bottom = w->height - 3;
+
+	window_staff_overview_widgets[WIDX_CLOSE].left = w->width - 13;
+	window_staff_overview_widgets[WIDX_CLOSE].right = w->width - 3;
+
+	window_staff_overview_widgets[WIDX_PICKUP].left = w->width - 25;
+	window_staff_overview_widgets[WIDX_PICKUP].right = w->width - 2;
+
+	window_staff_overview_widgets[WIDX_PATROL].left = w->width - 25;
+	window_staff_overview_widgets[WIDX_PATROL].right = w->width - 2;
+
+	window_staff_overview_widgets[WIDX_RENAME].left = w->width - 25;
+	window_staff_overview_widgets[WIDX_RENAME].right = w->width - 2;
+
+	window_staff_overview_widgets[WIDX_LOCATE].left = w->width - 25;
+	window_staff_overview_widgets[WIDX_LOCATE].right = w->width - 2;
+
+	window_staff_overview_widgets[WIDX_FIRE].left = w->width - 25;
+	window_staff_overview_widgets[WIDX_FIRE].right = w->width - 2;
+
+	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
+}
+
+/* rct2: 0x6BDEAF */
+void window_staff_overview_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_staff_overview_tab_paint(w, dpi);
+	window_staff_options_tab_paint(w, dpi);
+	window_staff_stats_tab_paint(w, dpi);
+
+
+	// Draw the viewport no sound sprite
+	if (w->viewport){
+		window_draw_viewport(dpi, w);
+		rct_viewport* viewport = w->viewport;
+		if (viewport->flags & VIEWPORT_FLAG_SOUND_ON){
+			gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->x + 2, w->y + 2, 0);
+		}
+	}
+
+	// Draw the centered label
+	uint32 argument1, argument2;
+	rct_peep* peep = GET_PEEP(w->number);
+	get_arguments_from_action(peep, &argument1, &argument2);
+	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
+	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
+	int x = (widget->left + widget->right) / 2 + w->x;
+	int y = w->y + widget->top - 1;
+	int width = widget->right - widget->left;
+	gfx_draw_string_centred_clipped(dpi, 1191, (void*)0x13CE952, 0, x, y, width);
+}
+
+/* rct2: 0x6BEC8F */
+void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_2)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_2];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = SPR_TAB_STAFF_OPTIONS_0;
+
+	if (w->page == WINDOW_STAFF_OPTIONS){
+		image_id += (w->frame_no / 2) % 7;
+	}
+
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
+/* rct2: 0x6BECD3 */
+void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_3)) return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_3];
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+
+	int image_id = SPR_TAB_STATS_0;
+
+	if (w->page == WINDOW_STAFF_STATISTICS){
+		image_id += (w->frame_no / 4) % 7;
+	}
+
+	gfx_draw_sprite(dpi, image_id, x, y, 0);
+}
+
+/**
+* Based on rct2: 0x6983dd in window_guest to be remerged into one when peep file added.
+*/
+void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+	if (w->disabled_widgets & (1 << WIDX_TAB_1))
+		return;
+
+	rct_widget* widget = &w->widgets[WIDX_TAB_1];
+	int width = widget->right - widget->left - 1;
+	int height = widget->bottom - widget->top - 1;
+	int x = widget->left + 1 + w->x;
+	int y = widget->top + 1 + w->y;
+	if (w->page == WINDOW_STAFF_OVERVIEW) height++;
+
+	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(dpi, x, width, y, height);
+	if (!clip_dpi) return;
+
+	x = 14;
+	y = 20;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+		y++;
+
+	int ebx = *(RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2]) + 1;
+
+	int eax = 0;
+
+	if (w->page == WINDOW_STAFF_OVERVIEW){
+		eax = w->var_494 >> 16;
+		eax &= 0xFFFC;
+	}
+	ebx += eax;
+
+	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+	gfx_draw_sprite(clip_dpi, sprite_id, x, y, 0);
+
+	// If holding a balloon
+	if (ebx >= 0x2A1D && ebx < 0x2A3D){
+		ebx += 32;
+		ebx |= (peep->balloon_colour << 19) | 0x20000000;
+		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+	}
+
+	// If holding umbrella
+	if (ebx >= 0x2BBD && ebx < 0x2BDD){
+		ebx += 32;
+		ebx |= (peep->umbrella_colour << 19) | 0x20000000;
+		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+	}
+
+	// If wearing hat
+	if (ebx >= 0x29DD && ebx < 0x29FD){
+		ebx += 32;
+		ebx |= (peep->hat_colour << 19) | 0x20000000;
+		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+	}
+}
+
+/* rct2: 0x6BE7C6 */
+void window_staff_options_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_staff_overview_tab_paint(w, dpi);
+	window_staff_options_tab_paint(w, dpi);
+	window_staff_stats_tab_paint(w, dpi);
+}
+
+/* rct2: 0x6BEA86 */
+void window_staff_stats_paint(){
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+	window_staff_overview_tab_paint(w, dpi);
+	window_staff_options_tab_paint(w, dpi);
+	window_staff_stats_tab_paint(w, dpi);
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	int x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
+	int y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+
+		RCT2_GLOBAL(0x13CE952,uint32) = RCT2_ADDRESS(0x992A00,uint16)[peep->staff_type];
+		gfx_draw_string_left(dpi, 2349, (void*)0x013CE952, 0,x, y);
+
+		y += 10;
+	}
+
+	gfx_draw_string_left(dpi, 2350, (void*)&peep->time_in_park, 0, x, y);
+	y += 10;
+
+	switch (peep->staff_type){
+	case STAFF_TYPE_HANDYMAN:
+		gfx_draw_string_left(dpi, 2351, (void*)&peep->paid_to_enter, 0, x, y);
+		y += 10;
+		gfx_draw_string_left(dpi, 2352, (void*)&peep->paid_on_rides, 0, x, y);
+		y += 10;
+		gfx_draw_string_left(dpi, 2353, (void*)&peep->paid_on_food, 0, x, y);
+		y += 10;
+		gfx_draw_string_left(dpi, 2354, (void*)&peep->paid_on_souvenirs, 0, x, y);
+		break;
+	case STAFF_TYPE_MECHANIC:
+		gfx_draw_string_left(dpi, 2356, (void*)&peep->paid_on_rides, 0, x, y);
+		y += 10;
+		gfx_draw_string_left(dpi, 2355, (void*)&peep->paid_to_enter, 0, x, y);
+		break;
+	}
 }
