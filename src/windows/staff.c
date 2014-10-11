@@ -29,6 +29,7 @@
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "error.h"
 
 #define WW 190
 #define WH 180
@@ -136,6 +137,8 @@ void window_staff_overview_update(rct_window* w);
 void window_staff_overview_invalidate();
 void window_staff_overview_paint();
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
+void window_staff_overview_tool_update();
+void window_staff_overview_tool_down();
 
 void window_staff_options_mouseup();
 void window_staff_options_update(rct_window* w);
@@ -161,8 +164,8 @@ static void* window_staff_overview_events[] = {
 	window_staff_overview_update,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BDFD8,
-	(void*)0x6BDFC3,
+	window_staff_overview_tool_update,
+	window_staff_overview_tool_down,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	(void*)0x6BDFAE,
@@ -1052,5 +1055,109 @@ void window_staff_stats_paint(){
 		y += 10;
 		gfx_draw_string_left(dpi, 2355, (void*)&peep->paid_to_enter, 0, x, y);
 		break;
+	}
+}
+
+/* rct2: 0x006BDFD8 */
+void window_staff_overview_tool_update(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex != WIDX_PICKUP) return;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+
+	int ebx;
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
+	if (ebx == 0)
+		return;
+
+	x--;
+	y += 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, uint16) = y;
+	w->var_492++;
+	if (w->var_492 >= 48)w->var_492 = 0;
+
+	rct_peep* peep;
+	peep = GET_PEEP(w->number);
+	int sprite_idx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
+	sprite_idx += w->var_492 >> 2;
+
+	sprite_idx |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = sprite_idx;
+}
+
+/* rct2: 0x006BDFC3 */
+void window_staff_overview_tool_down(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex == WIDX_PICKUP){
+		
+		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+		dest_y += 16;
+		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+
+		if (dest_x == 0x8000)return;
+
+		// Set the coordinate of destination to be exactly 
+		// in the middle of a tile.
+		dest_x += 16;
+		dest_y += 16;
+		// Set the tile coordinate to top left of tile
+		int tile_y = dest_y & 0xFFE0;
+		int tile_x = dest_x & 0xFFE0;
+
+		int dest_z = ((uint8*)edx)[2] * 8 + 16;
+
+		if (sub_664F72(tile_x, tile_y, dest_z)){
+			window_error_open(0x785, -1);
+			return;
+		}
+
+		int _edx = dest_z >> 3;
+		_edx &= 0xFFFF00FF;
+		_edx |= dest_z << 8;
+		_edx += 0x100;
+		int flags = RCT2_CALLPROC_X(0x68B93A, tile_x, 0xF, tile_y, _edx, (int)w, 0, 0);
+
+		if (flags & 0x100){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x3A5){
+				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x49B){
+					window_error_open(0x785, -1);
+					return;
+				}
+			}
+		}
+
+		rct_peep* peep = GET_PEEP(w->number);
+		RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->state = 0;
+		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->var_71 = 0xFF;
+		peep->var_6D = 0;
+		peep->var_70 = 0;
+		peep->var_6E = 0xFF;
+		peep->var_C4 = 0;
+
+		tool_cancel();
+		RCT2_GLOBAL(0x9DE550, sint32) = -1;
+	}
+	else if (widgetIndex == WIDX_PATROL){
+		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+
+		if (dest_x == 0x8000)return;
+
+		game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
 	}
 }

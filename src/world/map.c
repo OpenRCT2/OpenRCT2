@@ -433,3 +433,26 @@ static void sub_6A87BB(int x, int y)
 {
 	RCT2_CALLPROC_X(0x006A87BB, x, 0, y, 0, 0, 0, 0);
 }
+
+/* rct2: 0x664F72 */
+int sub_664F72(int x, int y, int z){
+	if (x > 0x1FFF || y > 0x1FFF){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+		return 1;
+	}
+
+	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
+	if (map_element->properties.surface.ownership & 0x20) return 0;
+	if (!(map_element->properties.surface.ownership & 0x10)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+		return 1;
+	}
+
+	z >>= 3;
+	if ((z & 0xFF) < map_element->base_height)return 0;
+	z = (z & 0xFF) - 2;
+	if (z > map_element->base_height)return 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
+	return 1;
+}
