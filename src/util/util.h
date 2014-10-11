@@ -21,8 +21,12 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#include "../common.h"
+
 int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
+
+long fsize(FILE *fp);
 
 #endif

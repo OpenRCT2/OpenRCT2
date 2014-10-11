@@ -346,3 +346,8 @@ int sawyercoding_encode_sv4(char *src, char *dst, int length)
 
 	return encodedLength + 4;
 }
+
+int sawyercoding_decode_td6(char *src, char *dst, int length)
+{
+	return decode_chunk_rle(src, dst, length - 4);
+}

@@ -40,3 +40,15 @@ int mph_to_kmph(int mph)
 	// RCT2 approximates as 1.609375
 	return (mph * 1648) / 1024;
 }
+
+long fsize(FILE *fp)
+{
+	long originalPosition, size;
+
+	originalPosition = ftell(fp);
+	fseek(fp, 0, SEEK_END);
+	size = ftell(fp);
+	fseek(fp, originalPosition, SEEK_SET);
+
+	return size;
+}

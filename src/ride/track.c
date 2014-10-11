@@ -18,10 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <string.h>
-#include <windows.h>
 #include "../addresses.h"
 #include "../platform/osinterface.h"
+#include "../util/sawyercoding.h"
+#include "../util/util.h"
 #include "ride.h"
 #include "track.h"
 
@@ -229,26 +229,10 @@ void track_load_list(ride_list_item item)
     RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }
 
-/**
- *
- *  rct2: 0x00676EBA
- */
-static uint8 sub_676EBA()
+static void read(void *dst, void **src, int length)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x00676EBA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax & 0xFF;
-}
-
-/**
- *
- *  rct2: 0x00676EAF
- */
-static void sub_676EAF(uint8 *esi, int ecx)
-{
-	do {
-		*esi++ = sub_676EBA();
-	} while (--ecx != 0);
+	memcpy(dst, *src, length);
+	*((char**)src) += length;
 }
 
 /**
@@ -258,10 +242,11 @@ static void sub_676EAF(uint8 *esi, int ecx)
  */
 int sub_67726A(const char *path)
 {
-	HANDLE *hFile;
+	FILE *fp;
+	long fpLength;
 	const char *ch;
-	char trackFilename[MAX_PATH], *dst;
-	int i;
+	char trackFilename[MAX_PATH], *fpBuffer, *decoded, *src, *dst;
+	int i, decodedLength;
 	uint8* edi;
 
 	RCT2_GLOBAL(0x009AAC54, uint8) = 1;
@@ -275,30 +260,41 @@ int sub_67726A(const char *path)
 	}
 	*dst = 0;
 
-	hFile = osinterface_file_open(path);
-	if (hFile == INVALID_HANDLE_VALUE)
+	fp = fopen(path, "rb");
+	if (fp == NULL)
 		return 0;
 
-	RCT2_GLOBAL(0x009E382C, HANDLE) = hFile;
-	if (!RCT2_CALLPROC_X(0x006770C1, 0, 0, 0, 0, 0, 0, 0)) {
-		CloseHandle(hFile);
-		return 0;
-	}
+	// Read whole file into a buffer
+	fpLength = fsize(fp);
+	fpBuffer = malloc(fpLength);
+	fread(fpBuffer, fpLength, 1, fp);
+	fclose(fp);
 
-	RCT2_CALLPROC_EBPSAFE(0x00676E7A);
+	// Validate the checksum
+	// Not the same checksum algorithm as scenarios and saved games
+	// sub_6770C1();
+
+	// Decode the track data
+	decoded = malloc(0x10000);
+	decodedLength = sawyercoding_decode_td6(fpBuffer, decoded, fpLength);
+	realloc(decoded, decodedLength);
+	free(fpBuffer);
+
+	// Read decoded data
+	src = decoded;
 	memset((void*)0x009D81D8, 0, 67);
-	sub_676EAF((void*)0x009D8178, 32);
+	read((void*)0x009D8178, &src, 32);
 
 	uint8 al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
 	if (al >= 2)
-		sub_676EAF((void*)0x009D8198, 40);
+		read((void*)0x009D8198, &src, 40);
 
-	sub_676EAF((void*)0x009D81C0, 24);
+	read((void*)0x009D81C0, &src, 24);
 	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
 	if (al != 0)
-		sub_676EAF((void*)0x009D81D8, al == 1 ? 140 : 67);
+		read((void*)0x009D81D8, &src, al == 1 ? 140 : 67);
 
-	sub_676EAF((void*)0x009D821B, 24572);
+	read((void*)0x009D821B, &src, 24572);
 	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
 	if (al < 2) {
 		if (RCT2_GLOBAL(0x009D8178, uint8) == 20) {
@@ -317,9 +313,9 @@ int sub_67726A(const char *path)
 			memset(edi, 255, (uint8*)0x009DE217 - edi);
 		}
 	}
+	free(decoded);
 
-	CloseHandle(hFile);
-
+	// 
 	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
 	if (al > 2)
 		return 0;

@@ -43,5 +43,6 @@ int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding
 int sawyercoding_decode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_sc4(char *src, char *dst, int length);
 int sawyercoding_encode_sv4(char *src, char *dst, int length);
+int sawyercoding_decode_td6(char *src, char *dst, int length);
 
 #endif

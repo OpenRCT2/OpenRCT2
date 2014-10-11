@@ -33,6 +33,7 @@
 #include "peep/staff.h"
 #include "ride/ride.h"
 #include "util/sawyercoding.h"
+#include "util/util.h"
 #include "world/banner.h"
 #include "world/map.h"
 #include "world/park.h"
@@ -247,12 +248,8 @@ static int editor_load_landscape_from_sv4(const char *path)
 		return 0;
 	}
 
-	// Get length
-	fseek(fp, 0, SEEK_END);
-	fpLength = ftell(fp);
-	rewind(fp);
-
 	// Read whole file into a buffer
+	fpLength = fsize(fp);
 	fpBuffer = malloc(fpLength);
 	fread(fpBuffer, fpLength, 1, fp);
 	fclose(fp);
