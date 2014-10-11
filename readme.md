@@ -1,7 +1,7 @@
 # OpenRCT2
 An open source clone of RollerCoaster Tycoon 2 built by decompiling the original game one bit at a time.
-- [Screenshot 1, cheats window](http://dev.intelorca.co.uk/2014/openrct2/cheats.png)
-- [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png)
+- [Screenshot 1, cheat windows](http://imgur.com/a/zJTYd)
+- [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png) (up to 64 squares at once)
 - [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
 - [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
@@ -13,7 +13,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 1.2 - [Decompiling the game](#12-decompiling-the-game)
   - 1.3 - [Progress](#13-progress)
   - 1.4 - [Aim](#14-aim) 
-- 2 - [Building the source code](#2-building-the-source-code)
+- 2 - [Downloading the game / Building the source code](#2-building-the-source-code)
   - 2.1 - [Prerequisites](#21-prerequisites)
   - 2.2 - [Compiling and running](#22-compiling-and-running)
 - 3 - [Contributing](#3-contributing)
@@ -51,9 +51,9 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
   - Finish building five coasters objective
   - Using the mountain tool during the game
 
-# 2 Building the source code
+# 2 Downloading the game / Building the source code
 
-Alternatively, a third-party offers [downloadable precompiled builds](https://openrct2.com/download). However, building the project is always recommended.
+A third-party offers [downloadable precompiled builds](https://openrct2.com/download). However, building the project is always recommended.
 
 ## 2.1 Prerequisites
 ### Windows:
