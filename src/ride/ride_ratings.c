@@ -51,7 +51,7 @@ static void loc_6B5BB2();
 static void ride_ratings_calculate(rct_ride *ride);
 static void ride_ratings_reliability_calculate(rct_ride *ride);
 
-int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
+static int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
@@ -65,7 +65,7 @@ int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 	return 1;
 }
 
-int sub_6C60C2(rct_map_element *mapElement, int *x, int *y, int *z)
+static int sub_6C60C2(rct_map_element *mapElement, int *x, int *y, int *z)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
@@ -582,6 +582,29 @@ static void sub_655FD6(rct_ride *ride)
 }
 
 /**
+ *
+ *  rct2: 0x0065E277
+ */
+static int sub_65E277()
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x0065E277, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
+/**
+ *
+ *  rct2: 0x0065E72D
+ */
+static int sub_65E72D(rct_ride *ride)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	edi = (int)ride;
+	RCT2_CALLFUNC_X(0x0065E277, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return edx & 0xFFFF;
+}
+
+/**
  * Calculates a score based on the surrounding scenery.
  *  rct2: 0x0065E557
  */
@@ -713,6 +736,44 @@ static void ride_ratings_calculate_bathroom(rct_ride *ride)
 	ride->var_14D |= 2;
 }
 
+static void ride_ratings_calculate_elevator(rct_ride *ride)
+{
+	rating_tuple ratings;
+	int totalLength;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+
+	ride->var_198 = 15;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement	= RIDE_RATING(1,11);
+	ratings.intensity	= RIDE_RATING(0,35);
+	ratings.nausea		= RIDE_RATING(0,30);
+
+	// Apply length factor
+	totalLength = ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3];
+	ratings.excitement += ((totalLength >> 16) * 45875) >> 16;
+	ratings.excitement += (sub_65E277() * 11183) >> 16;
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 83662) >> 16;
+	ratings.nausea += ((totalLength >> 16) * 26214) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 7 << 5;
+
+	if ((sub_65E72D(ride) >> 8) >= 5)
+		ride->excitement /= 4;
+}
+
 static void ride_ratings_calculate_first_aid(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
@@ -768,7 +829,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// TOP_SPIN
 	NULL,											// SPACE_RINGS
 	NULL,											// REVERSE_FREEFALL_COASTER
-	NULL,											// ELEVATOR
+	ride_ratings_calculate_elevator,				// ELEVATOR
 	NULL,											// VERTICAL_DROP_ROLLER_COASTER
 	NULL,											// ATM
 	NULL,											// TWIST
