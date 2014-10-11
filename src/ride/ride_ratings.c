@@ -638,12 +638,41 @@ static rating_tuple sub_65E1C2(rct_ride *ride)
  */
 static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edi = (int)ride;
-	RCT2_CALLFUNC_X(0x0065DCDC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	rating_tuple result;
+	fixed16_2dp gforce;
 
-	rating_tuple rating = { ebx, ecx, ebp };
-	return rating;
+	result.excitement = 0;
+	result.intensity = 0;
+	result.nausea = 0;
+
+	// Apply maximum positive G force factor
+	result.excitement += (ride->max_positive_vertical_g * 5242) >> 16;
+	result.intensity += (ride->max_positive_vertical_g * 52428) >> 16;
+	result.nausea += (ride->max_positive_vertical_g * 17039) >> 16;
+
+	// Apply maximum negative G force factor
+	gforce = ride->max_negative_vertical_g;
+	result.excitement += (clamp(-FIXED_2DP(2,50), gforce, FIXED_2DP(0,00)) * -15728) >> 16;
+	result.intensity += ((gforce - FIXED_2DP(1,00)) * -52428) >> 16;
+	result.nausea += ((gforce - FIXED_2DP(1,00)) * -14563) >> 16;
+
+	// Apply lateral G force factor
+	result.excitement += (min(FIXED_2DP(1,50), ride->max_lateral_g) * 26214) >> 16;
+	result.intensity += (ride->max_lateral_g * 65536) >> 16;
+	result.nausea += (ride->max_lateral_g * 21845) >> 16;
+
+	// Very high lateral G force penalty
+	if (ride->max_lateral_g > FIXED_2DP(2,80)) {
+		result.intensity += FIXED_2DP(3,75);
+		result.nausea += FIXED_2DP(2,00);
+	}
+	if (ride->max_lateral_g > FIXED_2DP(3,10)) {
+		result.excitement /= 2;
+		result.intensity += FIXED_2DP(8,50);
+		result.nausea += FIXED_2DP(4,00);
+	}
+
+	return result;
 }
 
 /**
@@ -652,12 +681,25 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
  */
 static rating_tuple ride_ratings_get_drop_ratings(rct_ride *ride)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edi = (int)ride;
-	RCT2_CALLFUNC_X(0x0065E139, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	rating_tuple result;
+	int drops;
 
-	rating_tuple rating = { ebx, ecx, ebp };
-	return rating;
+	result.excitement = 0;
+	result.intensity = 0;
+	result.nausea = 0;
+
+	// Apply number of drops factor
+	drops = ride->drops & 0x3F;
+	result.excitement += (min(9, drops) * 728177) >> 16;
+	result.intensity += (drops * 928426) >> 16;
+	result.nausea += (drops * 655360) >> 16;
+
+	// Apply highest drop factor
+	result.excitement += ((ride->highest_drop_height * 2) * 16000) >> 16;
+	result.intensity += ((ride->highest_drop_height * 2) * 32000) >> 16;
+	result.nausea += ((ride->highest_drop_height * 2) * 10240) >> 16;
+
+	return result;
 }
 
 /**
@@ -713,7 +755,7 @@ static int ride_ratings_get_scenery_score(rct_ride *ride)
 
 static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 {
-	rating_tuple ratings, unkRating;
+	rating_tuple ratings, subRating;
 	int totalLength, time;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -754,28 +796,28 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 	ratings.excitement += (min(150, time) * 26214) >> 16;
 
 	// Apply G forces factor
-	unkRating = ride_ratings_get_gforce_ratings(ride);
-	ratings.excitement += (unkRating.excitement * 40960) >> 16;
-	ratings.intensity += (unkRating.intensity * 35746) >> 16;
-	ratings.nausea += (unkRating.nausea * 49648) >> 16;
+	subRating = ride_ratings_get_gforce_ratings(ride);
+	ratings.excitement += (subRating.excitement * 40960) >> 16;
+	ratings.intensity += (subRating.intensity * 35746) >> 16;
+	ratings.nausea += (subRating.nausea * 49648) >> 16;
 
 	// Apply ?
-	unkRating = sub_65DDD1(ride);
-	ratings.excitement += (unkRating.excitement * 29721) >> 16;
-	ratings.intensity += (unkRating.intensity * 34767) >> 16;
-	ratings.nausea += (unkRating.nausea * 45749) >> 16;
+	subRating = sub_65DDD1(ride);
+	ratings.excitement += (subRating.excitement * 29721) >> 16;
+	ratings.intensity += (subRating.intensity * 34767) >> 16;
+	ratings.nausea += (subRating.nausea * 45749) >> 16;
 
 	// Apply drops factor
-	unkRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (unkRating.excitement * 29127) >> 16;
-	ratings.intensity += (unkRating.intensity * 46811) >> 16;
-	ratings.nausea += (unkRating.nausea * 49152) >> 16;
+	subRating = ride_ratings_get_drop_ratings(ride);
+	ratings.excitement += (subRating.excitement * 29127) >> 16;
+	ratings.intensity += (subRating.intensity * 46811) >> 16;
+	ratings.nausea += (subRating.nausea * 49152) >> 16;
 
 	// Apply ?
-	unkRating = sub_65E1C2(ride);
-	ratings.excitement += (unkRating.excitement * 19275) >> 16;
-	ratings.intensity += (unkRating.intensity * 32768) >> 16;
-	ratings.nausea += (unkRating.nausea * 35108) >> 16;
+	subRating = sub_65E1C2(ride);
+	ratings.excitement += (subRating.excitement * 19275) >> 16;
+	ratings.intensity += (subRating.intensity * 32768) >> 16;
+	ratings.nausea += (subRating.nausea * 35108) >> 16;
 
 	// Apply ?
 	ratings.excitement += (sub_65E277() * 21472) >> 16;
