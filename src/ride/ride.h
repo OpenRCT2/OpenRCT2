@@ -117,7 +117,8 @@ typedef struct {
 	uint8 var_0D0;
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
-	uint8 pad_0D5[0x3];
+	uint8 var_0D5;
+	uint8 pad_0D6[0x2];
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
 	uint8 pad_0E0[0x4];
@@ -126,13 +127,21 @@ typedef struct {
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
 	fixed16_2dp max_negative_vertical_g;	// 0x0FE
 	fixed16_2dp max_lateral_g;		// 0x100
-	uint8 pad_102[0x12];
-	uint8 inversions;				// 0x114 (???X XXXX) holes for mini golf
+	uint8 pad_102[0xC];
+	uint16 var_10E;
+	uint16 var_110;
+	uint16 var_112;
+	union {
+		uint8 inversions;			// 0x114 (???X XXXX)
+		uint8 holes;				// 0x114 (???X XXXX)
+	};
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
 	uint32 var_118;
-	uint8 pad_11C[0x08];
+	uint8 pad_11C[0x02];
+	uint8 var_11E;
+	uint8 pad_11F[0x05];
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;

@@ -4602,7 +4602,7 @@ static void window_ride_measurements_paint()
 			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS)) {
 				if (ride->type == RIDE_TYPE_MINI_GOLF) {
 					// Holes
-					holes = ride->inversions & 0x1F;
+					holes = ride->holes & 0x1F;
 					gfx_draw_string_left(dpi, STR_HOLES, &holes, 0, x, y);
 					y += 10;
 				} else {
