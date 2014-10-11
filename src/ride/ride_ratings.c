@@ -581,6 +581,55 @@ static void sub_655FD6(rct_ride *ride)
     ride->var_198 += (ride->lift_hill_speed - RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4]) * 2;
 }
 
+/**
+ * Calculates a score based on the surrounding scenery.
+ *  rct2: 0x0065E557
+ */
+static int ride_ratings_get_scenery_score(rct_ride *ride)
+{
+	int i, x, y, z, xx, yy, type, numSceneryItems;
+	uint16 stationXY;
+	rct_map_element *mapElement;
+
+	for (i = 0; i < 4; i++) {
+		stationXY = ride->station_starts[i];
+		if (stationXY != 0xFFFF)
+			break;
+	}
+	if (i == 4)
+		return 0;
+
+	if (ride->type == RIDE_TYPE_MAZE)
+		stationXY = ride->entrances[0];
+
+	x = stationXY & 0xFF;
+	y = stationXY >> 8;
+	z = map_element_height(x * 32, y * 32);
+
+	// Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
+	if (z > ride->station_heights[i] * 8)
+		return 40;
+
+	// Count surrounding scenery items
+	numSceneryItems = 0;
+	for (yy = y - 5; yy <= y + 5; yy++) {
+		for (xx = x - 5; xx <= x + 5; xx++) {
+			// Count scenery items on this tile
+			mapElement = TILE_MAP_ELEMENT_POINTER(yy * 256 + xx);
+			do {
+				if (mapElement->flags & 0x10)
+					continue;
+
+				type = mapElement->type & MAP_ELEMENT_TYPE_MASK;
+				if (type == MAP_ELEMENT_TYPE_SCENERY || type == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+					numSceneryItems++;
+			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
+
+	return min(numSceneryItems, 47) * 5;
+}
+
 #pragma region Ride rating calculation functions
 
 static void ride_ratings_calculate_crooked_house(rct_ride *ride)
@@ -599,9 +648,7 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
-	ride->excitement = ratings.excitement;
-	ride->intensity = ratings.intensity;
-	ride->nausea = ratings.nausea;
+	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->var_14D |= 2;
@@ -626,6 +673,32 @@ static void ride_ratings_calculate_shop(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 16;
+	sub_655FD6(ride);
+
+	int unk = ride->var_0D0 * 5;
+	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 19521) >> 16);
+	ratings.intensity	= unk + RIDE_RATING(0,15);
+	ratings.nausea		= unk + RIDE_RATING(0,30);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 7 << 5;
 }
 
 static void ride_ratings_calculate_information_kiosk(rct_ride *ride)
@@ -685,7 +758,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	ride_ratings_calculate_drink_stall,				// DRINK_STALL
 	NULL,											// 1F
 	ride_ratings_calculate_shop,					// SHOP
-	NULL,											// MERRY_GO_ROUND
+	ride_ratings_calculate_merry_go_round,			// MERRY_GO_ROUND
 	NULL,											// 22
 	ride_ratings_calculate_information_kiosk,		// INFORMATION_KIOSK
 	ride_ratings_calculate_bathroom,				// BATHROOM

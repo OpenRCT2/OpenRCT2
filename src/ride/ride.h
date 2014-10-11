@@ -145,9 +145,14 @@ typedef struct {
 	sint16 var_136;
 	money16 price;					// 0x138
 	uint8 pad_13A[0x06];
-	ride_rating excitement;			// 0x140
-	ride_rating intensity;			// 0x142
-	ride_rating nausea;				// 0x144
+	union {
+		rating_tuple ratings;		// 0x140
+		struct {
+			ride_rating excitement;	// 0x140
+			ride_rating intensity;	// 0x142
+			ride_rating nausea;		// 0x144
+		};
+	};
 	uint16 reliability;				// 0x146
 	uint16 pad_148;
 	uint16 var_14A;
