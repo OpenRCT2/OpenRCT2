@@ -425,7 +425,6 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
 	ride->reliability = max(0, reliability);
 }
 
-
 /**
  * rct2: sub_65E621
  *
@@ -434,7 +433,7 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
  * inputs
  * - edi: ride ptr
  */
-uint16 compute_upkeep(rct_ride *ride)
+static uint16 ride_compute_upkeep(rct_ride *ride)
 {
 	// data stored at 0x0057E3A8, incrementing 18 bytes at a time
 	uint16 upkeep = initialUpkeepCosts[ride->type];
@@ -527,87 +526,64 @@ uint16 compute_upkeep(rct_ride *ride)
  * - bp: nausea
  * - edi: ride ptr
  */
-rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement, 
-		ride_rating intensity, ride_rating nausea)
+static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings)
 {
-	// NB: The table here is allocated dynamically. Reading the exe will tell
-	// you nothing
-	rct_ride_type *rideType = gRideTypeList[ride->subtype];
+	rct_ride_type *rideEntry;
+	
+	rideEntry = gRideTypeList[ride->subtype];
 
-	// example value here: 12 (?)
-	excitement = excitement + ((excitement * rideType->excitement_multipler) >> 7);
-	intensity = intensity + ((intensity * rideType->intensity_multipler) >> 7);
-	nausea = nausea + ((nausea * rideType->nausea_multipler) >> 7);
+	// Apply ride entry multipliers
+	ratings->excitement += ((ratings->excitement * rideEntry->excitement_multipler) >> 7);
+	ratings->intensity +=  ((ratings->intensity  * rideEntry->intensity_multipler ) >> 7);
+	ratings->nausea +=     ((ratings->nausea     * rideEntry->nausea_multipler    ) >> 7);
 
 	// As far as I can tell, this flag detects whether the ride is a roller
 	// coaster, or a log flume or rapids. Everything else it's not set.
 	// more detail: https://gist.github.com/kevinburke/d951e74e678b235eef3e
-	uint16 ridetype_var = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
-	if (ridetype_var & 0x80) {
-		uint16 ax = ride->total_air_time;
-		if (rideType->var_008 & 0x800) {
-			// 65e86e
-			ax = ax - 96;
-			if (ax >= 0) {
-				ax = ax >> 3;
-				excitement = excitement - ax;
-				ax = ax >> 1;
-				nausea = nausea - ax;
+	uint16 flags = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
+	if (flags & 0x80) {
+		uint16 totalAirTime = ride->total_air_time;
+		if (rideEntry->var_008 & 0x800) {
+			totalAirTime -= 96;
+			if (totalAirTime >= 0) {
+				ratings->excitement -= totalAirTime / 8;
+				ratings->nausea -= totalAirTime / 16;
 			}
 		} else {
-			ax = ax >> 3;
-			excitement = excitement + ax;
-			ax = ax >> 1;
-			nausea += ax;
+			ratings->excitement += totalAirTime / 8;
+			ratings->nausea += totalAirTime / 16;
 		}
 	}
-	rating_tuple tup = { excitement, intensity, nausea };
-	return tup;
 }
 
 /**
- * rct2: 0x0065E7A3
- *
- * inputs from x86
- * - bx: excitement
- * - cx: intensity
- * - bp: nausea
- *
- * returns: the excitement level, with intensity penalties applied
+ * Lowers excitment, the higher the intensity.
+ *  rct2: 0x0065E7A3
  */
-ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity)
+static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 {
-    // intensity penalty
-    if (intensity >= 1000) {
-        excitement = excitement - (excitement >> 2);
-    }
-    if (intensity >= 1100) {
-        excitement = excitement - (excitement >> 2);
-    }
-    if (intensity >= 1200) {
-        excitement = excitement - (excitement >> 2);
-    }
-    if (intensity >= 1320) {
-        excitement = excitement - (excitement >> 2);
-    }
-    if (intensity >= 1450) {
-        excitement = excitement - (excitement >> 2);
-    }
-    return excitement;
+	static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+	int i;
+
+	ride_rating excitement = ratings->excitement;
+	for (i = 0; i < countof(intensityBounds); i++)
+		if (ratings->intensity >= intensityBounds[i])
+			excitement -= excitement / 4;
+	ratings->excitement = excitement;
 }
 
 /**
  *
  *  rct2: 0x00655FD6
  */
-void sub_655FD6(rct_ride *ride)
+static void sub_655FD6(rct_ride *ride)
 {
     ride->var_198 += (ride->lift_hill_speed - RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4]) * 2;
 }
 
 #pragma region Ride rating calculation functions
 
-void ride_ratings_calculate_crooked_house(rct_ride *ride)
+static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 {
 	rating_tuple ratings;
 
@@ -620,23 +596,53 @@ void ride_ratings_calculate_crooked_house(rct_ride *ride)
 	ratings.intensity	= RIDE_RATING(0,62);
 	ratings.nausea		= RIDE_RATING(0,34);
 
-	ratings.excitement = apply_intensity_penalty(ratings.excitement, ratings.intensity);
-	ratings = per_ride_rating_adjustments(ride, ratings.excitement, ratings.intensity, ratings.nausea);
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
 
 	ride->excitement = ratings.excitement;
 	ride->intensity = ratings.intensity;
 	ride->nausea = ratings.nausea;
 
-	ride->upkeep_cost = compute_upkeep(ride);
+	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->var_14D |= 2;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0xE0;
 }
 
-void ride_ratings_calculate_bathroom(rct_ride *ride)
+static void ride_ratings_calculate_food_stall(rct_ride *ride)
 {
-	ride->upkeep_cost = compute_upkeep(ride);
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_drink_stall(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_shop(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_information_kiosk(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_bathroom(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_first_aid(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
 	ride->var_14D |= 2;
 }
 
@@ -646,97 +652,97 @@ void ride_ratings_calculate_bathroom(rct_ride *ride)
 
 // rct2: 0x0097E050
 static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
-	NULL,									// SPIRAL_ROLLER_COASTER
-	NULL,									// STAND_UP_ROLLER_COASTER
-	NULL,									// SUSPENDED_SWINGING_COASTER
-	NULL,									// INVERTED_ROLLER_COASTER
-	NULL,									// JUNIOR_ROLLER_COASTER
-	NULL,									// MINIATURE_RAILWAY
-	NULL,									// MONORAIL
-	NULL,									// MINI_SUSPENDED_COASTER
-	NULL,									// BUMPER_BOATS
-	NULL,									// WOODEN_WILD_MOUSE
-	NULL,									// STEEPLECHASE
-	NULL,									// CAR_RIDE
-	NULL,									// LAUNCHED_FREEFALL
-	NULL,									// BOBSLEIGH_COASTER
-	NULL,									// OBSERVATION_TOWER
-	NULL,									// LOOPING_ROLLER_COASTER
-	NULL,									// DINGHY_SLIDE
-	NULL,									// MINE_TRAIN_COASTER
-	NULL,									// CHAIRLIFT
-	NULL,									// CORKSCREW_ROLLER_COASTER
-	NULL,									// MAZE
-	NULL,									// SPIRAL_SLIDE
-	NULL,									// GO_KARTS
-	NULL,									// LOG_FLUME
-	NULL,									// RIVER_RAPIDS
-	NULL,									// BUMPER_CARS
-	NULL,									// PIRATE_SHIP
-	NULL,									// SWINGING_INVERTER_SHIP
-	NULL,									// FOOD_STALL
-	NULL,									// 1D
-	NULL,									// DRINK_STALL
-	NULL,									// 1F
-	NULL,									// SHOP
-	NULL,									// MERRY_GO_ROUND
-	NULL,									// 22
-	NULL,									// INFORMATION_KIOSK
-	ride_ratings_calculate_bathroom,		// BATHROOM
-	NULL,									// FERRIS_WHEEL
-	NULL,									// MOTION_SIMULATOR
-	NULL,									// 3D_CINEMA
-	NULL,									// TOP_SPIN
-	NULL,									// SPACE_RINGS
-	NULL,									// REVERSE_FREEFALL_COASTER
-	NULL,									// ELEVATOR
-	NULL,									// VERTICAL_DROP_ROLLER_COASTER
-	NULL,									// ATM
-	NULL,									// TWIST
-	NULL,									// HAUNTED_HOUSE
-	NULL,									// FIRST_AID
-	NULL,									// CIRCUS_SHOW
-	NULL,									// GHOST_TRAIN
-	NULL,									// TWISTER_ROLLER_COASTER
-	NULL,									// WOODEN_ROLLER_COASTER
-	NULL,									// SIDE_FRICTION_ROLLER_COASTER
-	NULL,									// WILD_MOUSE
-	NULL,									// MULTI_DIMENSION_ROLLER_COASTER
-	NULL,									// 38
-	NULL,									// FLYING_ROLLER_COASTER
-	NULL,									// 3A
-	NULL,									// VIRGINIA_REEL
-	NULL,									// SPLASH_BOATS
-	NULL,									// MINI_HELICOPTERS
-	NULL,									// LAY_DOWN_ROLLER_COASTER
-	NULL,									// SUSPENDED_MONORAIL
-	NULL,									// 40
-	NULL,									// REVERSER_ROLLER_COASTER
-	NULL,									// HEARTLINE_TWISTER_COASTER
-	NULL,									// MINI_GOLF
-	NULL,									// GIGA_COASTER
-	NULL,									// ROTO_DROP
-	NULL,									// FLYING_SAUCERS
-	ride_ratings_calculate_crooked_house,	// CROOKED_HOUSE
-	NULL,									// MONORAIL_CYCLES
-	NULL,									// COMPACT_INVERTED_COASTER
-	NULL,									// WATER_COASTER
-	NULL,									// AIR_POWERED_VERTICAL_COASTER
-	NULL,									// INVERTED_HAIRPIN_COASTER
-	NULL,									// MAGIC_CARPET
-	NULL,									// SUBMARINE_RIDE
-	NULL,									// RIVER_RAFTS
-	NULL,									// 50
-	NULL,									// ENTERPRISE
-	NULL,									// 52
-	NULL,									// 53
-	NULL,									// 54
-	NULL,									// 55
-	NULL,									// INVERTED_IMPULSE_COASTER
-	NULL,									// MINI_ROLLER_COASTER
-	NULL,									// MINE_RIDE
-	NULL,									// LIM_LAUNCHED_ROLLER_COASTER
-	NULL,									// 90
+	NULL,											// SPIRAL_ROLLER_COASTER
+	NULL,											// STAND_UP_ROLLER_COASTER
+	NULL,											// SUSPENDED_SWINGING_COASTER
+	NULL,											// INVERTED_ROLLER_COASTER
+	NULL,											// JUNIOR_ROLLER_COASTER
+	NULL,											// MINIATURE_RAILWAY
+	NULL,											// MONORAIL
+	NULL,											// MINI_SUSPENDED_COASTER
+	NULL,											// BUMPER_BOATS
+	NULL,											// WOODEN_WILD_MOUSE
+	NULL,											// STEEPLECHASE
+	NULL,											// CAR_RIDE
+	NULL,											// LAUNCHED_FREEFALL
+	NULL,											// BOBSLEIGH_COASTER
+	NULL,											// OBSERVATION_TOWER
+	NULL,											// LOOPING_ROLLER_COASTER
+	NULL,											// DINGHY_SLIDE
+	NULL,											// MINE_TRAIN_COASTER
+	NULL,											// CHAIRLIFT
+	NULL,											// CORKSCREW_ROLLER_COASTER
+	NULL,											// MAZE
+	NULL,											// SPIRAL_SLIDE
+	NULL,											// GO_KARTS
+	NULL,											// LOG_FLUME
+	NULL,											// RIVER_RAPIDS
+	NULL,											// BUMPER_CARS
+	NULL,											// PIRATE_SHIP
+	NULL,											// SWINGING_INVERTER_SHIP
+	ride_ratings_calculate_food_stall,				// FOOD_STALL
+	NULL,											// 1D
+	ride_ratings_calculate_drink_stall,				// DRINK_STALL
+	NULL,											// 1F
+	ride_ratings_calculate_shop,					// SHOP
+	NULL,											// MERRY_GO_ROUND
+	NULL,											// 22
+	ride_ratings_calculate_information_kiosk,		// INFORMATION_KIOSK
+	ride_ratings_calculate_bathroom,				// BATHROOM
+	NULL,											// FERRIS_WHEEL
+	NULL,											// MOTION_SIMULATOR
+	NULL,											// 3D_CINEMA
+	NULL,											// TOP_SPIN
+	NULL,											// SPACE_RINGS
+	NULL,											// REVERSE_FREEFALL_COASTER
+	NULL,											// ELEVATOR
+	NULL,											// VERTICAL_DROP_ROLLER_COASTER
+	NULL,											// ATM
+	NULL,											// TWIST
+	NULL,											// HAUNTED_HOUSE
+	ride_ratings_calculate_first_aid,				// FIRST_AID
+	NULL,											// CIRCUS_SHOW
+	NULL,											// GHOST_TRAIN
+	NULL,											// TWISTER_ROLLER_COASTER
+	NULL,											// WOODEN_ROLLER_COASTER
+	NULL,											// SIDE_FRICTION_ROLLER_COASTER
+	NULL,											// WILD_MOUSE
+	NULL,											// MULTI_DIMENSION_ROLLER_COASTER
+	NULL,											// 38
+	NULL,											// FLYING_ROLLER_COASTER
+	NULL,											// 3A
+	NULL,											// VIRGINIA_REEL
+	NULL,											// SPLASH_BOATS
+	NULL,											// MINI_HELICOPTERS
+	NULL,											// LAY_DOWN_ROLLER_COASTER
+	NULL,											// SUSPENDED_MONORAIL
+	NULL,											// 40
+	NULL,											// REVERSER_ROLLER_COASTER
+	NULL,											// HEARTLINE_TWISTER_COASTER
+	NULL,											// MINI_GOLF
+	NULL,											// GIGA_COASTER
+	NULL,											// ROTO_DROP
+	NULL,											// FLYING_SAUCERS
+	ride_ratings_calculate_crooked_house,			// CROOKED_HOUSE
+	NULL,											// MONORAIL_CYCLES
+	NULL,											// COMPACT_INVERTED_COASTER
+	NULL,											// WATER_COASTER
+	NULL,											// AIR_POWERED_VERTICAL_COASTER
+	NULL,											// INVERTED_HAIRPIN_COASTER
+	NULL,											// MAGIC_CARPET
+	NULL,											// SUBMARINE_RIDE
+	NULL,											// RIVER_RAFTS
+	NULL,											// 50
+	NULL,											// ENTERPRISE
+	NULL,											// 52
+	NULL,											// 53
+	NULL,											// 54
+	NULL,											// 55
+	NULL,											// INVERTED_IMPULSE_COASTER
+	NULL,											// MINI_ROLLER_COASTER
+	NULL,											// MINE_RIDE
+	NULL,											// LIM_LAUNCHED_ROLLER_COASTER
+	NULL,											// 90
 };
 
 #pragma endregion

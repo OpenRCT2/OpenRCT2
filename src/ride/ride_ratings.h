@@ -30,6 +30,6 @@ void sub_655FD6(rct_ride *ride);
 ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity);
 rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
 	ride_rating intensity, ride_rating nausea);
-uint16 compute_upkeep(rct_ride *ride);
+uint16 ride_compute_upkeep(rct_ride *ride);
 
 #endif
