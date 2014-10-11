@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../interface/window.h"
 #include "../world/map.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -28,6 +29,8 @@ enum {
 	RIDE_RATINGS_STATE_FIND_NEXT_RIDE,
 	RIDE_RATINGS_STATE_INITIALISE
 };
+
+typedef void (*ride_ratings_calculation)(rct_ride *ride);
 
 #define _rideRatingsState				RCT2_GLOBAL(0x0138B591, uint8)
 #define _rideRatingsCurrentRide			RCT2_GLOBAL(0x00138B590, uint8)
@@ -39,6 +42,8 @@ static void ride_ratings_update_state_3();
 static void ride_ratings_update_state_4();
 static void ride_ratings_update_state_5();
 static void loc_6B5BB2();
+static void ride_ratings_calculate(rct_ride *ride);
+static void ride_ratings_reliability_calculate(rct_ride *ride);
 
 int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 {
@@ -203,7 +208,20 @@ static void ride_ratings_update_state_2()
  */
 static void ride_ratings_update_state_3()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006B5E4D);
+	rct_ride *ride;
+
+	ride = GET_RIDE(_rideRatingsCurrentRide);
+	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
+		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+		return;
+	}
+
+	ride_ratings_calculate(ride);
+	RCT2_CALLPROC_X(0x00655F64, 0, 0, 0, 0, 0, (int)ride, 0);
+	ride_ratings_reliability_calculate(ride);
+
+	window_invalidate_by_id(WC_RIDE, _rideRatingsCurrentRide);
+	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
 /**
@@ -274,6 +292,57 @@ static void ride_ratings_update_state_5()
 	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
 
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+}
+
+static void ride_ratings_calculate(rct_ride *ride)
+{
+	ride_ratings_calculation calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
+	RCT2_CALLPROC_EBPSAFE((int)calcFunc);
+	// calcFunc(ride);
+}
+
+static void ride_ratings_reliability_calculate(rct_ride *ride)
+{
+	rct_ride *ride2;
+	int i, otherRidesOfSameType;
+
+	if (ride->excitement == (ride_rating)0xFFFF)
+		return;
+
+	int reliability =
+		(((ride->excitement * RCT2_GLOBAL(0x0097CD1E + (ride->type * 6), sint16)) * 32) >> 15) +
+		(((ride->intensity  * RCT2_GLOBAL(0x0097CD20 + (ride->type * 6), sint16)) * 32) >> 15) +
+		(((ride->nausea     * RCT2_GLOBAL(0x0097CD22 + (ride->type * 6), sint16)) * 32) >> 15);
+
+	int monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date;
+
+	// New ride reward
+	if (monthsOld <= 12) {
+		reliability += 10;
+		if (monthsOld <= 4)
+			reliability += 20;
+	}
+
+	// Old ride penalty
+	if (monthsOld >= 40) reliability -= reliability / 4;
+	if (monthsOld >= 64) reliability -= reliability / 4;
+	if (monthsOld < 200) {
+		if (monthsOld >= 88) reliability -= reliability / 4;
+		if (monthsOld >= 104) reliability -= reliability / 4;
+		if (monthsOld >= 120) reliability -= reliability / 2;
+		if (monthsOld >= 128) reliability -= reliability / 2;
+	}
+
+	// Other ride of same type penalty
+	otherRidesOfSameType = 0;
+	FOR_ALL_RIDES(i, ride2) {
+		if (ride2->type == ride->type)
+			otherRidesOfSameType++;
+	}
+	if (otherRidesOfSameType > 1)
+		reliability -= reliability / 4;
+
+	ride->reliability = max(0, reliability);
 }
 
 /**
