@@ -27,13 +27,19 @@
 
 enum {
 	RIDE_RATINGS_STATE_FIND_NEXT_RIDE,
-	RIDE_RATINGS_STATE_INITIALISE
+	RIDE_RATINGS_STATE_INITIALISE,
+	RIDE_RATINGS_STATE_2,
+	RIDE_RATINGS_STATE_CALCULATE,
+	RIDE_RATINGS_STATE_4,
+	RIDE_RATINGS_STATE_5
 };
 
 typedef void (*ride_ratings_calculation)(rct_ride *ride);
 
 #define _rideRatingsState				RCT2_GLOBAL(0x0138B591, uint8)
-#define _rideRatingsCurrentRide			RCT2_GLOBAL(0x00138B590, uint8)
+#define _rideRatingsCurrentRide			RCT2_GLOBAL(0x0138B590, uint8)
+
+static const ride_ratings_calculation ride_ratings_calculate_func_table[91];
 
 static void ride_ratings_update_state_0();
 static void ride_ratings_update_state_1();
@@ -59,14 +65,26 @@ int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 	return 1;
 }
 
+int sub_6C60C2(rct_map_element *mapElement, int *x, int *y, int *z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	eax = *x;
+	ecx = *y;
+	esi = (int)mapElement;
+	RCT2_CALLFUNC_X(0x006C6402, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*x = *((uint16*)&eax);
+	*y = *((uint16*)&ecx);
+	*z = *((uint8*)&edx);
+	return 1;
+}
+
 /**
  *
  *  rct2: 0x006B5A2A
  */
 void ride_ratings_update_all()
 {
-	// RCT2_CALLPROC_EBPSAFE(0x006B5A2A);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
@@ -77,16 +95,16 @@ void ride_ratings_update_all()
 	case RIDE_RATINGS_STATE_INITIALISE:
 		ride_ratings_update_state_1();
 		break;
-	case 2:
+	case RIDE_RATINGS_STATE_2:
 		ride_ratings_update_state_2();
 		break;
-	case 3:
+	case RIDE_RATINGS_STATE_CALCULATE:
 		ride_ratings_update_state_3();
 		break;
-	case 4:
+	case RIDE_RATINGS_STATE_4:
 		ride_ratings_update_state_4();
 		break;
-	case 5:
+	case RIDE_RATINGS_STATE_5:
 		ride_ratings_update_state_5();
 		break;
 	}
@@ -144,7 +162,7 @@ static void ride_ratings_update_state_1()
 	RCT2_GLOBAL(0x0138B5C8, uint16) = 0;
 	RCT2_GLOBAL(0x0138B5CA, uint16) = 0;
 	RCT2_GLOBAL(0x0138B5CC, uint16) = 0;
-	_rideRatingsState = 2;
+	_rideRatingsState = RIDE_RATINGS_STATE_2;
 	RCT2_GLOBAL(0x0138B5CE, uint16) = 0;
 	loc_6B5BB2();
 }
@@ -165,7 +183,7 @@ static void loc_6B5BB2()
 	}
 
 	if (ride->type == RIDE_TYPE_MAZE) {
-		_rideRatingsState = 3;
+		_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 		return;
 	}
 
@@ -199,7 +217,63 @@ static void loc_6B5BB2()
  */
 static void ride_ratings_update_state_2()
 {
+	// sub_6C6402 returns a carry, CALLFUNC doesn't support this
+	// so have to wait for sub_6C60C2 to be decompiled
 	RCT2_CALLPROC_EBPSAFE(0x006B5C66);
+	return;
+
+	rct_ride *ride;
+	rct_map_element *mapElement;
+	int x, y, z, trackType, entranceIndex;
+
+	ride = GET_RIDE(_rideRatingsCurrentRide);
+	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
+		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+		return;
+	}
+
+	x = RCT2_GLOBAL(0x0138B584, uint16) / 32;
+	y = RCT2_GLOBAL(0x0138B586, uint16) / 32;
+	z = RCT2_GLOBAL(0x0138B588, uint16) / 8;
+
+	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	trackType = RCT2_GLOBAL(0x0138B592, uint8);
+
+	do {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+
+		if (trackType == 255 || (!(mapElement->properties.track.sequence & 0x0F) && trackType == mapElement->properties.track.type)) {
+			if (trackType == 1) {
+				entranceIndex = (mapElement->properties.track.sequence >> 4) & 7;
+				RCT2_GLOBAL(0x0138B5CE, uint16) &= ~1;
+				if (ride->entrances[entranceIndex] == 0xFFFF)
+					RCT2_GLOBAL(0x0138B5CE, uint16) |= 1;
+			}
+			
+			RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
+
+			x = RCT2_GLOBAL(0x0138B584, uint16);
+			y = RCT2_GLOBAL(0x0138B586, uint16);
+			if (!sub_6C60C2(mapElement, &x, &y, &z)) {
+				_rideRatingsState = RIDE_RATINGS_STATE_4;
+				return;
+			}
+
+			if (x == RCT2_GLOBAL(0x0138B58A, uint16) && y == RCT2_GLOBAL(0x0138B58C, uint16) && z == RCT2_GLOBAL(0x0138B58E, uint16)) {
+				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
+				return;
+			}
+			RCT2_GLOBAL(0x0138B584, uint16) = x;
+			RCT2_GLOBAL(0x0138B586, uint16) = y;
+			RCT2_GLOBAL(0x0138B588, uint16) = z;
+			RCT2_GLOBAL(0x0138B592, uint8) = mapElement->properties.track.type;
+		}
+	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+
+	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
 /**
@@ -230,7 +304,7 @@ static void ride_ratings_update_state_3()
  */
 static void ride_ratings_update_state_4()
 {
-	_rideRatingsState = 5;
+	_rideRatingsState = RIDE_RATINGS_STATE_5;
 	loc_6B5BB2();
 }
 
@@ -274,14 +348,14 @@ static void ride_ratings_update_state_5()
 			x = RCT2_GLOBAL(0x0138B584, uint16);
 			y = RCT2_GLOBAL(0x0138B586, uint16);
 			if (!sub_6C6402(mapElement, &x, &y, &z)) {
-				_rideRatingsState = 3;
+				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
 			}
 
 			x >>= 16;
 			y >>= 16;
 			if (x == RCT2_GLOBAL(0x0138B58A, uint16) && y == RCT2_GLOBAL(0x0138B58C, uint16) && z == RCT2_GLOBAL(0x0138B58E, uint16)) {
-				_rideRatingsState = 3;
+				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
 			}
 			RCT2_GLOBAL(0x0138B584, uint16) = x;
@@ -296,9 +370,15 @@ static void ride_ratings_update_state_5()
 
 static void ride_ratings_calculate(rct_ride *ride)
 {
-	ride_ratings_calculation calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
-	RCT2_CALLPROC_EBPSAFE((int)calcFunc);
-	// calcFunc(ride);
+	ride_ratings_calculation calcFunc;
+
+	calcFunc = ride_ratings_calculate_func_table[ride->type];
+	if (calcFunc == NULL) {
+		calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
+		RCT2_CALLPROC_X((int)calcFunc, 0, 0, 0, 0, 0, (int)ride, 0);
+	} else {
+		calcFunc(ride);
+	}
 }
 
 static void ride_ratings_reliability_calculate(rct_ride *ride)
@@ -345,43 +425,6 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
 	ride->reliability = max(0, reliability);
 }
 
-/**
- * rct2: 0x0065C4D4
- *
- * Compute excitement, intensity, etc. for a crooked house ride.
- */
-void crooked_house_excitement(rct_ride *ride)
-{
-	// Set lifecycle bits
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 5;
-	sub_655FD6(ride);
-
-	ride_rating excitement	= RIDE_RATING(2,15);
-	ride_rating intensity	= RIDE_RATING(0,62);
-	ride_rating nausea		= RIDE_RATING(0,34);
-
-	// NB this should get marked out by the compiler, if it's smart.
-	excitement = apply_intensity_penalty(excitement, intensity);
-	rating_tuple tup = per_ride_rating_adjustments(ride, excitement, intensity, nausea);
-	excitement = tup.excitement;
-	intensity = tup.intensity;
-	nausea = tup.nausea;
-
-	ride->excitement = excitement;
-	ride->intensity = intensity;
-	ride->nausea = nausea;
-
-	ride->upkeep_cost = compute_upkeep(ride);
-	// Upkeep flag? or a dirtiness flag
-	ride->var_14D |= 2;
-
-	// clear all bits except lowest 5
-	ride->inversions &= 0x1F;
-	// set 6th,7th,8th bits
-	ride->inversions |= 0xE0;
-}
 
 /**
  * rct2: sub_65E621
@@ -554,19 +597,146 @@ ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensit
 }
 
 /**
- * rct2: 0x00655FD6
  *
- * Take ride property 1CD, make some modifications, store the modified value in
- * property 198.
+ *  rct2: 0x00655FD6
  */
 void sub_655FD6(rct_ride *ride)
 {
-    uint8 al = ride->lift_hill_speed;
-    // No idea what this address is; maybe like compensation of some kind? The
-    // maximum possible value?
-    // List of ride names/values is here: 
-    // https://gist.github.com/kevinburke/5eebcda14d94e6ee99c0
-    al -= RCT2_ADDRESS(0x0097D7C9, uint8)[4 * ride->type];
-    al = al << 1;
-    ride->var_198 += al;
+    ride->var_198 += (ride->lift_hill_speed - RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4]) * 2;
 }
+
+#pragma region Ride rating calculation functions
+
+void ride_ratings_calculate_crooked_house(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 5;
+	sub_655FD6(ride);
+
+	ratings.excitement	= RIDE_RATING(2,15);
+	ratings.intensity	= RIDE_RATING(0,62);
+	ratings.nausea		= RIDE_RATING(0,34);
+
+	ratings.excitement = apply_intensity_penalty(ratings.excitement, ratings.intensity);
+	ratings = per_ride_rating_adjustments(ride, ratings.excitement, ratings.intensity, ratings.nausea);
+
+	ride->excitement = ratings.excitement;
+	ride->intensity = ratings.intensity;
+	ride->nausea = ratings.nausea;
+
+	ride->upkeep_cost = compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0xE0;
+}
+
+void ride_ratings_calculate_bathroom(rct_ride *ride)
+{
+	ride->upkeep_cost = compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+#pragma endregion
+
+#pragma region Ride rating calculation function table
+
+// rct2: 0x0097E050
+static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
+	NULL,									// SPIRAL_ROLLER_COASTER
+	NULL,									// STAND_UP_ROLLER_COASTER
+	NULL,									// SUSPENDED_SWINGING_COASTER
+	NULL,									// INVERTED_ROLLER_COASTER
+	NULL,									// JUNIOR_ROLLER_COASTER
+	NULL,									// MINIATURE_RAILWAY
+	NULL,									// MONORAIL
+	NULL,									// MINI_SUSPENDED_COASTER
+	NULL,									// BUMPER_BOATS
+	NULL,									// WOODEN_WILD_MOUSE
+	NULL,									// STEEPLECHASE
+	NULL,									// CAR_RIDE
+	NULL,									// LAUNCHED_FREEFALL
+	NULL,									// BOBSLEIGH_COASTER
+	NULL,									// OBSERVATION_TOWER
+	NULL,									// LOOPING_ROLLER_COASTER
+	NULL,									// DINGHY_SLIDE
+	NULL,									// MINE_TRAIN_COASTER
+	NULL,									// CHAIRLIFT
+	NULL,									// CORKSCREW_ROLLER_COASTER
+	NULL,									// MAZE
+	NULL,									// SPIRAL_SLIDE
+	NULL,									// GO_KARTS
+	NULL,									// LOG_FLUME
+	NULL,									// RIVER_RAPIDS
+	NULL,									// BUMPER_CARS
+	NULL,									// PIRATE_SHIP
+	NULL,									// SWINGING_INVERTER_SHIP
+	NULL,									// FOOD_STALL
+	NULL,									// 1D
+	NULL,									// DRINK_STALL
+	NULL,									// 1F
+	NULL,									// SHOP
+	NULL,									// MERRY_GO_ROUND
+	NULL,									// 22
+	NULL,									// INFORMATION_KIOSK
+	ride_ratings_calculate_bathroom,		// BATHROOM
+	NULL,									// FERRIS_WHEEL
+	NULL,									// MOTION_SIMULATOR
+	NULL,									// 3D_CINEMA
+	NULL,									// TOP_SPIN
+	NULL,									// SPACE_RINGS
+	NULL,									// REVERSE_FREEFALL_COASTER
+	NULL,									// ELEVATOR
+	NULL,									// VERTICAL_DROP_ROLLER_COASTER
+	NULL,									// ATM
+	NULL,									// TWIST
+	NULL,									// HAUNTED_HOUSE
+	NULL,									// FIRST_AID
+	NULL,									// CIRCUS_SHOW
+	NULL,									// GHOST_TRAIN
+	NULL,									// TWISTER_ROLLER_COASTER
+	NULL,									// WOODEN_ROLLER_COASTER
+	NULL,									// SIDE_FRICTION_ROLLER_COASTER
+	NULL,									// WILD_MOUSE
+	NULL,									// MULTI_DIMENSION_ROLLER_COASTER
+	NULL,									// 38
+	NULL,									// FLYING_ROLLER_COASTER
+	NULL,									// 3A
+	NULL,									// VIRGINIA_REEL
+	NULL,									// SPLASH_BOATS
+	NULL,									// MINI_HELICOPTERS
+	NULL,									// LAY_DOWN_ROLLER_COASTER
+	NULL,									// SUSPENDED_MONORAIL
+	NULL,									// 40
+	NULL,									// REVERSER_ROLLER_COASTER
+	NULL,									// HEARTLINE_TWISTER_COASTER
+	NULL,									// MINI_GOLF
+	NULL,									// GIGA_COASTER
+	NULL,									// ROTO_DROP
+	NULL,									// FLYING_SAUCERS
+	ride_ratings_calculate_crooked_house,	// CROOKED_HOUSE
+	NULL,									// MONORAIL_CYCLES
+	NULL,									// COMPACT_INVERTED_COASTER
+	NULL,									// WATER_COASTER
+	NULL,									// AIR_POWERED_VERTICAL_COASTER
+	NULL,									// INVERTED_HAIRPIN_COASTER
+	NULL,									// MAGIC_CARPET
+	NULL,									// SUBMARINE_RIDE
+	NULL,									// RIVER_RAFTS
+	NULL,									// 50
+	NULL,									// ENTERPRISE
+	NULL,									// 52
+	NULL,									// 53
+	NULL,									// 54
+	NULL,									// 55
+	NULL,									// INVERTED_IMPULSE_COASTER
+	NULL,									// MINI_ROLLER_COASTER
+	NULL,									// MINE_RIDE
+	NULL,									// LIM_LAUNCHED_ROLLER_COASTER
+	NULL,									// 90
+};
+
+#pragma endregion
