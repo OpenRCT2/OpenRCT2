@@ -2782,8 +2782,8 @@ STR_2775    :Fullscreen (desktop)
 STR_2776    :Language
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :Viewport #{COMMA16}
 # End of new strings
-STR_2779    :???
 STR_2780    :???
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 

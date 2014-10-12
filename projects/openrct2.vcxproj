@@ -135,6 +135,7 @@
     <ClCompile Include="..\src\windows\track_list.c" />
     <ClCompile Include="..\src\windows\track_manage.c" />
     <ClCompile Include="..\src\windows\track_place.c" />
+    <ClCompile Include="..\src\windows\viewport.c" />
     <ClCompile Include="..\src\windows\water.c" />
     <ClCompile Include="..\src\world\banner.c" />
     <ClCompile Include="..\src\world\climate.c" />

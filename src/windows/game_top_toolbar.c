@@ -205,7 +205,9 @@ static void window_game_top_toolbar_mouseup()
 		// button in the game. Use "git update-index --skip-worktree
 		// src/window_game_top_toolbar" to avoid committing these changes to
 		// version control.
-		window_cheats_open();
+		// window_cheats_open();
+
+		window_viewport_open();
 		break;
 
 	case WIDX_ZOOM_OUT:
