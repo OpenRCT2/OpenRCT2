@@ -205,9 +205,7 @@ static void window_game_top_toolbar_mouseup()
 		// button in the game. Use "git update-index --skip-worktree
 		// src/window_game_top_toolbar" to avoid committing these changes to
 		// version control.
-		// window_cheats_open();
-
-		window_viewport_open();
+		window_cheats_open();
 		break;
 
 	case WIDX_ZOOM_OUT:
@@ -221,9 +219,6 @@ static void window_game_top_toolbar_mouseup()
 	case WIDX_ROTATE:
 		if ((mainWindow = window_get_main()) != NULL)
 			window_rotate_camera(mainWindow);
-		break;
-	case WIDX_MAP:
-		window_map_open();
 		break;
 	case WIDX_CLEAR_SCENERY:
 		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
@@ -301,7 +296,8 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 {
 	rct_viewport *mainViewport;
 
-	if (widgetIndex == WIDX_FILE_MENU) {
+	switch (widgetIndex) {
+	case WIDX_FILE_MENU:
 		gDropdownItemsFormat[0] = 882;
 		gDropdownItemsFormat[1] = 883;
 		gDropdownItemsFormat[2] = 0;
@@ -318,7 +314,8 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 			0x80,
 			8
 		);
-	} else if (widgetIndex == WIDX_VIEW_MENU) {
+		break;
+	case WIDX_VIEW_MENU:
 		gDropdownItemsFormat[0] = 1156;
 		gDropdownItemsFormat[1] = 1156;
 		gDropdownItemsFormat[2] = 1156;
@@ -376,6 +373,20 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 			gDropdownItemsChecked |= (1 << 11);
 
 		RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+		break;
+	case WIDX_MAP:
+		gDropdownItemsFormat[0] = 2523;
+		gDropdownItemsFormat[1] = 2780;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[1] | 0x80,
+			0,
+			2
+		);
+		RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+		break;
 	}
 }
 
@@ -390,7 +401,8 @@ static void window_game_top_toolbar_dropdown()
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-	if (widgetIndex == WIDX_FILE_MENU) {
+	switch (widgetIndex) {
+	case WIDX_FILE_MENU:
 		switch (dropdownIndex) {
 		case DDIDX_LOAD_GAME:		// load game
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
@@ -413,7 +425,7 @@ static void window_game_top_toolbar_dropdown()
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		}
-	} else if (widgetIndex == WIDX_VIEW_MENU) {
+	case WIDX_VIEW_MENU:
 		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
 		w = window_get_main();
 		if (w){
@@ -453,6 +465,18 @@ static void window_game_top_toolbar_dropdown()
 			}
 			window_invalidate(w);
 		}
+	case WIDX_MAP:
+		if (dropdownIndex == -1)
+			dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+		switch (dropdownIndex) {
+		case 0:
+			window_map_open();
+			break;
+		case 1:
+			window_viewport_open();
+			break;
+		}
+		break;
 	}
 }
 
