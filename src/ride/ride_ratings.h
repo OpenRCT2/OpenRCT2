@@ -25,11 +25,5 @@
 #include "ride.h"
 
 void ride_ratings_update_all();
-void crooked_house_excitement(rct_ride *ride);
-void sub_655FD6(rct_ride *ride);
-ride_rating apply_intensity_penalty(ride_rating excitement, ride_rating intensity);
-rating_tuple per_ride_rating_adjustments(rct_ride *ride, ride_rating excitement,
-	ride_rating intensity, ride_rating nausea);
-uint16 compute_upkeep(rct_ride *ride);
 
 #endif
