@@ -418,6 +418,9 @@
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\staff_fire_prompt.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\viewport.c">
       <Filter>Source\Windows</Filter>

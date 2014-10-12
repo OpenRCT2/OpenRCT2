@@ -481,6 +481,7 @@ void window_shortcut_keys_open();
 void window_shortcut_change_open(int selected_key);
 void window_guest_open(rct_peep* peep);
 void window_staff_open(rct_peep* peep);
+void window_staff_fire_prompt_open(rct_peep* peep);
 void window_park_awards_open();
 void window_park_entrance_open();
 void window_park_guests_open();

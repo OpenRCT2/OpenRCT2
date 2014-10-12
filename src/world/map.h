@@ -205,6 +205,7 @@ void sub_68B089();
 int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);
 void map_invalidate_animations();
 void sub_6A876D();
+int sub_664F72(int x, int y, int z);
 
 void fountain_update_all();
 
