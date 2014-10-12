@@ -28,6 +28,7 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -127,6 +128,7 @@ rct_widget *window_staff_page_widgets[] = {
 void window_staff_set_page(rct_window* w, int page);
 void window_staff_disable_widgets(rct_window* w);
 void window_staff_unknown_05();
+void window_staff_viewport_init(rct_window* w);
 
 void window_staff_overview_close();
 void window_staff_overview_mouseup();
@@ -139,12 +141,17 @@ void window_staff_overview_paint();
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 void window_staff_overview_tool_update();
 void window_staff_overview_tool_down();
+void window_staff_overview_tool_abort();
+void window_staff_overview_text_input();
+void window_staff_overview_viewport_init_wrapper();
 
 void window_staff_options_mouseup();
 void window_staff_options_update(rct_window* w);
 void window_staff_options_invalidate();
 void window_staff_options_paint();
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
+void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
+void window_staff_options_dropdown();
 
 void window_staff_stats_mouseup();
 void window_staff_stats_resize();
@@ -168,14 +175,14 @@ static void* window_staff_overview_events[] = {
 	window_staff_overview_tool_down,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BDFAE,
+	window_staff_overview_tool_abort,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
-	(void*)0x6BDFED,
-	(void*)0x6BE5FC,
+	window_staff_overview_text_input,
+	window_staff_overview_viewport_init_wrapper,
 	window_staff_emptysub,
 	window_staff_emptysub,
 	window_staff_emptysub,
@@ -190,7 +197,7 @@ static void* window_staff_options_events[] = {
 	window_staff_emptysub,
 	window_staff_options_mouseup,
 	window_staff_stats_resize,
-	(void*)0x6BE802,
+	window_staff_options_mousedown,
 	(void*)0x6BE809,
 	window_staff_unknown_05,
 	window_staff_options_update,
@@ -324,7 +331,7 @@ void window_staff_open(rct_peep* peep)
 	w->pressed_widgets = 0;
 	window_staff_disable_widgets(w);
 	window_init_scroll_widgets(w);
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	window_staff_viewport_init(w);
 	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
 		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
 	}
@@ -515,7 +522,7 @@ void window_staff_overview_resize()
 		}
 	}
 
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	window_staff_viewport_init(w);
 }
 
 /** 
@@ -529,11 +536,11 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	}
 
 	// Dropdown names
-	gDropdownItemsFormat[0] = 3446;
-	gDropdownItemsFormat[1] = 3447;
+	gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
+	gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
 	int x = widget->left + w->x;
-	int y = widget->top + w->y;;
+	int y = widget->top + w->y;
 	int extray = widget->bottom - widget->top + 1;
 	window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
 	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
@@ -1070,9 +1077,9 @@ void window_staff_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
-	if (ebx == 0)
+	int z;
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL);
+	if (z == 0)
 		return;
 
 	x--;
@@ -1124,7 +1131,7 @@ void window_staff_overview_tool_down(){
 
 		int _edx = dest_z >> 3;
 		_edx &= 0xFFFF00FF;
-		_edx |= dest_z << 8;
+		_edx |= (_edx & 0xFF) << 8;
 		_edx += 0x100;
 		int flags = RCT2_CALLPROC_X(0x68B93A, tile_x, 0xF, tile_y, _edx, (int)w, 0, 0);
 
@@ -1146,7 +1153,7 @@ void window_staff_overview_tool_down(){
 		peep->var_71 = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;
-		peep->var_6E = 0xFF;
+		peep->var_6E = 0;
 		peep->var_C4 = 0;
 
 		tool_cancel();
@@ -1160,4 +1167,214 @@ void window_staff_overview_tool_down(){
 
 		game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
 	}
+}
+
+/* rct2: 0x6BDFAE */
+void window_staff_overview_tool_abort(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	if (widgetIndex == WIDX_PICKUP){
+
+		rct_peep* peep = GET_PEEP(w->number);
+		if (peep->state != PEEP_STATE_PICKED) return;
+
+		RCT2_CALLPROC_X(0x0069E9D3, w->var_48C, 0, peep->y, peep->z + 8, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		if (peep->x != 0x8000){
+			RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep->state = 0;
+			RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep->var_71 = 0xFF;
+			peep->var_6D = 0;
+			peep->var_70 = 0;
+			peep->var_6E = 0;
+			peep->var_C4 = 0;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	}
+	else if (widgetIndex == WIDX_PATROL){
+		hide_gridlines();
+		RCT2_GLOBAL(0x009DEA50, sint16) = -1;
+		gfx_invalidate_screen();
+	}
+}
+
+/* rct2:0x6BDFED */
+void window_staff_overview_text_input(){
+	short widgetIndex;
+	rct_window *w;
+	char _cl;
+	uint32* text;
+
+	window_text_input_get_registers(w, widgetIndex, _cl, text);
+
+	if (widgetIndex != WIDX_RENAME)return;
+
+	if (!_cl) return;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = 2979;
+
+	game_do_command(1, 1, w->number, *text, GAME_COMMAND_22, *(text + 2), *(text + 1));
+	game_do_command(2, 1, 0, *(text + 3), GAME_COMMAND_22, *(text + 5), *(text + 4));
+	game_do_command(0, 1, 0, *(text + 6), GAME_COMMAND_22, *(text + 8), *(text + 7));
+}
+
+/* rct2: 0x006BE5FC */
+void window_staff_overview_viewport_init_wrapper(){
+	rct_window* w;
+	window_get_register(w);
+
+	window_staff_viewport_init(w);
+}
+
+/* rct2: 0x006BEDA3 */
+void window_staff_viewport_init(rct_window* w){
+	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+
+	if (w->page != WINDOW_STAFF_OVERVIEW) return;
+
+	sprite_focus focus;
+
+	focus.sprite_id = w->number;
+
+	rct_peep* peep = GET_PEEP(w->number);
+
+	if (peep->state == PEEP_STATE_PICKED){
+		focus.sprite_id = -1;
+	}
+	else{
+		focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+		focus.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	}
+
+	uint16 viewport_flags;
+
+	if (w->viewport){
+		//Check all combos, for now skipping y and rot
+		if (focus.sprite_id == w->viewport_focus_sprite.sprite_id &&
+			focus.type == w->viewport_focus_sprite.type &&
+			focus.rotation == w->viewport_focus_sprite.rotation)
+			return;
+
+		viewport_flags = w->viewport->flags;
+		w->viewport->width = 0;
+		w->viewport = 0;
+
+		viewport_update_pointers();
+	}
+	else{
+		viewport_flags = 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+	}
+
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+
+	w->viewport_focus_sprite.sprite_id = focus.sprite_id;
+	w->viewport_focus_sprite.type = focus.type;
+	w->viewport_focus_sprite.rotation = focus.rotation;
+
+	if (peep->state != PEEP_STATE_PICKED){
+		if (!(w->viewport)){
+			rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+
+			int x = view_widget->left + 1 + w->x;
+			int y = view_widget->top + 1 + w->y;
+			int width = view_widget->right - view_widget->left - 1;
+			int height = view_widget->bottom - view_widget->top - 1;
+
+			viewport_create(w, x, y, width, height, 0, 0, 0, 0, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+			w->flags |= WF_2;
+			window_invalidate(w);
+		}
+	}
+
+	if (w->viewport)
+		w->viewport->flags = viewport_flags;
+	window_invalidate(w);
+}
+
+/**
+* Handle the costume of staff member.
+* rct2: 0x006BE802
+*/
+void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
+{
+	if (widgetIndex != WIDX_COSTUME_BTN) {
+		return;
+	}
+
+	init_scenery();
+
+	int ebx = 0;
+	for (int i = 0; i < 19;++i){
+		sint16* ebp = RCT2_ADDRESS(0xF64F2C, sint16*)[i];
+		if (*ebp != -1){
+			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
+			ebx |= scenery_entry->var_10A;
+		}
+	}
+
+	uint8* ebp = RCT2_ADDRESS(0xF4391B, uint8);
+	uint16 no_entries = 0;
+	for (uint8 i = 0; i < 32; ++i){
+		if (ebx & (1 << i)){
+			*ebp++ = i;
+			no_entries++;
+		}
+	}
+	// Save number of entrys. Not required any more.
+	RCT2_GLOBAL(0xF43926, uint16) = no_entries;
+
+	rct_peep* peep = GET_PEEP(w->number);
+	int item_checked = 0;
+	//This will be moved below where Items Checked is when all 
+	//of dropdown related functions are finished. This prevents
+	//the dropdown from not working on first click.
+	for (int i = 0; i < no_entries; ++i){
+		int eax = RCT2_ADDRESS(0xF4391B, uint8)[i];
+		if (eax == peep->sprite_type){
+			item_checked = 1 << i;
+		}
+		gDropdownItemsArgs[i] = eax + 1775;
+		gDropdownItemsFormat[i] = 1142;
+	}
+
+	//Get the dropdown box widget instead of button.
+	widget--;
+	
+	int x = widget->left + w->x;
+	int y = widget->top + w->y;
+	int extray = widget->bottom - widget->top + 1;
+	int width = widget->right - widget->left - 3;
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0x80, no_entries, width);
+	
+	// See above note.
+	gDropdownItemsChecked = item_checked;
+}
+
+/** rct2: 0x6BE809 */
+void window_staff_options_dropdown()
+{
+	short widgetIndex, dropdownIndex;
+	rct_window* w;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (widgetIndex != WIDX_COSTUME_BTN) {
+		return;
+	}
+
+	if (dropdownIndex == -1)return;
+
+	rct_peep* peep = GET_PEEP(w->number);
+	
+	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
+
+	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
 }

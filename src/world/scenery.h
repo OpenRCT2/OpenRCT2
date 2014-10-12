@@ -117,6 +117,8 @@ typedef struct {
 	uint8 entry_count;				// 0x106
 	uint8 pad_107;
 	uint8 var_108;					// 0x108, order?
+	uint8 pad_109;
+	uint32 var_10A;
 } rct_scenery_set_entry;
 
 #define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
