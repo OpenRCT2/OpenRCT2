@@ -73,17 +73,17 @@ rct_widget window_staff_overview_widgets[] = {
 	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
 	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
 	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,			17,			43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,		1, 34,		64,			17,			43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,		1, 65,		95,			17,			43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,		1, 3,		33,			17,			43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,			17,			43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,			17,			43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
 	{ WWT_TAB,		1, 96,		126,		17,			43,		0x2000144E,		STR_NONE},				// Tab 4
 	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,0x0FFFFFFFF,	STR_NONE},				// Viewport
 	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	0x0FFFFFFFF,	STR_NONE },				// Label at bottom of viewport
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		0x1436,			1706},					// Pickup Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		0x1437,			1708},					// Patrol Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	0x1430,			1056},					// Rename Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	0x142F,			1027},					// Locate Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	0x142D,			1705},					// Fire Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		SPR_PICKUP_BTN,	STR_PICKUP_TIP},		// Pickup Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		SPR_PATROL_BTN,	STR_SET_PATROL_TIP},	// Patrol Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	SPR_RENAME,		STR_NAME_STAFF_TIP},	// Rename Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	SPR_DEMOLISH,	STR_FIRE_STAFF_TIP},	// Fire Button
 	{ WIDGETS_END },
 };
 
@@ -93,16 +93,16 @@ rct_widget window_staff_options_widgets[] = {
 	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
 	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
 	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,				1, 3,		33,		17,		43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,				1, 34,		64,		17,		43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,				1, 65,		95,		17,		43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,				1, 3,		33,		17,		43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,				1, 34,		64,		17,		43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,				1, 65,		95,		17,		43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
 	{ WWT_TAB,				1, 96,		126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
 	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 1
 	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		0x0FFFFFFFF,	STR_NONE },				// Checkbox 2
 	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 3
 	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	0x0FFFFFFFF,	STR_NONE},				// Checkbox 4
 	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Costume Dropdown
-	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		876,			1946},					// Costume Dropdown Button
+	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		876,			STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
 	{ WIDGETS_END },
 };
 
@@ -112,9 +112,9 @@ rct_widget window_staff_stats_widgets[] = {
 	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
 	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
 	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,		17,	43,		0x2000144E,		1939 },					// Tab 1
-	{ WWT_TAB,		1, 34,		64,		17,	43,		0x2000144E,		1945},					// Tab 2
-	{ WWT_TAB,		1, 65,		95,		17,	43,		0x2000144E,		2348},					// Tab 3
+	{ WWT_TAB,		1, 3,		33,		17,	43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,		17,	43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,		17,	43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
 	{ WWT_TAB,		1, 96,		126,	17,	43,		0x2000144E,		STR_NONE},				// Tab 4
 	{ WIDGETS_END },
 };
@@ -198,7 +198,7 @@ static void* window_staff_options_events[] = {
 	window_staff_options_mouseup,
 	window_staff_stats_resize,
 	window_staff_options_mousedown,
-	(void*)0x6BE809,
+	window_staff_options_dropdown,
 	window_staff_unknown_05,
 	window_staff_options_update,
 	window_staff_emptysub,
@@ -297,7 +297,7 @@ void window_staff_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
 	if (w == NULL) {
-		w = window_create_auto_pos(190, 180, (uint32*)window_staff_overview_events, WC_PEEP, (uint16)0x400);
+		w = window_create_auto_pos(WW, WH, (uint32*)window_staff_overview_events, WC_PEEP, (uint16)0x400);
 
 		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -310,8 +310,8 @@ void window_staff_open(rct_peep* peep)
 
 		window_staff_disable_widgets(w);
 
-		w->min_width = 190;
-		w->min_height = 180;
+		w->min_width = WW;
+		w->min_height = WH;
 		w->max_width = 500;
 		w->max_height = 450;
 
@@ -469,7 +469,7 @@ void window_staff_overview_mouseup()
 		window_staff_fire_prompt_open(peep);
 		break;
 	case WIDX_RENAME:
-		window_show_textinput(w, (int)widgetIndex, 0xBA1, 0xBA2, peep->name_string_idx);
+		window_show_textinput(w, (int)widgetIndex, 2977, 2978, peep->name_string_idx);
 		break;
 	}
 }
@@ -482,9 +482,9 @@ void window_staff_overview_resize()
 
 	window_staff_disable_widgets(w);
 
-	w->min_width = 190;
+	w->min_width = WW;
 	w->max_width = 500;
-	w->min_height = 180;
+	w->min_height = WH;
 	w->max_height = 450;
 
 	if (w->width < w->min_width) {
@@ -703,7 +703,7 @@ void window_staff_stats_resize()
 void window_staff_stats_update(rct_window* w)
 {
 	w->frame_no++;
-	window_invalidate_by_id(0x697, w->number);
+	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_3);
 
 	rct_peep* peep = GET_PEEP(w->number);
 	if (peep->var_45 & 0x10) {
