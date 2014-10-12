@@ -45,7 +45,7 @@ static rct_widget window_text_input_widgets[] = {
 static void window_text_input_emptysub(){}
 static void window_text_input_mouseup();
 static void window_text_input_paint();
-static void window_text_input_text(int key);
+static void window_text_input_text(int key, rct_window* w);
 
 //0x9A3F7C
 static void* window_text_input_events[] = {
