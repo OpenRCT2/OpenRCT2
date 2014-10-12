@@ -40,7 +40,8 @@ enum {
 	WIDX_PAGE_BACKGROUND,
 	WIDX_VIEWPORT,
 	WIDX_ZOOM_IN,
-	WIDX_ZOOM_OUT
+	WIDX_ZOOM_OUT,
+	WIDX_LOCATE
 };
 
 static rct_widget window_viewport_widgets[] = {
@@ -52,6 +53,7 @@ static rct_widget window_viewport_widgets[] = {
 
 	{ WWT_FLATBTN,			0,	0,	0,	17,	40,	0xFFFFFFFF,		STR_ZOOM_IN_TIP			},	// zoom in
 	{ WWT_FLATBTN,			0,	0,	0,	41,	64,	0xFFFFFFFF,		STR_ZOOM_OUT_TIP		},	// zoom out
+	{ WWT_FLATBTN,			0,	0,	0,	65,	88,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP	},	// locate
 	{ WIDGETS_END },
 };
 
@@ -114,7 +116,8 @@ void window_viewport_open()
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_ZOOM_IN) |
-		(1 << WIDX_ZOOM_OUT);
+		(1 << WIDX_ZOOM_OUT) |
+		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
 	w->colours[0] = 24;
 	w->colours[1] = 24;
@@ -150,7 +153,8 @@ static void window_viewport_anchor_border_widgets(rct_window *w)
 static void window_viewport_mouseup()
 {
 	short widgetIndex;
-	rct_window *w;
+	rct_window *w, *mainWindow;
+	int x, y;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -168,6 +172,13 @@ static void window_viewport_mouseup()
 		if (w->viewport != NULL && w->viewport->zoom < 3) {
 			w->viewport->zoom++;
 			window_invalidate(w);
+		}
+		break;
+	case WIDX_LOCATE:
+		mainWindow = window_get_main();
+		if (mainWindow != NULL) {
+			get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), 0, &x, &y, NULL, NULL);
+			window_scroll_to_location(mainWindow, x, y, map_element_height(x, y));
 		}
 		break;
 	}
@@ -216,7 +227,7 @@ static void window_viewport_invalidate()
 	window_viewport_anchor_border_widgets(w);
 	viewportWidget->right = w->width - 26;
 	viewportWidget->bottom = w->height - 3;
-	for (i = WIDX_ZOOM_IN; i <= WIDX_ZOOM_OUT; i++) {
+	for (i = WIDX_ZOOM_IN; i <= WIDX_LOCATE; i++) {
 		window_viewport_widgets[i].left = w->width - 25;
 		window_viewport_widgets[i].right = w->width - 2;
 	}
