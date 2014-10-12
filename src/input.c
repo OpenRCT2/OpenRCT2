@@ -1623,8 +1623,17 @@ void game_handle_keyboard_input()
 			set_shortcut(key);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1)
 			tutorial_stop();
-		else
-			handle_shortcut(key);
+		else{
+			w = window_find_by_id(113, 0);
+			if (w != NULL){
+				void(*fp)(int, rct_window*) = (void*)(int)w->event_handlers[WE_TEXT_INPUT];
+				(*fp)(key,w);
+			}
+			else{
+				handle_shortcut(key);
+			}
+		}
+			
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)

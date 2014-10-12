@@ -469,6 +469,8 @@ void window_staff_overview_mouseup()
 		window_staff_fire_prompt_open(peep);
 		break;
 	case WIDX_RENAME:
+		window_text_input_open();
+		break;
 		window_show_textinput(w, (int)widgetIndex, 2977, 2978, peep->name_string_idx);
 		break;
 	}

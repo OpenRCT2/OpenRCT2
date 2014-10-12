@@ -509,6 +509,7 @@ void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
+void window_text_input_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
