@@ -26,7 +26,8 @@
 #include "../localisation/localisation.h"
 
 #define WW 250
-#define WH 60
+#define WH 50
+#define MAX_TEXTINPUT 32
 
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -79,16 +80,28 @@ static void* window_text_input_events[] = {
 	window_text_input_emptysub
 };
 
-char test_text[100] = { 0 };
+int string_description;
+char text_input[MAX_TEXTINPUT] = { 0 };
+rct_window* calling_w = NULL;
+int calling_widget = 0;
+char current_mode = 0;
 
-void window_text_input_open(){
+void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, uint16 description, rct_string_id string_id, uint32 args){
 	window_close_by_id(113, 0);
 
 	rct_window* w = window_create_auto_pos(WW, WH, (uint32*)window_text_input_events, 113, 0);
-	w->frame_no = 0;
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << 2);
-	osinterface_start_text_input(test_text, 100);
+
+	window_text_input_widgets[WIDX_TITLE].image = title;
+
+	format_string(text_input, string_id, &args);
+	string_description = description;
+	current_mode = 0;
+	calling_w = call_w;
+	calling_widget = call_widget;
+	osinterface_start_text_input(text_input, MAX_TEXTINPUT);
+
 	window_init_scroll_widgets(w);
 	w->colours[0] = 7;
 	w->colours[1] = 7;
@@ -108,6 +121,8 @@ static void window_text_input_mouseup(){
 	switch (widgetIndex){
 	case WIDX_CLOSE:
 		osinterface_stop_text_input();
+		if (calling_w != NULL)
+			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 0, calling_widget, (int)calling_w, (int)text_input, 0);
 		window_close(w);
 	}
 }
@@ -125,9 +140,13 @@ static void window_text_input_paint(){
 	window_draw_widgets(w, dpi);
 
 	int x = w->x + 4;
-	int y = w->y + 30;
+	int y = w->y + 15;
 	
-	gfx_draw_string(dpi, test_text, w->colours[1], x, y);
+	gfx_draw_string_left(dpi, string_description, 0, w->colours[1], x, y);
+
+	y += 15;
+
+	gfx_draw_string(dpi, text_input, w->colours[1], x, y);
 }
 
 
@@ -135,10 +154,16 @@ static void window_text_input_text(int key, rct_window* w){
 
 	int text = key;
 	char new_char = osinterface_scancode_to_rct_keycode(0xFF&key);
+	if (!current_mode){
+		// Delete the existing text on first key down
+		current_mode++;
+		memset(text_input+1, 0, MAX_TEXTINPUT - 1);
+	}
 	// If the return button is pressed stop text input
 	if (new_char == '\r'){
 		osinterface_stop_text_input();
 		window_close(w);
+		RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
 	}
 	
 	window_invalidate(w);
