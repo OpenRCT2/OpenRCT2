@@ -476,11 +476,11 @@ static void window_options_dropdown()
 		audio_init2(dropdownIndex);
 		if (dropdownIndex < gAudioDeviceCount) {
 #ifdef USE_MIXER
-			int devicenum = dropdownIndex;
-			if (devicenum == 0) {
-				devicenum = 1;
+			if (dropdownIndex == 0) {
+				Mixer_Init(NULL);
+			} else {
+				Mixer_Init(gAudioDevices[dropdownIndex].name);
 			}
-			Mixer_Init(gAudioDevices[devicenum].name);
 #endif
 		}
 		/*#ifdef _MSC_VER

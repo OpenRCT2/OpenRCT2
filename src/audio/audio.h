@@ -36,8 +36,6 @@ extern audio_device *gAudioDevices;
 void audio_init();
 void audio_quit();
 void audio_get_devices();
-void audio_init1();
-void audio_init2(int device);
 
 #include <dsound.h>
 
@@ -63,9 +61,9 @@ typedef struct rct_sound {
 } rct_sound;
 
 typedef struct {
-	uint32 var_0;
+	uint32 playing;					// 0x000
 	uint32 var_4;
-	char filename[MAX_PATH];		// 0x8
+	char filename[MAX_PATH];		// 0x008
 	uint32 var_10C;
 	uint32 var_110;
 	uint32 var_114;
@@ -75,11 +73,11 @@ typedef struct {
 	MMCKINFO mmckinfo1;				// 0x124
 	MMCKINFO mmckinfo2;				// 0x138
 	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
-	uint32 bufsize;
+	uint32 bufsize;					// 0x150
 	uint32 playpos;					// 0x154
 	uint32 var_158;
 	uint32 var_15C;
-	uint32 var_160;
+	uint32 stopped;					// 0x160
 	uint32 var_164;
 	uint32 var_168;
 } rct_sound_channel;
@@ -103,7 +101,7 @@ typedef struct {
 	sint16 sound2_volume;	// 0x36
 	sint16 sound2_pan;		// 0x38
 	uint16 sound2_freq;		// 0x3A
-
+	// added to openrct2:
 	void* sound1_channel;
 	void* sound2_channel;
 } rct_vehicle_sound;
@@ -140,8 +138,8 @@ typedef struct {
 } rct_music_info2;
 
 typedef struct {
-	uint8 var_0;
-	uint8 pad_1[0x7];
+	uint32 var_0;
+	uint32 var_4;
 	uint8 pathid;	//0x8
 	uint8 var_9;
 } rct_music_info3;
@@ -151,53 +149,72 @@ extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 extern void* gMusicChannels[4];
 
-int get_dsound_devices();
-int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
 void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
-int audio_release();
-MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
-MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
-MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
+int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
 int sub_40153B(int channel);
 int sub_4015E7(int channel);
-void sub_401AF3(int channel, const char* filename, int a3, int a4);
-int sub_401B63(int channel);
-void sub_6BC6D8();
+int sound_channel_load_file(int channel, const char* filename, int offset);
+int mmio_open_channel(int channel, char* filename, LONG offset);
+int audio_create_timer();
 int audio_remove_timer();
-void audio_close();
-LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
-int unmap_sound_effects();
-int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
-int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
-int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
-int sound_is_playing(rct_sound* sound);
-int sound_set_frequency(rct_sound* sound, int frequency);
-int sound_set_pan(rct_sound* sound, int pan);
-int sound_set_volume(rct_sound* sound, int volume);
+int sound_channel_load_file2(int channel, const char* filename, int offset);
 int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
+int sound_channel_stop(int channel);
 int sound_channel_set_frequency(int channel, int frequency);
 int sound_channel_set_pan(int channel, int pan);
 int sound_channel_set_volume(int channel, int volume);
-int sound_channel_load_file2(int channel, const char* filename, int offset);
-int sound_channel_load_file(int channel, const char* filename, int offset);
-void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
+void sub_401AF3(int channel, const char* filename, int a3, int a4);
+int sub_401B46(int channel);
+int sound_channel_is_playing(int channel);
+int audio_release();
+int map_sound_effects(const char* filename);
+int unmap_sound_effects();
+int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
+int sound_duplicate(rct_sound* newsound, rct_sound* sound);
 int sound_stop(rct_sound *sound);
 int sound_stop_all();
-int unmap_file(LPCVOID base);
-int sound_channel_stop(int channel);
-rct_sound* sound_add(rct_sound* sound);
-rct_sound* sound_remove(rct_sound* sound);
+void sound_bufferlost_check();
+int sound_is_playing(rct_sound* sound);
+int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
+int sound_set_frequency(rct_sound* sound, int frequency);
+int sound_set_pan(rct_sound* sound, int pan);
+int sound_set_volume(rct_sound* sound, int volume);
+int sound_load3dparameters();
+int sound_load3dposition();
+BOOL CALLBACK dsound_enum_callback_count(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
+int dsound_count_devices();
+BOOL CALLBACK dsound_enum_callback(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
+int sound_effect_loadvars(rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize);
+int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size);
 rct_sound* sound_begin();
 rct_sound* sound_next(rct_sound* sound);
-void pause_sounds();
+rct_sound* sound_add(rct_sound* sound);
+rct_sound* sound_remove(rct_sound* sound);
+int sound_bufferlost_restore(rct_sound* sound);
+rct_sound_effect* sound_get_effect(uint16 sound_id);
+MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
+MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
+MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
+LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
+int unmap_file(LPCVOID base);
+int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
+int get_dsound_devices();
+int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
 void stop_completed_sounds();
+void start_title_music();
 void stop_other_sounds();
-void stop_vehicle_sounds();
 void stop_ride_music();
 void stop_crowd_sound();
 void stop_title_music();
-void start_title_music();
+void audio_init1();
+void audio_init2(int device);
+void audio_close();
+void pause_sounds();
 void unpause_sounds();
+void stop_vehicle_sounds();
+void sub_6BC348();
+void sub_6BC6D8();
 
 // 0x009AF59C probably does the same job
 // once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
