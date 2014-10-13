@@ -79,6 +79,8 @@ static void* window_text_input_events[] = {
 	window_text_input_emptysub
 };
 
+char test_text[100] = { 0 };
+
 void window_text_input_open(){
 	window_close_by_id(113, 0);
 
@@ -86,6 +88,7 @@ void window_text_input_open(){
 	w->frame_no = 0;
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << 2);
+	osinterface_start_text_input(test_text, 100);
 	window_init_scroll_widgets(w);
 	w->colours[0] = 7;
 	w->colours[1] = 7;
@@ -104,10 +107,11 @@ static void window_text_input_mouseup(){
 
 	switch (widgetIndex){
 	case WIDX_CLOSE:
+		osinterface_stop_text_input();
 		window_close(w);
 	}
 }
-char test_text[100] = { 0 };
+
 /**
 *
 *  rct2: 0x006E3A9F
@@ -131,20 +135,11 @@ static void window_text_input_text(int key, rct_window* w){
 
 	int text = key;
 	char new_char = osinterface_scancode_to_rct_keycode(0xFF&key);
-	// If the shift key is held
-	if (!(key & 0x100)) new_char = tolower(new_char);
-	
-	if (new_char == '\b'){
-		if (w->frame_no != 0)
-			test_text[--w->frame_no] = '\0';
-	}
-	else if (new_char == '\r'){
+	// If the return button is pressed stop text input
+	if (new_char == '\r'){
+		osinterface_stop_text_input();
 		window_close(w);
 	}
-	else if (isprint(new_char)){
-		if (w->frame_no != 100)
-			test_text[w->frame_no++] = new_char;
-	}
-		
+	
 	window_invalidate(w);
 }

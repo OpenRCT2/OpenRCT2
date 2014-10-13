@@ -40,6 +40,9 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
+char* gTextInput;
+int gTextInputLength;
+int text_input_max_length;
 
 static void osinterface_create_window();
 static void osinterface_close_window();
@@ -78,6 +81,18 @@ int osinterface_scancode_to_rct_keycode(int sdl_key){
 	if (keycode >= 'a' && keycode <= 'z')keycode = toupper(keycode);
 
 	return keycode;
+}
+
+void osinterface_start_text_input(char* buffer, int max_length){
+	SDL_StartTextInput();
+	gTextInputLength = 0;
+	text_input_max_length = max_length;
+	gTextInput = buffer;
+}
+
+char* osinterface_stop_text_input(){
+	SDL_StopTextInput();
+	return gTextInput;
 }
 
 /**
@@ -407,6 +422,9 @@ void osinterface_process_messages()
 				//calling it here will save screenshots even while in main menu
 				screenshot_check();
 			}
+			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0){
+				gTextInput[--gTextInputLength] = '\0';
+			}
 			break;
 		case SDL_MULTIGESTURE:
 			if (e.mgesture.numFingers == 2) {
@@ -425,6 +443,15 @@ void osinterface_process_messages()
 					_gestureRadius = 0;
 					handle_shortcut_command(SHORTCUT_ZOOM_VIEW_OUT);
 				}
+			}
+			break;
+
+		case SDL_TEXTINPUT:
+			if (gTextInputLength < text_input_max_length){
+				if (!(e.text.text[0] & 0x80))
+					gTextInput[gTextInputLength++] = *e.text.text;
+				else if (!(e.text.text[0] & 0x20))
+					gTextInput[gTextInputLength++] = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);			
 			}
 			break;
 		default:
