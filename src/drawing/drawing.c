@@ -153,6 +153,75 @@ void gfx_transpose_palette(int pal, unsigned char product)
 }
 
 /**
+*
+*  rct2: 0x006EC9CE
+* @param x (ax)
+* @param y (cx)
+* @param base_height (di)
+* @param clearance_height (si)
+*/
+void gfx_invalidate_scrollingtext(int x, int y, int base_height, int clearance_height)
+{
+	x += 16;
+	y += 16;
+	int left, top, right, bottom;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+		case 0:
+			left = (-x + y) - 32;
+			right = (-x + y) + 32;
+			top = ((y + x) / 2) - 32 - clearance_height;
+			bottom = ((y + x) / 2) + 32 - base_height;
+			break;
+		case 1:
+			left = (-x - y) - 32;
+			right = (-x - y) + 32;
+			top = ((y - x) / 2) - 32 - clearance_height;
+			bottom = ((y - x) / 2) + 32 - base_height;
+			break;
+		case 2:
+			left = (x - y) - 32;
+			right = (x - y) + 32;
+			top = ((-y - x) / 2) - 32 - clearance_height;
+			bottom = ((-y - x) / 2) + 32 - base_height;
+			break;
+		case 3:
+			left = (x + y) - 32;
+			right = (x + y) + 32;
+			top = ((-y + x) / 2) - 32 - clearance_height;
+			bottom = ((-y + x) / 2) + 32 - base_height;
+			break;
+	}
+	rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*);
+	while (*viewport_p) {
+		rct_viewport* viewport = *viewport_p;
+		if (viewport->zoom < 1) {
+			if (right > viewport->view_x && bottom > viewport->view_y && left < viewport->view_x + viewport->view_width) {
+				if (left < viewport->view_x) {
+					left = viewport->view_x;
+				}
+				if (right > viewport->view_x + viewport->view_width) {
+					right = viewport->view_x + viewport->view_width;
+				}
+				if (top < viewport->view_y + viewport->view_height) {
+					if (top < viewport->view_y) {
+						top = viewport->view_y;
+					}
+					if (bottom > viewport->view_y + viewport->view_height) {
+						bottom = viewport->view_y + viewport->view_height;
+					}
+					left = ((left - viewport->view_x) >> viewport->zoom) + viewport->x;
+					top = ((top - viewport->view_y) >> viewport->zoom) + viewport->y;
+					right = ((right - viewport->view_x) >> viewport->zoom) + viewport->x;
+					bottom = ((bottom - viewport->view_y) >> viewport->zoom) + viewport->y;
+					gfx_set_dirty_blocks(left, top, right, bottom);
+				}
+			}
+		}
+		viewport_p++;
+	}
+}
+
+/**
  *
  *  rct2: 0x006ED7E5
  */
