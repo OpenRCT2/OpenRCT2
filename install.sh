@@ -51,7 +51,7 @@ if [[ `uname` == "Darwin" ]]; then
 
     mingw_name=mingw-w32-bin_i686-darwin
     mingw_tar=$mingw_name"_20130531".tar.bz2
-    mingw_path=/usr/local/$mingw_name/bin
+    mingw_path=/usr/local/$mingw_name
     if [[ ! -f $cachedir/$mingw_tar ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
@@ -62,7 +62,7 @@ if [[ `uname` == "Darwin" ]]; then
         popd
 
         echo "Extracting contents of $mingw_tar to $mingw_path"
-        echo "Don't forget to add $mingw_path to your PATH variable!"
+        echo "Don't forget to add $mingw_path/bin to your PATH variable!"
         sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
 
         pushd /usr/local
