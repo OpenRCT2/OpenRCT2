@@ -397,7 +397,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 static void window_game_top_toolbar_dropdown()
 {
 	short widgetIndex, dropdownIndex;
-	rct_window* w;
+	rct_window* w, *mainWindow;
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
@@ -416,7 +416,6 @@ static void window_game_top_toolbar_dropdown()
 			break;
 		case DDIDX_OPTIONS:		// options
 			window_options_open();
-			//RCT2_CALLPROC_EBPSAFE(0x006BAC5B);
 			break;
 		case DDIDX_SCREENSHOT:		// screenshot
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
@@ -425,46 +424,48 @@ static void window_game_top_toolbar_dropdown()
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		}
+		break;
 	case WIDX_VIEW_MENU:
 		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
-		w = window_get_main();
-		if (w){
+		mainWindow = window_get_main();
+		if (mainWindow) {
 			switch (dropdownIndex){
 			case DDIDX_UNDERGROUND_INSIDE:
-				w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
 				break;
 			case DDIDX_HIDE_BASE:
-				w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
 				break;
 			case DDIDX_HIDE_VERTICAL:
-				w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
 				break;
 			case DDIDX_SEETHROUGH_RIDES:
-				w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
 				break;
 			case DDIDX_SEETHROUGH_SCENARY:
-				w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
 				break;
 			case DDIDX_INVISIBLE_SUPPORTS:
-				w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
 				break;
 			case DDIDX_INVISIBLE_PEEPS:
-				w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
 				break;
 			case DDIDX_LAND_HEIGHTS:
-				w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
 				break;
 			case DDIDX_TRACK_HEIGHTS:
-				w->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
 				break;
 			case DDIDX_PATH_HEIGHTS:
-				w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
+				mainWindow->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
 				break;
 			default:
 				return;
 			}
 			window_invalidate(w);
 		}
+		break;
 	case WIDX_MAP:
 		if (dropdownIndex == -1)
 			dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
