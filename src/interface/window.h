@@ -390,7 +390,8 @@ enum {
 	WC_CLEAR_SCENERY = 50,
 	WC_MANAGE_TRACK_DESIGN = 89,
 	WC_CHEATS = 110,
-	WC_RESEARCH = 111
+	WC_RESEARCH = 111,
+	WC_VIEWPORT = 112
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -500,6 +501,7 @@ void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
+void window_viewport_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
