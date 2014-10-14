@@ -75,7 +75,7 @@ A third-party offers [downloadable precompiled builds](https://openrct2.com/down
 ## 2.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Download the [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should resemble ```\OpenRCT2\sdl\include\```.
+2. Download the [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should resemble ```\OpenRCT2\lib\sdl\include\```.
 3. Open the solution in the projects directory (**openrct2.sln**) with Visual Studio.
 4. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
 5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
