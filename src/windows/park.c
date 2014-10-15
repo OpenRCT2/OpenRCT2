@@ -24,6 +24,7 @@
 #include "../game.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../input.h"
 #include "../interface/graph.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -653,7 +654,7 @@ static void window_park_entrance_close()
 
 	window_get_register(w);
 		
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 }
@@ -1060,7 +1061,7 @@ void window_park_rating_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 		tool_cancel();
 
@@ -1194,9 +1195,9 @@ void window_park_guests_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
-	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
-		tool_cancel();
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+			tool_cancel();
 
 	window->viewport = NULL;
 	window->page = WINDOW_PARK_PAGE_GUESTS;
@@ -1600,7 +1601,7 @@ void window_park_objective_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1763,7 +1764,7 @@ void window_park_awards_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1891,7 +1892,7 @@ static void window_park_set_page(rct_window *w, int page)
 {
 	int listen;
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 

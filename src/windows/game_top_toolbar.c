@@ -21,6 +21,7 @@
 #include <string.h>
 #include "../addresses.h"
 #include "../game.h"
+#include "../input.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -221,41 +222,41 @@ static void window_game_top_toolbar_mouseup()
 			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_CLEAR_SCENERY:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
 			tool_cancel();
 		} else {
 			show_gridlines();
 			tool_set(w, WIDX_CLEAR_SCENERY, 12);
-			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
 			window_clear_scenery_open();
 		}
 		break;
 	case WIDX_LAND:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
 			tool_cancel();
 		} else {
 			show_gridlines();
 			tool_set(w, WIDX_LAND, 18);
-			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 			window_land_open();
 		}
 		break;
 	case WIDX_WATER:
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
 			tool_cancel();
 		} else {
 			show_gridlines();
 			tool_set(w, WIDX_WATER, 19);
-			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 			window_water_open();
 		}
 		break;
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
-			RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 			window_scenery_open();
 		}
 		break;

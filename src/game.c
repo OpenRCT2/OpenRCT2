@@ -189,7 +189,7 @@ void update_palette_effects()
 
 void game_update()
 {
-	int eax, tmp;
+	int i, numUpdates, tmp;
 
 	// Handles picked-up peep and rain redraw
 	RCT2_CALLPROC_EBPSAFE(0x006843DC);
@@ -199,51 +199,55 @@ void game_update()
 	screenshot_check();
 	game_handle_keyboard_input();
 
-	// do game logic
-	eax = RCT2_GLOBAL(0x009DE588, uint16) / 31;
-	if (eax == 0)
-		eax = 1;
-	if (eax > 4)
-		eax = 4;
+	// Determine how many times we need to update the game
+	if (gGameSpeed > 1) {
+		numUpdates = 1 << (gGameSpeed - 1);
+	} else {
+		numUpdates = RCT2_GLOBAL(0x009DE588, uint16) / 31;
+		numUpdates = clamp(1, numUpdates, 4);
+	}
 
-	if (gGameSpeed > 1)
-		eax = 1 << (gGameSpeed - 1);
-
+	// Update the game one or more times
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
-		for (; eax > 0; eax--) {
+		for (i = 0; i < numUpdates; i++) {
 			game_logic_update();
-			start_title_music(); //RCT2_CALLPROC_EBPSAFE(0x006BD0F8); // play title screen music
+			start_title_music();
 
-			/*
-			if (rctmem->dword_009E2D74 == 1) {
-			rctmem->dword_009E2D74 = 0;
-			break;
+			if (gGameSpeed > 1)
+				continue;
+
+			// Possibly smooths viewport scrolling, I don't see a difference though
+			if (RCT2_GLOBAL(0x009E2D74, uint32) == 1) {
+				RCT2_GLOBAL(0x009E2D74, uint32) = 0;
+				break;
 			} else {
-			if (rctmem->input_state != INPUT_STATE_WIDGET_RESET && rctmem->input_state != INPUT_STATE_WIDGET_NORMAL)
-			break;
-
-			tmp = rctmem->dword_009DE518 & 0x80;
-			rctmem->dword_009DE518 &= ~0x80;
-			if (tmp)
-			break;
+				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESET ||
+					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_NORMAL
+				) {
+					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32)) {
+						RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+						break;
+					}
+				} else {
+					break;
+				}
 			}
-			*/
 		}
 	}
 
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~0x80;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x8000;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x02;
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & 0x01;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x01;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	RCT2_GLOBAL(0x009AC861, uint16) ^= (1 << 15);
+	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 1);
+	tmp = RCT2_GLOBAL(0x009AC861, uint16) & (1 << 0);
+	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 0);
 	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= 0x02;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x08;
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & 0x04;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x04;
+		RCT2_GLOBAL(0x009AC861, uint16) |= (1 << 1);
+	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 3);
+	tmp = RCT2_GLOBAL(0x009AC861, uint16) & (1 << 2);
+	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 2);
 	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= 0x04;
+		RCT2_GLOBAL(0x009AC861, uint16) |= (1 << 2);
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
 
@@ -799,9 +803,9 @@ void game_load_or_quit_no_save_prompt()
 			load_game();
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
-		if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
 			RCT2_CALLPROC_EBPSAFE(0x0040705E);
-			RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 5);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		title_load();
 		rct2_endupdate();

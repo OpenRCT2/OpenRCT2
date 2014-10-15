@@ -21,6 +21,7 @@
 #include <string.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -321,7 +322,7 @@ void news_item_open_subject(int type, int subject)
 				if (tool_set(window, 9, 0)){
 					RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
 				}
-				RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 				window_scenery_open();
 			}
 		}

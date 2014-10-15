@@ -20,12 +20,14 @@
 
 #include <string.h>
 #include "../addresses.h"
-#include "../sprites.h"
 #include "../localisation/localisation.h"
+#include "../input.h"
 #include "../interface/widget.h"
-#include "../interface/window.h"
-#include "../windows/scenery.h"
 #include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../sprites.h"
+#include "../windows/scenery.h"
+
 
 enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -190,7 +192,7 @@ static void window_map_close()
 	window_get_register(w);
 
 	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
-	if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == w->number) {
 		tool_cancel();
@@ -472,7 +474,7 @@ static void window_map_invalidate()
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
 		// scenario editor: build park entrance selected, show rotate button
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_BUILD_PARK_ENTRANCE) {
 			w->widgets[WIDX_ROTATE_90].type = WWT_FLATBTN;
@@ -481,7 +483,7 @@ static void window_map_invalidate()
 		// always show set land rights button
 		w->widgets[WIDX_SET_LAND_RIGHTS].type = WWT_FLATBTN;
 
-		if ((RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) &&
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP) {
 
 			// if not in set land rights mode: show the default scenario editor buttons

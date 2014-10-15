@@ -22,12 +22,13 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
-#include "../sprites.h"
-#include "../localisation/localisation.h"
-#include "../ride/track.h"
+#include "../input.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../ride/track.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -436,7 +437,7 @@ void window_track_place_open()
 	w->colours[1] = 24;
 	w->colours[2] = 24;
 	tool_set(w, 6, 12);
-	RCT2_GLOBAL(0x009DE518, uint32) |= 6;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= 6;
 	window_push_others_right(w);
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
@@ -501,7 +502,7 @@ static void window_track_place_mouseup()
  */
 static void window_track_place_update(rct_window *w)
 {
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }

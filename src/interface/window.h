@@ -517,6 +517,8 @@ void window_staff_list_init_vars();
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
 
+void sub_6EA73F();
+
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
 		__asm mov w, esi

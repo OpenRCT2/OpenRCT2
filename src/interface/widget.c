@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include "../addresses.h"
 #include "../drawing/drawing.h"
+#include "../input.h"
 #include "../sprites.h"
 #include "widget.h"
 #include "window.h"
@@ -971,7 +972,7 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 			return 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
 			return 0;
-		if (!(RCT2_GLOBAL(0x009DE518, uint32) & 1))
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_WIDGET_PRESSED))
 			return 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
 			return 1;
@@ -992,7 +993,7 @@ int widget_is_highlighted(rct_window *w, int widgetIndex)
 
 int widget_is_active_tool(rct_window *w, int widgetIndex)
 {
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
 		return 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
 		return 0;

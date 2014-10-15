@@ -263,7 +263,7 @@ void title_update()
 		start_title_music();//title_play_music();
 	}
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~0x80;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
 	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x8000;
 	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x02;
 	tmp = RCT2_GLOBAL(0x009AC861, uint16) & 0x01;

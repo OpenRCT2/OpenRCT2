@@ -21,6 +21,7 @@
 #include <string.h>
 #include "../addresses.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -1151,7 +1152,7 @@ void window_ride_main_open(int rideIndex)
 		w->ride.var_482 = -1;
 	}
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
 		) {
@@ -1182,7 +1183,7 @@ static void window_ride_set_page(rct_window *w, int page)
 {
 	int listen;
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -3433,7 +3434,7 @@ static void window_ride_colour_close()
 
 	window_get_register(w);
 
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)

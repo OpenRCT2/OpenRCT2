@@ -19,11 +19,12 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "../world/map.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
+#include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../world/map.h"
 #include "dropdown.h"
 
 enum WINDOW_LAND_WIDGET_IDX {
@@ -389,7 +390,7 @@ static void window_land_paint()
  */
 static int window_land_should_close()
 {
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return 1;

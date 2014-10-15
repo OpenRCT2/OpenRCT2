@@ -24,6 +24,7 @@
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -445,7 +446,7 @@ bool window_scenery_is_scenery_tool_active() {
 	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
 	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, rct_windownumber);
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
 			return true;
 

@@ -23,6 +23,7 @@
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../drawing/drawing.h"
+#include "../input.h"
 #include "../platform/osinterface.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -315,7 +316,7 @@ static void window_all_wheel_input()
 		return;
 
 	// Check window cursor is over
-	if (!(RCT2_GLOBAL(0x009DE518, uint32) & (1 << 5))) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5)) {
 		w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
@@ -1439,7 +1440,7 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
  */
 int tool_set(rct_window *w, int widgetIndex, int tool)
 {
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
 		if (
 			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
@@ -1450,8 +1451,8 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 		}
 	}
 
-	RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 3);
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 6);
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_TOOL_ACTIVE;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_6;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
@@ -1467,8 +1468,8 @@ void tool_cancel()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(0x009DE518, uint32) & (1 << 3)) {
-		RCT2_GLOBAL(0x009DE518, uint32) &= ~(1 << 3);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_TOOL_ACTIVE;
 
 		// 
 		RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
@@ -1697,4 +1698,41 @@ void window_close_construction_windows()
 	window_close_by_id(WC_FOOTPATH, 0);
 	window_close_by_id(WC_TRACK_DESIGN_LIST, 0);
 	window_close_by_id(WC_TRACK_DESIGN_PLACE, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006EA776
+ */
+void window_invalidate_pressed_image_buttons(rct_window *w)
+{
+	int widgetIndex;
+	rct_widget *widget;
+
+	widgetIndex = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+		if (widget->type != WWT_5 && widget->type != WWT_IMGBTN)
+			continue;
+
+		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+			gfx_set_dirty_blocks(w->x, w->y, w->x + w->width, w->y + w->height);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006EA73F
+ */
+void sub_6EA73F()
+{
+	rct_window *w;
+
+	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+		RCT2_GLOBAL(0x01423604, uint32)++;
+
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+		window_update_scroll_widgets(w);
+		window_invalidate_pressed_image_buttons(w);
+		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	}
 }

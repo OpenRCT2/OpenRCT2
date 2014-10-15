@@ -21,6 +21,7 @@
 #include <windows.h>
 #include <memory.h>
 #include "../addresses.h"
+#include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -137,9 +138,9 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~((1 << 2) | (1 << 1));
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_1 | INPUT_FLAG_2);
 	if (flags & 0x80)
-		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 1);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_1;
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
@@ -206,9 +207,9 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(0x009DE518, uint32) &= ~((1 << 2) | (1 << 1));
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_1 | INPUT_FLAG_2);
 	if (flags & 0x80)
-		RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 1);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_1;
 
 	// Close existing dropdown
 	window_dropdown_close();
