@@ -83,11 +83,10 @@ extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
 extern unsigned int gLastKeyPressed;
-extern char* gTextInput;
-extern int gTextInputLength;
+extern int gTextInputCursorPosition;
 
 void osinterface_start_text_input(char* buffer, int max_length);
-char* osinterface_stop_text_input();
+void osinterface_stop_text_input();
 void osinterface_init();
 void osinterface_process_messages();
 void osinterface_draw();

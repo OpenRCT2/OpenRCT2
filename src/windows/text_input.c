@@ -26,7 +26,7 @@
 #include "../localisation/localisation.h"
 
 #define WW 250
-#define WH 50
+#define WH 90
 #define MAX_TEXTINPUT 32
 
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
@@ -47,6 +47,7 @@ static void window_text_input_emptysub(){}
 static void window_text_input_mouseup();
 static void window_text_input_paint();
 static void window_text_input_text(int key, rct_window* w);
+static void window_text_input_update(rct_window* w);
 
 //0x9A3F7C
 static void* window_text_input_events[] = {
@@ -56,7 +57,7 @@ static void* window_text_input_events[] = {
 	window_text_input_emptysub,
 	window_text_input_emptysub,
 	window_text_input_emptysub,
-	window_text_input_emptysub,
+	window_text_input_update,
 	window_text_input_emptysub,
 	window_text_input_emptysub,
 	window_text_input_emptysub,
@@ -89,7 +90,15 @@ char current_mode = 0;
 void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, uint16 description, rct_string_id string_id, uint32 args){
 	window_close_by_id(113, 0);
 
-	rct_window* w = window_create_auto_pos(WW, WH, (uint32*)window_text_input_events, 113, 0);
+	rct_window* w = window_create(
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - WW / 2,
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - WH / 2, 
+		WW, 
+		WH, 
+		(uint32*)window_text_input_events, 
+		113, 
+		0);
+
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << 2);
 
@@ -105,7 +114,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, u
 	window_init_scroll_widgets(w);
 	w->colours[0] = 7;
 	w->colours[1] = 7;
-	w->colours[2] = 7;
+	w->colours[2] = 1;
 }
 
 /**
@@ -139,14 +148,32 @@ static void window_text_input_paint(){
 
 	window_draw_widgets(w, dpi);
 
-	int x = w->x + 4;
-	int y = w->y + 15;
+	int y = w->y + 25;
 	
-	gfx_draw_string_left(dpi, string_description, 0, w->colours[1], x, y);
+	gfx_draw_string_centred(dpi, string_description, w->x + 4 + WW / 2, y, w->colours[1], 0);
 
-	y += 15;
+	y += 25;
 
-	gfx_draw_string(dpi, text_input, w->colours[1], x, y);
+	gfx_fill_rect_inset(dpi, w->x + 4, y, w->x + WW - 4, y + 12, w->colours[1], 0x60);
+
+	y += 1;
+	gfx_draw_string(dpi, text_input, w->colours[2], w->x + 6, y);
+
+	char temp_string[32] = { 0 };
+	memcpy(temp_string, text_input, gTextInputCursorPosition);
+	
+	int x = w->x + 7 + gfx_get_string_width(temp_string);
+
+	int width = 6;
+	if (gTextInputCursorPosition < strlen(text_input)){
+		temp_string[1] = '\0';
+		temp_string[0] = text_input[gTextInputCursorPosition];
+		width = max(gfx_get_string_width(temp_string) - 2, 4);
+	}
+	y += 9;
+	if ((w->frame_no > 15) && current_mode){
+		gfx_fill_rect(dpi, x, y, x + width, y, w->colours[1]);
+	}
 }
 
 
@@ -166,5 +193,12 @@ static void window_text_input_text(int key, rct_window* w){
 		RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
 	}
 	
+	window_invalidate(w);
+}
+
+void window_text_input_update(rct_window* w)
+{
+	w->frame_no++;
+	if (w->frame_no > 30) w->frame_no = 0;
 	window_invalidate(w);
 }

@@ -1222,6 +1222,11 @@ void game_handle_key_scroll()
 	if (mainWindow->viewport == NULL)
 		return;
 
+	rct_window *textWindow;
+
+	textWindow = window_find_by_id(113, 0);
+	if (textWindow) return;
+
 	scrollX = 0;
 	scrollY = 0;
 

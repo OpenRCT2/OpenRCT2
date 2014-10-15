@@ -43,6 +43,7 @@ unsigned int gLastKeyPressed;
 char* gTextInput;
 int gTextInputLength;
 int text_input_max_length;
+int gTextInputCursorPosition = 0;
 
 static void osinterface_create_window();
 static void osinterface_close_window();
@@ -90,9 +91,9 @@ void osinterface_start_text_input(char* buffer, int max_length){
 	gTextInput = buffer;
 }
 
-char* osinterface_stop_text_input(){
+void osinterface_stop_text_input(){
 	SDL_StopTextInput();
-	return gTextInput;
+	gTextInput = NULL;
 }
 
 /**
@@ -422,8 +423,23 @@ void osinterface_process_messages()
 				//calling it here will save screenshots even while in main menu
 				screenshot_check();
 			}
-			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0){
-				gTextInput[--gTextInputLength] = '\0';
+			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition){
+				if (gTextInputCursorPosition != text_input_max_length)
+					memmove(gTextInput + gTextInputCursorPosition - 1, gTextInput + gTextInputCursorPosition, text_input_max_length - gTextInputCursorPosition - 1);
+				gTextInput[gTextInputLength - 1] = '\0';
+				gTextInputCursorPosition--;
+				gTextInputLength--;
+			}
+			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != text_input_max_length){
+				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, text_input_max_length - gTextInputCursorPosition - 1);
+				gTextInput[text_input_max_length - 1] = '\0';
+				gTextInputLength--;
+			}
+			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
+				if (gTextInputCursorPosition) gTextInputCursorPosition--;
+			}
+			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
+				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
 			}
 			break;
 		case SDL_MULTIGESTURE:
@@ -447,11 +463,20 @@ void osinterface_process_messages()
 			break;
 
 		case SDL_TEXTINPUT:
-			if (gTextInputLength < text_input_max_length){
+			if (gTextInputLength < text_input_max_length && gTextInput){
+				char new_char;
 				if (!(e.text.text[0] & 0x80))
-					gTextInput[gTextInputLength++] = *e.text.text;
+					new_char = *e.text.text;
 				else if (!(e.text.text[0] & 0x20))
-					gTextInput[gTextInputLength++] = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);			
+					new_char = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);
+
+				if (gTextInputLength > gTextInputCursorPosition){
+					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, text_input_max_length - gTextInputCursorPosition - 1);
+					gTextInput[gTextInputCursorPosition] = new_char;
+					gTextInputLength++;
+				}
+				else gTextInput[gTextInputLength++] = new_char;
+				gTextInputCursorPosition++;
 			}
 			break;
 		default:
