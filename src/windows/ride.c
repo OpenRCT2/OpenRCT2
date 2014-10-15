@@ -1142,7 +1142,7 @@ rct_window *window_ride_open(int rideIndex)
  * 
  * rct2: 0x006ACC28
  */
-void window_ride_main_open(int rideIndex)
+rct_window *window_ride_main_open(int rideIndex)
 {
 	rct_window *w;
 
@@ -1173,6 +1173,8 @@ void window_ride_main_open(int rideIndex)
 	window_init_scroll_widgets(w);
 	w->ride.view = 0;
 	window_ride_init_viewport(w);
+
+	return w;
 }
 
 /**
@@ -1365,7 +1367,7 @@ static void window_ride_init_viewport(rct_window *w)
  * 
  * rct2: 0x006B4971
  */
-static void window_ride_construct(rct_window *w)
+void window_ride_construct(rct_window *w)
 {
 	int rideIndex = w->number;
 

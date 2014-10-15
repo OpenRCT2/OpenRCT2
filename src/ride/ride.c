@@ -432,11 +432,7 @@ rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *ou
 	return (rct_map_element*)esi;
 }
 
-/**
- *
- * rct2: 0x006B4800
- */
-void ride_construct_new(ride_list_item listItem)
+int ride_create_ride(ride_list_item listItem)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	edx = *((uint16*)&listItem);
@@ -450,27 +446,29 @@ void ride_construct_new(ride_list_item listItem)
 
 	esi = GAME_COMMAND_6;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (ebx == 0x80000000) {
-		return;
-	}
+	return ebx == 0x80000000 ? -1 : edi;
+}
 
-	//Looks like edi became the ride index after the command.
-	eax = edi;
+/**
+ *
+ * rct2: 0x006B4800
+ */
+void ride_construct_new(ride_list_item listItem)
+{
 	rct_window *w;
+	int rideIndex;
 
-	//TODO: replace with window_ride_main_open(eax)
-	// window_ride_main_open(eax);
-	RCT2_CALLFUNC_X(0x006ACC28, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	window_get_register(w);
+	rideIndex = ride_create_ride(listItem);
+	if (rideIndex == -1)
+		return;
 
-	ecx = w->classification;
-	edx = 0x13;
-	ebp = (int)w;
-	//TODO: replace with window_ride_main_mouseup() after ride-window_merge
-	// window_ride_main_mouseup();
-	RCT2_CALLFUNC_X(0x006AF17E, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	rct_window *ride_window = window_find_by_id(w->classification, w->number); //class here
-	window_close(ride_window);
+	// Open construction window
+	// HACK In the original game this created a mouse up event. This has been
+	// replaced with a direct call to the function that gets called.
+	// Eventually should be changed so the ride window does not need to be opened.
+	w = window_ride_main_open(rideIndex);
+	window_ride_construct(w);
+	window_close_by_id(WC_RIDE, rideIndex);
 }
 
 /**
