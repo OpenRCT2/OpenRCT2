@@ -46,11 +46,11 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
-		{ WWT_FRAME, 0, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
-		{ WWT_CAPTION, 0, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
-		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
-		{ WWT_DROPDOWN_BUTTON, 0, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
-		{ WWT_DROPDOWN_BUTTON, 0, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
+		{ WWT_FRAME, 1, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
+		{ WWT_CAPTION, 1, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
+		{ WWT_CLOSEBOX, 1, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
+		{ WWT_DROPDOWN_BUTTON, 1, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
+		{ WWT_DROPDOWN_BUTTON, 1, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
 		{ WIDGETS_END }
 };
 
@@ -136,9 +136,9 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	osinterface_start_text_input(text_input, MAX_TEXTINPUT);
 
 	window_init_scroll_widgets(w);
-	w->colours[0] = 7;
-	w->colours[1] = 7;
-	w->colours[2] = 1;
+	w->colours[0] = call_w->colours[0];
+	w->colours[1] = call_w->colours[1];
+	w->colours[2] = call_w->colours[2];
 }
 
 /**
@@ -192,7 +192,7 @@ static void window_text_input_paint(){
 	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 12, w->colours[1], 0x60);
 
 	y += 1;
-	gfx_draw_string(dpi, text_input, w->colours[2], w->x + 12, y);
+	gfx_draw_string(dpi, text_input, w->colours[1], w->x + 12, y);
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[32] = { 0 }; 

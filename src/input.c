@@ -1631,8 +1631,7 @@ void game_handle_keyboard_input()
 		else{
 			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL){
-				void(*fp)(int, rct_window*) = (void*)(int)w->event_handlers[WE_TEXT_INPUT];
-				(*fp)(key,w);
+				((void(*)(int, rct_window*))w->event_handlers[WE_TEXT_INPUT])(key,w);
 			}
 			else{
 				handle_shortcut(key);
