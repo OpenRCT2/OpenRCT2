@@ -1129,10 +1129,8 @@ void window_staff_overview_tool_down(){
 			return;
 		}
 
-		int _edx = dest_z >> 3;
-		_edx &= 0xFFFF00FF;
-		_edx |= (_edx & 0xFF) << 8;
-		_edx += 0x100;
+		int _edx;
+		_edx = (dest_z / 8) | (((dest_z / 8) + 1) << 8);
 		int flags = RCT2_CALLPROC_X(0x68B93A, tile_x, 0xF, tile_y, _edx, (int)w, 0, 0);
 
 		if (flags & 0x100){
