@@ -40,6 +40,10 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
+char* gTextInput;
+int gTextInputLength;
+int gTextInputMaxLength;
+int gTextInputCursorPosition = 0;
 
 static void osinterface_create_window();
 static void osinterface_close_window();
@@ -78,6 +82,19 @@ int osinterface_scancode_to_rct_keycode(int sdl_key){
 	if (keycode >= 'a' && keycode <= 'z')keycode = toupper(keycode);
 
 	return keycode;
+}
+
+void osinterface_start_text_input(char* buffer, int max_length){
+	SDL_StartTextInput();
+	gTextInputMaxLength = max_length - 1;
+	gTextInput = buffer;
+	gTextInputCursorPosition = strnlen(gTextInput, max_length);
+	gTextInputLength = gTextInputCursorPosition;
+}
+
+void osinterface_stop_text_input(){
+	SDL_StopTextInput();
+	gTextInput = NULL;
 }
 
 /**
@@ -407,6 +424,36 @@ void osinterface_process_messages()
 				//calling it here will save screenshots even while in main menu
 				screenshot_check();
 			}
+
+			// Text input
+
+			// If backspace and we have input text with a cursor position none zero
+			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition){
+				// When at max length don't shift the data left
+				// as it would buffer overflow.
+				if (gTextInputCursorPosition != gTextInputMaxLength)
+					memmove(gTextInput + gTextInputCursorPosition - 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
+				gTextInput[gTextInputLength - 1] = '\0';
+				gTextInputCursorPosition--;
+				gTextInputLength--;
+			}
+			if (e.key.keysym.sym == SDLK_END){
+				gTextInputCursorPosition = gTextInputLength;
+			}
+			if (e.key.keysym.sym == SDLK_HOME){
+				gTextInputCursorPosition = 0;
+			}
+			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != gTextInputLength){
+				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, gTextInputMaxLength - gTextInputCursorPosition - 1);
+				gTextInput[gTextInputMaxLength - 1] = '\0';
+				gTextInputLength--;
+			}
+			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
+				if (gTextInputCursorPosition) gTextInputCursorPosition--;
+			}
+			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
+				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
+			}
 			break;
 		case SDL_MULTIGESTURE:
 			if (e.mgesture.numFingers == 2) {
@@ -425,6 +472,27 @@ void osinterface_process_messages()
 					_gestureRadius = 0;
 					handle_shortcut_command(SHORTCUT_ZOOM_VIEW_OUT);
 				}
+			}
+			break;
+
+		case SDL_TEXTINPUT:
+			if (gTextInputLength < gTextInputMaxLength && gTextInput){
+				// Convert the utf-8 code into rct ascii
+				char new_char;
+				if (!(e.text.text[0] & 0x80))
+					new_char = *e.text.text;
+				else if (!(e.text.text[0] & 0x20))
+					new_char = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);
+
+				// If inserting in center of string make space for new letter
+				if (gTextInputLength > gTextInputCursorPosition){
+					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
+					gTextInput[gTextInputCursorPosition] = new_char;
+					gTextInputLength++;
+				}
+				else gTextInput[gTextInputLength++] = new_char;
+
+				gTextInputCursorPosition++;
 			}
 			break;
 		default:

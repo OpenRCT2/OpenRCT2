@@ -631,7 +631,7 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_RENAME:
-		window_show_textinput(w, (int)widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx);
+		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id);
 		break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);

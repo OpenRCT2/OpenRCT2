@@ -1222,6 +1222,11 @@ void game_handle_key_scroll()
 	if (mainWindow->viewport == NULL)
 		return;
 
+	rct_window *textWindow;
+
+	textWindow = window_find_by_class(WC_TEXTINPUT);
+	if (textWindow) return;
+
 	scrollX = 0;
 	scrollY = 0;
 
@@ -1623,8 +1628,16 @@ void game_handle_keyboard_input()
 			set_shortcut(key);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1)
 			tutorial_stop();
-		else
-			handle_shortcut(key);
+		else{
+			w = window_find_by_class(WC_TEXTINPUT);
+			if (w != NULL){
+				((void(*)(int, rct_window*))w->event_handlers[WE_TEXT_INPUT])(key,w);
+			}
+			else{
+				handle_shortcut(key);
+			}
+		}
+			
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)

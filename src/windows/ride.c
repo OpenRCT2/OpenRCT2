@@ -1401,7 +1401,7 @@ static void window_ride_rename(rct_window *w)
 
 	ride = GET_RIDE(w->number);
 	RCT2_GLOBAL(0x013CE962, uint32) = ride->name_arguments;
-	window_show_textinput(w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, ride->name);
+	window_text_input_open(w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, ride->name, ride->name_arguments);
 }
 
 /**

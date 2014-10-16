@@ -391,7 +391,8 @@ enum {
 	WC_MANAGE_TRACK_DESIGN = 89,
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
-	WC_VIEWPORT = 112
+	WC_VIEWPORT = 112,
+	WC_TEXTINPUT = 113
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -509,6 +510,7 @@ void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
+void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args);
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
@@ -539,9 +541,9 @@ void sub_6EA73F();
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 	
-	#define window_text_input_get_registers(w, widgetIndex, _cl, text)					\
+	#define window_text_input_get_registers(w, widgetIndex, result, text)					\
 		__asm mov widgetIndex, dx														\
-		__asm mov _cl, cl																\
+		__asm mov result, cl																\
 		__asm mov w, esi																\
 		__asm mov text, edi
 
@@ -578,8 +580,8 @@ void sub_6EA73F();
 		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
-	#define window_text_input_get_registers(w, widgetIndex, _cl, text)					\
-		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (_cl) );								\
+	#define window_text_input_get_registers(w, widgetIndex, result, text)					\
+		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (result) );								\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
 		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );

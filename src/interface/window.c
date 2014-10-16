@@ -1219,6 +1219,7 @@ void window_zoom_out(rct_window *w)
 /**
  * 
  *  rct2: 0x006EE308
+ * DEPRECIATED please use the new text_input window.
  */
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value)
 {
