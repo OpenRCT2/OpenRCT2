@@ -201,8 +201,10 @@ Channel::Channel()
 	resampler = 0;
 	SetRate(1);
 	SetVolume(SDL_MIX_MAXVOLUME);
+	oldvolume = 0;
 	SetPan(0.5f);
 	done = true;
+	stopping = false;
 }
 
 Channel::~Channel()
@@ -287,7 +289,8 @@ void Mixer::Close()
 {
 	Lock();
 	while (channels.begin() != channels.end()) {
-		Stop(*(*channels.begin()));
+		delete *(channels.begin());
+		channels.erase(channels.begin());
 	}
 	Unlock();
 	SDL_CloseAudioDevice(deviceid);
@@ -311,6 +314,7 @@ Channel* Mixer::Play(Stream& stream, int loop, bool deleteondone)
 	if (newchannel) {
 		newchannel->Play(stream, loop);
 		newchannel->deleteondone = deleteondone;
+		newchannel->stopping = false;
 		channels.push_back(newchannel);
 	}
 	Unlock();
@@ -320,8 +324,7 @@ Channel* Mixer::Play(Stream& stream, int loop, bool deleteondone)
 void Mixer::Stop(Channel& channel)
 {
 	Lock();
-	channels.remove(&channel);
-	delete &channel;
+	channel.stopping = true;
 	Unlock();
 }
 
@@ -346,7 +349,7 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 	std::list<Channel*>::iterator i = mixer->channels.begin();
 	while (i != mixer->channels.end()) {
 		mixer->MixChannel(*(*i), stream, length);
-		if ((*i)->done && (*i)->deleteondone) {
+		if (((*i)->done && (*i)->deleteondone) || (*i)->stopping) {
 			delete (*i);
 			i = mixer->channels.erase(i);
 		} else {
@@ -358,9 +361,6 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
 	if (channel.stream && !channel.done) {
-		if (!channel.resampler) {
-			channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
-		}
 		AudioFormat channelformat = *channel.stream->Format();
 		int loaded = 0;
 		SDL_AudioCVT cvt;
@@ -410,6 +410,9 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				if (rate != 1 && format.format == AUDIO_S16SYS) {
 					int in_len = (int)(ceil((double)lengthloaded / samplesize));
 					int out_len = samples + 20; // needs some extra, otherwise resampler sometimes doesn't process all the input samples
+					if (!channel.resampler) {
+						channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
+					}
 					speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
 					speex_resampler_process_interleaved_int(channel.resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
 					effectbufferloaded = true;
@@ -438,14 +441,38 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					mixlength = length - loaded;
 				}
 
-				SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, volume);
+				int startvolume = channel.oldvolume;
+				int endvolume = channel.volume;
+				if (channel.stopping) {
+					endvolume = 0;
+				}
+				int mixvolume = volume;
+				if (startvolume != endvolume) {
+					// fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
+					if (!effectbufferloaded) {
+						memcpy(effectbuffer, tomix, lengthloaded);
+						effectbufferloaded = true;
+						tomix = effectbuffer;
+					}
+					mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
+					int fadelength = mixlength / format.BytesPerSample();
+					switch (format.format) {
+						case AUDIO_S16SYS:
+							EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
+							break;
+						case AUDIO_U8:
+							EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
+							break;
+					}
+				}
+
+				SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, mixvolume);
 
 				if (dataconverted) {
 					delete[] dataconverted;
 				}
 
 				channel.offset += readfromstream;
-
 			}
 
 			loaded += lengthloaded;
@@ -456,7 +483,9 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				}
 				channel.offset = 0;
 			}
-		} while(loaded < length && channel.loop != 0);
+		} while(loaded < length && channel.loop != 0 && !channel.stopping);
+
+		channel.oldvolume = channel.volume;
 		if (channel.loop == 0 && channel.offset >= channel.stream->Length()) {
 			channel.done = true;
 		}
@@ -480,6 +509,26 @@ void Mixer::EffectPanU8(Channel& channel, uint8* data, int length)
 	for (int i = 0; i < length * 2; i += 2) {
 		data[i] = (uint8)(data[i] * left);
 		data[i + 1] = (uint8)(data[i + 1] * right);
+	}
+}
+
+void Mixer::EffectFadeS16(sint16* data, int length, int startvolume, int endvolume)
+{
+	float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
+	float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+	for (int i = 0; i < length; i++) {
+		float t = (float)i / length;
+		data[i] = (sint16)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
+	}
+}
+
+void Mixer::EffectFadeU8(uint8* data, int length, int startvolume, int endvolume)
+{
+	float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
+	float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+	for (int i = 0; i < length; i++) {
+		float t = (float)i / length;
+		data[i] = (uint8)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
 	}
 }
 

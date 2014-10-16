@@ -106,6 +106,8 @@ private:
 	float pan;
 	bool done;
 	bool deleteondone;
+	bool stopping;
+	int oldvolume;
 	SpeexResamplerState* resampler;
 	Stream* stream;
 };
@@ -129,6 +131,8 @@ private:
 	void MixChannel(Channel& channel, uint8* buffer, int length);
 	void EffectPanS16(Channel& channel, sint16* data, int length);
 	void EffectPanU8(Channel& channel, uint8* data, int length);
+	void EffectFadeS16(sint16* data, int length, int startvolume, int endvolume);
+	void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume);
 	bool MustConvert(Stream& stream);
 	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
 	SDL_AudioDeviceID deviceid;

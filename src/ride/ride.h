@@ -141,7 +141,9 @@ typedef struct {
 	uint32 var_118;
 	uint8 pad_11C[0x02];
 	uint8 var_11E;
-	uint8 pad_11F[0x05];
+	uint8 var_11F;
+	sint16 var_120;
+	sint16 var_122;
 	sint16 var_124;
 	sint16 var_126;
 	sint16 var_128;
@@ -153,7 +155,10 @@ typedef struct {
 	sint16 var_134;
 	sint16 var_136;
 	money16 price;					// 0x138
-	uint8 pad_13A[0x06];
+	sint16 var_13A;
+	sint16 var_13C;
+	uint8 var_13E;
+	uint8 var_13F;
 	union {
 		rating_tuple ratings;		// 0x140
 		struct {
@@ -163,7 +168,7 @@ typedef struct {
 		};
 	};
 	uint16 reliability;				// 0x146
-	uint16 pad_148;
+	uint16 var_148;
 	uint16 var_14A;
 	uint8 pad_14C;
 	uint8 var_14D;
@@ -173,9 +178,12 @@ typedef struct {
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
-	uint8 pad_15C[2];
-	uint16 maze_tiles;
-	uint8 pad_160[0x20];
+	uint8 var_15C;
+	uint8 var_15D;
+	uint16 maze_tiles;				// 0x15E
+	uint8 pad_160[0x16];
+	uint8 var_176;
+	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
 	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184

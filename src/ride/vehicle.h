@@ -23,14 +23,6 @@
 
 #include "../common.h"
 
-typedef union {
-	struct {
-		sint16 width;
-		sint16 height;
-	};
-	sint32 both;
-} rct_widthheight;
-
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 pad_01[0x03];
@@ -44,8 +36,10 @@ typedef struct {
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
 	uint8 pad_14[0x02];
-	rct_widthheight var_16;
-	rct_widthheight view;			// 0x1A
+	sint16 var_16;
+	sint16 var_18;
+	sint16 var_1A;
+	sint16 var_1C;
 	uint16 var_1E;
 	uint8 pad_20[0x08];
 	sint32 velocity;				// 0x28
