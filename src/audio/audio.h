@@ -90,7 +90,7 @@ typedef struct {
 
 typedef struct {
 	uint16 id;
-	uint16 var_2;
+	sint16 volume;			// 0x02
 	rct_sound sound1;		// 0x04
 	uint16 sound1_id;		// 0x18
 	sint16 sound1_volume;	// 0x1A
@@ -108,10 +108,10 @@ typedef struct {
 
 typedef struct {
 	uint16 id;
-	sint16 pan;			// 0x2
-	sint16 var_4;
+	sint16 panx;		// 0x2
+	sint16 pany;		// 0x4
 	uint16 frequency;	// 0x6
-	sint16 var_8;
+	sint16 volume;	// 0x8
 	uint16 var_A;		// 0xA
 } rct_vehicle_sound_params;
 

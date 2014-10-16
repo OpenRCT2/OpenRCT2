@@ -1705,8 +1705,9 @@ void audio_init1()
 void audio_init2(int device)
 {
 	audio_close();
-	for (int i = 0; i < countof(gVehicleSoundList); i++) {
-		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];//&RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
+	for (int i = 0; i < countof(gVehicleSoundList)/*7*/; i++) {
+		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
+		//rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
 	}
 	for (int i = 0; i < 7; i++) {
@@ -1807,8 +1808,9 @@ void unpause_sounds()
 void stop_vehicle_sounds()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
-		for (int i = 0; i < countof(gVehicleSoundList); i++) {
-			rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];//&RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
+		for (int i = 0; i < countof(gVehicleSoundList)/*7*/; i++) {
+			rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
+			//rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 			if (vehicle_sound->id != 0xFFFF) {
 				if (vehicle_sound->sound1_id != 0xFFFF) {
 #ifdef USE_MIXER
@@ -1903,8 +1905,8 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 				v12 = ((x - y) / 2) - z;
 				break;
 		}
-		RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width = v11;
-		RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height = v12;
+		RCT2_GLOBAL(0x009AF5A0, sint16) = v11;
+		RCT2_GLOBAL(0x009AF5A2, sint16) = v12;
 		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
 		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
 		sint16 view_width2 = view_width * 2;
@@ -1912,13 +1914,13 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
 		sint16 v16 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
 		sint16 v17 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
-		if (view_x >= RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width ||
-			view_y >= RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height ||
-			v16 < RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width ||
-			v17 < RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height) {
+		if (view_x >= RCT2_GLOBAL(0x009AF5A0, sint16) ||
+			view_y >= RCT2_GLOBAL(0x009AF5A2, sint16) ||
+			v16 < RCT2_GLOBAL(0x009AF5A0, sint16) ||
+			v17 < RCT2_GLOBAL(0x009AF5A2, sint16)) {
 				goto label58;
 		}
-		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((RCT2_GLOBAL(0x009AF5A0, rct_widthheight).width - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((RCT2_GLOBAL(0x009AF5A0, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		x2 <<= 16;
 		uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 		if (screenwidth < 64) {
@@ -1926,7 +1928,7 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 		}
 		int panx = ((x2 / screenwidth) - 0x8000) >> 4;
 
-		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A0, rct_widthheight).height - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A2, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		y2 <<= 16;
 		uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 		if (screenheight < 64) {

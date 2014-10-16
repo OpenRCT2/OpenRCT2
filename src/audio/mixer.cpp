@@ -446,6 +446,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				if (channel.stopping) {
 					endvolume = 0;
 				}
+				int mixvolume = volume;
 				if (startvolume != endvolume) {
 					// fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
 					if (!effectbufferloaded) {
@@ -453,16 +454,8 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 						effectbufferloaded = true;
 						tomix = effectbuffer;
 					}
+					mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
 					int fadelength = mixlength / format.BytesPerSample();
-					// normalize fade to SDL_MIX_MAXVOLUME
-					float ratio;
-					if (endvolume < startvolume) {
-						ratio = ((float)SDL_MIX_MAXVOLUME / startvolume);
-					} else {
-						ratio = ((float)SDL_MIX_MAXVOLUME / endvolume);
-					}
-					startvolume = (int)(startvolume * ratio);
-					endvolume = (int)(endvolume * ratio);
 					switch (format.format) {
 						case AUDIO_S16SYS:
 							EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
@@ -473,7 +466,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					}
 				}
 
-				SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, volume);
+				SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, mixvolume);
 
 				if (dataconverted) {
 					delete[] dataconverted;
