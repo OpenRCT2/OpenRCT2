@@ -1224,7 +1224,7 @@ void game_handle_key_scroll()
 
 	rct_window *textWindow;
 
-	textWindow = window_find_by_id(113, 0);
+	textWindow = window_find_by_class(WC_TEXTINPUT);
 	if (textWindow) return;
 
 	scrollX = 0;
@@ -1629,7 +1629,7 @@ void game_handle_keyboard_input()
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1)
 			tutorial_stop();
 		else{
-			w = window_find_by_id(113, 0);
+			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL){
 				void(*fp)(int, rct_window*) = (void*)(int)w->event_handlers[WE_TEXT_INPUT];
 				(*fp)(key,w);

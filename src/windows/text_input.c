@@ -33,6 +33,8 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_CANCEL,
+	WIDX_OKAY
 };
 
 // 0x9DE4E0
@@ -40,6 +42,8 @@ static rct_widget window_text_input_widgets[] = {
 		{ WWT_FRAME, 0, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
 		{ WWT_CAPTION, 0, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
 		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
+		{ WWT_DROPDOWN_BUTTON, 0, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
+		{ WWT_DROPDOWN_BUTTON, 0, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
 		{ WIDGETS_END }
 };
 
@@ -48,10 +52,11 @@ static void window_text_input_mouseup();
 static void window_text_input_paint();
 static void window_text_input_text(int key, rct_window* w);
 static void window_text_input_update(rct_window* w);
+static void window_text_input_close();
 
 //0x9A3F7C
 static void* window_text_input_events[] = {
-	window_text_input_emptysub,
+	window_text_input_close,
 	window_text_input_mouseup,
 	window_text_input_emptysub,
 	window_text_input_emptysub,
@@ -83,12 +88,12 @@ static void* window_text_input_events[] = {
 
 int string_description;
 char text_input[MAX_TEXTINPUT] = { 0 };
-rct_window* calling_w = NULL;
+rct_windowclass calling_class = 0;
+rct_windownumber calling_number = 0;
 int calling_widget = 0;
-char current_mode = 0;
 
 void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, uint16 description, rct_string_id string_id, uint32 args){
-	window_close_by_id(113, 0);
+	window_close_by_class(WC_TEXTINPUT);
 
 	rct_window* w = window_create(
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - WW / 2,
@@ -96,18 +101,18 @@ void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, u
 		WW, 
 		WH, 
 		(uint32*)window_text_input_events, 
-		113, 
+		WC_TEXTINPUT,
 		0);
 
 	w->widgets = window_text_input_widgets;
-	w->enabled_widgets = (1 << 2);
+	w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
 
 	window_text_input_widgets[WIDX_TITLE].image = title;
-
+	memset(text_input, 0, MAX_TEXTINPUT);
 	format_string(text_input, string_id, &args);
 	string_description = description;
-	current_mode = 0;
-	calling_w = call_w;
+	calling_class = call_w->classification;
+	calling_number = call_w->number;
 	calling_widget = call_widget;
 	osinterface_start_text_input(text_input, MAX_TEXTINPUT);
 
@@ -119,26 +124,33 @@ void window_text_input_open(rct_window* call_w, int call_widget, uint16 title, u
 
 /**
 *
-*  rct2: 0x006E3AE0
 */
 static void window_text_input_mouseup(){
 	short widgetIndex;
 	rct_window *w;
-
+	rct_window *calling_w;
 	window_widget_get_registers(w, widgetIndex);
 
+	calling_w = window_find_by_number(calling_class, calling_number);
+
 	switch (widgetIndex){
+	case WIDX_CANCEL:
 	case WIDX_CLOSE:
 		osinterface_stop_text_input();
 		if (calling_w != NULL)
 			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 0, calling_widget, (int)calling_w, (int)text_input, 0);
+		window_close(w);
+		break;
+	case WIDX_OKAY:
+		osinterface_stop_text_input();
+		if (calling_w != NULL)
+			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
 		window_close(w);
 	}
 }
 
 /**
 *
-*  rct2: 0x006E3A9F
 */
 static void window_text_input_paint(){
 	rct_window *w;
@@ -150,28 +162,28 @@ static void window_text_input_paint(){
 
 	int y = w->y + 25;
 	
-	gfx_draw_string_centred(dpi, string_description, w->x + 4 + WW / 2, y, w->colours[1], 0);
+	gfx_draw_string_centred(dpi, string_description, w->x + WW / 2, y, w->colours[1], 0);
 
 	y += 25;
 
-	gfx_fill_rect_inset(dpi, w->x + 4, y, w->x + WW - 4, y + 12, w->colours[1], 0x60);
+	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 12, w->colours[1], 0x60);
 
 	y += 1;
-	gfx_draw_string(dpi, text_input, w->colours[2], w->x + 6, y);
+	gfx_draw_string(dpi, text_input, w->colours[2], w->x + 12, y);
 
 	char temp_string[32] = { 0 };
 	memcpy(temp_string, text_input, gTextInputCursorPosition);
 	
-	int x = w->x + 7 + gfx_get_string_width(temp_string);
+	int x = w->x + 13 + gfx_get_string_width(temp_string);
 
 	int width = 6;
-	if (gTextInputCursorPosition < strlen(text_input)){
+	if ((uint32)gTextInputCursorPosition < strlen(text_input)){
 		temp_string[1] = '\0';
 		temp_string[0] = text_input[gTextInputCursorPosition];
 		width = max(gfx_get_string_width(temp_string) - 2, 4);
 	}
 	y += 9;
-	if ((w->frame_no > 15) && current_mode){
+	if (w->frame_no > 15){
 		gfx_fill_rect(dpi, x, y, x + width, y, w->colours[1]);
 	}
 }
@@ -181,16 +193,14 @@ static void window_text_input_text(int key, rct_window* w){
 
 	int text = key;
 	char new_char = osinterface_scancode_to_rct_keycode(0xFF&key);
-	if (!current_mode){
-		// Delete the existing text on first key down
-		current_mode++;
-		memset(text_input+1, 0, MAX_TEXTINPUT - 1);
-	}
+
 	// If the return button is pressed stop text input
 	if (new_char == '\r'){
 		osinterface_stop_text_input();
 		window_close(w);
-		RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
+		rct_window* calling_w = window_find_by_number(calling_class, calling_number);
+		if (calling_w)
+			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
 	}
 	
 	window_invalidate(w);
@@ -198,7 +208,17 @@ static void window_text_input_text(int key, rct_window* w){
 
 void window_text_input_update(rct_window* w)
 {
+	rct_window* calling_w = window_find_by_number(calling_class, calling_number);
+
+	if (!calling_w){
+		window_close(w);
+	}
+
 	w->frame_no++;
 	if (w->frame_no > 30) w->frame_no = 0;
 	window_invalidate(w);
+}
+
+static void window_text_input_close(){
+	osinterface_stop_text_input();
 }

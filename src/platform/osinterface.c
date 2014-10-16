@@ -86,9 +86,10 @@ int osinterface_scancode_to_rct_keycode(int sdl_key){
 
 void osinterface_start_text_input(char* buffer, int max_length){
 	SDL_StartTextInput();
-	gTextInputLength = 0;
 	text_input_max_length = max_length - 1;
 	gTextInput = buffer;
+	gTextInputCursorPosition = strnlen(gTextInput, max_length);
+	gTextInputLength = gTextInputCursorPosition;
 }
 
 void osinterface_stop_text_input(){
