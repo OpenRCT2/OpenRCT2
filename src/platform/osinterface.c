@@ -42,7 +42,7 @@ unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
 char* gTextInput;
 int gTextInputLength;
-int text_input_max_length;
+int gTextInputMaxLength;
 int gTextInputCursorPosition = 0;
 
 static void osinterface_create_window();
@@ -86,7 +86,7 @@ int osinterface_scancode_to_rct_keycode(int sdl_key){
 
 void osinterface_start_text_input(char* buffer, int max_length){
 	SDL_StartTextInput();
-	text_input_max_length = max_length - 1;
+	gTextInputMaxLength = max_length - 1;
 	gTextInput = buffer;
 	gTextInputCursorPosition = strnlen(gTextInput, max_length);
 	gTextInputLength = gTextInputCursorPosition;
@@ -424,16 +424,22 @@ void osinterface_process_messages()
 				//calling it here will save screenshots even while in main menu
 				screenshot_check();
 			}
+
+			// Text input
+
+			// If backspace and we have input text with a cursor position none zero
 			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition){
-				if (gTextInputCursorPosition != text_input_max_length)
-					memmove(gTextInput + gTextInputCursorPosition - 1, gTextInput + gTextInputCursorPosition, text_input_max_length - gTextInputCursorPosition - 1);
+				// When at max length don't shift the data left
+				// as it would buffer overflow.
+				if (gTextInputCursorPosition != gTextInputMaxLength)
+					memmove(gTextInput + gTextInputCursorPosition - 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
 				gTextInput[gTextInputLength - 1] = '\0';
 				gTextInputCursorPosition--;
 				gTextInputLength--;
 			}
 			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != gTextInputLength){
-				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, text_input_max_length - gTextInputCursorPosition - 1);
-				gTextInput[text_input_max_length - 1] = '\0';
+				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, gTextInputMaxLength - gTextInputCursorPosition - 1);
+				gTextInput[gTextInputMaxLength - 1] = '\0';
 				gTextInputLength--;
 			}
 			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
@@ -464,19 +470,22 @@ void osinterface_process_messages()
 			break;
 
 		case SDL_TEXTINPUT:
-			if (gTextInputLength < text_input_max_length && gTextInput){
+			if (gTextInputLength < gTextInputMaxLength && gTextInput){
+				// Convert the utf-8 code into rct ascii
 				char new_char;
 				if (!(e.text.text[0] & 0x80))
 					new_char = *e.text.text;
 				else if (!(e.text.text[0] & 0x20))
 					new_char = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);
 
+				// If inserting in center of string make space for new letter
 				if (gTextInputLength > gTextInputCursorPosition){
-					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, text_input_max_length - gTextInputCursorPosition - 1);
+					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
 					gTextInput[gTextInputCursorPosition] = new_char;
 					gTextInputLength++;
 				}
 				else gTextInput[gTextInputLength++] = new_char;
+
 				gTextInputCursorPosition++;
 			}
 			break;

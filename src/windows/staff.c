@@ -471,8 +471,6 @@ void window_staff_overview_mouseup()
 	case WIDX_RENAME:
 		window_text_input_open(w, widgetIndex, 2977, 2978, peep->name_string_idx, peep->id);
 		break;
-		window_show_textinput(w, (int)widgetIndex, 2977, 2978, peep->name_string_idx);
-		break;
 	}
 }
 
