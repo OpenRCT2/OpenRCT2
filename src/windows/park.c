@@ -694,7 +694,7 @@ static void window_park_entrance_mouseup()
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
-		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, uint32), 0);
+		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, rct_string_id), 0);
 		break;
 	}
 }
