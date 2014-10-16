@@ -430,7 +430,7 @@ void osinterface_process_messages()
 				gTextInputCursorPosition--;
 				gTextInputLength--;
 			}
-			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != text_input_max_length){
+			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != gTextInputLength){
 				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, text_input_max_length - gTextInputCursorPosition - 1);
 				gTextInput[text_input_max_length - 1] = '\0';
 				gTextInputLength--;
