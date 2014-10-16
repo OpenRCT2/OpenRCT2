@@ -294,7 +294,7 @@ static void ride_ratings_update_state_3()
 	RCT2_CALLPROC_X(0x00655F64, 0, 0, 0, 0, 0, (int)ride, 0);
 	ride_ratings_reliability_calculate(ride);
 
-	window_invalidate_by_id(WC_RIDE, _rideRatingsCurrentRide);
+	window_invalidate_by_number(WC_RIDE, _rideRatingsCurrentRide);
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 

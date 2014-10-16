@@ -79,7 +79,7 @@ static void* window_shortcut_change_events[] = {
 
 void window_shortcut_change_open(int selected_key){
 	// Move this to window_shortcut_change_open
-	window_close_by_id(WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	// Save the item we are selecting for new window
 	RCT2_GLOBAL(0x9DE511, uint8) = selected_key;
 	rct_window* w = window_create_auto_pos(WW, WH, (uint32*)window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);

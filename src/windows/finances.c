@@ -524,7 +524,7 @@ void window_finances_open()
 {
 	rct_window *w;
 
-	w = window_bring_to_front_by_id(WC_FINANCES, 0);
+	w = window_bring_to_front_by_class(WC_FINANCES);
 	if (w == NULL) {
 		w = window_create_auto_pos(530, 257, window_finances_page_events[0], WC_FINANCES, WF_10);
 		w->widgets = window_finances_page_widgets[0];
@@ -563,7 +563,7 @@ void window_finances_research_open()
 	rct_window *w;
 
 	window_finances_open();
-	w = window_find_by_id(WC_FINANCES, 0);
+	w = window_find_by_class(WC_FINANCES);
 	if (w != NULL)
 		window_finances_set_page(w, WINDOW_FINANCES_PAGE_RESEARCH);
 }
@@ -620,7 +620,7 @@ static void window_finances_summary_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1);
+	widget_invalidate(w, WIDX_TAB_1);
 }
 
 /**
@@ -793,7 +793,7 @@ static void window_finances_financial_graph_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**
@@ -915,7 +915,7 @@ static void window_finances_park_value_graph_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**
@@ -1033,7 +1033,7 @@ static void window_finances_profit_graph_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**
@@ -1154,7 +1154,7 @@ static void window_finances_marketing_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_5);
+	widget_invalidate(w, WIDX_TAB_5);
 }
 
 /**
@@ -1408,7 +1408,7 @@ static void window_finances_research_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_6);
+	widget_invalidate(w, WIDX_TAB_6);
 }
 
 /**

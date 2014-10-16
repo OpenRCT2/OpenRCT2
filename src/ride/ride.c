@@ -198,7 +198,7 @@ void ride_update_favourited_stat()
 
 	}
 
-	window_invalidate_by_id(WC_RIDE_LIST, 0);
+	window_invalidate_by_class(WC_RIDE_LIST);
 }
 
 /**
@@ -468,7 +468,7 @@ void ride_construct_new(ride_list_item listItem)
 	// Eventually should be changed so the ride window does not need to be opened.
 	w = window_ride_main_open(rideIndex);
 	window_ride_construct(w);
-	window_close_by_id(WC_RIDE, rideIndex);
+	window_close_by_number(WC_RIDE, rideIndex);
 }
 
 /**

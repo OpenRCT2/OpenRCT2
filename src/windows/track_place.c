@@ -563,7 +563,7 @@ static void window_track_place_toolupdate()
 	_window_track_place_last_y = y;
 	if (cost != _window_track_place_last_cost) {
 		_window_track_place_last_cost = cost;
-		widget_invalidate(WC_TRACK_DESIGN_PLACE, 0, WIDX_PRICE);
+		widget_invalidate(w, WIDX_PRICE);
 	}
 	
 	sub_6D01B3(0, x, y, z);
@@ -599,7 +599,7 @@ static void window_track_place_tooldown()
 		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 		if (cost != MONEY32_UNDEFINED) {
-			window_close_by_id(WC_ERROR, 0);
+			window_close_by_class(WC_ERROR);
 			sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
 
 			RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
@@ -608,8 +608,8 @@ static void window_track_place_tooldown()
 				window_close(w);
 			} else {
 				RCT2_CALLPROC_X(0x006CC3FB, 0, 0, 0, rideIndex, 0, 0, 0);
-				w = window_find_by_id(0x80 | WC_RIDE_CONSTRUCTION, 0);
-				RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 29, (int)w, 0, 0);
+				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+				window_event_helper(w, 29, WE_MOUSE_UP);
 			}
 			return;
 		}

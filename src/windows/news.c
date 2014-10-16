@@ -92,7 +92,7 @@ void window_news_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_RECENT_NEWS, 0);
+	window = window_bring_to_front_by_class(WC_RECENT_NEWS);
 	if (window == NULL) {
 		window = window_create_auto_pos(
 			400,

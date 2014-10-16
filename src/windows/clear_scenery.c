@@ -94,7 +94,7 @@ void window_clear_scenery_open()
 	rct_window* window;
 
 	// Check if window is already open
-	if (window_find_by_id(WC_CLEAR_SCENERY, 0) != NULL)
+	if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
 		return;
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 67, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);

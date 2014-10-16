@@ -110,7 +110,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	if ((eax & 0xFFFF) == 0xFFFF)
 		return;
 
-	w = window_find_by_id(WC_ERROR, 0);
+	w = window_find_by_class(WC_ERROR);
 	if (w != NULL)
 		return;
 
@@ -154,7 +154,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
  */
 void window_tooltip_close()
 {
-	window_close_by_id(WC_TOOLTIP, 0);
+	window_close_by_class(WC_TOOLTIP);
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = 255;
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;

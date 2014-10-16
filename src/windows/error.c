@@ -97,7 +97,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	int numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
-	window_close_by_id(WC_ERROR, 0);
+	window_close_by_class(WC_ERROR);
 	dst = _window_error_text;
 	args = (char*)0x0013CE952;
 

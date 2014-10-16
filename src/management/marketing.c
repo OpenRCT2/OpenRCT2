@@ -72,7 +72,7 @@ void marketing_update()
 		if (campaign_weeks_left == 0)
 			continue;
 
-		window_invalidate_by_id(WC_FINANCES, 0);
+		window_invalidate_by_class(WC_FINANCES);
 
 		// High bit marks the campaign as inactive, on first check the campaign is set actice
 		// this makes campaigns run a full x weeks even when started in the middle of a week

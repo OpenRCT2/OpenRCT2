@@ -386,13 +386,13 @@ void window_new_ride_open()
 {
 	rct_window *w;
 
-	w = window_bring_to_front_by_id(WC_CONSTRUCT_RIDE, 0);
+	w = window_bring_to_front_by_class(WC_CONSTRUCT_RIDE);
 	if (w != NULL)
 		return;
 
 	// Not sure what these windows are
-	window_close_by_id(161, 0);
-	window_close_by_id(162, 0);
+	window_close_by_class(WC_TRACK_DESIGN_LIST);
+	window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
 	w = window_create_auto_pos(601, 370, (uint32*)window_new_ride_events, WC_CONSTRUCT_RIDE, 0x400);
 	w->widgets = window_new_ride_widgets;
@@ -438,7 +438,7 @@ void window_new_ride_focus(ride_list_item rideItem)
 	rct_window *w;
 	rct_ride_type *rideType;
 
-	w = window_find_by_id(WC_CONSTRUCT_RIDE, 0);
+	w = window_find_by_class(WC_CONSTRUCT_RIDE);
 	if (w == NULL)
 		return;
 
@@ -611,7 +611,7 @@ static void window_new_ride_update(rct_window *w)
 	if (w->frame_no >= window_new_ride_tab_animation_loops[_window_new_ride_current_tab])
 		w->frame_no = 0;
 
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + _window_new_ride_current_tab);
+	widget_invalidate(w, WIDX_TAB_1 + _window_new_ride_current_tab);
 
 	if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);

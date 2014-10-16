@@ -159,6 +159,7 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 	fwrite(dst_buffer, 1, size_dst, file);
 
 	free(dst_buffer);
+	return 1;
 }
 
 /**

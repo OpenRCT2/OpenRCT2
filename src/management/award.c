@@ -621,7 +621,7 @@ void award_update_all()
 				awards[freeAwardEntryIndex].type = awardType;
 				awards[freeAwardEntryIndex].time = 5;
 				news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
-				window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}
 		}
 	}
@@ -630,5 +630,5 @@ void award_update_all()
 	for (i = 0; i < MAX_AWARDS; i++)
 		if (awards[i].time != 0)
 			if (--awards[i].time == 0)
-				window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+				window_invalidate_by_class(WC_PARK_INFORMATION);
 }

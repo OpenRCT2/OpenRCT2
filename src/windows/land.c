@@ -120,7 +120,7 @@ void window_land_open()
 	rct_window* window;
 
 	// Check if window is already open
-	if (window_find_by_id(WC_LAND, 0) != NULL)
+	if (window_find_by_class(WC_LAND) != NULL)
 		return;
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, (uint32*)window_land_events, WC_LAND, 0);

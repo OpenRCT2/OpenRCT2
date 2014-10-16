@@ -106,7 +106,7 @@ void window_banner_open()
 	windownumber = 0;
 
 	// Check if window is already open
-	w = window_bring_to_front_by_id(WC_BANNER, windownumber);
+	w = window_bring_to_front_by_number(WC_BANNER, windownumber);
 	if (w != NULL)
 		return;
 

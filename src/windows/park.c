@@ -627,7 +627,7 @@ void window_park_entrance_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
 	if (window == NULL) {
 		window = window_park_open();
 		window->viewport_focus_coordinates.y = -1;
@@ -778,7 +778,7 @@ static void window_park_entrance_dropdown()
 static void window_park_entrance_update(rct_window *w)
 {
 	w->frame_no++;
-	window_invalidate_by_id(w->classification, 1179);
+	widget_invalidate(w, WIDX_TAB_1);
 }
 
 /**
@@ -1054,7 +1054,7 @@ void window_park_rating_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
 	if (window == NULL) {
 		window = window_park_open();
 		window->viewport_focus_coordinates.x = -1;
@@ -1112,7 +1112,7 @@ static void window_park_rating_resize()
 static void window_park_rating_update(rct_window *w)
 {
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**
@@ -1188,7 +1188,7 @@ void window_park_guests_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
 	if (window == NULL) {
 		window = window_park_open();
 		window->viewport_focus_coordinates.x = -1;
@@ -1247,7 +1247,7 @@ static void window_park_guests_update(rct_window *w)
 {
 	w->frame_no++;
 	w->var_492 = (w->var_492 + 1) % 24;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_3);
+	widget_invalidate(w, WIDX_TAB_3);
 }
 
 /**
@@ -1384,7 +1384,7 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
 static void window_park_price_update(rct_window *w)
 {
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_4);
+	widget_invalidate(w, WIDX_TAB_4);
 }
 
 /**
@@ -1492,20 +1492,20 @@ static void window_park_stats_update(rct_window *w)
 	int i;
 
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_5);
+	widget_invalidate(w, WIDX_TAB_5);
 
 	// Invalidate ride count if changed
 	i = ride_get_count();
 	if (w->list_information_type != i) {
 		w->list_information_type = i;
-		widget_invalidate(w->classification, w->number, WIDX_PAGE_BACKGROUND);
+		widget_invalidate(w, WIDX_PAGE_BACKGROUND);
 	}
 
 	// Invalidate number of staff if changed
 	i = peep_get_staff_count();
 	if (w->var_48C != i) {
 		w->var_48C = i;
-		widget_invalidate(w->classification, w->number, WIDX_PAGE_BACKGROUND);
+		widget_invalidate(w, WIDX_PAGE_BACKGROUND);
 	}
 }
 
@@ -1594,7 +1594,7 @@ void window_park_objective_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
 	if (window == NULL) {
 		window = window_park_open();
 		window->viewport_focus_coordinates.x = -1;
@@ -1668,7 +1668,7 @@ static void window_park_objective_resize()
 static void window_park_objective_update(rct_window *w)
 {
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_6);
+	widget_invalidate(w, WIDX_TAB_6);
 }
 
 /**
@@ -1757,7 +1757,7 @@ void window_park_awards_open()
 {
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PARK_INFORMATION, 0);
+	window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
 	if (window == NULL) {
 		window = window_park_open();
 		window->viewport_focus_coordinates.x = -1;
@@ -1815,7 +1815,7 @@ static void window_park_awards_resize()
 static void window_park_awards_update(rct_window *w)
 {
 	w->frame_no++;
-	window_invalidate_by_id(w->classification, 1179);
+	widget_invalidate(w, WIDX_TAB_7);
 }
 
 /**

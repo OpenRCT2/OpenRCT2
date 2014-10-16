@@ -255,8 +255,8 @@ static void window_track_list_mouseup()
 	case WIDX_CLOSE:
 		window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-			window_close_by_id(WC_47, w->number);
-			window_close_by_id(WC_48, w->number);
+			window_close_by_number(WC_47, w->number);
+			window_close_by_number(WC_48, w->number);
 			trackmanager_load();
 		}
 		break;

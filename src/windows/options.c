@@ -211,7 +211,7 @@ void window_options_open()
 	rct_window* w;
 
 	// Check if window is already open
-	w = window_bring_to_front_by_id(WC_OPTIONS, 0);
+	w = window_bring_to_front_by_class(WC_OPTIONS);
 	if (w != NULL)
 		return;
 
@@ -728,7 +728,7 @@ static void window_options_update(rct_window *w)
 {
 	// Tab animation
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + w->page);
+	widget_invalidate(w, WIDX_TAB_1 + w->page);
 }
 
 /**

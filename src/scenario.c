@@ -325,7 +325,7 @@ int scenario_load_and_play_from_path(const char *path)
 void scenario_end()
 {
 	rct_window* w;
-	window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_class(WC_DROPDOWN);
 	
 	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
@@ -586,7 +586,7 @@ void scenario_update()
 			scenario_objectives_check();
 		}
 
-		window_invalidate_by_id(WC_BOTTOM_TOOLBAR, 0);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 	}
 
 	

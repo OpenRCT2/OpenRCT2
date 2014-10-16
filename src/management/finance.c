@@ -60,9 +60,9 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
 	
 
-	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money diry flag
-	window_invalidate_by_id(WC_FINANCES, 0);
-	window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money dirty flag
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 
 /**
@@ -233,7 +233,7 @@ void finance_update_daily_profit()
 	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
 	RCT2_GLOBAL(0x1358338, uint16) += 1;
 
-	window_invalidate_by_id(WC_FINANCES, 0);
+	window_invalidate_by_class(WC_FINANCES);
 }
 
 void sub_69E869()

@@ -95,8 +95,8 @@ static void research_calculate_expected_date()
 
 static void research_invalidate_related_windows()
 {
-	window_invalidate_by_id(WC_CONSTRUCT_RIDE, 0);
-	window_invalidate_by_id(WC_RESEARCH, 0);
+	window_invalidate_by_class(WC_CONSTRUCT_RIDE);
+	window_invalidate_by_class(WC_RESEARCH);
 }
 
 /**

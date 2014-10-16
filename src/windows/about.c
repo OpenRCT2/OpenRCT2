@@ -87,7 +87,7 @@ void window_about_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_ABOUT, 0);
+	window = window_bring_to_front_by_class(WC_ABOUT);
 	if (window != NULL)
 		return;
 

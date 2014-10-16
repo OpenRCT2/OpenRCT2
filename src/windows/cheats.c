@@ -250,7 +250,7 @@ void window_cheats_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_CHEATS, 0);
+	window = window_bring_to_front_by_class(WC_CHEATS);
 	if (window != NULL)
 		return;
 
@@ -291,13 +291,13 @@ static void window_cheats_money_mouseup()
 			i = INT_MAX;
 		}
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(i);
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 		break;
 	case WIDX_PARK_ENTRANCE_FEE:
 		RCT2_GLOBAL(0x13573E5, uint32) ^= 0x020;
 		if (!(RCT2_GLOBAL(0x13573E5, uint32) & 0x020) ) w->widgets[widgetIndex].image = 2762;
 		else w->widgets[widgetIndex].image = 2761;
-		window_invalidate_by_id(0x40 | WC_PARK_INFORMATION, 0);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
 		break;
 	}
 }
@@ -326,13 +326,13 @@ static void window_cheats_guests_mouseup()
 		FOR_ALL_GUESTS(spriteIndex, peep)
 			if (peep->var_2A == 0)
 				peep->happiness = 255;
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 		break;
 	case WIDX_TRAM_GUESTS:
 		for (i = 0; i < CHEATS_TRAM_INCREMENT; i++){
 			generate_new_guest();
 		}
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 		break;
 	}
 }
@@ -356,20 +356,17 @@ static void window_cheats_misc_mouseup()
 	case WIDX_FREEZE_CLIMATE:
 		toggle_climate_lock();
 		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2767 ? 2768 : 2767;
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
 		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2769 ? 2770 : 2769;
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
 		break;
 	case WIDX_DECREASE_GAME_SPEED:
 		game_reduce_game_speed();
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 	case WIDX_INCREASE_GAME_SPEED:
 		game_increase_game_speed();
-		window_invalidate_by_id(0x40 | WC_BOTTOM_TOOLBAR, 0);
 		break;
 
 	}
@@ -378,7 +375,7 @@ static void window_cheats_misc_mouseup()
 static void window_cheats_update(rct_window *w)
 {
 	w->frame_no++;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1+w->page);
+	widget_invalidate(w, WIDX_TAB_1 + w->page);
 }
 
 static void window_cheats_invalidate()

@@ -264,7 +264,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 
 void window_dropdown_close()
 {
-	window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_class(WC_DROPDOWN);
 }
 
 static void window_dropdown_paint()

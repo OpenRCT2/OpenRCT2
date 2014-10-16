@@ -141,7 +141,7 @@ void window_staff_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_STAFF_LIST, 0);
+	window = window_bring_to_front_by_class(WC_STAFF_LIST);
 	if (window != NULL)
 		return;
 
@@ -212,7 +212,7 @@ static void window_staff_list_mouseup()
 		newStaffId = hire_new_staff_member(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
 
 		if (newStaffId == 0xFFFF) {
-			rct_window* window = window_find_by_id(WC_STAFF_LIST, 0);
+			rct_window* window = window_find_by_class(WC_STAFF_LIST);
 			window_invalidate(window);
 		} else {
 			window_staff_open(&g_sprite_list[newStaffId].peep);
@@ -315,7 +315,7 @@ void window_staff_list_update(rct_window *w)
 	if (w->list_information_type >= 24) {
 		w->list_information_type = 0;
 	} else {
-		widget_invalidate(WC_GUEST_LIST, 0, WIDX_STAFF_LIST_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
+		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
 		RCT2_GLOBAL(0x009AC861, uint16) |= 2;
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF) {

@@ -139,7 +139,7 @@ void window_ride_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_RIDE_LIST, 0);
+	window = window_bring_to_front_by_class(WC_RIDE_LIST);
 	if (window == NULL) {
 		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, 0x0400);
 		window->widgets = window_ride_list_widgets;
@@ -291,7 +291,7 @@ static void window_ride_list_dropdown()
 static void window_ride_list_update(rct_window *w)
 {
 	w->frame_no = (w->frame_no + 1) % 64;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1 + w->page);
+	widget_invalidate(w, WIDX_TAB_1 + w->page);
 	if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
 		window_invalidate(w);
 }

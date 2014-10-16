@@ -1146,7 +1146,7 @@ rct_window *window_ride_main_open(int rideIndex)
 {
 	rct_window *w;
 
-	w = window_bring_to_front_by_id(WC_RIDE, rideIndex);
+	w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
 	if (w == NULL) {
 		w = window_ride_open(rideIndex);
 		w->ride.var_482 = -1;
@@ -1371,8 +1371,8 @@ void window_ride_construct(rct_window *w)
 {
 	int rideIndex = w->number;
 
-	window_close_by_id(WC_RIDE_CONSTRUCTION | 0x80, rideIndex);
-	w = window_find_by_id(WC_RIDE, rideIndex);
+	window_close_by_class(WC_RIDE_CONSTRUCTION);
+	w = window_find_by_number(WC_RIDE, rideIndex);
 	if (w == NULL)
 		return;
 
@@ -1446,7 +1446,7 @@ static void window_ride_demolish(rct_window *w)
 	rct_window *demolishWindow;
 	int x, y, screenWidth, screenHeight;
 
-	demolishWindow = window_bring_to_front_by_id(WC_DEMOLISH_RIDE_PROMPT, w->number);
+	demolishWindow = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, w->number);
 	if (demolishWindow != NULL)
 		return;
 
@@ -1765,7 +1765,7 @@ static void window_ride_main_update(rct_window *w)
 	// Update tab animation
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_1);
+	widget_invalidate(w, WIDX_TAB_1);
 
 	// Update status
 	ride = GET_RIDE(w->number);
@@ -1792,7 +1792,7 @@ static void window_ride_main_update(rct_window *w)
 	}
 
 	ride->var_14D &= ~4;
-	widget_invalidate(WC_RIDE, w->number, WIDX_STATUS);
+	widget_invalidate(w, WIDX_STATUS);
 }
 
 /**
@@ -2273,7 +2273,7 @@ static void window_ride_vehicle_update(rct_window *w)
 {
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**
@@ -2810,7 +2810,7 @@ static void window_ride_operating_update(rct_window *w)
 
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_3);
+	widget_invalidate(w, WIDX_TAB_3);
 
 	ride = GET_RIDE(w->number);
 	if (ride->var_14D & 10) {
@@ -3212,7 +3212,7 @@ static void window_ride_maintenance_update(rct_window *w)
 
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_4);
+	widget_invalidate(w, WIDX_TAB_4);
 
 	ride = GET_RIDE(w->number);
 	if (ride->var_14D & 20) {
@@ -3699,8 +3699,8 @@ static void window_ride_colour_update(rct_window *w)
 {
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_5);
-	widget_invalidate(WC_RIDE, w->number, WIDX_VEHICLE_PREVIEW);
+	widget_invalidate(w, WIDX_TAB_5);
+	widget_invalidate(w, WIDX_VEHICLE_PREVIEW);
 }
 
 /**
@@ -4229,7 +4229,7 @@ static void window_ride_music_update(rct_window *w)
 {
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_6);
+	widget_invalidate(w, WIDX_TAB_6);
 }
 
 /**
@@ -4453,7 +4453,7 @@ static void window_ride_measurements_update(rct_window *w)
 {
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_7);
+	widget_invalidate(w, WIDX_TAB_7);
 }
 
 /**
@@ -4825,9 +4825,9 @@ static void window_ride_graphs_update(rct_window *w)
 
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_8);
+	widget_invalidate(w, WIDX_TAB_8);
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_GRAPH);
+	widget_invalidate(w, WIDX_GRAPH);
 
 	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
 	x = w->scrolls[0].h_left;
@@ -5261,7 +5261,7 @@ static void window_ride_income_update(rct_window *w)
 
 	w->frame_no++;
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_9);
+	widget_invalidate(w, WIDX_TAB_9);
 
 	ride = GET_RIDE(w->number);
 	if (ride->var_14D & 2) {
@@ -5545,7 +5545,7 @@ static void window_ride_customer_update(rct_window *w)
 		w->var_492 = 0;
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	widget_invalidate(WC_RIDE, w->number, WIDX_TAB_10);
+	widget_invalidate(w, WIDX_TAB_10);
 
 	ride = GET_RIDE(w->number);
 	if (ride->var_14D & 1) {

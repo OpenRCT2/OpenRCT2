@@ -149,7 +149,7 @@ int park_calculate_size()
 
 	if (tiles != RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) = tiles;
-		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
 	
 	return tiles;
@@ -539,10 +539,10 @@ void park_update()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
-		window_invalidate_by_id(WC_FINANCES, 0);
+		window_invalidate_by_class(WC_FINANCES);
 		_guestGenerationProbability = park_calculate_guest_generation_probability();
 		RCT2_GLOBAL(0x009A9804, uint16) |= 0x10;
-		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
 
 	// Generate new guests
@@ -608,7 +608,7 @@ void game_command_set_park_entrance_fee()
 	if (_bl & 1){
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = new_fee;
 
-		window_invalidate_by_id(WC_PARK_INFORMATION, 0);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
 
 	#ifdef _MSC_VER

@@ -144,7 +144,7 @@ void window_guest_list_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_GUEST_LIST, 0);
+	window = window_bring_to_front_by_class(WC_GUEST_LIST);
 	if (window != NULL)
 		return;
 
@@ -326,7 +326,7 @@ static void window_guest_list_update(rct_window *w)
 	w->list_information_type++;
 	if (w->list_information_type >= (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
 		w->list_information_type = 0;
-	widget_invalidate(WC_GUEST_LIST, 0, WIDX_TAB_1 + _window_guest_list_selected_tab);
+	widget_invalidate(w, WIDX_TAB_1 + _window_guest_list_selected_tab);
 }
 
 /**

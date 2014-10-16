@@ -124,7 +124,7 @@ void window_save_prompt_open()
 	}
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_SAVE_PROMPT, 0);
+	window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
 	if (window){
 		window_close(window);
 	}
@@ -166,7 +166,7 @@ void window_save_prompt_open()
 	// Pause the game
 	RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
 	pause_sounds();
-	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = prompt_mode + STR_LOAD_GAME;
 	if (stringId == STR_LOAD_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
@@ -217,7 +217,7 @@ static void window_save_prompt_close()
 	// Unpause the game
 	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
 	unpause_sounds();
-	window_invalidate_by_id(0x80 | WC_TOP_TOOLBAR, 0);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 /**

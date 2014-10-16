@@ -87,7 +87,7 @@ static void* window_staff_fire_events[] = {
 /** Based off of rct2: 0x6C0A77 */
 void window_staff_fire_prompt_open(rct_peep* peep){
 	// Check if the confirm window already exists.
-	if (window_bring_to_front_by_id(WC_FIRE_PROMPT, peep->sprite_index)) {
+	if (window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index)) {
 		return;
 	}
 

@@ -337,7 +337,7 @@ void window_game_bottom_toolbar_invalidate_news_item()
 {
 	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
 		RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0].type == NEWS_ITEM_NULL ? WWT_EMPTY : WWT_IMGBTN;
-	window_invalidate_by_id((WIDX_MIDDLE_OUTSET << 8) | 0x80 | WC_BOTTOM_TOOLBAR, 0);
+	widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
 }
 
 /**

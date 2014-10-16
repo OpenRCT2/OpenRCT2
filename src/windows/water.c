@@ -94,7 +94,7 @@ void window_water_open()
 	rct_window* window;
 
 	// Check if window is already open
-	if (window_find_by_id(WC_WATER, 0) != NULL)
+	if (window_find_by_class(WC_WATER) != NULL)
 		return;
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76, 29, 76, 77, (uint32*)window_water_events, WC_WATER, 0);

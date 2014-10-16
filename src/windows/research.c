@@ -226,7 +226,7 @@ void window_research_open()
 {
 	rct_window *w;
 
-	w = window_bring_to_front_by_id(WC_RESEARCH, 0);
+	w = window_bring_to_front_by_class(WC_RESEARCH);
 	if (w == NULL) {
 		w = window_create_auto_pos(530, 257, window_research_page_events[0], WC_RESEARCH, WF_10);
 		w->widgets = window_research_page_widgets[0];
@@ -292,7 +292,7 @@ static void window_research_development_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_research_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_1);
+	widget_invalidate(w, WIDX_TAB_1);
 }
 
 /**
@@ -495,7 +495,7 @@ static void window_research_funding_update(rct_window *w)
 	// Tab animation
 	if (++w->frame_no >= window_research_tab_animation_loops[w->page])
 		w->frame_no = 0;
-	widget_invalidate(w->classification, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_2);
 }
 
 /**

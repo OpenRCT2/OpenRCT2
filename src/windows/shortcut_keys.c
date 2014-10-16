@@ -94,7 +94,7 @@ void window_shortcut_keys_open()
 {
 	rct_window* w;
 
-	w = window_bring_to_front_by_id(WC_KEYBOARD_SHORTCUT_LIST, 0);
+	w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
 
 	if (w) return;
 

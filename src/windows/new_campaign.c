@@ -136,7 +136,7 @@ void window_new_campaign_open(sint16 campaignType)
 	rct_ride *ride;
 	int i, numApplicableRides;
 	
-	w = window_bring_to_front_by_id(WC_NEW_CAMPAIGN, 0);
+	w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
 	if (w != NULL) {
 		if (w->campaign.campaign_type == campaignType)
 			return;

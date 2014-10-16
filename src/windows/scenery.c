@@ -365,7 +365,7 @@ void init_scenery() {
 		tabWidget->image = g_scenerySetEntries[tabIndex]->image | 0x20000000;
 	}
 
-	window_invalidate_by_id(WC_SCENERY, 0);
+	window_invalidate_by_class(WC_SCENERY);
 }
 
 /*
@@ -376,7 +376,7 @@ void window_scenery_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_SCENERY, 0);
+	window = window_bring_to_front_by_class(WC_SCENERY);
 	if (window != NULL)
 		return;
 

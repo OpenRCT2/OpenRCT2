@@ -466,7 +466,7 @@ void game_pause_toggle()
 
 	if (input_bl & 1) {
 		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
-		window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
+		window_invalidate_by_class(WC_TOP_TOOLBAR);
 		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
 			pause_sounds();
 		else
@@ -517,7 +517,7 @@ static void game_load_or_quit()
 		window_save_prompt_open();
 		break;
 	case 1:
-		window_close_by_id(WC_SAVE_PROMPT, 0);
+		window_close_by_class(WC_SAVE_PROMPT);
 		break;
 	default:
 		game_load_or_quit_no_save_prompt();

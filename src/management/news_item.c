@@ -136,7 +136,7 @@ void news_item_close_current()
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
-	window_invalidate_by_id(WC_RECENT_NEWS, 0);
+	window_invalidate_by_class(WC_RECENT_NEWS);
 
 	// Dequeue the current news item, shift news up
 	for (i = 0; i < 10; i++)
@@ -314,9 +314,9 @@ void news_item_open_subject(int type, int subject)
 		}
 
 		// Check if window is already open
-		window = window_bring_to_front_by_id(WC_SCENERY, 0);
+		window = window_bring_to_front_by_class(WC_SCENERY);
 		if (window == NULL) {
-			window = window_find_by_id(WC_TOP_TOOLBAR, 0);
+			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
 				if (tool_set(window, 9, 0)){

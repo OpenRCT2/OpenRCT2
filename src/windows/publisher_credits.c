@@ -86,7 +86,7 @@ void window_publisher_credits_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_PUBLISHER_CREDITS, 0);
+	window = window_bring_to_front_by_class(WC_PUBLISHER_CREDITS);
 	if (window != NULL)
 		return;
 

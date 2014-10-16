@@ -106,7 +106,7 @@ void window_scenarioselect_open()
 {
 	rct_window* window;
 
-	if (window_bring_to_front_by_id(WC_SCENARIO_SELECT, 0) != NULL)
+	if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
 		return;
 
 	// Load scenario list

@@ -237,7 +237,7 @@ static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 	}
 
 	widget_scroll_update_thumbs(w, widgetIndex);
-	widget_invalidate(w->classification, w->number, widgetIndex);
+	widget_invalidate(w, widgetIndex);
 }
 
 /**
@@ -474,7 +474,7 @@ void window_close(rct_window* window)
 	// Call close event of window
 	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, (int)window, 0, 0);
 
-	window = window_find_by_id(window->classification, window->number);
+	window = window_find_by_number(window->classification, window->number);
 
 	// Remove viewport
 	if (window->viewport != NULL) {
@@ -495,58 +495,71 @@ void window_close(rct_window* window)
 }
 
 /**
- *  Closes window with defined windowclass and windownumber.
- *  If the windowclass has the highest bit set (bit 15) then it only looks
- *  at the windowclass and not the windownumber
+ * Closes all windows with the specified window class.
  *  rct2: 0x006ECCF4
- * @param cls (cl)
- * @param number (dx)
+ * @param cls (cl) with bit 15 set
  */
-void window_close_by_id(rct_windowclass cls, rct_windownumber number)
+void window_close_by_class(rct_windowclass cls)
 {
-	rct_window* w;
-	
-	if (cls & 0x80) {
-		cls &= ~0x80;
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
-			if (w->classification == cls) {
-				window_close(w);
-				w = g_window_list - 1;
-			}
-		}
-	} else {
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
-			if (w->classification == cls && w->number == number) {
-				window_close(w);
-				w = g_window_list - 1;
-			}
+	rct_window *w;
+
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+		if (w->classification == cls) {
+			window_close(w);
+			w = g_window_list - 1;
 		}
 	}
 }
 
 /**
- *  Returns the first window with defined windowclass and windownumber.
- *  If the windowclass has the highest bit set (bit 15) then it only looks
- *  at the windowclass and not the windownumber.
- *  Returns NULL on failure to find window.
- *  rct2: 0x006EA8A0
- * @param cls (cl)
+ * Closes all windows with specified window class and number.
+ *  rct2: 0x006ECCF4
+ * @param cls (cl) without bit 15 set
  * @param number (dx)
  */
-rct_window *window_find_by_id(rct_windowclass cls, rct_windownumber number)
+void window_close_by_number(rct_windowclass cls, rct_windownumber number)
+{
+	rct_window* w;
+	
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+		if (w->classification == cls && w->number == number) {
+			window_close(w);
+			w = g_window_list - 1;
+		}
+	}
+}
+
+/**
+ * Finds the first window with the specified window class.
+ *  rct2: 0x006EA8A0
+ * @param cls (cl) with bit 15 set
+ * @returns the window or NULL if no window was found.
+ */
+rct_window *window_find_by_class(rct_windowclass cls)
 {
 	rct_window *w;
 
-	if (cls & 0x80) {
-		cls &= ~0x80;
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-			if (w->classification == cls)
-				return w;
-	} else {
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-			if (w->classification == cls && w->number == number)
-				return w;
-	}
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls)
+			return w;
+
+	return NULL;
+}
+
+/**
+ * Finds the first window with the specified window class and number.
+ *  rct2: 0x006EA8A0
+ * @param cls (cl) without bit 15 set
+ * @param number (dx)
+ * @returns the window or NULL if no window was found.
+ */
+rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
+{
+	rct_window *w;
+	
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls && w->number == number)
+			return w;
 
 	return NULL;
 }
@@ -560,7 +573,7 @@ void window_close_top()
 {
 	rct_window* w;
 
-	window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_class(WC_DROPDOWN);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
@@ -582,7 +595,7 @@ void window_close_top()
 void window_close_all() {
 	rct_window* w;
 
-	window_close_by_id(WC_DROPDOWN, 0);
+	window_close_by_class(WC_DROPDOWN);
 
 	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
@@ -678,46 +691,76 @@ void window_invalidate(rct_window *window)
 }
 
 /**
- * 
+ * Invalidates all windows with the specified window class.
  *  rct2: 0x006EC3AC
- * See also widget_invalidate that will probably be used
- * when cls is > 0x7F.
- * @param cls (ax)
- * @param number (bx)
+ * @param cls (al) with bit 14 set
  */
-void window_invalidate_by_id(uint16 cls, rct_windownumber number)
+void window_invalidate_by_class(rct_windowclass cls)
 {
 	rct_window* w;
-	rct_widget* widget;
-	uint8 widgetIndex;
 
-	if (cls & 0x80) {
-		widgetIndex = cls >> 8;
-		cls &= 0x7F;
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
-			if (w->classification == cls && w->number == number) {
-				widget = &w->widgets[widgetIndex];
-				if (widget->left != -2) {
-					gfx_set_dirty_blocks(w->x + widget->left, w->y + widget->top,
-						w->x + widget->right + 1, w->y + widget->bottom + 1);
-				}
-			}
-		}
-	} else if (cls & 0x40) {
-		cls &= 0xBF;
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-			if (w->classification == cls)
-				window_invalidate(w);
-	} else {
-		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-			if (w->classification == cls && w->number == number)
-				window_invalidate(w);
-	}
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls)
+			window_invalidate(w);
 }
 
-void widget_invalidate(rct_windowclass cls, rct_windownumber number, int widgetIndex)
+/**
+ * Invalidates all windows with the specified window class and number.
+ *  rct2: 0x006EC3AC
+ * @param (ah) widget index
+ * @param cls (al) without bit 14 set
+ * @param number (bx)
+ */
+void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 {
-	window_invalidate_by_id((widgetIndex << 8) | 0x80 | cls, number);
+	rct_window* w;
+
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls && w->number == number)
+			window_invalidate(w);
+}
+
+/**
+ * Invalidates the specified widget of a window.
+ *  rct2: 0x006EC402
+ */
+void widget_invalidate(rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+
+	widget = &w->widgets[widgetIndex];
+	if (widget->left == -2)
+		return;
+
+	gfx_set_dirty_blocks(w->x + widget->left, w->y + widget->top, w->x + widget->right + 1, w->y + widget->bottom + 1);
+}
+
+/**
+ * Invalidates the specified widget of all windows that match the specified window class.
+ */
+void widget_invalidate_by_class(rct_windowclass cls, int widgetIndex)
+{
+	rct_window* w;
+	
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls)
+			widget_invalidate(w, widgetIndex);
+}
+
+/**
+ * Invalidates the specified widget of all windows that match the specified window class and number.
+ *  rct2: 0x006EC3AC
+ * @param (ah) widget index
+ * @param cls (al) with bit 15 set
+ * @param number (bx)
+ */
+void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, int widgetIndex)
+{
+	rct_window* w;
+	
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->classification == cls && w->number == number)
+			widget_invalidate(w, widgetIndex);
 }
 
 /**
@@ -798,26 +841,6 @@ int window_get_scroll_data_index(rct_window *w, int widget_index)
 
 /**
  * 
- *  rct2: 0x006ED78A
- * cls (cl)
- * number (dx)
- */
-rct_window *window_bring_to_front_by_id(rct_windowclass cls, rct_windownumber number)
-{
-	rct_window* w;
-
-	w = window_find_by_id(cls, number);
-	if (w != NULL) {
-		w->flags |= WF_WHITE_BORDER_MASK;
-		window_invalidate(w);
-		w = window_bring_to_front(w);
-	}
-
-	return w;
-}
-
-/**
- * 
  *  rct2: 0x006ECDA4
  */
 rct_window *window_bring_to_front(rct_window *w)
@@ -854,36 +877,69 @@ rct_window *window_bring_to_front(rct_window *w)
 	return w;
 }
 
+rct_window *window_bring_to_front_by_class(rct_windowclass cls)
+{
+	rct_window* w;
+
+	w = window_find_by_class(cls);
+	if (w != NULL) {
+		w->flags |= WF_WHITE_BORDER_MASK;
+		window_invalidate(w);
+		w = window_bring_to_front(w);
+	}
+
+	return w;
+}
+
+/**
+ * 
+ *  rct2: 0x006ED78A
+ * cls (cl)
+ * number (dx)
+ */
+rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number)
+{
+	rct_window* w;
+
+	w = window_find_by_number(cls, number);
+	if (w != NULL) {
+		w->flags |= WF_WHITE_BORDER_MASK;
+		window_invalidate(w);
+		w = window_bring_to_front(w);
+	}
+
+	return w;
+}
+
 /**
  *
  * rct2: 0x006EE65A
  */
 void window_push_others_right(rct_window* window)
 {
+	for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+		if (w == window)
+			continue;
+		if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+			continue;
+		if (w->x >= window->x + window->width)
+			continue;
+		if (w->x + w->width <= window->x)
+			continue;
+		if (w->y >= window->y + window->height)
+			continue;
+		if (w->y + w->height <= window->y)
+			continue;
 
-        for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
-                if (w == window)
-                        continue;
-                if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-                        continue;
-                if (w->x >= window->x + window->width)
-                        continue;
-                if (w->x + w->width <= window->x)
-                        continue;
-                if (w->y >= window->y + window->height)
-                        continue;
-                if (w->y + w->height <= window->y)
-                        continue;
-
-                window_invalidate(w);
-                if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-                        continue;
-                uint16 push_amount = window->x + window->width - w->x + 3;
-                w->x += push_amount;
-                window_invalidate(w);
-                if (w->viewport != NULL)
-                        w->viewport->x += push_amount;
-        }
+		window_invalidate(w);
+		if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+			continue;
+		uint16 push_amount = window->x + window->width - w->x + 3;
+		w->x += push_amount;
+		window_invalidate(w);
+		if (w->viewport != NULL)
+			w->viewport->x += push_amount;
+	}
 }
 
 /**
@@ -1480,14 +1536,14 @@ void tool_cancel()
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) >= 0) {
 			// Invalidate tool widget
-			widget_invalidate(
+			widget_invalidate_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber),
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
 			);
 
 			// Abort tool event
-			w = window_find_by_id(
+			w = window_find_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
 			);
@@ -1552,8 +1608,8 @@ void window_resize_gui(int width, int height)
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}
-	rct_window* mainWind = window_get_main();
-	if (mainWind){
+	rct_window *mainWind = window_get_main();
+	if (mainWind != NULL) {
 		rct_viewport* viewport = mainWind->viewport;
 		mainWind->width = width;
 		mainWind->height = height;
@@ -1569,13 +1625,13 @@ void window_resize_gui(int width, int height)
 		}
 	}
 
-	rct_window* topWind = window_find_by_id(WC_TOP_TOOLBAR, 0);
-	if (topWind){
+	rct_window *topWind = window_find_by_class(WC_TOP_TOOLBAR);
+	if (topWind != NULL) {
 		topWind->width = max(640, width);
 	}
 
-	rct_window* bottomWind = window_find_by_id(WC_BOTTOM_TOOLBAR, 0);
-	if (bottomWind){
+	rct_window *bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
+	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
 		RCT2_GLOBAL(0x9A95D0, uint16) = width - 1;
@@ -1590,14 +1646,14 @@ void window_resize_gui(int width, int height)
 		RCT2_GLOBAL(0x9A95F0, uint16) = width - 3;
 	}
 
-	rct_window* titleWind = window_find_by_id(WC_TITLE_MENU, 0);
-	if (titleWind){
+	rct_window *titleWind = window_find_by_class(WC_TITLE_MENU);
+	if (titleWind != NULL) {
 		titleWind->x = width / 2 - 164;
 		titleWind->y = height - 142;
 	}
 
-	rct_window* exitWind = window_find_by_id(WC_TITLE_EXIT, 0);
-	if (exitWind){
+	rct_window *exitWind = window_find_by_class(WC_TITLE_EXIT);
+	if (exitWind != NULL) {
 		exitWind->x = width - 40;
 		exitWind->y = height - 64;
 	}
@@ -1625,13 +1681,13 @@ void window_resize_gui_scenario_editor(int width, int height)
 		}
 	}
 
-	rct_window* topWind = window_find_by_id(WC_TOP_TOOLBAR, 0);
-	if (topWind){
+	rct_window *topWind = window_find_by_class(WC_TOP_TOOLBAR);
+	if (topWind != NULL) {
 		topWind->width = max(640, width);
 	}
 
-	rct_window* bottomWind = window_find_by_id(WC_BOTTOM_TOOLBAR, 0);
-	if (bottomWind){
+	rct_window *bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
+	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
 		RCT2_GLOBAL(0x9A997C, uint16) = bottomWind->width - 1;
@@ -1694,10 +1750,10 @@ void window_align_tabs(rct_window *w, uint8 start_tab_id, uint8 end_tab_id)
  */
 void window_close_construction_windows()
 {
-	window_close_by_id(WC_RIDE_CONSTRUCTION, 0);
-	window_close_by_id(WC_FOOTPATH, 0);
-	window_close_by_id(WC_TRACK_DESIGN_LIST, 0);
-	window_close_by_id(WC_TRACK_DESIGN_PLACE, 0);
+	window_close_by_class(WC_RIDE_CONSTRUCTION);
+	window_close_by_class(WC_FOOTPATH);
+	window_close_by_class(WC_TRACK_DESIGN_LIST);
+	window_close_by_class(WC_TRACK_DESIGN_PLACE);
 }
 
 /**

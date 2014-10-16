@@ -485,7 +485,7 @@ void window_guest_open(rct_peep* peep){
 
 	rct_window* window;
 
-	window = window_bring_to_front_by_id(WC_PEEP, peep->sprite_index);
+	window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
 	if (window == NULL){
 		window = window_create_auto_pos(192, 157, (uint32*)window_guest_overview_events, WC_PEEP, 0);
 		window->widgets = window_guest_overview_widgets;
@@ -570,7 +570,7 @@ void window_guest_overview_resize(){
 	window_guest_disable_widgets(w);
 	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
 	
-	widget_invalidate(WC_PEEP, w->number, WIDX_MARQUEE);
+	widget_invalidate(w, WIDX_MARQUEE);
 	
 	window_set_resize(w, 192, 159, 500, 450);
 	
@@ -1082,8 +1082,8 @@ void window_guest_overview_update(rct_window* w){
 	w->var_494 &= 0x0000FFFF;
 	w->var_494 |= var_496 << 16;
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_1);
+	widget_invalidate(w, WIDX_TAB_2);
 	
 	w->list_information_type += 2;
 
@@ -1311,7 +1311,7 @@ void window_guest_unknown_05(){
 	rct_window* w;
 	window_get_register(w);
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_1);
+	widget_invalidate(w, WIDX_TAB_1);
 }
 
 /* rct2: 0x69746A */
@@ -1554,8 +1554,8 @@ void window_guest_rides_update(){
 
 	w->frame_no++;
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_3);
+	widget_invalidate(w, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_3);
 
 	rct_peep* peep = GET_PEEP(w->number);
 
@@ -1775,8 +1775,8 @@ void window_guest_finance_update(){
 
 	w->frame_no++;
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_4);
+	widget_invalidate(w, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_4);
 }
 
 /* rct2: 0x00697968 */
@@ -1914,8 +1914,8 @@ void window_guest_thoughts_update(){
 
 	w->frame_no++;
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_5);
+	widget_invalidate(w, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_5);
 }
 
 /* rct2: 0x00697C8A */
@@ -2016,8 +2016,8 @@ void window_guest_inventory_update(){
 
 	w->frame_no++;
 
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_2);
-	widget_invalidate(WC_PEEP, w->number, WIDX_TAB_6);
+	widget_invalidate(w, WIDX_TAB_2);
+	widget_invalidate(w, WIDX_TAB_6);
 }
 
 /* rct2: 0x00697EE1 */

@@ -136,7 +136,7 @@ void window_map_open()
 	uint32* map_image_data;
 
 	// Check if window is already open
-	w = window_bring_to_front_by_id(WC_MAP, 0);
+	w = window_bring_to_front_by_class(WC_MAP);
 	if (w != NULL) {
 		w->selected_tab = 0;
 		w->list_information_type = 0;
@@ -644,7 +644,7 @@ static void sub_68C990()
 	if (w == NULL || w->viewport == NULL)
 		return;
 
-	w_map = window_find_by_id(WC_MAP, 0);
+	w_map = window_find_by_class(WC_MAP);
 	if (w_map == NULL)
 		return;
 

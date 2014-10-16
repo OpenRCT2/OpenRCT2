@@ -261,11 +261,11 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_PATH:
-		if (window_find_by_id(WC_FOOTPATH, 0) == NULL) {
+		if (window_find_by_class(WC_FOOTPATH) == NULL) {
 			window_footpath_open();
 		} else {
 			tool_cancel();
-			window_close_by_id(0x80 | WC_FOOTPATH, 0);
+			window_close_by_class(WC_FOOTPATH);
 		}
 		break;
 	case WIDX_CONSTRUCT_RIDE:
@@ -464,7 +464,7 @@ static void window_game_top_toolbar_dropdown()
 			default:
 				return;
 			}
-			window_invalidate(w);
+			window_invalidate(mainWindow);
 		}
 		break;
 	case WIDX_MAP:
@@ -543,7 +543,7 @@ static void window_game_top_toolbar_invalidate()
 	window_game_top_toolbar_widgets[WIDX_CLEAR_SCENERY].left = x;
 
 	// Footpath button pressed down
-	if (window_find_by_id(0x80 | 0x20, 0) == NULL)
+	if (window_find_by_class(WC_FOOTPATH) == NULL)
 		w->pressed_widgets &= ~(1 << WIDX_PATH);
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);

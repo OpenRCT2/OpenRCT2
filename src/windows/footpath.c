@@ -171,7 +171,7 @@ void window_footpath_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_id(WC_FOOTPATH, 0);
+	window = window_bring_to_front_by_class(WC_FOOTPATH);
 	if (window != NULL)
 		return;
 
@@ -230,7 +230,7 @@ static void window_footpath_close()
 	viewport_set_visibility(0);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
-	window_invalidate_by_id(WC_TOP_TOOLBAR, 0);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 	hide_gridlines();
 }
 
@@ -456,7 +456,7 @@ static void window_footpath_toolup()
 static void window_footpath_update(rct_window *w)
 {
 	// Invalidate construct button
-	widget_invalidate(WC_FOOTPATH, 0, WIDX_CONSTRUCT);
+	widget_invalidate(w, WIDX_CONSTRUCT);
 
 	RCT2_CALLPROC_EBPSAFE(0x006A7760);
 
