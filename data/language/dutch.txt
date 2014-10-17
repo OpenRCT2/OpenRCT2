@@ -2777,8 +2777,8 @@ STR_2775    :Volledig scherm (bureaublad)
 STR_2776    :Taal
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
-STR_2779    :???
-STR_2780    :???
+STR_2779    :Kijkvenster #{COMMA16}
+STR_2780    :Extra Kijkvenster
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
