@@ -3318,9 +3318,9 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :Scenario Name
-STR_3314    :Enter name for scenario:-
+STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:-
+STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
@@ -3355,7 +3355,7 @@ STR_3347    :Ride is too large, contains too many elements, or scenery is too sp
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:-
+STR_3351    :Enter new name for this track design:
 STR_3352    :Can't rename track design...
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
