@@ -40,28 +40,26 @@
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-int scenario_load_basic(const char *path)
+int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
 	FILE *file;
-	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	file = fopen(path, "rb");
 	if (file != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)s6Header);
-		if (s6Header->type == S6_TYPE_SCENARIO) {
+		sawyercoding_read_chunk(file, (uint8*)header);
+		if (header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			sawyercoding_read_chunk(file, (uint8*)info);
 			fclose(file);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 
 			// Checks for a scenario string object (possibly for localisation)
-			if ((s6Info->entry.flags & 0xFF) != 255) {
-				if (object_get_scenario_text(&s6Info->entry)) {
+			if ((info->entry.flags & 0xFF) != 255) {
+				if (object_get_scenario_text(&info->entry)) {
 					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
-					format_string(s6Info->name, RCT2_GLOBAL(ebp, sint16), NULL);
-					format_string(s6Info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
+					format_string(info->name, RCT2_GLOBAL(ebp, sint16), NULL);
+					format_string(info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
 					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
 					object_free_scenario_text();
 				}

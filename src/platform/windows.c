@@ -121,6 +121,72 @@ int platform_lock_single_instance()
 	}
 }
 
+typedef struct {
+	char active;
+	char pattern[MAX_PATH];
+	HANDLE handle;
+	WIN32_FIND_DATAA data;
+} enumerate_file_info;
+static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
+
+int platform_enumerate_files_begin(const char *pattern)
+{
+	int i;
+	enumerate_file_info *enumFileInfo;
+
+	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+		enumFileInfo = &_enumerateFileInfoList[i];
+		if (!enumFileInfo->active) {
+			strncpy(enumFileInfo->pattern, pattern, MAX_PATH);
+			enumFileInfo->handle = NULL;
+			enumFileInfo->active = 1;
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+int platform_enumerate_files_next(int handle, char **outFileName)
+{
+	int result;
+	enumerate_file_info *enumFileInfo;
+	HANDLE findFileHandle;
+
+	enumFileInfo = &_enumerateFileInfoList[handle];
+
+	if (enumFileInfo->handle == NULL) {
+		findFileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		if (findFileHandle != INVALID_HANDLE_VALUE) {
+			enumFileInfo->handle = findFileHandle;
+			result = 1;
+		} else {
+			result = 0;
+		}
+	} else {
+		result = FindNextFile(enumFileInfo->handle, &enumFileInfo->data);
+	}
+
+	if (result) {
+		*outFileName = enumFileInfo->data.cFileName;
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+void platform_enumerate_files_end(int handle)
+{
+	enumerate_file_info *enumFileInfo;
+
+	enumFileInfo = &_enumerateFileInfoList[handle];
+	if (enumFileInfo->handle != NULL) {
+		FindClose(enumFileInfo->handle);
+		enumFileInfo->handle = NULL;
+	}
+	enumFileInfo->active = 0;
+}
+
 /**
  * http://alter.org.ua/en/docs/win/args/
  */
