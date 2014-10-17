@@ -110,6 +110,7 @@
     <ClCompile Include="..\src\windows\land.c" />
     <ClCompile Include="..\src\windows\main.c" />
     <ClCompile Include="..\src\windows\map.c" />
+    <ClCompile Include="..\src\windows\map_tooltip.c" />
     <ClCompile Include="..\src\windows\music_credits.c" />
     <ClCompile Include="..\src\windows\news.c" />
     <ClCompile Include="..\src\windows\new_campaign.c" />

@@ -381,6 +381,7 @@ enum {
 	WC_MAP = 38,
 	WC_TITLE_LOGO = 39,
 	WC_BANNER = 40,
+	WC_MAP_TOOLTIP = 41,
 	WC_EDITOR_OBJECT_SELECTION = 42,
 	WC_EDITOR_INVENTION_LIST = 43,
 	WC_EDITOR_SCENARIO_OPTIONS = 45,
@@ -520,6 +521,8 @@ void window_align_tabs( rct_window *w, uint8 start_tab_id, uint8 end_tab_id );
 
 void window_new_ride_init_vars();
 void window_new_ride_focus(ride_list_item rideItem);
+
+void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
 

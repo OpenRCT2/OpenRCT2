@@ -380,7 +380,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
@@ -390,9 +389,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c">
-      <Filter>Libraries\libspeex</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c">
       <Filter>Libraries\lodepng</Filter>
@@ -426,6 +422,10 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\text_input.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\map_tooltip.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>

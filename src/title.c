@@ -276,8 +276,7 @@ void title_update()
 	if (!tmp)
 		RCT2_GLOBAL(0x009AC861, uint16) |= 0x04;
 
-	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
-
+	window_map_tooltip_update_visibility();
 	window_update_all();
 	DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
 

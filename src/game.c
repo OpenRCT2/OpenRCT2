@@ -185,8 +185,6 @@ void update_palette_effects()
 	}
 }
 
-
-
 void game_update()
 {
 	int i, numUpdates, tmp;
@@ -249,8 +247,7 @@ void game_update()
 	if (!tmp)
 		RCT2_GLOBAL(0x009AC861, uint16) |= (1 << 2);
 
-	RCT2_CALLPROC_EBPSAFE(0x006EE77A);
-
+	window_map_tooltip_update_visibility();
 	window_update_all();
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
