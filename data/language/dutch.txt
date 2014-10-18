@@ -1502,7 +1502,7 @@ STR_1500    :{SMALLFONT}{OPENQUOTES}Ik heb honger{ENDQUOTES}
 STR_1501    :{SMALLFONT}{OPENQUOTES}Ik heb dorst{ENDQUOTES}
 STR_1502    :{SMALLFONT}{OPENQUOTES}Ik moet naar de WC{ENDQUOTES}
 STR_1503    :{SMALLFONT}{OPENQUOTES}Ik kan {STRINGID} niet vinden{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}Zoveel betalen ik niet voor het gebruik van {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor het gebruik van {STRINGID}{ENDQUOTES}
 STR_1505    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} als het regent{ENDQUOTES}
 STR_1506    :{SMALLFONT}{OPENQUOTES}Het is hier een zwijnenstal{ENDQUOTES}
 STR_1507    :{SMALLFONT}{OPENQUOTES}Ik kan de parkuitgang niet vinden{ENDQUOTES}
@@ -1515,14 +1515,14 @@ STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
 STR_1514    :{SMALLFONT}{OPENQUOTES}Mooi decor!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Dit park is erg schoon en netjes{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg leuk{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}Er speelt hier leuke muziek{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}De muziek is leuk hier{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}Deze plattegrond van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1521    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}Deze paraplu van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Deze frisdrank van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Deze hamburger van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1525    :{SMALLFONT}{OPENQUOTES}Deze frietjes van {STRINGID} zijn erg goedkoop{ENDQUOTES}
 STR_1526    :{SMALLFONT}{OPENQUOTES}Dit ijsje van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1527    :{SMALLFONT}{OPENQUOTES}Deze suikerspin van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1556,7 +1556,7 @@ STR_1554    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een plattegrond v
 STR_1555    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van {STRINGID}{ENDQUOTES}
 STR_1556    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een paraplu van {STRINGID}{ENDQUOTES}
 STR_1557    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor frisdrank van {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hamburger {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hamburger van {STRINGID}{ENDQUOTES}
 STR_1559    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor frietjes van {STRINGID}{ENDQUOTES}
 STR_1560    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een ijsje van {STRINGID}{ENDQUOTES}
 STR_1561    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een suikerspin van {STRINGID}{ENDQUOTES}
@@ -1694,7 +1694,7 @@ STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}vanaf {CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Bezoekers
 STR_1694    :{SMALLFONT}{BLACK}Werknemers
 STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
-STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
+STR_1696    :{SMALLFONT}{BLACK}Klanteninformatie
 STR_1697    :Dit kan niet op wachtrijen worden geplaatst
 STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
 STR_1699    :Teveel personen in het spel
@@ -2311,7 +2311,7 @@ STR_2309    :Nieuw baanontwerp installeren
 STR_2310    :Eigen ontwerp bouwen
 STR_2311    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2312    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32} (ongeveer)
-STR_2313    :{WINDOW_COLOUR_2}Misselheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2313    :{WINDOW_COLOUR_2}Missellijkheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} x {COMMA16} blokken
@@ -2350,7 +2350,7 @@ STR_2348    :{SMALLFONT}{BLACK}Statistieken voor deze werknemer tonen
 STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}In dienst genomen: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Bloembakken water gegeven: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Bloemen water gegeven: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA16}
@@ -2522,7 +2522,7 @@ STR_2520    :Lijst met bezoekers tonen
 STR_2521    :Lijst met werknemers tonen
 STR_2522    :Recente berichten tonen
 STR_2523    :Kaart tonen
-STR_2524    :Screenshot
+STR_2524    :Schermafbeelding
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -3043,7 +3043,7 @@ STR_3041    :Moderne stijl
 STR_3042    :Piratenstijl
 STR_3043    :Rockstijl 3
 STR_3044    :Snoepstijl
-STR_3045    :{SMALLFONT}{BLACK}Selecteer welke muziekstijl er moet worden gespeeld
+STR_3045    :{SMALLFONT}{BLACK}Selecteer welke muziekstijl er moet worden gedraaid
 STR_3046    :Deze attractie kan niet worden aangepast
 STR_3047    :De gemeente staat de sloop van en wijzigingen aan deze attractie niet toe
 STR_3048    :Marketingcampagnes worden niet toegestaan door de gemeente
