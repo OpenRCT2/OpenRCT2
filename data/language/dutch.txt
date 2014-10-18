@@ -1515,7 +1515,7 @@ STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
 STR_1514    :{SMALLFONT}{OPENQUOTES}Mooi decor!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Dit park is erg schoon en netjes{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg leuk{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}De muziek is leuk hier{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}Er wordt hier leuke muziek gedraaid{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}Deze plattegrond van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -2522,7 +2522,7 @@ STR_2520    :Lijst met bezoekers tonen
 STR_2521    :Lijst met werknemers tonen
 STR_2522    :Recente berichten tonen
 STR_2523    :Kaart tonen
-STR_2524    :Schermafbeelding
+STR_2524    :Screenshot
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -2759,7 +2759,7 @@ STR_2757    :???
 STR_2758    :???
 STR_2759    :???
 STR_2760    :+5000 geld
-STR_2761    :Betaald entree
+STR_2761    :Betaalde entree
 STR_2762    :Betalen per rit
 STR_2763    :???
 STR_2764    :Tevreden gasten
@@ -3078,7 +3078,7 @@ STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds lager da
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
 STR_3078    :Standaardingang
 STR_3079    :Houten ingang
-STR_3080    :Canvas tent ingang
+STR_3080    :Canvastentingang
 STR_3081    :Kasteelingang (grijs)
 STR_3082    :Kasteelingang (bruin)
 STR_3083    :Jungle-ingang
@@ -3331,7 +3331,7 @@ STR_3329    :Parkingang nog niet gebouwd
 STR_3330    :Park moet land bezitten
 STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te complex - het pad mag maar één blok breed zijn en moet zo min mogelijk kruisingen en bochten bevatten
 STR_3332    :Parkingang staan achterstevoren of heeft geen pad naar de rand van de kaart
-STR_3333    :Plug-in objecten meeleveren in opgeslagen spellen
+STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Achtbaanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
