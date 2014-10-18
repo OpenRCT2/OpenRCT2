@@ -561,8 +561,8 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels
-STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'
+STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'zweeftijd' in de heuvels
+STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'zweeftijd'
 STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht
 STR_0566    :Losse karretjes rijden over een kronkelende baan scherpe bochten en korte felle afdalingen
 STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door de diepe afdalingen gaan en door diverse omkeringen. 
@@ -932,16 +932,16 @@ STR_0930    :S-bocht (rechts)
 STR_0931    :Verticale looping (links)
 STR_0932    :Verticale looping (rechts)
 STR_0933    :Verhoog of verlaag eerst het land
-STR_0934    :Attractieingang in de weg
-STR_0935    :Attractieuitgang in de weg
-STR_0936    :Parkingang in de weg
+STR_0934    :Attractieingang staat in de weg
+STR_0935    :Attractieuitgang staat in de weg
+STR_0936    :Parkingang staat in de weg
 STR_0937    :{SMALLFONT}{BLACK}Beeldopties
 STR_0938    :{SMALLFONT}{BLACK}Landhoogte en -helling aanpassen
 STR_0939    :Zicht ondergronds/binnen
 STR_0940    :Bovenkant land verbergen
 STR_0941    :Zijkant land verbergen
 STR_0942    :Doorzichtige attracties
-STR_0943    :Doorzichtig decor
+STR_0943    :Doorzichtig landschap
 STR_0944    :Opslaan
 STR_0945    :Niet opslaan
 STR_0946    :Annuleren
@@ -1003,7 +1003,7 @@ STR_1001    :Baan is ongeschikt voor dit type trein
 STR_1002    :Kan {POP16}{POP16}{POP16}{STRINGID} niet openen...
 STR_1003    :Kan {POP16}{POP16}{POP16}{STRINGID} niet testen...
 STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten...
-STR_1005    :Kan verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet beginnen...
+STR_1005    :Kan de verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet starten...
 STR_1006    :Moet eerst worden gesloten
 STR_1007    :Kan niet voldoende voertuigen aanmaken
 STR_1008    :{SMALLFONT}{BLACK}Attractie openen, sluiten of testen
@@ -1013,7 +1013,7 @@ STR_1011    :Alles sluiten
 STR_1012    :Alles openen
 STR_1013    :Park sluiten
 STR_1014    :Park openen
-STR_1015    :Kan in deze modus niet met meer dan een station werken
+STR_1015    :Kan in deze modus niet met meer dan één station werken
 STR_1016    :Kan in deze modus niet met minder dan twee stations werken
 STR_1017    :Kan modus niet veranderen...
 STR_1018    :Kan geen veranderingen aanbrengen...
@@ -1052,12 +1052,12 @@ STR_1050    :Kan dit niet laden...{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
 STR_1053    :{SMALLFONT}{BLACK}Attracties in park
-STR_1054    :{SMALLFONT}{BLACK}Attractienaam
-STR_1055    :{SMALLFONT}{BLACK}Persoonsnaam
-STR_1056    :{SMALLFONT}{BLACK}Werknemersnaam
-STR_1057    :Attractienaam
+STR_1054    :{SMALLFONT}{BLACK}Naam attractie
+STR_1055    :{SMALLFONT}{BLACK}Naam persoon
+STR_1056    :{SMALLFONT}{BLACK}Naam werknemer
+STR_1057    :Naam attractie
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
-STR_1059    :Kan deze attractienaam geen andere naam geven...
+STR_1059    :Kan deze attractie geen andere naam geven...
 STR_1060    :Ongeldige attractienaam
 STR_1061    :Normale stand
 STR_1062    :Voortdurend circuit
@@ -1068,8 +1068,8 @@ STR_1066    :Bootverhuurmodus
 STR_1067    :Opwaartse lancering
 STR_1068    :Draaiendeliftmodus
 STR_1069    :Station-naar-station
-STR_1070    :Enkele rit per toegang
-STR_1071    :Onbeperkt aantal ritten per toegang
+STR_1070    :Enkele rit per entree
+STR_1071    :Onbeperkt aantal ritten per entree
 STR_1072    :Doolhofstand
 STR_1073    :Racestand
 STR_1074    :Botsautomodus
@@ -1177,7 +1177,7 @@ STR_1175    :Kan dit niet op hellend voetpad neerzetten
 STR_1176    :Kan hier geen voetpad neerzetten...
 STR_1177    :Kan dit voetpad niet verwijderen...
 STR_1178    :Landhelling is ongeschikt
-STR_1179    :Voetpad in de weg
+STR_1179    :Voetpad staat in de weg
 STR_1180    :Dit kan niet onder water worden gebouwd!
 STR_1181    :Voetpaden
 STR_1182    :Type
@@ -1187,8 +1187,8 @@ STR_1185    :{SMALLFONT}{BLACK}Richting
 STR_1186    :{SMALLFONT}{BLACK}Helling naar beneden
 STR_1187    :{SMALLFONT}{BLACK}Vlak
 STR_1188    :{SMALLFONT}{BLACK}Helling naar boven
-STR_1189    :{SMALLFONT}{BLACK}Bouw het geselecteerde segment
-STR_1190    :{SMALLFONT}{BLACK}Verwijder vorig segment
+STR_1189    :{SMALLFONT}{BLACK}Bouw het geselecteerde gedeelte
+STR_1190    :{SMALLFONT}{BLACK}Verwijder vorig gedeelte
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -1218,7 +1218,7 @@ STR_1216    :{SMALLFONT}{BLACK}Selecteer of een trein op hetzelfde moment moet v
 STR_1217    :{COMMA16} seconden
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :Alleen uitgang
+STR_1220    :Alleen een uitgang
 STR_1221    :Geen ingang
 STR_1222    :Geen uitgang
 STR_1223    :{SMALLFONT}{BLACK}Transportattracties
@@ -1383,7 +1383,7 @@ STR_1381    :Gedraaide liftheuvel (links)
 STR_1382    :Gedraaide liftheuvel (rechts)
 STR_1383    :Kwartlooping
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Andere baanconfiguraties
+STR_1385    :{SMALLFONT}{BLACK}Andere baaninstellingen
 STR_1386    :Speciaal...
 STR_1387    :Kan het landtype niet aanpassen...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
@@ -1409,7 +1409,7 @@ STR_1407    :{WINDOW_COLOUR_2}Dit bouwen...
 STR_1408    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY}
 STR_1409    :Platform voor ingang/uitgang
 STR_1410    :Verticale toren
-STR_1411    :{STRINGID} in de weg
+STR_1411    :{STRINGID} staat in de weg
 STR_1412    :{15}Datalog is niet beschikbaar voor dit type attractie
 STR_1413    :{15}Datalog zal beginnen wanneer de volgende {STRINGID} {STRINGID} verlaat
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
@@ -1443,10 +1443,10 @@ STR_1441    :Veegt voetpad
 STR_1442    :Leegt prullenbak
 STR_1443    :Geeft planten water
 STR_1444    :Kijkt naar {STRINGID}
-STR_1445    :Kijkt naar bouw van {STRINGID}
+STR_1445    :Kijkt naar de bouw van {STRINGID}
 STR_1446    :Kijkt naar decor
 STR_1447    :Verlaat het park
-STR_1448    :Kijkt naar bouw van nieuwe attractie
+STR_1448    :Kijkt naar de bouw van de nieuwe attractie
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
@@ -1512,9 +1512,9 @@ STR_1510    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} - het is gevaarlijk
 STR_1511    :{SMALLFONT}{OPENQUOTES}Dit pad is smerig{ENDQUOTES}
 STR_1512    :{SMALLFONT}{OPENQUOTES}Het is hier te druk{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Mooi decor!{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Mooie decor!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Dit park is erg schoon en netjes{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg leuk{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg mooi{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}Er wordt hier leuke muziek gedraaid{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1668,7 +1668,7 @@ STR_1666    :{WINDOW_COLOUR_2}Dorst:
 STR_1667    :{WINDOW_COLOUR_2}WC-behoefte:
 STR_1668    :{WINDOW_COLOUR_2}Voldoening: {BLACK}onbekend
 STR_1669    :{WINDOW_COLOUR_2}Voldoening: {BLACK}{COMMA16}%
-STR_1670    :{WINDOW_COLOUR_2}Totale bezoekers: {BLACK}{COMMA32}
+STR_1670    :{WINDOW_COLOUR_2}Totaal aantal bezoekers: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Totale winst: {BLACK}{CURRENCY2DP}
 STR_1672    :Remmen
 STR_1673    :Draaistop
@@ -1763,7 +1763,7 @@ STR_1761    :{SMALLFONT}{BLACK}Bouw doolhof in deze richting
 STR_1762    :Watervallen
 STR_1763    :Stroomversnelling
 STR_1764    :Balkendrempels
-STR_1765    :Actiefoto-installatie
+STR_1765    :Actiefoto-gedeelte
 STR_1766    :Draaischijf
 STR_1767    :Draaiende tunnel
 STR_1768    :Kan het aantal schommelingen niet aanpassen...
@@ -1771,7 +1771,7 @@ STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
 STR_1770    :{SMALLFONT}{BLACK}Aantal complete schommelingen
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Een attractie mag maar één actiefoto-installatie hebben
+STR_1773    :Een attractie mag maar één actiefoto-gedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1775    :Uit
 STR_1776    :Aan
@@ -2226,7 +2226,7 @@ STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Bedrijfswaarde: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Inkomsten horeca en merchandise{NEWLINE}vorige maand: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Inkomsten horeca en accessoires{NEWLINE}vorige maand: {BLACK}{CURRENCY}
 STR_2229    :Helling omhoog naar verticaal
 STR_2230    :Verticale baan
 STR_2231    :Vasthoudrem voor afdaling
@@ -2394,7 +2394,7 @@ STR_2392    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan attr
 STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van minstens {LENGTH}, en een spanningswaarde van minstens 7,00
 STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, ek met een spanningswaarde van minstens {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van minstens {POP16}{POP16}{CURRENCY} te bereiken
-STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en merchandise te verdienen
+STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en accessoires te verdienen
 STR_2397    :Geen
 STR_2398    :Aantal bezoekers op een bepaalde datum
 STR_2399    :Parkwaarde op een bepaalde datum
@@ -2406,7 +2406,7 @@ STR_2404    :Maandelijks inkomen van attractiekaartjes
 STR_2405    :10 achtbanen van een bepaalde lengte bouwen
 STR_2406    :5 achtbanen afmaken
 STR_2407    :Lening terugbetalen en een bepaalde parkwaarde bereiken
-STR_2408    :Maandelijks inkomen van voedsel/merchandise
+STR_2408    :Maandelijks inkomen van voedsel/accessoires
 STR_2409    :{WINDOW_COLOUR_2}Lopende marketingcampagnes
 STR_2410    :{BLACK}Geen
 STR_2411    :{WINDOW_COLOUR_2}Beschikbare marketingcampagnes
