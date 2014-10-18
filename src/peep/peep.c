@@ -107,6 +107,96 @@ void peep_update_all()
 	}
 }
 
+/* rct2: 0x6939EB */
+int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
+	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->var_70;
+	if (peep->var_71 == 0xFE){
+		peep->var_71 = 0xFF;
+	}
+
+	*x = peep->x - peep->var_32;
+	*y = peep->y - peep->var_34;
+	int ebx = *x;
+	int edx = *y;
+	if (ebx < 0) ebx = -ebx;
+	if (edx < 0) edx = -edx;
+
+	int ebp = ebx + edx;
+	if (peep->var_71 >= 0xFE){
+		if (ebp <= peep->var_36){
+			
+			return 0;
+		}
+		int direction = 0;
+		if (ebx <= edx){
+			direction = 8;
+			if (*y > 0){
+				direction = 24;
+			}
+		}
+		else{
+			direction = 16;
+			if (*x > 0){
+				direction = 0;
+			}
+		}
+		peep->sprite_direction = direction;
+		*x = peep->x + RCT2_ADDRESS(0x981D7C, uint16)[direction / 2];
+		*y = peep->y + RCT2_ADDRESS(0x981D7E, uint16)[direction / 2];
+		ebx = peep->var_E0 + 1;
+		uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
+		uint8* _edi = (uint8*)(edi[peep->var_6E * 2 + 1]);
+		if (ebx > *_edi){
+			ebx = 0;
+		}
+		peep->var_E0 = ebx;
+		peep->var_70 = _edi[ebx + 1];
+		return 1;
+	}
+	
+	int* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
+	uint8* _edi = (uint8*)(edi[peep->var_6E * 2 + 1]);
+	peep->var_72++;
+	ebx = _edi[peep->var_72 + 1];
+
+	if (ebx == 0xFF){
+		peep->var_70 = 0;
+		peep->var_71 = 0xFF;
+		RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		*x = peep->x;
+		*y = peep->y;
+		return 1;
+	}
+	peep->var_70 = ebx;
+	if (peep->var_71 != 8 || peep->var_71 != 15){
+		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		*x = peep->x;
+		*y = peep->y;
+		return 1;
+	}
+
+	peep->hunger /= 2;
+	peep->nausea_growth_rate /= 2;
+
+	if (peep->nausea < 30)
+		peep->nausea = 0;
+	else
+		peep->nausea -= 30;
+
+	peep->var_45 |= (1 << 2);
+
+	RCT2_CALLPROC_X(0x67375D, peep->x, peep->sprite_direction, peep->y, peep->z, 0, 0, peep->sprite_index & 1);
+
+	int sound_id = scenario_rand() & 3 + 24;
+
+	sound_play_panned(sound_id, 0x8001, peep->x, peep->y, peep->z);
+
+	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	*x = peep->x;
+	*y = peep->y;
+	return 1;
+}
 /**
 *  rct2: 0x0069A409
 * Decreases rider count if on/entering a ride.
@@ -176,7 +266,9 @@ void peep_remove(rct_peep* peep){
 void peep_update_falling(rct_peep* peep){
 	if (peep->var_71 == 11){
 		// Check to see if we are ready to drown.
-		RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
+		int x, y;
+		sub_6939EB(&x, &y, peep);
+		//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->var_71 == 11) return;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
 			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
@@ -336,7 +428,9 @@ void peep_update_sitting(rct_peep* peep){
 	}
 	else if (peep->var_2C == 1){
 		if (peep->var_71 < 0xFE){
-			RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
+			int x, y;
+			sub_6939EB(&x, &y, peep);
+			//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 			if (peep->var_71 != 0xFF) return;
 
 			peep->var_71 = 0xFE;
@@ -526,9 +620,10 @@ static void peep_update_entering_park(rct_peep* peep){
 		}
 		return;
 	}
-	if (RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100){
+	int x = 0, ebx = 0, y = 0, edx = 0, ebp = 0, edi = 0;
+	if (sub_6939EB(&x, &y, peep)){
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-		sub_69E9D3(0, 0, peep->z, (rct_sprite*)peep);
+		sub_69E9D3(x, y, peep->z, (rct_sprite*)peep);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
@@ -657,7 +752,8 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006BF641, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_ENTERING_PARK:
-			RCT2_CALLPROC_X(0x00691451, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_entering_park(peep);
+			//RCT2_CALLPROC_X(0x00691451, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_LEAVING_PARK:
 			RCT2_CALLPROC_X(0x006914CD, 0, 0, 0, 0, (int)peep, 0, 0);
