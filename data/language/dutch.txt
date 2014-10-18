@@ -898,12 +898,12 @@ STR_0896    :{POP16}{POP16}{STRINGID} Constructie
 STR_0897    :Richting
 STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
 STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
-STR_0900    :{SMALLFONT}{BLACK}Bocht naar links (kleine radius)
-STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine radius)
-STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine radius)
-STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine radius)
-STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote radius)
-STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote radius)
+STR_0900    :{SMALLFONT}{BLACK}Bocht naar links (kleine straal)
+STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine straal)
+STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine straal)
+STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine straal)
+STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
+STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (straal)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
 STR_0908    :Roll/Banking
@@ -911,10 +911,10 @@ STR_0909    :Stoelrot.
 STR_0910    :{SMALLFONT}{BLACK}Roll voor bocht naar links
 STR_0911    :{SMALLFONT}{BLACK}Roll voor bocht naar rechts
 STR_0912    :{SMALLFONT}{BLACK}Geen roll
-STR_0913    :{SMALLFONT}{BLACK}Ga naar vorig segment
-STR_0914    :{SMALLFONT}{BLACK}Ga naar volgend segment
-STR_0915    :{SMALLFONT}{BLACK}Bouw het geselecteerde segment
-STR_0916    :{SMALLFONT}{BLACK}Verwijder het gemarkeerde segment
+STR_0913    :{SMALLFONT}{BLACK}Ga naar vorig gedeelte
+STR_0914    :{SMALLFONT}{BLACK}Ga naar volgend gedeelte
+STR_0915    :{SMALLFONT}{BLACK}Bouw het geselecteerde gedeelte
+STR_0916    :{SMALLFONT}{BLACK}Verwijder het gemarkeerde gedeelte
 STR_0917    :{SMALLFONT}{BLACK}Verticale val
 STR_0918    :{SMALLFONT}{BLACK}Steile helling naar beneden
 STR_0919    :{SMALLFONT}{BLACK}Helling naar beneden
@@ -945,7 +945,7 @@ STR_0943    :Doorzichtig decor
 STR_0944    :Opslaan
 STR_0945    :Niet opslaan
 STR_0946    :Annuleren
-STR_0947    :Dit spel opslaan voordat je een ander laadt?
+STR_0947    :Dit spel opslaan voordat je een ander spel laadt?
 STR_0948    :Dit spel opslaan voordat je afsluit?
 STR_0949    :Dit spel opslaan voordat je afsluit?
 STR_0950    :Spel laden
@@ -953,7 +953,7 @@ STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Selecteer de draaiing van de stoelen voor dit segment
+STR_0955    :{SMALLFONT}{BLACK}Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -1920,7 +1920,7 @@ STR_1918    :Kan niet meer geld lenen!
 STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan geen lening terugbetalen!
 STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
-STR_1922    :{SMALLFONT}{BLACK}Verder gaan aan een opgeslagen spel
+STR_1922    :{SMALLFONT}{BLACK}Verder gaan met een opgeslagen spel
 STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
 STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen...
@@ -2759,7 +2759,7 @@ STR_2757    :???
 STR_2758    :???
 STR_2759    :???
 STR_2760    :+5000 geld
-STR_2761    :Betaalde entree
+STR_2761    :Betaald entree
 STR_2762    :Betalen per rit
 STR_2763    :???
 STR_2764    :Tevreden gasten
@@ -3067,7 +3067,7 @@ STR_3065    :Uitdagende parken
 STR_3066    :Moeilijke parken
 STR_3067    :{OPENQUOTES}Echte{ENDQUOTES} parken
 STR_3068    :Andere parken
-STR_3069    :Bovensegment
+STR_3069    :Bovengedeelte
 STR_3070    :Van helling naar vlak
 STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
 STR_3072    :{SMALLFONT}{BLACK}Selecteer of deze prijs in het hele park moet worden gehanteerd
@@ -3078,7 +3078,7 @@ STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds lager da
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
 STR_3078    :Standaardingang
 STR_3079    :Houten ingang
-STR_3080    :Canvastentingang
+STR_3080    :Canvas tent ingang
 STR_3081    :Kasteelingang (grijs)
 STR_3082    :Kasteelingang (bruin)
 STR_3083    :Jungle-ingang
@@ -3089,7 +3089,7 @@ STR_3087    :Sneeuw/ijs-ingang
 STR_3088    :Pagode-ingang
 STR_3089    :Ruimte-ingang
 STR_3090    :{SMALLFONT}{BLACK}Selecteer de stijl van de ingang, uitgang, en het station
-STR_3091    :Je mag dit segment niet verwijderen!
+STR_3091    :Je mag dit gedeelte niet verwijderen!
 STR_3092    :Je mag het station van deze attractie niet verplaatsen of veranderen!
 STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
 STR_3094    :n.v.t.
@@ -3331,7 +3331,7 @@ STR_3329    :Parkingang nog niet gebouwd
 STR_3330    :Park moet land bezitten
 STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te complex - het pad mag maar één blok breed zijn en moet zo min mogelijk kruisingen en bochten bevatten
 STR_3332    :Parkingang staan achterstevoren of heeft geen pad naar de rand van de kaart
-STR_3333    :Niet-standaard objecten meeleveren in opgeslagen spellen
+STR_3333    :Plug-in objecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Achtbaanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
@@ -3407,7 +3407,7 @@ STR_3405    :{SMALLFONT}{BLACK}Terwijl we op onze eerste bezoekers wachten kunne
 STR_3406    :{SMALLFONT}{BLACK}Dit is ons lege park. We gaan een simpele zelfontworpen attractie bouwen...
 STR_3407    :{SMALLFONT}{BLACK}Ten eerste hebben we een startpositie nodig...
 STR_3408    :{SMALLFONT}{BLACK}Het stuk baan dat we net gebouwd hebben is een 'station', en zorgt ervoor dat bezoekers in en uit kunnen stappen...
-STR_3409    :{SMALLFONT}{BLACK}We verlengen het perron een beetje door nog wat stationssegmenten aan te leggen...
+STR_3409    :{SMALLFONT}{BLACK}We verlengen het perron een beetje door nog wat stationsgedeeltes aan te leggen...
 STR_3410    :{SMALLFONT}{BLACK}De knopjes aan de bovenkant van het bouwvenster laten je tusen verschillende soorten baanstukjes kiezen...
 STR_3411    :{SMALLFONT}{BLACK}We gaan een bocht naar links bouwen...
 STR_3412    :{SMALLFONT}{BLACK}De bocht is nog niet gebouwd, maar het witte spookplaatje laat zien waar het gebouwd gaat worden. Als je op de grote knop klikt wordt het gebouwd...
