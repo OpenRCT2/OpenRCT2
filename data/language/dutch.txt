@@ -561,13 +561,13 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :
-STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan door soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels
+STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels
 STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'
 STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht
 STR_0566    :Losse karretjes rijden over een kronkelende baan scherpe bochten en korte felle afdalingen
 STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door de diepe afdalingen gaan en door diverse omkeringen. 
 STR_0568    :
-STR_0569    :Bezoekers zitten in een speciaal tuig onder de baan en krijgen zo de ervaring dat ze vliegen
+STR_0569    :Bezoekers zitten in een speciaal harnas onder de baan en krijgen zo de ervaring dat ze vliegen
 STR_0570    :
 STR_0571    :
 STR_0572    :
@@ -584,7 +584,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Bootvormige karretjes lopen over achtbaanrails waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
+STR_0586    :Bootvormige karretjes lopen over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
 STR_0587    :
 STR_0588    :
 STR_0589    :
@@ -879,7 +879,7 @@ STR_0877    :Te laag!
 STR_0878    :Te hoog!
 STR_0879    :Kan het land hier niet verlagen...
 STR_0880    :Kan het land hier niet verhogen...
-STR_0881    :Object in de weg
+STR_0881    :Object staat in de weg
 STR_0882    :Spel laden
 STR_0883    :Spel opslaan
 STR_0884    :Landschap laden
@@ -892,7 +892,7 @@ STR_0890    :SCR{COMMA16}.PNG
 STR_0891    :Screenshot
 STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
-STR_0894    :Landscape data area zit vol!
+STR_0894    :Landschap data gebied zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
 STR_0896    :{POP16}{POP16}{STRINGID} Constructie
 STR_0897    :Richting
