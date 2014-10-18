@@ -129,14 +129,14 @@ void peep_decrement_num_riders(rct_peep* peep){
  */
 void peep_window_state_update(rct_peep* peep){
 	
-	rct_window* w = window_find_by_id(WC_PEEP, peep->sprite_index);
+	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w){
 		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 	}
 
 	if (peep->type == PEEP_TYPE_GUEST){
 		// Update action label
-		widget_invalidate(WC_PEEP, peep->sprite_index, 12);
+		widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 12);
 
 		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
 			rct_ride* ride = GET_RIDE(peep->current_ride);
@@ -144,12 +144,12 @@ void peep_window_state_update(rct_peep* peep){
 			ride->var_14D |= 0xC;
 		}
 
-		window_invalidate_by_id(WC_GUEST_LIST,0);
+		window_invalidate_by_class(WC_GUEST_LIST);
 	}
 	else{
 		// Update action label
-		widget_invalidate(WC_PEEP, peep->sprite_index, 9);
-		window_invalidate_by_id(WC_STAFF_LIST, 0);
+		widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 9);
+		window_invalidate_by_class(WC_STAFF_LIST);
 	}
 }
 
@@ -289,9 +289,8 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
 	// Eats all food first
 	if (peep_has_food(peep))return;
 
-	(*((uint16*)&peep->current_car))--;
-	// Checks time we have been sitting on seat
-	if (*((uint16*)&peep->current_car)) return;
+	peep->time_to_sitdown--;
+	if (peep->time_to_sitdown) return;
 
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_WALKING;
@@ -333,7 +332,7 @@ void peep_update_sitting(rct_peep* peep){
 		peep->var_2C++;
 
 		// Sets time to sit on seat
-		*((uint16*)&peep->current_car) = (129 - peep->energy) * 16 + 50;
+		peep->time_to_sitdown = (129 - peep->energy) * 16 + 50;
 	}
 	else if (peep->var_2C == 1){
 		if (peep->var_71 < 0xFE){
@@ -505,6 +504,47 @@ void peep_update_queuing(rct_peep* peep){
 }
 
 /**
+ * rct2: 0x690009
+ */
+static void peep_update_picked(rct_peep* peep){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
+	peep->var_2C++;
+	if (peep->var_2C == 13){
+		peep_insert_new_thought(peep, PEEP_THOUGHT_HELP, 0xFF);
+	}
+}
+
+/**
+* rct2: 0x691451
+*/
+static void peep_update_entering_park(rct_peep* peep){
+	if (peep->var_37 != 1){
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		}
+		return;
+	}
+	if (RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100){
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_69E9D3(0, 0, peep->z, (rct_sprite*)peep);
+		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_FALLING;
+	peep_window_state_update(peep);
+
+	peep->var_2A = 0;
+	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, sint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+	RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 2);
+	window_invalidate_by_class(WC_GUEST_LIST);
+}
+
+/**
  *
  *  rct2: 0x0068FC1E
  */
@@ -605,7 +645,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_sitting(peep);
 			break;
 		case PEEP_STATE_PICKED:
-			RCT2_CALLPROC_X(0x00690009, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_picked(peep);
 			break;
 		case PEEP_STATE_PATROLLING:
 			RCT2_CALLPROC_X(0x006BF1FD, 0, 0, 0, 0, (int)peep, 0, 0);

@@ -367,8 +367,13 @@ typedef struct {
 	uint8 current_ride;				// 0x68
 	uint8 current_ride_station;		// 0x69
 	uint8 current_train;   	        // 0x6A
-	uint8 current_car;				// 0x6B
-	uint8 current_seat;				// 0x6C
+	union{
+		struct{
+			uint8 current_car;				// 0x6B
+			uint8 current_seat;				// 0x6C
+		};
+		uint16 time_to_sitdown; //0x6B
+	};
 	uint8 var_6D;					// 0x6D
 	uint8 var_6E;					// 0x6E
 	uint8 var_6F;
@@ -411,10 +416,24 @@ typedef struct {
 	uint8 pad_E1;
 	uint8 var_E2;					// 0xE2
 	uint8 pad_E3;
-	money16 paid_to_enter;			// 0xE4
-	money16 paid_on_rides;			// 0xE6
-	money16 paid_on_food;			// 0xE8
-	money16 paid_on_souvenirs;		// 0xEA
+	union{
+		money16 paid_to_enter;			// 0xE4
+		uint16 staff_lawns_mown;		// 0xE4
+		uint16 staff_rides_fixed;		// 0xE4
+	};
+	union{
+		money16 paid_on_rides;			// 0xE6
+		uint16 staff_gardens_watered;	// 0xE6
+		uint16 staff_rides_inspected;	// 0xE6
+	};
+	union {
+		money16 paid_on_food;			// 0xE8
+		uint16 staff_litter_swept;		// 0xE8
+	};
+	union{
+		money16 paid_on_souvenirs;		// 0xEA
+		uint16 staff_bins_emptied;		// 0xEA
+	};
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE

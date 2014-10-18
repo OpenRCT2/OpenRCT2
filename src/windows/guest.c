@@ -626,7 +626,7 @@ void window_guest_overview_mouse_up(){
 
 		sub_69E9D3(0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
-		peep->state = 9;
+		peep->state = PEEP_STATE_PICKED;
 		peep->var_2C = 0;
 		peep_window_state_update(peep);
 		break;
