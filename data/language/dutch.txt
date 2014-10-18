@@ -941,7 +941,7 @@ STR_0939    :Zicht ondergronds/binnen
 STR_0940    :Bovenkant land verbergen
 STR_0941    :Zijkant land verbergen
 STR_0942    :Doorzichtige attracties
-STR_0943    :Doorzichtig landschap
+STR_0943    :Doorzichtig decor
 STR_0944    :Opslaan
 STR_0945    :Niet opslaan
 STR_0946    :Annuleren
@@ -1052,10 +1052,10 @@ STR_1050    :Kan dit niet laden...{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
 STR_1053    :{SMALLFONT}{BLACK}Attracties in park
-STR_1054    :{SMALLFONT}{BLACK}Naam attractie
-STR_1055    :{SMALLFONT}{BLACK}Naam persoon
-STR_1056    :{SMALLFONT}{BLACK}Naam werknemer
-STR_1057    :Naam attractie
+STR_1054    :{SMALLFONT}{BLACK}Attractienaam
+STR_1055    :{SMALLFONT}{BLACK}Persoonsnaam
+STR_1056    :{SMALLFONT}{BLACK}Werknemersnaam
+STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven...
 STR_1060    :Ongeldige attractienaam
@@ -1383,7 +1383,7 @@ STR_1381    :Gedraaide liftheuvel (links)
 STR_1382    :Gedraaide liftheuvel (rechts)
 STR_1383    :Kwartlooping
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Andere baaninstellingen
+STR_1385    :{SMALLFONT}{BLACK}Andere baanmogelijkheden
 STR_1386    :Speciaal...
 STR_1387    :Kan het landtype niet aanpassen...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
@@ -1512,9 +1512,9 @@ STR_1510    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} - het is gevaarlijk
 STR_1511    :{SMALLFONT}{OPENQUOTES}Dit pad is smerig{ENDQUOTES}
 STR_1512    :{SMALLFONT}{OPENQUOTES}Het is hier te druk{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Mooie decor!{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Mooi decor!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Dit park is erg schoon en netjes{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg mooi{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Die springende fonteinen zijn erg leuk{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}Er wordt hier leuke muziek gedraaid{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Deze ballon van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Deze knuffel van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -2398,14 +2398,14 @@ STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de v
 STR_2397    :Geen
 STR_2398    :Aantal bezoekers op een bepaalde datum
 STR_2399    :Parkwaarde op een bepaalde datum
-STR_2400    :Veel plezier
-STR_2401    :Bouw de beste attractie 
-STR_2402    :Bouw tien achtbanen 
+STR_2400    :Plezier hebben
+STR_2401    :De beste attractie te bouwen
+STR_2402    :Tien achtbanen bouwen 
 STR_2403    :Aantal bezoekers in het park
 STR_2404    :Maandelijks inkomen van attractiekaartjes
-STR_2405    :Bouw tien achtbanen van een gegeven lengte
-STR_2406    :Maak vijf achtbanen af
-STR_2407    :Betaal lening terug en bereik en een bepaalde parkwaarde
+STR_2405    :Tien achtbanen van een bepaalde lengte bouwen
+STR_2406    :Vijf achtbanen afmaken
+STR_2407    :Lening terugbetalen en een bepaalde parkwaarde bereiken
 STR_2408    :Maandelijks inkomen van voedsel/souvenirs
 STR_2409    :{WINDOW_COLOUR_2}Lopende marketingcampagnes
 STR_2410    :{BLACK}Geen
