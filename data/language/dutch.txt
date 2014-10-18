@@ -1763,7 +1763,7 @@ STR_1761    :{SMALLFONT}{BLACK}Bouw doolhof in deze richting
 STR_1762    :Watervallen
 STR_1763    :Stroomversnelling
 STR_1764    :Balkendrempels
-STR_1765    :Actiefoto-gedeelte
+STR_1765    :Actiefotogedeelte
 STR_1766    :Draaischijf
 STR_1767    :Draaiende tunnel
 STR_1768    :Kan het aantal schommelingen niet aanpassen...
@@ -2400,7 +2400,7 @@ STR_2398    :Aantal bezoekers op een bepaalde datum
 STR_2399    :Parkwaarde op een bepaalde datum
 STR_2400    :Plezier hebben
 STR_2401    :De beste attractie te bouwen
-STR_2402    :Tien achtbanen bouwen 
+STR_2402    :Tien achtbanen bouwen
 STR_2403    :Aantal bezoekers in het park
 STR_2404    :Maandelijks inkomen van attractiekaartjes
 STR_2405    :Tien achtbanen van een bepaalde lengte bouwen
@@ -2810,7 +2810,7 @@ STR_2808    :{RED}Bezoekers klagen over het vandalisme in je park{NEWLINE}Contro
 STR_2809    :{RED}Bezoekers hebben honger en kunnen geen plek vinden om voedsel te kopen
 STR_2810    :{RED}Bezoekers hebben dorst en kunnen geen plek vinden om drinken te kopen
 STR_2811    :{RED}Bezoekers klagen omdat ze de toiletten in je park niet kunnen vinden
-STR_2812    :{RED}Bezoekers raken verdwaald of komen vast te zitten{NEWLINE}Controleer of de indeling van je voetpaden te verbeteren is om bezoekers te helpen de weg te vinden
+STR_2812    :{RED}Bezoekers raken verdwaald of komen vast te zitten{NEWLINE}Controleer of je de indeling van je voetpaden kunt verbeteren
 STR_2813    :{RED}Je entreeprijs is te hoog!{NEWLINE}Verlaag de entreeprijs of verbeter het park om meer bezoekers te trekken
 STR_2814    :{WINDOW_COLOUR_2}Rommeligste park prijs
 STR_2815    :{WINDOW_COLOUR_2}Netste park prijs
