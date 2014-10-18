@@ -709,12 +709,12 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 				/* Pop ebx reg into ecx*/ \n\
 				pop ecx		\n\
 				mov eax, [%[_ebx]] \n\
-				mov[eax], ecx \n\
+				mov [eax], ecx \n\
 				\n\
 				/* Pop ebp reg into ecx */\n\
 				pop ecx \n\
 				mov eax, [%[_ebp]] \n\
-				mov[eax], ecx \n\
+				mov [eax], ecx \n\
 				\n\
 				pop eax \n\
 				/* Get resulting eax register*/ \n\
