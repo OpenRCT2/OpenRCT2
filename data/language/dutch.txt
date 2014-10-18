@@ -567,7 +567,7 @@ STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen
 STR_0566    :Losse karretjes rijden over een kronkelende baan scherpe bochten en korte felle afdalingen
 STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door de diepe afdalingen gaan en door diverse omkeringen. 
 STR_0568    :
-STR_0569    :Bezoekers zitten in een speciaal harnas onder de baan en krijgen zo de ervaring dat ze vliegen
+STR_0569    :Bezoekers zitten in een speciaal tuig onder de baan en krijgen zo de ervaring dat ze vliegen
 STR_0570    :
 STR_0571    :
 STR_0572    :
@@ -892,7 +892,7 @@ STR_0890    :SCR{COMMA16}.PNG
 STR_0891    :Screenshot
 STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
-STR_0894    :Landschap data gebied zit vol!
+STR_0894    :Landscape data area zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
 STR_0896    :{POP16}{POP16}{STRINGID} Constructie
 STR_0897    :Richting
@@ -1918,7 +1918,7 @@ STR_1916    :{WINDOW_COLOUR_2}Lening:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan niet meer geld lenen!
 STR_1919    :Onvoldoende contant geld beschikbaar!
-STR_1920    :Kan geen lening terugbetalen!
+STR_1920    :Kan lening niet terugbetalen!
 STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
 STR_1922    :{SMALLFONT}{BLACK}Verder gaan met een opgeslagen spel
 STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
@@ -1945,10 +1945,10 @@ STR_1943    :{SMALLFONT}{BLACK}Recente gedachten van deze bezoeker tonen
 STR_1944    :{SMALLFONT}{BLACK}Toon de dingen die de gast bij zich heeft
 STR_1945    :{SMALLFONT}{BLACK}Orders en opties voor deze werknemer tonen
 STR_1946    :{SMALLFONT}{BLACK}Kostuum van deze entertainer selecteren
-STR_1947    :{SMALLFONT}{BLACK}Werkgebieden van het geselecteerde type werknemer weergeven, en de dichtstbijzijnde werknemer localiseren
+STR_1947    :{SMALLFONT}{BLACK}Werkgebieden van het geselecteerde type werknemer weergeven en de dichtstbijzijnde werknemer localiseren
 STR_1948    :{SMALLFONT}{BLACK}Nieuwe werknemer van het geselecteerde type aannemen
 STR_1949    :Samenvatting financiën
-STR_1950    :Grafiek financiën
+STR_1950    :Grafiek van financiën
 STR_1951    :Grafiek van parkwaardering
 STR_1952    :Winstgrafiek
 STR_1953    :Marketing
@@ -2226,7 +2226,7 @@ STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Bedrijfswaarde: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Inkomsten horeca en accessoires{NEWLINE}vorige maand: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Inkomsten horeca en souvenirs{NEWLINE}vorige maand: {BLACK}{CURRENCY}
 STR_2229    :Helling omhoog naar verticaal
 STR_2230    :Verticale baan
 STR_2231    :Vasthoudrem voor afdaling
@@ -2391,22 +2391,22 @@ STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
 STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een spanningswaarde van minstens 6,00
 STR_2391    :{BLACK}Om minstens {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
 STR_2392    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
-STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van minstens {LENGTH}, en een spanningswaarde van minstens 7,00
+STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van minstens {LENGTH} en een spanningswaarde van minstens 7,00
 STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, ek met een spanningswaarde van minstens {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van minstens {POP16}{POP16}{CURRENCY} te bereiken
-STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en accessoires te verdienen
+STR_2396    :{BLACK}Om in één maand minstens {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en souvenirs te verdienen
 STR_2397    :Geen
 STR_2398    :Aantal bezoekers op een bepaalde datum
 STR_2399    :Parkwaarde op een bepaalde datum
-STR_2400    :Plezier hebben
-STR_2401    :De beste attractie te bouwen
-STR_2402    :10 achtbanen bouwen
+STR_2400    :Veel plezier
+STR_2401    :Bouw de beste attractie 
+STR_2402    :Bouw tien achtbanen 
 STR_2403    :Aantal bezoekers in het park
 STR_2404    :Maandelijks inkomen van attractiekaartjes
-STR_2405    :10 achtbanen van een bepaalde lengte bouwen
-STR_2406    :5 achtbanen afmaken
-STR_2407    :Lening terugbetalen en een bepaalde parkwaarde bereiken
-STR_2408    :Maandelijks inkomen van voedsel/accessoires
+STR_2405    :Bouw tien achtbanen van een gegeven lengte
+STR_2406    :Maak vijf achtbanen af
+STR_2407    :Betaal lening terug en bereik en een bepaalde parkwaarde
+STR_2408    :Maandelijks inkomen van voedsel/souvenirs
 STR_2409    :{WINDOW_COLOUR_2}Lopende marketingcampagnes
 STR_2410    :{BLACK}Geen
 STR_2411    :{WINDOW_COLOUR_2}Beschikbare marketingcampagnes
@@ -2458,7 +2458,7 @@ STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Laat financiële posten zien
 STR_2458    :{SMALLFONT}{BLACK}Toon grafiek van saldoverloop (zonder lening)
 STR_2459    :{SMALLFONT}{BLACK}Toon grafiek van parkwaardeverloop
-STR_2460    :{SMALLFONT}{BLACK}Toon grafiek van wekelijke winst
+STR_2460    :{SMALLFONT}{BLACK}Toon grafiek van wekelijkse winst
 STR_2461    :{SMALLFONT}{BLACK}Toon marketingcampagnes
 STR_2462    :{SMALLFONT}{BLACK}Toon beeld van de parkingang
 STR_2463    :{SMALLFONT}{BLACK}Toon grafiek van parkwaarderingverloop
