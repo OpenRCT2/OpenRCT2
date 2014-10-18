@@ -486,10 +486,22 @@ static void RCT2_CALLPROC_EBPSAFE(int address)
 	#endif
 }
 
+/* Returns the flags register
+ *
+ *Flags register is as follows:
+ *0bSZ0A_0P0C_0000_00000
+ *S = Signed flag
+ *Z = Zero flag
+ *C = Carry flag
+ *A = Adjust flag
+ *P = Parity flag
+ *All other bits are undefined.
+ */
 static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
 	#ifdef _MSC_VER
 	__asm {
+		push ebp
 		push address
 		mov eax, _eax
 		mov ebx, _ebx
@@ -500,7 +512,8 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 		mov ebp, _ebp
 		call [esp]
 		lahf
-		add esp, 4
+		pop ebp
+		pop ebp
 	}
 	#else
 	__asm__ ( "\
@@ -568,13 +581,24 @@ static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, i
 	#endif
 }
 
-static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+/* Returns the flags register
+ *
+ *Flags register is as follows:
+ *0bSZ0A_0P0C_0000_00000
+ *S = Signed flag
+ *Z = Zero flag
+ *C = Carry flag
+ *A = Adjust flag
+ *P = Parity flag
+ *All other bits are undefined.
+ */
+static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	#ifdef _MSC_VER
 	__asm {
 		// Store C's base pointer
 		push ebp
-
+		push ebx
 		// Store address to call
 		push address
 
@@ -596,29 +620,16 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 
 		// Call function
 		call [esp]
-		add esp, 4
-
+		
 		// Store output eax
 		push eax
-		
-		// Put original C base pointer into eax
-		mov eax, [esp+4]
-
-		// Store output ebp
 		push ebp
-
-		// Set ebp to the original C base pointer
-		mov ebp, eax
-
-		// Put output ebp into ebp parameter
-		mov eax, [esp]
 		push ebx
-		mov ebx, [_ebp]
-		mov [ebx], eax
-		pop ebx
-		add esp, 4
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
 
-		// Get resulting ebx, ecx, edx, esi, edi registers
+		// Get resulting ecx, edx, esi, edi registers
+
 		mov eax, [_edi]
 		mov [eax], edi
 		mov eax, [_esi]
@@ -627,85 +638,96 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 		mov [eax], edx
 		mov eax, [_ecx]
 		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx		
 		mov eax, [_ebx]
-		mov [eax], ebx
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
 		pop eax
-
 		// Get resulting eax register
-		mov ebx, [_eax]
-		mov [ebx], eax
+		mov ecx, [_eax]
+		mov [ecx], eax
 
-		add esp, 4
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+		
+		pop ebx
+		pop ebp
 	}
 	#else
 	__asm__ ( "\
-	\n\
-		/* Store C's base pointer*/ 	\n\
-		push ebx 	\n\
-		push ebp 	\n\
-	\n\
-		/* Store %[address] to call*/ 	\n\
-		push %[address] 	\n\
-	\n\
-		/* Set all registers to the input values*/ 	\n\
-		mov eax, [%[_eax]] 	\n\
-		mov eax, [eax] 	\n\
-		mov ebx, [%[_ebx]] 	\n\
-		mov ebx, [ebx] 	\n\
-		mov ecx, [%[_ecx]] 	\n\
-		mov ecx, [ecx] 	\n\
-		mov edx, [%[_edx]] 	\n\
-		mov edx, [edx] 	\n\
-		mov esi, [%[_esi]] 	\n\
-		mov esi, [esi] 	\n\
-		mov edi, [%[_edi]] 	\n\
-		mov edi, [edi] 	\n\
-		mov ebp, [%[_ebp]] 	\n\
-		mov ebp, [ebp] 	\n\
-	\n\
-		/* Call function*/ 	\n\
-		call [esp] 	\n\
-		add esp, 4 	\n\
-	\n\
-		/* Store output eax*/ 	\n\
-		push eax 	\n\
-			\n\
-		/* Put original C base pointer into eax*/ 	\n\
-		mov eax, [esp+4] 	\n\
-	\n\
-		/* Store output ebp*/ 	\n\
-		push ebp 	\n\
-	\n\
-		/* Set ebp to the original C base pointer*/ 	\n\
-		mov ebp, eax 	\n\
-	\n\
-		/* Put output ebp into ebp parameter*/ 	\n\
-		mov eax, [esp] 	\n\
-		push ebx 	\n\
-		mov ebx, [%[_ebp]] 	\n\
-		mov [ebx], eax 	\n\
-		pop ebx 	\n\
-		add esp, 4 	\n\
-	\n\
-		/* Get resulting ebx, ecx, edx, esi, edi registers*/ 	\n\
-		mov eax, [%[_edi]] 	\n\
-		mov [eax], edi 	\n\
-		mov eax, [%[_esi]] 	\n\
-		mov [eax], esi 	\n\
-		mov eax, [%[_edx]] 	\n\
-		mov [eax], edx 	\n\
-		mov eax, [%[_ecx]] 	\n\
-		mov [eax], ecx 	\n\
-		mov eax, [%[_ebx]] 	\n\
-		mov [eax], ebx 	\n\
-		pop eax 	\n\
-	\n\
-		/* Get resulting eax register*/ 	\n\
-		mov ebx, [%[_eax]] 	\n\
-		mov [ebx], eax 	\n\
-	\n\
-		add esp, 4 	\n\
-		pop ebx 	\n\
+	       \n\
+                /* Store C's base pointer*/     \n\
+                push ebx        \n\
+                push ebp        \n\
+        \n\
+                /* Store %[address] to call*/   \n\
+                push %[address]         \n\
+        \n\
+                /* Set all registers to the input values*/      \n\
+                mov eax, [%[_eax]]      \n\
+                mov eax, [eax]  \n\
+                mov ebx, [%[_ebx]]      \n\
+                mov ebx, [ebx]  \n\
+                mov ecx, [%[_ecx]]      \n\
+                mov ecx, [ecx]  \n\
+                mov edx, [%[_edx]]      \n\
+                mov edx, [edx]  \n\
+                mov esi, [%[_esi]]      \n\
+                mov esi, [esi]  \n\
+                mov edi, [%[_edi]]      \n\
+                mov edi, [edi]  \n\
+                mov ebp, [%[_ebp]]      \n\
+                mov ebp, [ebp]  \n\
+        \n\
+                /* Call function*/      \n\
+                call [esp]      \n\
+        \n\
+				/* Store output eax */ \n\
+				push eax \n\
+				push ebp \n\
+				push ebx \n\
+				mov ebp, [esp + 20] \n\
+				mov ebx, [esp + 16] \n\
+                /* Get resulting ecx, edx, esi, edi registers*/       \n\
+                mov eax, [%[_edi]]      \n\
+                mov [eax], edi  \n\
+                mov eax, [%[_esi]]      \n\
+                mov [eax], esi  \n\
+                mov eax, [%[_edx]]      \n\
+                mov [eax], edx  \n\
+                mov eax, [%[_ecx]]      \n\
+                mov [eax], ecx  \n\
+				/* Pop ebx reg into ecx*/ \n\
+				pop ecx		\n\
+				mov eax, [%[_ebx]] \n\
+				mov [eax], ecx \n\
+				\n\
+				/* Pop ebp reg into ecx */\n\
+				pop ecx \n\
+				mov eax, [%[_ebp]] \n\
+				mov [eax], ecx \n\
+				\n\
+				pop eax \n\
+				/* Get resulting eax register*/ \n\
+				mov ecx, [%[_eax]] \n\
+				mov [ecx], eax \n\
+				\n\
+				/* Save flags as return in eax*/  \n\
+				lahf \n\
+				/* Pop address*/ \n\
+				pop ebp \n\
+				\n\
+				pop ebx \n\
+				pop ebp \n\
 	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
 		:
 		: "eax","ecx","edx","esi","edi"
