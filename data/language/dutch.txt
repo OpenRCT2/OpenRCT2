@@ -1013,7 +1013,7 @@ STR_1011    :Alles sluiten
 STR_1012    :Alles openen
 STR_1013    :Park sluiten
 STR_1014    :Park openen
-STR_1015    :Kan in deze modus niet met meer dan een station werken
+STR_1015    :Kan in deze modus niet met meer dan één station werken
 STR_1016    :Kan in deze modus niet met minder dan twee stations werken
 STR_1017    :Kan modus niet veranderen...
 STR_1018    :Kan geen veranderingen aanbrengen...
@@ -1508,7 +1508,7 @@ STR_1506    :{SMALLFONT}{OPENQUOTES}Het is hier een zwijnenstal{ENDQUOTES}
 STR_1507    :{SMALLFONT}{OPENQUOTES}Ik kan de parkuitgang niet vinden{ENDQUOTES}
 STR_1508    :{SMALLFONT}{OPENQUOTES}Ik wil uit {STRINGID}{ENDQUOTES}
 STR_1509    :{SMALLFONT}{OPENQUOTES}Ik wil uit {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} - het is gevaarlijk{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}Ik ga niet in {STRINGID} - het is onveilig{ENDQUOTES}
 STR_1511    :{SMALLFONT}{OPENQUOTES}Dit pad is smerig{ENDQUOTES}
 STR_1512    :{SMALLFONT}{OPENQUOTES}Het is hier te druk{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}Er is hier erg veel vandalisme{ENDQUOTES}
@@ -2332,16 +2332,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatuur:
 STR_2331    :{WINDOW_COLOUR_2}Hoogtemarkering:
 STR_2332    :Eenheden
 STR_2333    :Geluid
-STR_2334    :Ponden ({POUND})
-STR_2335    :Dollars ($)
+STR_2334    :Pond ({POUND})
+STR_2335    :Dollar ($)
 STR_2336    :Frank (F)
 STR_2337    :Duitse mark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Guldens (fl.)
+STR_2341    :Gulden (fl.)
 STR_2342    :Kronen (kr)
-STR_2343    :Euro's ({EURO})
+STR_2343    :Euro ({EURO})
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2346    :Weergave
