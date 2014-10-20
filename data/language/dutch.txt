@@ -1771,7 +1771,7 @@ STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
 STR_1770    :{SMALLFONT}{BLACK}Aantal complete schommelingen
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Een attractie mag maar één actiefoto-gedeelte hebben
+STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1775    :Uit
 STR_1776    :Aan
@@ -2812,29 +2812,29 @@ STR_2810    :{RED}Bezoekers hebben dorst en kunnen geen plek vinden om drinken t
 STR_2811    :{RED}Bezoekers klagen omdat ze de toiletten in je park niet kunnen vinden
 STR_2812    :{RED}Bezoekers raken verdwaald of komen vast te zitten{NEWLINE}Controleer of je de indeling van je voetpaden kunt verbeteren
 STR_2813    :{RED}Je entreeprijs is te hoog!{NEWLINE}Verlaag de entreeprijs of verbeter het park om meer bezoekers te trekken
-STR_2814    :{WINDOW_COLOUR_2}Rommeligste park prijs
-STR_2815    :{WINDOW_COLOUR_2}Netste park prijs
-STR_2816    :{WINDOW_COLOUR_2}Prijs voor het park met de beste achtbanen
-STR_2817    :{WINDOW_COLOUR_2}Beste park prijs
-STR_2818    :{WINDOW_COLOUR_2}Mooiste park prijs
-STR_2819    :{WINDOW_COLOUR_2}Slechtste park prijs
-STR_2820    :{WINDOW_COLOUR_2}Veiligste park prijs
-STR_2821    :{WINDOW_COLOUR_2}Beste personeel prijs
-STR_2822    :{WINDOW_COLOUR_2}Beste eten prijs
-STR_2823    :{WINDOW_COLOUR_2}Slechtste eten prijs
-STR_2824    :{WINDOW_COLOUR_2}Beste toiletten prijs
-STR_2825    :{WINDOW_COLOUR_2}Meest teleurstellende park prijs
-STR_2826    :{WINDOW_COLOUR_2}Beste waterattracties prijs
-STR_2827    :{WINDOW_COLOUR_2}Beste unieke attracties prijs
-STR_2828    :{WINDOW_COLOUR_2}Meest duizelingwekkende kleurenschema prijs
-STR_2829    :{WINDOW_COLOUR_2}Vreemdste indeling prijs
-STR_2830    :{WINDOW_COLOUR_2}Beste rustige attracties prijs
+STR_2814    :{WINDOW_COLOUR_2}Prijs voor het rommeligste park
+STR_2815    :{WINDOW_COLOUR_2}Prijs voor het netste park
+STR_2816    :{WINDOW_COLOUR_2}Prijs voor de beste achtbanen
+STR_2817    :{WINDOW_COLOUR_2}Prijs voor het park met de beste toegangsprijs
+STR_2818    :{WINDOW_COLOUR_2}Prijs voor het mooiste park
+STR_2819    :{WINDOW_COLOUR_2}Prijs voor het park met de slechtste toegangsprijs
+STR_2820    :{WINDOW_COLOUR_2}Prijs voor het veiligste park
+STR_2821    :{WINDOW_COLOUR_2}Prijs voor het beste personeel
+STR_2822    :{WINDOW_COLOUR_2}Prijs voor het beste eten
+STR_2823    :{WINDOW_COLOUR_2}Prijs voor het slechtste eten
+STR_2824    :{WINDOW_COLOUR_2}Prijs voor beste toiletten
+STR_2825    :{WINDOW_COLOUR_2}Prijs voor het meest teleurstellende park
+STR_2826    :{WINDOW_COLOUR_2}Prijs voor de beste waterattracties 
+STR_2827    :{WINDOW_COLOUR_2}Prijs voor de beste unieke attracties
+STR_2828    :{WINDOW_COLOUR_2}Prijs voor het meest duizelingwekkende kleurenschema
+STR_2829    :{WINDOW_COLOUR_2}Prijs voor de vreemdste indeling van je park
+STR_2830    :{WINDOW_COLOUR_2}Prijs voor de beste rustige attracties
 STR_2831    :{TOPAZ}Je park heeft een prijs gekregen: 'Rommeligste park van het land'!
 STR_2832    :{TOPAZ}Je park heeft een prijs gekregen: 'Netste park van het land'!
 STR_2833    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste achtbanen'!
-STR_2834    :{TOPAZ}Je park heeft een prijs gekregen: 'Beste park van het land'!
+STR_2834    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste toegangsprijs'!
 STR_2835    :{TOPAZ}Je park heeft een prijs gekregen: 'Mooiste park van het land'!
-STR_2836    :{TOPAZ}Je park heeft een prijs gekregen: 'Slechtste park van het land'!
+STR_2836    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de slechtste toegangsprijs'!
 STR_2837    :{TOPAZ}Je park heeft een prijs gekregen: 'Veiligste park'!
 STR_2838    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste werknemers'!
 STR_2839    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met het beste eten van het land'!
@@ -3280,10 +3280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde toegang / Attracties gratis
 STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :{SMALLFONT}{BLACK}Selecteer doel en parknaam
-STR_3283    :{SMALLFONT}{BLACK}Selecteer attracties om te behouden
+STR_3282    :{SMALLFONT}{BLACK}Doel en parknaam selecteren
+STR_3283    :{SMALLFONT}{BLACK}Beschermde attracties selecteren
 STR_3284    :Doelselectie
-STR_3285    :Behouden attracties
+STR_3285    :Beschermde attracties
 STR_3286    :{SMALLFONT}{BLACK}Selecteer doel voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doel:
 STR_3288    :{SMALLFONT}{BLACK}Selecteer klimaat:
@@ -3352,7 +3352,7 @@ STR_3350    :Naam baanontwerp
 STR_3351    :Voer een nieuwe naam in voor dit baanontwerp:
 STR_3352    :Kan het baanontwerp geen andere naam geven...
 STR_3353    :Nieuwe naam bevat ongeldige tekens
-STR_3354    :Er bestaat al een bestand met deze naam of het bestand is beveiligd tegen schrijven
+STR_3354    :Er bestaat al een bestand met deze naam, of het bestand is beveiligd tegen schrijven
 STR_3355    :Bestand is beveiligd tegen schrijven of vergrendeld
 STR_3356    :Bestand verwijderen
 STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} permanent wilt verwijderen?
@@ -3425,15 +3425,15 @@ STR_3423    :{SMALLFONT}{BLACK}Er zijn veel kant-en-klare achtbanen, maar wij ga
 STR_3424    :{SMALLFONT}{BLACK}Zo, het station is af. Nu hebben we een liftheuvel nodig...
 STR_3425    :{SMALLFONT}{BLACK}Achtbaankarretjes zijn niet aangedreven, dus is een 'kettinglift' nodig om ze eerst een heuvel op te trekken...
 STR_3426    :{SMALLFONT}{BLACK}Goed, de liftheuvel is klaar - nu de eerste afdaling...
-STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee; de passagiers zullen naar de zijkanten gesmeten worden wanneer de trein er doorheen raast...
-STR_3428    :{SMALLFONT}{BLACK}De bochten een banking (schuinleggen) geven zal de rit prettiger maken; de passagiers zullen in hun stoelen geduwd worden in plaats van naar de zijkanten...
-STR_3429    :{SMALLFONT}{BLACK}Dit gaat niet werken! Kijk naar de hoogtemarkeringen; de tweede heuvel is hoger dan de liftheuvel...
+STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee; de passagiers zullen naar de zijkanten geslingerd worden door de G-kracht wanneer de trein er doorheen raast...
+STR_3428    :{SMALLFONT}{BLACK}De bochten een banking geven (schuinleggen) zal de rit prettiger maken, aangezien de passagiers in hun stoelen geduwd zullen worden in plaats van naar de zijkanten...
+STR_3429    :{SMALLFONT}{BLACK}Dit gaat niet werken! Kijk naar de hoogtemarkeringen: de tweede heuvel is hoger dan de liftheuvel...
 STR_3430    :{SMALLFONT}{BLACK}Om ervoor te zorgen dat de trein terug naar het station komt, moet elke heuvel iets lager zijn dan de heuvel daarvoor...
 STR_3431    :{SMALLFONT}{BLACK}Dat ziet er beter uit! Onze trein zou het nu moeten halen! Laten we wat meer bochtige stukjes toevoegen...
 STR_3432    :{SMALLFONT}{BLACK}We moeten de trein afremmen voordat we de laatste bocht en het station inkomen, dus laten we wat remmen toevoegen...
 STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen zitten...
 STR_3434    :{SMALLFONT}{BLACK}Laten we kijken of onze achtbaan werkt!
-STR_3435    :{SMALLFONT}{BLACK}Fantastisch; hij werkt! Laten we wat voetpaden aanleggen, zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
+STR_3435    :{SMALLFONT}{BLACK}Fantastisch, hij werkt! Laten we wat voetpaden aanleggen, zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
 STR_3436    :{SMALLFONT}{BLACK}Terwijl we wachten op onze eerste bezoekers, kunnen we onze achtbaan een beetje aanpassen...
 STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen...
