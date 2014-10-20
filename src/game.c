@@ -190,7 +190,7 @@ void game_update()
 	int i, numUpdates, tmp;
 
 	// Handles picked-up peep and rain redraw
-	RCT2_CALLPROC_EBPSAFE(0x006843DC);
+	redraw_peep_and_rain();
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
