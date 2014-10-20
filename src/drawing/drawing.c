@@ -496,14 +496,15 @@ void redraw_peep_and_rain()
 			
 			gfx_set_dirty_blocks(left, top, right, bottom);
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) == 0) {
+
+		int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
+		if (rain_no_pixels == 0) {
 			return;
 		}
 		
-		uint8 *screen_pixels = (int *)RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
 		uint32 *rain_pixels = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
-		int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 		if (rain_pixels) {
+			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
 			for (int i = 0; i < rain_no_pixels; i++) {
 				uint32 pixel = rain_pixels[i];
 				screen_pixels[pixel >> 8] = pixel & 0xFF;
