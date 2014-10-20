@@ -2815,33 +2815,33 @@ STR_2813    :{RED}Je entreeprijs is te hoog!{NEWLINE}Verlaag de entreeprijs of v
 STR_2814    :{WINDOW_COLOUR_2}Prijs voor het rommeligste park
 STR_2815    :{WINDOW_COLOUR_2}Prijs voor het netste park
 STR_2816    :{WINDOW_COLOUR_2}Prijs voor de beste achtbanen
-STR_2817    :{WINDOW_COLOUR_2}Prijs voor het park met de beste toegangsprijs
+STR_2817    :{WINDOW_COLOUR_2}Prijs voor het park met de beste prijs/kwaliteitsverhouding
 STR_2818    :{WINDOW_COLOUR_2}Prijs voor het mooiste park
-STR_2819    :{WINDOW_COLOUR_2}Prijs voor het park met de slechtste toegangsprijs
+STR_2819    :{WINDOW_COLOUR_2}Prijs voor het park met de slechtste prijs/kwaliteitsverhouding
 STR_2820    :{WINDOW_COLOUR_2}Prijs voor het veiligste park
 STR_2821    :{WINDOW_COLOUR_2}Prijs voor het beste personeel
 STR_2822    :{WINDOW_COLOUR_2}Prijs voor het beste eten
 STR_2823    :{WINDOW_COLOUR_2}Prijs voor het slechtste eten
 STR_2824    :{WINDOW_COLOUR_2}Prijs voor beste toiletten
 STR_2825    :{WINDOW_COLOUR_2}Prijs voor het meest teleurstellende park
-STR_2826    :{WINDOW_COLOUR_2}Prijs voor de beste waterattracties 
+STR_2826    :{WINDOW_COLOUR_2}Prijs voor de beste waterattracties
 STR_2827    :{WINDOW_COLOUR_2}Prijs voor de beste unieke attracties
 STR_2828    :{WINDOW_COLOUR_2}Prijs voor het meest duizelingwekkende kleurenschema
-STR_2829    :{WINDOW_COLOUR_2}Prijs voor de vreemdste indeling van je park
+STR_2829    :{WINDOW_COLOUR_2}Prijs voor het park met de vreemdste indeling
 STR_2830    :{WINDOW_COLOUR_2}Prijs voor de beste rustige attracties
 STR_2831    :{TOPAZ}Je park heeft een prijs gekregen: 'Rommeligste park van het land'!
 STR_2832    :{TOPAZ}Je park heeft een prijs gekregen: 'Netste park van het land'!
 STR_2833    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste achtbanen'!
-STR_2834    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste toegangsprijs'!
+STR_2834    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste prijs/kwaliteitsverhouding'!
 STR_2835    :{TOPAZ}Je park heeft een prijs gekregen: 'Mooiste park van het land'!
-STR_2836    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de slechtste toegangsprijs'!
-STR_2837    :{TOPAZ}Je park heeft een prijs gekregen: 'Veiligste park'!
+STR_2836    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de slechtste prijs/kwaliteitsverhouding'!
+STR_2837    :{TOPAZ}Je park heeft een prijs gekregen: 'Veiligste park van het land'!
 STR_2838    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste werknemers'!
 STR_2839    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met het beste eten van het land'!
 STR_2840    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met het slechtste eten van het land'!
 STR_2841    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste toiletten van het land'!
-STR_2842    :{TOPAZ}Je park heeft een prijs gekregen: 'Meest teleurstellende park'!
-STR_2843    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste waterattracties'!
+STR_2842    :{TOPAZ}Je park heeft een prijs gekregen: 'Meest teleurstellende park van het land'!
+STR_2843    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste waterattracties van het land'!
 STR_2844    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de beste unieke attracties'!
 STR_2845    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met het meest duizelingwekkende kleurenschema'!
 STR_2846    :{TOPAZ}Je park heeft een prijs gekregen: 'Park met de vreemdste indeling'!
