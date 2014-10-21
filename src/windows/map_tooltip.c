@@ -122,8 +122,10 @@ static void window_map_tooltip_open()
 
 	w = window_find_by_class(WC_MAP_TOOLTIP);
 	if (w == NULL) {
-		w = window_create(x, y, width, height, (uint32*)0x009A43D4, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5);
-		w->widgets = (rct_widget*)0x009DEEFC;
+		w = window_create(
+			x, y, width, height, (uint32*)window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+		);
+		w->widgets = window_map_tooltip_widgets;
 	} else {
 		window_invalidate(w);
 		w->x = x;
