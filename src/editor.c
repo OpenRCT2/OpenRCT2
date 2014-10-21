@@ -347,8 +347,8 @@ static int editor_read_s4(char *src)
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
-		if (banner->var_00 != 255 && banner->var_02 != 3458)
-			banner->var_02 = 778;
+		if (banner->var_00 != 255 && banner->string_idx != 3458)
+			banner->string_idx = 778;
 	}
 
 	read((void*)0x0135A8F4, &src, 0x2F51C);

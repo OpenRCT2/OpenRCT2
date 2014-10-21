@@ -27,10 +27,17 @@
 
 typedef struct {
 	uint8 var_00;
-	uint8 pad_01;
-	uint16 var_02;
-	uint8 pad_04[4];
+	uint8 flags; //bit 0 is no entry
+	rct_string_id string_idx; //0x02
+	uint8 colour; //0x04
+	uint8 text_colour; //0x05
+	uint8 x; //0x06
+	uint8 y; //0x07
 } rct_banner;
+
+enum{
+	BANNER_FLAG_NO_ENTRY = (1<<0)
+} BANNER_FLAGS;
 
 extern rct_banner *gBanners;
 
