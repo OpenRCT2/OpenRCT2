@@ -115,5 +115,6 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args,
 
 // rain
 void update_rain_animation();
+void redraw_peep_and_rain();
 
 #endif

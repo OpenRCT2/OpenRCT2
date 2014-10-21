@@ -52,7 +52,7 @@ void screenshot_check()
 
 			window_error_open(screenshotIndex == -1 ? STR_SCREENSHOT_FAILED : STR_SCREENSHOT_SAVED_AS, -1);
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-			RCT2_CALLPROC_EBPSAFE(0x006843DC);
+			redraw_peep_and_rain();
 		}
 	}
 }
