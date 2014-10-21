@@ -78,6 +78,9 @@
     <Text Include="..\data\language\english_us.txt">
       <Filter>Source\Data\Language</Filter>
     </Text>
+    <Text Include="..\data\language\german.txt">
+      <Filter>Source\Data\Language</Filter>
+    </Text>
     <Text Include="..\data\language\french.txt">
       <Filter>Source\Data\Language</Filter>
     </Text>
