@@ -28,6 +28,8 @@
 #include "../interface/window.h"
 #include "dropdown.h"
 #include "../interface/viewport.h"
+#include "scenery.h"
+#include "../audio/audio.h"
 
 enum {
 	WIDX_PAUSE,
@@ -106,6 +108,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 static void window_game_top_toolbar_dropdown();
 static void window_game_top_toolbar_invalidate();
 static void window_game_top_toolbar_paint();
+static void window_game_top_toolbar_tool_down();
 
 static void* window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
@@ -117,8 +120,8 @@ static void* window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
-	(void*)0x0066CB25,
-	(void*)0x0066CB73,
+	(void*)0x0066CB25, //Update
+	window_game_top_toolbar_tool_down,
 	(void*)0x0066CB4E,
 	(void*)0x0066CC5B,
 	(void*)0x0066CA58,
@@ -595,4 +598,109 @@ static void window_game_top_toolbar_paint()
 	y = w->y + window_game_top_toolbar_widgets[WIDX_RESEARCH].top - 1;
 	imgId = SPR_TAB_FINANCES_RESEARCH_0;
 	gfx_draw_sprite(dpi, imgId, x, y, 0);
+}
+
+/**
+ * rct2: 0x6e2cc6
+ */
+static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
+	RCT2_CALLPROC_EBPSAFE(0x006E2712);
+	if (window_scenery_is_repaint_scenery_tool_on & 1){
+		//6e3158
+		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	}
+
+	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	if (selected_tab == -1) return;
+
+	sint16 grid_x, grid_y, grid_z;
+	uint8 item_colour;
+	int ebp = selected_tab;
+
+	{
+		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = selected_tab;
+		RCT2_CALLFUNC_X(0x6E1F34, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		item_colour = edi;
+		grid_x = eax;
+		grid_y = ecx;
+		grid_z = edx;
+	}
+
+	if (grid_x == 0x8000)return;
+	
+	if (ebp >= 1024){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		// The return value will be banner id but the input is colour
+		int banner_id = item_colour;
+		
+		int ebx = 1;
+
+		{
+			int esi = 0, eax = grid_x, ecx = grid_y, edx = grid_z;
+			game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
+		}
+
+		if (ebx == 0x80000000)return;
+
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+
+		window_banner_open(banner_id);
+	}
+	else if (ebp >= 768){
+		//6e301c
+		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	}
+	else if (ebp >= 512){
+		//6e2f2e
+		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	}
+	else if (ebp >= 256){
+		//6e2eda
+		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	}
+	else{
+		//6e2d2d
+		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	}
+}
+
+/**
+ * rct2: 0x0066CB73
+ */
+static void window_game_top_toolbar_tool_down(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex){
+	case WIDX_CLEAR_SCENERY:
+		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
+			return;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3438;
+
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			1,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			0,
+			GAME_COMMAND_57,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+			);
+		break;
+	case WIDX_LAND:
+		RCT2_CALLPROC_X(0x66CBF3, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_WATER:
+		RCT2_CALLPROC_X(0x66CC48, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_SCENERY:
+		window_game_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+		break;
+	}
 }

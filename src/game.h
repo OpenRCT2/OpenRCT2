@@ -93,7 +93,7 @@ void sub_0x0069E9A7();
 void update_palette_effects();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
-int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *edi, int *esi, int *ebp);
+int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

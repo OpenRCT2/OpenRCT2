@@ -70,10 +70,10 @@ typedef struct {
 } rct_map_element_scenerymultiple_properties;
 
 typedef struct {
-	uint8 index;
-	uint8 position;
-	uint8 flags;
-	uint8 unused;
+	uint8 index; //4
+	uint8 position; //5
+	uint8 flags; //6
+	uint8 unused; //7
 } rct_map_element_banner_properties;
 
 typedef union {
