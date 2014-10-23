@@ -67,7 +67,7 @@ A third-party offers [downloadable precompiled builds](https://openrct2.com/down
 - RollerCoaster Tycoon 2
 
 ### Mac OS X / Linux:
-- [MinGW-w64](mingw-w64.sourceforge.net)
+- [MinGW-w64](http://mingw-w64.sourceforge.net/)
 - [Wine](http://www.winehq.org)
 - RollerCoaster Tycoon 2
 - libsdl2 compiled with MinGW-w64
