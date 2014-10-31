@@ -187,7 +187,8 @@ typedef struct {
 	sint16 build_date;				// 0x180
 	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184
-	uint8 pad_186[0x06];
+	uint8 pad_186[0x02];
+	uint32 var_188;
 	uint8 var_18C;
 	uint8 mechanic_status;			// 0x18D
 	uint16 mechanic;				// 0x18E
@@ -202,7 +203,9 @@ typedef struct {
 	uint8 last_inspection;			// 0x19B
 	uint8 pad_19C[0x8];
 	uint32 var_1A4;
-	uint8 pad_1A8[6];
+	uint8 pad_1A8[4];
+	uint8 var_1AC;
+	uint8 pad_1AD;
 	uint8 var_1AE;
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
@@ -261,7 +264,7 @@ enum {
 	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
 	RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
 	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
-
+	RIDE_LIFECYCLE_6 = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
 
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
