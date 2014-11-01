@@ -192,7 +192,8 @@ typedef struct {
 	uint8 var_18C;
 	uint8 mechanic_status;			// 0x18D
 	uint16 mechanic;				// 0x18E
-	uint8 pad_190[0x03];
+	uint8 var_190;
+	uint8 pad_191[0x02];
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194
 	uint16 var_196;
@@ -201,7 +202,14 @@ typedef struct {
 	uint8 var_199;
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
-	uint8 pad_19C[0x8];
+	uint8 var_19C;
+	uint8 var_19D;
+	uint8 var_19E;
+	uint8 var_19F;
+	uint8 var_1A0;
+	uint8 var_1A1;
+	uint8 var_1A2;
+	uint8 var_1A3;
 	uint32 var_1A4;
 	uint8 pad_1A8[4];
 	uint8 var_1AC;
@@ -266,6 +274,7 @@ enum {
 	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
 	RIDE_LIFECYCLE_6 = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
+	RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
 
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
 	RIDE_LIFECYCLE_11 = 1 << 11,
@@ -523,6 +532,16 @@ enum {
 	RIDE_ENTRANCE_STYLE_SNOW_ICE,
 	RIDE_ENTRANCE_STYLE_PAGODA,
 	RIDE_ENTRANCE_STYLE_SPACE
+};
+
+enum {
+	RIDE_INSPECTION_EVERY_10_MINUTES,
+	RIDE_INSPECTION_EVERY_20_MINUTES,
+	RIDE_INSPECTION_EVERY_30_MINUTES,
+	RIDE_INSPECTION_EVERY_45_MINUTES,
+	RIDE_INSPECTION_EVERY_HOUR,
+	RIDE_INSPECTION_EVERY_2_HOURS,
+	RIDE_INSPECTION_NEVER
 };
 
 typedef struct {
