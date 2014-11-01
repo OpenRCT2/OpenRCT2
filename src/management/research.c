@@ -24,6 +24,7 @@
 #include "../world/scenery.h"
 #include "news_item.h"
 #include "research.h"
+#include "../scenario.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
@@ -259,4 +260,61 @@ void research_update()
 			break;
 		}
 	}
+}
+
+/* rct2: 0x684AC3*/
+void sub_684AC3(){
+	rct_research_item* research = gResearchItems;
+	for (; research->entryIndex != -2; research++);
+
+	research++;
+	for (; research->entryIndex != -3; research += 2){
+		if (scenario_rand() & 1) continue;
+
+		
+		rct_research_item* edx;
+		rct_research_item* ebp;
+		for (rct_research_item* inner_research = gResearchItems; inner_research->entryIndex != -2; inner_research++){
+			if (research->entryIndex == inner_research->entryIndex){
+				edx = inner_research;
+			}
+			if ((research + 1)->entryIndex == inner_research->entryIndex){
+				ebp = inner_research;
+			}
+		}
+		edx->entryIndex = research->entryIndex;
+		ebp->entryIndex = (research + 1)->entryIndex;
+
+		uint8 cat = edx->category;
+		edx->category = ebp->category;		
+		ebp->category = cat;
+	}
+
+	for (int i = 0; i < 8; ++i){
+		RCT2_ADDRESS(0x01357404, uint32)[i] = 0;
+		RCT2_ADDRESS(0x01357424, uint32)[i] = 0;
+	}
+
+	for (int i = 0; i < 56; i++){
+		RCT2_ADDRESS(0x01357BD0, uint32)[i] = -1;
+	}
+
+	for (int i = 0; i < 19; ++i){
+		rct_scenery_set_entry* scenery_set = g_scenerySetEntries[i];
+		if ((int)scenery_set == -1)continue;
+
+		for (int j = 0; j < scenery_set->entry_count; ++j){
+			uint8 value = scenery_set->scenery_entries[j] & 0x1F;
+			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1 << value);
+		}
+	}
+
+	
+	for (research = gResearchItems; research->entryIndex != -1; research++){
+		research_finish_item(research->entryIndex);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 }
