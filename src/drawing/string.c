@@ -85,6 +85,79 @@ void gfx_load_character_widths(){
 	}
 }
 
+
+/* rct2: 0x006C23B1 */
+int gfx_get_string_width_new_lined(char* buffer){
+	// Current font sprites
+	uint16* current_font_sprite_base;
+	// Width of string
+	int width = 0, max_width = 0, no_lines = 1;
+	rct_g1_element g1_element;
+
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+
+	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
+
+		if (*curr_char >= 0x20) {
+			width += RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[*current_font_sprite_base + (*curr_char - 0x20)];
+			continue;
+		}
+		switch (*curr_char) {
+		case FORMAT_MOVE_X:
+			curr_char++;
+			width = *curr_char;
+			break;
+		case FORMAT_ADJUST_PALETTE:
+		case 3:
+		case 4:
+			curr_char++;
+			break;
+		case FORMAT_NEWLINE:
+		case FORMAT_NEWLINE_SMALLER:
+			no_lines++;
+			max_width = max(max_width, width);
+			width = 0;
+			break;
+		case FORMAT_TINYFONT:
+			*current_font_sprite_base = 0x1C0;
+			break;
+		case FORMAT_BIGFONT:
+			*current_font_sprite_base = 0x2A0;
+			break;
+		case FORMAT_MEDIUMFONT:
+			*current_font_sprite_base = 0x0E0;
+			break;
+		case FORMAT_SMALLFONT:
+			*current_font_sprite_base = 0;
+			break;
+		case FORMAT_OUTLINE:
+		case FORMAT_OUTLINE_OFF:
+		case FORMAT_WINDOW_COLOUR_1:
+		case FORMAT_WINDOW_COLOUR_2:
+		case FORMAT_WINDOW_COLOUR_3:
+		case 0x10:
+			continue;
+		case FORMAT_INLINE_SPRITE:
+			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
+			width += g1_element.width;
+			curr_char += 4;
+			break;
+		default:
+			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
+				curr_char += 2;
+				continue;
+			}
+			curr_char += 4;//never happens?
+			break;
+		}
+	}
+
+	if (width > max_width)
+		return width;
+	return max_width;
+}
+
+
 /**
  *  Return the width of the string in buffer
  *

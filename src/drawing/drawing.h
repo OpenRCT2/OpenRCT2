@@ -100,6 +100,7 @@ void gfx_load_character_widths();
 int clip_text(char *buffer, int width);
 int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height);
 int gfx_get_string_width(char *buffer);
+int gfx_get_string_width_new_lined(char* buffer);
 void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y);
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void gfx_draw_string_left_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width);

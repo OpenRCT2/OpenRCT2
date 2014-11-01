@@ -73,14 +73,15 @@ static void* window_tooltip_events[] = {
 
 void window_tooltip_reset(int x, int y)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint8) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint8) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, uint8) = 255;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(1 << 4);
 }
 
+extern uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
 /**
  * 
  *  rct2: 0x006EA10D
@@ -120,9 +121,9 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	format_string(buffer, widget->tooltip, (void*)0x013CE952);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 
-	int tooltip_text_width = ecx, tooltip_text_height = 0;
-	//gfx_get_string_width_new_lined
-	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &tooltip_text_width, &edx, (int*)(&buffer), &edi, &ebp);
+	int tooltip_text_width = 0, tooltip_text_height = 0;
+
+	tooltip_text_width = gfx_get_string_width_new_lined(buffer);
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	tooltip_text_width &= 0xFFFF;
 	if (tooltip_text_width > 196)
@@ -131,13 +132,13 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &ebx);
 
-	RCT2_GLOBAL(0x01420044, sint16) = tooltip_text_height;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = tooltip_text_height;
 	width = tooltip_text_width + 3;
 	height = ((tooltip_text_height + 1) * 10) + 4;
 	window_tooltip_widgets[WIDX_BACKGROUND].right = width;
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-	memcpy((void*)0x0141FE44, (void*)buffer, 512);
+	memcpy(gTooltip_text_buffer, buffer, 512);
 	
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
 	y = clamp(22, y + 26, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height - 40);
@@ -215,5 +216,5 @@ static void window_tooltip_paint()
 	// Text
 	left = w->x + ((w->width + 1) / 2) - 1;
 	top = w->y + 1;
-	draw_string_centred_raw(dpi, left, top, RCT2_GLOBAL(0x01420044, uint16), (char*)0x0141FE44);
+	draw_string_centred_raw(dpi, left, top, RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, uint16), gTooltip_text_buffer);
 }
