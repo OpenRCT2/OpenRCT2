@@ -178,7 +178,7 @@ typedef struct {
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
-	uint8 var_15C;
+	uint8 music_tune_id;			// 0x15C
 	uint8 var_15D;
 	uint16 maze_tiles;				// 0x15E
 	uint8 pad_160[0x16];
@@ -188,11 +188,11 @@ typedef struct {
 	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x02];
-	uint32 var_188;
+	uint32 music_position;			// 0x188
 	uint8 var_18C;
 	uint8 mechanic_status;			// 0x18D
 	uint16 mechanic;				// 0x18E
-	uint8 var_190;
+	uint8 inspection_station;		// 0x190
 	uint8 pad_191[0x02];
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194

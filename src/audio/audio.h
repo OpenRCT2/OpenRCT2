@@ -215,7 +215,7 @@ void unpause_sounds();
 void stop_vehicle_sounds();
 void sub_6BC348();
 void sub_6BC6D8();
-int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di);
+int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 
 // 0x009AF59C probably does the same job
 // once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
