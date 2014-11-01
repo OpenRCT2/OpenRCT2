@@ -276,6 +276,13 @@ void game_logic_update()
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
 
+	// This is a hack for now to force a complete rerender of the screen to 
+	// stop viewports from failing. Remove this when real bug cause has been 
+	// found.
+	// ***********
+	gfx_invalidate_screen();
+	// ***********
+
 	sub_68B089();
 	scenario_update();
 	climate_update();
