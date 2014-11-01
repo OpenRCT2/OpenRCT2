@@ -128,6 +128,7 @@
     <ClCompile Include="..\src\windows\scenery.c" />
     <ClCompile Include="..\src\windows\shortcut_keys.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c" />
+    <ClCompile Include="..\src\windows\sign.c" />
     <ClCompile Include="..\src\windows\staff_fire_prompt.c" />
     <ClCompile Include="..\src\windows\staff_list.c" />
     <ClCompile Include="..\src\windows\staff.c" />

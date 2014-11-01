@@ -197,29 +197,30 @@ static void window_sign_mouseup()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_string_id string_id;
 
-	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE){
-			int ebx = map_element->properties.scenerymultiple.type;
-			ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
-			rct_scenery_entry* scenery_entry = g_largeSceneryEntries[ebx];
-			if (scenery_entry->large_scenery.var_11 != 0xFF){
-				int id = (map_element->type & 0xC0) |
-					((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-					((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-				if (id == w->number)
-					break;
-			}
-		}
-		map_element++;
-	}
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_SIGN_DEMOLISH:
+		while (1){
+			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE){
+				int ebx = map_element->properties.scenerymultiple.type;
+				ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
+				rct_scenery_entry* scenery_entry = g_largeSceneryEntries[ebx];
+				if (scenery_entry->large_scenery.var_11 != 0xFF){
+					int id = (map_element->type & 0xC0) |
+						((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+						((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+					if (id == w->number)
+						break;
+				}
+			}
+			map_element++;
+		}
 		game_do_command(
 			x,
 			1 | ((map_element->type&0x3) << 8),
@@ -230,8 +231,6 @@ static void window_sign_mouseup()
 			0);
 		break;
 	case WIDX_SIGN_TEXT:
-		rct_string_id string_id;
-
 		if (banner->flags&BANNER_FLAG_2){
 			rct_ride* ride = GET_RIDE(banner->colour);
 			RCT2_GLOBAL(0x13CE962, uint32) = ride->name_arguments;
@@ -253,10 +252,10 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, w->list_information_type);
+		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->list_information_type);
 		break;
 	case WIDX_TEXT_COLOR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, w->var_492);
+		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->var_492);
 		break;
 	}
 }
@@ -271,11 +270,11 @@ static void window_sign_dropdown()
 
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
-		if (dropdownIndex == 0xFFFF) return;
+		if (dropdownIndex == -1) return;
 		w->list_information_type = dropdownIndex;
 		break;
 	case WIDX_TEXT_COLOR:
-		if (dropdownIndex == 0xFFFF) return;
+		if (dropdownIndex == -1) return;
 		w->var_492 = dropdownIndex;
 		break;
 	default:
@@ -306,8 +305,8 @@ static void window_sign_dropdown()
 
 	int edx = map_element->base_height | ((map_element->properties.scenerymultiple.index >> 2) << 8);
 	int ebp = w->list_information_type | (w->var_492 << 8);
-	int ebx = map_element->type & 0x3;
-	RCT2_CALLPROC_X(0x6B9B05, x, ebx, y, edx, (int)map_element, 0, ebp);
+	int ebx = (map_element->type & 0x3) << 8;
+	RCT2_CALLPROC_X(0x6B9B05, x, ebx, y, edx, 0, w->number, ebp);
 	window_invalidate(w);
 }
 
@@ -364,33 +363,23 @@ static void window_sign_invalidate()
 
 	window_get_register(w);
 
-	//rct_banner* banner = &gBanners[w->number];
-	//rct_widget* colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
-	//colour_btn->type = WWT_EMPTY;
+	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
+	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOR];
 
-	////sceneray item not sure why we use this instead of banner?
-	//rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[banner->var_00];
+	rct_scenery_entry* scenery_entry = g_largeSceneryEntries[w->var_48C];
 
-	//if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLORBTN;
+	main_colour_btn->type = WWT_EMPTY;
+	text_colour_btn->type = WWT_EMPTY;
 
-	//w->pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
-	//w->disabled_widgets &= ~(
-	//	(1ULL << WIDX_BANNER_TEXT) |
-	//	(1ULL << WIDX_TEXT_COLOR_DROPDOWN) |
-	//	(1ULL << WIDX_TEXT_COLOR_DROPDOWN_BUTTON));
+	if (scenery_entry->large_scenery.flags&(1 << 0)){
+		main_colour_btn->type = WWT_COLORBTN;
+	}
+	if (scenery_entry->large_scenery.flags&(1 << 1)) {
+		text_colour_btn->type = WWT_COLORBTN;
+	}
 
-	//if (banner->flags & BANNER_FLAG_NO_ENTRY){
-	//	w->pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
-	//	w->disabled_widgets |=
-	//		(1ULL << WIDX_BANNER_TEXT) |
-	//		(1ULL << WIDX_TEXT_COLOR_DROPDOWN) |
-	//		(1ULL << WIDX_TEXT_COLOR_DROPDOWN_BUTTON);
-	//}
-
-	//colour_btn->image = (banner->colour << 19) + 0x600013C3;
-
-	//rct_widget* drop_down_widget = &window_sign_widgets[WIDX_TEXT_COLOR_DROPDOWN];
-	//drop_down_widget->image = banner->text_colour + 2996;
+	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
+	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
 }
 
 /* rct2: 0x006B9754 */
