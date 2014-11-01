@@ -515,13 +515,85 @@ void ride_update_station(rct_ride *ride, int stationIndex)
 	}
 }
 
-int sub_6B7294(rct_ride *ride)
+int bitscanforward(int source)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int i;
 
-	esi = (int)ride;
-	RCT2_CALLFUNC_X(0x006B7294, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
+	for (i = 0; i < 32; i++)
+		if (source & (1 << i))
+			return i;
+
+	return -1;
+}
+
+static uint8 _breakdownProblemProbabilities[] = {
+	25,		// BREAKDOWN_SAFETY_CUT_OUT
+	12,		// BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+	10,		// BREAKDOWN_RESTRAINTS_STUCK_OPEN
+	13,		// BREAKDOWN_DOORS_STUCK_CLOSED
+	10,		// BREAKDOWN_DOORS_STUCK_OPEN
+	6,		// BREAKDOWN_VEHICLE_MALFUNCTION
+	0,		// BREAKDOWN_BRAKES_FAILURE
+	3		// BREAKDOWN_CONTROL_FAILURE
+};
+
+/**
+ *
+ *  rct2: 0x006B7294
+ */
+int ride_get_new_breakdown_problem(rct_ride *ride)
+{
+	int availableBreakdownProblems, monthsOld, totalProbability, randomProbability, problemBits, breakdownProblem;
+	rct_ride_type *entry;
+
+	// Brake failure is more likely when its raining
+	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] =
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) == 0 ? 3 : 20;
+
+	entry = ride_get_entry(ride);
+	if (entry->var_008 & 0x4000)
+		return -1;
+	
+	availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
+
+	// Calculate the total probability range for all possible breakdown problems
+	totalProbability = 0;
+	problemBits = availableBreakdownProblems;
+	while (problemBits != 0) {
+		breakdownProblem = bitscanforward(problemBits);
+		problemBits &= ~(1 << breakdownProblem);
+		totalProbability += _breakdownProblemProbabilities[breakdownProblem];
+	}
+	if (totalProbability == 0)
+		return -1;
+
+	// Choose a random number within this range
+	randomProbability = scenario_rand() % totalProbability;
+
+	// Find which problem range the random number lies
+	problemBits = availableBreakdownProblems;
+	do {
+		breakdownProblem = bitscanforward(problemBits);
+		problemBits &= ~(1 << breakdownProblem);
+		randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
+	} while (randomProbability >= 0);
+
+	if (breakdownProblem != BREAKDOWN_BRAKES_FAILURE)
+		return breakdownProblem;
+
+	// Breaks failure can not happen if block breaks are used (so long as there is more than one vehicle)
+	// However if this is the case, break failure should be taken out the equation, otherwise block brake
+	// rides have a lower probability to break down due to a random implementation reason.
+	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+		if (ride->num_vehicles != 1)
+			return -1;
+
+	// Again the probability is lower, this time if young or two other unknown reasons...
+	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
+	if (monthsOld < 16 || ride->var_196 > 12800 || ride->lifecycle_flags & RIDE_LIFECYCLE_19)
+		return -1;
+
+	return BREAKDOWN_BRAKES_FAILURE;
 }
 
 /**
@@ -535,11 +607,79 @@ void sub_6B75C8(int rideIndex)
 
 /**
  *
+ *  rct2: 0x006B7348
+ */
+void ride_prepare_breakdown(int rideIndex, int breakdownReason)
+{
+	int i;
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+
+	ride = GET_RIDE(rideIndex);
+	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+		return;
+
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_6;
+
+	ride->breakdown_reason_pending = breakdownReason;
+	ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+	ride->var_1AC = 0;
+	ride->var_1AD = 0;
+	
+	switch (breakdownReason) {
+	case BREAKDOWN_SAFETY_CUT_OUT:
+	case BREAKDOWN_CONTROL_FAILURE:
+		// Inspect first station with an exit
+		for (i = 0; i < 4; i++) {
+			if (ride->exits[i] != 0xFFFF) {
+				ride->inspection_station = i;
+				break;
+			}
+		}
+		break;
+	case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
+	case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
+	case BREAKDOWN_DOORS_STUCK_CLOSED:
+	case BREAKDOWN_DOORS_STUCK_OPEN:
+		// Choose a random train and car
+		ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+		ride->broken_car = scenario_rand() % ride->num_cars_per_train;
+
+		// Set flag on broken car
+		vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+		for (i = ride->broken_car; i >= 0; i--)
+			vehicle = &(g_sprite_list[ride->vehicles[vehicle->next_vehicle_on_train]].vehicle);
+		vehicle->var_48 |= 0x100;
+		break;
+	case BREAKDOWN_VEHICLE_MALFUNCTION:
+		// Choose a random train
+		ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
+		ride->broken_car = 0;
+
+		// Set flag on broken train, first car
+		vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+		vehicle->var_48 |= 0x200;
+		break;
+	case BREAKDOWN_BRAKES_FAILURE:
+		// Original code generates a random number but does not use it
+		// Unsure if this was supposed to choose a random station (or random station with an exit)
+		for (i = 0; i < 4; i++) {
+			ride->inspection_station = i;
+			if (ride->exits[i] != 0xFFFF)
+				break;
+		}
+		break;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006AC622
  */
 void ride_breakdown_update(int rideIndex)
 {
-	int agePenalty, years, ax;
+	int agePenalty, years, ax, breakdownReason;
 	rct_ride *ride = GET_RIDE(rideIndex);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 255)
@@ -606,10 +746,12 @@ void ride_breakdown_update(int rideIndex)
 	ride->var_196 = max(0, ride->var_196 - ax);
 	ride->var_14D |= 32;
 
-	// Break down based on probability?
-	if (ride->var_196 == 0 || (scenario_rand() & 0x2FFFFF) <= 25856 - ride->var_196)
-		if (sub_6B7294(ride) != -1)
-			sub_6B75C8(rideIndex);
+	// Random probability of a breakdown
+	if (ride->var_196 == 0 || (scenario_rand() & 0x2FFFFF) <= 25856 - ride->var_196) {
+		breakdownReason = ride_get_new_breakdown_problem(ride);
+		if (breakdownReason != -1)
+			ride_prepare_breakdown(rideIndex, breakdownReason);
+	}
 }
 
 /**
@@ -665,7 +807,7 @@ void ride_chairlift_update(rct_ride *ride)
 		return;
 	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
 		return;
-	if (ride->var_18C == 0)
+	if (ride->breakdown_reason_pending == 0)
 		return;
 
 	ax = ride->var_0D0 * 2048;
@@ -694,6 +836,7 @@ void ride_spiral_slide_update(rct_ride *ride)
 {
 	int i, x, y, z;
 	rct_map_element *mapElement;
+	rct_peep *peep;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
 		return;
@@ -704,9 +847,8 @@ void ride_spiral_slide_update(rct_ride *ride)
 	if (ride->var_176 >= 48) {
 		ride->var_15D--;
 
-		// TODO find out what type of sprite is stored here
-		rct_sprite *sprite = &g_sprite_list[ride->maze_tiles];
-		RCT2_GLOBAL((int)sprite + 0x32, uint16)++;
+		peep = &(g_sprite_list[ride->maze_tiles].peep);
+		peep->var_32++;
 	}
 
 	// Invalidate something related to station start
@@ -755,14 +897,19 @@ void ride_music_update(int rideIndex)
 
 	// Oscillate parameters for a power cut effect when breaking down 
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN)) {
-		if (ride->var_18C == 7) {
+		if (ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE) {
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
 				if (ride->var_1AC != 255)
 					ride->var_1AC++;
 		} else {
-			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || ride->var_18C == 6 || ride->var_18C == 7)
+			if (
+				(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ||
+				ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE ||
+				ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE
+			) {
 				if (ride->var_1AC != 255)
 					ride->var_1AC++;
+			}
 
 			if (ride->var_1AC == 255) {
 				ride->music_tune_id = 255;
@@ -789,7 +936,7 @@ void ride_music_update(int rideIndex)
 	// Alter sample rate for a power cut effect
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN)) {
 		sampleRate = ride->var_1AC * 70;
-		if (ride->var_18C != 7)
+		if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
 			sampleRate *= -1;
 		sampleRate += 22050;
 	}

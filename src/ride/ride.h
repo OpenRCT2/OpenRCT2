@@ -180,7 +180,10 @@ typedef struct {
 	uint8 num_riders;				// 0x15B
 	uint8 music_tune_id;			// 0x15C
 	uint8 var_15D;
-	uint16 maze_tiles;				// 0x15E
+	union {
+		uint16 slide_peep;			// 0x15E
+		uint16 maze_tiles;			// 0x15E
+	};
 	uint8 pad_160[0x16];
 	uint8 var_176;
 	uint8 pad_177[0x9];
@@ -189,11 +192,12 @@ typedef struct {
 	uint16 race_winner;				// 0x184
 	uint8 pad_186[0x02];
 	uint32 music_position;			// 0x188
-	uint8 var_18C;
+	uint8 breakdown_reason_pending;	// 0x18C
 	uint8 mechanic_status;			// 0x18D
 	uint16 mechanic;				// 0x18E
 	uint8 inspection_station;		// 0x190
-	uint8 pad_191[0x02];
+	uint8 broken_vehicle;			// 0x191
+	uint8 broken_car;				// 0x192
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194
 	uint16 var_196;
@@ -213,7 +217,7 @@ typedef struct {
 	uint32 var_1A4;
 	uint8 pad_1A8[4];
 	uint8 var_1AC;
-	uint8 pad_1AD;
+	uint8 var_1AD;
 	uint8 var_1AE;
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
@@ -492,6 +496,7 @@ enum {
 };
 
 enum {
+	RIDE_MECHANIC_STATUS_UNDEFINED = 0,
 	RIDE_MECHANIC_STATUS_CALLING = 1,
 	RIDE_MECHANIC_STATUS_HEADING = 2,
 	RIDE_MECHANIC_STATUS_FIXING = 3,
