@@ -869,7 +869,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 							int id = (map_element->type & 0xC0) |
 								((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 								((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-							RCT2_CALLPROC_X(0x6B9559, id, 0, 0, 0, 0, 0, 0);
+							window_sign_open(id);
 						}
 						else{
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
