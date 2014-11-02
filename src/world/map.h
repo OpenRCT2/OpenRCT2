@@ -207,6 +207,7 @@ void map_invalidate_animations();
 void sub_6A876D();
 int sub_664F72(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
+void map_invalidate_tile(int x, int y, int zLow, int zHigh);
 
 void fountain_update_all();
 

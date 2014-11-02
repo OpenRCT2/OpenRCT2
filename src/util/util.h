@@ -29,4 +29,6 @@ int mph_to_kmph(int mph);
 
 long fsize(FILE *fp);
 
+int bitscanforward(int source);
+
 #endif

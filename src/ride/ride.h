@@ -276,7 +276,7 @@ enum {
 	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
 	RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
 	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
-	RIDE_LIFECYCLE_6 = 1 << 6,
+	RIDE_LIFECYCLE_BREAKDOWN_PENDING = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
 	RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
 
@@ -615,5 +615,6 @@ rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
+void ride_breakdown_add_news_item(int rideIndex);
 
 #endif

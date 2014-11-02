@@ -475,3 +475,13 @@ int map_is_location_in_park(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1729;
 	return 0;
 }
+
+/**
+ *
+ *  rct2: 0x006ECB60
+ * NOTE: x, y and z are in pixels, not tile units
+ */
+void map_invalidate_tile(int x, int y, int zLow, int zHigh)
+{
+	RCT2_CALLPROC_X(0x006ECB60, x, 0, y, 0, zHigh, zLow, 0);
+}
