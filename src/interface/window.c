@@ -1793,3 +1793,38 @@ void sub_6EA73F()
 		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
 	}
 }
+
+/**
+ * Update zoom based volume attenuation for ride music and clear music list.
+ *  rct2: 0x006BC348
+ */
+void window_update_viewport_ride_music()
+{
+	rct_viewport *viewport;
+	rct_window *w;
+
+	RCT2_GLOBAL(0x009AF42C, rct_music_info*) = (rct_music_info*)0x009AF430;
+	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+
+	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+		viewport = w->viewport;
+		if (viewport == NULL || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			continue;
+
+		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
+		RCT2_GLOBAL(0x00F438A8, rct_window*) = w;
+
+		switch (viewport->zoom) {
+		case 0:
+			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
+			break;
+		case 1:
+			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
+			break;
+		default:
+			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
+			break;
+		}
+		break;
+	}
+}

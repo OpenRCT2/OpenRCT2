@@ -125,7 +125,6 @@ static int ride_get_new_breakdown_problem(rct_ride *ride);
 static void ride_inspection_update(rct_ride *ride);
 static void ride_mechanic_status_update(int rideIndex, int mechanicStatus);
 static void ride_music_update(int rideIndex);
-static void ride_play_music();
 static void ride_prepare_breakdown(int rideIndex, int breakdownReason);
 static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
@@ -513,8 +512,6 @@ void ride_update_all()
 	rct_ride *ride;
 	int i;
 
-	// RCT2_CALLPROC_EBPSAFE(0x006ABE4C); return;
-
 	// Remove all rides if certain flags are set (possible scenario editor?)
 	int *esi = (int*)0x9DCE9E;
 	if (esi[0x1BCA] & 2) {
@@ -524,14 +521,13 @@ void ride_update_all()
 		return;
 	}
 
-	// Something related to windows
-	RCT2_CALLPROC_EBPSAFE(0x006BC348);
+	window_update_viewport_ride_music();
 
 	// Update rides
 	FOR_ALL_RIDES(i, ride)
 		ride_update(i);
 
-	ride_play_music();
+	sub_6BC6D8();
 }
 
 /**
@@ -1230,15 +1226,6 @@ static void ride_music_update(int rideIndex)
 	}
 
 	ride->music_position = sub_6BC3AC(x, y, z, rideIndex, sampleRate, ride->music_position, &ride->music_tune_id);
-}
-
-/**
- *
- *  rct2: 0x006BC6D8
- */
-static void ride_play_music()
-{
-	RCT2_CALLPROC_EBPSAFE(0x006BC6D8);
 }
 
 #pragma endregion

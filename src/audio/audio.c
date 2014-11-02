@@ -1837,35 +1837,6 @@ void stop_vehicle_sounds()
 }
 
 /**
-*  Update zoom based volume attenuation for ride music and clear music list
-*  rct2: 0x006BC348
-*/
-void sub_6BC348()
-{
-	RCT2_GLOBAL(0x009AF42C, rct_music_info*) = &RCT2_GLOBAL(0x009AF430, rct_music_info);
-	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
-	rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
-	while (1) {
-		window--;
-		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
-			break;
-		}
-		if (window->viewport && window->viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-			RCT2_GLOBAL(0x00F438A4, rct_viewport*) = window->viewport;
-			RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
-			if (window->viewport->zoom) {
-				RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
-				if (window->viewport->zoom != 1) {
-					RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
-				}
-			}
-			return;
-		}
-	}
-}
-
-/**
  * 
  *  rct2: 0x006BC3AC
  * Update ride music
