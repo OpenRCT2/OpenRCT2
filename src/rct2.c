@@ -229,6 +229,7 @@ void check_file_path(int pathId)
 	{
 	case PATH_ID_GAMECFG:
 	case PATH_ID_SCORES:
+	case PATH_ID_TRACKSIDX:
 		// Do nothing; these will be created later if they do not exist yet
 		break;
 
