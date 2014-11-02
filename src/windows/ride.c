@@ -1439,33 +1439,6 @@ static void window_ride_locate(rct_window *w)
 
 /**
  * 
- * rct2: 0x006B486A
- */
-static void window_ride_demolish(rct_window *w)
-{
-	rct_window *demolishWindow;
-	int x, y, screenWidth, screenHeight;
-
-	demolishWindow = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, w->number);
-	if (demolishWindow != NULL)
-		return;
-
-	screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	x = screenWidth / 2 - 100;
-	y = max(28, screenHeight / 2 - 50);
-
-	demolishWindow = window_create(x, y, 200, 100, (uint32*)0x0098E2E4, WC_DEMOLISH_RIDE_PROMPT, 0);
-	demolishWindow->widgets = (rct_widget*)0x009AEBA0;
-	demolishWindow->enabled_widgets = 4 | 8 | 16;
-	window_init_scroll_widgets(demolishWindow);
-	demolishWindow->flags |= WF_TRANSPARENT;
-	demolishWindow->number = w->number;
-	demolishWindow->colours[0] = 154;
-}
-
-/**
- * 
  * rct2: 0x006AF17E
  */
 static void window_ride_main_mouseup()
@@ -1501,7 +1474,7 @@ static void window_ride_main_mouseup()
 		window_ride_locate(w);
 		break;
 	case WIDX_DEMOLISH:
-		window_ride_demolish(w);
+		window_ride_demolish_prompt_open(w->number);
 		break;
 	}
 }
