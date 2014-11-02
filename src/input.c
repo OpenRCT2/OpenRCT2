@@ -845,7 +845,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 						//0x006e57a9
 						scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
 						if (scenery_entry->wall.var_0D != 0xFF){
-							RCT2_CALLPROC_X(0x6E5F52, map_element->properties.fence.item[0], 0, 0, 0, 0, 0, 0);
+							window_sign_small_open(map_element->properties.fence.item[0]);
 						}
 						else{
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
