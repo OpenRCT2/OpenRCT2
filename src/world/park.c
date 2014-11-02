@@ -508,7 +508,7 @@ static rct_peep *park_generate_new_guest_due_to_campaign(int campaign)
 static void park_generate_new_guests()
 {
 	// Generate a new guest for some probability
-	if ((scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
+	if ((int)(scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
 		int difficultGeneration = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
 		if (!difficultGeneration || _suggestedGuestMaximum + 150 >= RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16))
 			park_generate_new_guest();
@@ -519,7 +519,7 @@ static void park_generate_new_guests()
 	for (campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++) {
 		if (RCT2_ADDRESS(0x01358102, uint8)[campaign] != 0) {
 			// Random chance of guest generation
-			if ((scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
+			if ((int)(scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
 				park_generate_new_guest_due_to_campaign(campaign);
 		}
 	}

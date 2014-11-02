@@ -290,3 +290,28 @@ void sub_6C0C3F()
 		}
 	}
 }
+
+/**
+ *
+ *  rct2: 0x006C0905
+ */
+int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y)
+{
+	int eax, ebx, ecx;
+
+	if (!sub_664F72(x, y, mechanic->z))
+		return 0;
+
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[mechanic->staff_id] & 2))
+		return 1;
+
+	// Check patrol area?
+	ebx = mechanic->staff_id << 9;
+	eax = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
+	ecx = eax & 0x1F;
+	eax >>= 5;
+	if (RCT2_ADDRESS(0x013B0E72, uint32)[x * 4 + ebx] & (1 << y))
+		return 1;
+
+	return 0;
+}

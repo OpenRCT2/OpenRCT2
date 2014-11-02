@@ -627,7 +627,7 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep->state = 9;
-		peep->pad_2C = 0;
+		peep->var_2C = 0;
 		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
 		break;
 	case WIDX_RENAME:
@@ -1204,7 +1204,7 @@ void window_guest_overview_tool_down(){
 
 	int dest_z = ((uint8*)edx)[2] * 8 + 16;
 
-	if (sub_664F72(tile_x, tile_y, dest_z)){
+	if (!sub_664F72(tile_x, tile_y, dest_z)){
 		window_error_open(0x785,-1);
 		return;
 	}

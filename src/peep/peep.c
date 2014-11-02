@@ -558,11 +558,11 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		*argument_2 = 0;
 		break;
 	case PEEP_STATE_ANSWERING:
-		if (peep->pad_2C == 0){
+		if (peep->var_2C == 0){
 			*argument_1 = STR_WALKING;
 			*argument_2 = 0;
 		}
-		else if (peep->pad_2C == 1){
+		else if (peep->var_2C == 1){
 			*argument_1 = STR_ANSWERING_RADIO_CALL;
 			*argument_2 = 0;
 		}

@@ -598,11 +598,207 @@ int ride_get_new_breakdown_problem(rct_ride *ride)
 
 /**
  *
+ *  rct2: 0x006B74FA
+ */
+void ride_breakdown_add_news_item(int rideIndex)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
+	RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
+	news_item_add_to_queue(NEWS_ITEM_RIDE, 1927, rideIndex);
+}
+
+/**
+ *
+ *  rct2: 0x006B774B (forInspection = 0)
+ *  rct2: 0x006B78C3 (forInspection = 1)
+ */
+rct_peep *find_closest_mechanic(int x, int y, int forInspection)
+{
+	unsigned int closestDistance, distance;
+	uint16 spriteIndex;
+	rct_peep *peep, *closestMechanic;
+		
+	closestDistance = -1;
+	FOR_ALL_STAFF(spriteIndex, peep) {
+		if (forInspection) {
+			if ((peep->state != PEEP_STATE_HEADING_TO_INSPECTION || peep->var_2C >= 4) && peep->state != PEEP_STATE_PATROLLING)
+				continue;
+
+			if (!(peep->staff_orders & 2))
+				continue;
+		} else {
+			if (peep->state != PEEP_STATE_PATROLLING && !(peep->staff_orders & 1))
+				continue;
+		}
+
+		if (map_is_location_in_park(x, y))
+			if (!mechanic_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
+				continue;
+		
+		if (peep->x == (sint16)0x8000)
+			continue;
+
+		// Should probably be euclidean or manhattan distance, this seems a bit naive
+		distance = max(abs(peep->x - x), abs(peep->y - y));
+		if (distance < closestDistance) {
+			closestDistance = distance;
+			closestMechanic = peep;
+		}
+	}
+
+	return closestDistance == -1 ? NULL : closestMechanic;
+}
+
+/**
+ *
+ *  rct2: 0x006B76AB
+ */
+void ride_call_mechanic(int rideIndex)
+{
+	int x, y, z, stationIndex, direction, inspecting;
+	uint16 xy;
+	rct_ride *ride;
+	rct_map_element *mapElement;
+	rct_peep *mechanic;
+
+	ride = GET_RIDE(rideIndex);
+
+	inspecting = (ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN)) == 0;
+	
+	// Get either exit position or entrance position if there is no exit
+	stationIndex = ride->inspection_station;
+	xy = ride->exits[stationIndex];
+	if (xy == 0xFFFF) {
+		xy = ride->entrances[stationIndex];
+		if (xy == 0xFFFF)
+			return;
+	}
+
+	// Get station start track element and position
+	x = (xy & 0xFF) * 32;
+	y = (xy >> 8) * 32;
+	z = ride->station_heights[stationIndex] * 8;
+	mapElement = ride_get_station_start_track_element(ride, stationIndex);
+	if (mapElement == NULL)
+		return;
+
+	direction = mapElement->type & 3;
+	x -= RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
+	y -= RCT2_ADDRESS(0x00993CCE, sint16)[direction * 2];
+	x += 16;
+	y += 16;
+
+	// Find closest mechanic
+	mechanic = find_closest_mechanic(x, y, inspecting);
+	if (mechanic == NULL)
+		return;
+
+	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	mechanic->state = inspecting ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
+	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	mechanic->var_2C = 0;
+	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
+	ride->var_14D |= 0x20;
+	ride->mechanic = mechanic->sprite_index;
+	mechanic->current_ride = rideIndex;
+	mechanic->current_ride_station = ride->inspection_station;
+}
+
+/**
+ *
+ *  rct2: 0x006B762F
+ */
+void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
+{
+	int breakdownReason;
+	rct_ride *ride;
+	rct_peep *mechanic;
+	
+	ride = GET_RIDE(rideIndex);
+	switch (mechanicStatus) {
+	case RIDE_MECHANIC_STATUS_UNDEFINED:
+		breakdownReason = ride->breakdown_reason_pending;
+		if (
+			breakdownReason == BREAKDOWN_SAFETY_CUT_OUT ||
+			breakdownReason == BREAKDOWN_BRAKES_FAILURE ||
+			breakdownReason == BREAKDOWN_CONTROL_FAILURE
+		) {
+			ride->lifecycle_flags |= 0x80;
+			ride->var_14D |= 0x2C;
+			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+			ride->breakdown_reason = breakdownReason;
+			ride_breakdown_add_news_item(rideIndex);
+		}
+		break;
+	case RIDE_MECHANIC_STATUS_CALLING:
+		if (RideAvailableBreakdowns[ride->type] == 0) {
+			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
+			break;
+		}
+
+		ride_call_mechanic(rideIndex);
+		break;
+	case RIDE_MECHANIC_STATUS_HEADING:
+		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		if (
+			!peep_is_mechanic(mechanic) ||
+			(mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING) ||
+			mechanic->current_ride != rideIndex
+		) {
+			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+			ride->var_14D |= 0x20;
+			ride_mechanic_status_update(rideIndex, RIDE_MECHANIC_STATUS_CALLING);
+		}
+		break;
+	case RIDE_MECHANIC_STATUS_FIXING:
+		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		if (
+			!peep_is_mechanic(mechanic) ||
+			(
+				mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION &&
+				mechanic->state != PEEP_STATE_FIXING &&
+				mechanic->state != PEEP_STATE_INSPECTING &&
+				mechanic->state != PEEP_STATE_ANSWERING
+			)
+		) {
+			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+			ride->var_14D |= 0x20;
+			ride_mechanic_status_update(rideIndex, RIDE_MECHANIC_STATUS_CALLING);
+		}
+		break;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006B75C8
  */
-void sub_6B75C8(int rideIndex)
+void ride_breakdown_status_update(int rideIndex)
 {
-	RCT2_CALLPROC_X(0x006B75C8, 0, 0, 0, rideIndex, 0, 0, 0);
+	// RCT2_CALLPROC_X(0x006B75C8, 0, 0, 0, rideIndex, 0, 0, 0);
+
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	// Warn player if ride hasnt been fixed for ages
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		ride->var_1AD++;
+		if (ride->var_1AD == 0)
+			ride->var_1AD -= 16;
+
+		if (
+			!(ride->var_1AD & 15) &&
+			ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING &&
+			ride->mechanic_status != RIDE_MECHANIC_STATUS_4
+		) {
+			RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
+			RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
+			news_item_add_to_queue(NEWS_ITEM_RIDE, 1929, rideIndex);
+		}
+	}
+
+	ride_mechanic_status_update(rideIndex, ride->mechanic_status);
 }
 
 /**
@@ -747,7 +943,7 @@ void ride_breakdown_update(int rideIndex)
 	ride->var_14D |= 32;
 
 	// Random probability of a breakdown
-	if (ride->var_196 == 0 || (scenario_rand() & 0x2FFFFF) <= 25856 - ride->var_196) {
+	if (ride->var_196 == 0 || (int)(scenario_rand() & 0x2FFFFF) <= 25856 - ride->var_196) {
 		breakdownReason = ride_get_new_breakdown_problem(ride);
 		if (breakdownReason != -1)
 			ride_prepare_breakdown(rideIndex, breakdownReason);
@@ -998,7 +1194,7 @@ void ride_update(int rideIndex)
 	// Various things include news messages
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_6 | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
 		if (((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >> 1) & 255) == rideIndex)
-			sub_6B75C8(rideIndex);
+			ride_breakdown_status_update(rideIndex);
 
 	ride_inspection_update(ride);
 }

@@ -489,7 +489,7 @@ static void RCT2_CALLPROC_EBPSAFE(int address)
 /* Returns the flags register
  *
  *Flags register is as follows:
- *0bSZ0A_0P0C_0000_00000
+ *0bSZ0A_0P0C_0000_0000
  *S = Signed flag
  *Z = Zero flag
  *C = Carry flag

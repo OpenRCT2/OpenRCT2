@@ -642,7 +642,7 @@ void scenario_update()
 *
 *  rct2: 0x006E37D2
 */
-int scenario_rand()
+unsigned int scenario_rand()
 {
 	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
