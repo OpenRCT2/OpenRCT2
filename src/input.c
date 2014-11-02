@@ -34,6 +34,7 @@
 #include "windows/dropdown.h"
 #include "world/map.h"
 #include "world/sprite.h"
+#include "world/scenery.h"
 
 POINT _dragPosition;
 
@@ -814,38 +815,76 @@ static void game_handle_input_mouse(int x, int y, int state)
 			if (RCT2_GLOBAL(0x009DE540, sint16) < 500) {
 				// Right click
 				{
-					int eax, ebx, ecx, edx, esi, edi, ebp;
+					int eax, ebx, ecx, esi, edi, ebp;
+					rct_map_element* map_element;
+					rct_scenery_entry* scenery_entry;
 					eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
 					ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
-					RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, (int*)&map_element, &esi, &edi, &ebp);
 					switch (ebx & 0xFF) {
 					case 2:
-						if (*((uint8*)edx) == 0)
-							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, edx, 0, 0, 0);
+						if (map_element->type == 0)
+							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 3:
-						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 5:
-						RCT2_CALLPROC_X(0x006E08D2, eax, 0, ecx, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006E08D2, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 6:
-						RCT2_CALLPROC_X(0x006A614A, eax, 0, ecx, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006A614A, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 7:
-						RCT2_CALLPROC_X(0x006A61AB, eax, 0, ecx, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x006A61AB, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 8:
-						RCT2_CALLPROC_X(0x00666C0E, eax, 0, ecx, edx, 0, 0, 0);
+						RCT2_CALLPROC_X(0x00666C0E, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 9:
-						RCT2_CALLPROC_X(0x006E57A9, eax, 0, ecx, edx, 0, 0, 0);
+						//0x006e57a9
+						scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
+						if (scenery_entry->wall.var_0D != 0xFF){
+							window_sign_small_open(map_element->properties.fence.item[0]);
+						}
+						else{
+							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+							game_do_command(
+								eax,
+								1,
+								ecx,
+								(map_element->type & 0x3) | (map_element->base_height << 8),
+								GAME_COMMAND_42,
+								0,
+								0);
+						}
 						break;
 					case 10:
-						RCT2_CALLPROC_X(0x006B88DC, eax, 0, ecx, edx, 0, 0, 0);
+						//0x006B88DC
+						ebx = map_element->properties.scenerymultiple.type;
+						ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
+						scenery_entry = g_largeSceneryEntries[ebx];
+
+						if (scenery_entry->large_scenery.var_11 != 0xFF){
+							int id = (map_element->type & 0xC0) |
+								((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+								((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+							window_sign_open(id);
+						}
+						else{
+							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+							game_do_command(
+								eax, 
+								1 | ((map_element->type & 0x3) << 8), 
+								ecx, 
+								map_element->base_height | ((map_element->properties.scenerymultiple.index >> 2) << 8),
+								GAME_COMMAND_44, 
+								0, 
+								0);
+						}
 						break;
 					case 12:
-						RCT2_CALLPROC_X(0x006BA233, eax, 0, ecx, edx, 0, 0, 0);
+						window_banner_open(map_element->properties.banner.index);
 						break;
 					default:
 						break;

@@ -61,6 +61,7 @@ typedef struct {
 	uint16 price;			// 0x08
 	uint8 pad_0A[6];
 	uint8 scenery_tab_id;	// 0x10
+	uint8 var_11;
 } rct_large_scenery_entry;
 
 
@@ -71,6 +72,7 @@ typedef struct {
 	uint8 flags2;			// 0x09
 	uint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
+	uint8 var_0D; 
 } rct_wall_scenery_entry;
 
 typedef enum {

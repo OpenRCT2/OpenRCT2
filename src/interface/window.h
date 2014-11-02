@@ -505,6 +505,8 @@ void window_ride_list_open();
 void window_track_place_open();
 void window_new_ride_open();
 void window_banner_open(rct_windownumber number);
+void window_sign_open(rct_windownumber number);
+void window_sign_small_open(rct_windownumber number);
 void window_cheats_open();
 void window_research_open();
 void window_scenery_open();

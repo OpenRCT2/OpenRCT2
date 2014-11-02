@@ -31,42 +31,42 @@ typedef struct {
 } rct_map_element_surface_properties;
 
 typedef struct {
-	uint8 type;
-	uint8 additions;
-	uint8 edges;
-	uint8 addition_status;
+	uint8 type; //4
+	uint8 additions; //5
+	uint8 edges; //6
+	uint8 addition_status; //7
 } rct_map_element_path_properties;
 
 typedef struct {
-	uint8 type;
-	uint8 sequence;
-	uint8 colour;
-	uint8 ride_index;
+	uint8 type; //4
+	uint8 sequence; //5
+	uint8 colour; //6
+	uint8 ride_index; //7
 } rct_map_element_track_properties;
 
 typedef struct {
-	uint8 type;
-	uint8 age;
-	uint8 colour;
-	uint8 unused;
+	uint8 type; //4
+	uint8 age; //5
+	uint8 colour; //6
+	uint8 unused; //7
 } rct_map_element_scenery_properties;
 
 typedef struct {
-	uint8 type;
-	uint8 index;
-	uint8 path_type;
-	uint8 ride_index;
+	uint8 type; //4
+	uint8 index; //5
+	uint8 path_type; //6
+	uint8 ride_index; //7
 } rct_map_element_entrance_properties;
 
 typedef struct {
-	uint8 slope;
-	uint8 item[3];
+	uint8 slope; //4
+	uint8 item[3]; //5
 } rct_map_element_fence_properties;
 
 typedef struct {
-	uint8 type;
-	uint8 index;
-	uint8 colour[2];
+	uint8 type; //4
+	uint8 index; //5
+	uint8 colour[2]; //6
 } rct_map_element_scenerymultiple_properties;
 
 typedef struct {
