@@ -60,6 +60,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_DECREASE_GAME_SPEED,
 	WIDX_INCREASE_GAME_SPEED,
+	WIDX_ZERO_CLEARANCE
 	
 };
 
@@ -120,6 +121,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2769,			STR_NONE},					// open / close park
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2771,			STR_NONE},					// decrease game speed
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2772,			STR_NONE},					// increase game speed
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
 	{ WIDGETS_END },
 };
 
@@ -133,6 +135,8 @@ static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
 static void window_cheats_misc_mouseup();
+void window_cheats_misc_tool_update();
+void window_cheats_misc_tool_down();
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
@@ -210,8 +214,8 @@ static void* window_cheats_misc_events[] = {
 	window_cheats_update,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	window_cheats_misc_tool_update,
+	window_cheats_misc_tool_down,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
 	window_cheats_emptysub,
@@ -240,7 +244,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE),
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -368,7 +372,11 @@ static void window_cheats_misc_mouseup()
 	case WIDX_INCREASE_GAME_SPEED:
 		game_increase_game_speed();
 		break;
-
+	case WIDX_ZERO_CLEARANCE:
+		if (tool_set(w, widgetIndex, 7)) {
+			return;
+		}
+		break;
 	}
 }
 
@@ -470,4 +478,70 @@ static void window_cheats_set_page(rct_window *w, int page)
 	w->widgets = window_cheats_page_widgets[page];
 
 	window_invalidate(w);
+}
+
+void window_cheats_misc_tool_update(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
+
+	RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	int temp_y = y + 16;
+
+	int eax = x, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+	RCT2_CALLFUNC_X(0x689726, &eax, &temp_y, &ecx, &edx, &esi, &edi, &ebp);
+	if (eax != 0x8000){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
+		RCT2_CALLPROC_X(0x0068AAE1, eax, temp_y, 0, 0, (int)w, 0, 0);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+}
+
+void window_cheats_misc_tool_down(){
+	short widgetIndex;
+	rct_window* w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
+
+	int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
+	dest_y += 16;
+	RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+
+	if (dest_x == 0x8000)return;
+
+	// Set the coordinate of destination to be exactly 
+	// in the middle of a tile.
+	dest_x += 16;
+	dest_y += 16;
+	// Set the tile coordinate to top left of tile
+	int tile_y = dest_y & 0xFFE0;
+	int tile_x = dest_x & 0xFFE0;
+
+	ebp = ((tile_y << 8) | tile_x) >> 5;
+
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
+
+	while (1){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE){
+			map_element->clearance_height = 0;
+		}
+		if (map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+			break;
+		map_element++;
+	}
 }
