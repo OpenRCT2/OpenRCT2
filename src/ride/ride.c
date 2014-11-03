@@ -564,13 +564,14 @@ static void ride_update(int rideIndex)
 		ride->var_128 = ride->var_126;
 		ride->var_126 = ride->var_124;
 		ride->var_124 = ride->var_120;
+		ride->var_120 = 0;
 		ride->var_14D |= 1;
 
 		ride->income_per_hour = ride_calculate_income_per_hour(ride);
 		ride->var_14D |= 2;
 
 		if (ride->upkeep_cost != (money16)0xFFFF)
-			ride->upkeep_cost = (money16)ride->income_per_hour - (ride->upkeep_cost * 16);
+			ride->profit = (money16)ride->income_per_hour - (ride->upkeep_cost * 16);
 	}
 
 	// Ride specific updates
