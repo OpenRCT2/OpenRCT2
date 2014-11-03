@@ -904,6 +904,105 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 	ride->inversions |= 0 << 5;
 }
 
+static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 8;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement =	RIDE_RATING(1,50);
+	ratings.intensity =		RIDE_RATING(1,40);
+	ratings.nausea =		RIDE_RATING(0,90);
+
+	// Unlimited slides boost
+	if (ride->mode == RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION) {
+		ratings.excitement += RIDE_RATING(0, 40);
+		ratings.intensity  += RIDE_RATING(0, 20);
+		ratings.nausea     += RIDE_RATING(0, 25);
+	}
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 25098) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 2 << 5;
+}
+
+static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 10;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement =	RIDE_RATING(1,50);
+	ratings.intensity =		RIDE_RATING(1,90);
+	ratings.nausea =		RIDE_RATING(1,41);
+
+	ratings.excitement += ride->var_0D0 * 5;
+	ratings.intensity += ride->var_0D0 * 5;
+	ratings.nausea += ride->var_0D0 * 10;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 16732) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
+static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 16;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement =	RIDE_RATING(2,50);
+	ratings.intensity =		RIDE_RATING(2,70);
+	ratings.nausea =		RIDE_RATING(2,74);
+
+	ratings.excitement += ride->var_0D0 * 11;
+	ratings.intensity += ride->var_0D0 * 22;
+	ratings.nausea += ride->var_0D0 * 22;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
 static void ride_ratings_calculate_food_stall(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
@@ -986,6 +1085,150 @@ static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 	ride->inversions |= 0 << 5;
 }
 
+static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 21;
+	sub_655FD6(ride);
+
+	// Base ratings
+	if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS) {
+		ratings.excitement	= RIDE_RATING(2,90);
+		ratings.intensity	= RIDE_RATING(3,50);
+		ratings.nausea		= RIDE_RATING(3,00);
+	} else {
+		ratings.excitement	= RIDE_RATING(3,25);
+		ratings.intensity	= RIDE_RATING(4,10);
+		ratings.nausea		= RIDE_RATING(3,30);
+	}
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 7 << 5;
+}
+
+static void ride_ratings_calculate_3d_cinema(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 21;
+	sub_655FD6(ride);
+
+	// Base ratings
+	switch (ride->mode) {
+	default:
+	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+		ratings.excitement	= RIDE_RATING(3,50);
+		ratings.intensity	= RIDE_RATING(2,40);
+		ratings.nausea		= RIDE_RATING(1,40);
+		break;
+	case RIDE_MODE_3D_FILM_STORM_CHASERS:
+		ratings.excitement	= RIDE_RATING(4,00);
+		ratings.intensity	= RIDE_RATING(2,65);
+		ratings.nausea		= RIDE_RATING(1,55);
+		break;
+	case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+		ratings.excitement	= RIDE_RATING(4,20);
+		ratings.intensity	= RIDE_RATING(2,60);
+		ratings.nausea		= RIDE_RATING(1,48);
+		break;
+	}
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 7 << 5;
+}
+
+static void ride_ratings_calculate_top_spin(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 19;
+	sub_655FD6(ride);
+
+	// Base ratings
+	switch (ride->mode) {
+	default:
+	case RIDE_MODE_BEGINNERS:
+		ratings.excitement	= RIDE_RATING(2,00);
+		ratings.intensity	= RIDE_RATING(4,80);
+		ratings.nausea		= RIDE_RATING(5,74);
+		break;
+	case RIDE_MODE_INTENSE:
+		ratings.excitement	= RIDE_RATING(3,00);
+		ratings.intensity	= RIDE_RATING(5,75);
+		ratings.nausea		= RIDE_RATING(6,64);
+		break;
+	case RIDE_MODE_BERSERK:
+		ratings.excitement	= RIDE_RATING(3,20);
+		ratings.intensity	= RIDE_RATING(6,80);
+		ratings.nausea		= RIDE_RATING(7,94);
+		break;
+	}
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
+static void ride_ratings_calculate_space_rings(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 7;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement	= RIDE_RATING(1,50);
+	ratings.intensity	= RIDE_RATING(2,10);
+	ratings.nausea		= RIDE_RATING(6,50);
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 25098) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
 static void ride_ratings_calculate_elevator(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -1022,6 +1265,44 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 
 	if ((sub_65E72D(ride) >> 8) >= 5)
 		ride->excitement /= 4;
+}
+
+static void ride_ratings_calculate_atm(rct_ride *ride)
+{
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+}
+
+static void ride_ratings_calculate_twist(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 16;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement	= RIDE_RATING(1,13);
+	ratings.intensity	= RIDE_RATING(0,97);
+	ratings.nausea		= RIDE_RATING(1,90);
+
+	ratings.excitement += ride->var_0D0 * 20;
+	ratings.intensity += ride->var_0D0 * 20;
+	ratings.nausea += ride->var_0D0 * 20;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 13943) >> 16;
+	
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+	
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
 }
 
 static void ride_ratings_calculate_haunted_house(rct_ride *ride)
@@ -1113,6 +1394,31 @@ static void ride_ratings_calculate_first_aid(rct_ride *ride)
 	ride->var_14D |= 2;
 }
 
+static void ride_ratings_calculate_circus_show(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 9;
+	sub_655FD6(ride);
+
+	ratings.excitement	= RIDE_RATING(2,10);
+	ratings.intensity	= RIDE_RATING(0,30);
+	ratings.nausea		= RIDE_RATING(0,0);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 7 << 5;
+}
+
 static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -1136,6 +1442,70 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0xE0;
+}
+
+static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 16;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement	= RIDE_RATING(2,45);
+	ratings.intensity	= RIDE_RATING(1,60);
+	ratings.nausea		= RIDE_RATING(2,60);
+
+	ratings.excitement += ride->var_0D0 * 10;
+	ratings.intensity += ride->var_0D0 * 20;
+	ratings.nausea += ride->var_0D0 * 20;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+	
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 0 << 5;
+}
+
+static void ride_ratings_calculate_enterprise(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->var_198 = 22;
+	sub_655FD6(ride);
+
+	// Base ratings
+	ratings.excitement	= RIDE_RATING(3,60);
+	ratings.intensity	= RIDE_RATING(4,55);
+	ratings.nausea		= RIDE_RATING(5,72);
+
+	ratings.excitement += ride->var_0D0;
+	ratings.intensity += ride->var_0D0 * 16;
+	ratings.nausea += ride->var_0D0 * 16;
+
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 19521) >> 16;
+	
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->var_14D |= 2;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= 3 << 5;
 }
 
 #pragma endregion
@@ -1165,13 +1535,13 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// CHAIRLIFT
 	NULL,											// CORKSCREW_ROLLER_COASTER
 	ride_ratings_calculate_maze,					// MAZE
-	NULL,											// SPIRAL_SLIDE
+	ride_ratings_calculate_spiral_slide,			// SPIRAL_SLIDE
 	NULL,											// GO_KARTS
 	NULL,											// LOG_FLUME
 	NULL,											// RIVER_RAPIDS
 	NULL,											// BUMPER_CARS
-	NULL,											// PIRATE_SHIP
-	NULL,											// SWINGING_INVERTER_SHIP
+	ride_ratings_calculate_pirate_ship,				// PIRATE_SHIP
+	ride_ratings_calculate_inverter_ship,			// SWINGING_INVERTER_SHIP
 	ride_ratings_calculate_food_stall,				// FOOD_STALL
 	NULL,											// 1D
 	ride_ratings_calculate_drink_stall,				// DRINK_STALL
@@ -1182,18 +1552,18 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	ride_ratings_calculate_information_kiosk,		// INFORMATION_KIOSK
 	ride_ratings_calculate_bathroom,				// BATHROOM
 	ride_ratings_calculate_ferris_wheel,			// FERRIS_WHEEL
-	NULL,											// MOTION_SIMULATOR
-	NULL,											// 3D_CINEMA
-	NULL,											// TOP_SPIN
-	NULL,											// SPACE_RINGS
+	ride_ratings_calculate_motion_simulator,		// MOTION_SIMULATOR
+	ride_ratings_calculate_3d_cinema,				// 3D_CINEMA
+	ride_ratings_calculate_top_spin,				// TOP_SPIN
+	ride_ratings_calculate_space_rings,				// SPACE_RINGS
 	NULL,											// REVERSE_FREEFALL_COASTER
 	ride_ratings_calculate_elevator,				// ELEVATOR
 	NULL,											// VERTICAL_DROP_ROLLER_COASTER
-	NULL,											// ATM
-	NULL,											// TWIST
+	ride_ratings_calculate_atm,						// ATM
+	ride_ratings_calculate_twist,					// TWIST
 	ride_ratings_calculate_haunted_house,			// HAUNTED_HOUSE
 	ride_ratings_calculate_first_aid,				// FIRST_AID
-	NULL,											// CIRCUS_SHOW
+	ride_ratings_calculate_circus_show,				// CIRCUS_SHOW
 	NULL,											// GHOST_TRAIN
 	NULL,											// TWISTER_ROLLER_COASTER
 	NULL,											// WOODEN_ROLLER_COASTER
@@ -1221,11 +1591,11 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// WATER_COASTER
 	NULL,											// AIR_POWERED_VERTICAL_COASTER
 	NULL,											// INVERTED_HAIRPIN_COASTER
-	NULL,											// MAGIC_CARPET
+	ride_ratings_calculate_magic_carpet,			// MAGIC_CARPET
 	NULL,											// SUBMARINE_RIDE
 	NULL,											// RIVER_RAFTS
 	NULL,											// 50
-	NULL,											// ENTERPRISE
+	ride_ratings_calculate_enterprise,				// ENTERPRISE
 	NULL,											// 52
 	NULL,											// 53
 	NULL,											// 54
