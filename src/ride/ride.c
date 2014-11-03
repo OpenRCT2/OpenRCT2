@@ -1350,6 +1350,34 @@ void ride_measurements_update()
 	}
 }
 
+rct_ride_measurement *ride_get_existing_measurement(int rideIndex)
+{
+	int i;
+	rct_ride_measurement *measurement;
+
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == rideIndex)
+			return measurement;
+	}
+
+	return NULL;
+}
+
+rct_ride_measurement *ride_get_free_measurement()
+{
+	int i;
+	rct_ride_measurement *measurement;
+
+	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		measurement = GET_RIDE_MEASUREMENT(i);
+		if (measurement->ride_index == 255)
+			return measurement;
+	}
+
+	return NULL;
+}
+
 /**
  * 
  * rct2: 0x006B66D9
@@ -1370,45 +1398,37 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 	}
 
 	// Check if a measurement already exists for this ride
-	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
-		measurement = GET_RIDE_MEASUREMENT(i);
-		if (measurement->ride_index == i)
-			goto use_measurement;
-	}
+	measurement = ride_get_existing_measurement(rideIndex);
+	if (measurement == NULL) {
+		// Find a free measurement
+		measurement = ride_get_free_measurement();
+		if (measurement == NULL) {
+			// Use last recently used measurement for some other ride
+			lruIndex = 0;
+			lruTicks = 0xFFFFFFFF;
+			for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+				measurement = GET_RIDE_MEASUREMENT(i);
 
-	// Find a free measurement
-	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
-		measurement = GET_RIDE_MEASUREMENT(i);
-		if (measurement->ride_index == 255)
-			goto new_measurement;
-	}
+				if (measurement->last_use_tick <= lruTicks) {
+					lruTicks = measurement->last_use_tick;
+					lruIndex = i;
+				}
+			}
 
-	// Use last recently used measurement for some other ride
-	lruIndex = 0;
-	lruTicks = 0xFFFFFFFF;
-	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
-		measurement = GET_RIDE_MEASUREMENT(i);
-
-		if (measurement->last_use_tick <= lruTicks) {
-			lruTicks = measurement->last_use_tick;
-			lruIndex = i;
+			i = lruIndex;
+			measurement = GET_RIDE_MEASUREMENT(i);
+			ride->measurement_index = 255;
 		}
+
+		measurement->ride_index = rideIndex;
+		ride->measurement_index = i;
+		measurement->flags = 0;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x80)
+			measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
+		measurement->num_items = 0;
+		measurement->current_item = 0;
 	}
 
-	i = lruIndex;
-	measurement = GET_RIDE_MEASUREMENT(i);
-	ride->measurement_index = 255;
-
-new_measurement:
-	measurement->ride_index = rideIndex;
-	ride->measurement_index = i;
-	measurement->flags = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x80)
-		measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
-	measurement->num_items = 0;
-	measurement->current_item = 0;
-
-use_measurement:
 	measurement->last_use_tick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 	if (measurement->flags & 1) {
 		if (message != NULL) *message = 0;
