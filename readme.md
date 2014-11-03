@@ -1,4 +1,5 @@
 # OpenRCT2
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/IntelOrca/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 An open source clone of RollerCoaster Tycoon 2 built by decompiling the original game one bit at a time.
 - [Screenshot 1, cheat windows](http://imgur.com/a/zJTYd)
 - [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png) (up to 64 squares at once)
