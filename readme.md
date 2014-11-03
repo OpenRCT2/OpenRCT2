@@ -7,6 +7,8 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 
 [![Build Status](https://travis-ci.org/IntelOrca/OpenRCT2.svg)](https://travis-ci.org/IntelOrca/OpenRCT2)
 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/IntelOrca/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # Contents
 - 1 - [Introduction](#1-introduction)
   - 1.1 - [Background](#11-background)
