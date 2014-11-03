@@ -2761,8 +2761,8 @@ STR_2755    :???
 STR_2756    :???
 STR_2757    :???
 STR_2758    :???
-STR_2759    :???
 # New strings used in the cheats window previously these were ???
+STR_2759    :Zero Clearance
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
