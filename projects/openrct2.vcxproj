@@ -102,6 +102,7 @@
     <ClCompile Include="..\src\windows\banner.c" />
     <ClCompile Include="..\src\windows\cheats.c" />
     <ClCompile Include="..\src\windows\clear_scenery.c" />
+    <ClCompile Include="..\src\windows\demolish_ride_prompt.c" />
     <ClCompile Include="..\src\windows\dropdown.c" />
     <ClCompile Include="..\src\windows\error.c" />
     <ClCompile Include="..\src\windows\finances.c" />
@@ -128,6 +129,7 @@
     <ClCompile Include="..\src\windows\scenery.c" />
     <ClCompile Include="..\src\windows\shortcut_keys.c" />
     <ClCompile Include="..\src\windows\shortcut_key_change.c" />
+    <ClCompile Include="..\src\windows\sign.c" />
     <ClCompile Include="..\src\windows\staff_fire_prompt.c" />
     <ClCompile Include="..\src\windows\staff_list.c" />
     <ClCompile Include="..\src\windows\staff.c" />

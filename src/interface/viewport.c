@@ -289,7 +289,6 @@ void viewport_update_position(rct_window *window)
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
 		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
-		window_invalidate(window);//Added to force a redraw.
 		return;
 	}
 

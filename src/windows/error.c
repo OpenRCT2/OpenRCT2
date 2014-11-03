@@ -74,18 +74,6 @@ static uint16 _window_error_num_lines;
 
 /**
  * 
- *  rct2: 0x006C23B1
- */
-int sub_6C23B1(char *text)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	esi = (int)text;
-	RCT2_CALLFUNC_X(0x006C23B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return *((sint16*)&ecx);
-}
-
-/**
- * 
  *  rct2: 0x0066792F
  *
  * bx: title
@@ -120,7 +108,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	width = sub_6C23B1(_window_error_text);
+	width = gfx_get_string_width_new_lined(_window_error_text);
 	width = min(196, width);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
