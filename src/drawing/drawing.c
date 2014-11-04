@@ -338,7 +338,7 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	rct_drawpixelinfo *windowDPI = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
 
 	// Unsure what this does
-	RCT2_CALLPROC_X(0x00683326, left, top, right - 1, bottom - 1, 0, 0, 0);
+	//RCT2_CALLPROC_X(0x00683326, left, top, right - 1, bottom - 1, 0, 0, 0);
 
 	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
 	windowDPI->x = left;
@@ -348,6 +348,21 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
 
 	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+		if (w->viewport != NULL && w != g_window_list){
+			windowDPI->bits = screenDPI->bits + w->viewport->x + ((screenDPI->width + screenDPI->pitch)* w->viewport->y);
+			windowDPI->x = w->viewport->x;
+			windowDPI->y = w->viewport->y;
+			windowDPI->width = w->viewport->width;
+			windowDPI->height = w->viewport->height;
+			windowDPI->pitch = screenDPI->width + screenDPI->pitch - w->viewport->width;
+			window_draw(w, w->viewport->x, w->viewport->y, w->viewport->x + w->viewport->width, w->viewport->y + w->viewport->height);
+			windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
+			windowDPI->x = left;
+			windowDPI->y = top;
+			windowDPI->width = right - left;
+			windowDPI->height = bottom - top;
+			windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
+		}
 		if (w->flags & WF_TRANSPARENT)
 			continue;
 		if (right <= w->x || bottom <= w->y)

@@ -290,7 +290,7 @@ void game_logic_update()
 	// stop viewports from failing. Remove this when real bug cause has been 
 	// found.
 	// ***********
-	gfx_invalidate_screen();
+	//gfx_invalidate_screen();
 	// ***********
 
 	sub_68B089();

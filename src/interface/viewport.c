@@ -402,6 +402,8 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	if (left >= viewport->x + viewport->width )return;
 	if (top  >= viewport->y + viewport->height )return;
 
+	int l = left, t = top, r = right, b = bottom;
+
 	left = max(left - viewport->x, 0);
 	right = min(right - viewport->x, viewport->width);
 	top = max(top - viewport->y, 0);
@@ -424,7 +426,12 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 		top += 384;
 	}
 	//Paint
-	viewport_paint(viewport, dpi, left, top, right, bottom);
+	viewport_paint(viewport, dpi, left, top, right, bottom);	
+	
+	if (viewport != g_viewport_list){
+		gfx_fill_rect_inset(dpi, l, t, r-1, b-1, 0x2, 0x30);
+		return;
+	}
 }
 
 /**

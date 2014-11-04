@@ -208,7 +208,7 @@ static void window_viewport_update(rct_window *w)
 	}
 
 	// Not sure how to invalidate part of the viewport that has changed, this will have to do for now
-	widget_invalidate(w, WIDX_VIEWPORT);
+	//widget_invalidate(w, WIDX_VIEWPORT);
 }
 
 static void window_viewport_invalidate()
