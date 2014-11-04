@@ -623,5 +623,6 @@ uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
 void ride_breakdown_add_news_item(int rideIndex);
+rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection);
 
 #endif

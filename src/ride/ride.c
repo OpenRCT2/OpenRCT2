@@ -118,7 +118,8 @@ rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
 static void ride_breakdown_status_update(int rideIndex);
 static void ride_breakdown_update(int rideIndex);
-static void ride_call_mechanic(int rideIndex);
+static void ride_call_closest_mechanic(int rideIndex);
+static void ride_call_mechanic(int rideIndex, rct_peep *mechanic, int forInspection);
 static void ride_chairlift_update(rct_ride *ride);
 static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx);
 static int ride_get_new_breakdown_problem(rct_ride *ride);
@@ -1002,7 +1003,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 			break;
 		}
 
-		ride_call_mechanic(rideIndex);
+		ride_call_closest_mechanic(rideIndex);
 		break;
 	case RIDE_MECHANIC_STATUS_HEADING:
 		mechanic = &(g_sprite_list[ride->mechanic].peep);
@@ -1037,19 +1038,47 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 
 /**
  *
- *  rct2: 0x006B76AB
+ *  rct2: 0x006B796C
  */
-static void ride_call_mechanic(int rideIndex)
+static void ride_call_mechanic(int rideIndex, rct_peep *mechanic, int forInspection)
 {
-	int x, y, z, stationIndex, direction, inspecting;
-	uint16 xy;
 	rct_ride *ride;
-	rct_map_element *mapElement;
-	rct_peep *mechanic;
 
 	ride = GET_RIDE(rideIndex);
+	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	mechanic->state = forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
+	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	mechanic->var_2C = 0;
+	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
+	ride->var_14D |= 0x20;
+	ride->mechanic = mechanic->sprite_index;
+	mechanic->current_ride = rideIndex;
+	mechanic->current_ride_station = ride->inspection_station;
+}
 
-	inspecting = (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) == 0;
+/**
+ *
+ *  rct2: 0x006B76AB
+ */
+static void ride_call_closest_mechanic(int rideIndex)
+{
+	rct_ride *ride;
+	rct_peep *mechanic;
+	int forInspection;
+
+	ride = GET_RIDE(rideIndex);
+	forInspection = (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) == 0;
+
+	mechanic = ride_find_closest_mechanic(ride, forInspection);
+	if (mechanic != NULL)
+		ride_call_mechanic(rideIndex, mechanic, forInspection);
+}
+
+rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection)
+{
+	int x, y, z, stationIndex, direction;
+	uint16 xy;
+	rct_map_element *mapElement;
 	
 	// Get either exit position or entrance position if there is no exit
 	stationIndex = ride->inspection_station;
@@ -1057,7 +1086,7 @@ static void ride_call_mechanic(int rideIndex)
 	if (xy == 0xFFFF) {
 		xy = ride->entrances[stationIndex];
 		if (xy == 0xFFFF)
-			return;
+			return NULL;
 	}
 
 	// Get station start track element and position
@@ -1066,7 +1095,7 @@ static void ride_call_mechanic(int rideIndex)
 	z = ride->station_heights[stationIndex] * 8;
 	mapElement = ride_get_station_start_track_element(ride, stationIndex);
 	if (mapElement == NULL)
-		return;
+		return NULL;
 
 	direction = mapElement->type & 3;
 	x -= RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
@@ -1074,20 +1103,7 @@ static void ride_call_mechanic(int rideIndex)
 	x += 16;
 	y += 16;
 
-	// Find closest mechanic
-	mechanic = find_closest_mechanic(x, y, inspecting);
-	if (mechanic == NULL)
-		return;
-
-	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)mechanic, 0, 0);
-	mechanic->state = inspecting ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
-	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)mechanic, 0, 0);
-	mechanic->var_2C = 0;
-	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
-	ride->var_14D |= 0x20;
-	ride->mechanic = mechanic->sprite_index;
-	mechanic->current_ride = rideIndex;
-	mechanic->current_ride_station = ride->inspection_station;
+	return find_closest_mechanic(x, y, forInspection);
 }
 
 /**
@@ -1103,6 +1119,9 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 		
 	closestDistance = -1;
 	FOR_ALL_STAFF(spriteIndex, peep) {
+		if (peep->staff_type != STAFF_TYPE_MECHANIC)
+			continue;
+
 		if (forInspection) {
 			if ((peep->state != PEEP_STATE_HEADING_TO_INSPECTION || peep->var_2C >= 4) && peep->state != PEEP_STATE_PATROLLING)
 				continue;

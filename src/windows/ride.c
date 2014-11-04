@@ -30,6 +30,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../sprites.h"
+#include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
@@ -3045,16 +3046,22 @@ static void window_ride_operating_paint()
  */
 static void window_ride_locate_mechanic(rct_window *w)
 {
-	rct_peep *peep;
-	rct_ride *ride = GET_RIDE(w->number);
+	rct_ride *ride;
+	rct_peep *mechanic;
 
-	peep = ride_get_assigned_mechanic(ride);
-	if (peep != NULL) {
-		window_staff_open(peep);
-	} else {
-		// Presumebly looks for the closest mechanic
-		RCT2_CALLPROC_X(0x006B1B3E, 0, w->number * 0x260, 0, 0, (int)w, 0, 0);
-	}
+	ride = GET_RIDE(w->number);
+
+	// First check if there is a mechanic assigned
+	mechanic = ride_get_assigned_mechanic(ride);
+
+	// Otherwise find the closest mechanic
+	if (mechanic == NULL)
+		mechanic = ride_find_closest_mechanic(ride, 1);
+
+	if (mechanic == NULL)
+		window_error_open(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
+	else
+		window_staff_open(mechanic);
 }
 
 /**
