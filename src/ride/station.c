@@ -23,12 +23,12 @@
 #include "../world/sprite.h"
 #include "station.h"
 
-static void ride_update_station_blocksection(rct_ride *ride, int stationIndex, int dl);
-static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex, int dl);
-static void ride_update_station_race(rct_ride *ride, int stationIndex, int dl);
+static void ride_update_station_blocksection(rct_ride *ride, int stationIndex);
+static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex);
+static void ride_update_station_normal(rct_ride *ride, int stationIndex);
+static void ride_update_station_race(rct_ride *ride, int stationIndex);
 static void ride_race_init_vehicle_speeds(rct_ride *ride);
 static void ride_invalidate_station_start(rct_ride *ride, int stationIndex, int dl);
-static void sub_6AC2AF(rct_ride *ride, int stationIndex, int dl);
 
 /**
  *
@@ -36,41 +36,22 @@ static void sub_6AC2AF(rct_ride *ride, int stationIndex, int dl);
  */
 void ride_update_station(rct_ride *ride, int stationIndex)
 {
-	int dl, dh;
-
 	if (ride->station_starts[stationIndex] == 0xFFFF)
 		return;
 
-	dl = 0;
 	switch (ride->mode) {
 	case RIDE_MODE_RACE:
-		ride_update_station_race(ride, stationIndex, dl);
+		ride_update_station_race(ride, stationIndex);
 		break;
 	case RIDE_MODE_BUMPERCAR:
-		ride_update_station_bumpercar(ride, stationIndex, dl);
+		ride_update_station_bumpercar(ride, stationIndex);
 		break;
 	case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
 	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-		ride_update_station_blocksection(ride, stationIndex, dl);
+		ride_update_station_blocksection(ride, stationIndex);
 		break;
 	default:
-		if (
-			(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) &&
-			(ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
-		) {
-			dh = ride->var_062[stationIndex] & 0x7F;
-			if (dh != 0 && dh != 0x7F && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
-				ride->var_062[stationIndex]--;
-		} else {
-			dl = 1;
-			dh = ride->var_062[stationIndex] & 0x7F;
-			if (dh != 0) {
-				if (dh != 0x7F && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 31))
-					ride->var_062[stationIndex]--;
-				dl = 0;
-			}
-		}
-		sub_6AC2AF(ride, stationIndex, dl);
+		ride_update_station_normal(ride, stationIndex);
 		break;
 	}
 }
@@ -79,102 +60,114 @@ void ride_update_station(rct_ride *ride, int stationIndex)
  *
  *  rct2: 0x006AC0A1
  */
-static void ride_update_station_blocksection(rct_ride *ride, int stationIndex, int dl)
+static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 {
 	rct_map_element *mapElement;
 
 	mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
 	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || mapElement->flags & 0x20) {
-		dl = 0;
-		if (ride->var_062[stationIndex] & (1 << 7)) {
-			ride->var_062[stationIndex] &= ~(1 << 7);
-			ride_invalidate_station_start(ride, stationIndex, dl);
-			return;
-		}
+		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-		if (mapElement->properties.track.sequence & 0x80) {
-			ride_invalidate_station_start(ride, stationIndex, dl);
-			return;
-		}
+		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement->properties.track.sequence & 0x80))
+			ride_invalidate_station_start(ride, stationIndex, 0);
 	} else {
-		dl = 1;
-		if (!(ride->var_062[stationIndex] & (1 << 7))) {
-			ride->var_062[stationIndex] |= (1 << 7);
-			ride_invalidate_station_start(ride, stationIndex, dl);
-			return;
-		}
-
-		if (mapElement->properties.track.sequence & 0x80) {
-			ride_invalidate_station_start(ride, stationIndex, dl);
-			return;
+		if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
+			ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+			ride_invalidate_station_start(ride, stationIndex, 1);
+		} else if (mapElement->properties.track.sequence & 0x80) {
+			ride_invalidate_station_start(ride, stationIndex, 1);
 		}
 	}
-
-	sub_6AC2AF(ride, stationIndex, dl);
 }
 
 /**
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex, int dl)
+static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 {
-	int i, dx, dh;
+	int i, dx, dl, dh;
 	rct_vehicle *vehicle;
 
 	if (
 		ride->status == RIDE_STATUS_CLOSED ||
 		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
 	) {
-		sub_6AC2AF(ride, stationIndex, dl);
+		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 		return;
 	}
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
-		dx = ride->var_0D0 * 32;
+		dx = ride->time_limit * 32;
 		dl = dx & 0xFF;
 		dh = (dx >> 8) & 0xFF;
 		for (i = 0; i < ride->num_vehicles; i++) {
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
-			if (dh > vehicle->var_CE)
+			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->var_51 > dl))
 				continue;
 
-			if (dh < vehicle->var_CE) {
-				ride->lifecycle_flags &= ~VEHICLE_STATUS_WAITING_TO_DEPART;
-				dh = 0;
-				sub_6AC2AF(ride, stationIndex, dl);
-				return;
-			}
-
-			if (dl > vehicle->var_51)
-				continue;
+			// End match
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+			ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+			return;
 		}
 
-		dl = 1;
+		// Continue match
+		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
 	} else {
+		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) {
-				sub_6AC2AF(ride, stationIndex, dl);
+				ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 				return;
 			}
 		}
 
-		ride->lifecycle_flags |= VEHICLE_STATUS_WAITING_TO_DEPART;
-		ride->var_14D = 12;
-		dl = 1;
+		// Begin the match
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+		ride->var_14D |= 12;
 	}
-	sub_6AC2AF(ride, stationIndex, dl);
+}
+
+/**
+ *
+ *  rct2: 0x006AC02C
+ */
+static void ride_update_station_normal(rct_ride *ride, int stationIndex)
+{
+	int time;
+
+	time = ride->station_depart[stationIndex] & STATION_DEPART_MASK;
+	if (
+		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) &&
+		(ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
+	) {
+		if (time != 0 && time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
+			time--;
+
+		ride->station_depart[stationIndex] = time;
+	} else {
+		if (time == 0) {
+			ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+		} else {
+			if (time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 31))
+				time--;
+
+			ride->station_depart[stationIndex] = time;
+		}
+	}
 }
 
 /**
  *
  *  rct2: 0x006AC1DF
  */
-static void ride_update_station_race(rct_ride *ride, int stationIndex, int dl)
+static void ride_update_station_race(rct_ride *ride, int stationIndex)
 {
-	int i, dh;
+	int i, numLaps;
 	rct_vehicle *vehicle;
 	rct_peep *peep;
 
@@ -182,40 +175,47 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex, int dl)
 		ride->status == RIDE_STATUS_CLOSED ||
 		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
 	) {
-		sub_6AC2AF(ride, stationIndex, dl);
+		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 		return;
 	}
 
-	if (!(ride->lifecycle_flags & VEHICLE_STATUS_WAITING_TO_DEPART)) {
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+		numLaps = ride->num_laps;
+		for (i = 0; i < ride->num_vehicles; i++) {
+			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps) {
+				// Found a winner
+				if (vehicle->var_B3 != 0) {
+					peep = &(g_sprite_list[vehicle->peep].peep);
+					ride->race_winner = peep->sprite_index;
+					ride->var_14D |= 12;
+				}
+
+				// Race is over
+				ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+				ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+				return;
+			}
+		}
+
+		// Continue racing
+		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+	} else {
+		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING) {
-				sub_6AC2AF(ride, stationIndex, dl);
+				ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 				return;
 			}
 		}
 		
+		// Begin the race
 		ride_race_init_vehicle_speeds(ride);
-		ride->lifecycle_flags |= VEHICLE_STATUS_WAITING_TO_DEPART;
-		ride->var_14D = 12;
-	} else {
-		dh = ride->var_0D0;
-		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
-			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && dh <= vehicle->var_CE) {
-				ride->lifecycle_flags &= ~VEHICLE_STATUS_WAITING_TO_DEPART;
-				if (vehicle->var_B3 != 0) {
-					peep = &(g_sprite_list[vehicle->peep].peep);
-					ride->race_winner = peep->sprite_index;
-					ride->var_14D = 12;
-				}
-				sub_6AC2AF(ride, stationIndex, dl);
-				return;
-			}
-		}
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+		ride->var_14D |= 12;
 	}
-	dl = 1;
-	sub_6AC2AF(ride, stationIndex, dl);
 }
 
 /**
@@ -283,18 +283,6 @@ static void ride_invalidate_station_start(rct_ride *ride, int stationIndex, int 
 
 	// Invalidate map tile
 	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-}
-
-/**
- *
- *  rct2: 0x006AC2AF
- */
-static void sub_6AC2AF(rct_ride *ride, int stationIndex, int dl)
-{
-	if (dl != 0)
-		ride->var_062[stationIndex] |= (1 << 7);
-	else
-		ride->var_062[stationIndex] &= ~(1 << 7);
 }
 
 rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex)

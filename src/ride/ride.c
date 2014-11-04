@@ -711,6 +711,7 @@ static void ride_inspection_update(rct_ride *ride)
 
 	// Inspect the first station that has an exit
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_DUE_INSPECTION;
+	ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 	ride->inspection_station = 0;
 	for (i = 0; i < 4; i++) {
 		if (ride->exits[i] != 0xFFFF) {

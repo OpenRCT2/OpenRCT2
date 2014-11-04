@@ -76,7 +76,10 @@ typedef struct {
 	uint8 pad_C3[0x09];
 	uint8 var_CC;
 	uint8 var_CD;
-	uint8 var_CE;
+	union {
+		uint8 var_CE;
+		uint8 num_laps;					// 0xCE
+	};
 	uint8 pad_CF[0x07];
 	uint8 var_D6;
 } rct_vehicle;

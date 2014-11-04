@@ -97,7 +97,7 @@ typedef struct {
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
 	uint8 pad_05E[0x4];
-	uint8 var_062[4];
+	uint8 station_depart[4];		// 0x062
 	uint8 pad_066[0x4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
@@ -114,7 +114,11 @@ typedef struct {
 	uint8 var_0CD;
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
-	uint8 var_0D0;
+	union {
+		uint8 var_0D0;
+		uint8 time_limit;			// 0x0D0
+		uint8 num_laps;				// 0x0D0
+	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
 	uint8 var_0D5;
@@ -572,6 +576,9 @@ enum {
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+
+#define STATION_DEPART_FLAG (1 << 7)
+#define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
 // rct2: 0x009ACFA4
 rct_ride_type **gRideTypeList;
