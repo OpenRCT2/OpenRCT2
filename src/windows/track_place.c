@@ -607,7 +607,7 @@ static void window_track_place_tooldown()
 				window_ride_main_open(rideIndex);
 				window_close(w);
 			} else {
-				RCT2_CALLPROC_X(0x006CC3FB, 0, 0, 0, rideIndex, 0, 0, 0);
+				sub_6CC3FB(rideIndex);
 				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 				window_event_helper(w, 29, WE_MOUSE_UP);
 			}

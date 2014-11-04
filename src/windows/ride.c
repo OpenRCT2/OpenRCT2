@@ -1382,7 +1382,7 @@ void window_ride_construct(rct_window *w)
 
 	trackMapElement = sub_6CAF80(rideIndex, &trackX, &trackY);
 	if (trackMapElement == (rct_map_element*)-1) {
-		RCT2_CALLPROC_X(0x006CC3FB, 0, 0, 0, rideIndex, 0, 0, 0);
+		sub_6CC3FB(rideIndex);
 	} else {
 		trackMapElement = ride_find_track_gap(trackMapElement, &trackX, &trackY);
 

@@ -504,6 +504,7 @@ rct_window *window_ride_main_open(int rideIndex);
 void window_ride_demolish_prompt_open(int rideIndex);
 void window_ride_construct(rct_window *w);
 void window_ride_list_open();
+rct_window * window_construction_open();
 void window_track_place_open();
 void window_new_ride_open();
 void window_banner_open(rct_windownumber number);

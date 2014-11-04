@@ -124,6 +124,7 @@
     <ClCompile Include="..\src\windows\publisher_credits.c" />
     <ClCompile Include="..\src\windows\research.c" />
     <ClCompile Include="..\src\windows\ride.c" />
+    <ClCompile Include="..\src\windows\ride_construction.c" />
     <ClCompile Include="..\src\windows\ride_list.c" />
     <ClCompile Include="..\src\windows\save_prompt.c" />
     <ClCompile Include="..\src\windows\scenery.c" />

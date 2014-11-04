@@ -22,6 +22,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -30,6 +31,7 @@
 #include "../peep/staff.h"
 #include "../scenario.h"
 #include "../util/util.h"
+#include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "ride.h"
@@ -497,6 +499,72 @@ int ride_try_construct(rct_map_element *trackMapElement)
 	// Success stored in carry flag which can't be accessed after call using is macro
 	RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
 	return 1;
+}
+
+/**
+ * 
+ * rct2: 0x006CC3FB
+ */
+void sub_6CC3FB(int rideIndex)
+{
+	rct_ride *ride;
+	rct_window *w;
+
+	tool_cancel();
+	ride = GET_RIDE(rideIndex);
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+		return;
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);		
+		return;
+	}
+
+	RCT2_CALLPROC_X(0x006DD4AC, 0, 0, 0, rideIndex, 0, 0, 0);
+	RCT2_CALLPROC_X(0x006664DF, 0, 0, 0, rideIndex, 0, 0, 0);
+
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || w->number != rideIndex) {
+		window_close_construction_windows();
+		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+		w = window_construction_open(rideIndex);
+	} else {
+		RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+	}
+
+	tool_set(w, 23, 12);
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+
+	ride = GET_RIDE(RCT2_GLOBAL(0x00F440A7, uint8));
+
+	RCT2_GLOBAL(0x00F440A0, uint16) = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
+	RCT2_GLOBAL(0x00F440B2, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B3, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B4, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B5, uint8) = 0;
+
+	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x8000)
+		RCT2_GLOBAL(0x00F440B5, uint8) |= 2;
+
+	RCT2_GLOBAL(0x00F440B6, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B7, uint8) = 0;
+
+	RCT2_GLOBAL(0x00F440AE, uint8) = 0;
+	RCT2_GLOBAL(0x00F440A6, uint8) = 4;
+	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
+	RCT2_GLOBAL(0x00F44159, uint8) = 0;
+	RCT2_GLOBAL(0x00F4415C, uint8) = 0;
+
+	RCT2_CALLPROC_X(0x006C84CE, 0, 0, 0, 0, 0, ride->type, 0);
+	// return 0;
 }
 
 #pragma endregion
