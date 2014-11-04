@@ -22,6 +22,7 @@
 #define _STAFF_H_
 
 #include "../common.h"
+#include "peep.h"
 
 #define STAFF_MAX_COUNT 0xC8
 #define STAFF_TYPE_COUNT 0x04
@@ -45,5 +46,6 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 void update_staff_colour(uint8 staff_type, uint16 color);
 uint16 hire_new_staff_member(uint8 staff_type);
 void sub_6C0C3F();
+int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
 
 #endif

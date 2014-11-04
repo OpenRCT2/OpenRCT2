@@ -381,7 +381,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
@@ -433,6 +432,10 @@
     </ClCompile>
     <ClCompile Include="..\src\windows\sign.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\ride\station.c">
+      <Filter>Source\Ride</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -630,6 +633,9 @@
     </ClInclude>
     <ClInclude Include="..\src\world\banner.h">
       <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\station.h">
+      <Filter>Source\Ride</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

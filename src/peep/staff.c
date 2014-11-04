@@ -290,3 +290,34 @@ void sub_6C0C3F()
 		}
 	}
 }
+
+int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
+{
+	// Patrol quads are stored in a bit map (8 patrol quads per byte)
+	// Each patrol quad is 4x4
+	// Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map
+	int patrolOffset = peep->staff_id * (64 * 64 / 8);
+	int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
+	int mask = 1 << (patrolIndex & 0x1F);
+	int base = patrolIndex >> 5;
+
+	uint32 *patrolBits = (uint32*)(0x013B0E72 + patrolOffset + (base * 4));
+	return (*patrolBits & mask) != 0;
+}
+
+/**
+ *
+ *  rct2: 0x006C0905
+ */
+int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y)
+{
+	// Check if location is in the park
+	if (!sub_664F72(x, y, mechanic->z))
+		return 0;
+
+	// Check if mechanic has patrol area
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[mechanic->staff_id] & 2))
+		return 1;
+
+	return staff_is_location_in_patrol_area(mechanic, x, y);
+}

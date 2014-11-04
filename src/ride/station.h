@@ -18,48 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "util.h"
+#ifndef _RIDE_STATION_H_
+#define _RIDE_STATION_H_
 
-int squaredmetres_to_squaredfeet(int squaredMetres)
-{
-	// 1 metre squared = 10.7639104 feet squared
-	// RCT2 approximates as 11
-	return squaredMetres * 11;
-}
+#include "../common.h"
+#include "../world/map.h"
+#include "ride.h"
 
-int metres_to_feet(int metres)
-{
-	// 1 metre = 3.2808399 feet
-	// RCT2 approximates as 3.28125
-	return (metres * 840) / 256;
-}
+void ride_update_station(rct_ride *ride, int stationIndex);
+rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
 
-int mph_to_kmph(int mph)
-{
-	// 1 mph = 1.60934 kmph
-	// RCT2 approximates as 1.609375
-	return (mph * 1648) / 1024;
-}
-
-long fsize(FILE *fp)
-{
-	long originalPosition, size;
-
-	originalPosition = ftell(fp);
-	fseek(fp, 0, SEEK_END);
-	size = ftell(fp);
-	fseek(fp, originalPosition, SEEK_SET);
-
-	return size;
-}
-
-int bitscanforward(int source)
-{
-	int i;
-
-	for (i = 0; i < 32; i++)
-		if (source & (1 << i))
-			return i;
-
-	return -1;
-}
+#endif

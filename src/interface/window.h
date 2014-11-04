@@ -463,6 +463,8 @@ void tool_cancel();
 
 void window_close_construction_windows();
 
+void window_update_viewport_ride_music();
+
 // Open window functions
 void window_main_open();
 void window_resize_gui(int width, int height);

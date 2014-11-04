@@ -304,7 +304,7 @@ typedef struct {
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
-	uint8 pad_01;
+	uint8 var_01;
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
@@ -329,7 +329,7 @@ typedef struct {
 	uint16 next_z;					// 0x28
 	uint8 var_2A;
 	uint8 state;					// 0x2B
-	uint8 pad_2C;
+	uint8 var_2C;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	union{							
@@ -363,7 +363,7 @@ typedef struct {
 	uint8 photo4_ride_ref;			// 0x5E
 	uint8 pad_5F[0x09];				// 0x5C
 	uint8 current_ride;				// 0x68
-	uint8 pad_69;
+	uint8 current_ride_station;		// 0x69
 	uint8 current_train;   	        // 0x6A
 	uint8 current_car;				// 0x6B
 	uint8 current_seat;				// 0x6C

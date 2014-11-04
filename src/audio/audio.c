@@ -1837,35 +1837,6 @@ void stop_vehicle_sounds()
 }
 
 /**
-*  Update zoom based volume attenuation for ride music and clear music list
-*  rct2: 0x006BC348
-*/
-void sub_6BC348()
-{
-	RCT2_GLOBAL(0x009AF42C, rct_music_info*) = &RCT2_GLOBAL(0x009AF430, rct_music_info);
-	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
-	rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
-	while (1) {
-		window--;
-		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
-			break;
-		}
-		if (window->viewport && window->viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-			RCT2_GLOBAL(0x00F438A4, rct_viewport*) = window->viewport;
-			RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
-			if (window->viewport->zoom) {
-				RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
-				if (window->viewport->zoom != 1) {
-					RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
-				}
-			}
-			return;
-		}
-	}
-}
-
-/**
  * 
  *  rct2: 0x006BC3AC
  * Update ride music
@@ -1874,17 +1845,32 @@ void sub_6BC348()
  * @param x (ax)
  * @param y (cx)
  * @param z (dx)
- * @param bx
- * @param ebp
- * @param di
- * @returns ebp register
+ * @param sampleRate (di)
+ * @param rideIndex (bl)
+ * @param position (ebp)
+ * @param tuneId (bh)
+ * @returns new position (ebp)
  */
-int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
+int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	uint8 bl = LOBYTE(bx);
-	uint8 bh = HIBYTE(bx);
+	{
+		int a_eax, a_ebx, a_ecx, a_edx, a_esi, a_edi, a_ebp;
+
+		a_eax = x;
+		a_ebx = (*tuneId << 8) | rideIndex;
+		a_ecx = y;
+		a_edx = z;
+		a_edi = sampleRate;
+		a_ebp = position;
+		RCT2_CALLFUNC_X(0x006BC3AC, &a_eax, &a_ebx, &a_ecx, &a_edx, &a_esi, &a_edi, &a_ebp);
+
+		*tuneId = (a_ebx >> 8) & 0xFF;
+		return a_ebp;
+	}
+
+	// TODO fix / bh needs returning too!
 	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
-		RCT2_GLOBAL(0x009AF47C, uint16) = di;
+		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
 		sint16 v11;
 		sint16 v12;
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
@@ -1988,12 +1974,12 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 			rct_music_info2* music_info2 = &RCT2_GLOBAL(0x009AF46C, rct_music_info2);
 			int channel = 0;
 			uint32 a1;
-			while (music_info2->id != bl && music_info2->var_1 != bh) {
+			while (music_info2->id != rideIndex && music_info2->var_1 != *tuneId) {
 				music_info2++;
 				channel++;
 				if (channel >= 2) {
-					rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[bh];
-					a1 = ebp + music_info3->var_4;
+					rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId];
+					a1 = position + music_info3->var_4;
 					goto label51;
 				}
 			}
@@ -2007,11 +1993,11 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 			a1 = sub_401B46(channel);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		label51:
-			if (a1 < RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[bh].var_0) {
+			if (a1 < RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId].var_0) {
 				rct_music_info* music_info = RCT2_GLOBAL(0x009AF42C, rct_music_info*);
 				if (music_info < (rct_music_info*)0x009AF46C/*music_info list end*/) {
-					music_info->id = bl;
-					music_info->var_1 = bh;
+					music_info->id = rideIndex;
+					music_info->var_1 = *tuneId;
 					music_info->offset = a1;
 					music_info->volume = v32;
 					music_info->pan = panx;
@@ -2022,16 +2008,16 @@ int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint16 bx, uint32 ebp, uint16 di)
 		} else {
 			uint32 eax;
 		label58:
-			eax = ebp;
-			ebp = bh;
-			rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[bh];
+			eax = position;
+			position = *tuneId;
+			rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId];
 			eax += music_info3->var_4;
 			if (eax < music_info3->var_0) {
-				ebp = eax;
+				position = eax;
 			}
 		}
 	}
-	return ebp;
+	return position;
 }
 
 /**

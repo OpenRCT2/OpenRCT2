@@ -97,7 +97,7 @@ typedef struct {
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
 	uint8 pad_05E[0x4];
-	uint8 var_062[4];
+	uint8 station_depart[4];		// 0x062
 	uint8 pad_066[0x4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
@@ -114,7 +114,11 @@ typedef struct {
 	uint8 var_0CD;
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
-	uint8 var_0D0;
+	union {
+		uint8 var_0D0;
+		uint8 time_limit;			// 0x0D0
+		uint8 num_laps;				// 0x0D0
+	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
 	uint8 var_0D5;
@@ -178,20 +182,26 @@ typedef struct {
 	uint16 var_158;
 	uint8 pad_15A;
 	uint8 num_riders;				// 0x15B
-	uint8 var_15C;
+	uint8 music_tune_id;			// 0x15C
 	uint8 var_15D;
-	uint16 maze_tiles;				// 0x15E
+	union {
+		uint16 slide_peep;			// 0x15E
+		uint16 maze_tiles;			// 0x15E
+	};
 	uint8 pad_160[0x16];
 	uint8 var_176;
 	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
 	money16 upkeep_cost;			// 0x182
 	uint16 race_winner;				// 0x184
-	uint8 pad_186[0x06];
-	uint8 var_18C;
+	uint8 pad_186[0x02];
+	uint32 music_position;			// 0x188
+	uint8 breakdown_reason_pending;	// 0x18C
 	uint8 mechanic_status;			// 0x18D
 	uint16 mechanic;				// 0x18E
-	uint8 pad_190[0x03];
+	uint8 inspection_station;		// 0x190
+	uint8 broken_vehicle;			// 0x191
+	uint8 broken_car;				// 0x192
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194
 	uint16 var_196;
@@ -200,9 +210,18 @@ typedef struct {
 	uint8 var_199;
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
-	uint8 pad_19C[0x8];
+	uint8 var_19C;
+	uint8 var_19D;
+	uint8 var_19E;
+	uint8 var_19F;
+	uint8 var_1A0;
+	uint8 var_1A1;
+	uint8 var_1A2;
+	uint8 var_1A3;
 	uint32 var_1A4;
-	uint8 pad_1A8[6];
+	uint8 pad_1A8[4];
+	uint8 var_1AC;
+	uint8 var_1AD;
 	uint8 var_1AE;
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
@@ -261,8 +280,9 @@ enum {
 	RIDE_LIFECYCLE_NO_RAW_STATS = 1 << 3,
 	RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING = 1 << 4,
 	RIDE_LIFECYCLE_ON_RIDE_PHOTO = 1 << 5,
-
+	RIDE_LIFECYCLE_BREAKDOWN_PENDING = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
+	RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
 
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
 	RIDE_LIFECYCLE_11 = 1 << 11,
@@ -480,9 +500,11 @@ enum {
 };
 
 enum {
-	RIDE_MECHANIC_STATUS_CALLING = 1,
-	RIDE_MECHANIC_STATUS_HEADING = 2,
-	RIDE_MECHANIC_STATUS_FIXING = 3,
+	RIDE_MECHANIC_STATUS_UNDEFINED,
+	RIDE_MECHANIC_STATUS_CALLING,
+	RIDE_MECHANIC_STATUS_HEADING,
+	RIDE_MECHANIC_STATUS_FIXING,
+	RIDE_MECHANIC_STATUS_4
 };
 
 enum {
@@ -522,6 +544,16 @@ enum {
 	RIDE_ENTRANCE_STYLE_SPACE
 };
 
+enum {
+	RIDE_INSPECTION_EVERY_10_MINUTES,
+	RIDE_INSPECTION_EVERY_20_MINUTES,
+	RIDE_INSPECTION_EVERY_30_MINUTES,
+	RIDE_INSPECTION_EVERY_45_MINUTES,
+	RIDE_INSPECTION_EVERY_HOUR,
+	RIDE_INSPECTION_EVERY_2_HOURS,
+	RIDE_INSPECTION_NEVER
+};
+
 typedef struct {
 	uint8 main;
 	uint8 additional;
@@ -544,6 +576,9 @@ enum {
 
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+
+#define STATION_DEPART_FLAG (1 << 7)
+#define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
 // rct2: 0x009ACFA4
 rct_ride_type **gRideTypeList;
@@ -587,5 +622,6 @@ rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
+void ride_breakdown_add_news_item(int rideIndex);
 
 #endif

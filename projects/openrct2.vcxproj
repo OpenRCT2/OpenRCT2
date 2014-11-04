@@ -89,6 +89,7 @@
     <ClCompile Include="..\src\ride\ride.c" />
     <ClCompile Include="..\src\ride\ride_data.c" />
     <ClCompile Include="..\src\ride\ride_ratings.c" />
+    <ClCompile Include="..\src\ride\station.c" />
     <ClCompile Include="..\src\ride\track.c" />
     <ClCompile Include="..\src\ride\vehicle.c" />
     <ClCompile Include="..\src\scenario.c" />
@@ -190,6 +191,7 @@
     <ClInclude Include="..\src\ride\ride.h" />
     <ClInclude Include="..\src\ride\ride_data.h" />
     <ClInclude Include="..\src\ride\ride_ratings.h" />
+    <ClInclude Include="..\src\ride\station.h" />
     <ClInclude Include="..\src\ride\track.h" />
     <ClInclude Include="..\src\ride\vehicle.h" />
     <ClInclude Include="..\src\scenario.h" />
