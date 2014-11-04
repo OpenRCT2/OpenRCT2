@@ -854,7 +854,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 								1,
 								ecx,
 								(map_element->type & 0x3) | (map_element->base_height << 8),
-								GAME_COMMAND_42,
+								GAME_COMMAND_REMOVE_FENCE,
 								0,
 								0);
 						}

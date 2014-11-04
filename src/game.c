@@ -878,7 +878,7 @@ static uint32 game_do_command_table[58] = {
 	0x006B909A,
 	0x006BA16A,
 	0x006648E3,
-	0x0068DF91
+	0
 };
 
 void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
@@ -941,7 +941,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub
+	game_command_clear_scenery
 };
 
 #pragma endregion

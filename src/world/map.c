@@ -20,8 +20,11 @@
 
 #include "../addresses.h"
 #include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "climate.h"
 #include "map.h"
+#include "park.h"
+#include "scenery.h"
 
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
@@ -455,4 +458,187 @@ int sub_664F72(int x, int y, int z){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0x6C1;
 	return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006E0E01
+ */
+money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int flags)
+{
+	money32 cost;
+	rct_scenery_entry *entry;
+
+	entry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+	cost = entry->small_scenery.removal_price * 10;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(0x009DEA5E, uint32) = x * 32 + 16;
+	RCT2_GLOBAL(0x009DEA60, uint32) = y * 32 + 16;
+	RCT2_GLOBAL(0x009DEA62, uint32) = mapElement->base_height * 8;
+
+	x *= 32;
+	y *= 32;
+
+	if (!(flags & 0x40) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & 0x40)) {
+		// Check if allowed to remove item
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+			if (entry->small_scenery.height > 64) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+				return MONEY32_UNDEFINED;
+			}
+		}
+
+		// Check if the land is owned
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR))
+			if (sub_664F72(x, y, RCT2_GLOBAL(0x009DEA62, uint32)))
+				return MONEY32_UNDEFINED;
+	}
+
+	if ((flags & 0x40) && !(mapElement->flags & 0x10))
+		return 0;
+
+	// Remove element
+	if (flags & 1) {
+		RCT2_CALLPROC_X(0x006EC6D7, x, 0, y, 0, 0, 0, 0);
+		RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
+	}
+	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : cost;
+}
+
+/**
+ *
+ *  rct2: 0x006E5597
+ */
+money32 sub_6E5597(int x, int y, int dl, int dh, int bl)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x * 32;
+	ecx = y * 32;
+	ebx = bl & 0xFF;
+	edx = ((dh & 0xFF) << 8) | (dl & 0xFF);
+	RCT2_CALLFUNC_X(0x006E5597, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
+money32 sub_6A67C0(int x, int y, int z, int flags)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x * 32;
+	ecx = y * 32;
+	ebx = flags & 0xFF;
+	edx = z & 0xFF;
+	RCT2_CALLFUNC_X(0x006A67C0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
+// This will cause clear scenery to remove paths
+// This should be a flag for the game command which can be set via a checkbox on the clear scenery window.
+// #define CLEAR_SCENERY_REMOVES_PATHS
+
+/**
+ *
+ *  rct2: 0x0068DFE4
+ */
+money32 map_clear_scenery_from_tile(int x, int y, int flags)
+{
+	int type;
+	money32 cost, totalCost;
+	rct_map_element *mapElement;
+
+	totalCost = 0;
+
+restart_from_beginning:
+	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	do {
+		type = mapElement->type & MAP_ELEMENT_TYPE_MASK;
+		switch (type) {
+		case MAP_ELEMENT_TYPE_PATH:
+#ifdef CLEAR_SCENERY_REMOVES_PATHS
+			cost = sub_6A67C0(x, y, mapElement->base_height, flags);
+			if (cost == MONEY32_UNDEFINED)
+				return MONEY32_UNDEFINED;
+
+			totalCost += cost;
+			if (flags & 1)
+				goto restart_from_beginning;
+#endif
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY:
+			cost = map_try_clear_scenery(x, y, mapElement, flags);
+			if (cost == MONEY32_UNDEFINED)
+				return MONEY32_UNDEFINED;
+
+			totalCost += cost;
+			if (flags & 1)
+				goto restart_from_beginning;
+
+			break;
+		case MAP_ELEMENT_TYPE_FENCE:
+			cost = sub_6E5597(x, y, mapElement->type & 3, mapElement->base_height, flags);
+			if (cost == MONEY32_UNDEFINED)
+				return MONEY32_UNDEFINED;
+
+			totalCost += cost;
+			if (flags & 1)
+				goto restart_from_beginning;
+
+			break;
+		}
+	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+
+	return totalCost;
+}
+
+money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
+{
+	int x, y, z;
+	money32 totalCost, cost;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+
+	x = (x0 + x1) / 2 + 16;
+	y = (y0 + y1) / 2 + 16;
+	z = map_element_height(x, y);
+	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+
+	x0 = clamp(0, x0, 255);
+	y0 = clamp(0, y0, 255);
+	x1 = clamp(0, x1, 255);
+	y1 = clamp(0, y1, 255);
+
+	totalCost = 0;
+	for (y = y0; y <= y1; y++) {
+		for (x = x0; x <= x1; x++) {
+			cost = map_clear_scenery_from_tile(x, y, flags);
+			if (cost == MONEY32_UNDEFINED)
+				return MONEY32_UNDEFINED;
+
+			totalCost += cost;
+		}
+	}
+
+	return totalCost;
+}
+
+/**
+ *
+ *  rct2: 0x0068DF91
+ */
+void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	*ebx = map_clear_scenery(
+		(*eax & 0xFFFF) / 32,
+		(*ecx & 0xFFFF) / 32,
+		(*edi & 0xFFFF) / 32,
+		(*ebp & 0xFFFF) / 32,
+		*ebx & 0xFF
+	);
 }

@@ -584,7 +584,7 @@ static void window_sign_small_mouseup()
 			1 | ((map_element->type & 0x3) << 8),
 			y,
 			(map_element->base_height << 8) | (map_element->type & 0x3),
-			GAME_COMMAND_42,
+			GAME_COMMAND_REMOVE_FENCE,
 			0,
 			0);
 		break;

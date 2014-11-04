@@ -106,9 +106,11 @@ static void window_game_top_toolbar_emptysub() { }
 static void window_game_top_toolbar_mouseup();
 static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_game_top_toolbar_dropdown();
+static void window_game_top_toolbar_tool_update();
+static void window_game_top_toolbar_tool_down();
+static void window_game_top_toolbar_tool_drag();
 static void window_game_top_toolbar_invalidate();
 static void window_game_top_toolbar_paint();
-static void window_game_top_toolbar_tool_down();
 
 static void* window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
@@ -120,9 +122,9 @@ static void* window_game_top_toolbar_events[] = {
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
 	window_game_top_toolbar_emptysub,
-	(void*)0x0066CB25, //Update
+	window_game_top_toolbar_tool_update,
 	window_game_top_toolbar_tool_down,
-	(void*)0x0066CB4E,
+	window_game_top_toolbar_tool_drag,
 	(void*)0x0066CC5B,
 	(void*)0x0066CA58,
 	window_game_top_toolbar_emptysub,
@@ -666,6 +668,34 @@ static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_wind
 }
 
 /**
+ *
+ *  rct2: 0x0066CB25
+ */
+static void window_game_top_toolbar_tool_update()
+{
+	short widgetIndex;
+	rct_window *w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex){
+	case WIDX_CLEAR_SCENERY:
+		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_LAND:
+		RCT2_CALLPROC_X(0x00664280, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_WATER:
+		RCT2_CALLPROC_X(0x006E6BDC, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_SCENERY:
+		RCT2_CALLPROC_X(0x006E287B, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	}
+}
+
+/**
  * rct2: 0x0066CB73
  */
 static void window_game_top_toolbar_tool_down(){
@@ -677,9 +707,8 @@ static void window_game_top_toolbar_tool_down(){
 
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
-		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-			return;
-		}
+		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
+			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3438;
 
@@ -688,10 +717,11 @@ static void window_game_top_toolbar_tool_down(){
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
 			0,
-			GAME_COMMAND_57,
+			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-			);
+		);
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:
 		RCT2_CALLPROC_X(0x66CBF3, x, y, 0, widgetIndex, (int)w, 0, 0);
@@ -701,6 +731,51 @@ static void window_game_top_toolbar_tool_down(){
 		break;
 	case WIDX_SCENERY:
 		window_game_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0066CB4E
+ */
+static void window_game_top_toolbar_tool_drag()
+{
+	short widgetIndex;
+	rct_window *w;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex){
+	case WIDX_CLEAR_SCENERY:
+		if (window_find_by_class(WC_ERROR) != NULL)
+			break;
+
+		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
+			break;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3438;
+
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			1,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			0,
+			GAME_COMMAND_CLEAR_SCENERY,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		);
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
+		break;
+	case WIDX_LAND:
+		RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_WATER:
+		RCT2_CALLPROC_X(0x006E6D4B, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_SCENERY:
+		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	}
 }
