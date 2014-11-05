@@ -295,6 +295,7 @@ typedef enum {
 	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
 	WF_5 = (1 << 5),
+	WF_7 = (1 << 7),
 	WF_RESIZABLE = (1 << 8),
 	WF_9 = (1 << 9),
 	WF_10 = (1 << 10),

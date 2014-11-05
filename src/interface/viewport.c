@@ -266,6 +266,109 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 	*z = height;
 }
 
+void sub_6E7F34(rct_window* w, rct_viewport* viewport){
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+	for (; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+		if (!w->flags&WF_TRANSPARENT) continue;
+		if (w->viewport == viewport) continue;
+
+		if (viewport->x + viewport->width <= w->x)continue;
+		if (w->x + w->width <= viewport->x) continue;
+
+		if (viewport->y + viewport->height <= w->y)continue;
+		if (w->y + w->height <= viewport->y) continue;
+
+		int left = w->x;
+		int right = w->x + w->width;
+		int top = w->y;
+		int bottom = w->y + w->height;
+
+		if (left >= viewport->x)left = viewport->x;
+		if (right >= viewport->x + viewport->width) right = viewport->x + viewport->width;
+
+		if (top >= viewport->y)top = viewport->y;
+		if (bottom >= viewport->y + viewport->height) bottom = viewport->y + viewport->height;
+
+		if (left >= right) continue;
+		if (top >= bottom) continue;
+
+		gfx_redraw_screen_rect(left, top, right, bottom);
+	}
+
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, 0, viewport, w, 0);
+}
+
+void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
+	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, w, viewport, 0);
+	//return;
+	uint8 zoom = (1 << viewport->zoom);
+
+	sint16 previous_x = viewport->view_x / zoom;
+	sint16 previous_y = viewport->view_y / zoom;
+
+	viewport->view_x = x;
+	viewport->view_y = y;
+
+	if (((x / zoom) == previous_x) && ((y / zoom) == previous_y)) return;
+
+	if (w->flags & WF_7){
+		int left = max(viewport->x, 0);
+		int top = max(viewport->y, 0);
+		int right = min(viewport->x + viewport->width, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+		int bottom = min(viewport->y + viewport->height, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
+
+		if (left >= right) return;
+		if (top >= bottom) return;
+
+		gfx_redraw_screen_rect(left, top, right, bottom);
+		return;
+	}
+
+	rct_viewport view_copy;
+	memcpy(&view_copy, viewport, sizeof(rct_viewport));
+
+	if (viewport->x < 0){
+		viewport->width += viewport->x;
+		viewport->view_width += viewport->x * zoom;
+		viewport->view_x -= viewport->x * zoom;
+		viewport->x = 0;
+	}
+
+	int eax = viewport->x + viewport->width - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	if (eax > 0){
+		viewport->width -= eax;
+		viewport->view_width -= eax * zoom;
+	}
+
+	if (viewport->width <= 0){
+		memcpy( viewport, &view_copy,sizeof(rct_viewport));
+		return;
+	}
+
+	if (viewport->y < 0){
+		viewport->height += viewport->y;
+		viewport->view_height += viewport->y * zoom;
+		viewport->view_y -= viewport->y * zoom;
+		viewport->y = 0;
+	}
+
+	eax = viewport->y + viewport->height - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	if (eax > 0){
+		viewport->height -= eax;
+		viewport->view_height -= eax * zoom;
+	}
+
+	if (viewport->height <= 0){
+		memcpy(viewport, &view_copy, sizeof(rct_viewport));
+		return;
+	}
+
+	sub_6E7F34(w, viewport);
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+
+	memcpy(viewport, &view_copy, sizeof(rct_viewport));
+}
+
 /**
  * 
  *  rct2: 0x006E7A3A
@@ -290,7 +393,8 @@ void viewport_update_position(rct_window *window)
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
+		sub_6E7DE1(center_x, center_y, window, viewport);
+		//RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
 		return;
 	}
 
@@ -382,7 +486,8 @@ void viewport_update_position(rct_window *window)
 		y += viewport->view_y;
 	}
 
-	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
+	sub_6E7DE1(x, y, window, viewport);
+	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
