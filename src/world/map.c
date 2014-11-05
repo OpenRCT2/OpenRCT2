@@ -437,6 +437,23 @@ static void sub_6A87BB(int x, int y)
 	RCT2_CALLPROC_X(0x006A87BB, x, 0, y, 0, 0, 0, 0);
 }
 
+/* rct2: 0x6A7B84 */
+int map_height_from_slope(int x, int y, int slope){
+	if (!(slope & 4)) return 0;
+
+	switch (slope & 3){
+	case 0:
+		return (31 - (x & 31)) / 2;
+	case 1:
+		return (y & 31) / 2;
+	case 2:
+		return (x & 31) / 2;
+	case 3:
+		return (31 - (y & 31)) / 2;
+	}
+	return 0;
+}
+
 /**
  *
  *  rct2: 0x00664F72
@@ -453,8 +470,8 @@ int sub_664F72(int x, int y, int z)
 		if (mapElement->properties.surface.ownership & 0x10) {
 			z /= 8;
 			if (z < mapElement->base_height || z - 2 > mapElement->base_height)
-		return 1;
-	}
+				return 1;
+		}
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1729;

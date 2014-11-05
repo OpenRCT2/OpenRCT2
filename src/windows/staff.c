@@ -460,10 +460,10 @@ void window_staff_overview_mouseup()
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
-		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
-		peep->state = 9;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_69E9D3( 0x8000, peep->y, peep->z, (rct_sprite*)peep);
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_PICKED;
+		peep_window_state_update(peep);
 		break;
 	case WIDX_FIRE:
 		window_staff_fire_prompt_open(peep);
@@ -1049,18 +1049,24 @@ void window_staff_stats_paint(){
 
 	switch (peep->staff_type){
 	case STAFF_TYPE_HANDYMAN:
-		gfx_draw_string_left(dpi, 2351, (void*)&peep->paid_to_enter, 0, x, y);
+		// Lawns mown
+		gfx_draw_string_left(dpi, 2351, (void*)&peep->staff_lawns_mown, 0, x, y);
 		y += 10;
-		gfx_draw_string_left(dpi, 2352, (void*)&peep->paid_on_rides, 0, x, y);
+		// Gardens Watered
+		gfx_draw_string_left(dpi, 2352, (void*)&peep->staff_gardens_watered, 0, x, y);
 		y += 10;
-		gfx_draw_string_left(dpi, 2353, (void*)&peep->paid_on_food, 0, x, y);
+		// Litter Swept
+		gfx_draw_string_left(dpi, 2353, (void*)&peep->staff_litter_swept, 0, x, y);
 		y += 10;
-		gfx_draw_string_left(dpi, 2354, (void*)&peep->paid_on_souvenirs, 0, x, y);
+		// Bins Emptied
+		gfx_draw_string_left(dpi, 2354, (void*)&peep->staff_bins_emptied, 0, x, y);
 		break;
 	case STAFF_TYPE_MECHANIC:
-		gfx_draw_string_left(dpi, 2356, (void*)&peep->paid_on_rides, 0, x, y);
+		// Rides Inspected
+		gfx_draw_string_left(dpi, 2356, (void*)&peep->staff_rides_inspected, 0, x, y);
 		y += 10;
-		gfx_draw_string_left(dpi, 2355, (void*)&peep->paid_to_enter, 0, x, y);
+		// Rides Fixed
+		gfx_draw_string_left(dpi, 2355, (void*)&peep->staff_rides_fixed, 0, x, y);
 		break;
 	}
 }
@@ -1143,11 +1149,11 @@ void window_staff_overview_tool_down(){
 		}
 
 		rct_peep* peep = GET_PEEP(w->number);
-		RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
+		sub_69E9D3(dest_x, dest_y, dest_z, (rct_sprite*)peep);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
-		peep->state = 0;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
 		peep->var_71 = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;
@@ -1183,9 +1189,9 @@ void window_staff_overview_tool_abort(){
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 		if (peep->x != 0x8000){
-			RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
-			peep->state = 0;
-			RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_FALLING;
+			peep_window_state_update(peep);
 			peep->var_71 = 0xFF;
 			peep->var_6D = 0;
 			peep->var_70 = 0;

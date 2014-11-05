@@ -182,8 +182,8 @@ enum PEEP_THOUGHT_TYPE {
 };
 
 enum PEEP_STATE {
-	PEEP_STATE_0 = 0,
-
+	PEEP_STATE_FALLING = 0, //Drowning is part of falling
+	PEEP_STATE_1 = 1,
 	PEEP_STATE_QUEUING_FRONT = 2,
 	PEEP_STATE_ON_RIDE = 3,
 	PEEP_STATE_LEAVING_RIDE = 4,
@@ -202,7 +202,7 @@ enum PEEP_STATE {
 	PEEP_STATE_BUYING = 17,
 	PEEP_STATE_WATCHING = 18,
 	PEEP_STATE_EMPTYING_BIN = 19,
-	
+	PEEP_STATE_20 = 20,
 	PEEP_STATE_WATERING = 21,
 	PEEP_STATE_HEADING_TO_INSPECTION = 22,
 	PEEP_STATE_INSPECTING = 23
@@ -367,20 +367,26 @@ typedef struct {
 	uint8 current_ride;				// 0x68
 	uint8 current_ride_station;		// 0x69
 	uint8 current_train;   	        // 0x6A
-	uint8 current_car;				// 0x6B
-	uint8 current_seat;				// 0x6C
+	union{
+		struct{
+			uint8 current_car;				// 0x6B
+			uint8 current_seat;				// 0x6C
+		};
+		uint16 time_to_sitdown; //0x6B
+	};
 	uint8 var_6D;					// 0x6D
 	uint8 var_6E;					// 0x6E
-	uint8 pad_6F;
+	uint8 var_6F;
 	uint8 var_70;
 	uint8 var_71;
 	uint8 var_72;
 	uint8 var_73;
-	uint16 pad_74;
+	uint16 var_74;
 	uint8 var_76;
 	uint8 pad_77;
 	uint8 var_78;
-	uint8 pad_79[0x03];
+	uint8 pad_79;
+	uint16 var_7A; // time waiting in line possibly
 	uint8 rides_been_on[32];		// 0x7C 
 	// 255 bit bitmap of every ride the peep has been on see
 	// window_peep_rides_update for how to use.
@@ -410,10 +416,24 @@ typedef struct {
 	uint8 pad_E1;
 	uint8 var_E2;					// 0xE2
 	uint8 pad_E3;
-	money16 paid_to_enter;			// 0xE4
-	money16 paid_on_rides;			// 0xE6
-	money16 paid_on_food;			// 0xE8
-	money16 paid_on_souvenirs;		// 0xEA
+	union{
+		money16 paid_to_enter;			// 0xE4
+		uint16 staff_lawns_mown;		// 0xE4
+		uint16 staff_rides_fixed;		// 0xE4
+	};
+	union{
+		money16 paid_on_rides;			// 0xE6
+		uint16 staff_gardens_watered;	// 0xE6
+		uint16 staff_rides_inspected;	// 0xE6
+	};
+	union {
+		money16 paid_on_food;			// 0xE8
+		uint16 staff_litter_swept;		// 0xE8
+	};
+	union{
+		money16 paid_on_souvenirs;		// 0xEA
+		uint16 staff_bins_emptied;		// 0xEA
+	};
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
@@ -493,5 +513,16 @@ int get_peep_face_sprite_large(rct_peep *peep);
 int peep_check_easteregg_name(int index, rct_peep *peep);
 int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
+int peep_has_food(rct_peep* peep);
+
+void peep_window_state_update(rct_peep* peep);
+void peep_decrement_num_riders(rct_peep* peep);
+/**
+* rct2: 0x699F5A
+* al:thought_type
+* ah:thought_arguments
+* esi: peep
+*/
+void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
 #endif

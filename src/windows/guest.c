@@ -624,11 +624,11 @@ void window_guest_overview_mouse_up(){
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
-		RCT2_CALLPROC_X(0x0069E9D3, 0x8000, 0, peep->y, peep->z, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
-		peep->state = 9;
+		sub_69E9D3(0x8000, peep->y, peep->z, (rct_sprite*)peep);
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_PICKED;
 		peep->var_2C = 0;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:
 		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id);
@@ -1098,7 +1098,8 @@ void window_guest_overview_update(rct_window* w){
 			int rand = scenario_rand() & 0xFFFF;
 			if (rand <= 0x2AAA){
 				rct_peep* peep = GET_PEEP(w->number);
-				RCT2_CALLPROC_X(0x699F5A, 0xFF47, 0, 0, 0, (int)peep, 0, 0);
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+				//RCT2_CALLPROC_X(0x699F5A, 0xFF00 | PEEP_THOUGHT_TYPE_WATCHED, 0, 0, 0, (int)peep, 0, 0);
 			}
 		}
 	}
@@ -1223,11 +1224,11 @@ void window_guest_overview_tool_down(){
 	}
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_CALLPROC_X(0x0069E9D3, dest_x, 0, dest_y, dest_z, (int)peep, 0, 0);
+	sub_69E9D3(dest_x, dest_y, dest_z, (rct_sprite*)peep);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_decrement_num_riders(peep);
 	peep->state = 0;
-	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_window_state_update(peep);
 	peep->var_71 = 0xFF;
 	peep->var_6D = 0;
 	peep->var_70 = 0;
@@ -1254,13 +1255,13 @@ void window_guest_overview_tool_abort(){
 	rct_peep* peep = GET_PEEP(w->number);
 	if (peep->state != PEEP_STATE_PICKED) return;
 
-	RCT2_CALLPROC_X(0x0069E9D3, w->var_48C, 0, peep->y, peep->z + 8, (int)peep, 0, 0);
+	sub_69E9D3( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
 	RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 	if (peep->x != 0x8000){
-		RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_decrement_num_riders(peep);
 		peep->state = 0;
-		RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_window_state_update(peep);
 		peep->var_71 = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;

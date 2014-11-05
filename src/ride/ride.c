@@ -667,7 +667,7 @@ static void ride_remove_peeps(int rideIndex)
 			if (peep->current_ride != rideIndex)
 				continue;
 
-			RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_decrement_num_riders(peep);
 			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->var_2C == 0)
 				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 
@@ -687,7 +687,7 @@ static void ride_remove_peeps(int rideIndex)
 			}
 
 			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
-			peep->state = PEEP_STATE_0;
+			peep->state = PEEP_STATE_FALLING;
 			RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
 			
 			peep->happiness = min(peep->happiness, peep->happiness_growth_rate) / 2;
@@ -1539,9 +1539,9 @@ static void ride_call_mechanic(int rideIndex, rct_peep *mechanic, int forInspect
 	rct_ride *ride;
 
 	ride = GET_RIDE(rideIndex);
-	RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	peep_decrement_num_riders(mechanic);
 	mechanic->state = forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
-	RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)mechanic, 0, 0);
+	peep_window_state_update(mechanic);
 	mechanic->var_2C = 0;
 	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
 	ride->var_14D |= 0x20;
