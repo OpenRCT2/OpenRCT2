@@ -33,6 +33,8 @@
 #define RCT2_LAST_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*) - 1)
 #define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*))
 
+#define DEBUG_SHOW_DIRTY_BOX
+
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
 typedef struct paint_struct paint_struct;
@@ -428,10 +430,12 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	//Paint
 	viewport_paint(viewport, dpi, left, top, right, bottom);	
 	
+#ifdef DEBUG_SHOW_DIRTY_BOX
 	if (viewport != g_viewport_list){
 		gfx_fill_rect_inset(dpi, l, t, r-1, b-1, 0x2, 0x30);
 		return;
 	}
+#endif
 }
 
 /**
