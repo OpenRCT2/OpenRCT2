@@ -30,6 +30,7 @@
 #include "../cursors.h"
 #include "../drawing/drawing.h"
 #include "../input.h"
+#include "../interface/keyboard_shortcut.h"
 #include "../interface/screenshot.h"
 #include "../interface/window.h"
 #include "osinterface.h"
@@ -467,10 +468,10 @@ void osinterface_process_messages()
 				int gesturePixels = (int)(_gestureRadius * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
 				if (gesturePixels > tolerance) {
 					_gestureRadius = 0;
-					handle_shortcut_command(SHORTCUT_ZOOM_VIEW_IN);
+					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
 				} else if (gesturePixels < -tolerance) {
 					_gestureRadius = 0;
-					handle_shortcut_command(SHORTCUT_ZOOM_VIEW_OUT);
+					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_OUT);
 				}
 			}
 			break;

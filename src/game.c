@@ -50,6 +50,16 @@
 
 int gGameSpeed = 1;
 
+void game_increase_game_speed()
+{
+	gGameSpeed = min(8, gGameSpeed + 1);
+}
+
+void game_reduce_game_speed()
+{
+	gGameSpeed = max(1, gGameSpeed - 1);
+}
+
 /**
  * 
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)

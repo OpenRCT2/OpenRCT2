@@ -86,6 +86,9 @@ typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int*
 
 extern int gGameSpeed;
 
+void game_increase_game_speed();
+void game_reduce_game_speed();
+
 void game_create_windows();
 void game_update();
 void game_logic_update();
