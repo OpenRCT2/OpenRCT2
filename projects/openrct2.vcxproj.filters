@@ -443,6 +443,9 @@
     <ClCompile Include="..\src\interface\keyboard_shortcut.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\interface\viewport_interaction.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

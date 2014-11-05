@@ -42,6 +42,20 @@ enum {
 	VIEWPORT_FLAG_15 = (1 << 15)
 };
 
+enum {
+	VIEWPORT_INTERACTION_ITEM_NONE,
+	
+	VIEWPORT_INTERACTION_ITEM_2 = 2,
+	VIEWPORT_INTERACTION_ITEM_RIDE = 3,
+	VIEWPORT_INTERACTION_ITEM_SCENERY = 5,
+	VIEWPORT_INTERACTION_ITEM_FOOTPATH,
+	VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
+	VIEWPORT_INTERACTION_ITEM_PARK_ENTRANCE,
+	VIEWPORT_INTERACTION_ITEM_WALL,
+	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
+	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
+
+};
 
 // rct2: 0x014234BC
 extern rct_viewport* g_viewport_list;
@@ -66,5 +80,9 @@ void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
+
+int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);
+void viewport_interaction_hover(int x, int y);
+void viewport_interaction_right_click(int x, int y);
 
 #endif
