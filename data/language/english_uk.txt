@@ -2759,9 +2759,9 @@ STR_2753    :???
 STR_2754    :???
 STR_2755    :???
 STR_2756    :???
-STR_2757    :???
-STR_2758    :???
 # New strings used in the cheats window previously these were ???
+STR_2757    :Force Sun
+STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance

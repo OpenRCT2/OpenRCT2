@@ -30,6 +30,15 @@ enum {
 	CLIMATE_COLD
 };
 
+enum{
+	WEATHER_SUNNY,
+	WEATHER_PARTIALLY_CLOUDY,
+	WEATHER_CLOUDY,
+	WEATHER_RAIN,
+	WEATHER_HEAVY_RAIN,
+	WEATHER_THUNDER
+};
+
 typedef struct {
 	sint8 temp_delta;
 	sint8 effect_level;
@@ -49,5 +58,6 @@ int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);
 void climate_update();
 void climate_update_sound();
+void climate_force_weather(uint8 weather);
 
 #endif
