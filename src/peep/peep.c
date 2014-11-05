@@ -266,7 +266,7 @@ void peep_remove(rct_peep* peep){
 void peep_update_falling(rct_peep* peep){
 	if (peep->var_71 == 11){
 		// Check to see if we are ready to drown.
-		int x, y;
+		sint16 x, y;
 		sub_6939EB(&x, &y, peep);
 		//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->var_71 == 11) return;
@@ -428,7 +428,7 @@ void peep_update_sitting(rct_peep* peep){
 	}
 	else if (peep->var_2C == 1){
 		if (peep->var_71 < 0xFE){
-			int x, y;
+			sint16 x, y;
 			sub_6939EB(&x, &y, peep);
 			//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 			if (peep->var_71 != 0xFF) return;
@@ -508,7 +508,7 @@ void peep_update_queuing(rct_peep* peep){
 	if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
-		peep->state = 1;
+		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
 		return;
 	}
@@ -528,7 +528,7 @@ void peep_update_queuing(rct_peep* peep){
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
-		peep->state = 1;
+		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
 	}
 
@@ -592,7 +592,7 @@ void peep_update_queuing(rct_peep* peep){
 		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
-		peep->state = 1;
+		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
 	}
 }
@@ -620,7 +620,7 @@ static void peep_update_entering_park(rct_peep* peep){
 		}
 		return;
 	}
-	int x = 0, ebx = 0, y = 0, edx = 0, ebp = 0, edi = 0;
+	sint16 x = 0, y = 0;
 	if (sub_6939EB(&x, &y, peep)){
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		sub_69E9D3(x, y, peep->z, (rct_sprite*)peep);

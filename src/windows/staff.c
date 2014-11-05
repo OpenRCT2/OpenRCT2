@@ -462,7 +462,7 @@ void window_staff_overview_mouseup()
 
 		sub_69E9D3( 0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
-		peep->state = 9;
+		peep->state = PEEP_STATE_PICKED;
 		peep_window_state_update(peep);
 		break;
 	case WIDX_FIRE:
@@ -1152,7 +1152,7 @@ void window_staff_overview_tool_down(){
 		sub_69E9D3(dest_x, dest_y, dest_z, (rct_sprite*)peep);
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
-		peep->state = 0;
+		peep->state = PEEP_STATE_FALLING;
 		peep_window_state_update(peep);
 		peep->var_71 = 0xFF;
 		peep->var_6D = 0;
@@ -1189,9 +1189,9 @@ void window_staff_overview_tool_abort(){
 		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
 
 		if (peep->x != 0x8000){
-			RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
-			peep->state = 0;
-			RCT2_CALLPROC_X(0x0069A42F, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_FALLING;
+			peep_window_state_update(peep);
 			peep->var_71 = 0xFF;
 			peep->var_6D = 0;
 			peep->var_70 = 0;
