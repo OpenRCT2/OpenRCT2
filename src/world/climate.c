@@ -154,6 +154,17 @@ void climate_update()
 	}
 }
 
+void climate_force_weather(uint8 weather){
+	gClimateNextWeather = 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = weather;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
+	_climateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
+
+	climate_update();
+}
 
 /**
  * Calculates future weather development.

@@ -60,7 +60,9 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_DECREASE_GAME_SPEED,
 	WIDX_INCREASE_GAME_SPEED,
-	WIDX_ZERO_CLEARANCE
+	WIDX_ZERO_CLEARANCE,
+	WIDX_WEATHER_SUN,
+	WIDX_WEATHER_THUNDER
 	
 };
 
@@ -122,6 +124,8 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2771,			STR_NONE},					// decrease game speed
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2772,			STR_NONE},					// increase game speed
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2757,			STR_NONE},					// Sun
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2758,			STR_NONE},					// Thunder
 	{ WIDGETS_END },
 };
 
@@ -244,7 +248,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER),
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -376,6 +380,12 @@ static void window_cheats_misc_mouseup()
 		if (tool_set(w, widgetIndex, 7)) {
 			return;
 		}
+		break;
+	case WIDX_WEATHER_SUN:
+		climate_force_weather(WEATHER_SUNNY);
+		break;
+	case WIDX_WEATHER_THUNDER:
+		climate_force_weather(WEATHER_THUNDER);
 		break;
 	}
 }
