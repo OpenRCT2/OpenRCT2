@@ -706,12 +706,6 @@ void sub_6C683D(int x, int y, int z, int direction, int type, int esi, int edi, 
 	RCT2_CALLPROC_X(0x006C683D, x, (direction << 8) | type, y, z, esi, edi, ebp);
 }
 
-void sub_6CE254()
-{
-	RCT2_CALLPROC_X(0x006CE254, 0, 0, 0, 0, 0, 0, 0);
-}
-
-
 void sub_6C96C0()
 {
 	RCT2_CALLPROC_X(0x006C96C0, 0, 0, 0, 0, 0, 0, 0);
@@ -735,7 +729,13 @@ static void sub_6C9627()
 	case 6:
 	case 7:
 	case 8:
-		sub_6CE254();
+		if (RCT2_GLOBAL(0x00F440B0, uint8) & 1) {
+			map_invalidate_tile_full(
+				RCT2_GLOBAL(0x00F440A8, uint16) & 0xFFE0,
+				RCT2_GLOBAL(0x00F440AA, uint16) & 0xFFE0
+			);
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+		}
 		break;
 	default:
 		if (RCT2_GLOBAL(0x00F440B0, uint8) & 1) {

@@ -525,7 +525,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 
 		// Check if the land is owned
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR))
-			if (sub_664F72(x, y, RCT2_GLOBAL(0x009DEA62, uint32)))
+			if (!sub_664F72(x, y, RCT2_GLOBAL(0x009DEA62, uint32)))
 				return MONEY32_UNDEFINED;
 	}
 

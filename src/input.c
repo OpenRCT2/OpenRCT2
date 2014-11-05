@@ -28,6 +28,7 @@
 #include "interface/viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"
+#include "localisation/localisation.h"
 #include "platform/osinterface.h"
 #include "tutorial.h"
 #include "windows/tooltip.h"
@@ -53,6 +54,8 @@ void process_mouse_over(int x, int y);
 void process_mouse_tool(int x, int y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
+void map_element_right_click(int type, rct_map_element *mapElement, int x, int y);
+int sub_6EDE88(int x, int y, rct_map_element **mapElement, int *outX, int *outY);
 
 #pragma region Scroll bar input
 
@@ -815,80 +818,17 @@ static void game_handle_input_mouse(int x, int y, int state)
 			if (RCT2_GLOBAL(0x009DE540, sint16) < 500) {
 				// Right click
 				{
-					int eax, ebx, ecx, esi, edi, ebp;
-					rct_map_element* map_element;
-					rct_scenery_entry* scenery_entry;
-					eax = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
-					ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
-					RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, (int*)&map_element, &esi, &edi, &ebp);
-					switch (ebx & 0xFF) {
-					case 2:
-						if (map_element->type == 0)
-							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, (int)map_element, 0, 0, 0);
-						break;
-					case 3:
-						ride_modify(map_element, eax, ecx);
-						break;
-					case 5:
-						RCT2_CALLPROC_X(0x006E08D2, eax, 0, ecx, (int)map_element, 0, 0, 0);
-						break;
-					case 6:
-						RCT2_CALLPROC_X(0x006A614A, eax, 0, ecx, (int)map_element, 0, 0, 0);
-						break;
-					case 7:
-						RCT2_CALLPROC_X(0x006A61AB, eax, 0, ecx, (int)map_element, 0, 0, 0);
-						break;
-					case 8:
-						RCT2_CALLPROC_X(0x00666C0E, eax, 0, ecx, (int)map_element, 0, 0, 0);
-						break;
-					case 9:
-						//0x006e57a9
-						scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
-						if (scenery_entry->wall.var_0D != 0xFF){
-							window_sign_small_open(map_element->properties.fence.item[0]);
-						}
-						else{
-							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
-							game_do_command(
-								eax,
-								1,
-								ecx,
-								(map_element->type & 0x3) | (map_element->base_height << 8),
-								GAME_COMMAND_REMOVE_FENCE,
-								0,
-								0);
-						}
-						break;
-					case 10:
-						//0x006B88DC
-						ebx = map_element->properties.scenerymultiple.type;
-						ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
-						scenery_entry = g_largeSceneryEntries[ebx];
+					int x, y, type;
+					rct_map_element* mapElement;
 
-						if (scenery_entry->large_scenery.var_11 != 0xFF){
-							int id = (map_element->type & 0xC0) |
-								((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-								((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-							window_sign_open(id);
-						}
-						else{
-							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
-							game_do_command(
-								eax, 
-								1 | ((map_element->type & 0x3) << 8), 
-								ecx, 
-								map_element->base_height | ((map_element->properties.scenerymultiple.index >> 2) << 8),
-								GAME_COMMAND_44, 
-								0, 
-								0);
-						}
-						break;
-					case 12:
-						window_banner_open(map_element->properties.banner.index);
-						break;
-					default:
-						break;
-					}
+					type = sub_6EDE88(
+						RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16),
+						&mapElement,
+						&x,
+						&y
+					);
+					map_element_right_click(type, mapElement, x, y);
 				}
 			}
 		}
@@ -2011,4 +1951,155 @@ static rct_mouse_data* get_mouse_input()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MOUSE_READ_INDEX, uint32) = (read_index + 1) % 64;
 	return &mouse_buffer[read_index];
+}
+
+static void sub_6E57A9(rct_map_element *mapElement, int x, int y)
+{
+	rct_scenery_entry* sceneryEntry;
+
+	sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.slope];
+	if (sceneryEntry->wall.var_0D != 0xFF){
+		window_sign_small_open(mapElement->properties.fence.item[0]);
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+		game_do_command(
+			x,
+			1,
+			y,
+			(mapElement->type & 0x3) | (mapElement->base_height << 8),
+			GAME_COMMAND_REMOVE_FENCE,
+			0,
+			0
+		);
+	}
+}
+
+static void sub_6B88DC(rct_map_element *mapElement, int x, int y)
+{
+	int ebx;
+	rct_scenery_entry* sceneryEntry;
+
+	ebx = mapElement->properties.scenerymultiple.type;
+	ebx |= (mapElement->properties.scenerymultiple.index & 0x3) << 8;
+	sceneryEntry = g_largeSceneryEntries[ebx];
+
+	if (sceneryEntry->large_scenery.var_11 != 0xFF){
+		int id = (mapElement->type & 0xC0) |
+			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+		window_sign_open(id);
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+		game_do_command(
+			x, 
+			1 | ((mapElement->type & 0x3) << 8), 
+			y, 
+			mapElement->base_height | ((mapElement->properties.scenerymultiple.index >> 2) << 8),
+			GAME_COMMAND_44, 
+			0, 
+			0
+		);
+	}
+}
+
+static void sub_6A614A(rct_map_element *mapElement, int x, int y)
+{
+	int z;
+	rct_window *w;
+	rct_map_element *mapElement2;
+
+	z = mapElement->base_height;
+	
+	w = window_find_by_class(WC_FOOTPATH);
+	if (w != NULL)
+		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+
+	mapElement2 = TILE_MAP_ELEMENT_POINTER((y / 32) * 256 + (x / 32));
+	do {
+		if ((mapElement2->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH && mapElement2->base_height == z) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
+			game_do_command(x, 1, y, z, GAME_COMMAND_REMOVE_PATH, 0, 0);
+		}
+	} while (!((mapElement2++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+}
+
+static void sub_6E08D2(rct_map_element *mapElement, int x, int y)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	game_do_command(
+		x,
+		(mapElement->type << 8) | 1,
+		y,
+		(mapElement->properties.scenery.type << 8) | mapElement->base_height,
+		GAME_COMMAND_REMOVE_SCENERY,
+		0,
+		0
+	);
+}
+
+static void sub_6A61AB(rct_map_element *mapElement, int x, int y)
+{
+	int type;
+
+	type = mapElement->properties.scenery.type >> 4;
+	if (mapElement->type & 0x80)
+		type |= 0x80;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	game_do_command(
+		x,
+		((mapElement->properties.scenery.type & 7) << 8) | 1,
+		y,
+		(type << 8) | mapElement->base_height,
+		GAME_COMMAND_PLACE_PATH,
+		0,
+		0
+	);
+}
+
+int sub_6EDE88(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*outMapElement = (rct_map_element*)edx;
+	*outX = eax & 0xFFFF;
+	*outY = ecx & 0xFFFF;
+	return ebx & 0xFF;
+}
+
+void map_element_right_click(int type, rct_map_element *mapElement, int x, int y)
+{
+	switch (type) {
+	case 2:
+		if (mapElement->type == 0)
+			RCT2_CALLPROC_X(0x006B4857, x, 0, y, (int)mapElement, 0, 0, 0);
+		break;
+	case 3:
+		ride_modify(mapElement, x, y);
+		break;
+	case 5:
+		sub_6E08D2(mapElement, x, y);
+		break;
+	case 6:
+		sub_6A614A(mapElement, x, y);
+		break;
+	case 7:
+		sub_6A61AB(mapElement, x, y);
+		break;
+	case 8:
+		RCT2_CALLPROC_X(0x00666C0E, x, 0, y, (int)mapElement, 0, 0, 0);
+		break;
+	case 9:
+		sub_6E57A9(mapElement, x, y);
+		break;
+	case 10:
+		sub_6B88DC(mapElement, x, y);
+		break;
+	case 12:
+		window_banner_open(mapElement->properties.banner.index);
+		break;
+	}
 }
