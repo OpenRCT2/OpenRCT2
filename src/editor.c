@@ -341,13 +341,13 @@ static int editor_read_s4(char *src)
 	read((void*)0x010E63B8, &src, 0x138804);
 
 	for (i = 0; i < MAX_BANNERS; i++)
-		gBanners[i].var_00 = 255;
+		gBanners[i].type = 255;
 
 	read((void*)0x013573BC, &src, 12424);
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
-		if (banner->var_00 != 255 && banner->string_idx != 3458)
+		if (banner->type != 255 && banner->string_idx != 3458)
 			banner->string_idx = 778;
 	}
 

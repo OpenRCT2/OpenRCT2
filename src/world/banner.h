@@ -26,7 +26,7 @@
 #define MAX_BANNERS 250
 
 typedef struct {
-	uint8 var_00;
+	uint8 type;
 	uint8 flags; //0x01 bit 0 is no entry
 	rct_string_id string_idx; //0x02
 	uint8 colour; //0x04

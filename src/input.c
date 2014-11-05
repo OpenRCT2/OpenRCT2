@@ -30,9 +30,12 @@
 #include "interface/window.h"
 #include "localisation/localisation.h"
 #include "platform/osinterface.h"
+#include "ride/ride_data.h"
+#include "scenario.h"
 #include "tutorial.h"
 #include "windows/tooltip.h"
 #include "windows/dropdown.h"
+#include "world/banner.h"
 #include "world/map.h"
 #include "world/sprite.h"
 #include "world/scenery.h"
@@ -1888,10 +1891,17 @@ void process_mouse_over(int x, int y)
 			}
 		}
 	}
-	RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, cursorId, esi, edi, ebp);
-	//itemUnderCursor(&eax, &ebx, &ecx, &edx);
 
-	sub_6ED990(cursorId);
+	{
+		int outX, outY;
+		rct_map_element *mapElement;
+
+		sub_6EDE88(x, y, &mapElement, &outX, &outY);
+		// RCT2_CALLPROC_X(0x6EDE88, x, y, ecx, cursorId, esi, edi, ebp);
+		//itemUnderCursor(&eax, &ebx, &ecx, &edx);
+
+		sub_6ED990(cursorId);
+	}
 	return;
 }
 
@@ -2059,15 +2069,176 @@ static void sub_6A61AB(rct_map_element *mapElement, int x, int y)
 
 int sub_6EDE88(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	{
+		int eax, ebx, ecx, edx, esi, edi, ebp;
+		eax = x;
+		ebx = y;
+		RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
-	*outMapElement = (rct_map_element*)edx;
-	*outX = eax & 0xFFFF;
-	*outY = ecx & 0xFFFF;
-	return ebx & 0xFF;
+		*outMapElement = (rct_map_element*)edx;
+		*outX = eax & 0xFFFF;
+		*outY = ecx & 0xFFFF;
+		return ebx & 0xFF;
+	}
+
+	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
+	rct_map_element *mapElement;
+	rct_scenery_entry *sceneryEntry;
+	rct_banner *banner;
+	rct_ride *ride;
+	int i, outZ;
+
+	// No click input for title screen or track manager
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
+		return 0;
+
+	// 
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
+		return 0;
+
+	get_map_coordinates_from_pos(x, y, 9, outX, outY, &outZ, &mapElement);
+	*outMapElement = mapElement;
+
+	switch (outZ) {
+	case 3:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+			return 0;
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH)
+			return 0;
+
+		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		if (ride->status != RIDE_STATUS_CLOSED)
+			return 0;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) =
+				mapElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE ? 1335 : 1337;
+
+			goto loc_6EE1A7;
+		}
+
+		if (mapElement->properties.track.type == 1 || mapElement->properties.track.type == 2 || mapElement->properties.track.type == 3) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1333;
+			goto loc_6EE1A7;
+		}
+
+		if (!sub_664F72(x, y, mapElement->base_height << 4))
+			return 0;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+		return 3;
+
+	loc_6EE1A7:
+		if (ride->num_stations > 1)
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16)++;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].station_name + 2;
+
+		int edi = (mapElement->properties.track.sequence & 0x70) >> 4;
+		for (i = edi; i >= 0; i--)
+			if (ride->station_starts[i] == 0xFFFF)
+				edi--;
+		edi++;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = edi;
+		return 3;
+
+	case 2:
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || mapElement->type != 0)
+			return 0;
+
+		mapElement += 6;
+		ride = GET_RIDE(mapElement->type);
+		if (ride->status == RIDE_STATUS_CLOSED) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+		}
+		return 2;
+
+	case 12:
+		banner = &gBanners[mapElement->properties.banner.index];
+		sceneryEntry = g_bannerSceneryEntries[banner->type];
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		return 12;
+
+	case 9:
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		if (sceneryEntry->wall.var_0D != 255) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+			return 9;
+		}
+
+	case 10:
+		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		if (sceneryEntry->large_scenery.var_11 != 255) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+			return 10;
+		}
+	}
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & 0x48) != 0x48)
+		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL)
+			return 0;
+
+	switch (outZ) {
+	case 5:
+		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		return 5;
+
+	case 6:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1425;
+		if (mapElement->type & 1)
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1426;
+		return 6;
+
+	case 7:
+		sceneryEntry = g_pathBitSceneryEntries[mapElement->properties.scenery.age & 0x0F];
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		if (mapElement->flags & 0x20) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = sceneryEntry->name;
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		}
+		return 7;
+
+	case 9:
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		return 9;
+
+	case 10:
+		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type & 0x3FF];
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		return 10;
+
+	case 8:
+		if (RCT2_ADDRESS_SCREEN_FLAGS & SCREEN_FLAGS_SCENARIO_EDITOR)
+			return 0;
+
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_ENTRANCE)
+			return 0;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3192;
+		return 8;
+	}
+
+	return 0;
 }
 
 void map_element_right_click(int type, rct_map_element *mapElement, int x, int y)
