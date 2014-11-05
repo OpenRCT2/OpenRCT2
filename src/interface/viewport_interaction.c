@@ -27,6 +27,7 @@
 #include "../world/banner.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
+#include "../world/sprite.h"
 #include "viewport.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
@@ -38,22 +39,71 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 
 /**
  * 
+ *  rct2: 0x006ED9D0
+ */
+int viewport_interaction_get_item_left(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
+{
+
+}
+
+int viewport_interaction_left_over(int x, int y)
+{
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+	RCT2_CALLFUNC_X(0x006ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+		return 1;
+
+	return 0;
+}
+
+int viewport_interaction_left_click(int x, int y)
+{
+	rct_sprite* spr;
+
+	int eax = x, ebx = y, ecx = 0, esi = 0, edi = 0, ebp = 0;
+	RCT2_CALLFUNC_X(0x006ED9D0, &eax, &ebx, &ecx, (int*)&spr, &esi, &edi, &ebp);
+	if ((ebx & 0xFF) == 2){
+					
+		if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE){
+			//Open ride window
+			RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
+		}
+		else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
+			window_guest_open(&spr->peep);
+		}
+		else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
+			//Unknown for now
+			RCT2_CALLPROC_X(0x6E88D7, eax, ebx, ecx, (int)spr, esi, edi, ebp);
+		}
+		return 1;
+	}
+	else if ((ebx & 0xFF) == 3){
+		rct_map_element* map_element = (rct_map_element*)spr;
+		
+		if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
+			eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
+			if (!(eax & 0x10)){//If not station track
+				//Open ride window in overview mode.
+				window_ride_main_open(map_element->properties.track.ride_index);
+				return;
+			}
+		}
+		//Open ride window in station view
+		RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
+		return 1;
+	}
+	else if ((ebx & 0xFF) == 8){
+		window_park_entrance_open();
+		return 1;
+	}
+}
+
+/**
+ * 
  *  rct2: 0x006EDE88
  */
-int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
+int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
 {
-	{
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		eax = x;
-		ebx = y;
-		RCT2_CALLFUNC_X(0x006EDE88, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-		*outMapElement = (rct_map_element*)edx;
-		*outX = eax & 0xFFFF;
-		*outY = ecx & 0xFFFF;
-		return ebx & 0xFF;
-	}
-
 	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -134,6 +184,7 @@ int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
 			return 9;
 		}
+		break;
 
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
@@ -142,6 +193,7 @@ int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
 			return 10;
 		}
+		break;
 
 	case VIEWPORT_INTERACTION_ITEM_BANNER:
 		banner = &gBanners[mapElement->properties.banner.index];
@@ -208,22 +260,25 @@ int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement,
 	return 0;
 }
 
-void viewport_interaction_hover(int x, int y)
+int viewport_interaction_right_over(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	viewport_interaction_get_item(x, y, &mapElement, &x, &y);
+	return viewport_interaction_get_item_right(x, y, &mapElement, &x, &y) != 0;
 }
 
 /**
  * 
  *  rct2: 0x006E8A62
  */
-void viewport_interaction_right_click(int x, int y)
+int viewport_interaction_right_click(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	switch (viewport_interaction_get_item(x, y, &mapElement, &x, &y)) {
+	switch (viewport_interaction_get_item_right(x, y, &mapElement, &x, &y)) {
+	case 0:
+		return 0;
+		break;
 	case 2:
 		if (mapElement->type == 0)
 			RCT2_CALLPROC_X(0x006B4857, x, 0, y, (int)mapElement, 0, 0, 0);
@@ -253,6 +308,8 @@ void viewport_interaction_right_click(int x, int y)
 		window_banner_open(mapElement->properties.banner.index);
 		break;
 	}
+
+	return 1;
 }
 
 /**

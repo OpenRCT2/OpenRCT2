@@ -81,8 +81,11 @@ void viewport_set_visibility(uint8 mode);
 
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
 
-int viewport_interaction_get_item(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);
-void viewport_interaction_hover(int x, int y);
-void viewport_interaction_right_click(int x, int y);
+int viewport_interaction_get_item_left(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);
+int viewport_interaction_left_over(int x, int y);
+int viewport_interaction_left_click(int x, int y);
+int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);
+int viewport_interaction_right_over(int x, int y);
+int viewport_interaction_right_click(int x, int y);
 
 #endif

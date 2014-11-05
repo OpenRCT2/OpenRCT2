@@ -370,41 +370,10 @@ static void game_handle_input_mouse(int x, int y, int state)
 				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UP], x, y, 0, (int)RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
 			}
 			else{
-				if ((RCT2_GLOBAL(0x9DE518, uint32)&(1 << 4)))break;
-				rct_sprite* spr;
-				int eax = x, ebx = y, ecx = state, esi = (int)w, edi = (int)widget, ebp = 0;
-				RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, (int*)&spr, &esi, &edi, &ebp);
-				if ((ebx & 0xFF) == 2){
-					
-					if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE){
-						//Open ride window
-						RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
-					}
-					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
-						window_guest_open(&spr->peep);
-					}
-					else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
-						//Unknown for now
-						RCT2_CALLPROC_X(0x6E88D7, eax, ebx, ecx, (int)spr, esi, edi, ebp);
-					}
-				}
-				else if ((ebx & 0xFF) == 3){
-					rct_map_element* map_element = (rct_map_element*)spr;
-		
-					if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
-						eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
-						if (!(eax & 0x10)){//If not station track
-							//Open ride window in overview mode.
-							window_ride_main_open(map_element->properties.track.ride_index);
-							break;
-						}
-					}
-					//Open ride window in station view
-					RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
-				}
-				else if ((ebx & 0xFF) == 8){
-					window_park_entrance_open();
-				}
+				if ((RCT2_GLOBAL(0x9DE518, uint32) & (1 << 4)))
+					break;
+
+				viewport_interaction_left_click(x, y);
 			}
 		}
 		break;
@@ -542,19 +511,23 @@ void process_mouse_over(int x, int y)
 		if (widgetId != -1) {
 			switch (window->widgets[widgetId].type){
 			case WWT_VIEWPORT:
-				if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0)
-				{
-					edx = cursorId;
-					eax = x;
-					ebx = y;
-					//Find out if there is a clickable item under pointer
-					RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-					if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
-					{
+				if ((RCT2_GLOBAL(0x9DE518, int) & 0x8) == 0) {
+					if (viewport_interaction_left_over(x, y)) {
 						sub_6ED990(CURSOR_HAND_POINT);
 						return;
 					}
+
+					// edx = cursorId;
+					// eax = x;
+					// ebx = y;
+					// //Find out if there is a clickable item under pointer
+					// RCT2_CALLFUNC_X(0X6ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					// 
+					// if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
+					// {
+					// 	sub_6ED990(CURSOR_HAND_POINT);
+					// 	return;
+					// }
 					break;
 				}
 				cursorId = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
@@ -629,7 +602,7 @@ void process_mouse_over(int x, int y)
 		}
 	}
 
-	viewport_interaction_hover(x, y);
+	viewport_interaction_right_over(x, y);
 	sub_6ED990(cursorId);
 }
 
