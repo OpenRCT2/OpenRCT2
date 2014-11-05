@@ -534,7 +534,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 
 	// Remove element
 	if (flags & 1) {
-		RCT2_CALLPROC_X(0x006EC6D7, x, 0, y, 0, 0, 0, 0);
+		map_invalidate_tile_full(x, y);
 		RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
 	}
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : cost;
@@ -670,4 +670,13 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		(*ebp & 0xFFFF) / 32,
 		*ebx & 0xFF
 	);
+}
+
+/**
+ *
+ *  rct2: 0x006EC6D7
+ */
+void map_invalidate_tile_full(int x, int y)
+{
+	RCT2_CALLPROC_X(0x006EC6D7, x, 0, y, 0, 0, 0, 0);
 }

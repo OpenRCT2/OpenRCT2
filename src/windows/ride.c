@@ -1387,7 +1387,7 @@ void window_ride_construct(rct_window *w)
 		trackMapElement = ride_find_track_gap(trackMapElement, &trackX, &trackY);
 
 		w = window_get_main();
-		if (w != NULL && ride_try_construct(trackMapElement))
+		if (w != NULL && ride_modify(trackMapElement, trackX, trackY))
 			window_scroll_to_location(w, trackX, trackY, trackMapElement->base_height * 8);
 	}
 }

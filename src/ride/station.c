@@ -307,3 +307,21 @@ rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int statio
 
 	return NULL;
 }
+
+rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z)
+{
+	rct_map_element *mapElement;
+
+	// Get first element of the tile
+	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+
+	// Find the station track element
+	do {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE && z == mapElement->base_height)
+			return mapElement;
+
+		mapElement++;
+	} while (!((mapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+
+	return NULL;
+}

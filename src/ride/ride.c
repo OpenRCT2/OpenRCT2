@@ -451,6 +451,42 @@ void reset_all_ride_build_dates()
 
 #pragma region Construction
 
+static int ride_check_if_construction_allowed(rct_ride *ride)
+{
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+		return 0;
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);		
+		return 0;
+	}
+
+	return 1;
+}
+
+static rct_window *ride_create_or_find_construction_window(int rideIndex)
+{
+	rct_window *w;
+
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL || w->number != rideIndex) {
+		window_close_construction_windows();
+		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+		w = window_construction_open(rideIndex);
+	} else {
+		RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+	}
+
+	return w;
+}
+
 int ride_create_ride(ride_list_item listItem)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
@@ -492,52 +528,442 @@ void ride_construct_new(ride_list_item listItem)
 
 /**
  * 
+ * rct2: 0x006C84CE
+ */
+static void sub_6C84CE()
+{
+	RCT2_CALLPROC_X(0x006C84CE, 0, 0, 0, 0, 0, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006DD4D5
+ */
+static void ride_remove_cable_lift(rct_ride *ride)
+{
+	uint16 spriteIndex;
+	rct_vehicle *vehicle;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT) {
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
+		spriteIndex = ride->cable_lift;
+		do {
+			vehicle = &(g_sprite_list[spriteIndex].vehicle);
+			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			spriteIndex = vehicle->next_vehicle_on_train;
+		} while (spriteIndex != SPRITE_INDEX_NULL);
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006DD506
+ */
+static void ride_remove_vehicles(rct_ride *ride)
+{
+	int i;
+	uint16 spriteIndex;
+	rct_vehicle *vehicle;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
+		ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_11);
+
+		for (i = 0; i < 32; i++) {
+			spriteIndex = ride->vehicles[i];
+			while (spriteIndex != SPRITE_INDEX_NULL) {
+				vehicle = &(g_sprite_list[spriteIndex].vehicle);
+				RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)vehicle, 0, 0);
+				RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+				spriteIndex = vehicle->next_vehicle_on_train;
+			}
+
+			ride->vehicles[i] = SPRITE_INDEX_NULL;
+		}
+
+		for (i = 0; i < 4; i++)
+			ride->var_066[i] = 255;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006DD4AC
+ */
+static void ride_clear_for_construction(int rideIndex)
+{
+	rct_ride *ride;
+	rct_window *w;
+
+	ride = GET_RIDE(rideIndex);
+
+	ride_measurement_clear(ride);
+	
+	ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+	ride->var_14D |= 0x0C;
+
+	ride_remove_cable_lift(ride);
+	ride_remove_vehicles(ride);
+
+	w = window_find_by_number(WC_RIDE, rideIndex);
+	if (w != NULL)
+		window_event_helper(w, 0, WE_RESIZE);
+}
+
+/**
+ * 
+ * rct2: 0x006664DF
+ */
+static void ride_remove_peeps(int rideIndex)
+{
+	int i, stationIndex, x, y, z, exitX, exitY, exitZ, exitDirection;
+	uint16 xy, spriteIndex;
+	rct_ride *ride;
+	rct_map_element *mapElement;
+	rct_peep *peep;
+
+	ride = GET_RIDE(rideIndex);
+
+	// Find first station
+	stationIndex = -1;
+	for (i = 0; i < 4; i++) {
+		if (ride->station_starts[i] != 0xFFFF) {
+			stationIndex = i;
+			break;
+		}
+	}
+
+	// Get exit position and direction
+	exitDirection = 255;
+	if (stationIndex != -1) {
+		xy = ride->exits[stationIndex];
+		if (xy != 0xFFFF) {
+			exitX = xy & 0xFF;
+			exitY = xy >> 8;
+			exitZ = ride->station_heights[stationIndex];
+			mapElement = ride_get_station_exit_element(ride, exitX, exitY, exitZ);
+
+			exitDirection = mapElement->type & 3;
+			exitX = (exitX * 32) - (RCT2_ADDRESS(0x00981D6C, sint16)[exitDirection * 2] * 20) + 16;
+			exitY = (exitY * 32) - (RCT2_ADDRESS(0x00981D6E, sint16)[exitDirection * 2] * 20) + 16;
+			exitZ = (exitZ * 8) + 2;
+
+			// Reverse direction
+			exitDirection ^= 2;
+
+			exitDirection *= 8;
+		}
+	}
+
+	// Place all the peeps at exit
+	FOR_ALL_PEEPS(spriteIndex, peep) {
+		if (
+			peep->state == PEEP_STATE_QUEUING_FRONT ||
+			peep->state == PEEP_STATE_ENTERING_RIDE ||
+			peep->state == PEEP_STATE_LEAVING_RIDE ||
+			peep->state == PEEP_STATE_ON_RIDE
+		) {
+			if (peep->current_ride != rideIndex)
+				continue;
+
+			RCT2_CALLPROC_X(0x0069A409, 0, 0, 0, 0, (int)peep, 0, 0);
+			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->var_2C == 0)
+				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+
+			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+
+			if (exitDirection == 255) {
+				x = peep->next_x + 16;
+				y = peep->next_y + 16;
+				z = (peep->next_z & 0xFF) * 8;
+				if ((peep->next_z >> 8) & 4)
+					z += 8;
+				z++;
+				RCT2_CALLPROC_X(0x0069E9D3, exitX, 0, exitY, exitZ, (int)peep, 0, 0);
+			} else {
+				RCT2_CALLPROC_X(0x0069E9D3, exitX, 0, exitY, exitZ, (int)peep, 0, 0);
+				peep->sprite_direction = exitDirection;
+			}
+
+			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep->state = PEEP_STATE_0;
+			RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
+			
+			peep->happiness = min(peep->happiness, peep->happiness_growth_rate) / 2;
+			peep->happiness_growth_rate = peep->happiness;
+			peep->var_45 |= 2;
+		}
+	}
+
+	ride->num_riders = 0;
+	ride->var_15D = 0;
+	ride->var_14D |= 4;
+}
+
+void sub_6C683D(int x, int y, int z, int direction, int type, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x006C683D, x, (direction << 8) | type, y, z, esi, edi, ebp);
+}
+
+void sub_6CE254()
+{
+	RCT2_CALLPROC_X(0x006CE254, 0, 0, 0, 0, 0, 0, 0);
+}
+
+
+void sub_6C96C0()
+{
+	RCT2_CALLPROC_X(0x006C96C0, 0, 0, 0, 0, 0, 0, 0);
+}
+
+static void sub_6C9627()
+{
+	switch (RCT2_GLOBAL(0x00F440A6, uint8)) {
+	case 3:
+		sub_6C683D(
+			RCT2_GLOBAL(0x00F440A8, uint16),
+			RCT2_GLOBAL(0x00F440AA, uint16),
+			RCT2_GLOBAL(0x00F440AC, uint16),
+			RCT2_GLOBAL(0x00F440AE, uint8) & 3,
+			RCT2_GLOBAL(0x00F440AF, uint8),
+			0,
+			0,
+			1
+		);
+		break;
+	case 6:
+	case 7:
+	case 8:
+		sub_6CE254();
+		break;
+	default:
+		if (RCT2_GLOBAL(0x00F440B0, uint8) & 1) {
+			RCT2_GLOBAL(0x00F440B0, uint8) &= ~1;
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~4;
+			map_invalidate_tile_full(RCT2_GLOBAL(0x00F440A8, uint16), RCT2_GLOBAL(0x00F440AA, uint16));
+		}
+		sub_6C96C0();
+		break;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006C9296
+ */
+static void sub_6C9296()
+{
+	RCT2_CALLPROC_X(0x006C9296, 0, 0, 0, 0, 0, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006C93B8
+ */
+static void sub_6C93B8()
+{
+	RCT2_CALLPROC_X(0x006C93B8, 0, 0, 0, 0, 0, 0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006CC2CA
+ */
+static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int y)
+{
+	int rideIndex, entranceType;
+	rct_window *constructionWindow;
+
+	rideIndex = mapElement->properties.entrance.ride_index;
+
+	entranceType = mapElement->properties.entrance.type;
+	if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
+		return 0;
+
+	int bl = (mapElement->properties.entrance.index & 0x70) >> 4;
+
+	// Get or create construction window for ride
+	constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (constructionWindow == NULL) {
+		if (!sub_6CC3FB(rideIndex))
+			return 0;
+
+		constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+		if (constructionWindow == NULL)
+			return 0;
+	}
+
+	sub_6C9627();
+	if (
+		RCT2_GLOBAL(0x00F440A6, uint8) != 5 ||
+		!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE) ||
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_RIDE_CONSTRUCTION
+	) {
+		// Replace entrance / exit
+		tool_set(constructionWindow, entranceType == 0 ? 29 : 30, 12);
+		RCT2_GLOBAL(0x00F44191, uint8) = entranceType;
+		RCT2_GLOBAL(0x00F44192, uint8) = rideIndex;
+		RCT2_GLOBAL(0x00F44193, uint8) = bl;
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) |= INPUT_FLAG_6;
+		int al = RCT2_GLOBAL(0x00F440A6, uint8);
+		if (al != 5) {
+			RCT2_GLOBAL(0x00F440A6, uint8) = 5;
+			RCT2_GLOBAL(0x00F440CC, uint8) = al;
+		}
+
+		sub_6C84CE();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+	} else {
+		// Remove entrance / exit
+		game_do_command(x, 9, y, rideIndex, GAME_COMMAND_13, bl, 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? 29 : 30;
+		RCT2_GLOBAL(0x00F44191, uint8) = entranceType;
+	}
+		
+	window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+	return 1;
+}
+
+/**
+ * 
+ * rct2: 0x006CC287
+ */
+int ride_modify_maze(rct_map_element *mapElement, int x, int y)
+{
+	RCT2_GLOBAL(0x00F440A7, uint8) = mapElement->properties.track.ride_index;
+	RCT2_GLOBAL(0x00F440A6, uint8) = 6;
+	RCT2_GLOBAL(0x00F440A8, uint16) = x;
+	RCT2_GLOBAL(0x00F440AA, uint16) = y;
+	RCT2_GLOBAL(0x00F440AC, uint16) = mapElement->base_height * 8;
+	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
+	RCT2_CALLPROC_X(0x006CD887, 0, 0, 0, 0, 0, 0, 0);
+	return 1;
+}
+
+/**
+ * 
  * rct2: 0x006CC056
  */
-int ride_try_construct(rct_map_element *trackMapElement)
+int ride_modify(rct_map_element *mapElement, int x, int y)
 {
-	// Success stored in carry flag which can't be accessed after call using is macro
-	RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
+	int rideIndex, z, direction, type;
+	rct_ride *ride;
+	rct_window *constructionWindow;
+
+	rideIndex = mapElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	if (!ride_check_if_construction_allowed(ride))
+		return 0;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
+		return 0;
+	}
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_19) {
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_THIS_RIDE_CANNOT_BE_MODIFIED);
+		return 0;
+	}
+
+	ride_clear_for_construction(rideIndex);
+	ride_remove_peeps(rideIndex);
+
+	// Check if element is a station entrance or exit
+	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)
+		return ride_modify_entrance_or_exit(mapElement, x, y);
+
+	constructionWindow = ride_create_or_find_construction_window(rideIndex);
+
+	if (ride->type == RIDE_TYPE_MAZE)
+		return ride_modify_maze(mapElement, x, y);
+
+	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100) {
+		int outX, outY;
+		mapElement = ride_find_track_gap(mapElement, &outX, &outY);
+	}
+
+	z = mapElement->base_height * 8;
+	direction = mapElement->type & 3;
+	type = mapElement->properties.track.type;
+	sub_6C683D(x, y, z, direction, type, 0, 0, 0);
+
+	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+	RCT2_GLOBAL(0x00F440A6, uint8) = 3;
+	RCT2_GLOBAL(0x00F440A8, uint16) = x;
+	RCT2_GLOBAL(0x00F440AA, uint16) = y;
+	RCT2_GLOBAL(0x00F440AC, uint16) = z;
+	RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+	RCT2_GLOBAL(0x00F440AF, uint8) = type;
+	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
+
+	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x8000) {
+		sub_6C84CE();
+		return 1;
+	}
+
+	sub_6C9296();
+	if (RCT2_GLOBAL(0x00F440A6, uint8) == 1) {
+		sub_6C84CE();
+		return 1;
+	}
+
+	RCT2_GLOBAL(0x00F440A6, uint8) = 3;
+	RCT2_GLOBAL(0x00F440A8, uint16) = x;
+	RCT2_GLOBAL(0x00F440AA, uint16) = y;
+	RCT2_GLOBAL(0x00F440AC, uint16) = z;
+	RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+	RCT2_GLOBAL(0x00F440AF, uint8) = type;
+	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
+	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
+
+	sub_6C93B8();
+
+	if (RCT2_GLOBAL(0x00F440A6, uint8) != 2) {
+		RCT2_GLOBAL(0x00F440A6, uint8) = 3;
+		RCT2_GLOBAL(0x00F440A8, uint16) = x;
+		RCT2_GLOBAL(0x00F440AA, uint16) = y;
+		RCT2_GLOBAL(0x00F440AC, uint16) = z;
+		RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+		RCT2_GLOBAL(0x00F440AF, uint8) = type;
+		RCT2_GLOBAL(0x00F440B0, uint8) = 0;
+		RCT2_GLOBAL(0x00F440B1, uint8) = 0;
+	}
+
+	sub_6C84CE();
 	return 1;
+
+	// Success stored in carry flag which can't be accessed after call using is macro
+	// RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
+	// return 1;
 }
 
 /**
  * 
  * rct2: 0x006CC3FB
  */
-void sub_6CC3FB(int rideIndex)
+int sub_6CC3FB(int rideIndex)
 {
 	rct_ride *ride;
 	rct_window *w;
 
 	tool_cancel();
 	ride = GET_RIDE(rideIndex);
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
-		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
-		return;
-	}
 
-	if (ride->status != RIDE_STATUS_CLOSED) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
-		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);		
-		return;
-	}
+	if (!ride_check_if_construction_allowed(ride))
+		return 0;
 
-	RCT2_CALLPROC_X(0x006DD4AC, 0, 0, 0, rideIndex, 0, 0, 0);
-	RCT2_CALLPROC_X(0x006664DF, 0, 0, 0, rideIndex, 0, 0, 0);
+	ride_clear_for_construction(rideIndex);
+	ride_remove_peeps(rideIndex);
 
-	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-	if (w == NULL || w->number != rideIndex) {
-		window_close_construction_windows();
-		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
-		w = window_construction_open(rideIndex);
-	} else {
-		RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
-		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
-	}
+	w = ride_create_or_find_construction_window(rideIndex);
 
 	tool_set(w, 23, 12);
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
@@ -563,8 +989,8 @@ void sub_6CC3FB(int rideIndex)
 	RCT2_GLOBAL(0x00F44159, uint8) = 0;
 	RCT2_GLOBAL(0x00F4415C, uint8) = 0;
 
-	RCT2_CALLPROC_X(0x006C84CE, 0, 0, 0, 0, 0, ride->type, 0);
-	// return 0;
+	sub_6C84CE();
+	return 1;
 }
 
 #pragma endregion
@@ -1158,13 +1584,15 @@ rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection)
 	}
 
 	// Get station start track element and position
-	x = (xy & 0xFF) * 32;
-	y = (xy >> 8) * 32;
-	z = ride->station_heights[stationIndex] * 8;
-	mapElement = ride_get_station_start_track_element(ride, stationIndex);
+	x = xy & 0xFF;
+	y = xy >> 8;
+	z = ride->station_heights[stationIndex];
+	mapElement = ride_get_station_exit_element(ride, x, y, z);
 	if (mapElement == NULL)
 		return NULL;
 
+	x *= 32;
+	y *= 32;
 	direction = mapElement->type & 3;
 	x -= RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
 	y -= RCT2_ADDRESS(0x00993CCE, sint16)[direction * 2];
@@ -1320,6 +1748,22 @@ static void ride_music_update(int rideIndex)
 #pragma endregion
 
 #pragma region Measurement functions
+
+/**
+ *
+ *  rct2: 0x006B642B
+ */
+void ride_measurement_clear(rct_ride *ride)
+{
+	rct_ride_measurement *measurement;
+
+	if (ride->measurement_index == 255)
+		return;
+
+	measurement = GET_RIDE_MEASUREMENT(ride->measurement_index);
+	measurement->ride_index = 255;
+	ride->measurement_index = 255;
+}
 
 /**
  *  rct2: 0x006B64F2

@@ -27,5 +27,6 @@
 
 void ride_update_station(rct_ride *ride, int stationIndex);
 rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
+rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
 
 #endif

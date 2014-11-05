@@ -827,7 +827,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 							RCT2_CALLPROC_X(0x006B4857, eax, 0, ecx, (int)map_element, 0, 0, 0);
 						break;
 					case 3:
-						RCT2_CALLPROC_X(0x006CC056, eax, 0, ecx, (int)map_element, 0, 0, 0);
+						ride_modify(map_element, eax, ecx);
 						break;
 					case 5:
 						RCT2_CALLPROC_X(0x006E08D2, eax, 0, ecx, (int)map_element, 0, 0, 0);

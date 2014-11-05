@@ -182,6 +182,8 @@ enum PEEP_THOUGHT_TYPE {
 };
 
 enum PEEP_STATE {
+	PEEP_STATE_0 = 0,
+
 	PEEP_STATE_QUEUING_FRONT = 2,
 	PEEP_STATE_ON_RIDE = 3,
 	PEEP_STATE_LEAVING_RIDE = 4,
@@ -321,7 +323,7 @@ typedef struct {
 	sint16 var_18;
 	sint16 var_1A;
 	sint16 var_1C;
-	uint8 sprite_direction;
+	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[3];
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24

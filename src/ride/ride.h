@@ -98,7 +98,7 @@ typedef struct {
 	uint8 station_heights[4];		// 0x05A
 	uint8 pad_05E[0x4];
 	uint8 station_depart[4];		// 0x062
-	uint8 pad_066[0x4];
+	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint8 pad_07A[0x0C];
@@ -241,7 +241,8 @@ typedef struct {
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7
-	uint8 pad_1F8[0x8];
+	uint8 pad_1F8[6];
+	uint16 cable_lift;				// 0x1FE
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
@@ -611,7 +612,7 @@ void ride_check_all_reachable();
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(ride_list_item listItem);
-int ride_try_construct(rct_map_element *trackMapElement);
+int ride_modify(rct_map_element *trackMapElement, int x, int y);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
@@ -620,10 +621,11 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
+void ride_measurement_clear(rct_ride *ride);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
 void ride_breakdown_add_news_item(int rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection);
-void sub_6CC3FB(int rideIndex);
+int sub_6CC3FB(int rideIndex);
 
 #endif
