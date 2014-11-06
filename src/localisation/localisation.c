@@ -570,6 +570,8 @@ void format_string_part(char **dest, rct_string_id format, char **args)
 			real_name_initials[(format >> 10) % countof(real_name_initials)]
 		);
 		*dest = strchr(*dest, 0) + 1;
+
+		*args += 4;
 	} else {
 		// ?
 		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
