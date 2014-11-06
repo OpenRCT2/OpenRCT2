@@ -107,6 +107,48 @@ void peep_update_all()
 	}
 }
 
+/* rct2: 0x006EC473 */
+void invalidate_sprite(rct_peep* peep){
+	if (peep->var_16 == (sint16)0x8000) return;
+
+	// Note this function is different to original perhaps change back (part of viewport testing)
+	for (rct_viewport* viewport = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport); viewport < RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport) && viewport->width; viewport++){
+		int left, right, top, bottom;
+		left = peep->var_16;
+		right = peep->var_1A;
+		top = peep->var_18;
+		bottom = peep->var_1C;
+
+		if (viewport->zoom >= 3)continue;
+		if (right <= viewport->view_x)continue;
+		if (bottom <= viewport->view_y) continue;
+
+		int viewport_right = viewport->view_x + viewport->view_width;
+		int viewport_bottom = viewport->view_y + viewport->view_height;
+
+		if (left >= viewport_right)continue;
+		if (top >= viewport_bottom)continue;
+
+		left = max(left, viewport->view_x);
+		right = min(right, viewport_right);
+		top = max(top, viewport->view_y);
+		bottom = min(bottom, viewport_bottom);
+
+		left -= viewport->view_x;
+		top -= viewport->view_y;
+		right -= viewport->view_x;
+		bottom -= viewport->view_y;
+
+		int zoom = 1 << viewport->zoom;
+		left /= zoom;
+		top /= zoom;
+		right /= zoom;
+		bottom /= zoom;
+
+		gfx_set_dirty_blocks(left + viewport->x, top + viewport->y, right + viewport->x, bottom + viewport->y);
+	}
+}
+
 /* rct2: 0x6939EB */
 int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->var_70;
@@ -163,14 +205,14 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 		peep->var_70 = 0;
 		peep->var_71 = 0xFF;
 		RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);
 		*x = peep->x;
 		*y = peep->y;
 		return 1;
 	}
 	peep->var_70 = ebx;
 	if (peep->var_71 != 8 || peep->var_71 != 15){
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);
 		*x = peep->x;
 		*y = peep->y;
 		return 1;
@@ -192,7 +234,7 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 
 	sound_play_panned(sound_id, 0x8001, peep->x, peep->y, peep->z);
 
-	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	invalidate_sprite(peep);;
 	*x = peep->x;
 	*y = peep->y;
 	return 1;
@@ -310,7 +352,7 @@ void peep_update_falling(rct_peep* peep){
 
 				if (height - 4 >= peep->z && height < peep->z + 20){
 					// Looks like we are drowning!
-					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+					invalidate_sprite(peep);;
 					sub_69E9D3(peep->x, peep->y, height, (rct_sprite*)peep);
 					// Drop balloon if held
 					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
@@ -330,7 +372,7 @@ void peep_update_falling(rct_peep* peep){
 					peep->var_70 = 0;
 
 					RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-					RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+					invalidate_sprite(peep);;
 					peep_window_state_update(peep);
 					return;
 				}
@@ -345,20 +387,20 @@ void peep_update_falling(rct_peep* peep){
 
 	// This will be null if peep is falling
 	if (saved_map == NULL){
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		if (peep->z <= 1){
 			// Remove peep if it has gone to the void
 			peep_remove(peep);
 			return;
 		}
 		sub_69E9D3(peep->x, peep->y, peep->z - 2, (rct_sprite*)peep);
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		return;
 	}
 	
-	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	invalidate_sprite(peep);;
 	sub_69E9D3(peep->x, peep->y, saved_height, (rct_sprite*)peep);
-	RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+	invalidate_sprite(peep);;
 
 	peep->next_x = peep->x & 0xFFE0;
 	peep->next_y = peep->y & 0xFFE0;
@@ -412,11 +454,11 @@ void peep_update_sitting(rct_peep* peep){
 		int y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
 		int z = peep->z;		
 		
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		sub_69E9D3(x, y, z, (rct_sprite*)peep);
 
 		peep->sprite_direction = ((peep->var_37 + 2) & 3) * 8;
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		peep->var_71 = 254;
 		peep->var_6F = 7;
 		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -466,7 +508,7 @@ void peep_update_sitting(rct_peep* peep){
 			peep->var_72 = 0;
 			peep->var_70 = 0;
 			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite(peep);;
 			return;
 		}
 
@@ -491,7 +533,7 @@ void peep_update_sitting(rct_peep* peep){
 		peep->var_72 = 0;
 		peep->var_70 = 0;
 		RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		return;
 	}
 }
@@ -525,7 +567,7 @@ void peep_update_queuing(rct_peep* peep){
 		}
 		//Give up queueing for the ride
 		peep->sprite_direction ^= (1 << 4);
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
@@ -541,7 +583,7 @@ void peep_update_queuing(rct_peep* peep){
 			peep->var_72 = 0;
 			peep->var_70 = 0;
 			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite(peep);;
 		}
 		if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
 		{
@@ -579,7 +621,7 @@ void peep_update_queuing(rct_peep* peep){
 				peep->var_72 = 0;
 				peep->var_70 = 0;
 				RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-				RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+				invalidate_sprite(peep);;
 				break;
 			}
 		}
@@ -589,7 +631,7 @@ void peep_update_queuing(rct_peep* peep){
 	if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
 		//Give up queueing for the ride
 		peep->sprite_direction ^= (1 << 4);
-		RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);;
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
@@ -622,9 +664,9 @@ static void peep_update_entering_park(rct_peep* peep){
 	}
 	sint16 x = 0, y = 0;
 	if (sub_6939EB(&x, &y, peep)){
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep); 
 		sub_69E9D3(x, y, peep->z, (rct_sprite*)peep);
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite(peep);
 		return;
 	}
 	peep_decrement_num_riders(peep);
@@ -1048,7 +1090,7 @@ void peep_applause()
 			peep->var_72 = 0;
 			peep->var_70 = 0;
 			RCT2_CALLPROC_X(0x00693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite(peep);
 		}
 	}
 
@@ -1432,7 +1474,7 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 			peep->var_72 = 0;
 			peep->var_70 = 0;
 			RCT2_CALLPROC_X(0x693B58, 0, 0, 0, 0, (int)peep, 0, 0);
-			RCT2_CALLPROC_X(0x6EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite(peep);;
 	}
 	
 	for (int i = 0; i < PEEP_MAX_THOUGHTS; ++i){
