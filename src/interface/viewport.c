@@ -266,8 +266,45 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 	*z = height;
 }
 
+// This function also needs edx, ebp
+void sub_6E7FF3(rct_window* w, rct_viewport* viewport, int x, int y){
+	int zoom = 1 << viewport->zoom;
+	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){
+		if (viewport != w->viewport){
+			if ((viewport->x + viewport->width > w->x) &&
+				(w->x + w->width > viewport->x) &&
+				(viewport->y + viewport->height > w->y) &&
+				(w->y + w->height > viewport->y)){
+				if (viewport->x < w->x){
+					rct_viewport viewport_bkup;
+					memcpy(&viewport_bkup, viewport, sizeof(rct_viewport));
+
+					viewport->width = w->x - viewport->x;
+					viewport->view_width = (w->x - viewport->x) * zoom;
+
+					sub_6E7FF3(w, viewport, x, y);
+					
+					viewport->x += viewport->width;
+					viewport->view_x += viewport->width*zoom;
+					viewport->view_width = (viewport_bkup.width - viewport->width) * zoom;
+					viewport->width = viewport_bkup.width - viewport->width;
+					
+					sub_6E7FF3(w, viewport, x, y);
+
+					memcpy(viewport, &viewport_bkup, sizeof(rct_viewport));
+					return;
+				}//x6E80C4
+			}//0x6E824a
+		} // 0x6e824a
+	}//x6e8255
+
+}
+
 void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+	rct_window* orignal_w = w;
+	int left = 0, right = 0, top = 0, bottom = 0;
+
 	for (; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
 		if (!w->flags&WF_TRANSPARENT) continue;
 		if (w->viewport == viewport) continue;
@@ -278,10 +315,10 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 		if (viewport->y + viewport->height <= w->y)continue;
 		if (w->y + w->height <= viewport->y) continue;
 
-		int left = w->x;
-		int right = w->x + w->width;
-		int top = w->y;
-		int bottom = w->y + w->height;
+		left = w->x;
+		right = w->x + w->width;
+		top = w->y;
+		bottom = w->y + w->height;
 
 		if (left >= viewport->x)left = viewport->x;
 		if (right >= viewport->x + viewport->width) right = viewport->x + viewport->width;
@@ -295,7 +332,8 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 		gfx_redraw_screen_rect(left, top, right, bottom);
 	}
 
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, 0, viewport, w, 0);
+	w = orignal_w;
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, viewport, w, bottom);
 }
 
 void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
