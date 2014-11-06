@@ -555,8 +555,11 @@ void format_string_part(char **dest, rct_string_id format, char **args)
 	} else if (format < 0x9000) {
 		// Custom string
 		format -= 0x8000;
-		// args += (format & 0xC00) >> 9;
+
+		// Bits 10, 11 represent number of bytes to pop off arguments
+		*args += (format & 0xC00) >> 9;
 		format &= ~0xC00;
+
 		strcpy(*dest, RCT2_ADDRESS(0x135A8F4 + (format * 32), char));
 		*dest = strchr(*dest, 0) + 1;
 	} else if (format < 0xE000) {
