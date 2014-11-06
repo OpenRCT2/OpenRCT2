@@ -33,7 +33,7 @@
 #define RCT2_LAST_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*) - 1)
 #define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*))
 
-#define DEBUG_SHOW_DIRTY_BOX
+//#define DEBUG_SHOW_DIRTY_BOX
 
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
 
@@ -214,8 +214,9 @@ void viewport_update_pointers()
 	rct_viewport *viewport;
 	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*);
 
-	if (*vp == NULL) *vp = g_viewport_list;
-	for (viewport = g_viewport_list; viewport <= RCT2_NEW_VIEWPORT; viewport++)
+	// The last possible viewport entry is 1 before what is the new_viewport_ptr
+	// This is why it is rct_viewport and not rct_viewport*.
+	for (viewport = g_viewport_list; viewport < RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport); viewport++)
 		if (viewport->width != 0)
 			*vp++ = viewport;
 
@@ -266,39 +267,38 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 	*z = height;
 }
 
-// This function also needs edx, ebp
-void sub_6E7FF3(rct_window* w, rct_viewport* viewport, int x, int y){
-	int zoom = 1 << viewport->zoom;
-	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){
-		if (viewport != w->viewport){
-			if ((viewport->x + viewport->width > w->x) &&
-				(w->x + w->width > viewport->x) &&
-				(viewport->y + viewport->height > w->y) &&
-				(w->y + w->height > viewport->y)){
-				if (viewport->x < w->x){
-					rct_viewport viewport_bkup;
-					memcpy(&viewport_bkup, viewport, sizeof(rct_viewport));
-
-					viewport->width = w->x - viewport->x;
-					viewport->view_width = (w->x - viewport->x) * zoom;
-
-					sub_6E7FF3(w, viewport, x, y);
-					
-					viewport->x += viewport->width;
-					viewport->view_x += viewport->width*zoom;
-					viewport->view_width = (viewport_bkup.width - viewport->width) * zoom;
-					viewport->width = viewport_bkup.width - viewport->width;
-					
-					sub_6E7FF3(w, viewport, x, y);
-
-					memcpy(viewport, &viewport_bkup, sizeof(rct_viewport));
-					return;
-				}//x6E80C4
-			}//0x6E824a
-		} // 0x6e824a
-	}//x6e8255
-
-}
+//void sub_6E7FF3(rct_window* w, rct_viewport* viewport, int x, int y){
+//	int zoom = 1 << viewport->zoom;
+//	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){
+//		if (viewport != w->viewport){
+//			if ((viewport->x + viewport->width > w->x) &&
+//				(w->x + w->width > viewport->x) &&
+//				(viewport->y + viewport->height > w->y) &&
+//				(w->y + w->height > viewport->y)){
+//				if (viewport->x < w->x){
+//					rct_viewport viewport_bkup;
+//					memcpy(&viewport_bkup, viewport, sizeof(rct_viewport));
+//
+//					viewport->width = w->x - viewport->x;
+//					viewport->view_width = (w->x - viewport->x) * zoom;
+//
+//					sub_6E7FF3(w, viewport, x, y);
+//					
+//					viewport->x += viewport->width;
+//					viewport->view_x += viewport->width*zoom;
+//					viewport->view_width = (viewport_bkup.width - viewport->width) * zoom;
+//					viewport->width = viewport_bkup.width - viewport->width;
+//					
+//					sub_6E7FF3(w, viewport, x, y);
+//
+//					memcpy(viewport, &viewport_bkup, sizeof(rct_viewport));
+//					return;
+//				}//x6E80C4
+//			}//0x6E824a
+//		} // 0x6e824a
+//	}//x6e8255
+//
+//}
 
 void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
@@ -333,7 +333,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	}
 
 	w = orignal_w;
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, viewport, w, bottom);
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, (int)viewport, (int)w, bottom);
 }
 
 void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
