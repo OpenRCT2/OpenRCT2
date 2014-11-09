@@ -111,8 +111,8 @@ void peep_update_all()
 void invalidate_sprite(rct_peep* peep){
 	if (peep->var_16 == (sint16)0x8000) return;
 
-	// Note this function is different to original perhaps change back (part of viewport testing)
-	for (rct_viewport* viewport = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport); viewport < RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport) && viewport->width; viewport++){
+	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p!= NULL; viewport_p++){
+		rct_viewport* viewport = *viewport_p;
 		int left, right, top, bottom;
 		left = peep->var_16;
 		right = peep->var_1A;

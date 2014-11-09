@@ -191,8 +191,8 @@ void gfx_invalidate_scrollingtext(int x, int y, int base_height, int clearance_h
 			bottom = ((-y + x) / 2) + 32 - base_height;
 			break;
 	}
-	rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*);
-	while (*viewport_p) {
+	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p; ++viewport_p)
+	{
 		rct_viewport* viewport = *viewport_p;
 		if (viewport->zoom < 1) {
 			if (right > viewport->view_x && bottom > viewport->view_y && left < viewport->view_x + viewport->view_width) {
@@ -217,7 +217,6 @@ void gfx_invalidate_scrollingtext(int x, int y, int base_height, int clearance_h
 				}
 			}
 		}
-		viewport_p++;
 	}
 }
 

@@ -30,8 +30,8 @@
 #include "window.h"
 
 #define RCT2_FIRST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport))
-#define RCT2_LAST_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*) - 1)
-#define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*))
+#define RCT2_LAST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport) - 1)
+#define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*))
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
@@ -156,7 +156,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 {
 	rct_viewport* viewport;
 	for (viewport = g_viewport_list; viewport->width != 0; viewport++){
-		if (viewport >= RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport)){
+		if (viewport > RCT2_LAST_VIEWPORT){
 			error_string_quit(0xFF000001, -1);
 		}
 	}
@@ -212,11 +212,10 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 void viewport_update_pointers()
 {
 	rct_viewport *viewport;
-	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport*);
+	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
 
-	// The last possible viewport entry is 1 before what is the new_viewport_ptr
-	// This is why it is rct_viewport and not rct_viewport*.
-	for (viewport = g_viewport_list; viewport < RCT2_ADDRESS(RCT2_ADDRESS_NEW_VIEWPORT_PTR, rct_viewport); viewport++)
+	// The last possible viewport entry is 1 before what is the active viewport_ptr_array
+	for (viewport = g_viewport_list; viewport <= RCT2_LAST_VIEWPORT; viewport++)
 		if (viewport->width != 0)
 			*vp++ = viewport;
 
@@ -336,6 +335,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, (int)viewport, (int)w, bottom);
 }
 
+/* There is a bug in this. */
 void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, w, viewport, 0);
 	//return;
@@ -401,7 +401,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	sub_6E7F34(w, viewport);
+	//sub_6E7F34(w, viewport);
 	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
@@ -431,8 +431,8 @@ void viewport_update_position(rct_window *window)
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		sub_6E7DE1(center_x, center_y, window, viewport);
-		//RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
+		//sub_6E7DE1(center_x, center_y, window, viewport);
+		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
 		return;
 	}
 
@@ -524,8 +524,8 @@ void viewport_update_position(rct_window *window)
 		y += viewport->view_y;
 	}
 
-	sub_6E7DE1(x, y, window, viewport);
-	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
+	//sub_6E7DE1(x, y, window, viewport);
+	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
