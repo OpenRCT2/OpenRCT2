@@ -455,6 +455,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
+void window_set_position(rct_window *w, int x, int y);
 void window_move_position(rct_window *w, int dx, int dy);
 void window_resize(rct_window *w, int dw, int dh);
 void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth, int maxHeight);
@@ -537,6 +538,8 @@ void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
 void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct_widget* widget);
 
 void sub_6EA73F();
+
+void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\

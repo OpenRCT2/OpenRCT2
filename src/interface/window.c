@@ -1414,6 +1414,11 @@ void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w)
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
 
+void window_set_position(rct_window *w, int x, int y)
+{
+	window_move_position(w, x - w->x, y - w->y);
+}
+
 void window_move_position(rct_window *w, int dx, int dy)
 {
 	if (dx == 0 && dy == 0)
@@ -1827,4 +1832,164 @@ void window_update_viewport_ride_music()
 		}
 		break;
 	}
+}
+
+void window_snap_left(rct_window *w, int proximity)
+{
+	int right, rightMost, wLeftProximity, wRightProximity, wBottom;
+	rct_window *mainWindow, *w2;
+
+	mainWindow = window_get_main();
+
+	wBottom = w->y + w->height;
+	wLeftProximity = w->x - (proximity * 2);
+	wRightProximity = w->x + (proximity * 2);
+	rightMost = MININT32;
+	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
+		if (w2 == w || w2 == mainWindow)
+			continue;
+
+		right = w2->x + w2->width;
+
+		if (wBottom < w2->y || w->y > w2->y + w2->height)
+			continue;
+
+		if (right < wLeftProximity || right > wRightProximity)
+			continue;
+
+		rightMost = max(rightMost, right);
+	}
+
+	if (0 >= wLeftProximity && 0 <= wRightProximity)
+		rightMost = max(rightMost, 0);
+
+	if (rightMost != MININT32)
+		w->x = rightMost;
+}
+
+void window_snap_top(rct_window *w, int proximity)
+{
+	int bottom, bottomMost, wTopProximity, wBottomProximity, wRight;
+	rct_window *mainWindow, *w2;
+
+	mainWindow = window_get_main();
+
+	wRight = w->x + w->width;
+	wTopProximity = w->y - (proximity * 2);
+	wBottomProximity = w->y + (proximity * 2);
+	bottomMost = MININT32;
+	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
+		if (w2 == w || w2 == mainWindow)
+			continue;
+
+		bottom = w2->y + w2->height;
+
+		if (wRight < w2->x || w->x > w2->x + w2->width)
+			continue;
+
+		if (bottom < wTopProximity || bottom > wBottomProximity)
+			continue;
+
+		bottomMost = max(bottomMost, bottom);
+	}
+
+	if (0 >= wTopProximity && 0 <= wBottomProximity)
+		bottomMost = max(bottomMost, 0);
+
+	if (bottomMost != MININT32)
+		w->y = bottomMost;
+}
+
+void window_snap_right(rct_window *w, int proximity)
+{
+	int leftMost, wLeftProximity, wRightProximity, wRight, wBottom, screenWidth;
+	rct_window *mainWindow, *w2;
+
+	mainWindow = window_get_main();
+
+	wRight = w->x + w->width;
+	wBottom = w->y + w->height;
+	wLeftProximity = wRight - (proximity * 2);
+	wRightProximity = wRight + (proximity * 2);
+	leftMost = MAXINT32;
+	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
+		if (w2 == w || w2 == mainWindow)
+			continue;
+
+		if (wBottom < w2->y || w->y > w2->y + w2->height)
+			continue;
+
+		if (w2->x < wLeftProximity || w2->x > wRightProximity)
+			continue;
+
+		leftMost = min(leftMost, w2->x);
+	}
+
+	screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
+		leftMost = min(leftMost, screenWidth);
+
+	if (leftMost != MAXINT32)
+		w->x = leftMost - w->width;
+}
+
+void window_snap_bottom(rct_window *w, int proximity)
+{
+	int topMost, wTopProximity, wBottomProximity, wRight, wBottom, screenHeight;
+	rct_window *mainWindow, *w2;
+
+	mainWindow = window_get_main();
+
+	wRight = w->x + w->width;
+	wBottom = w->y + w->height;
+	wTopProximity = wBottom - (proximity * 2);
+	wBottomProximity = wBottom + (proximity * 2);
+	topMost = MAXINT32;
+	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
+		if (w2 == w || w2 == mainWindow)
+			continue;
+
+		if (wRight < w2->x || w->x > w2->x + w2->width)
+			continue;
+
+		if (w2->y < wTopProximity || w2->y > wBottomProximity)
+			continue;
+
+		topMost = min(topMost, w2->y);
+	}
+
+	screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
+		topMost = min(topMost, screenHeight);
+
+	if (topMost != MAXINT32)
+		w->y = topMost - w->height;
+}
+
+void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity)
+{
+	int originalX = w->x;
+	int originalY = w->y;
+
+	newWindowY = clamp(29, newWindowY, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 34);
+	
+	if (snapProximity > 0) {
+		w->x = newWindowX;
+		w->y = newWindowY;
+
+		window_snap_right(w, snapProximity);
+		window_snap_bottom(w, snapProximity);
+		window_snap_left(w, snapProximity);
+		window_snap_top(w, snapProximity);
+
+		if (w->x == originalX && w->y == originalY)
+			return;
+
+		newWindowX = w->x;
+		newWindowY = w->y;
+		w->x = originalX;
+		w->y = originalY;
+	}
+
+	window_set_position(w, newWindowX, newWindowY);
 }

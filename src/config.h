@@ -133,6 +133,7 @@ typedef struct general_configuration {
 	sint16 window_width;
 	sint16 window_height;
 	uint16 language;
+	uint8 window_snap_proximity;
 } general_configuration_t;
 
 static const struct { const char *key; int value; } _currencyLookupTable[] = {

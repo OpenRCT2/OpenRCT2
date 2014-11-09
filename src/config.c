@@ -79,7 +79,7 @@ general_configuration_t gGeneral_config_default = {
 	SCREENSHOT_FORMAT_PNG,			// screenshot_format
 	"",								// game_path
 	MEASUREMENT_FORMAT_IMPERIAL,	// measurement_format
-	TEMPERATURE_FORMAT_F,			// temperature_format
+	TEMPERATURE_FORMAT_C,			// temperature_format
 	CURRENCY_POUNDS,				// currency_format
 	0,								// construction_marker_colour
 	1,								// edge_scrolling
@@ -90,7 +90,8 @@ general_configuration_t gGeneral_config_default = {
 	0,								// fullscreen mode (default: windowed)
 	-1,								// window_width
 	-1,								// window_height
-	LANGUAGE_ENGLISH_UK				// language
+	LANGUAGE_ENGLISH_UK,			// language
+	5								// window_snap_proximity
 };
 sound_configuration_t gSound_config;
 
@@ -257,6 +258,8 @@ void config_write_ini_general(FILE *fp)
 		fprintf(fp, "window_height = %d\n", gGeneral_config.window_height);
 
 	fprintf(fp, "language = %d\n", gGeneral_config.language);
+
+	fprintf(fp, "window_snap_proximity = %d\n", gGeneral_config.window_snap_proximity);
 }
 
 /**
@@ -542,6 +545,9 @@ static void config_general(char *setting, char *value){
 	}
 	else if (strcmp(setting, "language") == 0) {
 		gGeneral_config.language = atoi(value);
+	}
+	else if (strcmp(setting, "window_snap_proximity") == 0) {
+		gGeneral_config.window_snap_proximity = clamp(0, atoi(value), 255);
 	}
 }
 
