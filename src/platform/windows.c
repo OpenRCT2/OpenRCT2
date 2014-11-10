@@ -187,6 +187,34 @@ void platform_enumerate_files_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+void platform_hide_cursor()
+{
+	ShowCursor(FALSE);
+}
+
+void platform_show_cursor()
+{
+	ShowCursor(TRUE);
+}
+
+void platform_get_cursor_position(int *x, int *y)
+{
+	POINT point;
+
+	if (GetCursorPos(&point)) {
+		*x = point.x;
+		*y = point.y;
+	} else {
+		*x = INT32_MIN;
+		*y = INT32_MIN;
+	}
+}
+
+void platform_set_cursor_position(int x, int y)
+{
+	SetCursorPos(x, y);
+}
+
 /**
  * http://alter.org.ua/en/docs/win/args/
  */

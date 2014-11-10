@@ -19,7 +19,6 @@
  *****************************************************************************/
 
 #include <SDL_keycode.h>
-#include <windows.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
@@ -41,7 +40,8 @@
 #include "world/sprite.h"
 #include "world/scenery.h"
 
-POINT _dragPosition;
+static int _dragX, _dragY;
+static int _originalWindowWidth, _originalWindowHeight;
 
 typedef struct {
 	uint32 x, y;
@@ -348,6 +348,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 		if (state != 0 && state != 2)
 			break;
+
 		if (state == 2) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
@@ -357,14 +358,17 @@ static void game_handle_input_mouse(int x, int y, int state)
 		}
 
 		if (y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 2) {
+			int dx = x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
+			int dy = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
+			int ww = _originalWindowWidth + dx;
+			int wh = _originalWindowHeight + dy;
+
 			window_resize(
 				w,
-				x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16),
-				y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16)
+				ww -w->width,
+				wh - w->height
 			);
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
 		break;
 	case 9:
 		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, widgetIndex, (int)w, (int)widget, 0);
@@ -385,21 +389,20 @@ static void input_viewport_drag_begin(rct_window *w, int x, int y)
 	// RCT2_CALLPROC_X(0x00407045, 0, 0, 0, 0, 0, 0, 0);
 	// RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_5;
 
-	GetCursorPos(&_dragPosition);
-	ShowCursor(FALSE);
+	platform_get_cursor_position(&_dragX, &_dragY);
+	platform_hide_cursor();
 }
 
 static void input_viewport_drag_continue()
 {
-	int dx, dy;
+	int dx, dy, newDragX, newDragY;
 	rct_window *w;
 	rct_viewport *viewport;
-	POINT newDragPosition;
 
-	GetCursorPos(&newDragPosition);
-		
-	dx = newDragPosition.x - _dragPosition.x;
-	dy = newDragPosition.y - _dragPosition.y;
+	platform_get_cursor_position(&newDragX, &newDragY);
+
+	dx = newDragX - _dragX;
+	dy = newDragY - _dragY;
 	w = window_find_by_number(
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
@@ -408,7 +411,7 @@ static void input_viewport_drag_continue()
 	viewport = w->viewport;
 	RCT2_GLOBAL(0x009DE540, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
 	if (viewport == NULL) {
-		ShowCursor(TRUE);
+		platform_show_cursor();
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 	} else if (dx != 0 || dy != 0) {
 		if (!(w->flags & (1 << 2))) {
@@ -420,13 +423,13 @@ static void input_viewport_drag_continue()
 		}
 	}
 
-	SetCursorPos(_dragPosition.x, _dragPosition.y);
+	platform_set_cursor_position(_dragX, _dragY);
 }
 
 static void input_viewport_drag_end()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
-	ShowCursor(TRUE);
+	platform_show_cursor();
 }
 
 static void input_window_drag(rct_window *w, int wdx, int wdy, int x, int y)
@@ -754,6 +757,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = windowClass;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = windowNumber;
+		_originalWindowWidth = w->width;
+		_originalWindowHeight = w->height;
 		break;
 	case WWT_VIEWPORT:
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_LEFT;
