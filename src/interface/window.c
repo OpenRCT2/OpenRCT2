@@ -1844,7 +1844,7 @@ void window_snap_left(rct_window *w, int proximity)
 	wBottom = w->y + w->height;
 	wLeftProximity = w->x - (proximity * 2);
 	wRightProximity = w->x + (proximity * 2);
-	rightMost = MININT32;
+	rightMost = INT32_MIN;
 	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
 		if (w2 == w || w2 == mainWindow)
 			continue;
@@ -1863,7 +1863,7 @@ void window_snap_left(rct_window *w, int proximity)
 	if (0 >= wLeftProximity && 0 <= wRightProximity)
 		rightMost = max(rightMost, 0);
 
-	if (rightMost != MININT32)
+	if (rightMost != INT32_MIN)
 		w->x = rightMost;
 }
 
@@ -1877,7 +1877,7 @@ void window_snap_top(rct_window *w, int proximity)
 	wRight = w->x + w->width;
 	wTopProximity = w->y - (proximity * 2);
 	wBottomProximity = w->y + (proximity * 2);
-	bottomMost = MININT32;
+	bottomMost = INT32_MIN;
 	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
 		if (w2 == w || w2 == mainWindow)
 			continue;
@@ -1896,7 +1896,7 @@ void window_snap_top(rct_window *w, int proximity)
 	if (0 >= wTopProximity && 0 <= wBottomProximity)
 		bottomMost = max(bottomMost, 0);
 
-	if (bottomMost != MININT32)
+	if (bottomMost != INT32_MIN)
 		w->y = bottomMost;
 }
 
@@ -1911,7 +1911,7 @@ void window_snap_right(rct_window *w, int proximity)
 	wBottom = w->y + w->height;
 	wLeftProximity = wRight - (proximity * 2);
 	wRightProximity = wRight + (proximity * 2);
-	leftMost = MAXINT32;
+	leftMost = INT32_MAX;
 	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
 		if (w2 == w || w2 == mainWindow)
 			continue;
@@ -1929,7 +1929,7 @@ void window_snap_right(rct_window *w, int proximity)
 	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
 		leftMost = min(leftMost, screenWidth);
 
-	if (leftMost != MAXINT32)
+	if (leftMost != INT32_MAX)
 		w->x = leftMost - w->width;
 }
 
@@ -1944,7 +1944,7 @@ void window_snap_bottom(rct_window *w, int proximity)
 	wBottom = w->y + w->height;
 	wTopProximity = wBottom - (proximity * 2);
 	wBottomProximity = wBottom + (proximity * 2);
-	topMost = MAXINT32;
+	topMost = INT32_MAX;
 	for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
 		if (w2 == w || w2 == mainWindow)
 			continue;
@@ -1962,7 +1962,7 @@ void window_snap_bottom(rct_window *w, int proximity)
 	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
 		topMost = min(topMost, screenHeight);
 
-	if (topMost != MAXINT32)
+	if (topMost != INT32_MAX)
 		w->y = topMost - w->height;
 }
 
