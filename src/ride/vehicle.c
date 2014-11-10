@@ -37,11 +37,11 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
-			if (vehicle->var_16 != 0x8000) {
-				RCT2_GLOBAL(0x009AF5A0, sint16) = vehicle->var_16;
-				RCT2_GLOBAL(0x009AF5A2, sint16) = vehicle->var_18;
-				RCT2_GLOBAL(0x009AF5A4, sint16) = vehicle->var_1A;
-				RCT2_GLOBAL(0x009AF5A6, sint16) = vehicle->var_1C;
+			if (vehicle->sprite_left != 0x8000) {
+				RCT2_GLOBAL(0x009AF5A0, sint16) = vehicle->sprite_left;
+				RCT2_GLOBAL(0x009AF5A2, sint16) = vehicle->sprite_top;
+				RCT2_GLOBAL(0x009AF5A4, sint16) = vehicle->sprite_right;
+				RCT2_GLOBAL(0x009AF5A6, sint16) = vehicle->sprite_bottom;
 				sint16 v4 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
 				sint16 v5 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
 				sint16 v6 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width / 4;

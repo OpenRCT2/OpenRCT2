@@ -21,6 +21,7 @@
 #include <string.h>
 #include "../addresses.h"
 #include "sprite.h"
+#include "../interface/viewport.h"
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
@@ -31,6 +32,48 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 void create_balloon(int x, int y, int z, int colour)
 {
 	RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
+}
+
+/* rct2: 0x006EC473 */
+void invalidate_sprite(rct_sprite* sprite){
+	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
+
+	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p != NULL; viewport_p++){
+		rct_viewport* viewport = *viewport_p;
+		int left, right, top, bottom;
+		left = sprite->unknown.sprite_left;
+		right = sprite->unknown.sprite_right;
+		top = sprite->unknown.sprite_top;
+		bottom = sprite->unknown.sprite_bottom;
+
+		if (viewport->zoom >= 3)continue;
+		if (right <= viewport->view_x)continue;
+		if (bottom <= viewport->view_y) continue;
+
+		int viewport_right = viewport->view_x + viewport->view_width;
+		int viewport_bottom = viewport->view_y + viewport->view_height;
+
+		if (left >= viewport_right)continue;
+		if (top >= viewport_bottom)continue;
+
+		left = max(left, viewport->view_x);
+		right = min(right, viewport_right);
+		top = max(top, viewport->view_y);
+		bottom = min(bottom, viewport_bottom);
+
+		left -= viewport->view_x;
+		top -= viewport->view_y;
+		right -= viewport->view_x;
+		bottom -= viewport->view_y;
+
+		int zoom = 1 << viewport->zoom;
+		left /= zoom;
+		top /= zoom;
+		right /= zoom;
+		bottom /= zoom;
+
+		gfx_set_dirty_blocks(left + viewport->x, top + viewport->y, right + viewport->x, bottom + viewport->y);
+	}
 }
 
 /*
@@ -142,7 +185,7 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->pad_09 = 0x14;
 	sprite->var_15 = 0x8;
 	sprite->pad_0C[0] = 0x0;
-	sprite->var_16 = SPRITE_LOCATION_NULL;
+	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
 	sprite->var_02 = RCT2_GLOBAL(0xF3EF60, uint16);
 	RCT2_GLOBAL(0xF3EF60, uint16) = sprite->sprite_index;
@@ -247,7 +290,7 @@ void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
 	}
 
 	if (x == 0x8000){
-		sprite->unknown.var_16 = 0x8000;
+		sprite->unknown.sprite_left = 0x8000;
 		sprite->unknown.x = x;
 		sprite->unknown.y = y;
 		sprite->unknown.z = z;
@@ -273,10 +316,10 @@ void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
 		break;
 	}
 
-	sprite->unknown.var_16 = new_x - sprite->unknown.var_14;
-	sprite->unknown.var_1A = new_x + sprite->unknown.var_14;
-	sprite->unknown.var_18 = new_y - sprite->unknown.pad_09;
-	sprite->unknown.var_1C = new_y + sprite->unknown.var_15;
+	sprite->unknown.sprite_left = new_x - sprite->unknown.var_14;
+	sprite->unknown.sprite_right = new_x + sprite->unknown.var_14;
+	sprite->unknown.sprite_top = new_y - sprite->unknown.pad_09;
+	sprite->unknown.sprite_bottom = new_y + sprite->unknown.var_15;
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;
