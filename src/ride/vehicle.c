@@ -169,9 +169,13 @@ void vehicle_sounds_update()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
 		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
-		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
 		rct_viewport* viewport = (rct_viewport*)-1;
-		for (window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); window >= RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window); window--) {
+		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+		while (1) {
+			window--;
+			if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
+				break;
+			}
 			viewport = window->viewport;
 			if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
 				break;
