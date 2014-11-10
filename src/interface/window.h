@@ -25,6 +25,7 @@
 #include "../drawing/drawing.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/vehicle.h"
 #include "../world/park.h"
 
 struct rct_window;
@@ -503,6 +504,9 @@ void window_finances_open();
 void window_finances_research_open();
 void window_new_campaign_open(sint16 campaignType);
 rct_window *window_ride_main_open(int rideIndex);
+rct_window *window_ride_open_station(int rideIndex, int stationIndex);
+rct_window *window_ride_open_track(rct_map_element *mapElement);
+rct_window *window_ride_open_vehicle(rct_vehicle *vehicle);
 void window_ride_demolish_prompt_open(int rideIndex);
 void window_ride_construct(rct_window *w);
 void window_ride_list_open();

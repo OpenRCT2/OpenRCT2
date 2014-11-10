@@ -525,4 +525,6 @@ void peep_decrement_num_riders(rct_peep* peep);
 */
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
+void peep_set_map_tooltip(rct_peep *peep);
+
 #endif

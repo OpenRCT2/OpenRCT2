@@ -25,7 +25,8 @@
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
-	uint8 pad_01[0x03];
+	uint8 var_01;
+	uint8 pad_02[0x02];
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
@@ -51,7 +52,8 @@ typedef struct {
 	sint16 var_36;
 	uint8 pad_38[0x06];
 	uint16 next_vehicle_on_train;	// 0x3E
-	uint32 var_40;
+	uint16 var_40;
+	uint16 pad_42;
 	uint16 var_44;
 	uint16 var_46;
 	uint16 var_48;
@@ -123,6 +125,7 @@ int sub_6BC2F3(rct_vehicle* vehicle);
 void sub_6BB9FF(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
+void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

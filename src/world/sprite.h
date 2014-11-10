@@ -103,5 +103,6 @@ void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void texteffect_update_all();
 void sub_69E9D3(int x, int y, int z, rct_sprite* sprite);
+void balloon_pop(rct_sprite *sprite);
 
 #endif

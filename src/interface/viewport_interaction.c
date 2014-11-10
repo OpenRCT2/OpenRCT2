@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -36,65 +36,113 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
 static void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y);
+static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDistance);
 
 /**
- * 
+ *
  *  rct2: 0x006ED9D0
  */
-int viewport_interaction_get_item_left(int x, int y, rct_map_element **outMapElement, int *outX, int *outY)
+int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info)
 {
+	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
+	rct_map_element *mapElement;
+	rct_sprite *sprite;
+	rct_vehicle *vehicle;
 
+	// No click input for title screen or scenario editor or track manager
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+		return 0;
+
+	// 
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
+		return 0;
+
+	get_map_coordinates_from_pos(x, y, 0xFF79, &info->x, &info->y, &info->type, &info->mapElement);
+	mapElement = info->mapElement;
+	sprite = (rct_sprite*)mapElement;
+
+	switch (info->type) {
+	case VIEWPORT_INTERACTION_ITEM_SPRITE:
+		switch (sprite->unknown.sprite_identifier) {
+		case SPRITE_IDENTIFIER_VEHICLE:
+			vehicle = &(sprite->vehicle);
+			if (vehicle->var_D6 != 255)
+				vehicle_set_map_toolbar(vehicle);
+			else
+				info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+			break;
+		case SPRITE_IDENTIFIER_PEEP:
+			peep_set_map_tooltip(&sprite->peep);
+			break;
+		}
+		break;
+	case VIEWPORT_INTERACTION_ITEM_RIDE:
+		ride_set_map_tooltip(mapElement);
+		break;
+	case VIEWPORT_INTERACTION_ITEM_PARK:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+		break;
+	default:
+		info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+		break;
+	}
+
+	// If nothing is under cursor, find a closeby peep
+	if (info->type == VIEWPORT_INTERACTION_ITEM_NONE) {
+		info->peep = viewport_interaction_get_closest_peep(x, y, 32);
+		if (info->peep == NULL)
+			return VIEWPORT_INTERACTION_ITEM_NONE;
+
+		info->type = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		info->x = info->peep->x;
+		info->y = info->peep->y;
+		peep_set_map_tooltip(info->peep);
+	}
+
+	return info->type;
 }
 
 int viewport_interaction_left_over(int x, int y)
 {
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-	RCT2_CALLFUNC_X(0x006ED9D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if ((ebx & 0xFF) == 2 || (ebx & 0xFF) == 8 || (ebx & 0xFF) == 3)
-		return 1;
+	viewport_interaction_info info;
 
-	return 0;
+	switch (viewport_interaction_get_item_left(x, y, &info)) {
+	case VIEWPORT_INTERACTION_ITEM_SPRITE:
+	case VIEWPORT_INTERACTION_ITEM_RIDE:
+	case VIEWPORT_INTERACTION_ITEM_PARK:
+		return 1;
+	default:
+		return 0;
+	}
 }
 
 int viewport_interaction_left_click(int x, int y)
 {
-	rct_sprite* spr;
+	viewport_interaction_info info;
 
-	int eax = x, ebx = y, ecx = 0, esi = 0, edi = 0, ebp = 0;
-	RCT2_CALLFUNC_X(0x006ED9D0, &eax, &ebx, &ecx, (int*)&spr, &esi, &edi, &ebp);
-	if ((ebx & 0xFF) == 2){
-					
-		if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE){
-			//Open ride window
-			RCT2_CALLPROC_X(0x6ACAC2, eax, ebx, ecx, (int)spr, esi, edi, ebp);
-		}
-		else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
-			window_guest_open(&spr->peep);
-		}
-		else if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_FLOATING_TEXT){
-			//Unknown for now
-			RCT2_CALLPROC_X(0x6E88D7, eax, ebx, ecx, (int)spr, esi, edi, ebp);
+	switch (viewport_interaction_get_item_left(x, y, &info)) {
+	case VIEWPORT_INTERACTION_ITEM_SPRITE:
+		switch (info.sprite->unknown.sprite_identifier) {
+		case SPRITE_IDENTIFIER_VEHICLE:
+			window_ride_open_vehicle(info.vehicle);
+			break;
+		case SPRITE_IDENTIFIER_PEEP:
+			window_guest_open(info.peep);
+			break;
+		case SPRITE_IDENTIFIER_FLOATING_TEXT:
+			balloon_pop(info.sprite);
+			break;
 		}
 		return 1;
-	}
-	else if ((ebx & 0xFF) == 3){
-		rct_map_element* map_element = (rct_map_element*)spr;
-		
-		if (!((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)){
-			eax = RCT2_ADDRESS(0x0099BA64, uint8)[16 * map_element->properties.track.type];
-			if (!(eax & 0x10)){//If not station track
-				//Open ride window in overview mode.
-				window_ride_main_open(map_element->properties.track.ride_index);
-				return;
-			}
-		}
-		//Open ride window in station view
-		RCT2_CALLPROC_X(0x6ACCCE, map_element->properties.track.ride_index, (map_element->properties.track.sequence & 0x70) >> 4, ecx, (int)map_element, esi, edi, ebp);
+	case VIEWPORT_INTERACTION_ITEM_RIDE:
+		window_ride_open_track(info.mapElement);
 		return 1;
-	}
-	else if ((ebx & 0xFF) == 8){
+	case VIEWPORT_INTERACTION_ITEM_PARK:
 		window_park_entrance_open();
 		return 1;
+	default:
+		return 0;
 	}
 }
 
@@ -109,7 +157,7 @@ int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapEl
 	rct_scenery_entry *sceneryEntry;
 	rct_banner *banner;
 	rct_ride *ride;
-	int i, outZ;
+	int i, stationIndex, outZ;
 
 	// No click input for title screen or track manager
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
@@ -123,7 +171,7 @@ int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapEl
 	*outMapElement = mapElement;
 
 	switch (outZ) {
-	case VIEWPORT_INTERACTION_ITEM_2:
+	case VIEWPORT_INTERACTION_ITEM_SPRITE:
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || mapElement->type != 0)
 			return 0;
 
@@ -169,12 +217,12 @@ int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapEl
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].station_name + 2;
 
-		int edi = (mapElement->properties.track.sequence & 0x70) >> 4;
-		for (i = edi; i >= 0; i--)
+		stationIndex = map_get_station(mapElement);
+		for (i = stationIndex; i >= 0; i--)
 			if (ride->station_starts[i] == 0xFFFF)
-				edi--;
-		edi++;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = edi;
+				stationIndex--;
+		stationIndex++;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex;
 		return 3;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -233,7 +281,7 @@ int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapEl
 		}
 		return 7;
 
-	case VIEWPORT_INTERACTION_ITEM_PARK_ENTRANCE:
+	case VIEWPORT_INTERACTION_ITEM_PARK:
 		if (RCT2_ADDRESS_SCREEN_FLAGS & SCREEN_FLAGS_SCENARIO_EDITOR)
 			return 0;
 
@@ -295,7 +343,7 @@ int viewport_interaction_right_click(int x, int y)
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
 		viewport_interaction_remove_footpath_item(mapElement, x, y);
 		break;
-	case VIEWPORT_INTERACTION_ITEM_PARK_ENTRANCE:
+	case VIEWPORT_INTERACTION_ITEM_PARK:
 		viewport_interaction_remove_park_entrance(mapElement, x, y);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -443,4 +491,44 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 			0
 		);
 	}
+}
+
+static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDistance)
+{
+	int distance, closestDistance;
+	uint16 spriteIndex;
+	rct_window *w;
+	rct_viewport *viewport;
+	rct_peep *peep, *closestPeep;
+
+	w = window_find_from_point(x, y);
+	if (w == NULL)
+		return 0;
+		
+	viewport = w->viewport;
+	if (viewport == NULL || viewport->zoom >= 2)
+		return 0;
+
+	x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
+	y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
+
+	closestPeep = NULL;
+	closestDistance = 0xFFFF;
+	FOR_ALL_PEEPS(spriteIndex, peep) {
+		if (peep->var_16 == 0x8000)
+			continue;
+
+		distance =
+			abs(((peep->var_16 + peep->var_1A) / 2) - x) +
+			abs(((peep->var_18 + peep->var_1C) / 2) - y);
+		if (distance > maxDistance)
+			continue;
+
+		if (distance < closestDistance) {
+			closestPeep = peep;
+			closestDistance = distance;
+		}
+	}
+
+	return closestPeep;
 }

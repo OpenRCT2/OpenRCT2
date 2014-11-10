@@ -21,6 +21,8 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "window.h"
 
 enum {
@@ -45,17 +47,29 @@ enum {
 enum {
 	VIEWPORT_INTERACTION_ITEM_NONE,
 	
-	VIEWPORT_INTERACTION_ITEM_2 = 2,
-	VIEWPORT_INTERACTION_ITEM_RIDE = 3,
+	VIEWPORT_INTERACTION_ITEM_SPRITE = 2,
+	VIEWPORT_INTERACTION_ITEM_RIDE,
 	VIEWPORT_INTERACTION_ITEM_SCENERY = 5,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
-	VIEWPORT_INTERACTION_ITEM_PARK_ENTRANCE,
+	VIEWPORT_INTERACTION_ITEM_PARK,
 	VIEWPORT_INTERACTION_ITEM_WALL,
 	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
 	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
 
 };
+
+typedef struct {
+	int type;
+	int x;
+	int y;
+	union {
+		rct_map_element *mapElement;
+		rct_sprite *sprite;
+		rct_peep *peep;
+		rct_vehicle *vehicle;
+	};
+} viewport_interaction_info;
 
 // rct2: 0x014234BC
 extern rct_viewport* g_viewport_list;
@@ -81,7 +95,7 @@ void viewport_set_visibility(uint8 mode);
 
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
 
-int viewport_interaction_get_item_left(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);
+int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_left_over(int x, int y);
 int viewport_interaction_left_click(int x, int y);
 int viewport_interaction_get_item_right(int x, int y, rct_map_element **outMapElement, int *outX, int *outY);

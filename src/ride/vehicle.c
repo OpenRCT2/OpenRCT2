@@ -24,6 +24,7 @@
 #include "../interface/viewport.h"
 #include "../world/sprite.h"
 #include "ride.h"
+#include "ride_data.h"
 #include "vehicle.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
@@ -586,4 +587,31 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	
 	if (verticalG != NULL) *verticalG = (sint16)(eax & 0xFFFF);
 	if (lateralG != NULL) *lateralG = (sint16)(edx & 0xFFFF);
+}
+
+void vehicle_set_map_toolbar(rct_vehicle *vehicle)
+{
+	rct_ride *ride;
+	int vehicleIndex;
+
+	ride = GET_RIDE(vehicle->ride);
+
+	while (vehicle->var_01 != 0)
+		vehicle = &(g_sprite_list[vehicle->var_40].vehicle);
+
+	for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
+		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+			break;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1165;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = vehicleIndex + 1;
+
+	int arg0, arg1;
+	ride_get_status(vehicle->ride, &arg0, &arg1);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = (uint16)arg1;
 }

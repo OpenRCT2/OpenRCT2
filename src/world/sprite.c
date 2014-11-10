@@ -281,3 +281,12 @@ void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;
 }
+
+/**
+ *
+ *  rct2: 0x006E88D7
+ */
+void balloon_pop(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x006E88D7, 0, 0, 0, (int)sprite, 0, 0, 0);
+}

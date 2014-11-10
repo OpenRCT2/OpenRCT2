@@ -2141,3 +2141,114 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 }
 
 #pragma endregion
+
+#pragma region Interface
+
+static void ride_track_set_map_tooltip(rct_map_element *mapElement)
+{
+	int rideIndex;
+	rct_ride *ride;
+
+	rideIndex = mapElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+
+	int arg0, arg1;
+	ride_get_status(rideIndex, &arg0, &arg1);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 8, uint16) = (uint16)arg0;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint32) = arg1;
+}
+
+static void ride_station_set_map_tooltip(rct_map_element *mapElement)
+{
+	int i, rideIndex, stationIndex;
+	rct_ride *ride;
+
+	rideIndex = mapElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	stationIndex = map_get_station(mapElement);
+	for (i = stationIndex; i >= 0; i--)
+		if (ride->station_starts[i] == 0xFFFF)
+			stationIndex--;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->num_stations <= 1 ? 1333 : 1334;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].station_name + 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex + 1;
+
+	int arg0, arg1;
+	ride_get_status(rideIndex, &arg0, &arg1);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = arg1;
+}
+
+static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
+{
+	int i, rideIndex, stationIndex, queueLength;
+	rct_ride *ride;
+
+	rideIndex = mapElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	// Get the station
+	stationIndex = map_get_station(mapElement);
+	for (i = stationIndex; i >= 0; i--)
+		if (ride->station_starts[i] == 0xFFFF)
+			stationIndex--;
+
+	if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+		// Get the queue length
+		queueLength = 0;
+		if (ride->entrances[stationIndex] != 0xFFFF)
+			queueLength = ride->queue_length[stationIndex];
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->num_stations <= 1 ? 1335 : 1336;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex + 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) =
+			queueLength == 0 ?
+				1201 :
+				queueLength == 1 ?
+					1202 :
+					1203;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint16) = queueLength;
+	} else {
+		// Get the station
+		stationIndex = map_get_station(mapElement);
+		for (i = stationIndex; i >= 0; i--)
+			if (ride->station_starts[i] == 0xFFFF)
+				stationIndex--;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = ride->num_stations <= 1 ? 1337 : 1338;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = stationIndex + 1;
+	}
+}
+
+void ride_set_map_tooltip(rct_map_element *mapElement)
+{
+	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		ride_entrance_set_map_tooltip(mapElement);
+	} else {
+		if (
+			mapElement->properties.track.type == 2 ||
+			mapElement->properties.track.type == 3 ||
+			mapElement->properties.track.type == 1
+		) {
+			ride_station_set_map_tooltip(mapElement);
+		} else {
+			ride_track_set_map_tooltip(mapElement);
+		}
+	}
+}
+
+#pragma endregion

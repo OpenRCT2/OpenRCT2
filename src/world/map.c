@@ -697,3 +697,8 @@ void map_invalidate_tile_full(int x, int y)
 {
 	RCT2_CALLPROC_X(0x006EC6D7, x, 0, y, 0, 0, 0, 0);
 }
+
+int map_get_station(rct_map_element *mapElement)
+{
+	return (mapElement->properties.track.sequence & 0x70) >> 4;
+}

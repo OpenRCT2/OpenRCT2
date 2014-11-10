@@ -1179,6 +1179,41 @@ rct_window *window_ride_main_open(int rideIndex)
 }
 
 /**
+ * 
+ * rct2: 0x006ACCCE
+ */
+rct_window *window_ride_open_station(int rideIndex, int stationIndex)
+{
+	RCT2_CALLPROC_X(0x006ACCCE, rideIndex, stationIndex, 0, 0, 0, 0, 0);
+	return window_find_by_number(WC_RIDE, rideIndex);
+}
+
+rct_window *window_ride_open_track(rct_map_element *mapElement)
+{
+	int rideIndex = mapElement->properties.track.ride_index;
+	if (
+		((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) ||
+		(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10)
+	) {
+		// Open ride window in station view
+		return window_ride_open_station(rideIndex, map_get_station(mapElement));
+	} else {
+		// Open ride window in overview mode.
+		return window_ride_main_open(rideIndex);
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006ACAC2
+ */
+rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x6ACAC2, 0, 0, 0, (int)vehicle, 0, 0, 0);
+	return window_find_by_number(WC_RIDE, vehicle->ride);
+}
+
+/**
  *
  *  rct2: 0x006AF1D2
  */
