@@ -29,6 +29,7 @@
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../platform/osinterface.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"
@@ -1022,7 +1023,7 @@ void ride_update_all()
 	FOR_ALL_RIDES(i, ride)
 		ride_update(i);
 
-	sub_6BC6D8();
+	ride_music_update_final();
 }
 
 /**
@@ -1742,7 +1743,7 @@ static void ride_music_update(int rideIndex)
 		sampleRate += 22050;
 	}
 
-	ride->music_position = sub_6BC3AC(x, y, z, rideIndex, sampleRate, ride->music_position, &ride->music_tune_id);
+	ride->music_position = ride_music_params_update(x, y, z, rideIndex, sampleRate, ride->music_position, &ride->music_tune_id);
 }
 
 #pragma endregion
@@ -2247,6 +2248,358 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
 			ride_station_set_map_tooltip(mapElement);
 		} else {
 			ride_track_set_map_tooltip(mapElement);
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006BC3AC
+ * Update ride music parameters
+ * @param x (ax)
+ * @param y (cx)
+ * @param z (dx)
+ * @param sampleRate (di)
+ * @param rideIndex (bl)
+ * @param position (ebp)
+ * @param tuneId (bh)
+ * @returns new position (ebp)
+ */
+int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
+{
+	/*{
+		int a_eax, a_ebx, a_ecx, a_edx, a_esi, a_edi, a_ebp;
+
+		a_eax = x;
+		a_ebx = (*tuneId << 8) | rideIndex;
+		a_ecx = y;
+		a_edx = z;
+		a_edi = sampleRate;
+		a_ebp = position;
+		RCT2_CALLFUNC_X(0x006BC3AC, &a_eax, &a_ebx, &a_ecx, &a_edx, &a_esi, &a_edi, &a_ebp);
+
+		*tuneId = (a_ebx >> 8) & 0xFF;
+		return a_ebp;
+	}*/
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
+		sint16 v11;
+		sint16 v12;
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+			case 0:
+				v11 = y - x;
+				v12 = ((y + x) / 2) - z;
+				break;
+			case 1:
+				v11 = -x - y;
+				v12 = ((y - x) / 2) - z;
+				break;
+			case 2:
+				v11 = x - y;
+				v12 = ((-y - x) / 2) - z;
+				break;
+			case 3:
+				v11 = y + x;
+				v12 = ((x - y) / 2) - z;
+				break;
+		}
+		RCT2_GLOBAL(0x009AF5A0, sint16) = v11;
+		RCT2_GLOBAL(0x009AF5A2, sint16) = v12;
+		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
+		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
+		sint16 view_width2 = view_width * 2;
+		sint16 view_x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x - view_width2;
+		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
+		sint16 v16 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
+		sint16 v17 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
+		if (view_x >= RCT2_GLOBAL(0x009AF5A0, sint16) ||
+			view_y >= RCT2_GLOBAL(0x009AF5A2, sint16) ||
+			v16 < RCT2_GLOBAL(0x009AF5A0, sint16) ||
+			v17 < RCT2_GLOBAL(0x009AF5A2, sint16)) {
+				goto label58;
+		}
+		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((RCT2_GLOBAL(0x009AF5A0, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		x2 <<= 16;
+		uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+		if (screenwidth < 64) {
+			screenwidth = 64;
+		}
+		int panx = ((x2 / screenwidth) - 0x8000) >> 4;
+
+		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A2, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		y2 <<= 16;
+		uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+		if (screenheight < 64) {
+			screenheight = 64;
+		}
+		int pany = ((y2 / screenheight) - 0x8000) >> 4;
+
+		uint8 vol1 = -1;
+		uint8 vol2 = -1;
+		if (pany < 0) {
+			pany = -pany;
+		}
+		if (pany > 6143) {
+			pany = 6143;
+		}
+		pany -= 2048;
+		if (pany > 0) {
+			pany = -((pany / 4) - 1024) / 4;
+			vol1 = (uint8)pany;
+			if (pany >= 256) {
+				vol1 = -1;
+			}
+		}
+
+		if (panx < 0) {
+			panx = -panx;
+		}
+		if (panx > 6143) {
+			panx = 6143;
+		}
+		panx -= 2048;
+		if (panx > 0) {
+			panx = -((panx / 4) - 1024) / 4;
+			vol2 = (uint8)panx;
+			if (panx >= 256) {
+				vol2 = -1;
+			}
+		}
+		if (vol1 >= vol2) {
+			vol1 = vol2;
+		}
+		if (vol1 < RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) * 3) {
+			vol1 = 0;
+		} else {
+			vol1 = vol1 - (RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) * 3);
+		}
+		int v32 = -(((uint8)(-vol1 - 1) * (uint8)(-vol1 - 1)) / 16) - 700;
+		if (vol1 && v32 >= -4000) {
+			if (panx > 10000) {
+				panx = 10000;
+			}
+			if (panx < -10000) {
+				panx = -10000;
+			}
+			if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
+				panx = 0;
+			}
+			rct_ride_music* ride_music = &RCT2_GLOBAL(0x009AF46C, rct_ride_music);
+			int channel = 0;
+			uint32 a1;
+			while (ride_music->rideid != rideIndex || ride_music->tuneid != *tuneId) {
+				ride_music++;
+				channel++;
+				if (channel >= 2) {
+					rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId];
+					a1 = position + ride_music_info->var_4;
+					goto label51;
+				}
+			}
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			int playing = sound_channel_is_playing(channel);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			if (!playing) {
+				*tuneId = 0xFF;
+				return 0;
+			}
+			RCT2_GLOBAL(0x014241BC, uint32) = 1;
+			a1 = sub_401B46(channel);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+		label51:
+			if (a1 < RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId].var_0) {
+				position = a1;
+				rct_ride_music_params* ride_music_params = RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*);
+				if (ride_music_params < (rct_ride_music_params*)0x009AF46C/*ride_music_params list end*/) {
+					ride_music_params->rideid = rideIndex;
+					ride_music_params->tuneid = *tuneId;
+					ride_music_params->offset = a1;
+					ride_music_params->volume = v32;
+					ride_music_params->pan = panx;
+					ride_music_params->freq = RCT2_GLOBAL(0x009AF47C, uint16);
+					RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)++;
+				}
+			} else {
+				*tuneId = 0xFF;
+				return 0;
+			}
+		} else {
+		label58:
+			;
+			rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId];
+			position += ride_music_info->var_4;
+			if (position < ride_music_info->var_0) {
+				return position;
+			} else {
+				*tuneId = 0xFF;
+				return 0;
+			}
+		}
+	}
+	return position;
+}
+
+/**
+*  Play/update ride music based on structs updated in 0x006BC3AC
+*  rct2: 0x006BC6D8
+*/
+void ride_music_update_final()
+{
+	rct_ride_music_params* edi;
+	int ebx;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
+		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
+			if (!RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+				// set to stop music if volume <= 1 ?
+				while (1) {
+					int v8 = 0;
+					int v9 = 1;
+					rct_ride_music_params* ride_music_params = &RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
+					while (ride_music_params < RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)) {
+						if (ride_music_params->rideid != (uint8)-1) {
+							rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
+							if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->pathid]) { // file_on_cdrom[]
+								v8++;
+								if (v9 >= ride_music_params->volume) {
+									v9 = ride_music_params->volume;
+									edi = ride_music_params;
+								}
+							}
+						}
+						ride_music_params++;
+					}
+					if (v8 <= 1) {
+						break;
+					}
+					edi->rideid = -1;
+				}
+				while (1) {
+					int v8 = 0;
+					int v9 = 1;
+					rct_ride_music_params* ride_music_params = &RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
+					while (ride_music_params < RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)) {
+						if (ride_music_params->rideid != (uint8)-1) {
+							v8++;
+							if (v9 >= ride_music_params->volume) {
+								v9 = ride_music_params->volume;
+								edi = ride_music_params;
+							}
+						}
+						ride_music_params++;
+					}
+					if (v8 <= 2) {
+						break;
+					}
+					edi->rideid = -1;
+				}
+
+				// stop currently playing music that is not in music params list or not playing?
+				rct_ride_music* ride_music = &RCT2_GLOBAL(0x009AF46C, rct_ride_music);
+				int channel = 0;
+				do {
+					if (ride_music->rideid != (uint8)-1) {
+						rct_ride_music_params* ride_music_params = &RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
+						while (ride_music_params < RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)) {
+							if (ride_music_params->rideid == ride_music->rideid && ride_music_params->tuneid == ride_music->tuneid) {
+								RCT2_GLOBAL(0x014241BC, uint32) = 1;
+								int v16 = sound_channel_is_playing(channel);
+								RCT2_GLOBAL(0x014241BC, uint32) = 0;
+								if (v16) {
+									goto label32;
+								}
+								break;
+							}
+							ride_music_params++;
+						}
+						RCT2_GLOBAL(0x014241BC, uint32) = 1;
+						sound_channel_stop(channel);
+						RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						ride_music->rideid = -1;
+					}
+				label32:
+					ride_music++;
+					channel++;
+				} while(channel < 2);
+
+				for (rct_ride_music_params* ride_music_params = &RCT2_GLOBAL(0x009AF430, rct_ride_music_params); ride_music_params < RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*); ride_music_params++) {
+					if (ride_music_params->rideid != (uint8)-1) {
+						rct_ride_music* ride_music = &RCT2_GLOBAL(0x009AF46C, rct_ride_music);
+						int channel = 0;
+						while (ride_music_params->rideid != ride_music->rideid || ride_music_params->tuneid != ride_music->tuneid) {
+							if (ride_music->rideid == (uint8)-1) {
+								ebx = channel;
+							}
+							ride_music++;
+							channel++;
+							if (channel >= 2) {
+								rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
+								const char* filename = get_file_path(ride_music_info->pathid);
+								RCT2_GLOBAL(0x014241BC, uint32) = 3;
+								HANDLE hfile = osinterface_file_open(filename);
+								RCT2_GLOBAL(0x014241BC, uint32) = 0;
+								if (hfile != INVALID_HANDLE_VALUE) {
+									RCT2_GLOBAL(0x014241BC, uint32) = 3;
+									osinterface_file_read(hfile, &RCT2_GLOBAL(0x009AF47E, uint32), 4);
+									RCT2_GLOBAL(0x014241BC, uint32) = 3;
+									osinterface_file_close(hfile);
+									RCT2_GLOBAL(0x014241BC, uint32) = 0;
+								}
+								if (hfile == INVALID_HANDLE_VALUE || RCT2_GLOBAL(0x009AF47E, uint32) != 0x78787878) {
+									int offset = ride_music_params->offset - 10000;
+									if (offset < 0) {
+										offset = 0;
+									}
+									RCT2_GLOBAL(0x014241BC, uint32) = 1;
+									int musicloaded = sound_channel_load_file2(ebx, filename, offset & 0xFFFFFFF0);
+									RCT2_GLOBAL(0x014241BC, uint32) = 0;
+									if (musicloaded) {
+										RCT2_GLOBAL(0x014241BC, uint32) = 1;
+										int musicplayed = sound_channel_play(ebx, 0, ride_music_params->volume, ride_music_params->pan, ride_music_params->freq);
+										RCT2_GLOBAL(0x014241BC, uint32) = 0;
+										if (musicplayed) {
+											rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
+											if (ride_music_info->var_9) {
+												RCT2_GLOBAL(0x014241BC, uint32) = 1;
+												sub_401AF3(ebx, get_file_path(ride_music_info->pathid), 1, 0);
+												RCT2_GLOBAL(0x014241BC, uint32) = 0;
+											}
+											rct_ride_music* ride_music = &RCT2_ADDRESS(0x009AF46C, rct_ride_music)[ebx];
+											ride_music->volume = ride_music_params->volume;
+											ride_music->pan = ride_music_params->pan;
+											ride_music->freq = ride_music_params->freq;
+											ride_music->rideid = ride_music_params->rideid;
+											ride_music->tuneid = ride_music_params->tuneid;
+										}
+									} else {
+										RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
+									}
+								}
+								return;
+							}
+						}
+
+						if (ride_music_params->volume != ride_music->volume) {
+							ride_music->volume = ride_music_params->volume;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_channel_set_volume(channel, ride_music_params->volume);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						}
+						if (ride_music_params->pan != ride_music->pan) {
+							ride_music->pan = ride_music_params->pan;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_channel_set_pan(channel, ride_music_params->pan);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						}
+						if (ride_music_params->freq != ride_music->freq) {
+							ride_music->freq = ride_music_params->freq;
+							RCT2_GLOBAL(0x014241BC, uint32) = 1;
+							sound_channel_set_frequency(channel, ride_music_params->freq);
+							RCT2_GLOBAL(0x014241BC, uint32) = 0;
+						}
+
+					}
+				}
+			}
 		}
 	}
 }

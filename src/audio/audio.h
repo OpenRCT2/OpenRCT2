@@ -121,28 +121,28 @@ typedef struct {
 } rct_other_sound;
 
 typedef struct {
-	uint8 id;
-	uint8 var_1;
+	uint8 rideid;
+	uint8 tuneid;
 	sint32 offset;	//0x2
 	sint16 volume;	//0x6
 	sint16 pan;		//0x8
 	uint16 freq;	//0xA
-} rct_music_info;
+} rct_ride_music_params;
 
 typedef struct {
-	uint8 id;
-	uint8 var_1;
+	uint8 rideid;
+	uint8 tuneid;
 	uint16 volume;	//0x2
 	uint16 pan;		//0x4
 	uint16 freq;	//0x6
-} rct_music_info2;
+} rct_ride_music;
 
 typedef struct {
 	uint32 var_0;
 	uint32 var_4;
 	uint8 pathid;	//0x8
 	uint8 var_9;
-} rct_music_info3;
+} rct_ride_music_info;
 
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
@@ -213,8 +213,6 @@ void audio_close();
 void pause_sounds();
 void unpause_sounds();
 void stop_vehicle_sounds();
-void sub_6BC6D8();
-int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 
 // 0x009AF59C probably does the same job
 // once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
