@@ -515,12 +515,12 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
 	closestPeep = NULL;
 	closestDistance = 0xFFFF;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->var_16 == 0x8000)
+		if (peep->sprite_left == 0x8000)
 			continue;
 
 		distance =
-			abs(((peep->var_16 + peep->var_1A) / 2) - x) +
-			abs(((peep->var_18 + peep->var_1C) / 2) - y);
+			abs(((peep->sprite_left + peep->sprite_right) / 2) - x) +
+			abs(((peep->sprite_top + peep->sprite_bottom) / 2) - y);
 		if (distance > maxDistance)
 			continue;
 

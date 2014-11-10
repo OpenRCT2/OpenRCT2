@@ -37,12 +37,12 @@ typedef struct {
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
 	uint8 pad_14[0x02];
-	sint16 var_16;
-	sint16 var_18;
-	sint16 var_1A;
-	sint16 var_1C;
-	uint16 var_1E;
-	uint8 pad_20[0x08];
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8 sprite_direction;			// 0x1E
+	uint8 pad_1F[0x09];
 	sint32 velocity;				// 0x28
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30

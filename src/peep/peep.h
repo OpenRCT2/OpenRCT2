@@ -319,10 +319,10 @@ typedef struct {
 	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
-	sint16 var_16;
-	sint16 var_18;
-	sint16 var_1A;
-	sint16 var_1C;
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[3];
 	uint16 name_string_idx;			// 0x22

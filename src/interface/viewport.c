@@ -782,10 +782,10 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 		spr = &g_sprite_list[sprite_idx];
 		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-		if (dpi->y + dpi->height <= spr->unknown.var_18) continue;
-		if (spr->unknown.var_1C <= dpi->y)continue;
-		if (dpi->x + dpi->width <= spr->unknown.var_16)continue;
-		if (spr->unknown.var_1A <= dpi->x)continue;
+		if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;
+		if (spr->unknown.sprite_bottom <= dpi->y)continue;
+		if (dpi->x + dpi->width <= spr->unknown.sprite_left)continue;
+		if (spr->unknown.sprite_right <= dpi->x)continue;
 
 		int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;

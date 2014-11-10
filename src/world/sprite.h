@@ -59,10 +59,10 @@ typedef struct {
 	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
-	sint16 var_16; //x related
-	sint16 var_18; //y related
-	sint16 var_1A; //x related
-	sint16 var_1C; //y related
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
 	uint8  sprite_direction; //direction of sprite? 0x1e
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
@@ -104,5 +104,6 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void texteffect_update_all();
 void sub_69E9D3(int x, int y, int z, rct_sprite* sprite);
 void balloon_pop(rct_sprite *sprite);
+void invalidate_sprite(rct_sprite* sprite);
 
 #endif
