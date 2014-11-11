@@ -41,6 +41,9 @@
 #include "world/scenery.h"
 
 static int _dragX, _dragY;
+static rct_windowclass _dragWindowClass;
+static rct_windownumber _dragWindowNumber;
+static int _dragWidgetIndex;
 static int _originalWindowWidth, _originalWindowHeight;
 
 typedef struct {
@@ -67,7 +70,12 @@ void game_handle_key_scroll();
 static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex);
 void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget);
 void sub_6ED990(char cursor_id);
-static void input_window_drag(rct_window *w, int lastX, int lastY, int newX, int newY);
+static void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y);
+static void input_window_position_continue(rct_window *w, int lastX, int lastY, int newX, int newY);
+static void input_window_position_end(rct_window *w, int x, int y);
+static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y);
+static void input_window_resize_continue(rct_window *w, int x, int y);
+static void input_window_resize_end();
 static void input_viewport_drag_begin(rct_window *w, int x, int y);
 static void input_viewport_drag_continue();
 static void input_viewport_drag_end();
@@ -229,36 +237,13 @@ static void game_handle_input_mouse(int x, int y, int state)
 		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
 		break;
 	case INPUT_STATE_POSITIONING_WINDOW:
-		// RCT2_CALLPROC_X(0x006E8C5C, x, y, state, widgetIndex, w, widget, 0);
-
-		w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
-		);
+		w = window_find_by_number(_dragWindowClass, _dragWindowNumber);
 		if (w == NULL) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
-			break;
-		}
-
-		input_window_drag(
-			w,
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16),
-			x,
-			y
-		);
-
-		// RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
-		// RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
-
-		if (state == 2) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
-
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_18], 0, 0, x, y, (int)w, 0, 0);
+		} else {
+			input_window_position_continue(w, _dragX, _dragY, x, y);
+			if (state == 2)
+				input_window_position_end(w, x, y);
 		}
 		break;
 	case INPUT_STATE_VIEWPORT_RIGHT:
@@ -335,39 +320,15 @@ static void game_handle_input_mouse(int x, int y, int state)
 			input_scroll_end();
 		break;
 	case INPUT_STATE_RESIZING:
-		// RCT2_CALLPROC_X(0x006E8B46, x, y, state, widgetIndex, w, widget, 0);
-
-		w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
-		);
+		w = window_find_by_number(_dragWindowClass, _dragWindowNumber);
 		if (w == NULL) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
-			break;
-		}
+		} else {
+			if (state == 2)
+				input_window_resize_end();
 
-		if (state != 0 && state != 2)
-			break;
-
-		if (state == 2) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint16);
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
-		}
-
-		if (y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 2) {
-			int dx = x - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16);
-			int dy = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16);
-			int ww = _originalWindowWidth + dx;
-			int wh = _originalWindowHeight + dy;
-
-			window_resize(
-				w,
-				ww -w->width,
-				wh - w->height
-			);
+			if (state == 0 || state == 2)
+				input_window_resize_continue(w, x, y);
 		}
 		break;
 	case 9:
@@ -376,21 +337,87 @@ static void game_handle_input_mouse(int x, int y, int state)
 	}
 }
 
+#pragma region Window positioning / resizing
+
+static void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_POSITIONING_WINDOW;
+	_dragX = x - w->x;
+	_dragY = y - w->y;
+	_dragWindowClass = w->classification;
+	_dragWindowNumber = w->number;
+	_dragWidgetIndex = widgetIndex;
+}
+
+static void input_window_position_continue(rct_window *w, int wdx, int wdy, int x, int y)
+{
+	window_move_and_snap(w, x - wdx, y - wdy, gGeneral_config.window_snap_proximity);
+}
+
+static void input_window_position_end(rct_window *w, int x, int y)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = _dragWindowClass;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = _dragWindowNumber;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = _dragWidgetIndex;
+	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_18], 0, 0, x, y, (int)w, 0, 0);
+}
+
+static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESIZING;
+	_dragX = x;
+	_dragY = y;
+	_dragWindowClass = w->classification;
+	_dragWindowNumber = w->number;
+	_dragWidgetIndex = widgetIndex;
+	_originalWindowWidth = w->width;
+	_originalWindowHeight = w->height;
+}
+
+static void input_window_resize_continue(rct_window *w, int x, int y)
+{
+	int dx, dy, targetWidth, targetHeight;
+
+	if (y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 2) {
+		dx = x - _dragX;
+		dy = y - _dragY;
+		targetWidth = _originalWindowWidth + dx;
+		targetHeight = _originalWindowHeight + dy;
+
+		window_resize(
+			w,
+			targetWidth - w->width,
+			targetHeight - w->height
+		);
+	}
+}
+
+static void input_window_resize_end()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_NORMAL;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = _dragWindowClass;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = _dragWindowNumber;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = _dragWidgetIndex;
+}
+
+#pragma endregion
+
+#pragma region Viewport dragging
+
 static void input_viewport_drag_begin(rct_window *w, int x, int y)
 {
 	w->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_RIGHT;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = w->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = w->number;
+	_dragWindowClass = w->classification;
+	_dragWindowNumber = w->number;
 	RCT2_GLOBAL(0x009DE540, sint16) = 0;
-	// hide cursor
-	// RCT2_CALLPROC_X(0x00407045, 0, 0, 0, 0, 0, 0, 0);
-	// RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_5;
-
 	platform_get_cursor_position(&_dragX, &_dragY);
 	platform_hide_cursor();
+
+	// RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_5;
 }
 
 static void input_viewport_drag_continue()
@@ -403,10 +430,7 @@ static void input_viewport_drag_continue()
 
 	dx = newDragX - _dragX;
 	dy = newDragY - _dragY;
-	w = window_find_by_number(
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
-	);
+	w = window_find_by_number(_dragWindowClass, _dragWindowNumber);
 
 	viewport = w->viewport;
 	RCT2_GLOBAL(0x009DE540, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
@@ -432,10 +456,9 @@ static void input_viewport_drag_end()
 	platform_show_cursor();
 }
 
-static void input_window_drag(rct_window *w, int wdx, int wdy, int x, int y)
-{
-	window_move_and_snap(w, x - wdx, y - wdy, gGeneral_config.window_snap_proximity);
-}
+#pragma endregion
+
+#pragma region Scroll bars
 
 static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 {
@@ -583,6 +606,8 @@ static void input_scroll_end()
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 	invalidate_scroll();
 }
+
+#pragma endregion
 
 /**
 *
@@ -744,21 +769,8 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 	switch (widget->type) {
 	case WWT_FRAME:
 	case WWT_RESIZE:
-		if (!(w->flags & WF_RESIZABLE))
-			break;
-		if (w->min_width == w->max_width && w->min_height == w->max_height)
-			break;
-		if (x < w->x + w->width - 19 || y < w->y + w->height - 19)
-			break;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESIZING;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = windowNumber;
-		_originalWindowWidth = w->width;
-		_originalWindowHeight = w->height;
+		if (window_can_resize(w) && (x >= w->x + w->width - 19 && y >= w->y + w->height - 19))
+			input_window_resize_begin(w, widgetIndex, x, y);
 		break;
 	case WWT_VIEWPORT:
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_LEFT;
@@ -780,12 +792,7 @@ static void input_leftmousedown(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_4;
 		break;
 	case WWT_CAPTION:
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_POSITIONING_WINDOW;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, uint16) = x - w->x;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) = y - w->y;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = windowNumber;
+		input_window_position_begin(w, widgetIndex, x, y);
 		break;
 	case WWT_SCROLL:
 		input_scroll_begin(w, widgetIndex, x, y);

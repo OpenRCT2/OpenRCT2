@@ -1993,3 +1993,8 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 
 	window_set_position(w, newWindowX, newWindowY);
 }
+
+int window_can_resize(rct_window *w)
+{
+	return (w->flags & WF_RESIZABLE) && (w->min_width != w->max_width || w->min_height != w->max_height);
+}

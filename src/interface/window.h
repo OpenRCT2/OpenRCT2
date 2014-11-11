@@ -544,6 +544,7 @@ void RCT2_CALLPROC_WE_MOUSE_DOWN(int address, int widgetIndex, rct_window*w, rct
 void sub_6EA73F();
 
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
+int window_can_resize(rct_window *w);
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
