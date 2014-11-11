@@ -538,7 +538,10 @@ void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
 
-void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event);
+void window_event_mouse_up_call(rct_window* w, int widgetIndex);
+void window_event_resize_call(rct_window* w);
+void window_event_mouse_down_call(rct_window* w, int widgetIndex);
+void window_event_invalidate_call(rct_window* w);
 
 void sub_6EA73F();
 

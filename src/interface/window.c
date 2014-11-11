@@ -1585,12 +1585,53 @@ void window_guest_list_init_vars_b()
 	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
 }
 
-/**
- *  Wrapper for window events so C functions can call them
- */ 
-void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event)
+void window_event_mouse_up_call(rct_window* w, int widgetIndex)
 {
-	RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, (int)w, (int)&(w->event_handlers[widgetIndex]), 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, widgetIndex, (int)w, (int)&(w->event_handlers[widgetIndex]), 0);
+}
+
+void window_event_resize_call(rct_window* w)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+void window_event_mouse_down_call(rct_window *w, int widgetIndex)
+{
+	int address = w->event_handlers[WE_MOUSE_DOWN];
+	rct_widget *widget = &w->widgets[widgetIndex];
+
+	#ifdef _MSC_VER
+		__asm {
+			push address
+			push widget
+			push w
+			push widgetIndex
+			mov edi, widget
+			mov edx, widgetIndex
+			mov esi, w
+			call[esp + 12]
+			add esp, 16
+		}
+	#else
+		__asm__("\
+				push %[address]\n\
+				mov edi, %[widget] \n\
+				mov eax, %[w]  \n\
+				mov edx, %[widgetIndex] \n\
+				push edi \n\
+				push eax \n\
+				push edx \n\
+				mov esi, %[w]	\n\
+				call [esp+12]	\n\
+				add esp, 16	\n\
+				" :[address] "+m" (address), [w] "+m" (w), [widget] "+m" (widget), [widgetIndex] "+m" (widgetIndex): : "eax", "esi", "edx", "edi"
+			);
+	#endif
+}
+
+void window_event_invalidate_call(rct_window* w)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**

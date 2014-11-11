@@ -692,7 +692,7 @@ static void input_widget_over_flatbutton_invalidate()
 	if (w == NULL)
 		return;
 
-	window_event_helper(w, 0, WE_INVALIDATE);
+	window_event_invalidate_call(w);
 	if (w->widgets[RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber)].type == WWT_FLATBTN) {
 		widget_invalidate_by_number(
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass),
@@ -773,7 +773,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 			RCT2_GLOBAL(0x009DE528, uint16) = 1;
 
 			widget_invalidate_by_number(windowClass, windowNumber, widgetIndex);
-			window_event_helper(w, widgetIndex, WE_MOUSE_DOWN);
+			window_event_mouse_down_call(w, widgetIndex);
 		}
 		break;
 	}
@@ -943,7 +943,7 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		if (w->var_020 & (1ULL << widgetIndex) &&
 			RCT2_GLOBAL(0x9DE528, uint16) >= 0x10 &&
 			(!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3))){
-			window_event_helper(w, widgetIndex, WE_MOUSE_DOWN);
+			window_event_mouse_down_call(w, widgetIndex);
 		}
 
 		if (RCT2_GLOBAL(0x9DE518, uint32) & 1) return;
@@ -1014,7 +1014,7 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 			break;
 
 		widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
-		window_event_helper(w, widgetIndex, WE_MOUSE_UP);
+		window_event_mouse_up_call(w, widgetIndex);
 	default:
 		return;
 	}

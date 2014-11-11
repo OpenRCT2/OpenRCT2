@@ -119,7 +119,7 @@ static void shortcut_pause_game()
 		window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_helper(window, 0, WE_MOUSE_UP);
+			window_event_mouse_up_call(window, 0);
 		}
 	}
 }
@@ -133,7 +133,7 @@ static void shortcut_zoom_view_out()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 2, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 2);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ static void shortcut_zoom_view_in()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 3, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 3);
 			}
 		}
 	}
@@ -163,7 +163,7 @@ static void shortcut_rotate_view()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 4, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 4);
 			}
 		}
 	}
@@ -233,7 +233,7 @@ static void shortcut_adjust_land()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 7, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 7);
 			}
 		}
 	}
@@ -248,7 +248,7 @@ static void shortcut_adjust_water()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 8, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 8);
 			}
 		}
 	}
@@ -263,7 +263,7 @@ static void shortcut_build_scenery()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 9, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 9);
 			}
 		}
 	}
@@ -278,7 +278,7 @@ static void shortcut_build_paths()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 10, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 10);
 			}
 		}
 	}
@@ -293,7 +293,7 @@ static void shortcut_build_new_ride()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 11, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 11);
 			}
 		}
 	}
@@ -315,7 +315,7 @@ static void shortcut_show_research_information()
 		RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
 		window = window_find_by_class(WC_CONSTRUCT_RIDE);
 		if (window != NULL)
-			window_event_helper(window, 10, WE_MOUSE_DOWN);
+			window_event_mouse_up_call(window, 10);
 	}
 }
 
@@ -327,7 +327,7 @@ static void shortcut_show_rides_list()
 		window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_helper(window, 12, WE_MOUSE_UP);
+			window_event_mouse_up_call(window, 12);
 		}
 	}
 }
@@ -340,7 +340,7 @@ static void shortcut_show_park_information()
 		window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_helper(window, 13, WE_MOUSE_UP);
+			window_event_mouse_up_call(window, 13);
 		}
 	}
 }
@@ -353,7 +353,7 @@ static void shortcut_show_guest_list()
 		window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_helper(window, 15, WE_MOUSE_UP);
+			window_event_mouse_up_call(window, 15);
 		}
 	}
 }
@@ -366,7 +366,7 @@ static void shortcut_show_staff_list()
 		window = window_find_by_class(WC_TOP_TOOLBAR);
 		if (window != NULL) {
 			window_invalidate(window);
-			window_event_helper(window, 14, WE_MOUSE_UP);
+			window_event_mouse_up_call(window, 14);
 		}
 	}
 }
@@ -386,7 +386,7 @@ static void shortcut_show_map()
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				window_event_helper(window, 6, WE_MOUSE_UP);
+				window_event_mouse_up_call(window, 6);
 			}
 		}
 	}

@@ -609,7 +609,7 @@ static void window_track_place_tooldown()
 			} else {
 				sub_6CC3FB(rideIndex);
 				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-				window_event_helper(w, 29, WE_MOUSE_UP);
+				window_event_mouse_up_call(w, 29);
 			}
 			return;
 		}

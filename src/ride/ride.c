@@ -608,7 +608,7 @@ static void ride_clear_for_construction(int rideIndex)
 
 	w = window_find_by_number(WC_RIDE, rideIndex);
 	if (w != NULL)
-		window_event_helper(w, 0, WE_RESIZE);
+		window_event_resize_call(w);
 }
 
 /**
