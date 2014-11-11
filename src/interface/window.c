@@ -1590,7 +1590,7 @@ void window_guest_list_init_vars_b()
  */ 
 void window_event_helper(rct_window* w, short widgetIndex, WINDOW_EVENTS event)
 {
-	RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[event], 0, 0, 0, widgetIndex, (int)w, (int)&(w->event_handlers[widgetIndex]), 0);
 }
 
 /**
@@ -1702,37 +1702,6 @@ void window_resize_gui_scenario_editor(int width, int height)
 		RCT2_GLOBAL(0x9A998C, uint16) = bottomWind->width - 3;
 	}
 	
-}
-
-void RCT2_CALLPROC_WE_MOUSE_DOWN(int address,  int widgetIndex, rct_window*w, rct_widget* widget )
-{
-#ifdef _MSC_VER
-	__asm {
-		push address
-		push widget
-		push w
-		push widgetIndex
-		mov edi, widget
-		mov edx, widgetIndex
-		mov esi, w
-		call[esp + 12]
-		add esp, 16
-	}
-#else
-	__asm__("\
-			push %[address]\n\
-			mov edi, %[widget] \n\
-			mov eax, %[w]  \n\
-			mov edx, %[widgetIndex] \n\
-			push edi \n\
-			push eax \n\
-			push edx \n\
-			mov esi, %[w]	\n\
-			call [esp+12]	\n\
-			add esp, 16	\n\
-			" :[address] "+m" (address), [w] "+m" (w), [widget] "+m" (widget), [widgetIndex] "+m" (widgetIndex): : "eax", "esi", "edx", "edi"
-		);
-#endif
 }
 
 /* Based on rct2: 0x6987ED and another version from window_park */
