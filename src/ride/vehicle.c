@@ -25,6 +25,7 @@
 #include "../hook.h"
 #include "../interface/viewport.h"
 #include "../openrct2.h"
+#include "../scenario.h"
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -32,6 +33,12 @@
 #include "vehicle.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
+static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
+static void vehicle_update_waiting_to_depart(rct_vehicle *vehicle);
+static void vehicle_update_departing(rct_vehicle *vehicle);
+static void vehicle_update_travelling(rct_vehicle *vehicle);
+static void vehicle_update_arriving(rct_vehicle *vehicle);
+static void vehicle_update_sound(rct_vehicle *vehicle);
 
 /**
 *
@@ -449,13 +456,297 @@ void vehicle_update_all()
 	}
 }
 
+static void sub_6D6D1F(rct_vehicle *vehicle)
+{
+	rct_ride *ride;
+
+	ride = GET_RIDE(vehicle->ride);
+	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)ride, 0);
+}
+
+static uint16 sub_6D7AC0(uint8 soundId, uint8 volume, uint8 bl, uint8 dl)
+{
+	if (soundId != 255) {
+		if (soundId == dl) {
+			volume += 15;
+			if ((sint8)volume < 0)
+				volume = bl;
+
+			if (volume > bl)
+				volume = bl;
+			return (volume << 8) | soundId;
+		} else {
+			volume -= 9;
+			if (volume >= 80)
+				return (volume << 8) | soundId;
+		}
+	}
+
+	soundId = dl;
+	volume = bl == 255 ? 255 : bl / 4;
+
+	return (volume << 8) | soundId;
+}
+
 /**
  *
  *  rct2: 0x006D77F2
  */
 static void vehicle_update(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006D77F2, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	// RCT2_CALLPROC_X(0x006D77F2, 0, 0, 0, 0, (int)vehicle, 0, 0);
+
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+
+	if (vehicle->ride_subtype == 255) {
+		switch (vehicle->status) {
+		case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
+			vehicle_update_moving_to_end_of_station(vehicle);
+			break;
+		case VEHICLE_STATUS_WAITING_TO_DEPART:
+			vehicle_update_waiting_to_depart(vehicle);
+			break;
+		case VEHICLE_STATUS_DEPARTING:
+			vehicle_update_departing(vehicle);
+			break;
+		case VEHICLE_STATUS_TRAVELLING:
+			vehicle_update_travelling(vehicle);
+			break;
+		case VEHICLE_STATUS_ARRIVING:
+			vehicle_update_arriving(vehicle);
+			break;
+		}
+		return;
+	}
+
+	rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	ride = GET_RIDE(vehicle->ride);
+	if (vehicle->var_48 & 0x20)
+		sub_6D6D1F(vehicle);
+
+	RCT2_GLOBAL(0x00F64E34, uint8) = 255;
+	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
+		RCT2_GLOBAL(0x00F64E34, uint8) = ride->breakdown_reason_pending;
+		if ((vehicleEntry->var_14 & 8) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT) {
+			if (!(vehicleEntry->var_14 & 0x2000) ||
+				(
+					vehicle->var_1F == 2 &&
+					vehicle->velocity <= 0x20000
+				)
+			) {
+				vehicle->var_48 |= 0x80;
+			}
+		}
+	}
+
+	int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
+	RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->var_51 << 8) | ride->mode, (int)vehicle, 0, 0);
+
+	vehicle_update_sound(vehicle);
+}
+
+static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+static void vehicle_update_waiting_to_depart(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DF8F1, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+static void vehicle_update_departing(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DF97A, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+static void vehicle_update_travelling(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DF99C, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+static void vehicle_update_arriving(rct_vehicle *vehicle)
+{
+	vehicle->var_51++;
+	if (vehicle->var_51 >= 64)
+		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+}
+
+/**
+ * 
+ *  rct2: 0x006D7888
+ */
+static void vehicle_update_sound(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006D7888, 0, 0, 0, 0, (int)vehicle, 0, 0); return;
+
+	// PROBLEMS
+	uint16 spriteIndex;
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	rct_vehicle *vehicle2;
+
+	ride = GET_RIDE(vehicle->ride);
+	rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	uint16 ax = vehicle->var_B8;
+	uint8 al, ah, bl, bh, cl, dh, dl = 255;
+	int ecx = abs(vehicle->velocity) - 0x10000;
+	if (ecx >= 0) {
+		dl = vehicleEntry->var_57;
+		ecx >>= 15;
+		bl = 208 + (ecx & 0xFF);
+		if (bl < 0)
+			bl = 255;
+	}
+
+	if (vehicleEntry->var_59 == 3) {
+		dh = vehicle->var_CC;
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+			if (vehicle->velocity < 0x40000 || vehicle->var_CC != 255)
+				goto loc_6D7A97;
+
+			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
+				dh = 18;
+				goto loc_6D7A43;
+			}
+		}
+
+		goto loc_6D7A4A;
+	}
+	if (vehicleEntry->var_59 == 4) {
+		dh = vehicle->var_CC;
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+			if (vehicle->velocity < 0x40000 || vehicle->var_CC != 255)
+				goto loc_6D7A97;
+
+			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
+				dh = 59;
+				goto loc_6D7A43;
+			}
+		}
+		goto loc_6D7A4A;
+	}
+
+	if (!(vehicleEntry->var_14 & 0x10))
+		goto loc_6D7A97;
+
+	uint8 ch = 0;
+	vehicle2 = vehicle;
+	for (;;) {
+		ch += vehicle2->num_peeps;
+		spriteIndex = vehicle2->next_vehicle_on_train;
+		if (spriteIndex == SPRITE_INDEX_NULL)
+			break;
+
+		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+	}
+	if (ch != 0) {
+		if (vehicle->velocity < 0) {
+			if (vehicle->velocity > 0xFFFD4000)
+				goto loc_6D7A97;
+
+			spriteIndex = vehicle->sprite_index;
+			do {
+				vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+				cl = vehicle2->var_1F;
+				if (cl < 1)
+					continue;
+				if (cl <= 4)
+					goto loc_6D79E2;
+				if (cl < 9)
+					continue;
+				if (cl <= 15)
+					goto loc_6D79E2;
+			} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+			goto loc_6D7A97;
+		}
+
+		if (vehicle->velocity < 0x2C000)
+			goto loc_6D7A97;
+
+		spriteIndex = vehicle->sprite_index;
+		do {
+			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+			cl = vehicle2->var_1F;
+			if (cl < 5)
+				continue;
+			if (cl <= 8)
+				goto loc_6D79E2;
+			if (cl < 17)
+				continue;
+			if (cl <= 23)
+				goto loc_6D79E2;
+		} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+		goto loc_6D7A97;
+
+	loc_6D79E2:
+		dh = vehicle->var_CC;
+		if (dh == 255) {
+			int eax = scenario_rand();
+			al = eax & 0xFF;
+			ah = (eax >> 8) & 0xFF;
+			if (ah <= ch) {
+				switch (vehicleEntry->var_59) {
+				case 0:
+					eax = ((al * 2) >> 8) & 0xFF;
+					dh = RCT2_ADDRESS(0x009A3A14, uint8)[eax];
+					goto loc_6D7A43;
+				case 1:
+					eax = ((al * 7) >> 8) & 0xFF;
+					dh = RCT2_ADDRESS(0x009A3A18, uint8)[eax];
+					goto loc_6D7A43;
+				case 2:
+					eax = ((al * 2) >> 8) & 0xFF;
+					dh = RCT2_ADDRESS(0x009A3A16, uint8)[eax];
+					goto loc_6D7A43;
+				}
+			}
+			dh = 254;
+
+		loc_6D7A43:
+			dh = vehicle->var_CC;
+		}
+
+	loc_6D7A4A:
+		if (dh != 254)
+			dh = 255;
+
+		bh = 255;
+		goto loc_6D7AC0;
+	}
+
+loc_6D7A97:
+	vehicle->var_CC = 255;
+	dh = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
+	bh = 243;
+	if (!(ax & 2))
+		dh = 255;
+
+loc_6D7AC0:
+	;
+	uint16 soundIdVolume;
+
+	soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, bl, dl);
+	vehicle->sound1_id = soundIdVolume & 0xFF;
+	vehicle->sound1_volume = (soundIdVolume >> 8) & 0xFF;
+	soundIdVolume = sub_6D7AC0(vehicle->sound2_id, vehicle->sound2_volume, bl, dl);
+	vehicle->sound2_id = soundIdVolume & 0xFF;
+	vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
+
+	{
+		int ebx = RCT2_ADDRESS(0x009A3684, sint16)[vehicle->sprite_direction];
+		int eax = ((vehicle->velocity >> 14) * ebx) >> 14;
+		eax = max(eax, 0xFF81);
+		eax = min(eax, 0x7F);
+		vehicle->var_BF = eax & 0xFF;
+	}
 }
 
 /**
