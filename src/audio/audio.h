@@ -32,6 +32,7 @@ extern int gAudioDeviceCount;
 extern audio_device *gAudioDevices;
 
 #define AUDIO_MAX_VEHICLE_SOUNDS 14
+#define AUDIO_MAX_RIDE_MUSIC 2
 
 void audio_init();
 void audio_quit();
@@ -132,9 +133,11 @@ typedef struct {
 typedef struct {
 	uint8 rideid;
 	uint8 tuneid;
-	uint16 volume;	//0x2
-	uint16 pan;		//0x4
+	sint16 volume;	//0x2
+	sint16 pan;		//0x4
 	uint16 freq;	//0x6
+	// added to openrct2:
+	void* sound_channel;
 } rct_ride_music;
 
 typedef struct {
@@ -147,7 +150,11 @@ typedef struct {
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-extern void* gMusicChannels[4];
+extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_params *gRideMusicParamsListEnd;
+extern void *gCrowdSoundChannel;
+extern void *gTitleMusicChannel;
 
 void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
 int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);

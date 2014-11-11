@@ -205,6 +205,7 @@ Channel::Channel()
 	SetPan(0.5f);
 	done = true;
 	stopping = false;
+	stream = 0;
 }
 
 Channel::~Channel()
@@ -260,6 +261,21 @@ bool Channel::IsPlaying()
 	return !done;
 }
 
+unsigned long Channel::GetOffset()
+{
+	return offset;
+}
+
+bool Channel::SetOffset(unsigned long offset)
+{
+	if (stream && offset < stream->Length()) {
+		int samplesize = stream->Format()->channels * stream->Format()->BytesPerSample();
+		Channel::offset = (offset / samplesize) * samplesize;
+		return true;
+	}
+	return false;
+}
+
 void Mixer::Init(const char* device)
 {
 	Close();
@@ -281,7 +297,7 @@ void Mixer::Init(const char* device)
 		css1samples[i].Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
 		css1streams[i].SetSource_Sample(css1samples[i]);
 	}
-	effectbuffer = new uint8[(have.samples * format.BytesPerSample() * format.channels) + 200];
+	effectbuffer = new uint8[(have.samples * format.BytesPerSample() * format.channels)];
 	SDL_PauseAudioDevice(deviceid, 0);
 }
 
@@ -361,7 +377,7 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
 	if (channel.stream && !channel.done) {
-		AudioFormat channelformat = *channel.stream->Format();
+		AudioFormat streamformat = *channel.stream->Format();
 		int loaded = 0;
 		SDL_AudioCVT cvt;
 		cvt.len_ratio = 1;
@@ -373,19 +389,20 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 			if (format.format == AUDIO_S16SYS) {
 				rate = channel.rate;
 			}
-			int samplestoread = (int)ceil((samples - samplesloaded) * rate);
+			int samplestoread = (int)((samples - samplesloaded) * rate);
 			int lengthloaded = 0;
 			if (channel.offset < channel.stream->Length()) {
 				bool mustconvert = false;
 				if (MustConvert(*channel.stream)) {
-					if (SDL_BuildAudioCVT(&cvt, channelformat.format, channelformat.channels, channelformat.freq, Mixer::format.format, Mixer::format.channels, Mixer::format.freq) == -1) {
+					if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, Mixer::format.format, Mixer::format.channels, Mixer::format.freq) == -1) {
 						break;
 					}
 					mustconvert = true;
 				}
 
 				const uint8* datastream = 0;
-				int readfromstream = (channel.stream->GetSome(channel.offset, &datastream, (int)(((samplestoread) * samplesize) / cvt.len_ratio)) / channelformat.BytesPerSample()) * channelformat.BytesPerSample();
+				int toread = (int)(samplestoread / cvt.len_ratio) * samplesize;
+				int readfromstream = (channel.stream->GetSome(channel.offset, &datastream, toread));
 				if (readfromstream == 0) {
 					break;
 				}
@@ -395,9 +412,10 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				const uint8* tomix = 0;
 
 				if (mustconvert) {
+					// tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
 					if (Convert(cvt, datastream, readfromstream, &dataconverted)) {
 						tomix = dataconverted;
-						lengthloaded = (cvt.len_cvt / samplesize) * samplesize;
+						lengthloaded = cvt.len_cvt;
 					} else {
 						break;
 					}
@@ -408,12 +426,18 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 
 				bool effectbufferloaded = false;
 				if (rate != 1 && format.format == AUDIO_S16SYS) {
-					int in_len = (int)(ceil((double)lengthloaded / samplesize));
-					int out_len = samples + 20; // needs some extra, otherwise resampler sometimes doesn't process all the input samples
+					int in_len = (int)((double)lengthloaded / samplesize);
+					int out_len = samples;
 					if (!channel.resampler) {
 						channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
 					}
-					speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
+					if (readfromstream == toread) {
+						// use buffer lengths for conversion ratio so that it fits exactly
+						speex_resampler_set_rate(channel.resampler, in_len, samples - samplesloaded);
+					} else {
+						// reached end of stream so we cant use buffer length as resampling ratio
+						speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
+					}
 					speex_resampler_process_interleaved_int(channel.resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
 					effectbufferloaded = true;
 					tomix = effectbuffer;
@@ -610,6 +634,16 @@ void Mixer_Channel_Rate(void* channel, double rate)
 int Mixer_Channel_IsPlaying(void* channel)
 {
 	return ((Channel*)channel)->IsPlaying();
+}
+
+unsigned long Mixer_Channel_GetOffset(void* channel)
+{
+	return ((Channel*)channel)->GetOffset();
+}
+
+int Mixer_Channel_SetOffset(void* channel, unsigned long offset)
+{
+	return ((Channel*)channel)->SetOffset(offset);
 }
 
 void* Mixer_Play_Music(int pathid)

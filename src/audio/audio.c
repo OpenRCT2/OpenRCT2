@@ -34,7 +34,11 @@ audio_device *gAudioDevices = NULL;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-void* gMusicChannels[4];
+rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params *gRideMusicParamsListEnd;
+void *gCrowdSoundChannel = 0;
+void *gTitleMusicChannel = 0;
 
 void audio_init(int i)
 {
@@ -1543,7 +1547,7 @@ void start_title_music()
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gMusicChannels[3] = Mixer_Play_Music(PATH_ID_CSS17);
+			gTitleMusicChannel = Mixer_Play_Music(PATH_ID_CSS17);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
@@ -1598,12 +1602,16 @@ void stop_other_sounds()
 void stop_ride_music()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-		for (int i = 0; i < 2; i++) {
-			rct_ride_music* ride_music = &RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
+		for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+			rct_ride_music* ride_music = &gRideMusicList[i];//&RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
 			if (ride_music->rideid != (uint8)-1) {
+#ifdef USE_MIXER
+				Mixer_Stop_Channel(ride_music->sound_channel);
+#else
 				RCT2_GLOBAL(0x014241BC, uint32) = 1;
 				sound_channel_stop(i);
 				RCT2_GLOBAL(0x014241BC, uint32) = 0;
+#endif
 				ride_music->rideid = -1;
 			}
 		}
@@ -1619,9 +1627,9 @@ void stop_crowd_sound()
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
 #ifdef USE_MIXER
-			if (gMusicChannels[2]) {
-				Mixer_Stop_Channel(gMusicChannels[2]);
-				gMusicChannels[2] = 0;
+			if (gCrowdSoundChannel) {
+				Mixer_Stop_Channel(gCrowdSoundChannel);
+				gCrowdSoundChannel = 0;
 			}
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
@@ -1642,9 +1650,9 @@ void stop_title_music()
 	if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
 		if (RCT2_GLOBAL(0x009AF600, uint8) != 0) {
 #ifdef USE_MIXER
-			if (gMusicChannels[3]) {
-				Mixer_Stop_Channel(gMusicChannels[3]);
-				gMusicChannels[3] = 0;
+			if (gTitleMusicChannel) {
+				Mixer_Stop_Channel(gTitleMusicChannel);
+				gTitleMusicChannel = 0;
 			}
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
@@ -1705,7 +1713,7 @@ void audio_init1()
 void audio_init2(int device)
 {
 	audio_close();
-	for (int i = 0; i < countof(gVehicleSoundList)/*7*/; i++) {
+	for (int i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS/*7*/; i++) {
 		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
 		//rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
@@ -1740,8 +1748,8 @@ void audio_init2(int device)
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
 	if (successtimer) {
 		RCT2_GLOBAL(0x009AF284, uint32) |= (1 << 0);
-		for (int i = 0; i < 2; i++) {
-			rct_ride_music* ride_music = &RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
+		for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+			rct_ride_music* ride_music = &gRideMusicList[i];//&RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
 			ride_music->rideid = -1;
 		}
 	}

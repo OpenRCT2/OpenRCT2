@@ -1822,7 +1822,7 @@ void window_update_viewport_ride_music()
 	rct_viewport *viewport;
 	rct_window *w;
 
-	RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*) = (rct_ride_music_params*)0x009AF430;
+	gRideMusicParamsListEnd = &gRideMusicParamsList[0];//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*) = (rct_ride_music_params*)0x009AF430;
 	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
