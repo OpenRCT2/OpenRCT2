@@ -39,6 +39,16 @@ static void vehicle_update_departing(rct_vehicle *vehicle);
 static void vehicle_update_travelling(rct_vehicle *vehicle);
 static void vehicle_update_arriving(rct_vehicle *vehicle);
 static void vehicle_update_sound(rct_vehicle *vehicle);
+static int vehicle_update_scream_sound(rct_vehicle *vehicle);
+
+#define NO_SCREAM 254
+
+const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
+const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
+const uint8 byte_9A3A18[] = {
+	SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
+	SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4, SOUND_LIFT_1
+};
 
 /**
 *
@@ -464,28 +474,24 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)ride, 0);
 }
 
-static uint16 sub_6D7AC0(uint8 soundId, uint8 volume, uint8 bl, uint8 dl)
+static uint16 sub_6D7AC0(int currentSoundId, int currentVolume, int targetSoundId, int targetVolume)
 {
-	if (soundId != 255) {
-		if (soundId == dl) {
-			volume += 15;
-			if ((sint8)volume < 0)
-				volume = bl;
-
-			if (volume > bl)
-				volume = bl;
-			return (volume << 8) | soundId;
+	if (currentSoundId != 255) {
+		if (currentSoundId == targetSoundId) {
+			currentVolume = min(currentVolume + 15, targetVolume);
+			return (currentVolume << 8) | currentSoundId;
 		} else {
-			volume -= 9;
-			if (volume >= 80)
-				return (volume << 8) | soundId;
+			currentVolume -= 9;
+			if (currentVolume >= 80)
+				return (currentVolume << 8) | currentSoundId;
 		}
 	}
 
-	soundId = dl;
-	volume = bl == 255 ? 255 : bl / 4;
+	// Begin sound at quarter volume
+	currentSoundId = targetSoundId;
+	currentVolume = targetVolume == 255 ? 255 : targetVolume / 4;
 
-	return (volume << 8) | soundId;
+	return (currentVolume << 8) | currentSoundId;
 }
 
 /**
@@ -585,18 +591,17 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	RCT2_CALLPROC_X(0x006D7888, 0, 0, 0, 0, (int)vehicle, 0, 0); return;
 
 	// PROBLEMS
-	uint16 spriteIndex;
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
-	rct_vehicle *vehicle2;
+	uint8 bl, dl = 255;
+	uint8 screamId, screamVolume;
+	uint16 soundIdVolume;
 
 	ride = GET_RIDE(vehicle->ride);
 	rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 
 	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
-	uint16 ax = vehicle->var_B8;
-	uint8 al, ah, bl, bh, cl, dh, dl = 255;
 	int ecx = abs(vehicle->velocity) - 0x10000;
 	if (ecx >= 0) {
 		dl = vehicleEntry->var_57;
@@ -606,137 +611,65 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 			bl = 255;
 	}
 
-	if (vehicleEntry->var_59 == 3) {
-		dh = vehicle->var_CC;
+	switch (vehicleEntry->sound_range) {
+	case 3:
+		screamVolume = vehicle->scream_sound_id;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
-			if (vehicle->velocity < 0x40000 || vehicle->var_CC != 255)
+			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
 			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
-				dh = 18;
-				goto loc_6D7A43;
+				vehicle->scream_sound_id = SOUND_TRAIN_WHISTLE;
+				screamId = 255;
+				break;
 			}
 		}
+		if (screamVolume != 254) screamVolume = 255;
+		screamId = 255;
+		break;
 
-		goto loc_6D7A4A;
-	}
-	if (vehicleEntry->var_59 == 4) {
-		dh = vehicle->var_CC;
+	case 4:
+		screamVolume = vehicle->scream_sound_id;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
-			if (vehicle->velocity < 0x40000 || vehicle->var_CC != 255)
+			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
 			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
-				dh = 59;
-				goto loc_6D7A43;
+				vehicle->scream_sound_id = SOUND_TRAM;
+				screamId = 255;
+				break;
 			}
 		}
-		goto loc_6D7A4A;
-	}
+		if (screamVolume != 254) screamVolume = 255;
+		screamId = 255;
+		break;
 
-	if (!(vehicleEntry->var_14 & 0x10))
-		goto loc_6D7A97;
+	default:
+		if ((vehicleEntry->var_14 & 0x10)) {
+			screamId = vehicle_update_scream_sound(vehicle);
+			if (screamId == 255)
+				goto loc_6D7A97;
 
-	uint8 ch = 0;
-	vehicle2 = vehicle;
-	for (;;) {
-		ch += vehicle2->num_peeps;
-		spriteIndex = vehicle2->next_vehicle_on_train;
-		if (spriteIndex == SPRITE_INDEX_NULL)
+			screamVolume = 255;
 			break;
-
-		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
-	}
-	if (ch != 0) {
-		if (vehicle->velocity < 0) {
-			if (vehicle->velocity > 0xFFFD4000)
-				goto loc_6D7A97;
-
-			spriteIndex = vehicle->sprite_index;
-			do {
-				vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
-				cl = vehicle2->var_1F;
-				if (cl < 1)
-					continue;
-				if (cl <= 4)
-					goto loc_6D79E2;
-				if (cl < 9)
-					continue;
-				if (cl <= 15)
-					goto loc_6D79E2;
-			} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
-			goto loc_6D7A97;
 		}
 
-		if (vehicle->velocity < 0x2C000)
-			goto loc_6D7A97;
-
-		spriteIndex = vehicle->sprite_index;
-		do {
-			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
-			cl = vehicle2->var_1F;
-			if (cl < 5)
-				continue;
-			if (cl <= 8)
-				goto loc_6D79E2;
-			if (cl < 17)
-				continue;
-			if (cl <= 23)
-				goto loc_6D79E2;
-		} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
-		goto loc_6D7A97;
-
-	loc_6D79E2:
-		dh = vehicle->var_CC;
-		if (dh == 255) {
-			int eax = scenario_rand();
-			al = eax & 0xFF;
-			ah = (eax >> 8) & 0xFF;
-			if (ah <= ch) {
-				switch (vehicleEntry->var_59) {
-				case 0:
-					eax = ((al * 2) >> 8) & 0xFF;
-					dh = RCT2_ADDRESS(0x009A3A14, uint8)[eax];
-					goto loc_6D7A43;
-				case 1:
-					eax = ((al * 7) >> 8) & 0xFF;
-					dh = RCT2_ADDRESS(0x009A3A18, uint8)[eax];
-					goto loc_6D7A43;
-				case 2:
-					eax = ((al * 2) >> 8) & 0xFF;
-					dh = RCT2_ADDRESS(0x009A3A16, uint8)[eax];
-					goto loc_6D7A43;
-				}
-			}
-			dh = 254;
-
-		loc_6D7A43:
-			dh = vehicle->var_CC;
-		}
-
-	loc_6D7A4A:
-		if (dh != 254)
-			dh = 255;
-
-		bh = 255;
-		goto loc_6D7AC0;
+	loc_6D7A97:
+		vehicle->scream_sound_id = 255;
+		screamVolume = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
+		screamId = 243;
+		if (!(vehicle->var_B8 & 2))
+			screamVolume = 255;
 	}
 
-loc_6D7A97:
-	vehicle->var_CC = 255;
-	dh = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
-	bh = 243;
-	if (!(ax & 2))
-		dh = 255;
 
-loc_6D7AC0:
-	;
-	uint16 soundIdVolume;
-
+	// Friction sound
 	soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, bl, dl);
 	vehicle->sound1_id = soundIdVolume & 0xFF;
 	vehicle->sound1_volume = (soundIdVolume >> 8) & 0xFF;
-	soundIdVolume = sub_6D7AC0(vehicle->sound2_id, vehicle->sound2_volume, bl, dl);
+
+	// Scream sound
+	soundIdVolume = sub_6D7AC0(vehicle->sound2_id, vehicle->sound2_volume, screamId, screamVolume);
 	vehicle->sound2_id = soundIdVolume & 0xFF;
 	vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
 
@@ -750,7 +683,91 @@ loc_6D7AC0:
 }
 
 /**
+<<<<<<< 0bfcf9391dbd97ecf76b3e6440e443ad52442517
  *
+=======
+ * 
+ *  rct2: 0x006D796B
+ */
+static int vehicle_update_scream_sound(rct_vehicle *vehicle)
+{
+	int r;
+	uint16 spriteIndex;
+	rct_ride_type *rideEntry;
+	rct_vehicle *vehicle2;
+
+	rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	int totalNumPeeps = vehicle_get_total_num_peeps(vehicle);
+	if (totalNumPeeps == 0)
+		return 255;
+
+	if (vehicle->velocity < 0) {
+		if (vehicle->velocity > -0x2C000)
+			return 255;
+
+		spriteIndex = vehicle->sprite_index;
+		do {
+			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+			if (vehicle2->var_1F < 1)
+				continue;
+			if (vehicle2->var_1F <= 4)
+				goto produceScream;
+			if (vehicle2->var_1F < 9)
+				continue;
+			if (vehicle2->var_1F <= 15)
+				goto produceScream;
+		} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+		return 255;
+	}
+
+	if (vehicle->velocity < 0x2C000)
+		return 255;
+
+	spriteIndex = vehicle->sprite_index;
+	do {
+		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+		if (vehicle2->var_1F < 5)
+			continue;
+		if (vehicle2->var_1F <= 8)
+			goto produceScream;
+		if (vehicle2->var_1F < 17)
+			continue;
+		if (vehicle2->var_1F <= 23)
+			goto produceScream;
+	} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
+	return 255;
+
+produceScream:
+	if (vehicle->scream_sound_id == 255) {
+		r = scenario_rand();
+		if (totalNumPeeps >= r % 16) {
+			switch (vehicleEntry->sound_range) {
+			case 0:
+				vehicle->scream_sound_id = byte_9A3A14[r % 2];
+				break;
+			case 1:
+				vehicle->scream_sound_id = byte_9A3A18[r % 8];
+				break;
+			case 2:
+				vehicle->scream_sound_id = byte_9A3A16[r % 2];
+				break;
+			default:
+				vehicle->scream_sound_id = NO_SCREAM;
+				break;
+			}
+		} else {
+			vehicle->scream_sound_id = NO_SCREAM;
+		}
+	}
+	return vehicle->scream_sound_id;
+}
+
+/**
+ * 
+>>>>>>> try to make sense of vehicle_update_sound
  *  rct2: 0x006D73D0
  * ax: verticalG
  * dx: lateralG
@@ -926,4 +943,20 @@ rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
 {
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	return &rideEntry->vehicles[vehicle->vehicle_type];
+}
+
+int vehicle_get_total_num_peeps(rct_vehicle *vehicle)
+{
+	uint16 spriteIndex;
+	int numPeeps = 0;
+	for (;;) {
+		numPeeps += vehicle->num_peeps;
+		spriteIndex = vehicle->next_vehicle_on_train;
+		if (spriteIndex == SPRITE_INDEX_NULL)
+			break;
+
+		vehicle = &(g_sprite_list[spriteIndex].vehicle);
+	}
+
+	return numPeeps;
 }

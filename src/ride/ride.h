@@ -109,7 +109,7 @@ typedef struct{
 	uint8 pad_55[0x2];
 	uint8 var_57;				// 0x57 , 0x71
 	uint8 pad_58;
-	uint8 var_59;				// 0x59 , 0x73
+	uint8 sound_range;				// 0x59 , 0x73
 	uint8 var_5A;				// 0x5A , 0x74
 	uint8 pad_5B;				// 0x5B , 0x75
 	uint8 var_5C;				// 0x5C , 0x76
