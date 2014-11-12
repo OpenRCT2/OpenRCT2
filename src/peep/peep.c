@@ -169,7 +169,7 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 		return 1;
 	}
 	peep->var_70 = ebx;
-	if (peep->var_71 != 8 || peep->var_71 != 15){
+	if (peep->var_71 != 8 || peep->var_72 != 15){
 		invalidate_sprite((rct_sprite*)peep);
 		*x = peep->x;
 		*y = peep->y;
