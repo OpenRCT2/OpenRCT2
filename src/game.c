@@ -719,7 +719,7 @@ void sub_0x0069E9A7(){
 	//return;
 	for (rct_sprite* spr = g_sprite_list; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; ++spr){
 		if (spr->unknown.sprite_identifier != 0xFF){
-			sub_69E9D3(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
+			sprite_move(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
 		}
 	}
 }

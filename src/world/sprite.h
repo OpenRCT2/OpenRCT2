@@ -51,7 +51,7 @@ typedef struct {
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-	uint8 pad_09;
+	uint8 var_09;
 	uint16 sprite_index;			// 0x0A
 	uint8 pad_0C[2];
 	sint16 x;						// 0x0E
@@ -102,7 +102,7 @@ void reset_sprite_list();
 void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void texteffect_update_all();
-void sub_69E9D3(int x, int y, int z, rct_sprite* sprite);
+void sprite_move(int x, int y, int z, rct_sprite* sprite);
 void balloon_pop(rct_sprite *sprite);
 void invalidate_sprite(rct_sprite* sprite);
 
