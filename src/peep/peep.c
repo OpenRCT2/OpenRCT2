@@ -311,7 +311,7 @@ void peep_update_falling(rct_peep* peep){
 				if (height - 4 >= peep->z && height < peep->z + 20){
 					// Looks like we are drowning!
 					invalidate_sprite((rct_sprite*)peep);
-					sub_69E9D3(peep->x, peep->y, height, (rct_sprite*)peep);
+					sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
 					// Drop balloon if held
 					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
 						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
@@ -351,13 +351,13 @@ void peep_update_falling(rct_peep* peep){
 			peep_remove(peep);
 			return;
 		}
-		sub_69E9D3(peep->x, peep->y, peep->z - 2, (rct_sprite*)peep);
+		sprite_move(peep->x, peep->y, peep->z - 2, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 		return;
 	}
 	
 	invalidate_sprite((rct_sprite*)peep);
-	sub_69E9D3(peep->x, peep->y, saved_height, (rct_sprite*)peep);
+	sprite_move(peep->x, peep->y, saved_height, (rct_sprite*)peep);
 	invalidate_sprite((rct_sprite*)peep);
 
 	peep->next_x = peep->x & 0xFFE0;
@@ -408,12 +408,12 @@ void peep_update_sitting(rct_peep* peep){
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
 
 		int ebx = peep->var_37 & 0x7;
-		int x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
-		int y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+		int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
+		int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
 		int z = peep->z;		
 		
 		invalidate_sprite((rct_sprite*)peep);
-		sub_69E9D3(x, y, z, (rct_sprite*)peep);
+		sprite_move(x, y, z, (rct_sprite*)peep);
 
 		peep->sprite_direction = ((peep->var_37 + 2) & 3) * 8;
 		invalidate_sprite((rct_sprite*)peep);
@@ -623,7 +623,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	sint16 x = 0, y = 0;
 	if (sub_6939EB(&x, &y, peep)){
 		invalidate_sprite((rct_sprite*)peep); 
-		sub_69E9D3(x, y, peep->z, (rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 		return;
 	}

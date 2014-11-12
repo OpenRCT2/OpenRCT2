@@ -549,7 +549,7 @@ static void ride_remove_cable_lift(rct_ride *ride)
 		spriteIndex = ride->cable_lift;
 		do {
 			vehicle = &(g_sprite_list[spriteIndex].vehicle);
-			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			invalidate_sprite((rct_sprite*)vehicle);
 			RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
 			spriteIndex = vehicle->next_vehicle_on_train;
 		} while (spriteIndex != SPRITE_INDEX_NULL);
@@ -574,7 +574,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 			spriteIndex = ride->vehicles[i];
 			while (spriteIndex != SPRITE_INDEX_NULL) {
 				vehicle = &(g_sprite_list[spriteIndex].vehicle);
-				RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)vehicle, 0, 0);
+				invalidate_sprite((rct_sprite*)vehicle);
 				RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
 				spriteIndex = vehicle->next_vehicle_on_train;
 			}
@@ -671,7 +671,7 @@ static void ride_remove_peeps(int rideIndex)
 			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->var_2C == 0)
 				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 
-			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite((rct_sprite*)peep);
 
 			if (exitDirection == 255) {
 				x = peep->next_x + 16;
@@ -680,13 +680,13 @@ static void ride_remove_peeps(int rideIndex)
 				if ((peep->next_z >> 8) & 4)
 					z += 8;
 				z++;
-				RCT2_CALLPROC_X(0x0069E9D3, exitX, 0, exitY, exitZ, (int)peep, 0, 0);
+				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
 			} else {
-				RCT2_CALLPROC_X(0x0069E9D3, exitX, 0, exitY, exitZ, (int)peep, 0, 0);
+				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
 				peep->sprite_direction = exitDirection;
 			}
 
-			RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+			invalidate_sprite((rct_sprite*)peep);
 			peep->state = PEEP_STATE_FALLING;
 			RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
 			

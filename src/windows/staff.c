@@ -458,9 +458,9 @@ void window_staff_overview_mouseup()
 		w->var_48C = peep->x;
 
 		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		invalidate_sprite((rct_sprite*)peep);
 
-		sub_69E9D3( 0x8000, peep->y, peep->z, (rct_sprite*)peep);
+		sprite_move( 0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_PICKED;
 		peep_window_state_update(peep);
@@ -1149,8 +1149,8 @@ void window_staff_overview_tool_down(){
 		}
 
 		rct_peep* peep = GET_PEEP(w->number);
-		sub_69E9D3(dest_x, dest_y, dest_z, (rct_sprite*)peep);
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_FALLING;
 		peep_window_state_update(peep);
@@ -1185,8 +1185,8 @@ void window_staff_overview_tool_abort(){
 		rct_peep* peep = GET_PEEP(w->number);
 		if (peep->state != PEEP_STATE_PICKED) return;
 
-		RCT2_CALLPROC_X(0x0069E9D3, w->var_48C, 0, peep->y, peep->z + 8, (int)peep, 0, 0);
-		RCT2_CALLPROC_X(0x006EC473, 0, 0, 0, 0, (int)peep, 0, 0);
+		sprite_move(w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
 
 		if (peep->x != 0x8000){
 			peep_decrement_num_riders(peep);

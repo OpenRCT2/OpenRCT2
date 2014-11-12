@@ -134,7 +134,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_14 = 8;
 		newPeep->sprite_direction = 0;
 
-		sub_69E9D3(_ax, *ecx, _dx, (rct_sprite*)newPeep);
+		sprite_move(_ax, *ecx, _dx, (rct_sprite*)newPeep);
 
 		newPeep->state = PEEP_STATE_PICKED;
 		if (newPeep->x != -32768) {
@@ -202,8 +202,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		newPeep->var_09 = *((uint8*)(_edx + 1));
 		newPeep->var_15 = *((uint8*)(_edx + 2));
 
-		sub_69E9D3( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
-		RCT2_CALLPROC_X(0x006EC473, *eax, 0, 0, 0, (int)newPeep, 0, 0);
+		sprite_move( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
+		invalidate_sprite((rct_sprite*)newPeep);
 
 		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
 		newPeep->var_CC = 0xFFFFFFFF;

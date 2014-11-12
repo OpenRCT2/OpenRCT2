@@ -182,7 +182,7 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->z = 0;
 	sprite->name_string_idx = 0;
 	sprite->var_14 = 0x10;
-	sprite->pad_09 = 0x14;
+	sprite->var_09 = 0x14;
 	sprite->var_15 = 0x8;
 	sprite->pad_0C[0] = 0x0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
@@ -256,11 +256,12 @@ void texteffect_update_all()
 
 /**
  *  rct2: 0x0069E9D3
+ *  Moves a sprite to a new location.
  * ax: x
  * cx: y
  * dx: z
  */
-void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
+void sprite_move(int x, int y, int z, rct_sprite* sprite){
 	int new_position = x;
 	if ((uint16)x == 0x8000)new_position = 0x10000;
 	else{
@@ -318,7 +319,7 @@ void sub_69E9D3(int x, int y, int z, rct_sprite* sprite){
 
 	sprite->unknown.sprite_left = new_x - sprite->unknown.var_14;
 	sprite->unknown.sprite_right = new_x + sprite->unknown.var_14;
-	sprite->unknown.sprite_top = new_y - sprite->unknown.pad_09;
+	sprite->unknown.sprite_top = new_y - sprite->unknown.var_09;
 	sprite->unknown.sprite_bottom = new_y + sprite->unknown.var_15;
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
