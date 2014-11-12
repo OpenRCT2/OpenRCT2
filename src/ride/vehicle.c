@@ -33,11 +33,15 @@
 #include "vehicle.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
-static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
-static void vehicle_update_waiting_to_depart(rct_vehicle *vehicle);
-static void vehicle_update_departing(rct_vehicle *vehicle);
-static void vehicle_update_travelling(rct_vehicle *vehicle);
-static void vehicle_update_arriving(rct_vehicle *vehicle);
+
+static void vehicle_D6_255_update_moving_to_end_of_station(rct_vehicle *vehicle);
+static void vehicle_D6_255_update_waiting_to_depart(rct_vehicle *vehicle);
+static void vehicle_D6_255_update_departing(rct_vehicle *vehicle);
+static void vehicle_D6_255_update_travelling(rct_vehicle *vehicle);
+static void vehicle_D6_255_update_arriving(rct_vehicle *vehicle);
+
+static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
+
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
 
@@ -508,19 +512,19 @@ static void vehicle_update(rct_vehicle *vehicle)
 	if (vehicle->ride_subtype == 255) {
 		switch (vehicle->status) {
 		case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-			vehicle_update_moving_to_end_of_station(vehicle);
+			vehicle_D6_255_update_moving_to_end_of_station(vehicle);
 			break;
 		case VEHICLE_STATUS_WAITING_TO_DEPART:
-			vehicle_update_waiting_to_depart(vehicle);
+			vehicle_D6_255_update_waiting_to_depart(vehicle);
 			break;
 		case VEHICLE_STATUS_DEPARTING:
-			vehicle_update_departing(vehicle);
+			vehicle_D6_255_update_departing(vehicle);
 			break;
 		case VEHICLE_STATUS_TRAVELLING:
-			vehicle_update_travelling(vehicle);
+			vehicle_D6_255_update_travelling(vehicle);
 			break;
 		case VEHICLE_STATUS_ARRIVING:
-			vehicle_update_arriving(vehicle);
+			vehicle_D6_255_update_arriving(vehicle);
 			break;
 		}
 		return;
@@ -549,37 +553,90 @@ static void vehicle_update(rct_vehicle *vehicle)
 		}
 	}
 
-	int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
-	RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->var_51 << 8) | ride->mode, (int)vehicle, 0, 0);
+	switch (vehicle->status) {
+	case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
+	case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
+	case VEHICLE_STATUS_WAITING_TO_DEPART:
+	case VEHICLE_STATUS_DEPARTING:
+	case VEHICLE_STATUS_TRAVELLING:
+	case VEHICLE_STATUS_ARRIVING:
+	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
+	case VEHICLE_STATUS_TRAVELLING_07:
+	case VEHICLE_STATUS_CRASHING:
+	case VEHICLE_STATUS_CRASHED:
+	case VEHICLE_STATUS_TRAVELLING_0A:
+	case VEHICLE_STATUS_SWINGING:
+	case VEHICLE_STATUS_ROTATING:
+	case VEHICLE_STATUS_ROTATING_0D:
+	case VEHICLE_STATUS_OPERATING:
+	case VEHICLE_STATUS_SHOWING_FILM:
+	case VEHICLE_STATUS_ROTATING_10:
+	case VEHICLE_STATUS_OPERATING_11:
+	case VEHICLE_STATUS_OPERATING_12:
+	case VEHICLE_STATUS_OPERATING_13:
+	case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
+	case VEHICLE_STATUS_TRAVELLING_15:
+		{
+			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
+			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->var_51 << 8) | ride->mode, (int)vehicle, 0, 0);
+		}
+		break;
+
+	case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
+		vehicle_update_doing_circus_show(vehicle);
+	}
 
 	vehicle_update_sound(vehicle);
 }
 
-static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle)
+static void vehicle_D6_255_update_moving_to_end_of_station(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_update_waiting_to_depart(rct_vehicle *vehicle)
+static void vehicle_D6_255_update_waiting_to_depart(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8F1, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_update_departing(rct_vehicle *vehicle)
+static void vehicle_D6_255_update_departing(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF97A, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_update_travelling(rct_vehicle *vehicle)
+static void vehicle_D6_255_update_travelling(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF99C, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_update_arriving(rct_vehicle *vehicle)
+static void vehicle_D6_255_update_arriving(rct_vehicle *vehicle)
 {
 	vehicle->var_51++;
 	if (vehicle->var_51 >= 64)
 		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+}
+
+/**
+ * 
+ *  rct2: 0x006D95F7
+ */
+static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
+{
+	int currentTime, totalTime;
+
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	totalTime = *(RCT2_ADDRESS(0x009A0AB4, uint16*)[vehicle->var_51]);
+	currentTime = vehicle->var_4C + 1;
+	if (currentTime <= totalTime) {
+		vehicle->var_4C = currentTime;
+	} else {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_51 = 0;
+		vehicle->var_C0 = 0;
+	}
 }
 
 /**
@@ -959,4 +1016,29 @@ int vehicle_get_total_num_peeps(rct_vehicle *vehicle)
 	}
 
 	return numPeeps;
+}
+
+/**
+ * 
+ *  rct2: 0x006DA1EC
+ */
+void vehicle_invalidate_window(rct_vehicle *vehicle)
+{
+	int viewVehicleIndex;
+	rct_ride *ride;
+	rct_window *w;
+
+	w = window_find_by_number(WC_RIDE, vehicle->ride);
+	if (w == NULL)
+		return;
+
+	ride = GET_RIDE(vehicle->ride);
+	viewVehicleIndex = w->ride.view - 1;
+	if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+		return;
+
+	if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
+		return;
+
+	window_invalidate(w);
 }

@@ -149,7 +149,7 @@ typedef struct {
 	uint8 sound2_id;				// 0xBD
 	uint8 sound2_volume;			// 0xBE
 	sint8 var_BF;
-	uint8 pad_C0[2];
+	uint16 var_C0;
 	uint8 speed;					// 0xC2
 	uint8 acceleration;				// 0xC3
 	uint8 var_C4;
@@ -282,6 +282,7 @@ bool sub_6DD365(rct_vehicle *vehicle);
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 int vehicle_get_total_num_peeps(rct_vehicle *vehicle);
+void vehicle_invalidate_window(rct_vehicle *vehicle);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)
