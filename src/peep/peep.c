@@ -525,7 +525,7 @@ void peep_update_sitting(rct_peep* peep){
 }
 
 /* rct2: 0x691A30 
- * Also used by entering_ride */
+ * Also used by entering_ride and queueing_front */
 static void peep_update_leaving_ride(rct_peep* peep){
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->var_2C], 0, 0, 0, 0, (int)peep, 0, 0);
 }
@@ -535,7 +535,7 @@ static void peep_update_leaving_ride(rct_peep* peep){
  */
 static void peep_update_queuing(rct_peep* peep){
 	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000){
-		RCT2_CALLPROC_X(0x691A23, 0, 0, 0, 0, (int)peep, 0, 0);
+		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
 	rct_ride* ride = GET_RIDE(peep->current_ride);
@@ -629,6 +629,44 @@ static void peep_update_queuing(rct_peep* peep){
 		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
 	}
+}
+
+/* rct2: 0x6BF641 */
+static void peep_update_sweeping(rct_peep* peep){
+	peep->var_E2 = 0;
+	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+	
+	invalidate_sprite((rct_sprite*)peep);
+
+	if (peep->action == PEEP_ACTION_STAFF_SWEEP && peep->action_frame == 8){
+		RCT2_CALLPROC_X(0x6738E1, peep->x, 0, peep->y, peep->z, 0, 0, 0);
+		peep->staff_litter_swept++;
+		peep->var_45 |= (1 << 4);
+	}
+	sint16 x = 0, y = 0;
+	if (sub_6939EB(&x, &y, peep)){
+		int eax = x, ebx, ecx = y, z, ebp, edi;
+		RCT2_CALLFUNC_X(0x694921, &eax, &ebx, &ecx, &z, &peep, &edi, &ebp);
+		x = eax;
+		y = ecx;
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	peep->var_37++;
+	if (peep->var_37 != 2){
+		peep->action = PEEP_ACTION_STAFF_SWEEP;
+		peep->action_frame = 0;
+		peep->var_70 = 0;
+		sub_693B58(peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_1;
+	peep_window_state_update(peep);
+	RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /* rct2: 0x6902A2 */
@@ -886,7 +924,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_1(peep);
 			break;
 		case PEEP_STATE_QUEUING_FRONT:
-			RCT2_CALLPROC_X(0x00691A24, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_leaving_ride(peep);
 			break;
 		case PEEP_STATE_ON_RIDE:
 			// No action
@@ -917,7 +955,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006BF567, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_SWEEPING:
-			RCT2_CALLPROC_X(0x006BF641, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_sweeping(peep);
 			break;
 		case PEEP_STATE_ENTERING_PARK:
 			peep_update_entering_park(peep);
