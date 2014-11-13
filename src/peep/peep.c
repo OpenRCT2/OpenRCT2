@@ -107,6 +107,34 @@ void peep_update_all()
 	}
 }
 
+/* some sort of check to see if peep is connected to the ground?? */
+int sub_68F3AE(rct_peep* peep){
+	peep->var_C4++;
+	if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF))return 1;
+
+	uint16 ebx = (peep->next_x | (peep->next_y << 8)) >> 5;
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebx);
+
+	uint8 map_type = MAP_ELEMENT_TYPE_PATH;
+	if ((peep->next_z >> 8) & ((1 << 4) | (1 << 3))){
+		map_type = MAP_ELEMENT_TYPE_SURFACE;
+	}
+
+	int z = peep->next_z & 0xFF;
+
+	for (;; map_element++){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == map_type){
+			if (z == map_element->base_height)return 1;
+		}
+		if (map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE)break;
+	}
+	
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_FALLING;
+	peep_window_state_update(peep);
+	return 0;
+}
+
 void sub_693B58(rct_peep* peep){
 	int ebx;
 	if (peep->action >= 0xFE){
@@ -429,7 +457,7 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
  */
 void peep_update_sitting(rct_peep* peep){
 	if (peep->var_2C == 0){
-		if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+		if (!sub_68F3AE(peep))return;
 		//691541
 
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -534,7 +562,7 @@ static void peep_update_leaving_ride(rct_peep* peep){
  * rct2: 0x69185D
  */
 static void peep_update_queuing(rct_peep* peep){
-	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000){
+	if (!sub_68F3AE(peep)){
 		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 		return;
 	}
@@ -634,11 +662,12 @@ static void peep_update_queuing(rct_peep* peep){
 /* rct2: 0x6BF641 */
 static void peep_update_sweeping(rct_peep* peep){
 	peep->var_E2 = 0;
-	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+	if (!sub_68F3AE(peep))return;
 	
 	invalidate_sprite((rct_sprite*)peep);
 
 	if (peep->action == PEEP_ACTION_STAFF_SWEEP && peep->action_frame == 8){
+		//Remove sick at this location		
 		RCT2_CALLPROC_X(0x6738E1, peep->x, 0, peep->y, peep->z, 0, 0, 0);
 		peep->staff_litter_swept++;
 		peep->var_45 |= (1 << 4);
@@ -646,7 +675,8 @@ static void peep_update_sweeping(rct_peep* peep){
 	sint16 x = 0, y = 0;
 	if (sub_6939EB(&x, &y, peep)){
 		int eax = x, ebx, ecx = y, z, ebp, edi;
-		RCT2_CALLFUNC_X(0x694921, &eax, &ebx, &ecx, &z, &peep, &edi, &ebp);
+
+		RCT2_CALLFUNC_X(0x694921, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
 		x = eax;
 		y = ecx;
 		sprite_move(x, y, z, (rct_sprite*)peep);
@@ -671,7 +701,7 @@ static void peep_update_sweeping(rct_peep* peep){
 
 /* rct2: 0x6902A2 */
 static void peep_update_1(rct_peep* peep){
-	if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+	if (!sub_68F3AE(peep))return;
 
 	peep_decrement_num_riders(peep);
 
@@ -733,7 +763,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 /* rct2: 0x6916D6 */
 static void peep_update_watching(rct_peep* peep){
 	if (peep->var_2C == 0){
-		if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+		if (!sub_68F3AE(peep))return;
 
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
