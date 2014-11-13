@@ -352,7 +352,7 @@ typedef struct {
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
-	uint16 next_z;					// 0x28
+	uint16 next_z;					// 0x28 possibly split into two uint8s
 	uint8 var_2A;
 	uint8 state;					// 0x2B
 	uint8 var_2C;
