@@ -113,7 +113,7 @@ void sub_693B58(rct_peep* peep){
 		ebx = RCT2_ADDRESS(0x981D8C, uint8)[peep->var_6D];
 	}
 	else{
-		ebx = RCT2_ADDRESS(0x981D8C, uint8)[peep->action];
+		ebx = RCT2_ADDRESS(0x981D8F, uint8)[peep->action];
 	}
 	if (ebx == peep->var_6E)return;
 
@@ -124,10 +124,13 @@ void sub_693B58(rct_peep* peep){
 	peep->var_14 = edx[ebx * 4];
 	peep->var_09 = edx[ebx * 4 + 1];
 	peep->var_15 = edx[ebx * 4 + 2];
+	// This is pointless as nothing will have changed.
 	invalidate_sprite((rct_sprite*)peep);
 }
 
-/* rct2: 0x6939EB */
+/* rct2: 0x6939EB 
+ * Possibly peep update action frame
+ */
 int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->var_70;
 	if (peep->action == 0xFE){
@@ -630,6 +633,89 @@ static void peep_update_picked(rct_peep* peep){
 	peep->var_2C++;
 	if (peep->var_2C == 13){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_HELP, 0xFF);
+	}
+}
+
+/* rct2: 0x6916D6 */
+static void peep_update_watching(rct_peep* peep){
+	if (peep->var_2C == 0){
+		if (RCT2_CALLPROC_X(0x68F3AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x4000)return;
+
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+		peep->var_32 = peep->x;
+		peep->var_34 = peep->y;
+
+		peep->sprite_direction = (peep->var_37 & 3) * 8;
+		invalidate_sprite((rct_sprite*)peep);
+
+		peep->action = 0xFE;
+		peep->var_6F = 2;
+
+		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		peep->var_2C++;
+
+		peep->time_to_stand = clamp(0, ((129 - peep->energy) * 16 + 50) / 2, 255);
+		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+	else if (peep->var_2C == 1){
+		if (peep->action < 0xFE){
+			//6917F6
+			sint16 x = 0, y = 0;
+			sub_6939EB(&x, &y, peep);
+
+			if (peep->action != 0xFF)return;
+			peep->action = 0xFE;
+		}
+		else{
+			if (peep_has_food(peep)){
+				if ((scenario_rand() & 0xFFFF) <= 1310){
+					peep->action = PEEP_ACTION_CHECK_WATCH;
+					peep->action_frame = 0;
+					peep->var_70 = 0;
+					sub_693B58(peep);
+					invalidate_sprite((rct_sprite*)peep);
+					return;
+				}
+
+				if ((scenario_rand() & 0xFFFF) <= 655){
+					peep->action = PEEP_ACTION_TAKE_PHOTO;
+					peep->action_frame = 0;
+					peep->var_70 = 0;
+					sub_693B58(peep);
+					invalidate_sprite((rct_sprite*)peep);
+					return;
+				}
+			}
+
+			if ((peep->standing_flags & 1)){
+				if ((scenario_rand() & 0xFFFF) <= 655){
+					peep->action = PEEP_ACTION_WAVE;
+					peep->action_frame = 0;
+					peep->var_70 = 0;
+					sub_693B58(peep);
+					invalidate_sprite((rct_sprite*)peep);
+					return;
+				}
+			}
+		}
+
+		peep->standing_flags ^= (1 << 7);
+		if (!(peep->standing_flags & (1 << 7)))return;
+
+		peep->time_to_stand--;
+		if (peep->time_to_stand != 0)return;
+
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_WALKING;
+		peep_window_state_update(peep);
+		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->var_32 = (peep->x & 0xFFE0) + 16;
+		peep->var_34 = (peep->y & 0xFFE0) + 16;
+		peep->var_36 = 5;
+		sub_693B58(peep);
 	}
 }
 

@@ -227,7 +227,8 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_FIX = 15,
 	PEEP_ACTION_STAFF_FIX_2 = 16,
 	PEEP_ACTION_STAFF_FIX_GROUND = 17,
-
+	PEEP_ACTION_WAVE = 22,
+	PEEP_ACTION_TAKE_PHOTO = 25,
 	PEEP_ACTION_CLAP = 26,
 };
 
@@ -396,6 +397,10 @@ typedef struct {
 			uint8 current_seat;				// 0x6C
 		};
 		uint16 time_to_sitdown; //0x6B
+		struct{
+			uint8 time_to_stand;	//0x6B
+			uint8 standing_flags;	//0x6C
+		};
 	};
 	uint8 var_6D;					// 0x6D
 	uint8 var_6E;					// 0x6E
