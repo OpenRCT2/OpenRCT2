@@ -636,6 +636,36 @@ static void peep_update_picked(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x6914CD */
+static void peep_update_leaving_park(rct_peep* peep){
+	if (peep->var_37 != 0){
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
+		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		return;
+	}
+
+	sint16 x = 0, y = 0;
+	if (sub_6939EB(&x, &y, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	peep->var_2A = 1;
+	peep->var_36 = 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+	RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 0);
+	peep->var_37 = 1;
+
+	window_invalidate_by_class(WC_GUEST_LIST);
+
+	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
+	RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
 /* rct2: 0x6916D6 */
 static void peep_update_watching(rct_peep* peep){
 	if (peep->var_2C == 0){
@@ -679,17 +709,17 @@ static void peep_update_watching(rct_peep* peep){
 					invalidate_sprite((rct_sprite*)peep);
 					return;
 				}
-
-				if ((scenario_rand() & 0xFFFF) <= 655){
-					peep->action = PEEP_ACTION_TAKE_PHOTO;
-					peep->action_frame = 0;
-					peep->var_70 = 0;
-					sub_693B58(peep);
-					invalidate_sprite((rct_sprite*)peep);
-					return;
-				}
 			}
-
+			
+			if ((scenario_rand() & 0xFFFF) <= 655){
+				peep->action = PEEP_ACTION_TAKE_PHOTO;
+				peep->action_frame = 0;
+				peep->var_70 = 0;
+				sub_693B58(peep);
+				invalidate_sprite((rct_sprite*)peep);
+				return;
+			}
+				
 			if ((peep->standing_flags & 1)){
 				if ((scenario_rand() & 0xFFFF) <= 655){
 					peep->action = PEEP_ACTION_WAVE;
@@ -864,10 +894,9 @@ static void peep_update(rct_peep *peep)
 			break;
 		case PEEP_STATE_ENTERING_PARK:
 			peep_update_entering_park(peep);
-			//RCT2_CALLPROC_X(0x00691451, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_LEAVING_PARK:
-			RCT2_CALLPROC_X(0x006914CD, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_leaving_park(peep);
 			break;
 		case PEEP_STATE_ANSWERING:
 			RCT2_CALLPROC_X(0x006C0CB8, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -879,7 +908,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_WATCHING:
-			RCT2_CALLPROC_X(0x006916D6, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_watching(peep);
 			break;
 		case PEEP_STATE_EMPTYING_BIN:
 			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
