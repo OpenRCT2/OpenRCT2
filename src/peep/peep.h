@@ -401,8 +401,8 @@ typedef struct {
 	uint8 var_6E;					// 0x6E
 	uint8 var_6F;
 	uint8 var_70;
-	uint8 var_71;
-	uint8 var_72;
+	uint8 action;					// 0x71
+	uint8 action_frame;				// 0x72
 	uint8 var_73;
 	uint16 var_74;
 	uint8 var_76;
@@ -549,5 +549,6 @@ void peep_decrement_num_riders(rct_peep* peep);
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep *peep);
+void sub_693B58(rct_peep* peep);
 
 #endif

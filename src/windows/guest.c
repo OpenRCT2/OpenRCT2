@@ -1229,7 +1229,7 @@ void window_guest_overview_tool_down(){
 	peep_decrement_num_riders(peep);
 	peep->state = 0;
 	peep_window_state_update(peep);
-	peep->var_71 = 0xFF;
+	peep->action = 0xFF;
 	peep->var_6D = 0;
 	peep->var_70 = 0;
 	peep->var_6E = 0xFF;
@@ -1238,7 +1238,7 @@ void window_guest_overview_tool_down(){
 	peep->happiness_growth_rate -= 10;
 	if (peep->happiness_growth_rate < 0)peep->happiness_growth_rate = 0;
 
-	RCT2_CALLPROC_X(0x00693B58, 0, 0, 0, 0, (int)peep, 0, 0);
+	sub_693B58(peep);
 	tool_cancel();
 	RCT2_GLOBAL(0x9DE550, sint32) = -1;
 }
@@ -1262,7 +1262,7 @@ void window_guest_overview_tool_abort(){
 		peep_decrement_num_riders(peep);
 		peep->state = 0;
 		peep_window_state_update(peep);
-		peep->var_71 = 0xFF;
+		peep->action = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;
 		peep->var_6E = 0;

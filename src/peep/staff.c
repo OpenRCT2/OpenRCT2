@@ -142,7 +142,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		}
 
 		newPeep->var_45 = 0;
-		newPeep->var_71 = 0xFF;
+		newPeep->action = 0xFF;
 		newPeep->var_6D = 0;
 		newPeep->var_70 = 0;
 		newPeep->var_E0 = 0;
