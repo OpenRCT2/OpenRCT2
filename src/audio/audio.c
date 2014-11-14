@@ -34,7 +34,11 @@ audio_device *gAudioDevices = NULL;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-void* gMusicChannels[4];
+rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params *gRideMusicParamsListEnd;
+void *gCrowdSoundChannel = 0;
+void *gTitleMusicChannel = 0;
 
 void audio_init(int i)
 {
@@ -1543,7 +1547,7 @@ void start_title_music()
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gMusicChannels[3] = Mixer_Play_Music(PATH_ID_CSS17);
+			gTitleMusicChannel = Mixer_Play_Music(PATH_ID_CSS17);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
@@ -1598,13 +1602,17 @@ void stop_other_sounds()
 void stop_ride_music()
 {
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-		for (int i = 0; i < 2; i++) {
-			rct_music_info2* music_info2 = &RCT2_ADDRESS(0x009AF46C, rct_music_info2)[i];
-			if (music_info2->id != (uint8)-1) {
+		for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+			rct_ride_music* ride_music = &gRideMusicList[i];//&RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
+			if (ride_music->rideid != (uint8)-1) {
+#ifdef USE_MIXER
+				Mixer_Stop_Channel(ride_music->sound_channel);
+#else
 				RCT2_GLOBAL(0x014241BC, uint32) = 1;
 				sound_channel_stop(i);
 				RCT2_GLOBAL(0x014241BC, uint32) = 0;
-				music_info2->id = -1;
+#endif
+				ride_music->rideid = -1;
 			}
 		}
 	}
@@ -1619,9 +1627,9 @@ void stop_crowd_sound()
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
 #ifdef USE_MIXER
-			if (gMusicChannels[2]) {
-				Mixer_Stop_Channel(gMusicChannels[2]);
-				gMusicChannels[2] = 0;
+			if (gCrowdSoundChannel) {
+				Mixer_Stop_Channel(gCrowdSoundChannel);
+				gCrowdSoundChannel = 0;
 			}
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
@@ -1642,9 +1650,9 @@ void stop_title_music()
 	if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
 		if (RCT2_GLOBAL(0x009AF600, uint8) != 0) {
 #ifdef USE_MIXER
-			if (gMusicChannels[3]) {
-				Mixer_Stop_Channel(gMusicChannels[3]);
-				gMusicChannels[3] = 0;
+			if (gTitleMusicChannel) {
+				Mixer_Stop_Channel(gTitleMusicChannel);
+				gTitleMusicChannel = 0;
 			}
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
@@ -1680,8 +1688,8 @@ void audio_init1()
 	audio_init2(devicenum);
 	int m = 0;
 	do {
-		rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[m];
-		const char* path = get_file_path(music_info3->pathid);
+		rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[m];
+		const char* path = get_file_path(ride_music_info->pathid);
 		RCT2_GLOBAL(0x014241BC, uint32) = 3;
 		HANDLE hfile = osinterface_file_open(path);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
@@ -1691,7 +1699,7 @@ void audio_init1()
 			osinterface_file_close(hfile);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
-				music_info3->var_0 = 0;
+				ride_music_info->var_0 = 0;
 			}
 		}
 		m++;
@@ -1705,7 +1713,7 @@ void audio_init1()
 void audio_init2(int device)
 {
 	audio_close();
-	for (int i = 0; i < countof(gVehicleSoundList)/*7*/; i++) {
+	for (int i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS/*7*/; i++) {
 		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
 		//rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];
 		vehicle_sound->id = 0xFFFF;
@@ -1740,9 +1748,9 @@ void audio_init2(int device)
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
 	if (successtimer) {
 		RCT2_GLOBAL(0x009AF284, uint32) |= (1 << 0);
-		for (int i = 0; i < 2; i++) {
-			rct_music_info2* music_info2 = &RCT2_ADDRESS(0x009AF46C, rct_music_info2)[i];
-			music_info2->id = -1;
+		for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+			rct_ride_music* ride_music = &gRideMusicList[i];//&RCT2_ADDRESS(0x009AF46C, rct_ride_music)[i];
+			ride_music->rideid = -1;
 		}
 	}
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4)) {
@@ -1832,355 +1840,6 @@ void stop_vehicle_sounds()
 				}
 			}
 			vehicle_sound->id = 0xFFFF;
-		}
-	}
-}
-
-/**
- * 
- *  rct2: 0x006BC3AC
- * Update ride music
- * cant properly hook this function, because the EBP register is used as a return value,
- * so it isn't fully tested.  need to decompile 6ABE4C (ride_update_all) first
- * @param x (ax)
- * @param y (cx)
- * @param z (dx)
- * @param sampleRate (di)
- * @param rideIndex (bl)
- * @param position (ebp)
- * @param tuneId (bh)
- * @returns new position (ebp)
- */
-int sub_6BC3AC(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
-{
-	{
-		int a_eax, a_ebx, a_ecx, a_edx, a_esi, a_edi, a_ebp;
-
-		a_eax = x;
-		a_ebx = (*tuneId << 8) | rideIndex;
-		a_ecx = y;
-		a_edx = z;
-		a_edi = sampleRate;
-		a_ebp = position;
-		RCT2_CALLFUNC_X(0x006BC3AC, &a_eax, &a_ebx, &a_ecx, &a_edx, &a_esi, &a_edi, &a_ebp);
-
-		*tuneId = (a_ebx >> 8) & 0xFF;
-		return a_ebp;
-	}
-
-	// TODO fix / bh needs returning too!
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
-		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
-		sint16 v11;
-		sint16 v12;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-			case 0:
-				v11 = y - x;
-				v12 = ((y + x) / 2) - z;
-				break;
-			case 1:
-				v11 = -x - y;
-				v12 = ((y - x) / 2) - z;
-				break;
-			case 2:
-				v11 = x - y;
-				v12 = ((-y - x) / 2) - z;
-				break;
-			case 3:
-				v11 = y + x;
-				v12 = ((x - y) / 2) - z;
-				break;
-		}
-		RCT2_GLOBAL(0x009AF5A0, sint16) = v11;
-		RCT2_GLOBAL(0x009AF5A2, sint16) = v12;
-		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
-		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
-		sint16 view_width2 = view_width * 2;
-		sint16 view_x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x - view_width2;
-		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
-		sint16 v16 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
-		sint16 v17 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
-		if (view_x >= RCT2_GLOBAL(0x009AF5A0, sint16) ||
-			view_y >= RCT2_GLOBAL(0x009AF5A2, sint16) ||
-			v16 < RCT2_GLOBAL(0x009AF5A0, sint16) ||
-			v17 < RCT2_GLOBAL(0x009AF5A2, sint16)) {
-				goto label58;
-		}
-		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((RCT2_GLOBAL(0x009AF5A0, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
-		x2 <<= 16;
-		uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-		if (screenwidth < 64) {
-			screenwidth = 64;
-		}
-		int panx = ((x2 / screenwidth) - 0x8000) >> 4;
-
-		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A2, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
-		y2 <<= 16;
-		uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-		if (screenheight < 64) {
-			screenheight = 64;
-		}
-		int pany = ((y2 / screenheight) - 0x8000) >> 4;
-
-		uint8 v24l = -1;
-		uint8 v24h = -1;
-		if (pany < 0) {
-			pany = -pany;
-		}
-		if (pany > 6143) {
-			pany = 6143;
-		}
-		if (pany > 2048) {
-			uint16 v27 = -(((pany - 2048) >> 2) - 1024) >> 2;
-			v24l = (uint8)v27;
-			if (v27 & 0xFF00) {
-				v24l = -1;
-			}
-		}
-
-		if (panx < 0) {
-			panx = -panx;
-		}
-		if (panx > 6143) {
-			panx = 6143;
-		}
-		if (panx > 2048) {
-			uint16 v27 = -(((panx - 2048) >> 2) - 1024) >> 2;
-			v24h = (uint8)v27;
-			if (v27 & 0xFF00) {
-				v24h = -1;
-			}
-		}
-
-		if (v24l >= v24h) {
-			v24l = v24h;
-		}
-
-		sint8 v31 = v24l - (3 * RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8));
-		if (v24l < (3 * RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8))) {
-			v31 = 0;
-		}
-		int v32 = -(((-v31 - 1) * (-v31 - 1)) >> 4) - 700;
-		if (v31 && v32 >= -4000) {
-			if (panx > 10000) {
-				panx = 10000;
-			}
-			if (panx < -10000) {
-				panx = -10000;
-			}
-			if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
-				panx = 0;
-			}
-			rct_music_info2* music_info2 = &RCT2_GLOBAL(0x009AF46C, rct_music_info2);
-			int channel = 0;
-			uint32 a1;
-			while (music_info2->id != rideIndex && music_info2->var_1 != *tuneId) {
-				music_info2++;
-				channel++;
-				if (channel >= 2) {
-					rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId];
-					a1 = position + music_info3->var_4;
-					goto label51;
-				}
-			}
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			int playing = sound_channel_is_playing(channel);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-			if (!playing) {
-				return 0;
-			}
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			a1 = sub_401B46(channel);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-		label51:
-			if (a1 < RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId].var_0) {
-				rct_music_info* music_info = RCT2_GLOBAL(0x009AF42C, rct_music_info*);
-				if (music_info < (rct_music_info*)0x009AF46C/*music_info list end*/) {
-					music_info->id = rideIndex;
-					music_info->var_1 = *tuneId;
-					music_info->offset = a1;
-					music_info->volume = v32;
-					music_info->pan = panx;
-					music_info->freq = RCT2_GLOBAL(0x009AF47C, uint16);
-					RCT2_GLOBAL(0x009AF42C, rct_music_info*)++;
-				}
-			}
-		} else {
-			uint32 eax;
-		label58:
-			eax = position;
-			position = *tuneId;
-			rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[*tuneId];
-			eax += music_info3->var_4;
-			if (eax < music_info3->var_0) {
-				position = eax;
-			}
-		}
-	}
-	return position;
-}
-
-/**
-*  Play/update ride music based on structs updated in 0x006BC3AC
-*  rct2: 0x006BC6D8
-*/
-void sub_6BC6D8()
-{
-	rct_music_info* edi;
-	int ebx;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
-		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-			if (!RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
-				// set to stop music if volume <= 1 ?
-				while (1) {
-					int v8 = 0;
-					int v9 = 1;
-					rct_music_info* music_info = &RCT2_GLOBAL(0x009AF430, rct_music_info);
-					while (music_info < RCT2_GLOBAL(0x009AF42C, rct_music_info*)) {
-						if (music_info->id != (uint8)-1) {
-							rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[music_info->var_1];
-							if (RCT2_ADDRESS(0x009AA0B1, uint8*)[music_info3->pathid]) { // file_on_cdrom[]
-								v8++;
-								if (v9 >= music_info->volume) {
-									v9 = music_info->volume;
-									edi = music_info;
-								}
-							}
-						}
-						music_info++;
-					}
-					if (v8 <= 1) {
-						break;
-					}
-					edi->id = -1;
-				}
-				while (1) {
-					int v8 = 0;
-					int v9 = 1;
-					rct_music_info* music_info = &RCT2_GLOBAL(0x009AF430, rct_music_info);
-					while (music_info < RCT2_GLOBAL(0x009AF42C, rct_music_info*)) {
-						if (music_info->id != (uint8)-1) {
-							v8++;
-							if (v9 >= music_info->volume) {
-								v9 = music_info->volume;
-								edi = music_info;
-							}
-						}
-						music_info++;
-					}
-					if (v8 <= 2) {
-						break;
-					}
-					edi->id = -1;
-				}
-
-				// stop currently playing music that is not in music_info list or not playing?
-				rct_music_info2* music_info2 = &RCT2_GLOBAL(0x009AF46C, rct_music_info2);
-				int channel = 0;
-				do {
-					if (music_info2->id != (uint8)-1) {
-						rct_music_info* music_info = &RCT2_GLOBAL(0x009AF430, rct_music_info);
-						while (music_info < RCT2_GLOBAL(0x009AF42C, rct_music_info*)) {
-							if (music_info->id == music_info2->id && music_info->var_1 == music_info2->var_1) {
-								RCT2_GLOBAL(0x014241BC, uint32) = 1;
-								int v16 = sound_channel_is_playing(channel);
-								RCT2_GLOBAL(0x014241BC, uint32) = 0;
-								if (v16) {
-									goto label32;
-								}
-								break;
-							}
-							music_info++;
-						}
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_channel_stop(channel);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-						music_info2->id = -1;
-					}
-				label32:
-					music_info2++;
-					channel++;
-				} while(channel < 2);
-
-				for (rct_music_info* music_info = &RCT2_GLOBAL(0x009AF430, rct_music_info); music_info < RCT2_GLOBAL(0x009AF42C, rct_music_info*); music_info++) {
-					if (music_info->id != (uint8)-1) {
-						rct_music_info2* music_info2 = &RCT2_GLOBAL(0x009AF46C, rct_music_info2);
-						int channel = 0;
-						while (music_info->id != music_info2->id || music_info->var_1 != music_info2->var_1) {
-							if (music_info2->id == (uint8)-1) {
-								ebx = channel;
-							}
-							music_info2++;
-							channel++;
-							if (channel >= 2) {
-								rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[music_info->var_1];
-								const char* filename = get_file_path(music_info3->pathid);
-								RCT2_GLOBAL(0x014241BC, uint32) = 3;
-								HANDLE hfile = osinterface_file_open(filename);
-								RCT2_GLOBAL(0x014241BC, uint32) = 0;
-								if (hfile != INVALID_HANDLE_VALUE) {
-									RCT2_GLOBAL(0x014241BC, uint32) = 3;
-									osinterface_file_read(hfile, &RCT2_GLOBAL(0x009AF47E, uint32), 4);
-									RCT2_GLOBAL(0x014241BC, uint32) = 3;
-									osinterface_file_close(hfile);
-									RCT2_GLOBAL(0x014241BC, uint32) = 0;
-								}
-								if (hfile == INVALID_HANDLE_VALUE || RCT2_GLOBAL(0x009AF47E, uint32) != 0x78787878) {
-									int offset = music_info->offset - 10000;
-									if (offset < 0) {
-										offset = 0;
-									}
-									RCT2_GLOBAL(0x014241BC, uint32) = 1;
-									int musicloaded = sound_channel_load_file2(ebx, filename, offset & 0xFFFFFFF0);
-									RCT2_GLOBAL(0x014241BC, uint32) = 0;
-									if (musicloaded) {
-										RCT2_GLOBAL(0x014241BC, uint32) = 1;
-										int musicplayed = sound_channel_play(ebx, 0, music_info->volume, music_info->pan, music_info->freq);
-										RCT2_GLOBAL(0x014241BC, uint32) = 0;
-										if (musicplayed) {
-											rct_music_info3* music_info3 = &RCT2_GLOBAL(0x009AF1C8, rct_music_info3*)[music_info->var_1];
-											if (music_info3->var_9) {
-												RCT2_GLOBAL(0x014241BC, uint32) = 1;
-												sub_401AF3(ebx, get_file_path(music_info3->pathid), 1, 0);
-												RCT2_GLOBAL(0x014241BC, uint32) = 0;
-											}
-											rct_music_info2* music_info2 = &RCT2_ADDRESS(0x009AF46C, rct_music_info2)[ebx];
-											music_info2->volume = music_info->volume;
-											music_info2->pan = music_info->pan;
-											music_info2->freq = music_info->freq;
-											music_info2->id = music_info->id;
-											music_info2->var_1 = music_info->var_1;
-										}
-									} else {
-										RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
-									}
-								}
-								return;
-							}
-						}
-
-						if (music_info->volume != music_info2->volume) {
-							music_info2->volume = music_info->volume;
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_volume(channel, music_info->volume);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-						}
-						if (music_info->pan != music_info2->pan) {
-							music_info2->pan = music_info->pan;
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_pan(channel, music_info->pan);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-						}
-						if (music_info->freq != music_info2->freq) {
-							music_info2->freq = music_info->freq;
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_frequency(channel, music_info->freq);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-						}
-
-					}
-				}
-			}
 		}
 	}
 }

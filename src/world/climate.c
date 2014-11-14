@@ -53,7 +53,7 @@ static const rct_weather_transition* climate_transitions[4];
 // Sound data
 static int _rainVolume = 1;
 static rct_sound _rainSoundInstance;
-static void* _rainSoundChannel;
+static void* _rainSoundChannel = 0;
 static unsigned int _lightningTimer, _thunderTimer;
 static rct_sound _thunderSoundInstance[MAX_THUNDER_INSTANCES];
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
@@ -218,7 +218,9 @@ static void climate_update_rain_sound()
 		if (_rainVolume == 1) {
 			// Start playing the rain sound
 #ifdef USE_MIXER
-			_rainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+			if (!_rainSoundChannel) {
+				_rainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+			}
 #else
 			if (sound_prepare(SOUND_RAIN_1, &_rainSoundInstance, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32)))
 				sound_play(&_rainSoundInstance, 1, -4000, 0, 0);
@@ -250,6 +252,7 @@ static void climate_update_rain_sound()
 #ifdef USE_MIXER
 			if (_rainSoundChannel) {
 				Mixer_Stop_Channel(_rainSoundChannel);
+				_rainSoundChannel = 0;
 			}
 #else
 			sound_stop(&_rainSoundInstance);
