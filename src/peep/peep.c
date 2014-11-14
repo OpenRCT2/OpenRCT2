@@ -874,6 +874,55 @@ static void peep_update_entering_park(rct_peep* peep){
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
 
+/* From peep_update */
+static void peep_update_thoughts(rct_peep* peep){
+	// Thoughts must always have a gap of at least
+	// 220 ticks in age between them. In order to 
+	// allow this when a thought is new it enters
+	// a holding zone. Before it becomes fresh.
+	int add_fresh = 1;
+	int fresh_thought = -1;
+	for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+		if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+			break;
+
+
+		if (peep->thoughts[i].var_2 == 1) {
+			add_fresh = 0;		
+			// If thought is fresh we wait 220 ticks
+			// before allowing a new thought to become fresh.
+			if (++peep->thoughts[i].var_3 >= 220) {
+				peep->thoughts[i].var_3 = 0;
+				// Thought is no longer fresh
+				peep->thoughts[i].var_2++;
+				add_fresh = 1;
+			}
+		}
+		else if (peep->thoughts[i].var_2 > 1) {
+			if (++peep->thoughts[i].var_3 == 0) {			
+				// When thought is older than ~6900 ticks remove it
+				if (++peep->thoughts[i].var_2 >= 28) {
+					peep->var_45 |= 1;
+
+					// Clear top thought, push others up
+					memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - 1));
+					peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+				}
+			}
+		}
+		else {
+			fresh_thought = i;
+		}
+	}
+	// If there are no fresh thoughts 
+	// a previously new thought can become 
+	// fresh.
+	if (add_fresh && fresh_thought != -1) {
+		peep->thoughts[fresh_thought].var_2 = 1;
+		peep->var_45 |= 1;
+	}
+}
+
 /**
  *
  *  rct2: 0x0068FC1E
@@ -889,40 +938,7 @@ static void peep_update(rct_peep *peep)
 			if (++peep->var_AE < 720)
 				peep->var_AD = 255;
 
-		// Update thoughts
-		i = 0;
-		int ebp = 0;
-		int edi = -1;
-		for (i = 0; i < PEEP_MAX_THOUGHTS; i++) {
-			if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
-				break;
-
-			if (peep->thoughts[i].var_2 == 1) {
-				ebp++;
-				if (++peep->thoughts[i].var_3 >= 220) {
-					peep->thoughts[i].var_3 = 0;
-					peep->thoughts[i].var_2++;
-					ebp--;
-				}
-			} else if (peep->thoughts[i].var_2 > 1) {
-				if (++peep->thoughts[i].var_3 > 255) {
-					if (++peep->thoughts[i].var_3 >= 28) {
-						peep->var_45 |= 1;
-
-						// Clear top thought, push others up
-						for (j = i; j < PEEP_MAX_THOUGHTS - 1; j++)
-							peep->thoughts[j].type = peep->thoughts[j + 1].type;
-						peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
-					}
-				}
-			} else {
-				edi = i;
-			}
-		}
-		if (ebp == 0 && edi != -1) {
-			peep->thoughts[edi].var_2 = 1;
-			peep->var_45 |= 1;
-		}
+		peep_update_thoughts(peep);
 	}
 
 	// Walking speed logic
