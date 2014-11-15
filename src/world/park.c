@@ -480,7 +480,7 @@ static rct_peep *park_generate_new_guest()
 			peep->destination_x = (peep->x & 0xFFE0) + 16;
 			peep->destination_y = (peep->y & 0xFFE0) + 16;
 
-			peep->var_36 = 5;
+			peep->destination_tolerence = 5;
 			peep->var_76 = 0;
 			peep->var_78 = spawn.direction;
 			peep->var_37 = 0;
