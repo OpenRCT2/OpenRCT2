@@ -253,10 +253,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		} else if (state == 4) {
 			input_viewport_drag_end();
 			if (RCT2_GLOBAL(0x009DE540, sint16) < 500) {
-				viewport_interaction_right_click(
-					RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, sint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, sint16)
-				);
+				viewport_interaction_right_click(x, y);
 			}
 		}
 		break;

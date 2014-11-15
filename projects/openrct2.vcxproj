@@ -149,6 +149,7 @@
     <ClCompile Include="..\src\windows\water.c" />
     <ClCompile Include="..\src\world\banner.c" />
     <ClCompile Include="..\src\world\climate.c" />
+    <ClCompile Include="..\src\world\footpath.c" />
     <ClCompile Include="..\src\world\fountain.c" />
     <ClCompile Include="..\src\world\map.c" />
     <ClCompile Include="..\src\world\park.c" />
@@ -210,6 +211,7 @@
     <ClInclude Include="..\src\windows\tooltip.h" />
     <ClInclude Include="..\src\world\banner.h" />
     <ClInclude Include="..\src\world\climate.h" />
+    <ClInclude Include="..\src\world\footpath.h" />
     <ClInclude Include="..\src\world\map.h" />
     <ClInclude Include="..\src\world\park.h" />
     <ClInclude Include="..\src\world\scenery.h" />

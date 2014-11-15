@@ -22,13 +22,14 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
-#include "../input.h"
-#include "../world/map.h"
 #include "../localisation/localisation.h"
+#include "../input.h"
 #include "../sprites.h"
-#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/viewport.h"
+#include "../world/footpath.h"
+#include "../world/map.h"
 #include "dropdown.h"
 
 enum {
@@ -41,14 +42,6 @@ enum {
 	SELECTED_PATH_TYPE_NORMAL,
 	SELECTED_PATH_TYPE_QUEUE
 };
-
-typedef struct {
-	uint16 pad_00;
-	uint32 image;		// 0x02
-	uint32 pad_06;
-	uint8 pad_0A;
-	uint8 flags;		// 0x0B
-} rct_path_type;
 
 enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -226,7 +219,7 @@ static void window_footpath_close()
 
 	window_get_register(w);
 
-	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	sub_6A7831();
 	viewport_set_visibility(0);
 	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
@@ -261,7 +254,7 @@ static void window_footpath_mouseup()
 
 		_window_footpath_cost = 0x80000000;
 		tool_cancel();
-		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		sub_6A7831();
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
@@ -276,7 +269,7 @@ static void window_footpath_mouseup()
 
 		_window_footpath_cost = 0x80000000;
 		tool_cancel();
-		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		sub_6A7831();
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
@@ -372,7 +365,7 @@ static void window_footpath_dropdown()
 
 	// Set selected path id
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = pathId;
-	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	sub_6A7831();
 	_window_footpath_cost = 0x80000000;
 	window_invalidate(w);
 }
@@ -620,7 +613,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 
 	if (z == 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
-		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		sub_6A7831();
 	} else {
 		// Check for change
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & 2) && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) == x && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) == y && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) == mapElement->base_height)
@@ -634,7 +627,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
 
-		RCT2_CALLPROC_EBPSAFE(0x006A7831);
+		sub_6A7831();
 
 		// Set provisional path
 		slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
@@ -687,7 +680,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) != 0)
 		return;
 
-	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	sub_6A7831();
 
 	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement);
 	if (z == 0)
@@ -737,7 +730,7 @@ static void window_footpath_remove()
 	// RCT2_CALLPROC_EBPSAFE(0x006A7863);
 
 	_window_footpath_cost = MONEY32_UNDEFINED;
-	RCT2_CALLPROC_EBPSAFE(0x006A7831);
+	sub_6A7831();
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) / 32;
 	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) / 32;
@@ -793,7 +786,12 @@ loc_6A78EF:
 	
 	// Remove path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
-	game_do_command(RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16), 1, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16), mapElement->base_height, GAME_COMMAND_REMOVE_PATH, 0, 0);
+	footpath_remove(
+		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16),
+		mapElement->base_height,
+		1
+	);
 
 	// Move selection
 	edge ^= 2;
