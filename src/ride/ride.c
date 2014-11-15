@@ -1140,7 +1140,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		ride->var_15D--;
 
 		peep = &(g_sprite_list[ride->maze_tiles].peep);
-		peep->var_32++;
+		peep->destination_x++;
 	}
 
 	// Invalidate something related to station start

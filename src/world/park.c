@@ -477,8 +477,8 @@ static rct_peep *park_generate_new_guest()
 			peep->sprite_direction = spawn.direction << 3;
 						
 			// Get the centre point of the tile the peep is on
-			peep->var_32 = (peep->x & 0xFFE0) + 16;
-			peep->var_34 = (peep->y & 0xFFE0) + 16;
+			peep->destination_x = (peep->x & 0xFFE0) + 16;
+			peep->destination_y = (peep->y & 0xFFE0) + 16;
 
 			peep->var_36 = 5;
 			peep->var_76 = 0;

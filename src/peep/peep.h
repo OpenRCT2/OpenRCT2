@@ -230,6 +230,9 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_TAKE_PHOTO = 25,
 	PEEP_ACTION_CLAP = 26,
+
+	PEEP_ACTION_NONE_1 = 254,
+	PEEP_ACTION_NONE_2 = 255
 };
 
 enum PEEP_FLAGS {
@@ -364,9 +367,9 @@ typedef struct {
 	};
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
-	uint16 var_32;
-	uint16 var_34;
-	uint8 var_36;
+	uint16 destination_x;			// 0x32 Location that the peep is trying to get to
+	uint16 destination_y;			// 0x34 
+	uint8 destination_tolerence;	// 0x36 How close to destination before next action/state 0 = exact
 	uint8 var_37;
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39

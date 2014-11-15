@@ -157,7 +157,10 @@ void sub_693B58(rct_peep* peep){
 }
 
 /* rct2: 0x6939EB 
- * Possibly peep update action frame
+ * Possibly peep update action frame.
+ * Also used to move peeps to the correct position to
+ * start an action. Returns 0 if the correct destination 
+ * has not yet been reached.
  */
 int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->var_70;
@@ -165,21 +168,18 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 		peep->action = 0xFF;
 	}
 
-	*x = peep->x - peep->var_32;
-	*y = peep->y - peep->var_34;
-	int ebx = *x;
-	int edx = *y;
-	if (ebx < 0) ebx = -ebx;
-	if (edx < 0) edx = -edx;
+	*x = peep->x - peep->destination_x;
+	*y = peep->y - peep->destination_y;
 
-	int ebp = ebx + edx;
+	int x_delta = abs(*x);
+	int y_delta = abs(*y);
+
 	if (peep->action >= 0xFE){
-		if (ebp <= peep->var_36){
-			
+		if (x_delta + y_delta <= peep->destination_tolerence){
 			return 0;
 		}
 		int direction = 0;
-		if (ebx < edx){
+		if (x_delta < y_delta){
 			direction = 8;
 			if (*y >= 0){
 				direction = 24;
@@ -194,7 +194,7 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 		peep->sprite_direction = direction;
 		*x = peep->x + RCT2_ADDRESS(0x981D7C, uint16)[direction / 4];
 		*y = peep->y + RCT2_ADDRESS(0x981D7E, uint16)[direction / 4];
-		ebx = peep->var_E0 + 1;
+		int ebx = peep->var_E0 + 1;
 		uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
 		uint8* _edi = (uint8*)(edi[peep->var_6E * 2 + 1]);
 		if (ebx >= *_edi){
@@ -208,7 +208,7 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 	int* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
 	uint8* _edi = (uint8*)(edi[peep->var_6E * 2 + 1]);
 	peep->action_frame++;
-	ebx = _edi[peep->action_frame + 1];
+	int ebx = _edi[peep->action_frame + 1];
 
 	// If last frame of action
 	if (ebx == 0xFF){
@@ -444,11 +444,10 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
 	peep->state = PEEP_STATE_WALKING;
 	peep_window_state_update(peep);
 
-	int x = (peep->x & 0xFFE0) + 16;
-	int y = (peep->y & 0xFFE0) + 16;
-	peep->var_32 = x;
-	peep->var_34 = y;
-	peep->var_36 = 5;
+	// Set destination to the center of the tile.
+	peep->destination_x = (peep->x & 0xFFE0) + 16;
+	peep->destination_y = (peep->y & 0xFFE0) + 16;
+	peep->destination_tolerence = 5;
 	sub_693B58(peep);
 }
 
@@ -499,11 +498,10 @@ void peep_update_sitting(rct_peep* peep){
 			peep->state = PEEP_STATE_WALKING;
 			peep_window_state_update(peep);
 
-			int x = (peep->x & 0xFFE0) + 16;
-			int y = (peep->y & 0xFFE0) + 16;
-			peep->var_32 = x;
-			peep->var_34 = y;
-			peep->var_36 = 5;
+			// Set destination to the center of the tile
+			peep->destination_x = (peep->x & 0xFFE0) + 16;
+			peep->destination_y = (peep->y & 0xFFE0) + 16;
+			peep->destination_tolerence = 5;
 			sub_693B58(peep);
 			return;
 		}
@@ -578,7 +576,7 @@ static void peep_update_queuing(rct_peep* peep){
 	if (peep->var_2C != 0xA){
 		if (peep->var_74 == 0xFFFF){
 			//Happens every time peep goes onto ride.
-			peep->var_36 = 0;
+			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
 			peep_window_state_update(peep);
@@ -692,8 +690,8 @@ static void peep_update_mowing(rct_peep* peep){
 			return;
 		}
 
-		peep->var_32 = RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] + peep->next_x;
-		peep->var_34 = RCT2_ADDRESS(0x9929CA, uint16)[peep->var_37 * 2] + peep->next_y;
+		peep->destination_x = RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] + peep->next_x;
+		peep->destination_y = RCT2_ADDRESS(0x9929CA, uint16)[peep->var_37 * 2] + peep->next_y;
 
 		if (peep->var_37 != 7)continue;
 
@@ -763,9 +761,9 @@ static void peep_update_1(rct_peep* peep){
 		peep->state = PEEP_STATE_PATROLLING;
 	}
 	peep_window_state_update(peep);
-	peep->var_32 = peep->x;
-	peep->var_34 = peep->y;
-	peep->var_36 = 10;
+	peep->destination_x = peep->x;
+	peep->destination_y = peep->y;
+	peep->destination_tolerence = 10;
 	peep->var_76 = 0;
 	peep->var_78 = peep->sprite_direction >> 3;
 }
@@ -799,7 +797,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 	}
 
 	peep->var_2A = 1;
-	peep->var_36 = 5;
+	peep->destination_tolerence = 5;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
 	RCT2_GLOBAL(0x9A9804, uint16) |= (1 << 0);
 	peep->var_37 = 1;
@@ -819,8 +817,8 @@ static void peep_update_watching(rct_peep* peep){
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
 
-		peep->var_32 = peep->x;
-		peep->var_34 = peep->y;
+		peep->destination_x = peep->x;
+		peep->destination_y = peep->y;
 
 		peep->sprite_direction = (peep->var_37 & 3) * 8;
 		invalidate_sprite((rct_sprite*)peep);
@@ -887,9 +885,10 @@ static void peep_update_watching(rct_peep* peep){
 		peep->state = PEEP_STATE_WALKING;
 		peep_window_state_update(peep);
 		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
-		peep->var_32 = (peep->x & 0xFFE0) + 16;
-		peep->var_34 = (peep->y & 0xFFE0) + 16;
-		peep->var_36 = 5;
+		// Send peep to the center of current tile.
+		peep->destination_x = (peep->x & 0xFFE0) + 16;
+		peep->destination_y = (peep->y & 0xFFE0) + 16;
+		peep->destination_tolerence = 5;
 		sub_693B58(peep);
 	}
 }
