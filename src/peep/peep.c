@@ -659,6 +659,57 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x006BF567 */
+static void peep_update_mowing(rct_peep* peep){
+	peep->var_E2 = 0;
+	if (!sub_68F3AE(peep))return;
+
+	invalidate_sprite((rct_sprite*)peep);
+	while (1){
+		sint16 x = 0, y = 0;
+		if (sub_6939EB(&x, &y, peep)){
+			int eax = x, ebx, ecx = y, z, ebp, edi;
+
+			RCT2_CALLFUNC_X(0x662783, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
+			x = eax;
+			y = ecx;
+			sprite_move(x, y, z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+			return;
+		}
+
+		peep->var_37++;
+
+		if (peep->var_37 == 1){
+			RCT2_CALLPROC_X(0x00693BE5, 2, 0, 0, 0, (int)peep, 0, 0);
+		}
+
+		if (RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] == 0xFFFF){
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_1;
+			peep_window_state_update(peep);
+			RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
+			return;
+		}
+
+		peep->var_32 = RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] + peep->next_x;
+		peep->var_34 = RCT2_ADDRESS(0x9929CA, uint16)[peep->var_37 * 2] + peep->next_y;
+
+		if (peep->var_37 != 7)continue;
+
+		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+		for (; ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE); map_element++);
+
+		if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5)){
+			map_element->properties.surface.grass_length = 0;
+			gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->base_height * 8 + 16);
+		}
+		peep->staff_lawns_mown++;
+		peep->var_45 |= (1 << 5);
+	}
+}
+
 /* rct2: 0x6BF641 */
 static void peep_update_sweeping(rct_peep* peep){
 	peep->var_E2 = 0;
@@ -905,7 +956,7 @@ static void peep_update_thoughts(rct_peep* peep){
 					peep->var_45 |= 1;
 
 					// Clear top thought, push others up
-					memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - 1));
+					memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
 					peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
 				}
 			}
@@ -931,7 +982,6 @@ static void peep_update(rct_peep *peep)
 {
 	//RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0); return;
 	//return;
-	int i, j;
 
 	if (peep->type == PEEP_TYPE_GUEST) {
 		if (peep->var_AD != 255)
@@ -998,7 +1048,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006BF1FD, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_MOWING:
-			RCT2_CALLPROC_X(0x006BF567, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_mowing(peep);
 			break;
 		case PEEP_STATE_SWEEPING:
 			peep_update_sweeping(peep);
