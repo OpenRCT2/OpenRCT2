@@ -30,6 +30,7 @@
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
+#include "../world/scenery.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -154,6 +155,14 @@ void sub_693B58(rct_peep* peep){
 	peep->var_15 = edx[ebx * 4 + 2];
 	// This is pointless as nothing will have changed.
 	invalidate_sprite((rct_sprite*)peep);
+}
+
+static void peep_state_reset(rct_peep* peep){
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_1;
+	peep_window_state_update(peep);
+
+	RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /* rct2: 0x6939EB 
@@ -683,10 +692,7 @@ static void peep_update_mowing(rct_peep* peep){
 		}
 
 		if (RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] == 0xFFFF){
-			peep_decrement_num_riders(peep);
-			peep->state = PEEP_STATE_1;
-			peep_window_state_update(peep);
-			RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_state_reset(peep);
 			return;
 		}
 
@@ -705,6 +711,73 @@ static void peep_update_mowing(rct_peep* peep){
 		}
 		peep->staff_lawns_mown++;
 		peep->var_45 |= (1 << 5);
+	}
+}
+
+
+
+/* rct2: 0x006BF6C9 */
+static void peep_update_emptying_bin(rct_peep* peep){
+	peep->var_E2 = 0;
+
+	if (peep->var_2C == 0){
+		if (!sub_68F3AE(peep))return;
+
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+		peep->sprite_direction = (peep->var_37 & 3) << 3;
+		peep->action = PEEP_ACTION_STAFF_EMPTY_BIN;
+		peep->action_frame = 0;
+		peep->var_70 = 0;
+		sub_693B58(peep);
+		invalidate_sprite((rct_sprite*)peep);
+
+		peep->var_2C = 1;
+	}
+	else if (peep->var_2C == 1){
+
+		if (peep->action == PEEP_ACTION_NONE_2){
+			peep_state_reset(peep);
+			return;
+		}
+
+		sint16 x = 0, y = 0;
+		sub_6939EB(&x, &y, peep);
+
+		if (peep->action_frame != 11)return;
+
+		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+		for (;; map_element++){
+			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+				if ((peep->next_z & 0xFF) == map_element->base_height)break;
+			}
+			if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+				peep_state_reset(peep);
+				return;
+			}
+		}
+
+		if ((map_element->properties.path.additions & 0xF) == 0){
+			peep_state_reset(peep);
+			return;
+		}
+
+		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[(map_element->properties.path.additions & 0xF) - 1];
+		if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG1)
+			|| map_element->flags&(1 << 5)
+			|| map_element->properties.path.additions & (1 << 7)){
+			peep_state_reset(peep);
+			return;
+		}
+
+		map_element->properties.path.addition_status = ((3 << peep->var_37) << peep->var_37);
+
+		gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->clearance_height * 8);
+
+		peep->staff_bins_emptied++;
+		peep->var_45 |= (1 << 4);
 	}
 }
 
@@ -742,10 +815,7 @@ static void peep_update_sweeping(rct_peep* peep){
 		invalidate_sprite((rct_sprite*)peep);
 		return;
 	}
-	peep_decrement_num_riders(peep);
-	peep->state = PEEP_STATE_1;
-	peep_window_state_update(peep);
-	RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_state_reset(peep);
 }
 
 /* rct2: 0x6902A2 */
@@ -1071,7 +1141,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_watching(peep);
 			break;
 		case PEEP_STATE_EMPTYING_BIN:
-			RCT2_CALLPROC_X(0x006BF6C9, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_emptying_bin(peep);
 			break;
 		case PEEP_STATE_20:
 			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
