@@ -714,7 +714,56 @@ static void peep_update_mowing(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x006BF7E6 */
+static void peep_update_watering(rct_peep* peep){
+	peep->var_E2 = 0;
+	if (peep->var_2C == 0){
+		if (!sub_68F3AE(peep))return;
 
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+		peep->sprite_direction = (peep->var_37 & 3) << 3;
+		peep->action = PEEP_ACTION_STAFF_WATERING;
+		peep->action_frame = 0;
+		peep->var_70 = 0;
+		sub_693B58(peep);
+		invalidate_sprite((rct_sprite*)peep);		
+		
+		peep->var_2C = 1;
+	}
+	else if (peep->var_2C == 1){
+		if (peep->action != PEEP_ACTION_NONE_2){
+			sint16 x, y;
+			sub_6939EB(&x, &y, peep);
+			return;
+		}
+
+		int x = peep->next_x + RCT2_ADDRESS(0x993CCC, sint16)[peep->var_37 * 2];
+		int y = peep->next_y + RCT2_ADDRESS(0x993CCE, sint16)[peep->var_37 * 2];
+
+		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((x | (y << 8)) >> 5);
+
+		for (;; map_element++){
+			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY){
+				if (abs((peep->next_z & 0xFF) - map_element->base_height) <= 4){
+					rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+
+					if (scenery_entry->small_scenery.flags& SMALL_SCENERY_FLAG6){
+						map_element->properties.scenery.age = 0;
+						gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+						peep->staff_gardens_watered++;
+						peep->var_45 |= (1 << 4);
+					}
+				}
+			}
+			if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+				peep_state_reset(peep);
+				return;
+			}
+		}
+	}
+}
 
 /* rct2: 0x006BF6C9 */
 static void peep_update_emptying_bin(rct_peep* peep){
@@ -1147,7 +1196,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_WATERING:
-			RCT2_CALLPROC_X(0x006BF7E6, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_watering(peep);
 			break;
 		case PEEP_STATE_HEADING_TO_INSPECTION:
 			RCT2_CALLPROC_X(0x006C16D7, 0, 0, 0, 0, (int)peep, 0, 0);
