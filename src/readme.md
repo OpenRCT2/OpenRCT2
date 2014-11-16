@@ -24,6 +24,10 @@
 
   Park management logic such as finance, marketing and research.
 
+- **peep**
+
+  Guest and staff definitions and logic such as action management and pathfinding.
+
 - **platform**
 
   Compiler and operating system specific code such as type definitions, message handling and file input / output.
