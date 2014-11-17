@@ -236,30 +236,31 @@ static void window_save_prompt_mouseup()
 
 	if (prompt_mode == PM_QUIT) {
 		switch (widgetIndex) {
-			case WQIDX_OK:
-				openrct2_finish();
-				break;
-			case WQIDX_CLOSE:
-			case WQIDX_CANCEL:
-				window_close(w);
-				break;
+		case WQIDX_OK:
+			openrct2_finish();
+			break;
+		case WQIDX_CLOSE:
+		case WQIDX_CANCEL:
+			window_close(w);
+			break;
 		}
 		return;
 	} else {
 		switch (widgetIndex) {
-			case WIDX_SAVE:
-				if (!save_game()) {
-					// user pressed cancel
-					window_close(w);
-					return;
-				}
-				break;
-			case WIDX_DONT_SAVE:
-				break;
-			case WIDX_CLOSE:
-			case WIDX_CANCEL:
+		case WIDX_SAVE:
+			if (!save_game()) {
+				// user pressed cancel
 				window_close(w);
 				return;
+			}
+			break;
+		case WIDX_DONT_SAVE:
+			game_load_or_quit_no_save_prompt();
+			return;
+		case WIDX_CLOSE:
+		case WIDX_CANCEL:
+			window_close(w);
+			return;
 		}
 	}
 	
