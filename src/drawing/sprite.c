@@ -328,7 +328,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
 
 	uint8* palette_pointer = NULL;
-	uint8 palette[0x100];
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 
@@ -347,11 +346,11 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 
 		uint16 palette_offset = palette_to_g1_offset[palette_ref];
 		palette_pointer = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette_offset].offset;
-		RCT2_GLOBAL(0x9ABDA4, uint32) = (uint32)palette_pointer;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		unknown_pointer = NULL;
+		palette_pointer = RCT2_ADDRESS(0x9ABF0C, uint8);
 
 		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
@@ -361,40 +360,36 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 		rct_g1_element* secondary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[secondary_offset];
 		rct_g1_element* tertiary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[tertiary_offset];
 
-		memcpy((uint8*)0x9ABFFF, &primary_colour->offset[0xF3], 12);
-		memcpy((uint8*)0x9ABFD6, &secondary_colour->offset[0xF3], 12);
-		memcpy((uint8*)0x9ABF3A, &tertiary_colour->offset[0xF3], 12);
+		memcpy(palette_pointer + 0xF3, &primary_colour->offset[0xF3], 12);
+		memcpy(palette_pointer + 0xCA, &secondary_colour->offset[0xF3], 12);
+		memcpy(palette_pointer + 0x2E, &tertiary_colour->offset[0xF3], 12);
 
 		//image_id
 		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
 		image_id |= IMAGE_TYPE_USE_PALETTE << 28;
-
-		RCT2_GLOBAL(0x9ABDA4, uint32) = 0x9ABF0C;
-		palette_pointer = (uint8*)0x9ABF0C;
 	}
 	else if (image_type){
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
 		unknown_pointer = NULL;
-		//Copy the peep palette into a new palette. 
-		//Not really required but its nice to make a copy
-		memcpy(palette, peep_palette, 0x100);
+
+		palette_pointer = RCT2_ADDRESS(0x9ABE0C, uint8);
 
 		//Top
 		int top_type = (image_id >> 19) & 0x1f;
 		uint32 top_offset = palette_to_g1_offset[top_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
 		rct_g1_element top_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[top_offset];
-		memcpy(palette + 0xF3, top_palette.offset + 0xF3, 12);
+		memcpy(palette_pointer + 0xF3, top_palette.offset + 0xF3, 12);
 		
 		//Trousers
 		int trouser_type = (image_id >> 24) & 0x1f;
 		uint32 trouser_offset = palette_to_g1_offset[trouser_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
 		rct_g1_element trouser_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[trouser_offset];
-		memcpy(palette + 0xCA, trouser_palette.offset + 0xF3, 12);
-
-		//For backwards compatibility until the zooming function is done
-		RCT2_GLOBAL(0x9ABDA4, uint8*) = palette;
-		palette_pointer = palette;
+		memcpy(palette_pointer + 0xCA, trouser_palette.offset + 0xF3, 12);
 	}
+
+	//For backwards compatibility
+	RCT2_GLOBAL(0x9ABDA4, uint8*) = palette_pointer;
+
 	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }
 
