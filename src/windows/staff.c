@@ -1154,7 +1154,7 @@ void window_staff_overview_tool_down(){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_FALLING;
 		peep_window_state_update(peep);
-		peep->var_71 = 0xFF;
+		peep->action = 0xFF;
 		peep->var_6D = 0;
 		peep->var_70 = 0;
 		peep->var_6E = 0;
@@ -1192,7 +1192,7 @@ void window_staff_overview_tool_abort(){
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_FALLING;
 			peep_window_state_update(peep);
-			peep->var_71 = 0xFF;
+			peep->action = 0xFF;
 			peep->var_6D = 0;
 			peep->var_70 = 0;
 			peep->var_6E = 0;

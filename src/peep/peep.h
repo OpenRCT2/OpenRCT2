@@ -227,8 +227,14 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_FIX = 15,
 	PEEP_ACTION_STAFF_FIX_2 = 16,
 	PEEP_ACTION_STAFF_FIX_GROUND = 17,
-
+	PEEP_ACTION_STAFF_WATERING = 19,
+	PEEP_ACTION_WAVE = 22,
+	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
+	PEEP_ACTION_TAKE_PHOTO = 25,
 	PEEP_ACTION_CLAP = 26,
+
+	PEEP_ACTION_NONE_1 = 254,
+	PEEP_ACTION_NONE_2 = 255
 };
 
 enum PEEP_FLAGS {
@@ -351,7 +357,7 @@ typedef struct {
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
-	uint16 next_z;					// 0x28
+	uint16 next_z;					// 0x28 possibly split into two uint8s
 	uint8 var_2A;
 	uint8 state;					// 0x2B
 	uint8 var_2C;
@@ -363,9 +369,9 @@ typedef struct {
 	};
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
-	uint16 var_32;
-	uint16 var_34;
-	uint8 var_36;
+	uint16 destination_x;			// 0x32 Location that the peep is trying to get to
+	uint16 destination_y;			// 0x34 
+	uint8 destination_tolerence;	// 0x36 How close to destination before next action/state 0 = exact
 	uint8 var_37;
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
@@ -396,13 +402,17 @@ typedef struct {
 			uint8 current_seat;				// 0x6C
 		};
 		uint16 time_to_sitdown; //0x6B
+		struct{
+			uint8 time_to_stand;	//0x6B
+			uint8 standing_flags;	//0x6C
+		};
 	};
 	uint8 var_6D;					// 0x6D
 	uint8 var_6E;					// 0x6E
 	uint8 var_6F;
 	uint8 var_70;
-	uint8 var_71;
-	uint8 var_72;
+	uint8 action;					// 0x71
+	uint8 action_frame;				// 0x72
 	uint8 var_73;
 	uint16 var_74;
 	uint8 var_76;
@@ -549,5 +559,6 @@ void peep_decrement_num_riders(rct_peep* peep);
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep *peep);
+void sub_693B58(rct_peep* peep);
 
 #endif
