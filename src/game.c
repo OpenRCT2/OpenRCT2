@@ -607,6 +607,23 @@ static void load_landscape()
 	}
 }
 
+void sub_675827(){
+	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
+	int ebx = (object->flags >> 4);
+	if (((object->flags >> 4) & 0xFF) == 0
+		|| ((object->flags >> 4) & 0xFF) == 8
+		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << (object->flags >> 4))){
+		format_string(0x9BC677, 3323, 0); //Missing object data, ID:
+
+		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, 0x9BC677, 0x13CE952);
+		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+		return;
+	}
+
+	//675846
+}
+
 /**
  * 
  *  rct2: 0x00675E1B
@@ -666,7 +683,8 @@ int game_load_save(const char *path)
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
 	if (!load_success){
-		RCT2_CALLPROC_X(0x675827, 0, 0, 0, 0, 0, 0, 0);
+		sub_675827();
+		//RCT2_CALLPROC_X(0x675827, 0, 0, 0, 0, 0, 0, 0);
 		RCT2_CALLPROC_X(0x66DC83, 0, 0, 0, 0, 0, 0, 0);
 		return;
 	}
