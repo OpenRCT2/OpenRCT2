@@ -677,8 +677,8 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 	__asm__ ( "\
 	       \n\
                 /* Store C's base pointer*/     \n\
-                push ebx        \n\
                 push ebp        \n\
+                push ebx        \n\
         \n\
                 /* Store %[address] to call*/   \n\
                 push %[address]         \n\
