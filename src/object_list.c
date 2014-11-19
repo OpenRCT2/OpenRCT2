@@ -202,7 +202,7 @@ int object_read_and_load_entries(FILE *file)
 			// Failed to load the object
 			//Destroy progress bar
 
-			memcpy((char*)0x13CE952, entries[i].name, 8);
+			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			free(entries);
 			object_unload_all();
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;

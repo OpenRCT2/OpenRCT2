@@ -648,12 +648,7 @@ int game_load_save(const char *path)
 		}
 	}
 
-	if (!object_read_and_load_entries(file)){
-		fclose(file);
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
-	};
+	uint8 load_success = object_read_and_load_entries(file);
 
 	// Read flags (16 bytes)
 	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
@@ -669,6 +664,12 @@ int game_load_save(const char *path)
 
 	// Check expansion pack
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
+
+	if (!load_success){
+		RCT2_CALLPROC_X(0x675827, 0, 0, 0, 0, 0, 0, 0);
+		RCT2_CALLPROC_X(0x66DC83, 0, 0, 0, 0, 0, 0, 0);
+		return;
+	}
 
 	// The rest is the same as in scenario load and play
 	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
