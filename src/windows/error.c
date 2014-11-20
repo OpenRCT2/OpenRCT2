@@ -103,6 +103,9 @@ void window_error_open(rct_string_id title, rct_string_id message)
 		dst += get_string_length(dst);
 	}
 
+	printf(_window_error_text+1);
+	printf("\r\n");
+
 	// Check if there is any text to display
 	if (dst == _window_error_text + 1)
 		return;

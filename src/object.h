@@ -48,6 +48,7 @@ extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
 void object_list_load();
+void set_load_objects_fail_reason();
 int object_read_and_load_entries(FILE *file);
 int object_load_packed(FILE *file);
 void object_unload_all();

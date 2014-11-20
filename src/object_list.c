@@ -22,6 +22,7 @@
 #include "addresses.h"
 #include "object.h"
 #include "util/sawyercoding.h"
+#include "localisation/localisation.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -167,6 +168,39 @@ static int check_object_entry(rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
+}
+
+/* rct2: 0x675827 */
+void set_load_objects_fail_reason(){
+	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
+	int expansion = (object->flags & 0xFF) >> 4;
+	if (expansion == 0
+		|| expansion == 8
+		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << expansion)){
+
+		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
+
+		format_string(string_buffer, 3323, 0); //Missing object data, ID:
+
+		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
+		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+		return;
+	}
+
+	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
+	if (*exapansion_name == '\0'){
+		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+		RCT2_GLOBAL(0x9AC31C, uint16) = 3325;
+		return;
+	}
+
+	char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
+
+	format_string(string_buffer, 3324, 0); // Requires expansion pack
+	strcat(string_buffer, exapansion_name);
+	RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+	RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
 }
 
 /**

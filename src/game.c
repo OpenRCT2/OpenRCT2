@@ -609,39 +609,6 @@ static void load_landscape()
 	}
 }
 
-/* rct2: 0x675827 */
-void set_load_objects_fail_reason(){
-	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
-	int expansion = (object->flags & 0xFF) >> 4;
-	if (expansion == 0
-		|| expansion == 8
-		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << expansion)){
-
-		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
-
-		format_string(string_buffer, 3323, 0); //Missing object data, ID:
-
-		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
-		return;
-	}
-
-	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
-	if (*exapansion_name == '\0'){
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3325;
-		return;
-	}
-
-	char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
-
-	format_string(string_buffer, 3324, 0); // Requires expansion pack
-	strcat(string_buffer, exapansion_name);
-	RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-	RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
-}
-
 /**
  * 
  *  rct2: 0x00675E1B
@@ -709,7 +676,8 @@ int game_load_save(const char *path)
 			RCT2_GLOBAL(0x9DE518, uint32) &= ~(1<<5);
 		}
 		title_load();
-		return 0;// In the original this would call end_update but we get the same by returning 0
+		rct2_endupdate();
+		return 0;//This never gets called
 	}
 
 	// The rest is the same as in scenario load and play
