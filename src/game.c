@@ -532,16 +532,16 @@ static void game_load_or_quit()
 		break;
 	}
 
-	#ifdef _MSC_VER
+#ifdef _MSC_VER
 	__asm mov ebx, 0
-	#else
+#else
 	__asm__ ( "mov ebx, 0 "  );
-	#endif
+#endif
 
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674F40
  */
 static int open_landscape_file_dialog()
@@ -558,7 +558,7 @@ static int open_landscape_file_dialog()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674EB6
  */
 static int open_load_game_dialog()
@@ -575,14 +575,15 @@ static int open_load_game_dialog()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066DC0F
  */
 static void load_landscape()
 {
 	if (open_landscape_file_dialog() == 0) {
 		gfx_invalidate_screen();
-	} else {
+	}
+	else {
 		// Set default filename
 		char *esi = (char*)0x0141EF67;
 		while (1) {
@@ -600,28 +601,45 @@ static void load_landscape()
 		if (1) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
-		} else {
+		}
+		else {
 			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 			rct2_endupdate();
 		}
 	}
 }
 
-void sub_675827(){
+/* rct2: 0x675827 */
+void set_load_objects_fail_reason(){
 	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
-	int ebx = (object->flags >> 4);
-	if (((object->flags >> 4) & 0xFF) == 0
-		|| ((object->flags >> 4) & 0xFF) == 8
-		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << (object->flags >> 4))){
-		format_string(0x9BC677, 3323, 0); //Missing object data, ID:
+	int expansion = (object->flags & 0xFF) >> 4;
+	if (expansion == 0
+		|| expansion == 8
+		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << expansion)){
 
-		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, 0x9BC677, 0x13CE952);
+		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
+
+		format_string(string_buffer, 3323, 0); //Missing object data, ID:
+
+		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
 		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
 		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
 		return;
 	}
 
-	//675846
+	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
+	if (*exapansion_name == '\0'){
+		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+		RCT2_GLOBAL(0x9AC31C, uint16) = 3325;
+		return;
+	}
+
+	char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
+
+	format_string(string_buffer, 3324, 0); // Requires expansion pack
+	strcat(string_buffer, exapansion_name);
+	RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
+	RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
 }
 
 /**
@@ -683,7 +701,7 @@ int game_load_save(const char *path)
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
 	if (!load_success){
-		sub_675827();
+		set_load_objects_fail_reason();
 		if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<5)){
 			RCT2_GLOBAL(0x14241BC, uint32) = 2;
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
