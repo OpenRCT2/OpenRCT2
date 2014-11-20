@@ -684,9 +684,14 @@ int game_load_save(const char *path)
 
 	if (!load_success){
 		sub_675827();
-		//RCT2_CALLPROC_X(0x675827, 0, 0, 0, 0, 0, 0, 0);
-		RCT2_CALLPROC_X(0x66DC83, 0, 0, 0, 0, 0, 0, 0);
-		return;
+		if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<5)){
+			RCT2_GLOBAL(0x14241BC, uint32) = 2;
+			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
+			RCT2_GLOBAL(0x14241BC, uint32) = 0;
+			RCT2_GLOBAL(0x9DE518, uint32) &= ~(1<<5);
+		}
+		title_load();
+		return 0;// In the original this would call end_update but we get the same by returning 0
 	}
 
 	// The rest is the same as in scenario load and play
