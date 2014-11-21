@@ -35,9 +35,9 @@ void diagnostic_log(int diagnosticLevel, const char *format, ...);
 void diagnostic_log_with_location(int diagnosticLevel, const char *file, const char *function, int line, const char *format, ...);
 
 #ifdef _MSC_VER
-#define diagnostic_log_macro(level, format, ...)	diagnostic_log(level, __FILE__, __FUNCTION__, __LINE__, format, __VA_ARGS__)
+#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, __VA_ARGS__)
 #else
-#define diagnostic_log_macro(level, format, ...)	diagnostic_log(level, __FILE__, __func__, __LINE__, format, ## __VA_ARGS__)
+#define diagnostic_log_macro(level, format, ...)	diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ## __VA_ARGS__)
 #endif
 
 #define log_fatal(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, __VA_ARGS__)
