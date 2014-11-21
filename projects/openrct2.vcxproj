@@ -49,6 +49,7 @@
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\cmdline.c" />
     <ClCompile Include="..\src\config.c" />
+    <ClCompile Include="..\src\diagnostic.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
     <ClCompile Include="..\src\drawing\line.c" />
     <ClCompile Include="..\src\drawing\rain.c" />
@@ -163,6 +164,7 @@
     <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\config.h" />
     <ClInclude Include="..\src\cursors.h" />
+    <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />

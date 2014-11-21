@@ -82,6 +82,8 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
  */
 int scenario_load(const char *path)
 {
+	log_verbose("loading scenario, %s", path);
+
 	FILE *file;
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
@@ -93,6 +95,8 @@ int scenario_load(const char *path)
 			fclose(file);
 			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+
+			log_error("failed to load scenario, invalid checksum");
 			return 0;
 		}
 

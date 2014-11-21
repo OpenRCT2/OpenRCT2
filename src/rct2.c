@@ -73,6 +73,8 @@ void rct2_quit() {
 
 void rct2_init()
 {
+	log_verbose("initialising game");
+
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();

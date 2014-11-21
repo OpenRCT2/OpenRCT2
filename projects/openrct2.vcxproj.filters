@@ -377,7 +377,6 @@
     <ClCompile Include="..\src\windows\shortcut_keys.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
@@ -448,6 +447,10 @@
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\diagnostic.c">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -654,6 +657,9 @@
     </ClInclude>
     <ClInclude Include="..\src\world\footpath.h">
       <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\diagnostic.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -55,11 +55,12 @@ int cmdline_run(char *argv[], int argc)
 	argv--;
 
 	// 
-	int version = 0, width = 0, height = 0;
+	int version = 0, verbose = 0, width = 0, height = 0;
 
 	argparse_option_t options[] = {
 		OPT_HELP(),
 		OPT_BOOLEAN('v', "version", &version, "show version information and exit"),
+		OPT_BOOLEAN(0, "verbose", &verbose, "log verbose messages"),
 		OPT_END()
 	};
 
@@ -73,6 +74,9 @@ int cmdline_run(char *argv[], int argc)
 		printf("%s\n", OPENRCT2_TIMESTAMP);
 		return 0;
 	}
+
+	if (verbose)
+		_log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
 
 	if (argc != 0) {
 		if (_stricmp(argv[0], "intro") == 0) {

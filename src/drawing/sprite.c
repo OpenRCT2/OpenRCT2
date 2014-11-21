@@ -35,6 +35,8 @@ void *_g1Buffer = NULL;
  */
 int gfx_load_g1()
 {
+	log_verbose("loading g1 graphics");
+
 	FILE *file;
 	rct_g1_header header;
 	unsigned int i;
@@ -68,7 +70,7 @@ int gfx_load_g1()
 	}
 
 	// Unsuccessful
-	RCT2_ERROR("Unable to load g1.dat");
+	log_fatal("Unable to load g1 graphics");
 	return 0;
 }
 

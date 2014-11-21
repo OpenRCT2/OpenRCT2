@@ -21,6 +21,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#include "diagnostic.h"
 #include "rct2.h"
 
 #endif
