@@ -532,16 +532,16 @@ static void game_load_or_quit()
 		break;
 	}
 
-	#ifdef _MSC_VER
+#ifdef _MSC_VER
 	__asm mov ebx, 0
-	#else
+#else
 	__asm__ ( "mov ebx, 0 "  );
-	#endif
+#endif
 
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674F40
  */
 static int open_landscape_file_dialog()
@@ -558,7 +558,7 @@ static int open_landscape_file_dialog()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674EB6
  */
 static int open_load_game_dialog()
@@ -575,14 +575,15 @@ static int open_load_game_dialog()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066DC0F
  */
 static void load_landscape()
 {
 	if (open_landscape_file_dialog() == 0) {
 		gfx_invalidate_screen();
-	} else {
+	}
+	else {
 		// Set default filename
 		char *esi = (char*)0x0141EF67;
 		while (1) {
@@ -600,7 +601,8 @@ static void load_landscape()
 		if (1) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
-		} else {
+		}
+		else {
 			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 			rct2_endupdate();
 		}
@@ -648,12 +650,7 @@ int game_load_save(const char *path)
 		}
 	}
 
-	if (!object_read_and_load_entries(file)){
-		fclose(file);
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
-	};
+	uint8 load_success = object_read_and_load_entries(file);
 
 	// Read flags (16 bytes)
 	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
@@ -669,6 +666,19 @@ int game_load_save(const char *path)
 
 	// Check expansion pack
 	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
+
+	if (!load_success){
+		set_load_objects_fail_reason();
+		if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<5)){
+			RCT2_GLOBAL(0x14241BC, uint32) = 2;
+			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
+			RCT2_GLOBAL(0x14241BC, uint32) = 0;
+			RCT2_GLOBAL(0x9DE518, uint32) &= ~(1<<5);
+		}
+		title_load();
+		rct2_endupdate();
+		return 0;//This never gets called
+	}
 
 	// The rest is the same as in scenario load and play
 	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
