@@ -235,7 +235,7 @@ int object_read_and_load_entries(FILE *file)
 		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
 			//Destroy progress bar
-			log_error("failed to load entrie:");
+			log_error("failed to load entry:");
 			log_error("%.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			free(entries);
