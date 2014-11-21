@@ -213,7 +213,7 @@ int object_read_and_load_entries(FILE *file)
 
 	int i, j;
 	rct_object_entry *entries;
-
+	log_verbose("Entered object read and load entries");
 	// Read all the object entries
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	sawyercoding_read_chunk(file, (uint8*)entries);
@@ -235,7 +235,8 @@ int object_read_and_load_entries(FILE *file)
 		if (!object_load(entryGroupIndex, &entries[i])) {
 			// Failed to load the object
 			//Destroy progress bar
-
+			log_error("failed to load entrie:");
+			log_error("%.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			free(entries);
 			object_unload_all();

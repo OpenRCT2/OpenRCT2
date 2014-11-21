@@ -153,6 +153,7 @@ int scenario_load(const char *path)
 
 			fclose(file);
 			if (!load_success){
+				log_error("failed to load all entries.");
 				set_load_objects_fail_reason();
 				title_load();
 				rct2_endupdate();
@@ -170,6 +171,7 @@ int scenario_load(const char *path)
 		fclose(file);
 	}
 
+	log_error("failed to find scenario file.");
 	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
