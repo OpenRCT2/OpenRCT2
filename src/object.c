@@ -43,6 +43,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 
 	if (!(RCT2_GLOBAL(0xF42B6C, uint32))){
 		RCT2_GLOBAL(0xF42BD9, uint8) = 0;
+		log_error("Object Load failed due to 0xF42B6C check.");
 		return 1;
 	}
 	for (int i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
@@ -80,12 +81,14 @@ int object_load(int groupIndex, rct_object_entry *entry)
 
 					// Calculate and check checksum
 					if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
+						log_error("Object Load failed due to checksum failure.");
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 						rct2_free(chunk);
 						return 0;
 					}
 
 					if (object_paint(openedEntry.flags & 0x0F, 2, 0, openedEntry.flags & 0x0F, 0, (int)chunk, 0, 0)) {
+						log_error("Object Load failed due to paint failure.");
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 						rct2_free(chunk);
 						return 0;
@@ -94,6 +97,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
 
 					if (yyy >= 0x4726E){
+						log_error("Object Load failed due to yyy failure.");
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
 						rct2_free(chunk);
 						return 0;
@@ -105,6 +109,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					if (ecx == -1){
 						for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
 							if ((ecx + 1) >= object_entry_group_counts[ebp]){
+								log_error("Object Load failed due to ??? failure.");
 								RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
 								rct2_free(chunk);
 								return 0;
@@ -126,6 +131,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 	}
 	//6a991f
 	// Installed Object can not be found.
+	log_error("Object Load failed due to file not installed.");
 	return 0;
 	//return !(RCT2_CALLPROC_X(0x006A985D, 0, 0, groupIndex, 0, 0, 0, (int)entry) & 0x400);
 }
