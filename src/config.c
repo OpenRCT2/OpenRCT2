@@ -347,6 +347,8 @@ static int config_find_rct2_path(char *resultPath)
 {
 	int i;
 
+	log_verbose("searching common installation locations.");
+
 	const char *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
@@ -367,6 +369,23 @@ static int config_find_rct2_path(char *resultPath)
 	return 0;
 }
 
+int config_find_or_browse_install_directory()
+{
+	char *installPath;
+
+	if (!config_find_rct2_path(gGeneral_config.game_path)) {
+		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		installPath = osinterface_open_directory_browser("Please select your RCT2 directory");
+		if (installPath == NULL)
+			return 0;
+
+		strcpy(gGeneral_config.game_path, installPath);
+	}
+
+	config_save();
+	return 1;
+}
+
 /**
  * Create a new default settings file.
  * This should be created from some other resource when openRCT2 grows
@@ -375,13 +394,11 @@ static int config_find_rct2_path(char *resultPath)
 static void config_create_default(char *path)
 {
 	gGeneral_config = gGeneral_config_default;
-
-	if (!config_find_rct2_path(gGeneral_config.game_path)) {
-		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
-		char *res = osinterface_open_directory_browser("Please select your RCT2 directory");
-		strcpy(gGeneral_config.game_path, res);
+	if (!config_find_or_browse_install_directory()) {
+		log_fatal("An RCT2 install directory must be specified!");
+		exit(-1);
 	}
-
+	
 	config_save_ini(path);
 }
 

@@ -849,27 +849,31 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 	return result;
 }
 
-void osinterface_show_messagebox(char* message){
+void osinterface_show_messagebox(char* message)
+{
 	MessageBox(NULL, message, "OpenRCT2", MB_OK);
 }
 
-char* osinterface_open_directory_browser(char *title) {
-	BROWSEINFO      bi;
-	char            pszBuffer[MAX_PATH];
-	LPITEMIDLIST    pidl;
-	LPMALLOC        lpMalloc;
+char* osinterface_open_directory_browser(char *title)
+{
+	BROWSEINFO   bi;
+	char         pszBuffer[MAX_PATH];
+	LPITEMIDLIST pidl;
+	LPMALLOC     lpMalloc;
 
 	// Initialize COM
 	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
+
+		log_error("Error opening directory browse window");
 		return 0;
 	}
 
 	// Get a pointer to the shell memory allocator
 	if (FAILED(SHGetMalloc(&lpMalloc))) {
-		MessageBox(NULL, _T("Error opening browse window"), _T("ERROR"), MB_OK);
 		CoUninitialize();
+
+		log_error("Error opening directory browse window");
 		return 0;
 	}
 
@@ -881,7 +885,7 @@ char* osinterface_open_directory_browser(char *title) {
 	bi.lpfn = NULL;
 	bi.lParam = 0;
 
-	char *outPath = "C:\\";
+	char *outPath = NULL;
 
 	if (pidl = SHBrowseForFolder(&bi)) {
 		// Copy the path directory to the buffer
@@ -900,7 +904,7 @@ char* osinterface_get_orct2_homefolder()
 	char *path=NULL;
 	path = malloc(sizeof(char) * MAX_PATH);
 	if (path == NULL){
-		osinterface_show_messagebox("Error allocating memory!");
+		log_fatal("Error allocating memory!");
 		exit(EXIT_FAILURE);
 	}
 

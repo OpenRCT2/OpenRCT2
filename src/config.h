@@ -100,6 +100,7 @@ extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 void config_reset_shortcut_keys();
 void config_load();
 void config_save();
+int config_find_or_browse_install_directory();
 
 
 // New config format

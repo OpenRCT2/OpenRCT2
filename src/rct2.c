@@ -56,8 +56,8 @@ typedef struct tm tm_t;
 
 void print_launch_information();
 
-void rct2_init_directories();
-void rct2_startup_checks();
+int rct2_init_directories();
+int rct2_startup_checks();
 
 static void rct2_update_2();
 
@@ -71,7 +71,7 @@ void rct2_quit() {
 		openrct2_finish();
 }
 
-void rct2_init()
+int rct2_init()
 {
 	log_verbose("initialising game");
 
@@ -80,8 +80,12 @@ void rct2_init()
 	get_system_time();
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
-	rct2_init_directories();
-	rct2_startup_checks();
+	if (!rct2_init_directories())
+		return 0;
+
+	if (!rct2_startup_checks())
+		return 0;
+
 	config_reset_shortcut_keys();
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	// config_load();
@@ -119,15 +123,23 @@ void rct2_init()
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
 	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
+
+	return 1;
 }
 
-// rct2: 0x00683499
-void rct2_init_directories()
+/**
+ * 
+ *  rct2: 0x00683499
+ */
+int rct2_init_directories()
 {
 	// check install directory
-	if (!platform_directory_exists(gGeneral_config.game_path) ) {
-		osinterface_show_messagebox("Invalid RCT2 installation path. Please correct in config.ini.");
-		exit(-1);
+	if (!platform_directory_exists(gGeneral_config.game_path)) {
+		log_verbose("install directory does not exist, %s", gGeneral_config.game_path);
+		if (!config_find_or_browse_install_directory()) {
+			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
+			return 0;
+		}
 	}
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
@@ -151,6 +163,7 @@ void rct2_init_directories()
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "\\Tracks\\*.TD?");
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+	return 1;
 }
 
 void subsitute_path(char *dest, const char *path, const char *filename)
@@ -161,12 +174,19 @@ void subsitute_path(char *dest, const char *path, const char *filename)
 	strcpy(dest, filename);
 }
 
-// rct2: 0x00674B42
-void rct2_startup_checks()
+/**
+ * 
+ *  rct2: 0x00674B42
+ */
+int rct2_startup_checks()
 {
-	// Check data files
-	check_file_paths();
-	check_files_integrity();
+	if (!check_file_paths())
+		return 0;
+
+	if (!check_files_integrity())
+		return 0;
+	
+	return 1;
 }
 
 void rct2_update()
@@ -212,23 +232,29 @@ int rct2_open_file(const char *path)
 	return 0;
 }
 
-// rct2: 0x00674C95
-void check_file_paths()
+/**
+ * 
+ *  rct2: 0x00674C95
+ */
+int check_file_paths()
 {
-	for (int pathId = 0; pathId < PATH_ID_END; pathId += 1)
-	{
-		check_file_path(pathId);
-	}
+	for (int pathId = 0; pathId < PATH_ID_END; pathId++)
+		if (!check_file_path(pathId))
+			return 0;
+
+	return 1;
 }
 
-// rct2: 0x00674CA5
-void check_file_path(int pathId)
+/**
+ * 
+ *  rct2: 0x00674CA5
+ */
+int check_file_path(int pathId)
 {
 	const char * path = get_file_path(pathId);
 	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 
-	switch (pathId)
-	{
+	switch (pathId) {
 	case PATH_ID_GAMECFG:
 	case PATH_ID_SCORES:
 	case PATH_ID_TRACKSIDX:
@@ -254,38 +280,45 @@ void check_file_path(int pathId)
 			// the original implementation always assumes they are stored on CD-ROM.
 			// This has been removed for now for the sake of simplicity and could be added
 			// later in a more convenient way using the INI file.
-			RCT2_ERROR("Could not find file %s", path);
-			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+			log_fatal("Could not find file %s", path);
+			return 0;
 		}
 		break;
 	}
 
 	if (file != INVALID_HANDLE_VALUE)
 		CloseHandle(file);
+
+	return 1;
 }
 
-// rct2: 0x00674C0B
-void check_files_integrity()
+/**
+ * 
+ *  rct2: 0x00674C0B
+ */
+int check_files_integrity()
 {
-	int i = 0;
-	while (files_to_check[i].pathId != PATH_ID_END)
-	{
-		WIN32_FIND_DATA find_data;
-		const char * path = get_file_path(files_to_check[i].pathId);
-		HANDLE file = FindFirstFile(path, &find_data);
+	int i;
+	const char *path;
+	HANDLE file;
+	WIN32_FIND_DATA find_data;
 
-		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].fileSize)
-		{
+	for (i = 0; files_to_check[i].pathId != PATH_ID_END; i++) {
+		path = get_file_path(files_to_check[i].pathId);
+		file = FindFirstFile(path, &find_data);
+
+		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].fileSize) {
 			if (file != INVALID_HANDLE_VALUE)
 				FindClose(file);
-			RCT2_ERROR("Integrity check failed for %s", path);
-			RCT2_CALLPROC_X(0x006E3838, 0x343, 0x337, 0, 0, 0, 0, 0); // exit_with_error
+
+			log_fatal("Integrity check failed for %s", path);
+			return 0;
 		}
 
 		FindClose(file);
-
-		i += 1;
 	}
+
+	return 1;
 }
 
 void rct2_update_2()

@@ -269,14 +269,14 @@ static const struct file_to_check
 	{ PATH_ID_END,          0 }
 };
 
-void rct2_init();
+int rct2_init();
 void rct2_update();
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
-void check_file_paths();
-void check_file_path(int pathId);
-void check_files_integrity();
+int check_file_paths();
+int check_file_path(int pathId);
+int check_files_integrity();
 const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();

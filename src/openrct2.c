@@ -56,7 +56,9 @@ void openrct2_launch()
 	audio_get_devices();
 	get_dsound_devices();
 	language_open(gGeneral_config.language);
-	rct2_init();
+	if (!rct2_init())
+		return;
+
 	Mixer_Init(NULL);
 
 	switch (gOpenRCT2StartupAction) {
