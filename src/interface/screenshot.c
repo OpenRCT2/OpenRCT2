@@ -30,6 +30,8 @@
 #include "../windows/error.h"
 #include "screenshot.h"
 
+static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
+
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
 
@@ -46,18 +48,28 @@ void screenshot_check()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
 			update_rain_animation();
 			screenshotIndex = screenshot_dump();
-			RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			window_error_open(screenshotIndex == -1 ? STR_SCREENSHOT_FAILED : STR_SCREENSHOT_SAVED_AS, -1);
+			if (screenshotIndex != -1) {
+				char *lang_3165 = (char*)0x009BC677;
+				sprintf(lang_3165, "SCR%d%s", screenshotIndex, _screenshot_format_extension[gGeneral_config.screenshot_format]);
+
+				RCT2_GLOBAL(0x013CE952, uint16) = 3165;
+				// RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
+				// RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
+				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+				window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
+			} else {
+				window_error_open(STR_SCREENSHOT_FAILED, -1);
+			}
+
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 			redraw_peep_and_rain();
 		}
 	}
 }
 
-static int screenshot_get_next_path(char *path, char *extension)
+static int screenshot_get_next_path(char *path, int format)
 {
 	char *screenshotPath = osinterface_get_orct2_homesubfolder("screenshot");
 	if (!platform_ensure_directory_exists(screenshotPath)) {
@@ -72,7 +84,7 @@ static int screenshot_get_next_path(char *path, char *extension)
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%s%cSCR%d%s", screenshotPath, osinterface_get_path_separator(), i, extension);
+		sprintf(path, "%s%cSCR%d%s", screenshotPath, osinterface_get_path_separator(), i, _screenshot_format_extension[format]);
 
 		if (!platform_file_exists(path)) {
 			return i;
@@ -133,7 +145,7 @@ int screenshot_dump_bmp()
 	unsigned int bytesWritten;
 
 	// Get a free screenshot path
-	if ((index = screenshot_get_next_path(path, ".bmp")) == -1)
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_BMP)) == -1)
 		return -1;
 
 	// Open binary file for writing
@@ -220,9 +232,11 @@ int screenshot_dump_bmp()
 
 int screenshot_dump_png()
 {
+	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+
 	int i, index, width, height, stride;
 	char path[MAX_PATH] = "";
-
+	unsigned int error;
 	unsigned char r, g, b, a = 255;
 
 	unsigned char* png;
@@ -230,7 +244,7 @@ int screenshot_dump_png()
 	LodePNGState state;
 
 	// Get a free screenshot path
-	if ((index = screenshot_get_next_path(path, ".png")) == -1)
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1)
 		return -1;
 
 
@@ -240,9 +254,9 @@ int screenshot_dump_png()
 	// Get image size
 	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-	stride = (width + 3) & 0xFFFFFFFC;
+	stride = (width + 3) & ~3;
 
-	for (i = 0; i < 246; i++) {
+	for (i = 0; i < 256; i++) {
 		b = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
 		g = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 1];
 		r = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
@@ -250,14 +264,12 @@ int screenshot_dump_png()
 		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
 
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-
-	unsigned int error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
-	if (!error) lodepng_save_file(png, pngSize, path);
-
+	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
 	if (error) {
-		fprintf(stderr, "error: %u: %s\n", error, lodepng_error_text(error));
+		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
 		index = -1;
+	} else {
+		lodepng_save_file(png, pngSize, path);
 	}
 
 	free(png);
