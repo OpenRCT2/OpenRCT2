@@ -1162,7 +1162,7 @@ void window_rotate_camera(rct_window *w)
 
 	RCT2_CALLPROC_EBPSAFE(0x00688956);
 
-	sub_0x0069E9A7();
+	sub_69E9A7();
 }
 
 /**

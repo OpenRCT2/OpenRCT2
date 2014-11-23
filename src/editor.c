@@ -31,10 +31,13 @@
 #include "management/news_item.h"
 #include "object.h"
 #include "peep/staff.h"
+#include "platform/osinterface.h"
 #include "ride/ride.h"
+#include "scenario.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/banner.h"
+#include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/sprite.h"
@@ -46,8 +49,6 @@ static int editor_read_sc4(char *src, int length);
 static int editor_read_sv4(char *src, int length);
 static int editor_read_s4(char *src);
 static int editor_read_s6(const char *path);
-
-/*Syntax error blah blah blat *&2)*/
 
 /**
  *
@@ -81,14 +82,36 @@ void editor_load()
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
-	//RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
-	// rct2_endupdate();
+}
+
+/**
+ *
+ *  rct2: 0x0067505F
+ */
+static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
+{
+	int result;
+	char title[256];
+	char filename[MAX_PATH];
+	char filterName[256];
+
+	format_string(title, STR_CONVERT_SAVED_GAME_TO_SCENARIO_1038, NULL);
+	strcpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
+
+	pause_sounds();
+	result = osinterface_open_common_file_dialog(1, title, filename, "*.SV6", filterName);
+	unpause_sounds();
+
+	if (result)
+		strcpy(resultPath, filename);
+	return result;
 }
 
 /**
@@ -97,7 +120,90 @@ void editor_load()
  */
 void editor_convert_save_to_scenario()
 {
-	RCT2_CALLPROC_EBPSAFE(0x00672781);
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	char *ch, savedGamePath[MAX_PATH];
+	rct_window *w;
+	rct_viewport *viewport;
+
+	tool_cancel();
+	if (!show_convert_saved_game_to_scenario_dialog(savedGamePath))
+		return;
+
+	// Ensure it ends with .SV6
+	ch = savedGamePath;
+	while (*++ch != '.') {
+		if (*ch == 0) {
+			strcpy(ch, ".SV6");
+			break;
+		}
+	}
+
+	// Load the saved game
+	if (!game_load_save(savedGamePath))
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+	else
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
+
+	strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME);
+	strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS);
+	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
+	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
+	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+
+	if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
+		object_unload(0, (rct_object_entry_extended*)0x00F4287C);
+		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+
+		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
+		s6Info->name[0] = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	s6Info->var_000 = 4;
+	s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
+	viewport_init_all();
+	news_item_init_queue();
+	window_editor_main_open();
+
+	// Initialise main view
+	w = window_get_main();
+	viewport = w->viewport;
+
+	w->viewport_target_sprite = -1;
+	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+
+	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
+
+	int cx = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
+	if (cx != 0) {
+		if (cx >= 0) {
+			viewport->view_width <<= cx;
+			viewport->view_height <<= cx;
+		} else {
+			cx = -cx;
+			viewport->view_width >>= cx;
+			viewport->view_height >>= cx;
+		}
+	}
+	w->saved_view_x -= viewport->view_width >> 1;
+	w->saved_view_y -= viewport->view_height >> 1;
+
+	window_invalidate(w);
+	sub_69E9A7();
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	window_new_ride_init_vars();
+	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 }
 
 /**
@@ -136,7 +242,6 @@ void trackdesigner_load()
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
-	rct2_endupdate();
 }
 
 /**
@@ -175,7 +280,6 @@ void trackmanager_load()
 	RCT2_CALLPROC_EBPSAFE(0x006837E3);
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
-	rct2_endupdate();
 }
 
 /**
