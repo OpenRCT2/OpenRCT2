@@ -60,7 +60,7 @@ enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
 
 static rct_widget window_quit_prompt_widgets[] = {
 	{ WWT_FRAME,			0,	0,		176,	0,	33,	STR_NONE,					STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		175,	1,	14,	STR_QUIT_GAME,				STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CAPTION,			0,	1,		175,	1,	14,	STR_QUIT_GAME_PROMPT_TITLE,	STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	164,	174,	2,	13,	STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		19,	30,	STR_OK,						STR_NONE },		// ok
 	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	19,	30,	STR_CANCEL,					STR_NONE },		// cancel
@@ -168,10 +168,10 @@ void window_save_prompt_open()
 	pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
-	stringId = prompt_mode + STR_LOAD_GAME;
-	if (stringId == STR_LOAD_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
-		stringId = STR_LOAD_LANDSCAPE;
-	if (stringId == STR_QUIT_GAME && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
+	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
+	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;

@@ -22,6 +22,7 @@
 #include "audio/audio.h"
 #include "config.h"
 #include "game.h"
+#include "editor.h"
 #include "input.h"
 #include "localisation/localisation.h"
 #include "interface/screenshot.h"
@@ -305,7 +306,7 @@ void game_logic_update()
 	peep_update_crowd_noise();
 	climate_update_sound();
 	news_item_update_current();
-	RCT2_CALLPROC_EBPSAFE(0x0067009A);	// scenario editor opening of windows for a phase
+	editor_open_windows_for_current_step();
 
 	stop_completed_sounds(); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
 

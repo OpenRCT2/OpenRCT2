@@ -387,7 +387,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
@@ -451,6 +450,22 @@
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\diagnostic.c">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\toolbar.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_main.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_object_selection.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_top_toolbar.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,6 +674,9 @@
       <Filter>Source\World</Filter>
     </ClInclude>
     <ClInclude Include="..\src\diagnostic.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\toolbar.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

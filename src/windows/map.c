@@ -219,7 +219,7 @@ static void window_map_mouseup()
 
 	case WIDX_SET_LAND_RIGHTS:
 		window_invalidate(var_w);
-		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
@@ -285,7 +285,7 @@ static void window_map_mouseup()
 
 	case WIDX_BUILD_PARK_ENTRANCE:
 		window_invalidate(var_w);
-		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
 			break;
 
 		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
@@ -304,7 +304,7 @@ static void window_map_mouseup()
 		break;
 
 	case WIDX_PEOPLE_STARTING_POSITION:
-		if (!tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
@@ -383,6 +383,19 @@ static void window_map_scrollgetsize()
 static void window_map_scrollmousedown()
 {
 	RCT2_CALLPROC_EBPSAFE(0x0068D726);
+}
+
+/**
+*
+*  rct2: 0x0068CD35 (part of 0x0068CA8F)
+*/
+static void window_map_show_default_scenario_editor_buttons(rct_window *mapWindow) {
+	mapWindow->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
+	mapWindow->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
+	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
+	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
+	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 }
 
 /**
@@ -472,6 +485,8 @@ static void window_map_invalidate()
 		w->widgets[i].type = WWT_EMPTY;
 	}
 
+
+
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
 		// scenario editor: build park entrance selected, show rotate button
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
@@ -483,26 +498,25 @@ static void window_map_invalidate()
 		// always show set land rights button
 		w->widgets[WIDX_SET_LAND_RIGHTS].type = WWT_FLATBTN;
 
+		// if any tool is active
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP) {
 
 			// if not in set land rights mode: show the default scenario editor buttons
 			if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) != WIDX_SET_LAND_RIGHTS) {
-				w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
-				w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
-				w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-				w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
-				w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
-			} else {	// if in set land rights mode: show land tool buttons + modes
+				window_map_show_default_scenario_editor_buttons(w);
+			} else { // if in set land rights mode: show land tool buttons + modes
 				w->widgets[WIDX_LAND_TOOL].type = WWT_IMGBTN;
 				w->widgets[WIDX_LAND_TOOL_SMALLER].type = WWT_TRNBTN;
 				w->widgets[WIDX_LAND_TOOL_LARGER].type = WWT_TRNBTN;
 				for (i = 0; i < 4; i++)
 					w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
-				w->widgets[WIDX_LAND_TOOL].image = SPR_LAND_TOOL_SIZE_0 + 
+				w->widgets[WIDX_LAND_TOOL].image = SPR_LAND_TOOL_SIZE_0 +
 					RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16);
 			}
+		// if no tool is active: show the default scenario editor buttons
+		} else {
+			window_map_show_default_scenario_editor_buttons(w);
 		}
 	}
 }
@@ -563,14 +577,14 @@ static void window_map_paint()
 				}
 			}
 		}
-
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) != WC_MAP) &&
+	} else {
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) != WC_MAP) &&
 			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) != WIDX_SET_LAND_RIGHTS))
 			return;
-	}
 
-	// map size spinner
-	gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+		gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+	}
 }
 
 /*

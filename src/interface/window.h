@@ -525,6 +525,10 @@ void window_track_manage_open();
 void window_viewport_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args);
 
+void window_editor_main_open();
+void window_editor_top_toolbar_open();
+void window_editor_bottom_toolbar_open();
+
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();
 void window_bubble_list_item(rct_window* w, int item_position);

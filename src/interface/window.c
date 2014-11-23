@@ -1510,6 +1510,8 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 		) {
 			tool_cancel();
 			return 1;
+		} else {
+			tool_cancel();
 		}
 	}
 

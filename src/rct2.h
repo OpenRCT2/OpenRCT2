@@ -94,6 +94,7 @@ typedef fixed32_1dp money32;
 
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
+typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
 
 enum {
@@ -103,6 +104,8 @@ enum {
 	SCREEN_FLAGS_TRACK_DESIGNER = 4,
 	SCREEN_FLAGS_TRACK_MANAGER = 8,
 };
+
+#define SCREEN_FLAGS_EDITOR (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)
 
 enum {
 	PATH_ID_G1,

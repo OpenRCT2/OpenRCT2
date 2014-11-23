@@ -23,13 +23,14 @@
 #include "../game.h"
 #include "../input.h"
 #include "../sprites.h"
-#include "../localisation/localisation.h"
+#include "../toolbar.h"
+#include "../audio/audio.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "dropdown.h"
 #include "../interface/viewport.h"
+#include "../localisation/localisation.h"
+#include "dropdown.h"
 #include "scenery.h"
-#include "../audio/audio.h"
 
 enum {
 	WIDX_PAUSE,
@@ -63,19 +64,6 @@ typedef enum {
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_QUIT_GAME = 7,
 } FILE_MENU_DDIDX;
-
-typedef enum {
-	DDIDX_UNDERGROUND_INSIDE = 0,
-	DDIDX_HIDE_BASE = 1,
-	DDIDX_HIDE_VERTICAL = 2,
-	DDIDX_SEETHROUGH_RIDES = 4,
-	DDIDX_SEETHROUGH_SCENARY = 5,
-	DDIDX_INVISIBLE_SUPPORTS = 6,
-	DDIDX_INVISIBLE_PEEPS = 7,
-	DDIDX_LAND_HEIGHTS = 9,
-	DDIDX_TRACK_HEIGHTS = 10,
-	DDIDX_PATH_HEIGHTS = 11,
-} VIEW_MENU_DDIDX;
 
 static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x0000,			0x001D,			0,		27,		0x20000000 | SPR_TOOLBAR_PAUSE,				STR_PAUSE_GAME_TIP },				// Pause
@@ -227,37 +215,13 @@ static void window_game_top_toolbar_mouseup()
 			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_CLEAR_SCENERY:
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
-			tool_cancel();
-		} else {
-			show_gridlines();
-			tool_set(w, WIDX_CLEAR_SCENERY, 12);
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
-			window_clear_scenery_open();
-		}
+		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);
 		break;
 	case WIDX_LAND:
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
-			tool_cancel();
-		} else {
-			show_gridlines();
-			tool_set(w, WIDX_LAND, 18);
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
-			window_land_open();
-		}
+		toggle_land_window(w, WIDX_LAND);
 		break;
 	case WIDX_WATER:
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
-			tool_cancel();
-		} else {
-			show_gridlines();
-			tool_set(w, WIDX_WATER, 19);
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
-			window_water_open();
-		}
+		toggle_water_window(w, WIDX_WATER);
 		break;
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
@@ -266,12 +230,7 @@ static void window_game_top_toolbar_mouseup()
 		}
 		break;
 	case WIDX_PATH:
-		if (window_find_by_class(WC_FOOTPATH) == NULL) {
-			window_footpath_open();
-		} else {
-			tool_cancel();
-			window_close_by_class(WC_FOOTPATH);
-		}
+		toggle_footpath_window();
 		break;
 	case WIDX_CONSTRUCT_RIDE:
 		window_new_ride_open();
@@ -304,14 +263,14 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
-		gDropdownItemsFormat[0] = 882;
-		gDropdownItemsFormat[1] = 883;
+		gDropdownItemsFormat[0] = STR_LOAD_GAME;
+		gDropdownItemsFormat[1] = STR_SAVE_GAME;
 		gDropdownItemsFormat[2] = 0;
-		gDropdownItemsFormat[3] = 847;
-		gDropdownItemsFormat[4] = 2327;
-		gDropdownItemsFormat[5] = 891;
+		gDropdownItemsFormat[3] = STR_ABOUT;
+		gDropdownItemsFormat[4] = STR_OPTIONS;
+		gDropdownItemsFormat[5] = STR_SCREENSHOT;
 		gDropdownItemsFormat[6] = 0;
-		gDropdownItemsFormat[7] = 886;
+		gDropdownItemsFormat[7] = STR_QUIT_GAME;
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -322,63 +281,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 		);
 		break;
 	case WIDX_VIEW_MENU:
-		gDropdownItemsFormat[0] = 1156;
-		gDropdownItemsFormat[1] = 1156;
-		gDropdownItemsFormat[2] = 1156;
-		gDropdownItemsFormat[3] = 0;
-		gDropdownItemsFormat[4] = 1156;
-		gDropdownItemsFormat[5] = 1156;
-		gDropdownItemsFormat[6] = 1156;
-		gDropdownItemsFormat[7] = 1156;
-		gDropdownItemsFormat[8] = 0;
-		gDropdownItemsFormat[9] = 1156;
-		gDropdownItemsFormat[10] = 1156;
-		gDropdownItemsFormat[11] = 1156;
-
-		gDropdownItemsArgs[0] = 939;
-		gDropdownItemsArgs[1] = 940;
-		gDropdownItemsArgs[2] = 941;
-		gDropdownItemsArgs[4] = 942;
-		gDropdownItemsArgs[5] = 943;
-		gDropdownItemsArgs[6] = 1051;
-		gDropdownItemsArgs[7] = 1052;
-		gDropdownItemsArgs[9] = 1154;
-		gDropdownItemsArgs[10] = 1153;
-		gDropdownItemsArgs[11] = 1155;
-
-		window_dropdown_show_text(
-			w->x + widget->left,
-			w->y + widget->top,
-			widget->bottom - widget->top + 1,
-			w->colours[1] | 0x80,
-			0,
-			12
-		);
-
-		// Set checkmarks
-		mainViewport = window_get_main()->viewport;
-		if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-			gDropdownItemsChecked |= (1 << 0);
-		if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-			gDropdownItemsChecked |= (1 << 1);
-		if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-			gDropdownItemsChecked |= (1 << 2);
-		if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-			gDropdownItemsChecked |= (1 << 4);
-		if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-			gDropdownItemsChecked |= (1 << 5);
-		if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-			gDropdownItemsChecked |= (1 << 6);
-		if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-			gDropdownItemsChecked |= (1 << 7);
-		if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-			gDropdownItemsChecked |= (1 << 9);
-		if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-			gDropdownItemsChecked |= (1 << 10);
-		if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-			gDropdownItemsChecked |= (1 << 11);
-
-		RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+		top_toolbar_init_view_menu(w, widget);
 		break;
 	case WIDX_MAP:
 		gDropdownItemsFormat[0] = 2523;
@@ -403,7 +306,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 static void window_game_top_toolbar_dropdown()
 {
 	short widgetIndex, dropdownIndex;
-	rct_window* w, *mainWindow;
+	rct_window* w;
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
@@ -432,45 +335,7 @@ static void window_game_top_toolbar_dropdown()
 		}
 		break;
 	case WIDX_VIEW_MENU:
-		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
-		mainWindow = window_get_main();
-		if (mainWindow) {
-			switch (dropdownIndex){
-			case DDIDX_UNDERGROUND_INSIDE:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-				break;
-			case DDIDX_HIDE_BASE:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
-				break;
-			case DDIDX_HIDE_VERTICAL:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
-				break;
-			case DDIDX_SEETHROUGH_RIDES:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
-				break;
-			case DDIDX_SEETHROUGH_SCENARY:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
-				break;
-			case DDIDX_INVISIBLE_SUPPORTS:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-				break;
-			case DDIDX_INVISIBLE_PEEPS:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
-				break;
-			case DDIDX_LAND_HEIGHTS:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
-				break;
-			case DDIDX_TRACK_HEIGHTS:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
-				break;
-			case DDIDX_PATH_HEIGHTS:
-				mainWindow->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
-				break;
-			default:
-				return;
-			}
-			window_invalidate(mainWindow);
-		}
+		top_toolbar_view_menu_dropdown(dropdownIndex);
 		break;
 	case WIDX_MAP:
 		if (dropdownIndex == -1)
@@ -720,7 +585,7 @@ static void window_game_top_toolbar_tool_down(){
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-		);
+			);
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:

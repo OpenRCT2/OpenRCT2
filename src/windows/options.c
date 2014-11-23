@@ -102,7 +102,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,		STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,		STR_OPTIONS_TITLE,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		WW - 1,	43,		WH - 1,	0xFFFFFFFF,		STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,		STR_NONE },

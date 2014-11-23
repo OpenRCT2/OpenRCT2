@@ -98,6 +98,7 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\title.c" />
+    <ClCompile Include="..\src\toolbar.c" />
     <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\util\sawyercoding.c" />
     <ClCompile Include="..\src\util\util.c" />
@@ -107,6 +108,10 @@
     <ClCompile Include="..\src\windows\clear_scenery.c" />
     <ClCompile Include="..\src\windows\demolish_ride_prompt.c" />
     <ClCompile Include="..\src\windows\dropdown.c" />
+    <ClCompile Include="..\src\windows\editor_bottom_toolbar.c" />
+    <ClCompile Include="..\src\windows\editor_main.c" />
+    <ClCompile Include="..\src\windows\editor_object_selection.c" />
+    <ClCompile Include="..\src\windows\editor_top_toolbar.c" />
     <ClCompile Include="..\src\windows\error.c" />
     <ClCompile Include="..\src\windows\finances.c" />
     <ClCompile Include="..\src\windows\footpath.c" />
@@ -204,6 +209,7 @@
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\title.h" />
+    <ClInclude Include="..\src\toolbar.h" />
     <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\util\sawyercoding.h" />
     <ClInclude Include="..\src\util\util.h" />
