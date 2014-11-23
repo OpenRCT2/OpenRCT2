@@ -2755,9 +2755,9 @@ STR_2753    :???
 STR_2754    :???
 STR_2755    :???
 STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
+STR_2757    :Mooi weer
+STR_2758    :Regen
+STR_2759    :Hoogtes op nul
 STR_2760    :+5000 geld
 STR_2761    :Betaalde entree
 STR_2762    :Betalen per rit
