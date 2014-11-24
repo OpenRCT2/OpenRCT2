@@ -52,7 +52,7 @@ enum {
 	WIDX_GUESTS,
 	WIDX_CLEAR_SCENERY,
 
-	WIDX_FASTFORWARD,
+	//WIDX_FASTFORWARD,
 	WIDX_RESEARCH
 };
 
@@ -85,7 +85,7 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
+	//{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	{ WIDGETS_END },
 };
@@ -166,7 +166,7 @@ void window_game_top_toolbar_open()
 		(1 << WIDX_STAFF) | 
 		(1 << WIDX_GUESTS) |
 		(1 << WIDX_CLEAR_SCENERY) |
-		(1ULL << WIDX_FASTFORWARD) | 
+		//(1ULL << WIDX_FASTFORWARD) | 
 		(1ULL << WIDX_RESEARCH);
 
 	window_init_scroll_widgets(window);
@@ -193,14 +193,14 @@ static void window_game_top_toolbar_mouseup()
 		// Not sure where this was done in the original code
 		w->pressed_widgets ^= (1 << WIDX_PAUSE);
 		break;
-	case WIDX_FASTFORWARD:
-		// This is an excellent place to add in debugging statements and
-		// print routines, that will be triggered when you press the
-		// button in the game. Use "git update-index --skip-worktree
-		// src/window_game_top_toolbar" to avoid committing these changes to
-		// version control.
-		window_cheats_open();
-		break;
+	// case WIDX_FASTFORWARD:
+	// 	// This is an excellent place to add in debugging statements and
+	// 	// print routines, that will be triggered when you press the
+	// 	// button in the game. Use "git update-index --skip-worktree
+	// 	// src/window_game_top_toolbar" to avoid committing these changes to
+	// 	// version control.
+	// 	window_cheats_open();
+	// 	break;
 
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
@@ -411,6 +411,38 @@ static void window_game_top_toolbar_invalidate()
 	window_game_top_toolbar_widgets[WIDX_CLEAR_SCENERY].right = x;
 	x -= 29;
 	window_game_top_toolbar_widgets[WIDX_CLEAR_SCENERY].left = x;
+	x = 0;
+	window_game_top_toolbar_widgets[WIDX_PAUSE].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_PAUSE].right = x;
+	x += 1;
+	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].left = x;
+	// x += 29;
+	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].right = x;
+	x += 1;
+	window_game_top_toolbar_widgets[WIDX_FILE_MENU].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_FILE_MENU].right = x;
+	x += 11;
+	window_game_top_toolbar_widgets[WIDX_ZOOM_OUT].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_ZOOM_OUT].right = x;
+	x += 1;
+	window_game_top_toolbar_widgets[WIDX_ZOOM_IN].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_ZOOM_IN].right = x;
+	x += 1;
+	window_game_top_toolbar_widgets[WIDX_ROTATE].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_ROTATE].right = x;
+	x += 1;
+	window_game_top_toolbar_widgets[WIDX_VIEW_MENU].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_VIEW_MENU].right = x;
+	x += 1;
+	window_game_top_toolbar_widgets[WIDX_MAP].left = x;
+	x += 29;
+	window_game_top_toolbar_widgets[WIDX_MAP].right = x;
 
 	// Footpath button pressed down
 	if (window_find_by_class(WC_FOOTPATH) == NULL)
@@ -419,10 +451,10 @@ static void window_game_top_toolbar_invalidate()
 		w->pressed_widgets |= (1 << WIDX_PATH);
 
 	// Fast forward button pressed down
-	if (0)
-		w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
-	else
-		w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
+	// if (0)
+	// 	w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
+	// else
+	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
 
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
