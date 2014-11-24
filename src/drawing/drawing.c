@@ -501,14 +501,15 @@ void redraw_peep_and_rain()
 			return;
 		}
 		rct_window *window = window_get_main();
-		uint32 pixels = window->width * window->height;
+		uint32 numPixels = window->width * window->height;
 		
 		uint32 *rain_pixels = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
 		if (rain_pixels) {
 			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
 			for (int i = 0; i < rain_no_pixels; i++) {
 				uint32 pixel = rain_pixels[i];
-				if (pixel >> 8 > pixels) {
+				//HACK
+				if (pixel >> 8 > numPixels) {
 					log_verbose("Pixel error, skipping rain draw in this frame");
 					break;
 				}
