@@ -407,6 +407,19 @@ static void shortcut_increase_game_speed()
 	game_increase_game_speed();
 }
 
+static void shortcut_open_cheat_window()
+{
+	rct_window *window;
+
+	// Check if window is already open
+	window = window_find_by_class(WC_CHEATS);
+	if (window != NULL) {
+		window_close(window);
+		return;
+	}
+	window_cheats_open();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -441,7 +454,8 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_show_map,
 	shortcut_screenshot,
 	shortcut_reduce_game_speed,
-	shortcut_increase_game_speed
+	shortcut_increase_game_speed,
+	shortcut_open_cheat_window
 };
 
 #pragma endregion
