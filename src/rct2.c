@@ -104,7 +104,7 @@ int rct2_init()
 	news_item_init_queue();
 	get_local_time();
 	reset_park_entrances();
-	reset_saved_strings();
+	user_string_clear_all();
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();

@@ -583,8 +583,7 @@ static void load_landscape()
 {
 	if (open_landscape_file_dialog() == 0) {
 		gfx_invalidate_screen();
-	}
-	else {
+	} else {
 		// Set default filename
 		char *esi = (char*)0x0141EF67;
 		while (1) {
@@ -598,12 +597,11 @@ static void load_landscape()
 		}
 		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
 
-		RCT2_CALLPROC_EBPSAFE(0x006758C0); // landscape_load
+		editor_load_landscape((char*)0x0141EF68);
 		if (1) {
 			gfx_invalidate_screen();
 			rct2_endupdate();
-		}
-		else {
+		} else {
 			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 			rct2_endupdate();
 		}

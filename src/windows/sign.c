@@ -367,8 +367,7 @@ static void window_sign_textinput()
 			if (string_id){
 				rct_string_id prev_string_id = banner->string_idx;
 				banner->string_idx = string_id;
-				// De-allocate previous string id?
-				RCT2_CALLPROC_X(0x6C42AC, prev_string_id, 0, 0, 0, 0, 0, 0);
+				user_string_free(prev_string_id);
 
 				banner->flags &= ~(BANNER_FLAG_2);
 				gfx_invalidate_screen();
@@ -386,7 +385,7 @@ static void window_sign_textinput()
 
 			rct_string_id prev_string_id = banner->string_idx;
 			banner->string_idx = 778;
-			RCT2_CALLPROC_X(0x6C42AC, prev_string_id, 0, 0, 0, 0, 0, 0);
+			user_string_free(prev_string_id);
 			gfx_invalidate_screen();
 		}
 	}

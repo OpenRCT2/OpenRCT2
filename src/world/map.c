@@ -552,7 +552,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 	// Remove element
 	if (flags & 1) {
 		map_invalidate_tile_full(x, y);
-		RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
+		map_element_remove(mapElement);
 	}
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : cost;
 }
@@ -701,4 +701,62 @@ void map_invalidate_tile_full(int x, int y)
 int map_get_station(rct_map_element *mapElement)
 {
 	return (mapElement->properties.track.sequence & 0x70) >> 4;
+}
+
+/**
+ *
+ *  rct2: 0x0068B280
+ */
+void map_element_remove(rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006A6AA7
+ * @param x x-coordinate in units (not tiles)
+ * @param y y-coordinate in units (not tiles)
+ */
+void sub_6A6AA7(int x, int y, rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x006A6AA7, x, 0, y, 0, (int)mapElement, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00675A8E
+ */
+void map_remove_all_rides()
+{
+	int x, y;
+	rct_map_element *mapElement;
+
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+		repeat_tile:
+			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+
+			do {
+				switch (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
+				case MAP_ELEMENT_TYPE_PATH:
+					if (mapElement->type & 1) {
+						mapElement->properties.path.type &= ~8;
+						mapElement->properties.path.addition_status = 255;
+					}
+					break;
+				case MAP_ELEMENT_TYPE_ENTRANCE:
+					if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+						break;
+
+					// fall-through
+				case MAP_ELEMENT_TYPE_TRACK:
+					RCT2_CALLPROC_EBPSAFE(0x006A7594);
+					sub_6A6AA7(x * 32, y * 32, mapElement);
+					map_element_remove(mapElement);
+					goto repeat_tile;
+				}
+			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
 }

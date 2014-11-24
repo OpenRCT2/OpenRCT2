@@ -18,28 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _BANNER_H_
-#define _BANNER_H_
+#include "localisation.h"
 
-#include "../common.h"
+char *gUserStrings = (char*)0x0135A8F4;
 
-#define MAX_BANNERS 250
+/**
+ *
+ *  rct2: 0x006C4209
+ */
+void user_string_clear_all()
+{
+	memset(gUserStrings, 0, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
+}
 
-typedef struct {
-	uint8 type;
-	uint8 flags; //0x01 bit 0 is no entry
-	rct_string_id string_idx; //0x02
-	uint8 colour; //0x04
-	uint8 text_colour; //0x05
-	uint8 x; //0x06
-	uint8 y; //0x07
-} rct_banner;
+/**
+ * 
+ *  rct2: 0x006C42AC
+ */
+void user_string_free(rct_string_id id)
+{
+	if (id < 0x8000 || id >= 0x9000)
+		return;
 
-enum{
-	BANNER_FLAG_NO_ENTRY = (1 << 0),
-	BANNER_FLAG_2 = (1 << 2)
-} BANNER_FLAGS;
-
-extern rct_banner *gBanners;
-
-#endif
+	id %= MAX_USER_STRINGS;
+	gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
+}

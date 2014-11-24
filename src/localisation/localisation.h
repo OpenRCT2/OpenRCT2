@@ -28,9 +28,14 @@
 
 void format_string(char *dest, rct_string_id format, void *args);
 void generate_string_file();
-void reset_saved_strings();
 void error_string_quit(int error, rct_string_id format);
 int get_string_length(char* buffer);
+
+void user_string_clear_all();
+void user_string_free(rct_string_id id);
+
+#define MAX_USER_STRINGS 1024
+#define USER_STRING_MAX_LENGTH 32
 
 // Real name data
 extern const char real_name_initials[16];

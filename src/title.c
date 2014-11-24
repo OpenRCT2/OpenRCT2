@@ -95,7 +95,7 @@ void title_load()
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
 
 	reset_park_entrances();
-	reset_saved_strings();
+	user_string_clear_all();
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
