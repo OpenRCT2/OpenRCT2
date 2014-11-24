@@ -419,12 +419,6 @@ void osinterface_process_messages()
 			gKeysPressed[e.key.keysym.scancode] = 1;
 			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
 				osinterface_set_fullscreen_mode(!gGeneral_config.fullscreen_mode);
-			if (e.key.keysym.sym == SDLK_PRINTSCREEN){
-				RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 1;
-				//this function is normally called only in-game (in game_update)
-				//calling it here will save screenshots even while in main menu
-				screenshot_check();
-			}
 
 			// Text input
 

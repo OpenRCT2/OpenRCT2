@@ -44,6 +44,7 @@ enum {
 	INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
+void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
 

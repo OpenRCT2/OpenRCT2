@@ -18,16 +18,17 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <windows.h>
 #include <time.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
 #include "drawing/drawing.h"
 #include "editor.h"
+#include "game.h"
+#include "input.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
-#include "game.h"
+#include "interface/screenshot.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "management/news_item.h"
@@ -256,6 +257,9 @@ void game_handle_input();
 void title_update()
 {
 	int tmp;
+
+	screenshot_check();
+	title_handle_keyboard_input();
 
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
 		title_update_showcase();

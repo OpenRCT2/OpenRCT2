@@ -1087,6 +1087,37 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
  * 
  *  rct2: 0x006E3B43
  */
+void title_handle_keyboard_input()
+{
+	int key;
+
+	// Handle modifier keys and key scrolling
+	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+	if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
+		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
+		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+	}
+
+	while ((key = get_next_key()) != 0) {
+		if (key == 255)
+			continue;
+
+		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
+
+		if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
+			keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006E3B43
+ */
 void game_handle_keyboard_input()
 {
 	rct_window *w;
@@ -1106,6 +1137,8 @@ void game_handle_keyboard_input()
 			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
 		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
 			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
+			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
 			game_handle_key_scroll();
 	}
