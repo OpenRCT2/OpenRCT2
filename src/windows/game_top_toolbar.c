@@ -415,7 +415,7 @@ static void window_game_top_toolbar_invalidate()
 	window_game_top_toolbar_widgets[WIDX_PAUSE].left = x;
 	x += 29;
 	window_game_top_toolbar_widgets[WIDX_PAUSE].right = x;
-	x += 1;
+	// x += 1;
 	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].left = x;
 	// x += 29;
 	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].right = x;
