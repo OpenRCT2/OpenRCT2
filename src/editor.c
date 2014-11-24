@@ -235,7 +235,6 @@ void trackdesigner_load()
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
-	//RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
@@ -273,7 +272,6 @@ void trackmanager_load()
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
-	//RCT2_CALLPROC_EBPSAFE(0x0066EF38); // window_main_editor_create
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
@@ -721,10 +719,11 @@ static int editor_read_s6(const char *path)
 }
 
 /**
-*
-*  rct2: 0x0067009A
-*/
-void editor_open_windows_for_current_step() {
+ *
+ *  rct2: 0x0067009A
+ */
+void editor_open_windows_for_current_step()
+{
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
 		return;
 
@@ -741,25 +740,24 @@ void editor_open_windows_for_current_step() {
 		}
 
 		window_editor_object_selection_open();
-		//RCT2_CALLPROC_EBPSAFE(0x006AA64E); // window_editor_object_selection_open();
 		break;
 	case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
 		if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
 			return;
 
-		RCT2_CALLPROC_EBPSAFE(0x00684E04); // window_editor_inventions_list_open();
+		window_editor_inventions_list_open();
 		break;
 	case EDITOR_STEP_OPTIONS_SELECTION:
 		if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
 			return;
 
-		RCT2_CALLPROC_EBPSAFE(0x00670138); // window_editor_scenario_options_open();
+		window_editor_scenario_options_open();
 		break;
 	case EDITOR_STEP_OBJECTIVE_SELECTION:
 		if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
 			return;
 
-		RCT2_CALLPROC_EBPSAFE(0x0067137D); // window_editor_objective_options_open();
+		window_editor_objective_options_open();
 		break;
 	}
 }

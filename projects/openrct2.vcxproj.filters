@@ -385,7 +385,6 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
@@ -469,6 +468,16 @@
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\windows\editor_inventions_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_objective_options.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\editor_scenario_options.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

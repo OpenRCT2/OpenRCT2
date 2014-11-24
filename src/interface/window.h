@@ -528,6 +528,10 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 void window_editor_main_open();
 void window_editor_top_toolbar_open();
 void window_editor_bottom_toolbar_open();
+void window_editor_object_selection_open();
+void window_editor_inventions_list_open();
+void window_editor_scenario_options_open();
+void window_editor_objective_options_open();
 
 void window_guest_list_init_vars_a();
 void window_guest_list_init_vars_b();

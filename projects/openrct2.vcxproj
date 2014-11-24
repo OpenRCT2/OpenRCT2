@@ -110,8 +110,11 @@
     <ClCompile Include="..\src\windows\demolish_ride_prompt.c" />
     <ClCompile Include="..\src\windows\dropdown.c" />
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c" />
+    <ClCompile Include="..\src\windows\editor_inventions_list.c" />
     <ClCompile Include="..\src\windows\editor_main.c" />
+    <ClCompile Include="..\src\windows\editor_objective_options.c" />
     <ClCompile Include="..\src\windows\editor_object_selection.c" />
+    <ClCompile Include="..\src\windows\editor_scenario_options.c" />
     <ClCompile Include="..\src\windows\editor_top_toolbar.c" />
     <ClCompile Include="..\src\windows\error.c" />
     <ClCompile Include="..\src\windows\finances.c" />
