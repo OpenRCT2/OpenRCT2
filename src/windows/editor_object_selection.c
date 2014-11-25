@@ -169,7 +169,7 @@ static void window_editor_object_selection_mouseup()
 	case WIDX_EDITOR_OBJECT_SELECTION_DROPDOWN2:
 		if (w->selected_list_item != -1) {
 			w->selected_list_item = -1;
-			object_free_scenario_text();
+			RCT2_CALLPROC_EBPSAFE(0x006A982D); // object_free_scenario_text();
 		}
 		window_invalidate(w);
 
@@ -192,6 +192,6 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->selected_list_item = -1;
 	w->var_494 = 0xFFFFFFFF;
 	w->scrolls[0].v_top = 0;
-	object_free_scenario_text();
+	RCT2_CALLPROC_EBPSAFE(0x006A982D); // object_free_scenario_text();
 	window_invalidate(w);
 }
