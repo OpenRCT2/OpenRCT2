@@ -82,6 +82,17 @@ int climate_celsius_to_fahrenheit(int celsius)
 void climate_reset(int climate)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = climate;
+
+	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	const rct_weather_transition* climate_table = climate_transitions[climate];
+	rct_weather_transition transition = climate_table[month];
+	sint8 weather = WEATHER_PARTIALLY_CLOUDY;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = weather;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = transition.base_temperature + climate_weather_data[weather].temp_delta;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
+
 	climate_determine_future_weather();
 }
 
