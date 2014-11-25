@@ -795,15 +795,16 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 
 	// Get directory path from given filename
 	strcpy(initialDirectory, filename);
-	dotAddress = strrchr(filename, '.');
+	dotAddress = strrchr(initialDirectory, '.');
 	if (dotAddress != NULL) {
-		slashAddress = strrchr(filename, '\\');
+		slashAddress = strrchr(initialDirectory, '\\');
 		if (slashAddress < dotAddress)
 			*(slashAddress + 1) = 0;
 	}
 
 	// Clear filename
-	*filename = 0;
+	if (type != 0)
+		*filename = 0;
 
 	// Set open file name options
 	memset(&openFileName, 0, sizeof(OPENFILENAME));

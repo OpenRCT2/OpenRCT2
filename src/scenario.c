@@ -45,6 +45,8 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 {
 	FILE *file;
 
+	log_verbose("loading scenario details, %s", path);
+
 	file = fopen(path, "rb");
 	if (file != NULL) {
 		// Read first chunk
@@ -70,8 +72,9 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 		fclose(file);
 	}
 
-	RCT2_GLOBAL(0x009AC31B, sint8) = -1;
-	RCT2_GLOBAL(0x009AC31C, sint16) = 3011;
+	log_error("invalid scenario, %s", path);
+	// RCT2_GLOBAL(0x009AC31B, sint8) = -1;
+	// RCT2_GLOBAL(0x009AC31C, sint16) = 3011;
 	return 0;
 }
 
@@ -204,6 +207,8 @@ int scenario_load_and_play_from_path(const char *path)
 
 	if (!scenario_load(path))
 		return 0;
+
+	log_verbose("starting scenario, %s", path);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
@@ -659,4 +664,63 @@ unsigned int scenario_rand()
 	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
 	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+}
+
+/**
+ * Prepare rides, for the finish five rollercoasters objective.
+ *  rct2: 0x006788F7
+ */
+void scenario_prepare_rides_for_save()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006788F7);
+}
+
+/**
+ *
+ *  rct2: 0x006726C7
+ */
+int scenario_prepare_for_save()
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	char buffer[256];
+
+	s6Info->entry.flags = 255;
+
+	char *stex = RCT2_GLOBAL(0x009ADAE4, char*);
+	if (stex != (char*)0xFFFFFFFF) {
+		format_string(buffer, RCT2_GLOBAL(stex, uint16), NULL);
+		strncpy(s6Info->name, buffer, sizeof(s6Info->name));
+		s6Info->entry = *((rct_object_entry*)0x00F4287C);
+	}
+
+	if (s6Info->name[0] == 0)
+		format_string(s6Info->name, RCT2_GLOBAL(0x013573D4, rct_string_id), (void*)0x013573D8);
+
+	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, uint8);
+	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint8);
+
+	scenario_prepare_rides_for_save();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+
+	return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006754F5
+ * @param flags bit 0: pack objects, 1: save as scenario
+ */
+int scenario_save(char *path, int flags)
+{
+	if (flags & 2)
+		log_verbose("saving scenario, %s", path);
+	else
+		log_verbose("saving game, %s", path);
+
+	strcpy((char*)0x0141EF68, path);
+	return !(RCT2_CALLPROC_X(0x006754F5, flags, 0, 0, 0, 0, 0, 0) & 0x100);
 }

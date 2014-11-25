@@ -121,7 +121,7 @@ static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
 void editor_convert_save_to_scenario()
 {
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-	char *ch, savedGamePath[MAX_PATH];
+	char savedGamePath[MAX_PATH];
 	rct_window *w;
 	rct_viewport *viewport;
 
@@ -129,14 +129,7 @@ void editor_convert_save_to_scenario()
 	if (!show_convert_saved_game_to_scenario_dialog(savedGamePath))
 		return;
 
-	// Ensure it ends with .SV6
-	ch = savedGamePath;
-	while (*++ch != '.') {
-		if (*ch == 0) {
-			strcpy(ch, ".SV6");
-			break;
-		}
-	}
+	path_set_extension(savedGamePath, ".SV6");
 
 	// Load the saved game
 	if (!game_load_save(savedGamePath))

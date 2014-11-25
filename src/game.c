@@ -43,6 +43,7 @@
 #include "title.h"
 #include "tutorial.h"
 #include "util/sawyercoding.h"
+#include "util/util.h"
 #include "windows/error.h"
 #include "windows/tooltip.h"
 #include "world/climate.h"
@@ -763,33 +764,51 @@ static void load_game()
 	}
 }
 
+/**
+ *
+ *  rct2: 0x006750E9
+ */
+static int show_save_game_dialog(char *resultPath)
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	int result;
+	char title[256];
+	char filename[MAX_PATH];
+	char filterName[256];
+
+	format_string(title, STR_SAVE_GAME_1040, NULL);
+	strcpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char));
+	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
+
+	pause_sounds();
+	result = osinterface_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
+	unpause_sounds();
+
+	if (result)
+		strcpy(resultPath, filename);
+	return result;
+}
+
 char save_game()
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x006750E9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax == 0) {
-		// user pressed "cancel"
+	char path[256];
+
+	if (!show_save_game_dialog(path)) {
 		gfx_invalidate_screen();
 		return 0;
 	}
-	
-	char *src = (char*)0x0141EF67;
-	do {
-		src++;
-	} while (*src != '.' && *src != '\0');
-	strcpy(src, ".SV6");
-	strcpy((char*) RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*) 0x0141EF68);
-	
-	eax = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 8)
-		eax |= 1;
-	RCT2_CALLPROC_X(0x006754F5, eax, 0, 0, 0, 0, 0, 0);
-	// check success?
 
-	game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
-	gfx_invalidate_screen();
+	// Ensure path has .SV6 extension
+	path_set_extension(path, ".SV6");
 	
-	return 1;
+	if (scenario_save(path, gGeneral_config.save_plugin_data ? 1 : 0)) {
+		game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
+		gfx_invalidate_screen();
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 /**

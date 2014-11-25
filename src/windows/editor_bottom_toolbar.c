@@ -20,12 +20,18 @@
 
 #include <stdbool.h>
 #include "../addresses.h"
+#include "../audio/audio.h"
+#include "../config.h"
 #include "../editor.h"
+#include "../scenario.h"
 #include "../sprites.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../platform/osinterface.h"
+#include "../title.h"
+#include "../util/util.h"
 #include "error.h"
 
 enum WINDOW_EDITOR_TOP_TOOLBAR_WIDGET_IDX {
@@ -250,11 +256,74 @@ void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
 }
 
 /**
-*
-*  rct2: 0x0066f7c0
-*/
-void window_editor_bottom_toolbar_jump_forward_to_save_scenario() {
-	RCT2_CALLPROC_EBPSAFE(0x0066f7c0);
+ *
+ *  rct2: 0x00675181
+ */
+static int show_save_scenario_dialog(char *resultPath)
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	int result;
+	char title[256];
+	char filename[MAX_PATH];
+	char filterName[256];
+
+
+	format_string(title, STR_SAVE_SCENARIO, NULL);
+	subsitute_path(filename, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), s6Info->name);
+	strcat(filename, ".SC6");
+	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
+
+	pause_sounds();
+	result = osinterface_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
+	unpause_sounds();
+
+	if (result)
+		strcpy(resultPath, filename);
+	return result;
+}
+
+/**
+ *
+ *  rct2: 0x0066F7C0
+ */
+void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	int parkFlagsBackup, success;
+	char path[256];
+
+	if (!scenario_prepare_for_save()) {
+		window_error_open(STR_UNABLE_TO_SAVE_SCENARIO_FILE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		gfx_invalidate_screen();
+		return;
+	}
+
+	window_close_all();
+	if (!show_save_scenario_dialog(path)) {
+		gfx_invalidate_screen();
+		return;
+	}
+
+	// 
+	s6Info->var_000 = 255;
+
+	// Ensure path has .SC6 extension
+	path_set_extension(path, ".SC6");
+
+	// Save the scenario
+	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
+	success = scenario_save(path, gGeneral_config.save_plugin_data ? 3 : 2);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
+
+	if (success) {
+		// RCT2_CALLPROC_EBPSAFE(0x0066DC83);
+		title_load();
+	} else {
+		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);
+		s6Info->var_000 = 4;
+	}
 }
 
 /**
