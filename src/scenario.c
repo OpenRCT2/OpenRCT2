@@ -519,13 +519,17 @@ void scenario_objectives_check()
 
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
 	{
+		int i;
 		rct_ride* ride;
+
+		// ORIGINAL BUG?:
+		// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
+		// It also did not exclude null rides.
 		int rcs = 0;
-		for (int i = 0; i < MAX_RIDES; i++) {
-			ride = &g_ride_list[i];
+		FOR_ALL_RIDES(i, ride)
 			if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objective_currency)
 				rcs++;
-		}
+
 		if (rcs >= 5)
 			scenario_success();
 		break;
@@ -672,7 +676,34 @@ unsigned int scenario_rand()
  */
 void scenario_prepare_rides_for_save()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006788F7);
+	int i, x, y;
+	rct_map_element *mapElement;
+	rct_ride *ride;
+
+	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+
+	// Set all existing track to be indestructible
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+			do {
+				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK) {
+					if (isFiveCoasterObjective)
+						mapElement->flags |= 0x40;
+					else
+						mapElement->flags &= ~0x40;
+				}
+			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
+
+	// Set all existing rides to have indestructible track
+	FOR_ALL_RIDES(i, ride) {
+		if (isFiveCoasterObjective)
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+		else
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+	}
 }
 
 /**
