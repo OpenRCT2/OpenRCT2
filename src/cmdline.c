@@ -48,7 +48,7 @@ static const char *const usage[] = {
  * will then terminate before any initialisation has even been done.
  * @returns 1 if the game should run, otherwise 0.
  */
-int cmdline_run(char *argv[], int argc)
+int cmdline_run(const char **argv, int argc)
 {
 	// For argparse's sake, add virtual first argument process path
 	argc++;
