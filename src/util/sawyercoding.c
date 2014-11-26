@@ -350,7 +350,7 @@ static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 static int encode_chunk_repeat(char *src_buffer, char *dst_buffer, int length)
 {
 	int i, j, outLength;
-	int searchIndex, searchEnd, searchCount, maxRepeatCount;
+	int searchIndex, searchEnd, maxRepeatCount;
 	int bestRepeatIndex, bestRepeatCount, repeatIndex, repeatCount;
 
 	if (length == 0)
@@ -367,7 +367,6 @@ static int encode_chunk_repeat(char *src_buffer, char *dst_buffer, int length)
 	for (i = 1; i < length; ) {
 		searchIndex = max(0, i - 32);
 		searchEnd = i - 1;
-		searchCount = i - searchIndex;
 
 		bestRepeatCount = 0;
 		for (repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
