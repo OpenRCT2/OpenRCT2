@@ -61,5 +61,6 @@ int object_get_length(rct_object_entry *entry);
 rct_object_entry *object_get_next(rct_object_entry *entry);
 int object_calculate_checksum(rct_object_entry *entry, char *data, int dataLength);
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+int sub_6A9F42(FILE *file, rct_object_entry* entry);
 
 #endif

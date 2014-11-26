@@ -619,9 +619,13 @@ int game_load_save(const char *path)
 	FILE *file;
 	int i, j;
 
+	log_verbose("loading saved game, %s", path);
+
 	strcpy((char*)0x0141EF68, path);
 	file = fopen(path, "rb");
 	if (file == NULL) {
+		log_error("unable to open %s", path);
+
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
@@ -629,6 +633,9 @@ int game_load_save(const char *path)
 
 	if (!sawyercoding_validate_checksum(file)) {
 		fclose(file);
+
+		log_error("invalid checksum, %s", path);
+
 		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;

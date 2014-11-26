@@ -33,6 +33,7 @@
 #include "ride/ride.h"
 #include "scenario.h"
 #include "util/sawyercoding.h"
+#include "util/util.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/sprite.h"
@@ -742,16 +743,279 @@ int scenario_prepare_for_save()
 
 /**
  *
+ *  rct2: 0x006AA244
+ */
+int scenario_get_num_packed_objects_to_write()
+{
+	int i, count = 0;
+	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
+
+	for (i = 0; i < 721; i++, entry++) {
+		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+			continue;
+
+		count++;
+	}
+
+	return count;
+}
+
+/**
+ *
+ *  rct2: 0x006AA26E
+ */
+int scenario_write_packed_objects(FILE *file)
+{
+	int i;
+	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
+	for (i = 0; i < 721; i++, entry++) {
+		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+			continue;
+
+		if (!sub_6A9F42(file, (rct_object_entry*)entry))
+			return 0;
+	}
+
+	return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006AA039
+ */
+int scenario_write_available_objects(FILE *file)
+{
+	char *buffer, *dstBuffer;
+	int i, encodedLength;
+	sawyercoding_chunk_header chunkHeader;
+
+	const int totalEntries = 721;
+	const int bufferLength = totalEntries * sizeof(rct_object_entry);
+
+	// Initialise buffers
+	buffer = malloc(bufferLength);
+	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
+	if (buffer == NULL || dstBuffer == NULL)
+		return 0;
+
+	// Write entries
+	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
+	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
+	for (i = 0; i < 721; i++) {
+		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF)
+			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
+		else
+			*dstEntry = *((rct_object_entry*)srcEntry);
+		
+		srcEntry++;
+		dstEntry++;
+	}
+
+	// Write chunk
+	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+	chunkHeader.length = bufferLength;
+	encodedLength = sawyercoding_write_chunk_buffer(dstBuffer, buffer, chunkHeader);
+	fwrite(dstBuffer, encodedLength, 1, file);
+
+	// Free buffers
+	free(dstBuffer);
+	free(buffer);
+}
+
+/**
+ *
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
 int scenario_save(char *path, int flags)
 {
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	FILE *file;
+	char *buffer;
+	sawyercoding_chunk_header chunkHeader;
+	int encodedLength;
+	long fileSize;
+	uint32 checksum;
+
+	rct_window *w;
+	rct_viewport *viewport;
+	int viewX, viewY, viewZoom, viewRotation;
+
 	if (flags & 2)
 		log_verbose("saving scenario, %s", path);
 	else
 		log_verbose("saving game, %s", path);
 
-	strcpy((char*)0x0141EF68, path);
-	return !(RCT2_CALLPROC_X(0x006754F5, flags, 0, 0, 0, 0, 0, 0) & 0x100);
+
+	if (!(flags & 0x80000000))
+		window_close_construction_windows();
+
+	RCT2_CALLPROC_EBPSAFE(0x0068B111);
+	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	RCT2_CALLPROC_EBPSAFE(0x0069EBA4);
+	RCT2_CALLPROC_EBPSAFE(0x00677552);
+	RCT2_CALLPROC_EBPSAFE(0x00674BCF);
+
+	// Set saved view
+	w = window_get_main();
+	if (w != NULL) {
+		viewport = w->viewport;
+
+		viewX = viewport->view_width / 2 + viewport->view_x;
+		viewY = viewport->view_height / 2 + viewport->view_y;
+		viewZoom = viewport->zoom;
+		viewRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	} else {
+		viewX = 0;
+		viewY = 0;
+		viewZoom = 0;
+		viewRotation = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+
+	// 
+	memset(s6Header, 0, sizeof(rct_s6_header));
+	s6Header->type = flags & 2 ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
+	s6Header->num_packed_objects = flags & 1 ? scenario_get_num_packed_objects_to_write() : 0;
+	s6Header->version = S6_RCT2_VERSION;
+	s6Header->magic_number = S6_MAGIC_NUMBER;
+
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		log_error("Unable to write to %s", path);
+		return 0;
+	}
+
+	buffer = malloc(0x600000);
+	if (buffer == NULL) {
+		log_error("Unable to allocate enough space for a write buffer.");
+		fclose(file);
+		return 0;
+	}
+
+	// Write header chunk
+	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+	chunkHeader.length = sizeof(rct_s6_header);
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6Header, chunkHeader);
+	fwrite(buffer, encodedLength, 1, file);
+
+	// Write scenario info chunk
+	if (flags & 2) {
+		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+		chunkHeader.length = sizeof(rct_s6_info);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6Info, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+	}
+
+	// Write packed objects
+	if (s6Header->num_packed_objects > 0) {
+		if (!scenario_write_packed_objects(file)) {
+			free(buffer);
+			fclose(file);
+			return 0;
+		}
+	}
+
+	// Write available objects chunk
+	scenario_write_available_objects(file);
+
+	// Write date etc. chunk
+	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+	chunkHeader.length = 16;
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x00F663A8, chunkHeader);
+	fwrite(buffer, encodedLength, 1, file);
+
+	// Write map elements
+	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+	chunkHeader.length = 0x4A85EC;
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x00F663B8, chunkHeader);
+	fwrite(buffer, encodedLength, 1, file);
+
+	if (flags & 2) {
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 0x27104C;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x010E63B8, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 4;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357844, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 8;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357BC8, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 2;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357CB0, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 1082;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357CF2, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 16;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x0135832C, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 4;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x0135853C, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 0x761E8;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01358740, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+	} else {
+		// Write chunk
+		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+		chunkHeader.length = 0x2E8570;
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x010E63B8, chunkHeader);
+		fwrite(buffer, encodedLength, 1, file);
+	}
+
+	free(buffer);
+
+	// Due to the buffered writing and the writing of packed objects, there is no single buffer to calculate the checksum.
+	// Therefore the file is closed, opened, closed and opened again to save the checksum. Inefficient, but will do until
+	// the chunk writing code is better.
+	fclose(file);
+
+	file = fopen(path, "rb");
+	fileSize = fsize(file);
+	buffer = malloc(fileSize);
+	fread(buffer, fileSize, 1, file);
+	fclose(file);
+
+	checksum = sawyercoding_calculate_checksum(buffer, fileSize);
+
+	fopen(path, "wb");
+	fwrite(buffer, fileSize, 1, file);
+	fwrite(&checksum, sizeof(int), 1, file);
+	fclose(file);
+
+	if (!(flags & 0x80000000))
+		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	return 1;
 }

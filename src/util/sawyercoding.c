@@ -30,15 +30,11 @@ static void decode_chunk_rotate(char *buffer, int length);
 int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length);
 void encode_chunk_rotate(char *buffer, int length);
 
-int sawyercoding_calculate_checksum(uint8* buffer, uint32 length){
-	int checksum = 0;
-	do {
-		int bufferSize = min(length , 1024);
-
-		for (int i = 0; i < bufferSize; i++)
-			checksum += buffer[i];
-		length -= bufferSize;
-	} while (length != 0);
+uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length)
+{
+	uint32 i, checksum = 0;
+	for (i = 0; i < length; i++)
+		checksum += buffer[i];
 
 	return checksum;
 }
@@ -230,10 +226,9 @@ int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding
 		free(encode_buffer);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		RCT2_ERROR("This has not been implemented");
-		return -1;
-		//chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
-		//chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+		log_warning("RLECOMPRESSED encoding has not been implemented, using CHUNK_ENCODING_RLE instead.");
+		chunkHeader.encoding = CHUNK_ENCODING_RLE;
+		return sawyercoding_write_chunk_buffer(dst_file, buffer, chunkHeader);
 		break;
 	case CHUNK_ENCODING_ROTATE:
 		encode_chunk_rotate(buffer, chunkHeader.length);
