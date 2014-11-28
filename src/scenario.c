@@ -885,7 +885,7 @@ int scenario_save(char *path, int flags)
 	s6Header->version = S6_RCT2_VERSION;
 	s6Header->magic_number = S6_MAGIC_NUMBER;
 
-	file = fopen(path, "wb");
+	file = fopen(path, "wb+");
 	if (file == NULL) {
 		log_error("Unable to write to %s", path);
 		return 0;
@@ -994,22 +994,19 @@ int scenario_save(char *path, int flags)
 
 	free(buffer);
 
-	// Due to the buffered writing and the writing of packed objects, there is no single buffer to calculate the checksum.
-	// Therefore the file is closed, opened, closed and opened again to save the checksum. Inefficient, but will do until
-	// the chunk writing code is better.
-	fclose(file);
+	// Determine number of bytes written
+	fileSize = ftell(file);
+	fseek(file, 0, SEEK_SET);
 
-	file = fopen(path, "rb");
-	fileSize = fsize(file);
+	// Read all written bytes back into a single buffer
 	buffer = malloc(fileSize);
 	fread(buffer, fileSize, 1, file);
-	fclose(file);
-
 	checksum = sawyercoding_calculate_checksum(buffer, fileSize);
+	free(buffer);
 
-	fopen(path, "wb");
-	fwrite(buffer, fileSize, 1, file);
-	fwrite(&checksum, sizeof(int), 1, file);
+	// Append the checksum
+	fseek(file, fileSize, SEEK_SET);
+	fwrite(&checksum, sizeof(uint32), 1, file);
 	fclose(file);
 
 	if (!(flags & 0x80000000))
