@@ -295,7 +295,7 @@ void news_item_open_subject(int type, int subject)
 	case NEWS_ITEM_PEEP_ON_RIDE:
 	case NEWS_ITEM_PEEP:
 		peep = GET_PEEP(subject);
-		RCT2_CALLPROC_X(0x006989E9, 0, 0, 0, (int)peep, 0, 0, 0);
+		window_guest_open(peep);
 		break;
 	case NEWS_ITEM_MONEY:
 		window_finances_open();

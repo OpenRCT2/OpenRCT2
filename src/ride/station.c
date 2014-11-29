@@ -185,8 +185,8 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps) {
 				// Found a winner
-				if (vehicle->var_B3 != 0) {
-					peep = &(g_sprite_list[vehicle->peep].peep);
+				if (vehicle->num_peeps != 0) {
+					peep = &(g_sprite_list[vehicle->peep[0]].peep);
 					ride->race_winner = peep->sprite_index;
 					ride->var_14D |= 12;
 				}
@@ -240,8 +240,8 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 
 		vehicle->speed = (scenario_rand() & 16) - 8 + RCT2_GLOBAL(unk + 0x76, uint8);
 
-		if (vehicle->var_B3) {
-			rct_peep *peep = &g_sprite_list[vehicle->peep].peep;
+		if (vehicle->num_peeps != 0) {
+			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;
 
 			switch (peep_get_easteregg_name_id(peep)) {
 			case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:

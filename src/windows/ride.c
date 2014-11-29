@@ -925,17 +925,6 @@ static uint32* window_ride_page_events[] = {
 const int window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 const int window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
 
-// WINDOW_PARK_PAGE_MAIN,
-// WINDOW_PARK_PAGE_VEHICLE,
-// WINDOW_PARK_PAGE_OPERATING,
-// WINDOW_PARK_PAGE_MAINTENANCE,
-// WINDOW_PARK_PAGE_COLOUR,
-// WINDOW_PARK_PAGE_MUSIC,
-// WINDOW_PARK_PAGE_MEASUREMENTS,
-// WINDOW_PARK_PAGE_GRAPHS,
-// WINDOW_PARK_PAGE_INCOME,
-// WINDOW_PARK_PAGE_CUSTOMER
-
 static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int page, int spriteIndex)
 {
 	int widgetIndex = WIDX_TAB_1 + page;
@@ -1184,8 +1173,52 @@ rct_window *window_ride_main_open(int rideIndex)
  */
 rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 {
-	RCT2_CALLPROC_X(0x006ACCCE, rideIndex, stationIndex, 0, 0, 0, 0, 0);
-	return window_find_by_number(WC_RIDE, rideIndex);
+	int i;
+	rct_ride *ride;
+	rct_window *w;
+
+	ride = GET_RIDE(rideIndex);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000)
+		return window_ride_main_open(rideIndex);
+
+	w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
+	if (w == NULL) {
+		w = window_ride_open(rideIndex);
+		w->ride.var_482 = -1;
+	}
+
+	if (
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE &&
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == w->classification &&
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) == w->number
+	) {
+		tool_cancel();
+	}
+
+	w->page = WINDOW_PARK_PAGE_MAIN;
+	w->width = 316;
+	w->height = 180;
+	window_invalidate(w);
+
+	w->widgets = window_ride_page_widgets[w->page];
+	w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
+	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[w->page];
+	w->event_handlers = window_ride_page_events[w->page];
+	w->pressed_widgets = 0;
+	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_init_scroll_widgets(w);
+
+	// View
+	for (i = stationIndex; i >= 0; i--) {
+		if (ride->station_starts[i] == 0xFFFF)
+			stationIndex--;
+	}
+
+	w->ride.view = 1 + ride->num_vehicles + stationIndex;
+	window_ride_init_viewport(w);
+
+	return w;
 }
 
 rct_window *window_ride_open_track(rct_map_element *mapElement)
@@ -1209,8 +1242,87 @@ rct_window *window_ride_open_track(rct_map_element *mapElement)
  */
 rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x6ACAC2, 0, 0, 0, (int)vehicle, 0, 0, 0);
-	return window_find_by_number(WC_RIDE, vehicle->ride);
+	int i, rideIndex, view, numPeepsLeft, openedPeepWindow;
+	uint16 headVehicleSpriteIndex, peepSpriteIndex;
+	rct_ride *ride;
+	rct_vehicle *headVehicle;
+	rct_window *w, *w2;
+
+	headVehicle = vehicle_get_head(vehicle);
+	headVehicleSpriteIndex = headVehicle->sprite_index;
+	rideIndex = headVehicle->ride;
+	ride = GET_RIDE(rideIndex);
+
+	// Get view index
+	view = 1;
+	for (i = 0; i < 32; i++) {
+		if (ride->vehicles[i] == headVehicleSpriteIndex)
+			break;
+		
+		view++;
+	}
+
+
+	w = window_find_by_number(WC_RIDE, rideIndex);
+	if (w != NULL) {
+		window_invalidate(w);
+
+		if (
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE &&
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == w->classification &&
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) == w->number
+		) {
+			tool_cancel();
+		}
+
+		openedPeepWindow = 0;
+		if (w->ride.view == view) {
+			numPeepsLeft = vehicle->num_peeps;
+			for (i = 0; i < 32 && numPeepsLeft > 0; i++) {
+				peepSpriteIndex = vehicle->peep[i];
+				if (peepSpriteIndex == SPRITE_INDEX_NULL)
+					continue;
+
+				numPeepsLeft--;
+				w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
+				if (w2 == NULL) {
+					rct_peep *peep = &(g_sprite_list[peepSpriteIndex].peep);
+					window_guest_open(peep);
+					openedPeepWindow = 1;
+
+					break;
+				}
+			}
+		}
+
+		w = openedPeepWindow ?
+			window_find_by_number(WC_RIDE, rideIndex) :
+			window_bring_to_front_by_number(WC_RIDE, rideIndex);
+	}
+
+	if (w == NULL) {
+		w = window_ride_open(rideIndex);
+		w->ride.var_482 = -1;
+	}
+
+	w->page = WINDOW_PARK_PAGE_MAIN;
+	w->width = 316;
+	w->height = 180;
+	window_invalidate(w);
+
+	w->widgets = window_ride_page_widgets[w->page];
+	w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
+	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[w->page];
+	w->event_handlers = window_ride_page_events[w->page];
+	w->pressed_widgets = 0;
+	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_init_scroll_widgets(w);
+
+	w->ride.view = view;
+	window_ride_init_viewport(w);
+	window_invalidate(w);
+
+	return w;
 }
 
 /**
