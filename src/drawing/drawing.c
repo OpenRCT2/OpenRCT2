@@ -437,20 +437,21 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	uint8 pattern_y_space = *pattern++;
 
 	uint8 pattern_start_x_offset = x_start % pattern_x_space;
-	uint8 pattern_start_y_offset = y_start % pattern_y_space;;
+	uint8 pattern_start_y_offset = y_start % pattern_y_space;
 
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
-	uint8 pattern_y_pos = pattern_start_y_offset;
+	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
 	//Stores the colours of changed pixels
 	uint32* pixel_store = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
 	pixel_store += RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 
 	for (; height != 0; height--){
+
 		uint8 pattern_x = pattern[pattern_y_pos * 2];
 		if (pattern_x != 0xFF){
-			if (RCT2_GLOBAL(0x9AC00C, uint32) <= 0x1F38){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) <= 0x4000){
 
 				int final_pixel_offset = width + pixel_offset;
 
@@ -465,6 +466,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 
 					//Store colour and position
 					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
+					
 				}
 			}
 		}
