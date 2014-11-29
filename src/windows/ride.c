@@ -3985,7 +3985,7 @@ static void window_ride_colour_paint()
 
 		uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
 		spriteIndex = 5061 + shopItem;
-		spriteIndex |= ride->track_colour_main[trackColour.main] << 19;
+		spriteIndex |= ride->track_colour_main[0] << 19;
 		spriteIndex |= 0x20000000;
 
 		gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
