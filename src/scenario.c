@@ -160,9 +160,7 @@ int scenario_load(const char *path)
 			if (!load_success){
 				log_error("failed to load all entries.");
 				set_load_objects_fail_reason();
-				title_load();
-				rct2_endupdate();
-				return 0;//This never gets called
+				return 0;
 			}
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);

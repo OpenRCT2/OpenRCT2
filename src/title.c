@@ -167,7 +167,10 @@ static void title_update_showcase()
 				_scriptWaitCounter = (*_currentScript++) * 32;
 				break;
 			case TITLE_SCRIPT_LOAD:
-				scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN));
+				if (!scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
+					log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
+					exit(-1);
+				}
 
 				w = window_get_main();
 				w->viewport_target_sprite = -1;

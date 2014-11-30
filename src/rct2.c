@@ -253,6 +253,7 @@ int check_file_path(int pathId)
 	case PATH_ID_GAMECFG:
 	case PATH_ID_SCORES:
 	case PATH_ID_TRACKSIDX:
+	case PATH_ID_PLUGIN:
 		// Do nothing; these will be created later if they do not exist yet
 		break;
 

@@ -20,10 +20,11 @@
 
 #include <windows.h>
 #include "addresses.h"
-#include "object.h"
-#include "util/sawyercoding.h"
 #include "localisation/localisation.h"
+#include "object.h"
+#include "platform/osinterface.h"
 #include "ride/track.h"
+#include "util/sawyercoding.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -79,6 +80,13 @@ struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[
 	(void**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water
 	(void**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))		// scenario text
 };
+
+static void get_plugin_path(char *path)
+{
+	char *homePath = osinterface_get_orct2_homefolder();
+	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "plugin.dat");
+	free(homePath);
+}
 
 /**
  * 
@@ -172,6 +180,9 @@ void object_list_load()
 	WIN32_FIND_DATAA findFileData;
 	int totalFiles = 0, totalFileSize = 0, fileDateModifiedChecksum = 0;
 
+	char pluginPath[MAX_PATH];
+	get_plugin_path(pluginPath);
+
 	// Enumerate through each object in the directory
 	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), &findFileData);
 	if (hFindFile != INVALID_HANDLE_VALUE) {
@@ -192,7 +203,8 @@ void object_list_load()
 
 	// Read plugin header
 	rct_plugin_header pluginHeader;
-	FILE *file = fopen(get_file_path(PATH_ID_PLUGIN), "rb");
+
+	FILE *file = fopen(pluginPath, "rb");
 	if (file != NULL) {
 		if (fread(&pluginHeader, sizeof(pluginHeader), 1, file) == 1) {
 			// Check if object repository has changed in anyway
@@ -458,7 +470,9 @@ void object_list_load()
 	// Size of list Not used any more.
 	// RCT2_GLOBAL(0xF42BA0, uint32) = current_item_offset;
 	// RCT2_GLOBAL(0xF42BA4, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
-	FILE* obj_list_file = fopen(get_file_path(PATH_ID_PLUGIN),"wb");
+
+	get_plugin_path(pluginPath);
+	FILE* obj_list_file = fopen(pluginPath,"wb");
 
 	if (obj_list_file){
 		totalFiles = file_count;
