@@ -379,7 +379,7 @@ void scenario_success()
 			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
 				break; // not a new high score -> no glory
 
-			// bts game_flags, 1 happens here but I don't know what for
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 			scenario->company_value = current_val;
 			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
 			scenario->completed_by[0] = 0;
@@ -1015,4 +1015,28 @@ int scenario_save(char *path, int flags)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	return 1;
+}
+
+void scenario_success_submit_name(const char *name)
+{
+	int i;
+	rct_scenario_basic* scenario;
+	uint32 scenarioWinCompanyValue;
+	
+	for (i = 0; i < gScenarioListCount; i++) {
+		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
+		scenario = &gScenarioList[i];
+
+		if (strncmp(cur_scenario_name, scenario->path, 256) == 0) {
+			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
+			if (scenario->company_value == scenarioWinCompanyValue) {
+				strncpy(scenario->completed_by, name, 64);
+				strncpy((char*)0x013587D8, name, 32);
+				scenario_scores_save();
+			}
+			break;
+		}
+	}
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
