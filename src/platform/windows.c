@@ -215,6 +215,11 @@ void platform_set_cursor_position(int x, int y)
 	SetCursorPos(x, y);
 }
 
+unsigned int platform_get_ticks()
+{
+	return GetTickCount();
+}
+
 /**
  * http://alter.org.ua/en/docs/win/args/
  */

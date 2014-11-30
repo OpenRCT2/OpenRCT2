@@ -18,12 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <windows.h>
-#include <limits.h>
 #include "../addresses.h"
 #include "../common.h"
 #include "../localisation/localisation.h"

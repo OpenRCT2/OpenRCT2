@@ -21,7 +21,6 @@
 #ifndef _SAWYERCODING_H_
 #define _SAWYERCODING_H_
 
-#include <stdio.h>
 #include "../common.h"
 
 typedef struct {

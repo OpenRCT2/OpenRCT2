@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <ctype.h>
 #include "addresses.h"
 #include "localisation/localisation.h"
 #include "object.h"

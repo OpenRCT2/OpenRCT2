@@ -8,7 +8,6 @@
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
-#include <stdbool.h>
 #include "ride.h"
 #include "ride_data.h"
 

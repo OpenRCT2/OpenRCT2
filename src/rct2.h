@@ -22,11 +22,17 @@
 #define _RCT2_H_
 
 #include <assert.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _MSC_VER
+	#include <time.h>
+#endif
 
 typedef signed char sint8;
 typedef signed short sint16;

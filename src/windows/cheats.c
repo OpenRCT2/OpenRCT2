@@ -18,9 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
-#include <string.h>
-#include <limits.h>
 #include "../addresses.h"
 #include "../game.h"
 #include "../interface/widget.h"

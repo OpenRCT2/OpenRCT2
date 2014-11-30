@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
-#include <string.h>
 #include "../addresses.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

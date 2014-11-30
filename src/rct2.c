@@ -21,12 +21,6 @@
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <setjmp.h>
-#ifdef _MSC_VER
-#include <time.h>
-#endif
-#include <windows.h>
-#include <shlobj.h>
-#include <SDL.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"

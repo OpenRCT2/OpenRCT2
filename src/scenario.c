@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
-#include "title.h"
 #include "addresses.h"
 #include "game.h"
 #include "interface/viewport.h"
@@ -30,8 +28,10 @@
 #include "management/marketing.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
+#include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/map.h"
@@ -201,8 +201,8 @@ int scenario_load_and_play_from_path(const char *path)
 
 	// Create the scenario pseduo-random seeds using the current time
 	uint32 srand0, srand1;
-	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
-	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
+	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ platform_get_ticks();
+	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ platform_get_ticks();
 
 	window_close_construction_windows();
 
