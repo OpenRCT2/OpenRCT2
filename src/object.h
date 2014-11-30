@@ -53,7 +53,7 @@ int object_read_and_load_entries(FILE *file);
 int object_load_packed(FILE *file);
 void object_unload_all();
 
-int object_load(int groupIndex, rct_object_entry *entry);
+int object_load(int groupIndex, rct_object_entry *entry, int* chunk_size);
 void object_unload(int groupIndex, rct_object_entry_extended *entry);
 int object_get_scenario_text(rct_object_entry *entry);
 void object_free_scenario_text();

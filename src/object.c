@@ -33,19 +33,19 @@ rct_object_entry *object_get_next(rct_object_entry *entry);
  * 
  *  rct2: 0x006A985D
  */
-int object_load(int groupIndex, rct_object_entry *entry)
+int object_load(int groupIndex, rct_object_entry *entry, int* chunk_size)
 {
 	RCT2_GLOBAL(0xF42B64, uint32) = groupIndex;
 
 	//part of 6a9866
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
-	if (!(RCT2_GLOBAL(0xF42B6C, uint32))){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32))){
 		RCT2_GLOBAL(0xF42BD9, uint8) = 0;
-		log_error("Object Load failed due to 0xF42B6C check.");
+		log_error("Object Load failed due to no items installed check.");
 		return 1;
 	}
-	for (int i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
+	for (int i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
 		if (object_entry_compare(installedObject, entry)){
 
 			char path[260];
@@ -64,22 +64,24 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					} while (*(pos - 1) != 0);
 
 					// Read chunk
-					int chunkSize = *((uint32*)pos);
+					*chunk_size = *((uint32*)pos);
 					char *chunk;
 					
-					if (chunkSize == 0xFFFFFFFF) {
+					if (*chunk_size == 0xFFFFFFFF) {
 						chunk = rct2_malloc(0x600000);
-						chunkSize = sawyercoding_read_chunk(file, chunk);
-						chunk = rct2_realloc(chunk, chunkSize);
+						*chunk_size = sawyercoding_read_chunk(file, chunk);
+						chunk = rct2_realloc(chunk, *chunk_size);
 					}
 					else {
-						chunk = rct2_malloc(chunkSize);
-						chunkSize = sawyercoding_read_chunk(file, chunk);
+						chunk = rct2_malloc(*chunk_size);
+						*chunk_size = sawyercoding_read_chunk(file, chunk);
 					}
 					fclose(file);
 
+					
+
 					// Calculate and check checksum
-					if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
+					if (object_calculate_checksum(&openedEntry, chunk, *chunk_size) != openedEntry.checksum) {
 						log_error("Object Load failed due to checksum failure.");
 						RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 						rct2_free(chunk);
@@ -106,7 +108,7 @@ int object_load(int groupIndex, rct_object_entry *entry)
 					int esi = RCT2_ADDRESS(0x98D97C, uint32)[ebp * 2];
 					int ecx = groupIndex;
 					if (ecx == -1){
-						for (int ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
+						for (ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
 							if ((ecx + 1) >= object_entry_group_counts[ebp]){
 								log_error("Object Load failed due to ??? failure.");
 								RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
@@ -119,8 +121,11 @@ int object_load(int groupIndex, rct_object_entry *entry)
 
 					int* edx = (int*)( ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2]);
 					memcpy(edx, (int*)&openedEntry, 20);
+
+					RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, char*) = chunk;
+
 					if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)return 1;
-					object_paint(ecx, 0, ecx, ebp, 0, (int)chunk, 0, 0);
+					object_paint(ebp, 0, ecx, ebp, 0, (int)chunk, 0, 0);
 					return 1;
 				}
 				fclose(file);
@@ -227,8 +232,8 @@ int object_load_packed(FILE *file)
 	//esi
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
-	if (RCT2_GLOBAL(0xF42B6C, uint32)){
-		for (uint32 i = 0; i < RCT2_GLOBAL(0xF42B6C, uint32); ++i){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)){
+		for (uint32 i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); ++i){
 			if (object_entry_compare(entry, installedObject)){
 				object_unload_all();
 				return 0;
@@ -374,9 +379,9 @@ int object_scenario_load_custom_text(char* chunk){
 
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	if (type == 10){
-		if (eax == 0) return object_scenario_load_custom_text((char*)esi);
-	}
+	//if (type == 10){
+	//	if (eax == 0) return object_scenario_load_custom_text((char*)esi);
+	//}
 	return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
 }
 
@@ -390,7 +395,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 	int i;
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	for (i = 0; i < RCT2_GLOBAL(0x00F42B6C, sint32); i++) {
+	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
 		if (object_entry_compare(installedObject, entry)) {
 			char path[260];
 			char *objectPath = (char*)installedObject + 16;
@@ -476,7 +481,7 @@ int object_get_length(rct_object_entry *entry)
 
 rct_object_entry *object_get_next(rct_object_entry *entry)
 {
-	uint8 *pos = (char*)entry;
+	uint8 *pos = (uint8*)entry;
 
 	// Skip sizeof(rct_object_entry)
 	pos += 16;
