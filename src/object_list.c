@@ -81,6 +81,9 @@ struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[
 	(void**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))		// scenario text
 };
 
+static int object_list_cache_load(int totalFiles, int totalFileSize, int fileDateModifiedChecksum);
+static int object_list_cache_save(int fileCount, int totalFileSize, int fileDateModifiedChecksum, int currentItemOffset);
+
 static void get_plugin_path(char *path)
 {
 	char *homePath = osinterface_get_orct2_homefolder();
@@ -180,10 +183,8 @@ void object_list_load()
 	WIN32_FIND_DATAA findFileData;
 	int totalFiles = 0, totalFileSize = 0, fileDateModifiedChecksum = 0;
 
-	char pluginPath[MAX_PATH];
-	get_plugin_path(pluginPath);
-
 	// Enumerate through each object in the directory
+	// platform_enumerate_files... doesn't support file size and last modified yet
 	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), &findFileData);
 	if (hFindFile != INVALID_HANDLE_VALUE) {
 		do {
@@ -197,42 +198,12 @@ void object_list_load()
 		FindClose(hFindFile);
 	}
 
+	// Would move this into cache load, but its used further on
 	totalFiles = ror32(totalFiles, 24);
 	totalFiles = (totalFiles & ~0xFF) | 1;
 	totalFiles = rol32(totalFiles, 24);
 
-	// Read plugin header
-	rct_plugin_header pluginHeader;
-
-	FILE *file = fopen(pluginPath, "rb");
-	if (file != NULL) {
-		if (fread(&pluginHeader, sizeof(pluginHeader), 1, file) == 1) {
-			// Check if object repository has changed in anyway
-			if (
-				totalFiles == pluginHeader.total_files &&
-				totalFileSize == pluginHeader.total_file_size &&
-				fileDateModifiedChecksum == pluginHeader.date_modified_checksum
-			) {
-				// Dispose installed object list
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
-					rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*));
-					RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) = -1;
-				}
-
-				// Read installed object list
-				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
-				if (fread(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1, file) == 1) {
-					RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
-
-					fclose(file);
-					sub_6A9FC0();
-					object_list_examine();
-					return;
-				}
-			}
-		}
-		fclose(file);
-	}
+	object_list_cache_load(totalFiles, totalFileSize, fileDateModifiedChecksum);
 
 	// Reload object list
 	RCT2_GLOBAL(0x00F42B94, uint32) = totalFiles;
@@ -270,6 +241,7 @@ void object_list_load()
 	uint32 installed_buffer_size = 0x1000;
 	uint32 current_item_offset = 0;
 
+	// TODO use platform_enumerate_files...
 	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), &findFileData);
 	if (hFindFile == INVALID_HANDLE_VALUE){
 		//6a92ea This hasn't been implemented but there isn't much point.
@@ -280,7 +252,7 @@ void object_list_load()
 	for (uint8 first_time = 1; first_time || FindNextFile(hFindFile, &findFileData);){
 		first_time = 0;
 
-		RCT2_GLOBAL(0x9ABD98, HANDLE) = hFindFile;
+		// RCT2_GLOBAL(0x9ABD98, HANDLE) = hFindFile;
 		
 		file_count++;
 		// update progress bar. 
@@ -471,28 +443,7 @@ void object_list_load()
 	// RCT2_GLOBAL(0xF42BA0, uint32) = current_item_offset;
 	// RCT2_GLOBAL(0xF42BA4, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
 
-	get_plugin_path(pluginPath);
-	FILE* obj_list_file = fopen(pluginPath,"wb");
-
-	if (obj_list_file){
-		totalFiles = file_count;
-		totalFiles = ror32(totalFiles, 24);
-		totalFiles |= 1;
-		totalFiles = rol32(totalFiles, 24);
-		pluginHeader.total_files = totalFiles;
-		pluginHeader.date_modified_checksum = fileDateModifiedChecksum;
-		pluginHeader.total_file_size = totalFileSize;
-		pluginHeader.object_list_size = current_item_offset;
-		pluginHeader.object_list_no_items = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
-
-		RCT2_GLOBAL(0xF42B94, uint32) = totalFiles;
-
-		fwrite(&pluginHeader, sizeof(rct_plugin_header), 1, obj_list_file);
-	
-		fwrite(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1, obj_list_file);
-
-		fclose(obj_list_file);
-	}
+	object_list_cache_save(file_count, totalFileSize, fileDateModifiedChecksum, current_item_offset);
 
 	ride_list_item ride_list;
 	ride_list.entry_index = 0xFC;
@@ -501,6 +452,88 @@ void object_list_load()
 	track_load_list(ride_list);
 
 	object_list_examine();
+}
+
+static int object_list_cache_load(int totalFiles, int totalFileSize, int fileDateModifiedChecksum)
+{
+	char path[MAX_PATH];
+	FILE *file;
+	rct_plugin_header pluginHeader;
+
+	log_verbose("loading object list cache (plugin.dat)");
+
+	get_plugin_path(path);
+	file = fopen(path, "rb");
+	if (file == NULL) {
+		log_verbose("Unable to load %s", path);
+		return 0;
+	}
+
+	if (fread(&pluginHeader, sizeof(rct_plugin_header), 1, file) == 1) {
+		// Check if object repository has changed in anyway
+		if (
+			pluginHeader.total_files == totalFiles &&
+			pluginHeader.total_file_size == totalFileSize &&
+			pluginHeader.date_modified_checksum == fileDateModifiedChecksum
+		) {
+			// Dispose installed object list
+			if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
+				rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*));
+				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) = -1;
+			}
+
+			// Read installed object list
+			RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
+			if (fread(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1, file) == 1) {
+				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
+
+				fclose(file);
+				sub_6A9FC0();
+				object_list_examine();
+				return 1;
+			}
+		}
+	}
+
+	fclose(file);
+
+	log_error("loading object list cache failed");
+	return 0;
+}
+
+static int object_list_cache_save(int fileCount, int totalFileSize, int fileDateModifiedChecksum, int currentItemOffset)
+{
+	char path[MAX_PATH];
+	FILE *file;
+	rct_plugin_header pluginHeader;
+	int totalFiles;
+
+	log_verbose("saving object list cache (plugin.dat)");
+
+	totalFiles = fileCount;
+	totalFiles = ror32(totalFiles, 24);
+	totalFiles |= 1;
+	totalFiles = rol32(totalFiles, 24);
+
+	pluginHeader.total_files = totalFiles;
+	pluginHeader.total_file_size = totalFileSize;
+	pluginHeader.date_modified_checksum = fileDateModifiedChecksum;
+	pluginHeader.object_list_size = currentItemOffset;
+	pluginHeader.object_list_no_items = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+
+	RCT2_GLOBAL(0x00F42B94, uint32) = totalFiles;
+
+	get_plugin_path(path);
+	file = fopen(path,"wb");
+	if (file == NULL) {
+		log_error("Failed to save %s", path);
+		return 0;
+	}
+
+	fwrite(&pluginHeader, sizeof(rct_plugin_header), 1, file);
+	fwrite(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1, file);
+	fclose(file);
+	return 1;
 }
 
 static int check_object_entry(rct_object_entry *entry)
