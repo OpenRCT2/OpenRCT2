@@ -52,5 +52,6 @@ extern uint8 gResearchUncompletedCategories;
 void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
+void sub_684AC3();
 
 #endif
