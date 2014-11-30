@@ -477,7 +477,7 @@ int object_get_length(rct_object_entry *entry)
 
 rct_object_entry *object_get_next(rct_object_entry *entry)
 {
-	char *pos = (char*)entry;
+	uint8 *pos = (char*)entry;
 
 	// Skip sizeof(rct_object_entry)
 	pos += 16;
