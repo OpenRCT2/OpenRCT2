@@ -26,6 +26,7 @@
 #include "management/award.h"
 #include "management/finance.h"
 #include "management/marketing.h"
+#include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
 #include "platform/platform.h"
@@ -248,7 +249,7 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
-	RCT2_CALLPROC_EBPSAFE(0x00684AC3);
+	sub_684AC3();
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	news_item_init_queue();
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)

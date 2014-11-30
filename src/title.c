@@ -31,6 +31,7 @@
 #include "interface/viewport.h"
 #include "intro.h"
 #include "management/news_item.h"
+#include "management/research.h"
 #include "ride/ride.h"
 #include "scenario.h"
 #include "world/climate.h"
@@ -194,7 +195,7 @@ static void title_update_showcase()
 				window_invalidate(w);
 				sub_69E9A7();
 				window_new_ride_init_vars();
-				RCT2_CALLPROC_EBPSAFE(0x00684AC3);
+				sub_684AC3();
 				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 				news_item_init_queue();
 				gfx_invalidate_screen();
