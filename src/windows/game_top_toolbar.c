@@ -639,10 +639,24 @@ static void window_game_top_toolbar_tool_down(){
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:
-		RCT2_CALLPROC_X(0x66CBF3, x, y, 0, widgetIndex, (int)w, 0, 0);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1387;
+			game_do_command(
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+				1,
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) | (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) << 8),
+				GAME_COMMAND_20, 
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+				);
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 3;
+		}
 		break;
 	case WIDX_WATER:
-		RCT2_CALLPROC_X(0x66CC48, x, y, 0, widgetIndex, (int)w, 0, 0);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 3;
+		}
 		break;
 	case WIDX_SCENERY:
 		window_game_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
