@@ -189,8 +189,6 @@ static void window_game_top_toolbar_mouseup()
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
-		// Not sure where this was done in the original code
-		w->pressed_widgets ^= (1 << WIDX_PAUSE);
 		break;
 	// case WIDX_FASTFORWARD:
 	// 	// This is an excellent place to add in debugging statements and
@@ -258,8 +256,6 @@ static void window_game_top_toolbar_mouseup()
  */
 static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	rct_viewport *mainViewport;
-
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
 		gDropdownItemsFormat[0] = STR_LOAD_GAME;
@@ -454,6 +450,11 @@ static void window_game_top_toolbar_invalidate()
 	// 	w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
 	// else
 	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
+
+	if (!(RCT2_GLOBAL(0x009DEA6E, uint32) & 1))
+		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
+	else
+		w->pressed_widgets |= (1 << WIDX_PAUSE);
 
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
