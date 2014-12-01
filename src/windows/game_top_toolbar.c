@@ -514,12 +514,14 @@ static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_wind
 
 	sint16 grid_x, grid_y, grid_z;
 	uint8 item_colour;
+	uint8 model_type;
 	int ebp = selected_tab;
 
 	{
-		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = selected_tab;
+		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0;
 		RCT2_CALLFUNC_X(0x6E1F34, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 		item_colour = edi;
+		model_type = (ebx & 0xFF00) >> 8;
 		grid_x = eax;
 		grid_y = ecx;
 		grid_z = edx;
@@ -533,7 +535,7 @@ static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_wind
 		// The return value will be banner id but the input is colour
 		int banner_id = item_colour;
 		
-		int ebx = 1;
+		int ebx = (model_type << 8) | 1;
 
 		{
 			int esi = 0, eax = grid_x, ecx = grid_y, edx = grid_z;
