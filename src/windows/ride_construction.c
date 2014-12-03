@@ -139,7 +139,7 @@ rct_window *window_construction_open()
 	w = window_create(0, 29, 166, 394, (uint32*)window_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
 
 	w->widgets = (rct_widget*)0x9D7A90;
-	w->enabled_widgets = 0x67C4FFFFEF;
+	w->enabled_widgets = 0x67EFFFFFC4;
 
 	window_init_scroll_widgets(w);
 
