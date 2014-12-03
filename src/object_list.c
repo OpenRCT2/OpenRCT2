@@ -84,6 +84,8 @@ struct { void **data; rct_object_entry_extended *entries; } object_entry_groups[
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
 static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileDateModifiedChecksum, int currentItemOffset);
 
+void object_list_create_hash_table();
+
 static void get_plugin_path(char *path)
 {
 	char *homePath = osinterface_get_orct2_homefolder();
@@ -107,6 +109,9 @@ static void object_list_examine()
 
 		object = object_get_next(object);
 	}
+
+	// Create a search index
+	object_list_create_hash_table();
 }
 
 /**
@@ -225,7 +230,8 @@ void object_list_load()
 	totalFiles = (totalFiles & ~0xFF) | 1;
 	totalFiles = rol32(totalFiles, 24);
 
-	object_list_cache_load(totalFiles, totalFileSize, fileDateModifiedChecksum);
+	if (object_list_cache_load(totalFiles, totalFileSize, fileDateModifiedChecksum))
+		return;
 
 	// Reload object list
 
@@ -249,6 +255,8 @@ void object_list_load()
 
 	uint32 fileCount = 0;
 	uint32 current_item_offset = 0;
+
+	log_verbose("building cache of available objects...");
 
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
@@ -555,7 +563,9 @@ int object_read_and_load_entries(FILE *file)
 
 	int i, j;
 	rct_object_entry *entries;
-	log_verbose("Entered object read and load entries");
+
+	log_verbose("loading required objects");
+
 	// Read all the object entries
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	sawyercoding_read_chunk(file, (uint8*)entries);
@@ -573,14 +583,9 @@ int object_read_and_load_entries(FILE *file)
 			entryGroupIndex -= object_entry_group_counts[j];
 		}
 
-		// Not used but required for function call
-		int chunk_size;
 		// Load the obect
-		if (!object_load(entryGroupIndex, &entries[i], &chunk_size)) {
-			// Failed to load the object
-			//Destroy progress bar
-			log_error("failed to load entry:");
-			log_error("%.8s", entries[i].name);
+		if (!object_load(entryGroupIndex, &entries[i], NULL)) {
+			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			free(entries);
 			object_unload_all();
@@ -609,4 +614,68 @@ void object_unload_all()
 				object_unload(j, &object_entry_groups[i].entries[j]);
 
 	sub_6A9FC0();
+}
+
+
+
+uint32 _installedObjectHashTableSize;
+rct_object_entry ** _installedObjectHashTable = NULL;
+uint32 _installedObjectHashTableCollisions;
+
+uint32 object_get_hash_code(rct_object_entry *object)
+{
+	uint32 hash = 5381;
+	uint8 *byte = (uint8*)object;
+	int i;
+
+	for (i = 0; i < 8; i++)
+        hash = ((hash << 5) + hash) + object->name[i];
+
+    return hash;
+}
+
+void object_list_create_hash_table()
+{
+	rct_object_entry *installedObject;
+	int numInstalledObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+
+	if (_installedObjectHashTable != NULL)
+		free(_installedObjectHashTable);
+
+	_installedObjectHashTableSize = min(8192, numInstalledObjects * 4);
+	_installedObjectHashTable = calloc(_installedObjectHashTableSize, sizeof(rct_object_entry*));
+	_installedObjectHashTableCollisions = 0;
+
+	installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	for (int i = 0; i < numInstalledObjects; i++) {
+		uint32 hash = object_get_hash_code(installedObject);
+		uint32 index = hash % _installedObjectHashTableSize;
+
+		// Find empty slot
+		while (_installedObjectHashTable[index] != NULL) {
+			_installedObjectHashTableCollisions++;
+			index++;
+		}
+
+		// Set hash table slot
+		_installedObjectHashTable[index] = installedObject;
+
+		// Next installde object
+		installedObject = object_get_next(installedObject);
+	}
+}
+
+rct_object_entry *object_list_find(rct_object_entry *entry)
+{
+	uint32 hash = object_get_hash_code(entry);
+	uint32 index = hash % _installedObjectHashTableSize;
+
+	while (_installedObjectHashTable[index] != NULL) {
+		if (object_entry_compare(entry, _installedObjectHashTable[index]))
+			return _installedObjectHashTable[index];
+
+		index++;
+	}
+
+	return NULL;
 }
