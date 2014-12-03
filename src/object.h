@@ -47,6 +47,7 @@ typedef struct {
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
+int object_load_entry(const char *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
 int object_read_and_load_entries(FILE *file);

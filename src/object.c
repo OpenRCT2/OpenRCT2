@@ -29,6 +29,24 @@ int object_entry_compare(rct_object_entry *a, rct_object_entry *b);
 int object_calculate_checksum(rct_object_entry *entry, char *data, int dataLength);
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 rct_object_entry *object_get_next(rct_object_entry *entry);
+
+int object_load_entry(const char *path, rct_object_entry *outEntry)
+{
+	FILE *file;
+	
+	file = fopen(path, "rb");
+	if (file == NULL)
+		return 0;
+
+	if (fread(outEntry, sizeof(rct_object_entry), 1, file) != 1) {
+		fclose(file);
+		return 0;
+	}
+
+	fclose(file);
+	return 1;
+}
+
 /**
  * 
  *  rct2: 0x006A985D

@@ -49,7 +49,7 @@ static rct_scenario_basic *get_scenario_by_filename(const char *filename)
 void scenario_load_list()
 {
 	int i, enumFileHandle;
-	char *enumFileName;
+	file_info enumFileInfo;
 
 	// Load scores
 	scenario_scores_load();
@@ -60,9 +60,9 @@ void scenario_load_list()
 
 	// Enumerate through each scenario in the directory
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char));
-	if (enumFileHandle >= 0) {
-		while (platform_enumerate_files_next(enumFileHandle, &enumFileName)) {
-			scenario_list_add(enumFileName);
+	if (enumFileHandle != INVALID_HANDLE) {
+		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
+			scenario_list_add(enumFileInfo.path);
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
