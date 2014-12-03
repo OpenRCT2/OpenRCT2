@@ -16,8 +16,13 @@ if [[ ! -h openrct2.dll ]]; then
 fi
 
 if [[ -t 1 ]]; then
-    echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95mwine openrct2.exe\n\033[0m"
+    echo "Done! Run OpenRCT2 by typing:"
+    echo 
+    echo "\033[95mwine openrct2.exe"
+    echo "\033[0m"
 else
-    echo -e "\nDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
+    echo "Done! Run OpenRCT2 by typing:"
+    echo 
+    echo "wine openrct2.exe"
 fi
  
