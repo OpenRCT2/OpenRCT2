@@ -642,7 +642,7 @@ void object_list_create_hash_table()
 	if (_installedObjectHashTable != NULL)
 		free(_installedObjectHashTable);
 
-	_installedObjectHashTableSize = min(8192, numInstalledObjects * 4);
+	_installedObjectHashTableSize = max(8192, numInstalledObjects * 4);
 	_installedObjectHashTable = calloc(_installedObjectHashTableSize, sizeof(rct_object_entry*));
 	_installedObjectHashTableCollisions = 0;
 
