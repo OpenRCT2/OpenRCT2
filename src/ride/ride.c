@@ -885,8 +885,8 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	if (ride->type == RIDE_TYPE_MAZE)
 		return ride_modify_maze(mapElement, x, y);
 
-	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100) {
-		int outX, outY;
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS,uint64)[ride->type] & 0x100) {
+		int outX = x, outY = y;
 		mapElement = ride_find_track_gap(mapElement, &outX, &outY);
 	}
 
