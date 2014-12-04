@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <string.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -259,6 +258,7 @@ static void window_park_stats_paint();
 static void window_park_objective_mouseup();
 static void window_park_objective_resize();
 static void window_park_objective_update(rct_window *w);
+static void window_park_objective_textinput();
 static void window_park_objective_invalidate();
 static void window_park_objective_paint();
 
@@ -443,7 +443,7 @@ static void* window_park_objective_events[] = {
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
-	window_park_emptysub,
+	window_park_objective_textinput,
 	window_park_emptysub,
 	window_park_emptysub,
 	window_park_emptysub,
@@ -1643,7 +1643,14 @@ static void window_park_objective_mouseup()
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_ENTER_NAME:
-		RCT2_CALLPROC_X(0x006EE308, 2791, 2792, 0, 0, 0, 0, 0);
+		window_text_input_open(
+			w,
+			WIDX_ENTER_NAME,
+			STR_ENTER_NAME,
+			STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART,
+			0,
+			0
+		);
 		break;
 	}
 }
@@ -1673,6 +1680,25 @@ static void window_park_objective_update(rct_window *w)
 
 /**
  * 
+ *  rct2: 0x006695CC
+ */
+static void window_park_objective_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (widgetIndex == WIDX_ENTER_NAME && result && text[0] != 0) {
+		scenario_success_submit_name(text);
+		window_invalidate(w);
+	}
+}
+
+/**
+ * 
  *  rct2: 0x006693B2
  */
 static void window_park_objective_invalidate()
@@ -1688,7 +1714,7 @@ static void window_park_objective_invalidate()
 	*((uint32*)0x013CE954) = RCT2_GLOBAL(0x013573D8, uint32);
 
 	// 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x02)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
 	else
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;

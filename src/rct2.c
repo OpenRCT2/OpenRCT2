@@ -21,12 +21,6 @@
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <setjmp.h>
-#ifdef _MSC_VER
-#include <time.h>
-#endif
-#include <windows.h>
-#include <shlobj.h>
-#include <SDL.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
@@ -259,6 +253,7 @@ int check_file_path(int pathId)
 	case PATH_ID_GAMECFG:
 	case PATH_ID_SCORES:
 	case PATH_ID_TRACKSIDX:
+	case PATH_ID_PLUGIN:
 		// Do nothing; these will be created later if they do not exist yet
 		break;
 

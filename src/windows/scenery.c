@@ -18,8 +18,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <string.h>
-#include <stdbool.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"

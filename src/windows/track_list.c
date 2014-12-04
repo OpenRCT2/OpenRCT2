@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <memory.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../editor.h"

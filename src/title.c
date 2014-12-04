@@ -18,7 +18,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <time.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
@@ -32,6 +31,7 @@
 #include "interface/viewport.h"
 #include "intro.h"
 #include "management/news_item.h"
+#include "management/research.h"
 #include "ride/ride.h"
 #include "scenario.h"
 #include "world/climate.h"
@@ -167,7 +167,10 @@ static void title_update_showcase()
 				_scriptWaitCounter = (*_currentScript++) * 32;
 				break;
 			case TITLE_SCRIPT_LOAD:
-				scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN));
+				if (!scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
+					log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
+					exit(-1);
+				}
 
 				w = window_get_main();
 				w->viewport_target_sprite = -1;
@@ -195,7 +198,7 @@ static void title_update_showcase()
 				window_invalidate(w);
 				sub_69E9A7();
 				window_new_ride_init_vars();
-				RCT2_CALLPROC_EBPSAFE(0x00684AC3);
+				sub_684AC3();
 				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 				news_item_init_queue();
 				gfx_invalidate_screen();

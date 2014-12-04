@@ -601,7 +601,7 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 	ride = GET_RIDE(vehicle->ride);
 
 	while (vehicle->var_01 != 0)
-		vehicle = &(g_sprite_list[vehicle->var_40].vehicle);
+		vehicle = &(g_sprite_list[vehicle->prev_vehicle_on_train].vehicle);
 
 	for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
@@ -618,4 +618,19 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 	ride_get_status(vehicle->ride, &arg0, &arg1);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = (uint16)arg1;
+}
+
+rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
+{
+	rct_vehicle *prevVehicle;
+
+	for (;;) {
+		prevVehicle = &(g_sprite_list[vehicle->prev_vehicle_on_train].vehicle);
+		if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+			break;
+
+		vehicle = prevVehicle;
+	}
+
+	return vehicle;
 }

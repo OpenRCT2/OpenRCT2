@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
@@ -886,8 +885,8 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	if (ride->type == RIDE_TYPE_MAZE)
 		return ride_modify_maze(mapElement, x, y);
 
-	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100) {
-		int outX, outY;
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS,uint64)[ride->type] & 0x100) {
+		int outX = x, outY = y;
 		mapElement = ride_find_track_gap(mapElement, &outX, &outY);
 	}
 
@@ -1068,7 +1067,7 @@ static void ride_update(int rideIndex)
 		ride->var_14D |= 2;
 
 		if (ride->upkeep_cost != (money16)0xFFFF)
-			ride->profit = (money16)ride->income_per_hour - (ride->upkeep_cost * 16);
+			ride->profit = (money16)(ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
 	}
 
 	// Ride specific updates

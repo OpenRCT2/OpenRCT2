@@ -19,7 +19,6 @@
  *****************************************************************************/
 
 #include <SDL_keycode.h>
-#include <ctype.h>
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"

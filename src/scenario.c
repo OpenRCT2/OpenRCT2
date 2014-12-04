@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
-#include "title.h"
 #include "addresses.h"
 #include "game.h"
 #include "interface/viewport.h"
@@ -28,10 +26,13 @@
 #include "management/award.h"
 #include "management/finance.h"
 #include "management/marketing.h"
+#include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
+#include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/map.h"
@@ -159,9 +160,7 @@ int scenario_load(const char *path)
 			if (!load_success){
 				log_error("failed to load all entries.");
 				set_load_objects_fail_reason();
-				title_load();
-				rct2_endupdate();
-				return 0;//This never gets called
+				return 0;
 			}
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
@@ -201,8 +200,8 @@ int scenario_load_and_play_from_path(const char *path)
 
 	// Create the scenario pseduo-random seeds using the current time
 	uint32 srand0, srand1;
-	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ timeGetTime();
-	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ timeGetTime();
+	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ platform_get_ticks();
+	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ platform_get_ticks();
 
 	window_close_construction_windows();
 
@@ -248,7 +247,7 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
-	RCT2_CALLPROC_EBPSAFE(0x00684AC3);
+	sub_684AC3();
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	news_item_init_queue();
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
@@ -379,7 +378,7 @@ void scenario_success()
 			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
 				break; // not a new high score -> no glory
 
-			// bts game_flags, 1 happens here but I don't know what for
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 			scenario->company_value = current_val;
 			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
 			scenario->completed_by[0] = 0;
@@ -1015,4 +1014,28 @@ int scenario_save(char *path, int flags)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	return 1;
+}
+
+void scenario_success_submit_name(const char *name)
+{
+	int i;
+	rct_scenario_basic* scenario;
+	uint32 scenarioWinCompanyValue;
+	
+	for (i = 0; i < gScenarioListCount; i++) {
+		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
+		scenario = &gScenarioList[i];
+
+		if (strncmp(cur_scenario_name, scenario->path, 256) == 0) {
+			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
+			if (scenario->company_value == scenarioWinCompanyValue) {
+				strncpy(scenario->completed_by, name, 64);
+				strncpy((char*)0x013587D8, name, 32);
+				scenario_scores_save();
+			}
+			break;
+		}
+	}
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }

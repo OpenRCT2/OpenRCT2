@@ -413,5 +413,6 @@ void scenario_update();
 unsigned int scenario_rand();
 int scenario_prepare_for_save();
 int scenario_save(char *path, int flags);
+void scenario_success_submit_name(const char *name);
 
 #endif

@@ -21,7 +21,6 @@
 #ifndef _RIDE_DATA_H_
 #define _RIDE_DATA_H_
 
-#include <stdbool.h>
 #include "../common.h"
 
 typedef struct {
