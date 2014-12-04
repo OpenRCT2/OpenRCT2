@@ -213,6 +213,7 @@
 
 //Every pixel changed by rain is stored.
 //32bit (pixel_offset 24 bit)(pixel_colour 8 bit)
+//Use the rainPixels[] global in drawing.c from now on
 #define RCT2_ADDRESS_RAIN_PIXEL_STORE				0x00EDF850
 
 #define RCT2_ADDRESS_UNCOMPLETED_RESEARCH_TYPES		0x00EE787C

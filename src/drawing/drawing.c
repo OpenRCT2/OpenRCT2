@@ -37,6 +37,8 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
+uint32 rainPixels[0x4000];
+
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = { 
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -444,7 +446,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
 	//Stores the colours of changed pixels
-	uint32* pixel_store = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
+	uint32* pixel_store = rainPixels;
 	pixel_store += RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 
 	for (; height != 0; height--){
@@ -505,7 +507,7 @@ void redraw_peep_and_rain()
 		rct_window *window = window_get_main();
 		uint32 numPixels = window->width * window->height;
 		
-		uint32 *rain_pixels = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
+		uint32 *rain_pixels = rainPixels;
 		if (rain_pixels) {
 			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
 			for (int i = 0; i < rain_no_pixels; i++) {
