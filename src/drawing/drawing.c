@@ -31,7 +31,8 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
-uint32 rainPixels[0x4000];
+#define MAX_RAIN_PIXELS 0x9000
+uint32 rainPixels[MAX_RAIN_PIXELS];
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = { 
@@ -447,7 +448,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 
 		uint8 pattern_x = pattern[pattern_y_pos * 2];
 		if (pattern_x != 0xFF){
-			if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) <= 0x4000){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) < (MAX_RAIN_PIXELS - (uint32)width)){
 
 				int final_pixel_offset = width + pixel_offset;
 
