@@ -627,7 +627,7 @@ void window_guest_overview_mouse_up(){
 		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_PICKED;
-		peep->var_2C = 0;
+		peep->sub_state = 0;
 		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:

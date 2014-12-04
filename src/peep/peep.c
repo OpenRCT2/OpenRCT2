@@ -114,11 +114,11 @@ int sub_68F3AE(rct_peep* peep){
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	uint8 map_type = MAP_ELEMENT_TYPE_PATH;
-	if ((peep->next_z >> 8) & ((1 << 4) | (1 << 3))){
+	if (peep->next_var_29 & ((1 << 4) | (1 << 3))){
 		map_type = MAP_ELEMENT_TYPE_SURFACE;
 	}
 
-	int z = peep->next_z & 0xFF;
+	int z = peep->next_z;
 
 	do {
 		if (map_element_get_type(map_element) == map_type){
@@ -427,7 +427,7 @@ void peep_update_falling(rct_peep* peep){
 	if (saved_map->type != MAP_ELEMENT_TYPE_PATH){
 		edx = 8;
 	}
-	peep->next_z += edx << 8;
+	peep->next_var_29 = edx << 8;
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
 	peep_window_state_update(peep);
@@ -458,7 +458,7 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
  * rct2: 0x0069152B 
  */
 void peep_update_sitting(rct_peep* peep){
-	if (peep->var_2C == 0){
+	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 		//691541
 
@@ -479,12 +479,12 @@ void peep_update_sitting(rct_peep* peep){
 		peep->var_6F = 7;
 		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
 
-		peep->var_2C++;
+		peep->sub_state++;
 
 		// Sets time to sit on seat
 		peep->time_to_sitdown = (129 - peep->energy) * 16 + 50;
 	}
-	else if (peep->var_2C == 1){
+	else if (peep->sub_state == 1){
 		if (peep->action < 0xFE){
 			sint16 x, y;
 			sub_6939EB(&x, &y, peep);
@@ -556,7 +556,7 @@ void peep_update_sitting(rct_peep* peep){
 /* rct2: 0x691A30 
  * Also used by entering_ride and queueing_front */
 static void peep_update_leaving_ride(rct_peep* peep){
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->var_2C], 0, 0, 0, 0, (int)peep, 0, 0);
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /**
@@ -576,14 +576,14 @@ static void peep_update_queuing(rct_peep* peep){
 		return;
 	}
 
-	if (peep->var_2C != 0xA){
+	if (peep->sub_state != 0xA){
 		if (peep->var_74 == 0xFFFF){
 			//Happens every time peep goes onto ride.
 			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
 			peep_window_state_update(peep);
-			peep->var_2C = 0;
+			peep->sub_state = 0;
 			return;
 		}
 		//Give up queueing for the ride
@@ -711,7 +711,7 @@ static void peep_update_mowing(rct_peep* peep){
 /* rct2: 0x006BF7E6 */
 static void peep_update_watering(rct_peep* peep){
 	peep->var_E2 = 0;
-	if (peep->var_2C == 0){
+	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -724,9 +724,9 @@ static void peep_update_watering(rct_peep* peep){
 		sub_693B58(peep);
 		invalidate_sprite((rct_sprite*)peep);		
 		
-		peep->var_2C = 1;
+		peep->sub_state = 1;
 	}
-	else if (peep->var_2C == 1){
+	else if (peep->sub_state == 1){
 		if (peep->action != PEEP_ACTION_NONE_2){
 			sint16 x, y;
 			sub_6939EB(&x, &y, peep);
@@ -740,7 +740,7 @@ static void peep_update_watering(rct_peep* peep){
 
 		for (;; map_element++){
 			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY){
-				if (abs((peep->next_z & 0xFF) - map_element->base_height) <= 4){
+				if (abs(((int)peep->next_z) - map_element->base_height) <= 4){
 					rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
 					if (scenery_entry->small_scenery.flags& SMALL_SCENERY_FLAG6){
@@ -763,7 +763,7 @@ static void peep_update_watering(rct_peep* peep){
 static void peep_update_emptying_bin(rct_peep* peep){
 	peep->var_E2 = 0;
 
-	if (peep->var_2C == 0){
+	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -776,9 +776,9 @@ static void peep_update_emptying_bin(rct_peep* peep){
 		sub_693B58(peep);
 		invalidate_sprite((rct_sprite*)peep);
 
-		peep->var_2C = 1;
+		peep->sub_state = 1;
 	}
-	else if (peep->var_2C == 1){
+	else if (peep->sub_state == 1){
 
 		if (peep->action == PEEP_ACTION_NONE_2){
 			peep_state_reset(peep);
@@ -794,7 +794,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 
 		for (;; map_element++) {
 			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
-				if ((peep->next_z & 0xFF) == map_element->base_height)
+				if (peep->next_z == map_element->base_height)
 					break;
 			}
 			if (map_element_is_last_for_tile(map_element)) {
@@ -889,8 +889,8 @@ static void peep_update_1(rct_peep* peep){
  */
 static void peep_update_picked(rct_peep* peep){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
-	peep->var_2C++;
-	if (peep->var_2C == 13){
+	peep->sub_state++;
+	if (peep->sub_state == 13){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_HELP, 0xFF);
 	}
 }
@@ -927,7 +927,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 
 /* rct2: 0x6916D6 */
 static void peep_update_watching(rct_peep* peep){
-	if (peep->var_2C == 0){
+	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -944,12 +944,12 @@ static void peep_update_watching(rct_peep* peep){
 
 		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
 
-		peep->var_2C++;
+		peep->sub_state++;
 
 		peep->time_to_stand = clamp(0, ((129 - peep->energy) * 16 + 50) / 2, 255);
 		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 	}
-	else if (peep->var_2C == 1){
+	else if (peep->sub_state == 1){
 		if (peep->action < 0xFE){
 			//6917F6
 			sint16 x = 0, y = 0;
@@ -1112,7 +1112,7 @@ static void peep_update(rct_peep *peep)
 		stepsToTake = 95;
 	if ((peep->flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING)
 		stepsToTake /= 2;
-	if (peep->action == 255 && ((peep->next_z >> 8) & 4)) {
+	if (peep->action == 255 && (peep->next_var_29 & 4)) {
 		stepsToTake /= 2;
 		if (peep->state == PEEP_STATE_QUEUING)
 			stepsToTake += stepsToTake / 2;
@@ -1587,11 +1587,11 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		*argument_2 = 0;
 		break;
 	case PEEP_STATE_ANSWERING:
-		if (peep->var_2C == 0){
+		if (peep->sub_state == 0){
 			*argument_1 = STR_WALKING;
 			*argument_2 = 0;
 		}
-		else if (peep->var_2C == 1){
+		else if (peep->sub_state == 1){
 			*argument_1 = STR_ANSWERING_RADIO_CALL;
 			*argument_2 = 0;
 		}

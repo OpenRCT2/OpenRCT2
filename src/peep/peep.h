@@ -357,10 +357,11 @@ typedef struct {
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
-	uint16 next_z;					// 0x28 possibly split into two uint8s
+	uint8 next_z;					// 0x28
+	uint8 next_var_29;				// 0x29
 	uint8 var_2A;
 	uint8 state;					// 0x2B
-	uint8 var_2C;
+	uint8 sub_state;
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	union{							
