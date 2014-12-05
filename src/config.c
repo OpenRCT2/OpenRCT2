@@ -75,7 +75,7 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 general_configuration_t gGeneral_config;
 general_configuration_t gGeneral_config_default = {
 	0,								// play_intro
-	1,								// confirmation_prompt
+	0,								// confirmation_prompt
 	SCREENSHOT_FORMAT_PNG,			// screenshot_format
 	"",								// game_path
 	MEASUREMENT_FORMAT_IMPERIAL,	// measurement_format
