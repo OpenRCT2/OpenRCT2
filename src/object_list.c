@@ -291,6 +291,7 @@ void object_list_load()
 			strcpy(installed_entry_pointer, enumFileInfo.path);
 			while (*installed_entry_pointer++);
 
+			// Chunk size is set to unknown
 			*((sint32*)installed_entry_pointer) = -1;
 			*(installed_entry_pointer + 4) = 0;
 			*((sint32*)(installed_entry_pointer + 5)) = 0;
@@ -315,6 +316,9 @@ void object_list_load()
 				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
 				continue;
 			}
+
+			int objectType = entry->flags & 0xF;
+
 			// See above note
 			RCT2_GLOBAL(0x009ADAF4, sint32) = -1;
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
@@ -333,7 +337,7 @@ void object_list_load()
 			uint8* chunk = RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*); // Loaded in object_load
 
 			// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars);
-			if ((entry->flags & 0xF) == 0 && !(*((uint32*)(chunk + 8)) & 0x1000)) {
+			if (objectType == 0 && !(*((uint32*)(chunk + 8)) & 0x1000)) {
 				rct_string_id obj_string = chunk[12];
 				if (obj_string == 0xFF){
 					obj_string = chunk[13];
@@ -356,18 +360,18 @@ void object_list_load()
 			installed_entry_pointer += 4;
 
 			uint8* esi = RCT2_ADDRESS(0x00F42BDB, uint8);
-			int cl = *esi++;
-			*installed_entry_pointer++ = cl;
-			if (cl){
-				memcpy(installed_entry_pointer, esi, cl*sizeof(rct_object_entry));
-				installed_entry_pointer += cl*sizeof(rct_object_entry);
+			uint8 num_unk_objects = *esi++;
+			*installed_entry_pointer++ = num_unk_objects;
+			if (num_unk_objects > 0) {
+				memcpy(installed_entry_pointer, esi, num_unk_objects * sizeof(rct_object_entry));
+				installed_entry_pointer += num_unk_objects * sizeof(rct_object_entry);
 			}
 
-			cl = *esi++;
-			*installed_entry_pointer++ = cl;
-			if (cl) {
-				memcpy(installed_entry_pointer, esi, cl*sizeof(rct_object_entry));
-				installed_entry_pointer += cl*sizeof(rct_object_entry);
+			uint8 no_theme_objects  = *esi++;
+			*installed_entry_pointer++ = no_theme_objects ;
+			if (no_theme_objects > 0) {
+				memcpy(installed_entry_pointer, esi, no_theme_objects * sizeof(rct_object_entry));
+				installed_entry_pointer += no_theme_objects * sizeof(rct_object_entry);
 			}
 
 			*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(0x00F433DD, uint32);
@@ -375,7 +379,7 @@ void object_list_load()
 
 			int size_of_object = installed_entry_pointer - RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) - current_item_offset;
 
-			object_unload(entry->flags & 0xF, (rct_object_entry_extended*)entry);
+			object_unload(objectType, (rct_object_entry_extended*)entry);
 
 			// Return pointer to start of entry
 			installed_entry_pointer -= size_of_object;

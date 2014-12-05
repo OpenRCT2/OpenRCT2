@@ -44,6 +44,7 @@ int object_load_entry(const char *path, rct_object_entry *outEntry)
 
 static int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSize, const rct_object_entry *installedObject)
 {
+	int i, objectType;
 	rct_object_entry openedEntry;
 	char path[260];
 	FILE *file;
@@ -109,22 +110,22 @@ static int object_load_file(int groupIndex, const rct_object_entry *entry, int* 
 		return 0;
 	}
 	//B84 is openedEntry
-	int ebp = openedEntry.flags & 0x0F;
-	int esi = RCT2_ADDRESS(0x98D97C, uint32)[ebp * 2];
-	int ecx = groupIndex;
-	if (ecx == -1){
-		for (ecx = 0; ((sint32*)esi)[ecx] != -1; ecx++){
-			if ((ecx + 1) >= object_entry_group_counts[ebp]){
+	objectType = openedEntry.flags & 0x0F;
+	int esi = RCT2_ADDRESS(0x98D97C, uint32)[objectType * 2];
+	if (groupIndex == -1) {
+		for (i = 0; ((sint32*)esi)[i] != -1; i++) {
+			if (i + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to ??? failure.");
 				RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
 				rct2_free(chunk);
 				return 0;
 			}
 		}
+		groupIndex = i;
 	}
-	((char**)esi)[ecx] = chunk;
+	((char**)esi)[groupIndex] = chunk;
 
-	int* edx = (int*)( ecx * 20 + RCT2_ADDRESS(0x98D980, uint32)[ebp * 2]);
+	int* edx = (int*)(groupIndex * 20 + RCT2_ADDRESS(0x98D980, uint32)[objectType * 2]);
 	memcpy(edx, (int*)&openedEntry, 20);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, char*) = chunk;
@@ -132,7 +133,7 @@ static int object_load_file(int groupIndex, const rct_object_entry *entry, int* 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)
 		return 1;
 
-	object_paint(ebp, 0, ecx, ebp, 0, (int)chunk, 0, 0);
+	object_paint(objectType, 0, groupIndex, objectType, 0, (int)chunk, 0, 0);
 	return 1;
 }
 
