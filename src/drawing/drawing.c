@@ -31,6 +31,9 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
+#define MAX_RAIN_PIXELS 0x9000
+uint32 rainPixels[MAX_RAIN_PIXELS];
+
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = { 
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -431,20 +434,21 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	uint8 pattern_y_space = *pattern++;
 
 	uint8 pattern_start_x_offset = x_start % pattern_x_space;
-	uint8 pattern_start_y_offset = y_start % pattern_y_space;;
+	uint8 pattern_start_y_offset = y_start % pattern_y_space;
 
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
-	uint8 pattern_y_pos = pattern_start_y_offset;
+	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
 	//Stores the colours of changed pixels
-	uint32* pixel_store = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
+	uint32* pixel_store = rainPixels;
 	pixel_store += RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 
 	for (; height != 0; height--){
+
 		uint8 pattern_x = pattern[pattern_y_pos * 2];
 		if (pattern_x != 0xFF){
-			if (RCT2_GLOBAL(0x9AC00C, uint32) <= 0x1F38){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) < (MAX_RAIN_PIXELS - (uint32)width)){
 
 				int final_pixel_offset = width + pixel_offset;
 
@@ -459,6 +463,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 
 					//Store colour and position
 					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
+					
 				}
 			}
 		}
@@ -497,7 +502,7 @@ void redraw_peep_and_rain()
 		rct_window *window = window_get_main();
 		uint32 numPixels = window->width * window->height;
 		
-		uint32 *rain_pixels = RCT2_ADDRESS(RCT2_ADDRESS_RAIN_PIXEL_STORE, uint32);
+		uint32 *rain_pixels = rainPixels;
 		if (rain_pixels) {
 			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
 			for (int i = 0; i < rain_no_pixels; i++) {
