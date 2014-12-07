@@ -24,6 +24,7 @@
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
+#include "platform.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
@@ -144,10 +145,10 @@ int platform_enumerate_files_begin(const char *pattern)
 		}
 	}
 
-	return -1;
+	return INVALID_HANDLE;
 }
 
-int platform_enumerate_files_next(int handle, char **outFileName)
+int platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
 	int result;
 	enumerate_file_info *enumFileInfo;
@@ -168,7 +169,9 @@ int platform_enumerate_files_next(int handle, char **outFileName)
 	}
 
 	if (result) {
-		*outFileName = enumFileInfo->data.cFileName;
+		outFileInfo->path = enumFileInfo->data.cFileName;
+		outFileInfo->size = ((uint64)enumFileInfo->data.nFileSizeHigh << 32ULL) | (uint64)enumFileInfo->data.nFileSizeLow;
+		outFileInfo->last_modified = ((uint64)enumFileInfo->data.ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)enumFileInfo->data.ftLastWriteTime.dwLowDateTime;
 		return 1;
 	} else {
 		return 0;
