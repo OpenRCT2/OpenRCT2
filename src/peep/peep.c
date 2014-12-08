@@ -33,6 +33,7 @@
 #include "staff.h"
 
 static void peep_update(rct_peep *peep);
+static int peep_has_empty_container(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1040,6 +1041,77 @@ static void peep_update_entering_park(rct_peep* peep){
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
 
+/* rct2: 0x0069030A */
+static void peep_update_walking(rct_peep* peep){
+	if (!sub_68F3AE(peep))return;
+
+	if (peep->flags & PEEP_FLAGS_SLOW_WALK){
+		if (peep->action >= PEEP_ACTION_NONE_1){
+			if ((0xFFFF & scenario_rand()) < 936){
+				invalidate_sprite((rct_sprite*)peep);
+
+				peep->action = PEEP_ACTION_YAWN;
+				peep->action_frame = 0;
+				peep->var_70 = 0;
+
+				sub_693B58(peep);
+				invalidate_sprite((rct_sprite*)peep);
+			}
+		}
+	}
+
+	if (peep->flags & PEEP_FLAGS_PHOTO){
+		if (peep->action >= PEEP_ACTION_NONE_1){
+			if ((0xFFFF & scenario_rand()) < 936){
+				invalidate_sprite((rct_sprite*)peep);
+
+				peep->action = PEEP_ACTION_TAKE_PHOTO;
+				peep->action_frame = 0;
+				peep->var_70 = 0;
+
+				sub_693B58(peep);
+				invalidate_sprite((rct_sprite*)peep);
+			}
+		}
+	}
+
+	if (peep->flags & PEEP_FLAGS_PAINTING){
+		if (peep->action >= PEEP_ACTION_NONE_1){
+			if ((0xFFFF & scenario_rand()) < 936){
+				invalidate_sprite((rct_sprite*)peep);
+
+				peep->action = PEEP_ACTION_DRAW_PICTURE;
+				peep->action_frame = 0;
+				peep->var_70 = 0;
+
+				sub_693B58(peep);
+				invalidate_sprite((rct_sprite*)peep);
+			}
+		}
+	}
+
+	if (peep->flags & PEEP_FLAGS_LITTER){
+		if (!(peep->next_var_29 & 0x18)){
+			if ((0xFFFF & scenario_rand()) <= 4096){
+				int ebp = (scenario_rand() & 0x3) + 2;
+				int x = peep->x + (scenario_rand() & 0x7) - 3;
+				int y = peep->y + (scenario_rand() & 0x7) - 3;
+				int direction = (scenario_rand() & 0x3);
+
+				RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, ebp);
+			}
+		}
+	}
+	else if (peep_has_empty_container(peep)){
+		if ((!(peep->next_var_29 & 0x18)) && 
+			((peep->sprite_index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF))&&
+			((0xFFFF & scenario_rand()) <= 4096)){
+			
+			//690477
+		}
+	}
+}
+
 /* From peep_update */
 static void peep_update_thoughts(rct_peep* peep){
 	// Thoughts must always have a gap of at least
@@ -1833,6 +1905,23 @@ int peep_has_food(rct_peep* peep){
 		PEEP_ITEM_SUB_SANDWICH |
 		PEEP_ITEM_COOKIE |
 		PEEP_ITEM_ROAST_SAUSAGE
+		));
+}
+
+static int peep_has_empty_container(rct_peep* peep){
+	return (peep->item_standard_flags &(
+		PEEP_ITEM_EMPTY_CAN |
+		PEEP_ITEM_EMPTY_BURGER_BOX |
+		PEEP_ITEM_EMPTY_CUP |
+		PEEP_ITEM_RUBBISH |
+		PEEP_ITEM_EMPTY_BOX |
+		PEEP_ITEM_EMPTY_BOTTLE
+		)) ||
+		(peep->item_extra_flags &(
+		PEEP_ITEM_EMPTY_BOWL_RED |
+		PEEP_ITEM_EMPTY_DRINK_CARTON |
+		PEEP_ITEM_EMPTY_JUICE_CUP |
+		PEEP_ITEM_EMPTY_BOWL_BLUE
 		));
 }
 
