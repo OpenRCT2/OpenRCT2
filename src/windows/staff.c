@@ -1188,7 +1188,7 @@ void window_staff_overview_tool_abort(){
 		sprite_move(w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 
-		if (peep->x != 0x8000){
+		if (peep->x != (sint16)0x8000){
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_FALLING;
 			peep_window_state_update(peep);
