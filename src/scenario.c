@@ -819,6 +819,7 @@ int scenario_write_available_objects(FILE *file)
 	// Free buffers
 	free(dstBuffer);
 	free(buffer);
+	return 1;
 }
 
 /**

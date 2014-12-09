@@ -153,21 +153,23 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 
 	// Enumerate through each object in the directory
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
-	if (enumFileHandle != INVALID_HANDLE) {
-		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
-			totalFiles++;
-			totalFileSize += enumFileInfo.size;
-			fileDateModifiedChecksum ^=
-				(uint32)(enumFileInfo.last_modified >> 32) ^
-				(uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
-			fileDateModifiedChecksum = ror32(fileDateModifiedChecksum, 5);
-		}
-		platform_enumerate_files_end(enumFileHandle);
+	if (enumFileHandle == INVALID_HANDLE)
+		return 0;
+
+	while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
+		totalFiles++;
+		totalFileSize += enumFileInfo.size;
+		fileDateModifiedChecksum ^=
+			(uint32)(enumFileInfo.last_modified >> 32) ^
+			(uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
+		fileDateModifiedChecksum = ror32(fileDateModifiedChecksum, 5);
 	}
+	platform_enumerate_files_end(enumFileHandle);
 
 	*outTotalFiles = totalFiles;
 	*outTotalFileSize = totalFileSize;
 	*outFileDateModifiedChecksum = fileDateModifiedChecksum;
+	return 1;
 }
 
 /**
@@ -573,12 +575,12 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 		obj_string += 2;
 		format_string(installed_entry_pointer, obj_string, 0);
 		strcat(installed_entry_pointer, "\t (");
-		strcat(installed_entry_pointer, language_get_string(RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
 		strcat(installed_entry_pointer, ")");
 		while (*installed_entry_pointer++);
 	}
 	else{
-		strcpy(installed_entry_pointer, language_get_string(RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
 		while (*installed_entry_pointer++);
 	}
 	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(0x009ADAF0, uint32) - 0xF26E;

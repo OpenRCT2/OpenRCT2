@@ -403,6 +403,9 @@ static void shortcut_open_cheat_window()
 {
 	rct_window *window;
 
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_PLAYING)
+		return;
+
 	// Check if window is already open
 	window = window_find_by_class(WC_CHEATS);
 	if (window != NULL) {
