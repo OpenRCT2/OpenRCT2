@@ -461,7 +461,7 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 	FOR_ALL_RIDES(i, ride) {
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
 			continue;
-		if (ride->lifecycle_flags & 0x40000)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_18)
 			continue;
 		if (ride->excitement < RIDE_RATING(5, 50))
 			continue;
