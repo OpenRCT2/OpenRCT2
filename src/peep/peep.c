@@ -1045,12 +1045,12 @@ static void peep_update_entering_park(rct_peep* peep){
 static void peep_update_walking(rct_peep* peep){
 	if (!sub_68F3AE(peep))return;
 
-	if (peep->flags & PEEP_FLAGS_SLOW_WALK){
+	if (peep->flags & PEEP_FLAGS_WAVING){
 		if (peep->action >= PEEP_ACTION_NONE_1){
 			if ((0xFFFF & scenario_rand()) < 936){
 				invalidate_sprite((rct_sprite*)peep);
 
-				peep->action = PEEP_ACTION_YAWN;
+				peep->action = PEEP_ACTION_WAVE_2;
 				peep->action_frame = 0;
 				peep->var_70 = 0;
 
@@ -1107,9 +1107,66 @@ static void peep_update_walking(rct_peep* peep){
 			((peep->sprite_index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF))&&
 			((0xFFFF & scenario_rand()) <= 4096)){
 			
-			//690477
+			uint8 pos_stnd = 0;
+			for (int container = peep->item_standard_flags & 
+				(PEEP_ITEM_EMPTY_CAN |
+				PEEP_ITEM_EMPTY_BURGER_BOX |
+				PEEP_ITEM_EMPTY_CUP |
+				PEEP_ITEM_RUBBISH |
+				PEEP_ITEM_EMPTY_BOX |
+				PEEP_ITEM_EMPTY_BOTTLE); pos_stnd < 32; pos_stnd++)if (container&(1<<pos_stnd))break;
+
+			int bp = 0;
+
+			if (pos_stnd != 32){
+				peep->item_standard_flags &= ~(1 << pos_stnd);
+				bp = RCT2_ADDRESS(0x97EFCC, uint8)[pos_stnd];
+			}
+			else{
+				uint8 pos_extr = 0;
+				for (int container = peep->item_extra_flags &
+					(PEEP_ITEM_EMPTY_BOWL_RED |
+					PEEP_ITEM_EMPTY_DRINK_CARTON |
+					PEEP_ITEM_EMPTY_JUICE_CUP |
+					PEEP_ITEM_EMPTY_BOWL_BLUE);  pos_extr < 32; pos_extr++)if (container&(1 << pos_extr))break;
+				peep->item_extra_flags &= ~(1 << pos_extr);
+				bp = RCT2_ADDRESS(0x97EFE8, uint8)[pos_extr];
+			}
+
+			peep->var_45 |= 8;
+			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+
+			int x = peep->x + (scenario_rand() & 0x7) - 3;
+			int y = peep->y + (scenario_rand() & 0x7) - 3;
+			int direction = (scenario_rand() & 0x3);
+
+			RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, bp);
 		}
 	}
+
+	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+	if ((peep->next_var_29 & 0x18) == 8){
+		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+		while ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) map_element++;
+
+		int water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+		if (water_height){
+			invalidate_sprite((rct_sprite*)peep);
+			water_height *= 16;
+			sprite_move(peep->x, peep->y, water_height, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_FALLING;
+			peep_window_state_update(peep);
+			return;
+		}
+	}
+	//690573
+	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /* From peep_update */
@@ -1216,7 +1273,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_leaving_ride(peep);
 			break;
 		case PEEP_STATE_WALKING:
-			RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_walking(peep);
 			break;
 		case PEEP_STATE_QUEUING:
 			peep_update_queuing(peep);
