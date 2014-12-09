@@ -122,3 +122,10 @@ While decompilation is an ongoing process, this does not prohibit changes being 
 
 # 4 License
 **OpenRCT2** is licensed under the GNU General Public License version 3.
+
+# 5 More information
+- [GitHub](https://github.com/IntelOrca/OpenRCT2)
+- [Facebook](https://www.facebook.com/OpenRCT2)
+- [Automated Builds](https://openrct2.com/download)
+- [rct2 subreddit](http://www.reddit.com/r/rct/)
+- [openrct2 subreddit](http://www.reddit.com/r/openrct2)
