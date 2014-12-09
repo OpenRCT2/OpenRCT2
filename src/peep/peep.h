@@ -261,6 +261,8 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 
+	PEEP_FLAGS_21 = (1<<21),
+
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25) // Unconfirmed
@@ -479,7 +481,8 @@ typedef struct {
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
 	uint8 pad_F2;
 	uint8 var_F3;
-	uint8 pad_F4[0x02];
+	uint8 var_F4;
+	uint8 pad_F5;
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8

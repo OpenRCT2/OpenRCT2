@@ -162,6 +162,25 @@ static void peep_state_reset(rct_peep* peep){
 	RCT2_CALLPROC_X(0x00693BE5, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
+/* rct2: 0x69C308 
+ * Check if lost.
+ */
+void sub_69C308(rct_peep* peep){
+	if (!(peep->flags & PEEP_FLAGS_LOST)){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) < 2)return;
+		peep->flags ^= PEEP_FLAGS_21;
+
+		if (!(peep->flags & PEEP_FLAGS_21)) return;
+
+		peep->var_F4++;
+		if (peep->var_F4 != 254)return;
+		peep->var_F4 = 230;
+	}
+	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, 0xFF);
+	if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
+	else peep->happiness_growth_rate -= 30;
+}
+
 /* rct2: 0x6939EB 
  * Possibly peep update action frame.
  * Also used to move peeps to the correct position to
@@ -428,7 +447,7 @@ void peep_update_falling(rct_peep* peep){
 	if (saved_map->type != MAP_ELEMENT_TYPE_PATH){
 		edx = 8;
 	}
-	peep->next_var_29 = edx << 8;
+	peep->next_var_29 = edx;
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
 	peep_window_state_update(peep);
