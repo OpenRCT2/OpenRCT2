@@ -523,7 +523,7 @@ void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
-void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args);
+void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 
 void window_editor_main_open();
 void window_editor_top_toolbar_open();
@@ -569,9 +569,9 @@ int window_can_resize(rct_window *w);
 		__asm mov widgetIndex, dx														\
 		__asm mov w, esi
 	
-	#define window_text_input_get_registers(w, widgetIndex, result, text)					\
+	#define window_text_input_get_registers(w, widgetIndex, result, text)				\
 		__asm mov widgetIndex, dx														\
-		__asm mov result, cl																\
+		__asm mov result, cl															\
 		__asm mov w, esi																\
 		__asm mov text, edi
 
@@ -595,6 +595,10 @@ int window_can_resize(rct_window *w);
 	#define window_paint_get_registers(w, dpi)											\
 		__asm mov w, esi																\
 		__asm mov dpi, edi
+
+	#define window_scrollsize_set_registers(width, height)								\
+		__asm mov ecx, width															\
+		__asm mov edx, height
 #else
 	#define window_get_register(w)														\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
@@ -605,24 +609,24 @@ int window_can_resize(rct_window *w);
 
 	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
 		__asm__ ( "mov %["#dropdownIndex"], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
-		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
-	#define window_text_input_get_registers(w, widgetIndex, result, text)					\
-		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (result) );								\
+	#define window_text_input_get_registers(w, widgetIndex, result, text)				\
+		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (result) );							\
 		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
 		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
 
 	#define window_scrollmouse_get_registers(w, x, y)									\
-		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );										\
-		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );										\
+		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );									\
+		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );									\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_tool_get_registers(w, widgetIndex, x, y)								\
-		__asm__ ( "mov %["#x"], ax " : [x] "+m" (x) );										\
-		__asm__ ( "mov %["#y"], bx " : [y] "+m" (y) );										\
-		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );		\
+		__asm__ ( "mov %["#x"], ax " : [x] "+m" (x) );									\
+		__asm__ ( "mov %["#y"], bx " : [y] "+m" (y) );									\
+		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_textinput_get_registers(w, widgetIndex, result, text)				\
@@ -634,6 +638,10 @@ int window_can_resize(rct_window *w);
 	#define window_paint_get_registers(w, dpi)											\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
 		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
+
+	#define window_scrollsize_set_registers(width, height)								\
+		__asm__ ( "mov ecx, %[width] " : [width] "+m" (width) );						\
+		__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
 #endif
 
 #endif

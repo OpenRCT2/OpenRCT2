@@ -275,7 +275,7 @@ static void window_sign_mouseup()
 		{
 			string_id = gBanners[w->number].string_idx;
 		}
-		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0);
+		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0, 32);
 		break;
 	}
 }
@@ -596,7 +596,7 @@ static void window_sign_small_mouseup()
 		{
 			string_id = gBanners[w->number].string_idx;
 		}
-		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0);
+		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0, 32);
 		break;
 	}
 }

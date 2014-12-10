@@ -34,7 +34,6 @@
 
 #define WW 250
 #define WH 90
-#define MAX_TEXTINPUT 32
 
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -94,12 +93,16 @@ static void* window_text_input_events[] = {
 };
 
 int input_text_description;
-char text_input[MAX_TEXTINPUT] = { 0 };
+char text_input[512] = { 0 };
 rct_windowclass calling_class = 0;
 rct_windownumber calling_number = 0;
 int calling_widget = 0;
+int _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args){
+void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength)
+{
+	_maxInputLength = maxLength;
+
 	window_close_by_class(WC_TEXTINPUT);
 
 	// Window will be in the center of the screen
@@ -110,7 +113,8 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 		WH, 
 		(uint32*)window_text_input_events, 
 		WC_TEXTINPUT,
-		0);
+		0
+	);
 
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
@@ -118,7 +122,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	window_text_input_widgets[WIDX_TITLE].image = title;
 
 	// Clear the text input buffer
-	memset(text_input, 0, MAX_TEXTINPUT);
+	memset(text_input, 0, maxLength);
 
 	// Enter in the the text input buffer any existing
 	// text.
@@ -133,7 +137,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	calling_number = call_w->number;
 	calling_widget = call_widget;
 
-	osinterface_start_text_input(text_input, MAX_TEXTINPUT);
+	osinterface_start_text_input(text_input, maxLength);
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = call_w->colours[0];
@@ -195,7 +199,7 @@ static void window_text_input_paint(){
 	gfx_draw_string(dpi, text_input, w->colours[1], w->x + 12, y);
 
 	// Make a copy of the string for measuring the width.
-	char temp_string[32] = { 0 }; 
+	char temp_string[512] = { 0 }; 
 	memcpy(temp_string, text_input, gTextInputCursorPosition);
 	
 	int x = w->x + 13 + gfx_get_string_width(temp_string);

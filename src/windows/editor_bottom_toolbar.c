@@ -190,7 +190,7 @@ void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138); // open scenario options
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -201,7 +201,7 @@ void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 */
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138); // open options selection window
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -238,7 +238,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138);
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -249,7 +249,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x0067137D);
+	window_editor_objective_options_open();
 	g_editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	gfx_invalidate_screen();
 }

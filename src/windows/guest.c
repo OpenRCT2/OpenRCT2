@@ -631,7 +631,7 @@ void window_guest_overview_mouse_up(){
 		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:
-		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id);
+		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id, 32);
 		break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);

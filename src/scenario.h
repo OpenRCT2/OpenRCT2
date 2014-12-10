@@ -83,6 +83,12 @@ typedef struct {
 	char completed_by[64];		// 0x0270
 } rct_scenario_basic;
 
+typedef struct {
+	rct_string_id scenario_name;
+	rct_string_id park_name;
+	rct_string_id details;
+} rct_stex_entry;
+
 /* This will be useful for backwards compatibility
 typedef struct {
 	// SC6[0]

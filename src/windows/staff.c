@@ -469,7 +469,7 @@ void window_staff_overview_mouseup()
 		window_staff_fire_prompt_open(peep);
 		break;
 	case WIDX_RENAME:
-		window_text_input_open(w, widgetIndex, 2977, 2978, peep->name_string_idx, peep->id);
+		window_text_input_open(w, widgetIndex, 2977, 2978, peep->name_string_idx, peep->id, 32);
 		break;
 	}
 }
