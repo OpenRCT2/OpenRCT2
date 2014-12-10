@@ -104,6 +104,7 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void texteffect_update_all();
 void sprite_move(int x, int y, int z, rct_sprite* sprite);
 void balloon_pop(rct_sprite *sprite);
-void invalidate_sprite(rct_sprite* sprite);
+void invalidate_sprite(rct_sprite *sprite);
+void sprite_remove(rct_sprite *sprite);
 
 #endif

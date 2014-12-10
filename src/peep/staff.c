@@ -123,9 +123,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 	}
 
 	if (_bl == 0) {
-		RCT2_CALLPROC_X(0x0069EDB6, 0, 0, _ecx, 0, (int)newPeep, 0, 0);
-	}
-	else {
+		sprite_remove((rct_sprite*)newPeep);
+	} else {
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
 
 		newPeep->sprite_identifier = 1;

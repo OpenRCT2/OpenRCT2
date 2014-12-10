@@ -551,7 +551,7 @@ static void ride_remove_cable_lift(rct_ride *ride)
 		do {
 			vehicle = &(g_sprite_list[spriteIndex].vehicle);
 			invalidate_sprite((rct_sprite*)vehicle);
-			RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			sprite_remove((rct_sprite*)vehicle);
 			spriteIndex = vehicle->next_vehicle_on_train;
 		} while (spriteIndex != SPRITE_INDEX_NULL);
 	}
@@ -576,7 +576,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 			while (spriteIndex != SPRITE_INDEX_NULL) {
 				vehicle = &(g_sprite_list[spriteIndex].vehicle);
 				invalidate_sprite((rct_sprite*)vehicle);
-				RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+				sprite_remove((rct_sprite*)vehicle);
 				spriteIndex = vehicle->next_vehicle_on_train;
 			}
 

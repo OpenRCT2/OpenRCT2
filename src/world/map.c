@@ -437,11 +437,16 @@ static void sub_6A87BB(int x, int y)
 	RCT2_CALLPROC_X(0x006A87BB, x, 0, y, 0, 0, 0, 0);
 }
 
-/* rct2: 0x6A7B84 */
-int map_height_from_slope(int x, int y, int slope){
-	if (!(slope & 4)) return 0;
+/**
+ *
+ *  rct2: 0x006A7B84
+ */
+int map_height_from_slope(int x, int y, int slope)
+{
+	if (!(slope & 4))
+		return 0;
 
-	switch (slope & 3){
+	switch (slope & 3) {
 	case 0:
 		return (31 - (x & 31)) / 2;
 	case 1:
@@ -464,10 +469,10 @@ int sub_664F72(int x, int y, int z)
 
 	if (x < (256 * 32) && y < (256 * 32)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
-		if (mapElement->properties.surface.ownership & 0x20)
+		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
 			return 1;
 
-		if (mapElement->properties.surface.ownership & 0x10) {
+		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			z /= 8;
 			if (z < mapElement->base_height || z - 2 > mapElement->base_height)
 				return 1;
@@ -488,8 +493,8 @@ int map_is_location_in_park(int x, int y)
 
 	if (x < (256 * 32) && y < (256 * 32)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
-		if (mapElement->properties.surface.ownership & 0x20)
-		return 1;
+		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
+			return 1;
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1729;

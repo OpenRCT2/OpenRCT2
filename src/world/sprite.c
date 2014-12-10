@@ -333,3 +333,12 @@ void balloon_pop(rct_sprite *sprite)
 {
 	RCT2_CALLPROC_X(0x006E88D7, 0, 0, 0, (int)sprite, 0, 0, 0);
 }
+
+/**
+ *
+ *  rct2: 0x0069EDB6
+ */
+void sprite_remove(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
