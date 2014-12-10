@@ -2750,11 +2750,11 @@ STR_2748    :Bar
 STR_2749    :???
 STR_2750    :???
 STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
+STR_2752    :Onkruid weg
+STR_2753    :Gras maaien
+STR_2754    :Bloemen water geven
+STR_2755    :Vandalisme repareren
+STR_2756    :Afval op paden weghalen
 STR_2757    :Mooi weer
 STR_2758    :Regen
 STR_2759    :Hoogtes op nul
