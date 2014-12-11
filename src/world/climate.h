@@ -47,7 +47,10 @@ typedef struct {
 	uint32 sprite_id;
 } rct_weather;
 
-extern int gClimateNextWeather;
+// This still needs to be read / written when loading and saving
+// extern int gClimateNextWeather;
+#define gClimateNextWeather RCT2_GLOBAL(0x013CA74B, uint8)
+
 extern const rct_weather climate_weather_data[6];
 
 // cheats

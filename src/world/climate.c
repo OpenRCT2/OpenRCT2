@@ -39,14 +39,22 @@ typedef struct {
 	sint8 distribution[24];
 } rct_weather_transition;
 
-int gClimateNextWeather;
+// These still need to be read / written when loading and saving
+// int gClimateNextWeather;
+// 
+// static int _climateCurrentWeatherEffect;
+// 
+// static int _climateNextTemperature;
+// static int _climateNextWeatherEffect;
+// static int _climateNextWeatherGloom;
+// static int _climateNextRainLevel;
 
-static int _climateCurrentWeatherEffect;
+#define _climateCurrentWeatherEffect	RCT2_GLOBAL(0x013CA74E, uint8)
 
-static int _climateNextTemperature;
-static int _climateNextWeatherEffect;
-static int _climateNextWeatherGloom;
-static int _climateNextRainLevel;
+#define _climateNextTemperature			RCT2_GLOBAL(0x013CA74D, uint8)
+#define _climateNextWeatherEffect		RCT2_GLOBAL(0x013CA74F, uint8)
+#define _climateNextWeatherGloom		RCT2_GLOBAL(0x013CA751, uint8)
+#define _climateNextRainLevel			RCT2_GLOBAL(0x013CA753, uint8)
 
 static const rct_weather_transition* climate_transitions[4];
 

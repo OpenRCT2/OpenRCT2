@@ -141,7 +141,7 @@ typedef struct {
 	uint8 pad_013573F1[2];
 	rct2_peep_spawn peep_spawns[2];
 	uint8 guest_count_change_modifier;
-	uint8 byte_013573FF;
+	uint8 current_research_level;
 	uint8 pad_01357400[4];
 	uint32 dword_01357404;
 	uint32 dword_01357408;
@@ -186,7 +186,7 @@ typedef struct {
 	uint8 research_progress_stage;
 	uint32 dword_01357CF4;
 	uint8 byte_01357CF8[1000];
-	uint32 dword_013580E0;
+	uint32 next_research_item;
 	uint16 research_progress;
 	uint8 next_research_category;
 	uint8 next_research_expected_day;
@@ -195,8 +195,8 @@ typedef struct {
 	uint16 park_size;
 	uint16 guest_generation_probability;
 	uint16 total_ride_value;
-	uint32 dword_013580F0;
-	uint16 dword_013580F4;
+	money32 maximum_loan;
+	money16 guest_initial_cash;
 	uint8 dword_013580F6;
 	uint8 dword_013580F7;
 	uint8 objective_type;
@@ -218,7 +218,7 @@ typedef struct {
 	uint8 pad_0135833A[2];
 
 	// Ignored in scenario
-	uint8 pad_0135833C[2];
+	money32 weekly_profit_history[128];
 	money32 park_value;
 	money32 park_value_history[128];
 
@@ -241,7 +241,7 @@ typedef struct {
 	uint8 pad_013587CA[16];
 	uint32 dword_013587D0;
 	uint8 pad_013587D4[8];
-	uint16 word_013587D8[16];
+	char scenario_completed_name[32];
 	money32 cash;
 	uint8 pad_013587FC[50];
 	uint16 word_0135882E;
@@ -255,17 +255,12 @@ typedef struct {
 	uint8 word_01358840;
 	uint8 word_01358841;
 	uint8 pad_01358842[4];
-	uint32 dword_01358844;
-	uint8 pad_01358848;
-	uint32 dword_01358849;
-	uint8 pad_0135884D[2];
-	uint8 dword_0135884E[622];
-	uint8 pad_01359206[2];
+	rct_research_item research_items[500];
 	uint16 word_01359208;
 	char scenario_name[64];
 	char scenario_description[255];
 	uint8 byte_01359349;
-	uint8 byte_0135934A;
+	uint8 current_interest_rate;
 	uint8 pad_0135934B[3];
 	uint32 dword_0135934C;
 	uint16 park_entrance_x[4];
@@ -275,14 +270,7 @@ typedef struct {
 	uint8 pad_01359369[3];
 	uint8 byte_0135936C[256];
 	uint8 byte_0135946C[3256];
-	uint8 byte_0135A124;
-	uint8 byte_0135A125;
-	uint16 word_0135A126;
-	uint8 byte_0135A128;
-	uint8 byte_0135A129;
-	uint8 byte_0135A12A;
-	uint8 byte_0135A12B[793];
-	uint8 byte_0135A444[1200];
+	rct_banner banners[250]
 	char custom_strings[0x8000];
 	uint32 game_ticks_1;
 	rct_ride rides[255];
@@ -300,8 +288,8 @@ typedef struct {
 	uint16 word_0138B58A;
 	uint16 word_0138B58C;
 	uint16 word_0138B58E;
-	uint8 byte_0138B590;
-	uint8 byte_0138B591;
+	uint8 ride_ratings_current_ride;
+	uint8 ride_ratings_state;
 	uint8 byte_0138B592;
 	uint8 byte_0138B593;
 	uint16 word_0138B594;
