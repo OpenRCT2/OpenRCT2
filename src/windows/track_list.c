@@ -450,11 +450,11 @@ static void window_track_list_paint()
 
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
-	
+
+	RCT2_GLOBAL(0x00F44153, uint8) = 0;
 	// Warnings
 	if ((trackDesign->var_06 & 4) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
-		RCT2_GLOBAL(0x00F44153, uint8) = 0;
 		gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, 0, x, y, 368);
 		y -= 10;
 	}
