@@ -70,6 +70,8 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 	} else if (!(char_ptr[0] & 0x20)) {
 		result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
 		numBytes = 2;
+	} else {
+		numBytes++;
 	}
 
 	if (nextchar_ptr != NULL)
@@ -136,8 +138,13 @@ static int language_open_file(const char *filename)
 	char *dst = NULL;
 	char *token = NULL;
 	char tokenBuffer[64];
-	int i, stringIndex = 0, mode = 0, string_no;
-	for (i = 0; i < language_buffer_size; i++) {
+	int i = 0, stringIndex = 0, mode = 0, string_no;
+
+	// Skim UTF-8 byte order mark
+	if (language_buffer[0] == (char)0xEF && language_buffer[1] == (char)0xBB && language_buffer[2] == (char)0xBF)
+		i += 3;
+
+	for (; i < language_buffer_size; i++) {
 		char *src = &language_buffer[i];
 
 		// Handle UTF-8
