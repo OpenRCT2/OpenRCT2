@@ -174,7 +174,7 @@ static rct_widget window_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint16 window_scenery_tab_entries[0x13][SCENERY_ENTRIES_BY_TAB + 1];
+static sint16 window_scenery_tab_entries[0x14][SCENERY_ENTRIES_BY_TAB + 1];
 
 /*
 * Was part of 0x006DFA00
