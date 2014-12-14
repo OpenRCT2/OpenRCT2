@@ -104,6 +104,8 @@ typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
 
 enum {
+	// Although this is labeled a flag it actually means when
+	// zero the screen is in playing mode.
 	SCREEN_FLAGS_PLAYING = 0,
 	SCREEN_FLAGS_TITLE_DEMO = 1,
 	SCREEN_FLAGS_SCENARIO_EDITOR = 2,

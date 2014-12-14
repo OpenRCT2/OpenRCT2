@@ -103,6 +103,17 @@ void climate_reset(int climate)
 	
 	_lightningTimer = 0;
 	_thunderTimer = 0;
+	if (_rainVolume != 1){
+#ifdef USE_MIXER
+		if (_rainSoundChannel) {
+			Mixer_Stop_Channel(_rainSoundChannel);
+			_rainSoundChannel = 0;
+		}
+#else
+		sound_stop(&_rainSoundInstance);
+#endif
+		_rainVolume = 1;
+	}
 
 	climate_determine_future_weather();
 }
@@ -229,7 +240,7 @@ void climate_update_sound()
 		return;
 	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (1<<SCREEN_FLAGS_PLAYING))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;
 
 	climate_update_rain_sound();
