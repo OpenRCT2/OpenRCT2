@@ -100,6 +100,9 @@ void climate_reset(int climate)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
+	
+	_lightningTimer = 0;
+	_thunderTimer = 0;
 
 	climate_determine_future_weather();
 }
@@ -153,6 +156,8 @@ void climate_update()
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
 				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
+				_thunderTimer = 0;
+				_lightningTimer = 0;
 
 				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
@@ -224,7 +229,7 @@ void climate_update_sound()
 		return;
 	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (1<<SCREEN_FLAGS_PLAYING))
 		return;
 
 	climate_update_rain_sound();
