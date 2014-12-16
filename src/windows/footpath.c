@@ -104,7 +104,7 @@ static rct_widget window_footpath_widgets[] = {
 static void window_footpath_emptysub() { }
 static void window_footpath_close();
 static void window_footpath_mouseup();
-static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_footpath_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
 static void window_footpath_dropdown();
 static void window_footpath_update(rct_window *w);
 static void window_footpath_toolupdate();
@@ -149,7 +149,6 @@ money32 _window_footpath_cost;
 
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 static void window_footpath_set_provisional_path_at_point(int x, int y);
-static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope);
 static void window_footpath_place_path_at_point(int x, int y);
 static void window_footpath_construct();
 static void window_footpath_remove();
@@ -251,7 +250,7 @@ static void window_footpath_mouseup()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND)
 			break;
 
-		_window_footpath_cost = 0x80000000;
+		_window_footpath_cost = MONEY32_UNDEFINED;
 		tool_cancel();
 		sub_6A7831();
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
@@ -266,7 +265,7 @@ static void window_footpath_mouseup()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
 			break;
 
-		_window_footpath_cost = 0x80000000;
+		_window_footpath_cost = MONEY32_UNDEFINED;
 		tool_cancel();
 		sub_6A7831();
 		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
@@ -365,7 +364,7 @@ static void window_footpath_dropdown()
 	// Set selected path id
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = pathId;
 	sub_6A7831();
-	_window_footpath_cost = 0x80000000;
+	_window_footpath_cost = MONEY32_UNDEFINED;
 	window_invalidate(w);
 }
 
@@ -550,7 +549,7 @@ static void window_footpath_paint()
 	// Draw cost
 	x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
 	y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
-	if (_window_footpath_cost != 0x80000000)
+	if (_window_footpath_cost != MONEY32_UNDEFINED)
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
 }
@@ -634,38 +633,12 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 			slope = mapElement->properties.surface.slope & 7;
 		pathType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
-		_window_footpath_cost = window_footpath_set_provisional_path(pathType, x, y, mapElement->base_height, slope);
-		// window_invalidate_by_id(eax, ebx);
+		_window_footpath_cost = footpath_provisional_set(pathType, x, y, mapElement->base_height, slope);
+		window_invalidate_by_class(WC_FOOTPATH);
 	}
 }
 
-/**
- * 
- *  rct2: 0x006A76FF
- */
-static int window_footpath_set_provisional_path(int type, int x, int y, int z, int slope)
-{
-	int eax, cost;
 
-	RCT2_CALLPROC_EBPSAFE(0x006A77FF);
-
-	// Try and show provisional path
-	cost = game_do_command(x, (slope << 8) | 121, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
-
-	if (cost != MONEY32_UNDEFINED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= 2;
-
-		eax = 3;
-		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
-			eax = 1;
-		viewport_set_visibility((uint8)eax);
-	}
-
-	return cost;
-}
 
 /**
  * 
@@ -692,11 +665,9 @@ static void window_footpath_place_path_at_point(int x, int y)
 	z = mapElement->base_height;
 	selectedType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
-	// Prepare error text
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
-
 	// Try and place path
-	cost = game_do_command(x, (presentType << 8) | 1, y, (selectedType << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
+	cost = footpath_place(selectedType, x, y, z, presentType, (1 << 0));
 
 	if (cost == MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 1;
@@ -772,11 +743,11 @@ loc_6A78EF:
 	// Find a connected edge
 	int edge = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) ^ 2;
 	if (!(mapElement->properties.path.edges & (1 << edge))) {
-		edge = (edge + 1) % 4;
+		edge = (edge + 1) & 3;
 		if (!(mapElement->properties.path.edges & (1 << edge))) {
-			edge = (edge + 2) % 4;
+			edge = (edge + 2) & 3;
 			if (!(mapElement->properties.path.edges & (1 << edge))) {
-				edge = (edge - 1) % 4;
+				edge = (edge - 1) & 3;
 				if (!(mapElement->properties.path.edges & (1 << edge)))
 					edge ^= 2;
 			}
@@ -805,4 +776,3 @@ loc_6A78EF:
 loc_6A79B0:
 	RCT2_CALLPROC_EBPSAFE(0x006A855C);
 }
-

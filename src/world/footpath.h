@@ -22,6 +22,7 @@
 #define _WORLD_FOOTPATH_H_
 
 #include "../common.h"
+#include "../interface/viewport.h"
 
 typedef struct {
 	uint16 pad_00;
@@ -31,8 +32,10 @@ typedef struct {
 	uint8 flags;		// 0x0B
 } rct_path_type;
 
+money32 footpath_place(int type, int x, int y, int z, int slope, int flags);
 void footpath_remove(int x, int y, int z, int flags);
-void sub_6A7FFF();
+money32 footpath_provisional_set(int type, int x, int y, int z, int slope);
+void footpath_provisional_remove();
 void sub_6A7831();
 
 #endif

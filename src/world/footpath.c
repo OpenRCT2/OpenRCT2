@@ -23,6 +23,11 @@
 #include "footpath.h"
 #include "map.h"
 
+money32 footpath_place(int type, int x, int y, int z, int slope, int flags)
+{
+	return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
+}
+
 void footpath_remove(int x, int y, int z, int flags)
 {
 	game_do_command(x, flags, y, z, GAME_COMMAND_REMOVE_PATH, 0, 0);
@@ -30,9 +35,32 @@ void footpath_remove(int x, int y, int z, int flags)
 
 /**
  * 
- *  rct2: 0x006A7FFF
+ *  rct2: 0x006A76FF
  */
-void sub_6A7FFF()
+money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
+{
+	money32 cost;
+
+	footpath_provisional_remove();
+
+	cost = footpath_place(type, x, y, z, slope, (1 << 6) | (1 << 5) | (1 << 4) | (1 << 3) | (1 << 0));
+	if (cost != MONEY32_UNDEFINED) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= (1 << 1);
+
+		viewport_set_visibility(RCT2_GLOBAL(0x00F3EFA4, uint8) & 2 ? 1 : 3);
+	}
+
+	return cost;
+}
+
+/**
+ * 
+ *  rct2: 0x006A77FF
+ */
+void footpath_provisional_remove()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~(1 << 1);
@@ -41,7 +69,7 @@ void sub_6A7FFF()
 			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint16),
-			41
+			(1 << 0) | (1 << 3) | (1 << 5)
 		);
 	}
 }
@@ -60,7 +88,6 @@ void sub_6A7831()
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16)
 		);
-	} else {
-		sub_6A7FFF();
 	}
+	footpath_provisional_remove();
 }
