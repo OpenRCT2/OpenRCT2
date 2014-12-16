@@ -592,7 +592,7 @@ static void window_editor_inventions_list_cursor()
 	rct_window *w;
 	rct_research_item *researchItem;
 	short widgetIndex, x, y;
-	int scrollIndex;
+	int scrollIndex, cursorId;
 
 	window_cursor_get_registers(w, widgetIndex, x, y);
 
@@ -601,7 +601,8 @@ static void window_editor_inventions_list_cursor()
 	} else if (widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
 		scrollIndex = 1;
 	} else {
-		window_cursor_set_registers(-1);
+		cursorId = -1;
+		window_cursor_set_registers(cursorId);
 		return;
 	}
 
@@ -610,11 +611,13 @@ static void window_editor_inventions_list_cursor()
 		return;
 
 	if (researchItem->entryIndex < (uint32)-3 && research_item_is_always_researched(researchItem)) {
-		window_cursor_set_registers(-1);
+		cursorId = -1;
+		window_cursor_set_registers(cursorId);
 		return;
 	}
 
-	window_cursor_set_registers(CURSOR_HAND_OPEN);
+	cursorId = CURSOR_HAND_OPEN;
+	window_cursor_set_registers(cursorId);
 }
 
 /**
@@ -846,6 +849,7 @@ static void window_editor_inventions_list_drag_cursor()
 	rct_window *w, *inventionListWindow;
 	rct_research_item *researchItem;
 	short widgetIndex, x, y;
+	int cursorId;
 
 	window_cursor_get_registers(w, widgetIndex, x, y);
 
@@ -858,7 +862,8 @@ static void window_editor_inventions_list_drag_cursor()
 		}
 	}
 
-	window_cursor_set_registers(CURSOR_HAND_CLOSED);
+	cursorId = CURSOR_HAND_CLOSED;
+	window_cursor_set_registers(cursorId);
 }
 
 /**
