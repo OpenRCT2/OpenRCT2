@@ -288,8 +288,8 @@ void window_editor_top_toolbar_dropdown() {
 			} else if (dropdownIndex == DDIDX_TD_SCREENSHOT) {
 				RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			} else if (dropdownIndex == DDIDX_TD_QUIT_GAME) {
-				window_close_by_number(WC_47, w->number);
-				window_close_by_number(WC_48, w->number);
+				window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+				window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 				game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			}
 		} else {
@@ -304,8 +304,8 @@ void window_editor_top_toolbar_dropdown() {
 			} else if (dropdownIndex == DDIDX_SE_SCREENSHOT) {
 				RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			} else if (dropdownIndex == DDIDX_SE_QUIT_GAME) {
-				window_close_by_number(WC_47, w->number);
-				window_close_by_number(WC_48, w->number);
+				window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+				window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 				game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			}
 		}

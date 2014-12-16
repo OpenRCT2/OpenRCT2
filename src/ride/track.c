@@ -424,3 +424,21 @@ rct_track_design *track_get_info(int index, uint8** preview)
 
 	return trackDesign;
 }
+
+/**
+ * 
+ *  rct2: 0x006D3664
+ */
+int track_rename(const char *text)
+{
+	return (RCT2_CALLPROC_X(0x006D3664, 0, 0, 0, (int)text, 0, 0, 0) & 0x100) != 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006D3761
+ */
+int track_delete()
+{
+	return (RCT2_CALLPROC_X(0x006D3761, 0, 0, 0, 0, 0, 0, 0) & 0x100) != 0;
+}

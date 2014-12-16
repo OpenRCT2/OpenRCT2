@@ -163,7 +163,7 @@ static void window_track_list_select(rct_window *w, int index)
 	w->track_list.var_480 = index;
 
 	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8) && index == 0) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
 		window_close(w);
 		ride_construct_new(_window_track_list_item);
 		return;
@@ -172,7 +172,7 @@ static void window_track_list_select(rct_window *w, int index)
 	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
 		RCT2_GLOBAL(0x00F44152, uint8) = 1;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);;
@@ -181,14 +181,14 @@ static void window_track_list_select(rct_window *w, int index)
 	window_track_list_format_name(
 		(char*)0x009BC313,
 		trackDesignItem,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8 ?
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ?
 			0 :
 			FORMAT_WHITE
 	);
 
 	subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
 		return;
 	}
@@ -213,7 +213,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
 	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
 
 	index = 0;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
 		y -= 10;
 		if (y < 0)
 			return index;
@@ -254,8 +254,8 @@ static void window_track_list_mouseup()
 	case WIDX_CLOSE:
 		window_close(w);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-			window_close_by_number(WC_47, w->number);
-			window_close_by_number(WC_48, w->number);
+			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 			trackmanager_load();
 		}
 		break;
@@ -279,26 +279,17 @@ static void window_track_list_mouseup()
 static void window_track_list_scrollgetsize()
 {
 	rct_window *w;
-	int height;
+	int width, height;
 	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
 
 	window_get_register(w);
 
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER & 8 ? 0 : 10;
+	width = 0;
+	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
 	for (trackDesignItem = trackDesignList; *trackDesignItem != 0; trackDesignItem += 128)
 		height += 10;
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 0
-	#else
-	__asm__ ( "mov ecx, 0 "  );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

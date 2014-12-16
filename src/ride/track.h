@@ -133,5 +133,7 @@ enum {
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
+int track_rename(const char *text);
+int track_delete();
 
 #endif
