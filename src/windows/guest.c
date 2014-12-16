@@ -1628,10 +1628,10 @@ void window_guest_rides_scroll_get_size(){
 /* rct2: 0x006978CC */
 void window_guest_rides_scroll_mouse_down(){
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items) return;
@@ -1642,10 +1642,10 @@ void window_guest_rides_scroll_mouse_down(){
 /* rct2: 0x0069789C */
 void window_guest_rides_scroll_mouse_over(){
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)return;

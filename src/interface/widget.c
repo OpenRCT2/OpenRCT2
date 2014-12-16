@@ -830,7 +830,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 
 	// Draw the scroll contents
 	if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], 0, 0, 0, 0, (int)w, (int)&scroll_dpi, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], scrollIndex, 0, 0, 0, (int)w, (int)&scroll_dpi, 0);
 }
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)

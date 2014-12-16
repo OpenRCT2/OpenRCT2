@@ -756,10 +756,10 @@ short get_scenery_id_by_cursor_pos(short x, short y) {
 *  rct2: 0x006E1C4A
 */
 void window_scenery_scrollmousedown() {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	short sceneryId = get_scenery_id_by_cursor_pos(x, y);
 	if (sceneryId == -1)
@@ -780,10 +780,10 @@ void window_scenery_scrollmousedown() {
 *  rct2: 0x006E1BB8
 */
 void window_scenery_scrollmouseover() {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 	short sceneryId = get_scenery_id_by_cursor_pos(x, y);
 	if (sceneryId != -1) {
 		w->scenery.selected_scenery_id = sceneryId;

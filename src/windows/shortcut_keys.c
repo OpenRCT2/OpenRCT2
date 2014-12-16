@@ -182,10 +182,10 @@ static void window_shortcut_scrollgetsize()
 */
 static void window_shortcut_scrollmousedown()
 {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	int selected_item = y / 10;
 
@@ -200,10 +200,10 @@ static void window_shortcut_scrollmousedown()
 */
 static void window_shortcut_scrollmouseover()
 {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	int selected_item = y / 10;
 

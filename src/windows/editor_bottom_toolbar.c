@@ -179,7 +179,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 */
 void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00684E04); // open invention list window
+	window_editor_inventions_list_open();
 	g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	gfx_invalidate_screen();
 }
@@ -223,7 +223,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 
 	if (!(flags & 0x100)) {
 		window_close_all();
-		RCT2_CALLPROC_EBPSAFE(0x00684E04);
+		window_editor_inventions_list_open();
 		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	} else {
 		window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));

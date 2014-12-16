@@ -209,11 +209,11 @@ static void window_news_scrollgetsize()
 static void window_news_scrollmousedown()
 {
 	int i, buttonIndex;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_news_item *newsItems;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);

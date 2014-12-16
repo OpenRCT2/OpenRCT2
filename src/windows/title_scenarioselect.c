@@ -226,11 +226,11 @@ static void window_scenarioselect_scrollgetsize()
 static void window_scenarioselect_scrollmousedown()
 {
 	int i;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
@@ -253,11 +253,11 @@ static void window_scenarioselect_scrollmousedown()
 static void window_scenarioselect_scrollmouseover()
 {
 	int i;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_scenario_basic *scenario, *selected;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	selected = NULL;
 	for (i = 0; i < gScenarioListCount; i++) {

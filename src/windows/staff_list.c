@@ -398,11 +398,11 @@ void window_staff_list_scrollgetsize() {
 */
 void window_staff_list_scrollmousedown() {
 	int i, spriteIndex;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_peep *peep;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 10;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -427,10 +427,10 @@ void window_staff_list_scrollmousedown() {
 */
 void window_staff_list_scrollmouseover() {
 	int i;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 10;
 	if (i != RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {

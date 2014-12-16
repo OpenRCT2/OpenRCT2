@@ -31,6 +31,7 @@ typedef struct {
 
 #define RESEARCHED_ITEMS_SEPERATOR -1
 #define RESEARCHED_ITEMS_END -2
+#define RESEARCHED_ITEMS_END_2 -3
 
 enum {
 	RESEARCH_FUNDING_NONE,

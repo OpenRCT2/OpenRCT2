@@ -71,7 +71,7 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 		result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
 		numBytes = 2;
 	} else {
-		numBytes++;
+		numBytes = 1;
 	}
 
 	if (nextchar_ptr != NULL)

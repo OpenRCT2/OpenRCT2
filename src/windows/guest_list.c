@@ -405,11 +405,11 @@ static void window_guest_list_scrollgetsize()
 static void window_guest_list_scrollmousedown()
 {
 	int i, spriteIndex;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_peep *peep;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -453,10 +453,10 @@ static void window_guest_list_scrollmousedown()
 static void window_guest_list_scrollmouseover()
 {
 	int i;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;

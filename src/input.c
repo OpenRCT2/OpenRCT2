@@ -70,7 +70,6 @@ void game_handle_key_scroll();
 static void input_widget_left(int x, int y, rct_window *w, int widgetIndex);
 void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget);
 void sub_6ED990(char cursor_id);
-static void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y);
 static void input_window_position_continue(rct_window *w, int lastX, int lastY, int newX, int newY);
 static void input_window_position_end(rct_window *w, int x, int y);
 static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y);
@@ -337,7 +336,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 #pragma region Window positioning / resizing
 
-static void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y)
+void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_POSITIONING_WINDOW;
 	_dragX = x - w->x;
@@ -349,7 +348,10 @@ static void input_window_position_begin(rct_window *w, int widgetIndex, int x, i
 
 static void input_window_position_continue(rct_window *w, int wdx, int wdy, int x, int y)
 {
-	window_move_and_snap(w, x - wdx, y - wdy, gGeneral_config.window_snap_proximity);
+	int snapProximity;
+
+	snapProximity = w->flags & WF_NO_SNAPPING ? 0 : gGeneral_config.window_snap_proximity;
+	window_move_and_snap(w, x - wdx, y - wdy, snapProximity);
 }
 
 static void input_window_position_end(rct_window *w, int x, int y)
@@ -359,7 +361,7 @@ static void input_window_position_end(rct_window *w, int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = _dragWindowClass;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = _dragWindowNumber;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = _dragWidgetIndex;
-	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_18], 0, 0, x, y, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_MOVED], 0, 0, x, y, (int)w, 0, 0);
 }
 
 static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y)
@@ -479,7 +481,7 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32) = scroll_id * sizeof(rct_scroll);//We do this because scroll id is not all decompiled
 	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_15], RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32), ebx, scroll_area, scroll_id, (int)w, (int)widget, 0);
 	if (scroll_area == SCROLL_PART_VIEW){
-		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], scroll_id / sizeof(rct_scroll), ebx, eax, ebx, (int)w, (int)widget, 0);
+		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], scroll_id, ebx, eax, ebx, (int)w, (int)widget, 0);
 		return;
 	}
 
@@ -866,11 +868,11 @@ void process_mouse_over(int x, int y)
 				edx = y;
 				eax = widgetId;
 				ebx = 0xFFFFFFFF;
+				esi = (int)window;
 				edi = (int)&window->widgets[widgetId];
 
-				RCT2_CALLFUNC_X(window->event_handlers[WE_UNKNOWN_17], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				if (ebx == 0xFFFFFFFF)
-				{
+				RCT2_CALLFUNC_X(window->event_handlers[WE_CURSOR], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				if (ebx == 0xFFFFFFFF) {
 					cursorId = CURSOR_ARROW;
 					break;
 				}

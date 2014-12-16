@@ -308,9 +308,9 @@ static void window_track_list_scrollgetsize()
 static void window_track_list_scrollmousedown()
 {
 	rct_window *w;
-	short i, x, y;
+	short i, x, y, scrollIndex;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	if (w->track_list.var_484 & 1)
 		return;
@@ -329,9 +329,9 @@ static void window_track_list_scrollmousedown()
 static void window_track_list_scrollmouseover()
 {
 	rct_window *w;
-	short i, x, y;
+	short i, x, y, scrollIndex;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	if (w->track_list.var_484 & 1)
 		return;

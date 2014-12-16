@@ -272,8 +272,8 @@ typedef enum {
 	WE_UNKNOWN_14 = 20,
 	WE_UNKNOWN_15 = 21, // scroll mouse move?
 	WE_TOOLTIP = 22,
-	WE_UNKNOWN_17 = 23, // tooltip related
-	WE_UNKNOWN_18 = 24,
+	WE_CURSOR = 23,
+	WE_MOVED = 24,
 	WE_INVALIDATE = 25,
 	WE_PAINT = 26,
 	WE_SCROLL_PAINT = 27,
@@ -302,6 +302,8 @@ typedef enum {
 	WF_10 = (1 << 10),
 	WF_WHITE_BORDER_ONE = (1 << 12),
 	WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
+
+	WF_NO_SNAPPING = (1 << 15)
 } WINDOW_FLAGS;
 
 enum SCROLL_FLAGS {
@@ -386,6 +388,7 @@ enum {
 	WC_MAP_TOOLTIP = 41,
 	WC_EDITOR_OBJECT_SELECTION = 42,
 	WC_EDITOR_INVENTION_LIST = 43,
+	WC_EDITOR_INVENTION_LIST_DRAG = 44,
 	WC_EDITOR_SCENARIO_OPTIONS = 45,
 	WC_EDTIOR_OBJECTIVE_OPTIONS = 46,
 	WC_47,
@@ -575,7 +578,12 @@ int window_can_resize(rct_window *w);
 		__asm mov w, esi																\
 		__asm mov text, edi
 
-	#define window_scrollmouse_get_registers(w, x, y)									\
+	#define window_scroll_get_registers(w, i)											\
+		__asm mov i, ax																	\
+		__asm mov w, esi
+
+	#define window_scrollmouse_get_registers(w, i, x, y)								\
+		__asm mov i, ax																	\
 		__asm mov x, cx																	\
 		__asm mov y, dx																	\
 		__asm mov w, esi
@@ -596,9 +604,24 @@ int window_can_resize(rct_window *w);
 		__asm mov w, esi																\
 		__asm mov dpi, edi
 
+	#define window_scrollpaint_get_registers(w, dpi, i)									\
+		__asm mov i, ax																	\
+		__asm mov w, esi																\
+		__asm mov dpi, edi
+
 	#define window_scrollsize_set_registers(width, height)								\
 		__asm mov ecx, width															\
 		__asm mov edx, height
+
+	#define window_cursor_get_registers(w, widgetIndex, x, y)							\
+		__asm mov widgetIndex, ax														\
+		__asm mov x, cx																	\
+		__asm mov y, dx																	\
+		__asm mov w, esi
+
+	#define window_cursor_set_registers(cursorId)										\
+		__asm mov ebx, cursorId
+
 #else
 	#define window_get_register(w)														\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
@@ -618,7 +641,12 @@ int window_can_resize(rct_window *w);
 		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
 		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
 
-	#define window_scrollmouse_get_registers(w, x, y)									\
+	#define window_scroll_get_registers(w, i)											\
+		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
+
+	#define window_scrollmouse_get_registers(w, i, x, y)								\
+		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
 		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );									\
 		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );									\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
@@ -639,9 +667,23 @@ int window_can_resize(rct_window *w);
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
 		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
 
+	#define window_scrollpaint_get_registers(w, dpi, i)									\
+		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
+		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
+
 	#define window_scrollsize_set_registers(width, height)								\
 		__asm__ ( "mov ecx, %[width] " : [width] "+m" (width) );						\
 		__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
+
+	#define window_cursor_get_registers(w, widgetIndex, x, y)							\
+		__asm__ ( "mov %["#widgetIndex"], ax " : [widgetIndex] "+m" (widgetIndex) );	\
+		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );									\
+		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );									\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
+
+	#define window_cursor_set_registers(cursorId)										\
+		__asm__ ( "mov ebx, %[cursorId] " : [cursorId] "+m" (cursorId) );
 #endif
 
 #endif

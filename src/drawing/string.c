@@ -773,8 +773,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	int max_y = y;
 
 	// 
-	uint16* current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	uint16 *current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	sint16 *current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
 
 	uint8* palette_pointer = text_palette;
 
@@ -802,10 +802,10 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			*current_font_flags = 0;
 			if (*current_font_sprite_base < 0) {
 				*current_font_flags |= 4;
-				if (*current_font_sprite_base != 0xFFFF) {
+				if (*current_font_sprite_base != -1) {
 					*current_font_flags |= 8;
 				}
-				*current_font_sprite_base = 0xE0;
+				*current_font_sprite_base = 224;
 			}
 			if (colour & (1 << 5)) {
 				*current_font_flags |= 2;
@@ -917,11 +917,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			break;
 		case FORMAT_NEWLINE://Start New Line at set y lower
 			max_x = x;
-			if (*current_font_sprite_base <= 0xE0) {
+			if (*current_font_sprite_base <= 224) {
 				max_y += 10;
 				break;
 			}
-			else if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 448) {
 				max_y += 6;
 				break;
 			}
@@ -929,24 +929,24 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			break;
 		case FORMAT_NEWLINE_SMALLER://Start New Line at set y lower
 			max_x = x;
-			if (*current_font_sprite_base <= 0xE0) {
+			if (*current_font_sprite_base <= 224) {
 				max_y += 5;
 				break;
 			}
-			else if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 448) {
 				max_y += 3;
 				break;
 			}
 			max_y += 9;
 			break;
 		case FORMAT_TINYFONT:
-			*current_font_sprite_base = 0x1C0;
+			*current_font_sprite_base = 448;
 			break;
 		case FORMAT_BIGFONT:
-			*current_font_sprite_base = 0x2A0;
+			*current_font_sprite_base = 672;
 			break;
 		case FORMAT_MEDIUMFONT:
-			*current_font_sprite_base = 0xE0;
+			*current_font_sprite_base = 224;
 			break;
 		case FORMAT_SMALLFONT:
 			*current_font_sprite_base = 0;

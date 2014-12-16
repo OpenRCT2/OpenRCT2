@@ -21,6 +21,8 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
+#include "interface/window.h"
+
 enum {
 	INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
@@ -49,5 +51,7 @@ void game_handle_input();
 void game_handle_keyboard_input();
 
 void store_mouse_input(int state);
+
+void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y);
 
 #endif

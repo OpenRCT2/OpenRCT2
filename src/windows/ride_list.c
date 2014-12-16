@@ -341,10 +341,10 @@ static void window_ride_list_scrollgetsize()
 static void window_ride_list_scrollmousedown()
 {
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -361,10 +361,10 @@ static void window_ride_list_scrollmousedown()
 static void window_ride_list_scrollmouseover()
 {
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)

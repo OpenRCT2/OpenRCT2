@@ -652,11 +652,11 @@ static void window_new_ride_scrollgetsize()
  */
 static void window_new_ride_scrollmousedown()
 {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	ride_list_item item;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
 		return;
@@ -679,11 +679,11 @@ static void window_new_ride_scrollmousedown()
  */
 static void window_new_ride_scrollmouseover()
 {
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	ride_list_item item;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	if (w->new_ride.selected_ride_id != -1)
 		return;

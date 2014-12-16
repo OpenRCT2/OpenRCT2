@@ -1157,10 +1157,10 @@ static void window_editor_objective_options_rides_scrollmousedown()
 {
 	rct_ride *ride;
 	rct_window *w;
-	short x, y;
+	short x, y, scrollIndex;
 	int i;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 12;
 	if (i < 0 || i >= w->no_list_items)
@@ -1178,10 +1178,10 @@ static void window_editor_objective_options_rides_scrollmousedown()
 static void window_editor_objective_options_rides_scrollmouseover()
 {
 	rct_window *w;
-	short x, y;
+	short x, y, scrollIndex;
 	int i;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 12;
 	if (i < 0 || i >= w->no_list_items)
