@@ -298,8 +298,8 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 //
 //}
 
-void sub_6E7F34(rct_window* w, rct_viewport* viewport){
-	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+void sub_6E7F34(sint16 previous_x, sint16 previous_y, rct_window* w, rct_viewport* viewport){
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
@@ -331,7 +331,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	}
 
 	w = orignal_w;
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, (int)viewport, (int)w, bottom);
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
 }
 
 /* There is a bug in this. */
@@ -400,8 +400,8 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	//sub_6E7F34(w, viewport);
-	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+	sub_6E7F34(previous_x, previous_y, w, viewport);
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
@@ -430,8 +430,8 @@ void viewport_update_position(rct_window *window)
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		//sub_6E7DE1(center_x, center_y, window, viewport);
-		RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
+		sub_6E7DE1(center_x, center_y, window, viewport);
+		//RCT2_CALLPROC_X(0x6E7DE1, center_x, center_y, 0, 0, (int)window, (int)viewport, 0);
 		return;
 	}
 
@@ -523,8 +523,8 @@ void viewport_update_position(rct_window *window)
 		y += viewport->view_y;
 	}
 
-	//sub_6E7DE1(x, y, window, viewport);
-	RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
+	sub_6E7DE1(x, y, window, viewport);
+	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 }
 
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
