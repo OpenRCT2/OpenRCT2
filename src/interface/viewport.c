@@ -304,7 +304,7 @@ void sub_6E7F34(sint16 previous_x, sint16 previous_y, rct_window* w, rct_viewpor
 	int left = 0, right = 0, top = 0, bottom = 0;
 
 	for (; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
-		if (!w->flags&WF_TRANSPARENT) continue;
+		if (!(w->flags & WF_TRANSPARENT)) continue;
 		if (w->viewport == viewport) continue;
 
 		if (viewport->x + viewport->width <= w->x)continue;
