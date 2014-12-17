@@ -453,7 +453,7 @@ static void window_track_place_close()
 {
 	window_track_place_clear_provisional();
 	viewport_set_visibility(0);
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~6;
 	hide_gridlines();
 	free(_window_track_place_mini_preview);
@@ -520,7 +520,7 @@ static void window_track_place_toolupdate()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
 
 	// Get the tool map position
@@ -583,7 +583,7 @@ static void window_track_place_tooldown()
 	window_tool_get_registers(w, widgetIndex, x, y);
 
 	window_track_place_clear_provisional();
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
 
 	sub_68A15E(x, y, &x, &y);

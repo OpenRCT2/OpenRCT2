@@ -646,7 +646,7 @@ void window_cheats_misc_tool_update(){
 
 	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
 
-	RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
+	map_invalidate_selection_rect();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 	int temp_y = y + 16;
@@ -660,7 +660,7 @@ void window_cheats_misc_tool_update(){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
-		RCT2_CALLPROC_X(0x0068AAE1, eax, temp_y, 0, 0, (int)w, 0, 0);
+		map_invalidate_selection_rect();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;

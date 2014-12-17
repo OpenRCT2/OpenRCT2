@@ -80,8 +80,8 @@ void footpath_provisional_remove()
  */
 void sub_6A7831()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 0)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~(1 << 0);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~(1 << 2);
 		map_invalidate_tile_full(
@@ -90,4 +90,20 @@ void sub_6A7831()
 		);
 	}
 	footpath_provisional_remove();
+}
+
+/**
+ * 
+ *  rct2: 0x0068A0C9
+ */
+void sub_68A0C9(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = screenX;
+	ebx = screenY;
+	RCT2_CALLFUNC_X(0x0068A0C9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	if (x != NULL) *x = *((uint16*)&eax);
+	if (y != NULL) *y = *((uint16*)&ebx);
+	if (direction != NULL) *direction = *((uint8*)&ecx);
+	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
 }

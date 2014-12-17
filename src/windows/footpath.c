@@ -33,8 +33,8 @@
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
-	PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL,
-	PATH_CONSTRUCTION_MODE_2
+	PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL,
+	PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
 };
 
 enum {
@@ -146,12 +146,16 @@ static void* window_footpath_events[] = {
 };
 
 money32 _window_footpath_cost;
+sint8 _window_footpath_provisional_path_arrow_timer;
 
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 static void window_footpath_set_provisional_path_at_point(int x, int y);
 static void window_footpath_place_path_at_point(int x, int y);
+static void window_footpath_start_bridge_at_point(int screenX, int screenY);
 static void window_footpath_construct();
 static void window_footpath_remove();
+static void window_footpath_set_enabled_and_pressed_widgets();
+static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope);
 
 /**
  * 
@@ -204,7 +208,7 @@ void window_footpath_open()
 	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 	RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006A855C);
+	window_footpath_set_enabled_and_pressed_widgets();
 }
 
 /**
@@ -219,7 +223,7 @@ static void window_footpath_close()
 
 	sub_6A7831();
 	viewport_set_visibility(0);
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 	hide_gridlines();
@@ -253,28 +257,28 @@ static void window_footpath_mouseup()
 		_window_footpath_cost = MONEY32_UNDEFINED;
 		tool_cancel();
 		sub_6A7831();
-		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+		map_invalidate_map_selection_tiles();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
 		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
-		RCT2_CALLPROC_EBPSAFE(0x006A855C);
+		window_footpath_set_enabled_and_pressed_widgets();
 		break;
 	case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
 			break;
 
 		_window_footpath_cost = MONEY32_UNDEFINED;
 		tool_cancel();
 		sub_6A7831();
-		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+		map_invalidate_map_selection_tiles();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
-		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
 		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
-		RCT2_CALLPROC_EBPSAFE(0x006A855C);
+		window_footpath_set_enabled_and_pressed_widgets();
 		break;
 	}
 }
@@ -399,11 +403,10 @@ static void window_footpath_tooldown()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
 		window_footpath_place_path_at_point(x, y);
-	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
-		RCT2_CALLPROC_X(0x006A840F, x, y, 0, 0, (int)w, 0, 0);
-	}
+	else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+		window_footpath_start_bridge_at_point(x, y);
 }
 
 /**
@@ -442,14 +445,47 @@ static void window_footpath_toolup()
 
 /**
  * 
+ *  rct2: 0x006A7760
+ */
+static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *w)
+{
+	int type, x, y, z, slope;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+		return;
+
+	// Update provisional bridge mode path
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1))) {
+		footpath_get_next_path_info(&type, &x, &y, &z, &slope);
+		_window_footpath_cost = footpath_provisional_set(type, x, y, z, slope);
+		widget_invalidate(w, WIDX_CONSTRUCT);
+	}
+
+	// Update little directional arrow on provisional bridge mode path
+	if (--_window_footpath_provisional_path_arrow_timer < 0) {
+		_window_footpath_provisional_path_arrow_timer = 5;
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+		footpath_get_next_path_info(&type, &x, &y, &z, &slope);
+		RCT2_GLOBAL(0x009DEA48, uint16) = x;
+		RCT2_GLOBAL(0x009DEA4A, uint16) = y;
+		RCT2_GLOBAL(0x009DEA4C, uint16) = z * 8;
+		RCT2_GLOBAL(0x009DEA4E, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 2);
+		else
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
+		map_invalidate_tile_full(x, y);
+	}
+}
+
+/**
+ * 
  *  rct2: 0x006A84BB
  */
 static void window_footpath_update(rct_window *w)
 {
-	// Invalidate construct button
 	widget_invalidate(w, WIDX_CONSTRUCT);
-
-	RCT2_CALLPROC_EBPSAFE(0x006A7760);
+	window_footpath_update_provisional_path_for_bridge_mode(w);
 
 	// Check tool
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
@@ -459,7 +495,7 @@ static void window_footpath_update(rct_window *w)
 			window_close(w);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
 			window_close(w);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
@@ -489,7 +525,9 @@ static void window_footpath_invalidate()
 		(1 << WIDX_QUEUELINE_TYPE);
 
 	// Enable / disable construct button
-	window_footpath_widgets[WIDX_CONSTRUCT].type = RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND ? WWT_EMPTY : WWT_IMGBTN;
+	window_footpath_widgets[WIDX_CONSTRUCT].type =
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL ?
+			WWT_IMGBTN : WWT_EMPTY;
 
 	// Set footpath and queue type button images
 	selectedPath = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16);
@@ -523,9 +561,9 @@ static void window_footpath_paint()
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
 		// Get construction image
 		image = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) % 4;
-		if (RCT2_GLOBAL(0x00F3EF91, uint8) == 2)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 2)
 			image += 4;
-		else if (RCT2_GLOBAL(0x00F3EF91, uint8) == 6)
+		else if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 6)
 			image += 8;
 		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
 
@@ -604,21 +642,21 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	int z, slope, pathType;
 	rct_map_element *mapElement;
 
-	RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+	map_invalidate_selection_rect();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
 
 	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement);
 
 	if (z == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 		sub_6A7831();
 	} else {
 		// Check for change
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & 2) && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) == x && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) == y && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) == mapElement->base_height)
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1)) && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) == x && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) == y && RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) == mapElement->base_height)
 			return;
 
 		// Set map selection
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
@@ -637,8 +675,6 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		window_invalidate_by_class(WC_FOOTPATH);
 	}
 }
-
-
 
 /**
  * 
@@ -681,6 +717,51 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 /**
  * 
+ *  rct2: 0x006A840F
+ */
+static void window_footpath_start_bridge_at_point(int screenX, int screenY)
+{
+	int x, y, z, direction;
+	rct_map_element *mapElement;
+
+	sub_68A0C9(screenX, screenY, &x, &y, &direction, &mapElement);
+	if (x == 0x8000)
+		return;
+
+	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE) {
+		// ?
+		uint8 dl = ((mapElement->properties.surface.slope & 0x0F) << direction) & 0xFF;
+		uint8 dh = dl;
+		dl = (dl >> 4) & 0x0F;
+		dh = (dh & 0x0F) | dl;
+		z = mapElement->base_height;
+		if ((dh & 0x0C) == 0x0C)
+			z += 2;
+	} else {
+		z = mapElement->base_height;
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
+			if (mapElement->properties.path.type & 4) {
+				if (direction == (mapElement->properties.path.type & 3))
+					z += 2;
+			}
+		}
+	}
+		
+	tool_cancel();
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) = z * 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = direction;
+	RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) = 0;
+	_window_footpath_provisional_path_arrow_timer = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8) = 255;
+	window_footpath_set_enabled_and_pressed_widgets();
+}
+
+/**
+ * 
  *  rct2: 0x006A79B7
  */
 static void window_footpath_construct()
@@ -690,56 +771,21 @@ static void window_footpath_construct()
 
 /**
  * 
- *  rct2: 0x006A7863
+ *  rct2: 0x006A78EF
  */
-static void window_footpath_remove()
+static rct_map_element *footpath_remove_map_element(rct_map_element *mapElement)
 {
-	int x, y, lastTile;
-	rct_map_element *mapElement;
+	int x, y, z;
 
-	// RCT2_CALLPROC_EBPSAFE(0x006A7863);
-
-	_window_footpath_cost = MONEY32_UNDEFINED;
-	sub_6A7831();
-
-	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) / 32;
-	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) / 32;
-	int dl = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) >> 3) & 0xFF;
-	int dh = dl - 2;
-
-	if (x >= 256 || y >= 256)
-		goto loc_6A79B0;
-
-	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
-	do {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
-			if (mapElement->base_height == dl) {
-				if (mapElement->properties.path.type & 4)
-					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
-						continue;
-				goto loc_6A78EF;
-			} else if (mapElement->base_height == dh) {
-				if (!(mapElement->properties.path.type & 4))
-					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
-						continue;
-				goto loc_6A78EF;
-			}
-		}
-		lastTile = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
-		mapElement++;
-	} while (!lastTile);
-	goto loc_6A79B0;
-
-loc_6A78EF:
-	dl = mapElement->base_height;
+	z = mapElement->base_height;
 	int pathType = mapElement->properties.path.type;
 	if (pathType & 4) {
 		pathType &= 3;
 		pathType ^= 2;
 		if (pathType == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
-			dl += 2;
+			z += 2;
 	}
-	
+
 	// Find a connected edge
 	int edge = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) ^ 2;
 	if (!(mapElement->properties.path.edges & (1 << edge))) {
@@ -753,7 +799,7 @@ loc_6A78EF:
 			}
 		}
 	}
-	
+
 	// Remove path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
 	footpath_remove(
@@ -765,14 +811,166 @@ loc_6A78EF:
 
 	// Move selection
 	edge ^= 2;
-	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) - RCT2_GLOBAL(0x00993CCC + (edge * 4), sint16);
-	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) - RCT2_GLOBAL(0x00993CCE + (edge * 4), sint16);
+	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) - TileDirectionDelta[edge].x;
+	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) - TileDirectionDelta[edge].y;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) = dl << 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) = z << 3;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = edge;
-	RCT2_GLOBAL(0x00F3EF9E, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8) = 255;
+}
 
-loc_6A79B0:
-	RCT2_CALLPROC_EBPSAFE(0x006A855C);
+/**
+ * 
+ *  rct2: 0x006A7873
+ */
+static rct_map_element *footpath_get_map_element_to_remove()
+{
+	rct_map_element *mapElement;
+	int x, y, z, zLow;
+
+	x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) / 32;
+	y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) / 32;
+	if (x >= 256 || y >= 256)
+		return NULL;
+
+	z = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) >> 3) & 0xFF;
+	zLow = z - 2;
+
+	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
+	do {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
+			if (mapElement->base_height == z) {
+				if (mapElement->properties.path.type & 4)
+					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
+						continue;
+
+				return mapElement;
+			} else if (mapElement->base_height == zLow) {
+				if (!(mapElement->properties.path.type & 4))
+					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
+						continue;
+				
+				return mapElement;
+			}
+		}
+	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+
+	return NULL;
+}
+
+/**
+ * 
+ *  rct2: 0x006A7863
+ */
+static void window_footpath_remove()
+{
+	rct_map_element *mapElement;
+
+	_window_footpath_cost = MONEY32_UNDEFINED;
+	sub_6A7831();
+
+	mapElement = footpath_get_map_element_to_remove();
+	if (mapElement != NULL)
+		footpath_remove_map_element(mapElement);
+
+	window_footpath_set_enabled_and_pressed_widgets();
+}
+
+/**
+ * 
+ *  rct2: 0x006A855C
+ */
+static void window_footpath_set_enabled_and_pressed_widgets()
+{
+	rct_window *w;
+	uint64 pressedWidgets, disabledWidgets;
+	int currentRotation, direction, slope;
+
+	w = window_find_by_class(WC_FOOTPATH);
+	if (w == NULL)
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+		map_invalidate_map_selection_tiles();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1) | (1 << 3);
+
+		direction = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+		gMapSelectionTiles[0].x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) + TileDirectionDelta[direction].x;
+		gMapSelectionTiles[0].y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) + TileDirectionDelta[direction].y;
+		gMapSelectionTiles[1].x = -1;
+		map_invalidate_map_selection_tiles();
+	}
+
+	pressedWidgets = w->pressed_widgets & 0xFFFF887F;
+	disabledWidgets = 0;
+	currentRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+		// Set pressed directional widget
+		direction = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + currentRotation) & 3;
+		pressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
+
+		// Set pressed slope widget
+		slope = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8);
+		if (slope == 6)
+			pressedWidgets |= (1 << WIDX_SLOPEDOWN);
+		else if (slope == 0)
+			pressedWidgets |= (1 << WIDX_LEVEL);
+		else
+			pressedWidgets |= (1 << WIDX_SLOPEUP);
+
+		// Enable / disable directional widgets
+		direction = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8);
+		if (direction != 255) {
+			disabledWidgets |=
+				(1 << WIDX_DIRECTION_NW) |
+				(1 << WIDX_DIRECTION_NE) |
+				(1 << WIDX_DIRECTION_SW) |
+				(1 << WIDX_DIRECTION_SE);
+
+			direction = (direction + currentRotation) & 3;
+			disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
+		}
+	} else {
+		// Disable all bridge mode widgets
+		disabledWidgets |=
+			(1 << WIDX_DIRECTION_GROUP) |
+			(1 << WIDX_DIRECTION_NW) |
+			(1 << WIDX_DIRECTION_NE) |
+			(1 << WIDX_DIRECTION_SW) |
+			(1 << WIDX_DIRECTION_SE) |
+			(1 << WIDX_SLOPE_GROUP) |
+			(1 << WIDX_SLOPEDOWN) |
+			(1 << WIDX_LEVEL) |
+			(1 << WIDX_SLOPEUP) |
+			(1 << WIDX_CONSTRUCT) |
+			(1 << WIDX_REMOVE);
+	}
+
+	w->pressed_widgets = pressedWidgets;
+	w->disabled_widgets = disabledWidgets;
+	window_invalidate(w);
+}
+
+/**
+ * 
+ *  rct2: 0x006A7B20
+ */
+static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope)
+{
+	int direction;
+
+	direction = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+	*x = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) + TileDirectionDelta[direction].x;
+	*y = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) + TileDirectionDelta[direction].y;
+	*z = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) / 8;
+	*type = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
+	*slope = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) != 0) {
+		*slope = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) | 4;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) != 2) {
+			*z -= 2;
+			*slope ^= 2;
+		}
+	}
 }

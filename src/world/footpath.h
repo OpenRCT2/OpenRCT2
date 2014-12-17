@@ -24,6 +24,10 @@
 #include "../common.h"
 #include "../interface/viewport.h"
 
+enum {
+	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0)
+};
+
 typedef struct {
 	uint16 pad_00;
 	uint32 image;		// 0x02
@@ -37,5 +41,6 @@ void footpath_remove(int x, int y, int z, int flags);
 money32 footpath_provisional_set(int type, int x, int y, int z, int slope);
 void footpath_provisional_remove();
 void sub_6A7831();
+void sub_68A0C9(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
 
 #endif

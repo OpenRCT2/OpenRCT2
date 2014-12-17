@@ -197,7 +197,7 @@ void window_construction_close(){
 	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
 	viewport_set_visibility(0);
 
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(0x9DE58A, uint16) &= 0xFFFD;
 
 	hide_gridlines();
@@ -228,7 +228,7 @@ void window_construction_maze_close(){
 	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
 	viewport_set_visibility(0);
 
-	RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(0x9DE58A, uint16) &= 0xFFFD;
 
 	hide_gridlines();

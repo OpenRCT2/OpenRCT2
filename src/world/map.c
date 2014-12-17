@@ -26,6 +26,19 @@
 #include "park.h"
 #include "scenery.h"
 
+const rct_xy16 TileDirectionDelta[] = {
+	{ -32,   0 },
+	{   0, +32 },
+	{ +32,   0 },
+	{   0, -32 },
+	{ -32, +32 },
+	{ +32, +32 },
+	{ +32, -32 },
+	{ -32, -32 }
+};
+
+rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
+
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
 
@@ -764,4 +777,40 @@ void map_remove_all_rides()
 			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
 		}
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0068AB1B
+ */
+void map_invalidate_map_selection_tiles()
+{
+	rct_xy16 *position;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 1)))
+		return;
+
+	for (position = gMapSelectionTiles; position->x != -1; position++)
+		map_invalidate_tile_full(position->x, position->y);
+}
+
+/**
+ *
+ *  rct2: 0x0068AAE1
+ */
+void map_invalidate_selection_rect()
+{
+	int x, y, x0, y0, x1, y1;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
+		return;
+
+	x0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
+	y0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	x1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
+	y1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
+
+	for (x = x0; x <= x1; x++)
+		for (y = y0; y <= y1; y++)
+			map_invalidate_tile_full(x, y);
 }

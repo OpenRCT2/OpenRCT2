@@ -1534,9 +1534,8 @@ void tool_cancel()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_TOOL_ACTIVE;
 
-		// 
-		RCT2_CALLPROC_EBPSAFE(0x0068AAE1);
-		RCT2_CALLPROC_EBPSAFE(0x0068AB1B);
+		map_invalidate_selection_rect();
+		map_invalidate_map_selection_tiles();
 
 		// Reset map selection
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
