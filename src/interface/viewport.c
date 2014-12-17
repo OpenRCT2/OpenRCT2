@@ -298,7 +298,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 //
 //}
 
-void sub_6E7F34(sint16 previous_x, sint16 previous_y, rct_window* w, rct_viewport* viewport){
+void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
@@ -318,11 +318,11 @@ void sub_6E7F34(sint16 previous_x, sint16 previous_y, rct_window* w, rct_viewpor
 		top = w->y;
 		bottom = w->y + w->height;
 
-		if (left >= viewport->x)left = viewport->x;
-		if (right >= viewport->x + viewport->width) right = viewport->x + viewport->width;
+		if (left < viewport->x)left = viewport->x;
+		if (right > viewport->x + viewport->width) right = viewport->x + viewport->width;
 
-		if (top >= viewport->y)top = viewport->y;
-		if (bottom >= viewport->y + viewport->height) bottom = viewport->y + viewport->height;
+		if (top < viewport->y)top = viewport->y;
+		if (bottom > viewport->y + viewport->height) bottom = viewport->y + viewport->height;
 
 		if (left >= right) continue;
 		if (top >= bottom) continue;
@@ -331,7 +331,7 @@ void sub_6E7F34(sint16 previous_x, sint16 previous_y, rct_window* w, rct_viewpor
 	}
 
 	w = orignal_w;
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, (int)viewport, (int)w, bottom);
 }
 
 /* There is a bug in this. */
@@ -346,7 +346,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	viewport->view_x = x;
 	viewport->view_y = y;
 
-	if (((x / zoom) == previous_x) && ((y / zoom) == previous_y)) return;
+	if (((x / zoom) == previous_x) && ((y / zoom) == previous_y))return;
 
 	if (w->flags & WF_7){
 		int left = max(viewport->x, 0);
@@ -400,8 +400,8 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	sub_6E7F34(previous_x, previous_y, w, viewport);
-	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
+	sub_6E7F34(w, viewport);
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
