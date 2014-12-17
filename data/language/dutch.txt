@@ -2748,8 +2748,8 @@ STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
 STR_2749    :???
-STR_2750    :???
-STR_2751    :???
+STR_2750    :Verplaats alle items naar boven
+STR_2751    :Verplaats alle items naar beneden
 STR_2752    :Onkruid weg
 STR_2753    :Gras maaien
 STR_2754    :Bloemen water geven
