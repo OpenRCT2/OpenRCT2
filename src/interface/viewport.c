@@ -334,7 +334,6 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, x_diff, (int)viewport, (int)w, y_diff);
 }
 
-/* There is a bug in this. */
 void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, w, viewport, 0);
 	//return;
