@@ -298,8 +298,8 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 //
 //}
 
-void sub_6E7F34(rct_window* w, rct_viewport* viewport){
-	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, previous_x, (int)viewport, (int)w, previous_y);
+void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff){
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, x_diff, (int)viewport, (int)w, y_diff);
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
@@ -331,7 +331,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport){
 	}
 
 	w = orignal_w;
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, right, (int)viewport, (int)w, bottom);
+	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, x_diff, (int)viewport, (int)w, y_diff);
 }
 
 /* There is a bug in this. */
@@ -340,13 +340,14 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	//return;
 	uint8 zoom = (1 << viewport->zoom);
 
-	sint16 previous_x = viewport->view_x / zoom;
-	sint16 previous_y = viewport->view_y / zoom;
+	sint16 x_diff = (viewport->view_x - x) / zoom;
+	sint16 y_diff = (viewport->view_y - y) / zoom;
 
 	viewport->view_x = x;
 	viewport->view_y = y;
 
-	if (((x / zoom) == previous_x) && ((y / zoom) == previous_y))return;
+	// If no change in viewing area
+	if ((!x_diff) && (!y_diff))return;
 
 	if (w->flags & WF_7){
 		int left = max(viewport->x, 0);
@@ -400,8 +401,8 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	sub_6E7F34(w, viewport);
-	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, 0, (int)viewport, (int)w, 0);
+	sub_6E7F34(w, viewport, x_diff, y_diff);
+	//RCT2_CALLPROC_X(0x6E7F34, 0, 0, 0, x_diff, (int)viewport, (int)w, y_diff);
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
