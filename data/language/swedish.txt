@@ -576,7 +576,7 @@ STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana tranporterar folk runt om i parken
+STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana transporterar folk runt om i parken
 STR_0576    :
 STR_0577    :
 STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsbackar och skruvar
