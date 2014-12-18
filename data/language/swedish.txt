@@ -2775,7 +2775,7 @@ STR_2767    :Frys Klimat
 STR_2768    :Avfrys klimat
 STR_2769    :Öppna Park
 STR_2770    :Stäng Park
-STR_2771    :Långsammare Spekhastighet
+STR_2771    :Långsammare Spelhastighet
 STR_2772    :Snabbare Spelhastighet
 STR_2773    :Fönster
 STR_2774    :Fullskärm
