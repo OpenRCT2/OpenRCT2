@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Vagnen acceleras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
+STR_0554    :Vagnen accelereras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
 STR_0555    :
 STR_0556    :
 STR_0557    :
