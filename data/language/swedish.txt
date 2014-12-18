@@ -1181,7 +1181,7 @@ STR_1175    :Kan inte bygga på en sluttande gångväg
 STR_1176    :Kan inte bygga gångväg här...
 STR_1177    :Kan inte ta bort gångvägen här...
 STR_1178    :Markens sluttning är inte lämplig
-STR_1179    :Gånvägen är i vägen
+STR_1179    :Gångvägen är i vägen
 STR_1180    :Kan inte bygga det här under vatten!
 STR_1181    :Gångvägar
 STR_1182    :Sort
