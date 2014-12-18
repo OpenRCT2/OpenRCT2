@@ -36,6 +36,8 @@ typedef struct {
 	uint8 flags;		// 0x0B
 } rct_path_type;
 
+void game_command_place_footpath(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_remove_footpath(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 money32 footpath_place(int type, int x, int y, int z, int slope, int flags);
 void footpath_remove(int x, int y, int z, int flags);
 money32 footpath_provisional_set(int type, int x, int y, int z, int slope);

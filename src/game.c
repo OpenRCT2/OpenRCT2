@@ -875,9 +875,9 @@ static uint32 game_do_command_table[58] = {
 	0x006E0E01,
 	0x006E08F4,
 	0x006E650F,
-	0x006A61DE,
+	0,
 	0x006A68AE,
-	0x006A67C0,
+	0,
 	0, // use new_game_command_table, original: 0x00663CCD, // 20
 	0x006B53E9,
 	0x00698D6C, // text input
@@ -938,9 +938,9 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_place_footpath,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_remove_footpath,
 	game_command_change_surface_style, // 20
 	game_command_emptysub,
 	game_command_emptysub,
