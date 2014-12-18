@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Vagnen acceleras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
+STR_0554    :Vagnen accelereras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
 STR_0555    :
 STR_0556    :
 STR_0557    :
@@ -576,7 +576,7 @@ STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana tranporterar folk runt om i parken
+STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana transporterar folk runt om i parken
 STR_0576    :
 STR_0577    :
 STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsbackar och skruvar
@@ -1181,7 +1181,7 @@ STR_1175    :Kan inte bygga på en sluttande gångväg
 STR_1176    :Kan inte bygga gångväg här...
 STR_1177    :Kan inte ta bort gångvägen här...
 STR_1178    :Markens sluttning är inte lämplig
-STR_1179    :Gånvägen är i vägen
+STR_1179    :Gångvägen är i vägen
 STR_1180    :Kan inte bygga det här under vatten!
 STR_1181    :Gångvägar
 STR_1182    :Sort
@@ -2775,7 +2775,7 @@ STR_2767    :Frys Klimat
 STR_2768    :Avfrys klimat
 STR_2769    :Öppna Park
 STR_2770    :Stäng Park
-STR_2771    :Långsammare Spekhastighet
+STR_2771    :Långsammare Spelhastighet
 STR_2772    :Snabbare Spelhastighet
 STR_2773    :Fönster
 STR_2774    :Fullskärm
