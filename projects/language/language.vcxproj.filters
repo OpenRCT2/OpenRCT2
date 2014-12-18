@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Language">
+      <UniqueIdentifier>{96ec0470-f3e0-443e-8715-171ad8676bb6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\data\language\dutch.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\english_uk.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\english_us.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\german.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\french.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\hungarian.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\polish.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\spanish_sp.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+    <Text Include="..\..\data\language\swedish.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
