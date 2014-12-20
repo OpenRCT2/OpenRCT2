@@ -5,26 +5,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Libraries">
-      <UniqueIdentifier>{29bd2abb-0a50-4c58-9031-bee3f966b249}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\lodepng">
-      <UniqueIdentifier>{e9219aff-1bb5-4065-8204-427a97344a43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\libspeex">
-      <UniqueIdentifier>{3c824fc4-8242-4127-a4b4-248435ff9058}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{4c8348c7-dfe9-4368-9d87-29733fe5950a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{8e15cd5b-d7a7-4bda-a58a-e1158ad6ffb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Data">
-      <UniqueIdentifier>{ee2e3a6f-1209-407b-8000-a6a4b88d28d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Data\Language">
-      <UniqueIdentifier>{b344ca0f-b412-4924-be08-54bb6f83c3dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Drawing">
       <UniqueIdentifier>{8a9b8831-4ba9-4104-b13f-949981e10c22}</UniqueIdentifier>
@@ -53,49 +38,14 @@
     <Filter Include="Source\Windows">
       <UniqueIdentifier>{81716f5d-b396-4a82-a450-76fee56d982b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\libspeex\speex">
-      <UniqueIdentifier>{209155b8-2f61-4e25-ab86-c8aa36357abd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Peep">
       <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\argparse">
-      <UniqueIdentifier>{7e9587b2-333f-42ca-8a56-b77070828b17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\data\language\dutch.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\english_uk.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\english_us.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\german.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\french.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\hungarian.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\polish.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\spanish_sp.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\swedish.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\management\award.c">
@@ -384,19 +334,13 @@
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\openrct2.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\argparse\argparse.c">
-      <Filter>Libraries\argparse</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
@@ -479,6 +423,7 @@
     <ClCompile Include="..\src\windows\editor_scenario_options.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -634,27 +579,6 @@
     <ClInclude Include="..\src\localisation\format_codes.h">
       <Filter>Source\Localisation</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\lodepng\lodepng.h">
-      <Filter>Libraries\lodepng</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\arch.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\config.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\os_support.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\stack_alloc.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h">
-      <Filter>Libraries\libspeex\speex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\speex\speex_types.h">
-      <Filter>Libraries\libspeex\speex</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\peep\peep.h">
       <Filter>Source\Peep</Filter>
     </ClInclude>
@@ -669,9 +593,6 @@
     </ClInclude>
     <ClInclude Include="..\src\openrct2.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\argparse\argparse.h">
-      <Filter>Libraries\argparse</Filter>
     </ClInclude>
     <ClInclude Include="..\src\world\banner.h">
       <Filter>Source\World</Filter>
