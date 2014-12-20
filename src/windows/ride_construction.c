@@ -287,7 +287,7 @@ void window_construction_mouseup(){
 		window_construction_mouseup_demolish(w);
 		break;
 	case 32:
-		RCT2_CALLPROC_X(0x6C98AA, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		RCT2_CALLPROC_X(0x6C78AA, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case 29:
 		RCT2_CALLPROC_X(0x6C7802, 0, 0, 0, widgetIndex, (int)w, 0, 0);
@@ -318,7 +318,7 @@ void window_construction_mouseup_demolish(rct_window* w){
 			ecx = RCT2_GLOBAL(0xF440AA, uint16),
 			edx = RCT2_GLOBAL(0xF440AC, uint16);
 
-		sub_6C683D(eax, ecx, edx, RCT2_GLOBAL(0xF440AE, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
+		sub_6C683D(&eax, &ecx, edx, RCT2_GLOBAL(0xF440AE, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
 	}
 
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);

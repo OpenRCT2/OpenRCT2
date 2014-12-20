@@ -702,9 +702,10 @@ static void ride_remove_peeps(int rideIndex)
 	ride->var_14D |= 4;
 }
 
-int sub_6C683D(int x, int y, int z, int direction, int type, int esi, int edi, int ebp)
+int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006C683D, x, (direction << 8) | type, y, z, esi, edi, ebp)&0x100;
+	int ebx = (direction << 8) | type;
+	return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
 }
 
 void sub_6C96C0()
@@ -716,16 +717,19 @@ void sub_6C9627()
 {
 	switch (RCT2_GLOBAL(0x00F440A6, uint8)) {
 	case 3:
+	{
+		int x = RCT2_GLOBAL(0x00F440A8, uint16), y = RCT2_GLOBAL(0x00F440AA, uint16);
 		sub_6C683D(
-			RCT2_GLOBAL(0x00F440A8, uint16),
-			RCT2_GLOBAL(0x00F440AA, uint16),
+			&x,
+			&y,
 			RCT2_GLOBAL(0x00F440AC, uint16),
 			RCT2_GLOBAL(0x00F440AE, uint8) & 3,
 			RCT2_GLOBAL(0x00F440AF, uint8),
 			0,
 			0,
 			1
-		);
+			); 
+	}
 		break;
 	case 6:
 	case 7:
@@ -893,7 +897,8 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	z = mapElement->base_height * 8;
 	direction = mapElement->type & 3;
 	type = mapElement->properties.track.type;
-	if (sub_6C683D(x, y, z, direction, type, 0, 0, 0)) return 0;
+	
+	if (sub_6C683D(&x, &y, z, direction, type, 0, 0, 0)) return 0;
 
 	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 	RCT2_GLOBAL(0x00F440A6, uint8) = 3;
