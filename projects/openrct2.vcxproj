@@ -18,33 +18,6 @@
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\dutch.txt" />
-    <Text Include="..\data\language\english_uk.txt" />
-    <Text Include="..\data\language\english_us.txt" />
-    <Text Include="..\data\language\german.txt" />
-    <Text Include="..\data\language\french.txt" />
-    <Text Include="..\data\language\hungarian.txt" />
-    <Text Include="..\data\language\polish.txt" />
-    <Text Include="..\data\language\spanish_sp.txt" />
-    <Text Include="..\data\language\swedish.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\lib\argparse\argparse.h" />
-    <ClInclude Include="..\lib\libspeex\arch.h" />
-    <ClInclude Include="..\lib\libspeex\config.h" />
-    <ClInclude Include="..\lib\libspeex\os_support.h" />
-    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h" />
-    <ClInclude Include="..\lib\libspeex\speex\speex_types.h" />
-    <ClInclude Include="..\lib\libspeex\stack_alloc.h" />
-    <ClInclude Include="..\lib\lodepng\lodepng.h" />
-    <ClCompile Include="..\lib\argparse\argparse.c">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\cmdline.c" />
@@ -229,6 +202,11 @@
     <ClInclude Include="..\src\world\scenery.h" />
     <ClInclude Include="..\src\world\sprite.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libs\libs.vcxproj">
+      <Project>{074dc930-05c6-4b7f-b5dd-dd237e6e44db}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2</RootNamespace>
@@ -262,13 +240,13 @@
     <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(SolutionDir)..\libspeex;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -277,6 +255,7 @@
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -306,9 +285,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /Y "$(ProjectDir)\..\Data\Language\*.*" "$(TargetDir)\Data\Language\"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
