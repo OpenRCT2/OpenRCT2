@@ -481,7 +481,7 @@ static rct_window *ride_create_or_find_construction_window(int rideIndex)
 		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 		w = window_construction_open(rideIndex);
 	} else {
-		RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+		sub_6C9627();
 		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 	}
 
@@ -702,9 +702,10 @@ static void ride_remove_peeps(int rideIndex)
 	ride->var_14D |= 4;
 }
 
-void sub_6C683D(int x, int y, int z, int direction, int type, int esi, int edi, int ebp)
+int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi, int ebp)
 {
-	RCT2_CALLPROC_X(0x006C683D, x, (direction << 8) | type, y, z, esi, edi, ebp);
+	int ebx = (direction << 8) | type;
+	return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
 }
 
 void sub_6C96C0()
@@ -712,20 +713,23 @@ void sub_6C96C0()
 	RCT2_CALLPROC_X(0x006C96C0, 0, 0, 0, 0, 0, 0, 0);
 }
 
-static void sub_6C9627()
+void sub_6C9627()
 {
 	switch (RCT2_GLOBAL(0x00F440A6, uint8)) {
 	case 3:
+	{
+		int x = RCT2_GLOBAL(0x00F440A8, uint16), y = RCT2_GLOBAL(0x00F440AA, uint16);
 		sub_6C683D(
-			RCT2_GLOBAL(0x00F440A8, uint16),
-			RCT2_GLOBAL(0x00F440AA, uint16),
+			&x,
+			&y,
 			RCT2_GLOBAL(0x00F440AC, uint16),
 			RCT2_GLOBAL(0x00F440AE, uint8) & 3,
 			RCT2_GLOBAL(0x00F440AF, uint8),
 			0,
 			0,
 			1
-		);
+			); 
+	}
 		break;
 	case 6:
 	case 7:
@@ -893,7 +897,8 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	z = mapElement->base_height * 8;
 	direction = mapElement->type & 3;
 	type = mapElement->properties.track.type;
-	sub_6C683D(x, y, z, direction, type, 0, 0, 0);
+	
+	if (sub_6C683D(&x, &y, z, direction, type, 0, 0, 0)) return 0;
 
 	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 	RCT2_GLOBAL(0x00F440A6, uint8) = 3;
@@ -905,7 +910,7 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
 
-	if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x8000) {
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint64)[ride->type] & 0x8000) {
 		sub_6C84CE();
 		return 1;
 	}
