@@ -35,8 +35,18 @@ void sub_6b2fa9(rct_windownumber number){
 	}
 }
 
+enum {
+	WIDX_BACKGROUND,
+	WIDX_TITLE,
+	WIDX_CLOSE,
+	WIDX_PAGE_BACKGROUND,
+
+	WIDX_DEMOLISH = 24
+};
+
 void window_construction_emptysub(){}
 void window_construction_close();
+void window_construction_mouseup();
 
 void window_construction_maze_close();
 
@@ -75,7 +85,7 @@ static void* window_construction_maze_events[] = {
 //0x993EEC
 static void* window_construction_events[] = {
 	window_construction_close,
-	(void*)0x6C6E14,
+	window_construction_mouseup,
 	(void*)0x6C7934,
 	(void*)0x6C6E6A,
 	(void*)0x6C78CD,
@@ -248,3 +258,66 @@ void window_construction_maze_close(){
 
 	window_ride_main_open(ride_id);
 }
+
+void window_construction_mouseup_demolish(rct_window* w);
+
+/* rct2: 0x006C6E14 */
+void window_construction_mouseup(){
+	short widgetIndex;
+	rct_window *w;
+
+	window_widget_get_registers(w, widgetIndex);
+
+	RCT2_CALLPROC_X(0x6C6A77, 0, 0, 0, 0, 0, 0, 0);
+
+	switch (widgetIndex){
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case 27:
+		RCT2_CALLPROC_X(0x6C9296, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case 26:
+		RCT2_CALLPROC_X(0x6C93B8, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case 23:
+		RCT2_CALLPROC_X(0x6C9F72, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case WIDX_DEMOLISH:
+		window_construction_mouseup_demolish(w);
+		break;
+	case 32:
+		RCT2_CALLPROC_X(0x6C98AA, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case 29:
+		RCT2_CALLPROC_X(0x6C7802, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	case 30:
+		RCT2_CALLPROC_X(0x6C7866, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	}
+}
+
+/* rct2: 0x006C9BA5 */
+void window_construction_mouseup_demolish(rct_window* w){
+	RCT2_CALLPROC_X(0x6C9BA5, 0, 0, 0, 0, (int)w, 0, 0);
+	return;
+
+	RCT2_GLOBAL(0xF44070, uint32) = 0x80000000;
+	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+
+	RCT2_GLOBAL(0xF440B8, uint8) = 3;
+	if (RCT2_GLOBAL(0xF440A6, uint8) == 1){
+		//6C9C4F
+	}
+
+	if (RCT2_GLOBAL(0xF440A6, uint8) != 2){
+		//6c9cc4
+		//do this
+	}
+
+	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);
+	RCT2_GLOBAL(0xF441D2, uint8) = ride_id;
+	//6c9BFE
+}
+
