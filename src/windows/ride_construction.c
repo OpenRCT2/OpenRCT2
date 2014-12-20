@@ -203,7 +203,7 @@ void window_construction_close(){
 
 	window_get_register(w);
 
-	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+	sub_6C9627();
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
@@ -234,7 +234,7 @@ void window_construction_maze_close(){
 
 	window_get_register(w);
 
-	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+	sub_6C9627();
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
@@ -304,7 +304,7 @@ void window_construction_mouseup_demolish(rct_window* w){
 	return;
 
 	RCT2_GLOBAL(0xF44070, uint32) = 0x80000000;
-	RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+	sub_6C9627();
 
 	RCT2_GLOBAL(0xF440B8, uint8) = 3;
 	if (RCT2_GLOBAL(0xF440A6, uint8) == 1){
@@ -313,7 +313,12 @@ void window_construction_mouseup_demolish(rct_window* w){
 
 	if (RCT2_GLOBAL(0xF440A6, uint8) != 2){
 		//6c9cc4
-		//do this
+		int eax = RCT2_GLOBAL(0xF440A8, uint16),
+			ebx = RCT2_GLOBAL(0xF440AF, uint8) || (RCT2_GLOBAL(0xF440AE, uint8) << 8),
+			ecx = RCT2_GLOBAL(0xF440AA, uint16),
+			edx = RCT2_GLOBAL(0xF440AC, uint16);
+
+		sub_6C683D(eax, ecx, edx, RCT2_GLOBAL(0xF440AE, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
 	}
 
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);

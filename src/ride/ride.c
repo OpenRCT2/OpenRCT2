@@ -481,7 +481,7 @@ static rct_window *ride_create_or_find_construction_window(int rideIndex)
 		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 		w = window_construction_open(rideIndex);
 	} else {
-		RCT2_CALLPROC_X(0x006C9627, 0, 0, 0, 0, 0, 0, 0);
+		sub_6C9627();
 		RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 	}
 
@@ -712,7 +712,7 @@ void sub_6C96C0()
 	RCT2_CALLPROC_X(0x006C96C0, 0, 0, 0, 0, 0, 0, 0);
 }
 
-static void sub_6C9627()
+void sub_6C9627()
 {
 	switch (RCT2_GLOBAL(0x00F440A6, uint8)) {
 	case 3:

@@ -470,10 +470,15 @@ void window_close(rct_window* window)
 	if (window == NULL)
 		return;
 
+	// Make a copy of the window class and number incase
+	// the window order is changed by the close event.
+	rct_windowclass cls = window->classification;
+	rct_windownumber number = window->number;
+
 	// Call close event of window
 	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, (int)window, 0, 0);
 
-	window = window_find_by_number(window->classification, window->number);
+	window = window_find_by_number(cls, number);
 
 	// Remove viewport
 	if (window->viewport != NULL) {
