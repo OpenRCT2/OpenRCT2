@@ -414,6 +414,11 @@ void osinterface_process_messages()
 			}
 			break;
 		case SDL_KEYDOWN:
+			if (e.key.keysym.sym == SDLK_KP_ENTER){
+				// Map Keypad enter to regular enter.
+				e.key.keysym.scancode = SDL_SCANCODE_RETURN;
+			}
+
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
 			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
