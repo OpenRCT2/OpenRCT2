@@ -59,6 +59,7 @@ static void window_text_input_paint();
 static void window_text_input_text(int key, rct_window* w);
 static void window_text_input_update(rct_window* w);
 static void window_text_input_close();
+static void window_text_input_invalidate();
 
 //0x9A3F7C
 static void* window_text_input_events[] = {
@@ -87,7 +88,7 @@ static void* window_text_input_events[] = {
 	window_text_input_emptysub,
 	window_text_input_emptysub,
 	window_text_input_emptysub,
-	window_text_input_emptysub,
+	window_text_input_invalidate,
 	window_text_input_paint,
 	window_text_input_emptysub
 };
@@ -105,22 +106,6 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 
 	window_close_by_class(WC_TEXTINPUT);
 
-	// Window will be in the center of the screen
-	rct_window* w = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - WW / 2,
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - WH / 2, 
-		WW, 
-		WH, 
-		(uint32*)window_text_input_events, 
-		WC_TEXTINPUT,
-		0
-	);
-
-	w->widgets = window_text_input_widgets;
-	w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
-
-	window_text_input_widgets[WIDX_TITLE].image = title;
-
 	// Clear the text input buffer
 	memset(text_input, 0, maxLength);
 
@@ -130,6 +115,34 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 
 	// This is the text displayed above the input box
 	input_text_description = description;
+
+	// Work out the existing size of the window
+	char wrapped_string[512];
+	strcpy(wrapped_string, text_input);
+
+	int no_lines = 0, font_height = 0;
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+
+	int height = no_lines * 10 + WH;
+
+	// Window will be in the center of the screen
+	rct_window* w = window_create(
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - WW / 2,
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - height / 2,
+		WW, 
+		height,
+		(uint32*)window_text_input_events, 
+		WC_TEXTINPUT,
+		0
+	);
+
+	w->widgets = window_text_input_widgets;
+	w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
+
+	window_text_input_widgets[WIDX_TITLE].image = title;
 
 	// Save calling window details so that the information
 	// can be passed back to the correct window & widget
@@ -189,34 +202,62 @@ static void window_text_input_paint(){
 
 	int y = w->y + 25;
 	
+	int no_lines = 0;
+	int font_height = 0;
+	
+
 	gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], 0);
 
 	y += 25;
 
-	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 12, w->colours[1], 0x60);
+	char wrapped_string[512];
+	strcpy(wrapped_string, text_input);
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+
+	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], 0x60);
 
 	y += 1;
-	gfx_draw_string(dpi, text_input, w->colours[1], w->x + 12, y);
 
-	// Make a copy of the string for measuring the width.
-	char temp_string[512] = { 0 }; 
-	memcpy(temp_string, text_input, gTextInputCursorPosition);
-	
-	int x = w->x + 13 + gfx_get_string_width(temp_string);
+	char* wrap_pointer = wrapped_string;
+	int char_count = 0;
+	uint8 cur_drawn = 0;
 
-	int width = 6;
-	if ((uint32)gTextInputCursorPosition < strlen(text_input)){
-		// Make a new 1 character wide string for measuring the width
-		// of the character that the cursor is under.
-		temp_string[1] = '\0';
-		temp_string[0] = text_input[gTextInputCursorPosition];
-		width = max(gfx_get_string_width(temp_string) - 2, 4);
-	}
+	for (int line = 0; line <= no_lines; ++line){
+		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
-	// Draw the cursor
-	y += 9;
-	if (w->frame_no > 15){
-		gfx_fill_rect(dpi, x, y, x + width, y, w->colours[1]);
+		int string_length = get_string_length(wrap_pointer);
+
+		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)){
+			// Make a copy of the string for measuring the width.
+			char temp_string[512] = { 0 };
+			memcpy(temp_string, wrap_pointer, gTextInputCursorPosition - char_count);
+			int cur_x = w->x + 13 + gfx_get_string_width(temp_string);
+
+			int width = 6;
+			if ((uint32)gTextInputCursorPosition < strlen(text_input)){
+				// Make a new 1 character wide string for measuring the width
+				// of the character that the cursor is under.
+				temp_string[1] = '\0';
+				temp_string[0] = text_input[gTextInputCursorPosition];
+				width = max(gfx_get_string_width(temp_string) - 2, 4);
+			}
+
+			if (w->frame_no > 15){
+				gfx_fill_rect(dpi, cur_x, y + 9, cur_x + width, y + 9, w->colours[1]);
+			}
+
+			cur_drawn++;
+		}
+		
+		wrap_pointer += string_length + 1;
+
+		if (text_input[char_count + string_length] == ' ')char_count++;
+		char_count += string_length;
+
+		y += 10;
 	}
 }
 
@@ -259,4 +300,36 @@ static void window_text_input_close(){
 	// Make sure that we take it out of the text input
 	// mode otherwise problems may occur.
 	osinterface_stop_text_input();
+}
+
+static void window_text_input_invalidate(){
+	rct_window* w;
+
+	window_get_register(w);
+
+	// Work out the existing size of the window
+	char wrapped_string[512];
+	strcpy(wrapped_string, text_input);
+
+	int no_lines = 0, font_height = 0;
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+
+	int height = no_lines * 10 + WH;
+
+	// Change window size if required.
+	if (height != w->height) {
+		window_invalidate(w);
+		window_set_resize(w, WW, height, WW, height);
+	}
+
+	window_text_input_widgets[WIDX_OKAY].top = height - 21;
+	window_text_input_widgets[WIDX_OKAY].bottom = height - 10;
+
+	window_text_input_widgets[WIDX_CANCEL].top = height - 21;
+	window_text_input_widgets[WIDX_CANCEL].bottom = height - 10;
+
+	window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
 }
