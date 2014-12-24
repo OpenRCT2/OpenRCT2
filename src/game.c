@@ -601,9 +601,8 @@ static void load_landscape()
  * 
  *  rct2: 0x00675E1B
  */
-int game_load_save(const char *path)
+int game_load_sv6(const char *path)
 {
-	rct_window *mainWindow;
 	FILE *file;
 	int i, j;
 
@@ -672,15 +671,31 @@ int game_load_save(const char *path)
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
-		title_load();
-		rct2_endupdate();
+
 		return 0;//This never gets called
 	}
 
 	// The rest is the same as in scenario load and play
 	reset_loaded_objects();
 	map_update_tile_pointers();
-	reset_0x69EBE4();
+	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	return 1;
+}
+
+/**
+ * 
+ *  rct2: 0x00675E1B
+ */
+int game_load_save(const char *path)
+{
+	rct_window *mainWindow;
+
+	if (!game_load_sv6(path)) {
+		title_load();
+		rct2_endupdate();
+		return 0;
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();

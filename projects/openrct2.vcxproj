@@ -259,6 +259,14 @@
       <Project>{074dc930-05c6-4b7f-b5dd-dd237e6e44db}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\data\title\script.txt">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </DeploymentContent>
+    </Text>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2</RootNamespace>
@@ -399,7 +407,7 @@ xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
     </Link>
     <PostBuildEvent>
       <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
+xcopy /SY "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
