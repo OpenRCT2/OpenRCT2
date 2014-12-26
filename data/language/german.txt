@@ -2752,17 +2752,17 @@ STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Leiste
 STR_2749    :???
+# New strings used in the cheats window previously these were ???
 STR_2750    :???
 STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
-# New strings used in the cheats window previously these were ???
+STR_2752    :Gras beseitigen
+STR_2753    :Rasen mähen
+STR_2754    :Pflanzen gießen
+STR_2755    :Vandalismus beseitigen
+STR_2756    :Müll beseitigen
+STR_2757    :Schönes Wetter erzwingen
+STR_2758    :Gewitter erzwingen
+STR_2759    :Zero Clearance
 STR_2760    :+5000 Geld
 STR_2761    :Bezahlen für Eintritt
 STR_2762    :Bezahlen für Bahnen
