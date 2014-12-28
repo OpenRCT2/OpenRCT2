@@ -854,6 +854,8 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 		ebx |= (peep->hat_colour << 19) | 0x20000000;
 		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
 	}
+
+	rct2_free(clip_dpi);
 }
 
 /* rct2: 0x69869b */
@@ -1017,6 +1019,8 @@ void window_guest_overview_paint(){
 
 	x = widget->right - widget->left - w->list_information_type;
 	gfx_draw_string_left(dpi_marquee, 1193, (void*)0x13CE952, 0, x, 0);
+
+	rct2_free(dpi_marquee);
 }
 
 /* rct2: 0x696749*/

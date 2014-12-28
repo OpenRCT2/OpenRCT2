@@ -669,6 +669,8 @@ static void window_track_place_paint()
 		subsituteElement->flags = 0;
 		gfx_draw_sprite(clippedDpi, 0, 0, 0, 0);
 		*subsituteElement = tmpElement;
+
+		rct2_free(clippedDpi);
 	}
 
 	// Price

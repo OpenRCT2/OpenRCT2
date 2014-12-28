@@ -1036,6 +1036,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		spriteIndex |= 0x80000000;
 
 		gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
+		rct2_free(dpi);
 	}
 }
 
@@ -4129,6 +4130,8 @@ static void window_ride_colour_paint()
 			// ?
 			if (terniaryColour != 0)
 				gfx_draw_sprite(clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
+
+			rct2_free(clippedDpi);
 		}
 	}
 }
