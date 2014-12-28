@@ -1004,6 +1004,8 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 		ebx |= (peep->hat_colour << 19) | 0x20000000;
 		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
 	}
+
+	rct2_free(clip_dpi);
 }
 
 /* rct2: 0x6BE7C6 */

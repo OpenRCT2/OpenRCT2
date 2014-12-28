@@ -211,8 +211,15 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level;
 	int zoom_amount = 1 << zoom_level;
+	int zoom_mask = 0xFFFFFFFF << zoom_level;
 	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
+
+	if (source_y_start < 0){ 
+		source_y_start += zoom_amount; 
+		next_dest_pointer += dpi->width / zoom_amount + dpi->pitch;
+		height -= zoom_amount;
+	}
 
 	//For every line in the image
 	for (int y = source_y_start; y < (height + source_y_start); y += zoom_amount){
@@ -241,6 +248,13 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 
 			//Calculates the start point of the image
 			int x_start = gap_size - source_x_start;
+
+			if (x_start & ~zoom_mask){
+				no_pixels -= (x_start&~zoom_mask);
+				x_start += (x_start&~zoom_mask);
+				source_pointer += (x_start&~zoom_mask);
+				if (no_pixels <= 0) continue;
+			}
 
 			if (x_start > 0){
 				//Since the start is positive
@@ -447,10 +461,24 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	int zoom_amount = 1 << zoom_level;
 	int zoom_mask = 0xFFFFFFFF << zoom_level;
 
+	if (zoom_level && g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		x -= ~zoom_mask;
+		y -= ~zoom_mask;
+	}
+
 	//This will be the height of the drawn image
 	int height = g1_source->height;
 	//This is the start y coordinate on the destination
-	sint16 dest_start_y = ((y + g1_source->y_offset)&zoom_mask) - dpi->y;
+	sint16 dest_start_y = y + g1_source->y_offset;
+
+	// For whatever reason the RLE version does not use
+	// the zoom mask on the y coordinate but does on x.
+	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+		dest_start_y -= dpi->y;
+	}
+	else{
+		dest_start_y = (dest_start_y&zoom_mask) - dpi->y;
+	}
 	//This is the start y coordinate on the source
 	int source_start_y = 0;
 
@@ -466,6 +494,12 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		source_start_y -= dest_start_y;
 		//The destination start is now reset to 0
 		dest_start_y = 0;
+	}
+	else{
+		if (g1_source->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
+			source_start_y -= dest_start_y & ~zoom_mask;
+			height += dest_start_y & ~zoom_mask;
+		}
 	}
 
 	int dest_end_y = dest_start_y + height;
@@ -486,7 +520,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//This is the source start x coordinate
 	int source_start_x = 0;
 	//This is the destination start x coordinate
-	sint16 dest_start_x = ((x + g1_source->x_offset) & zoom_mask) - dpi->x;
+	sint16 dest_start_x = ((x + g1_source->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
 
 	if (dest_start_x < 0){
 		//If the destination is negative reduce the width
@@ -500,6 +534,11 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		source_start_x -= dest_start_x;
 		//Reset the destination to 0
 		dest_start_x = 0;
+	}
+	else{
+		if (g1_source->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
+			source_start_x -= dest_start_x & ~zoom_mask;
+		}
 	}
 
 	int dest_end_x = dest_start_x + width;
