@@ -272,6 +272,8 @@ void game_update()
 	update_palette_effects();
 	update_rain_animation();
 
+	stop_completed_sounds(); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
+
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
 		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
@@ -308,8 +310,6 @@ void game_logic_update()
 	climate_update_sound();
 	news_item_update_current();
 	editor_open_windows_for_current_step();
-
-	stop_completed_sounds(); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
 
 	// Update windows
 	window_dispatch_update_all();

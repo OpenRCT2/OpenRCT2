@@ -1481,7 +1481,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 		while (other_sound->id != 0xFFFF) {
 			i++;
 			other_sound = &RCT2_ADDRESS(0x009AF484, rct_other_sound)[i];
-			if (i > RCT2_GLOBAL(0x009AAC76, uint8)) { // too many sounds playing
+			if (i > RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS, uint8)) { // too many sounds playing
 				return sound_id;
 			}
 		}

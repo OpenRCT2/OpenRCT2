@@ -1004,6 +1004,9 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		if (!w)
 			break;
 
+		if (!widget)
+			break;
+
 		int mid_point_x = (widget->left + widget->right) / 2 + w->x;
 		sound_play_panned(5, mid_point_x, 0, 0, 0);
 		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
