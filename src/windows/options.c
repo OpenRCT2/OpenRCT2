@@ -510,8 +510,7 @@ static void window_options_dropdown()
 		window_invalidate(w);
 		break;
 	case WIDX_SOUND_QUALITY_DROPDOWN:
-		// TODO: no clue what this does (and if it's correct)
-		RCT2_GLOBAL(0x009AAC75, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS, uint8) = RCT2_GLOBAL(0x009AF604 + dropdownIndex, uint8);
 		gSound_config.sound_quality = (sint8)dropdownIndex;
 		config_save();
