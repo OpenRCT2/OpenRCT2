@@ -114,7 +114,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		// Fill the rectangle with the colours from the colour table
 		for (int i = 0; i < height>>dpi->zoom_level; ++i) {
 			uint8* next_dest_pointer = dest_pointer + (dpi->width >> dpi->zoom_level) + dpi->pitch;
-			for (int j = 0; j < width; ++j) {
+			for (int j = 0; j < width>>dpi->zoom_level; ++j) {
 				*dest_pointer = g1_element.offset[*dest_pointer];
 				dest_pointer++;
 			}
