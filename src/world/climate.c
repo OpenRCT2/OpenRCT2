@@ -199,6 +199,9 @@ void climate_force_weather(uint8 weather){
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 
 	climate_update();
+	
+	// Incase of change in gloom level force a complete redraw
+	gfx_invalidate_screen();
 }
 
 /**
