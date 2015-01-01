@@ -1710,10 +1710,10 @@ STR_1708    :{SMALLFONT}{BLACK}Werkgebied van deze werknemer instellen
 STR_1709    :Werknemer ontslaan
 STR_1710    :Ja
 STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt ontslaan?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Voetpaden vegen
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Bloemen water geven
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Prullenbakken legen
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Gras maaien
 STR_1716    :Ongeldige parknaam
 STR_1717    :Kan het park geen andere naam geven...
 STR_1718    :Parknaam
