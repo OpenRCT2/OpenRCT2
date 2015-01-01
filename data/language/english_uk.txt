@@ -39,7 +39,7 @@ STR_0034    :Stall
 STR_0035    :Ride
 STR_0036    :Stall
 STR_0037    :Kiosk
-STR_0038    :Restroom
+STR_0038    :Toilet
 STR_0039    :Ride
 STR_0040    :Ride
 STR_0041    :Ride
@@ -977,7 +977,7 @@ STR_0972    :Cancel
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
+STR_0976    :Toilets and Information Kiosks
 STR_0977    :New Transport Rides
 STR_0978    :New Gentle Rides
 STR_0979    :New Roller Coasters
@@ -1526,9 +1526,9 @@ STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really
 STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}These chips from {STRINGID} are really good value{ENDQUOTES}
 STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}This candyfloss from {STRINGID} is really good value{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
@@ -1538,7 +1538,7 @@ STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good 
 STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
 STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
 STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}This toffee apple from {STRINGID} is really good value{ENDQUOTES}
 STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
 STR_1539    :{SMALLFONT}{OPENQUOTES}This doughnut from {STRINGID} is really good value{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
@@ -1560,9 +1560,9 @@ STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride phot
 STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
 STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
 STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for chips from {STRINGID}{ENDQUOTES}
 STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for candyfloss from {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
@@ -1572,7 +1572,7 @@ STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {S
 STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
 STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
 STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a toffee apple from {STRINGID}{ENDQUOTES}
 STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
 STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a doughnut from {STRINGID}{ENDQUOTES}
 STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
@@ -1968,9 +1968,9 @@ STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
 STR_1965    :{WINDOW_COLOUR_2}Drink price:
 STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Fries price:
+STR_1967    :{WINDOW_COLOUR_2}Chips price:
 STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
@@ -1980,7 +1980,7 @@ STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
 STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
 STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
 STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Candy Apple price:
+STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
 STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
 STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
 STR_1982    :{WINDOW_COLOUR_2}Coffee price:
@@ -1996,9 +1996,9 @@ STR_1991    :On-Ride Photo
 STR_1992    :Umbrella
 STR_1993    :Drink
 STR_1994    :Burger
-STR_1995    :Fries
+STR_1995    :Chips
 STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
+STR_1997    :Candyfloss
 STR_1998    :Empty Can
 STR_1999    :Rubbish
 STR_2000    :Empty Burger Box
@@ -2008,7 +2008,7 @@ STR_2003    :Popcorn
 STR_2004    :Hot Dog
 STR_2005    :Tentacle
 STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2007    :Toffee Apple
 STR_2008    :T-Shirt
 STR_2009    :Doughnut
 STR_2010    :Coffee
@@ -2024,9 +2024,9 @@ STR_2019    :On-Ride Photos
 STR_2020    :Umbrellas
 STR_2021    :Drinks
 STR_2022    :Burgers
-STR_2023    :Fries
+STR_2023    :Chips
 STR_2024    :Ice Creams
-STR_2025    :Cotton Candy
+STR_2025    :Candyfloss
 STR_2026    :Empty Cans
 STR_2027    :Rubbish
 STR_2028    :Empty Burger Boxes
@@ -2036,7 +2036,7 @@ STR_2031    :Popcorn
 STR_2032    :Hot Dogs
 STR_2033    :Tentacles
 STR_2034    :Hats
-STR_2035    :Candy Apples
+STR_2035    :Toffee Apples
 STR_2036    :T-Shirts
 STR_2037    :Doughnuts
 STR_2038    :Coffees
@@ -2052,9 +2052,9 @@ STR_2047    :an On-Ride Photo
 STR_2048    :an Umbrella
 STR_2049    :a Drink
 STR_2050    :a Burger
-STR_2051    :some Fries
+STR_2051    :some Chips
 STR_2052    :an Ice Cream
-STR_2053    :some Cotton Candy
+STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
 STR_2055    :some Rubbish
 STR_2056    :an Empty Burger Box
@@ -2064,7 +2064,7 @@ STR_2059    :some Popcorn
 STR_2060    :a Hot Dog
 STR_2061    :a Tentacle
 STR_2062    :a Hat
-STR_2063    :a Candy Apple
+STR_2063    :a Toffee Apple
 STR_2064    :a T-Shirt
 STR_2065    :a Doughnut
 STR_2066    :a Coffee
@@ -2080,9 +2080,9 @@ STR_2075    :On-Ride Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
-STR_2079    :Fries
+STR_2079    :Chips
 STR_2080    :Ice Cream
-STR_2081    :Cotton Candy
+STR_2081    :Candyfloss
 STR_2082    :Empty Can
 STR_2083    :Rubbish
 STR_2084    :Empty Burger Box
@@ -2092,7 +2092,7 @@ STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
 STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Candy Apple
+STR_2091    :Toffee Apple
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
 STR_2093    :Doughnut
 STR_2094    :Coffee
@@ -2815,7 +2815,7 @@ STR_2807    :{RED}Guests are complaining about the amount of litter in your park
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
 STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
 STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
+STR_2811    :{RED}Guests are complaining because they can't find the toilets in your park
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
 STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
@@ -2828,7 +2828,7 @@ STR_2820    :{WINDOW_COLOUR_2}Safest park award
 STR_2821    :{WINDOW_COLOUR_2}Best staff award
 STR_2822    :{WINDOW_COLOUR_2}Best park food award
 STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park restrooms award
+STR_2824    :{WINDOW_COLOUR_2}Best park toilets award
 STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
 STR_2826    :{WINDOW_COLOUR_2}Best water rides award
 STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
@@ -2845,7 +2845,7 @@ STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park i
 STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
 STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
 STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
+STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best toilet facilities in the country'!
 STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
 STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
 STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
@@ -3376,8 +3376,8 @@ STR_3368    :{BLACK}= Drink Stall
 STR_3369    :{BLACK}= Souvenir Stall
 STR_3370    :{BLACK}= Info. Kiosk
 STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= A.T.M.
-STR_3373    :{BLACK}= Restroom
+STR_3372    :{BLACK}= Cash Machine
+STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design...
