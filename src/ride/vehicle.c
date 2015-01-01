@@ -305,7 +305,7 @@ void vehicle_sounds_update()
 						while (vehicle_sound->id != (uint16)-1) {
 							vehicle_sound++;
 							i++;
-							if (i >= countof(gVehicleSoundList)/*i >= RCT2_GLOBAL(0x009AAC75, uint8)*/) {
+							if (i >= countof(gVehicleSoundList)/*i >= RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS, uint8)*/) {
 								vehicle_sound_params = (rct_vehicle_sound_params*)((int)vehicle_sound_params + 10);
 								goto label28;
 							}
