@@ -36,6 +36,7 @@ static void peep_update(rct_peep *peep);
 static int peep_has_empty_container(rct_peep* peep);
 static int peep_has_food_standard_flag(rct_peep* peep);
 static int peep_has_food_extra_flag(rct_peep* peep);
+static int peep_should_find_bench(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1233,22 +1234,10 @@ static void peep_update_walking(rct_peep* peep){
 	sub_69C26B(peep);
 	sub_69C2D0(peep);
 
-	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
-		if (peep_has_food(peep)){
-			if (peep->hunger < 128 || peep->happiness < 128){
-				//6905C3
-			}
-		}
-		if (peep->nausea > 170 || peep->energy <= 50){
-			//6905C3
-		}
-
-		//6905c3
-		if (!(peep->next_var_29 & 0x1C)){
-			// Find bench??
-		}
+	if (peep_should_find_bench(peep)){
+		//6905CD
 	}
-	//690582
+	//690737
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
