@@ -1230,7 +1230,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	peep->var_37 = chosen_edge;
 
 	peep_decrement_num_riders(peep);
-	peep->state = PEEP_STATE_20;
+	peep->state = PEEP_STATE_USING_BIN;
 	peep_window_state_update(peep);
 
 	peep->sub_state = 0;
@@ -1244,6 +1244,73 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	peep->destination_tolerence = 3;
 
 	return 1;
+}
+
+/* rct2: 0x00690848*/
+static void peep_update_walking_break_scenery(rct_peep* peep){
+	if (!peep->flags & PEEP_FLAGS_ANGRY){
+		if (peep->happiness >= 48) return;
+		if (peep->energy < 85) return;
+		if (peep->state != PEEP_STATE_WALKING) return;
+
+		if ((peep->var_E1 & 0xC0) != 0xC0 &&
+			(peep->var_E3 & 0xC0) != 0xC0) return;
+
+		if ((scenario_rand() & 0xFFFF) > 3276) return;
+	}
+
+	if (peep->next_var_29 & 0x18) return;
+
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+	for (;; map_element++){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+			if (peep->next_z == map_element->base_height)break;
+		}
+		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+			return;
+		}
+	}
+
+	uint8 additions = map_element->properties.path.additions & 0xF;
+
+	if (!additions) return;
+	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+
+	if (!(sceneryEntry->path_bit.var_06 & 0x4))return;
+
+	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return;
+
+	if (map_element->properties.path.additions & 0x80)return;
+
+	int edges = map_element->properties.path.edges & 0xF;
+	if (edges == 0xF) return;
+
+	rct_peep* inner_peep;
+	uint16 sprite_index;
+
+	FOR_ALL_STAFF(sprite_index, inner_peep){
+		if (inner_peep->staff_type != STAFF_TYPE_SECURITY)continue;
+
+		if (inner_peep->x == (sint16)SPRITE_LOCATION_NULL)continue;
+
+		int x_diff = abs(inner_peep->x - peep->x);
+		int y_diff = abs(inner_peep->y - peep->y);
+
+		if (max(x_diff, y_diff) < 224)return;
+	}
+
+	map_element->flags |= MAP_ELEMENT_FLAG_BROKEN;
+
+	map_invalidate_tile(
+		peep->next_x, 
+		peep->next_y, 
+		(map_element->base_height << 3) + 32, 
+		map_element->base_height << 3);
+
+	peep->var_F3 = 0x10;
+
+	return;
 }
 
 /* rct2: 0x0069030A */
@@ -1378,7 +1445,10 @@ static void peep_update_walking(rct_peep* peep){
 	if (peep_update_walking_find_bench(peep))return;
 
 	if (peep_update_walking_find_bin(peep))return;
-	//690848
+
+	peep_update_walking_break_scenery(peep);
+
+	//6909A6
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
@@ -1531,7 +1601,7 @@ static void peep_update(rct_peep *peep)
 		case PEEP_STATE_EMPTYING_BIN:
 			peep_update_emptying_bin(peep);
 			break;
-		case PEEP_STATE_20:
+		case PEEP_STATE_USING_BIN:
 			RCT2_CALLPROC_X(0x00691089, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_WATERING:
@@ -1866,7 +1936,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		*argument_2 = ride.name_arguments;
 		break;
 	case PEEP_STATE_WALKING:
-	case PEEP_STATE_20:
+	case PEEP_STATE_USING_BIN:
 		if (peep->guest_heading_to_ride_id != 0xFF){
 			ride = g_ride_list[peep->guest_heading_to_ride_id];
 			*argument_1 = STR_HEADING_FOR | (ride.name << 16);

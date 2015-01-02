@@ -202,7 +202,7 @@ enum PEEP_STATE {
 	PEEP_STATE_BUYING = 17,
 	PEEP_STATE_WATCHING = 18,
 	PEEP_STATE_EMPTYING_BIN = 19,
-	PEEP_STATE_20 = 20,
+	PEEP_STATE_USING_BIN = 20,
 	PEEP_STATE_WATERING = 21,
 	PEEP_STATE_HEADING_TO_INSPECTION = 22,
 	PEEP_STATE_INSPECTING = 23
@@ -452,9 +452,9 @@ typedef struct {
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
 	uint8 var_E0;					// 0xE0
-	uint8 pad_E1;
+	uint8 var_E1;
 	uint8 var_E2;					// 0xE2
-	uint8 pad_E3;
+	uint8 var_E3;
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
