@@ -181,6 +181,48 @@ void sub_69C308(rct_peep* peep){
 	else peep->happiness_growth_rate -= 30;
 }
 
+/* rct2: 0x69C26B
+* Check if cant find ride.
+*/
+void sub_69C26B(rct_peep* peep){
+	if (peep->guest_heading_to_ride_id == 0xFF) return;
+
+	if (peep->var_C6 == 30 || peep->var_C6 == 60){
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND, peep->guest_heading_to_ride_id);
+
+		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
+		else peep->happiness_growth_rate -= 30;
+	}
+
+	peep->var_C6--;
+	if (peep->var_C6 != 0)return;
+
+	peep->guest_heading_to_ride_id = 0xFF;
+	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
+
+	if (w){
+		window_event_invalidate_call(w);
+	}
+
+	widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 12);
+}
+
+/* rct2: 0x69C2D0
+* Check if cant find exit.
+*/
+void sub_69C2D0(rct_peep* peep){
+	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))return;
+
+	if (peep->var_C6 == 1){
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
+
+		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
+		else peep->happiness_growth_rate -= 30;
+	}
+
+	if (--peep->var_C6 == 0) peep->var_C6 = 90;
+}
+
 /* rct2: 0x6939EB 
  * Possibly peep update action frame.
  * Also used to move peeps to the correct position to
@@ -1184,7 +1226,11 @@ static void peep_update_walking(rct_peep* peep){
 			return;
 		}
 	}
-	//690573
+
+	sub_69C308(peep);
+	sub_69C26B(peep);
+	sub_69C2D0(peep);
+	//690582
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
