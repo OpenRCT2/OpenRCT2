@@ -31,7 +31,7 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
-#define MAX_RAIN_PIXELS 0x9000
+#define MAX_RAIN_PIXELS 0xFFFE
 uint32 rainPixels[MAX_RAIN_PIXELS];
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
