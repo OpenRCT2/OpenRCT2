@@ -1448,6 +1448,55 @@ static void peep_update_walking(rct_peep* peep){
 
 	peep_update_walking_break_scenery(peep);
 
+	if (peep->state != PEEP_STATE_WALKING)return;
+
+	if (peep->flags &= PEEP_FLAGS_LEAVING_PARK)return;
+
+	if (peep->nausea > 140)return;
+
+	if (peep->happiness < 120)return;
+
+	if (peep->bathroom > 140)return;
+
+	int chance = 13107;
+	if (peep_has_food(peep))chance = 2849;
+
+	if ((scenario_rand() & 0xFFFF) > chance)return;
+
+	if (peep->next_var_29 & 0x1C)return;
+
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+	for (;; map_element++){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+			if (peep->next_z == map_element->base_height)break;
+		}
+		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+			return;
+		}
+	}
+
+	uint8 additions = map_element->properties.path.additions & 0xF;
+
+	int ebp = 15;
+
+	if (additions){
+		if (!(map_element->properties.path.additions & 0x80)){
+			rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+
+			if (!(sceneryEntry->path_bit.var_06 & 0x2)) ebp = 9;
+		}
+	}
+
+	int edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
+	if (edges == 0) return;
+
+	uint8 chosen_edge = scenario_rand() & 0x3;
+
+	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
+
+	RCT2_CALLPROC_X(0x00690B99, chosen_edge, 0, 0, 0, peep, 0, 0);
+	
 	//6909A6
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
