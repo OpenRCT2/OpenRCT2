@@ -366,7 +366,7 @@ typedef struct {
 	uint8 next_var_29;				// 0x29
 	uint8 var_2A;
 	uint8 state;					// 0x2B
-	uint8 sub_state;
+	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	union{							
