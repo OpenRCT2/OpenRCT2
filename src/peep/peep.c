@@ -1498,11 +1498,15 @@ static void peep_update_walking(rct_peep* peep){
 
 	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
 
-	int ecx = 0;
-
+	uint8 ride_to_view;
+	uint8 ride_seat_to_view;
 	{
-		int eax = chosen_edge, _ebx = 0, edx = 0, esi = (int)peep, _ebp = 0, edi = 0;
+		int eax = chosen_edge, _ebx = 0, ecx, edx = 0, esi = (int)peep, _ebp = 0, edi = 0;
+		// Work out what to look at
 		if (RCT2_CALLFUNC_X(0x00690B99, &eax, &_ebx, &ecx, &edx, &esi, &edi, &_ebp) & 0x100)return;
+
+		ride_to_view = ecx & 0xFF;
+		ride_seat_to_view = (ecx & 0xFF00) >> 8;
 	}
 
 	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[(peep->x & 0x1FE0 << 3) | (peep->y >> 5)];
@@ -1524,8 +1528,8 @@ static void peep_update_walking(rct_peep* peep){
 
 	for (; !(ebp & (1 << chosen_position));)chosen_position = (chosen_position + 1) & 3;
 
-	peep->current_ride = ecx & 0xFF;
-	peep->current_seat = (ecx & 0xFF00) >> 8;
+	peep->current_ride = ride_to_view;
+	peep->current_seat = ride_seat_to_view;
 	peep->var_37 = chosen_edge | (chosen_position << 2);
 
 	peep_decrement_num_riders(peep);
