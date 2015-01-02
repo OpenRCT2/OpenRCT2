@@ -1315,6 +1315,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
+	//RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
+	//return;
+
 	if (!sub_68F3AE(peep))return;
 
 	if (peep->flags & PEEP_FLAGS_WAVING){
@@ -1495,10 +1498,56 @@ static void peep_update_walking(rct_peep* peep){
 
 	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
 
-	RCT2_CALLPROC_X(0x00690B99, chosen_edge, 0, 0, 0, peep, 0, 0);
-	
-	//6909A6
-	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
+	int ecx = 0;
+
+	{
+		int eax = chosen_edge, _ebx = 0, edx = 0, esi = (int)peep, _ebp = 0, edi = 0;
+		if (RCT2_CALLFUNC_X(0x00690B99, &eax, &_ebx, &ecx, &edx, &esi, &edi, &_ebp) & 0x100)return;
+	}
+
+	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[(peep->x & 0x1FE0 << 3) | (peep->y >> 5)];
+	for (rct_sprite* sprite = &g_sprite_list[sprite_id]; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
+
+		if (sprite->peep.state != PEEP_STATE_WATCHING)continue;
+
+		if (peep->z != sprite->peep.z)continue;
+
+		if ((sprite->peep.var_37 & 0x3) != chosen_edge)continue;
+
+		ebp &= ~(1 << ((sprite->peep.var_37 & 0x1C) >> 2));
+	}
+
+	if (!ebp)return;
+
+	uint8 chosen_position = scenario_rand() & 0x3;
+
+	for (; !(ebp & (1 << chosen_position));)chosen_position = (chosen_position + 1) & 3;
+
+	peep->current_ride = ecx & 0xFF;
+	peep->current_seat = (ecx & 0xFF00) >> 8;
+	peep->var_37 = chosen_edge | (chosen_position << 2);
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_WATCHING;
+	peep_window_state_update(peep);
+
+	peep->sub_state = 0;
+
+	int ebx = peep->var_37 & 0x1F;
+	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F4C, uint16)[ebx * 2];
+	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F4E, uint16)[ebx * 2];
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 3;
+
+	if (peep->current_seat&1){
+		peep_insert_new_thought(peep, PEEP_THOUGHT_NEW_RIDE, 0xFF);
+	}
+	if (peep->current_ride == 0xFF){
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, 0xFF);
+	}
 }
 
 /* From peep_update */
