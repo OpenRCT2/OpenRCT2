@@ -1461,7 +1461,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (peep->bathroom > 140)return;
 
-	int chance = 13107;
+	uint16 chance = 13107;
 	if (peep_has_food(peep))chance = 2849;
 
 	if ((scenario_rand() & 0xFFFF) > chance)return;
