@@ -1179,6 +1179,73 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	return 1;
 }
 
+static int peep_update_walking_find_bin(rct_peep* peep){
+	if (!peep_has_empty_container(peep)) return 0;
+
+	if (peep->next_var_29 & 0x18)return 0;
+
+	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+
+	for (;; map_element++){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+			if (peep->next_z == map_element->base_height)break;
+		}
+		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+			return 0;
+		}
+	}
+
+	uint8 additions = map_element->properties.path.additions & 0xF;
+
+	if (!additions) return 0;
+	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+
+	if (!(sceneryEntry->path_bit.var_06 & 0x1))return 0;
+
+	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return 0;
+
+	if (map_element->properties.path.additions & 0x80)return 0;
+
+	int edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
+	if (edges == 0) return 0;
+
+	uint8 chosen_edge = scenario_rand() & 0x3;
+
+	//ecx
+	uint8 addition_status = map_element->properties.path.addition_status;
+
+	chosen_edge = ror8(ror8(addition_status, chosen_edge),chosen_edge);
+
+	
+
+	for (uint8 free_edge = 4; free_edge != 0; free_edge--){
+		if (addition_status & 0x3){
+			if (edges&(1 << chosen_edge))break;
+		}
+		chosen_edge = (chosen_edge + 1) & 0x3;
+		addition_status = ror8(addition_status, 2);
+		if ((free_edge - 1) == 0) return 0;
+	}
+
+	peep->var_37 = chosen_edge;
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_20;
+	peep_window_state_update(peep);
+
+	peep->sub_state = 0;
+
+	int ebx = peep->var_37 & 0x3;
+	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A4C, uint16)[ebx * 2];
+	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A4E, uint16)[ebx * 2];
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 3;
+
+	return 1;
+}
+
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
 	if (!sub_68F3AE(peep))return;
