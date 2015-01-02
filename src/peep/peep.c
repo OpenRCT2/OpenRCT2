@@ -34,6 +34,8 @@
 
 static void peep_update(rct_peep *peep);
 static int peep_has_empty_container(rct_peep* peep);
+static int peep_has_food_standard_flag(rct_peep* peep);
+static int peep_has_food_extra_flag(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1230,6 +1232,22 @@ static void peep_update_walking(rct_peep* peep){
 	sub_69C308(peep);
 	sub_69C26B(peep);
 	sub_69C2D0(peep);
+
+	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+		if (peep_has_food(peep)){
+			if (peep->hunger < 128 || peep->happiness < 128){
+				//6905C3
+			}
+		}
+		if (peep->nausea > 170 || peep->energy <= 50){
+			//6905C3
+		}
+
+		//6905c3
+		if (!(peep->next_var_29 & 0x1C)){
+			// Find bench??
+		}
+	}
 	//690582
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
@@ -1993,11 +2011,8 @@ int peep_is_mechanic(rct_peep *peep)
 	);
 }
 
-/* To simplify check of 0x36BA3E0 and 0x11FF78 
- * returns 0 on no food.
- */
-int peep_has_food(rct_peep* peep){
-	return (peep->item_standard_flags &(
+static int peep_has_food_standard_flag(rct_peep* peep){
+	return peep->item_standard_flags &(
 		PEEP_ITEM_DRINK |
 		PEEP_ITEM_BURGER |
 		PEEP_ITEM_FRIES |
@@ -2011,8 +2026,11 @@ int peep_has_food(rct_peep* peep){
 		PEEP_ITEM_DONUT |
 		PEEP_ITEM_COFFEE |
 		PEEP_ITEM_CHICKEN |
-		PEEP_ITEM_LEMONADE)) ||
-		(peep->item_extra_flags &(
+		PEEP_ITEM_LEMONADE);
+}
+
+static int peep_has_food_extra_flag(rct_peep* peep){
+	return peep->item_extra_flags &(
 		PEEP_ITEM_PRETZEL |
 		PEEP_ITEM_CHOCOLATE |
 		PEEP_ITEM_ICED_TEA |
@@ -2027,7 +2045,15 @@ int peep_has_food(rct_peep* peep){
 		PEEP_ITEM_SUB_SANDWICH |
 		PEEP_ITEM_COOKIE |
 		PEEP_ITEM_ROAST_SAUSAGE
-		));
+		);
+}
+
+/* To simplify check of 0x36BA3E0 and 0x11FF78 
+ * returns 0 on no food.
+ */
+int peep_has_food(rct_peep* peep){
+	return peep_has_food_standard_flag(peep) ||
+		peep_has_food_extra_flag(peep);
 }
 
 static int peep_has_empty_container(rct_peep* peep){
@@ -2045,6 +2071,25 @@ static int peep_has_empty_container(rct_peep* peep){
 		PEEP_ITEM_EMPTY_JUICE_CUP |
 		PEEP_ITEM_EMPTY_BOWL_BLUE
 		));
+}
+
+/* Simplifies 0x690582. Returns 1 if should find bench*/
+static int peep_should_find_bench(rct_peep* peep){
+	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+		if (peep_has_food(peep)){
+			if (peep->hunger > 128 && peep->happiness > 128){
+				return 0;
+			}
+		}
+		if (peep->nausea <= 170 || peep->energy > 50){
+			return 0;
+		}
+
+		if (!(peep->next_var_29 & 0x1C)){
+			return 1;
+		}
+	}
+	return 0;
 }
 
 /**
