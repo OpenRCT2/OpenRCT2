@@ -1376,7 +1376,9 @@ static void peep_update_walking(rct_peep* peep){
 	peep_check_cant_find_exit(peep);
 
 	if (peep_update_walking_find_bench(peep))return;
-	//690737
+
+	if (peep_update_walking_find_bin(peep))return;
+	//690848
 	RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
