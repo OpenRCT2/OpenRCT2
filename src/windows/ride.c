@@ -5787,7 +5787,7 @@ static void window_ride_customer_paint()
 			stringId += 96;
 
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_1A4;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->no_primary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
 		y += 10;
 	}
@@ -5802,7 +5802,7 @@ static void window_ride_customer_paint()
 			stringId += 96;
 
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->var_1A4;
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->no_secondary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
 		y += 10;
 	}
