@@ -1248,7 +1248,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 /* rct2: 0x00690848*/
 static void peep_update_walking_break_scenery(rct_peep* peep){
-	if (!peep->flags & PEEP_FLAGS_ANGRY){
+	if (!(peep->flags & PEEP_FLAGS_ANGRY)){
 		if (peep->happiness >= 48) return;
 		if (peep->energy < 85) return;
 		if (peep->state != PEEP_STATE_WALKING) return;
@@ -1453,7 +1453,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (peep->state != PEEP_STATE_WALKING)return;
 
-	if (peep->flags &= PEEP_FLAGS_LEAVING_PARK)return;
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)return;
 
 	if (peep->nausea > 140)return;
 
