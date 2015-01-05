@@ -76,15 +76,17 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
+static void window_game_bottom_toobar_update(rct_window* w);
 
+/* rct2: 0x0097BFDC */
 static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_mouseup,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_emptysub,//0x66c6f2
+	window_game_bottom_toobar_update,//0x66c6d8
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
@@ -101,7 +103,7 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_tooltip,
-	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_emptysub,//0x66c644
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_invalidate,
 	window_game_bottom_toolbar_paint,
@@ -673,4 +675,36 @@ static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi
 	y = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + w->y + 2;
 	gfx_draw_string_centred(dpi, STR_TUTORIAL, x, y, 32, 0);
 	gfx_draw_string_centred(dpi, STR_PRESS_KEY_OR_MOUSE_BUTTON_FOR_CONTROL, x, y + 10, 32, 0);
+}
+
+/* rct2: 0x0066C6D8 */
+static void window_game_bottom_toobar_update(rct_window* w){
+
+	w->frame_no++;
+	if (w->frame_no >= 24)w->frame_no = 0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 1){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~1;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 2){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~2;
+		widget_invalidate(w, WIDX_RIGHT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 4){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~4;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 8){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~8;
+		widget_invalidate(w, WIDX_RIGHT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 16){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~16;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
 }

@@ -540,7 +540,7 @@ void park_update()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 		window_invalidate_by_class(WC_FINANCES);
 		_guestGenerationProbability = park_calculate_guest_generation_probability();
-		RCT2_GLOBAL(0x009A9804, uint16) |= 0x10;
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 0x10;
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
 
