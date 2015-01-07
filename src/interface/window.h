@@ -407,6 +407,15 @@ enum PROMPT_MODE {
 	PM_QUIT
 };
 
+typedef enum {
+	BTM_TB_DIRTY_FLAG_MONEY = (1 << 0),
+	BTM_TB_DIRTY_FLAG_DATE = (1 << 1),
+	BTM_TB_DIRTY_FLAG_PEEP_COUNT = (1 << 2),
+	BTM_TB_DIRTY_FLAG_CLIMATE = (1 << 3),
+	BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
+} BTM_TOOLBAR_DIRTY_FLAGS;
+
+
 // rct2: 0x01420078
 extern rct_window* g_window_list;
 
