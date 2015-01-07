@@ -70,13 +70,15 @@ static void window_game_bottom_toolbar_mouseup();
 static void window_game_bottom_toolbar_tooltip();
 static void window_game_bottom_toolbar_invalidate();
 static void window_game_bottom_toolbar_paint();
+static void window_game_bottom_toobar_update(rct_window* w);
+static void window_game_bottom_toolbar_cursor();
+static void window_game_bottom_toolbar_unknown05();
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toobar_update(rct_window* w);
 
 /* rct2: 0x0097BFDC */
 static void* window_game_bottom_toolbar_events[] = {
@@ -85,8 +87,8 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,//0x66c6f2
-	window_game_bottom_toobar_update,//0x66c6d8
+	window_game_bottom_toolbar_unknown05,
+	window_game_bottom_toobar_update,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
@@ -103,7 +105,7 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_tooltip,
-	window_game_bottom_toolbar_emptysub,//0x66c644
+	window_game_bottom_toolbar_cursor,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_invalidate,
 	window_game_bottom_toolbar_paint,
@@ -683,28 +685,55 @@ static void window_game_bottom_toobar_update(rct_window* w){
 	w->frame_no++;
 	if (w->frame_no >= 24)w->frame_no = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 1){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~1;
+	// Due to windows not fully finished use callproc to save on duplicate code.
+	RCT2_CALLPROC_X((int)window_game_bottom_toolbar_unknown05, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/* rct2: 0x006C644 */
+static void window_game_bottom_toolbar_cursor(){
+	rct_window *w;
+	short widgetIndex, x, y;
+
+	window_cursor_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex){
+	case WIDX_MONEY:
+	case WIDX_GUESTS:
+	case WIDX_PARK_RATING:
+	case WIDX_DATE:
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 2000;
+		break;
+	}
+}
+
+/* rct2: 0x0066C6F2 */
+static void window_game_bottom_toolbar_unknown05(){
+	rct_window* w;
+
+	window_get_register(w);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_MONEY){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_MONEY;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 2){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~2;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_DATE){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_DATE;
 		widget_invalidate(w, WIDX_RIGHT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 4){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~4;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PEEP_COUNT){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 8){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~8;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_CLIMATE){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
 		widget_invalidate(w, WIDX_RIGHT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & 16){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~16;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PARK_RATING){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 }
