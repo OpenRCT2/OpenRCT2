@@ -7,7 +7,7 @@ STR_0005    :Attractie
 STR_0006    :Juniorachtbaan
 STR_0007    :Miniatuurspoorweg
 STR_0008    :Monorail
-STR_0009    :Omgekeerde miniachtbaan
+STR_0009    :Omgekeerde mini-achtbaan
 STR_0010    :Attractie
 STR_0011    :Attractie
 STR_0012    :Attractie
@@ -87,7 +87,7 @@ STR_0085    :Attractie
 STR_0086    :Attractie
 STR_0087    :Attractie
 STR_0088    :Attractie
-STR_0089    :Miniachtbaan
+STR_0089    :Mini-achtbaan
 STR_0090    :Attractie
 STR_0091    :Attractie
 STR_0092    :Attractie
