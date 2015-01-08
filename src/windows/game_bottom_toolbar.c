@@ -70,7 +70,7 @@ static void window_game_bottom_toolbar_mouseup();
 static void window_game_bottom_toolbar_tooltip();
 static void window_game_bottom_toolbar_invalidate();
 static void window_game_bottom_toolbar_paint();
-static void window_game_bottom_toobar_update(rct_window* w);
+static void window_game_bottom_toolbar_update(rct_window* w);
 static void window_game_bottom_toolbar_cursor();
 static void window_game_bottom_toolbar_unknown05();
 
@@ -88,7 +88,7 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_unknown05,
-	window_game_bottom_toobar_update,
+	window_game_bottom_toolbar_update,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
@@ -680,7 +680,7 @@ static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi
 }
 
 /* rct2: 0x0066C6D8 */
-static void window_game_bottom_toobar_update(rct_window* w){
+static void window_game_bottom_toolbar_update(rct_window* w){
 
 	w->frame_no++;
 	if (w->frame_no >= 24)w->frame_no = 0;
