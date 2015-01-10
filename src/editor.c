@@ -728,7 +728,7 @@ void editor_open_windows_for_current_step()
 		if (window_find_by_class(49))
 			return;
 
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 			object_unload_all();
 		}
 
