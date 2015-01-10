@@ -245,6 +245,7 @@ void map_invalidate_selection_rect();
 void fountain_update_all();
 
 void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_raise_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
 #define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])

@@ -877,7 +877,7 @@ static uint32 game_do_command_table[58] = {
 	0x006A61DE,
 	0x006A68AE,
 	0x006A67C0,
-	0x00663CCD, // 20
+	0, // use new_game_command_table, original: 0x00663CCD, // 20
 	0x006B53E9,
 	0x00698D6C, // text input
 	0x0068C542,
@@ -940,7 +940,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub, // 20
+	game_command_raise_lower_land, // 20
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,

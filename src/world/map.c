@@ -707,6 +707,88 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	);
 }
 
+/* rct2: 0x00663CCD */
+money32 map_raise_lower_land(int x0, int y0, int x1, int y1, uint8 terrain_surface, uint8 flags)
+{
+	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+
+	int x_mid, y_mid;
+
+	x_mid = (x0 + x1) / 2 + 16;
+	y_mid = (y0 + y1) / 2 + 16;
+
+	int height_mid = map_element_height(x_mid, y_mid);
+
+	RCT2_GLOBAL(0x9DEA5E, uint16) = x_mid;
+	RCT2_GLOBAL(0x9DEA60, uint16) = y_mid;
+	RCT2_GLOBAL(0x9DEA62, uint16) = height_mid;
+	RCT2_GLOBAL(0x9E32B4, uint32) = 0;
+
+	if (RCT2_GLOBAL(0x9DEA6E, uint8) != 0){
+		//663e62 return part
+	}
+
+	if (!(RCT2_GLOBAL(0x9DEA68, uint8) & 2) && RCT2_GLOBAL(0x13573E4, uint32) & 4){
+		//663e62 return part
+	}
+
+	for (int x = x0; x < x1; x += 32){
+		for (int y = y0; y < y1; y += 32){
+			if (x > 0x1FFF)continue;
+			if (y > 0x1FFF)continue;
+
+			if (!(RCT2_GLOBAL(0x9DEA68, uint8) & 2)){
+				if (!map_is_location_in_park(x, y))continue;
+			}
+
+			rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((x | (y << 8)) >> 5);
+
+			while ((map_element->type&MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE){
+				map_element++;
+			}
+
+			if (terrain_surface != 0xFF){
+				uint8 cur_terrain = (
+					(map_element->type&MAP_ELEMENT_DIRECTION_MASK) << 3) 
+					| (map_element->properties.surface.terrain >> 5);
+
+				if (terrain_surface != cur_terrain){
+					RCT2_GLOBAL(0x9E32B4, uint32) += RCT2_ADDRESS(0x97B8B8, uint32)[terrain_surface & 0x1F];
+
+					if (flags & 1){
+						map_element->properties.surface.terrain &= MAP_ELEMENT_WATER_HEIGHT_MASK;
+						map_element->type &= MAP_ELEMENT_QUADRANT_MASK | MAP_ELEMENT_TYPE_MASK;
+
+						//Save the new terrain
+						map_element->properties.surface.terrain |= terrain_surface << 5;
+						//Save the new direction mask
+						map_element->type |= terrain_surface >> 3;
+
+						map_invalidate_tile_full(x, y);
+						RCT2_CALLPROC_X(0x673883, x, 0, y, map_element_height(x, y), 0, 0, 0);
+					}
+				}
+			}
+
+			//0x663de2
+
+		}
+	}
+	//0x663e62 
+}
+
+/* rct2: 0x00663CCD */
+void game_command_raise_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
+	*ebx = map_raise_lower_land(
+		(*eax & 0xFFFF) / 32,
+		(*ecx & 0xFFFF) / 32,
+		(*edi & 0xFFFF) / 32,
+		(*ebp & 0xFFFF) / 32,
+		*edx & 0xFF,
+		*ebx & 0xFF
+		);
+}
+
 /**
  *
  *  rct2: 0x006EC6D7
