@@ -708,7 +708,7 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 }
 
 /* rct2: 0x00663CCD */
-money32 map_raise_lower_land(int x0, int y0, int x1, int y1, uint8 terrain_surface, uint8 flags)
+money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_style, uint8 edge_style, uint8 flags)
 {
 	RCT2_GLOBAL(0x141F56C, uint8) = 12;
 
@@ -724,45 +724,53 @@ money32 map_raise_lower_land(int x0, int y0, int x1, int y1, uint8 terrain_surfa
 	RCT2_GLOBAL(0x9DEA62, uint16) = height_mid;
 	RCT2_GLOBAL(0x9E32B4, uint32) = 0;
 
+	money32 cur_cost = 0;
+
 	if (RCT2_GLOBAL(0x9DEA6E, uint8) != 0){
-		//663e62 return part
+		cur_cost += RCT2_GLOBAL(0x9E32B4, uint32);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+			return 0;
+		}
+		return cur_cost;
 	}
 
-	if (!(RCT2_GLOBAL(0x9DEA68, uint8) & 2) && RCT2_GLOBAL(0x13573E4, uint32) & 4){
-		//663e62 return part
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES){
+		cur_cost += RCT2_GLOBAL(0x9E32B4, uint32);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+			return 0;
+		}
+		return cur_cost;
 	}
 
-	for (int x = x0; x < x1; x += 32){
-		for (int y = y0; y < y1; y += 32){
+	for (int x = x0; x <= x1; x += 32){
+		for (int y = y0; y <= y1; y += 32){
 			if (x > 0x1FFF)continue;
 			if (y > 0x1FFF)continue;
 
-			if (!(RCT2_GLOBAL(0x9DEA68, uint8) & 2)){
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
 				if (!map_is_location_in_park(x, y))continue;
 			}
+			
+			rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
 
-			rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((x | (y << 8)) >> 5);
-
-			while ((map_element->type&MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE){
-				map_element++;
-			}
-
-			if (terrain_surface != 0xFF){
+			if (surface_style != 0xFF){
 				uint8 cur_terrain = (
 					(map_element->type&MAP_ELEMENT_DIRECTION_MASK) << 3) 
 					| (map_element->properties.surface.terrain >> 5);
 
-				if (terrain_surface != cur_terrain){
-					RCT2_GLOBAL(0x9E32B4, uint32) += RCT2_ADDRESS(0x97B8B8, uint32)[terrain_surface & 0x1F];
+				if (surface_style != cur_terrain){
+					RCT2_GLOBAL(0x9E32B4, uint32) += RCT2_ADDRESS(0x97B8B8, uint32)[surface_style & 0x1F];
 
 					if (flags & 1){
 						map_element->properties.surface.terrain &= MAP_ELEMENT_WATER_HEIGHT_MASK;
 						map_element->type &= MAP_ELEMENT_QUADRANT_MASK | MAP_ELEMENT_TYPE_MASK;
 
 						//Save the new terrain
-						map_element->properties.surface.terrain |= terrain_surface << 5;
+						map_element->properties.surface.terrain |= surface_style << 5;
 						//Save the new direction mask
-						map_element->type |= terrain_surface >> 3;
+						map_element->type |= (surface_style >> 3) & MAP_ELEMENT_DIRECTION_MASK;
 
 						map_invalidate_tile_full(x, y);
 						RCT2_CALLPROC_X(0x673883, x, 0, y, map_element_height(x, y), 0, 0, 0);
@@ -770,21 +778,62 @@ money32 map_raise_lower_land(int x0, int y0, int x1, int y1, uint8 terrain_surfa
 				}
 			}
 
-			//0x663de2
+			if (edge_style != 0xFF){
+				uint8 cur_edge = 
+					((map_element->type & 0x80) >> 4) 
+					| (map_element->properties.surface.slope >> 5);
 
+				if (edge_style != cur_edge){
+					cur_cost++;
+
+					if (flags & 1){
+						map_element->properties.surface.slope &= MAP_ELEMENT_SLOPE_MASK;
+						map_element->type &= 0x7F;
+
+						//Save edge style
+						map_element->properties.surface.slope |= edge_style << 5;
+						//Save ???
+						map_element->type |= (edge_style << 4) & 0x80;
+						map_invalidate_tile_full(x, y);
+					}
+				}
+			}
+			
+			if (flags & 1){
+				if (!(map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK)){
+					if (!(map_element->type & MAP_ELEMENT_DIRECTION_MASK)){
+						if ((map_element->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0){
+							map_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+							map_invalidate_tile_full(x, y);
+						}
+					}
+				}
+			}
 		}
 	}
-	//0x663e62 
+
+	cur_cost *= 100;
+
+	cur_cost += RCT2_GLOBAL(0x9E32B4, uint32);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+		return 0;
+	}
+	return cur_cost;
 }
 
 /* rct2: 0x00663CCD */
-void game_command_raise_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
-	*ebx = map_raise_lower_land(
-		(*eax & 0xFFFF) / 32,
-		(*ecx & 0xFFFF) / 32,
-		(*edi & 0xFFFF) / 32,
-		(*ebp & 0xFFFF) / 32,
+void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
+	//RCT2_CALLFUNC_X(0x663CCD, eax, ebx, ecx, edx, esi, edi, ebp);
+	//return;
+
+	*ebx = map_change_surface_style(
+		(*eax & 0xFFFF),
+		(*ecx & 0xFFFF),
+		(*edi & 0xFFFF),
+		(*ebp & 0xFFFF),
 		*edx & 0xFF,
+		(*edx & 0xFF00) >> 8,
 		*ebx & 0xFF
 		);
 }

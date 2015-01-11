@@ -24,10 +24,10 @@
 #include "../common.h"
 
 typedef struct {
-	uint8 slope; //4
-	uint8 terrain; //5
-	uint8 grass_length;
-	uint8 ownership;
+	uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
+	uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
+	uint8 grass_length; //6
+	uint8 ownership; //7
 } rct_map_element_surface_properties;
 
 typedef struct {
@@ -192,6 +192,7 @@ enum {
 #define MAP_ELEMENT_DIRECTION_MASK 0x03
 
 #define MAP_ELEMENT_SLOPE_MASK 0x1F
+#define MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK 0xE0
 #define MAP_ELEMENT_WATER_HEIGHT_MASK 0x1F
 #define MAP_ELEMENT_SURFACE_TERRAIN_MASK 0xE0
 
@@ -245,7 +246,7 @@ void map_invalidate_selection_rect();
 void fountain_update_all();
 
 void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
-void game_command_raise_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
 #define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])

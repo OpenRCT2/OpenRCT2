@@ -940,7 +940,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_raise_lower_land, // 20
+	game_command_change_surface_style, // 20
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,

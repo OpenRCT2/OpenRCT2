@@ -1660,7 +1660,7 @@ void window_bubble_list_item(rct_window* w, int item_position){
 */
 void window_resize_gui(int width, int height)
 {
-	if (RCT2_GLOBAL(0x9DEA68, uint8) & 0xE){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xE){
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}
