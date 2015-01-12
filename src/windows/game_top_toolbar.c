@@ -52,6 +52,7 @@ enum {
 	WIDX_CLEAR_SCENERY,
 
 	//WIDX_FASTFORWARD,
+	WIDX_FINANCES,
 	WIDX_RESEARCH
 };
 
@@ -85,6 +86,7 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
 	//{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
+	{ WWT_TRNBTN,	3,	0x001E, 0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	{ WIDGETS_END },
 };
@@ -166,6 +168,7 @@ void window_game_top_toolbar_open()
 		(1 << WIDX_GUESTS) |
 		(1 << WIDX_CLEAR_SCENERY) |
 		//(1ULL << WIDX_FASTFORWARD) | 
+		(1ULL << WIDX_FINANCES) |
 		(1ULL << WIDX_RESEARCH);
 
 	window_init_scroll_widgets(window);
@@ -243,6 +246,9 @@ static void window_game_top_toolbar_mouseup()
 		break;
 	case WIDX_GUESTS:
 		window_guest_list_open();
+		break;
+	case WIDX_FINANCES:
+		window_finances_open();
 		break;
 	case WIDX_RESEARCH:
 		window_research_open();
@@ -382,6 +388,10 @@ static void window_game_top_toolbar_invalidate()
 	window_game_top_toolbar_widgets[WIDX_RESEARCH].right = x;
 	x -= 29;
 	window_game_top_toolbar_widgets[WIDX_RESEARCH].left = x;
+	x -= 1;
+	window_game_top_toolbar_widgets[WIDX_FINANCES].right = x;
+	x -= 29;
+	window_game_top_toolbar_widgets[WIDX_FINANCES].left = x;
 	x -= 11;
 	window_game_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].right = x;
 	x -= 29;
@@ -494,8 +504,14 @@ static void window_game_top_toolbar_paint()
 
 	// Draw research button
 	x = w->x + window_game_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
-	y = w->y + window_game_top_toolbar_widgets[WIDX_RESEARCH].top - 1;
+	y = w->y + window_game_top_toolbar_widgets[WIDX_RESEARCH].top;
 	imgId = SPR_TAB_FINANCES_RESEARCH_0;
+	gfx_draw_sprite(dpi, imgId, x, y, 0);
+
+	// Draw finances button
+	x = w->x + window_game_top_toolbar_widgets[WIDX_FINANCES].left + 3;
+	y = w->y + window_game_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+	imgId = SPR_FINANCE;
 	gfx_draw_sprite(dpi, imgId, x, y, 0);
 }
 
