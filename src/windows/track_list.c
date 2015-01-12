@@ -628,7 +628,7 @@ static void window_track_list_scrollpaint()
 			}
 
 			// Draw track name
-			window_track_list_format_name((char*)0x009BC678, trackDesignItem, 0);
+			window_track_list_format_name((char *)language_get_string(3165), trackDesignItem, 0);
 			stringId2 = 3165;
 			gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
 		}
