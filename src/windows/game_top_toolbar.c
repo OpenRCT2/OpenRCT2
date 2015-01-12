@@ -477,6 +477,13 @@ static void window_game_top_toolbar_invalidate()
 	{
 		w->disabled_widgets &= ~((1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT));
 	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		window_game_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
+	}
+	else{
+		window_game_top_toolbar_widgets[WIDX_FINANCES].type = WWT_TRNBTN;
+	}
 }
 
 /**
@@ -509,10 +516,12 @@ static void window_game_top_toolbar_paint()
 	gfx_draw_sprite(dpi, imgId, x, y, 0);
 
 	// Draw finances button
-	x = w->x + window_game_top_toolbar_widgets[WIDX_FINANCES].left + 3;
-	y = w->y + window_game_top_toolbar_widgets[WIDX_FINANCES].top + 1;
-	imgId = SPR_FINANCE;
-	gfx_draw_sprite(dpi, imgId, x, y, 0);
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+		x = w->x + window_game_top_toolbar_widgets[WIDX_FINANCES].left + 3;
+		y = w->y + window_game_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+		imgId = SPR_FINANCE;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
 }
 
 /**
