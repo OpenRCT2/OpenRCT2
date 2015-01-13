@@ -356,7 +356,7 @@ void peep_update_falling(rct_peep* peep){
 		final_element = map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 
 		// If a path check if we are on it
-		if (map_element->type == MAP_ELEMENT_TYPE_PATH){
+		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
 			int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
 				+ map_element->base_height * 8;
 
@@ -366,7 +366,7 @@ void peep_update_falling(rct_peep* peep){
 			saved_map = map_element;
 			break;
 		} // If a surface get the height and see if we are on it
-		else if (map_element->type == MAP_ELEMENT_TYPE_SURFACE){
+		else if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE){
 			// If the surface is water check to see if we could be drowning
 			if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK){
 				int height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
