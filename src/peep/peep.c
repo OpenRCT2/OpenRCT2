@@ -658,6 +658,7 @@ static void peep_update_queuing(rct_peep* peep){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
+		return;
 	}
 
 	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -1313,6 +1314,30 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	return;
 }
 
+/* rct2: 0x006912A3 */
+static void peep_update_buying(rct_peep* peep)
+{
+	RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+	return;
+	if (!sub_68F3AE(peep))return;
+	
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+	if (ride->type == RIDE_TYPE_NULL || ride->status != RIDE_STATUS_OPEN){
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		return;
+	}
+	
+	if (ride->type == RIDE_TYPE_ATM){
+		//6913D9
+	}
+	
+	if (peep->sub_state == 1){
+		//69138F
+	}
+	//6912E9
+}
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -1695,7 +1720,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_BUYING:
-			RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_buying(peep);
 			break;
 		case PEEP_STATE_WATCHING:
 			peep_update_watching(peep);
