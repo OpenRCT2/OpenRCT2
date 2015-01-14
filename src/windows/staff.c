@@ -1132,7 +1132,7 @@ void window_staff_overview_tool_down(){
 
 		int dest_z = ((uint8*)edx)[2] * 8 + 16;
 
-		if (!sub_664F72(tile_x, tile_y, dest_z)){
+		if (!map_is_location_owned(tile_x, tile_y, dest_z)){
 			window_error_open(0x785, -1);
 			return;
 		}
