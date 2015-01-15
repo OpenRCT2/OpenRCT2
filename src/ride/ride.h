@@ -612,6 +612,7 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_update_all();
 void ride_check_all_reachable();
+void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(ride_list_item listItem);

@@ -1119,6 +1119,22 @@ static void ride_chairlift_update(rct_ride *ride)
 	map_invalidate_tile(x, y, z, z + (4 * 8));
 }
 
+/* rct2: 0x0069A3D7
+ * Updates the ride popularity
+ * edi : ride
+ * bl  : pop_amount
+ * pop_amount can be zero if peep visited but did not purchase.
+ */
+void ride_update_popularity(rct_ride* ride, uint8 pop_amount){
+	ride->popularity_next += pop_amount;
+	ride->popularity_time_out++;
+	if (ride->popularity_time_out < 25)return;
+
+	ride->popularity = ride->popularity_next;
+	ride->popularity_time_out = 0;
+	ride->var_14D |= 1;
+}
+
 /**
  *
  *  rct2: 0x006AC545
