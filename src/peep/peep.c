@@ -1336,6 +1336,15 @@ static void peep_update_buying(rct_peep* peep)
 	if (peep->sub_state == 1){
 		//69138F
 	}
+
+	if (peep->current_ride != peep->var_AD){
+		rct_ride_type* ride_type = gRideTypeList[ride->subtype];
+		if (ride_type->shop_item_secondary != 0xFF){
+			money16 price = ride->price_secondary;
+
+			RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item_secondary | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0);
+		}
+	}
 	//6912E9
 }
 /* rct2: 0x0069030A */

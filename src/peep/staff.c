@@ -204,7 +204,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		sprite_move( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
 		invalidate_sprite((rct_sprite*)newPeep);
 
-		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
+		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 		newPeep->var_CC = 0xFFFFFFFF;
 
 		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];

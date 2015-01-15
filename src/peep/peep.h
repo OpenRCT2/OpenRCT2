@@ -434,7 +434,7 @@ typedef struct {
 	money32 cash_spent;				// 0xA4
 	sint32 time_in_park;			// 0xA8
 	uint8 var_AC;					// 0xAC
-	uint8 var_AD;					// creation/hire time?
+	uint8 var_AD;					// 0xAD
 	uint16 var_AE;
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
