@@ -220,8 +220,8 @@ typedef struct {
 	uint8 var_1A1;
 	uint8 var_1A2;
 	uint8 var_1A3;
-	uint32 no_primary_items_sold;
-	uint32 no_secondary_items_sold;
+	uint32 no_primary_items_sold;	// 0x1A4
+	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 var_1AC;
 	uint8 var_1AD;
 	uint8 var_1AE;

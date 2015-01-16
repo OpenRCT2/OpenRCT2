@@ -1317,8 +1317,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 /* rct2: 0x006912A3 */
 static void peep_update_buying(rct_peep* peep)
 {
-	RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
-	return;
+	//RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
+	//return;
+
 	if (!sub_68F3AE(peep))return;
 	
 	rct_ride* ride = GET_RIDE(peep->current_ride);
@@ -1330,22 +1331,116 @@ static void peep_update_buying(rct_peep* peep)
 	}
 	
 	if (ride->type == RIDE_TYPE_ATM){
-		//6913D9
+		if (peep->sub_state == 1){
+			if (peep->action != 0xFF){
+				sint16 x, y;
+				sub_6939EB(&x, &y, peep);
+				return;
+			}
+
+			if (peep->current_ride != peep->var_AD){
+				peep->cash_in_pocket += 500;
+			}
+
+			window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+			peep->sprite_direction ^= 0x10;
+			peep->destination_x = peep->next_x + 16;
+			peep->destination_y = peep->next_y + 16;
+			peep->var_78 ^= 2;
+
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_WALKING;
+			peep_window_state_update(peep);
+			return;
+		}
+
+		if (peep->current_ride == peep->var_AD){
+			ride_update_popularity(ride, 0);
+			peep->sub_state = 1;
+			return;
+		}
+
+		uint8 atm_used = 0;
+		atm_used = !(RCT2_CALLPROC_X(0x0069AEB7, peep->current_ride << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
+
+		if (atm_used){
+			peep->var_AD = peep->current_ride;
+			peep->var_AE = 0;
+			ride_update_popularity(ride, 0);
+			peep->sub_state = 1;
+			return;
+		}
+
+		peep->action = PEEP_ACTION_30;
+		peep->action_frame = 0;
+		peep->var_70 = 0;
+
+		sub_693B58(peep);
+		invalidate_sprite((rct_sprite*)peep);
+
+		ride->no_primary_items_sold++;
+		ride_update_popularity(ride, 1);
+
+		// Peep thought related
+		RCT2_CALLPROC_X(0x00699FE3, ride->type, 0, 0, 0, (int)peep, 0, 0);
+		peep->sub_state = 1;
+		return;
 	}
 	
 	if (peep->sub_state == 1){
-		//69138F
+		if (peep->action != 0xFF){
+			sint16 x, y;
+			sub_6939EB(&x, &y, peep);
+			return;
+		}
+
+		peep->sprite_direction ^= 0x10;
+		peep->destination_x = peep->next_x + 16;
+		peep->destination_y = peep->next_y + 16;
+		peep->var_78 ^= 2;
+
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_WALKING;
+		peep_window_state_update(peep);
+		return;
 	}
+
+	uint8 item_bought = 0;
 
 	if (peep->current_ride != peep->var_AD){
 		rct_ride_type* ride_type = gRideTypeList[ride->subtype];
 		if (ride_type->shop_item_secondary != 0xFF){
 			money16 price = ride->price_secondary;
 
-			RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item_secondary | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0);
+			item_bought = !(RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item_secondary | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
+
+			if (item_bought){
+				ride->no_secondary_items_sold++;
+			}
+		}
+
+		if (!item_bought && ride_type->shop_item != 0xFF){
+			money16 price = ride->price;
+
+			item_bought = !(RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
+
+			if (item_bought){
+				ride->no_primary_items_sold++;
+			}
 		}
 	}
-	//6912E9
+
+	if (item_bought){
+		ride_update_popularity(ride, 1);
+
+		// Peep thought related
+		RCT2_CALLPROC_X(0x00699FE3, ride->type, 0, 0, 0, (int)peep, 0, 0);
+	}
+	else{
+		ride_update_popularity(ride, 0);
+	}		
+	peep->sub_state = 1;
+	return;
 }
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
