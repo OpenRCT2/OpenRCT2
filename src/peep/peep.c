@@ -1338,8 +1338,8 @@ static void peep_update_buying(rct_peep* peep)
 		}
 
 		if (ride->type == RIDE_TYPE_ATM){
-			if (peep->current_ride != peep->var_AD){
-				peep->cash_in_pocket += 500;
+			if (peep->current_ride != peep->previous_ride){
+				peep->cash_in_pocket += MONEY(50,00);
 			}
 			window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 		}
@@ -1356,16 +1356,16 @@ static void peep_update_buying(rct_peep* peep)
 
 	uint8 item_bought = 0;
 
-	if (peep->current_ride != peep->var_AD){
+	if (peep->current_ride != peep->previous_ride){
 		if (ride->type == RIDE_TYPE_ATM){
 			item_bought = !(RCT2_CALLPROC_X(0x0069AEB7, peep->current_ride << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
 
 			if (!item_bought){
-				peep->var_AD = peep->current_ride;
-				peep->var_AE = 0;
+				peep->previous_ride = peep->current_ride;
+				peep->previous_ride_time_out = 0;
 			}
 			else{
-				peep->action = PEEP_ACTION_30;
+				peep->action = PEEP_ACTION_WITHDRAW_MONEY;
 				peep->action_frame = 0;
 				peep->var_70 = 0;
 
@@ -1411,6 +1411,7 @@ static void peep_update_buying(rct_peep* peep)
 	peep->sub_state = 1;
 	return;
 }
+
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -1711,9 +1712,9 @@ static void peep_update(rct_peep *peep)
 	//return;
 
 	if (peep->type == PEEP_TYPE_GUEST) {
-		if (peep->var_AD != 255)
-			if (++peep->var_AE < 720)
-				peep->var_AD = 255;
+		if (peep->previous_ride != 255)
+			if (++peep->previous_ride_time_out >= 720)
+				peep->previous_ride = 255;
 
 		peep_update_thoughts(peep);
 	}
