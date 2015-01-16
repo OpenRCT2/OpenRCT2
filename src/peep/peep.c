@@ -1139,10 +1139,12 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 
 	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 0x3;
 
-	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[(peep->x & 0x1FE0 << 3) | (peep->y >> 5)];
+	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
 	uint8 free_edge = 3;
 
-	for (rct_sprite* sprite = &g_sprite_list[sprite_id]; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+		sprite = &g_sprite_list[sprite_id];
+
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
 
 		if (sprite->peep.state != PEEP_STATE_SITTING)continue;
@@ -1608,8 +1610,10 @@ static void peep_update_walking(rct_peep* peep){
 		ride_seat_to_view = (ecx & 0xFF00) >> 8;
 	}
 
-	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[(peep->x & 0x1FE0 << 3) | (peep->y >> 5)];
-	for (rct_sprite* sprite = &g_sprite_list[sprite_id]; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
+	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+		sprite = &g_sprite_list[sprite_id];
+
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
 
 		if (sprite->peep.state != PEEP_STATE_WATCHING)continue;
