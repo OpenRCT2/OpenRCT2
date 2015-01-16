@@ -37,6 +37,7 @@ static int peep_has_empty_container(rct_peep* peep);
 static int peep_has_food_standard_flag(rct_peep* peep);
 static int peep_has_food_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
+static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1404,8 +1405,7 @@ static void peep_update_buying(rct_peep* peep)
 	if (item_bought){
 		ride_update_popularity(ride, 1);
 
-		// Peep thought related
-		RCT2_CALLPROC_X(0x00699FE3, ride->type, 0, 0, 0, (int)peep, 0, 0);
+		peep_stop_purchase_thought(peep, ride->type);
 	}
 	else{
 		ride_update_popularity(ride, 0);
@@ -2536,6 +2536,45 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 	peep->thoughts[0].var_3 = 0;
 
 	peep->var_45 |= (1 << 0);
+}
+
+/* rct2: 0x00699FE3 
+ * Stops peeps that are having thoughts
+ * such as "I'm hungry" after visiting a food shop.
+ * Works for Thirst/Hungry/Low Money/Bathroom
+ */
+static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
+
+	uint8 thought_type = PEEP_THOUGHT_TYPE_HUNGRY;
+
+	if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x800000)){
+		thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
+		if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x1000000)){
+			thought_type = PEEP_THOUGHT_RUNNING_OUT;
+			if (ride_type != RIDE_TYPE_ATM){
+				thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
+				if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x2000000)){
+					return;
+				}
+			}
+		}
+	}
+
+	//Remove the related thought
+	for (int i = 0; i < PEEP_MAX_THOUGHTS; ++i){
+		rct_peep_thought* thought = &peep->thoughts[i];
+
+		if (thought->type == PEEP_THOUGHT_TYPE_NONE) break;
+
+		if (thought->type != thought_type)continue;
+
+		memmove(thought, thought + 1, sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
+
+		peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+
+		peep->var_45 |= (1 << 0);
+		i--;
+	}
 }
 
 void peep_set_map_tooltip(rct_peep *peep)
