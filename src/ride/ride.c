@@ -1131,6 +1131,7 @@ void ride_update_popularity(rct_ride* ride, uint8 pop_amount){
 	if (ride->popularity_time_out < 25)return;
 
 	ride->popularity = ride->popularity_next;
+	ride->popularity_next = 0;
 	ride->popularity_time_out = 0;
 	ride->var_14D |= 1;
 }

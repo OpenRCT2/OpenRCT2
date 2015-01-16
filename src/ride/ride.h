@@ -181,7 +181,7 @@ typedef struct {
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154
 	uint8 popularity;				// 0x158
-	uint8 popularity_time_out;		// 0x159 Updated every purchase and also by time
+	uint8 popularity_time_out;		// 0x159 Updated every purchase and ?possibly by time?
 	uint8 popularity_next;			// 0x15A When timeout reached this will be the next popularity
 	uint8 num_riders;				// 0x15B
 	uint8 music_tune_id;			// 0x15C
