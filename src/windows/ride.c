@@ -2431,7 +2431,7 @@ static void window_ride_vehicle_invalidate()
 
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
-	if (var_496(w) <= 1 && (w->enabled_widgets & (1 << WIDX_TAB_10))) {
+	if (var_496(w) <= 1 || (w->enabled_widgets & (1 << WIDX_TAB_10))) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
@@ -2508,18 +2508,24 @@ static void window_ride_vehicle_paint()
 	if (!(rideEntry->var_008 & 0x2000) && var_496(w) > 1) {
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
-		gfx_draw_string_left(dpi, 3125, &factor, 0, x, y);
-		y += 10;
+		if (factor > 0) {
+			gfx_draw_string_left(dpi, 3125, &factor, 0, x, y);
+			y += 10;
+		}
 
 		// Intensity Factor
 		factor = rideEntry->intensity_multipler;
-		gfx_draw_string_left(dpi, 3126, &factor, 0, x, y);
-		y += 10;
+		if (factor > 0) {
+			gfx_draw_string_left(dpi, 3126, &factor, 0, x, y);
+			y += 10;
+		}
 
 		// Nausea Factor
 		factor = rideEntry->nausea_multipler;
-		gfx_draw_string_left(dpi, 3127, &factor, 0, x, y);
-		y += 10;
+		if (factor > 0) {
+			gfx_draw_string_left(dpi, 3127, &factor, 0, x, y);
+			y += 10;
+		}
 	}
 }
 
