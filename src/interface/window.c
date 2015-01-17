@@ -1654,6 +1654,38 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position + 1] = swap;
 }
 
+/* rct2: 0x006ED710 
+ * Called after a window resize to move windows if they
+ * are going to be out of sight.
+ */
+void window_relocate_windows(int width, int height){
+	int new_location = 8;
+	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++){
+
+		// Work out if the window requires moving
+		if (w->x + 10 < width){
+			if (w->flags&(WF_STICK_TO_BACK | WF_STICK_TO_FRONT)){
+				if (w->y -22 < height)continue;
+			}
+			if (w->y + 10 < height)continue;
+		}
+
+		// Calculate the new locations
+		int x = w->x;
+		int y = w->y;
+		w->x = new_location;
+		w->y = new_location + 28;
+
+		// Move the next new location so windows are not directly on top
+		new_location += 8;
+
+		// Adjust the viewport if required.
+		if (w->viewport){
+			w->viewport->x -= x - w->x;
+			w->viewport->y -= y - w->y;
+		}
+	}
+}
 
 /**
 * rct2: 0x0066B905

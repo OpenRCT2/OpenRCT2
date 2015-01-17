@@ -286,7 +286,7 @@ static void osinterface_resize(int width, int height)
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
 	window_resize_gui(width, height);
-	//RCT2_CALLPROC_EBPSAFE(0x0066B905); // resize_gui()
+	window_relocate_windows(width, height);
 
 	gfx_invalidate_screen();
 }
