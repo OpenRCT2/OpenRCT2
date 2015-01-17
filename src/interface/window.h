@@ -481,6 +481,7 @@ void window_update_viewport_ride_music();
 
 // Open window functions
 void window_main_open();
+void window_relocate_windows(int width, int height);
 void window_resize_gui(int width, int height);
 void window_resize_gui_scenario_editor(int width, int height);
 void window_game_top_toolbar_open();
