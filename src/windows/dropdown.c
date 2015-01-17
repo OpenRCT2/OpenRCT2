@@ -150,6 +150,14 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	// Set the widgets
 	gDropdownNumItems = num_items;
 	_dropdown_num_rows = num_items;
+
+	width = _dropdown_item_width * _dropdown_num_columns + 3;
+	int height = _dropdown_item_height * _dropdown_num_rows + 3;
+	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16))
+		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - width);
+	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
+		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height);
+
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
 	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
 
