@@ -50,10 +50,6 @@ static const char *const usage[] = {
  */
 int cmdline_run(const char **argv, int argc)
 {
-	// For argparse's sake, add virtual first argument process path
-	argc++;
-	argv--;
-
 	// 
 	int version = 0, verbose = 0, width = 0, height = 0;
 

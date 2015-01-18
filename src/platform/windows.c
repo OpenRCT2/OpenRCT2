@@ -70,7 +70,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	// Get command line arguments in standard form
 	argv = CommandLineToArgvA(lpCmdLine, &argc);
 	runGame = cmdline_run(argv, argc);
-	//LocalFree(argv);
+	GlobalFree(argv);
 
 	if (runGame)
 		openrct2_launch();
@@ -243,11 +243,13 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
 
 	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR));
+		i + (len + 2)*sizeof(CHAR) + 1);
 
 	_argv = (PCHAR)(((PUCHAR)argv) + i);
 
-	argc = 0;
+	// Add in virtual 1st command line argument, process path, for arg_parse's sake.
+	argv[0] = 0;
+	argc = 1;
 	argv[argc] = _argv;
 	in_QM = FALSE;
 	in_TEXT = FALSE;
