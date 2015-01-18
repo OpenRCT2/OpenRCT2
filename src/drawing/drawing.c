@@ -136,7 +136,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 	rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[pal];
 	int width = g1.width;
 	int x = g1.x_offset;  
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x014124680,uint8)[x]);
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
