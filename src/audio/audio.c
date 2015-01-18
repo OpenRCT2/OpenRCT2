@@ -693,32 +693,32 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 	rct_sound_effect* sound_effect = sound_get_effect(sound_id);
 	if (sound_effect) {
 		if (sound_effect_loadvars(sound_effect, &bufferdesc.lpwfxFormat, &buffer, &bufferdesc.dwBufferBytes)) {
-			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
-			if (channels) {
-				if (channels == 2) {
+			if (channels == 0){
+				bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
+			}
+			else if (channels == 2) {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
-				} else {
+			} else {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
+			}
+			if (RCT2_GLOBAL(0x009E2B90, uint32)) {
+				bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
+			}
+			if (software) {
+				bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
+			}
+			if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
+				if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
+					sound->id = sound_id;
+					DSBCAPS caps;
+					caps.dwSize = sizeof(caps);
+					sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
+					sound->has_caps = caps.dwFlags;
+					sound_add(sound);
+					return 1;
 				}
-				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
-					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
-				}
-				if (software) {
-					bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
-				}
-				if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
-					if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
-						sound->id = sound_id;
-						DSBCAPS caps;
-						caps.dwSize = sizeof(caps);
-						sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
-						sound->has_caps = caps.dwFlags;
-						sound_add(sound);
-						return 1;
-					}
-					sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
-					sound->dsbuffer = 0;
-				}
+				sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
+				sound->dsbuffer = 0;
 			}
 			sound->dsbuffer = 0;
 		}

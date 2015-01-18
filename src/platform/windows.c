@@ -70,7 +70,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	// Get command line arguments in standard form
 	argv = CommandLineToArgvA(lpCmdLine, &argc);
 	runGame = cmdline_run(argv, argc);
-	LocalFree(argv);
+	//LocalFree(argv);
 
 	if (runGame)
 		openrct2_launch();
