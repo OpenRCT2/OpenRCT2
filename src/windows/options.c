@@ -791,7 +791,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int 
 static void window_options_update_height_markers() 
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) = gGeneral_config.show_height_as_units ?
-		0 : (gGeneral_config.show_height_as_units + 1) * 256;
+		0 : (gGeneral_config.measurement_format + 1) * 256;
 	config_save();
 	gfx_invalidate_screen();
 }
