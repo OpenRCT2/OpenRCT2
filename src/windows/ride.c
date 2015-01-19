@@ -1554,39 +1554,6 @@ static void window_ride_rename(rct_window *w)
 
 /**
  * 
- * rct2: 0x006AF3B3
- */
-static void window_ride_locate(rct_window *w)
-{
-	rct_window *mainWindow;
-	int xy, x, y, z;
-
-	if (w->viewport->width == 0)
-		return;
-
-	xy = w->ride.var_482;
-	z = w->ride.var_486;
-	if (xy == -1)
-		return;
-
-	if (xy & 0x80000000) {
-		rct_sprite *sprite = &g_sprite_list[xy & 0xFFFF];
-		x = sprite->unknown.x;
-		y = sprite->unknown.y;
-		z = sprite->unknown.z;
-	} else {
-		x = (xy & ~0xC0000000) & 0xFFFF;
-		y = (xy & ~0xC0000000) >> 16;
-		z = z >> 16;
-	}
-
-	mainWindow = window_get_main();
-	if (mainWindow != NULL)
-		window_scroll_to_location(mainWindow, x, y, z);
-}
-
-/**
- * 
  * rct2: 0x006AF17E
  */
 static void window_ride_main_mouseup()
@@ -1619,7 +1586,7 @@ static void window_ride_main_mouseup()
 		window_ride_rename(w);
 		break;
 	case WIDX_LOCATE:
-		window_ride_locate(w);
+		window_scroll_to_viewport(w);
 		break;
 	case WIDX_DEMOLISH:
 		window_ride_demolish_prompt_open(w->number);
