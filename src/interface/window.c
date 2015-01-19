@@ -1007,7 +1007,7 @@ rct_window *window_get_main()
 
 /**
  * Based on 
- * rct2: 0x696ee9 & 0x66842F
+ * rct2: 0x696ee9 & 0x66842F & 0x006AF3B3
  * 
  */
 void window_scroll_to_viewport(rct_window *w)
