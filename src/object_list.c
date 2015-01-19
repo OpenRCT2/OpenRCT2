@@ -194,8 +194,10 @@ void object_list_load()
 
 	// Reload object list
 
-	if (RCT2_GLOBAL(0x9AA00D, uint8) != 0)
-		RCT2_GLOBAL(0x9AA00D, uint8) = 0;
+	// RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS used to control if this was the first time loading objects
+	// and display the starting RCT2 for the first time message.
+	//if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) != 0)
+	//	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) = 0;
 
 	sub_6A9FC0();
 
