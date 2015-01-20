@@ -81,6 +81,7 @@
     <Text Include="..\..\data\language\german.txt" />
     <Text Include="..\..\data\language\hungarian.txt" />
     <Text Include="..\..\data\language\polish.txt" />
+    <Text Include="..\..\data\language\portugues_br.txt" />
     <Text Include="..\..\data\language\spanish_sp.txt" />
     <Text Include="..\..\data\language\swedish.txt" />
   </ItemGroup>
