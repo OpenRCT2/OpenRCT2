@@ -412,3 +412,28 @@ static void encode_chunk_rotate(char *buffer, int length)
 }
 
 #pragma endregion
+
+int sawyercoding_detect_file_type(char *src, int length)
+{
+	int i;
+
+	// Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
+
+	uint32 checksum = *((uint32*)&src[length - 4]);
+	uint32 actualChecksum = 0;
+	for (i = 0; i < length - 4; i++) {
+		actualChecksum = (actualChecksum & 0xFFFFFF00) | (((actualChecksum & 0xFF) + (uint8)src[i]) & 0xFF);
+		actualChecksum = rol32(actualChecksum, 3);
+	}
+
+	switch (checksum - actualChecksum) {
+	case +108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SV4;
+	case -108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SC4;
+	case +110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SV4;
+	case -110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SC4;
+	case +120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SV4;
+	case -120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SC4;
+	}
+
+	return -1;
+}

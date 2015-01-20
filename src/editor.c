@@ -330,6 +330,258 @@ void editor_load_landscape(const char *path)
 
 /**
  *
+ *  rct2: 0x00666DFD
+ */
+static void sub_666DFD()
+{
+	int x, y;
+	rct_map_element *mapElement;
+
+	x = RCT2_GLOBAL(0x013573EA, uint16);
+	y = RCT2_GLOBAL(0x013573EC, uint16);
+	if (x == 0x8000)
+		return;
+
+	x /= 32;
+	y /= 32;
+	mapElement = TILE_MAP_ELEMENT_POINTER(x + y * 256);
+	do {
+		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
+				mapElement->properties.entrance.path_type = 0;
+				break;
+			}
+		}
+	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+}
+
+/**
+ *
+ *  rct2: 0x0069F06A
+ */
+static void sub_69F06A()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F06A); return;
+
+	// TODO, bug with the following code
+	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 0) | (1 << 1) | (1 << 14) | (1 << 2) | (1 << 3);
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 4))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 4);
+		RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	}
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 6))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 6);
+		RCT2_CALLPROC_EBPSAFE(0x0069E891);
+	}
+	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 7);
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 8))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 8);
+		sub_666DFD();
+	}
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 9))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 9);
+		RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+	}
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 13))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 13);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 127 * 32;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = 4350;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 128;
+		RCT2_GLOBAL(0x01358836, uint16) = 4095;
+	}
+	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 15))) {
+		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 15);
+		RCT2_GLOBAL(0x01358838, uint32) = 0;
+	}
+	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 16) | (1 << 18) | (1 << 19);
+}
+
+/**
+ *
+ *  rct2: 0x006A2B62
+ */
+static void sub_6A2B62()
+{
+	int i, x, y;
+	rct_sprite *sprite;
+	rct_ride *ride;
+	rct_map_element *mapElement;
+
+	RCT2_CALLPROC_EBPSAFE(0x0069F007);
+
+	// Free sprite user strings
+	for (i = 0; i < MAX_SPRITES; i++) {
+		sprite = &g_sprite_list[i];
+		if (sprite->unknown.sprite_identifier != 255)
+			user_string_free(sprite->unknown.name_string_idx);
+	}
+
+	reset_sprite_list();
+
+	// Free ride user strings
+	FOR_ALL_RIDES(i, ride)
+		user_string_free(ride->name);
+
+	ride_init_all();
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
+	RCT2_GLOBAL(0x01357BC8, uint16) = 0;
+	RCT2_GLOBAL(0x013573FE, uint8) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x0069F44B);
+	sub_69F06A();
+	RCT2_CALLPROC_EBPSAFE(0x0069F143);
+	RCT2_CALLPROC_EBPSAFE(0x0069F2D0);
+	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
+
+	// Fix paths and remove all ride track / entrance / exit
+	for (y = 0; y < 256; y++) {
+		for (x = 0; x < 256; x++) {
+		resetElementLoop:
+			mapElement = TILE_MAP_ELEMENT_POINTER(x + y * 256);
+			do {
+				switch (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
+				case MAP_ELEMENT_TYPE_PATH:
+					if (mapElement->type & 1) {
+						mapElement->properties.path.type &= 0xF7;
+						mapElement->properties.path.addition_status = 255;
+					}
+					break;
+
+				case MAP_ELEMENT_TYPE_TRACK:
+					RCT2_CALLPROC_EBPSAFE(0x006A7594);
+					sub_6A6AA7(x * 32, y * 32, mapElement);
+					map_element_remove(mapElement);
+					goto resetElementLoop;
+
+				case MAP_ELEMENT_TYPE_ENTRANCE:
+					if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
+						RCT2_CALLPROC_EBPSAFE(0x006A7594);
+						sub_6A6AA7(x * 32, y * 32, mapElement);
+						map_element_remove(mapElement);
+						goto resetElementLoop;
+					}
+					break;
+				}
+			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
+
+	object_unload_all();
+
+	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
+	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	RCT2_CALLPROC_EBPSAFE(0x006A2730);
+	RCT2_CALLPROC_EBPSAFE(0x006A2956);
+	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
+	RCT2_CALLPROC_EBPSAFE(0x006A2A68);
+	RCT2_CALLPROC_EBPSAFE(0x0069F509);
+	RCT2_CALLPROC_EBPSAFE(0x00685675);
+	RCT2_CALLPROC_EBPSAFE(0x0068585B);
+
+	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	news_item_init_queue();
+	window_editor_main_open();
+
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	s6Info->var_000 = 1;
+	s6Info->category = 4;
+	format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
+	s6Info->name[0] = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) & PARK_FLAGS_NO_MONEY) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= PARK_FLAGS_NO_MONEY_SCENARIO;
+	}
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY_FREE) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) |= PARK_FLAGS_PARK_FREE_ENTRY;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= ~PARK_FLAGS_18;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
+		MONEY(10,00),
+		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
+		MONEY(100,00)
+	);
+	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = min(
+		MONEY(10000,00),
+		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
+	);
+	RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
+		MONEY(0,00),
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
+		MONEY(5000000,00)
+	);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
+		MONEY(0,00),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
+		MONEY(5000000,00)
+	);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
+		5,
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
+		80
+	);
+
+	if (
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_NONE ||
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_HAVE_FUN ||
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_BUILD_THE_BEST
+	) {
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_GUESTS_BY;
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1000;
+	}
+
+	RCT2_GLOBAL(0x01358774, uint16) = 0;
+
+	// Initialise main view
+	rct_window *w = window_get_main();
+	rct_viewport *viewport = w->viewport;
+
+	w->viewport_target_sprite = -1;
+	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
+	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+
+	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
+
+	int cx = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
+	if (cx != 0) {
+		if (cx >= 0) {
+			viewport->view_width <<= cx;
+			viewport->view_height <<= cx;
+		} else {
+			cx = -cx;
+			viewport->view_width >>= cx;
+			viewport->view_height >>= cx;
+		}
+	}
+	w->saved_view_x -= viewport->view_width >> 1;
+	w->saved_view_y -= viewport->view_height >> 1;
+
+	window_invalidate(w);
+	sub_69E9A7();
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	window_new_ride_init_vars();
+	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	gfx_invalidate_screen();
+
+	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+}
+
+/**
+ *
  *  rct2: 0x006A2B02
  */
 static int editor_load_landscape_from_sv4(const char *path)
@@ -355,7 +607,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 	editor_read_sv4(fpBuffer, fpLength);
 	free(fpBuffer);
 
-	RCT2_CALLPROC_EBPSAFE(0x006A2B62);
+	sub_6A2B62();
 	return 1;
 }
 
@@ -386,7 +638,7 @@ static int editor_load_landscape_from_sc4(const char *path)
 	editor_read_sc4(fpBuffer, fpLength);
 	free(fpBuffer);
 
-	RCT2_CALLPROC_EBPSAFE(0x006A2B62);
+	sub_6A2B62();
 	return 1;
 }
 
@@ -395,8 +647,12 @@ static int editor_read_sc4(char *src, int length)
 	int decodedLength;
 	char *decodedBuffer;
 
+	int fileType = sawyercoding_detect_file_type(src, length);
+
 	decodedBuffer = malloc(2065676);
-	decodedLength = sawyercoding_decode_sc4(src, decodedBuffer, length);
+	decodedLength = (fileType & FILE_VERSION_MASK) == FILE_VERSION_RCT1 ?
+		sawyercoding_decode_sv4(src, decodedBuffer, length) :
+		sawyercoding_decode_sc4(src, decodedBuffer, length);
 	if (decodedLength != 2065676) {
 		free(decodedBuffer);
 		return 0;
@@ -641,9 +897,9 @@ static int editor_read_s6(const char *path)
 				MONEY(5000000,00)
 			);
 
-			RCT2_GLOBAL(0x013580F0, money32) = clamp(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
 				MONEY(0,00),
-				RCT2_GLOBAL(0x013580F0, money32),
+				RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
 				MONEY(5000000,00)
 			);
 

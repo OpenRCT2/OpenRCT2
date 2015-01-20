@@ -98,6 +98,7 @@ typedef fixed32_1dp money32;
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
 #define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
 
+#define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
