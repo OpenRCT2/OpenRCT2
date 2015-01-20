@@ -23,6 +23,7 @@
 #include "config.h"
 #include "game.h"
 #include "editor.h"
+#include "world/footpath.h"
 #include "input.h"
 #include "localisation/localisation.h"
 #include "interface/screenshot.h"
@@ -386,7 +387,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	// Increment nest count
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
 
-	*ebx &= ~1;
+	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 	
 	// Primary command
 	if (game_do_command_table[command] == 0) {

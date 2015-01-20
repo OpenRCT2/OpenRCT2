@@ -311,7 +311,7 @@ int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y)
 {
 	// Check if location is in the park
-	if (!sub_664F72(x, y, mechanic->z))
+	if (!map_is_location_owned(x, y, mechanic->z))
 		return 0;
 
 	// Check if mechanic has patrol area

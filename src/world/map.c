@@ -476,7 +476,7 @@ int map_height_from_slope(int x, int y, int slope)
  *
  *  rct2: 0x00664F72
  */
-int sub_664F72(int x, int y, int z)
+int map_is_location_owned(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
@@ -560,7 +560,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 
 		// Check if the land is owned
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR))
-			if (!sub_664F72(x, y, RCT2_GLOBAL(0x009DEA62, uint32)))
+			if (!map_is_location_owned(x, y, RCT2_GLOBAL(0x009DEA62, uint32)))
 				return MONEY32_UNDEFINED;
 	}
 
@@ -944,4 +944,95 @@ void map_invalidate_selection_rect()
 	for (x = x0; x <= x1; x++)
 		for (y = y0; y <= y1; y++)
 			map_invalidate_tile_full(x, y);
+}
+
+/**
+ *
+ *  rct2: 0x0068B111
+ */
+void map_reorganise_elements()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0068B111);
+}
+
+/**
+ *
+ *  rct2: 0x0068B044
+ */
+int sub_68B044()
+{
+	return (RCT2_CALLPROC_X(0x0068B044, 0, 0, 0, 0, 0, 0, 0) & 0x100) == 0;
+}
+
+/**
+ *
+ *  rct2: 0x0068B1F6
+ */
+rct_map_element *map_element_insert(int x, int y, int z, int flags)
+{
+	rct_map_element *originalMapElement, *newMapElement, *insertedElement;
+
+	sub_68B044();
+
+	newMapElement = RCT2_GLOBAL(0x00140E9A4, rct_map_element*);
+	originalMapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+
+	// Set tile index pointer to point to new element block
+	TILE_MAP_ELEMENT_POINTER(y * 256 + x) = newMapElement;
+
+	// Copy all elements that are below the insert height
+	while (z >= originalMapElement->base_height) {
+		// Copy over map element
+		*newMapElement = *originalMapElement;
+		originalMapElement->base_height = 255;
+		originalMapElement++;
+		newMapElement++;
+
+		if ((newMapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+			// No more elements above the insert element
+			(newMapElement - 1)->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
+			flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+			break;
+		}
+	}
+
+	// Insert new map element
+	insertedElement = newMapElement;
+	newMapElement->base_height = z;
+	newMapElement->flags = flags;
+	newMapElement->clearance_height = z;
+	*((uint32*)&newMapElement->properties) = 0;
+	newMapElement++;
+
+	// Insert rest of map elements above insert height
+	if (!(flags & MAP_ELEMENT_FLAG_LAST_TILE)) {
+		do {
+			// Copy over map element
+			*newMapElement = *originalMapElement;
+			originalMapElement->base_height = 255;
+			originalMapElement++;
+			newMapElement++;
+		} while (!((newMapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	}
+
+	RCT2_GLOBAL(0x00140E9A4, rct_map_element*) = newMapElement;
+	return insertedElement;
+}
+
+/**
+ *
+ *  rct2: 0x0068B932
+ */
+int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl)
+{
+	return (RCT2_CALLPROC_X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
+}
+
+/**
+ *
+ *  rct2: 0x0068B93A
+ */
+int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl)
+{
+	return map_can_construct_with_clear_at(x, y, zLow, zHigh, (void*)0xFFFFFFFF, bl);
 }
