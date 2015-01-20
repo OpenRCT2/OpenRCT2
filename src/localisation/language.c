@@ -45,7 +45,7 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"hungarian",		// LANGUAGE_HUNGARIAN
 	"polish",			// LANGUAGE_POLISH
 	"spanish_sp",		// LANGUAGE_SPANISH
-	"swedish"			// LANGUAGE_SWEDISH
+	"swedish",			// LANGUAGE_SWEDISH
 	"portugues_br"		// LANGUAGE_PORTUGUESE_BR
 };
 
