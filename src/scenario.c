@@ -852,7 +852,7 @@ int scenario_save(char *path, int flags)
 	if (!(flags & 0x80000000))
 		window_close_construction_windows();
 
-	map_reorganise_elements();
+	RCT2_CALLPROC_EBPSAFE(0x0068B111);
 	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	RCT2_CALLPROC_EBPSAFE(0x0069EBA4);
 	RCT2_CALLPROC_EBPSAFE(0x00677552);

@@ -82,9 +82,6 @@ enum GAME_COMMAND {
 	GAME_COMMAND_CLEAR_SCENERY
 };
 
-// If this flag is set, the command is applied, otherwise only the cost is retrieved
-#define GAME_COMMAND_FLAG_APPLY (1 << 0)
-
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 extern int gGameSpeed;

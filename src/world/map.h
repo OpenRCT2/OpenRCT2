@@ -232,7 +232,7 @@ void sub_68B089();
 int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);
 void map_invalidate_animations();
 void sub_6A876D();
-int map_is_location_owned(int x, int y, int z);
+int sub_664F72(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
 void map_invalidate_tile(int x, int y, int zLow, int zHigh);
 void map_invalidate_tile_full(int x, int y);
@@ -242,11 +242,6 @@ void sub_6A6AA7(int x, int y, rct_map_element *mapElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
-void map_reorganise_elements();
-int sub_68B044();
-rct_map_element *map_element_insert(int x, int y, int z, int flags);
-int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
-int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 
 void fountain_update_all();
 

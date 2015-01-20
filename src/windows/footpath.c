@@ -773,7 +773,7 @@ static void window_footpath_construct()
  * 
  *  rct2: 0x006A78EF
  */
-static void footpath_remove_map_element(rct_map_element *mapElement)
+static rct_map_element *footpath_remove_map_element(rct_map_element *mapElement)
 {
 	int x, y, z;
 

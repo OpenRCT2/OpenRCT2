@@ -205,7 +205,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		} else if (mapElement->properties.track.type == 1 || mapElement->properties.track.type == 2 || mapElement->properties.track.type == 3) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1333;
 		} else {
-			if (!map_is_location_owned(x, y, mapElement->base_height << 4))
+			if (!sub_664F72(x, y, mapElement->base_height << 4))
 				return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
