@@ -176,6 +176,7 @@
     <ClInclude Include="..\src\peep\staff.h" />
     <ClInclude Include="..\src\platform\osinterface.h" />
     <ClInclude Include="..\src\platform\platform.h" />
+    <ClInclude Include="..\src\rct1.h" />
     <ClInclude Include="..\src\rct2.h" />
     <ClInclude Include="..\src\ride\ride.h" />
     <ClInclude Include="..\src\ride\ride_data.h" />

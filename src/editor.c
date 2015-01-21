@@ -32,6 +32,7 @@
 #include "object.h"
 #include "peep/staff.h"
 #include "platform/osinterface.h"
+#include "rct1.h"
 #include "ride/ride.h"
 #include "scenario.h"
 #include "util/sawyercoding.h"
@@ -47,7 +48,7 @@ static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
 static int editor_read_sc4(char *src, int length);
 static int editor_read_sv4(char *src, int length);
-static int editor_read_s4(char *src);
+static int editor_read_s4(rct1_s4 *data);
 static int editor_read_s6(const char *path);
 
 /**
@@ -297,12 +298,6 @@ void sub_6BD3A4() {
 	}
 	//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
 	sub_6C0C3F();
-}
-
-static void read(void *dst, void **src, int length)
-{
-	memcpy(dst, *src, length);
-	*((char**)src) += length;
 }
 
 /**
@@ -645,59 +640,64 @@ static int editor_load_landscape_from_sc4(const char *path)
 static int editor_read_sc4(char *src, int length)
 {
 	int decodedLength;
-	char *decodedBuffer;
+	rct1_s4 *data;
 
 	int fileType = sawyercoding_detect_file_type(src, length);
 
-	decodedBuffer = malloc(2065676);
+	data = malloc(sizeof(rct1_s4));
 	decodedLength = (fileType & FILE_VERSION_MASK) == FILE_VERSION_RCT1 ?
-		sawyercoding_decode_sv4(src, decodedBuffer, length) :
-		sawyercoding_decode_sc4(src, decodedBuffer, length);
-	if (decodedLength != 2065676) {
-		free(decodedBuffer);
+		sawyercoding_decode_sv4(src, (char*)data, length) :
+		sawyercoding_decode_sc4(src, (char*)data, length);
+	if (decodedLength != sizeof(rct1_s4)) {
+		free(data);
 		return 0;
 	}
 
-	editor_read_s4(decodedBuffer);
-	free(decodedBuffer);
+	editor_read_s4(data);
+	free(data);
 	return 1;
 }
 
 static int editor_read_sv4(char *src, int length)
 {
 	int decodedLength;
-	char *decodedBuffer;
+	rct1_s4 *data;
 
-	decodedBuffer = malloc(2065676);
-	decodedLength = sawyercoding_decode_sv4(src, decodedBuffer, length);
-	if (decodedLength != 2065676) {
-		free(decodedBuffer);
+	data = malloc(sizeof(rct1_s4));
+	decodedLength = sawyercoding_decode_sv4(src, (char*)data, length);
+	if (decodedLength != sizeof(rct1_s4)) {
+		free(data);
 		return 0;
 	}
 
-	editor_read_s4(decodedBuffer);
-	free(decodedBuffer);
+	editor_read_s4(data);
+	free(data);
 	return 1;
+}
+
+static void read(void *dst, void *src, int length)
+{
+	memcpy(dst, src, length);
 }
 
 /**
  *
  *  rct2: 0x0069EEA0
  */
-static int editor_read_s4(char *src)
+static int editor_read_s4(rct1_s4 *src)
 {
 	int i;
 	rct_banner *banner;
 
-	read((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &src, 16);
-	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, 0x60000 * 4);
-	read((void*)RCT2_ADDRESS_MAP_ELEMENTS, &src, 0x60000);
-	read((void*)0x010E63B8, &src, 0x138804);
+	read((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &src->month, 16);
+	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, 0x30000 * sizeof(rct_map_element));
+	read((void*)RCT2_ADDRESS_MAP_ELEMENTS, src->map_elements, sizeof(src->map_elements));
+	read((void*)0x010E63B8, &src->unk_counter, 4 + sizeof(src->sprites));
 
 	for (i = 0; i < MAX_BANNERS; i++)
 		gBanners[i].type = 255;
 
-	read((void*)0x013573BC, &src, 12424);
+	read((void*)0x013573BC, &src->next_sprite_index, 12424);
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
@@ -705,10 +705,10 @@ static int editor_read_s4(char *src)
 			banner->string_idx = 778;
 	}
 
-	read((void*)0x0135A8F4, &src, 0x2F51C);
+	read((void*)0x0135A8F4, &src->string_table, 0x2F51C);
 	memset((void*)0x013CA672, 0, 204);
-	read((void*)0x0138B580, &src, 0x258F2);
-	read((void*)0x013C6A72, &src, 0x3C00);
+	read((void*)0x0138B580, &src->animated_objects, 0x258F2);
+	read((void*)0x013C6A72, &src->patrol_areas, sizeof(src->patrol_areas));
 
 	char *esi = (char*)0x13C6A72;
 	char *edi = (char*)0x13B0E72;
@@ -733,9 +733,9 @@ static int editor_read_s4(char *src)
 		memset(edi, 0, 64); edi += 64;
 	} while (--edx);
 
-	read((void*)0x013CA672, &src, 116);
-	read((void*)0x013CA73A, &src, 4);
-	read((void*)0x013CA73E, &src, 0x41EA);
+	read((void*)0x013CA672, &src->unk_1F42AA, 116);
+	read((void*)0x013CA73A, &src->unk_1F431E, 4);
+	read((void*)0x013CA73E, &src->unk_1F4322, 0x41EA);
 	return 1;
 }
 

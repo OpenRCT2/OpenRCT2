@@ -203,6 +203,13 @@ enum {
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
+typedef struct {
+	sint16 x, y;
+} rct_xy16;
+
+typedef struct {
+	sint16 x, y, z;
+} rct_xyz16;
 
 typedef struct {
 	uint16 x;
@@ -210,11 +217,6 @@ typedef struct {
 	uint8 z;
 	uint8 direction;
 } rct2_peep_spawn;
-
-typedef struct {
-	sint16 x;
-	sint16 y;
-} rct_xy16;
 
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
