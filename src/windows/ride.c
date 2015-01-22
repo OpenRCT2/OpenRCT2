@@ -2398,7 +2398,7 @@ static void window_ride_vehicle_invalidate()
 
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
-	if (var_496(w) <= 1 || (w->enabled_widgets & (1 << WIDX_TAB_10))) {
+	if (var_496(w) <= 1 || (rideEntry->var_008 & (1 << 13))) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);

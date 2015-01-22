@@ -200,6 +200,7 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 
 	trackDesign = track_get_info(index, NULL);
+	if (trackDesign == NULL) return;
 	if (trackDesign->var_06 & 4)
 		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
 

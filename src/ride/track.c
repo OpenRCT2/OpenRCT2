@@ -273,7 +273,7 @@ rct_track_design* load_track_design(const char *path)
 	rct_track_design* track_design = RCT2_ADDRESS(0x009D8178, rct_track_design);
 	// Read decoded data
 	src = decoded;
-	// Clear top of track_design
+	// Clear top of track_design as this is not loaded from the file
 	memset(&track_design->pad_60, 0, 67);
 	// Read start of track_design
 	read(track_design, &src, 32);
@@ -290,7 +290,7 @@ rct_track_design* load_track_design(const char *path)
 	read(&track_design->preview, &src, 24572);
 	al = track_design->var_07 >> 2;
 	if (al < 2) {
-		if (track_design->type == 20) {
+		if (track_design->type == RIDE_TYPE_MAZE) {
 			edi = (uint8*)(&track_design->preview);
 			while (*edi != 0) {
 				edi += 4;
@@ -326,13 +326,13 @@ rct_track_design* load_track_design(const char *path)
 		if (!RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
 			track_design->type = 255;
 
-		if (track_design->type == 4)
-			track_design->type = 255;
+		if (track_design->type == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+			track_design->type = RIDE_TYPE_NULL;
 
-		if (track_design->type == 0)
-			track_design->type = 52;
+		if (track_design->type == RIDE_TYPE_SPIRAL_ROLLER_COASTER)
+			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
-		if (track_design->type == 19) {
+		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
 			if (track_design->var_06 == 3)
 				track_design->var_06 = 35;
 			if (track_design->var_01 == 79) {
@@ -341,19 +341,19 @@ rct_track_design* load_track_design(const char *path)
 			}
 		}
 
-		int unk1;
-		if (track_design->type == 20) {
-			unk1 = 0x0097F66C;
+		rct_object_entry* vehicle_object;
+		if (track_design->type == RIDE_TYPE_MAZE) {
+			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
 			int var_01 = track_design->var_01;
 			if (var_01 == 3 && track_design->type == 3)
 				var_01 = 80;
-			unk1 = 0x0097F0DC + (var_01 * 16);
+			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[var_01];
 		}
 
-		memcpy(&track_design->pad_70, (void*)unk1, 16);
+		memcpy(&track_design->vehicle_object, vehicle_object, sizeof(rct_object_entry));
 		for (i = 0; i < 32; i++)
-			track_design->pad_82[i] = track_design->pad_09[i * 2];
+			track_design->pad_82[i] = track_design->pad_08[1 + i * 2];
 
 		track_design->space_required_x = 255;
 		track_design->space_required_y = 255;
@@ -411,8 +411,11 @@ rct_track_design *track_get_info(int index, uint8** preview)
 
 		rct_track_design* loaded_design = NULL;
 
+		log_verbose("Loading track: %s", trackDesignList + (index * 128));
+
 		if (!(loaded_design = load_track_design(track_path))) {
 			if (preview != NULL) *preview = NULL;
+			log_error("Failed to load track: %s", trackDesignList + (index * 128));
 			return NULL;
 		}
 

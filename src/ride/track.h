@@ -23,6 +23,7 @@
 
 #include "../common.h"
 #include "ride.h"
+#include "../object.h"
 
 typedef struct {
 	uint8 type;
@@ -46,8 +47,7 @@ typedef struct {
 	money32 cost;									// 0x02
 	uint8 var_06;
 	uint8 var_07;
-	uint8 pad_08;
-	uint8 pad_09[0x17];
+	uint8 pad_08[0x18];
 	uint8 pad_20[40];
 	uint8 pad_48[2];
 	uint8 total_air_time;							// 0x4A
@@ -71,7 +71,7 @@ typedef struct {
 	uint8 pad_5E[2];
 	uint8 pad_60[0xC];
 	uint32 var_6C;
-	uint8 pad_70[0x10];
+	rct_object_entry vehicle_object;				// 0x70
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
 	uint8 pad_82[0x1D];
