@@ -296,7 +296,7 @@ void window_editor_top_toolbar_dropdown() {
 			if (dropdownIndex == DDIDX_SE_LOAD_LANDSCAPE) {
 				game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			} else if (dropdownIndex == DDIDX_SE_SAVE_LANDSCAPE) {
-				RCT2_CALLPROC(0x0066FE2A);
+				RCT2_CALLPROC_EBPSAFE(0x0066FE2A);
 			} else if (dropdownIndex == DDIDX_SE_ABOUT) {
 				window_about_open();
 			} else if (dropdownIndex == DDIDX_SE_OPTIONS) {

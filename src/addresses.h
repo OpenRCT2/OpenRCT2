@@ -500,21 +500,6 @@
 
 #pragma endregion
 
-static void RCT2_CALLPROC_EBPSAFE(int address)
-{
-	#ifdef _MSC_VER
-	__asm push ebp
-	__asm call address
-	__asm pop ebp
-	#else
-	__asm__ ( "\
-		push ebp \n\
-		call %[address] \n\
-		pop ebp \n\
-		" : [address] "+m" (address) );
-	#endif
-}
-
 /* Returns the flags register
  *
  *Flags register is as follows:
@@ -569,45 +554,9 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 	#endif
 }
 
-static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+static int RCT2_CALLPROC_EBPSAFE(int address)
 {
-	#ifdef _MSC_VER
-	__asm {
-		push ebp
-		push address
-		mov eax, _eax
-		mov ebx, _ebx
-		mov ecx, _ecx
-		mov edx, _edx
-		mov esi, _esi
-		mov edi, _edi
-		mov ebp, _ebp
-		call[esp]
-		add esp, 4
-		pop ebp
-	}
-	#else
-	__asm__ ( "\
-	\n\
-	push ebx \n\
-	push ebp \n\
-	push %[address] 	\n\
-	mov eax, %[_eax] 	\n\
-	mov ebx, %[_ebx] 	\n\
-	mov ecx, %[_ecx] 	\n\
-	mov edx, %[_edx] 	\n\
-	mov esi, %[_esi] 	\n\
-	mov edi, %[_edi] 	\n\
-	mov ebp, %[_ebp] 	\n\
-	call [esp] 	\n\
-	add esp, 4 	\n\
-	pop ebp \n\
-	pop ebx \n\
-	" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
-	:
-	: "eax","ecx","edx","esi","edi"
-	);
-	#endif
+	return RCT2_CALLPROC_X(address, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB);
 }
 
 /* Returns the flags register

@@ -398,7 +398,7 @@ static void window_track_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
-	rct_track_design *trackDesign;
+	rct_track_design *trackDesign = NULL;
 	uint8 *image, *trackDesignList = (uint8*)0x00F441EC;
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;

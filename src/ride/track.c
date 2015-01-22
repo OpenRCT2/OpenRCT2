@@ -412,7 +412,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
 
 		memcpy(trackDesign, (void*)0x009D8178, 163);
-		RCT2_CALLPROC_EBPSAFE(0x006D1EF0);
+		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)trackDesign + 163, 0);
 
 		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
 		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
