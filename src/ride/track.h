@@ -42,13 +42,17 @@ typedef struct {
  */
 typedef struct {
 	uint8 type;										// 0x00
-	uint8 pad_01;
+	uint8 var_01;
 	money32 cost;									// 0x02
 	uint8 var_06;
 	uint8 var_07;
-	uint8 pad_08[0x42];
+	uint8 pad_08;
+	uint8 pad_09[0x17];
+	uint8 pad_20[40];
+	uint8 pad_48[2];
 	uint8 total_air_time;							// 0x4A
-	uint8 pad_4B[0x06];
+	uint8 pad_4B[0x05];
+	uint8 var_50;
 	uint8 max_speed;								// 0x51
 	uint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53
@@ -64,12 +68,15 @@ typedef struct {
 	uint8 excitement;								// 0x5B
 	uint8 intensity;								// 0x5C
 	uint8 nausea;									// 0x5D
-	uint8 pad_5E[0x0E];
+	uint8 pad_5E[2];
+	uint8 pad_60[0xC];
 	uint32 var_6C;
 	uint8 pad_70[0x10];
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
-	uint8 pad_82[0x21];
+	uint8 pad_82[0x1D];
+	uint8 pad_9F[3];
+	uint8 var_A2;
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
 } rct_track_design;
 
@@ -135,5 +142,6 @@ int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
 int track_rename(const char *text);
 int track_delete();
+void reset_track_list_cache();
 
 #endif
