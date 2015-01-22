@@ -45,6 +45,61 @@ int _sub_6A876D_save_y;
 static void tiles_init();
 static void sub_6A87BB(int x, int y);
 
+void map_element_iterator_begin(map_element_iterator *it)
+{
+	it->x = 0;
+	it->y = 0;
+	it->element = map_get_first_element_at(0, 0);
+}
+
+int map_element_iterator_next(map_element_iterator *it)
+{
+	if (it->element == NULL) {
+		it->element = map_get_first_element_at(it->x, it->y);
+		return 1;
+	}
+
+	if (!map_element_is_last_for_tile(it->element)) {
+		it->element++;
+		return 1;
+	}
+
+	if (it->x < 255) {
+		it->x++;
+		it->element = map_get_first_element_at(it->x, it->y);
+		return 1;
+	}
+
+	if (it->y < 255) {
+		it->x = 0;
+		it->y++;
+		it->element = map_get_first_element_at(it->x, it->y);
+		return 1;
+	}
+
+	return 0;
+}
+
+void map_element_iterator_restart_for_tile(map_element_iterator *it)
+{
+	it->element = NULL;
+}
+
+rct_map_element *map_get_first_element_at(int x, int y)
+{
+	return TILE_MAP_ELEMENT_POINTER(x + y * 256);
+}
+
+int map_element_is_last_for_tile(rct_map_element *element)
+{
+	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+}
+
+int map_element_get_type(rct_map_element *element)
+{
+	return element->type & MAP_ELEMENT_TYPE_MASK;
+}
+
 int map_element_get_terrain(rct_map_element *element)
 {
 	int terrain = (element->properties.surface.terrain >> 5) & 7;
@@ -89,13 +144,11 @@ void map_element_set_terrain_edge(rct_map_element *element, int terrain)
 
 rct_map_element *map_get_surface_element_at(int x, int y)
 {
-	// Get first element of the tile
-	rct_map_element *mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
 
 	// Find the first surface element
-	while ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) {
-		// Check if last element on tile
-		if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+	while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
+		if (map_element_is_last_for_tile(mapElement))
 			return NULL;
 
 		mapElement++;
@@ -151,7 +204,7 @@ void map_init()
  */
 void map_update_tile_pointers()
 {
-	int i, x, y, lastTile;
+	int i, x, y;
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++)
 		TILE_MAP_ELEMENT_POINTER(i) = TILE_UNDEFINED_MAP_ELEMENT;
@@ -161,10 +214,7 @@ void map_update_tile_pointers()
 	for (y = 0; y < 256; y++) {
 		for (x = 0; x < 256; x++) {
 			*tile++ = mapElement;
-			do {
-				lastTile = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE);
-				mapElement++;
-			} while (!lastTile);
+			do { } while (!map_element_is_last_for_tile(mapElement++));
 		}
 	}
 
@@ -354,7 +404,7 @@ void sub_68B089()
 
 		mapElement++;
 		mapElementFirst++;
-	} while (!((mapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement - 1));
 
 	// Update next free element?
 	mapElement = RCT2_GLOBAL(0x0140E9A4, rct_map_element*);
@@ -370,34 +420,32 @@ void sub_68B089()
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwise
  */
-int map_coord_is_connected(uint16 tile_idx, uint8 height, uint8 face_direction)
+int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
 {
-    rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
 
-    do {
-        rct_map_element_path_properties props = tile->properties.path;
-        uint8 path_type = props.type >> 2, path_dir = props.type & 3;
-        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
 
-        if (element_type != PATH_ROAD)
-            continue;
+		rct_map_element_path_properties props = mapElement->properties.path;
+		uint8 pathType = props.type >> 2;
+		uint8 pathDirection = props.type & 3;
 
-        if (path_type & 1) {
-			if (path_dir == face_direction) {
-				if (height == tile->base_height + 2)
+		if (pathType & 1) {
+			if (pathDirection == faceDirection) {
+				if (z == mapElement->base_height + 2)
 					return 1;
-			}
-			else if ((path_dir ^ 2) == face_direction && height == tile->base_height) {
+			} else if ((pathDirection ^ 2) == faceDirection && z == mapElement->base_height) {
 				return 1;
 			}
-        } else {
-			if (height == tile->base_height)
+		} else {
+			if (z == mapElement->base_height)
 				return 1;
-        }
-            
-    } while (!(tile->flags & MAP_ELEMENT_FLAG_LAST_TILE) && tile++);
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -618,9 +666,9 @@ money32 map_clear_scenery_from_tile(int x, int y, int flags)
 	totalCost = 0;
 
 restart_from_beginning:
-	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	mapElement = map_get_first_element_at(x, y);
 	do {
-		type = mapElement->type & MAP_ELEMENT_TYPE_MASK;
+		type = map_element_get_type(mapElement);
 		switch (type) {
 		case MAP_ELEMENT_TYPE_PATH:
 #ifdef CLEAR_SCENERY_REMOVES_PATHS
@@ -654,7 +702,7 @@ restart_from_beginning:
 
 			break;
 		}
-	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return totalCost;
 }
@@ -878,36 +926,30 @@ void sub_6A6AA7(int x, int y, rct_map_element *mapElement)
  */
 void map_remove_all_rides()
 {
-	int x, y;
-	rct_map_element *mapElement;
+	map_element_iterator it;
 
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-		repeat_tile:
-			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	map_element_iterator_begin(&it);
+	do {
+		switch (map_element_get_type(it.element)) {
+		case MAP_ELEMENT_TYPE_PATH:
+			if (it.element->type & 1) {
+				it.element->properties.path.type &= ~8;
+				it.element->properties.path.addition_status = 255;
+			}
+			break;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (it.element->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+				break;
 
-			do {
-				switch (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
-				case MAP_ELEMENT_TYPE_PATH:
-					if (mapElement->type & 1) {
-						mapElement->properties.path.type &= ~8;
-						mapElement->properties.path.addition_status = 255;
-					}
-					break;
-				case MAP_ELEMENT_TYPE_ENTRANCE:
-					if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
-						break;
-
-					// fall-through
-				case MAP_ELEMENT_TYPE_TRACK:
-					RCT2_CALLPROC_EBPSAFE(0x006A7594);
-					sub_6A6AA7(x * 32, y * 32, mapElement);
-					map_element_remove(mapElement);
-					goto repeat_tile;
-				}
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+			// fall-through
+		case MAP_ELEMENT_TYPE_TRACK:
+			RCT2_CALLPROC_EBPSAFE(0x006A7594);
+			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+			map_element_remove(it.element);
+			map_element_iterator_restart_for_tile(&it);
+			break;
 		}
-	}
+	} while (map_element_iterator_next(&it));
 }
 
 /**

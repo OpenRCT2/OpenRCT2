@@ -136,13 +136,15 @@ void window_banner_open(rct_windownumber number)
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	int ebp = ((view_y << 8) | view_x) >> 5;
 	
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
-
-	while(1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
-			(map_element->properties.banner.index == w->number)) break;
+	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+	while(1) {
+		if (
+			(map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
+			(map_element->properties.banner.index == w->number)
+		) {
+			break;
+		}
 
 		map_element++;
 	}
@@ -186,10 +188,10 @@ static void window_banner_mouseup()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	while (1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
+		if ((map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
 			(map_element->properties.banner.index == w->number)) break;
 		map_element++;
 	}

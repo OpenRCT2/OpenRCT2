@@ -137,7 +137,7 @@ int park_calculate_size()
 	for (y = 0; y < 256; y++) {
 		for (x = 0; x < 256; x++) {
 			mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
-			while (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
+			while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
 				mapElement++;
 			}
 

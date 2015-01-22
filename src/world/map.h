@@ -223,6 +223,9 @@ extern rct_xy16 *gMapSelectionTiles;
 
 void map_init();
 void map_update_tile_pointers();
+rct_map_element *map_get_first_element_at(int x, int y);
+int map_element_is_last_for_tile(rct_map_element *element);
+int map_element_get_type(rct_map_element *element);
 int map_element_get_terrain(rct_map_element *element);
 int map_element_get_terrain_edge(rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, int terrain);
@@ -231,7 +234,7 @@ int map_height_from_slope(int x, int y, int slope);
 rct_map_element *map_get_surface_element_at(int x, int y);
 int map_element_height(int x, int y);
 void sub_68B089();
-int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);
+int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
 void map_invalidate_animations();
 void sub_6A876D();
 int map_is_location_owned(int x, int y, int z);
@@ -257,5 +260,15 @@ void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, i
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
 #define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
+
+typedef struct {
+	int x;
+	int y;
+	rct_map_element *element;
+} map_element_iterator;
+
+void map_element_iterator_begin(map_element_iterator *it);
+int map_element_iterator_next(map_element_iterator *it);
+void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
 #endif

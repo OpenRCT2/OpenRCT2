@@ -288,42 +288,32 @@ static void cheat_set_grass_length(int length)
 
 static void cheat_water_plants()
 {
-	int x, y;
-	rct_map_element *mapElement;
+	map_element_iterator it;
 
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
-			do {
-				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY) {
-					mapElement->properties.scenery.age = 0;
-				}
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SCENERY) {
+			it.element->properties.scenery.age = 0;
 		}
-	}
+	} while (map_element_iterator_next(&it));
 
 	gfx_invalidate_screen();
 }
 
 static void cheat_fix_vandalism()
 {
-	int x, y;
-	rct_map_element *mapElement;
+	map_element_iterator it;
 
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
-			do {
-				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_PATH)
-					continue;
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_PATH)
+			continue;
 
-				if ((mapElement->properties.path.additions & 0x0F) == 0)
-					continue;
+		if ((it.element->properties.path.additions & 0x0F) == 0)
+			continue;
 
-				mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
-		}
-	}
+		it.element->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+	} while (map_element_iterator_next(&it));
 
 	gfx_invalidate_screen();
 }
@@ -685,20 +675,15 @@ void window_cheats_misc_tool_down(){
 	// in the middle of a tile.
 	dest_x += 16;
 	dest_y += 16;
+
 	// Set the tile coordinate to top left of tile
-	int tile_y = dest_y & 0xFFE0;
-	int tile_x = dest_x & 0xFFE0;
+	int tile_x = (dest_x & 0xFFE0) >> 5;
+	int tile_y = (dest_y & 0xFFE0) >> 5;
 
-	ebp = ((tile_y << 8) | tile_x) >> 5;
-
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
-
-	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE){
-			map_element->clearance_height = 0;
+	rct_map_element *mapElement = map_get_first_element_at(tile_x, tile_y);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
+			mapElement->clearance_height = 0;
 		}
-		if (map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE)
-			break;
-		map_element++;
-	}
+	} while (!map_element_is_last_for_tile(mapElement++));
 }

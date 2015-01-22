@@ -1431,7 +1431,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 			sint16 y2 = y & 0xFFE0;
 			if (x2 < 0x1FFF && y2 < 0x1FFF) {
 				rct_map_element* mapelement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[((y2 * 256 + x2) & 0xFFFF) / 8];
-				while (mapelement->type & MAP_ELEMENT_TYPE_MASK) {
+				while (map_element_get_type(mapelement) != MAP_ELEMENT_TYPE_SURFACE) {
 					mapelement++;
 				}
 				if ((mapelement->base_height * 8) - 5 > z) {

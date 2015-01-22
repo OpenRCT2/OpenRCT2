@@ -169,12 +169,11 @@ void window_sign_open(rct_windownumber number)
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	int ebp = ((view_y << 8) | view_x) >> 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
+	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			int ebx = map_element->properties.scenerymultiple.type;
 			ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
 			rct_scenery_entry* scenery_entry = g_largeSceneryEntries[ebx];
@@ -213,7 +212,7 @@ void window_sign_open(rct_windownumber number)
 		view_z,
 		0,
 		-1
-		);
+	);
 
 	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
 	w->flags |= WF_2;
@@ -234,7 +233,7 @@ static void window_sign_mouseup()
 
 	rct_string_id string_id;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -242,7 +241,7 @@ static void window_sign_mouseup()
 		break;
 	case WIDX_SIGN_DEMOLISH:
 		while (1){
-			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE){
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 				int ebx = map_element->properties.scenerymultiple.type;
 				ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
 				rct_scenery_entry* scenery_entry = g_largeSceneryEntries[ebx];
@@ -320,10 +319,10 @@ static void window_sign_dropdown()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			int ebx = map_element->properties.scenerymultiple.type;
 			ebx |= (map_element->properties.scenerymultiple.index & 0x3) << 8;
 			rct_scenery_entry* scenery_entry = g_largeSceneryEntries[ebx];
@@ -499,12 +498,11 @@ void window_sign_small_open(rct_windownumber number){
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	int ebp = ((view_y << 8) | view_x) >> 5;
-
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
+	
+	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_FENCE){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 			rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
 			if (scenery_entry->wall.var_0D != 0xFF){
 				if (map_element->properties.fence.item[0] == w->number)
@@ -538,7 +536,7 @@ void window_sign_small_open(rct_windownumber number){
 		view_z,
 		0,
 		-1
-		);
+	);
 
 	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
 	w->flags |= WF_2;
@@ -559,7 +557,7 @@ static void window_sign_small_mouseup()
 
 	rct_string_id string_id;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -567,7 +565,7 @@ static void window_sign_small_mouseup()
 		break;
 	case WIDX_SIGN_DEMOLISH:
 		while (1){
-			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_FENCE){
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 				rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
 				if (scenery_entry->wall.var_0D != 0xFF){
 					if (map_element->properties.fence.item[0] == w->number)
@@ -626,10 +624,10 @@ static void window_sign_small_dropdown()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	while (1){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_FENCE){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
 			rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.slope];
 			if (scenery_entry->wall.var_0D != 0xFF){
 				if (map_element->properties.fence.item[0] == w->number)
