@@ -780,37 +780,37 @@ STR_0775    :Park Sem Nome{POP16}{POP16}
 STR_0776    :Park Sem Nome{POP16}{POP16}
 STR_0777    :Park Sem Nome{POP16}{POP16}
 STR_0778    :Entrar*
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
+STR_0779    :1º de
+STR_0780    :2 de
+STR_0781    :3 de
+STR_0782    :4 de
+STR_0783    :5 de
+STR_0784    :6 de
+STR_0785    :7 de
+STR_0786    :8 de
+STR_0787    :9 de
+STR_0788    :10 de
+STR_0789    :11 de
+STR_0790    :12 de
+STR_0791    :13 de
+STR_0792    :14 de
+STR_0793    :15 de
+STR_0794    :16 de
+STR_0795    :17 de
+STR_0796    :18 de
+STR_0797    :19 de
+STR_0798    :20 de
+STR_0799    :21 de
+STR_0800    :22 de
+STR_0801    :23 de
+STR_0802    :24 de
+STR_0803    :25 de
+STR_0804    :26 de
+STR_0805    :27 de
+STR_0806    :28 de
+STR_0807    :29 de
+STR_0808    :30 de
+STR_0809    :31 de
 STR_0810    :Jan
 STR_0811    :Fev
 STR_0812    :Mar
@@ -1159,16 +1159,16 @@ STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
+STR_1158    :Impossível remover isto...
+STR_1159    :{SMALLFONT}{BLACK}Coloque cenários, jardins, e outros acessórios
+STR_1160    :{SMALLFONT}{BLACK}Criar/ajustar lagos e água
 STR_1161    :Can't position this here...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
 STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
+STR_1166    :Impossível diminuir o nível da água aqui...
+STR_1167    :Impossível aumentar o nível da água aqui...
 STR_1168    :Opções
 STR_1169    :(None)
 STR_1170    :{STRING}
@@ -1908,7 +1908,7 @@ STR_1903    :{WINDOW_COLOUR_2}Vendas das lojas
 STR_1904    :{WINDOW_COLOUR_2}Estoque das lojas
 STR_1905    :{WINDOW_COLOUR_2}Vendas de Comidas/Bebidas
 STR_1906    :{WINDOW_COLOUR_2}Estoque de Comidas/Bebidas
-STR_1907    :{WINDOW_COLOUR_2}salários dos funcionários
+STR_1907    :{WINDOW_COLOUR_2}Salários dos funcionários
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Pesquisa
 STR_1910    :{WINDOW_COLOUR_2}Juros de empréstimos
@@ -1950,12 +1950,12 @@ STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
 STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
 STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
 STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
-STR_1949    :Financial Summary
-STR_1950    :Financial Graph
-STR_1951    :Park Value Graph
-STR_1952    :Profit Graph
+STR_1949    :Resumo Financeiro
+STR_1950    :Gráfico Financeiro
+STR_1951    :Gráfico do Valor do Parque
+STR_1952    :Gráfico dos Lucros
 STR_1953    :Marketing
-STR_1954    :Research Funding
+STR_1954    :Financiamento de Pesquisa
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
 STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -2075,7 +2075,7 @@ STR_2070    :uma caixa vazia
 STR_2071    :uma garafa vazia
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balão
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Brinquedo de Pelúcia
-STR_2074    :Mapada de {STRINGID}
+STR_2074    :Mapa de {STRINGID}
 STR_2075    :foto na atração {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Guarda-Chuva
 STR_2077    :Bebida
@@ -2221,21 +2221,21 @@ STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
-STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
+STR_2220    :{WINDOW_COLOUR_2}Classificação do Parque: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}Classificação do Parque: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA16}
-STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
-STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
-STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
-STR_2227    :{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}
+STR_2223    :{WINDOW_COLOUR_2}Visitantes no parque: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}Dinheiro: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Dinheiro: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}Valor do parque: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}Valor da empresa: {BLACK}{CURRENCY}
 STR_2228    :{WINDOW_COLOUR_2}Last month's profit from food/drink and{NEWLINE}merchandise sales: {BLACK}{CURRENCY}
 STR_2229    :Slope up to vertical
 STR_2230    :Vertical track
 STR_2231    :Holding brake for drop
 STR_2232    :Cable lift hill
 STR_2233    :{SMALLFONT}{BLACK}Park information
-STR_2234    :Recent Messages
+STR_2234    :Mensagens Recentes
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :Janeiro
 STR_2237    :Fevereiro
@@ -2278,23 +2278,23 @@ STR_2273    :{WINDOW_COLOUR_2}Cenário/tematização:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Mostrar detalhes desta invenção ou desenvolvimento
 STR_2275    :{SMALLFONT}{BLACK}Mostrar financiamento e opções para pesquisa e desenvolvimento
 STR_2276    :{SMALLFONT}{BLACK}Mostrar estado das pesquisa e desenvolvimentos
-STR_2277    :Unknown
-STR_2278    :Transport Ride
-STR_2279    :Gentle Ride
-STR_2280    :Roller Coaster
-STR_2281    :Thrill Ride
-STR_2282    :Water Ride
-STR_2283    :Shop/Stall
-STR_2284    :Scenery/Themeing
-STR_2285    :Initial research
-STR_2286    :Designing
-STR_2287    :Completing design
-STR_2288    :Unknown
+STR_2277    :Desconhecido
+STR_2278    :Atrações de Transporte
+STR_2279    :Atrações Suaves/Calmas
+STR_2280    :Montanhas-Russas
+STR_2281    :Atrações Emocionantes
+STR_2282    :Atrações com Água
+STR_2283    :Lojas/Barracas
+STR_2284    :Cenário/Tematização
+STR_2285    :Pesquisa Inicial
+STR_2286    :Projetando
+STR_2287    :Completando Projeto 
+STR_2288    :Desconhecido
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
-STR_2291    :Select scenario for new game
+STR_2291    :Selecione o cenário para novo jogo
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
-STR_2293    :{BLACK} Nothing
+STR_2293    :{BLACK} Nada*
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
@@ -2383,8 +2383,8 @@ STR_2378    :{SMALLFONT}{BLACK}Adjust smaller area of land
 STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
 STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
 STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
-STR_2382    :Land
-STR_2383    :Water
+STR_2382    :Terra
+STR_2383    :Água
 STR_2384    :{WINDOW_COLOUR_2}Your objective:
 STR_2385    :{BLACK}None
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
@@ -2398,7 +2398,7 @@ STR_2393    :{BLACK}To have 10 different types of roller coasters operating in y
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
-STR_2397    :None
+STR_2397    :Nenhum
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
@@ -2410,60 +2410,60 @@ STR_2405    :Build 10 roller coasters of a given length
 STR_2406    :Finish building 5 roller coasters
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
-STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
-STR_2410    :{BLACK}None
-STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
-STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
-STR_2413    :{BLACK}({CURRENCY2DP} per week)
-STR_2414    :(Not Selected)
-STR_2415    :{WINDOW_COLOUR_2}Ride:
+STR_2409    :{WINDOW_COLOUR_2}Campanhas de marketing em operação
+STR_2410    :{BLACK}Nenhum
+STR_2411    :{WINDOW_COLOUR_2}Campanhas de marketing disponíveis
+STR_2412    :{SMALLFONT}{BLACK}Comece esta campanha de marketing
+STR_2413    :{BLACK}({CURRENCY2DP} por semana)
+STR_2414    :(Não Selecionado)
+STR_2415    :{WINDOW_COLOUR_2}Atração:
 STR_2416    :{WINDOW_COLOUR_2}Item:
-STR_2417    :{WINDOW_COLOUR_2}Length of time:
-STR_2418    :Free entry to {STRINGID}
-STR_2419    :Free ride on {STRINGID}
-STR_2420    :Half-price entry to {STRINGID}
-STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
-STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
-STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
-STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
-STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
-STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
-STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
-STR_2433    :{BLACK}Vouchers for free {STRINGID}
-STR_2434    :{BLACK}Advertising campaign for {STRINGID}
-STR_2435    :{BLACK}Advertising campaign for {STRINGID}
-STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
+STR_2417    :{WINDOW_COLOUR_2}Período de tempo:
+STR_2418    :Entrada gratuita para {STRINGID}
+STR_2419    :Atração gratuita no {STRINGID}*
+STR_2420    :Meia-entrada para {STRINGID}
+STR_2421    :Gratuito {STRINGID}
+STR_2422    :Campanha publicitária para {STRINGID}
+STR_2423    :Campanha publicitária para {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Cupões para entrada gratuita no parque
+STR_2425    :{WINDOW_COLOUR_2}Cupões para entrada gratuitas em atrações em especial
+STR_2426    :{WINDOW_COLOUR_2}Cupões para meia-entrada para o parque
+STR_2427    :{WINDOW_COLOUR_2}Cupões para comida ou bebida de graça
+STR_2428    :{WINDOW_COLOUR_2}Campanha publicitária para o parque
+STR_2429    :{WINDOW_COLOUR_2}Campanha publicitária para uma atração em especial
+STR_2430    :{BLACK}Cupões de entrada gratuita para {STRINGID}
+STR_2431    :{BLACK}Cupões para entrada gratuita na atração {STRINGID}
+STR_2432    :{BLACK}Cupões de meia-entrada para {STRINGID}
+STR_2433    :{BLACK}Cupões de graça{STRINGID}
+STR_2434    :{BLACK}Campanha publicitária para {STRINGID}
+STR_2435    :{BLACK}Campanha publicitária para {STRINGID}
+STR_2436    :1 semana
+STR_2437    :2 semanas
+STR_2438    :3 semanas
+STR_2439    :4 semanas
+STR_2440    :5 semanas
+STR_2441    :6 semanas
+STR_2442    :{BLACK}({STRINGID} restante*)
+STR_2443    :{WINDOW_COLOUR_2}Custo por semana: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Custo total: {BLACK}{CURRENCY2DP}
+STR_2445    :Comece esta campanha de marketing
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
 STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
 STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
 STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
-STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}Dinheiro (menos empréstimo): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Dinheiro (menos empréstimo): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
-STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
-STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
-STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
-STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
-STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
+STR_2457    :{SMALLFONT}{BLACK}Mostrar contas financeiras
+STR_2458    :{SMALLFONT}{BLACK}Mostrar gráfico de dinheiro (menos de empréstimo) ao longo do tempo
+STR_2459    :{SMALLFONT}{BLACK}Mostrar gráfico de valor parque ao longo do tempo
+STR_2460    :{SMALLFONT}{BLACK}Mostrar gráfico de lucro semanal
+STR_2461    :{SMALLFONT}{BLACK}Mostrar campanhas de marketing
+STR_2462    :{SMALLFONT}{BLACK}Mostrar vista da entrada do parque
 STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
 STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
 STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
@@ -2484,8 +2484,8 @@ STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
 STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
 STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
 STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
-STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
-STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
+STR_2483    :{WINDOW_COLOUR_2}Lucro semanal: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Lucro semanal: {RED}{CURRENCY2DP}
 STR_2485    :Controls
 STR_2486    :General
 STR_2487    :Show 'real' names of guests
@@ -2790,13 +2790,13 @@ STR_2783    :CTRL +
 STR_2784    :Change keyboard shortcut
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
-STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
-STR_2790    :Enter name into scenario chart
-STR_2791    :Enter name
-STR_2792    :Please enter your name for the scenario chart:
-STR_2793    :{SMALLFONT}(Completed by {STRINGID})
+STR_2787    :{WINDOW_COLOUR_2}Valor do parque: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}Parabéns !{NEWLINE}{BLACK}Você alcançou seu objetivo com o valor da empresa de {CURRENCY} !
+STR_2789    :{WINDOW_COLOUR_2}Você falhou no seu objetivo !
+STR_2790    :Digite o nome do gráfico do cenário*
+STR_2791    :Digite o nome
+STR_2792    :Por favor, insira o seu nome para o gráfico do cenário:
+STR_2793    :{SMALLFONT}(Completado por {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
@@ -3243,8 +3243,8 @@ STR_3236    :{SMALLFONT}{BLACK}Show guest options
 STR_3237    :{SMALLFONT}{BLACK}Show park options
 STR_3238    :No Money
 STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
+STR_3240    :{WINDOW_COLOUR_2}Dinheiro inicial:
+STR_3241    :{WINDOW_COLOUR_2}Empréstimo inicial:
 STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
 STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
 STR_3244    :Forbid marketing campaigns
@@ -3440,8 +3440,8 @@ STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow
 STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
 STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
 STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here...
+STR_3437    :{SMALLFONT}{BLACK}Limpar grandes áreas de cenário no terreno*
+STR_3438    :Impossível remover todos os cenários a partir daqui...
 STR_3439    :Limpar Cenário
 STR_3440    :Página 1
 STR_3441    :Página 2
