@@ -49,7 +49,6 @@ static void osinterface_create_window();
 static void osinterface_close_window();
 static void osinterface_resize(int width, int height);
 
-static SDL_Window *_window;
 static SDL_Surface *_surface;
 static SDL_Palette *_palette;
 
@@ -204,16 +203,16 @@ static void osinterface_create_window()
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
-	_window = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
+	gWindow = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
 		_fullscreen_modes[gGeneral_config.fullscreen_mode] | SDL_WINDOW_RESIZABLE);
-	if (!_window) {
+	if (!gWindow) {
 		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
 	}
 
 	SDL_VERSION(&wmInfo.version);
 	// Get the HWND context
-	if (SDL_GetWindowWMInfo(_window, &wmInfo) != SDL_TRUE) {
+	if (SDL_GetWindowWMInfo(gWindow, &wmInfo) != SDL_TRUE) {
 		RCT2_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
 		exit(-1);
 	}
@@ -225,6 +224,8 @@ static void osinterface_create_window()
 
 	// Initialise the surface, palette and draw buffer
 	osinterface_resize(width, height);
+
+	platform_update_fullscreen_resolutions();
 }
 
 
@@ -297,7 +298,7 @@ void osinterface_update_palette(char* colours, int start_index, int num_colours)
 	SDL_Surface *surface;
 	int i;
 
-	surface = SDL_GetWindowSurface(_window);
+	surface = SDL_GetWindowSurface(gWindow);
 	if (!surface) {
 		RCT2_ERROR("SDL_GetWindowSurface failed %s", SDL_GetError());
 		exit(1);
@@ -334,11 +335,11 @@ void osinterface_draw()
 		SDL_UnlockSurface(_surface);
 
 	// Copy the surface to the window
-	if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(_window), NULL)) {
+	if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
 		RCT2_ERROR("SDL_BlitSurface %s", SDL_GetError());
 		exit(1);
 	}
-	if (SDL_UpdateWindowSurface(_window)) {
+	if (SDL_UpdateWindowSurface(gWindow)) {
 		RCT2_ERROR("SDL_UpdateWindowSurface %s", SDL_GetError());
 		exit(1);
 	}
@@ -508,8 +509,8 @@ void osinterface_process_messages()
 
 static void osinterface_close_window()
 {
-	if (_window != NULL)
-		SDL_DestroyWindow(_window);
+	if (gWindow != NULL)
+		SDL_DestroyWindow(gWindow);
 	if (_surface != NULL)
 		SDL_FreeSurface(_surface);
 	if (_palette != NULL)
@@ -525,16 +526,45 @@ void osinterface_free()
 	SDL_Quit();
 }
 
-void osinterface_set_fullscreen_mode(int mode){
-	if (mode == gGeneral_config.fullscreen_mode)
-		return;
+void osinterface_set_fullscreen_mode(int mode)
+{
+	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth, closestHeight;
 
-	if (SDL_SetWindowFullscreen(_window, _fullscreen_modes[mode])){
+	if (mode == SDL_WINDOW_FULLSCREEN)
+		SDL_SetWindowFullscreen(gWindow, 0);
+
+	if (mode == SDL_WINDOW_FULLSCREEN) {
+		platform_update_fullscreen_resolutions();
+
+		closestAreaDiff = -1;
+		destinationArea = gGeneral_config.fullscreen_width * gGeneral_config.fullscreen_height;
+		for (i = 0; i < gNumResolutions; i++) {
+			// Check if exact match
+			if (gResolutions[i].width == gGeneral_config.fullscreen_width && gResolutions[i].height == gGeneral_config.fullscreen_height) {
+				closestWidth = gResolutions[i].width;
+				closestHeight = gResolutions[i].height;
+				break;
+			}
+
+			// Check if area is closer to best match
+			areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
+			if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
+				closestAreaDiff = areaDiff;
+				closestWidth = gResolutions[i].width;
+				closestHeight = gResolutions[i].height;
+			}
+		}
+		
+		if (closestAreaDiff != -1)
+			SDL_SetWindowSize(gWindow, closestWidth, closestHeight);
+	} else if (mode == 0) {
+		SDL_SetWindowSize(gWindow, gGeneral_config.window_width, gGeneral_config.window_height);
+	}
+
+	if (SDL_SetWindowFullscreen(gWindow, _fullscreen_modes[mode])){
 		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
 		exit(1);
 	}
-	//SDL automatically resizes the fullscreen window to the nearest allowed screen resolution
-	//No need to call osinterface_resize() here, SDL_WINDOWEVENT_SIZE_CHANGED event will be triggered anyway
 
 	gGeneral_config.fullscreen_mode = mode;
 

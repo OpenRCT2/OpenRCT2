@@ -21,6 +21,8 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#include <SDL.h>
+
 #include "../common.h"
 
 #ifndef MAX_PATH
@@ -30,10 +32,22 @@
 #define INVALID_HANDLE -1
 
 typedef struct {
+	int width, height;
+} resolution;
+
+typedef struct {
 	const char *path;
 	uint64 size;
 	uint64 last_modified;
 } file_info;
+
+extern int gResolutionsAllowAnyAspectRatio;
+extern int gNumResolutions;
+extern resolution *gResolutions;
+extern SDL_Window *gWindow;
+
+// Platform shared definitions
+void platform_update_fullscreen_resolutions();
 
 // Platform specific definitions
 char platform_get_path_separator();

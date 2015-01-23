@@ -409,7 +409,30 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsChecked = 1 << gGeneral_config.measurement_format;
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		// RCT2_CALLPROC_EBPSAFE(0x006BB2AF);
+	{
+		platform_update_fullscreen_resolutions();
+
+		int selectedResolution = -1;
+		for (i = 0; i < gNumResolutions; i++) {
+			resolution *resolution = &gResolutions[i];
+
+			gDropdownItemsFormat[i] = 1142;
+
+			uint16 *args = (uint16*)&gDropdownItemsArgs[i];
+			args[0] = 839;
+			args[1] = resolution->width;
+			args[2] = resolution->height;
+
+			if (resolution->width == gGeneral_config.fullscreen_width && resolution->height == gGeneral_config.fullscreen_height)
+				selectedResolution = i;
+		}
+
+		window_options_show_dropdown(w, widget, gNumResolutions);
+
+		if (selectedResolution != -1 && selectedResolution < 32)
+			gDropdownItemsChecked = 1 << selectedResolution;
+	}
+
 		break;
 	case WIDX_FULLSCREEN_DROPDOWN:
 		gDropdownItemsFormat[0] = 1142;
@@ -527,13 +550,19 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_RESOLUTION_DROPDOWN:
-		#ifdef _MSC_VER
-		__asm movzx ax, dropdownIndex		
-		#else
-		__asm__ ( "movzx ax, %[dropdownIndex]		 " : : [dropdownIndex] "g" ((char)dropdownIndex) );
-		#endif
-		// the switch replaces ax value
-		RCT2_CALLPROC_EBPSAFE(0x006BB37D);
+		{
+			resolution *resolution = &gResolutions[dropdownIndex];
+			if (resolution->width != gGeneral_config.fullscreen_width || resolution->height != gGeneral_config.fullscreen_height) {
+				gGeneral_config.fullscreen_width = resolution->width;
+				gGeneral_config.fullscreen_height = resolution->height;
+
+				if (gGeneral_config.fullscreen_mode == SDL_WINDOW_FULLSCREEN)
+					osinterface_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
+
+				config_save();
+				gfx_invalidate_screen();
+			}
+		}
 		break;
 	case WIDX_FULLSCREEN_DROPDOWN:
 		if (dropdownIndex != gGeneral_config.fullscreen_mode){
@@ -592,8 +621,8 @@ static void window_options_invalidate()
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		// resolution
-		RCT2_GLOBAL(0x013CE952 + 16, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_WIDTH, uint16);
-		RCT2_GLOBAL(0x013CE952 + 18, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_RESOLUTION_HEIGHT, uint16);
+		RCT2_GLOBAL(0x013CE952 + 16, uint16) = gGeneral_config.fullscreen_width;
+		RCT2_GLOBAL(0x013CE952 + 18, uint16) = gGeneral_config.fullscreen_height;
 		RCT2_GLOBAL(0x013CE952 + 12, uint16) = 2773 + gGeneral_config.fullscreen_mode;
 
 		// landscape tile smoothing checkbox

@@ -88,6 +88,8 @@ general_configuration_t gGeneral_config_default = {
 	0,								// show_height_as_units
 	1,								// save_plugin_data
 	0,								// fullscreen mode (default: windowed)
+	-1,								// fullscreen_width
+	-1,								// fullscreen_height
 	-1,								// window_width
 	-1,								// window_height
 	LANGUAGE_ENGLISH_UK,			// language
@@ -251,6 +253,11 @@ void config_write_ini_general(FILE *fp)
 		fprintf(fp, "fullscreen_mode = fullscreen\n");
 	else
 		fprintf(fp, "fullscreen_mode = borderless_fullscreen\n");
+
+	if (gGeneral_config.fullscreen_width != -1)
+		fprintf(fp, "fullscreen_width = %d\n", gGeneral_config.fullscreen_width);
+	if (gGeneral_config.window_height != -1)
+		fprintf(fp, "fullscreen_height = %d\n", gGeneral_config.fullscreen_height);
 
 	if (gGeneral_config.window_width != -1)
 		fprintf(fp, "window_width = %d\n", gGeneral_config.window_width);
@@ -556,6 +563,12 @@ static void config_general(char *setting, char *value){
 		}
 		else
 			gGeneral_config.fullscreen_mode = 2;
+	}
+	else if (strcmp(setting, "fullscreen_width") == 0) {
+		gGeneral_config.fullscreen_width = atoi(value);
+	}
+	else if (strcmp(setting, "fullscreen_height") == 0) {
+		gGeneral_config.fullscreen_height = atoi(value);
 	}
 	else if (strcmp(setting, "window_width") == 0) {
 		gGeneral_config.window_width = atoi(value);
