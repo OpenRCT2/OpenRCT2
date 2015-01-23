@@ -568,7 +568,7 @@ void window_guest_overview_resize(){
 	window_get_register(w);
 	
 	window_guest_disable_widgets(w);
-	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 	
 	widget_invalidate(w, WIDX_MARQUEE);
 	

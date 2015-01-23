@@ -218,7 +218,7 @@ static void window_track_place_draw_mini_preview()
 					} else {
 						pixelX = 80 + ((y / 32) - (x / 32)) * 4;
 						pixelY = 38 + ((y / 32) + (x / 32)) * 2;
-						if (pixelX <= 160 && pixelY <= 75) {
+						if (pixelX >= 0 && pixelY >= 0 && pixelX <= 160 && pixelY <= 75) {
 							pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
 
 							bits = trackBlock->var_08 << (rotation & 3);

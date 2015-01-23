@@ -240,26 +240,16 @@ static void read(void *dst, void **src, int length)
  *  rct2: 0x0067726A
  * path: 0x0141EF68
  */
-int sub_67726A(const char *path)
+rct_track_design* load_track_design(const char *path)
 {
 	FILE *fp;
 	long fpLength;
-	const char *ch;
-	char trackFilename[MAX_PATH], *fpBuffer, *decoded, *src, *dst;
+	char *fpBuffer, *decoded, *src;
 	int i, decodedLength;
 	uint8* edi;
 
 	RCT2_GLOBAL(0x009AAC54, uint8) = 1;
 	
-	// Get filename
-	ch = strrchr(path, '\\');
-	ch = ch == NULL ? path : ch + 1;
-	dst = trackFilename;
-	while (*ch != 0 && *ch != '.') {
-		*dst++ = *ch++;
-	}
-	*dst = 0;
-
 	fp = fopen(path, "rb");
 	if (fp == NULL)
 		return 0;
@@ -280,98 +270,111 @@ int sub_67726A(const char *path)
 	realloc(decoded, decodedLength);
 	free(fpBuffer);
 
+	rct_track_design* track_design = RCT2_ADDRESS(0x009D8178, rct_track_design);
 	// Read decoded data
 	src = decoded;
-	memset((void*)0x009D81D8, 0, 67);
-	read((void*)0x009D8178, &src, 32);
+	// Clear top of track_design as this is not loaded from the file
+	memset(&track_design->pad_60, 0, 67);
+	// Read start of track_design
+	read(track_design, &src, 32);
 
-	uint8 al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	uint8 al = track_design->var_07 >> 2;
 	if (al >= 2)
-		read((void*)0x009D8198, &src, 40);
+		read(&track_design->pad_20, &src, 40);
 
-	read((void*)0x009D81C0, &src, 24);
-	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	read(&track_design->pad_48, &src, 24);
+	al = track_design->var_07 >> 2;
 	if (al != 0)
-		read((void*)0x009D81D8, &src, al == 1 ? 140 : 67);
+		read(&track_design->pad_60, &src, al == 1 ? 140 : 67);
 
-	read((void*)0x009D821B, &src, 24572);
-	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	read(&track_design->preview, &src, 24572);
+	al = track_design->var_07 >> 2;
 	if (al < 2) {
-		if (RCT2_GLOBAL(0x009D8178, uint8) == 20) {
-			edi = (uint8*)0x009D821B;
+		if (track_design->type == RIDE_TYPE_MAZE) {
+			edi = (uint8*)(&track_design->preview);
 			while (*edi != 0) {
 				edi += 4;
 			}
 			edi += 4;
-			memset(edi, 255, (uint8*)0x009DE217 - edi);
+			memset(edi, 255, ((uint8*)&track_design->pad_9F) - edi);
 		} else {
-			edi = (uint8*)0x009D821B;
+			edi = (uint8*)(&track_design->preview);
 			while (*edi != 255) {
 				edi += 2;
 			}
 			edi++;
-			memset(edi, 255, (uint8*)0x009DE217 - edi);
+			memset(edi, 255, ((uint8*)&track_design->pad_9F) - edi);
 		}
 	}
 	free(decoded);
 
 	// 
-	al = RCT2_GLOBAL(0x009D817F, uint8) >> 2;
+	al = track_design->var_07 >> 2;
 	if (al > 2)
-		return 0;
+		return NULL;
 
 	if (al <= 1) {
-		edi = (uint8*)0x009D8180;
+		edi = (uint8*)&track_design->pad_08;
 		for (i = 0; i < 67; i++)
 			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
-		edi = (uint8*)0x009D81D8;
+		edi = (uint8*)&track_design->pad_60;
 		for (i = 0; i < 12; i++)
 			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
-		RCT2_GLOBAL(0x009D81D2, uint8) >>= 1;
+		track_design->highest_drop_height >>= 1;
 		if (!RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
-			RCT2_GLOBAL(0x009D8178, uint8) = 255;
+			track_design->type = 255;
 
-		if (RCT2_GLOBAL(0x009D8178, uint8) == 4)
-			RCT2_GLOBAL(0x009D8178, uint8) = 255;
+		if (track_design->type == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+			track_design->type = RIDE_TYPE_NULL;
 
-		if (RCT2_GLOBAL(0x009D8178, uint8) == 0)
-			RCT2_GLOBAL(0x009D8178, uint8) = 52;
+		if (track_design->type == RIDE_TYPE_SPIRAL_ROLLER_COASTER)
+			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
-		if (RCT2_GLOBAL(0x009D8178, uint8) == 19) {
-			if (RCT2_GLOBAL(0x009D817E, uint8) == 3)
-				RCT2_GLOBAL(0x009D817E, uint8) = 35;
-			if (RCT2_GLOBAL(0x009D8179, uint8) == 79) {
-				if (RCT2_GLOBAL(0x009D817E, uint8) == 2)
-					RCT2_GLOBAL(0x009D817E, uint8) = 1;
+		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
+			if (track_design->var_06 == 3)
+				track_design->var_06 = 35;
+			if (track_design->var_01 == 79) {
+				if (track_design->var_06 == 2)
+					track_design->var_06 = 1;
 			}
 		}
 
-		int unk1 = RCT2_GLOBAL(0x009D8179, uint8);
-		if (RCT2_GLOBAL(0x009D8178, uint8) == 20) {
-			unk1 = 0x0097F66C;
+		rct_object_entry* vehicle_object;
+		if (track_design->type == RIDE_TYPE_MAZE) {
+			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
-			if (unk1 == 3 && RCT2_GLOBAL(0x009D8178, uint8) == 3)
-				unk1 = 80;
-			unk1 = 0x0097F0DC + (unk1 * 16);
+			int var_01 = track_design->var_01;
+			if (var_01 == 3 && track_design->type == 3)
+				var_01 = 80;
+			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[var_01];
 		}
 
-		memcpy((void*)0x009D81E8, (void*)unk1, 16);
+		memcpy(&track_design->vehicle_object, vehicle_object, sizeof(rct_object_entry));
 		for (i = 0; i < 32; i++)
-			RCT2_ADDRESS(0x009D81FA, uint8)[i] = RCT2_ADDRESS(0x009D8181, uint8)[i * 2];
+			track_design->pad_82[i] = track_design->pad_08[1 + i * 2];
 
-		RCT2_GLOBAL(0x009D81F8, uint8) = 255;
-		RCT2_GLOBAL(0x009D81F9, uint8) = 255;
-		RCT2_GLOBAL(0x009D821A, uint8) = 5;
+		track_design->space_required_x = 255;
+		track_design->space_required_y = 255;
+		track_design->var_A2 = 5;
 	}
 
-	RCT2_GLOBAL(0x009D81C8, uint8) = min(
-		RCT2_GLOBAL(0x009D81C8, uint8),
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (RCT2_GLOBAL(0x009D8178, uint8) * 8), uint8)
+	track_design->var_50 = min(
+		track_design->var_50,
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (track_design->type * 8), uint8)
 	);
 
-	return 1;
+	return track_design;
+}
+
+/* rct2: 0x006D1DCE*/
+void reset_track_list_cache(){
+	int* track_list_cache = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, int);
+	for (int i = 0; i < 4; ++i){
+		track_list_cache[i] = -1;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) = 0;
 }
 
 /**
@@ -389,30 +392,39 @@ rct_track_design *track_get_info(int index, uint8** preview)
 
 	// Check if track design has already been loaded
 	for (i = 0; i < 4; i++) {
-		if (index == RCT2_ADDRESS(0x00F44109, uint32)[i]) {
-			trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+		if (index == RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, uint32)[i]) {
+			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, rct_track_design*)[i];
 			break;
 		}
 	}
 
 	if (trackDesign == NULL) {
 		// Load track design
-		i = RCT2_GLOBAL(0x00F44119, uint32);
-		RCT2_GLOBAL(0x00F44119, uint32)++;
-		if (RCT2_GLOBAL(0x00F44119, uint32) >= 4)
-			RCT2_GLOBAL(0x00F44119, uint32) = 0;
+		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) >= 4)
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) = 0;
 
-		RCT2_ADDRESS(0x00F44109, uint32)[i] = index;
-		subsitute_path((char*)0x0141EF68, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
-		if (!sub_67726A((char*)0x0141EF68)) {
+		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, uint32)[i] = index;
+
+		char track_path[MAX_PATH] = { 0 };
+		subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
+
+		rct_track_design* loaded_design = NULL;
+
+		log_verbose("Loading track: %s", trackDesignList + (index * 128));
+
+		if (!(loaded_design = load_track_design(track_path))) {
 			if (preview != NULL) *preview = NULL;
+			log_error("Failed to load track: %s", trackDesignList + (index * 128));
 			return NULL;
 		}
 
-		trackDesign = &RCT2_GLOBAL(0x00F44105, rct_track_design*)[i];
+		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, rct_track_design*)[i];
 
-		memcpy(trackDesign, (void*)0x009D8178, 163);
-		RCT2_CALLPROC_EBPSAFE(0x006D1EF0);
+		// Copy the track design apart from the preview image
+		memcpy(trackDesign, loaded_design, 163);
+		// Load in a new preview image, calculate cost variable, calculate var_06
+		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
 		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;

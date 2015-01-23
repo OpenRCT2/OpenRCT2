@@ -126,8 +126,8 @@ void window_track_list_open(ride_list_item item)
 	if (mem == NULL)
 		return;
 
-	RCT2_GLOBAL(0x00F44105, void*) = mem;
-	RCT2_CALLPROC_EBPSAFE(0x006D1DCE);
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, void*) = mem;
+	reset_track_list_cache();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300;
@@ -200,6 +200,7 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 
 	trackDesign = track_get_info(index, NULL);
+	if (trackDesign == NULL) return;
 	if (trackDesign->var_06 & 4)
 		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
 
@@ -236,7 +237,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
  */
 static void window_track_list_close()
 {
-	free(RCT2_GLOBAL(0x00F44105, void*));
+	free(RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, void*));
 }
 
 /**
@@ -398,7 +399,7 @@ static void window_track_list_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
-	rct_track_design *trackDesign;
+	rct_track_design *trackDesign = NULL;
 	uint8 *image, *trackDesignList = (uint8*)0x00F441EC;
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;

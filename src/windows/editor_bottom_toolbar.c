@@ -166,8 +166,8 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	RCT2_CALLPROC(0x006DFED0);
-	RCT2_CALLPROC(0x006DFEE4);
+	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
 	gfx_invalidate_screen();
