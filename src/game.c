@@ -31,6 +31,7 @@
 #include "interface/widget.h"
 #include "interface/window.h"
 #include "management/finance.h"
+#include "management/marketing.h"
 #include "management/news_item.h"
 #include "management/research.h"
 #include "object.h"
@@ -906,7 +907,7 @@ static uint32 game_do_command_table[58] = {
 	0x0069DFB3,
 	0x00684A7F,
 	0x006D13FE,
-	0x0069E73C,
+	0,
 	0x006CDEE4,
 	0x006B9E6D, // 50
 	0x006BA058,
@@ -969,7 +970,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
+	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_emptysub, // 50
 	game_command_emptysub,

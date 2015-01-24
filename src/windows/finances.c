@@ -1177,9 +1177,8 @@ static void window_finances_marketing_invalidate()
 
 	// Count number of active campaigns
 	int numActiveCampaigns = 0;
-	uint8 *campaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			numActiveCampaigns++;
 
 	int y = max(1, numActiveCampaigns) * 10 + 92;
@@ -1204,7 +1203,7 @@ static void window_finances_marketing_invalidate()
 			continue;
 		}
 
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
 		campaginButton->type = WWT_DROPDOWN_BUTTON;
@@ -1235,11 +1234,8 @@ static void window_finances_marketing_paint()
 	y = w->y + 62;
 
 	int noCampaignsActive = 1;
-	uint8 *campaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
-	uint8 *campaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
-
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-		if (campaignDaysLeft[i] == 0)
+		if (gMarketingCampaignDaysLeft[i] == 0)
 			continue;
 
 		noCampaignsActive = 0;
@@ -1250,12 +1246,12 @@ static void window_finances_marketing_paint()
 		switch (i) {
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
-			ride = GET_RIDE(campaignRideIndex[i]);
+			ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			shopString = campaignRideIndex[i] + 2016; // STR_BALLOONS+
+			shopString = gMarketingCampaignRideIndex[i] + 2016; // STR_BALLOONS+
 			if (shopString >= 2048) // STR_AN_UMBRELLA
 				shopString += 96; // STR_ON_RIDE_PHOTOS+
 			RCT2_GLOBAL(0x013CE952, uint16) = shopString;
@@ -1266,7 +1262,7 @@ static void window_finances_marketing_paint()
 		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, x + 4, y, 296);
 
 		// Duration
-		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (campaignDaysLeft[i] % 128);
+		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (gMarketingCampaignDaysLeft[i] % 128);
 		gfx_draw_string_left(dpi, STR_MARKETING_WEEKS_REMAINING, &weeksRemainingStringId, 0, x + 304, y);
 
 		y += 10;
@@ -1294,7 +1290,7 @@ static void window_finances_marketing_paint()
 			continue;
 		}
 
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
