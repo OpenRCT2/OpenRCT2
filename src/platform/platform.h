@@ -48,6 +48,7 @@ extern SDL_Window *gWindow;
 
 // Platform shared definitions
 void platform_update_fullscreen_resolutions();
+void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight);
 
 // Platform specific definitions
 char platform_get_path_separator();

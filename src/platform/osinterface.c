@@ -182,35 +182,35 @@ static void osinterface_create_window()
 {
 	SDL_SysWMinfo wmInfo;
 	HWND hWnd;
-	int width, height;
+	int width, height, mode;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		RCT2_ERROR("SDL_Init %s", SDL_GetError());
 		exit(-1);
 	}
 
-	// stuff
-	{
-		osinterface_load_cursors();
-		RCT2_CALLPROC_EBPSAFE(0x0068371D);
+	osinterface_load_cursors();
+	RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
-		width = gGeneral_config.window_width;
-		height = gGeneral_config.window_height;
-
-		if (width == -1) width = 640;
-		if (height == -1) height = 480;
-	}
+	// Get window size
+	width = gGeneral_config.window_width;
+	height = gGeneral_config.window_height;
+	if (width == -1) width = 640;
+	if (height == -1) height = 480;
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
-	gWindow = SDL_CreateWindow("OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
-		_fullscreen_modes[gGeneral_config.fullscreen_mode] | SDL_WINDOW_RESIZABLE);
+	// Create window in window first rather than fullscreen so we have the display the window is on first
+	gWindow = SDL_CreateWindow(
+		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
+	);
 	if (!gWindow) {
 		RCT2_ERROR("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
 	}
 
 	SDL_VERSION(&wmInfo.version);
+
 	// Get the HWND context
 	if (SDL_GetWindowWMInfo(gWindow, &wmInfo) != SDL_TRUE) {
 		RCT2_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
@@ -226,8 +226,38 @@ static void osinterface_create_window()
 	osinterface_resize(width, height);
 
 	platform_update_fullscreen_resolutions();
+	osinterface_set_fullscreen_mode(gGeneral_config.fullscreen_mode);
 }
 
+void osinterface_set_fullscreen_mode(int mode)
+{
+	int width, height;
+
+	mode = _fullscreen_modes[mode];
+
+	// HACK Changing window size when in fullscreen usually has no effect
+	if (mode == SDL_WINDOW_FULLSCREEN)
+		SDL_SetWindowFullscreen(gWindow, 0);
+
+	// Set window size
+	if (mode == SDL_WINDOW_FULLSCREEN) {
+		platform_update_fullscreen_resolutions();
+		platform_get_closest_resolution(gGeneral_config.fullscreen_width, gGeneral_config.fullscreen_height, &width, &height);
+		SDL_SetWindowSize(gWindow, width, height);
+	} else if (mode == 0) {
+		SDL_SetWindowSize(gWindow, gGeneral_config.window_width, gGeneral_config.window_height);
+	}
+
+	if (SDL_SetWindowFullscreen(gWindow, mode)) {
+		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
+		exit(1);
+
+		// TODO try another display mode rather than just exiting the game
+	}
+
+	gGeneral_config.fullscreen_mode = mode;
+	config_save();
+}
 
 static void osinterface_resize(int width, int height)
 {
@@ -524,51 +554,6 @@ void osinterface_free()
 
 	osinterface_close_window();
 	SDL_Quit();
-}
-
-void osinterface_set_fullscreen_mode(int mode)
-{
-	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth, closestHeight;
-
-	if (mode == SDL_WINDOW_FULLSCREEN)
-		SDL_SetWindowFullscreen(gWindow, 0);
-
-	if (mode == SDL_WINDOW_FULLSCREEN) {
-		platform_update_fullscreen_resolutions();
-
-		closestAreaDiff = -1;
-		destinationArea = gGeneral_config.fullscreen_width * gGeneral_config.fullscreen_height;
-		for (i = 0; i < gNumResolutions; i++) {
-			// Check if exact match
-			if (gResolutions[i].width == gGeneral_config.fullscreen_width && gResolutions[i].height == gGeneral_config.fullscreen_height) {
-				closestWidth = gResolutions[i].width;
-				closestHeight = gResolutions[i].height;
-				break;
-			}
-
-			// Check if area is closer to best match
-			areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
-			if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
-				closestAreaDiff = areaDiff;
-				closestWidth = gResolutions[i].width;
-				closestHeight = gResolutions[i].height;
-			}
-		}
-		
-		if (closestAreaDiff != -1)
-			SDL_SetWindowSize(gWindow, closestWidth, closestHeight);
-	} else if (mode == 0) {
-		SDL_SetWindowSize(gWindow, gGeneral_config.window_width, gGeneral_config.window_height);
-	}
-
-	if (SDL_SetWindowFullscreen(gWindow, _fullscreen_modes[mode])){
-		RCT2_ERROR("SDL_SetWindowFullscreen %s", SDL_GetError());
-		exit(1);
-	}
-
-	gGeneral_config.fullscreen_mode = mode;
-
-	config_save();
 }
 
 /**
