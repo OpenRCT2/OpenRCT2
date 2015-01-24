@@ -1225,7 +1225,7 @@ rct_window *window_ride_open_track(rct_map_element *mapElement)
 {
 	int rideIndex = mapElement->properties.track.ride_index;
 	if (
-		((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) ||
+		(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) ||
 		(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10)
 	) {
 		// Open ride window in station view

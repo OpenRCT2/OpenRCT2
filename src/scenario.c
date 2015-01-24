@@ -676,26 +676,22 @@ unsigned int scenario_rand()
  */
 void scenario_prepare_rides_for_save()
 {
-	int i, x, y;
-	rct_map_element *mapElement;
+	int i;
 	rct_ride *ride;
+	map_element_iterator it;
 
 	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
-			do {
-				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK) {
-					if (isFiveCoasterObjective)
-						mapElement->flags |= 0x40;
-					else
-						mapElement->flags &= ~0x40;
-				}
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK) {
+			if (isFiveCoasterObjective)
+				it.element->flags |= 0x40;
+			else
+				it.element->flags &= ~0x40;
 		}
-	}
+	} while (map_element_iterator_next(&it));
 
 	// Set all existing rides to have indestructible track
 	FOR_ALL_RIDES(i, ride) {

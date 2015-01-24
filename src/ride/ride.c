@@ -266,47 +266,42 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
  */
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
 {
-	rct_map_element *resultMapElement, *mapElement;
+	map_element_iterator it;
+	rct_map_element *resultMapElement;
 	int foundSpecialTrackPiece;
 
 	resultMapElement = (rct_map_element*)-1;
 	foundSpecialTrackPiece = 0;
 
-	uint16 x, y;
-	for (x = 0; x < 256; x++) {
-		for (y = 0; y < 256; y++) {
-			// Iterate through map elements on tile
-			int tileIndex = (y << 8) | x;
-			mapElement = TILE_MAP_ELEMENT_POINTER(tileIndex);
-			do {
-				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_TRACK)
-					continue;
-				if (rideIndex != mapElement->properties.track.ride_index)
-					continue;
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (rideIndex != it.element->properties.track.ride_index)
+			continue;
 
-				// Found a track piece for target ride
+		// Found a track piece for target ride
 
-				// Check if its a ???
-				int specialTrackPiece = (
-					(mapElement->properties.track.type != 2 && mapElement->properties.track.type != 3) &&
-					(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10)
-				);
+		// Check if its a ???
+		int specialTrackPiece = (
+			(it.element->properties.track.type != 2 && it.element->properties.track.type != 3) &&
+			(RCT2_ADDRESS(0x0099BA64, uint8)[it.element->properties.track.type * 16] & 0x10)
+		);
 
-				// Set result tile to this track piece if first found track or a ???
-				if (resultMapElement == (rct_map_element*)-1 || specialTrackPiece) {
-					resultMapElement = mapElement;
+		// Set result tile to this track piece if first found track or a ???
+		if (resultMapElement == (rct_map_element*)-1 || specialTrackPiece) {
+			resultMapElement = it.element;
 
-					if (outX != NULL) *outX = x * 32;
-					if (outY != NULL) *outY = y * 32;
-				}
-
-				if (specialTrackPiece) {
-					foundSpecialTrackPiece = 1;
-					return resultMapElement;
-				}
-			} while (!(mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) && mapElement++);
+			if (outX != NULL) *outX = it.x * 32;
+			if (outY != NULL) *outY = it.y * 32;
 		}
-	}
+
+		if (specialTrackPiece) {
+			foundSpecialTrackPiece = 1;
+			return resultMapElement;
+		}
+	} while (map_element_iterator_next(&it));
+
 	return resultMapElement;
 }
 
@@ -881,7 +876,7 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	ride_remove_peeps(rideIndex);
 
 	// Check if element is a station entrance or exit
-	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE)
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE)
 		return ride_modify_entrance_or_exit(mapElement, x, y);
 
 	constructionWindow = ride_create_or_find_construction_window(rideIndex);
@@ -2031,29 +2026,35 @@ void ride_check_all_reachable()
  * rct2: 0x006B7C59
  * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
-static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index) {
-	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
-		y = (coordinate & 0xFF) << 5;		 // ax	
-	uint8 station_height = ride->station_heights[index];
-	int tile_idx = ((x << 8) | y) >> 5;
-	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index)
+{
+	int x, y, z;
+	rct_map_element *mapElement;
 
-	while(1) {
-        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
-        if (element_type == MAP_ELEMENT_TYPE_ENTRANCE && station_height == tile->base_height) {
-            break;
-        } else if (tile->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-            return 1;
-        }
-        tile++;
+	x = coordinate & 0xFF;
+	y = (coordinate >> 8) & 0xFF;
+	z = ride->station_heights[index];
+	mapElement = map_get_first_element_at(x, y);
+
+	for (;;) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE && z == mapElement->base_height) {
+			break;
+		} else if (map_element_is_last_for_tile(mapElement)) {
+			return 1;
+		}
+		mapElement++;
 	}
 
-	uint8 face_direction = tile->type & 3;
-	y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
-	x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
-	tile_idx = ((x << 8) | y) >> 5;
+	uint8 face_direction = mapElement->type & 3;
 
-    return map_coord_is_connected(tile_idx, station_height, face_direction);
+	x *= 32;
+	y *= 32;
+	x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+	y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+	x /= 32;
+	y /= 32;
+
+	return map_coord_is_connected(x, y, z, face_direction);
 }
 
 static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
@@ -2086,64 +2087,66 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 
 static void ride_shop_connected(rct_ride* ride, int ride_idx)
 {
-	rct_ride* ride_back = ride;
+	int x, y, count;
+	rct_map_element *mapElement;
+
     uint16 coordinate = ride->station_starts[0];
 	if (coordinate == 0xFFFF)
 		return;
 
-	int x = ((coordinate >> 8) & 0xFF) << 5, // cx
-		y = (coordinate & 0xFF) << 5;		 // ax	
+	x = (coordinate & 0xFF);
+	y = (coordinate >> 8) & 0xFF;
 	
-	rct_map_element* tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[coordinate];
-	
-    for (; ; tile++){
-        uint8 element_type = tile->type & MAP_ELEMENT_TYPE_MASK;
-        if(element_type == MAP_ELEMENT_TYPE_TRACK && tile->properties.track.ride_index == ride_idx)
-            break;
-        if(tile->flags & MAP_ELEMENT_FLAG_LAST_TILE)
-            return;
-    }
+	mapElement = map_get_first_element_at(x, y);
+	do {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK && mapElement->properties.track.ride_index == ride_idx)
+			break;
+	} while (!map_element_is_last_for_tile(mapElement++));
 
 	uint16 entrance_directions = 0;
-    uint8 track_type = tile->properties.track.type;
-	ride = &g_ride_list[tile->properties.track.ride_index];
-    if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
+	uint8 track_type = mapElement->properties.track.type;
+	ride = &g_ride_list[mapElement->properties.track.ride_index];
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000) {
 		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
-    } else {
+	} else {
 		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
-    }
+	}
 
-	
-	uint8 tile_direction = tile->type & MAP_ELEMENT_DIRECTION_MASK;
+	uint8 tile_direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 	entrance_directions <<= tile_direction;
 	entrance_directions = ((entrance_directions >> 12) | entrance_directions) & 0xF;
 
-	// now each bit in entrance_directions stands for an entrance direction to check
+	// Now each bit in entrance_directions stands for an entrance direction to check
 	if (entrance_directions == 0)
 		return;
 
-	for (int count = 0; entrance_directions != 0; ++count) {
+	// Turn x, y from tiles into units
+	x *= 32;
+	y *= 32;
+
+	for (count = 0; entrance_directions != 0; count++) {
 		if (!(entrance_directions & 1)) {
 			entrance_directions >>= 1;
-            continue;
-        }
+			continue;
+		}
 		entrance_directions >>= 1;
 
-        uint8 face_direction = count ^ 2; // flip direction north<->south, east<->west
+		// Flip direction north<->south, east<->west
+		uint8 face_direction = count ^ 2;
+
 		int y2 = y - RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
 		int x2 = x - RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
-        int tile_idx = ((x2 << 8) | y2) >> 5;
 
-        if (map_coord_is_connected(tile_idx, tile->base_height, face_direction))
-            return;
-    }    
-    
-	// name of ride is parameter of the format string
-    RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+		if (map_coord_is_connected(x2 / 32, y2 / 32, mapElement->base_height, face_direction))
+			return;
+	}
+
+	// Name of ride is parameter of the format string
+	RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
 	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
 
-    ride->connected_message_throttle = 3;
+	ride->connected_message_throttle = 3;
 }
 
 #pragma endregion
@@ -2242,7 +2245,7 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
 
 void ride_set_map_tooltip(rct_map_element *mapElement)
 {
-	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
 		ride_entrance_set_map_tooltip(mapElement);
 	} else {
 		if (

@@ -728,7 +728,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 	if (x == 0x8000)
 		return;
 
-	if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE) {
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
 		// ?
 		uint8 dl = ((mapElement->properties.surface.slope & 0x0F) << direction) & 0xFF;
 		uint8 dh = dl;
@@ -739,7 +739,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 			z += 2;
 	} else {
 		z = mapElement->base_height;
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			if (mapElement->properties.path.type & 4) {
 				if (direction == (mapElement->properties.path.type & 3))
 					z += 2;
@@ -837,9 +837,9 @@ static rct_map_element *footpath_get_map_element_to_remove()
 	z = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) >> 3) & 0xFF;
 	zLow = z - 2;
 
-	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
+	mapElement = map_get_first_element_at(x, y);
 	do {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			if (mapElement->base_height == z) {
 				if (mapElement->properties.path.type & 4)
 					if (((mapElement->properties.path.type & 3) ^ 2) != RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
@@ -854,7 +854,7 @@ static rct_map_element *footpath_get_map_element_to_remove()
 				return mapElement;
 			}
 		}
-	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return NULL;
 }

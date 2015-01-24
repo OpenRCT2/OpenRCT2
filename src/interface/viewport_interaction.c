@@ -190,7 +190,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	case VIEWPORT_INTERACTION_ITEM_RIDE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH)
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		ride = GET_RIDE(mapElement->properties.track.ride_index);
@@ -199,7 +199,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) =
 				mapElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE ? 1335 : 1337;
 		} else if (mapElement->properties.track.type == 1 || mapElement->properties.track.type == 2 || mapElement->properties.track.type == 3) {
@@ -288,7 +288,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		if (!(RCT2_ADDRESS_SCREEN_FLAGS & SCREEN_FLAGS_SCENARIO_EDITOR))
 			break;
 
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_ENTRANCE)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
@@ -397,13 +397,14 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 	if (w != NULL)
 		sub_6A7831();
 
-	mapElement2 = TILE_MAP_ELEMENT_POINTER((y / 32) * 256 + (x / 32));
+	mapElement2 = map_get_first_element_at(x / 32, y / 32);
 	do {
-		if ((mapElement2->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH && mapElement2->base_height == z) {
+		if (map_element_get_type(mapElement2) == MAP_ELEMENT_TYPE_PATH && mapElement2->base_height == z) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
 			footpath_remove(x, y, z, 1);
+			break;
 		}
-	} while (!((mapElement2++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement2++));
 }
 
 /**

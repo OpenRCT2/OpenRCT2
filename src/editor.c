@@ -339,15 +339,15 @@ static void sub_666DFD()
 
 	x /= 32;
 	y /= 32;
-	mapElement = TILE_MAP_ELEMENT_POINTER(x + y * 256);
+	mapElement = map_get_first_element_at(x, y);
 	do {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
 				mapElement->properties.entrance.path_type = 0;
 				break;
 			}
 		}
-	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
 /**
@@ -397,10 +397,10 @@ static void sub_69F06A()
  */
 static void sub_6A2B62()
 {
-	int i, x, y;
+	int i;
 	rct_sprite *sprite;
 	rct_ride *ride;
-	rct_map_element *mapElement;
+	map_element_iterator it;
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F007);
 
@@ -429,37 +429,33 @@ static void sub_6A2B62()
 	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
 
 	// Fix paths and remove all ride track / entrance / exit
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-		resetElementLoop:
-			mapElement = TILE_MAP_ELEMENT_POINTER(x + y * 256);
-			do {
-				switch (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
-				case MAP_ELEMENT_TYPE_PATH:
-					if (mapElement->type & 1) {
-						mapElement->properties.path.type &= 0xF7;
-						mapElement->properties.path.addition_status = 255;
-					}
-					break;
+	map_element_iterator_begin(&it);
+	do {
+		switch (map_element_get_type(it.element)) {
+		case MAP_ELEMENT_TYPE_PATH:
+			if (it.element->type & 1) {
+				it.element->properties.path.type &= 0xF7;
+				it.element->properties.path.addition_status = 255;
+			}
+			break;
 
-				case MAP_ELEMENT_TYPE_TRACK:
-					RCT2_CALLPROC_EBPSAFE(0x006A7594);
-					sub_6A6AA7(x * 32, y * 32, mapElement);
-					map_element_remove(mapElement);
-					goto resetElementLoop;
+		case MAP_ELEMENT_TYPE_TRACK:
+			RCT2_CALLPROC_EBPSAFE(0x006A7594);
+			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+			map_element_remove(it.element);
+			map_element_iterator_restart_for_tile(&it);
+			break;
 
-				case MAP_ELEMENT_TYPE_ENTRANCE:
-					if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
-						RCT2_CALLPROC_EBPSAFE(0x006A7594);
-						sub_6A6AA7(x * 32, y * 32, mapElement);
-						map_element_remove(mapElement);
-						goto resetElementLoop;
-					}
-					break;
-				}
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (it.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
+				RCT2_CALLPROC_EBPSAFE(0x006A7594);
+				sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+				map_element_remove(it.element);
+				map_element_iterator_restart_for_tile(&it);
+			}
+			break;
 		}
-	}
+	} while (map_element_iterator_next(&it));
 
 	object_unload_all();
 

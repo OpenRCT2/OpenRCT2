@@ -111,8 +111,7 @@ int sub_68F3AE(rct_peep* peep){
 	peep->var_C4++;
 	if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF))return 1;
 
-	uint16 ebx = (peep->next_x | (peep->next_y << 8)) >> 5;
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebx);
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	uint8 map_type = MAP_ELEMENT_TYPE_PATH;
 	if ((peep->next_z >> 8) & ((1 << 4) | (1 << 3))){
@@ -121,12 +120,11 @@ int sub_68F3AE(rct_peep* peep){
 
 	int z = peep->next_z & 0xFF;
 
-	for (;; map_element++){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == map_type){
+	do {
+		if (map_element_get_type(map_element) == map_type){
 			if (z == map_element->base_height)return 1;
 		}
-		if (map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE)break;
-	}
+	} while (!map_element_is_last_for_tile(map_element++));
 	
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_FALLING;
@@ -348,15 +346,13 @@ void peep_update_falling(rct_peep* peep){
 
 	// If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
 
-	rct_map_element *map_element = TILE_MAP_ELEMENT_POINTER((peep->y / 32) * 256 + (peep->x /32));
+	rct_map_element *map_element = map_get_first_element_at(peep->x / 32, peep->y / 32);
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
 
-	for (int final_element = 0; !final_element; map_element++){
-		final_element = map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
-
+	do {
 		// If a path check if we are on it
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
 			int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
 				+ map_element->base_height * 8;
 
@@ -366,7 +362,7 @@ void peep_update_falling(rct_peep* peep){
 			saved_map = map_element;
 			break;
 		} // If a surface get the height and see if we are on it
-		else if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE){
+		else if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SURFACE){
 			// If the surface is water check to see if we could be drowning
 			if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK){
 				int height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
@@ -404,7 +400,7 @@ void peep_update_falling(rct_peep* peep){
 			saved_map = map_element;
 		} // If not a path or surface go see next element
 		else continue;
-	}
+	} while (!map_element_is_last_for_tile(map_element++));
 
 	// This will be null if peep is falling
 	if (saved_map == NULL){
@@ -699,9 +695,9 @@ static void peep_update_mowing(rct_peep* peep){
 
 		if (peep->var_37 != 7)continue;
 
-		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+		rct_map_element *map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
-		for (; ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE); map_element++);
+		for (; (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SURFACE); map_element++);
 
 		if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5)){
 			map_element->properties.surface.grass_length = 0;
@@ -740,10 +736,10 @@ static void peep_update_watering(rct_peep* peep){
 		int x = peep->next_x + RCT2_ADDRESS(0x993CCC, sint16)[peep->var_37 * 2];
 		int y = peep->next_y + RCT2_ADDRESS(0x993CCE, sint16)[peep->var_37 * 2];
 
-		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((x | (y << 8)) >> 5);
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 		for (;; map_element++){
-			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SCENERY){
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY){
 				if (abs((peep->next_z & 0xFF) - map_element->base_height) <= 4){
 					rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
@@ -755,7 +751,7 @@ static void peep_update_watering(rct_peep* peep){
 					}
 				}
 			}
-			if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+			if (map_element_is_last_for_tile(map_element)) {
 				peep_state_reset(peep);
 				return;
 			}
@@ -794,27 +790,30 @@ static void peep_update_emptying_bin(rct_peep* peep){
 
 		if (peep->action_frame != 11)return;
 
-		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+		rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
-		for (;; map_element++){
-			if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
-				if ((peep->next_z & 0xFF) == map_element->base_height)break;
+		for (;; map_element++) {
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
+				if ((peep->next_z & 0xFF) == map_element->base_height)
+					break;
 			}
-			if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+			if (map_element_is_last_for_tile(map_element)) {
 				peep_state_reset(peep);
 				return;
 			}
 		}
 
-		if ((map_element->properties.path.additions & 0xF) == 0){
+		if ((map_element->properties.path.additions & 0x0F) == 0) {
 			peep_state_reset(peep);
 			return;
 		}
 
 		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[(map_element->properties.path.additions & 0xF) - 1];
-		if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG1)
-			|| map_element->flags&(1 << 5)
-			|| map_element->properties.path.additions & (1 << 7)){
+		if (
+			!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG1)
+			|| map_element->flags & (1 << 5)
+			|| map_element->properties.path.additions & (1 << 7)
+		) {
 			peep_state_reset(peep);
 			return;
 		}

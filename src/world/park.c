@@ -130,21 +130,18 @@ void park_reset_history()
  */
 int park_calculate_size()
 {
-	int tiles, x, y;
-	rct_map_element *mapElement;
+	int tiles;
+	map_element_iterator it;
 
 	tiles = 0;
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			mapElement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[y * 256 + x];
-			while (mapElement->type & MAP_ELEMENT_TYPE_MASK) {
-				mapElement++;
-			}
-
-			if (mapElement->properties.surface.ownership & 0x30)
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SURFACE) {
+			if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED)) {
 				tiles++;
+			}
 		}
-	}
+	} while (map_element_iterator_next(&it));
 
 	if (tiles != RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) = tiles;
