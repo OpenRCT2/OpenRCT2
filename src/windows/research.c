@@ -430,7 +430,7 @@ static void window_research_funding_mouseup()
 	case WIDX_SCENERY_AND_THEMING:
 		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
-		game_do_command(0, (1 << 8) | 1, 0, activeResearchTypes, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+		research_set_priority(activeResearchTypes);
 		break;
 	}
 }
@@ -482,7 +482,7 @@ static void window_research_funding_dropdown()
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
 
-	game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+	research_set_funding(dropdownIndex);
 	window_invalidate(w);
 }
 
