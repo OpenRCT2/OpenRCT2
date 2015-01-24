@@ -2049,8 +2049,8 @@ static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, in
 
 	x *= 32;
 	y *= 32;
-	x -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
-	y -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+	x -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+	y -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
 	x /= 32;
 	y /= 32;
 
@@ -2134,8 +2134,8 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 		// Flip direction north<->south, east<->west
 		uint8 face_direction = count ^ 2;
 
-		int y2 = y - RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
-		int x2 = x - RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+		int y2 = y - RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+		int x2 = x - RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
 
 		if (map_coord_is_connected(x2 / 32, y2 / 32, mapElement->base_height, face_direction))
 			return;
