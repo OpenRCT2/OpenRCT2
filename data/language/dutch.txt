@@ -51,7 +51,7 @@ STR_0049    :Attractie
 STR_0050    :Attractie
 STR_0051    :Attractie
 STR_0052    :Attractie
-STR_0053    :Hyper-Twisterachtbaan
+STR_0053    :Hyper-twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
@@ -66,7 +66,7 @@ STR_0064    :Attractie
 STR_0065    :Omgekeerde monorail
 STR_0066    :Attractie
 STR_0067    :Attractie
-STR_0068    :Heartline-Twisterachtbaan
+STR_0068    :Heartline-twisterachtbaan
 STR_0069    :Attractie
 STR_0070    :Attractie
 STR_0071    :Attractie
@@ -515,7 +515,7 @@ STR_0513    :
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in bochten
 STR_0515    :
 STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
-STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smal spoorweg
 STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
 STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten
 STR_0520    :
@@ -576,7 +576,7 @@ STR_0574    :
 STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen
 STR_0576    :
 STR_0577    :
-STR_0578    :Karretjes lopen in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists
+STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists
 STR_0579    :
 STR_0580    :
 STR_0581    :
@@ -584,7 +584,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Bootvormige karretjes lopen over een achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
+STR_0586    :Bootvormige karretjes rijden over een achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
 STR_0587    :
 STR_0588    :
 STR_0589    :
@@ -835,7 +835,7 @@ STR_0833    :{SMALLFONT}{BLACK}Spel pauzeren
 STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
 STR_0835    :Kan het spel niet initialiseren
 STR_0836    :Kan het spel niet in geminimaliseerde toestand starten
-STR_0837    :Kan het grafische systeem niet starten
+STR_0837    :Kan het grafisch systeem niet starten
 STR_0838    :CD-code {INT32} is niet geldig voor deze CD van RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Deïnstalleer RollerCoaster Tycoon 2% en installeer het opnieuw met de correcte CD-code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -1588,7 +1588,7 @@ STR_1586    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoo
 STR_1587    :{SMALLFONT}{OPENQUOTES}Deze krakeling van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1588    :{SMALLFONT}{OPENQUOTES}Deze warme chocolademelk van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1589    :{SMALLFONT}{OPENQUOTES}Deze ijsthee van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Deze funnel cake van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Deze trechterkoekjes van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1591    :{SMALLFONT}{OPENQUOTES}Deze zonnebril van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1592    :{SMALLFONT}{OPENQUOTES}Deze rundernoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
 STR_1593    :{SMALLFONT}{OPENQUOTES}Deze rijstnoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
@@ -1620,7 +1620,7 @@ STR_1618    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van
 STR_1619    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een krakeling van {STRINGID}{ENDQUOTES}
 STR_1620    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}{ENDQUOTES}
 STR_1621    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor ijsthee van {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een funnel cake van {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een trechterkoekje van {STRINGID}{ENDQUOTES}
 STR_1623    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een zonnebril van {STRINGID}{ENDQUOTES}
 STR_1624    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rundernoedels van {STRINGID}{ENDQUOTES}
 STR_1625    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rijstnoedels van {STRINGID}{ENDQUOTES}
@@ -1693,7 +1693,7 @@ STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}vanaf {CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Bezoekers
 STR_1694    :{SMALLFONT}{BLACK}Werknemers
-STR_1695    :{SMALLFONT}{BLACK}Inkomsten en uitgaven
+STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
 STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
 STR_1697    :Dit kan niet op wachtrijen worden geplaatst
 STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
@@ -2104,7 +2104,7 @@ STR_2102    :{WINDOW_COLOUR_2}Prijs actiefoto:
 STR_2103    :{WINDOW_COLOUR_2}Prijs krakeling:
 STR_2104    :{WINDOW_COLOUR_2}Prijs warme chocolademelk:
 STR_2105    :{WINDOW_COLOUR_2}Prijs ijsthee:
-STR_2106    :{WINDOW_COLOUR_2}Prijs funnel cake:
+STR_2106    :{WINDOW_COLOUR_2}Prijs trechterkoekje:
 STR_2107    :{WINDOW_COLOUR_2}Prijs zonnebril:
 STR_2108    :{WINDOW_COLOUR_2}Prijs rundernoedels:
 STR_2109    :{WINDOW_COLOUR_2}Prijs rijstnoedels:
@@ -2126,7 +2126,7 @@ STR_2124    :Actiefoto
 STR_2125    :Krakeling
 STR_2126    :Warme chocolademelk
 STR_2127    :IJsthee
-STR_2128    :Funnel cake
+STR_2128    :Trechterkoekje
 STR_2129    :Zonnebril
 STR_2130    :Rundernoedels
 STR_2131    :Rijstnoedels
@@ -2148,7 +2148,7 @@ STR_2146    :Actiefoto's
 STR_2147    :Krakelingen
 STR_2148    :Warme chocolademelk
 STR_2149    :IJsthee
-STR_2150    :Funnel cakes
+STR_2150    :Trechterkoekjes
 STR_2151    :Zonnebrillen
 STR_2152    :Rundernoedels
 STR_2153    :Rijstnoedels
@@ -2170,7 +2170,7 @@ STR_2168    :een actiefoto
 STR_2169    :een krakeling
 STR_2170    :warme chocolademelk
 STR_2171    :ijsthee
-STR_2172    :een funnel cake
+STR_2172    :een trechterkoekje
 STR_2173    :een zonnebril
 STR_2174    :rundernoedels
 STR_2175    :rijstnoedels
@@ -2192,7 +2192,7 @@ STR_2190    :Actiefoto van {STRINGID}
 STR_2191    :Krakeling
 STR_2192    :Warme chocolademelk
 STR_2193    :IJsthee
-STR_2194    :Funnel cake
+STR_2194    :Trechterkoekjes
 STR_2195    :Zonnebril
 STR_2196    :Rundernoedels
 STR_2197    :Rijstnoedels
@@ -2339,9 +2339,9 @@ STR_2337    :Duitse mark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Guldens (fl.)
+STR_2341    :Guldens (fl)
 STR_2342    :Kronen (kr)
-STR_2343    :Euro's ({EURO}) €?
+STR_2343    :Euro's ({EURO})
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2346    :Weergave
@@ -2360,7 +2360,7 @@ STR_2358    :Eenheden
 STR_2359    :Echte waarden
 STR_2360    :{WINDOW_COLOUR_2}Schermresolutie:
 STR_2361    :Landschapslijnen verzachten
-STR_2362    :{SMALLFONT}{BLACK}Verzachting van lijnen tussen landschaptegels aan- of uitzetten
+STR_2362    :{SMALLFONT}{BLACK}Verzachting van lijnen tussen landschapstegels aan- of uitzetten
 STR_2363    :Raster weergeven op landschap
 STR_2364    :{SMALLFONT}{BLACK}Rasterlijnen op land aan- of uitzetten
 STR_2365    :De bank wil je lening niet verhogen!
@@ -3425,13 +3425,13 @@ STR_3423    :{SMALLFONT}{BLACK}Er zijn veel kant-en-klare achtbanen, maar wij ga
 STR_3424    :{SMALLFONT}{BLACK}Zo, het station is af. Nu hebben we een liftheuvel nodig...
 STR_3425    :{SMALLFONT}{BLACK}Achtbaankarretjes zijn niet aangedreven, dus is een 'kettinglift' nodig om ze eerst een heuvel op te trekken...
 STR_3426    :{SMALLFONT}{BLACK}Goed, de liftheuvel is klaar - nu de eerste afdaling...
-STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee; de passagiers zullen naar de zijkanten geslingerd worden door de zijwaartse G-krachten wanneer de trein er overheen raast...
+STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee; de passagiers zullen naar de zijkanten geslingerd worden door de zijwaartse G-krachten wanneer de trein er doorheen raast...
 STR_3428    :{SMALLFONT}{BLACK}De bochten een banking geven (schuinleggen) zal de rit prettiger maken, aangezien de passagiers in hun stoelen geduwd zullen worden in plaats van naar de zijkanten...
 STR_3429    :{SMALLFONT}{BLACK}Dit gaat niet werken! Kijk naar de hoogtemarkeringen: de tweede heuvel is hoger dan de liftheuvel...
 STR_3430    :{SMALLFONT}{BLACK}Om ervoor te zorgen dat de trein terug naar het station komt, moet elke heuvel iets lager zijn dan de heuvel daarvoor...
 STR_3431    :{SMALLFONT}{BLACK}Dat ziet er beter uit! Onze trein zou het nu moeten halen! Laten we wat meer bochtige stukjes toevoegen...
 STR_3432    :{SMALLFONT}{BLACK}We moeten de trein afremmen voordat we de laatste bocht en het station inkomen, dus laten we wat remmen toevoegen...
-STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen staan...
+STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen rijden...
 STR_3434    :{SMALLFONT}{BLACK}Laten we kijken of onze achtbaan werkt!
 STR_3435    :{SMALLFONT}{BLACK}Fantastisch, hij werkt! Laten we wat voetpaden aanleggen, zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
 STR_3436    :{SMALLFONT}{BLACK}Terwijl we wachten op onze eerste bezoekers, kunnen we onze achtbaan een beetje aanpassen...
