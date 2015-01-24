@@ -1626,7 +1626,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 			if (!(peep->staff_orders & 2))
 				continue;
 		} else {
-			if (peep->state != PEEP_STATE_PATROLLING && !(peep->staff_orders & 1))
+			if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & 1))
 				continue;
 		}
 
