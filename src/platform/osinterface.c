@@ -254,9 +254,6 @@ void osinterface_set_fullscreen_mode(int mode)
 
 		// TODO try another display mode rather than just exiting the game
 	}
-
-	gGeneral_config.fullscreen_mode = mode;
-	config_save();
 }
 
 static void osinterface_resize(int width, int height)

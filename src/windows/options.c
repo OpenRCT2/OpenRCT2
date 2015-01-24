@@ -574,6 +574,9 @@ static void window_options_dropdown()
 				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
 			}
 			osinterface_set_fullscreen_mode(dropdownIndex);
+			
+			gGeneral_config.fullscreen_mode = (uint8)dropdownIndex;
+			config_save();
 		}
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
