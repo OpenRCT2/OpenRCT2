@@ -1111,13 +1111,13 @@ static void peep_update_entering_park(rct_peep* peep){
 static int peep_update_walking_find_bench(rct_peep* peep){
 	if (!peep_should_find_bench(peep))return 0;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
 			if (peep->next_z == map_element->base_height)break;
 		}
-		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+		if (map_element_is_last_for_tile(map_element)){
 			return 0;
 		}
 	}
@@ -1188,13 +1188,13 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 	if (peep->next_var_29 & 0x18)return 0;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
 			if (peep->next_z == map_element->base_height)break;
 		}
-		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+		if (map_element_is_last_for_tile(map_element)){
 			return 0;
 		}
 	}
@@ -1265,13 +1265,13 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 
 	if (peep->next_var_29 & 0x18) return;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+		if ( map_element_get_type(map_element->type) == MAP_ELEMENT_TYPE_PATH){
 			if (peep->next_z == map_element->base_height)break;
 		}
-		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+		if (map_element_is_last_for_tile(map_element)){
 			return;
 		}
 	}
@@ -1524,10 +1524,8 @@ static void peep_update_walking(rct_peep* peep){
 	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
 
 	if ((peep->next_var_29 & 0x18) == 8){
-		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
-
-		while ((map_element->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) map_element++;
-
+		rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+		
 		int water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 		if (water_height){
 			invalidate_sprite((rct_sprite*)peep);
@@ -1569,13 +1567,13 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (peep->next_var_29 & 0x1C)return;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER((peep->next_x | (peep->next_y << 8)) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if ((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_PATH){
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
 			if (peep->next_z == map_element->base_height)break;
 		}
-		if (map_element->flags&MAP_ELEMENT_FLAG_LAST_TILE){
+		if (map_element_is_last_for_tile(map_element)){
 			return;
 		}
 	}
