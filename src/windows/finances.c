@@ -599,13 +599,13 @@ static void window_finances_summary_mousedown(int widgetIndex, rct_window*w, rct
 	case WIDX_LOAN_INCREASE:
 		newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) + MONEY(1000, 00);
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_BORROW_ANY_MORE_MONEY;
-		game_do_command(0, 1, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+		finance_set_loan(newLoan);
 		break;
 	case WIDX_LOAN_DECREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > 0) {
 			newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) - MONEY(1000, 00);
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_PAY_BACK_LOAN;
-			game_do_command(0, 1, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+			finance_set_loan(newLoan);
 		}
 		break;
 	}

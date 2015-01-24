@@ -44,4 +44,7 @@ void finance_init();
 void finance_update_daily_profit();
 void sub_69E869();
 
+void finance_set_loan(money32 loan);
+void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
 #endif

@@ -19,7 +19,9 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../world/park.h"
@@ -239,11 +241,58 @@ void sub_69E869()
 {
 	// This subroutine is loan related and is used for cheat detection
 	sint32 value = 0x70093A;
-	value -= RCT2_GLOBAL(0x013573DC, money32); // Cheat detection
+	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	value = ror32(value, 7);
 	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
 	value = ror32(value, 3);
 	RCT2_GLOBAL(0x013587C4, sint32) = value;
+}
+
+void finance_set_loan(money32 loan)
+{
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, loan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x0069DFB3
+ */
+void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	money32 money, loanDifference, currentLoan;
+	money32 newLoan = *edx;
+
+	currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	loanDifference = currentLoan - newLoan;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 52;
+	if (newLoan > currentLoan) {
+		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BANK_REFUSES_TO_INCREASE_LOAN;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	} else {
+		if (loanDifference > money) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_ENOUGH_CASH_AVAILABLE;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}
+
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		money -= loanDifference;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
+		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
+		sub_69E869();
+
+		window_invalidate_by_class(WC_FINANCES);
+		RCT2_GLOBAL(0x009A9804, uint16) |= 1;
+	}
+
+	*ebx = 0;
 }
