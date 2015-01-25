@@ -1283,7 +1283,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
 	for (;; map_element++){
-		if ( map_element_get_type(map_element->type) == MAP_ELEMENT_TYPE_PATH){
+		if ( map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
 			if (peep->next_z == map_element->base_height)break;
 		}
 		if (map_element_is_last_for_tile(map_element)){
