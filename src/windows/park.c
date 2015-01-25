@@ -755,19 +755,17 @@ static void window_park_entrance_dropdown()
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		if (dropdownIndex == -1)
 			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
 		if (dropdownIndex != 0) {
-			dropdownIndex &= 0x00FF;
-			dropdownIndex |= 0x0100;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
+			park_set_open(1);
 		} else {
-			dropdownIndex &= 0x00FF;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
+			park_set_open(0);
 		}
-		game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 	}
 }
 

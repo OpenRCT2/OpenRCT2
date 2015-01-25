@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/award.h"
@@ -612,4 +613,49 @@ void game_command_set_park_entrance_fee()
 	#else
 		__asm__("mov ebx, 0 ");
 	#endif
+}
+
+void park_set_open(int open)
+{
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00669D4A
+ */
+void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		*ebx = 0;
+		return;
+	}
+
+	int dh = (*edx >> 8) & 0xFF;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 16;
+	switch (dh) {
+	case 0:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
+			window_invalidate_by_class(WC_PARK_INFORMATION);
+		}
+		break;
+	case 1:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+			window_invalidate_by_class(WC_PARK_INFORMATION);
+		}
+		break;
+	case 2:
+		RCT2_GLOBAL(0x01358838, uint32) = *edi;
+		window_invalidate_by_class(WC_RIDE);
+		break;
+	case 3:
+		RCT2_GLOBAL(0x0135934C, uint32) = *edi;
+		window_invalidate_by_class(WC_RIDE);
+		break;
+	}
+
+	*ebx = 0;
 }

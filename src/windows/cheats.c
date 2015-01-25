@@ -23,6 +23,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../world/park.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
@@ -478,8 +479,7 @@ static void window_cheats_misc_mouseup()
 		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2767 ? 2768 : 2767;
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
-		game_do_command(0, 1, 0, park_is_open() ? 0 : 0x101, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
-		window_invalidate_by_class(WC_PARK_INFORMATION);
+		park_set_open(park_is_open() ? 0 : 1);
 		break;
 	case WIDX_DECREASE_GAME_SPEED:
 		game_reduce_game_speed();
