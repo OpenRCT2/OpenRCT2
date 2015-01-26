@@ -173,14 +173,16 @@ typedef struct {
 	};
 	uint16 reliability;				// 0x146
 	uint16 var_148;
-	uint16 var_14A;
-	uint8 pad_14C;
+	uint8 satisfaction;				// 0x14A
+	uint8 satisfaction_time_out;	// 0x14B
+	uint8 satisfaction_next;		// 0x14C
 	uint8 var_14D;
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154
-	uint16 var_158;
-	uint8 pad_15A;
+	uint8 popularity;				// 0x158
+	uint8 popularity_time_out;		// 0x159 Updated every purchase and ?possibly by time?
+	uint8 popularity_next;			// 0x15A When timeout reached this will be the next popularity
 	uint8 num_riders;				// 0x15B
 	uint8 music_tune_id;			// 0x15C
 	uint8 var_15D;
@@ -218,8 +220,8 @@ typedef struct {
 	uint8 var_1A1;
 	uint8 var_1A2;
 	uint8 var_1A3;
-	uint32 no_primary_items_sold;
-	uint32 no_secondary_items_sold;
+	uint32 no_primary_items_sold;	// 0x1A4
+	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 var_1AC;
 	uint8 var_1AD;
 	uint8 var_1AE;
@@ -610,6 +612,7 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_update_all();
 void ride_check_all_reachable();
+void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(ride_list_item listItem);

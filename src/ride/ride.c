@@ -664,7 +664,7 @@ static void ride_remove_peeps(int rideIndex)
 				continue;
 
 			peep_decrement_num_riders(peep);
-			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->var_2C == 0)
+			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == 0)
 				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
 
 			invalidate_sprite((rct_sprite*)peep);
@@ -672,8 +672,8 @@ static void ride_remove_peeps(int rideIndex)
 			if (exitDirection == 255) {
 				x = peep->next_x + 16;
 				y = peep->next_y + 16;
-				z = (peep->next_z & 0xFF) * 8;
-				if ((peep->next_z >> 8) & 4)
+				z = peep->next_z * 8;
+				if (peep->next_var_29 & 4)
 					z += 8;
 				z++;
 				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
@@ -1119,6 +1119,23 @@ static void ride_chairlift_update(rct_ride *ride)
 	map_invalidate_tile(x, y, z, z + (4 * 8));
 }
 
+/* rct2: 0x0069A3D7
+ * Updates the ride popularity
+ * edi : ride
+ * bl  : pop_amount
+ * pop_amount can be zero if peep visited but did not purchase.
+ */
+void ride_update_popularity(rct_ride* ride, uint8 pop_amount){
+	ride->popularity_next += pop_amount;
+	ride->popularity_time_out++;
+	if (ride->popularity_time_out < 25)return;
+
+	ride->popularity = ride->popularity_next;
+	ride->popularity_next = 0;
+	ride->popularity_time_out = 0;
+	ride->var_14D |= 1;
+}
+
 /**
  *
  *  rct2: 0x006AC545
@@ -1543,7 +1560,7 @@ static void ride_call_mechanic(int rideIndex, rct_peep *mechanic, int forInspect
 	peep_decrement_num_riders(mechanic);
 	mechanic->state = forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
 	peep_window_state_update(mechanic);
-	mechanic->var_2C = 0;
+	mechanic->sub_state = 0;
 	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
 	ride->var_14D |= 0x20;
 	ride->mechanic = mechanic->sprite_index;
@@ -1620,7 +1637,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 			continue;
 
 		if (forInspection) {
-			if ((peep->state != PEEP_STATE_HEADING_TO_INSPECTION || peep->var_2C >= 4) && peep->state != PEEP_STATE_PATROLLING)
+			if ((peep->state != PEEP_STATE_HEADING_TO_INSPECTION || peep->sub_state >= 4) && peep->state != PEEP_STATE_PATROLLING)
 				continue;
 
 			if (!(peep->staff_orders & 2))

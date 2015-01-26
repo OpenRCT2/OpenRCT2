@@ -471,16 +471,16 @@ static void window_ride_list_scrollpaint()
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-			if ((ride->var_158 & 0xFF) != 255) {
+			if (ride->popularity != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_158 & 0xFF) * 4;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->popularity * 4;
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-			if ((ride->var_14A & 0xFF) != 255) {
+			if (ride->satisfaction != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_14A & 0xFF) * 5;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->satisfaction * 5;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
@@ -616,7 +616,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_POPULARITY:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
+				if (ride->popularity * 4 <= otherRide->popularity * 4)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -625,7 +625,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
+				if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
 					break;
 
 				window_bubble_list_item(w, current_list_position);

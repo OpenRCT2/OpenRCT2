@@ -5725,7 +5725,7 @@ static void window_ride_customer_paint()
 	y += 10;
 
 	// Popularity
-	popularity = ride->var_158 & 0xFF;
+	popularity = ride->popularity;
 	if (popularity == 255) {
 		stringId = STR_POPULARITY_UNKNOWN;
 	} else {
@@ -5736,7 +5736,7 @@ static void window_ride_customer_paint()
 	y += 10;
 
 	// Satisfaction
-	satisfaction = ride->var_14A & 0xFF;
+	satisfaction = ride->satisfaction;
 	if (satisfaction == 255) {
 		stringId = STR_SATISFACTION_UNKNOWN;
 	} else {

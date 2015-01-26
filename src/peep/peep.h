@@ -202,7 +202,7 @@ enum PEEP_STATE {
 	PEEP_STATE_BUYING = 17,
 	PEEP_STATE_WATCHING = 18,
 	PEEP_STATE_EMPTYING_BIN = 19,
-	PEEP_STATE_20 = 20,
+	PEEP_STATE_USING_BIN = 20,
 	PEEP_STATE_WATERING = 21,
 	PEEP_STATE_HEADING_TO_INSPECTION = 22,
 	PEEP_STATE_INSPECTING = 23
@@ -230,8 +230,13 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_WATERING = 19,
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
+	PEEP_ACTION_WAVE_2 = 24,
 	PEEP_ACTION_TAKE_PHOTO = 25,
 	PEEP_ACTION_CLAP = 26,
+
+	PEEP_ACTION_DRAW_PICTURE = 28,
+
+	PEEP_ACTION_WITHDRAW_MONEY = 30,
 
 	PEEP_ACTION_NONE_1 = 254,
 	PEEP_ACTION_NONE_2 = 255
@@ -257,6 +262,8 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
+
+	PEEP_FLAGS_21 = (1<<21),
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
@@ -357,10 +364,11 @@ typedef struct {
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
-	uint16 next_z;					// 0x28 possibly split into two uint8s
+	uint8 next_z;					// 0x28
+	uint8 next_var_29;				// 0x29
 	uint8 var_2A;
 	uint8 state;					// 0x2B
-	uint8 var_2C;
+	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	union{							
@@ -428,8 +436,8 @@ typedef struct {
 	money32 cash_spent;				// 0xA4
 	sint32 time_in_park;			// 0xA8
 	uint8 var_AC;					// 0xAC
-	uint8 var_AD;					// creation/hire time?
-	uint16 var_AE;
+	uint8 previous_ride;			// 0xAD
+	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
 	union							// 0xC5
@@ -446,9 +454,9 @@ typedef struct {
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
 	uint8 var_E0;					// 0xE0
-	uint8 pad_E1;
+	uint8 var_E1;
 	uint8 var_E2;					// 0xE2
-	uint8 pad_E3;
+	uint8 var_E3;
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
@@ -475,7 +483,8 @@ typedef struct {
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
 	uint8 pad_F2;
 	uint8 var_F3;
-	uint8 pad_F4[0x02];
+	uint8 var_F4;
+	uint8 pad_F5;
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
