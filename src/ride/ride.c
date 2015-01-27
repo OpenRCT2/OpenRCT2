@@ -2680,3 +2680,80 @@ void ride_music_update_final()
 }
 
 #pragma endregion
+
+void ride_set_name(int rideIndex, const char *name)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_RIDE_ATTRACTION;
+	game_do_command(1, (rideIndex << 8) | 1, 0, *((int*)(name +  0)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name +  8)), *((int*)(name +  4)));
+	game_do_command(2, (rideIndex << 8) | 1, 0, *((int*)(name + 12)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name + 20)), *((int*)(name + 16)));
+	game_do_command(0, (rideIndex << 8) | 1, 0, *((int*)(name + 24)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name + 32)), *((int*)(name + 28)));
+}
+
+/**
+ * 
+ *  rct2: 0x006B578B
+ */
+void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	rct_window *w;
+	rct_ride *ride;
+	rct_string_id newUserStringId;
+	char oldName[128];
+	static char newName[128];
+
+	int rideIndex = (*ebx >> 8) & 0xFF;
+	int nameChunkIndex = *eax & 0xFFFF;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 4;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		int nameChunkOffset = nameChunkIndex - 1;
+		if (nameChunkOffset < 0)
+			nameChunkOffset = 2;
+		nameChunkOffset *= 12;
+		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
+		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
+		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+	}
+
+	if (nameChunkIndex != 0) {
+		*ebx = 0;
+		return;
+	}
+
+	ride = GET_RIDE(rideIndex);
+	format_string(oldName, ride->name, &ride->name_arguments);
+	if (strcmp(oldName, newName) == 0) {
+		*ebx = 0;
+		return;
+	}
+
+	if (newName[0] == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	newUserStringId = user_string_allocate(4, newName);
+	if (newUserStringId == 0) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		// Free the old ride name
+		user_string_free(ride->name);
+
+		ride->name = newUserStringId;
+
+		gfx_invalidate_screen();
+
+		// Force ride list window refresh
+		w = window_find_by_class(WC_RIDE_LIST);
+		if (w != NULL)
+			w->no_list_items = 0;
+	} else {
+		user_string_free(newUserStringId);
+	}
+
+	*ebx = 0;
+}

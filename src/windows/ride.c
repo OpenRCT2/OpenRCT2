@@ -1899,10 +1899,7 @@ static void window_ride_main_textinput()
 	if (widgetIndex != WIDX_RENAME || !result)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_RIDE_ATTRACTION;
-	game_do_command(1, (w->number << 8) | 1, 0, *((int*)(text +  0)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text +  8)), *((int*)(text +  4)));
-	game_do_command(2, (w->number << 8) | 1, 0, *((int*)(text + 12)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
-	game_do_command(0, (w->number << 8) | 1, 0, *((int*)(text + 24)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
+	ride_set_name(w->number, text);
 }
 
 /**

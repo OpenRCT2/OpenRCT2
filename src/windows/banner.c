@@ -287,17 +287,13 @@ static void window_banner_dropdown()
 
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		// Allocate text_buffer to a new string_id?
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId != 0) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 		break;
@@ -324,16 +320,13 @@ static void window_banner_textinput()
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 		strncpy(text_buffer + 1, text, 32);
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 	}

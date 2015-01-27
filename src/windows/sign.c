@@ -360,17 +360,15 @@ static void window_sign_textinput()
 	if (widgetIndex == WIDX_SIGN_TEXT && result) {
 
 		if (*text != 0){
-			int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-			RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text, &ebp);
-			if (string_id){
+			rct_string_id string_id = user_string_allocate(128, text);
+			if (string_id != 0) {
 				rct_string_id prev_string_id = banner->string_idx;
 				banner->string_idx = string_id;
 				user_string_free(prev_string_id);
 
 				banner->flags &= ~(BANNER_FLAG_2);
 				gfx_invalidate_screen();
-			}
-			else{
+			} else {
 				window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 			}
 		}

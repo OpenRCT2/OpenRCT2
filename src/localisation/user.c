@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include "../addresses.h"
 #include "localisation.h"
 
 char *gUserStrings = (char*)0x0135A8F4;
@@ -29,6 +30,21 @@ char *gUserStrings = (char*)0x0135A8F4;
 void user_string_clear_all()
 {
 	memset(gUserStrings, 0, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
+}
+
+/**
+ * 
+ *  rct2: 0x006C421D
+ */
+rct_string_id user_string_allocate(int base, const char *text)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	ecx = base;
+	edi = (int)text;
+	RCT2_CALLFUNC_X(0x006C421D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	
+	return eax & 0xFFFF;
 }
 
 /**

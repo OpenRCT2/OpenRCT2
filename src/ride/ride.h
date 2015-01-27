@@ -637,4 +637,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
 
+void ride_set_name(int rideIndex, const char *name);
+void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
 #endif
