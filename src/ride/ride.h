@@ -616,6 +616,7 @@ void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
 void ride_construct_new(ride_list_item listItem);
+void ride_construct(int rideIndex);
 int ride_modify(rct_map_element *trackMapElement, int x, int y);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);

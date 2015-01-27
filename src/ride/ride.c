@@ -506,12 +506,20 @@ int ride_create_ride(ride_list_item listItem)
  */
 void ride_construct_new(ride_list_item listItem)
 {
-	rct_window *w;
 	int rideIndex;
 
 	rideIndex = ride_create_ride(listItem);
-	if (rideIndex == -1)
-		return;
+	if (rideIndex != -1)
+		ride_construct(rideIndex);
+}
+
+/**
+ *
+ * rct2: 0x006B4857
+ */
+void ride_construct(int rideIndex)
+{
+	rct_window *w;
 
 	// Open construction window
 	// HACK In the original game this created a mouse up event. This has been

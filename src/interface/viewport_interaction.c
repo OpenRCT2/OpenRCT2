@@ -285,7 +285,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		if (!(RCT2_ADDRESS_SCREEN_FLAGS & SCREEN_FLAGS_SCENARIO_EDITOR))
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR))
 			break;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
@@ -331,8 +331,8 @@ int viewport_interaction_right_click(int x, int y)
 		return 0;
 
 	case VIEWPORT_INTERACTION_ITEM_SPRITE:
-		if (info.mapElement->type == 0)
-			RCT2_CALLPROC_X(0x006B4857, info.x, 0, info.y, (int)info.sprite, 0, 0, 0);
+		if (info.sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+			ride_construct(info.sprite->vehicle.ride);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_RIDE:
 		ride_modify(info.mapElement, info.x, info.y);
@@ -437,7 +437,19 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
  */
 static void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y)
 {
-	RCT2_CALLPROC_X(0x00666C0E, x, 0, y, (int)mapElement, 0, 0, 0);
+	int rotation = (mapElement->type + 1) & 3;
+	switch (mapElement->properties.entrance.index & 0x0F) {
+	case 1:
+		x += TileDirectionDelta[rotation].x;
+		y += TileDirectionDelta[rotation].y;
+		break;
+	case 2:
+		x -= TileDirectionDelta[rotation].x;
+		y -= TileDirectionDelta[rotation].y;
+		break;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, mapElement->base_height / 2, GAME_COMMAND_37, 0, 0);
 }
 
 /**
@@ -452,10 +464,10 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x,
-			1,
+			GAME_COMMAND_FLAG_APPLY,
 			y,
 			(mapElement->type & 0x3) | (mapElement->base_height << 8),
 			GAME_COMMAND_REMOVE_FENCE,
