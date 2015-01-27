@@ -62,8 +62,11 @@ void park_update_histories();
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
 void park_set_open(int open);
+void park_set_name(const char *name);
 
 void game_command_set_park_entrance_fee();
 void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 #endif

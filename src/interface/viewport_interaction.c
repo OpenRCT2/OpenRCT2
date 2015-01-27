@@ -81,8 +81,8 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		ride_set_map_tooltip(mapElement);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 		break;
 	default:
 		info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -449,7 +449,7 @@ static void viewport_interaction_remove_park_entrance(rct_map_element *mapElemen
 		break;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
-	game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, mapElement->base_height / 2, GAME_COMMAND_37, 0, 0);
+	game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, mapElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
 }
 
 /**

@@ -611,10 +611,16 @@ rct_window *window_park_open()
  *
  *  rct2: 0x00667F8B
  */
-void window_park_set_disabled_tabs(rct_window *w)
+static void window_park_set_disabled_tabs(rct_window *w)
 {
 	// Disable price tab if money is disabled
 	w->disabled_widgets = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? (1 << WIDX_TAB_4) : 0;
+}
+
+static void window_park_prepare_window_title_text()
+{
+	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 }
 
 #pragma region Entrance page
@@ -694,7 +700,7 @@ static void window_park_entrance_mouseup()
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
-		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, rct_string_id), 0, 32);
+		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	}
 }
@@ -867,14 +873,8 @@ static void window_park_entrance_textinput()
 
 	window_textinput_get_registers(w, widgetIndex, result, text);
 
-	if (widgetIndex == WIDX_RENAME) {
-		if (result) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-			game_do_command(1, 1, 0, *((int*)(text + 0)), GAME_COMMAND_33, *((int*)(text + 8)), *((int*)(text + 4)));
-			game_do_command(2, 1, 0, *((int*)(text + 12)), GAME_COMMAND_33, *((int*)(text + 20)), *((int*)(text + 16)));
-			game_do_command(0, 1, 0, *((int*)(text + 24)), GAME_COMMAND_33, *((int*)(text + 32)), *((int*)(text + 28)));
-		}
-	}
+	if (widgetIndex == WIDX_RENAME && result)
+		park_set_name(text);
 }
 
 /**
@@ -894,8 +894,8 @@ static void window_park_entrance_invalidate()
 	window_park_set_pressed_tab(w);
 
 	// Set open / close park button state
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
 
 	// Only allow closing of park for guest / rating objective
@@ -1131,9 +1131,7 @@ static void window_park_rating_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1266,9 +1264,7 @@ static void window_park_guests_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1403,9 +1399,7 @@ static void window_park_price_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
@@ -1525,9 +1519,7 @@ static void window_park_stats_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1707,10 +1699,7 @@ static void window_park_objective_invalidate()
 	window_get_register(w);
 
 	window_park_set_pressed_tab(w);
-
-	// Set window title arguments
-	*((uint16*)0x013CE952) = RCT2_GLOBAL(0x013573D4, uint16);
-	*((uint32*)0x013CE954) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	// 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
@@ -1861,9 +1850,7 @@ static void window_park_awards_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);

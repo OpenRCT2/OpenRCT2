@@ -271,13 +271,13 @@ int scenario_load_and_play_from_path(const char *path)
 		
 		// Set park name
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), GAME_COMMAND_33,
+		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), GAME_COMMAND_SET_PARK_NAME,
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 8)), 
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 4)));
-		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), GAME_COMMAND_33, 
+		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), GAME_COMMAND_SET_PARK_NAME, 
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 20)),
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 16)));
-		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), GAME_COMMAND_33,
+		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), GAME_COMMAND_SET_PARK_NAME,
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 32)),
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 28)));
 
@@ -721,7 +721,7 @@ int scenario_prepare_for_save()
 	}
 
 	if (s6Info->name[0] == 0)
-		format_string(s6Info->name, RCT2_GLOBAL(0x013573D4, rct_string_id), (void*)0x013573D8);
+		format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 
 	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);

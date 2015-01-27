@@ -896,7 +896,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0x006649BD,
 	0x006666E7,
-	0x00666A63,
+	0,
 	0x006CD8CE,
 	(uint32)game_command_set_park_entrance_fee,
 	(uint32)game_command_update_staff_colour, // 40
@@ -955,11 +955,11 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub, // 30
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
+	game_command_set_park_name,
 	game_command_set_park_open,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
+	game_command_remove_park_entrance,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub, // 40

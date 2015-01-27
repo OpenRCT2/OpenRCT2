@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "climate.h"

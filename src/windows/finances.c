@@ -1239,8 +1239,8 @@ static void window_finances_marketing_paint()
 			continue;
 
 		noCampaignsActive = 0;
-		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 
 		// Set special parameters
 		switch (i) {

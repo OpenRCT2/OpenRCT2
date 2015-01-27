@@ -61,7 +61,7 @@ void park_init()
 	int i;
 
 	RCT2_GLOBAL(0x013CA740, uint8) = 0;
-	RCT2_GLOBAL(0x013573D4, uint16) = 777;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16) = 777;
 	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = 28;
 	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = 28;
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = 28;
@@ -331,7 +331,7 @@ money32 calculate_company_value()
  */
 void reset_park_entrances()
 {
-	RCT2_GLOBAL(0x013573D4, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = 0;
 
 	for (short i = 0; i < 4; i++) {
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
@@ -655,6 +655,167 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		RCT2_GLOBAL(0x0135934C, uint32) = *edi;
 		window_invalidate_by_class(WC_RIDE);
 		break;
+	}
+
+	*ebx = 0;
+}
+
+int park_get_entrance_index(int x, int y, int z)
+{
+	int i;
+
+	for (i = 0; i < 4; i++) {
+		if (
+			x == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] &&
+			y == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] &&
+			z == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i]
+		) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+void sub_6EC847(int x, int y, int z0, int z1)
+{
+	RCT2_CALLPROC_X(0x006EC847, x, 0, y, 0, z1, z0, 0);
+}
+
+void sub_664D05(int x, int y)
+{
+	RCT2_CALLPROC_X(0x00664D05, x, 0, y, 0, 0, 0, 0);
+}
+
+void park_remove_entrance_segment(int x, int y, int z)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+
+		sub_6EC847(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		map_element_remove(mapElement);
+		sub_664D05(x, y);
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ *
+ *  rct2: 0x00666A63
+ */
+void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	int x, y, z, entranceIndex, direction;
+
+	x = *eax & 0xFFFF;
+	y = *ecx & 0xFFFF;
+	z = *edx * 16;
+
+	RCT2_GLOBAL(0x0141F56C, uint32) = 8;
+	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
+	entranceIndex = park_get_entrance_index(x, y, z);
+	RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = 0x8000;
+	direction = (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] - 1) & 3;
+	z = (*edx & 0xFF) * 2;
+
+	// Centre (sign)
+	park_remove_entrance_segment(x, y, z);
+
+	// Left post
+	park_remove_entrance_segment(
+		x + TileDirectionDelta[direction].x,
+		y + TileDirectionDelta[direction].y,
+		z
+	);
+
+	// Right post
+	park_remove_entrance_segment(
+		x - TileDirectionDelta[direction].x,
+		y - TileDirectionDelta[direction].y,
+		z
+	);
+
+	*ebx = 0;
+}
+
+void park_set_name(const char *name)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
+	game_do_command(1, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 0)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 8)), *((int*)(name + 4)));
+	game_do_command(2, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 12)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 20)), *((int*)(name + 16)));
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 24)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 32)), *((int*)(name + 28)));
+}
+
+/**
+ *
+ *  rct2: 0x00669C6D
+ */
+void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	rct_string_id newUserStringId;
+	char oldName[128];
+	static char newName[128];
+
+	int nameChunkIndex = *eax & 0xFFFF;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		int nameChunkOffset = nameChunkIndex - 1;
+		if (nameChunkOffset < 0)
+			nameChunkOffset = 2;
+		nameChunkOffset *= 12;
+		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
+		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
+		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+	}
+
+	if (nameChunkIndex != 0) {
+		*ebx = 0;
+		return;
+	}
+
+	format_string(oldName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), &RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32));
+	if (strcmp(oldName, newName) == 0) {
+		*ebx = 0;
+		return;
+	}
+
+	if (newName[0] == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	newUserStringId = user_string_allocate(4, newName);
+	if (newUserStringId == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_NAME_FOR_PARK;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		// Free the old ride name
+		user_string_free(RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id));
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = newUserStringId;
+
+		gfx_invalidate_screen();
+	} else {
+		user_string_free(newUserStringId);
 	}
 
 	*ebx = 0;
