@@ -37,6 +37,7 @@
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
+#include "track.h"
 #include "station.h"
 
 #pragma region Ride classification table
@@ -308,6 +309,28 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
 
 /**
  * 
+ * rct2: 0x006C60C2
+ */
+rct_map_element *track_get_next(rct_map_element *mapElement, int *x, int *y, int *z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+
+	eax = *x;
+	ecx = *y;
+	esi = (int)mapElement;
+	result = RCT2_CALLFUNC_X(0x006C60C2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*x = *((uint16*)&eax);
+	*y = *((uint16*)&ecx);
+	*z = *((uint8*)&edx);
+	mapElement = (rct_map_element*)esi;
+
+	if (result & 0x100) return NULL;
+	return mapElement;
+}
+
+/**
+ * 
+ * Make sure to pass in the x and y of the start track element too.
  * rct2: 0x006CB02F
  * ax result x
  * bx result y
@@ -315,19 +338,44 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
  */
 rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	esi = (int)startTrackElement;
-	eax = *outX;
-	ebx = 0;
-	ecx = *outY;
-	edx = 0;
-	edi = 0;
-	ebp = 0;
-	RCT2_CALLFUNC_X(0x006CB02F, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	int rideIndex, x, y, z;
+	rct_map_element *trackElement, *nextTrackElement, *loopTrackElement;
+	rct_ride *ride;
+	rct_window *w;
 
-	if (outX != NULL) *outX = eax & 0xFFFF;
-	if (outY != NULL) *outY = ecx & 0xFFFF;
-	return (rct_map_element*)esi;
+	x = *outX;
+	y = *outY;
+	rideIndex = startTrackElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	if (ride->type == RIDE_TYPE_MAZE)
+		return NULL;
+	
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && RCT2_GLOBAL(0x00F440A6, uint8) != 0 && RCT2_GLOBAL(0x00F440A7, uint8) == rideIndex)
+		sub_6C9627();
+
+	trackElement = startTrackElement;
+	loopTrackElement = NULL;
+	while (1) {
+		nextTrackElement = track_get_next(trackElement, &x, &y, &z);
+		if (nextTrackElement == NULL)
+			return trackElement;
+
+		if (!track_is_connected_by_shape(trackElement, nextTrackElement)) {
+			*outX = x;
+			*outY = y;
+			return nextTrackElement;
+		}
+
+		trackElement = nextTrackElement;
+		if (loopTrackElement == NULL)
+			loopTrackElement = trackElement;
+		else if (trackElement == loopTrackElement)
+			break;
+	}
+
+	return NULL;
 }
 
 /**
@@ -858,6 +906,7 @@ int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 int ride_modify(rct_map_element *mapElement, int x, int y)
 {
 	int rideIndex, z, direction, type;
+	rct_map_element *endOfTrackElement;
 	rct_ride *ride;
 	rct_window *constructionWindow;
 
@@ -895,7 +944,9 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 
 	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS,uint64)[ride->type] & 0x100) {
 		int outX = x, outY = y;
-		mapElement = ride_find_track_gap(mapElement, &outX, &outY);
+		endOfTrackElement = ride_find_track_gap(mapElement, &outX, &outY);
+		if (endOfTrackElement != NULL)
+			mapElement = endOfTrackElement;
 	}
 
 	z = mapElement->base_height * 8;
@@ -2696,7 +2747,7 @@ void ride_music_update_final()
  */
 int ride_mode_check_valid_stations(rct_ride *ride)
 {
-	return RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+	return (RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100) == 0;
 }
 
 /**
@@ -2705,7 +2756,7 @@ int ride_mode_check_valid_stations(rct_ride *ride)
  */
 int ride_check_for_entrance_exit(int rideIndex)
 {
-	return RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100;
+	return (RCT2_CALLPROC_X(0x006B5872, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100) == 0;
 }
 
 /**
@@ -2835,11 +2886,9 @@ void loc_6B51C0(int rideIndex)
 		window_scroll_to_location(w, x, y, z);
 
 		mapElement = sub_6CAF80(rideIndex, &x, &y);
-		ride_find_track_gap(mapElement, &x, &y);
-		w = window_get_main();
-		rct_viewport *viewport = w->viewport;
+		mapElement = ride_find_track_gap(mapElement, &x, &y);
 		ride_modify(mapElement, x, y);
-		
+
 		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 		if (w != NULL)
 			window_event_mouse_up_call(w, 29 + entranceOrExit);
@@ -2876,7 +2925,7 @@ rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
 {
 	rct_map_element *mapElement;
 
-	mapElement = map_get_first_element_at(x, y);
+	mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
@@ -2914,11 +2963,13 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		return 0;
 
 	if (!ride_check_for_entrance_exit(rideIndex)) {
+		// TODO check if this is correct
 		loc_6B51C0(rideIndex);
 		return 0;
 	}
 
 	if (goingToBeOpen && isApplying) {
+		// TODO check if this is correct
 		sub_6B5952(rideIndex);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
 	}
@@ -2932,6 +2983,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (stationIndex == -1) {
+		// TODO check if this is correct
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x8000)
 			return 0;
@@ -2943,11 +2995,14 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		return 0;
 	}
 
-	mapElement = loc_6B4F6B(rideIndex, ride->station_starts[i] >> 8, ride->station_starts[i] & 0xFF);
+	x = (ride->station_starts[i] & 0xFF) * 32;
+	y = (ride->station_starts[i] >> 8) * 32;
+	z = ride->station_heights[i] * 8;
+
+	mapElement = loc_6B4F6B(rideIndex, x, y);
 	if (mapElement == NULL)
 		return 0;
 
-	z = ride->station_heights[i] * 8;
 	if (
 		ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER ||
 		ride->mode == RIDE_MODE_RACE ||
@@ -2962,6 +3017,8 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 			return 0;
 		}
 	}
+
+	// TODO check if the following is correct
 
 	if (
 		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
@@ -3059,23 +3116,20 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 	switch (targetStatus) {
 	case RIDE_STATUS_CLOSED:
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-			*ebx = 0;
-			return;
-		}
-
-		if (ride->status == targetStatus) {
-			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-				ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-				ride_clear_for_construction(rideIndex);
-				ride_remove_peeps(rideIndex);
+			if (ride->status == targetStatus) {
+				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+					ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+					ride_clear_for_construction(rideIndex);
+					ride_remove_peeps(rideIndex);
+				}
 			}
+		
+			ride->status = RIDE_STATUS_CLOSED;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+			ride->race_winner = 0xFFFF;
+			ride->var_14D |= (1 << 2) | (1 << 3);
+			window_invalidate_by_number(WC_RIDE, rideIndex);
 		}
-
-		ride->status = RIDE_STATUS_CLOSED;
-		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-		ride->race_winner = 0xFFFF;
-		ride->var_14D |= (1 << 2) | (1 << 3);
-		window_invalidate_by_number(WC_RIDE, rideIndex);
 		*ebx = 0;
 		return;
 	case RIDE_STATUS_TESTING:

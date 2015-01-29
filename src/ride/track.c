@@ -29,7 +29,10 @@
  *
  *  rct2: 0x00997C9D
  */
-const rct_trackdefinition gTrackDefinitions[] = {
+const rct_trackdefinition *gTrackDefinitions = (rct_trackdefinition*)0x00997C9D;
+
+// TODO This table is incorrect or at least missing 69 elements. There should be 256 in total!
+const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
     // TYPE							VANGLE END					VANGLE START				BANK END				BANK START				SPECIAL
     { TRACK_FLAT,					TRACK_NONE,					TRACK_NONE,					TRACK_BANK_NONE,		TRACK_BANK_NONE,		TRACK_NONE					},	// ELEM_FLAT
     { TRACK_FLAT,					TRACK_NONE,					TRACK_NONE,					TRACK_BANK_NONE,		TRACK_BANK_NONE,		TRACK_NONE					},	// ELEM_END_STATION
@@ -453,4 +456,41 @@ int track_rename(const char *text)
 int track_delete()
 {
 	return (RCT2_CALLPROC_X(0x006D3761, 0, 0, 0, 0, 0, 0, 0) & 0x100) != 0;
+}
+
+/**
+ * Helper method to determine if a connects to b by its bank and angle, not location.
+ */
+int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
+{
+	int trackType, aBank, aAngle, bBank, bAngle;
+	rct_ride *ride;
+
+	ride = GET_RIDE(a->properties.track.ride_index);
+	trackType = a->properties.track.type;
+	aBank = gTrackDefinitions[trackType].bank_end;
+	aAngle = gTrackDefinitions[trackType].vangle_end;
+	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (a->properties.track.colour & 4) {
+			if (aBank == TRACK_BANK_NONE)
+				aBank = TRACK_BANK_UPSIDE_DOWN;
+			else if (aBank == TRACK_BANK_UPSIDE_DOWN)
+				aBank = TRACK_BANK_NONE;
+		}
+	}
+
+	ride = GET_RIDE(b->properties.track.ride_index);
+	trackType = b->properties.track.type;
+	bBank = gTrackDefinitions[trackType].bank_start;
+	bAngle = gTrackDefinitions[trackType].vangle_start;
+	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (b->properties.track.colour & 4) {
+			if (bBank == TRACK_BANK_NONE)
+				bBank = TRACK_BANK_UPSIDE_DOWN;
+			else if (bBank == TRACK_BANK_UPSIDE_DOWN)
+				bBank = TRACK_BANK_NONE;
+		}
+	}
+
+	return aBank == bBank && aAngle == bAngle;
 }
