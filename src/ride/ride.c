@@ -247,6 +247,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 
 		shopItem = entry->shop_item_secondary;
 		if (shopItem != 255) {
+			priceMinusCost += ride->price_secondary;
 			priceMinusCost -= get_shop_item_cost(shopItem);
 			priceMinusCost /= 2;
 		}
