@@ -88,7 +88,7 @@ void map_element_iterator_restart_for_tile(map_element_iterator *it)
 
 rct_map_element *map_get_first_element_at(int x, int y)
 {
-	if (x < 0 || y < 0)
+	if (x < 0 || y < 0 || x > 255 || y > 255)
 	{ 
 		log_error("Trying to access element outside of range"); 
 		return NULL;
