@@ -1834,7 +1834,7 @@ static void window_ride_main_dropdown()
 
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->overall_view;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
-		game_do_command(0, 1, 0, w->number | (status << 8), GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		ride_set_status(w->number, status);
 		break;
 	}
 }

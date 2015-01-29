@@ -2689,6 +2689,418 @@ void ride_music_update_final()
 
 #pragma endregion
 
+/**
+ * 
+ *  rct2: 0x006B4CC1
+ */
+int ride_mode_check_valid_stations(rct_ride *ride)
+{
+	return RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006B5872
+ */
+int ride_check_for_entrance_exit(int rideIndex)
+{
+	return RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006B5952
+ */
+void sub_6B5952(int rideIndex)
+{
+	RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, rideIndex, 0, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006D3319
+ */
+int sub_6D3319(rct_map_element *mapElement)
+{
+	return RCT2_CALLPROC_X(0x006D3319, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006CB149
+ */
+int sub_6CB149(rct_map_element *mapElement)
+{
+	return RCT2_CALLPROC_X(0x006CB149, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006CB1D3
+ */
+int sub_6CB1D3(rct_map_element *mapElement)
+{
+	return RCT2_CALLPROC_X(0x006CB1D3, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006CB25D
+ */
+int sub_6CB25D(rct_map_element *mapElement)
+{
+	return RCT2_CALLPROC_X(0x006CB25D, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006CB2DA
+ */
+int sub_6CB2DA(rct_map_element *mapElement)
+{
+	return RCT2_CALLPROC_X(0x006CB2DA, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006B4D26
+ */
+void sub_6B4D26(int rideIndex)
+{
+	RCT2_CALLPROC_X(0x006CB2DA, 0, 0, 0, rideIndex, 0, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006DD84C
+ */
+int sub_6DD84C(rct_ride *ride)
+{
+	return RCT2_CALLPROC_X(0x006DD84C, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006DF4D4
+ */
+int sub_6DF4D4(rct_ride *ride)
+{
+	return RCT2_CALLPROC_X(0x006DF4D4, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+}
+
+/**
+ * 
+ *  rct2: 0x006B51C0
+ */
+void loc_6B51C0(int rideIndex)
+{
+	int i, x, y, z;
+	rct_ride *ride;
+	rct_map_element *mapElement;
+	rct_window *w;
+
+	ride = GET_RIDE(rideIndex);
+
+	if (RCT2_GLOBAL(0x0141F568, uint8) != RCT2_GLOBAL(0x013CA740, uint8))
+		return;
+
+	w = window_get_main();
+	if (w == NULL)
+		return;
+
+	uint8 entranceOrExit = -1;
+	for (i = 0; i < 4; i++) {
+		if (ride->station_starts[i] == 0xFFFF)
+			continue;
+
+		if (ride->entrances[i] == 0xFFFF) {
+			entranceOrExit = 0;
+			break;
+		}
+
+		if (ride->exits[i] == 0xFFFF) {
+			entranceOrExit = 1;
+			break;
+		}
+	}
+
+	if (entranceOrExit == -1)
+		return;
+
+	if (ride->type != RIDE_TYPE_MAZE) {
+		x = (ride->station_starts[i] >> 8) * 32;
+		y = (ride->station_starts[i] & 0xFF) * 32;
+		z = ride->station_heights[i] * 8;
+		window_scroll_to_location(w, x, y, z);
+
+		mapElement = sub_6CAF80(rideIndex, &x, &y);
+		ride_find_track_gap(mapElement, &x, &y);
+		w = window_get_main();
+		rct_viewport *viewport = w->viewport;
+		ride_modify(mapElement, x, y);
+		
+		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+		if (w != NULL)
+			window_event_mouse_up_call(w, 29 + entranceOrExit);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006B528A
+ */
+void loc_6B528A(rct_map_element *mapElement, int x, int y, int z)
+{
+	rct_ride *ride;
+	rct_window *w;
+
+	ride = GET_RIDE(mapElement->properties.track.ride_index);
+
+	if (RCT2_GLOBAL(0x0141F568, uint8) != RCT2_GLOBAL(0x013CA740, uint8))
+		return;
+
+	w = window_get_main();
+	if (w == NULL)
+		return;
+
+	window_scroll_to_location(w, x, y, z);
+	ride_modify(mapElement, x, y);
+}
+
+/**
+ * 
+ *  rct2: 0x006B4F6B
+ */
+rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x, y);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		uint32 unk = mapElement->properties.track.type << 4;
+		if (RCT2_GLOBAL(0x00F43484, uint32) & 0x80000) {
+			if (!(RCT2_ADDRESS(0x0099CA64, uint8)[unk] & 0x10))
+				continue;
+		} else {
+			if (!(RCT2_ADDRESS(0x0099BA64, uint8)[unk] & 0x10))
+				continue;
+		}
+
+		if (mapElement->properties.track.ride_index == rideIndex)
+			return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	
+	return NULL;
+}
+
+/**
+ * 
+ *  rct2: 0x006B4EEA
+ */
+int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
+{
+	int i, x, y, z, stationIndex;
+	rct_ride *ride;
+	rct_map_element *mapElement, *mapElement2;
+
+	ride = GET_RIDE(rideIndex);
+
+	window_close_by_class(WC_RIDE_CONSTRUCTION);
+	if (!ride_mode_check_valid_stations(ride))
+		return 0;
+
+	if (!ride_check_for_entrance_exit(rideIndex)) {
+		loc_6B51C0(rideIndex);
+		return 0;
+	}
+
+	if (goingToBeOpen && isApplying) {
+		sub_6B5952(rideIndex);
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+	}
+
+	stationIndex = -1;
+	for (i = 0; i < 4; i++) {
+		if (ride->station_starts[i] != 0xFFFF) {
+			stationIndex = i;
+			break;
+		}
+	}
+
+	if (stationIndex == -1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x8000)
+			return 0;
+
+		if (ride->type == RIDE_TYPE_MAZE)
+			return 0;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_REQUIRES_A_STATION_PLATFORM;
+		return 0;
+	}
+
+	mapElement = loc_6B4F6B(rideIndex, ride->station_starts[i] >> 8, ride->station_starts[i] & 0xFF);
+	if (mapElement == NULL)
+		return 0;
+
+	z = ride->station_heights[i] * 8;
+	if (
+		ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER ||
+		ride->mode == RIDE_MODE_RACE ||
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT ||
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+	) {
+		mapElement2 = ride_find_track_gap(mapElement, &x, &y);
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
+		if (mapElement2 != NULL) {
+			loc_6B528A(mapElement, x, y, z);
+			return 0;
+		}
+	}
+
+	if (
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+	) {
+		if (sub_6D3319(mapElement)) {
+			loc_6B528A(mapElement, x, y, z);
+			return 0;
+		}
+	}
+
+	if (ride->subtype != 255) {
+		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
+		if (rideType->var_008 & 2) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (sub_6CB149(mapElement)) {
+				loc_6B528A(mapElement, x, y, z);
+				return 0;
+			}
+		}
+		if (rideType->var_008 & 4) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (sub_6CB1D3(mapElement)) {
+				loc_6B528A(mapElement, x, y, z);
+				return 0;
+			}
+		}
+	}
+
+	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
+		mapElement2 = ride_find_track_gap(mapElement, &x, &y);
+		if (mapElement2 == NULL) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+			return 0;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_STATION_NOT_LONG_ENOUGH;
+		if (sub_6CB25D(mapElement)) {
+			loc_6B528A(mapElement, x, y, z);
+			return 0;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		if (sub_6CB2DA(mapElement)) {
+			loc_6B528A(mapElement, x, y, z);
+			return 0;
+		}
+	}
+
+	if (isApplying)
+		sub_6B4D26(rideIndex);
+
+	if (
+		!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+	) {
+		if (sub_6DD84C(ride))
+			return 0;
+	}
+
+	if (
+		(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint32) & 0x400) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+	) {
+		if (sub_6DF4D4(ride))
+			return 0;
+	}
+
+	return 1;
+}
+
+void ride_set_status(int rideIndex, int status)
+{
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex | (status << 8), GAME_COMMAND_SET_RIDE_STATUS, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006B4EA6
+ */
+void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	int rideIndex, targetStatus;
+	rct_ride *ride;
+
+	rideIndex = *edx & 0xFF;
+	targetStatus = (*edx >> 8) & 0xFF;
+
+	RCT2_GLOBAL(0x0141F56C, uint8) = 4;
+
+	ride = GET_RIDE(rideIndex);
+	RCT2_GLOBAL(0x00F43484, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
+
+	switch (targetStatus) {
+	case RIDE_STATUS_CLOSED:
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			*ebx = 0;
+			return;
+		}
+
+		if (ride->status == targetStatus) {
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+				ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+				ride_clear_for_construction(rideIndex);
+				ride_remove_peeps(rideIndex);
+			}
+		}
+
+		ride->status = RIDE_STATUS_CLOSED;
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+		ride->race_winner = 0xFFFF;
+		ride->var_14D |= (1 << 2) | (1 << 3);
+		window_invalidate_by_number(WC_RIDE, rideIndex);
+		*ebx = 0;
+		return;
+	case RIDE_STATUS_TESTING:
+	case RIDE_STATUS_OPEN:
+		if (ride->status == targetStatus) {
+			*ebx = 0;
+			return;
+		}
+
+		if (!ride_is_valid_for_open(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			ride->race_winner = 0xFFFF;
+			ride->status = targetStatus;
+			ride_get_measurement(rideIndex, NULL);
+			ride->var_14D |= (1 << 2) | (1 << 3);
+			window_invalidate_by_number(WC_RIDE, rideIndex);
+		}
+		*ebx = 0;
+		return;
+	}
+}
+
 void ride_set_name(int rideIndex, const char *name)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_RIDE_ATTRACTION;

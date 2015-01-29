@@ -293,7 +293,7 @@ enum {
 	RIDE_LIFECYCLE_MUSIC = 1 << 13,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
-
+	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
 	RIDE_LIFECYCLE_18 = 1 << 18,
 	RIDE_LIFECYCLE_19 = 1 << 19
@@ -638,6 +638,8 @@ void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
 
+void ride_set_status(int rideIndex, int status);
+void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
