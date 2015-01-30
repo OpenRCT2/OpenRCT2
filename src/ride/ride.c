@@ -266,13 +266,13 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
  * dl ride index
  * esi result map element
  */
-rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
+int sub_6CAF80(int rideIndex, rct_xy_element *output)
 {
 	map_element_iterator it;
 	rct_map_element *resultMapElement;
 	int foundSpecialTrackPiece;
 
-	resultMapElement = (rct_map_element*)-1;
+	resultMapElement = NULL;
 	foundSpecialTrackPiece = 0;
 
 	map_element_iterator_begin(&it);
@@ -284,48 +284,50 @@ rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY)
 
 		// Found a track piece for target ride
 
-		// Check if its a ???
+		// Check if its not the station or ??? (but allow end piece of station)
 		int specialTrackPiece = (
-			(it.element->properties.track.type != 2 && it.element->properties.track.type != 3) &&
+			it.element->properties.track.type != 2 &&
+			it.element->properties.track.type != 3 &&
 			(RCT2_ADDRESS(0x0099BA64, uint8)[it.element->properties.track.type * 16] & 0x10)
 		);
 
 		// Set result tile to this track piece if first found track or a ???
-		if (resultMapElement == (rct_map_element*)-1 || specialTrackPiece) {
+		if (resultMapElement == NULL || specialTrackPiece) {
 			resultMapElement = it.element;
 
-			if (outX != NULL) *outX = it.x * 32;
-			if (outY != NULL) *outY = it.y * 32;
+			if (output != NULL) {
+				output->element = resultMapElement;
+				output->x = it.x * 32;
+				output->y = it.y * 32;
+			}
 		}
 
 		if (specialTrackPiece) {
 			foundSpecialTrackPiece = 1;
-			return resultMapElement;
+			return 1;
 		}
 	} while (map_element_iterator_next(&it));
 
-	return resultMapElement;
+	return resultMapElement != NULL;
 }
 
 /**
  * 
  * rct2: 0x006C60C2
  */
-rct_map_element *track_get_next(rct_map_element *mapElement, int *x, int *y, int *z)
+int track_get_next(rct_xy_element *input, rct_xy_element *output)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp, result;
 
-	eax = *x;
-	ecx = *y;
-	esi = (int)mapElement;
+	eax = input->x;
+	ecx = input->y;
+	esi = (int)input->element;
 	result = RCT2_CALLFUNC_X(0x006C60C2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = *((uint16*)&eax);
-	*y = *((uint16*)&ecx);
-	*z = *((uint8*)&edx);
-	mapElement = (rct_map_element*)esi;
+	output->x = *((uint16*)&eax);
+	output->y = *((uint16*)&ecx);
+	output->element = (rct_map_element*)esi;
 
-	if (result & 0x100) return NULL;
-	return mapElement;
+	return (result & 0x100) == 0;
 }
 
 /**
@@ -336,46 +338,45 @@ rct_map_element *track_get_next(rct_map_element *mapElement, int *x, int *y, int
  * bx result y
  * esi input / output map element
  */
-rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY)
+int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 {
-	int rideIndex, x, y, z;
-	rct_map_element *trackElement, *nextTrackElement, *loopTrackElement;
+	int rideIndex;
+	rct_xy_element trackElement, nextTrackElement;
+	rct_map_element *loopTrackElement;
 	rct_ride *ride;
 	rct_window *w;
 
-	x = *outX;
-	y = *outY;
-	rideIndex = startTrackElement->properties.track.ride_index;
+	trackElement = *input;
+	rideIndex = trackElement.element->properties.track.ride_index;
 	ride = GET_RIDE(rideIndex);
 
 	if (ride->type == RIDE_TYPE_MAZE)
-		return NULL;
+		return 0;
 	
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && RCT2_GLOBAL(0x00F440A6, uint8) != 0 && RCT2_GLOBAL(0x00F440A7, uint8) == rideIndex)
 		sub_6C9627();
 
-	trackElement = startTrackElement;
 	loopTrackElement = NULL;
 	while (1) {
-		nextTrackElement = track_get_next(trackElement, &x, &y, &z);
-		if (nextTrackElement == NULL)
-			return trackElement;
+		if (!track_get_next(&trackElement, &nextTrackElement)) {
+			*output = trackElement;
+			return 1;
+		}
 
-		if (!track_is_connected_by_shape(trackElement, nextTrackElement)) {
-			*outX = x;
-			*outY = y;
-			return nextTrackElement;
+		if (!track_is_connected_by_shape(trackElement.element, nextTrackElement.element)) {
+			*output = nextTrackElement;
+			return 1;
 		}
 
 		trackElement = nextTrackElement;
 		if (loopTrackElement == NULL)
-			loopTrackElement = trackElement;
-		else if (trackElement == loopTrackElement)
+			loopTrackElement = trackElement.element;
+		else if (loopTrackElement == trackElement.element)
 			break;
 	}
 
-	return NULL;
+	return 0;
 }
 
 /**
@@ -903,14 +904,15 @@ int ride_modify_maze(rct_map_element *mapElement, int x, int y)
  * 
  * rct2: 0x006CC056
  */
-int ride_modify(rct_map_element *mapElement, int x, int y)
+int ride_modify(rct_xy_element *input)
 {
-	int rideIndex, z, direction, type;
-	rct_map_element *endOfTrackElement;
+	int rideIndex, x, y, z, direction, type;
+	rct_xy_element mapElement, endOfTrackElement;
 	rct_ride *ride;
 	rct_window *constructionWindow;
 
-	rideIndex = mapElement->properties.track.ride_index;
+	mapElement = *input;
+	rideIndex = mapElement.element->properties.track.ride_index;
 	ride = GET_RIDE(rideIndex);
 
 	if (!ride_check_if_construction_allowed(ride))
@@ -934,26 +936,27 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	ride_remove_peeps(rideIndex);
 
 	// Check if element is a station entrance or exit
-	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE)
-		return ride_modify_entrance_or_exit(mapElement, x, y);
+	if (map_element_get_type(mapElement.element) == MAP_ELEMENT_TYPE_ENTRANCE)
+		return ride_modify_entrance_or_exit(mapElement.element, mapElement.x, mapElement.y);
 
 	constructionWindow = ride_create_or_find_construction_window(rideIndex);
 
 	if (ride->type == RIDE_TYPE_MAZE)
-		return ride_modify_maze(mapElement, x, y);
+		return ride_modify_maze(mapElement.element, mapElement.x, mapElement.y);
 
 	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS,uint64)[ride->type] & 0x100) {
-		int outX = x, outY = y;
-		endOfTrackElement = ride_find_track_gap(mapElement, &outX, &outY);
-		if (endOfTrackElement != NULL)
+		if (ride_find_track_gap(&mapElement, &endOfTrackElement))
 			mapElement = endOfTrackElement;
 	}
 
-	z = mapElement->base_height * 8;
-	direction = mapElement->type & 3;
-	type = mapElement->properties.track.type;
+	x = mapElement.x;
+	y = mapElement.y;
+	z = mapElement.element->base_height * 8;
+	direction = mapElement.element->type & 3;
+	type = mapElement.element->properties.track.type;
 	
-	if (sub_6C683D(&x, &y, z, direction, type, 0, 0, 0)) return 0;
+	if (sub_6C683D(&x, &y, z, direction, type, 0, 0, 0))
+		return 0;
 
 	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 	RCT2_GLOBAL(0x00F440A6, uint8) = 3;
@@ -2772,45 +2775,129 @@ void sub_6B5952(int rideIndex)
  * 
  *  rct2: 0x006D3319
  */
-int sub_6D3319(rct_map_element *mapElement)
+int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 {
-	return RCT2_CALLPROC_X(0x006D3319, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+	// return RCT2_CALLPROC_X(0x006D3319, x, 0, y, 0, (int)mapElement, 0, 0) & 0x100;
+
+	int rideIndex, type;
+	rct_xy_element trackElement, nextTrackElement;
+	rct_map_element *loopTrackElement;
+	rct_window *w;
+
+	trackElement = *input;
+	rideIndex = trackElement.element->properties.track.ride_index;
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && RCT2_GLOBAL(0x00F440A6, uint8) != 0 && RCT2_GLOBAL(0x00F440A7, uint8) == rideIndex)
+		sub_6C9627();
+
+	loopTrackElement = NULL;
+	while (1) {
+		if (!track_get_next(&trackElement, &nextTrackElement)) {
+			// Not sure why this is the case...
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+			return 0;
+		}
+
+		if (nextTrackElement.element->type == 216) {
+			type = trackElement.element->properties.track.type;
+			if (type == 1) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+				return 0;
+			}
+			if (type == 216) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
+				return 0;
+			}
+			if ((trackElement.element->type & 0x80) && type != 209 && type != 210) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
+				return 0;
+			}
+		}
+
+		trackElement = nextTrackElement;
+		if (loopTrackElement == NULL)
+			loopTrackElement = trackElement.element;
+		else if (loopTrackElement == trackElement.element)
+			break;
+	}
+
+	return 1;
 }
 
 /**
  * 
  *  rct2: 0x006CB149
  */
-int sub_6CB149(rct_map_element *mapElement)
+int ride_check_track_suitability_a(rct_xy_element *input, rct_xy_element *output)
 {
-	return RCT2_CALLPROC_X(0x006CB149, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+
+	eax = input->x;
+	ecx = input->y;
+	esi = (int)input->element;
+	result = RCT2_CALLFUNC_X(0x006CB149, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	output->x = eax;
+	output->y = ecx;
+	output->element = (rct_map_element*)esi;
+
+	return (result & 0x100) != 0;
 }
 
 /**
  * 
  *  rct2: 0x006CB1D3
  */
-int sub_6CB1D3(rct_map_element *mapElement)
+int ride_check_track_suitability_b(rct_xy_element *input, rct_xy_element *output)
 {
-	return RCT2_CALLPROC_X(0x006CB1D3, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+
+	eax = input->x;
+	ecx = input->y;
+	esi = (int)input->element;
+	result = RCT2_CALLFUNC_X(0x006CB1D3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	output->x = eax;
+	output->y = ecx;
+	output->element = (rct_map_element*)esi;
+
+	return (result & 0x100) != 0;
 }
 
 /**
  * 
  *  rct2: 0x006CB25D
  */
-int sub_6CB25D(rct_map_element *mapElement)
+int ride_check_station_length(rct_xy_element *input, rct_xy_element *output)
 {
-	return RCT2_CALLPROC_X(0x006CB25D, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+
+	eax = input->x;
+	ecx = input->y;
+	esi = (int)input->element;
+	result = RCT2_CALLFUNC_X(0x006CB25D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	output->x = eax;
+	output->y = ecx;
+	output->element = (rct_map_element*)esi;
+
+	return (result & 0x100) != 0;
 }
 
 /**
  * 
  *  rct2: 0x006CB2DA
  */
-int sub_6CB2DA(rct_map_element *mapElement)
+int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *output)
 {
-	return RCT2_CALLPROC_X(0x006CB2DA, 0, 0, 0, 0, (int)mapElement, 0, 0) & 0x100;
+	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+
+	eax = input->x;
+	ecx = input->y;
+	esi = (int)input->element;
+	result = RCT2_CALLFUNC_X(0x006CB2DA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	output->x = eax;
+	output->y = ecx;
+	output->element = (rct_map_element*)esi;
+
+	return (result & 0x100) != 0;
 }
 
 /**
@@ -2848,7 +2935,7 @@ void loc_6B51C0(int rideIndex)
 {
 	int i, x, y, z;
 	rct_ride *ride;
-	rct_map_element *mapElement;
+	rct_xy_element trackElement;
 	rct_window *w;
 
 	ride = GET_RIDE(rideIndex);
@@ -2885,9 +2972,9 @@ void loc_6B51C0(int rideIndex)
 		z = ride->station_heights[i] * 8;
 		window_scroll_to_location(w, x, y, z);
 
-		mapElement = sub_6CAF80(rideIndex, &x, &y);
-		mapElement = ride_find_track_gap(mapElement, &x, &y);
-		ride_modify(mapElement, x, y);
+		sub_6CAF80(rideIndex, &trackElement);
+		ride_find_track_gap(&trackElement, &trackElement);
+		ride_modify(&trackElement);
 
 		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 		if (w != NULL)
@@ -2899,12 +2986,12 @@ void loc_6B51C0(int rideIndex)
  * 
  *  rct2: 0x006B528A
  */
-void loc_6B528A(rct_map_element *mapElement, int x, int y, int z)
+void loc_6B528A(rct_xy_element *trackElement)
 {
 	rct_ride *ride;
 	rct_window *w;
 
-	ride = GET_RIDE(mapElement->properties.track.ride_index);
+	ride = GET_RIDE(trackElement->element->properties.track.ride_index);
 
 	if (RCT2_GLOBAL(0x0141F568, uint8) != RCT2_GLOBAL(0x013CA740, uint8))
 		return;
@@ -2913,8 +3000,8 @@ void loc_6B528A(rct_map_element *mapElement, int x, int y, int z)
 	if (w == NULL)
 		return;
 
-	window_scroll_to_location(w, x, y, z);
-	ride_modify(mapElement, x, y);
+	window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
+	ride_modify(trackElement);
 }
 
 /**
@@ -2952,9 +3039,9 @@ rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
  */
 int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 {
-	int i, x, y, z, stationIndex;
+	int i, stationIndex;
 	rct_ride *ride;
-	rct_map_element *mapElement, *mapElement2;
+	rct_xy_element trackElement, problematicTrackElement;
 
 	ride = GET_RIDE(rideIndex);
 
@@ -2994,13 +3081,12 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_REQUIRES_A_STATION_PLATFORM;
 		return 0;
 	}
-
-	x = (ride->station_starts[i] & 0xFF) * 32;
-	y = (ride->station_starts[i] >> 8) * 32;
-	z = ride->station_heights[i] * 8;
-
-	mapElement = loc_6B4F6B(rideIndex, x, y);
-	if (mapElement == NULL)
+	
+	// z = ride->station_heights[i] * 8;
+	trackElement.x = (ride->station_starts[i] & 0xFF) * 32;
+	trackElement.y = (ride->station_starts[i] >> 8) * 32;
+	trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
+	if (trackElement.element == NULL)
 		return 0;
 
 	if (
@@ -3010,60 +3096,59 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 	) {
-		mapElement2 = ride_find_track_gap(mapElement, &x, &y);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
-		if (mapElement2 != NULL) {
-			loc_6B528A(mapElement, x, y, z);
+		if (ride_find_track_gap(&trackElement, &problematicTrackElement)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 	}
-
-	// TODO check if the following is correct
 
 	if (
 		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 	) {
-		if (sub_6D3319(mapElement)) {
-			loc_6B528A(mapElement, x, y, z);
+		if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
+			// TODO check if this is correct
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 	}
 
+	// Check onwards
+
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
 		if (rideType->var_008 & 2) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (sub_6CB149(mapElement)) {
-				loc_6B528A(mapElement, x, y, z);
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
+				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
 		if (rideType->var_008 & 4) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (sub_6CB1D3(mapElement)) {
-				loc_6B528A(mapElement, x, y, z);
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
+				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
 	}
 
 	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
-		mapElement2 = ride_find_track_gap(mapElement, &x, &y);
-		if (mapElement2 == NULL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_STATION_NOT_LONG_ENOUGH;
-		if (sub_6CB25D(mapElement)) {
-			loc_6B528A(mapElement, x, y, z);
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
+		if (ride_check_station_length(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint32) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-		if (sub_6CB2DA(mapElement)) {
-			loc_6B528A(mapElement, x, y, z);
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		if (ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 	}

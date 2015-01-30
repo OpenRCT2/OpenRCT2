@@ -198,8 +198,10 @@ rct_window *window_construction_open()
 	return w;
 }
 
-void window_construction_close(){
+void window_construction_close()
+{
 	rct_window *w;
+	rct_xy_element mapElement;
 
 	window_get_register(w);
 
@@ -211,21 +213,18 @@ void window_construction_close(){
 
 	hide_gridlines();
 
-	int x, y;
-	uint8 ride_id = RCT2_GLOBAL(0xF440A7, uint8);
-	rct_map_element* map_element = sub_6CAF80(ride_id, &x, &y);
-
-	if ((int)map_element == -1){
+	uint8 rideIndex = RCT2_GLOBAL(0xF440A7, uint8);
+	if (!sub_6CAF80(rideIndex, &mapElement)) {
 		int eax = RCT2_GLOBAL(0x009DEA6E, uint8);
 
 		RCT2_GLOBAL(0x009DEA6E, uint8) = 0;
-		game_do_command(0, 9, 0, ride_id, GAME_COMMAND_7, 0, 0);
+		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_7, 0, 0);
 
 		RCT2_GLOBAL(0x009DEA6E, uint8) = eax;
 		return;
 	}
 
-	window_ride_main_open(ride_id);
+	window_ride_main_open(rideIndex);
 }
 
 

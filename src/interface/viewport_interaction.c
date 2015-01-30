@@ -324,6 +324,7 @@ int viewport_interaction_right_over(int x, int y)
  */
 int viewport_interaction_right_click(int x, int y)
 {
+	rct_xy_element mapElement;
 	viewport_interaction_info info;
 
 	switch (viewport_interaction_get_item_right(x, y, &info)) {
@@ -335,7 +336,10 @@ int viewport_interaction_right_click(int x, int y)
 			ride_construct(info.sprite->vehicle.ride);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_RIDE:
-		ride_modify(info.mapElement, info.x, info.y);
+		mapElement.x = info.x;
+		mapElement.y = info.y;
+		mapElement.element = info.mapElement;
+		ride_modify(&mapElement);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
 		viewport_interaction_remove_scenery(info.mapElement, info.x, info.y);

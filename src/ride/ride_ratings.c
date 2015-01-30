@@ -209,6 +209,7 @@ static void ride_ratings_update_state_2()
 
 	rct_ride *ride;
 	rct_map_element *mapElement;
+	rct_xy_element trackElement, nextTrackElement;
 	int x, y, z, trackType, entranceIndex;
 
 	ride = GET_RIDE(_rideRatingsCurrentRide);
@@ -240,13 +241,18 @@ static void ride_ratings_update_state_2()
 			
 			RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
 
-			x = RCT2_GLOBAL(0x0138B584, uint16);
-			y = RCT2_GLOBAL(0x0138B586, uint16);
-			if ((mapElement = track_get_next(mapElement, &x, &y, &z)) == NULL) {
+			trackElement.x = RCT2_GLOBAL(0x0138B584, uint16);
+			trackElement.y = RCT2_GLOBAL(0x0138B586, uint16);
+			trackElement.element = mapElement;
+			if (!track_get_next(&trackElement, &nextTrackElement)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_4;
 				return;
 			}
 
+			x = nextTrackElement.x;
+			y = nextTrackElement.y;
+			z = nextTrackElement.element->base_height * 8;
+			mapElement = nextTrackElement.element;
 			if (x == RCT2_GLOBAL(0x0138B58A, uint16) && y == RCT2_GLOBAL(0x0138B58C, uint16) && z == RCT2_GLOBAL(0x0138B58E, uint16)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;

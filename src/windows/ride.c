@@ -1518,24 +1518,21 @@ static void window_ride_init_viewport(rct_window *w)
 void window_ride_construct(rct_window *w)
 {
 	int rideIndex = w->number;
+	rct_xy_element trackElement;
 
 	window_close_by_class(WC_RIDE_CONSTRUCTION);
 	w = window_find_by_number(WC_RIDE, rideIndex);
 	if (w == NULL)
 		return;
 
-	rct_map_element *trackMapElement;
-	int trackX, trackY;
-
-	trackMapElement = sub_6CAF80(rideIndex, &trackX, &trackY);
-	if (trackMapElement == (rct_map_element*)-1) {
-		sub_6CC3FB(rideIndex);
-	} else {
-		trackMapElement = ride_find_track_gap(trackMapElement, &trackX, &trackY);
+	if (sub_6CAF80(rideIndex, &trackElement)) {
+		ride_find_track_gap(&trackElement, &trackElement);
 
 		w = window_get_main();
-		if (w != NULL && ride_modify(trackMapElement, trackX, trackY))
-			window_scroll_to_location(w, trackX, trackY, trackMapElement->base_height * 8);
+		if (w != NULL && ride_modify(&trackElement))
+			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
+	} else {
+		sub_6CC3FB(rideIndex);
 	}
 }
 
