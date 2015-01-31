@@ -685,7 +685,7 @@ static void ride_remove_peeps(int rideIndex)
 				if (peep->next_var_29 & 4)
 					z += 8;
 				z++;
-				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
+				sprite_move(x, y, z, (rct_sprite*)peep);
 			} else {
 				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
 				peep->sprite_direction = exitDirection;
