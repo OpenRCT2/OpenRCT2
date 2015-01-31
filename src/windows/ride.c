@@ -5540,9 +5540,9 @@ static void window_ride_income_paint()
 		profit = ride->price_secondary;
 
 		stringId = STR_PROFIT_PER_ITEM_SOLD;
-		profit -= primaryItem < 32 ?
-			RCT2_GLOBAL(0x00982164 + (primaryItem * 8), uint16) :
-			RCT2_GLOBAL(0x00982144 + (primaryItem * 8), uint16);
+		profit -= secondaryItem < 32 ?
+			RCT2_GLOBAL(0x00982164 + (secondaryItem * 8), uint16) :
+			RCT2_GLOBAL(0x00982144 + (secondaryItem * 8), uint16);
 		if (profit < 0) {
 			profit *= -1;
 			stringId = STR_LOSS_PER_ITEM_SOLD;
