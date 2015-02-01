@@ -512,10 +512,10 @@ STR_0510    :
 STR_0511    :
 STR_0512    :
 STR_0513    :
-STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in bochten
+STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten
 STR_0515    :
 STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
-STR_0517    :Passagiers rijden in miniatuurtreinen over een smal spoorweg
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg
 STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
 STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten
 STR_0520    :
@@ -567,7 +567,7 @@ STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen
 STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen
 STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan 
 STR_0568    :
-STR_0569    :Bezoekers zitten in een speciaal tuigje onder de baan en krijgen zo de ervaring dat ze vliegen
+STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen
 STR_0570    :
 STR_0571    :
 STR_0572    :
@@ -993,7 +993,7 @@ STR_0991    :Station
 STR_0992    :{SMALLFONT}{BLACK}Gehele attractie afbreken
 STR_0993    :Attractie afbreken
 STR_0994    :Afbreken
-STR_0995    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} helemaal wil afbreken?
+STR_0995    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} helemaal wilt afbreken?
 STR_0996    :Totaaloverzicht
 STR_0997    :{SMALLFONT}{BLACK}Selectie bekijken
 STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
@@ -1139,7 +1139,7 @@ STR_1137    :{SMALLFONT}{BLACK}Selecteer extra kleur 1
 STR_1138    :{SMALLFONT}{BLACK}Selecteer extra kleur 2
 STR_1139    :{SMALLFONT}{BLACK}Selecteer kleur ondersteuningen
 STR_1140    :{SMALLFONT}{BLACK}Selecteer kleurenschemaoptie voor voertuigen
-STR_1141    :{SMALLFONT}{BLACK}Selecteer welk voertuig je wil aanpassen
+STR_1141    :{SMALLFONT}{BLACK}Selecteer welk voertuig je wilt aanpassen
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Kan de ingang van deze attractie niet bouwen of verplaatsen...
@@ -1588,7 +1588,7 @@ STR_1586    :{SMALLFONT}{OPENQUOTES}Deze actiefoto van {STRINGID} is erg goedkoo
 STR_1587    :{SMALLFONT}{OPENQUOTES}Deze krakeling van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1588    :{SMALLFONT}{OPENQUOTES}Deze warme chocolademelk van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1589    :{SMALLFONT}{OPENQUOTES}Deze ijsthee van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Deze trechterkoekjes van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Deze oliebollen van {STRINGID} zijn erg goedkoop{ENDQUOTES}
 STR_1591    :{SMALLFONT}{OPENQUOTES}Deze zonnebril van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1592    :{SMALLFONT}{OPENQUOTES}Deze rundernoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
 STR_1593    :{SMALLFONT}{OPENQUOTES}Deze rijstnoedels van {STRINGID} zijn erg goedkoop{ENDQUOTES}
@@ -1620,7 +1620,7 @@ STR_1618    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een actiefoto van
 STR_1619    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een krakeling van {STRINGID}{ENDQUOTES}
 STR_1620    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}{ENDQUOTES}
 STR_1621    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor ijsthee van {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een trechterkoekje van {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een oliebol van {STRINGID}{ENDQUOTES}
 STR_1623    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een zonnebril van {STRINGID}{ENDQUOTES}
 STR_1624    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rundernoedels van {STRINGID}{ENDQUOTES}
 STR_1625    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor rijstnoedels van {STRINGID}{ENDQUOTES}
@@ -1709,7 +1709,7 @@ STR_1707    :Teveel werknemers in dit park
 STR_1708    :{SMALLFONT}{BLACK}Werkgebied van deze werknemer instellen
 STR_1709    :Werknemer ontslaan
 STR_1710    :Ja
-STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wil ontslaan?
+STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt ontslaan?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Voetpaden vegen
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Bloemen water geven
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Prullenbakken legen
@@ -1814,7 +1814,7 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
-STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de gastenlijst wil zien
+STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de gastenlijst wilt zien
 STR_1817    :({COMMA16})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
@@ -1842,7 +1842,7 @@ STR_1840    :Stilstandtijd: {COMMA16}%
 STR_1841    :Winst: {CURRENCY} per uur
 STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
 STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
-STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wil zien
+STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} bezoekers
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
@@ -2104,7 +2104,7 @@ STR_2102    :{WINDOW_COLOUR_2}Prijs actiefoto:
 STR_2103    :{WINDOW_COLOUR_2}Prijs krakeling:
 STR_2104    :{WINDOW_COLOUR_2}Prijs warme chocolademelk:
 STR_2105    :{WINDOW_COLOUR_2}Prijs ijsthee:
-STR_2106    :{WINDOW_COLOUR_2}Prijs trechterkoekje:
+STR_2106    :{WINDOW_COLOUR_2}Prijs oliebollen:
 STR_2107    :{WINDOW_COLOUR_2}Prijs zonnebril:
 STR_2108    :{WINDOW_COLOUR_2}Prijs rundernoedels:
 STR_2109    :{WINDOW_COLOUR_2}Prijs rijstnoedels:
@@ -2126,7 +2126,7 @@ STR_2124    :Actiefoto
 STR_2125    :Krakeling
 STR_2126    :Warme chocolademelk
 STR_2127    :IJsthee
-STR_2128    :Trechterkoekje
+STR_2128    :Oliebol
 STR_2129    :Zonnebril
 STR_2130    :Rundernoedels
 STR_2131    :Rijstnoedels
@@ -2148,7 +2148,7 @@ STR_2146    :Actiefoto's
 STR_2147    :Krakelingen
 STR_2148    :Warme chocolademelk
 STR_2149    :IJsthee
-STR_2150    :Trechterkoekjes
+STR_2150    :Oliebollen
 STR_2151    :Zonnebrillen
 STR_2152    :Rundernoedels
 STR_2153    :Rijstnoedels
@@ -2170,7 +2170,7 @@ STR_2168    :een actiefoto
 STR_2169    :een krakeling
 STR_2170    :warme chocolademelk
 STR_2171    :ijsthee
-STR_2172    :een trechterkoekje
+STR_2172    :een oliebol
 STR_2173    :een zonnebril
 STR_2174    :rundernoedels
 STR_2175    :rijstnoedels
@@ -2192,7 +2192,7 @@ STR_2190    :Actiefoto van {STRINGID}
 STR_2191    :Krakeling
 STR_2192    :Warme chocolademelk
 STR_2193    :IJsthee
-STR_2194    :Trechterkoekjes
+STR_2194    :Oliebollen
 STR_2195    :Zonnebril
 STR_2196    :Rundernoedels
 STR_2197    :Rijstnoedels
@@ -2973,7 +2973,7 @@ STR_2971    :Standaard kleurenschema
 STR_2972    :Alternatief kleurenschema 1
 STR_2973    :Alternatief kleurenschema 2
 STR_2974    :Alternatief kleurenschema 3
-STR_2975    :{SMALLFONT}{BLACK}Selecteer welk kleurenschema je wil aanpassen of gebruiken
+STR_2975    :{SMALLFONT}{BLACK}Selecteer welk kleurenschema je wilt aanpassen of gebruiken
 STR_2976    :{SMALLFONT}{BLACK}Met het geselecteerde kleurenschema een onderdeel van de baan verven
 STR_2977    :Naam werknemer
 STR_2978    :Voer een nieuwe naam in voor deze werknemer:
@@ -3355,7 +3355,7 @@ STR_3353    :Nieuwe naam bevat ongeldige tekens
 STR_3354    :Er bestaat al een bestand met deze naam, of het bestand is beveiligd tegen schrijven
 STR_3355    :Bestand is beveiligd tegen schrijven of vergrendeld
 STR_3356    :Bestand verwijderen
-STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} permanent wil verwijderen?
+STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} permanent wilt verwijderen?
 STR_3358    :Kan het baanontwerp niet verwijderen...
 STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
