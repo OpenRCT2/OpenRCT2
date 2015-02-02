@@ -488,6 +488,30 @@ void object_list_create_hash_table()
 	}
 }
 
+/* 0x006A9DA1 
+ * bl = entry_index
+ * ecx = entry_type
+ */
+int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+	*entry_type = entry->flags & 0xF;
+
+	rct_object_entry_group entry_group = object_entry_groups[*entry_type];
+	for (*entry_index = 0; 
+		*entry_index < object_entry_group_counts[*entry_type]; 
+		++(*entry_index),
+		entry_group.chunks++,
+		entry_group.entries++){
+
+		if (*entry_group.chunks == (uint8*)-1) continue;
+
+		if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
+	}
+
+	if (*entry_index == object_entry_group_counts[*entry_type])return 0;
+	return 1;
+}
+
+
 rct_object_entry *object_list_find(rct_object_entry *entry)
 {
 	uint32 hash = object_get_hash_code(entry);
