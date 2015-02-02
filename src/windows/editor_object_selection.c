@@ -23,6 +23,9 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../object.h"
+#include "../audio/audio.h"
+#include "../ride/track.h"
+#include "error.h"
 
 #pragma region Widgets
 
@@ -55,9 +58,11 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 static void window_editor_object_selection_emptysub() { }
 
 static void window_editor_object_selection_mouseup();
+static void window_editor_object_selection_scroll_mousedown();
+static void window_editor_object_selection_close();
 
 static void* window_editor_object_selection_events[] = {
-	(void*)0x006AB199,
+	window_editor_object_selection_close,
 	(void*)window_editor_object_selection_mouseup,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
@@ -73,7 +78,7 @@ static void* window_editor_object_selection_events[] = {
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)0x006AB031,
-	(void*)0x006AB0B6,
+	window_editor_object_selection_scroll_mousedown,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)0x006AB079,
 	(void*)window_editor_object_selection_emptysub,
@@ -105,6 +110,10 @@ void window_editor_object_selection_open()
 
 	RCT2_CALLPROC_EBPSAFE(0x006AB211);
 	RCT2_CALLPROC_EBPSAFE(0x006AA770);
+
+	// HACK REMOVE WHEN ALL OBJECT_LOAD CALLS FINISHED
+	// Force Expansion Packs to always pass tests on object load
+	RCT2_GLOBAL(0x9AB4C0, uint16) = 0xFF;
 
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300,
@@ -194,4 +203,161 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->scrolls[0].v_top = 0;
 	RCT2_CALLPROC_EBPSAFE(0x006A982D); // object_free_scenario_text();
 	window_invalidate(w);
+}
+
+/* rct2: 0x006AA703 
+ * Takes the y coordinate of the clicked on scroll list
+ * and converts this into an object selection.
+ * Returns the position in the list.
+ * Object_selection_flags, installed_entry also populated
+ */
+int get_object_from_object_selection(uint8 object_type, int y, uint8* object_selection_flags, rct_object_entry** installed_entry){
+	*installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	int object_count = 0;
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+		if (((*installed_entry)->flags & 0xF) == object_type){
+			if (!(*selection_flags & 0x20)){
+				y -= 12;
+				*object_selection_flags = *selection_flags;
+				if (y < 0)return object_count;
+				object_count++;
+			}
+		}
+
+		*installed_entry = object_get_next(*installed_entry);
+		selection_flags++;
+	}
+	return -1;
+}
+
+/* rct2: 0x006D33E2 */
+void sub_6d33e2(){
+	RCT2_GLOBAL(0x1357404, sint32) = -1;
+	RCT2_GLOBAL(0x1357408, sint32) = -1;
+	RCT2_GLOBAL(0x135740C, sint32) = -1;
+	RCT2_GLOBAL(0x1357410, sint32) = -1;
+
+	for (int i = 0; i < 128; ++i){
+		RCT2_ADDRESS(0x1357444, uint32)[i] = RCT2_ADDRESS(0x97C468, uint32)[i];
+		RCT2_ADDRESS(0x1357644, uint32)[i] = RCT2_ADDRESS(0x97C5D4, uint32)[i];
+	}
+
+	for (int i = 0; i < 8; ++i){
+		RCT2_ADDRESS(0x1357424, sint32)[i] = -1;
+	}
+
+	RCT2_GLOBAL(0x141F570, uint8) = 7;
+
+	int entry_index = 0;
+	for (; ((int)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
+
+	//RCT2_GLOBAL(0xF44157, uint8) = entry_index;
+
+	rct_ride_type* ride_entry = GET_RIDE_ENTRY(entry_index);
+	uint8* ride_type_array = &ride_entry->var_00C;
+
+	int ride_type;
+	for (int i = 0; (ride_type = ride_type_array[i]) == 0xFF; i++);
+	//RCT2_GLOBAL(0xF44158, uint8) = ride_type;
+
+	ride_list_item item = { ride_type, entry_index };
+	track_load_list(item);
+	window_track_list_open(item);
+}
+
+/* rct2: 0x006AB0B6 */
+static void window_editor_object_selection_scroll_mousedown(){
+	short x, y, scrollIndex;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+
+	uint8 object_selection_flags;
+	rct_object_entry* installed_entry;
+	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y, &object_selection_flags, &installed_entry);
+	if (selected_object == -1) return;
+
+	if (object_selection_flags & 0x20)return;
+
+	window_invalidate(w);
+
+	sound_play_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+		if (RCT2_CALLPROC_X(0x6AB54F, 0, 1, 0, 0, 0, 0, (int)installed_entry) & 0x100)return;
+
+		window_close(w);
+
+		//This function calls window_track_list_open
+		sub_6d33e2();
+		return;
+	}
+
+	int ebx = 6;
+	// If already selected
+	if (!(object_selection_flags & 1))
+		ebx = 7;
+
+	RCT2_GLOBAL(0xF43411, uint8) = 0;
+	if (0x100 & RCT2_CALLPROC_X(0x6AB54F, 0, ebx, 0, 0, 0, 0, (int)installed_entry)){
+
+		rct_string_id error_title;
+		if (ebx & 1)
+			error_title = 3176;
+		else
+			error_title = 3177;
+
+		window_error_open(error_title, RCT2_GLOBAL(0x141E9AC, uint16));
+		return;
+	}
+
+	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)return;
+
+	window_error_open(3374, 3375);
+}
+
+/* rct2:0x006ABBBE */
+static void editor_load_selected_objects(){
+	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	rct_object_entry* installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0)return;
+
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; --i, selection_flags++){
+
+		if (*selection_flags & 1){
+
+			uint8 entry_index, entry_type;
+			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
+				int chunk_size;
+				if (!object_load(-1, installed_entry, &chunk_size)){
+					log_error("Failed to load entry %.8s", installed_entry->name);
+				}
+			}
+		}
+
+		installed_entry = object_get_next(installed_entry);
+	}
+}
+
+/* rct2: 0x006AB199 */
+static void window_editor_object_selection_close(){
+	rct_window* w;
+	window_get_register(w);
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 
+		(SCREEN_FLAGS_SCENARIO_EDITOR | 
+		SCREEN_FLAGS_TRACK_MANAGER | 
+		SCREEN_FLAGS_TRACK_MANAGER))
+		)return;
+
+	RCT2_CALLPROC_EBPSAFE(0x6ABB66);
+	editor_load_selected_objects();
+	sub_6A9FC0();
+	RCT2_CALLPROC_EBPSAFE(0x6A982D);
+	RCT2_CALLPROC_EBPSAFE(0x6AB316);
+	RCT2_CALLPROC_EBPSAFE(0x685675);
+	RCT2_CALLPROC_EBPSAFE(0x68585B);
+	window_new_ride_init_vars();
 }

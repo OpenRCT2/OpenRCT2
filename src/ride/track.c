@@ -277,11 +277,12 @@ void track_load_list(ride_list_item item)
 			fread(&track_file_count, 1, 1, file);
 			rewind(file);
 			if (track_file_count == totalFiles){
-				//0x6CF060 assume skip remaking tracks.idx
+				fclose(file);
+				goto finish_creating_tracks_idx;
 			}
 		}
+		fclose(file);
 	}
-	fclose(file);
 
 	uint8* new_track_file;
 
@@ -330,6 +331,7 @@ void track_load_list(ride_list_item item)
 
 	free(new_track_file);
 
+finish_creating_tracks_idx:
 	file = fopen(tracks_path, "rb");
 	// 0x006CF060 see above.
 	int file_size = fsize(file);
@@ -359,7 +361,7 @@ void track_load_list(ride_list_item item)
 		}
 		else{
 			if (find_object_in_entry_group(track_object, &entry_type, &entry_index)){
-				if (track_object->flags & 0x3000)continue;
+				if (GET_RIDE_ENTRY(entry_index)->var_008 & 0x3000)continue;
 			}
 			else{
 				uint32* esi = sub_6AB49A(track_object);
@@ -412,6 +414,7 @@ void track_load_list(ride_list_item item)
 		continue;
 	}
 
+	*track_design_list_entry = '\0';
 	fclose(file);
     //RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }

@@ -136,7 +136,7 @@ void window_track_list_open(ride_list_item item)
 		x = 0;
 		y = 29;
 	}
-	w = window_create(0, 29, 600, 400, (uint32*)window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+	w = window_create(x, y, 600, 400, (uint32*)window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 	w->widgets = window_track_list_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY);
 	window_init_scroll_widgets(w);
@@ -144,7 +144,7 @@ void window_track_list_open(ride_list_item item)
 	w->colours[1] = 26;
 	w->colours[2] = 26;
 	w->track_list.var_480 = 0xFFFF;
-	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 1 : 0;
+	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
 	RCT2_GLOBAL(0x00F44152, uint8) = 0;
 	window_push_others_right(w);
@@ -618,9 +618,9 @@ static void window_track_list_scrollpaint()
 		stringId2 = STR_BUILD_CUSTOM_DESIGN;
 		gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
 		y += 10;
+		i++;
 	}
 
-	i++;
 	while (*trackDesignItem != 0) {
 		if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
 			if (i == w->track_list.var_482) {

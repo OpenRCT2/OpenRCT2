@@ -136,7 +136,7 @@ void sub_6A9FC0()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_paint(type, 0, 0, 0, 0, (int)chunk, 0, 0);
+				object_paint(type, 0, j, type, 0, (int)chunk, 0, 0);
 		}
 	}
 }
@@ -488,7 +488,7 @@ void object_list_create_hash_table()
 	}
 }
 
-/* 0x006A9DA1 
+/* 0x006A9DA2
  * bl = entry_index
  * ecx = entry_type
  */
