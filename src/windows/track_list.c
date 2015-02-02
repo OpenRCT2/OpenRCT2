@@ -126,7 +126,7 @@ void window_track_list_open(ride_list_item item)
 	if (mem == NULL)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, void*) = mem;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
 	reset_track_list_cache();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
@@ -157,7 +157,7 @@ void window_track_list_open(ride_list_item item)
  */
 static void window_track_list_select(rct_window *w, int index)
 {
-	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 	rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
@@ -212,7 +212,7 @@ static void window_track_list_select(rct_window *w, int index)
 static int window_track_list_get_list_item_index_from_position(int x, int y)
 {
 	int index;
-	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
 	index = 0;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -238,7 +238,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
  */
 static void window_track_list_close()
 {
-	free(RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, void*));
+	free(RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*));
 }
 
 /**
@@ -282,7 +282,7 @@ static void window_track_list_scrollgetsize()
 {
 	rct_window *w;
 	int width, height;
-	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
 	window_get_register(w);
 
@@ -401,7 +401,7 @@ static void window_track_list_paint()
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
 	rct_track_design *trackDesign = NULL;
-	uint8 *image, *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *image, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;
 	int trackIndex, x, y, colour, gForces, airTime;
@@ -586,7 +586,7 @@ static void window_track_list_scrollpaint()
 	rct_drawpixelinfo *dpi;
 	rct_string_id stringId, stringId2;
 	int i, x, y, colour;
-	uint8 *trackDesignItem, *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
 	window_paint_get_registers(w, dpi);
 

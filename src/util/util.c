@@ -76,3 +76,13 @@ int bitscanforward(int source)
 
 	return -1;
 }
+
+/* case insensitve compare */
+int strcicmp(char const *a, char const *b)
+{
+	for (;; a++, b++) {
+		int d = tolower(*a) - tolower(*b);
+		if (d != 0 || !*a)
+			return d;
+	}
+}

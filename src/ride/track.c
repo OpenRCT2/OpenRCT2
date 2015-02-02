@@ -231,25 +231,18 @@ uint32* sub_6AB49A(rct_object_entry* entry){
 	return (((uint32*)object_get_next(object_list_entry)) - 1);
 }
 
-/**
- *
- *  rct2: 0x006CED50
- */
-void track_load_list(ride_list_item item)
+static void get_track_idx_path(char *path)
 {
-	RCT2_GLOBAL(0xF635ED, uint8) = 0;
+	char *homePath = osinterface_get_orct2_homefolder();
+	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "Tracks.IDX");
+	free(homePath);
+}
 
-	if (item.type < 0x80){
-		rct_ride_type* ride_type = gRideTypeList[item.entry_index];
-		if (!(ride_type->var_008 & 0x2000)){
-			item.entry_index = 0xFF;
-		}
-	}
-
-	int enumFileHandle, totalFiles;
+static void track_list_query_directory(int *outTotalFiles){
+	int enumFileHandle;
 	file_info enumFileInfo;
 
-	totalFiles = 0;
+	*outTotalFiles = 0;
 
 	// Enumerate through each track in the directory
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
@@ -257,92 +250,67 @@ void track_load_list(ride_list_item item)
 		return;
 
 	while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
-		totalFiles++;
+		(*outTotalFiles)++;
 	}
 	platform_enumerate_files_end(enumFileHandle);
+}
 
-	const char* tracks_path = get_file_path(PATH_ID_TRACKSIDX);
+static int track_list_cache_save(int fileCount, uint8* track_list_cache, uint32 track_list_size){
+	char path[MAX_PATH];
+	FILE *file;
 
-	FILE* file;
-
-	file = fopen(tracks_path, "rb");
-
-	if (file == NULL){
-		log_error("Failed to find tracks.idx");
-	}
-	else{
-		RCT2_GLOBAL(0xF44125, FILE*) = file;
-		if (item.type != 0xFC){
-			uint8 track_file_count;
-			fread(&track_file_count, 1, 1, file);
-			rewind(file);
-			if (track_file_count == totalFiles){
-				fclose(file);
-				goto finish_creating_tracks_idx;
-			}
-		}
-		fclose(file);
-	}
-
-	uint8* new_track_file;
-
-	new_track_file = malloc(0x40000);
-
-	uint8* new_file_pointer = new_track_file;
-	*(uint32*)new_file_pointer = totalFiles;
-	new_file_pointer += 4;
-
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
-	if (enumFileHandle == INVALID_HANDLE)
-		return;
-
-	while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
-		if (new_file_pointer > new_track_file + 0x3FF04)break;
-
-		char path[MAX_PATH];
-		subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), enumFileInfo.path);
-
-		rct_track_td6* loaded_track = load_track_design(path);
-		if (loaded_track){
-			*new_file_pointer++ = loaded_track->type;
-		}
-		else{
-			*new_file_pointer++ = 0xFF;
-		}
-		memcpy(new_file_pointer, &loaded_track->vehicle_object, sizeof(rct_object_entry));
-		new_file_pointer += sizeof(rct_object_entry);
-
-		int file_name_length = strlen(enumFileInfo.path);
-		strcpy(new_file_pointer, enumFileInfo.path);
-		new_file_pointer += file_name_length + 1;
-	}
-	platform_enumerate_files_end(enumFileHandle);
-
-	*new_file_pointer++ = 0xFE;
-
-	file = fopen(tracks_path, "wb");
+	log_verbose("saving track list cache (tracks.idx)");
+	get_track_idx_path(path);
+	file = fopen(path, "wb");
 	if (file == NULL) {
-		log_error("Failed to save %s", tracks_path);
-	}
-	else{
-		fwrite(new_track_file, (new_file_pointer - new_track_file), 1, file);
-		fclose(file);
+		log_error("Failed to save %s", path);
+		return 0;
 	}
 
-	free(new_track_file);
+	fwrite(&fileCount, sizeof(int), 1, file);
+	fwrite(track_list_cache, track_list_size, 1, file);
+	uint8 last_entry = 0xFE;
+	fwrite(&last_entry, 1, 1, file);
+	fclose(file);
+	return 1;
+}
 
-finish_creating_tracks_idx:
-	file = fopen(tracks_path, "rb");
-	// 0x006CF060 see above.
-	int file_size = fsize(file);
-	uint8* track_idx_file = malloc(file_size);
-	fread(track_idx_file, file_size, 1, file);
+static uint8* track_list_cache_load(int totalFiles){
+	char path[MAX_PATH];
+	FILE *file;
 
-	// +4 Skip number of elements
-	uint8* track_pointer = track_idx_file + 4;
-	uint8* track_design_list_entry = RCT2_ADDRESS(0xF441EC, uint8);
+	log_verbose("loading track list cache (tracks.idx)");
+	get_track_idx_path(path);
+	file = fopen(path, "rb");
+	if (file == NULL) {
+		log_error("Failed to load %s", path);
+		return 0;
+	}
 
-	for (uint8 track_type = *track_pointer++; track_type != 0xFE; 
+	uint8* track_list_cache;
+	uint32 fileCount;
+	// Remove 4 for the file count variable
+	long track_list_size = fsize(file) - 4;
+
+	if (track_list_size < 0) return 0;
+
+	fread(&fileCount, 4, 1, file);
+	
+	if (fileCount != totalFiles){
+		log_verbose("Track file count is different.");
+		return 0;
+	}
+
+	track_list_cache = malloc(track_list_size);
+	fread(track_list_cache, track_list_size, 1, file);
+	return track_list_cache;
+}
+
+void track_list_populate(ride_list_item item, uint8* track_list_cache){
+	uint8* track_pointer = track_list_cache;
+
+	uint8 cur_track_entry_index = 0;
+	for (uint8 track_type = *track_pointer++; track_type != 0xFE;
 		track_pointer += strlen(track_pointer) + 1,
 		track_type = *track_pointer++){
 		rct_object_entry* track_object = (rct_object_entry*)track_pointer;
@@ -370,52 +338,106 @@ finish_creating_tracks_idx:
 			}
 		}
 
-		if (track_design_list_entry >= RCT2_ADDRESS(0xF635EC, uint8)){
+		// If cur_track_entry_index is greater than max number of tracks
+		if (cur_track_entry_index >= 1000){
 			RCT2_GLOBAL(0xF635ED, uint8) |= 1;
 			break;
 		}
 
-		uint8* edi = RCT2_ADDRESS(0xF441EC, uint8);
-		uint8 isBelow;
-		for (; edi != track_design_list_entry; edi += 128){
-			//edx
-			uint8* current_entry = edi;
-			//ebx
-			uint8* track_name = track_pointer;
-			isBelow = 0;
-
-			while (1){
-				uint8 character = *track_name++;
-				if (character >= 'a' || character < 'z')character += 0xE0;
-				uint8 entry_char = *current_entry++;
-				if (entry_char >= 'a' || entry_char < 'z')entry_char += 0xE0;
-				if (character == entry_char && character != 0)continue;
-
-				if (character == 0){
-					isBelow = -1;
-					break;
-				}
-				if (character < entry_char) isBelow = 1;
+		uint8 track_entry_index = 0;
+		uint8 isBelow = 0;
+		for (; track_entry_index != cur_track_entry_index; track_entry_index++){
+			if (strcicmp(track_pointer, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128]) < 0){
+				isBelow = 1;
 				break;
 			}
-			if (isBelow == 1) break;
 		}
 
 		if (isBelow == 1){
-			uint8* edx = track_design_list_entry;
-
-			while (edx >= edi){
-				edx[128] = *edx--;
-			}
+			memmove(
+				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128 + 128], 
+				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128], 
+				(cur_track_entry_index - track_entry_index) * 128);
 		}
-		uint8* track_name = track_pointer;
-		while (*edi++ = *track_name++);
-		track_design_list_entry += 128;
-		continue;
+
+		strcpy(&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128], track_pointer);
+		cur_track_entry_index++;
 	}
 
-	*track_design_list_entry = '\0';
-	fclose(file);
+	RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[cur_track_entry_index * 128] = '\0';
+	free(track_list_cache);
+}
+
+/**
+ *
+ *  rct2: 0x006CED50
+ */
+void track_load_list(ride_list_item item)
+{
+	RCT2_GLOBAL(0xF635ED, uint8) = 0;
+
+	if (item.type < 0x80){
+		rct_ride_type* ride_type = gRideTypeList[item.entry_index];
+		if (!(ride_type->var_008 & 0x2000)){
+			item.entry_index = 0xFF;
+		}
+	}
+
+	int totalFiles;
+	
+	track_list_query_directory(&totalFiles);
+
+	uint8* track_list_cache;
+
+	if (item.type == 0xFC || !(track_list_cache = track_list_cache_load(totalFiles))){
+		uint8* new_track_file;
+
+		new_track_file = malloc(0x40000);
+
+		uint8* new_file_pointer = new_track_file;
+		file_info enumFileInfo;
+
+		int enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
+		if (enumFileHandle == INVALID_HANDLE)
+			return;
+
+		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
+			if (new_file_pointer > new_track_file + 0x3FF00)break;
+
+			char path[MAX_PATH];
+			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), enumFileInfo.path);
+
+			rct_track_td6* loaded_track = load_track_design(path);
+			if (loaded_track){
+				*new_file_pointer++ = loaded_track->type;
+			}
+			else{
+				*new_file_pointer++ = 0xFF;
+			}
+			memcpy(new_file_pointer, &loaded_track->vehicle_object, sizeof(rct_object_entry));
+			new_file_pointer += sizeof(rct_object_entry);
+
+			int file_name_length = strlen(enumFileInfo.path);
+			strcpy(new_file_pointer, enumFileInfo.path);
+			new_file_pointer += file_name_length + 1;
+		}
+		platform_enumerate_files_end(enumFileHandle);
+
+		if (!track_list_cache_save(totalFiles, new_track_file, new_file_pointer - new_track_file)){
+			log_error("Track list failed to save.");
+			return;
+		}
+		free(new_track_file);
+
+		track_list_cache = track_list_cache_load(totalFiles);
+		if (!track_list_cache){
+			log_error("Track list failed to load after new save");
+			return;
+		}
+	}
+
+	track_list_populate(item, track_list_cache);
+	free(track_list_cache);
     //RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }
 
@@ -575,11 +597,11 @@ rct_track_td6* load_track_design(const char *path)
 
 /* rct2: 0x006D1DCE*/
 void reset_track_list_cache(){
-	int* track_list_cache = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, int);
+	int* track_list_cache = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, int);
 	for (int i = 0; i < 4; ++i){
 		track_list_cache[i] = -1;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
 }
 
 /**
@@ -590,26 +612,26 @@ void reset_track_list_cache(){
 rct_track_design *track_get_info(int index, uint8** preview)
 {
 	rct_track_design *trackDesign;
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	uint8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 	int i;
 
 	trackDesign = NULL;
 
 	// Check if track design has already been loaded
 	for (i = 0; i < 4; i++) {
-		if (index == RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, uint32)[i]) {
-			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, rct_track_design*)[i];
+		if (index == RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i]) {
+			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
 			break;
 		}
 	}
 
 	if (trackDesign == NULL) {
 		// Load track design
-		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) >= 4)
-			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST_NEXT_INDEX, uint32) = 0;
+		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) >= 4)
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
 
-		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST_CACHE, uint32)[i] = index;
+		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = index;
 
 		char track_path[MAX_PATH] = { 0 };
 		subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
@@ -624,7 +646,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 			return NULL;
 		}
 
-		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, rct_track_design*)[i];
+		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
 		
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
