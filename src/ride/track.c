@@ -22,6 +22,7 @@
 #include "../platform/osinterface.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../rct1.h"
 #include "ride.h"
 #include "track.h"
 
@@ -240,7 +241,7 @@ static void read(void *dst, void **src, int length)
  *  rct2: 0x0067726A
  * path: 0x0141EF68
  */
-rct_track_design* load_track_design(const char *path)
+rct_track_td6* load_track_design(const char *path)
 {
 	FILE *fp;
 	long fpLength;
@@ -270,72 +271,87 @@ rct_track_design* load_track_design(const char *path)
 	realloc(decoded, decodedLength);
 	free(fpBuffer);
 
-	rct_track_design* track_design = RCT2_ADDRESS(0x009D8178, rct_track_design);
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 	// Read decoded data
 	src = decoded;
-	// Clear top of track_design as this is not loaded from the file
-	memset(&track_design->pad_60, 0, 67);
+	// Clear top of track_design as this is not loaded from the td4 files
+	memset(&track_design->track_spine_colour, 0, 67);
 	// Read start of track_design
 	read(track_design, &src, 32);
 
-	uint8 al = track_design->var_07 >> 2;
-	if (al >= 2)
-		read(&track_design->pad_20, &src, 40);
+	uint8 version = track_design->var_07 >> 2;
+
+	if (version > 2){
+		free(decoded);
+		return NULL;
+	}
+
+	// In td6 there are 32 sets of two byte vehicle colour specifiers 
+	// In td4 there are 12 sets so the remaining 20 need to be read.
+	if (version == 2)
+		read(&track_design->vehicle_colours[12], &src, 40);
 
 	read(&track_design->pad_48, &src, 24);
-	al = track_design->var_07 >> 2;
-	if (al != 0)
-		read(&track_design->pad_60, &src, al == 1 ? 140 : 67);
 
-	read(&track_design->preview, &src, 24572);
-	al = track_design->var_07 >> 2;
-	if (al < 2) {
-		if (track_design->type == RIDE_TYPE_MAZE) {
-			edi = (uint8*)(&track_design->preview);
-			while (*edi != 0) {
-				edi += 4;
-			}
-			edi += 4;
-			memset(edi, 255, ((uint8*)&track_design->pad_9F) - edi);
-		} else {
-			edi = (uint8*)(&track_design->preview);
-			while (*edi != 255) {
-				edi += 2;
-			}
-			edi++;
-			memset(edi, 255, ((uint8*)&track_design->pad_9F) - edi);
-		}
-	}
+	// In td4 (version AA/CF) and td6 both start actual track data at 0xA3
+	if (version > 0)
+		read(&track_design->track_spine_colour, &src, version == 1 ? 140 : 67);
+
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	// Read the actual track data.
+	read(track_elements, &src, 24572);
+	
+	uint8* final_track_element_location = track_elements + 24572;
 	free(decoded);
 
-	// 
-	al = track_design->var_07 >> 2;
-	if (al > 2)
-		return NULL;
+	// td4 files require some work to be recognised as td6.
+	if (version < 2) {
 
-	if (al <= 1) {
-		edi = (uint8*)&track_design->pad_08;
+		// Set any element passed the tracks to 0xFF
+		if (track_design->type == RIDE_TYPE_MAZE) {
+			uint32* maze_element = (uint32*)track_elements;
+			while (*maze_element != 0) {
+				maze_element++;
+			}
+			maze_element++;
+			memset(maze_element, 255, final_track_element_location - (uint8*)maze_element);
+		} else {
+			uint8* track_element = track_elements;
+			while (*track_element != 255) {
+				track_element += 2;
+			}
+			track_element++;
+			memset(track_element, 255, final_track_element_location - track_element);
+		}
+
+		// Edit the colours to use the new versions
+		// Unsure why it is 67
+		edi = (uint8*)&track_design->vehicle_colours;
 		for (i = 0; i < 67; i++)
 			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
-		edi = (uint8*)&track_design->pad_60;
+		// Edit the colours to use the new versions
+		edi = (uint8*)&track_design->track_spine_colour;
 		for (i = 0; i < 12; i++)
 			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
+		// Highest drop height is 1bit = 3/4 a meter in td6
+		// Highest drop height is 1bit = 1/3 a meter in td4
+		// Not sure if this is correct??
 		track_design->highest_drop_height >>= 1;
-		if (!RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
-			track_design->type = 255;
-
-		if (track_design->type == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+		if (0x100 & RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
 			track_design->type = RIDE_TYPE_NULL;
 
-		if (track_design->type == RIDE_TYPE_SPIRAL_ROLLER_COASTER)
+		if (track_design->type == RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER)
+			track_design->type = RIDE_TYPE_NULL;
+
+		if (track_design->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER)
 			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
 		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
 			if (track_design->var_06 == 3)
 				track_design->var_06 = 35;
-			if (track_design->var_01 == 79) {
+			if (track_design->vehicle_type == 79) {
 				if (track_design->var_06 == 2)
 					track_design->var_06 = 1;
 			}
@@ -345,15 +361,15 @@ rct_track_design* load_track_design(const char *path)
 		if (track_design->type == RIDE_TYPE_MAZE) {
 			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
-			int var_01 = track_design->var_01;
-			if (var_01 == 3 && track_design->type == 3)
-				var_01 = 80;
-			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[var_01];
+			int vehicle_type = track_design->vehicle_type;
+			if (vehicle_type == 3 && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
+				vehicle_type = 80;
+			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
 		}
 
 		memcpy(&track_design->vehicle_object, vehicle_object, sizeof(rct_object_entry));
 		for (i = 0; i < 32; i++)
-			track_design->pad_82[i] = track_design->pad_08[1 + i * 2];
+			track_design->vehicle_additional_colour[i] = track_design->vehicle_colours[i].trim_colour;
 
 		track_design->space_required_x = 255;
 		track_design->space_required_y = 255;
@@ -409,25 +425,25 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		char track_path[MAX_PATH] = { 0 };
 		subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
 
-		rct_track_design* loaded_design = NULL;
+		rct_track_td6* loaded_track = NULL;
 
 		log_verbose("Loading track: %s", trackDesignList + (index * 128));
 
-		if (!(loaded_design = load_track_design(track_path))) {
+		if (!(loaded_track = load_track_design(track_path))) {
 			if (preview != NULL) *preview = NULL;
 			log_error("Failed to load track: %s", trackDesignList + (index * 128));
 			return NULL;
 		}
 
 		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_LIST, rct_track_design*)[i];
-
+		
 		// Copy the track design apart from the preview image
-		memcpy(trackDesign, loaded_design, 163);
+		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
-		trackDesign->cost = RCT2_GLOBAL(0x00F4411D, money32);
-		trackDesign->var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
+		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
 	// Set preview to correct preview image based on rotation

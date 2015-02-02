@@ -171,7 +171,7 @@ static void window_track_place_draw_mini_preview()
 			originY -= ((maxY + minY) >> 6) << 5;
 		}
 
-		if (design->type != RIDE_TYPE_MAZE) {
+		if (design->track_td6.type != RIDE_TYPE_MAZE) {
 			#pragma region Track
 
 			rotation = RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
