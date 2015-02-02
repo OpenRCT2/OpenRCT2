@@ -136,7 +136,7 @@ void sub_6A9FC0()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_paint(type, 0, 0, 0, 0, (int)chunk, 0, 0);
+				object_paint(type, 0, j, type, 0, (int)chunk, 0, 0);
 		}
 	}
 }
@@ -487,6 +487,30 @@ void object_list_create_hash_table()
 		installedObject = object_get_next(installedObject);
 	}
 }
+
+/* 0x006A9DA2
+ * bl = entry_index
+ * ecx = entry_type
+ */
+int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+	*entry_type = entry->flags & 0xF;
+
+	rct_object_entry_group entry_group = object_entry_groups[*entry_type];
+	for (*entry_index = 0; 
+		*entry_index < object_entry_group_counts[*entry_type]; 
+		++(*entry_index),
+		entry_group.chunks++,
+		entry_group.entries++){
+
+		if (*entry_group.chunks == (uint8*)-1) continue;
+
+		if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
+	}
+
+	if (*entry_index == object_entry_group_counts[*entry_type])return 0;
+	return 1;
+}
+
 
 rct_object_entry *object_list_find(rct_object_entry *entry)
 {
