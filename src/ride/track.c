@@ -629,7 +629,7 @@ int backup_map(){
 	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32*);
+	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32);
 	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
 	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
 	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
@@ -652,15 +652,59 @@ void blank_map(){
 	}
 	map_update_tile_pointers();
 }
+
+/* rct2: 0x006ABDB0 */
+void load_track_objects(){
+	int entry_index = RCT2_GLOBAL(0xF44157, uint8);
+	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
+
+	rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
+	memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
+
+	object_unload_all();
+	object_load(-1, copied_entry, 0);
+	int entry_type;
+	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
+	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
+
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+
+	if (track_design->type == RIDE_TYPE_MAZE){
+		// Skip all of the maze track elements
+		while (*(uint32*)track_elements != 0)track_elements += 4;
+		track_elements += 4;
+	}
+	else{
+		// Skip track_elements
+		while (*track_elements != 255) track_elements += 2;
+		track_elements++;
+		
+		// Skip entrance exit elements
+		while (*track_elements != 255) track_elements += 6;
+		track_elements++;
+	}
+
+	while (*track_elements != 255){
+		if (!find_object_in_entry_group((rct_object_entry*)track_elements, &entry_type, &entry_index)){
+			object_load(-1, (rct_object_entry*)track_elements, 0);
+		}
+		// Skip object and location/direction/colour
+		track_elements += sizeof(rct_object_entry) + 6;
+	}
+
+	sub_6A9FC0();
+}
+
 /* rct2: 0x006D1EF0 */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
-	if (!backup_map)return;
+	if (!backup_map())return;
 
 	blank_map();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
-		//call 6abdb0
+		load_track_objects();
 	}
 	// 0x6D1F0F
 }
@@ -712,6 +756,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
+		draw_track_preview(trackDesign->preview);
 		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
