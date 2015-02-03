@@ -604,6 +604,47 @@ void reset_track_list_cache(){
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
 }
 
+/* rct2: 0x006D1C68 */
+int backup_map(){
+	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
+	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
+	
+	RCT2_GLOBAL(0xF440F1, uint8*) = malloc(0x40000);
+	if (RCT2_GLOBAL(0xF440F1, uint32) == 0){
+		free(RCT2_GLOBAL(0xF440ED, uint8*));
+		return 0;
+	}
+
+	RCT2_GLOBAL(0xF440F5, uint8*) = malloc(14);
+	if (RCT2_GLOBAL(0xF440F5, uint32) == 0){
+		free(RCT2_GLOBAL(0xF440ED, uint8*));
+		free(RCT2_GLOBAL(0xF440F1, uint8*));
+		return 0;
+	}
+
+	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
+	memcpy(RCT2_GLOBAL(0xF440ED, uint32*), map_elements, 0xED600);
+
+	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
+	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
+
+	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
+	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32*);
+	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
+	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
+	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	*(uint32*)(backup_info + 10) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	return 1;
+}
+
+/* rct2: 0x006D1EF0 */
+void draw_track_preview(uint8** preview){
+	// Make a copy of the map
+	if (!backup_map)return;
+
+	// 0x6D1EFC
+}
+
 /**
  * 
  * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
