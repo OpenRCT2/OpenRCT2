@@ -392,6 +392,7 @@ int object_read_and_load_entries(FILE *file)
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	sawyercoding_read_chunk(file, (uint8*)entries);
 
+	uint8 load_fail = 0;
 	// Load each object
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		if (!check_object_entry(&entries[i]))
@@ -409,14 +410,16 @@ int object_read_and_load_entries(FILE *file)
 		if (!object_load(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
-			free(entries);
-			object_unload_all();
-			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			return 0;
+			load_fail = 1;
 		}
 	}
 
-	free(entries);
+	free(entries);	
+	if (load_fail){
+		object_unload_all();
+		RCT2_GLOBAL(0x14241BC, uint32) = 0;
+		return 0;
+	}
 	return 1;
 }
 
