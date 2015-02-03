@@ -637,12 +637,32 @@ int backup_map(){
 	return 1;
 }
 
+/* rct2: 0x006D1D9A */
+void blank_map(){
+	rct_map_element* map_element;
+	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
+		map_element = GET_MAP_ELEMENT(i);
+		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
+		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
+		map_element->base_height = 2;
+		map_element->clearance_height = 0;
+		map_element->properties.surface.slope = 0;
+		map_element->properties.surface.grass_length = 1;
+		map_element->properties.surface.ownership = OWNERSHIP_OWNED;
+	}
+	map_update_tile_pointers();
+}
 /* rct2: 0x006D1EF0 */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
 	if (!backup_map)return;
 
-	// 0x6D1EFC
+	blank_map();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+		//call 6abdb0
+	}
+	// 0x6D1F0F
 }
 
 /**
