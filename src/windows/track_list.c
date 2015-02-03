@@ -94,15 +94,21 @@ static void* window_track_list_events[] = {
 
 ride_list_item _window_track_list_item;
 
-void window_track_list_format_name(char *dst, const char *src, char colour)
+void window_track_list_format_name(char *dst, const char *src, char colour, char quotes)
 {
 	if (colour != 0)
 		*dst++ = colour;
-	*dst++ = FORMAT_OPENQUOTES;
+
+	if (quotes != 0)
+		*dst++ = FORMAT_OPENQUOTES;
+
 	while (*src != '.' && *src != 0) {
 		*dst++ = *src++;
 	}
-	*dst++ = FORMAT_ENDQUOTES;
+
+	if (quotes != 0)
+		*dst++ = FORMAT_ENDQUOTES;
+
 	*dst = 0;
 }
 
@@ -175,7 +181,7 @@ static void window_track_list_select(rct_window *w, int index)
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
 
-	trackDesignItem = trackDesignList + (index * 128);;
+	trackDesignItem = trackDesignList + (index * 128);
 	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
 
 	window_track_list_format_name(
@@ -183,11 +189,14 @@ static void window_track_list_select(rct_window *w, int index)
 		trackDesignItem,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ?
 		0 :
-		FORMAT_WHITE
-		);
+		FORMAT_WHITE,
+		1);
 
 	char track_path[MAX_PATH] = { 0 };
 	subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
+
+	// Copy the track name for use as the default name of this ride
+	window_track_list_format_name((char*)0x009E3504, trackDesignItem, 0, 0);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
@@ -464,7 +473,7 @@ static void window_track_list_paint()
 	}
 
 	// Track design name
-	window_track_list_format_name((char*)0x009BC677, trackDesignList + (trackIndex * 128), FORMAT_WINDOW_COLOUR_1);
+	window_track_list_format_name((char*)0x009BC677, trackDesignList + (trackIndex * 128), FORMAT_WINDOW_COLOUR_1, 1);
 	gfx_draw_string_centred_clipped(dpi, 3165, NULL, 0, x, y, 368);
 
 	// Information
@@ -632,7 +641,7 @@ static void window_track_list_scrollpaint()
 			}
 
 			// Draw track name
-			window_track_list_format_name((char *)language_get_string(3165), trackDesignItem, 0);
+			window_track_list_format_name((char *)language_get_string(3165), trackDesignItem, 0, 1);
 			stringId2 = 3165;
 			gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
 		}
