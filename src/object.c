@@ -51,7 +51,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
 
-	// log_verbose("loading object, %s", path);
+	log_verbose("loading object, %s", path);
 
 	file = fopen(path, "rb");
 	if (file == NULL)

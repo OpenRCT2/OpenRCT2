@@ -84,6 +84,7 @@ void openrct2_launch()
 		break;
 	}
 
+	log_verbose("begin openrct2 loop");
 	openrct2_loop();
 	osinterface_free();
 

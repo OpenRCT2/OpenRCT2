@@ -420,6 +420,8 @@ int object_read_and_load_entries(FILE *file)
 		RCT2_GLOBAL(0x14241BC, uint32) = 0;
 		return 0;
 	}
+
+	log_verbose("finished loading required objects");
 	return 1;
 }
 
