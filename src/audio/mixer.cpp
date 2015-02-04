@@ -44,23 +44,31 @@ Sample::~Sample()
 
 bool Sample::Load(const char* filename)
 {
+	log_verbose("Sample::Load(%s)", filename);
+
 	Unload();
+	SDL_ClearError();
 	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-	if (!rw) {
-		SDL_RWclose(rw);
+	if (rw == NULL) {
+		log_verbose("Error loading %s", filename);
 		return false;
 	}
+
 	SDL_AudioSpec audiospec;
 	memset(&audiospec, 0, sizeof(audiospec));
 	SDL_AudioSpec* spec = SDL_LoadWAV_RW(rw, false, &audiospec, &data, (Uint32*)&length);
+	SDL_RWclose(rw);
+
 	if (spec != NULL) {
 		format.freq = spec->freq;
 		format.format = spec->format;
 		format.channels = spec->channels;
 		issdlwav = true;
 	} else {
+		log_verbose("Error loading %s, unsupported WAV format", filename);
 		return false;
 	}
+
 	return true;
 }
 
@@ -68,7 +76,7 @@ bool Sample::LoadCSS1(const char* filename, unsigned int offset)
 {
 	Unload();
 	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-	if (!rw) {
+	if (rw == NULL) {
 		return false;
 	}
 	Uint32 numsounds;
