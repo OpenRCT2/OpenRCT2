@@ -2526,6 +2526,7 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
+
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -2751,17 +2752,27 @@ STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
 STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
+
+
+
+
+
+
+
+
+
+
 # New strings used in the cheats window previously these were ???
+STR_2750    :Move all items to top
+STR_2751    :Move all items to bottom
+STR_2752    :Clear grass
+STR_2753    :Mowed grass
+STR_2754    :Water plants
+STR_2755    :Fix vandalism
+STR_2756    :Remove litter
+STR_2757    :Force Sun
+STR_2758    :Force Thunder
+STR_2759    :Zero Clearance
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
@@ -2781,9 +2792,11 @@ STR_2775    :Fullscreen (desktop)
 STR_2776    :Language
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :Viewport #{COMMA16}
+STR_2780    :Extra viewport
 # End of new strings
-STR_2779    :???
-STR_2780    :???
+
+
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
