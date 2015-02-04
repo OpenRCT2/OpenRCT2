@@ -637,6 +637,26 @@ int backup_map(){
 	return 1;
 }
 
+/* rct2: 0x006D2378 */
+void reload_map_backup(){
+	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
+	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
+
+	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
+	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
+
+	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
+	RCT2_GLOBAL(0x0140E9A4, uint32) = *(uint32*)backup_info;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = *(uint16*)(backup_info + 6);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
+
+	free(RCT2_GLOBAL(0xF440ED, uint8*));
+	free(RCT2_GLOBAL(0xF440F1, uint8*));
+	free(RCT2_GLOBAL(0xF440F5, uint8*));
+}
+
 /* rct2: 0x006D1D9A */
 void blank_map(){
 	rct_map_element* map_element;
@@ -707,6 +727,8 @@ void draw_track_preview(uint8** preview){
 		load_track_objects();
 	}
 	// 0x6D1F0F
+	
+	reload_map_backup();
 }
 
 /**
