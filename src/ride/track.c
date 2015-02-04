@@ -26,6 +26,8 @@
 #include "ride.h"
 #include "track.h"
 #include "../platform/platform.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
 
 /**
  *
@@ -674,8 +676,8 @@ void blank_map(){
 }
 
 /* rct2: 0x006ABDB0 */
-void load_track_objects(){
-	int entry_index = RCT2_GLOBAL(0xF44157, uint8);
+void load_track_scenery_objects(){
+	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
 	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
 
 	rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
@@ -683,7 +685,7 @@ void load_track_objects(){
 
 	object_unload_all();
 	object_load(-1, copied_entry, 0);
-	int entry_type;
+	uint8 entry_type;
 	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
@@ -716,6 +718,29 @@ void load_track_objects(){
 	sub_6A9FC0();
 }
 
+/* rct2: 0x006D2189 */
+int sub_6D2189(){
+	RCT2_GLOBAL(0xF44151, uint8) = 0;
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8 entry_type, entry_index;
+	
+	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
+		entry_index = 0xFF;
+
+	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
+	ebx = 41;
+	edx = track_design->type | (entry_index << 8);
+	esi = GAME_COMMAND_6;
+
+	if (0x80000000 == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
+
+	// bh
+	uint8 ride_index = edi & 0xFF;
+	uint8* ride_name = RCT2_ADDRESS(0x9E3504, uint8);
+	user_string_allocate(132, ride_name);
+	//6d21de
+}
+
 /* rct2: 0x006D1EF0 */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
@@ -724,8 +749,9 @@ void draw_track_preview(uint8** preview){
 	blank_map();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
-		load_track_objects();
+		load_track_scenery_objects();
 	}
+	sub_6D2189();
 	// 0x6D1F0F
 	
 	reload_map_backup();
@@ -778,7 +804,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(trackDesign->preview);
+		draw_track_preview((uint8**)trackDesign->preview);
 		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
