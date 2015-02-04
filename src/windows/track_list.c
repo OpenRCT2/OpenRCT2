@@ -195,9 +195,6 @@ static void window_track_list_select(rct_window *w, int index)
 	char track_path[MAX_PATH] = { 0 };
 	subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
-	// Copy the track name for use as the default name of this ride
-	window_track_list_format_name((char*)0x009E3504, trackDesignItem, 0, 0);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
 		return;

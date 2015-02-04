@@ -468,6 +468,14 @@ rct_track_td6* load_track_design(const char *path)
 	if (fp == NULL)
 		return 0;
 
+	char* track_name_pointer = path;
+	while (*track_name_pointer++ != '\0');
+	while (*--track_name_pointer != '\\');
+	char* default_name = RCT2_ADDRESS(0x009E3504, char);
+	// Copy the track name for use as the default name of this ride
+	while (*++track_name_pointer != '.')*default_name++ = *track_name_pointer;
+	
+
 	// Read whole file into a buffer
 	fpLength = fsize(fp);
 	fpBuffer = malloc(fpLength);
@@ -736,9 +744,35 @@ int sub_6D2189(){
 
 	// bh
 	uint8 ride_index = edi & 0xFF;
+
+	rct_ride* ride = GET_RIDE(ride_index);
+
 	uint8* ride_name = RCT2_ADDRESS(0x9E3504, uint8);
-	user_string_allocate(132, ride_name);
-	//6d21de
+	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
+
+	if (new_ride_name){
+		rct_string_id old_name = ride->name;
+		ride->name = new_ride_name;
+		user_string_free(old_name);
+	}
+
+	uint8 version = track_design->var_07 >> 2;
+
+	if (version == 2){
+		ride->entrance_style = track_design->entrance_style;
+	}
+
+	if (version != 0){
+		memcpy(&ride->track_colour_main, &track_design->track_spine_colour, 4);
+		memcpy(&ride->track_colour_additional, &track_design->track_rail_colour, 4);
+		memcpy(&ride->track_colour_supports, &track_design->track_support_colour, 4);
+	}
+	else{
+		memset(&ride->track_colour_main, track_design->track_spine_colour_rct1, 4);
+		memset(&ride->track_colour_additional, track_design->track_rail_colour_rct1, 4);
+		memset(&ride->track_colour_supports, track_design->track_support_colour_rct1, 4);
+	}
+	//6d227c
 }
 
 /* rct2: 0x006D1EF0 */
