@@ -348,7 +348,7 @@ static void window_editor_object_selection_close(){
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 
 		(SCREEN_FLAGS_SCENARIO_EDITOR | 
-		SCREEN_FLAGS_TRACK_MANAGER | 
+		SCREEN_FLAGS_TRACK_DESIGNER | 
 		SCREEN_FLAGS_TRACK_MANAGER))
 		)return;
 
