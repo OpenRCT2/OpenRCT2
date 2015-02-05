@@ -80,6 +80,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
 
 void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation);
 

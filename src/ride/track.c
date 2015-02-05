@@ -29,6 +29,7 @@
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../world/park.h"
+#include "../interface/viewport.h"
 
 /**
  *
@@ -677,7 +678,8 @@ void blank_map(){
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 2;
 		map_element->clearance_height = 0;
-		map_element->properties.surface.slope = 0;
+		map_element->properties.surface.slope = 0;		
+		map_element->properties.surface.terrain = 0;
 		map_element->properties.surface.grass_length = 1;
 		map_element->properties.surface.ownership = OWNERSHIP_OWNED;
 	}
@@ -745,8 +747,11 @@ int sub_6D01B3(int bl, int x, int y, int z)
 	return *((short*)&ebx);
 }
 
-/* rct2: 0x006D2189 */
-int sub_6D2189(){
+/* rct2: 0x006D2189 
+ * ebx = ride_id
+ * cost = edi
+ */
+int sub_6D2189(int* cost, uint8* ride_id){
 	RCT2_GLOBAL(0xF44151, uint8) = 0;
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 	uint8 entry_type, entry_index;
@@ -754,7 +759,7 @@ int sub_6D2189(){
 	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
 		entry_index = 0xFF;
 
-	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
+	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = &track_design->vehicle_object;
 	ebx = 41;
 	edx = track_design->type | (entry_index << 8);
 	esi = GAME_COMMAND_6;
@@ -762,9 +767,9 @@ int sub_6D2189(){
 	if (0x80000000 == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
 
 	// bh
-	uint8 ride_index = edi & 0xFF;
+	*ride_id = edi & 0xFF;
 
-	rct_ride* ride = GET_RIDE(ride_index);
+	rct_ride* ride = GET_RIDE(*ride_id);
 
 	uint8* ride_name = RCT2_ADDRESS(0x9E3504, uint8);
 	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
@@ -823,6 +828,7 @@ int sub_6D2189(){
 
 		RCT2_GLOBAL(0xF440AE, uint8) = backup_rotation;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		*cost = edi;
 		return 1;
 	}
 	else{
@@ -835,6 +841,13 @@ int sub_6D2189(){
 	}
 }
 
+/* rct2: 0x006D235B */
+void sub_6D235B(uint8 ride_id){
+	rct_ride* ride = GET_RIDE(ride_id);
+	user_string_free(ride->name);
+	ride->type = RIDE_TYPE_NULL;
+}
+
 /* rct2: 0x006D1EF0 */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
@@ -845,13 +858,73 @@ void draw_track_preview(uint8** preview){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
 		load_track_scenery_objects();
 	}
-	if (!sub_6D2189()){
+
+	int cost;
+	uint8 ride_id;
+
+	if (!sub_6D2189(&cost, &ride_id)){
 		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
 		reload_map_backup();
 		return;
 	}
+
+	RCT2_GLOBAL(0xF4411D, uint32) = cost;
 	// 0x6D1F1A
+	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
+	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
+	int left, top, right, bottom;
+
+	int center_x = (RCT2_GLOBAL(0xF440F9, sint16) + RCT2_GLOBAL(0xF440FB, sint16)) / 2 + 16;
+	int center_y = (RCT2_GLOBAL(0xF440FD, sint16) + RCT2_GLOBAL(0xF440FF, sint16)) / 2 + 16;
+	int center_z = (RCT2_GLOBAL(0xF44101, sint16) + RCT2_GLOBAL(0xF44103, sint16)) / 2;
+
+	//push center_y
+	int width = RCT2_GLOBAL(0xF440FB, sint16) - RCT2_GLOBAL(0xF440F9, sint16);
+	int height = RCT2_GLOBAL(0xF440FF, sint16) - RCT2_GLOBAL(0xF440FD, sint16);
+
+	if (width < height)
+		width = height;
+
+	int zoom_level = 1;
 	
+	if (width > 1120)
+		zoom_level = 2;
+
+	if (width > 2240)
+		zoom_level = 3;
+
+	width = 370 << zoom_level;
+	height = 217 << zoom_level;
+
+	dpi->zoom_level = zoom_level;
+	view->view_width = width;
+	view->view_height = height;
+	view->zoom = zoom_level;
+
+	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
+	view->height = 217;
+	view->width = 370;
+	view->x = 0;
+	view->y = 0;
+
+	dpi->x = 0;
+	dpi->y = 0;
+	dpi->bits = preview;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
+	int x = center_y - center_x - width / 2;
+	int y = (center_y + center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	sub_6D235B(ride_id);
 	reload_map_backup();
 }
 
@@ -903,7 +976,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview((uint8**)trackDesign->preview);
-		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
+		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
 		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
