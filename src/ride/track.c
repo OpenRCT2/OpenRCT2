@@ -470,7 +470,7 @@ rct_track_td6* load_track_design(const char *path)
 	if (fp == NULL)
 		return 0;
 
-	char* track_name_pointer = path;
+	char* track_name_pointer = (char*)path;
 	while (*track_name_pointer++ != '\0');
 	while (*--track_name_pointer != '\\');
 	char* default_name = RCT2_ADDRESS(0x009E3504, char);
@@ -645,6 +645,7 @@ int backup_map(){
 	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
 	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
 	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
 	*(uint32*)(backup_info + 10) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	return 1;
 }
@@ -759,7 +760,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
 		entry_index = 0xFF;
 
-	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = &track_design->vehicle_object;
+	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
 	ebx = 41;
 	edx = track_design->type | (entry_index << 8);
 	esi = GAME_COMMAND_6;
@@ -817,7 +818,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		bl |= 0x80;
 		RCT2_GLOBAL(0xF44151, uint8) |= 1;
 	}
-	edi = sub_6D01B3(bl, map_size, map_size, z);
+	edi = sub_6D01B3((*ride_id << 8) | bl, map_size, map_size, z);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
 
 	if (edi != 0x80000000){
@@ -878,7 +879,6 @@ void draw_track_preview(uint8** preview){
 	int center_y = (RCT2_GLOBAL(0xF440FD, sint16) + RCT2_GLOBAL(0xF440FF, sint16)) / 2 + 16;
 	int center_z = (RCT2_GLOBAL(0xF44101, sint16) + RCT2_GLOBAL(0xF44103, sint16)) / 2;
 
-	//push center_y
 	int width = RCT2_GLOBAL(0xF440FB, sint16) - RCT2_GLOBAL(0xF440F9, sint16);
 	int height = RCT2_GLOBAL(0xF440FF, sint16) - RCT2_GLOBAL(0xF440FD, sint16);
 
@@ -896,24 +896,72 @@ void draw_track_preview(uint8** preview){
 	width = 370 << zoom_level;
 	height = 217 << zoom_level;
 
-	dpi->zoom_level = zoom_level;
-	view->view_width = width;
-	view->view_height = height;
-	view->zoom = zoom_level;
-
-	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
-	view->height = 217;
-	view->width = 370;
-	view->x = 0;
-	view->y = 0;
-
-	dpi->x = 0;
-	dpi->y = 0;
-	dpi->bits = preview;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
 	int x = center_y - center_x - width / 2;
 	int y = (center_y + center_x) / 2 - center_z - height / 2;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
+
+	view->width = 370;
+	view->height = 217;
+	view->view_width = width;
+	view->view_height = height;
+	view->x = 0;
+	view->y = 0;
+	view->view_x = x;
+	view->view_y = y;
+	view->zoom = zoom_level;
+	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
+
+	dpi->zoom_level = zoom_level;
+	dpi->x = 0;
+	dpi->y = 0;
+	dpi->width = 370;
+	dpi->height = 217;
+	dpi->pitch = 0;
+	dpi->bits = (char*)preview;
+
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 1;
+	x = -center_y - center_x - width / 2;
+	y = (center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 2;
+	x =  center_x - center_y - width / 2;
+	y = (-center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 3;
+	x = center_x + center_y - width / 2;
+	y = (center_x - center_y) / 2 - center_z - height / 2;
 
 	view->view_x = x;
 	view->view_y = y;
