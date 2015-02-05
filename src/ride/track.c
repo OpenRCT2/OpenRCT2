@@ -28,6 +28,7 @@
 #include "../platform/platform.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../world/park.h"
 
 /**
  *
@@ -726,6 +727,24 @@ void load_track_scenery_objects(){
 	sub_6A9FC0();
 }
 
+/**
+* Seems to highlight the surface tiles to match the track layout at the given position but also returns some Z value.
+*  rct2: 0x006D01B3
+*/
+int sub_6D01B3(int bl, int x, int y, int z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = bl;
+	ecx = y;
+	edx = z;
+	esi = 0;
+	edi = 0;
+	ebp = 0;
+	RCT2_CALLFUNC_X(0x006D01B3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return *((short*)&ebx);
+}
+
 /* rct2: 0x006D2189 */
 int sub_6D2189(){
 	RCT2_GLOBAL(0xF44151, uint8) = 0;
@@ -772,7 +791,48 @@ int sub_6D2189(){
 		memset(&ride->track_colour_additional, track_design->track_rail_colour_rct1, 4);
 		memset(&ride->track_colour_supports, track_design->track_support_colour_rct1, 4);
 	}
-	//6d227c
+
+	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
+	uint8 backup_rotation = RCT2_GLOBAL(0xF440AE, uint8);
+	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
+
+	RCT2_GLOBAL(0xF440AE, uint8) = 0;
+	int z = sub_6D01B3(3, map_size, map_size, 16);
+
+	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
+		RCT2_GLOBAL(0xF44151, uint8) |= 2;
+	}
+	//dx
+	z += 16 - RCT2_GLOBAL(0xF44129, uint16);
+
+	int bl = 5;
+	if (RCT2_GLOBAL(0xF4414E, uint8) & 2){
+		bl |= 0x80;
+		RCT2_GLOBAL(0xF44151, uint8) |= 1;
+	}
+	edi = sub_6D01B3(bl, map_size, map_size, z);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
+
+	if (edi != 0x80000000){
+
+		if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index)){
+			RCT2_GLOBAL(0xF44151, uint8) |= 4;
+		}
+
+		RCT2_GLOBAL(0xF440AE, uint8) = backup_rotation;
+		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		return 1;
+	}
+	else{
+
+		RCT2_GLOBAL(0xF440AE, uint8) = backup_rotation;
+		user_string_free(ride->name);
+		ride->type = RIDE_TYPE_NULL;
+		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		return 0;
+	}
 }
 
 /* rct2: 0x006D1EF0 */
@@ -785,8 +845,12 @@ void draw_track_preview(uint8** preview){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
 		load_track_scenery_objects();
 	}
-	sub_6D2189();
-	// 0x6D1F0F
+	if (!sub_6D2189()){
+		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
+		reload_map_backup();
+		return;
+	}
+	// 0x6D1F1A
 	
 	reload_map_backup();
 }

@@ -338,24 +338,6 @@ static void sub_68A15E(int x, int y, short *ax, short *bx)
 }
 
 /**
- * Seems to highlight the surface tiles to match the track layout at the given position but also returns some Z value.
- *  rct2: 0x006D01B3
- */
-static int sub_6D01B3(int bl, int x, int y, int z)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = bl;
-	ecx = y;
-	edx = z;
-	esi = 0;
-	edi = 0;
-	ebp = 0;
-	RCT2_CALLFUNC_X(0x006D01B3,  &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return *((short*)&ebx);
-}
-
-/**
  *
  *  rct2: 0x006D017F
  */

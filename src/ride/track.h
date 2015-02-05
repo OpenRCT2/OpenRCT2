@@ -168,5 +168,6 @@ rct_track_td6* load_track_design(const char *path);
 int track_rename(const char *text);
 int track_delete();
 void reset_track_list_cache();
+int sub_6D01B3(int bl, int x, int y, int z);
 
 #endif
