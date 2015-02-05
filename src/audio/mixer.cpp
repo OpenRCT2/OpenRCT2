@@ -25,6 +25,7 @@ extern "C" {
 	#include "../config.h"
 	#include "../platform/platform.h"
 	#include "audio.h"
+	#include "../localisation/localisation.h"
 }
 #include "mixer.h"
 
@@ -46,9 +47,11 @@ bool Sample::Load(const char* filename)
 {
 	log_verbose("Sample::Load(%s)", filename);
 
+	utf8 utf8filename[512];
+	win1252_to_utf8(utf8filename, filename, sizeof(utf8filename));
+
 	Unload();
-	SDL_ClearError();
-	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(utf8filename, "rb");
 	if (rw == NULL) {
 		log_verbose("Error loading %s", filename);
 		return false;
@@ -74,11 +77,18 @@ bool Sample::Load(const char* filename)
 
 bool Sample::LoadCSS1(const char* filename, unsigned int offset)
 {
+	log_verbose("Sample::LoadCSS1(%s, %d)", filename, offset);
+
+	utf8 utf8filename[512];
+	win1252_to_utf8(utf8filename, filename, sizeof(utf8filename));
+
 	Unload();
-	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(utf8filename, "rb");
 	if (rw == NULL) {
+		log_verbose("Unable to load %s", filename);
 		return false;
 	}
+
 	Uint32 numsounds;
 	SDL_RWread(rw, &numsounds, sizeof(numsounds), 1);
 	if (offset > numsounds) {
