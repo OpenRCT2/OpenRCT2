@@ -53,7 +53,9 @@ enum {
 
 	//WIDX_FASTFORWARD,
 	WIDX_FINANCES,
-	WIDX_RESEARCH
+	WIDX_RESEARCH,
+
+	WIDX_SEPARATOR,
 };
 
 typedef enum {
@@ -67,17 +69,14 @@ typedef enum {
 
 #pragma region Toolbar_widget_ordering
 
-// todo: declare separators in the widget list itself
-
 // from left to right
 static const int left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	//WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
-};
 
-// from left to right
-static const int left_separator_aligned_widgets_order[] = {
+	WIDX_SEPARATOR,
+
 	WIDX_ZOOM_OUT,
 	WIDX_ZOOM_IN,
 	WIDX_ROTATE,
@@ -93,10 +92,9 @@ static const int right_aligned_widgets_order[] = {
 	WIDX_RIDES,
 	WIDX_RESEARCH,
 	WIDX_FINANCES,
-};
 
-// from right to left
-static const int right_separator_aligned_widgets_order[] = {
+	WIDX_SEPARATOR,
+
 	WIDX_CONSTRUCT_RIDE,
 	WIDX_PATH,
 	WIDX_SCENERY,
@@ -130,6 +128,8 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	//{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
 	{ WWT_TRNBTN,	3,	0x001E, 0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
+	
+	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
 };
 
@@ -412,36 +412,24 @@ static void window_game_top_toolbar_invalidate()
 		x = 640;
 
 	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
-		x -= 1;
-		window_game_top_toolbar_widgets[right_aligned_widgets_order[i]].right = x;
-		x -= 29;
-		window_game_top_toolbar_widgets[right_aligned_widgets_order[i]].left = x;
-	}
+		rct_widget *current_widget = &window_game_top_toolbar_widgets[right_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
 
-	x -= 10;
-
-	for (int i = 0; i < countof(right_separator_aligned_widgets_order); ++i) {
 		x -= 1;
-		window_game_top_toolbar_widgets[right_separator_aligned_widgets_order[i]].right = x;
-		x -= 29;
-		window_game_top_toolbar_widgets[right_separator_aligned_widgets_order[i]].left = x;
+		current_widget->right = x;
+		x -= widget_width;
+		current_widget->left = x;
 	}
 
 	x = 0;
 
 	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
-		window_game_top_toolbar_widgets[left_aligned_widgets_order[i]].left = x;
-		x += 29;
-		window_game_top_toolbar_widgets[left_aligned_widgets_order[i]].right = x;
-		x += 1;
-	}
+		rct_widget *current_widget = &window_game_top_toolbar_widgets[left_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
 
-	x += 10;
-
-	for (int i = 0; i < countof(left_separator_aligned_widgets_order); ++i) {
-		window_game_top_toolbar_widgets[left_separator_aligned_widgets_order[i]].left = x;
-		x += 29;
-		window_game_top_toolbar_widgets[left_separator_aligned_widgets_order[i]].right = x;
+		current_widget->left = x;
+		x += widget_width;
+		current_widget->right = x;
 		x += 1;
 	}
 
