@@ -256,7 +256,7 @@ void config_write_ini_general(FILE *fp)
 
 	if (gGeneral_config.fullscreen_width != -1)
 		fprintf(fp, "fullscreen_width = %d\n", gGeneral_config.fullscreen_width);
-	if (gGeneral_config.window_height != -1)
+	if (gGeneral_config.fullscreen_height != -1)
 		fprintf(fp, "fullscreen_height = %d\n", gGeneral_config.fullscreen_height);
 
 	if (gGeneral_config.window_width != -1)
