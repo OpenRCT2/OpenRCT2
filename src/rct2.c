@@ -252,24 +252,7 @@ int check_file_path(int pathId)
 	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 
 	switch (pathId) {
-	case PATH_ID_GAMECFG:
-	case PATH_ID_SCORES:
-	case PATH_ID_TRACKSIDX:
-	case PATH_ID_PLUGIN:
-		// Do nothing; these will be created later if they do not exist yet
-		break;
-
-	case PATH_ID_CUSTOM1:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
-		break;
-
-	case PATH_ID_CUSTOM2:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
-		break;
-
-	default:
+	case PATH_ID_G1:
 		if (file == INVALID_HANDLE_VALUE) {
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
@@ -281,6 +264,16 @@ int check_file_path(int pathId)
 			log_fatal("Could not find file %s", path);
 			return 0;
 		}
+		break;
+
+	case PATH_ID_CUSTOM1:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		break;
+
+	case PATH_ID_CUSTOM2:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 
