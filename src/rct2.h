@@ -184,6 +184,7 @@ enum {
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
 	PATH_ID_CSS46,
+	PATH_ID_CSS50,
 	PATH_ID_END
 };
 
@@ -251,7 +252,8 @@ static const char * const file_paths[] =
 	"Data\\CSS43.DAT",
 	"Data\\CSS44.DAT",
 	"Data\\CSS45.DAT",
-	"Data\\CSS46.DAT"
+	"Data\\CSS46.DAT",
+	"Data\\CSS50.DAT"
 };
 
 // Files to check (rct2 @ 0x0097FB5A)

@@ -182,7 +182,7 @@ static void osinterface_create_window()
 {
 	SDL_SysWMinfo wmInfo;
 	HWND hWnd;
-	int width, height, mode;
+	int width, height;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		RCT2_ERROR("SDL_Init %s", SDL_GetError());
@@ -449,8 +449,13 @@ void osinterface_process_messages()
 
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
-			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT)
-				osinterface_set_fullscreen_mode(!gGeneral_config.fullscreen_mode);
+			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT) {
+				int targetMode = gGeneral_config.fullscreen_mode == 0 ? 2 : 0;
+				osinterface_set_fullscreen_mode(targetMode);
+				gGeneral_config.fullscreen_mode = targetMode;
+				config_save();
+				break;
+			}
 
 			// Text input
 

@@ -36,7 +36,7 @@ int resolution_sort_func(const void *pa, const void *pb)
 	const resolution *b = (resolution*)pb;
 
 	int areaA = a->width * a->height;
-	int areaB = b->height * b->height;
+	int areaB = b->width * b->height;
 
 	if (areaA == areaB) return 0;
 	if (areaA < areaB) return -1;

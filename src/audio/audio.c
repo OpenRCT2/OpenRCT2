@@ -1544,13 +1544,25 @@ void stop_completed_sounds()
 */
 void start_title_music()
 {
+	int musicPathId;
+	switch (gGeneral_config.title_music) {
+	default:
+		return;
+	case 1:
+		musicPathId = PATH_ID_CSS50;
+		break;
+	case 2:
+		musicPathId = PATH_ID_CSS17;
+		break;
+	}
+
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gTitleMusicChannel = Mixer_Play_Music(PATH_ID_CSS17);
+			gTitleMusicChannel = Mixer_Play_Music(musicPathId);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
+			int result = sound_channel_load_file2(3, (char*)get_file_path(musicPathId), 0);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (result) {
 				RCT2_GLOBAL(0x014241BC, uint32) = 1;
