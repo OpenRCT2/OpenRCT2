@@ -5,6 +5,9 @@ sdl
 # Compiled dll
 openrct2.dll
 
+# Distribution
+distribution/windows/*.exe
+
 # Build artifacts
 .cache
 

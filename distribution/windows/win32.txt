@@ -1,0 +1,5 @@
+!define APPBITS 32          ; Define number of bits for the architecture
+!define EXTRA_VERSION "XP SP3, Vista, 7 and 8.1"
+!define APPARCH "win32"     ; Define the application architecture
+!define BINARY_DIR "${PATH_ROOT}build\Release"
+InstallDir "$PROGRAMFILES32\OpenRCT2\"
