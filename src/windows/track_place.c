@@ -174,7 +174,7 @@ static void window_track_place_draw_mini_preview()
 		if (design->track_td6.type != RIDE_TYPE_MAZE) {
 			#pragma region Track
 
-			rotation = RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 			trackPtr = design->preview[0];
 
 			while (*trackPtr != 255) {
@@ -271,7 +271,7 @@ static void window_track_place_draw_mini_preview()
 		} else {
 			#pragma region Maze
 
-			rotation = (RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
+			rotation = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
 			mazeBlock = (rct_preview_maze*)design->preview[0];
 			while (mazeBlock->all != 0) {
 				x = mazeBlock->x * 32;
@@ -423,7 +423,7 @@ void window_track_place_open()
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
-	RCT2_GLOBAL(0x00F440AE, uint8) = (-RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = (-RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
 	window_track_place_draw_mini_preview();
 }
 
@@ -458,14 +458,14 @@ static void window_track_place_mouseup()
 		break;
 	case WIDX_ROTATE:
 		window_track_place_clear_provisional();
-		RCT2_GLOBAL(0x00F440AE, uint16) = (RCT2_GLOBAL(0x00F440AE, uint16) + 1) & 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) + 1) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
 		RCT2_CALLPROC_EBPSAFE(0x006D2436);
-		RCT2_GLOBAL(0x00F440AE, uint16) = (-RCT2_GLOBAL(0x00F440AE, uint16)) & 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();

@@ -731,7 +731,13 @@ void load_track_scenery_objects(){
 }
 
 /**
-* Seems to highlight the surface tiles to match the track layout at the given position but also returns some Z value.
+* Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by 
+* the track preview window to place the whole track. 
+* Depending on the value of bl it modifies the function.
+* bl == 0, Draw outlines on the ground
+* bl == 3, Returns the z value of a succesful placement
+* bl == 5, Returns cost to create the track. Places the track. (used by the preview)
+* bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
 int sub_6D01B3(int bl, int x, int y, int z)
@@ -799,12 +805,12 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	}
 
 	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
-	uint8 backup_rotation = RCT2_GLOBAL(0xF440AE, uint8);
+	uint8 backup_rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
 	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
 
-	RCT2_GLOBAL(0xF440AE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 0;
 	int z = sub_6D01B3(3, map_size, map_size, 16);
 
 	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
@@ -827,14 +833,14 @@ int sub_6D2189(int* cost, uint8* ride_id){
 			RCT2_GLOBAL(0xF44151, uint8) |= 4;
 		}
 
-		RCT2_GLOBAL(0xF440AE, uint8) = backup_rotation;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
 		*cost = edi;
 		return 1;
 	}
 	else{
 
-		RCT2_GLOBAL(0xF440AE, uint8) = backup_rotation;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
@@ -869,18 +875,18 @@ void draw_track_preview(uint8** preview){
 		return;
 	}
 
-	RCT2_GLOBAL(0xF4411D, uint32) = cost;
-	// 0x6D1F1A
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32) = cost;
+
 	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
 	int left, top, right, bottom;
 
-	int center_x = (RCT2_GLOBAL(0xF440F9, sint16) + RCT2_GLOBAL(0xF440FB, sint16)) / 2 + 16;
-	int center_y = (RCT2_GLOBAL(0xF440FD, sint16) + RCT2_GLOBAL(0xF440FF, sint16)) / 2 + 16;
-	int center_z = (RCT2_GLOBAL(0xF44101, sint16) + RCT2_GLOBAL(0xF44103, sint16)) / 2;
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)) / 2 + 16;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)) / 2 + 16;
+	int center_z = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)) / 2;
 
-	int width = RCT2_GLOBAL(0xF440FB, sint16) - RCT2_GLOBAL(0xF440F9, sint16);
-	int height = RCT2_GLOBAL(0xF440FF, sint16) - RCT2_GLOBAL(0xF440FD, sint16);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
 
 	if (width < height)
 		width = height;
@@ -1026,13 +1032,13 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		draw_track_preview((uint8**)trackDesign->preview);
 		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
-		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
+		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
 		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
 	// Set preview to correct preview image based on rotation
 	if (preview != NULL)
-		*preview = trackDesign->preview[RCT2_GLOBAL(0x00F440AE, uint8)];
+		*preview = trackDesign->preview[RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)];
 
 	return trackDesign;
 }

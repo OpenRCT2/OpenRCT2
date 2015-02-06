@@ -35,6 +35,21 @@ typedef struct {
 	uint8 pad[2];
 } rct_trackdefinition;
 
+typedef struct{
+	uint8 type;
+	uint8 flags;
+}rct_track_element;
+
+enum{
+	TRACK_ELEMENT_FLAG_CHAIN_LIFT = (1<<7),
+	TRACK_ELEMENT_FLAG_INVERTED = (1<<6),
+	TRACK_ELEMENT_FLAG_TERMINAL_STATION = (1<<3),
+};
+
+#define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
+#define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
+#define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
+
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
 /* size: 0x2 */

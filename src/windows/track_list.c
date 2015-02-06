@@ -152,9 +152,9 @@ void window_track_list_open(ride_list_item item)
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
-	RCT2_GLOBAL(0x00F44152, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
-	RCT2_GLOBAL(0x00F440AE, uint8) = 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
 }
 
 /**
@@ -176,7 +176,7 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 
 	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
-		RCT2_GLOBAL(0x00F44152, uint8) = 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 1;
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
@@ -268,13 +268,13 @@ static void window_track_list_mouseup()
 		}
 		break;
 	case WIDX_ROTATE:
-		RCT2_GLOBAL(0x00F440AE, uint8)++;
-		RCT2_GLOBAL(0x00F440AE, uint8) %= 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)++;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) %= 4;
 		window_invalidate(w);
 		break;
 	case WIDX_TOGGLE_SCENERY:
-		RCT2_GLOBAL(0x00F44152, uint8) ^= 1;
-		RCT2_CALLPROC_EBPSAFE(0x006D1DCE);
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
+		reset_track_list_cache();
 		window_invalidate(w);
 		break;
 	}
@@ -385,7 +385,7 @@ static void window_track_list_invalidate()
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_FLATBTN;
-		if (RCT2_GLOBAL(0x00F44152, uint8) == 0)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)
 			w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
 		else
 			w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
@@ -462,7 +462,7 @@ static void window_track_list_paint()
 
 	if (track_td6->var_06 & 1) {
 		RCT2_GLOBAL(0x00F44153, uint8) = 1;
-		if (RCT2_GLOBAL(0x00F44152, uint8) == 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
 			y -= 10;
