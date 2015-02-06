@@ -35,6 +35,34 @@ typedef struct {
 	uint8 pad[2];
 } rct_trackdefinition;
 
+/**
+* Size: 0x0A
+*/
+typedef struct {
+	uint8 var_00;
+	sint16 x;
+	sint16 y;
+	uint8 pad_05[3];
+	uint8 var_08;
+	uint8 unk_09;
+} rct_preview_track;
+
+/**
+* Size: 0x04
+*/
+typedef struct {
+	union {
+		uint32 all;
+		struct {
+			sint8 x;
+			sint8 y;
+			uint8 unk_2;
+			uint8 type;
+		};
+	};
+} rct_maze_element;
+
+/* Size: 0x02 */
 typedef struct{
 	uint8 type;
 	uint8 flags;
