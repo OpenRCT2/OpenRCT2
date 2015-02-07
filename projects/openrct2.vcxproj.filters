@@ -332,7 +332,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -344,7 +343,7 @@
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -423,6 +422,9 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\ride\track_data.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -613,6 +615,9 @@
     </ClInclude>
     <ClInclude Include="..\src\rct1.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\track_data.h">
+      <Filter>Source\Ride</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

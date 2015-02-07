@@ -28,6 +28,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../ride/track.h"
+#include "../ride/track_data.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -211,28 +212,30 @@ static void window_track_place_draw_mini_preview()
 
 				// Change rotation and next position based on track curvature
 				rotation &= 3;
+				const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
+
 				trackType *= 10;
 				switch (rotation) {
 				case 0:
-					originX += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
-					originY += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originX += track_coordinate->x;
+					originY += track_coordinate->y;
 					break;
 				case 1:
-					originX += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
-					originY -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originX += track_coordinate->y;
+					originY -= track_coordinate->x;
 					break;
 				case 2:
-					originX -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
-					originY -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originX -= track_coordinate->x;
+					originY -= track_coordinate->y;
 					break;
 				case 3:
-					originX -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
-					originY += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originX -= track_coordinate->y;
+					originY += track_coordinate->x;
 					break;
 				}
-				rotation += RCT2_ADDRESS(0x009968BC, uint8)[trackType] - RCT2_ADDRESS(0x009968BB, uint8)[trackType];
+				rotation += track_coordinate->rotation_positive - track_coordinate->rotation_negative;
 				rotation &= 3;
-				if (RCT2_ADDRESS(0x009968BC, uint8)[trackType] & 4)
+				if (track_coordinate->rotation_positive & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
 					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
