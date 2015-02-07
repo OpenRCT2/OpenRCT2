@@ -47,6 +47,8 @@ enum WINDOW_EDITOR_TOP_TOOLBAR_WIDGET_IDX {
 	WIDX_UNUSED3,				// 14, 4000
 	WIDX_UNUSED4,				// 15, 8000
 	WIDX_CLEAR_SCENERY,			// 16, 10000
+
+	WIDX_SEPARATOR,
 };
 
 typedef enum {
@@ -64,6 +66,32 @@ typedef enum {
 	DDIDX_TD_SCREENSHOT = 2,
 	DDIDX_TD_QUIT_GAME = 4,
 } TRACK_DESINGER_FILE_MENU_DDIDX;
+
+#pragma region Toolbar_widget_ordering
+
+// from left to right
+static const int left_aligned_widgets_order[] = {
+	WIDX_PAUSE, WIDX_FILE_MENU,
+
+	WIDX_SEPARATOR,
+
+	WIDX_ZOOM_OUT,
+	WIDX_ZOOM_IN,
+	WIDX_ROTATE,
+	WIDX_VIEW_MENU,
+	WIDX_MAP,
+};
+
+// from right to left
+static const int right_aligned_widgets_order[] = {
+	WIDX_CONSTRUCT_RIDE, WIDX_PATH,
+	WIDX_SCENERY,
+	WIDX_WATER,
+	WIDX_LAND,
+	WIDX_CLEAR_SCENERY,
+};
+
+#pragma endregion
 
 static rct_widget window_editor_top_toolbar_widgets[] = {
 	{ WWT_EMPTY, 0, 0, 0, 0, 0, 0xFFFFFFFF, 0xFFFF },														// 1		0x009A9844
@@ -83,6 +111,8 @@ static rct_widget window_editor_top_toolbar_widgets[] = {
 	{ WWT_EMPTY, 0, 0, 0, 0, 0, 0xFFFFFFFF, 0xFFFF },														// 4000		0x009A9924
 	{ WWT_EMPTY, 0, 0, 0, 0, 0, 0xFFFFFFFF, 0xFFFF },														// 8000		0x009A9934
 	{ WWT_TRNBTN, 2, 560, 589, 0, 27, 0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY, STR_CLEAR_SCENERY_TIP },		// 10000	0x009A9944
+
+	{ WWT_EMPTY, 0, 0, 10-1, 0, 0, 0xFFFFFFFF, 0xFFFF },													// Artificial widget separator
 	{ WIDGETS_END },
 };
 
@@ -324,36 +354,6 @@ void window_editor_top_toolbar_invalidate()
 
 	window_get_register(w);
 
-	sint16 screenWidth = max(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 640);
-
-	window_editor_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].left = screenWidth - 30;
-	window_editor_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].right =
-		window_editor_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].left + 29;
-
-	window_editor_top_toolbar_widgets[WIDX_PATH].left = screenWidth - 30;
-	window_editor_top_toolbar_widgets[WIDX_PATH].right =
-		window_editor_top_toolbar_widgets[WIDX_PATH].left + 29;
-
-	window_editor_top_toolbar_widgets[WIDX_SCENERY].left =
-		window_editor_top_toolbar_widgets[WIDX_PATH].left - 30;
-	window_editor_top_toolbar_widgets[WIDX_SCENERY].right =
-		window_editor_top_toolbar_widgets[WIDX_SCENERY].left + 29;
-
-	window_editor_top_toolbar_widgets[WIDX_WATER].left =
-		window_editor_top_toolbar_widgets[WIDX_SCENERY].left - 30;
-	window_editor_top_toolbar_widgets[WIDX_WATER].right =
-		window_editor_top_toolbar_widgets[WIDX_WATER].left + 29;
-
-	window_editor_top_toolbar_widgets[WIDX_LAND].left =
-		window_editor_top_toolbar_widgets[WIDX_WATER].left - 30;
-	window_editor_top_toolbar_widgets[WIDX_LAND].right =
-		window_editor_top_toolbar_widgets[WIDX_LAND].left + 29;
-
-	window_editor_top_toolbar_widgets[WIDX_CLEAR_SCENERY].left =
-		window_editor_top_toolbar_widgets[WIDX_LAND].left - 30;
-	window_editor_top_toolbar_widgets[WIDX_CLEAR_SCENERY].right =
-		window_editor_top_toolbar_widgets[WIDX_CLEAR_SCENERY].left + 29;
-
 	window_editor_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
 	window_editor_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
 	window_editor_top_toolbar_widgets[WIDX_ROTATE].type = WWT_EMPTY;
@@ -390,6 +390,36 @@ void window_editor_top_toolbar_invalidate()
 		w->pressed_widgets &= ~(1 << WIDX_PATH);
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);
+
+	sint16 x = max(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 640);
+
+	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
+		rct_widget *current_widget = &window_editor_top_toolbar_widgets[right_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
+
+		if (current_widget->type == WWT_EMPTY && right_aligned_widgets_order[i] != WIDX_SEPARATOR)
+			continue;
+
+		x -= 1;
+		current_widget->right = x;
+		x -= widget_width;
+		current_widget->left = x;
+	}
+
+	x = 0;
+
+	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
+		rct_widget *current_widget = &window_editor_top_toolbar_widgets[left_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
+
+		if (current_widget->type == WWT_EMPTY && left_aligned_widgets_order[i] != WIDX_SEPARATOR)
+			continue;
+
+		current_widget->left = x;
+		x += widget_width;
+		current_widget->right = x;
+		x += 1;
+	}
 }
 
 /**

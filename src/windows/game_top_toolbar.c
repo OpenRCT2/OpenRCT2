@@ -53,7 +53,9 @@ enum {
 
 	//WIDX_FASTFORWARD,
 	WIDX_FINANCES,
-	WIDX_RESEARCH
+	WIDX_RESEARCH,
+
+	WIDX_SEPARATOR,
 };
 
 typedef enum {
@@ -64,6 +66,44 @@ typedef enum {
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_QUIT_GAME = 7,
 } FILE_MENU_DDIDX;
+
+#pragma region Toolbar_widget_ordering
+
+// from left to right
+static const int left_aligned_widgets_order[] = {
+	WIDX_PAUSE,
+	//WIDX_FASTFORWARD,
+	WIDX_FILE_MENU,
+
+	WIDX_SEPARATOR,
+
+	WIDX_ZOOM_OUT,
+	WIDX_ZOOM_IN,
+	WIDX_ROTATE,
+	WIDX_VIEW_MENU,
+	WIDX_MAP,
+};
+
+// from right to left
+static const int right_aligned_widgets_order[] = {
+	WIDX_GUESTS,
+	WIDX_STAFF,
+	WIDX_PARK,
+	WIDX_RIDES,
+	WIDX_RESEARCH,
+	WIDX_FINANCES,
+
+	WIDX_SEPARATOR,
+
+	WIDX_CONSTRUCT_RIDE,
+	WIDX_PATH,
+	WIDX_SCENERY,
+	WIDX_WATER,
+	WIDX_LAND,
+	WIDX_CLEAR_SCENERY,
+};
+
+#pragma endregion
 
 static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x0000,			0x001D,			0,		27,		0x20000000 | SPR_TOOLBAR_PAUSE,				STR_PAUSE_GAME_TIP },				// Pause
@@ -88,6 +128,8 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	//{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
 	{ WWT_TRNBTN,	3,	0x001E, 0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
+	
+	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
 };
 
@@ -368,86 +410,28 @@ static void window_game_top_toolbar_invalidate()
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
 	if (x < 640)
 		x = 640;
-	x--;
-	window_game_top_toolbar_widgets[WIDX_GUESTS].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_GUESTS].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_STAFF].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_STAFF].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_PARK].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_PARK].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_RIDES].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_RIDES].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_RESEARCH].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_RESEARCH].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_FINANCES].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_FINANCES].left = x;
-	x -= 11;
-	window_game_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_PATH].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_PATH].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_SCENERY].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_SCENERY].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_WATER].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_WATER].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_LAND].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_LAND].left = x;
-	x -= 1;
-	window_game_top_toolbar_widgets[WIDX_CLEAR_SCENERY].right = x;
-	x -= 29;
-	window_game_top_toolbar_widgets[WIDX_CLEAR_SCENERY].left = x;
+
+	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
+		rct_widget *current_widget = &window_game_top_toolbar_widgets[right_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
+
+		x -= 1;
+		current_widget->right = x;
+		x -= widget_width;
+		current_widget->left = x;
+	}
+
 	x = 0;
-	window_game_top_toolbar_widgets[WIDX_PAUSE].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_PAUSE].right = x;
-	// x += 1;
-	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].left = x;
-	// x += 29;
-	// window_game_top_toolbar_widgets[WIDX_FASTFORWARD].right = x;
-	x += 1;
-	window_game_top_toolbar_widgets[WIDX_FILE_MENU].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_FILE_MENU].right = x;
-	x += 11;
-	window_game_top_toolbar_widgets[WIDX_ZOOM_OUT].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_ZOOM_OUT].right = x;
-	x += 1;
-	window_game_top_toolbar_widgets[WIDX_ZOOM_IN].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_ZOOM_IN].right = x;
-	x += 1;
-	window_game_top_toolbar_widgets[WIDX_ROTATE].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_ROTATE].right = x;
-	x += 1;
-	window_game_top_toolbar_widgets[WIDX_VIEW_MENU].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_VIEW_MENU].right = x;
-	x += 1;
-	window_game_top_toolbar_widgets[WIDX_MAP].left = x;
-	x += 29;
-	window_game_top_toolbar_widgets[WIDX_MAP].right = x;
+
+	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
+		rct_widget *current_widget = &window_game_top_toolbar_widgets[left_aligned_widgets_order[i]];
+		int widget_width = current_widget->right - current_widget->left;
+
+		current_widget->left = x;
+		x += widget_width;
+		current_widget->right = x;
+		x += 1;
+	}
 
 	// Footpath button pressed down
 	if (window_find_by_class(WC_FOOTPATH) == NULL)
