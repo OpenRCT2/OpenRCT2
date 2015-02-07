@@ -92,7 +92,7 @@ void title_load()
 {
 	log_verbose("loading title");
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) & 1)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0);//Game pause toggle
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
@@ -174,7 +174,7 @@ static void title_update_showcase()
 				if (scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
 					log_verbose("loaded title scenario");
 				} else {
-					RCT2_CALLPROC_EBPSAFE(0x006837E3);
+					load_palette();
 					title_create_windows();
 				}
 
@@ -270,7 +270,7 @@ void title_update()
 	screenshot_check();
 	title_handle_keyboard_input();
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		title_update_showcase();
 		game_logic_update();
 		start_title_music();//title_play_music();

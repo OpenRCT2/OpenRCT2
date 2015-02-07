@@ -1840,7 +1840,7 @@ void sub_6EA73F()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		RCT2_GLOBAL(0x01423604, uint32)++;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {

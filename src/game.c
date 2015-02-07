@@ -126,7 +126,7 @@ void update_palette_effects()
 				q = 2;
 			}
 		}
-		uint32 j = RCT2_GLOBAL(0x009DE584, uint32);
+		uint32 j = RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32);
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
 		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
@@ -165,7 +165,7 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		j = ((uint16)(RCT2_GLOBAL(0x009DE584, uint32) * -960) * 3) >> 16;
+		j = ((uint16)(RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32) * -960) * 3) >> 16;
 		p = 1539;
 		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
 		vs = &g1_element.offset[j * 3];
@@ -220,7 +220,7 @@ void game_update()
 	}
 
 	// Update the game one or more times
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		for (i = 0; i < numUpdates; i++) {
 			game_logic_update();
 			start_title_music();
@@ -477,9 +477,9 @@ void game_pause_toggle()
 
 
 	if (input_bl & 1) {
-		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
-		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
 			pause_sounds();
 		else
 			unpause_sounds();
@@ -725,7 +725,7 @@ int game_load_save(const char *path)
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
 		sub_69E869();
 
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 	gfx_invalidate_screen();
 	return 1;
 }
