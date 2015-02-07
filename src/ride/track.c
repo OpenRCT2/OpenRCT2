@@ -476,7 +476,7 @@ rct_track_td6* load_track_design(const char *path)
 	char* default_name = RCT2_ADDRESS(0x009E3504, char);
 	// Copy the track name for use as the default name of this ride
 	while (*++track_name_pointer != '.')*default_name++ = *track_name_pointer;
-	
+	*default_name++ = '\0';
 
 	// Read whole file into a buffer
 	fpLength = fsize(fp);
