@@ -164,7 +164,7 @@ void window_save_prompt_open()
 	window->colours[0] = 154;
 
 	// Pause the game
-	RCT2_GLOBAL(0x009DEA6E, uint8) |= 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
 	pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
@@ -215,7 +215,7 @@ void window_save_prompt_open()
 static void window_save_prompt_close()
 {
 	// Unpause the game
-	RCT2_GLOBAL(0x009DEA6E, uint8) &= ~2;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
 	unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }

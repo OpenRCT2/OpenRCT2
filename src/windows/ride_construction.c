@@ -216,12 +216,12 @@ void window_construction_close(){
 	rct_map_element* map_element = sub_6CAF80(ride_id, &x, &y);
 
 	if ((int)map_element == -1){
-		int eax = RCT2_GLOBAL(0x009DEA6E, uint8);
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
 		game_do_command(0, 9, 0, ride_id, GAME_COMMAND_7, 0, 0);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = eax;
 		return;
 	}
 
@@ -247,12 +247,12 @@ void window_construction_maze_close(){
 	rct_ride* ride = GET_RIDE(ride_id);
 
 	if (ride->overall_view == 0xFFFF){
-		int eax = RCT2_GLOBAL(0x009DEA6E, uint8);
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
 		game_do_command(0, 9, 0, ride_id, GAME_COMMAND_7, 0, 0);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = eax;
 		return;
 	}
 

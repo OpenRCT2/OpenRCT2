@@ -316,7 +316,7 @@ static void window_track_list_scrollmousedown()
 
 	if (w->track_list.var_484 & 1)
 		return;
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		return;
 
 	i = window_track_list_get_list_item_index_from_position(x, y);
@@ -337,7 +337,7 @@ static void window_track_list_scrollmouseover()
 
 	if (w->track_list.var_484 & 1)
 		return;
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		return;
 
 	i = window_track_list_get_list_item_index_from_position(x, y);

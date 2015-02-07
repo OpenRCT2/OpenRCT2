@@ -598,7 +598,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 	x *= 32;
 	y *= 32;
 
-	if (!(flags & 0x40) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0) {
+	if (!(flags & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -780,7 +780,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_s
 
 	money32 cur_cost = 0;
 
-	if (RCT2_GLOBAL(0x9DEA6E, uint8) != 0){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
 		cur_cost += RCT2_GLOBAL(0x9E32B4, uint32);
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){

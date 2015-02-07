@@ -461,7 +461,7 @@ static void window_game_top_toolbar_invalidate()
 	// else
 	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
 
-	if (!(RCT2_GLOBAL(0x009DEA6E, uint32) & 1))
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1))
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 	else
 		w->pressed_widgets |= (1 << WIDX_PAUSE);

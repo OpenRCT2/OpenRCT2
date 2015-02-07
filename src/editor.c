@@ -86,7 +86,7 @@ void editor_load()
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	load_palette();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
 }
@@ -195,7 +195,7 @@ void editor_convert_save_to_scenario()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 }
@@ -232,7 +232,7 @@ void trackdesigner_load()
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	load_palette();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
 }
@@ -269,7 +269,7 @@ void trackmanager_load()
 	mainWindow = window_get_main();
 	window_scroll_to_location(mainWindow, 2400, 2400, 112);
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3);
+	load_palette();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
 }
@@ -565,7 +565,7 @@ static void sub_6A2B62()
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 	gfx_invalidate_screen();
 
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
@@ -951,7 +951,7 @@ static int editor_read_s6(const char *path)
 		RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 		window_new_ride_init_vars();
 		RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
-		RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+		load_palette(); 
 		gfx_invalidate_screen();
 
 		return 1;

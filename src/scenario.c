@@ -327,7 +327,7 @@ int scenario_load_and_play_from_path(const char *path)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_18;
 
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;

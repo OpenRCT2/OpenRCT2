@@ -170,6 +170,8 @@
 #define RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER		0x009DE55E
 #define RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX		0x009DE560
 
+#define RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO		0x009DE584
+
 #define RCT2_ADDRESS_MAP_SELECTION_FLAGS			0x009DE58A
 #define RCT2_ADDRESS_MAP_SELECTION_A_X				0x009DE58C
 #define RCT2_ADDRESS_MAP_SELECTION_B_X				0x009DE58E
@@ -179,6 +181,11 @@
 
 #define RCT2_ADDRESS_SCREEN_FLAGS					0x009DEA68
 #define RCT2_ADDRESS_SCREENSHOT_COUNTDOWN			0x009DEA6D
+// Note: not only the zeroth bit can be set to control pause
+// When paused by saving track 2nd bit is set
+// When paused by save menu 1st bit is set
+// When paused by pause button 0th bit is set
+#define RCT2_ADDRESS_GAME_PAUSED					0x009DEA6E
 #define RCT2_ADDRESS_PLACE_OBJECT_MODIFIER			0x009DEA70
 #define RCT2_ADDRESS_ON_TUTORIAL					0x009DEA71
 
