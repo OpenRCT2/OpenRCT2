@@ -595,6 +595,7 @@ void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, 
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = (*edi & 0xFFFF);
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
+	*ebx = 0;
 }
 
 void park_set_open(int open)
