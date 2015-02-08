@@ -426,7 +426,6 @@ void peep_update_falling(rct_peep* peep){
 	}
 
 	// If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-
 	rct_map_element *map_element = map_get_first_element_at(peep->x / 32, peep->y / 32);
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
@@ -1230,12 +1229,9 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 	uint8 chosen_edge = scenario_rand() & 0x3;
 
-	//ecx
 	uint8 addition_status = map_element->properties.path.addition_status;
 
-	chosen_edge = ror8(ror8(addition_status, chosen_edge),chosen_edge);
-
-	
+	addition_status = ror8(ror8(addition_status, chosen_edge), chosen_edge);
 
 	for (uint8 free_edge = 4; free_edge != 0; free_edge--){
 		if (addition_status & 0x3){
