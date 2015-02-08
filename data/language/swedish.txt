@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Vagnen acceleras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
+STR_0554    :Vagnen accelereras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
 STR_0555    :
 STR_0556    :
 STR_0557    :
@@ -576,7 +576,7 @@ STR_0571    :
 STR_0572    :
 STR_0573    :
 STR_0574    :
-STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana tranporterar folk runt om i parken
+STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana transporterar folk runt om i parken
 STR_0576    :
 STR_0577    :
 STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsbackar och skruvar
@@ -857,7 +857,7 @@ STR_0852    :{WINDOW_COLOUR_2}Grafik av Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Ljud och musik av Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Ytterligare ljud inspelade av David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation av Jacqui Lyons från Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Tack till:-
+STR_0856    :{WINDOW_COLOUR_2}Tack till:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, och John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -1059,7 +1059,7 @@ STR_1054    :{SMALLFONT}{BLACK}Namnge åktur/attraktion
 STR_1055    :{SMALLFONT}{BLACK}Namnge person
 STR_1056    :{SMALLFONT}{BLACK}Namnge anställd
 STR_1057    :Åkturens/attraktionens namn
-STR_1058    :Skriv in ett nytt namn för den här åkturen/attraktionen:-
+STR_1058    :Skriv in ett nytt namn för den här åkturen/attraktionen:
 STR_1059    :Kan inte namnge åktur/attraktion...
 STR_1060    :Ogiltigt åktur/attraktionsnamn
 STR_1061    :Normalt läge
@@ -1181,7 +1181,7 @@ STR_1175    :Kan inte bygga på en sluttande gångväg
 STR_1176    :Kan inte bygga gångväg här...
 STR_1177    :Kan inte ta bort gångvägen här...
 STR_1178    :Markens sluttning är inte lämplig
-STR_1179    :Gånvägen är i vägen
+STR_1179    :Gångvägen är i vägen
 STR_1180    :Kan inte bygga det här under vatten!
 STR_1181    :Gångvägar
 STR_1182    :Sort
@@ -1455,7 +1455,7 @@ STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Gästens namn
-STR_1453    :Skriv in namn för den här gästen:-
+STR_1453    :Skriv in namn för den här gästen:
 STR_1454    :Kan inte namnge gäst...
 STR_1455    :Ogiltigt gästnamn
 STR_1456    :{WINDOW_COLOUR_2}Spenderade pengar: {BLACK}{CURRENCY2DP}
@@ -1722,7 +1722,7 @@ STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Klipp gräs
 STR_1716    :Ogiltigt parknamn
 STR_1717    :Kan inte namnge park...
 STR_1718    :Parknamn
-STR_1719    :Skriv in namn på parken:-
+STR_1719    :Skriv in namn på parken:
 STR_1720    :{SMALLFONT}{BLACK}Namnge park
 STR_1721    :Parken är stängd
 STR_1722    :Parken är öppen
@@ -1896,7 +1896,7 @@ STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
 STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Var god sätt in din RollerCoaster Tycoon 2-skiva i följande CD-läsare:-
+STR_1893    :Var god sätt in din RollerCoaster Tycoon 2-skiva i följande CD-läsare:
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
@@ -2252,8 +2252,8 @@ STR_2245    :Oktober
 STR_2246    :November
 STR_2247    :December
 STR_2248    :Kan inte riva åktur/attraktion...
-STR_2249    :{BABYBLUE}Ny åktur/attraktion är nu tillgänglig:-{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}Nya dekorationer/teman är nu tillgängliga:-{NEWLINE}{STRINGID}
+STR_2249    :{BABYBLUE}Ny åktur/attraktion är nu tillgänglig:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}Nya dekorationer/teman är nu tillgängliga:{NEWLINE}{STRINGID}
 STR_2251    :Kan bara byggas på gångvägar!
 STR_2252    :Kan bara byggas över gångvägar!
 STR_2253    :Transportåkturer
@@ -2775,7 +2775,7 @@ STR_2767    :Frys Klimat
 STR_2768    :Avfrys klimat
 STR_2769    :Öppna Park
 STR_2770    :Stäng Park
-STR_2771    :Långsammare Spekhastighet
+STR_2771    :Långsammare Spelhastighet
 STR_2772    :Snabbare Spelhastighet
 STR_2773    :Fönster
 STR_2774    :Fullskärm
@@ -2790,7 +2790,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Ändra snabbtangenter
-STR_2785    :{WINDOW_COLOUR_2}Välj ny snabbtangent för:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Välj ny snabbtangent för:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Klicka på en beskrivning för att välja en ny snabbtangent
 STR_2787    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Grattis !{NEWLINE}{BLACK}Du uppnådde ditt mål med ett företagsvärde på {CURRENCY} !
@@ -2799,7 +2799,7 @@ STR_2789    :{WINDOW_COLOUR_2}Du har misslyckats med ditt mål !
 STR_2790    :Skriv in namn i scenario chart
 STR_2791    :Skriv in namn
 #TODO
-STR_2792    :Var god skriv in ditt namn i scenario chart:-
+STR_2792    :Var god skriv in ditt namn i scenario chart:
 STR_2793    :{SMALLFONT}(Avklarad av {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Avklarad av: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med ett företagsvärde på: {BLACK}{CURRENCY}
 STR_2795    :Sortera
@@ -2985,12 +2985,12 @@ STR_2974    :Fjärde färg
 STR_2975    :{SMALLFONT}{BLACK}Välj vilken färgpalett som ska ändras eller användas för målning av en åktur
 STR_2976    :{SMALLFONT}{BLACK}Måla ett enstaka område på denna åktur med den valda färgpaletten
 STR_2977    :Personalnamn
-STR_2978    :Skriv in nytt namn på personal:-
+STR_2978    :Skriv in nytt namn på personal:
 STR_2979    :Kan inte namnge personal...
 STR_2980    :För många banderoller i spelet
 STR_2981    :{RED}Tillträde förbjudet - - 
 STR_2982    :Banderolltext
-STR_2983    :Skriv in ny text för denna banderoll:-
+STR_2983    :Skriv in ny text för denna banderoll:
 STR_2984    :Kan inte sätta ny text på banderollen...
 STR_2985    :Banderoll
 STR_2986    :{SMALLFONT}{BLACK}Byt text på banderoll
@@ -3000,7 +3000,7 @@ STR_2989    :{SMALLFONT}{BLACK}Välj huvudfärg
 STR_2990    :{SMALLFONT}{BLACK}Välj textfärg
 STR_2991    :Banderoll
 STR_2992    :Skylttext
-STR_2993    :Skriv in ny text för denna skylt:-
+STR_2993    :Skriv in ny text för denna skylt:
 STR_2994    :{SMALLFONT}{BLACK}Byt text på skylt
 STR_2995    :{SMALLFONT}{BLACK}Riv denna skylt
 STR_2996    :{BLACK}ABC
@@ -3321,9 +3321,9 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Åkturer/attraktioner som måste bevaras:
 STR_3313    :Scenarionamn
-STR_3314    :Skriv in namn för scenario:-
+STR_3314    :Skriv in namn för scenario:
 STR_3315    :Park- och Scenariodetails
-STR_3316    :Skriv in en beskriving för detta scenario:-
+STR_3316    :Skriv in en beskriving för detta scenario:
 STR_3317    :Inga detaljer än
 STR_3318    :{SMALLFONT}{BLACK}Välj vilken grupp detta scenario hör till
 STR_3319    :{WINDOW_COLOUR_2}Scenariogrupp:
@@ -3358,7 +3358,7 @@ STR_3347    :Åkturen är för stor, innehåller för många delar, eller så ä
 STR_3348    :Döp om
 STR_3349    :Ta bort
 STR_3350    :Bandesignnamn
-STR_3351    :Skriv in nytt namn på denna bandesign:-
+STR_3351    :Skriv in nytt namn på denna bandesign:
 STR_3352    :Kan inte namnge bandesign...
 STR_3353    :Det nya namnet innehåller ogiltiga bokstäver eller symboler
 STR_3354    :En annan fil finns redan med detta namn, eller så är filen skrivskyddad

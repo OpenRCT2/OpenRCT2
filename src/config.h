@@ -21,9 +21,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include "currency.h"
-#include "rct2.h"
-#include <windows.h> // for MAX_PATH
+#include "common.h"
+#include "localisation/currency.h"
+#include "platform/platform.h"
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
@@ -69,6 +69,7 @@ enum {
 	// New
 	SHORTCUT_REDUCE_GAME_SPEED,
 	SHORTCUT_INCREASE_GAME_SPEED,
+	SHORTCUT_OPEN_CHEAT_WINDOW,
 
 	SHORTCUT_COUNT
 };
@@ -100,6 +101,7 @@ extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 void config_reset_shortcut_keys();
 void config_load();
 void config_save();
+int config_find_or_browse_install_directory();
 
 
 // New config format
@@ -130,7 +132,13 @@ typedef struct general_configuration {
 
 	//new
 	uint8 fullscreen_mode;
+	sint16 fullscreen_width;
+	sint16 fullscreen_height;
+	sint16 window_width;
+	sint16 window_height;
 	uint16 language;
+	uint8 window_snap_proximity;
+	uint8 title_music;
 } general_configuration_t;
 
 static const struct { const char *key; int value; } _currencyLookupTable[] = {
@@ -153,12 +161,15 @@ static const struct { const char *key; int value; } _currencyLookupTable[] = {
 	{ "\xB5", CURRENCY_EUROS }
 };
 
+typedef struct shortcut_entry{
+	uint8 key;
+	uint8 modifier;
+}shortcut_entry;
+
 //typedef struct hotkey_configuration{
 
 //};
 extern general_configuration_t gGeneral_config;
 extern sound_configuration_t gSound_config;
-
-void config_init();
 
 #endif

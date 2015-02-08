@@ -18,10 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <string.h>
 #include "addresses.h"
+#include "localisation/localisation.h"
 #include "tutorial.h"
-#include "window_error.h"
+#include "windows/error.h"
 
 /**
  *
@@ -30,7 +30,7 @@
 void tutorial_start(int type)
 {
 	strcpy((char*)0x009BC677, "Tutorial not implemented.");
-	window_error_open(3165, -1);
+	window_error_open(3165, STR_NONE);
 
 	// RCT2_CALLPROC_X(0x0066ECC1, type, 0, 0, 0, 0, 0, 0);
 }

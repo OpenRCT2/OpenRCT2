@@ -18,9 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <windows.h>
 #include "addresses.h"
-#include "rct2.h"
+#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "scenario.h"
 
 // Scenario list
@@ -49,9 +49,8 @@ static rct_scenario_basic *get_scenario_by_filename(const char *filename)
  */
 void scenario_load_list()
 {
-	int i;
-	HANDLE hFindFile;
-	WIN32_FIND_DATAA findFileData;
+	int i, enumFileHandle;
+	file_info enumFileInfo;
 
 	// Load scores
 	scenario_scores_load();
@@ -61,12 +60,12 @@ void scenario_load_list()
 		gScenarioList[i].flags &= ~SCENARIO_FLAGS_VISIBLE;
 
 	// Enumerate through each scenario in the directory
-	hFindFile = FindFirstFile(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), &findFileData);
-	if (hFindFile != INVALID_HANDLE_VALUE) {
-		do {
-			scenario_list_add(findFileData.cFileName);
-		} while (FindNextFile(hFindFile, &findFileData));
-		FindClose(hFindFile);
+	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char));
+	if (enumFileHandle != INVALID_HANDLE) {
+		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
+			scenario_list_add(enumFileInfo.path);
+		}
+		platform_enumerate_files_end(enumFileHandle);
 	}
 
 	// Sort alphabetically
@@ -80,17 +79,18 @@ static void scenario_list_add(const char *path)
 {
 	char scenarioPath[MAX_PATH];
 	rct_scenario_basic *scenario;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_s6_header s6Header;
+	rct_s6_info s6Info;
 
 	// Get absolute path
 	subsitute_path(scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), path);
 
 	// Load the basic scenario information
-	if (!scenario_load_basic(scenarioPath))
+	if (!scenario_load_basic(scenarioPath, &s6Header, &s6Info))
 		return;
 
 	// Ignore scenarios where first header byte is not 255
-	if (s6Info->var_000 != 255)
+	if (s6Info.var_000 != 255)
 		return;
 
 	// Check if scenario already exists in list, likely if in scores
@@ -98,13 +98,13 @@ static void scenario_list_add(const char *path)
 	if (scenario != NULL) {
 		// Update the scenario information
 		scenario->flags |= SCENARIO_FLAGS_VISIBLE;
-		scenario->category = s6Info->category;
-		scenario->objective_type = s6Info->objective_type;
-		scenario->objective_arg_1 = s6Info->objective_arg_1;
-		scenario->objective_arg_2 = s6Info->objective_arg_2;
-		scenario->objective_arg_3 = s6Info->objective_arg_3;
-		strcpy(scenario->name, s6Info->name);
-		strcpy(scenario->details, s6Info->details);
+		scenario->category = s6Info.category;
+		scenario->objective_type = s6Info.objective_type;
+		scenario->objective_arg_1 = s6Info.objective_arg_1;
+		scenario->objective_arg_2 = s6Info.objective_arg_2;
+		scenario->objective_arg_3 = s6Info.objective_arg_3;
+		strcpy(scenario->name, s6Info.name);
+		strcpy(scenario->details, s6Info.details);
 	} else {
 		// Check if the scenario list buffer has room for another scenario
 		if (gScenarioListCount >= gScenarioListCapacity) {
@@ -122,13 +122,13 @@ static void scenario_list_add(const char *path)
 		scenario->flags = SCENARIO_FLAGS_VISIBLE;
 		if (RCT2_GLOBAL(0x009AA00C, uint8) & 1)
 			scenario->flags |= SCENARIO_FLAGS_SIXFLAGS;
-		scenario->category = s6Info->category;
-		scenario->objective_type = s6Info->objective_type;
-		scenario->objective_arg_1 = s6Info->objective_arg_1;
-		scenario->objective_arg_2 = s6Info->objective_arg_2;
-		scenario->objective_arg_3 = s6Info->objective_arg_3;
-		strcpy(scenario->name, s6Info->name);
-		strcpy(scenario->details, s6Info->details);
+		scenario->category = s6Info.category;
+		scenario->objective_type = s6Info.objective_type;
+		scenario->objective_arg_1 = s6Info.objective_arg_1;
+		scenario->objective_arg_2 = s6Info.objective_arg_2;
+		scenario->objective_arg_3 = s6Info.objective_arg_3;
+		strcpy(scenario->name, s6Info.name);
+		strcpy(scenario->details, s6Info.details);
 	}
 }
 
@@ -144,12 +144,22 @@ static void scenario_list_sort()
 }
 
 /**
-* Basic scenario information compare function for sorting.
-*  rct2: 0x00677C08
-*/
+ * Basic scenario information compare function for sorting.
+ *  rct2: 0x00677C08
+ */
 static int scenario_list_sort_compare(const void *a, const void *b)
 {
 	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
+}
+
+/**
+ * Gets the path for the scenario scores path.
+ */
+static void scenario_scores_get_path(char *outPath)
+{
+	char *homePath = osinterface_get_orct2_homefolder();
+	sprintf(outPath, "%s%c%s", homePath, osinterface_get_path_separator(), "scores.dat");
+	free(homePath);
 }
 
 /**
@@ -159,6 +169,9 @@ static int scenario_list_sort_compare(const void *a, const void *b)
 static int scenario_scores_load()
 {
 	FILE *file;
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
 
 	// Free scenario list if already allocated
 	if (gScenarioList != NULL) {
@@ -167,10 +180,15 @@ static int scenario_scores_load()
 	}
 
 	// Try and load the scores file
-	file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+
+	// First check user folder and then fallback to install directory
+	file = fopen(scoresPath, "rb");
 	if (file == NULL) {
-		RCT2_ERROR("Unable to load scenario scores.");
-		return 0;
+		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+		if (file == NULL) {
+			RCT2_ERROR("Unable to load scenario scores.");
+			return 0;
+		}
 	}
 
 	// Load header
@@ -207,8 +225,11 @@ static int scenario_scores_load()
 int scenario_scores_save()
 {
 	FILE *file;
-	
-	file = fopen(get_file_path(PATH_ID_SCORES), "wb");
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
+
+	file = fopen(scoresPath, "wb");
 	if (file == NULL) {
 		RCT2_ERROR("Unable to save scenario scores.");
 		return 0;

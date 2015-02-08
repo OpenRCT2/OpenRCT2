@@ -857,7 +857,7 @@ STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:-
+STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -1059,7 +1059,7 @@ STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
 STR_1055    :{SMALLFONT}{BLACK}Name person
 STR_1056    :{SMALLFONT}{BLACK}Name staff member
 STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:-
+STR_1058    :Enter new name for this ride/attraction:
 STR_1059    :Can't rename ride/attraction...
 STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
@@ -1454,7 +1454,7 @@ STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Vendég neve
-STR_1453    :Add meg a vendég nevét:-
+STR_1453    :Add meg a vendég nevét:
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
 STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
@@ -1720,7 +1720,7 @@ STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fűnyírás
 STR_1716    :Invalid name for park
 STR_1717    :Can't rename park...
 STR_1718    :Park Name
-STR_1719    :Enter name for park:-
+STR_1719    :Enter name for park:
 STR_1720    :{SMALLFONT}{BLACK}Name park
 STR_1721    :Park closed
 STR_1722    :Park open
@@ -1894,7 +1894,7 @@ STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
 STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:-
+STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
@@ -2250,8 +2250,8 @@ STR_2245    :Október
 STR_2246    :November
 STR_2247    :December
 STR_2248    :Can't demolish ride/attraction...
-STR_2249    :{BABYBLUE}New ride/attraction now available:-{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}New scenery/themeing now available:-{NEWLINE}{STRINGID}
+STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
 STR_2253    :Transport Rides
@@ -2788,14 +2788,14 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
 STR_2790    :Enter name into scenario chart
 STR_2791    :Enter name
-STR_2792    :Please enter your name for the scenario chart:-
+STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
@@ -2981,12 +2981,12 @@ STR_2974    :Alternative color scheme 3
 STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
 STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
 STR_2977    :Staff member name
-STR_2978    :Enter new name for this member of staff:-
+STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
 STR_2981    :{RED}No entry - - 
 STR_2982    :Banner text
-STR_2983    :Enter new text for this banner:-
+STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
 STR_2985    :Banner
 STR_2986    :{SMALLFONT}{BLACK}Change text on banner
@@ -2996,7 +2996,7 @@ STR_2989    :{SMALLFONT}{BLACK}Select main color
 STR_2990    :{SMALLFONT}{BLACK}Select text color
 STR_2991    :Sign
 STR_2992    :Sign text
-STR_2993    :Enter new text for this sign:-
+STR_2993    :Enter new text for this sign:
 STR_2994    :{SMALLFONT}{BLACK}Change text on sign
 STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
 STR_2996    :{BLACK}ABC
@@ -3317,9 +3317,9 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :Scenario Name
-STR_3314    :Enter name for scenario:-
+STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:-
+STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
@@ -3354,7 +3354,7 @@ STR_3347    :Ride is too large, contains too many elements, or scenery is too sp
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:-
+STR_3351    :Enter new name for this track design:
 STR_3352    :Can't rename track design...
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected

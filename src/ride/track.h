@@ -1,0 +1,162 @@
+/*****************************************************************************
+ * Copyright (c) 2014 Ted John
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * This file is part of OpenRCT2.
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************************/
+
+#ifndef _TRACK_H_
+#define _TRACK_H_
+
+#include "../common.h"
+#include "ride.h"
+#include "../object.h"
+
+typedef struct {
+	uint8 type;
+	uint8 vangle_end;
+	uint8 vangle_start;
+	uint8 bank_end;
+	uint8 bank_start;
+	uint8 special;
+	uint8 pad[2];
+} rct_trackdefinition;
+
+#define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
+
+/* size: 0x2 */
+typedef struct{
+	uint8 body_colour;
+	uint8 trim_colour;
+} rct_track_vehicle_colour;
+
+/**
+ * Track design structure.
+ * size: 0x4E72B
+ */
+typedef struct {
+	uint8 type;										// 0x00
+	uint8 vehicle_type;
+	money32 cost;									// 0x02
+	uint8 var_06;
+	uint8 var_07;
+	rct_track_vehicle_colour vehicle_colours[32];	// 0x08
+	uint8 pad_48[2];
+	uint8 total_air_time;							// 0x4A
+	uint8 pad_4B;
+	uint8 number_of_trains;							// 0x4C
+	uint8 number_of_cars_per_train;					// 0x4D
+	uint8 pad_4E[2];
+	uint8 var_50;
+	uint8 max_speed;								// 0x51
+	uint8 average_speed;							// 0x52
+	uint16 ride_length;								// 0x53
+	uint8 max_positive_vertical_g;					// 0x55
+	uint8 max_negitive_vertical_g;					// 0x56
+	uint8 max_lateral_g;							// 0x57
+	union {
+		uint8 inversions;							// 0x58
+		uint8 holes;								// 0x58
+	};
+	uint8 drops;									// 0x59
+	uint8 highest_drop_height;						// 0x5A
+	uint8 excitement;								// 0x5B
+	uint8 intensity;								// 0x5C
+	uint8 nausea;									// 0x5D
+	uint8 pad_5E[2];
+	uint8 track_spine_colour[4];					// 0x60
+	uint8 track_rail_colour[4];						// 0x64
+	uint8 track_support_colour[4];					// 0x68
+	uint32 var_6C;
+	rct_object_entry vehicle_object;				// 0x70
+	uint8 space_required_x;							// 0x80
+	uint8 space_required_y;							// 0x81
+	uint8 vehicle_additional_colour[32];			// 0x82
+	uint8 var_A2;
+} rct_track_td6;
+
+typedef struct{
+	rct_track_td6 track_td6;
+	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
+} rct_track_design;
+
+
+enum {
+	TRACK_NONE = 0,
+
+	TRACK_FLAT = 0,
+	TRACK_STATION_END = 2,
+	TRACK_VERTICAL_LOOP = 7,
+	TRACK_S_BEND = 13,
+	TRACK_TWIST = 17,
+	TRACK_HALF_LOOP = 18,
+	TRACK_CORKSCREW = 19,
+	TRACK_TOWER_BASE = 20,
+	TRACK_HELIX_SMALL= 21,
+	TRACK_HELIX_LARGE= 22,
+	TRACK_HELIX_LARGE_UNBANKED = 23, 
+	TRACK_BRAKES = 24,
+	TRACK_ON_RIDE_PHOTO = 26,
+	TRACK_WATER_SPLASH = 27,
+	TRACK_BARREL_ROLL = 29,
+	TRACK_POWERED_LIFT = 30,
+	TRACK_HALF_LOOP_2 = 31, // ?
+	TRACK_LOG_FLUME_REVERSER = 33,
+	TRACK_WHOA_BELLY = 36,
+	TRACK_LIFT_HILL = 43,
+	TRACK_SPINNING_TUNNEL = 46,
+	TRACK_ROTATION_CONTROL_TOGGLE = 47,
+	TRACK_RAPIDS = 52,
+	TRACK_WATERFALL = 152,
+	TRACK_WHIRLPOOL = 152,
+	TRACK_BRAKE_FOR_DROP = 172
+};
+
+enum {
+	TRACK_UP_25 = 2,
+	TRACK_UP_60 = 4,
+	TRACK_DOWN_25 = 6,
+	TRACK_DOWN_60 = 8,
+	TRACK_UP_90 = 10,
+	TRACK_DOWN_90 = 18,
+
+	TRACK_VANGLE_TOWER = 10,
+	TRACK_VANGLE_WHOA_BELLY = 10
+};
+
+enum {
+	TRACK_BANK_NONE = 0,
+	TRACK_BANK_LEFT = 2,
+	TRACK_BANK_RIGHT = 4,
+	TRACK_BANK_UPSIDE_DOWN = 15,
+};
+
+enum {
+	TRACK_HALF_LOOP_UP = 64,
+	TRACK_HALF_LOOP_DOWN = 192,
+	TRACK_UNKNOWN_VERTICAL_LOOP = 208,
+	TRACK_CORKSCREW_DOWN = 224
+};
+
+void track_load_list(ride_list_item item);
+int sub_67726A(const char *path);
+rct_track_design *track_get_info(int index, uint8** preview);
+rct_track_td6* load_track_design(const char *path);
+int track_rename(const char *text);
+int track_delete();
+void reset_track_list_cache();
+
+#endif

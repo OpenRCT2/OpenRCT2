@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="argparse">
+      <UniqueIdentifier>{f28d7721-061f-44b8-bbd5-42dc9483b387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libspeex">
+      <UniqueIdentifier>{69f22202-b887-4e7c-bf7c-eb581571398d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libspeex\speex">
+      <UniqueIdentifier>{45966214-8043-431c-8eb3-920c00bf749d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lodepng">
+      <UniqueIdentifier>{7f953e55-d294-4158-b309-67f41fa82760}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\argparse\argparse.c">
+      <Filter>argparse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\libspeex\resample.c">
+      <Filter>libspeex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\lodepng\lodepng.c">
+      <Filter>lodepng</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lib\argparse\argparse.h">
+      <Filter>argparse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\arch.h">
+      <Filter>libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\config.h">
+      <Filter>libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\os_support.h">
+      <Filter>libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\stack_alloc.h">
+      <Filter>libspeex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\speex\speex_resampler.h">
+      <Filter>libspeex\speex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\libspeex\speex\speex_types.h">
+      <Filter>libspeex\speex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\lodepng\lodepng.h">
+      <Filter>lodepng</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

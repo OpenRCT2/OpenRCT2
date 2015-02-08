@@ -36,15 +36,15 @@ enum GAME_COMMAND {
 	GAME_COMMAND_11,
 	GAME_COMMAND_12,
 	GAME_COMMAND_13,
-	GAME_COMMAND_14,
+	GAME_COMMAND_REMOVE_SCENERY,
 	GAME_COMMAND_15,
 	GAME_COMMAND_16,
 	GAME_COMMAND_PLACE_PATH, // 17
 	GAME_COMMAND_18,
 	GAME_COMMAND_REMOVE_PATH, // 19
-	GAME_COMMAND_20,
+	GAME_COMMAND_CHANGE_SURFACE_STYLE, //20
 	GAME_COMMAND_21,
-	GAME_COMMAND_22,
+	GAME_COMMAND_22, //To do with text input
 	GAME_COMMAND_23,
 	GAME_COMMAND_24,
 	GAME_COMMAND_25,
@@ -52,19 +52,19 @@ enum GAME_COMMAND {
 	GAME_COMMAND_27,
 	GAME_COMMAND_28,
 	GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, // 29
-	GAME_COMMAND_30,
-	GAME_COMMAND_31,
-	GAME_COMMAND_SET_STAFF_ORDER,
-	GAME_COMMAND_33,
+	GAME_COMMAND_SET_STAFF_PATROL, //30
+	GAME_COMMAND_FIRE_STAFF_MEMBER, // 31
+	GAME_COMMAND_SET_STAFF_ORDER, // 32
+	GAME_COMMAND_SET_PARK_NAME,
 	GAME_COMMAND_SET_PARK_OPEN, // 34
 	GAME_COMMAND_35,
-	GAME_COMMAND_36,
-	GAME_COMMAND_37,
+	GAME_COMMAND_PLACE_PARK_ENTRANCE,
+	GAME_COMMAND_REMOVE_PARK_ENTRANCE,
 	GAME_COMMAND_38,
 	GAME_COMMAND_SET_PARK_ENTRANCE_FEE, // 39
 	GAME_COMMAND_SET_STAFF_COLOUR, // 40
 	GAME_COMMAND_41,
-	GAME_COMMAND_42,
+	GAME_COMMAND_REMOVE_FENCE,
 	GAME_COMMAND_43,
 	GAME_COMMAND_44,
 	GAME_COMMAND_SET_CURRENT_LOAN, // 45
@@ -72,29 +72,34 @@ enum GAME_COMMAND {
 	GAME_COMMAND_47,
 	GAME_COMMAND_START_MARKETING_CAMPAIGN, // 48
 	GAME_COMMAND_49,
-	GAME_COMMAND_50,
+	GAME_COMMAND_50, // New banner? (possibly scenery)
 	GAME_COMMAND_51,
 	GAME_COMMAND_52,
 	GAME_COMMAND_53,
 	GAME_COMMAND_54,
 	GAME_COMMAND_55,
 	GAME_COMMAND_56,	// Set land owned (possibly does other things)
-	GAME_COMMAND_57
+	GAME_COMMAND_CLEAR_SCENERY
 };
+
+// If this flag is set, the command is applied, otherwise only the cost is retrieved
+#define GAME_COMMAND_FLAG_APPLY (1 << 0)
 
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 extern int gGameSpeed;
 
+void game_increase_game_speed();
+void game_reduce_game_speed();
+
 void game_create_windows();
 void game_update();
 void game_logic_update();
-void sub_0x0069E9A7(); 
-void update_rain_animation();
-void update_water_animation();
+void sub_69E9A7(); 
+void update_palette_effects();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
-int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *edi, int *esi, int *ebp);
+int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

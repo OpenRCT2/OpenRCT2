@@ -41,21 +41,40 @@
 #define RCT2_CALLPROC_4(address, a1, a2, a3, a4, v1, v2, v3, v4)			RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, v1, v2, v3, v4)
 #define RCT2_CALLPROC_5(address, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	RCT2_CALLFUNC_5(address, void, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 
+#pragma region Memory locations
+
+// The following memory locations represent memory in RCT2 that is still used
+// by OpenRCT2. Only when the memory is no longer needed due to them being
+// stored in a new C module or changed behaviour of code that used them.
+// This generally can happen once all functions that referenced the location
+// are implemented in C. Sometimes memory locations are still used even if
+// they aren't directly referenced, for example when a game is saved and
+// loaded, large chunks of data is read and written to.
+
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
 #define RCT2_ADDRESS_RIDE_PROPERTIES				0x00997C9D
 #define RCT2_ADDRESS_LAND_TOOL_SIZE					0x009A9800
 #define RCT2_ADDRESS_SAVE_PROMPT_MODE				0x009A9802
+#define RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS		0x009A9804
+#define RCT2_ADDRESS_MAP_TOOLTIP_ARGS				0x009A9808
 
 // #define RCT2_ADDRESS_SCENARIO_LIST				0x009A9FF4
 // #define RCT2_ADDRESS_NUM_SCENARIOS				0x009AA008
 
 #define RCT2_ADDRESS_APP_PATH						0x009AA214
 
+#define RCT2_ADDRESS_DSOUND_GUID					0x009AAC5D
+
 #define RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER			0x009AAC6E
 #define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
 
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74
+
+// MAX vehicle sounds not used anymore
+#define RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS		0x009AAC75
+
+#define RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS			0x009AAC76
 #define RCT2_ADDRESS_CONFIG_SOUND_QUALITY			0x009AAC77
 #define RCT2_ADDRESS_CONFIG_METRIC					0x009AAC78
 #define RCT2_ADDRESS_CONFIG_TEMPERATURE				0x009AAC79
@@ -110,11 +129,13 @@
 #define RCT2_ADDRESS_RIDE_ENTRIES					0x009ACFA4
 
 #define RCT2_ADDRESS_INSTALLED_OBJECT_LIST			0x009ADAE8
+#define RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST		0x009ADAEC
 
 #define RCT2_ADDRESS_CURRENT_SOUND_DEVICE			0x009AF280
 
 #define RCT2_ADDRESS_VEHICLE_SOUND_LIST				0x009AF288
 
+#define RCT2_ADDRESS_INPUT_FLAGS					0x009DE518
 #define RCT2_ADDRESS_CURENT_CURSOR					0x009DE51C
 #define RCT2_ADDRESS_INPUT_STATE					0x009DE51D
 #define RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS		0x009DE51F
@@ -149,6 +170,8 @@
 #define RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER		0x009DE55E
 #define RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX		0x009DE560
 
+#define RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO		0x009DE584
+
 #define RCT2_ADDRESS_MAP_SELECTION_FLAGS			0x009DE58A
 #define RCT2_ADDRESS_MAP_SELECTION_A_X				0x009DE58C
 #define RCT2_ADDRESS_MAP_SELECTION_B_X				0x009DE58E
@@ -158,6 +181,11 @@
 
 #define RCT2_ADDRESS_SCREEN_FLAGS					0x009DEA68
 #define RCT2_ADDRESS_SCREENSHOT_COUNTDOWN			0x009DEA6D
+// Note: not only the zeroth bit can be set to control pause
+// When paused by saving track 2nd bit is set
+// When paused by save menu 1st bit is set
+// When paused by pause button 0th bit is set
+#define RCT2_ADDRESS_GAME_PAUSED					0x009DEA6E
 #define RCT2_ADDRESS_PLACE_OBJECT_MODIFIER			0x009DEA70
 #define RCT2_ADDRESS_ON_TUTORIAL					0x009DEA71
 
@@ -166,7 +194,7 @@
 #define RCT2_ADDRESS_DSOUND_BUFFERS					0x009E1AB0
 #define RCT2_ADDRESS_NUM_DSOUND_DEVICES				0x009E2B88
 #define RCT2_ADDRESS_DSOUND_DEVICES					0x009E2B8C
-#define RCT2_ADDRESS_SOUND_INFO_LIST_MAPPING		0x009E2B94
+#define RCT2_ADDRESS_SOUND_EFFECTS_MAPPING			0x009E2B94
 #define RCT2_ADDRESS_SOUNDLIST_BEGIN				0x009E2B98
 #define RCT2_ADDRESS_SOUNDLIST_END					0x009E2B9C
 #define RCT2_ADDRESS_DIRECTSOUND					0x009E2BA0
@@ -198,11 +226,16 @@
 
 //Every pixel changed by rain is stored.
 //32bit (pixel_offset 24 bit)(pixel_colour 8 bit)
+//Use the rainPixels[] global in drawing.c from now on
 #define RCT2_ADDRESS_RAIN_PIXEL_STORE				0x00EDF850
 
 #define RCT2_ADDRESS_UNCOMPLETED_RESEARCH_TYPES		0x00EE787C
 
 #define RCT2_ADDRESS_MAP_IMAGE_DATA					0x00F1AD68
+
+// No longer used
+#define RCT2_ADDRESS_PEEP_UPDATE_FALLING_MAP		0x00F1AEC4
+#define RCT2_ADDRESS_PEEP_UPDATE_FALLING_HEIGHT		0x00F1AEC8
 
 #define RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS			0x00F3EF92
 #define RCT2_ADDRESS_PROVISIONAL_PATH_X				0x00F3EF94
@@ -216,8 +249,23 @@
 #define RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y			0x00F3EF8C
 #define RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z			0x00F3EF8E
 #define RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION		0x00F3EF90
+#define RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE			0x00F3EF91
+
+#define RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS	0x00F3EF9E
+
+#define RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS			0x00F42B6C
+
+#define RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER		0x00F42BC0
+
+#define RCT2_ADDRESS_VOLUME_ADJUST_ZOOM				0x00F438AC
 
 #define RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX		0x00F43908
+
+#define RCT2_ADDRESS_TRACK_DESIGN_CACHE				0x00F44105
+#define RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE		0x00F44109
+#define RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE	0x00F44119
+
+#define RCT2_ADDRESS_TRACK_LIST						0x00F441EC
 
 #define RCT2_ADDRESS_CURRENT_MONTH_YEAR				0x00F663A8
 #define RCT2_ADDRESS_CURRENT_MONTH_TICKS			0x00F663AA
@@ -234,6 +282,9 @@
 #define RCT2_ADDRESS_SPRITES_START_TEXTFX			0x013573C2
 #define RCT2_ADDRESS_SPRITES_START_LITTER			0x013573C4
 
+#define RCT2_ADDRESS_PARK_NAME						0x013573D4
+#define RCT2_ADDRESS_PARK_NAME_ARGS					0x013573D8
+#define RCT2_ADDRESS_INITIAL_CASH					0x013573DC
 #define RCT2_ADDRESS_CURRENT_LOAN					0x013573E0
 #define RCT2_ADDRESS_MAXIMUM_LOAN					0x013580F0
 #define RCT2_ADDRESS_PARK_FLAGS						0x013573E4
@@ -281,14 +332,22 @@
 #define RCT2_ADDRESS_SECURITY_COLOUR				0x01357BCF
 
 #define RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES			0x01357CF2
+#define RCT2_ADDRESS_RESEARH_PROGRESS_STAGE			0x01357CF3
+
+#define RCT2_ADDRESS_NEXT_RESEARCH_ITEM				0x013580E0
+#define RCT2_ADDRESS_RESEARH_PROGRESS				0x013580E4
+#define RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY			0x013580E6
 #define RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY		0x013580E7
 #define RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH	0x013580E8
 
+#define RCT2_ADDRESS_MAP_SIZE_UNITS					0x01358830
 #define RCT2_ADDRESS_MAP_MAXIMUM_X_Y				0x01358832
 #define RCT2_ADDRESS_MAP_SIZE						0x01358834
 #define RCT2_ADDRESS_PARK_SIZE						0x013580EA
 
 #define RCT2_TOTAL_RIDE_VALUE						0x013580EE
+
+#define RCT2_RESEARCH_ITEMS							0x01358844
 
 #define RCT2_ADDRESS_SCENARIO_NAME					0x0135920A
 #define RCT2_ADDRESS_SCENARIO_DETAILS				0x0135924A
@@ -296,6 +355,7 @@
 #define RCT2_ADDRESS_PARK_ENTRANCE_X				0x01359350
 #define RCT2_ADDRESS_PARK_ENTRANCE_Y				0x01359358
 #define RCT2_ADDRESS_PARK_ENTRANCE_Z				0x01359360
+#define RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION		0x01359368
 
 #define RCT2_ADDRESS_CURRENT_TICKS					0x013628F4
 #define RCT2_ADDRESS_RIDE_LIST						0x013628F8
@@ -303,6 +363,7 @@
 #define RCT2_ADDRESS_RIDE_FLAGS						0x0097CF40
 #define RCT2_ADDRESS_SAVED_VIEW_X					0x0138869A
 #define RCT2_ADDRESS_SAVED_VIEW_Y					0x0138869C
+#define RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION	0x0138869E
 #define RCT2_ADDRESS_RIDE_MEASUREMENTS				0x0138B60C
 
 #define RCT2_ADDRESS_CLIMATE						0x013CA746
@@ -348,10 +409,17 @@
 #define RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3		0x0141F742
 #define RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4		0x0141F743
 
+// size: 500 chars
+#define RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER			0x0141FE44
+#define RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT			0x01420044
+
 #define RCT2_ADDRESS_WINDOW_LIST					0x01420078
 #define RCT2_ADDRESS_NEW_WINDOW_PTR					0x014234B8
+
 #define RCT2_ADDRESS_VIEWPORT_LIST					0x014234BC
-#define RCT2_ADDRESS_NEW_VIEWPORT_PTR				0x01423570
+// Null Terminated list of active viewport pointers. 
+// This is also the end of RCT2_ADDRESS_VIEWPORT_LIST.
+#define RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY		0x01423570
 
 #define RCT2_ADDRESS_HCURSOR_START					0x01423598
 #define RCT2_ADDRESS_HCURSOR_ARROW					0x01423598
@@ -429,25 +497,42 @@
 
 #define RCT2_ADDRESS_STAFF_MODE_ARRAY               0x013CA672
 
-static void RCT2_CALLPROC_EBPSAFE(int address)
-{
-	#ifdef _MSC_VER
-	__asm push ebp
-	__asm call address
-	__asm pop ebp
-	#else
-	__asm__ ( "\
-		push ebp \n\
-		call %[address] \n\
-		pop ebp \n\
-		" : [address] "+m" (address) );
-	#endif
-}
+#pragma endregion
 
+#pragma region Obsolete
+
+// The following addresses relate to memory locations that no longer used by
+// OpenRCT2. This may be due to the data at those locations being stored in
+// the new C modules or changed behaviour of code that used them.
+
+#define RCT2_ADDRESS_Y_RELATED_GLOBAL_1				0x9E3D12	//uint16
+#define RCT2_ADDRESS_Y_END_POINT_GLOBAL				0x9ABDAC	//sint16
+#define RCT2_ADDRESS_Y_START_POINT_GLOBAL			0xEDF808	//sint16
+#define RCT2_ADDRESS_X_RELATED_GLOBAL_1				0x9E3D10	//uint16
+#define RCT2_ADDRESS_X_END_POINT_GLOBAL				0x9ABDA8	//sint16
+#define RCT2_ADDRESS_X_START_POINT_GLOBAL			0xEDF80C	//sint16
+#define RCT2_ADDRESS_DPI_LINE_LENGTH_GLOBAL			0x9ABDB0	//uint16 width+pitch
+#define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS 0x009AA00D
+#define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG	0x009AB4C6
+
+#pragma endregion
+
+/* Returns the flags register
+ *
+ *Flags register is as follows:
+ *0bSZ0A_0P0C_0000_0000
+ *S = Signed flag
+ *Z = Zero flag
+ *C = Carry flag
+ *A = Adjust flag
+ *P = Parity flag
+ *All other bits are undefined.
+ */
 static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
 	#ifdef _MSC_VER
 	__asm {
+		push ebp
 		push address
 		mov eax, _eax
 		mov ebx, _ebx
@@ -458,7 +543,8 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 		mov ebp, _ebp
 		call [esp]
 		lahf
-		add esp, 4
+		pop ebp
+		pop ebp
 	}
 	#else
 	__asm__ ( "\
@@ -485,54 +571,29 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 	#endif
 }
 
-static void RCT2_CALLPROC_X_EBPSAFE(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+static int RCT2_CALLPROC_EBPSAFE(int address)
 {
-	#ifdef _MSC_VER
-	__asm {
-		push ebp
-		push address
-		mov eax, _eax
-		mov ebx, _ebx
-		mov ecx, _ecx
-		mov edx, _edx
-		mov esi, _esi
-		mov edi, _edi
-		mov ebp, _ebp
-		call[esp]
-		add esp, 4
-		pop ebp
-	}
-	#else
-	__asm__ ( "\
-	\n\
-	push ebx \n\
-	push ebp \n\
-	push %[address] 	\n\
-	mov eax, %[_eax] 	\n\
-	mov ebx, %[_ebx] 	\n\
-	mov ecx, %[_ecx] 	\n\
-	mov edx, %[_edx] 	\n\
-	mov esi, %[_esi] 	\n\
-	mov edi, %[_edi] 	\n\
-	mov ebp, %[_ebp] 	\n\
-	call [esp] 	\n\
-	add esp, 4 	\n\
-	pop ebp \n\
-	pop ebx \n\
-	" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
-	:
-	: "eax","ecx","edx","esi","edi"
-	);
-	#endif
+	return RCT2_CALLPROC_X(address, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB);
 }
 
-static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+/* Returns the flags register
+ *
+ *Flags register is as follows:
+ *0bSZ0A_0P0C_0000_00000
+ *S = Signed flag
+ *Z = Zero flag
+ *C = Carry flag
+ *A = Adjust flag
+ *P = Parity flag
+ *All other bits are undefined.
+ */
+static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	#ifdef _MSC_VER
 	__asm {
 		// Store C's base pointer
 		push ebp
-
+		push ebx
 		// Store address to call
 		push address
 
@@ -554,29 +615,16 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 
 		// Call function
 		call [esp]
-		add esp, 4
-
+		
 		// Store output eax
 		push eax
-		
-		// Put original C base pointer into eax
-		mov eax, [esp+4]
-
-		// Store output ebp
 		push ebp
-
-		// Set ebp to the original C base pointer
-		mov ebp, eax
-
-		// Put output ebp into ebp parameter
-		mov eax, [esp]
 		push ebx
-		mov ebx, [_ebp]
-		mov [ebx], eax
-		pop ebx
-		add esp, 4
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
 
-		// Get resulting ebx, ecx, edx, esi, edi registers
+		// Get resulting ecx, edx, esi, edi registers
+
 		mov eax, [_edi]
 		mov [eax], edi
 		mov eax, [_esi]
@@ -585,85 +633,96 @@ static void RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_
 		mov [eax], edx
 		mov eax, [_ecx]
 		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx		
 		mov eax, [_ebx]
-		mov [eax], ebx
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
 		pop eax
-
 		// Get resulting eax register
-		mov ebx, [_eax]
-		mov [ebx], eax
+		mov ecx, [_eax]
+		mov [ecx], eax
 
-		add esp, 4
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+		
+		pop ebx
+		pop ebp
 	}
 	#else
 	__asm__ ( "\
-	\n\
-		/* Store C's base pointer*/ 	\n\
-		push ebx 	\n\
-		push ebp 	\n\
-	\n\
-		/* Store %[address] to call*/ 	\n\
-		push %[address] 	\n\
-	\n\
-		/* Set all registers to the input values*/ 	\n\
-		mov eax, [%[_eax]] 	\n\
-		mov eax, [eax] 	\n\
-		mov ebx, [%[_ebx]] 	\n\
-		mov ebx, [ebx] 	\n\
-		mov ecx, [%[_ecx]] 	\n\
-		mov ecx, [ecx] 	\n\
-		mov edx, [%[_edx]] 	\n\
-		mov edx, [edx] 	\n\
-		mov esi, [%[_esi]] 	\n\
-		mov esi, [esi] 	\n\
-		mov edi, [%[_edi]] 	\n\
-		mov edi, [edi] 	\n\
-		mov ebp, [%[_ebp]] 	\n\
-		mov ebp, [ebp] 	\n\
-	\n\
-		/* Call function*/ 	\n\
-		call [esp] 	\n\
-		add esp, 4 	\n\
-	\n\
-		/* Store output eax*/ 	\n\
-		push eax 	\n\
-			\n\
-		/* Put original C base pointer into eax*/ 	\n\
-		mov eax, [esp+4] 	\n\
-	\n\
-		/* Store output ebp*/ 	\n\
-		push ebp 	\n\
-	\n\
-		/* Set ebp to the original C base pointer*/ 	\n\
-		mov ebp, eax 	\n\
-	\n\
-		/* Put output ebp into ebp parameter*/ 	\n\
-		mov eax, [esp] 	\n\
-		push ebx 	\n\
-		mov ebx, [%[_ebp]] 	\n\
-		mov [ebx], eax 	\n\
-		pop ebx 	\n\
-		add esp, 4 	\n\
-	\n\
-		/* Get resulting ebx, ecx, edx, esi, edi registers*/ 	\n\
-		mov eax, [%[_edi]] 	\n\
-		mov [eax], edi 	\n\
-		mov eax, [%[_esi]] 	\n\
-		mov [eax], esi 	\n\
-		mov eax, [%[_edx]] 	\n\
-		mov [eax], edx 	\n\
-		mov eax, [%[_ecx]] 	\n\
-		mov [eax], ecx 	\n\
-		mov eax, [%[_ebx]] 	\n\
-		mov [eax], ebx 	\n\
-		pop eax 	\n\
-	\n\
-		/* Get resulting eax register*/ 	\n\
-		mov ebx, [%[_eax]] 	\n\
-		mov [ebx], eax 	\n\
-	\n\
-		add esp, 4 	\n\
-		pop ebx 	\n\
+	       \n\
+                /* Store C's base pointer*/     \n\
+                push ebp        \n\
+                push ebx        \n\
+        \n\
+                /* Store %[address] to call*/   \n\
+                push %[address]         \n\
+        \n\
+                /* Set all registers to the input values*/      \n\
+                mov eax, [%[_eax]]      \n\
+                mov eax, [eax]  \n\
+                mov ebx, [%[_ebx]]      \n\
+                mov ebx, [ebx]  \n\
+                mov ecx, [%[_ecx]]      \n\
+                mov ecx, [ecx]  \n\
+                mov edx, [%[_edx]]      \n\
+                mov edx, [edx]  \n\
+                mov esi, [%[_esi]]      \n\
+                mov esi, [esi]  \n\
+                mov edi, [%[_edi]]      \n\
+                mov edi, [edi]  \n\
+                mov ebp, [%[_ebp]]      \n\
+                mov ebp, [ebp]  \n\
+        \n\
+                /* Call function*/      \n\
+                call [esp]      \n\
+        \n\
+				/* Store output eax */ \n\
+				push eax \n\
+				push ebp \n\
+				push ebx \n\
+				mov ebp, [esp + 20] \n\
+				mov ebx, [esp + 16] \n\
+                /* Get resulting ecx, edx, esi, edi registers*/       \n\
+                mov eax, [%[_edi]]      \n\
+                mov [eax], edi  \n\
+                mov eax, [%[_esi]]      \n\
+                mov [eax], esi  \n\
+                mov eax, [%[_edx]]      \n\
+                mov [eax], edx  \n\
+                mov eax, [%[_ecx]]      \n\
+                mov [eax], ecx  \n\
+				/* Pop ebx reg into ecx*/ \n\
+				pop ecx		\n\
+				mov eax, [%[_ebx]] \n\
+				mov [eax], ecx \n\
+				\n\
+				/* Pop ebp reg into ecx */\n\
+				pop ecx \n\
+				mov eax, [%[_ebp]] \n\
+				mov [eax], ecx \n\
+				\n\
+				pop eax \n\
+				/* Get resulting eax register*/ \n\
+				mov ecx, [%[_eax]] \n\
+				mov [ecx], eax \n\
+				\n\
+				/* Save flags as return in eax*/  \n\
+				lahf \n\
+				/* Pop address*/ \n\
+				pop ebp \n\
+				\n\
+				pop ebx \n\
+				pop ebp \n\
 	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
 		:
 		: "eax","ecx","edx","esi","edi"

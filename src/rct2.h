@@ -21,9 +21,18 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#include <assert.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+#ifdef _MSC_VER
+	#include <time.h>
+#endif
 
 typedef signed char sint8;
 typedef signed short sint16;
@@ -33,6 +42,11 @@ typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
+
+typedef char utf8;
+typedef wchar_t utf16;
+typedef utf8* utf8string;
+typedef utf16* utf16string;
 
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
@@ -89,17 +103,23 @@ typedef fixed32_1dp money32;
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
 #define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
 
+#define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
-void rct2_finish();
+typedef void (EMPTY_ARGS_VOID_POINTER)();
+typedef unsigned short rct_string_id;
 
 enum {
+	// Although this is labeled a flag it actually means when
+	// zero the screen is in playing mode.
 	SCREEN_FLAGS_PLAYING = 0,
 	SCREEN_FLAGS_TITLE_DEMO = 1,
 	SCREEN_FLAGS_SCENARIO_EDITOR = 2,
 	SCREEN_FLAGS_TRACK_DESIGNER = 4,
 	SCREEN_FLAGS_TRACK_MANAGER = 8,
 };
+
+#define SCREEN_FLAGS_EDITOR (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)
 
 enum {
 	PATH_ID_G1,
@@ -164,6 +184,7 @@ enum {
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
 	PATH_ID_CSS46,
+	PATH_ID_CSS50,
 	PATH_ID_END
 };
 
@@ -231,7 +252,8 @@ static const char * const file_paths[] =
 	"Data\\CSS43.DAT",
 	"Data\\CSS44.DAT",
 	"Data\\CSS45.DAT",
-	"Data\\CSS46.DAT"
+	"Data\\CSS46.DAT",
+	"Data\\CSS50.DAT"
 };
 
 // Files to check (rct2 @ 0x0097FB5A)
@@ -266,12 +288,14 @@ static const struct file_to_check
 	{ PATH_ID_END,          0 }
 };
 
+int rct2_init();
+void rct2_update();
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
-void check_file_paths();
-void check_file_path(int pathId);
-void check_files_integrity();
+int check_file_paths();
+int check_file_path(int pathId);
+int check_files_integrity();
 const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
@@ -280,5 +304,7 @@ void *rct2_malloc(size_t numBytes);
 void *rct2_realloc(void *block, size_t numBytes);
 void rct2_free(void *block);
 void rct2_quit();
+
+int rct2_open_file(const char *path);
 
 #endif

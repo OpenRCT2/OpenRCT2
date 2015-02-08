@@ -15,154 +15,198 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\addresses.h" />
-    <ClInclude Include="..\src\audio.h" />
-    <ClInclude Include="..\src\award.h" />
-    <ClInclude Include="..\src\climate.h" />
-    <ClInclude Include="..\src\config.h" />
-    <ClInclude Include="..\src\currency.h" />
-    <ClInclude Include="..\src\cursors.h" />
-    <ClInclude Include="..\src\date.h" />
-    <ClInclude Include="..\src\editor.h" />
-    <ClInclude Include="..\src\finance.h" />
-    <ClInclude Include="..\src\game.h" />
-    <ClInclude Include="..\src\gfx.h" />
-    <ClInclude Include="..\src\graph.h" />
-    <ClInclude Include="..\src\hook.h" />
-    <ClInclude Include="..\src\input.h" />
-    <ClInclude Include="..\src\intro.h" />
-    <ClInclude Include="..\src\language.h" />
-    <ClInclude Include="..\src\map.h" />
-    <ClInclude Include="..\src\mapgen.h" />
-    <ClInclude Include="..\src\map_helpers.h" />
-    <ClInclude Include="..\src\marketing.h" />
-    <ClInclude Include="..\src\mixer.h" />
-    <ClInclude Include="..\src\news_item.h" />
-    <ClInclude Include="..\src\object.h" />
-    <ClInclude Include="..\src\osinterface.h" />
-    <ClInclude Include="..\src\park.h" />
-    <ClInclude Include="..\src\peep.h" />
-    <ClInclude Include="..\src\rct2.h" />
-    <ClInclude Include="..\src\ride.h" />
-    <ClInclude Include="..\src\ride_data.h" />
-    <ClInclude Include="..\src\ride_ratings.h" />
-    <ClInclude Include="..\src\sawyercoding.h" />
-    <ClInclude Include="..\src\scenario.h" />
-    <ClInclude Include="..\src\scenery.h" />
-    <ClInclude Include="..\src\screenshot.h" />
-    <ClInclude Include="..\src\sprite.h" />
-    <ClInclude Include="..\src\sprites.h" />
-    <ClInclude Include="..\src\string_ids.h" />
-    <ClInclude Include="..\src\title.h" />
-    <ClInclude Include="..\src\track.h" />
-    <ClInclude Include="..\src\tutorial.h" />
-    <ClInclude Include="..\src\util.h" />
-    <ClInclude Include="..\src\vehicle.h" />
-    <ClInclude Include="..\src\viewport.h" />
-    <ClInclude Include="..\src\widget.h" />
-    <ClInclude Include="..\src\window.h" />
-    <ClInclude Include="..\src\window_dropdown.h" />
-    <ClInclude Include="..\src\window_error.h" />
-    <ClInclude Include="..\src\window_scenery.h" />
-    <ClInclude Include="..\src\window_tooltip.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="..\src\staff.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\libspeex\resample.c" />
-    <ClCompile Include="..\lodepng\lodepng.c" />
-    <ClCompile Include="..\src\audio.c" />
-    <ClCompile Include="..\src\award.c" />
-    <ClCompile Include="..\src\climate.c" />
-    <ClCompile Include="..\src\config.c" />
-    <ClCompile Include="..\src\currency.c" />
-    <ClCompile Include="..\src\date.c" />
-    <ClCompile Include="..\src\editor.c" />
-    <ClCompile Include="..\src\finance.c" />
-    <ClCompile Include="..\src\game.c" />
-    <ClCompile Include="..\src\gfx.c" />
-    <ClCompile Include="..\src\graph.c" />
-    <ClCompile Include="..\src\hook.c" />
-    <ClCompile Include="..\src\input.c" />
-    <ClCompile Include="..\src\intro.c" />
-    <ClCompile Include="..\src\language.c" />
-    <ClCompile Include="..\src\map.c" />
-    <ClCompile Include="..\src\mapgen.c" />
-    <ClCompile Include="..\src\map_helpers.c" />
-    <ClCompile Include="..\src\marketing.c" />
-    <ClCompile Include="..\src\mixer.cpp" />
-    <ClCompile Include="..\src\news_item.c" />
-    <ClCompile Include="..\src\object.c" />
-    <ClCompile Include="..\src\object_list.c" />
-    <ClCompile Include="..\src\osinterface.c" />
-    <ClCompile Include="..\src\park.c" />
-    <ClCompile Include="..\src\peep.c" />
-    <ClCompile Include="..\src\rct2.c" />
-    <ClCompile Include="..\src\ride.c" />
-    <ClCompile Include="..\src\ride_data.c" />
-    <ClCompile Include="..\src\ride_ratings.c" />
-    <ClCompile Include="..\src\sawyercoding.c" />
-    <ClCompile Include="..\src\scenario.c" />
-    <ClCompile Include="..\src\scenario_list.c" />
-    <ClCompile Include="..\src\screenshot.c" />
-    <ClCompile Include="..\src\sprite.c" />
-    <ClCompile Include="..\src\string_ids.c" />
-    <ClCompile Include="..\src\title.c" />
-    <ClCompile Include="..\src\track.c" />
-    <ClCompile Include="..\src\tutorial.c" />
-    <ClCompile Include="..\src\util.c" />
-    <ClCompile Include="..\src\vehicle.c" />
-    <ClCompile Include="..\src\viewport.c" />
-    <ClCompile Include="..\src\widget.c" />
-    <ClCompile Include="..\src\window.c" />
-    <ClCompile Include="..\src\window_about.c" />
-    <ClCompile Include="..\src\window_banner.c" />
-    <ClCompile Include="..\src\window_cheats.c" />
-    <ClCompile Include="..\src\window_clear_scenery.c" />
-    <ClCompile Include="..\src\window_error.c" />
-    <ClCompile Include="..\src\window_game_bottom_toolbar.c" />
-    <ClCompile Include="..\src\window_dropdown.c" />
-    <ClCompile Include="..\src\window_guest_list.c" />
-    <ClCompile Include="..\src\window_land.c" />
-    <ClCompile Include="..\src\window_new_campaign.c" />
-    <ClCompile Include="..\src\window_news.c" />
-    <ClCompile Include="..\src\window_park.c" />
-    <ClCompile Include="..\src\window_finances.c" />
-    <ClCompile Include="..\src\window_footpath.c" />
-    <ClCompile Include="..\src\window_map.c" />
-    <ClCompile Include="..\src\window_new_ride.c" />
-    <ClCompile Include="..\src\window_options.c" />
-    <ClCompile Include="..\src\window_peep.c" />
-    <ClCompile Include="..\src\window_research.c" />
-    <ClCompile Include="..\src\window_ride.c" />
-    <ClCompile Include="..\src\window_ride_list.c" />
-    <ClCompile Include="..\src\window_save_prompt.c" />
-    <ClCompile Include="..\src\window_staff.c" />
-    <ClCompile Include="..\src\window_staff_peep.c" />
-    <ClCompile Include="..\src\window_title_exit.c" />
-    <ClCompile Include="..\src\window_title_logo.c" />
-    <ClCompile Include="..\src\window_main.c" />
-    <ClCompile Include="..\src\window_title_menu.c" />
-    <ClCompile Include="..\src\window_title_scenarioselect.c" />
-    <ClCompile Include="..\src\window_game_top_toolbar.c" />
-    <ClCompile Include="..\src\window_tooltip.c" />
-    <ClCompile Include="..\src\window_water.c" />
-    <ClCompile Include="..\src\staff.c" />
-    <ClCompile Include="..\src\window_scenery.c" />
-    <ClCompile Include="..\src\window_credits.c" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\data\language\dutch.txt" />
-    <Text Include="..\data\language\english_uk.txt" />
-    <Text Include="..\data\language\english_us.txt" />
-    <Text Include="..\data\language\french.txt" />
-    <Text Include="..\data\language\hungarian.txt" />
-    <Text Include="..\data\language\polish.txt" />
-    <Text Include="..\data\language\spanish_sp.txt" />
-    <Text Include="..\data\language\swedish.txt" />
+    <ClCompile Include="..\src\audio\audio.c" />
+    <ClCompile Include="..\src\audio\mixer.cpp" />
+    <ClCompile Include="..\src\cmdline.c" />
+    <ClCompile Include="..\src\config.c" />
+    <ClCompile Include="..\src\diagnostic.c" />
+    <ClCompile Include="..\src\drawing\drawing.c" />
+    <ClCompile Include="..\src\drawing\line.c" />
+    <ClCompile Include="..\src\drawing\rain.c" />
+    <ClCompile Include="..\src\drawing\rect.c" />
+    <ClCompile Include="..\src\drawing\sprite.c" />
+    <ClCompile Include="..\src\drawing\string.c" />
+    <ClCompile Include="..\src\editor.c" />
+    <ClCompile Include="..\src\game.c" />
+    <ClCompile Include="..\src\hook.c" />
+    <ClCompile Include="..\src\input.c" />
+    <ClCompile Include="..\src\interface\graph.c" />
+    <ClCompile Include="..\src\interface\keyboard_shortcut.c" />
+    <ClCompile Include="..\src\interface\screenshot.c" />
+    <ClCompile Include="..\src\interface\viewport.c" />
+    <ClCompile Include="..\src\interface\viewport_interaction.c" />
+    <ClCompile Include="..\src\interface\widget.c" />
+    <ClCompile Include="..\src\interface\window.c" />
+    <ClCompile Include="..\src\intro.c" />
+    <ClCompile Include="..\src\localisation\currency.c" />
+    <ClCompile Include="..\src\localisation\date.c" />
+    <ClCompile Include="..\src\localisation\language.c" />
+    <ClCompile Include="..\src\localisation\localisation.c" />
+    <ClCompile Include="..\src\localisation\real_names.c" />
+    <ClCompile Include="..\src\localisation\user.c" />
+    <ClCompile Include="..\src\management\award.c" />
+    <ClCompile Include="..\src\management\finance.c" />
+    <ClCompile Include="..\src\management\marketing.c" />
+    <ClCompile Include="..\src\management\news_item.c" />
+    <ClCompile Include="..\src\management\research.c" />
+    <ClCompile Include="..\src\object.c" />
+    <ClCompile Include="..\src\object_list.c" />
+    <ClCompile Include="..\src\openrct2.c" />
+    <ClCompile Include="..\src\peep\peep.c" />
+    <ClCompile Include="..\src\peep\staff.c" />
+    <ClCompile Include="..\src\platform\shared.c" />
+    <ClCompile Include="..\src\platform\unix.c" />
+    <ClCompile Include="..\src\platform\osinterface.c" />
+    <ClCompile Include="..\src\platform\osx.c" />
+    <ClCompile Include="..\src\platform\windows.c" />
+    <ClCompile Include="..\src\rct2.c" />
+    <ClCompile Include="..\src\ride\ride.c" />
+    <ClCompile Include="..\src\ride\ride_data.c" />
+    <ClCompile Include="..\src\ride\ride_ratings.c" />
+    <ClCompile Include="..\src\ride\station.c" />
+    <ClCompile Include="..\src\ride\track.c" />
+    <ClCompile Include="..\src\ride\vehicle.c" />
+    <ClCompile Include="..\src\scenario.c" />
+    <ClCompile Include="..\src\scenario_list.c" />
+    <ClCompile Include="..\src\title.c" />
+    <ClCompile Include="..\src\toolbar.c" />
+    <ClCompile Include="..\src\tutorial.c" />
+    <ClCompile Include="..\src\util\sawyercoding.c" />
+    <ClCompile Include="..\src\util\util.c" />
+    <ClCompile Include="..\src\windows\about.c" />
+    <ClCompile Include="..\src\windows\banner.c" />
+    <ClCompile Include="..\src\windows\cheats.c" />
+    <ClCompile Include="..\src\windows\clear_scenery.c" />
+    <ClCompile Include="..\src\windows\demolish_ride_prompt.c" />
+    <ClCompile Include="..\src\windows\dropdown.c" />
+    <ClCompile Include="..\src\windows\editor_bottom_toolbar.c" />
+    <ClCompile Include="..\src\windows\editor_inventions_list.c" />
+    <ClCompile Include="..\src\windows\editor_main.c" />
+    <ClCompile Include="..\src\windows\editor_objective_options.c" />
+    <ClCompile Include="..\src\windows\editor_object_selection.c" />
+    <ClCompile Include="..\src\windows\editor_scenario_options.c" />
+    <ClCompile Include="..\src\windows\editor_top_toolbar.c" />
+    <ClCompile Include="..\src\windows\error.c" />
+    <ClCompile Include="..\src\windows\finances.c" />
+    <ClCompile Include="..\src\windows\footpath.c" />
+    <ClCompile Include="..\src\windows\game_bottom_toolbar.c" />
+    <ClCompile Include="..\src\windows\game_top_toolbar.c" />
+    <ClCompile Include="..\src\windows\guest_list.c" />
+    <ClCompile Include="..\src\windows\land.c" />
+    <ClCompile Include="..\src\windows\main.c" />
+    <ClCompile Include="..\src\windows\map.c" />
+    <ClCompile Include="..\src\windows\map_tooltip.c" />
+    <ClCompile Include="..\src\windows\music_credits.c" />
+    <ClCompile Include="..\src\windows\news.c" />
+    <ClCompile Include="..\src\windows\new_campaign.c" />
+    <ClCompile Include="..\src\windows\new_ride.c" />
+    <ClCompile Include="..\src\windows\options.c" />
+    <ClCompile Include="..\src\windows\park.c" />
+    <ClCompile Include="..\src\windows\guest.c" />
+    <ClCompile Include="..\src\windows\publisher_credits.c" />
+    <ClCompile Include="..\src\windows\research.c" />
+    <ClCompile Include="..\src\windows\ride.c" />
+    <ClCompile Include="..\src\windows\ride_construction.c" />
+    <ClCompile Include="..\src\windows\ride_list.c" />
+    <ClCompile Include="..\src\windows\save_prompt.c" />
+    <ClCompile Include="..\src\windows\scenery.c" />
+    <ClCompile Include="..\src\windows\shortcut_keys.c" />
+    <ClCompile Include="..\src\windows\shortcut_key_change.c" />
+    <ClCompile Include="..\src\windows\sign.c" />
+    <ClCompile Include="..\src\windows\staff_fire_prompt.c" />
+    <ClCompile Include="..\src\windows\staff_list.c" />
+    <ClCompile Include="..\src\windows\staff.c" />
+    <ClCompile Include="..\src\windows\text_input.c" />
+    <ClCompile Include="..\src\windows\title_exit.c" />
+    <ClCompile Include="..\src\windows\title_logo.c" />
+    <ClCompile Include="..\src\windows\title_menu.c" />
+    <ClCompile Include="..\src\windows\title_scenarioselect.c" />
+    <ClCompile Include="..\src\windows\tooltip.c" />
+    <ClCompile Include="..\src\windows\track_list.c" />
+    <ClCompile Include="..\src\windows\track_manage.c" />
+    <ClCompile Include="..\src\windows\track_place.c" />
+    <ClCompile Include="..\src\windows\viewport.c" />
+    <ClCompile Include="..\src\windows\water.c" />
+    <ClCompile Include="..\src\world\banner.c" />
+    <ClCompile Include="..\src\world\climate.c" />
+    <ClCompile Include="..\src\world\footpath.c" />
+    <ClCompile Include="..\src\world\fountain.c" />
+    <ClCompile Include="..\src\world\map.c" />
+    <ClCompile Include="..\src\world\park.c" />
+    <ClCompile Include="..\src\world\sprite.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\addresses.h" />
+    <ClInclude Include="..\src\audio\audio.h" />
+    <ClInclude Include="..\src\audio\mixer.h" />
+    <ClInclude Include="..\src\cmdline.h" />
+    <ClInclude Include="..\src\common.h" />
+    <ClInclude Include="..\src\config.h" />
+    <ClInclude Include="..\src\cursors.h" />
+    <ClInclude Include="..\src\diagnostic.h" />
+    <ClInclude Include="..\src\drawing\drawing.h" />
+    <ClInclude Include="..\src\editor.h" />
+    <ClInclude Include="..\src\game.h" />
+    <ClInclude Include="..\src\hook.h" />
+    <ClInclude Include="..\src\input.h" />
+    <ClInclude Include="..\src\interface\graph.h" />
+    <ClInclude Include="..\src\interface\keyboard_shortcut.h" />
+    <ClInclude Include="..\src\interface\screenshot.h" />
+    <ClInclude Include="..\src\interface\viewport.h" />
+    <ClInclude Include="..\src\interface\widget.h" />
+    <ClInclude Include="..\src\interface\window.h" />
+    <ClInclude Include="..\src\intro.h" />
+    <ClInclude Include="..\src\localisation\currency.h" />
+    <ClInclude Include="..\src\localisation\date.h" />
+    <ClInclude Include="..\src\localisation\format_codes.h" />
+    <ClInclude Include="..\src\localisation\language.h" />
+    <ClInclude Include="..\src\localisation\localisation.h" />
+    <ClInclude Include="..\src\localisation\string_ids.h" />
+    <ClInclude Include="..\src\management\award.h" />
+    <ClInclude Include="..\src\management\finance.h" />
+    <ClInclude Include="..\src\management\marketing.h" />
+    <ClInclude Include="..\src\management\news_item.h" />
+    <ClInclude Include="..\src\management\research.h" />
+    <ClInclude Include="..\src\object.h" />
+    <ClInclude Include="..\src\openrct2.h" />
+    <ClInclude Include="..\src\peep\peep.h" />
+    <ClInclude Include="..\src\peep\staff.h" />
+    <ClInclude Include="..\src\platform\osinterface.h" />
+    <ClInclude Include="..\src\platform\platform.h" />
+    <ClInclude Include="..\src\rct1.h" />
+    <ClInclude Include="..\src\rct2.h" />
+    <ClInclude Include="..\src\ride\ride.h" />
+    <ClInclude Include="..\src\ride\ride_data.h" />
+    <ClInclude Include="..\src\ride\ride_ratings.h" />
+    <ClInclude Include="..\src\ride\station.h" />
+    <ClInclude Include="..\src\ride\track.h" />
+    <ClInclude Include="..\src\ride\vehicle.h" />
+    <ClInclude Include="..\src\scenario.h" />
+    <ClInclude Include="..\src\sprites.h" />
+    <ClInclude Include="..\src\title.h" />
+    <ClInclude Include="..\src\toolbar.h" />
+    <ClInclude Include="..\src\tutorial.h" />
+    <ClInclude Include="..\src\util\sawyercoding.h" />
+    <ClInclude Include="..\src\util\util.h" />
+    <ClInclude Include="..\src\windows\dropdown.h" />
+    <ClInclude Include="..\src\windows\error.h" />
+    <ClInclude Include="..\src\windows\scenery.h" />
+    <ClInclude Include="..\src\windows\tooltip.h" />
+    <ClInclude Include="..\src\world\banner.h" />
+    <ClInclude Include="..\src\world\climate.h" />
+    <ClInclude Include="..\src\world\footpath.h" />
+    <ClInclude Include="..\src\world\map.h" />
+    <ClInclude Include="..\src\world\park.h" />
+    <ClInclude Include="..\src\world\scenery.h" />
+    <ClInclude Include="..\src\world\sprite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libs\libs.vcxproj">
+      <Project>{074dc930-05c6-4b7f-b5dd-dd237e6e44db}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
@@ -197,13 +241,13 @@
     <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(SolutionDir)..\libspeex;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lodepng;$(SolutionDir)..\sdl\include;$(SolutionDir)..\libspeex;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\sdl\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -212,6 +256,7 @@
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -233,6 +278,7 @@
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -240,9 +286,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /Y "$(ProjectDir)\..\Data\Language\*.*" "$(TargetDir)\Data\Language\"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

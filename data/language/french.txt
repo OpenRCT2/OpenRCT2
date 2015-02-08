@@ -857,7 +857,7 @@ STR_0852    :{WINDOW_COLOUR_2}Graphismes : Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Son et musique : Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Enregistrement sons additionnels : David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Représentation :Jacqui Lyons, Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Remerciements:-
+STR_0856    :{WINDOW_COLOUR_2}Remerciements:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -1059,7 +1059,7 @@ STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
 STR_1055    :{SMALLFONT}{BLACK}Name person
 STR_1056    :{SMALLFONT}{BLACK}Name staff member
 STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:-
+STR_1058    :Enter new name for this ride/attraction:
 STR_1059    :Can't rename ride/attraction...
 STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
@@ -1454,7 +1454,7 @@ STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:-
+STR_1453    :Enter name for this guest:
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
 STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
@@ -1720,7 +1720,7 @@ STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :Nom du parc non valide
 STR_1717    :Impossible de renommer le parc...
 STR_1718    :Nom dur parc
-STR_1719    :Saisir nom du parc:-
+STR_1719    :Saisir nom du parc:
 STR_1720    :{SMALLFONT}{BLACK}Name park
 STR_1721    :Parc fermé
 STR_1722    :Parc ouvert
@@ -1894,7 +1894,7 @@ STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
 STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:-
+STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Dépenses/Revenus
@@ -2250,8 +2250,8 @@ STR_2245    :Octobre
 STR_2246    :Novembre
 STR_2247    :Décembre
 STR_2248    :Can't demolish ride/attraction...
-STR_2249    :{BABYBLUE}New ride/attraction now available:-{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}New scenery/themeing now available:-{NEWLINE}{STRINGID}
+STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
 STR_2253    :Attractions de transport
@@ -2788,14 +2788,14 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:-{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
 STR_2790    :Enter name into scenario chart
 STR_2791    :Enter name
-STR_2792    :Please enter your name for the scenario chart:-
+STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
@@ -2859,8 +2859,8 @@ STR_2852    :Track design already installed
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
+STR_2856    :{WINDOW_COLOUR_2}Didacticiel
+STR_2857    :{WINDOW_COLOUR_2}(Appuyez sur une touche ou un bouton de la souris pour essayer vous-même)
 STR_2858    :Can't start marketing campaign...
 STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
 STR_2860    :Infogrames Interactive credits...
@@ -2981,12 +2981,12 @@ STR_2974    :Alternative color scheme 3
 STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
 STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
 STR_2977    :Staff member name
-STR_2978    :Enter new name for this member of staff:-
+STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
 STR_2981    :{RED}No entry - - 
 STR_2982    :Banner text
-STR_2983    :Enter new text for this banner:-
+STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
 STR_2985    :Banner
 STR_2986    :{SMALLFONT}{BLACK}Change text on banner
@@ -2996,7 +2996,7 @@ STR_2989    :{SMALLFONT}{BLACK}Select main color
 STR_2990    :{SMALLFONT}{BLACK}Select text color
 STR_2991    :Sign
 STR_2992    :Sign text
-STR_2993    :Enter new text for this sign:-
+STR_2993    :Enter new text for this sign:
 STR_2994    :{SMALLFONT}{BLACK}Change text on sign
 STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
 STR_2996    :{BLACK}ABC
@@ -3317,9 +3317,9 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :Scenario Name
-STR_3314    :Enter name for scenario:-
+STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
-STR_3316    :Décrire ce scénario:-
+STR_3316    :Décrire ce scénario:
 STR_3317    :Pas de détails
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
@@ -3354,7 +3354,7 @@ STR_3347    :Ride is too large, contains too many elements, or scenery is too sp
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:-
+STR_3351    :Enter new name for this track design:
 STR_3352    :Can't rename track design...
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
@@ -3388,27 +3388,27 @@ STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
+STR_3385    :Didacticiel pour débutants
+STR_3386    :Didacticiel attractions personnalisées
+STR_3387    :Didacticiel construction des montagnes russes
 STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
+STR_3391    :{SMALLFONT}{BLACK}Voici notre parc. Voyons ça d'un peu plus près...
+STR_3392    :{SMALLFONT}{BLACK}Pour déplacer la vue, maintenir le bouton DROIT de la souris enfoncé puis bouger la souris...
+STR_3393    :{SMALLFONT}{BLACK}Pour élargir la vue, faites un zomm arrière à l'aide de l'icone placé en haut de l'écran...
+STR_3394    :{SMALLFONT}{BLACK}Vous pouvez aussi faire pivoter la vue par tranches de 90 degrés...
+STR_3395    :{SMALLFONT}{BLACK}Difficile d'entamer une construction avec une vue aussi large. Faites un zoom avant...
+STR_3396    :{SMALLFONT}{BLACK}Construisons d'abord une simple attraction...
+STR_3397    :{SMALLFONT}{BLACK}L'image fantôme blanche montre l'emplacement de l'attraction. Déplacez le pointeur pour choisir la position puis cliquez pour valider...
+STR_3398    :{SMALLFONT}{BLACK}Chaque attraction doit comporter une entrée et une sortie. Déplacez le pointeur jusqu'au bord de l'attraction, et cliquez pour l'entrée puis pour la sortie...
+STR_3399    :{SMALLFONT}{BLACK}Des allées doivent mener les visiteurs à votre nouvelle attraction...
+STR_3400    :{SMALLFONT}{BLACK}Avant l'entrée, vous devez construire une "zone d'attente"...
+STR_3401    :{SMALLFONT}{BLACK}Après la sortie, un chemin ordinaire fera l'affaire...
+STR_3402    :{SMALLFONT}{BLACK}Bien, et si on ouvrait l'attraction maintenant ? Cliquez sur le petit drapeau placé dans la fenêtre Attractions puis sélectionnez "ouvrir"...
+STR_3403    :{SMALLFONT}{BLACK}Mais où sont passés les visiteurs ?
+STR_3404    :{SMALLFONT}{BLACK}Zut. Nous avons oublié d'ouvrir le parc. Bon il est temps d'y remédier...
+STR_3405    :{SMALLFONT}{BLACK}En attendant vos premiers visiteurs, occupons-nous du décor...
 STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
 STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
 STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
