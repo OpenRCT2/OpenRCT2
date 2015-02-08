@@ -22,6 +22,7 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../ride/ride.h"
 #include "marketing.h"
 #include "news_item.h"
@@ -152,7 +153,7 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 	int rideOrItem = (*edx >> 8) & 0xFF;
 	int numWeeks = (*ebx >> 8) & 0xFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 44;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3048;
 		*ebx = MONEY32_UNDEFINED;

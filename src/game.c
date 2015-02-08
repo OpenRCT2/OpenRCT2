@@ -436,7 +436,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
-				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
+				finance_payment(cost, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
@@ -898,8 +898,8 @@ static uint32 game_do_command_table[58] = {
 	0x006666E7,
 	0,
 	0x006CD8CE,
-	(uint32)game_command_set_park_entrance_fee,
-	(uint32)game_command_update_staff_colour, // 40
+	0,
+	0, // 40
 	0x006E519A,
 	0x006E5597,
 	0x006B893C,
@@ -961,8 +961,8 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_remove_park_entrance,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub, // 40
+	game_command_set_park_entrance_fee,
+	game_command_update_staff_colour, // 40
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,

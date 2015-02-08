@@ -1361,12 +1361,12 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_INCREASE_PRICE:
-		newFee = min(1000, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) + 10);
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
+		newFee = min(MONEY(100,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(1,00));
+		park_set_entrance_fee(newFee);
 		break;
 	case WIDX_DECREASE_PRICE:
-		newFee = max(0, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) - 10);
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
+		newFee = max(MONEY(0,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) - MONEY(1,00));
+		park_set_entrance_fee(newFee);
 		break;
 	}
 }
