@@ -3060,6 +3060,7 @@ static void window_ride_operating_invalidate()
 		break;
 	case RIDE_MODE_STATION_TO_STATION:
 		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
+		format = 1331;
 		caption = STR_SPEED;
 		tooltip = STR_SPEED_TIP;
 		break;
