@@ -332,7 +332,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -344,7 +343,7 @@
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -423,6 +422,12 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\src\world\map_helpers.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\mapgen.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -613,6 +618,12 @@
     </ClInclude>
     <ClInclude Include="..\src\rct1.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\mapgen.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\map_helpers.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

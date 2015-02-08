@@ -232,30 +232,6 @@ int rct2_open_file(const char *path)
 	return 0;
 }
 
-void check_cmdline_arg()
-{
-	int argc;
-	char **argv;
-	char *args;
-
-	args = RCT2_GLOBAL(0x009AC310, char*);
-	if (args == (char*)0xFFFFFFFF)
-		return;
-	RCT2_GLOBAL(0x009AC310, char*) = (char*)0xFFFFFFFF;
-
-	argv = CommandLineToArgvA(args, &argc);
-	if (argc > 0) {
-		if (_stricmp(argv[0], "edit") == 0) {
-			if (argc >= 1)
-				editor_load_landscape(argv[1]);
-		} else {
-			rct2_open_file(argv[0]);
-		}
-	}
-
-	LocalFree(argv);
-}
-
 /**
  * 
  *  rct2: 0x00674C95

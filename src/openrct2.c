@@ -29,6 +29,7 @@
 #include "platform/platform.h"
 #include "platform/osinterface.h"
 #include "util/sawyercoding.h"
+#include "world/mapgen.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -77,10 +78,12 @@ void openrct2_launch()
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 		break;
 	case STARTUP_ACTION_EDIT:
-		if (strlen(gOpenRCT2StartupActionPath) == 0)
+		if (strlen(gOpenRCT2StartupActionPath) == 0) {
 			editor_load();
-		else
+			mapgen_generate();
+		} else {
 			editor_load_landscape(gOpenRCT2StartupActionPath);
+		}
 		break;
 	}
 

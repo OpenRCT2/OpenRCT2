@@ -1080,11 +1080,6 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 			return;
 		window_close_by_class(WC_TOOLTIP);
 	}
-
-	if (key == SDL_SCANCODE_R) {
-		mapgen_generate();
-		gfx_invalidate_screen();
-	}
 }
 
 
@@ -1175,7 +1170,6 @@ void game_handle_keyboard_input()
 				keyboard_shortcut_handle(key);
 			}
 		}
-			
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)

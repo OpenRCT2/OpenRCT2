@@ -19,12 +19,10 @@
  *****************************************************************************/
 
 #ifndef _USE_MATH_DEFINES
-	#define _USE_MATH_DEFINES
+  #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
-#include <string.h>
-#include <time.h>
-#include "addresses.h"
+#include "../addresses.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
@@ -108,7 +106,7 @@ void mapgen_generate()
 
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 	mapgen_set_water_level(6 + (rand() % 4) * 2);
-	mapgen_place_trees();
+	// mapgen_place_trees();
 }
 
 const uint8 GrassTrees[] = { 21, 22, 27, 31, 42, 69, 71, 82, 84, 94, 95, 109 };

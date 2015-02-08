@@ -135,6 +135,8 @@
     <ClCompile Include="..\src\world\footpath.c" />
     <ClCompile Include="..\src\world\fountain.c" />
     <ClCompile Include="..\src\world\map.c" />
+    <ClCompile Include="..\src\world\mapgen.c" />
+    <ClCompile Include="..\src\world\map_helpers.c" />
     <ClCompile Include="..\src\world\park.c" />
     <ClCompile Include="..\src\world\sprite.c" />
   </ItemGroup>
@@ -199,6 +201,8 @@
     <ClInclude Include="..\src\world\climate.h" />
     <ClInclude Include="..\src\world\footpath.h" />
     <ClInclude Include="..\src\world\map.h" />
+    <ClInclude Include="..\src\world\mapgen.h" />
+    <ClInclude Include="..\src\world\map_helpers.h" />
     <ClInclude Include="..\src\world\park.h" />
     <ClInclude Include="..\src\world\scenery.h" />
     <ClInclude Include="..\src\world\sprite.h" />
