@@ -2769,7 +2769,7 @@ int ride_check_for_entrance_exit(int rideIndex)
  */
 void sub_6B5952(int rideIndex)
 {
-	RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, rideIndex, 0, 0, 0);
+	RCT2_CALLPROC_X(0x006B5952, 0, 0, 0, rideIndex, 0, 0, 0);
 }
 
 /**
@@ -2907,7 +2907,7 @@ int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *o
  */
 void sub_6B4D26(int rideIndex)
 {
-	RCT2_CALLPROC_X(0x006CB2DA, 0, 0, 0, rideIndex, 0, 0, 0);
+	RCT2_CALLPROC_X(0x006B4D26, 0, 0, 0, rideIndex, 0, 0, 0);
 }
 
 /**
@@ -3051,13 +3051,11 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		return 0;
 
 	if (!ride_check_for_entrance_exit(rideIndex)) {
-		// TODO check if this is correct
 		loc_6B51C0(rideIndex);
 		return 0;
 	}
 
 	if (goingToBeOpen && isApplying) {
-		// TODO check if this is correct
 		sub_6B5952(rideIndex);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
 	}
@@ -3071,7 +3069,6 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (stationIndex == -1) {
-		// TODO check if this is correct
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x8000)
 			return 0;
@@ -3087,8 +3084,11 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	trackElement.x = (ride->station_starts[i] & 0xFF) * 32;
 	trackElement.y = (ride->station_starts[i] >> 8) * 32;
 	trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
-	if (trackElement.element == NULL)
-		return 0;
+	if (trackElement.element == NULL) {
+		// Maze is strange, station start is 0... investigation required
+		if (ride->type != RIDE_TYPE_MAZE)
+			return 0;
+	}
 
 	if (
 		ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER ||
@@ -3109,13 +3109,10 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 	) {
 		if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
-			// TODO check if this is correct
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 	}
-
-	// Check onwards
 
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
@@ -3161,6 +3158,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
+		// TODO Check if this is correct
 		if (sub_6DD84C(ride))
 			return 0;
 	}
