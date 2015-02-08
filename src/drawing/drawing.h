@@ -75,6 +75,7 @@ void gfx_invalidate_screen();
 
 // palette
 void gfx_transpose_palette(int pal, unsigned char product);
+void load_palette();
 
 // other
 void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start);

@@ -3188,7 +3188,7 @@ static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *d
 	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
 	if (unk & (1 << 31)) {
 		unk &= ~(1 << 31);
-		if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0 && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8))
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8))
 			return;
 	}
 
@@ -5463,7 +5463,7 @@ static void window_ride_income_invalidate()
 				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 		} else {
 			secondaryItem -= 32;
-			if (RCT2_GLOBAL(0x0135884C, uint32) & (1 << secondaryItem))
+			if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << secondaryItem))
 				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 		}
 
@@ -5537,9 +5537,9 @@ static void window_ride_income_paint()
 		profit = ride->price_secondary;
 
 		stringId = STR_PROFIT_PER_ITEM_SOLD;
-		profit -= primaryItem < 32 ?
-			RCT2_GLOBAL(0x00982164 + (primaryItem * 8), uint16) :
-			RCT2_GLOBAL(0x00982144 + (primaryItem * 8), uint16);
+		profit -= secondaryItem < 32 ?
+			RCT2_GLOBAL(0x00982164 + (secondaryItem * 8), uint16) :
+			RCT2_GLOBAL(0x00982144 + (secondaryItem * 8), uint16);
 		if (profit < 0) {
 			profit *= -1;
 			stringId = STR_LOSS_PER_ITEM_SOLD;

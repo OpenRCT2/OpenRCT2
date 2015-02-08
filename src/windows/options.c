@@ -38,6 +38,7 @@
 #include "../sprites.h"
 #include "../platform/osinterface.h"
 #include "dropdown.h"
+#include "error.h"
 
 enum {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -87,6 +88,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SOUND_QUALITY_DROPDOWN,
 	WIDX_SOUND_SW_BUFFER_CHECKBOX,
 	WIDX_SOUND_PAUSED_CHECKBOX,
+	WIDX_TITLE_MUSIC,
+	WIDX_TITLE_MUSIC_DROPDOWN,
 
 	WIDX_SCREEN_EDGE_SCROLLING,
 	WIDX_HOTKEY_DROPDOWN,
@@ -96,7 +99,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 135
+#define WH 153
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
@@ -140,6 +143,8 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WWT_CHECKBOX,			0,	10,		299,	99,		110,	STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING, STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING_TIP },
 	{ WWT_CHECKBOX,			0,	10,		229,	114,	125,	STR_SOUND,		STR_NONE }, // enable/disable sound
+	{ WWT_DROPDOWN,			0,	155,	299,	130,	141,	STR_NONE,		STR_NONE },	// title music
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	131,	140,	876,			STR_NONE },
 
 	// Controls tab
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
@@ -228,6 +233,8 @@ void window_options_open()
 		(1ULL << WIDX_MUSIC_DROPDOWN) |
 		(1ULL << WIDX_SOUND_QUALITY) |
 		(1ULL << WIDX_SOUND_QUALITY_DROPDOWN) |
+		(1ULL << WIDX_TITLE_MUSIC) |
+		(1ULL << WIDX_TITLE_MUSIC_DROPDOWN) |
 		(1ULL << WIDX_LANGUAGE) |
 		(1ULL << WIDX_LANGUAGE_DROPDOWN) |
 		(1ULL << WIDX_CURRENCY) |
@@ -386,6 +393,18 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 		gDropdownItemsChecked = 1 << gSound_config.sound_quality;
 		break;
+	case WIDX_TITLE_MUSIC_DROPDOWN:
+		num_items = 3;
+
+		for (i = 0; i < num_items; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = 2739 + i;
+		}
+
+		window_options_show_dropdown(w, widget, num_items);
+
+		gDropdownItemsChecked = 1 << gGeneral_config.title_music;
+		break;
 	case WIDX_CURRENCY_DROPDOWN:
 		num_items = 10;
 
@@ -539,6 +558,15 @@ static void window_options_dropdown()
 		config_save();
 		window_invalidate(w);
 		break;
+	case WIDX_TITLE_MUSIC_DROPDOWN:
+		if (dropdownIndex == 1 && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
+			window_error_open(2742, 2743);
+		} else {
+			gGeneral_config.title_music = (sint8)dropdownIndex;
+			config_save();
+			window_invalidate(w);
+		}
+		break;
 	case WIDX_CURRENCY_DROPDOWN:
 		gGeneral_config.currency_format = (sint8)dropdownIndex;
 		config_save();
@@ -574,6 +602,9 @@ static void window_options_dropdown()
 				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
 			}
 			osinterface_set_fullscreen_mode(dropdownIndex);
+			
+			gGeneral_config.fullscreen_mode = (uint8)dropdownIndex;
+			config_save();
 		}
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
@@ -710,6 +741,8 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_SOUND_QUALITY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_SOUND_SW_BUFFER_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_SOUND_PAUSED_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
+		window_options_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_INPUT:
 		// screen edge scrolling checkbox
@@ -799,6 +832,15 @@ static void window_options_paint()
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		gfx_draw_string_left(dpi, STR_MUSIC, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_MUSIC].top + 1);
 		gfx_draw_string_left(dpi, STR_SOUND_QUALITY, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_SOUND_QUALITY].top + 1);
+		gfx_draw_string_left(dpi, 2738, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_TITLE_MUSIC].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			2739 + gGeneral_config.title_music,
+			NULL,
+			12,
+			w->x + window_options_widgets[WIDX_TITLE_MUSIC].left + 1,
+			w->y + window_options_widgets[WIDX_TITLE_MUSIC].top
+		);
 		break;
 	}
 }

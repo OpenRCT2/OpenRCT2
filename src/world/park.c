@@ -579,40 +579,23 @@ void park_update_histories()
 	RCT2_CALLPROC_EBPSAFE(0x0066A231);
 }
 
-/**
-*
-*  rct2: 0x00669E30
-*/
-void game_command_set_park_entrance_fee()
+void park_set_entrance_fee(money32 value)
 {
-	uint8 _bl;
-	uint16 new_fee;
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, value, 0);
+}
 
-	#ifdef _MSC_VER
-		__asm mov _bl, bl
-	#else
-		__asm__("mov %[_bl], bl " : [_bl] "+m" (_bl));
-	#endif
-
-	#ifdef _MSC_VER
-		__asm mov new_fee, di
-	#else
-		__asm__("mov %[new_fee], di " : [new_fee] "+m" (new_fee));
-	#endif
-
-	RCT2_GLOBAL(0x0141F56C, uint8) = 0x10;
-
-	if (_bl & 1){
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = new_fee;
-
+/**
+ *
+ *  rct2: 0x00669E30
+ */
+void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = (*edi & 0xFFFF);
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
-
-	#ifdef _MSC_VER
-		__asm mov ebx, 0
-	#else
-		__asm__("mov ebx, 0 ");
-	#endif
+	*ebx = 0;
 }
 
 void park_set_open(int open)
@@ -633,7 +616,7 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 
 	int dh = (*edx >> 8) & 0xFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
 	switch (dh) {
 	case 0:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
@@ -718,7 +701,7 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	y = *ecx & 0xFFFF;
 	z = *edx * 16;
 
-	RCT2_GLOBAL(0x0141F56C, uint32) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
@@ -773,7 +756,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 
 	int nameChunkIndex = *eax & 0xFFFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		int nameChunkOffset = nameChunkIndex - 1;
 		if (nameChunkOffset < 0)

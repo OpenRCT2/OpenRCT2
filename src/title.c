@@ -90,7 +90,9 @@ static void title_create_windows();
  */
 void title_load()
 {
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) & 1)
+	log_verbose("loading title");
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 		RCT2_CALLPROC_X(0x00667C15, 0, 1, 0, 0, 0, 0, 0);//Game pause toggle
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
@@ -117,6 +119,8 @@ void title_load()
 	title_init_showcase();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+
+	log_verbose("loading title finished");
 }
 
 /**
@@ -167,9 +171,11 @@ static void title_update_showcase()
 				_scriptWaitCounter = (*_currentScript++) * 32;
 				break;
 			case TITLE_SCRIPT_LOAD:
-				if (!scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
-					log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
-					exit(-1);
+				if (scenario_load(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
+					log_verbose("loaded title scenario");
+				} else {
+					load_palette();
+					title_create_windows();
 				}
 
 				w = window_get_main();
@@ -264,7 +270,7 @@ void title_update()
 	screenshot_check();
 	title_handle_keyboard_input();
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		title_update_showcase();
 		game_logic_update();
 		start_title_music();//title_play_music();

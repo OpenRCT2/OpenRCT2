@@ -93,7 +93,8 @@ general_configuration_t gGeneral_config_default = {
 	-1,								// window_width
 	-1,								// window_height
 	LANGUAGE_ENGLISH_UK,			// language
-	5								// window_snap_proximity
+	5,								// window_snap_proximity
+	2								// title music
 };
 sound_configuration_t gSound_config;
 
@@ -256,7 +257,7 @@ void config_write_ini_general(FILE *fp)
 
 	if (gGeneral_config.fullscreen_width != -1)
 		fprintf(fp, "fullscreen_width = %d\n", gGeneral_config.fullscreen_width);
-	if (gGeneral_config.window_height != -1)
+	if (gGeneral_config.fullscreen_height != -1)
 		fprintf(fp, "fullscreen_height = %d\n", gGeneral_config.fullscreen_height);
 
 	if (gGeneral_config.window_width != -1)
@@ -267,6 +268,8 @@ void config_write_ini_general(FILE *fp)
 	fprintf(fp, "language = %d\n", gGeneral_config.language);
 
 	fprintf(fp, "window_snap_proximity = %d\n", gGeneral_config.window_snap_proximity);
+
+	fprintf(fp, "title_music = %d\n", gGeneral_config.title_music);
 }
 
 /**
@@ -581,6 +584,9 @@ static void config_general(char *setting, char *value){
 	}
 	else if (strcmp(setting, "window_snap_proximity") == 0) {
 		gGeneral_config.window_snap_proximity = clamp(0, atoi(value), 255);
+	}
+	else if (strcmp(setting, "title_music") == 0) {
+		gGeneral_config.title_music = atoi(value);
 	}
 }
 

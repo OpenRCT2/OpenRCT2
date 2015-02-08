@@ -26,6 +26,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -734,7 +735,7 @@ static void ride_remove_peeps(int rideIndex)
 				if (peep->next_var_29 & 4)
 					z += 8;
 				z++;
-				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
+				sprite_move(x, y, z, (rct_sprite*)peep);
 			} else {
 				sprite_move(exitX, exitY, exitZ, (rct_sprite*)peep);
 				peep->sprite_direction = exitDirection;
@@ -3264,7 +3265,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	int rideIndex = (*ebx >> 8) & 0xFF;
 	int nameChunkIndex = *eax & 0xFFFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		int nameChunkOffset = nameChunkIndex - 1;
 		if (nameChunkOffset < 0)

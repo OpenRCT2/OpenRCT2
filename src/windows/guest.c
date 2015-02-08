@@ -1376,7 +1376,7 @@ void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_d
 	int blink_flag = colour & (1 << 0x1F); //0x80000000
 	colour &= ~(1 << 0x1F);
 	if (!blink_flag ||
-		RCT2_GLOBAL(0x009DEA6E, uint8) != 0 ||
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 ||
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8) == 0)
 	{
 		if (value <= 2)

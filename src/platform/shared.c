@@ -23,7 +23,7 @@
 #include "../config.h"
 #include "platform.h"
 
-int gNumResolutions;
+int gNumResolutions = 0;
 resolution *gResolutions = NULL;
 
 SDL_Window *gWindow;
@@ -36,7 +36,7 @@ int resolution_sort_func(const void *pa, const void *pb)
 	const resolution *b = (resolution*)pb;
 
 	int areaA = a->width * a->height;
-	int areaB = b->height * b->height;
+	int areaB = b->width * b->height;
 
 	if (areaA == areaB) return 0;
 	if (areaA < areaB) return -1;
@@ -94,5 +94,37 @@ void platform_update_fullscreen_resolutions()
 	if (gGeneral_config.fullscreen_width == -1 || gGeneral_config.fullscreen_height == -1) {
 		gGeneral_config.fullscreen_width = gResolutions[gNumResolutions - 1].width;
 		gGeneral_config.fullscreen_height = gResolutions[gNumResolutions - 1].height;
+	}
+}
+
+void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight)
+{
+	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth, closestHeight;
+
+	closestAreaDiff = -1;
+	destinationArea = inWidth * inHeight;
+	for (i = 0; i < gNumResolutions; i++) {
+		// Check if exact match
+		if (gResolutions[i].width == inWidth && gResolutions[i].height == inHeight) {
+			closestWidth = gResolutions[i].width;
+			closestHeight = gResolutions[i].height;
+			break;
+		}
+
+		// Check if area is closer to best match
+		areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
+		if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
+			closestAreaDiff = areaDiff;
+			closestWidth = gResolutions[i].width;
+			closestHeight = gResolutions[i].height;
+		}
+	}
+
+	if (closestAreaDiff != -1) {
+		*outWidth = closestWidth;
+		*outHeight = closestHeight;
+	} else {
+		*outWidth = 640;
+		*outHeight = 480;
 	}
 }

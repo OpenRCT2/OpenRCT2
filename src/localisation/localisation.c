@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -700,4 +701,13 @@ int get_string_length(char* buffer)
 		}
 	}
 	return length;
+}
+
+int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
+{
+	utf16 intermediateBuffer[512];
+
+	// TODO this supports only a maximum of 512 characters
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, 512);
+	return WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 }
