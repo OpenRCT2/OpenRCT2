@@ -1431,6 +1431,8 @@ static void peep_update_buying(rct_peep* peep)
 
 /* rct2: 0x00691089 */
 static void peep_update_using_bin(rct_peep* peep){
+	//RCT2_CALLPROC_X(0x0691089, 0, 0, 0, 0, peep, 0, 0);
+	//return;
 	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
@@ -1479,6 +1481,11 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
+		if (map_element->properties.path.additions & 0x80){
+			peep_state_reset(peep);
+			return;
+		}
+
 		uint8 edge = 0x3 & (map_element->properties.path.addition_status >> (peep->var_37 * 2));
 		uint32 empty_containers = peep_empty_container_standard_flag(peep);
 
@@ -1489,7 +1496,6 @@ static void peep_update_using_bin(rct_peep* peep){
 				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7) edge--;
 				peep->item_standard_flags &= ~(1 << cur_container);
 				peep->var_45 |= 8;
-
 				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 				continue;
 			}
@@ -2606,14 +2612,16 @@ static int peep_has_empty_container(rct_peep* peep){
 static int peep_should_find_bench(rct_peep* peep){
 	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (peep_has_food(peep)){
-			if (peep->hunger > 128 && peep->happiness > 128){
-				return 0;
+			if (peep->hunger < 128 || peep->happiness < 128){
+				if (!(peep->next_var_29 & 0x1C)){
+					return 1;
+				}
 			}
 		}
-		if (peep->nausea <= 170 || peep->energy > 50){
+		if (peep->nausea <= 170 && peep->energy > 50){
 			return 0;
 		}
-
+		
 		if (!(peep->next_var_29 & 0x1C)){
 			return 1;
 		}
