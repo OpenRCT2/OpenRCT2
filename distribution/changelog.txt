@@ -7,6 +7,7 @@
 - Feature: Place scenery as a random cluster available in play mode.
 - Feature: Park window viewport is resizable.
 - Feature: Extra viewport windows.
+- Feature: Windows now snap to the borders of other windows when dragging (snap radius configurable).
 - Feature: Text input is now an in game window.
 - Feature: Cheats window (CTRL-ALT-C).
 - Feature: Improved settings window with tab interface.
@@ -14,4 +15,7 @@
 - Feature: Game configuration, cache, scores and screenshots now saved in user documents directory under OpenRCT2.
 - Feature: Research and development / research funding now accessible as a stand alone window without the requirement of the finances window.
 - Feature: Ability to change game speed (+ and - keys)
+- Feature: The "have fun" objective can now be selected in the scenario editor.
 - Feature: RollerCoaster Tycoon 1 scenarios can now be opened in the scenario editor or by using the 'edit' command line action.
+- Feature: Title sequence music can now be disabled or changed to the RollerCoaster Tycoon 1 theme music.
+- Fix: Litter bins now get full and require emptying by handymen.
