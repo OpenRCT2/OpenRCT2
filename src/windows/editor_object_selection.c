@@ -111,10 +111,6 @@ void window_editor_object_selection_open()
 	RCT2_CALLPROC_EBPSAFE(0x006AB211);
 	RCT2_CALLPROC_EBPSAFE(0x006AA770);
 
-	// HACK REMOVE WHEN ALL OBJECT_LOAD CALLS FINISHED
-	// Force Expansion Packs to always pass tests on object load
-	RCT2_GLOBAL(0x9AB4C0, uint16) = 0xFF;
-
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300,
 		max(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200, 28),
