@@ -40,11 +40,11 @@ enum STAFF_TYPE {
 	STAFF_TYPE_ENTERTAINER
 };
 
-void game_command_update_staff_colour();
-void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
-void update_staff_colour(uint8 staff_type, uint16 color);
-uint16 hire_new_staff_member(uint8 staff_type);
+void update_staff_colour(uint8 staffType, uint16 color);
+uint16 hire_new_staff_member(uint8 staffType);
 void sub_6C0C3F();
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
 

@@ -22,10 +22,11 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../management/finance.h"
+#include "../scenario.h"
 #include "../world/scenery.h"
 #include "news_item.h"
 #include "research.h"
-#include "../scenario.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
@@ -344,7 +345,7 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 	int fundingAmount = *edx;
 	int activeCategories = *edx;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 48;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RESEARCH * 4;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (!setPriorities)
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = fundingAmount;

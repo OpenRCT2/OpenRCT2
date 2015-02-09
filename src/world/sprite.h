@@ -97,6 +97,7 @@ typedef union {
 extern rct_sprite* g_sprite_list;
 
 void create_balloon(int x, int y, int z, int colour);
+void create_duck(int targetX, int targetY);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();

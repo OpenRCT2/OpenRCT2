@@ -436,7 +436,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
-				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
+				finance_payment(cost, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
@@ -465,18 +465,9 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
  * 
  *  rct2: 0x00667C15
  */
-void game_pause_toggle()
+void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	char input_bl;
-
-	#ifdef _MSC_VER
-	__asm mov input_bl, bl
-	#else
-	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
-	#endif
-
-
-	if (input_bl & 1) {
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
@@ -484,64 +475,30 @@ void game_pause_toggle()
 		else
 			unpause_sounds();
 	}
-
-	#ifdef _MSC_VER
-	__asm mov ebx, 0
-	#else
-	__asm__ ( "mov ebx, 0 "  );
-	#endif
-
+	*ebx = 0;
 }
 
 /**
  * 
  *  rct2: 0x0066DB5F
  */
-static void game_load_or_quit()
+static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	char input_bl, input_dl;
-	short input_di;
-
-	#ifdef _MSC_VER
-	__asm mov input_bl, bl
-	#else
-	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov input_dl, dl
-	#else
-	__asm__ ( "mov %[input_dl], dl " : [input_dl] "+m" (input_dl) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov input_di, di
-	#else
-	__asm__ ( "mov %[input_di], di " : [input_di] "+m" (input_di) );
-	#endif
-
-	if (!(input_bl & 1))
-		return; // 0;
-
-	switch (input_dl) {
-	case 0:
-		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = input_di;
-		window_save_prompt_open();
-		break;
-	case 1:
-		window_close_by_class(WC_SAVE_PROMPT);
-		break;
-	default:
-		game_load_or_quit_no_save_prompt();
-		break;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		switch (*edx & 0xFF) {
+		case 0:
+			RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = *edi & 0xFF;
+			window_save_prompt_open();
+			break;
+		case 1:
+			window_close_by_class(WC_SAVE_PROMPT);
+			break;
+		default:
+			game_load_or_quit_no_save_prompt();
+			break;
+		}
 	}
-
-#ifdef _MSC_VER
-	__asm mov ebx, 0
-#else
-	__asm__ ( "mov ebx, 0 "  );
-#endif
-
+	*ebx = 0;
 }
 
 /**
@@ -861,10 +818,10 @@ void game_load_or_quit_no_save_prompt()
 static uint32 game_do_command_table[58] = {
 	0x006B2FC5,
 	0x0066397F,
-	(uint32)game_pause_toggle,
+	0,
 	0x006C511D,
 	0x006C5B69,
-	(uint32)game_load_or_quit,
+	0,
 	0x006B3F0F,
 	0x006B49D9,
 	0x006B4EA6,
@@ -898,8 +855,8 @@ static uint32 game_do_command_table[58] = {
 	0x006666E7,
 	0,
 	0x006CD8CE,
-	(uint32)game_command_set_park_entrance_fee,
-	(uint32)game_command_update_staff_colour, // 40
+	0,
+	0, // 40
 	0x006E519A,
 	0x006E5597,
 	0x006B893C,
@@ -924,10 +881,10 @@ void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
+	game_pause_toggle,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_load_or_quit,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -961,8 +918,8 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_remove_park_entrance,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub, // 40
+	game_command_set_park_entrance_fee,
+	game_command_update_staff_colour, // 40
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,

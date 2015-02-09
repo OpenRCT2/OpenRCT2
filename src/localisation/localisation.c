@@ -343,6 +343,84 @@ void format_currency_2dp(char **dest, long long value)
 	}
 }
 
+void format_date(char **dest, uint16 value)
+{
+	uint16 args[] = { date_get_month(value), date_get_year(value) + 1 };
+	uint16 *argsRef = args;
+	format_string_part(dest, 2736, (char**)&argsRef);
+	(*dest)--;
+}
+
+void format_length(char **dest, uint16 value)
+{
+	rct_string_id stringId = 2733;
+
+	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
+		value = metres_to_feet(value);
+		stringId--;
+	}
+
+	uint16 *argRef = &value;
+	format_string_part(dest, stringId, (char**)&argRef);
+}
+
+void format_velocity(char **dest, uint16 value)
+{
+	rct_string_id stringId = 2734;
+
+	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+		value = mph_to_kmph(value);
+		stringId++;
+	}
+
+	uint16 *argRef = &value;
+	format_string_part(dest, stringId, (char**)&argRef);
+}
+
+void format_duration(char **dest, uint16 value)
+{
+	uint16 minutes = value / 60;
+	uint16 seconds = value % 60;
+	uint16 args[] = { minutes, seconds };
+	uint16 *argsRef = &args[1];
+	rct_string_id stringId = 2720;
+
+	if (minutes > 0) {
+		stringId += 2;
+		if (minutes != 1)
+			stringId += 2;
+
+		argsRef--;
+	}
+
+	if (seconds != 1)
+		stringId++;
+
+	format_string_part(dest, stringId, (char**)&argsRef);
+}
+
+void format_realtime(char **dest, uint16 value)
+{
+	uint16 hours = value / 60;
+	uint16 minutes = value % 60;
+	uint16 args[] = { hours, minutes };
+	uint16 *argsRef = &args[1];
+	rct_string_id stringId = 2726;
+
+	if (hours > 0) {
+		stringId += 2;
+		if (hours != 1)
+			stringId += 2;
+
+		argsRef--;
+	}
+
+	if (minutes != 1)
+		stringId++;
+
+	format_string_part(dest, stringId, (char**)&argsRef);
+}
+
 void format_string_code(unsigned char format_code, char **dest, char **args)
 {
 	int value;
@@ -419,13 +497,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		uint16 dateArgs[] = { date_get_month(value), date_get_year(value) + 1 };
-		uint16 *dateArgs2 = dateArgs;
-		char formatString[] = "?, Year ?";
-		formatString[0] = FORMAT_MONTH;
-		formatString[8] = FORMAT_COMMA16;
-		format_string_part_from_raw(dest, formatString, (char**)&dateArgs2);
-		(*dest)--;
+		format_date(dest, value);
 		break;
 	case FORMAT_MONTH:
 		// Pop argument
@@ -440,15 +512,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint16*)*args);
 		*args += 2;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_separated_integer(dest, mph_to_kmph(value));
-			strcpy(*dest, "kmh");
-			*dest += strlen(*dest);
-		} else {
-			format_comma_separated_integer(dest, value);
-			strcpy(*dest, "mph");
-			*dest += strlen(*dest);
-		}
+		format_velocity(dest, value);
 		break;
 	case FORMAT_POP16:
 		*args += 2;
@@ -461,45 +525,21 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		if (value / 60 > 0) {
-			format_integer(dest, value / 60);
-			strcpy(*dest, value / 60 == 1 ? "min:" : "mins:");
-			*dest += strlen(*dest);
-		}
-
-		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "sec" : "secs");
-		*dest += strlen(*dest);
+		format_duration(dest, value);
 		break;
 	case FORMAT_REALTIME:
 		// Pop argument
 		value = *((uint16*)*args);
 		*args += 2;
 
-		if (value / 60 > 0) {
-			format_integer(dest, value / 60);
-			strcpy(*dest, value / 60 == 1 ? "hour:" : "hours:");
-			*dest += strlen(*dest);
-		}
-
-		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "min" : "mins");
-		*dest += strlen(*dest);
+		format_realtime(dest, value);
 		break;
 	case FORMAT_LENGTH:
 		// Pop argument
 		value = *((sint16*)*args);
 		*args += 2;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_separated_integer(dest, value);
-			strcpy(*dest, "m");
-			*dest += strlen(*dest);
-		} else {
-			format_comma_separated_integer(dest, metres_to_feet(value));
-			strcpy(*dest, "ft");
-			*dest += strlen(*dest);
-		}
+		format_length(dest, value);
 		break;
 	case FORMAT_SPRITE:
 		// Pop argument

@@ -22,6 +22,7 @@
 #include "../game.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "climate.h"
 #include "map.h"
 #include "park.h"
@@ -590,7 +591,7 @@ money32 map_try_clear_scenery(int x, int y, rct_map_element *mapElement, int fla
 	entry = g_smallSceneryEntries[mapElement->properties.scenery.type];
 	cost = entry->small_scenery.removal_price * 10;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x * 32 + 16;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y * 32 + 16;
 	RCT2_GLOBAL(0x009DEA62, uint32) = mapElement->base_height * 8;
@@ -718,7 +719,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 	int x, y, z;
 	money32 totalCost, cost;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 
 	x = (x0 + x1) / 2 + 16;
 	y = (y0 + y1) / 2 + 16;

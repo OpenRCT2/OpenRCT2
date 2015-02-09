@@ -426,7 +426,6 @@ void peep_update_falling(rct_peep* peep){
 	}
 
 	// If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-
 	rct_map_element *map_element = map_get_first_element_at(peep->x / 32, peep->y / 32);
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
@@ -892,7 +891,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 
 		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[(map_element->properties.path.additions & 0xF) - 1];
 		if (
-			!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG1)
+			!(scenery_entry->path_bit.var_06 & 1)
 			|| map_element->flags & (1 << 5)
 			|| map_element->properties.path.additions & (1 << 7)
 		) {
@@ -900,7 +899,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 			return;
 		}
 
-		map_element->properties.path.addition_status = ((3 << peep->var_37) << peep->var_37);
+		map_element->properties.path.addition_status |= ((3 << peep->var_37) << peep->var_37);
 
 		gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->clearance_height * 8);
 
@@ -1230,19 +1229,19 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 	uint8 chosen_edge = scenario_rand() & 0x3;
 
-	//ecx
-	uint8 addition_status = map_element->properties.path.addition_status;
+	// Note: Bin qunatity is inverted 0 = full, 3 = empty
+	uint8 bin_quantities = map_element->properties.path.addition_status;
 
-	chosen_edge = ror8(ror8(addition_status, chosen_edge),chosen_edge);
-
-	
+	// Rotate the bin to the correct edge. Makes it easier for next calc.
+	bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
 
 	for (uint8 free_edge = 4; free_edge != 0; free_edge--){
-		if (addition_status & 0x3){
+		// If not full
+		if (bin_quantities & 0x3){
 			if (edges&(1 << chosen_edge))break;
 		}
 		chosen_edge = (chosen_edge + 1) & 0x3;
-		addition_status = ror8(addition_status, 2);
+		bin_quantities = ror8(bin_quantities, 2);
 		if ((free_edge - 1) == 0) return 0;
 	}
 
@@ -1431,6 +1430,8 @@ static void peep_update_buying(rct_peep* peep)
 
 /* rct2: 0x00691089 */
 static void peep_update_using_bin(rct_peep* peep){
+	//RCT2_CALLPROC_X(0x0691089, 0, 0, 0, 0, peep, 0, 0);
+	//return;
 	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
@@ -1479,17 +1480,28 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
-		uint8 edge = 0x3 & (map_element->properties.path.addition_status >> (peep->var_37 * 2));
+		if (map_element->properties.path.additions & 0x80){
+			peep_state_reset(peep);
+			return;
+		}
+
+		// Bin selection is one of 4 corners
+		uint8 selected_bin = peep->var_37 * 2;
+
+		// This counts down 2 = No rubbish, 0 = full
+		uint8 rubbish_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
 		uint32 empty_containers = peep_empty_container_standard_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
 			if (!(empty_containers & (1 << cur_container))) continue;
 
-			if (edge != 0){
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7) edge--;
+			if (rubbish_in_bin != 0){
+				// OpenRCT2 modification: This previously used
+				// the tick count as a simple random function
+				// switched to scenario_rand as it is more reliable
+				if (scenario_rand() & 7) rubbish_in_bin--;
 				peep->item_standard_flags &= ~(1 << cur_container);
 				peep->var_45 |= 8;
-
 				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 				continue;
 			}
@@ -1506,14 +1518,18 @@ static void peep_update_using_bin(rct_peep* peep){
 			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 		}
 
-		edge = 0x3 & (map_element->properties.path.addition_status >> (peep->var_37 * 2));
+		// Original bug: This would clear any rubbish placed by the previous function
+		//rubbish_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
 		empty_containers = peep_empty_container_extra_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
 			if (!(empty_containers & (1 << cur_container))) continue;
 
-			if (edge != 0){
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7) edge--;
+			if (rubbish_in_bin != 0){
+				// OpenRCT2 modification: This previously used
+				// the tick count as a simple random function
+				// switched to scenario_rand as it is more reliable
+				if (scenario_rand() & 7) rubbish_in_bin--;
 				peep->item_extra_flags &= ~(1 << cur_container);
 				peep->var_45 |= 8;
 
@@ -1533,9 +1549,10 @@ static void peep_update_using_bin(rct_peep* peep){
 			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 		}
 
-		edge <<= peep->var_37 * 2;		
-		map_element->properties.path.addition_status &= ~(3 << (peep->var_37 * 2));
-		map_element->properties.path.addition_status |= edge;
+		// Place new amount in bin by first clearing the value
+		map_element->properties.path.addition_status &= ~(3 << selected_bin);
+		// Then placeing the new value.
+		map_element->properties.path.addition_status |= rubbish_in_bin << selected_bin;
 
 		gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height << 3, map_element->clearance_height << 3);
 		peep_state_reset(peep);
@@ -2606,14 +2623,16 @@ static int peep_has_empty_container(rct_peep* peep){
 static int peep_should_find_bench(rct_peep* peep){
 	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (peep_has_food(peep)){
-			if (peep->hunger > 128 && peep->happiness > 128){
-				return 0;
+			if (peep->hunger < 128 || peep->happiness < 128){
+				if (!(peep->next_var_29 & 0x1C)){
+					return 1;
+				}
 			}
 		}
-		if (peep->nausea <= 170 || peep->energy > 50){
+		if (peep->nausea <= 170 && peep->energy > 50){
 			return 0;
 		}
-
+		
 		if (!(peep->next_var_29 & 0x1C)){
 			return 1;
 		}

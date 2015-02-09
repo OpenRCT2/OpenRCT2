@@ -33,6 +33,15 @@ void create_balloon(int x, int y, int z, int colour)
 	RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
 }
 
+/**
+ * 
+ *  rct2: 0x0067440F
+ */
+void create_duck(int targetX, int targetY)
+{
+	RCT2_CALLPROC_X(0x0067440F, targetX, 0, targetY, 0, 0, 0, 0);
+}
+
 /* rct2: 0x006EC473 */
 void invalidate_sprite(rct_sprite* sprite){
 	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
