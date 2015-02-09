@@ -1686,7 +1686,7 @@ STR_1663    :{WINDOW_COLOUR_2}Mdłości:
 STR_1664    :{WINDOW_COLOUR_2}Energia:
 STR_1665    :{WINDOW_COLOUR_2}Głód:
 STR_1666    :{WINDOW_COLOUR_2}Pragnienie:
-STR_1667    :{WINDOW_COLOUR_2}Łazienka:
+STR_1667    :{WINDOW_COLOUR_2}Pęcherz:
 # ------------------------------------------ Polish end
 STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
@@ -2755,30 +2755,36 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :???
 STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+# New strings (previously these were ???)
+# sec, secs
+STR_2720    :{UINT16}sek
+STR_2721    :{UINT16}sek
+# min+sec, min+secs, mins+sec, mins+secs
+STR_2722    :{UINT16}min:{UINT16}sek
+STR_2723    :{UINT16}min:{UINT16}sek
+STR_2724    :{UINT16}min:{UINT16}sek
+STR_2725    :{UINT16}min:{UINT16}sek
+# min, mins
+STR_2726    :{UINT16}min
+STR_2727    :{UINT16}min
+# hour+min, hour+mins, hours+min, hours+mins
+STR_2728    :{UINT16}godz:{UINT16}min
+STR_2729    :{UINT16}godz:{UINT16}min
+STR_2730    :{UINT16}godz:{UINT16}min
+STR_2731    :{UINT16}godz:{UINT16}min
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, Rok {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Rok {COMMA16}
+STR_2738    :Muzyka tytułowa
+STR_2739    :Brak
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :Nie znaleziono css50.dat
+STR_2743    :Przekopiuj data\css17.dat z folderu RCT1 do data\css50.dat folderu instalacji RCT2.
+# End of new strings
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
