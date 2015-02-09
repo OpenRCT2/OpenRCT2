@@ -40,25 +40,31 @@ static uint8 *_height;
 
 const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_ICE };
 
-void mapgen_generate()
+void mapgen_generate_blank(int mapSize, int height, int waterLevel, int floor, int wall)
 {
-	int i, x, y, mapSize, baseTerrain;
+	int x, y;
 	rct_map_element *mapElement;
 
-	/*
-	mapElement = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
-	for (i = 0; i < MAX_MAP_ELEMENTS; i++) {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_SURFACE) {
-			i = i;
+	map_init(mapSize);
+	for (y = 1; y < mapSize - 1; y++) {
+		for (x = 1; x < mapSize - 1; x++) {
+			mapElement = map_get_surface_element_at(x, y);
+			map_element_set_terrain(mapElement, floor);
+			map_element_set_terrain_edge(mapElement, wall);
+			mapElement->base_height = height;
+			mapElement->clearance_height = height;
 		}
-		mapElement++;
 	}
-	*/
 
-	map_init();
+	mapgen_set_water_level(waterLevel);
+}
 
-	// Not sure how to change map size at the moment, default is 150
-	mapSize = 150;
+void mapgen_generate(int mapSize)
+{
+	int i, x, y, baseTerrain;
+	rct_map_element *mapElement;
+
+	map_init(mapSize);
 
 	srand((unsigned int)time(NULL));
 	baseTerrain = BaseTerrain[rand() % countof(BaseTerrain)];

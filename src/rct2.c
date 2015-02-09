@@ -104,7 +104,7 @@ int rct2_init()
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
-	map_init();
+	map_init(150);
 	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
 	date_reset();

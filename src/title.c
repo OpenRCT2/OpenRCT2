@@ -103,7 +103,7 @@ void title_load()
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4(); // RCT2_CALLPROC_EBPSAFE(0x006BD3A4);
-	map_init();
+	map_init(150);
 	park_init();
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);

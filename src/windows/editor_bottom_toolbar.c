@@ -33,7 +33,7 @@
 #include "../util/util.h"
 #include "error.h"
 
-enum WINDOW_EDITOR_TOP_TOOLBAR_WIDGET_IDX {
+enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
 	WIDX_PREVIOUS_STEP_BUTTON,	// 2
 	WIDX_NEXT_IMAGE,			// 4

@@ -21,6 +21,7 @@
 #ifndef _MAPGEN_H_
 #define _MAPGEN_H_
 
-void mapgen_generate();
+void mapgen_generate_blank(int mapSize, int height, int waterLevel, int floor, int wall);
+void mapgen_generate(int mapSize);
 
 #endif

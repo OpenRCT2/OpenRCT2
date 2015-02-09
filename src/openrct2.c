@@ -80,7 +80,6 @@ void openrct2_launch()
 	case STARTUP_ACTION_EDIT:
 		if (strlen(gOpenRCT2StartupActionPath) == 0) {
 			editor_load();
-			mapgen_generate();
 		} else {
 			editor_load_landscape(gOpenRCT2StartupActionPath);
 		}

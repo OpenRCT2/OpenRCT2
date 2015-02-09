@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../sprites.h"
@@ -105,7 +106,7 @@ static const int right_aligned_widgets_order[] = {
 
 #pragma endregion
 
-static rct_widget window_game_top_toolbar_widgets[] = {
+static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x0000,			0x001D,			0,		27,		0x20000000 | SPR_TOOLBAR_PAUSE,				STR_PAUSE_GAME_TIP },				// Pause
 	{ WWT_TRNBTN,	0,	0x001E + 30,	0x003B + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_FILE,				STR_DISC_AND_GAME_OPTIONS_TIP },	// File menu
 	{ WWT_TRNBTN,	1,	0x0046 + 30,	0x0063 + 30,	0,		27,		0x20000000 | SPR_TOOLBAR_ZOOM_OUT,			STR_ZOOM_OUT_TIP },					// Zoom out
@@ -133,85 +134,63 @@ static rct_widget window_game_top_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_game_top_toolbar_emptysub() { }
-static void window_game_top_toolbar_mouseup();
-static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_game_top_toolbar_dropdown();
-static void window_game_top_toolbar_tool_update();
-static void window_game_top_toolbar_tool_down();
-static void window_game_top_toolbar_tool_drag();
-static void window_game_top_toolbar_invalidate();
-static void window_game_top_toolbar_paint();
+static void window_top_toolbar_emptysub() { }
+static void window_top_toolbar_mouseup();
+static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_top_toolbar_dropdown();
+static void window_top_toolbar_tool_update();
+static void window_top_toolbar_tool_down();
+static void window_top_toolbar_tool_drag();
+static void window_top_toolbar_invalidate();
+static void window_top_toolbar_paint();
 
-static void* window_game_top_toolbar_events[] = {
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_mouseup,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_mousedown,
-	window_game_top_toolbar_dropdown,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_tool_update,
-	window_game_top_toolbar_tool_down,
-	window_game_top_toolbar_tool_drag,
-	(void*)0x0066CC5B,
-	(void*)0x0066CA58,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_emptysub,
-	window_game_top_toolbar_invalidate,
-	window_game_top_toolbar_paint,
-	window_game_top_toolbar_emptysub
+static void* window_top_toolbar_events[] = {
+	window_top_toolbar_emptysub,
+	window_top_toolbar_mouseup,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_mousedown,
+	window_top_toolbar_dropdown,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,					// check if editor versions are significantly different...
+	window_top_toolbar_tool_update,					// editor: 0x0066fB0E
+	window_top_toolbar_tool_down,					// editor: 0x0066fB5C
+	window_top_toolbar_tool_drag,					// editor: 0x0066fB37
+	(void*)0x0066CC5B,								// editor: 0x0066fC44
+	(void*)0x0066CA58,								// editor: 0x0066fA74
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_emptysub,
+	window_top_toolbar_invalidate,
+	window_top_toolbar_paint,
+	window_top_toolbar_emptysub
 };
 
 /**
  * Creates the main game top toolbar window.
  *  rct2: 0x0066B485 (part of 0x0066B3E8)
  */
-void window_game_top_toolbar_open()
+void window_top_toolbar_open()
 {
 	rct_window* window;
 
 	window = window_create(
 		0, 0,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
-		(uint32*)window_game_top_toolbar_events,
+		(uint32*)window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 	);
-	window->widgets = window_game_top_toolbar_widgets;
-
-	window->enabled_widgets |= 
-		(1 << WIDX_PAUSE) | 
-		(1 << WIDX_FILE_MENU) |
-		(1 << WIDX_ZOOM_OUT) | 
-		(1 << WIDX_ZOOM_IN) |
-		(1 << WIDX_ROTATE) | 
-		(1 << WIDX_VIEW_MENU) |
-		(1 << WIDX_MAP) | 
-		(1 << WIDX_LAND) |
-		(1 << WIDX_WATER) | 
-		(1 << WIDX_SCENERY) |
-		(1 << WIDX_PATH) | 
-		(1 << WIDX_CONSTRUCT_RIDE) |
-		(1 << WIDX_RIDES) | 
-		(1 << WIDX_PARK) |
-		(1 << WIDX_STAFF) | 
-		(1 << WIDX_GUESTS) |
-		(1 << WIDX_CLEAR_SCENERY) |
-		//(1ULL << WIDX_FASTFORWARD) | 
-		(1ULL << WIDX_FINANCES) |
-		(1ULL << WIDX_RESEARCH);
+	window->widgets = window_top_toolbar_widgets;
 
 	window_init_scroll_widgets(window);
 	window->colours[0] = 7;
@@ -224,7 +203,7 @@ void window_game_top_toolbar_open()
  * 
  *  rct2: 0x0066C957
  */
-static void window_game_top_toolbar_mouseup()
+static void window_top_toolbar_mouseup()
 {
 	short widgetIndex;
 	rct_window *w, *mainWindow;
@@ -239,7 +218,7 @@ static void window_game_top_toolbar_mouseup()
 	// 	// This is an excellent place to add in debugging statements and
 	// 	// print routines, that will be triggered when you press the
 	// 	// button in the game. Use "git update-index --skip-worktree
-	// 	// src/window_game_top_toolbar" to avoid committing these changes to
+	// 	// src/window_top_toolbar" to avoid committing these changes to
 	// 	// version control.
 	// 	window_cheats_open();
 	// 	break;
@@ -302,25 +281,51 @@ static void window_game_top_toolbar_mouseup()
  * 
  *  rct2: 0x0066CA3B
  */
-static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
+	int numItems;
+
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
-		gDropdownItemsFormat[0] = STR_LOAD_GAME;
-		gDropdownItemsFormat[1] = STR_SAVE_GAME;
-		gDropdownItemsFormat[2] = 0;
-		gDropdownItemsFormat[3] = STR_ABOUT;
-		gDropdownItemsFormat[4] = STR_OPTIONS;
-		gDropdownItemsFormat[5] = STR_SCREENSHOT;
-		gDropdownItemsFormat[6] = 0;
-		gDropdownItemsFormat[7] = STR_QUIT_GAME;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+			gDropdownItemsFormat[0] = STR_ABOUT;
+			gDropdownItemsFormat[1] = STR_OPTIONS;
+			gDropdownItemsFormat[2] = STR_SCREENSHOT;
+			gDropdownItemsFormat[3] = 0;
+			gDropdownItemsFormat[4] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+				gDropdownItemsFormat[4] = STR_QUIT_ROLLERCOASTER_DESIGNER;
+
+			numItems = 5;
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
+			gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
+			gDropdownItemsFormat[2] = 0;
+			gDropdownItemsFormat[3] = STR_ABOUT;
+			gDropdownItemsFormat[4] = STR_OPTIONS;
+			gDropdownItemsFormat[5] = STR_SCREENSHOT;
+			gDropdownItemsFormat[6] = 0;
+			gDropdownItemsFormat[7] = STR_QUIT_SCENARIO_EDITOR;
+			numItems = 8;
+		} else {
+			gDropdownItemsFormat[0] = STR_LOAD_GAME;
+			gDropdownItemsFormat[1] = STR_SAVE_GAME;
+			gDropdownItemsFormat[2] = 0;
+			gDropdownItemsFormat[3] = STR_ABOUT;
+			gDropdownItemsFormat[4] = STR_OPTIONS;
+			gDropdownItemsFormat[5] = STR_SCREENSHOT;
+			gDropdownItemsFormat[6] = 0;
+			gDropdownItemsFormat[7] = STR_QUIT_GAME;
+			numItems = 8;
+		}
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
 			0x80,
-			8
+			numItems
 		);
 		break;
 	case WIDX_VIEW_MENU:
@@ -329,15 +334,22 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
 	case WIDX_MAP:
 		gDropdownItemsFormat[0] = 2523;
 		gDropdownItemsFormat[1] = 2780;
+		numItems = 2;
+
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && g_editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+			gDropdownItemsFormat[2] = 2690;
+			numItems++;
+		}
+
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1] | 0x80,
 			0,
-			2
+			numItems
 		);
-		RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	}
 }
@@ -346,7 +358,7 @@ static void window_game_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct
  * 
  *  rct2: 0x0066C9EA
  */
-static void window_game_top_toolbar_dropdown()
+static void window_top_toolbar_dropdown()
 {
 	short widgetIndex, dropdownIndex;
 	rct_window* w;
@@ -355,24 +367,33 @@ static void window_game_top_toolbar_dropdown()
 
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+			dropdownIndex += DDIDX_ABOUT;
+
 		switch (dropdownIndex) {
-		case DDIDX_LOAD_GAME:		// load game
+		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
-		case DDIDX_SAVE_GAME:		// save game
-			tool_cancel();
-			save_game();
+		case DDIDX_SAVE_GAME:
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+				RCT2_CALLPROC_EBPSAFE(0x0066FE2A);
+			} else {
+				tool_cancel();
+				save_game();
+			}
 			break;
-		case DDIDX_ABOUT:		// about
+		case DDIDX_ABOUT:
 			window_about_open();
 			break;
-		case DDIDX_OPTIONS:		// options
+		case DDIDX_OPTIONS:
 			window_options_open();
 			break;
-		case DDIDX_SCREENSHOT:		// screenshot
+		case DDIDX_SCREENSHOT:
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
-		case DDIDX_QUIT_GAME:		// quit game
+		case DDIDX_QUIT_GAME:
+			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+			window_close_by_class(WC_TRACK_DELETE_PROMPT);
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		}
@@ -382,13 +403,17 @@ static void window_game_top_toolbar_dropdown()
 		break;
 	case WIDX_MAP:
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
+
 		switch (dropdownIndex) {
 		case 0:
 			window_map_open();
 			break;
 		case 1:
 			window_viewport_open();
+			break;
+		case 2:
+			window_mapgen_open();
 			break;
 		}
 		break;
@@ -399,38 +424,102 @@ static void window_game_top_toolbar_dropdown()
  * 
  *  rct2: 0x0066C810
  */
-static void window_game_top_toolbar_invalidate()
+static void window_top_toolbar_invalidate()
 {
-	int x;
+	int i, x, enabledWidgets, widgetIndex, widgetWidth;
 	rct_window *w;
+	rct_widget *widget;
 
 	window_get_register(w);
 
-	// Anchor the right half of the buttons to the right
-	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	if (x < 640)
-		x = 640;
+	// Enable / disable buttons
+	window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_FILE_MENU].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_PATH].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_RIDES].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_PARK].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_STAFF].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
 
-	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
-		rct_widget *current_widget = &window_game_top_toolbar_widgets[right_aligned_widgets_order[i]];
-		int widget_width = current_widget->right - current_widget->left;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_PARK].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_STAFF].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 
-		x -= 1;
-		current_widget->right = x;
-		x -= widget_width;
-		current_widget->left = x;
+		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
+			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_LAND].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_WATER].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_PATH].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
+		}
+		
+		if (g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
+		}
+
+		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+			window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_EMPTY;
+		}
+	} else {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+			window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 	}
 
+	enabledWidgets = 0;
+	for (i = WIDX_PAUSE; i <= WIDX_RESEARCH; i++)
+		if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
+			enabledWidgets |= (1 << i);
+	w->enabled_widgets = enabledWidgets;
+
+	// Align left hand side toolbar buttons
 	x = 0;
-
 	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
-		rct_widget *current_widget = &window_game_top_toolbar_widgets[left_aligned_widgets_order[i]];
-		int widget_width = current_widget->right - current_widget->left;
+		widgetIndex = left_aligned_widgets_order[i];
+		widget = &window_top_toolbar_widgets[widgetIndex];
+		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
+			continue;
 
-		current_widget->left = x;
-		x += widget_width;
-		current_widget->right = x;
+		widgetWidth = widget->right - widget->left;
+		widget->left = x;
+		x += widgetWidth;
+		widget->right = x;
 		x += 1;
+	}
+
+	// Align right hand side toolbar buttons
+	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
+		widgetIndex = right_aligned_widgets_order[i];
+		widget = &window_top_toolbar_widgets[widgetIndex];
+		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
+			continue;
+
+		widgetWidth = widget->right - widget->left;
+		x -= 1;
+		widget->right = x;
+		x -= widgetWidth;
+		widget->left = x;
 	}
 
 	// Footpath button pressed down
@@ -453,20 +542,10 @@ static void window_game_top_toolbar_invalidate()
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){
 		w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
-	}
-	else if (window_get_main()->viewport->zoom == 3){
+	} else if (window_get_main()->viewport->zoom == 3){
 		w->disabled_widgets |= (1 << WIDX_ZOOM_OUT);
-	}
-	else
-	{
+	} else {
 		w->disabled_widgets &= ~((1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT));
-	}
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
-		window_game_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
-	}
-	else{
-		window_game_top_toolbar_widgets[WIDX_FINANCES].type = WWT_TRNBTN;
 	}
 }
 
@@ -474,7 +553,7 @@ static void window_game_top_toolbar_invalidate()
  * 
  *  rct2: 0x0066C8EC
  */
-static void window_game_top_toolbar_paint()
+static void window_top_toolbar_paint()
 {
 	int x, y, imgId;
 	rct_window *w;
@@ -485,24 +564,28 @@ static void window_game_top_toolbar_paint()
 	window_draw_widgets(w, dpi);
 
 	// Draw staff button image (setting masks to the staff colours)
-	x = w->x + window_game_top_toolbar_widgets[WIDX_STAFF].left;
-	y = w->y + window_game_top_toolbar_widgets[WIDX_STAFF].top;
-	imgId = 5627;
-	if (widget_is_pressed(w, WIDX_STAFF))
-		imgId++;
-	imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
-	gfx_draw_sprite(dpi, imgId, x, y, 0);
+	if (window_top_toolbar_widgets[WIDX_STAFF].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_STAFF].left;
+		y = w->y + window_top_toolbar_widgets[WIDX_STAFF].top;
+		imgId = 5627;
+		if (widget_is_pressed(w, WIDX_STAFF))
+			imgId++;
+		imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
 
 	// Draw research button
-	x = w->x + window_game_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
-	y = w->y + window_game_top_toolbar_widgets[WIDX_RESEARCH].top;
-	imgId = SPR_TAB_FINANCES_RESEARCH_0;
-	gfx_draw_sprite(dpi, imgId, x, y, 0);
+	if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
+		y = w->y + window_top_toolbar_widgets[WIDX_RESEARCH].top;
+		imgId = SPR_TAB_FINANCES_RESEARCH_0;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
 
 	// Draw finances button
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
-		x = w->x + window_game_top_toolbar_widgets[WIDX_FINANCES].left + 3;
-		y = w->y + window_game_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+	if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3;
+		y = w->y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1;
 		imgId = SPR_FINANCE;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
@@ -511,7 +594,7 @@ static void window_game_top_toolbar_paint()
 /**
  * rct2: 0x6e2cc6
  */
-static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
+static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
 	RCT2_CALLPROC_EBPSAFE(0x006E2712);
 	if (window_scenery_is_repaint_scenery_tool_on & 1){
 		//6e3158
@@ -579,7 +662,7 @@ static void window_game_top_toolbar_scenery_tool_down(short x, short y, rct_wind
  *
  *  rct2: 0x0066CB25
  */
-static void window_game_top_toolbar_tool_update()
+static void window_top_toolbar_tool_update()
 {
 	short widgetIndex;
 	rct_window *w;
@@ -606,7 +689,7 @@ static void window_game_top_toolbar_tool_update()
 /**
  * rct2: 0x0066CB73
  */
-static void window_game_top_toolbar_tool_down(){
+static void window_top_toolbar_tool_down(){
 	short widgetIndex;
 	rct_window* w;
 	short x, y;
@@ -652,7 +735,7 @@ static void window_game_top_toolbar_tool_down(){
 		}
 		break;
 	case WIDX_SCENERY:
-		window_game_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+		window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}
 }
@@ -661,7 +744,7 @@ static void window_game_top_toolbar_tool_down(){
  *
  *  rct2: 0x0066CB4E
  */
-static void window_game_top_toolbar_tool_drag()
+static void window_top_toolbar_tool_drag()
 {
 	short widgetIndex;
 	rct_window *w;

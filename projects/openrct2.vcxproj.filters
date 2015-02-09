@@ -120,9 +120,6 @@
     <ClCompile Include="..\src\windows\game_bottom_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\windows\game_top_toolbar.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\windows\guest_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -331,7 +328,6 @@
       <Filter>Source\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -350,7 +346,7 @@
     <ClCompile Include="..\src\windows\staff_fire_prompt.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\viewport.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -404,9 +400,6 @@
     <ClCompile Include="..\src\windows\editor_object_selection.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\windows\editor_top_toolbar.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
@@ -427,6 +420,12 @@
     </ClCompile>
     <ClCompile Include="..\src\world\mapgen.c">
       <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\mapgen.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\top_toolbar.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

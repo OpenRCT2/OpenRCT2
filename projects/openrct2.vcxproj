@@ -88,16 +88,15 @@
     <ClCompile Include="..\src\windows\editor_objective_options.c" />
     <ClCompile Include="..\src\windows\editor_object_selection.c" />
     <ClCompile Include="..\src\windows\editor_scenario_options.c" />
-    <ClCompile Include="..\src\windows\editor_top_toolbar.c" />
     <ClCompile Include="..\src\windows\error.c" />
     <ClCompile Include="..\src\windows\finances.c" />
     <ClCompile Include="..\src\windows\footpath.c" />
     <ClCompile Include="..\src\windows\game_bottom_toolbar.c" />
-    <ClCompile Include="..\src\windows\game_top_toolbar.c" />
     <ClCompile Include="..\src\windows\guest_list.c" />
     <ClCompile Include="..\src\windows\land.c" />
     <ClCompile Include="..\src\windows\main.c" />
     <ClCompile Include="..\src\windows\map.c" />
+    <ClCompile Include="..\src\windows\mapgen.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c" />
     <ClCompile Include="..\src\windows\music_credits.c" />
     <ClCompile Include="..\src\windows\news.c" />
@@ -125,6 +124,7 @@
     <ClCompile Include="..\src\windows\title_menu.c" />
     <ClCompile Include="..\src\windows\title_scenarioselect.c" />
     <ClCompile Include="..\src\windows\tooltip.c" />
+    <ClCompile Include="..\src\windows\top_toolbar.c" />
     <ClCompile Include="..\src\windows\track_list.c" />
     <ClCompile Include="..\src\windows\track_manage.c" />
     <ClCompile Include="..\src\windows\track_place.c" />

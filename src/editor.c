@@ -62,7 +62,7 @@ void editor_load()
 	pause_sounds();
 	unpause_sounds();
 	object_unload_all();
-	map_init();
+	map_init(150);
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
 	user_string_clear_all();
@@ -209,7 +209,7 @@ void trackdesigner_load()
 	rct_window *mainWindow;
 
 	object_unload_all();
-	map_init();
+	map_init(150);
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
@@ -246,7 +246,7 @@ void trackmanager_load()
 	rct_window *mainWindow;
 
 	object_unload_all();
-	map_init();
+	map_init(150);
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();

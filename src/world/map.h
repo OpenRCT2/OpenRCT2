@@ -223,7 +223,7 @@ typedef struct {
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
 
-void map_init();
+void map_init(int size);
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
 int map_element_is_last_for_tile(rct_map_element *element);

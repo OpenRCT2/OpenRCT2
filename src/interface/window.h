@@ -397,7 +397,8 @@ enum {
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
 	WC_VIEWPORT = 112,
-	WC_TEXTINPUT = 113
+	WC_TEXTINPUT = 113,
+	WC_MAPGEN = 114
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -484,7 +485,7 @@ void window_main_open();
 void window_relocate_windows(int width, int height);
 void window_resize_gui(int width, int height);
 void window_resize_gui_scenario_editor(int width, int height);
-void window_game_top_toolbar_open();
+void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
 void window_footpath_open();
@@ -536,9 +537,9 @@ void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
+rct_window *window_mapgen_open();
 
 void window_editor_main_open();
-void window_editor_top_toolbar_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
 void window_editor_inventions_list_open();
