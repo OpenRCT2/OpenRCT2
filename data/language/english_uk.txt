@@ -2722,24 +2722,24 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :???
 STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
+STR_2720    :{UINT16}sec
+STR_2721    :{UINT16}secs
+STR_2722    :{UINT16}min:{UINT16}sec
+STR_2723    :{UINT16}min:{UINT16}secs
+STR_2724    :{UINT16}mins:{UINT16}sec
+STR_2725    :{UINT16}mins:{UINT16}secs
+STR_2726    :{UINT16}min
+STR_2727    :{UINT16}mins
+STR_2728    :{UINT16}hour:{UINT16}min
+STR_2729    :{UINT16}hour:{UINT16}mins
+STR_2730    :{UINT16}hours:{UINT16}min
+STR_2731    :{UINT16}hours:{UINT16}mins
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, Year {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music
 STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
