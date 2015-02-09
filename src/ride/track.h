@@ -35,6 +35,49 @@ typedef struct {
 	uint8 pad[2];
 } rct_trackdefinition;
 
+/**
+* Size: 0x0A
+*/
+typedef struct {
+	uint8 var_00;
+	sint16 x;
+	sint16 y;
+	uint8 pad_05[3];
+	uint8 var_08;
+	uint8 unk_09;
+} rct_preview_track;
+
+/**
+* Size: 0x04
+*/
+typedef struct {
+	union {
+		uint32 all;
+		struct {
+			sint8 x;
+			sint8 y;
+			uint8 unk_2;
+			uint8 type;
+		};
+	};
+} rct_maze_element;
+
+/* Size: 0x02 */
+typedef struct{
+	uint8 type;
+	uint8 flags;
+}rct_track_element;
+
+enum{
+	TRACK_ELEMENT_FLAG_CHAIN_LIFT = (1<<7),
+	TRACK_ELEMENT_FLAG_INVERTED = (1<<6),
+	TRACK_ELEMENT_FLAG_TERMINAL_STATION = (1<<3),
+};
+
+#define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
+#define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
+#define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
+
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
 /* size: 0x2 */
@@ -54,8 +97,18 @@ typedef struct {
 	uint8 var_06;
 	uint8 var_07;
 	rct_track_vehicle_colour vehicle_colours[32];	// 0x08
-	uint8 pad_48[2];
-	uint8 total_air_time;							// 0x4A
+	union{
+		uint8 pad_48;
+		uint8 track_spine_colour_rct1;				// 0x48
+	};
+	union{
+		uint8 entrance_style;						// 0x49
+		uint8 track_rail_colour_rct1;				// 0x49
+	};
+	union{
+		uint8 total_air_time;						// 0x4A
+		uint8 track_support_colour_rct1;			// 0x4A
+	};
 	uint8 pad_4B;
 	uint8 number_of_trains;							// 0x4C
 	uint8 number_of_cars_per_train;					// 0x4D
@@ -158,5 +211,6 @@ rct_track_td6* load_track_design(const char *path);
 int track_rename(const char *text);
 int track_delete();
 void reset_track_list_cache();
+int sub_6D01B3(int bl, int x, int y, int z);
 
 #endif

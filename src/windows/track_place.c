@@ -28,6 +28,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../ride/track.h"
+#include "../ride/track_data.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -114,33 +115,6 @@ static void window_track_place_clear_mini_preview()
 	memset(_window_track_place_mini_preview, 220, TRACK_MINI_PREVIEW_SIZE);
 }
 
-/**
- * Size: 0x0A
- */
-typedef struct {
-	uint8 var_00;
-	sint16 x;
-	sint16 y;
-	uint8 pad_05[3];
-	uint8 var_08;
-	uint8 unk_09;
-} rct_preview_track;
-
-/**
- * Size: 0x04
- */
-typedef struct {
-	union {
-		uint32 all;
-		struct {
-			sint8 x;
-			sint8 y;
-			uint8 unk_2;
-			uint8 type;
-		};
-	};
-} rct_preview_maze;
-
 #define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
 
 /**
@@ -149,10 +123,11 @@ typedef struct {
  */
 static void window_track_place_draw_mini_preview()
 {
-	rct_track_design *design = (rct_track_design*)0x009D8178;
-	uint8 *pixel, colour, *trackPtr, bits;
+	rct_track_td6 *track = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8 *pixel, colour, bits;
 	int i, rotation, pass, x, y, pixelX, pixelY, originX, originY, minX, minY, maxX, maxY;
-	rct_preview_maze *mazeBlock;
+	rct_maze_element *mazeElement;
+	rct_track_element *trackElement;
 	rct_preview_track *trackBlock;
 
 	window_track_place_clear_mini_preview();
@@ -171,14 +146,14 @@ static void window_track_place_draw_mini_preview()
 			originY -= ((maxY + minY) >> 6) << 5;
 		}
 
-		if (design->track_td6.type != RIDE_TYPE_MAZE) {
+		if (track->type != RIDE_TYPE_MAZE) {
 			#pragma region Track
 
-			rotation = RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-			trackPtr = design->preview[0];
+			rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			trackElement = RCT2_ADDRESS(0x009D821B, rct_track_element);
 
-			while (*trackPtr != 255) {
-				int trackType = *trackPtr;
+			while (trackElement->type != 255) {
+				int trackType = trackElement->type;
 				if (trackType == 101)
 					trackType = 255;
 
@@ -237,45 +212,47 @@ static void window_track_place_draw_mini_preview()
 
 				// Change rotation and next position based on track curvature
 				rotation &= 3;
+				const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
+
 				trackType *= 10;
 				switch (rotation) {
 				case 0:
-					originX += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
-					originY += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originX += track_coordinate->x;
+					originY += track_coordinate->y;
 					break;
 				case 1:
-					originX += RCT2_GLOBAL(0x009968C3 + trackType, sint16);
-					originY -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originX += track_coordinate->y;
+					originY -= track_coordinate->x;
 					break;
 				case 2:
-					originX -= RCT2_GLOBAL(0x009968C1 + trackType, sint16);
-					originY -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
+					originX -= track_coordinate->x;
+					originY -= track_coordinate->y;
 					break;
 				case 3:
-					originX -= RCT2_GLOBAL(0x009968C3 + trackType, sint16);
-					originY += RCT2_GLOBAL(0x009968C1 + trackType, sint16);
+					originX -= track_coordinate->y;
+					originY += track_coordinate->x;
 					break;
 				}
-				rotation += RCT2_ADDRESS(0x009968BC, uint8)[trackType] - RCT2_ADDRESS(0x009968BB, uint8)[trackType];
+				rotation += track_coordinate->rotation_positive - track_coordinate->rotation_negative;
 				rotation &= 3;
-				if (RCT2_ADDRESS(0x009968BC, uint8)[trackType] & 4)
+				if (track_coordinate->rotation_positive & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
 					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
 					originY += RCT2_GLOBAL(0x00993CCE + (rotation * 4), sint16);
 				}
-				trackPtr += 2;
+				trackElement++;
 			}
 
 			#pragma endregion
 		} else {
 			#pragma region Maze
 
-			rotation = (RCT2_GLOBAL(0x00F440AE, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
-			mazeBlock = (rct_preview_maze*)design->preview[0];
-			while (mazeBlock->all != 0) {
-				x = mazeBlock->x * 32;
-				y = mazeBlock->y * 32;
+			rotation = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
+			mazeElement = RCT2_ADDRESS(0x009D821B, rct_maze_element);
+			while (mazeElement->all != 0) {
+				x = mazeElement->x * 32;
+				y = mazeElement->y * 32;
 				switch (rotation) {
 				case 1:
 					x = -x;
@@ -294,7 +271,7 @@ static void window_track_place_draw_mini_preview()
 				y += originY;
 
 				// Entrance or exit is a lighter colour
-				colour = mazeBlock->type == 8 || mazeBlock->type == 128 ? 222 : 218;
+				colour = mazeElement->type == 8 || mazeElement->type == 128 ? 222 : 218;
 
 				if (pass == 0) {
 					minX = min(minX, x);
@@ -315,7 +292,7 @@ static void window_track_place_draw_mini_preview()
 						}
 					}
 				}
-				mazeBlock++;
+				mazeElement++;
 			}
 
 			#pragma endregion
@@ -335,24 +312,6 @@ static void sub_68A15E(int x, int y, short *ax, short *bx)
 	RCT2_CALLFUNC_X(0x0068A15E, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	*ax = *((short*)&eax);
 	*bx = *((short*)&ebx);
-}
-
-/**
- * Seems to highlight the surface tiles to match the track layout at the given position but also returns some Z value.
- *  rct2: 0x006D01B3
- */
-static int sub_6D01B3(int bl, int x, int y, int z)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = bl;
-	ecx = y;
-	edx = z;
-	esi = 0;
-	edi = 0;
-	ebp = 0;
-	RCT2_CALLFUNC_X(0x006D01B3,  &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return *((short*)&ebx);
 }
 
 /**
@@ -441,7 +400,7 @@ void window_track_place_open()
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
-	RCT2_GLOBAL(0x00F440AE, uint8) = (-RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = (-RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
 	window_track_place_draw_mini_preview();
 }
 
@@ -476,14 +435,14 @@ static void window_track_place_mouseup()
 		break;
 	case WIDX_ROTATE:
 		window_track_place_clear_provisional();
-		RCT2_GLOBAL(0x00F440AE, uint16) = (RCT2_GLOBAL(0x00F440AE, uint16) + 1) & 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) + 1) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
 		RCT2_CALLPROC_EBPSAFE(0x006D2436);
-		RCT2_GLOBAL(0x00F440AE, uint16) = (-RCT2_GLOBAL(0x00F440AE, uint16)) & 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();

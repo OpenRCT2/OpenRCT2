@@ -728,7 +728,7 @@ void sub_6C9627()
 			&x,
 			&y,
 			RCT2_GLOBAL(0x00F440AC, uint16),
-			RCT2_GLOBAL(0x00F440AE, uint8) & 3,
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) & 3,
 			RCT2_GLOBAL(0x00F440AF, uint8),
 			0,
 			0,
@@ -910,7 +910,7 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	RCT2_GLOBAL(0x00F440A8, uint16) = x;
 	RCT2_GLOBAL(0x00F440AA, uint16) = y;
 	RCT2_GLOBAL(0x00F440AC, uint16) = z;
-	RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = direction;
 	RCT2_GLOBAL(0x00F440AF, uint8) = type;
 	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
@@ -930,7 +930,7 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 	RCT2_GLOBAL(0x00F440A8, uint16) = x;
 	RCT2_GLOBAL(0x00F440AA, uint16) = y;
 	RCT2_GLOBAL(0x00F440AC, uint16) = z;
-	RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = direction;
 	RCT2_GLOBAL(0x00F440AF, uint8) = type;
 	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
@@ -942,7 +942,7 @@ int ride_modify(rct_map_element *mapElement, int x, int y)
 		RCT2_GLOBAL(0x00F440A8, uint16) = x;
 		RCT2_GLOBAL(0x00F440AA, uint16) = y;
 		RCT2_GLOBAL(0x00F440AC, uint16) = z;
-		RCT2_GLOBAL(0x00F440AE, uint8) = direction;
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = direction;
 		RCT2_GLOBAL(0x00F440AF, uint8) = type;
 		RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 		RCT2_GLOBAL(0x00F440B1, uint8) = 0;
@@ -993,7 +993,7 @@ int sub_6CC3FB(int rideIndex)
 	RCT2_GLOBAL(0x00F440B6, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B7, uint8) = 0;
 
-	RCT2_GLOBAL(0x00F440AE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 0;
 	RCT2_GLOBAL(0x00F440A6, uint8) = 4;
 	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;

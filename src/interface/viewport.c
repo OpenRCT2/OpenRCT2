@@ -527,8 +527,6 @@ void viewport_update_position(rct_window *window)
 	//RCT2_CALLPROC_X(0x6E7DE1, x, y, 0, 0, (int)window, (int)viewport, 0);
 }
 
-void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
-
 /**
  * 
  *  rct2: 0x00685C02

@@ -26,6 +26,10 @@
 #include "ride.h"
 #include "track.h"
 #include "../platform/platform.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../world/park.h"
+#include "../interface/viewport.h"
 
 /**
  *
@@ -466,6 +470,14 @@ rct_track_td6* load_track_design(const char *path)
 	if (fp == NULL)
 		return 0;
 
+	char* track_name_pointer = (char*)path;
+	while (*track_name_pointer++ != '\0');
+	while (*--track_name_pointer != '\\');
+	char* default_name = RCT2_ADDRESS(0x009E3504, char);
+	// Copy the track name for use as the default name of this ride
+	while (*++track_name_pointer != '.')*default_name++ = *track_name_pointer;
+	*default_name++ = '\0';
+
 	// Read whole file into a buffer
 	fpLength = fsize(fp);
 	fpBuffer = malloc(fpLength);
@@ -604,6 +616,372 @@ void reset_track_list_cache(){
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
 }
 
+/* rct2: 0x006D1C68 */
+int backup_map(){
+	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
+	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
+	
+	RCT2_GLOBAL(0xF440F1, uint8*) = malloc(0x40000);
+	if (RCT2_GLOBAL(0xF440F1, uint32) == 0){
+		free(RCT2_GLOBAL(0xF440ED, uint8*));
+		return 0;
+	}
+
+	RCT2_GLOBAL(0xF440F5, uint8*) = malloc(14);
+	if (RCT2_GLOBAL(0xF440F5, uint32) == 0){
+		free(RCT2_GLOBAL(0xF440ED, uint8*));
+		free(RCT2_GLOBAL(0xF440F1, uint8*));
+		return 0;
+	}
+
+	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
+	memcpy(RCT2_GLOBAL(0xF440ED, uint32*), map_elements, 0xED600);
+
+	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
+	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
+
+	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
+	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32);
+	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
+	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
+	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
+	*(uint32*)(backup_info + 10) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	return 1;
+}
+
+/* rct2: 0x006D2378 */
+void reload_map_backup(){
+	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
+	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
+
+	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
+	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
+
+	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
+	RCT2_GLOBAL(0x0140E9A4, uint32) = *(uint32*)backup_info;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = *(uint16*)(backup_info + 6);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
+
+	free(RCT2_GLOBAL(0xF440ED, uint8*));
+	free(RCT2_GLOBAL(0xF440F1, uint8*));
+	free(RCT2_GLOBAL(0xF440F5, uint8*));
+}
+
+/* rct2: 0x006D1D9A */
+void blank_map(){
+	rct_map_element* map_element;
+	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
+		map_element = GET_MAP_ELEMENT(i);
+		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
+		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
+		map_element->base_height = 2;
+		map_element->clearance_height = 0;
+		map_element->properties.surface.slope = 0;		
+		map_element->properties.surface.terrain = 0;
+		map_element->properties.surface.grass_length = 1;
+		map_element->properties.surface.ownership = OWNERSHIP_OWNED;
+	}
+	map_update_tile_pointers();
+}
+
+/* rct2: 0x006ABDB0 */
+void load_track_scenery_objects(){
+	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
+	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
+
+	rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
+	memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
+
+	object_unload_all();
+	object_load(-1, copied_entry, 0);
+	uint8 entry_type;
+	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
+	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
+
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+
+	if (track_design->type == RIDE_TYPE_MAZE){
+		// Skip all of the maze track elements
+		while (*(uint32*)track_elements != 0)track_elements += 4;
+		track_elements += 4;
+	}
+	else{
+		// Skip track_elements
+		while (*track_elements != 255) track_elements += 2;
+		track_elements++;
+		
+		// Skip entrance exit elements
+		while (*track_elements != 255) track_elements += 6;
+		track_elements++;
+	}
+
+	while (*track_elements != 255){
+		if (!find_object_in_entry_group((rct_object_entry*)track_elements, &entry_type, &entry_index)){
+			object_load(-1, (rct_object_entry*)track_elements, 0);
+		}
+		// Skip object and location/direction/colour
+		track_elements += sizeof(rct_object_entry) + 6;
+	}
+
+	sub_6A9FC0();
+}
+
+/**
+* Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by 
+* the track preview window to place the whole track. 
+* Depending on the value of bl it modifies the function.
+* bl == 0, Draw outlines on the ground
+* bl == 3, Returns the z value of a succesful placement
+* bl == 5, Returns cost to create the track. Places the track. (used by the preview)
+* bl == 6, Clear white outlined track.
+*  rct2: 0x006D01B3
+*/
+int sub_6D01B3(int bl, int x, int y, int z)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = bl;
+	ecx = y;
+	edx = z;
+	esi = 0;
+	edi = 0;
+	ebp = 0;
+	RCT2_CALLFUNC_X(0x006D01B3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return *((short*)&ebx);
+}
+
+/* rct2: 0x006D2189 
+ * ebx = ride_id
+ * cost = edi
+ */
+int sub_6D2189(int* cost, uint8* ride_id){
+	RCT2_GLOBAL(0xF44151, uint8) = 0;
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8 entry_type, entry_index;
+	
+	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
+		entry_index = 0xFF;
+
+	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
+	ebx = 41;
+	edx = track_design->type | (entry_index << 8);
+	esi = GAME_COMMAND_6;
+
+	if (0x80000000 == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
+
+	// bh
+	*ride_id = edi & 0xFF;
+
+	rct_ride* ride = GET_RIDE(*ride_id);
+
+	uint8* ride_name = RCT2_ADDRESS(0x9E3504, uint8);
+	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
+
+	if (new_ride_name){
+		rct_string_id old_name = ride->name;
+		ride->name = new_ride_name;
+		user_string_free(old_name);
+	}
+
+	uint8 version = track_design->var_07 >> 2;
+
+	if (version == 2){
+		ride->entrance_style = track_design->entrance_style;
+	}
+
+	if (version != 0){
+		memcpy(&ride->track_colour_main, &track_design->track_spine_colour, 4);
+		memcpy(&ride->track_colour_additional, &track_design->track_rail_colour, 4);
+		memcpy(&ride->track_colour_supports, &track_design->track_support_colour, 4);
+	}
+	else{
+		memset(&ride->track_colour_main, track_design->track_spine_colour_rct1, 4);
+		memset(&ride->track_colour_additional, track_design->track_rail_colour_rct1, 4);
+		memset(&ride->track_colour_supports, track_design->track_support_colour_rct1, 4);
+	}
+
+	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
+	uint8 backup_rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 0;
+	int z = sub_6D01B3(3, map_size, map_size, 16);
+
+	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
+		RCT2_GLOBAL(0xF44151, uint8) |= 2;
+	}
+	//dx
+	z += 16 - RCT2_GLOBAL(0xF44129, uint16);
+
+	int bl = 5;
+	if (RCT2_GLOBAL(0xF4414E, uint8) & 2){
+		bl |= 0x80;
+		RCT2_GLOBAL(0xF44151, uint8) |= 1;
+	}
+	edi = sub_6D01B3((*ride_id << 8) | bl, map_size, map_size, z);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
+
+	if (edi != 0x80000000){
+
+		if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index)){
+			RCT2_GLOBAL(0xF44151, uint8) |= 4;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
+		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		*cost = edi;
+		return 1;
+	}
+	else{
+
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
+		user_string_free(ride->name);
+		ride->type = RIDE_TYPE_NULL;
+		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		return 0;
+	}
+}
+
+/* rct2: 0x006D235B */
+void sub_6D235B(uint8 ride_id){
+	rct_ride* ride = GET_RIDE(ride_id);
+	user_string_free(ride->name);
+	ride->type = RIDE_TYPE_NULL;
+}
+
+/* rct2: 0x006D1EF0 */
+void draw_track_preview(uint8** preview){
+	// Make a copy of the map
+	if (!backup_map())return;
+
+	blank_map();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+		load_track_scenery_objects();
+	}
+
+	int cost;
+	uint8 ride_id;
+
+	if (!sub_6D2189(&cost, &ride_id)){
+		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
+		reload_map_backup();
+		return;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32) = cost;
+
+	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
+	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
+	int left, top, right, bottom;
+
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)) / 2 + 16;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)) / 2 + 16;
+	int center_z = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)) / 2;
+
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
+
+	if (width < height)
+		width = height;
+
+	int zoom_level = 1;
+	
+	if (width > 1120)
+		zoom_level = 2;
+
+	if (width > 2240)
+		zoom_level = 3;
+
+	width = 370 << zoom_level;
+	height = 217 << zoom_level;
+
+	int x = center_y - center_x - width / 2;
+	int y = (center_y + center_x) / 2 - center_z - height / 2;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
+
+	view->width = 370;
+	view->height = 217;
+	view->view_width = width;
+	view->view_height = height;
+	view->x = 0;
+	view->y = 0;
+	view->view_x = x;
+	view->view_y = y;
+	view->zoom = zoom_level;
+	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
+
+	dpi->zoom_level = zoom_level;
+	dpi->x = 0;
+	dpi->y = 0;
+	dpi->width = 370;
+	dpi->height = 217;
+	dpi->pitch = 0;
+	dpi->bits = (char*)preview;
+
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 1;
+	x = -center_y - center_x - width / 2;
+	y = (center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 2;
+	x =  center_x - center_y - width / 2;
+	y = (-center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 3;
+	x = center_x + center_y - width / 2;
+	y = (center_x - center_y) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	sub_6D235B(ride_id);
+	reload_map_backup();
+}
+
 /**
  * 
  * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
@@ -651,15 +1029,16 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
+		draw_track_preview((uint8**)trackDesign->preview);
+		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
-		trackDesign->track_td6.cost = RCT2_GLOBAL(0x00F4411D, money32);
+		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
 		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
 	// Set preview to correct preview image based on rotation
 	if (preview != NULL)
-		*preview = trackDesign->preview[RCT2_GLOBAL(0x00F440AE, uint8)];
+		*preview = trackDesign->preview[RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)];
 
 	return trackDesign;
 }

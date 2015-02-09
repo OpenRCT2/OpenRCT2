@@ -111,10 +111,6 @@ void window_editor_object_selection_open()
 	RCT2_CALLPROC_EBPSAFE(0x006AB211);
 	RCT2_CALLPROC_EBPSAFE(0x006AA770);
 
-	// HACK REMOVE WHEN ALL OBJECT_LOAD CALLS FINISHED
-	// Force Expansion Packs to always pass tests on object load
-	RCT2_GLOBAL(0x9AB4C0, uint16) = 0xFF;
-
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300,
 		max(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200, 28),
@@ -252,14 +248,14 @@ void sub_6d33e2(){
 	int entry_index = 0;
 	for (; ((int)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
 
-	//RCT2_GLOBAL(0xF44157, uint8) = entry_index;
+	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
 	rct_ride_type* ride_entry = GET_RIDE_ENTRY(entry_index);
 	uint8* ride_type_array = &ride_entry->var_00C;
 
 	int ride_type;
 	for (int i = 0; (ride_type = ride_type_array[i]) == 0xFF; i++);
-	//RCT2_GLOBAL(0xF44158, uint8) = ride_type;
+	RCT2_GLOBAL(0xF44158, uint8) = ride_type;
 
 	ride_list_item item = { ride_type, entry_index };
 	track_load_list(item);
