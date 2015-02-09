@@ -2736,7 +2736,7 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/u
 STR_2736    :{MONTH}, Jaar {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Jaar {COMMA16}
-STR_2738    :Hoofdscherm muziek
+STR_2738    :Muziek hoofdscherm
 STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
