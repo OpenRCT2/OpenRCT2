@@ -2798,21 +2798,25 @@ int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 		if (!track_get_next(&trackElement, &nextTrackElement)) {
 			// Not sure why this is the case...
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+			*output = trackElement;
 			return 0;
 		}
 
-		if (nextTrackElement.element->type == 216) {
+		if (nextTrackElement.element->properties.track.type == 216) {
 			type = trackElement.element->properties.track.type;
 			if (type == 1) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+				*output = nextTrackElement;
 				return 0;
 			}
 			if (type == 216) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
+				*output = nextTrackElement;
 				return 0;
 			}
 			if ((trackElement.element->type & 0x80) && type != 209 && type != 210) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
+				*output = nextTrackElement;
 				return 0;
 			}
 		}
@@ -2909,7 +2913,7 @@ int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *o
  */
 void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
 {
-	// RCT2_CALLPROC_X(0x006B4D26, element->x, 0, element->y, rideIndex, (int)element->element, 0, 0);
+	RCT2_CALLPROC_X(0x006B4D26, startElement->x, 0, startElement->y, rideIndex, (int)startElement->element, 0, 0); return;
 
 	rct_xy_element currentElement;
 	rct_ride *ride;
@@ -3006,8 +3010,8 @@ void loc_6B51C0(int rideIndex)
 		return;
 
 	if (ride->type != RIDE_TYPE_MAZE) {
-		x = (ride->station_starts[i] >> 8) * 32;
-		y = (ride->station_starts[i] & 0xFF) * 32;
+		x = (ride->station_starts[i] & 0xFF) * 32;
+		y = (ride->station_starts[i] >> 8) * 32;
 		z = ride->station_heights[i] * 8;
 		window_scroll_to_location(w, x, y, z);
 
