@@ -1979,7 +1979,7 @@ rct_ride_measurement *ride_get_existing_measurement(int rideIndex)
 	return NULL;
 }
 
-rct_ride_measurement *ride_get_free_measurement()
+int ride_get_free_measurement()
 {
 	int i;
 	rct_ride_measurement *measurement;
@@ -1987,10 +1987,10 @@ rct_ride_measurement *ride_get_free_measurement()
 	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
 		measurement = GET_RIDE_MEASUREMENT(i);
 		if (measurement->ride_index == 255)
-			return measurement;
+			return i;
 	}
 
-	return NULL;
+	return -1;
 }
 
 /**
@@ -2016,8 +2016,8 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 	measurement = ride_get_existing_measurement(rideIndex);
 	if (measurement == NULL) {
 		// Find a free measurement
-		measurement = ride_get_free_measurement();
-		if (measurement == NULL) {
+		i = ride_get_free_measurement();
+		if (i == -1) {
 			// Use last recently used measurement for some other ride
 			lruIndex = 0;
 			lruTicks = 0xFFFFFFFF;
@@ -2032,9 +2032,11 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 
 			i = lruIndex;
 			measurement = GET_RIDE_MEASUREMENT(i);
-			ride->measurement_index = 255;
+			GET_RIDE(measurement->ride_index)->measurement_index = 255;
+		} else {
+			measurement = GET_RIDE_MEASUREMENT(i);
 		}
-
+		
 		measurement->ride_index = rideIndex;
 		ride->measurement_index = i;
 		measurement->flags = 0;
@@ -2905,27 +2907,63 @@ int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *o
  * 
  *  rct2: 0x006B4D26
  */
-void sub_6B4D26(int rideIndex)
+void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
 {
-	RCT2_CALLPROC_X(0x006B4D26, 0, 0, 0, rideIndex, 0, 0, 0);
+	// RCT2_CALLPROC_X(0x006B4D26, element->x, 0, element->y, rideIndex, (int)element->element, 0, 0);
+
+	rct_xy_element currentElement;
+	rct_ride *ride;
+	int trackType;
+
+	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_BUMPER_BOATS) {
+
+	} else if (ride->type != RIDE_TYPE_MAZE) {
+
+	}
+
+	if (
+		(
+			ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+		) &&
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+	) {
+		// Set flag on track pieces where a train can start
+		currentElement = *startElement;
+		do {
+			trackType = currentElement.element->properties.track.type;
+			switch (trackType) {
+			case 1:			// end of station
+			case 123:		// cable lift hill
+			case 9:			// 25deg up to flat
+			case 63:		// 60deg up to flat
+			case 147:		// diag 25deg up to flat
+			case 155:		// diag 60deg up to flat
+			case 216:		// block brakes
+				currentElement.element->flags &= ~(1 << 5);
+				break;
+			}
+		} while (track_get_next(&currentElement, &currentElement) && currentElement.element != startElement->element);
+	}
 }
 
 /**
  * 
  *  rct2: 0x006DD84C
  */
-int sub_6DD84C(rct_ride *ride)
+int sub_6DD84C(rct_ride *ride, rct_xy_element *element, int isApplying)
 {
-	return RCT2_CALLPROC_X(0x006DD84C, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+	return RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, 0, (int)ride, (int)element->element, 0) & 0x100;
 }
 
 /**
  * 
  *  rct2: 0x006DF4D4
  */
-int sub_6DF4D4(rct_ride *ride)
+int sub_6DF4D4(rct_ride *ride, rct_xy_element *element, int isApplying)
 {
-	return RCT2_CALLPROC_X(0x006DF4D4, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100;
+	return RCT2_CALLPROC_X(0x006DF4D4, element->x, isApplying, element->y, 0, (int)ride, (int)element->element, 0) & 0x100;
 }
 
 /**
@@ -3152,23 +3190,22 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (isApplying)
-		sub_6B4D26(rideIndex);
+		sub_6B4D26(rideIndex, &trackElement);
 
 	if (
 		!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000) &&
-		(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
-		// TODO Check if this is correct
-		if (sub_6DD84C(ride))
+		if (sub_6DD84C(ride, &trackElement, isApplying))
 			return 0;
 	}
 
 	if (
 		(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint32) & 0x400) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
-		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 	) {
-		if (sub_6DF4D4(ride))
+		if (sub_6DF4D4(ride, &trackElement, isApplying))
 			return 0;
 	}
 
