@@ -334,7 +334,6 @@ int scenario_load_and_play_from_path(const char *path)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
-
 	return 1;
 }
 

@@ -47,8 +47,8 @@ typedef struct {
 typedef struct {
 	uint8 type; //4
 	uint8 age; //5
-	uint8 colour; //6
-	uint8 unused; //7
+	uint8 colour_1; //6
+	uint8 colour_2; //7
 } rct_map_element_scenery_properties;
 
 typedef struct {
@@ -223,7 +223,7 @@ typedef struct {
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
 
-void map_init();
+void map_init(int size);
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
 int map_element_is_last_for_tile(rct_map_element *element);

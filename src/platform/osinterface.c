@@ -189,8 +189,8 @@ static void osinterface_create_window()
 		exit(-1);
 	}
 
-	osinterface_load_cursors();
-	RCT2_CALLPROC_EBPSAFE(0x0068371D);
+		osinterface_load_cursors();
+		RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
 	// Get window size
 	width = gGeneral_config.window_width;
@@ -825,7 +825,7 @@ int osinterface_open_common_file_dialog(int type, char *title, char *filename, c
 
 	// Clear filename
 	if (type != 0)
-		*filename = 0;
+	*filename = 0;
 
 	// Set open file name options
 	memset(&openFileName, 0, sizeof(OPENFILENAME));

@@ -62,7 +62,7 @@ void editor_load()
 	pause_sounds();
 	unpause_sounds();
 	object_unload_all();
-	map_init();
+	map_init(150);
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
 	user_string_clear_all();
@@ -156,7 +156,7 @@ void editor_convert_save_to_scenario()
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		s6Info->name[0] = 0;
-	}
+}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->var_000 = 4;
@@ -209,7 +209,7 @@ void trackdesigner_load()
 	rct_window *mainWindow;
 
 	object_unload_all();
-	map_init();
+	map_init(150);
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();
@@ -246,7 +246,7 @@ void trackmanager_load()
 	rct_window *mainWindow;
 
 	object_unload_all();
-	map_init();
+	map_init(150);
 	set_all_land_owned();
 	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
 	reset_park_entrances();

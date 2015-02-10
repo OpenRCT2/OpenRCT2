@@ -104,7 +104,7 @@ int rct2_init()
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
-	map_init();
+	map_init(150);
 	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
 	date_reset();
@@ -135,7 +135,7 @@ int rct2_init_directories()
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
-		}
+	}
 	}
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
@@ -223,7 +223,10 @@ int rct2_open_file(const char *path)
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
+		return 1;
+	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
+		return 1;
 	}
 
 	return 0;
@@ -234,10 +237,10 @@ int rct2_open_file(const char *path)
  *  rct2: 0x00674C95
  */
 int check_file_paths()
-{
+	{
 	for (int pathId = 0; pathId < PATH_ID_END; pathId++)
 		if (!check_file_path(pathId))
-			return 0;
+	return 0;
 
 	return 1;
 }
@@ -288,11 +291,11 @@ int check_file_path(int pathId)
  *  rct2: 0x00674C0B
  */
 int check_files_integrity()
-{
+	{
 	int i;
 	const char *path;
 	HANDLE file;
-	WIN32_FIND_DATA find_data;
+		WIN32_FIND_DATA find_data;
 
 	for (i = 0; files_to_check[i].pathId != PATH_ID_END; i++) {
 		path = get_file_path(files_to_check[i].pathId);

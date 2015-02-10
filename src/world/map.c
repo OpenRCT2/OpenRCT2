@@ -168,7 +168,7 @@ rct_map_element *map_get_surface_element_at(int x, int y)
  * 
  *  rct2: 0x0068AB4C
  */
-void map_init()
+void map_init(int size)
 {
 	int i;
 	rct_map_element *map_element;
@@ -194,10 +194,10 @@ void map_init()
 	RCT2_GLOBAL(0x013B0E70, sint16) = 0;
 	_sub_6A876D_save_x = 0;
 	_sub_6A876D_save_y = 0;
-	RCT2_GLOBAL(0x01358830, sint16) = 4768;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = 5054;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = 150;
-	RCT2_GLOBAL(0x01358836, sint16) = 4767;
+	RCT2_GLOBAL(0x01358830, sint16) = size * 32 - 32;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = size * 32 - 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = size;
+	RCT2_GLOBAL(0x01358836, sint16) = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	map_update_tile_pointers();
 	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);

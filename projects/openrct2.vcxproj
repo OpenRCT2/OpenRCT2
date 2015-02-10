@@ -73,7 +73,6 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\title.c" />
-    <ClCompile Include="..\src\toolbar.c" />
     <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\util\sawyercoding.c" />
     <ClCompile Include="..\src\util\util.c" />
@@ -89,16 +88,15 @@
     <ClCompile Include="..\src\windows\editor_objective_options.c" />
     <ClCompile Include="..\src\windows\editor_object_selection.c" />
     <ClCompile Include="..\src\windows\editor_scenario_options.c" />
-    <ClCompile Include="..\src\windows\editor_top_toolbar.c" />
     <ClCompile Include="..\src\windows\error.c" />
     <ClCompile Include="..\src\windows\finances.c" />
     <ClCompile Include="..\src\windows\footpath.c" />
     <ClCompile Include="..\src\windows\game_bottom_toolbar.c" />
-    <ClCompile Include="..\src\windows\game_top_toolbar.c" />
     <ClCompile Include="..\src\windows\guest_list.c" />
     <ClCompile Include="..\src\windows\land.c" />
     <ClCompile Include="..\src\windows\main.c" />
     <ClCompile Include="..\src\windows\map.c" />
+    <ClCompile Include="..\src\windows\mapgen.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c" />
     <ClCompile Include="..\src\windows\music_credits.c" />
     <ClCompile Include="..\src\windows\news.c" />
@@ -126,6 +124,7 @@
     <ClCompile Include="..\src\windows\title_menu.c" />
     <ClCompile Include="..\src\windows\title_scenarioselect.c" />
     <ClCompile Include="..\src\windows\tooltip.c" />
+    <ClCompile Include="..\src\windows\top_toolbar.c" />
     <ClCompile Include="..\src\windows\track_list.c" />
     <ClCompile Include="..\src\windows\track_manage.c" />
     <ClCompile Include="..\src\windows\track_place.c" />
@@ -136,6 +135,8 @@
     <ClCompile Include="..\src\world\footpath.c" />
     <ClCompile Include="..\src\world\fountain.c" />
     <ClCompile Include="..\src\world\map.c" />
+    <ClCompile Include="..\src\world\mapgen.c" />
+    <ClCompile Include="..\src\world\map_helpers.c" />
     <ClCompile Include="..\src\world\park.c" />
     <ClCompile Include="..\src\world\sprite.c" />
   </ItemGroup>
@@ -189,7 +190,6 @@
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\sprites.h" />
     <ClInclude Include="..\src\title.h" />
-    <ClInclude Include="..\src\toolbar.h" />
     <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\util\sawyercoding.h" />
     <ClInclude Include="..\src\util\util.h" />
@@ -201,6 +201,8 @@
     <ClInclude Include="..\src\world\climate.h" />
     <ClInclude Include="..\src\world\footpath.h" />
     <ClInclude Include="..\src\world\map.h" />
+    <ClInclude Include="..\src\world\mapgen.h" />
+    <ClInclude Include="..\src\world\map_helpers.h" />
     <ClInclude Include="..\src\world\park.h" />
     <ClInclude Include="..\src\world\scenery.h" />
     <ClInclude Include="..\src\world\sprite.h" />
