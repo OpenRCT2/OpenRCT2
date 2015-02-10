@@ -339,8 +339,11 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	//return;
 	uint8 zoom = (1 << viewport->zoom);
 
-	sint16 x_diff = (viewport->view_x - x) / zoom;
-	sint16 y_diff = (viewport->view_y - y) / zoom;
+	// Note: do not do the subtraction and then divide!
+	// Note: Due to arithmatic shift != /zoom a shift will have to be used
+	// hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
+	sint16 x_diff = (viewport->view_x >> viewport->zoom) - (x >> viewport->zoom);
+	sint16 y_diff = (viewport->view_y >> viewport->zoom) - (y >> viewport->zoom);
 
 	viewport->view_x = x;
 	viewport->view_y = y;
