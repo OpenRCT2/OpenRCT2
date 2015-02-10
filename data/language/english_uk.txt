@@ -2697,8 +2697,8 @@ STR_2691    :{WINDOW_COLOUR_2}Base height:
 STR_2692    :{WINDOW_COLOUR_2}Water level:
 STR_2693    :{WINDOW_COLOUR_2}Terrain:
 STR_2694    :Generate
-STR_2695    :???
-STR_2696    :???
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???

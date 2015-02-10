@@ -45,7 +45,7 @@ enum {
 
 	WIDX_GENERATE,
 
-	WIDX_MAP_SIZE,
+	WIDX_MAP_SIZE = 7,
 	WIDX_MAP_SIZE_UP,
 	WIDX_MAP_SIZE_DOWN,
 	WIDX_BASE_HEIGHT,
@@ -55,7 +55,10 @@ enum {
 	WIDX_WATER_LEVEL_UP,
 	WIDX_WATER_LEVEL_DOWN,
 	WIDX_FLOOR_TEXTURE,
-	WIDX_WALL_TEXTURE
+	WIDX_WALL_TEXTURE,
+
+	WIDX_RANDOM_TERRAIN = 7,
+	WIDX_PLACE_TREES,
 };
 
 #pragma region Widgets
@@ -93,6 +96,9 @@ static rct_widget window_mapgen_random_widgets[] = {
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_NONE },
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		2694,					STR_NONE },
+
+	{ WWT_CHECKBOX,			1,	4,		198,	52,		63,		2695,					STR_NONE },
+	{ WWT_CHECKBOX,			1,	4,		198,	70,		81,		2696,					STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -207,7 +213,9 @@ static uint32 window_mapgen_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_TAB_2) |
-	(1 << WIDX_GENERATE)
+	(1 << WIDX_GENERATE) |
+	(1 << WIDX_RANDOM_TERRAIN) |
+	(1 << WIDX_PLACE_TREES)
 };
 
 #pragma endregion
@@ -236,6 +244,8 @@ static int _baseHeight = 12;
 static int _waterLevel = 6;
 static int _floorTexture = TERRAIN_GRASS;
 static int _wallTexture = TERRAIN_EDGE_ROCK;
+static int _randomTerrrain = 1;
+static int _placeTrees = 1;
 
 rct_window *window_mapgen_open()
 {
@@ -267,7 +277,7 @@ rct_window *window_mapgen_open()
 	window_invalidate(w);
 	w->widgets = window_mapgen_page_widgets[0];
 	w->enabled_widgets = window_mapgen_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
+	w->var_020 = 0xFFFFFFFF;
 	w->event_handlers = window_mapgen_page_events[0];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
@@ -282,6 +292,7 @@ static void window_mapgen_base_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
+	mapgen_settings mapgenSettings;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -294,7 +305,13 @@ static void window_mapgen_base_mouseup()
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GENERATE:
-		mapgen_generate_blank(_mapSize, _baseHeight + 2, _waterLevel + 2, _floorTexture, _wallTexture);
+		mapgenSettings.mapSize = _mapSize;
+		mapgenSettings.height = _baseHeight + 2;
+		mapgenSettings.waterLevel = _waterLevel + 2;
+		mapgenSettings.floor = _floorTexture;
+		mapgenSettings.wall = _wallTexture;
+
+		mapgen_generate_blank(&mapgenSettings);
 		gfx_invalidate_screen();
 		break;
 	}
@@ -470,6 +487,7 @@ static void window_mapgen_random_mouseup()
 {
 	rct_window * w;
 	short widgetIndex;
+	mapgen_settings mapgenSettings;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -482,8 +500,21 @@ static void window_mapgen_random_mouseup()
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GENERATE:
-		mapgen_generate(_mapSize);
+		mapgenSettings.mapSize = _mapSize;
+		mapgenSettings.height = _baseHeight + 2;
+		mapgenSettings.waterLevel = _waterLevel + 2;
+		mapgenSettings.floor = _randomTerrrain ? -1 : _floorTexture;
+		mapgenSettings.wall = _randomTerrrain ? -1 : _wallTexture;
+		mapgenSettings.trees = _placeTrees;
+
+		mapgen_generate(&mapgenSettings);
 		gfx_invalidate_screen();
+		break;
+	case WIDX_RANDOM_TERRAIN:
+		_randomTerrrain ^= 1;
+		break;
+	case WIDX_PLACE_TREES:
+		_placeTrees ^= 1;
 		break;
 	}
 }
@@ -511,6 +542,12 @@ static void window_mapgen_random_invalidate()
 		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_RANDOM];
 		window_init_scroll_widgets(w);
 	}
+
+	w->pressed_widgets = 0;
+	if (_randomTerrrain)
+		w->pressed_widgets |= 1 << WIDX_RANDOM_TERRAIN;
+	if (_placeTrees)
+		w->pressed_widgets |= 1 << WIDX_PLACE_TREES;
 
 	window_mapgen_set_pressed_tab(w);
 	window_mapgen_anchor_border_widgets(w);

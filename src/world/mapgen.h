@@ -21,7 +21,19 @@
 #ifndef _MAPGEN_H_
 #define _MAPGEN_H_
 
-void mapgen_generate_blank(int mapSize, int height, int waterLevel, int floor, int wall);
-void mapgen_generate(int mapSize);
+typedef struct {
+	// Base
+	int mapSize;
+	int height;
+	int waterLevel;
+	int floor;
+	int wall;
+
+	// Features (e.g. tree, rivers, lakes etc.)
+	int trees;
+} mapgen_settings;
+
+void mapgen_generate_blank(mapgen_settings *settings);
+void mapgen_generate(mapgen_settings *settings);
 
 #endif

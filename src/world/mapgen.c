@@ -23,9 +23,54 @@
 #endif
 #include <math.h>
 #include "../addresses.h"
+#include "../object.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
+#include "scenery.h"
+
+#pragma region Random objects
+
+const char *GrassTrees[] = {
+	// Dark
+	"TCF     ",		// Caucasian Fir Tree
+	"TRF     ",		// Red Fir Tree
+	"TRF2    ",		// Red Fir Tree
+	"TSP     ",		// Scots Pine Tree
+	"TMZP    ",		// Montezuma Pine Tree
+	"TAP     ",		// Aleppo Pine Tree
+	"TCRP    ",		// Corsican Pine Tree
+	"TBP     ",		// Black Poplar Tree
+
+	// Light
+	"TCL     ",		// Cedar of Lebanon Tree
+	"TEL     ",		// European Larch Tree
+};
+
+// Trees to be placed in proximity to water
+const char *GrassWaterTrees[] = {
+	"TWW     "		// Weeping Willow Tree
+};
+
+const char *DesertTrees[] = {
+	"TMP     ",		// Monkey-Puzzle Tree
+	"THL     ",		// Honey Locust Tree
+	"TH1     ",		// Canary Palm Tree
+	"TH2     ",		// Palm Tree
+	"TPM     ",		// Palm Tree
+	"TROPT1  ",		// Tree
+	"TBC     ",		// Cactus
+	"TSC     ",		// Cactus
+};
+
+const char *SnowTrees[] = {
+	"TCFS    ",		// Snow-covered Caucasian Fir Tree
+	"TNSS    ",		// Snow-covered Norway Spruce Tree
+	"TRF3    ",		// Snow-covered Red Fir Tree
+	"TRFS    ",		// Snow-covered Red Fir Tree
+};
+
+#pragma endregion
 
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int height);
@@ -40,40 +85,52 @@ static uint8 *_height;
 
 const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_ICE };
 
-void mapgen_generate_blank(int mapSize, int height, int waterLevel, int floor, int wall)
+void mapgen_generate_blank(mapgen_settings *settings)
 {
 	int x, y;
 	rct_map_element *mapElement;
+
+	map_init(settings->mapSize);
+	for (y = 1; y < settings->mapSize - 1; y++) {
+		for (x = 1; x < settings->mapSize - 1; x++) {
+			mapElement = map_get_surface_element_at(x, y);
+			map_element_set_terrain(mapElement, settings->floor);
+			map_element_set_terrain_edge(mapElement, settings->wall);
+			mapElement->base_height = settings->height;
+			mapElement->clearance_height = settings->height;
+		}
+	}
+
+	mapgen_set_water_level(settings->waterLevel);
+}
+
+void mapgen_generate(mapgen_settings *settings)
+{
+	int i, x, y, mapSize, floorTexture, wallTexture;
+	rct_map_element *mapElement;
+
+	srand((unsigned int)time(NULL));
+
+	mapSize = settings->mapSize;
+	floorTexture = settings->floor;
+	wallTexture = settings->wall;
+
+	if (floorTexture == -1)
+		floorTexture = BaseTerrain[rand() % countof(BaseTerrain)];
+	if (wallTexture == -1) {
+		wallTexture = TERRAIN_EDGE_ROCK;
+		if (floorTexture == TERRAIN_ICE)
+			wallTexture = TERRAIN_EDGE_ICE;
+	}
 
 	map_init(mapSize);
 	for (y = 1; y < mapSize - 1; y++) {
 		for (x = 1; x < mapSize - 1; x++) {
 			mapElement = map_get_surface_element_at(x, y);
-			map_element_set_terrain(mapElement, floor);
-			map_element_set_terrain_edge(mapElement, wall);
-			mapElement->base_height = height;
-			mapElement->clearance_height = height;
-		}
-	}
-
-	mapgen_set_water_level(waterLevel);
-}
-
-void mapgen_generate(int mapSize)
-{
-	int i, x, y, baseTerrain;
-	rct_map_element *mapElement;
-
-	map_init(mapSize);
-
-	srand((unsigned int)time(NULL));
-	baseTerrain = BaseTerrain[rand() % countof(BaseTerrain)];
-	for (y = 0; y < mapSize; y++) {
-		for (x = 0; x < mapSize; x++) {
-			mapElement = map_get_surface_element_at(x, y);
-			map_element_set_terrain(mapElement, baseTerrain);
-			if (baseTerrain == TERRAIN_ICE)
-				map_element_set_terrain_edge(mapElement, TERRAIN_EDGE_ICE);
+			map_element_set_terrain(mapElement, floorTexture);
+			map_element_set_terrain_edge(mapElement, wallTexture);
+			mapElement->base_height = settings->height;
+			mapElement->clearance_height = settings->height;
 		}
 	}
 
@@ -98,7 +155,7 @@ void mapgen_generate(int mapSize)
 
 	int border = 2 + (rand() % 24);
 	for (i = 0; i < 128; i++) {
-		int radius = 4 + (rand() % 64);
+		int radius = 4 + (rand() % 32);
 		mapgen_blob(
 			border + (rand() % (_heightSize - (border * 2))),
 			border + (rand() % (_heightSize - (border * 2))),
@@ -112,11 +169,10 @@ void mapgen_generate(int mapSize)
 
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 	mapgen_set_water_level(6 + (rand() % 4) * 2);
-	// mapgen_place_trees();
-}
 
-const uint8 GrassTrees[] = { 21, 22, 27, 31, 42, 69, 71, 82, 84, 94, 95, 109 };
-const uint8 DesertTrees[] = { 15, 16, 17, 19, 72, 81, 90, 91 };
+	if (settings->trees != 0)
+		mapgen_place_trees();
+}
 
 static void mapgen_place_tree(int type, int x, int y)
 {
@@ -157,8 +213,45 @@ static void mapgen_place_tree(int type, int x, int y)
 
 static void mapgen_place_trees()
 {
-	int x, y, mapSize, i, rindex, type;
+	int x, y, mapSize, i, j, rindex, type;
 	rct_map_element *mapElement;
+
+	int numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
+	int *grassTreeIds = (int*)malloc(countof(GrassTrees) * sizeof(int));
+	int *desertTreeIds = (int*)malloc(countof(DesertTrees) * sizeof(int));
+	int *snowTreeIds = (int*)malloc(countof(SnowTrees) * sizeof(int));
+
+	for (i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
+		rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[i];
+		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
+
+		if (sceneryEntry == (rct_scenery_entry*)0xFFFFFFFF || sceneryEntry == NULL)
+			continue;
+
+		for (j = 0; j < countof(GrassTrees); j++)
+			if (strncmp(GrassTrees[j], entry->name, 8) == 0)
+				break;
+		if (j != countof(GrassTrees)) {
+			grassTreeIds[numGrassTreeIds++] = i;
+			continue;
+		}
+
+		for (j = 0; j < countof(DesertTrees); j++)
+			if (strncmp(DesertTrees[j], entry->name, 8) == 0)
+				break;
+		if (j != countof(DesertTrees)) {
+			desertTreeIds[numDesertTreeIds++] = i;
+			continue;
+		}
+
+		for (j = 0; j < countof(SnowTrees); j++)
+			if (strncmp(SnowTrees[j], entry->name, 8) == 0)
+				break;
+		if (j != countof(SnowTrees)) {
+			snowTreeIds[numSnowTreeIds++] = i;
+			continue;
+		}
+	}
 
 	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
@@ -197,16 +290,44 @@ static void mapgen_place_trees()
 	for (i = 0; i < min(availablePositionsCount, 2048 + (rand() % 10000)); i++) {
 		pos = &availablePositions[i];
 
-		mapElement = map_get_surface_element_at(x, y);
-		if (map_element_get_terrain(mapElement) == TERRAIN_SAND)
-			type = DesertTrees[rand() % countof(DesertTrees)];
-		else
-			type = GrassTrees[rand() % countof(GrassTrees)];
+		type = -1;
+		mapElement = map_get_surface_element_at(pos->x, pos->y);
+		switch (map_element_get_terrain(mapElement)) {
+		case TERRAIN_GRASS:
+		case TERRAIN_DIRT:
+		case TERRAIN_GRASS_CLUMPS:
+			if (numGrassTreeIds == 0)
+				break;
 
-		mapgen_place_tree(type, pos->x, pos->y);
+			type = grassTreeIds[rand() % numGrassTreeIds];
+			break;
+
+		case TERRAIN_SAND:
+		case TERRAIN_SAND_DARK:
+		case TERRAIN_SAND_LIGHT:
+			if (numDesertTreeIds == 0)
+				break;
+
+			if (rand() % 4 == 0)
+				type = desertTreeIds[rand() % numDesertTreeIds];
+			break;
+
+		case TERRAIN_ICE:
+			if (numSnowTreeIds == 0)
+				break;
+			
+			type = snowTreeIds[rand() % numSnowTreeIds];
+			break;
+		}
+
+		if (type != -1)
+			mapgen_place_tree(type, pos->x, pos->y);
 	}
 
 	free(availablePositions);
+	free(grassTreeIds);
+	free(desertTreeIds);
+	free(snowTreeIds);
 }
 
 static void mapgen_set_water_level(int waterLevel)

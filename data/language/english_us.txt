@@ -2692,13 +2692,13 @@ STR_2686    :???
 STR_2687    :???
 STR_2688    :???
 STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2690    :Map Generation
+STR_2691    :{WINDOW_COLOUR_2}Base height:
+STR_2692    :{WINDOW_COLOUR_2}Water level:
+STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
