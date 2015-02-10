@@ -327,7 +327,6 @@
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -353,7 +352,7 @@
     <ClCompile Include="..\src\windows\text_input.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -388,9 +387,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\src\toolbar.c">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -610,9 +606,6 @@
       <Filter>Source\World</Filter>
     </ClInclude>
     <ClInclude Include="..\src\diagnostic.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\toolbar.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\src\rct1.h">

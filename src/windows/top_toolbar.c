@@ -23,7 +23,6 @@
 #include "../game.h"
 #include "../input.h"
 #include "../sprites.h"
-#include "../toolbar.h"
 #include "../audio/audio.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -67,6 +66,19 @@ typedef enum {
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_QUIT_GAME = 7,
 } FILE_MENU_DDIDX;
+
+typedef enum {
+	DDIDX_UNDERGROUND_INSIDE = 0,
+	DDIDX_HIDE_BASE = 1,
+	DDIDX_HIDE_VERTICAL = 2,
+	DDIDX_SEETHROUGH_RIDES = 4,
+	DDIDX_SEETHROUGH_SCENARY = 5,
+	DDIDX_INVISIBLE_SUPPORTS = 6,
+	DDIDX_INVISIBLE_PEEPS = 7,
+	DDIDX_LAND_HEIGHTS = 9,
+	DDIDX_TRACK_HEIGHTS = 10,
+	DDIDX_PATH_HEIGHTS = 11,
+} TOP_TOOLBAR_VIEW_MENU_DDIDX;
 
 #pragma region Toolbar_widget_ordering
 
@@ -174,6 +186,14 @@ static void* window_top_toolbar_events[] = {
 	window_top_toolbar_paint,
 	window_top_toolbar_emptysub
 };
+
+void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_view_menu_dropdown(short dropdownIndex);
+
+void toggle_footpath_window();
+void toggle_land_window(rct_window *topToolbar, int widgetIndex);
+void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex);
+void toggle_water_window(rct_window *topToolbar, int widgetIndex);
 
 /**
  * Creates the main game top toolbar window.
@@ -426,7 +446,7 @@ static void window_top_toolbar_dropdown()
  */
 static void window_top_toolbar_invalidate()
 {
-	int i, x, enabledWidgets, widgetIndex, widgetWidth;
+	int i, x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
 	rct_window *w;
 	rct_widget *widget;
 
@@ -493,6 +513,7 @@ static void window_top_toolbar_invalidate()
 	w->enabled_widgets = enabledWidgets;
 
 	// Align left hand side toolbar buttons
+	firstAlignment = 1;
 	x = 0;
 	for (int i = 0; i < countof(left_aligned_widgets_order); ++i) {
 		widgetIndex = left_aligned_widgets_order[i];
@@ -500,14 +521,19 @@ static void window_top_toolbar_invalidate()
 		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
 			continue;
 
+		if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
+			continue;
+
 		widgetWidth = widget->right - widget->left;
 		widget->left = x;
 		x += widgetWidth;
 		widget->right = x;
 		x += 1;
+		firstAlignment = 0;
 	}
 
 	// Align right hand side toolbar buttons
+	firstAlignment = 1;
 	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
 	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
@@ -515,11 +541,15 @@ static void window_top_toolbar_invalidate()
 		if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
 			continue;
 
+		if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
+			continue;
+
 		widgetWidth = widget->right - widget->left;
 		x -= 1;
 		widget->right = x;
 		x -= widgetWidth;
 		widget->left = x;
+		firstAlignment = 0;
 	}
 
 	// Footpath button pressed down
@@ -782,5 +812,181 @@ static void window_top_toolbar_tool_drag()
 	case WIDX_SCENERY:
 		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0066CDE4
+ */
+void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = 1156;
+	gDropdownItemsFormat[1] = 1156;
+	gDropdownItemsFormat[2] = 1156;
+	gDropdownItemsFormat[3] = 0;
+	gDropdownItemsFormat[4] = 1156;
+	gDropdownItemsFormat[5] = 1156;
+	gDropdownItemsFormat[6] = 1156;
+	gDropdownItemsFormat[7] = 1156;
+	gDropdownItemsFormat[8] = 0;
+	gDropdownItemsFormat[9] = 1156;
+	gDropdownItemsFormat[10] = 1156;
+	gDropdownItemsFormat[11] = 1156;
+
+	gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
+	gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
+	gDropdownItemsArgs[2] = STR_REMOVE_VERTICAL_FACES;
+	gDropdownItemsArgs[4] = STR_SEE_THROUGH_RIDES;
+	gDropdownItemsArgs[5] = STR_SEE_THROUGH_SCENERY;
+	gDropdownItemsArgs[6] = STR_INVISIBLE_SUPPORTS;
+	gDropdownItemsArgs[7] = STR_INVISIBLE_PEOPLE;
+	gDropdownItemsArgs[9] = STR_HEIGHT_MARKS_ON_LAND;
+	gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
+	gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_PATHS;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1] | 0x80,
+		0,
+		12
+	);
+
+	// Set checkmarks
+	rct_viewport* mainViewport = window_get_main()->viewport;
+	if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+		gDropdownItemsChecked |= (1 << 0);
+	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
+		gDropdownItemsChecked |= (1 << 1);
+	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
+		gDropdownItemsChecked |= (1 << 2);
+	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+		gDropdownItemsChecked |= (1 << 4);
+	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+		gDropdownItemsChecked |= (1 << 5);
+	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+		gDropdownItemsChecked |= (1 << 6);
+	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+		gDropdownItemsChecked |= (1 << 7);
+	if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
+		gDropdownItemsChecked |= (1 << 9);
+	if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
+		gDropdownItemsChecked |= (1 << 10);
+	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
+		gDropdownItemsChecked |= (1 << 11);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
+/**
+ *
+ *  rct2: 0x0066CF8A
+ */
+void top_toolbar_view_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		switch (dropdownIndex) {
+		case DDIDX_UNDERGROUND_INSIDE:
+			w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			break;
+		case DDIDX_HIDE_BASE:
+			w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
+			break;
+		case DDIDX_HIDE_VERTICAL:
+			w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
+			break;
+		case DDIDX_SEETHROUGH_RIDES:
+			w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+			break;
+		case DDIDX_SEETHROUGH_SCENARY:
+			w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+			break;
+		case DDIDX_INVISIBLE_SUPPORTS:
+			w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+			break;
+		case DDIDX_INVISIBLE_PEEPS:
+			w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+			break;
+		case DDIDX_LAND_HEIGHTS:
+			w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
+			break;
+		case DDIDX_TRACK_HEIGHTS:
+			w->viewport->flags ^= VIEWPORT_FLAG_TRACK_HEIGHTS;
+			break;
+		case DDIDX_PATH_HEIGHTS:
+			w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
+			break;
+		default:
+			return;
+		}
+		window_invalidate(w);
+	}
+}
+
+
+/**
+ *
+ *  rct2: 0x0066CCE7
+ */
+void toggle_footpath_window()
+{
+	if (window_find_by_class(WC_FOOTPATH) == NULL) {
+		window_footpath_open();
+	} else {
+		tool_cancel();
+		window_close_by_class(WC_FOOTPATH);
+	}
+}
+
+/**
+ *
+ * rct2: 0x0066CD54
+ */
+void toggle_land_window(rct_window *topToolbar, int widgetIndex)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
+		tool_cancel();
+	} else {
+		show_gridlines();
+		tool_set(topToolbar, widgetIndex, 18);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		window_land_open();
+	}
+}
+
+/**
+ *
+ * rct2: 0x0066CD0C
+ */
+void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
+		tool_cancel();
+	} else {
+		show_gridlines();
+		tool_set(topToolbar, widgetIndex, 12);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
+		window_clear_scenery_open();
+	}
+}
+
+/**
+ *
+ * rct2: 0x0066CD9C
+ */
+void toggle_water_window(rct_window *topToolbar, int widgetIndex)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
+		tool_cancel();
+	} else {
+		show_gridlines();
+		tool_set(topToolbar, widgetIndex, 19);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		window_water_open();
 	}
 }
