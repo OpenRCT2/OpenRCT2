@@ -249,7 +249,7 @@ void window_research_open()
 
 	w->widgets = window_research_page_widgets[0];
 	w->enabled_widgets = window_research_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[0];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
@@ -591,7 +591,7 @@ static void window_research_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_research_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[page];
 	w->widgets = window_research_page_widgets[page];
 	w->disabled_widgets = 0;

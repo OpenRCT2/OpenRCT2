@@ -572,6 +572,19 @@ static uint32 window_park_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_7)
 };
 
+static uint32 window_park_page_hold_down_widgets[] = {
+	0,
+	0,
+	0,
+
+	(1 << WIDX_INCREASE_PRICE) |
+	(1 << WIDX_DECREASE_PRICE),
+
+	0,
+	0,
+	0
+};
+
 #pragma endregion
 
 static void window_park_init_viewport(rct_window *w);
@@ -1068,7 +1081,7 @@ void window_park_rating_open()
 	window_invalidate(window);
 	window->widgets = window_park_rating_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
 	window->event_handlers = (uint32*)window_park_rating_events;
 	window_init_scroll_widgets(window);
 }
@@ -1200,7 +1213,7 @@ void window_park_guests_open()
 	window_invalidate(window);
 	window->widgets = window_park_guests_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
 	window->event_handlers = (uint32*)window_park_guests_events;
 	window_init_scroll_widgets(window);
 }
@@ -1600,7 +1613,7 @@ void window_park_objective_open()
 	window_invalidate(window);
 	window->widgets = window_park_objective_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
 	window->event_handlers = (uint32*)window_park_objective_events;
 	window_init_scroll_widgets(window);
 	window->x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2 - 115;
@@ -1787,7 +1800,7 @@ void window_park_awards_open()
 	window_invalidate(window);
 	window->widgets = window_park_awards_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
 	window->event_handlers = (uint32*)window_park_awards_events;
 	window_init_scroll_widgets(window);
 }
@@ -1922,7 +1935,7 @@ static void window_park_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_park_page_enabled_widgets[page];
-	w->var_020 = RCT2_GLOBAL(0x0097BAE0 + (page * 4), uint32);
+	w->hold_down_widgets = window_park_page_hold_down_widgets[page];
 	w->event_handlers = window_park_page_events[page];
 	w->widgets = window_park_page_widgets[page];
 	window_park_set_disabled_tabs(w);

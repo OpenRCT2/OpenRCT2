@@ -190,7 +190,7 @@ typedef struct rct_window {
 	uint64 enabled_widgets;		// 0x008
 	uint64 disabled_widgets;	// 0x010
 	uint64 pressed_widgets;		// 0x018
-	uint64 var_020;
+	uint64 hold_down_widgets;	// 0x020
 	rct_widget* widgets;		// 0x028
 	sint16 x;					// 0x02C
 	sint16 y;					// 0x02E

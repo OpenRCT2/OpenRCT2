@@ -231,6 +231,15 @@ static uint64 window_editor_objective_options_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_2)
 };
 
+static uint64 window_editor_objective_options_page_hold_down_widgets[] = {
+	(1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_2_DECREASE),
+
+	0
+};
+
 #pragma endregion
 
 /**
@@ -255,12 +264,12 @@ void window_editor_objective_options_open()
 		WF_10
 	);
 	w->widgets = window_editor_objective_options_main_widgets;
-	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[0];
+	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
 	w->pressed_widgets = 0;
-	w->var_020 = 0x00003600;
+	w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
 	window_init_scroll_widgets(w);
 	w->var_4AE = 0;
-	w->selected_tab = 0;
+	w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	RCT2_CALLPROC_X(0x00672609, 0, 0, 0, 0, (int)w, 0, 0);
@@ -328,7 +337,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
-	w->var_020 = page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN ? 0x3600 : 0;
+	w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
 	w->event_handlers = window_editor_objective_options_page_events[page];
 	w->widgets = window_editor_objective_options_widgets[page];
 	window_invalidate(w);

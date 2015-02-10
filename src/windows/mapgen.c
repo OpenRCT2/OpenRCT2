@@ -284,7 +284,7 @@ rct_window *window_mapgen_open()
 	window_invalidate(w);
 	w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE];
 	w->enabled_widgets = window_mapgen_page_enabled_widgets[WINDOW_MAPGEN_PAGE_BASE];
-	w->var_020 = window_mapgen_page_hold_down_widgets[WINDOW_MAPGEN_PAGE_BASE];
+	w->hold_down_widgets = window_mapgen_page_hold_down_widgets[WINDOW_MAPGEN_PAGE_BASE];
 	w->event_handlers = window_mapgen_page_events[WINDOW_MAPGEN_PAGE_BASE];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
@@ -585,7 +585,7 @@ static void window_mapgen_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_mapgen_page_enabled_widgets[page];
-	w->var_020 = window_mapgen_page_hold_down_widgets[page];
+	w->hold_down_widgets = window_mapgen_page_hold_down_widgets[page];
 	w->event_handlers = window_mapgen_page_events[page];
 	w->widgets = window_mapgen_page_widgets[page];
 	w->disabled_widgets = 0;

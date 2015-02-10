@@ -152,7 +152,9 @@ void window_new_campaign_open(sint16 campaignType)
 		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
 		(1 << WIDX_WEEKS_DECREASE_BUTTON) |
 		(1 << WIDX_START_BUTTON);
-	w->var_020 = 0x300;
+	w->hold_down_widgets =
+		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
+		(1 << WIDX_WEEKS_DECREASE_BUTTON);
 	window_init_scroll_widgets(w);
 	w->colours[0] = 19;
 	w->colours[1] = 19;

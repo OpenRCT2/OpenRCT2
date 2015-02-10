@@ -911,9 +911,8 @@ void process_mouse_tool(int x, int y)
  * 
  *  rct2: 0x006E8DA7
  */
-void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget ){
-	//RCT2_CALLPROC_X(0x006E8DA7, x, y, state, widgetIndex, (int)w, (int)widget, 0);
-	//return;
+void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_window *w, rct_widget *widget)
+{
 	RCT2_GLOBAL(0x1420054, uint16) = x;
 	RCT2_GLOBAL(0x1420056, uint16) = y;
 
@@ -923,11 +922,11 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 	cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
 	int cursor_widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
 
-	rct_window* cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
+	rct_window *cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
 	if (cursor_w == NULL) {
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 		return;
-		}
+	}
 
 	switch (state){
 	case 0:
@@ -935,28 +934,30 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 		break;
 
 		if (w->disabled_widgets & (1ULL << widgetIndex))
-		break;
+			break;
 
-		if (RCT2_GLOBAL(0x9DE528, uint16) != 0) RCT2_GLOBAL(0x9DE528, uint16)++;
+		if (RCT2_GLOBAL(0x009DE528, uint16) != 0)
+			RCT2_GLOBAL(0x009DE528, uint16)++;
 
-		if (w->var_020 & (1ULL << widgetIndex) &&
-			RCT2_GLOBAL(0x9DE528, uint16) >= 0x10 &&
-			(!(RCT2_GLOBAL(0x9DE528, uint16) & 0x3))){
+		if (w->hold_down_widgets & (1ULL << widgetIndex) &&
+			RCT2_GLOBAL(0x009DE528, uint16) >= 16 &&
+			!(RCT2_GLOBAL(0x009DE528, uint16) & 3)
+		) {
 			window_event_mouse_down_call(w, widgetIndex);
-				}
+		}
 
-		if (RCT2_GLOBAL(0x9DE518, uint32) & 1) return;
+		if (RCT2_GLOBAL(0x009DE518, uint32) & 1) return;
 
-		RCT2_GLOBAL(0x9DE518, uint32) |= 1;
+		RCT2_GLOBAL(0x009DE518, uint32) |= 1;
 		widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
 		return;
 	case 3:
 	case 2:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 5) {
 			if (w) {
 				int dropdown_index = 0;
 
-				if (w->classification == WC_DROPDOWN){
+				if (w->classification == WC_DROPDOWN) {
 					dropdown_index = dropdown_index_from_point(x, y, w);
 					if (dropdown_index == -1)goto dropdown_cleanup;
 
@@ -965,8 +966,7 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 
 					// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
 					if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)goto dropdown_cleanup;
-			}
-				else{
+				} else {
 					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
 						goto dropdown_cleanup;
 					dropdown_index = -1;
@@ -974,16 +974,16 @@ void input_state_widget_pressed( int x, int y, int state, int widgetIndex, rct_w
 						if (!(RCT2_GLOBAL(0x9DE518, uint32) & 4)){
 							RCT2_GLOBAL(0x9DE518, uint32) |= (1 << 2);
 							return;
-		}
-		}
-			}
+						}
+					}
+				}
 
 				window_close_by_class(WC_DROPDOWN);
 				cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
-				if (RCT2_GLOBAL(0x9DE518, uint32) & 1){
+				if (RCT2_GLOBAL(0x9DE518, uint32) & 1) {
 					RCT2_GLOBAL(0x9DE518, uint32) &= 0xFFFE;
 					widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
-		}
+				}
 
 				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;

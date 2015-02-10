@@ -36,18 +36,18 @@
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
 
-enum WINDOW_PARK_PAGE {
-	WINDOW_PARK_PAGE_MAIN,
-	WINDOW_PARK_PAGE_VEHICLE,
-	WINDOW_PARK_PAGE_OPERATING,
-	WINDOW_PARK_PAGE_MAINTENANCE,
-	WINDOW_PARK_PAGE_COLOUR,
-	WINDOW_PARK_PAGE_MUSIC,
-	WINDOW_PARK_PAGE_MEASUREMENTS,
-	WINDOW_PARK_PAGE_GRAPHS,
-	WINDOW_PARK_PAGE_INCOME,
-	WINDOW_PARK_PAGE_CUSTOMER,
-	WINDOW_PARK_PAGE_COUNT
+enum {
+	WINDOW_RIDE_PAGE_MAIN,
+	WINDOW_RIDE_PAGE_VEHICLE,
+	WINDOW_RIDE_PAGE_OPERATING,
+	WINDOW_RIDE_PAGE_MAINTENANCE,
+	WINDOW_RIDE_PAGE_COLOUR,
+	WINDOW_RIDE_PAGE_MUSIC,
+	WINDOW_RIDE_PAGE_MEASUREMENTS,
+	WINDOW_RIDE_PAGE_GRAPHS,
+	WINDOW_RIDE_PAGE_INCOME,
+	WINDOW_RIDE_PAGE_CUSTOMER,
+	WINDOW_RIDE_PAGE_COUNT
 };
 
 #pragma region Widgets
@@ -487,6 +487,19 @@ const uint64 window_ride_page_enabled_widgets[] = {
 	0x000000000007BFF4,
 	0x0000000000E73FF4,
 	0x000000000001FFF4
+};
+
+const uint64 window_ride_page_hold_down_widgets[] = {
+	0x0000000000000000,
+	0x0000000000000000,
+	0x00000000330D8000,
+	0x0000000000000000,
+	0x0000000000000000,
+	0x0000000000000000,
+	0x0000000000000000,
+	0x0000000000000000,
+	0x0000000000630000,
+	0x0000000000000000
 };
 
 #pragma endregion
@@ -944,7 +957,7 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, in
  */
 static void window_ride_draw_tab_main(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int widgetIndex = WIDX_TAB_1 + WINDOW_PARK_PAGE_MAIN;
+	int widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		int spriteIndex;
@@ -953,17 +966,17 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo *dpi, rct_window *w)
 		switch (gRideClassifications[rideType]) {
 		case RIDE_CLASS_RIDE:
 			spriteIndex = 5442;
-			if (w->page == WINDOW_PARK_PAGE_MAIN)
+			if (w->page == WINDOW_RIDE_PAGE_MAIN)
 				spriteIndex += (w->frame_no / 4) % 16;
 			break;
 		case RIDE_CLASS_SHOP_OR_STALL:
 			spriteIndex = 5351;
-			if (w->page == WINDOW_PARK_PAGE_MAIN)
+			if (w->page == WINDOW_RIDE_PAGE_MAIN)
 				spriteIndex += (w->frame_no / 4) % 16;
 			break;
 		case RIDE_CLASS_KIOSK_OR_FACILITY:
 			spriteIndex = 5367;
-			if (w->page == WINDOW_PARK_PAGE_MAIN)
+			if (w->page == WINDOW_RIDE_PAGE_MAIN)
 				spriteIndex += (w->frame_no / 4) % 8;
 			break;
 		}
@@ -985,7 +998,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 	rct_ride_type *rideEntry;
 	vehicle_colour vehicleColour;
 
-	widgetIndex = WIDX_TAB_1 + WINDOW_PARK_PAGE_VEHICLE;
+	widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
 	widget = &w->widgets[widgetIndex];
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
@@ -993,7 +1006,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		y = widget->top + 1;
 		width = widget->right - x;
 		height = widget->bottom - 3 - y;
-		if (w->page == WINDOW_PARK_PAGE_VEHICLE)
+		if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
 			height += 4;
 
 		x += w->x;
@@ -1026,7 +1039,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		vehicleColour = ride_get_vehicle_colour(ride, 0);
 
 		spriteIndex = 32;
-		if (w->page == WINDOW_PARK_PAGE_VEHICLE)
+		if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
 			spriteIndex += w->frame_no;
 		spriteIndex /= (RCT2_GLOBAL(ebp + 0x2C, uint16) & 0x800) ? 4 : 2;
 		spriteIndex &= RCT2_GLOBAL(ebp + 0x1A, uint16);
@@ -1047,12 +1060,12 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 static void window_ride_draw_tab_customer(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	int spriteIndex;
-	int widgetIndex = WIDX_TAB_1 + WINDOW_PARK_PAGE_CUSTOMER;
+	int widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_CUSTOMER;
 	rct_widget *widget = &w->widgets[widgetIndex];
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		spriteIndex = 0;
-		if (w->page == WINDOW_PARK_PAGE_CUSTOMER)
+		if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
 			spriteIndex = w->var_492 & ~3;
 
 		spriteIndex += RCT2_GLOBAL(RCT2_GLOBAL(0x00982708, uint32), uint32);
@@ -1070,15 +1083,15 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo *dpi, rct_window *w)
 static void window_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	window_ride_draw_tab_vehicle(dpi, w);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_OPERATING, 5201);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_MAINTENANCE, 5205);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_INCOME, 5253);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_OPERATING, 5201);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_MAINTENANCE, 5205);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_INCOME, 5253);
 	window_ride_draw_tab_main(dpi, w);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_MEASUREMENTS, 5229);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_COLOUR, 5221);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_GRAPHS, 5237);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_MEASUREMENTS, 5229);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_COLOUR, 5221);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_GRAPHS, 5237);
 	window_ride_draw_tab_customer(dpi, w);
-	window_ride_draw_tab_image(dpi, w, WINDOW_PARK_PAGE_MUSIC, 5335);
+	window_ride_draw_tab_image(dpi, w, WINDOW_RIDE_PAGE_MUSIC, 5335);
 }
 
 /**
@@ -1150,14 +1163,14 @@ rct_window *window_ride_main_open(int rideIndex)
 		}
 	}
 
-	w->page = 0;
+	w->page = WINDOW_RIDE_PAGE_MAIN;
 	w->width = 316;
 	w->height = 180;
 	window_invalidate(w);
-	w->widgets = window_ride_page_widgets[0];
-	w->enabled_widgets = 0x007DBFF4;
-	w->var_020 = 0;
-	w->event_handlers = window_ride_page_events[0];
+	w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
+	w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
+	w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
+	w->event_handlers = window_ride_page_events[WINDOW_RIDE_PAGE_MAIN];
 	w->pressed_widgets = 0;
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 	window_init_scroll_widgets(w);
@@ -1196,14 +1209,14 @@ rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 		tool_cancel();
 	}
 
-	w->page = WINDOW_PARK_PAGE_MAIN;
+	w->page = WINDOW_RIDE_PAGE_MAIN;
 	w->width = 316;
 	w->height = 180;
 	window_invalidate(w);
 
 	w->widgets = window_ride_page_widgets[w->page];
 	w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
-	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[w->page];
+	w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
 	w->event_handlers = window_ride_page_events[w->page];
 	w->pressed_widgets = 0;
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
@@ -1305,14 +1318,14 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 		w->ride.var_482 = -1;
 	}
 
-	w->page = WINDOW_PARK_PAGE_MAIN;
+	w->page = WINDOW_RIDE_PAGE_MAIN;
 	w->width = 316;
 	w->height = 180;
 	window_invalidate(w);
 
 	w->widgets = window_ride_page_widgets[w->page];
 	w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
-	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[w->page];
+	w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
 	w->event_handlers = window_ride_page_events[w->page];
 	w->pressed_widgets = 0;
 	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
@@ -1339,7 +1352,7 @@ static void window_ride_set_page(rct_window *w, int page)
 
 	// Set listen only to viewport
 	listen = 0;
-	if (page == WINDOW_PARK_PAGE_MAIN && w->page == WINDOW_PARK_PAGE_MAIN && w->viewport != NULL && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+	if (page == WINDOW_RIDE_PAGE_MAIN && w->page == WINDOW_RIDE_PAGE_MAIN && w->viewport != NULL && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
 		listen++;
 
 	w->page = page;
@@ -1351,7 +1364,7 @@ static void window_ride_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_ride_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x0098DD68, uint32)[page];
+	w->hold_down_widgets = window_ride_page_hold_down_widgets[page];
 	w->event_handlers = window_ride_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_ride_page_widgets[page];
@@ -1371,7 +1384,7 @@ static void window_ride_set_page(rct_window *w, int page)
 static void window_ride_set_pressed_tab(rct_window *w)
 {
 	int i;
-	for (i = 0; i < WINDOW_PARK_PAGE_COUNT; i++)
+	for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
@@ -1395,7 +1408,7 @@ static void window_ride_anchor_border_widgets(rct_window *w)
  */
 static void window_ride_init_viewport(rct_window *w)
 {
-	if (w->page != WINDOW_PARK_PAGE_MAIN) return;
+	if (w->page != WINDOW_RIDE_PAGE_MAIN) return;
 
 	rct_ride* ride = GET_RIDE(w->number);
 	int eax = w->viewport_focus_coordinates.var_480 - 1;

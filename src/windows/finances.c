@@ -508,6 +508,17 @@ static uint32 window_finances_page_enabled_widgets[] = {
 	(1 << WIDX_SCENERY_AND_THEMING)
 };
 
+static uint32 window_finances_page_hold_down_widgets[] = {
+	(1 << WIDX_LOAN_INCREASE) |
+	(1 << WIDX_LOAN_DECREASE),
+
+	0,
+	0,
+	0,
+	0,
+	0
+};
+
 #pragma endregion
 
 const int window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
@@ -527,28 +538,24 @@ void window_finances_open()
 	w = window_bring_to_front_by_class(WC_FINANCES);
 	if (w == NULL) {
 		w = window_create_auto_pos(530, 257, window_finances_page_events[0], WC_FINANCES, WF_10);
-		w->widgets = window_finances_page_widgets[0];
-		w->enabled_widgets = 0x1BF4;
 		w->number = 0;
-		w->page = 0;
 		w->frame_no = 0;
-		w->disabled_widgets = 0;
 		w->colours[0] = 1;
 		w->colours[1] = 19;
 		w->colours[2] = 19;
 		research_update_uncompleted_types();
 	}
 
-	w->page = 0;
+	w->page = WINDOW_FINANCES_PAGE_SUMMARY;
 	window_invalidate(w);
 	w->width = 530;
 	w->height = 257;
 	window_invalidate(w);
 
-	w->widgets = window_finances_page_widgets[0];
-	w->enabled_widgets = window_finances_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
-	w->event_handlers = window_finances_page_events[0];
+	w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->enabled_widgets = window_finances_page_enabled_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->hold_down_widgets = window_finances_page_hold_down_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->event_handlers = window_finances_page_events[WINDOW_FINANCES_PAGE_SUMMARY];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
 	window_init_scroll_widgets(w);
@@ -1489,7 +1496,7 @@ static void window_finances_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_finances_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->hold_down_widgets = window_finances_page_hold_down_widgets[page];
 	w->event_handlers = window_finances_page_events[page];
 	w->widgets = window_finances_page_widgets[page];
 	w->disabled_widgets = 0;

@@ -165,7 +165,9 @@ void window_map_open()
 		(1 << WIDX_BUILD_PARK_ENTRANCE) |
 		(1 << WIDX_ROTATE_90) |
 		(1 << WIDX_PEOPLE_STARTING_POSITION);
-	w->var_020 |= 0x300;
+	w->hold_down_widgets =
+		(1 << WIDX_MAP_SIZE_SPINNER_UP) |
+		(1 << WIDX_MAP_SIZE_SPINNER_DOWN);
 	window_init_scroll_widgets(w);
 
 	window_map_set_bounds(w);

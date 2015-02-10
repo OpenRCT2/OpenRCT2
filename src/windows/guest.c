@@ -516,7 +516,7 @@ void window_guest_open(rct_peep* peep){
 	
 	window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
 	window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
-	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
+	window->hold_down_widgets = 0;
 	window->event_handlers = window_guest_page_events[WINDOW_GUEST_OVERVIEW];
 	window->pressed_widgets = 0;
 	
@@ -670,7 +670,7 @@ void window_guest_set_page(rct_window* w, int page){
 	}
 	
 	w->enabled_widgets = window_guest_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x981D54,uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_guest_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_guest_page_widgets[page];
