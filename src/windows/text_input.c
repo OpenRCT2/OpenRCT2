@@ -136,7 +136,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 		height,
 		(uint32*)window_text_input_events, 
 		WC_TEXTINPUT,
-		0
+		WF_STICK_TO_FRONT
 	);
 
 	w->widgets = window_text_input_widgets;

@@ -1049,7 +1049,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
  */
 int track_rename(const char *text)
 {
-	return (RCT2_CALLPROC_X(0x006D3664, 0, 0, 0, (int)text, 0, 0, 0) & 0x100) != 0;
+	return (RCT2_CALLPROC_X(0x006D3664, 0, 0, 0, 0, 0, (int)text, 0) & 0x100) == 0;
 }
 
 /**
@@ -1058,5 +1058,5 @@ int track_rename(const char *text)
  */
 int track_delete()
 {
-	return (RCT2_CALLPROC_X(0x006D3761, 0, 0, 0, 0, 0, 0, 0) & 0x100) != 0;
+	return (RCT2_CALLPROC_X(0x006D3761, 0, 0, 0, 0, 0, 0, 0) & 0x100) == 0;
 }

@@ -309,7 +309,8 @@ static void window_editor_object_selection_scroll_mousedown()
 	sound_play_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-		if (RCT2_CALLPROC_X(0x6AB54F, 0, 1, 0, 0, 0, 0, (int)installed_entry) & 0x100)return;
+		if (RCT2_CALLPROC_X(0x6AB54F, 0, 1, 0, 0, 0, 0, (int)installed_entry) & 0x100)
+			return;
 
 		window_close(w);
 
@@ -324,8 +325,7 @@ static void window_editor_object_selection_scroll_mousedown()
 		ebx = 7;
 
 	RCT2_GLOBAL(0xF43411, uint8) = 0;
-	if (0x100 & RCT2_CALLPROC_X(0x6AB54F, 0, ebx, 0, 0, 0, 0, (int)installed_entry)){
-
+	if (0x100 & RCT2_CALLPROC_X(0x6AB54F, 0, ebx, 0, 0, 0, 0, (int)installed_entry)) {
 		rct_string_id error_title;
 		if (ebx & 1)
 			error_title = 3176;
@@ -336,7 +336,8 @@ static void window_editor_object_selection_scroll_mousedown()
 		return;
 	}
 
-	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)return;
+	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)
+		return;
 
 	window_error_open(3374, 3375);
 }
@@ -645,6 +646,12 @@ static void window_editor_object_selection_scrollpaint()
 				char *buffer = (char*)0x0141ED68;
 				*buffer = colour;
 				strcpy(buffer + 1, object_get_name(entry));
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+					while (*buffer != 0 && *buffer != 9)
+						buffer++;
+
+					*buffer = 0;
+				}
 
 				if (*itemFlags & 0x20) {
 					colour = w->colours[1] & 0x7F;
