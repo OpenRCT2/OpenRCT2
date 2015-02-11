@@ -1082,7 +1082,7 @@ STR_1080    :Film: {ENDQUOTES}Avenging Aviators{ENDQUOTES}
 STR_1081    :3D-film: {ENDQUOTES}Mouse Tails{ENDQUOTES}
 STR_1082    :Ruimteringenmodus
 STR_1083    :Beginnersstand
-STR_1084    :Lineaire inductiemotor-lancering
+STR_1084    :LIM-lancering
 STR_1085    :Film: {ENDQUOTES}Thrill Riders{ENDQUOTES}
 STR_1086    :3D-film: {ENDQUOTES}Storm Chasers{ENDQUOTES}
 STR_1087    :3D-film: {ENDQUOTES}Space Raiders{ENDQUOTES}
