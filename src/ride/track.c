@@ -645,7 +645,6 @@ int backup_map(){
 	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
 	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
 	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
 	*(uint32*)(backup_info + 10) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	return 1;
 }
@@ -672,6 +671,13 @@ void reload_map_backup(){
 
 /* rct2: 0x006D1D9A */
 void blank_map(){
+
+	// These values were previously allocated in backup map but
+	// it seems more fitting to place in this function
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 0x1FE0;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = 0x20FE;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
+
 	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
 		map_element = GET_MAP_ELEMENT(i);
