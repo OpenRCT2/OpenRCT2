@@ -2956,9 +2956,9 @@ void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
  * 
  *  rct2: 0x006DD84C
  */
-int sub_6DD84C(rct_ride *ride, rct_xy_element *element, int isApplying)
+int sub_6DD84C(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
 {
-	return RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, 0, (int)ride, (int)element->element, 0) & 0x100;
+	return RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, rideIndex, (int)ride, (int)element->element, 0) & 0x100;
 }
 
 /**
@@ -3200,7 +3200,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x2000) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
-		if (sub_6DD84C(ride, &trackElement, isApplying))
+		if (sub_6DD84C(ride, rideIndex, &trackElement, isApplying))
 			return 0;
 	}
 
