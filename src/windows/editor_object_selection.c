@@ -104,6 +104,7 @@ static void window_editor_object_selection_scroll_mouseover();
 static void window_editor_object_selection_tooltip();
 static void window_editor_object_selection_invalidate();
 static void window_editor_object_selection_paint();
+static void window_editor_object_selection_scrollpaint();
 
 static void* window_editor_object_selection_events[] = {
 	window_editor_object_selection_close,
@@ -133,7 +134,7 @@ static void* window_editor_object_selection_events[] = {
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_invalidate,
 	(void*)window_editor_object_selection_paint,
-	(void*)0x006AADA3
+	(void*)window_editor_object_selection_scrollpaint
 };
 
 #pragma endregion
@@ -589,6 +590,78 @@ static void window_editor_object_selection_paint()
 	// Draw object dat name
 	strcpy(stringBuffer, datName);
 	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
+}
+
+/**
+ * 
+ *  rct2: 0x006AADA3
+ */
+static void window_editor_object_selection_scrollpaint()
+{
+	int x, y, i, colour, colour2, numObjects, type;
+	short scrollIndex;
+	rct_object_entry *entry;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	uint8 *itemFlags;
+
+	window_scrollpaint_get_registers(w, dpi, scrollIndex);
+
+	colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
+	gfx_clear(dpi, colour);
+
+	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	itemFlags = RCT2_GLOBAL(0x009ADAEC, uint8*);
+	y = 0;
+	for (i = 0; i < numObjects; i++) {
+		type = entry->flags & 0x0F;
+		if (type == w->selected_tab && !(*itemFlags & 0x20)) {
+			if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
+				// Draw checkbox
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*itemFlags & 0x20))
+					gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
+
+				// Highlight background
+				colour = 142;
+				if (entry == (rct_object_entry*)w->var_494 && !(*itemFlags & 0x20)) {
+					gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
+					colour = 14;
+				}
+
+				// Draw checkmark
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*itemFlags & 1)) {
+					x = 2;
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
+					colour2 = w->colours[1] & 0x7F;
+					if (*itemFlags & 0x1C)
+						colour2 |= 0x40;
+
+					gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
+				}
+
+				// Draw text
+				char *buffer = (char*)0x0141ED68;
+				*buffer = colour;
+				strcpy(buffer + 1, object_get_name(entry));
+
+				if (*itemFlags & 0x20) {
+					colour = w->colours[1] & 0x7F;
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+				} else {
+					colour = 0;
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+				}
+				x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+				gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
+			}
+			y += 12;
+		}
+
+		entry = object_get_next(entry);
+		itemFlags++;
+	}
 }
 
 static void window_editor_object_set_page(rct_window *w, int page)
