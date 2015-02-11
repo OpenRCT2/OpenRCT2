@@ -72,8 +72,14 @@ const char *SnowTrees[] = {
 
 #pragma endregion
 
+// Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
+const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
+
+#define BLOB_HEIGHT 255
+
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int height);
+static void mapgen_blobs(int count, int lowSize, int highSize, int lowHeight, int highHeight);
 static void mapgen_blob(int cx, int cy, int size, int height);
 static void mapgen_smooth_height(int iterations);
 static void mapgen_set_height();
@@ -81,9 +87,19 @@ static void mapgen_set_height();
 static int _heightSize;
 static uint8 *_height;
 
-#define HEIGHT(x, y) (_height[(y) * _heightSize + (x)])
+static int get_height(int x, int y)
+{
+	if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
+		return _height[x + y * _heightSize];
+	else
+		return 0;
+}
 
-const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_ICE };
+static void set_height(int x, int y, int height)
+{
+	if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
+		_height[x + y * _heightSize] = height;
+}
 
 void mapgen_generate_blank(mapgen_settings *settings)
 {
@@ -106,7 +122,7 @@ void mapgen_generate_blank(mapgen_settings *settings)
 
 void mapgen_generate(mapgen_settings *settings)
 {
-	int i, x, y, mapSize, floorTexture, wallTexture;
+	int x, y, mapSize, floorTexture, wallTexture;
 	rct_map_element *mapElement;
 
 	srand((unsigned int)time(NULL));
@@ -117,12 +133,23 @@ void mapgen_generate(mapgen_settings *settings)
 
 	if (floorTexture == -1)
 		floorTexture = BaseTerrain[rand() % countof(BaseTerrain)];
+
 	if (wallTexture == -1) {
-		wallTexture = TERRAIN_EDGE_ROCK;
-		if (floorTexture == TERRAIN_ICE)
+		// Base edge type on surface type
+		switch (floorTexture) {
+		case TERRAIN_DIRT:
+			wallTexture = TERRAIN_EDGE_WOOD_RED;
+			break;
+		case TERRAIN_ICE:
 			wallTexture = TERRAIN_EDGE_ICE;
+			break;
+		default:
+			wallTexture = TERRAIN_EDGE_ROCK;
+			break;
+		}
 	}
 
+	// Initialise the base map
 	map_init(mapSize);
 	for (y = 1; y < mapSize - 1; y++) {
 		for (x = 1; x < mapSize - 1; x++) {
@@ -134,83 +161,60 @@ void mapgen_generate(mapgen_settings *settings)
 		}
 	}
 
+	// Create the temporary height map and initialise
 	_heightSize = mapSize * 2;
-	_height = (uint8*)malloc((mapSize * 2) * (mapSize * 2) * sizeof(uint8));
-	for (y = 0; y < mapSize * 2; y++) {
-		for (x = 0; x < mapSize * 2; x++) {
-			double a = abs(x - (mapSize)) / (double)(mapSize);
-			double b = abs(y - (mapSize)) / (double)(mapSize);
+	_height = (uint8*)malloc(_heightSize * _heightSize * sizeof(uint8));
+	memset(_height, 0, _heightSize * _heightSize * sizeof(uint8));
 
-			a *= 2;
-			b *= 2;
-			double c = 1 - ((a*a + b*b) / 2);
-			c = clamp(0, c, 1);
+	// Keep overwriting the map with rough cicular blobs of different sizes and heights.
+	// This procedural method can produce intersecting contour like land and lakes.
+	// Large blobs, general shape of map
+	mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 2, 16);
+	// Medium blobs
+	mapgen_blobs(12, _heightSize / 16, _heightSize / 8, 2, 18);
+	// Small blobs, small hills and lakes
+	mapgen_blobs(32, _heightSize / 32, _heightSize / 16, 2, 18);
 
-			int h = 1 + rand() % ((int)(c * 22) + 1);
-			h = 1;
-
-			HEIGHT(x, y) = h;
-		}
-	}
-
-	int border = 2 + (rand() % 24);
-	for (i = 0; i < 128; i++) {
-		int radius = 4 + (rand() % 32);
-		mapgen_blob(
-			border + (rand() % (_heightSize - (border * 2))),
-			border + (rand() % (_heightSize - (border * 2))),
-			(int)(M_PI * radius * radius),
-			1 + (rand() % 12)
-		);
-	}
+	// Smooth the land so that their aren't cliffs round every blob.
 	mapgen_smooth_height(2);
+
+	// Set the game map to the height map
 	mapgen_set_height();
 	free(_height);
 
+	// Set the tile slopes so that their are no cliffs
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
+
+	// Add the water
 	mapgen_set_water_level(6 + (rand() % 4) * 2);
 
+	// Place the trees
 	if (settings->trees != 0)
 		mapgen_place_trees();
+
+	map_reorganise_elements();
 }
 
 static void mapgen_place_tree(int type, int x, int y)
 {
-	uint8 baseHeight;
-	rct_map_element *mapElement, *surfaceElement, *nextFreeElement;
+	int surfaceZ;
+	rct_map_element *mapElement;
+	rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[type];
 
-	nextFreeElement = RCT2_GLOBAL(0x0140E9A4, rct_map_element*);
-
-	// Get first element of the tile
-	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
-
-	// Find the last element
-	while (!(mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE)) {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_SURFACE)
-			surfaceElement = mapElement;
-		mapElement++;
-	}
-
-	// Shift elements for a free space
-	memmove(mapElement + 2, mapElement + 1, (int)nextFreeElement - (int)mapElement);
-
-	baseHeight = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
-
-	mapElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
-	mapElement++;
+	surfaceZ = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
+	mapElement = map_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
+	mapElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
 	mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (rand() % 3);
-	mapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE | (1 | 2 | 4 | 8);
-	mapElement->base_height = baseHeight;
-	mapElement->clearance_height = baseHeight + 15;
 	mapElement->properties.scenery.type = type;
 	mapElement->properties.scenery.age = 0;
 	mapElement->properties.scenery.colour_1 = 26;
-	mapElement->properties.scenery.colour_2 = 18;
-
-	map_update_tile_pointers();
+	mapElement->properties.scenery.colour_1 = 18;
 }
 
+/**
+ * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
+ */
 static void mapgen_place_trees()
 {
 	int x, y, mapSize, i, j, rindex, type;
@@ -330,6 +334,9 @@ static void mapgen_place_trees()
 	free(snowTreeIds);
 }
 
+/**
+ * Sets each tile's water level to the specified water level if underneath that water level.
+ */
 static void mapgen_set_water_level(int waterLevel)
 {
 	int x, y, mapSize;
@@ -346,9 +353,31 @@ static void mapgen_set_water_level(int waterLevel)
 	}
 }
 
+static void mapgen_blobs(int count, int lowSize, int highSize, int lowHeight, int highHeight)
+{
+	int i;
+	int sizeRange = highSize - lowSize;
+	int heightRange = highHeight - lowHeight;
+
+	int border = 2 + (rand() % 24);
+	int borderRange = _heightSize - (border * 2);
+	for (i = 0; i < count; i++) {
+		int radius = lowSize + (rand() % sizeRange);
+		mapgen_blob(
+			border + (rand() % borderRange),
+			border + (rand() % borderRange),
+			(int)(M_PI * radius * radius),
+			lowHeight + (rand() % heightRange)
+		);
+	}
+}
+
+/**
+ * Sets any holes within a new created blob to the specified height.
+ */
 static void mapgen_blob_fill(int height)
 {
-	// For each square find out whether it is landlocked by 255 and then fill it if it is
+	// For each square find out whether it is landlocked by BLOB_HEIGHT and then fill it if it is
 	int left = 0,
 		top = 0,
 		right = _heightSize - 1,
@@ -362,7 +391,7 @@ static void mapgen_blob_fill(int height)
 		// Calculate first land
 		firstLand = -1;
 		for (int xx = left; xx <= right; xx++) {
-			if (HEIGHT(xx, y) == 255) {
+			if (get_height(xx, y) == BLOB_HEIGHT) {
 				firstLand = xx;
 				break;
 			}
@@ -372,7 +401,7 @@ static void mapgen_blob_fill(int height)
 		if (firstLand >= 0) {
 			// Calculate last land
 			for (int xx = right; xx >= left; xx--) {
-				if (HEIGHT(xx, y) == 255) {
+				if (get_height(xx, y) == BLOB_HEIGHT) {
 					lastLand = xx;
 					break;
 				}
@@ -392,7 +421,7 @@ static void mapgen_blob_fill(int height)
 		// Calculate first land
 		firstLand = -1;
 		for (int yy = top; yy <= bottom; yy++) {
-			if (HEIGHT(x, yy) == 255) {
+			if (get_height(x, yy) == BLOB_HEIGHT) {
 				firstLand = yy;
 				break;
 			}
@@ -402,7 +431,7 @@ static void mapgen_blob_fill(int height)
 		if (firstLand >= 0) {
 			// Calculate last land
 			for (int yy = bottom; yy >= top; yy--) {
-				if (HEIGHT(x, yy) == 255) {
+				if (get_height(x, yy) == BLOB_HEIGHT) {
 					lastLand = yy;
 					break;
 				}
@@ -416,20 +445,23 @@ static void mapgen_blob_fill(int height)
 			if (y >= firstLand && y <= lastLand && landX[x, y]) {
 				// Not only do we know its landlocked to both x and y
 				// we can change the land too
-				HEIGHT(x, y) = 255;
+				set_height(x, y, BLOB_HEIGHT);
 			}
 		}
 	}
 
-	// Replace all the 255 with the actual land height
+	// Replace all the BLOB_HEIGHT with the actual land height
 	for (int x = left; x <= right; x++)
 		for (int y = top; y <= bottom; y++)
-			if (HEIGHT(x, y) == 255)
-				HEIGHT(x, y) = height;
+			if (get_height(x, y) == BLOB_HEIGHT)
+				set_height(x, y, height);
 
 	free(landX);
 }
 
+/**
+ * Sets a rough circular blob of tiles of the specified size to the specified height.
+ */
 static void mapgen_blob(int cx, int cy, int size, int height)
 {
 	int x, y, currentSize, direction;
@@ -438,11 +470,11 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 	y = cy;
 	currentSize = 1;
 	direction = 0;
-	HEIGHT(y, x) = 255;
+	set_height(x, y, BLOB_HEIGHT);
 
 	while (currentSize < size) {
 		if (rand() % 2 == 0) {
-			HEIGHT(x, y) = 255;
+			set_height(x, y, BLOB_HEIGHT);
 			currentSize++;
 		}
 
@@ -454,11 +486,11 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 			}
 
 			y--;
-			if (HEIGHT(x + 1, y) != 255)
+			if (get_height(x + 1, y) != BLOB_HEIGHT)
 				direction = 1;
-			else if (HEIGHT(x, y - 1) != 255)
+			else if (get_height(x, y - 1) != BLOB_HEIGHT)
 				direction = 0;
-			else if (HEIGHT(x - 1, y) != 255)
+			else if (get_height(x - 1, y) != BLOB_HEIGHT)
 				direction = 3;
 			break;
 		case 1:
@@ -468,11 +500,11 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 			}
 
 			x++;
-			if (HEIGHT(x, y + 1) != 255)
+			if (get_height(x, y + 1) != BLOB_HEIGHT)
 				direction = 2;
-			else if (HEIGHT(x + 1, y) != 255)
+			else if (get_height(x + 1, y) != BLOB_HEIGHT)
 				direction = 1;
-			else if (HEIGHT(x, y - 1) != 255)
+			else if (get_height(x, y - 1) != BLOB_HEIGHT)
 				direction = 0;
 			break;
 		case 2:
@@ -482,11 +514,11 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 			}
 
 			y++;
-			if (HEIGHT(x - 1, y) != 255)
+			if (get_height(x - 1, y) != BLOB_HEIGHT)
 				direction = 3;
-			else if (HEIGHT(x, y + 1) != 255)
+			else if (get_height(x, y + 1) != BLOB_HEIGHT)
 				direction = 2;
-			else if (HEIGHT(x + 1, y) != 255)
+			else if (get_height(x + 1, y) != BLOB_HEIGHT)
 				direction = 1;
 			break;
 		case 3:
@@ -496,11 +528,11 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 			}
 
 			x--;
-			if (HEIGHT(x, y - 1) != 255)
+			if (get_height(x, y - 1) != BLOB_HEIGHT)
 				direction = 0;
-			else if (HEIGHT(x - 1, y) != 255)
+			else if (get_height(x - 1, y) != BLOB_HEIGHT)
 				direction = 3;
-			else if (HEIGHT(x, y + 1) != 255)
+			else if (get_height(x, y + 1) != BLOB_HEIGHT)
 				direction = 2;
 			break;
 		}
@@ -509,6 +541,9 @@ static void mapgen_blob(int cx, int cy, int size, int height)
 	mapgen_blob_fill(height);
 }
 
+/**
+ * Smooths the height map.
+ */
 static void mapgen_smooth_height(int iterations)
 {
 	int i, x, y, xx, yy, avg;
@@ -524,12 +559,15 @@ static void mapgen_smooth_height(int iterations)
 					for (xx = -1; xx <= 1; xx++)
 						avg += copyHeight[(y + yy) * _heightSize + (x + xx)];
 				avg /= 9;
-				HEIGHT(x, y) = avg;
+				set_height(x, y, avg);
 			}
 		}
 	}
 }
 
+/**
+ * Sets the height of the actual game map tiles to the height map.
+ */
 static void mapgen_set_height()
 {
 	int x, y, heightX, heightY, mapSize;
@@ -541,10 +579,10 @@ static void mapgen_set_height()
 			heightX = x * 2;
 			heightY = y * 2;
 
-			uint8 q00 = HEIGHT(heightX + 0, heightY + 0);
-			uint8 q01 = HEIGHT(heightX + 0, heightY + 1);
-			uint8 q10 = HEIGHT(heightX + 1, heightY + 0);
-			uint8 q11 = HEIGHT(heightX + 1, heightY + 1);
+			uint8 q00 = get_height(heightX + 0, heightY + 0);
+			uint8 q01 = get_height(heightX + 0, heightY + 1);
+			uint8 q10 = get_height(heightX + 1, heightY + 0);
+			uint8 q11 = get_height(heightX + 1, heightY + 1);
 
 			uint8 baseHeight = (q00 + q01 + q10 + q11) / 4;
 			
