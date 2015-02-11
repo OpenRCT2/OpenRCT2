@@ -1077,7 +1077,7 @@ static void ride_update(int rideIndex)
 		ride->var_14D |= 2;
 
 		if (ride->upkeep_cost != (money16)0xFFFF)
-			ride->profit = (money16)(ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
+			ride->profit = (ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
 	}
 
 	// Ride specific updates
