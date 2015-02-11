@@ -319,7 +319,7 @@ static void window_all_wheel_input()
 		w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
-			if (w->classification == WC_MAIN_WINDOW) {
+			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
 				window_viewport_wheel_input(w, wheel);
 				return;
 			}
