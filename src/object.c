@@ -535,3 +535,19 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 
 	return (rct_object_entry*)pos;
 }
+
+char *object_get_name(rct_object_entry *entry)
+{
+	uint8 *pos = (uint8*)entry;
+
+	// Skip sizeof(rct_object_entry)
+	pos += 16;
+
+	// Skip filename
+	while (*pos++);
+
+	// Skip 
+	pos += 4;
+
+	return pos;
+}

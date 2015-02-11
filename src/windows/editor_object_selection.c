@@ -483,7 +483,7 @@ static void window_editor_object_selection_paint()
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
 	uint8 *text;
-	char *name, *stringBuffer;
+	char *datName, *name, *stringBuffer;
 
 	window_paint_get_registers(w, dpi);
 
@@ -545,6 +545,7 @@ static void window_editor_object_selection_paint()
 
 	// Skip object dat name
 	text = (char*)(highlightedEntry + 1);
+	datName = text;
 	do {
 		text++;
 	} while (*(text - 1) != 0);
@@ -584,6 +585,10 @@ static void window_editor_object_selection_paint()
 	x = w->x + w->widgets[WIDX_LIST].right + 4;
 	y += 15;
 	object_paint(type, 259, type, x, y, (int)w, (int)dpi, RCT2_GLOBAL(0x009ADAF8, sint32));
+
+	// Draw object dat name
+	strcpy(stringBuffer, datName);
+	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
 
 static void window_editor_object_set_page(rct_window *w, int page)
