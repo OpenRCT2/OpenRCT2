@@ -495,7 +495,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(0x009ADAF8, void*) != NULL) {
-		free(RCT2_GLOBAL(0x009ADAF8, void*));
+		rct2_free(RCT2_GLOBAL(0x009ADAF8, void*));
 		RCT2_GLOBAL(0x009ADAF8, void*) = NULL;
 	}
 }
