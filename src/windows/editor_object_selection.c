@@ -103,6 +103,7 @@ static void window_editor_object_selection_scroll_mousedown();
 static void window_editor_object_selection_scroll_mouseover();
 static void window_editor_object_selection_tooltip();
 static void window_editor_object_selection_invalidate();
+static void window_editor_object_selection_paint();
 
 static void* window_editor_object_selection_events[] = {
 	window_editor_object_selection_close,
@@ -131,7 +132,7 @@ static void* window_editor_object_selection_events[] = {
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_invalidate,
-	(void*)0x006AAB56,
+	(void*)window_editor_object_selection_paint,
 	(void*)0x006AADA3
 };
 
@@ -467,6 +468,122 @@ static void window_editor_object_selection_invalidate()
 	w->widgets[WIDX_LIST].right = 587 - x;
 	w->widgets[WIDX_PREVIEW].left = 537 - (x >> 1);
 	w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
+}
+
+/**
+ * 
+ *  rct2: 0x006AAB56
+ */
+static void window_editor_object_selection_paint()
+{
+	int i, x, y, width, numSelected, totalSelectable, type;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_widget *widget;
+	rct_object_entry *highlightedEntry;
+	rct_string_id stringId;
+	uint8 *text;
+	char *name, *stringBuffer;
+
+	window_paint_get_registers(w, dpi);
+
+	window_draw_widgets(w, dpi);
+
+	// Draw tabs
+	for (i = 0; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++) {
+		widget = &w->widgets[WIDX_TAB_1 + i];
+		if (widget->type == WWT_EMPTY)
+			continue;
+
+		x = w->x + widget->left;
+		y = w->y + widget->top;
+		gfx_draw_sprite(dpi, 5458 + i, x, y, 0);
+	}
+
+	// Preview background
+	widget = &w->widgets[WIDX_PREVIEW];
+	gfx_fill_rect(
+		dpi,
+		w->x + widget->left + 1,
+		w->y + widget->top + 1,
+		w->x + widget->right - 1,
+		w->y + widget->bottom - 1,
+		RCT2_ADDRESS(0x0141FC44, uint8)[w->colours[1] * 8]
+	);
+
+	// Draw number of selected items
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+		x = w->x + 3;
+		y = w->y + w->height - 12;
+
+		numSelected = RCT2_ADDRESS(0x00F433F7, uint16)[w->selected_tab];
+		totalSelectable = object_entry_group_counts[w->selected_tab];
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+			totalSelectable = 4;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = numSelected;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = totalSelectable;
+		gfx_draw_string_left(dpi, 3164, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	}
+
+	if (w->selected_list_item == -1 || RCT2_GLOBAL(0x009ADAF8, sint32) == -1)
+		return;
+
+	highlightedEntry = (rct_object_entry*)w->var_494;
+	type = highlightedEntry->flags & 0x0F;
+
+	// Draw preview
+	widget = &w->widgets[WIDX_PREVIEW];
+	x = w->x + (widget->left + widget->right) / 2 + 1;
+	y = w->y + (widget->top + widget->bottom) / 2 + 1;
+	object_paint(type, 3, type, x, y, 0, (int)dpi, RCT2_GLOBAL(0x009ADAF8, sint32));
+
+	// Draw name of object
+	x = w->x + (widget->left + widget->right) / 2 + 1;
+	y = w->y + widget->bottom + 3;
+	width = w->width - w->widgets[WIDX_LIST].right - 6;
+
+	// Skip object dat name
+	text = (char*)(highlightedEntry + 1);
+	do {
+		text++;
+	} while (*(text - 1) != 0);
+	text += 4;
+	name = text;
+
+	RCT2_GLOBAL(0x009BC677, uint8) = 14;
+
+	stringId = 3165;
+	stringBuffer = (char*)language_get_string(3165) + 1;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+		// Skip name
+		do {
+			text++;
+		} while (*(text - 1) != 0);
+		text += 4;
+		text += *text++ * 16;
+		text += *text++ * 16;
+
+		if (RCT2_GLOBAL(text, uint32) & 0x1000000) {
+			strcpy(stringBuffer, name);
+		} else {
+			int eax = *text;
+			if (*text == 0xFF) {
+				eax = *(text + 1);
+				if (*(text + 1) == 0xFF)
+					eax = *(text + 2);
+			}
+			format_string(stringBuffer, eax + 2, NULL);
+		}
+	} else {
+		strcpy(stringBuffer, name);
+	}
+	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
+	
+	// Draw description of object
+	x = w->x + w->widgets[WIDX_LIST].right + 4;
+	y += 15;
+	object_paint(type, 259, type, x, y, (int)w, (int)dpi, RCT2_GLOBAL(0x009ADAF8, sint32));
 }
 
 static void window_editor_object_set_page(rct_window *w, int page)
