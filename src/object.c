@@ -495,7 +495,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(0x009ADAF8, void*) != NULL) {
-		free(RCT2_GLOBAL(0x009ADAF8, void*));
+		rct2_free(RCT2_GLOBAL(0x009ADAF8, void*));
 		RCT2_GLOBAL(0x009ADAF8, void*) = NULL;
 	}
 }
@@ -534,4 +534,20 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	pos += 4;
 
 	return (rct_object_entry*)pos;
+}
+
+char *object_get_name(rct_object_entry *entry)
+{
+	uint8 *pos = (uint8*)entry;
+
+	// Skip sizeof(rct_object_entry)
+	pos += 16;
+
+	// Skip filename
+	while (*pos++);
+
+	// Skip 
+	pos += 4;
+
+	return pos;
 }

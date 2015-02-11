@@ -92,4 +92,6 @@ int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8
 
 rct_object_entry *object_list_find(rct_object_entry *entry);
 
+char *object_get_name(rct_object_entry *entry);
+
 #endif

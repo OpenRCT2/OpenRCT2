@@ -79,7 +79,7 @@ rct_object_entry_group object_entry_groups[] = {
 	(uint8**)(0x009ACFA4 + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets
 	(uint8**)(0x009ACFA4 + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance
 	(uint8**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water
-	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))		// scenario text
+	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text
 };
 
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
@@ -93,6 +93,56 @@ static void get_plugin_path(char *path)
 	char *homePath = osinterface_get_orct2_homefolder();
 	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "plugin.dat");
 	free(homePath);
+}
+
+static void object_list_sort()
+{
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry;
+	int numObjects, i, j, bufferSize, entrySize, lowestIndex;
+	char *objectName, *lowestString;
+	uint8 *copied;
+
+	objectBuffer = &RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	copied = calloc(numObjects, sizeof(uint8));
+
+	// Get buffer size
+	entry = *objectBuffer;
+	for (i = 0; i < numObjects; i++)
+		entry = object_get_next(entry);
+	bufferSize = (int)entry - (int)*objectBuffer;
+
+	// Create new buffer
+	newBuffer = rct2_malloc(bufferSize);
+	destEntry = newBuffer;
+
+	// Copy over sorted objects
+	for (i = 0; i < numObjects; i++) {
+		// Find next lowest string
+		lowestString = NULL;
+		entry = *objectBuffer;
+		for (j = 0; j < numObjects; j++) {
+			if (!copied[j]) {
+				objectName = object_get_name(entry);
+				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
+					lowestEntry = entry;
+					lowestString = objectName;
+					lowestIndex = j;
+				}
+			}
+			entry = object_get_next(entry);
+		}
+		entrySize = object_get_length(lowestEntry);
+		memcpy(destEntry, lowestEntry, entrySize);
+		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+		copied[lowestIndex] = 1;
+	}
+
+	// Replace old buffer
+	rct2_free(*objectBuffer);
+	*objectBuffer = newBuffer;
+
+	free(copied);
 }
 
 /**
@@ -111,6 +161,7 @@ static void object_list_examine()
 
 		object = object_get_next(object);
 	}
+	object_list_sort();
 
 	// Create a search index
 	object_list_create_hash_table();
@@ -488,7 +539,7 @@ void object_list_create_hash_table()
 		// Set hash table slot
 		_installedObjectHashTable[index] = installedObject;
 
-		// Next installde object
+		// Next installed object
 		installedObject = object_get_next(installedObject);
 	}
 }
