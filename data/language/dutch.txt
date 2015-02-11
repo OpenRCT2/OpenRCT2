@@ -1059,23 +1059,23 @@ STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven...
 STR_1060    :Ongeldige attractienaam
-STR_1061    :Normale stand
+STR_1061    :Normale modus
 STR_1062    :Voortdurend circuit
 STR_1063    :Lancering via achterwaartse optakeling
 STR_1064    :Lancering
-STR_1065    :Shuttlestand
+STR_1065    :Shuttlemodus
 STR_1066    :Bootverhuurmodus
 STR_1067    :Opwaartse lancering
 STR_1068    :Draaiendeliftmodus
 STR_1069    :Station-naar-station
 STR_1070    :Enkele rit per entree
 STR_1071    :Onbeperkt aantal ritten per entree
-STR_1072    :Doolhofstand
-STR_1073    :Racestand
+STR_1072    :Doolhofmodus
+STR_1073    :Racemodus
 STR_1074    :Botsautomodus
-STR_1075    :Schommelstand
-STR_1076    :Winkelstand
-STR_1077    :Draaistand
+STR_1075    :Schommelmodus
+STR_1076    :Winkelmodus
+STR_1077    :Draaimodus
 STR_1078    :Voorwaartse rotatie
 STR_1079    :Achterwaartse rotatie
 STR_1080    :Film: {ENDQUOTES}Avenging Aviators{ENDQUOTES}
@@ -1091,7 +1091,7 @@ STR_1089    :Waanzinnige stand
 STR_1090    :Spookhuismodus
 STR_1091    :Circusmodus
 STR_1092    :Neerwaartse lancering
-STR_1093    :Krommehuismodus
+STR_1093    :Crooked house-modus
 STR_1094    :Vrijevalmodus
 STR_1095    :Voortdurend circuit met blokken
 STR_1096    :Lancering
