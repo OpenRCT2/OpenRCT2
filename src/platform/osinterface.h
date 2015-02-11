@@ -69,16 +69,6 @@ typedef struct {
 	int old;
 } openrct2_cursor;
 
-typedef struct {
-	uint32 installlevel;
-	char title[260];
-	char path[260];
-	uint32 var_20C;
-	uint8 pad_210[0x100];
-	char addon[16][0x80];
-	uint32 addons;			//0xB10
-} rct2_install_info;
-
 extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;

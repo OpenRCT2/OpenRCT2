@@ -109,6 +109,16 @@ typedef fixed32_1dp money32;
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
 
+typedef struct {
+	uint32 installLevel;
+	char title[260];
+	char path[260];
+	uint32 var_20C;
+	uint8 pad_210[256];
+	char expansionPackNames[16][128];
+	uint32 activeExpansionPacks;		//0xB10
+} rct2_install_info;
+
 enum {
 	// Although this is labeled a flag it actually means when
 	// zero the screen is in playing mode.

@@ -560,50 +560,6 @@ void osinterface_free()
 
 /**
  * 
- *  rct2: 0x00407978
- */
-int osinterface_407978(rct2_install_info* install_info, char* source, char* font, uint8 charset)
-{
-	char subkey[MAX_PATH];
-	char subkey2[MAX_PATH];
-	strcpy(subkey, "Software\\Infogrames\\");
-	strcat(subkey, source);
-	strcpy(subkey2, "Software\\Fish Technology Group\\");
-	strcat(subkey2, source);
-	LOGFONTA lf;
-	memset(&lf, 0, sizeof(lf));
-	lf.lfCharSet = charset;
-	lf.lfHeight = 12;
-	lf.lfWeight = 400;
-	strcpy(lf.lfFaceName, font);
-	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
-	HKEY hkey;
-	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey, &hkey) != ERROR_SUCCESS && RegOpenKeyA(HKEY_LOCAL_MACHINE, subkey2, &hkey) != ERROR_SUCCESS) {
-		return 0;
-	} else {
-		DWORD type;
-		DWORD size = 260;
-		RegQueryValueExA(hkey, "Title", 0, &type, install_info->title, &size);
-		size = 260;
-		RegQueryValueExA(hkey, "Path", 0, &type, install_info->path, &size);
-		install_info->var_20C = 235960;
-		size = 4;
-		RegQueryValueExA(hkey, "InstallLevel", 0, &type, (LPBYTE)&install_info->installlevel, &size);
-		for (int i = 0; i <= 15; i++) {
-			char name[100];
-			sprintf(name, "AddonPack%d", i);
-			size = sizeof(install_info->addon[i]);
-			if (RegQueryValueExA(hkey, name, 0, &type, install_info->addon[i], &size) == ERROR_SUCCESS) {
-				install_info->addons |= (1 << i);
-			}
-		}
-		RegCloseKey(hkey);
-		return 1;
-	}
-}
-
-/**
- * 
  *  rct2: 0x00407D80
  */
 int osinterface_get_cursor_pos(int* x, int* y)

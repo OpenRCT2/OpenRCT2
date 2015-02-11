@@ -224,6 +224,58 @@ unsigned int platform_get_ticks()
 }
 
 /**
+ * 
+ *  rct2: 0x00407978
+ */
+int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
+{
+	char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
+	LOGFONTA lf;
+	HKEY hKey;
+	DWORD type, size;
+
+	strcpy(subkeyInfogrames, "Software\\Infogrames\\");
+	strcat(subkeyInfogrames, source);
+	strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\");
+	strcat(subkeyFishTechGroup, source);
+	
+	memset(&lf, 0, sizeof(lf));
+	lf.lfCharSet = charset;
+	lf.lfHeight = 12;
+	lf.lfWeight = 400;
+	strcpy(lf.lfFaceName, font);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
+	
+	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
+		return 0;
+
+	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyFishTechGroup, &hKey) != ERROR_SUCCESS)
+		return 0;
+
+	
+	size = 260;
+	RegQueryValueExA(hKey, "Title", 0, &type, installInfo->title, &size);
+
+	size = 260;
+	RegQueryValueExA(hKey, "Path", 0, &type, installInfo->path, &size);
+	
+	installInfo->var_20C = 235960;
+	
+	size = 4;
+	RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
+	for (int i = 0; i <= 15; i++) {
+		sprintf(keyName, "AddonPack%d", i);
+		size = sizeof(installInfo->expansionPackNames[i]);
+		if (RegQueryValueExA(hKey, keyName, 0, &type, installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
+			installInfo->activeExpansionPacks |= (1 << i);
+	}
+
+	RegCloseKey(hKey);
+	return 1;
+}
+
+/**
  * http://alter.org.ua/en/docs/win/args/
  */
 PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)

@@ -65,4 +65,8 @@ void platform_get_cursor_position(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 
+#ifdef _WIN32
+	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
+#endif
+
 #endif

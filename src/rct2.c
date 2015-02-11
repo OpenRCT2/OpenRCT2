@@ -129,6 +129,8 @@ int rct2_init()
  */
 int rct2_init_directories()
 {
+	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
+
 	// check install directory
 	if (!platform_directory_exists(gGeneral_config.game_path)) {
 		log_verbose("install directory does not exist, %s", gGeneral_config.game_path);
