@@ -34,6 +34,7 @@
 #include "management/marketing.h"
 #include "management/news_item.h"
 #include "management/research.h"
+#include "network/network.h"
 #include "object.h"
 #include "openrct2.h"
 #include "peep/peep.h"
@@ -387,6 +388,35 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 {
 	int cost, flags, insufficientFunds;
 	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
+
+	int sendPacket = 0;
+	if (gNetworkStatus == NETWORK_CLIENT) {
+		if (command & (1 << 31)) {
+			command &= ~(1 << 31);
+		} else {
+			sendPacket = 1;
+		}
+	} else if (gNetworkStatus == NETWORK_SERVER) {
+		sendPacket = 1;
+	}
+
+	if (sendPacket) {
+		network_packet packet;
+		packet.size = 8 * 4;
+		uint32 *args = (uint32*)&packet.data;
+		args[0] = command;
+		args[1] = *eax;
+		args[2] = *ebx;
+		args[3] = *ecx;
+		args[4] = *edx;
+		args[5] = *esi;
+		args[6] = *edi;
+		args[7] = *ebp;
+		network_send_packet(&packet);
+
+		if (gNetworkStatus == NETWORK_CLIENT)
+			return MONEY32_UNDEFINED;
+	}
 
 	*esi = command;
 	original_ebx = *ebx;

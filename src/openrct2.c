@@ -29,6 +29,7 @@
 #include "interface/window.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
+#include "network/network.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
@@ -166,10 +167,10 @@ bool openrct2_initialise()
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
-	if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
-		log_fatal("OpenRCT2 is already running.");
-		return false;
-	}
+	// if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+	// 	log_fatal("OpenRCT2 is already running.");
+	// 	return false;
+	// }
 
 	get_system_info();
 	if (!gOpenRCT2Headless) {
@@ -223,7 +224,14 @@ void openrct2_launch()
 				editor_load_landscape(gOpenRCT2StartupActionPath);
 			}
 			break;
-    	}
+		}
+
+		if (gNetworkStart == NETWORK_CLIENT) {
+			network_begin_client(gNetworkStartHost, gNetworkStartPort);
+		} else if (gNetworkStart == NETWORK_SERVER) {
+			network_begin_server(gNetworkStartPort);
+		}
+
 		openrct2_loop();
 	}
 	openrct2_dispose();
@@ -234,6 +242,7 @@ void openrct2_launch()
 
 void openrct2_dispose()
 {
+	network_close();
 	http_dispose();
 	language_close_all();
 	platform_free();
@@ -329,6 +338,7 @@ static void openrct2_loop()
 			window_update_all_viewports();
 
 			platform_process_messages();
+			network_update();
 			rct2_draw();
 			platform_draw();
 			fps++;
@@ -358,6 +368,7 @@ static void openrct2_loop()
 			lastTick = currentTick;
 
 			platform_process_messages();
+			network_update();
 
 			rct2_update();
 			gOpenRCT2ResetFrameSmoothing = false;
