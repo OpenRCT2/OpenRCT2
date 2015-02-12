@@ -27,15 +27,41 @@
 
 #include "../common.h"
 
+typedef struct {
+	uint16 size;
+	uint8 data[128];
+} network_packet;
+
 #define NETWORK_DEFAULT_PORT 11753
+
+enum {
+	NETWORK_NONE,
+	NETWORK_CLIENT,
+	NETWORK_SERVER
+};
+
+enum {
+	NETWORK_SUCCESS,
+	NETWORK_NO_DATA,
+	NETWORK_DISCONNECTED
+};
+
+extern int gNetworkStart;
+extern char gNetworkStartHost[128];
+extern int gNetworkStartPort;
+extern int gNetworkStatus;
 
 int network_init();
 void network_close();
+int network_begin_client(const char *host, int port);
+void network_end_client();
 int network_begin_server(int port);
 void network_end_server();
 
-int network_send_data(uint8 *data, int length);
-int network_receive_data(uint8 *data, int maxLength);
+void network_update();
+void network_send_packet(network_packet *packet);
+
+void network_print_error();
 
 #endif /* DISABLE_NETWORK */
 
