@@ -21,9 +21,9 @@
 #ifndef _STRING_IDS_H_
 #define _STRING_IDS_H_
 
-enum {
-	STR_NONE = -1,
+#define STR_NONE ((rct_string_id)-1)
 
+enum {
 	STR_GUEST = 767,
 
 	STR_DATE_DAY_1 = 779,

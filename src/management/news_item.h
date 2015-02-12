@@ -61,4 +61,6 @@ void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc);
 void news_item_open_subject(int type, int subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
 
+void news_item_add_to_queue_custom(rct_news_item *newNewsItem);
+
 #endif

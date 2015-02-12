@@ -20,7 +20,12 @@
 
 #ifndef DISABLE_NETWORK
 
+#include "../addresses.h"
 #include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
 #include "network.h"
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -220,14 +225,30 @@ static void network_process_packet(network_packet *packet)
 {
 	uint32 *args;
 	int command;
+	rct_news_item newsItem;
 
 	args = (uint32*)&packet->data;
 	command = args[0];
 
-	if (gNetworkStatus == NETWORK_CLIENT)
-		command |= (1 << 31);
+	switch (command) {
+	case 700:
+		newsItem.type = NEWS_ITEM_BLANK;
+		newsItem.flags = 1;
+		newsItem.assoc = 0;
+		newsItem.ticks = 0;
+		newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
+		newsItem.colour = FORMAT_TOPAZ;
+		strcpy(newsItem.text, packet->data + 4);
+		news_item_add_to_queue_custom(&newsItem);
+		break;
+	default:
+		if (gNetworkStatus == NETWORK_CLIENT)
+			command |= (1 << 31);
 
-	game_do_command_p(command, &args[1], &args[2], &args[3], &args[4], &args[5], &args[6], &args[7]);
+		game_do_command_p(command, &args[1], &args[2], &args[3], &args[4], &args[5], &args[6], &args[7]);
+		break;
+	}
 }
 
 void network_send_packet(network_packet *packet)
@@ -247,6 +268,72 @@ void network_print_error()
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
+}
+
+static void window_chat_host_emptysub() { }
+
+static void window_chat_host_textinput()
+{
+	rct_window *w;
+	short widgetIndex;
+	uint8 result;
+	char *text;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (!result)
+		return;
+
+	network_packet packet;
+	packet.size = 4 + strlen(text) + 1;
+	*((uint32*)packet.data) = 700;
+	strcpy(packet.data + 4, text);
+
+	network_send_packet(&packet);
+
+	window_close(w);
+}
+
+static void* window_chat_host_events[] = {
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_textinput,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub,
+	window_chat_host_emptysub
+};
+
+void network_open_chat_box()
+{
+	rct_window *w;
+	w = window_create(0, 0, 0, 0, (uint32*)window_chat_host_events, WC_CHAT_HOST, 0);
+	w->colours[0] = 1;
+	w->colours[1] = 1;
+	w->colours[2] = 0;
+	w->number = 0;
+	window_text_input_open(w, 0, 6000, 6001, STR_NONE, 0, 64);
 }
 
 #endif /* DISABLE_NETWORK */

@@ -61,6 +61,8 @@ void network_end_server();
 void network_update();
 void network_send_packet(network_packet *packet);
 
+void network_open_chat_box();
+
 void network_print_error();
 
 #endif /* DISABLE_NETWORK */
