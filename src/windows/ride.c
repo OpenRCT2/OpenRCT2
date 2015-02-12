@@ -1829,7 +1829,7 @@ static void window_ride_main_dropdown()
 			break;
 		}
 
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->overall_view;
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
 		ride_set_status(w->number, status);
 		break;
