@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
+#include "../network/network.h"
 #include "keyboard_shortcut.h"
 #include "viewport.h"
 #include "window.h"
@@ -470,6 +471,11 @@ static void shortcut_open_cheat_window()
 	window_cheats_open();
 }
 
+static void shortcut_open_chat_window()
+{
+	network_open_chat_box();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -509,6 +515,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_increase_game_speed,
 	shortcut_open_cheat_window,
 	shortcut_remove_top_bottom_toolbar_toggle,
+	shortcut_open_chat_window
 };
 
 #pragma endregion
