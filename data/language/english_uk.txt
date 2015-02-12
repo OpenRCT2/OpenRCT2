@@ -3801,3 +3801,6 @@ STR_5464    :General
 STR_5465    :Climate
 STR_5466    :Staff
 STR_5467    :ALT + 
+
+STR_6000    :Send Message
+STR_6001    :Type the message you would like to send.
