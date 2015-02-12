@@ -5433,23 +5433,23 @@ static void window_ride_income_invalidate()
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE].image = STR_FREE;
 
 	primaryItem = 31;
-	if (ride->type != RIDE_TYPE_BATHROOM) {
-		if ((primaryItem = (sint8)rideEntry->shop_item) != -1) {
-			window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
-			if (primaryItem < 32) {
-				if (RCT2_GLOBAL(0x01358838, uint32) & (1 << primaryItem))
-					w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+	if (ride->type == RIDE_TYPE_BATHROOM || ((primaryItem = (sint8)rideEntry->shop_item) != -1)) {
+		window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
+		if (primaryItem < 32) {
+			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << primaryItem))
+				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-				if (primaryItem != 31)
-					window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 1960 + primaryItem;
-			} else {
-				primaryItem -= 32;
-				if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << primaryItem))
-					w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
-
-				window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2100 + primaryItem;
-			}
+			if (primaryItem != 31)
+				window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 1960 + primaryItem;
 		}
+		else {
+			primaryItem -= 32;
+			if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << primaryItem))
+				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+
+			window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2100 + primaryItem;
+		}
+
 	}
 
 	// Get secondary item
