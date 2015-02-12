@@ -37,7 +37,7 @@
 #include "object.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
@@ -97,7 +97,7 @@ void update_palette_effects()
 			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
 	} else {
@@ -183,11 +183,11 @@ void update_palette_effects()
 		}
 
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
+		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
 			RCT2_GLOBAL(0x014241BC, uint32) = 2;
-			osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+			platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
 		}
@@ -512,7 +512,7 @@ static int open_landscape_file_dialog()
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
+	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -529,7 +529,7 @@ static int open_load_game_dialog()
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
+	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -748,7 +748,7 @@ static int show_save_game_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
+	result = platform_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
 	unpause_sounds();
 
 	if (result)

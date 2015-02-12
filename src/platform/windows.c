@@ -20,7 +20,9 @@
 
 #ifdef _WIN32
 
+#include <shlobj.h>
 #include <windows.h>
+#include <SDL_syswm.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
@@ -190,6 +192,16 @@ void platform_enumerate_files_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_file_move(const char *srcPath, const char *dstPath)
+{
+	return MoveFileA(srcPath, dstPath);
+}
+
+int platform_file_delete(const char *path)
+{
+	return DeleteFileA(path);
+}
+
 void platform_hide_cursor()
 {
 	ShowCursor(FALSE);
@@ -221,6 +233,136 @@ void platform_set_cursor_position(int x, int y)
 unsigned int platform_get_ticks()
 {
 	return GetTickCount();
+}
+
+char* platform_get_orct2_homefolder()
+{
+	char *path = NULL;
+	path = malloc(sizeof(char) * MAX_PATH);
+	if (path == NULL){
+		log_fatal("Error allocating memory!");
+		exit(EXIT_FAILURE);
+	}
+
+	path[0] = '\0';
+
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path)))
+		strcat(path, "\\OpenRCT2");
+
+	return path;
+}
+
+void platform_show_messagebox(char *message)
+{
+	MessageBoxA(windows_get_window_handle(), message, "OpenRCT2", MB_OK);
+}
+
+/**
+ * 
+ *  rct2: 0x004080EA
+ */
+int platform_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName)
+{
+	char initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
+	OPENFILENAME openFileName;
+	BOOL result;
+	int tmp;
+	DWORD commonFlags;
+
+	// Get directory path from given filename
+	strcpy(initialDirectory, filename);
+	dotAddress = strrchr(initialDirectory, '.');
+	if (dotAddress != NULL) {
+		slashAddress = strrchr(initialDirectory, '\\');
+		if (slashAddress < dotAddress)
+			*(slashAddress + 1) = 0;
+	}
+
+	// Clear filename
+	if (type != 0)
+	*filename = 0;
+
+	// Set open file name options
+	memset(&openFileName, 0, sizeof(OPENFILENAME));
+	openFileName.lStructSize = sizeof(OPENFILENAME);
+	openFileName.hwndOwner = windows_get_window_handle();
+	openFileName.lpstrFile = filename;
+	openFileName.nMaxFile = MAX_PATH;
+	openFileName.lpstrInitialDir = initialDirectory;
+	openFileName.lpstrTitle = title;
+
+	// Copy filter name
+	strcpy((char*)0x01423800, filterName);
+
+	// Copy filter pattern
+	strcpy((char*)0x01423800 + strlen(filterName) + 1, filterPattern);
+	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
+	openFileName.lpstrFilter = (char*)0x01423800;
+
+	// 
+	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
+	if (RCT2_GLOBAL(0x009E2BB8, uint32) == 2 && RCT2_GLOBAL(0x009E1AF8, uint32) == 1)
+		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
+
+	// Open dialog
+	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+	if (type == 0) {
+		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
+		result = GetSaveFileName(&openFileName);
+	} else if (type == 1) {
+		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
+		result = GetOpenFileName(&openFileName);
+	}
+
+	// 
+	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
+
+	return result;
+}
+
+char *platform_open_directory_browser(char *title)
+{
+	BROWSEINFO bi;
+	char pszBuffer[MAX_PATH];
+	LPITEMIDLIST pidl;
+	LPMALLOC lpMalloc;
+
+	// Initialize COM
+	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
+		CoUninitialize();
+
+		log_error("Error opening directory browse window");
+		return 0;
+	}
+
+	// Get a pointer to the shell memory allocator
+	if (FAILED(SHGetMalloc(&lpMalloc))) {
+		CoUninitialize();
+
+		log_error("Error opening directory browse window");
+		return 0;
+	}
+
+	bi.hwndOwner = NULL;
+	bi.pidlRoot = NULL;
+	bi.pszDisplayName = pszBuffer;
+	bi.lpszTitle = title;
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+
+	char *outPath = NULL;
+
+	if (pidl = SHBrowseForFolder(&bi)) {
+		// Copy the path directory to the buffer
+		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+			// Store pszBuffer (and the path) in the outPath
+			outPath = (char*) malloc(strlen(pszBuffer)+1);
+			strcpy(outPath, pszBuffer);
+		}
+	}
+	CoUninitialize();
+	return outPath;
 }
 
 /**
@@ -273,6 +415,21 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 
 	RegCloseKey(hKey);
 	return 1;
+}
+
+HWND windows_get_window_handle()
+{
+	SDL_SysWMinfo wmInfo;
+
+	if (gWindow == NULL)
+		return NULL;
+
+	SDL_VERSION(&wmInfo.version);
+	if (SDL_GetWindowWMInfo(gWindow, &wmInfo) != SDL_TRUE) {
+		log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
+		exit(-1);
+	}
+	return wmInfo.info.win.window;
 }
 
 /**

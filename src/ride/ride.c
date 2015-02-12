@@ -30,7 +30,6 @@
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
-#include "../platform/osinterface.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"

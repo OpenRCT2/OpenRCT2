@@ -35,8 +35,8 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../platform/platform.h"
 #include "../sprites.h"
-#include "../platform/osinterface.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -585,7 +585,7 @@ static void window_options_dropdown()
 				gGeneral_config.fullscreen_height = resolution->height;
 
 				if (gGeneral_config.fullscreen_mode == SDL_WINDOW_FULLSCREEN)
-					osinterface_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
+					platform_set_fullscreen_mode(SDL_WINDOW_FULLSCREEN);
 
 				config_save();
 				gfx_invalidate_screen();
@@ -601,7 +601,7 @@ static void window_options_dropdown()
 				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
 				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
 			}
-			osinterface_set_fullscreen_mode(dropdownIndex);
+			platform_set_fullscreen_mode(dropdownIndex);
 			
 			gGeneral_config.fullscreen_mode = (uint8)dropdownIndex;
 			config_save();

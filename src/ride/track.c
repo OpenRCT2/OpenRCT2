@@ -19,17 +19,16 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "../platform/osinterface.h"
+#include "../game.h"
+#include "../interface/viewport.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
-#include "../rct1.h"
+#include "../world/park.h"
 #include "ride.h"
 #include "track.h"
-#include "../platform/platform.h"
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../world/park.h"
-#include "../interface/viewport.h"
 
 /**
  *
@@ -237,8 +236,8 @@ uint32* sub_6AB49A(rct_object_entry* entry){
 
 static void get_track_idx_path(char *path)
 {
-	char *homePath = osinterface_get_orct2_homefolder();
-	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "Tracks.IDX");
+	char *homePath = platform_get_orct2_homefolder();
+	sprintf(path, "%s%c%s", homePath, platform_get_path_separator(), "tracks.idx");
 	free(homePath);
 }
 
@@ -1080,7 +1079,7 @@ int track_rename(const char *text)
 	char old_path[MAX_PATH];
 	subsitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
-	if (osinterface_file_move(old_path, new_path)){
+	if (!platform_file_move(old_path, new_path)) {
 		RCT2_GLOBAL(0x141E9AC, uint16) = 3354;
 		return 0;
 	}
@@ -1109,7 +1108,7 @@ int track_delete()
 	char path[MAX_PATH];
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
-	if (osinterface_file_delete(path)){
+	if (!platform_file_delete(path)) {
 		RCT2_GLOBAL(0x141E9AC, uint16) = 3355;
 		return 0;
 	}

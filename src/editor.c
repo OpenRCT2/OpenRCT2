@@ -31,7 +31,7 @@
 #include "management/news_item.h"
 #include "object.h"
 #include "peep/staff.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "rct1.h"
 #include "ride/ride.h"
 #include "scenario.h"
@@ -107,7 +107,7 @@ static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, title, filename, "*.SV6", filterName);
+	result = platform_open_common_file_dialog(1, title, filename, "*.SV6", filterName);
 	unpause_sounds();
 
 	if (result)

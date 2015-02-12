@@ -23,7 +23,7 @@
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 
 #define WW 340
 #define WH 240
@@ -257,7 +257,7 @@ static void window_shortcut_scrollpaint()
 
 		uint16 shortcut_entry = gShortcutKeys[i];
 		if (shortcut_entry != 0xFFFF){
-			RCT2_GLOBAL(0x13CE958, uint16) = STR_INDIVIDUAL_KEYS_BASE + osinterface_scancode_to_rct_keycode(shortcut_entry & 0xFF);
+			RCT2_GLOBAL(0x13CE958, uint16) = STR_INDIVIDUAL_KEYS_BASE + platform_scancode_to_rct_keycode(shortcut_entry & 0xFF);
 			//Display the modifer
 			if (shortcut_entry & 0x100){
 				RCT2_GLOBAL(0x13CE956, uint16) = STR_SHIFT_PLUS;

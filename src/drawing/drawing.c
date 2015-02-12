@@ -22,7 +22,7 @@
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../object.h"
 #include "drawing.h"
 
@@ -147,7 +147,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	osinterface_update_palette((char*)0x01424680, 10, 236);
+	platform_update_palette((char*)0x01424680, 10, 236);
 }
 
 /* rct2: 0x006837E3 */
@@ -173,7 +173,7 @@ void load_palette(){
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	osinterface_update_palette((char*)0x01424680, 10, 236);
+	platform_update_palette((char*)0x01424680, 10, 236);
 }
 
 /**

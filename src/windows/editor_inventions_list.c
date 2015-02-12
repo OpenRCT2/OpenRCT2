@@ -19,13 +19,13 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cursors.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../platform/osinterface.h"
 #include "../world/scenery.h"
 
 #pragma region Widgets

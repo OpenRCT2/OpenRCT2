@@ -201,9 +201,6 @@
     <ClCompile Include="..\src\localisation\language.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\osinterface.c">
-      <Filter>Source\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ride\ride.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -334,7 +331,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -356,7 +352,7 @@
     <ClCompile Include="..\src\windows\map_tooltip.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\demolish_ride_prompt.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -423,8 +419,11 @@
     <ClCompile Include="..\src\windows\top_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-	<ClCompile Include="..\src\ride\track_data.c">
+    <ClCompile Include="..\src\ride\track_data.c">
       <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cursors.c">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,9 +495,6 @@
     </ClInclude>
     <ClInclude Include="..\src\localisation\string_ids.h">
       <Filter>Source\Localisation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\osinterface.h">
-      <Filter>Source\Platform</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ride\ride.h">
       <Filter>Source\Ride</Filter>

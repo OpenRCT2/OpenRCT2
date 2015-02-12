@@ -21,7 +21,6 @@
 #include "addresses.h"
 #include "localisation/localisation.h"
 #include "object.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 

@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\cmdline.c" />
     <ClCompile Include="..\src\config.c" />
+    <ClCompile Include="..\src\cursors.c" />
     <ClCompile Include="..\src\diagnostic.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
     <ClCompile Include="..\src\drawing\line.c" />
@@ -59,7 +60,6 @@
     <ClCompile Include="..\src\peep\staff.c" />
     <ClCompile Include="..\src\platform\shared.c" />
     <ClCompile Include="..\src\platform\unix.c" />
-    <ClCompile Include="..\src\platform\osinterface.c" />
     <ClCompile Include="..\src\platform\osx.c" />
     <ClCompile Include="..\src\platform\windows.c" />
     <ClCompile Include="..\src\rct2.c" />
@@ -176,7 +176,6 @@
     <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />
     <ClInclude Include="..\src\peep\staff.h" />
-    <ClInclude Include="..\src\platform\osinterface.h" />
     <ClInclude Include="..\src\platform\platform.h" />
     <ClInclude Include="..\src\rct1.h" />
     <ClInclude Include="..\src\rct2.h" />

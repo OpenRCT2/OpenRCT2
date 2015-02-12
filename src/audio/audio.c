@@ -23,7 +23,7 @@
 #include "../config.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "audio.h"
@@ -1329,7 +1329,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 		if (FAILED(DirectSoundCreate(&dsdevice->guid, &RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), 0))) {
 			return 0;
 		}
-		if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), RCT2_GLOBAL(0x009E2D70, HWND), DSSCL_NORMAL)) || 
+		if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), windows_get_window_handle(), DSSCL_NORMAL)) || 
 			FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), 0))) {
 			RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->Release(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND));
 			RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
@@ -1374,7 +1374,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 	if (FAILED(DirectSoundCreate(&dsdevice->guid, &RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), 0))) {
 		return 0;
 	}
-	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), RCT2_GLOBAL(0x009E2D70, HWND), DSSCL_PRIORITY))) {
+	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), windows_get_window_handle(), DSSCL_PRIORITY))) {
 		RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->Release(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND));
 		RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
 		return 0;
@@ -1702,13 +1702,10 @@ void audio_init1()
 	do {
 		rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[m];
 		const char* path = get_file_path(ride_music_info->pathid);
-		RCT2_GLOBAL(0x014241BC, uint32) = 3;
-		HANDLE hfile = osinterface_file_open(path);
-		RCT2_GLOBAL(0x014241BC, uint32) = 0;
-		if (hfile != INVALID_HANDLE_VALUE) {
-			RCT2_GLOBAL(0x014241BC, uint32) = 3;
-			osinterface_file_read(hfile, &RCT2_GLOBAL(0x009AF47E, uint32), 4);
-			osinterface_file_close(hfile);
+		FILE *file = fopen(path, "rb");
+		if (file != NULL) {
+			fread(&RCT2_GLOBAL(0x009AF47E, uint32), 4, 1, file);
+			fclose(file);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
 				ride_music_info->var_0 = 0;

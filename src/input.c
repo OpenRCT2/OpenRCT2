@@ -22,6 +22,7 @@
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
+#include "cursors.h"
 #include "game.h"
 #include "input.h"
 #include "interface/keyboard_shortcut.h"
@@ -29,7 +30,7 @@
 #include "interface/widget.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "ride/ride_data.h"
 #include "scenario.h"
 #include "tutorial.h"
@@ -1237,7 +1238,7 @@ void sub_6ED990(char cursor_id){
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor_id;
 	RCT2_GLOBAL(0x14241BC, uint32) = 2;
-	osinterface_set_cursor(cursor_id);
+	platform_set_cursor(cursor_id);
 	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }
 

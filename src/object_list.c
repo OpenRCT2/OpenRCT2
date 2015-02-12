@@ -22,7 +22,6 @@
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
-#include "platform/osinterface.h"
 #include "ride/track.h"
 #include "util/sawyercoding.h"
 
@@ -90,8 +89,8 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 static void get_plugin_path(char *path)
 {
-	char *homePath = osinterface_get_orct2_homefolder();
-	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "plugin.dat");
+	char *homePath = platform_get_orct2_homefolder();
+	sprintf(path, "%s%c%s", homePath, platform_get_path_separator(), "plugin.dat");
 	free(homePath);
 }
 

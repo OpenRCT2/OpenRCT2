@@ -23,7 +23,7 @@
 #include "../game.h"
 #include "../drawing/drawing.h"
 #include "../input.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "widget.h"

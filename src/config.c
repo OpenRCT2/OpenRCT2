@@ -22,7 +22,6 @@
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 
 // Current keyboard shortcuts
@@ -309,7 +308,7 @@ void config_apply_to_old_addresses()
  */
 void config_load()
 {	
-	char *path = osinterface_get_orct2_homefolder();
+	char *path = platform_get_orct2_homefolder();
 	FILE* fp;
 
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
@@ -320,7 +319,7 @@ void config_load()
 			return;
 		}
 		
-		sprintf(path, "%s%c%s", path, osinterface_get_path_separator(), "config.ini");
+		sprintf(path, "%s%c%s", path, platform_get_path_separator(), "config.ini");
 		
 		fp = fopen(path, "r");
 		if (!fp) {
@@ -342,9 +341,9 @@ void config_load()
 
 void config_save()
 {
-	char *configIniPath = osinterface_get_orct2_homefolder();;
+	char *configIniPath = platform_get_orct2_homefolder();;
 
-	sprintf(configIniPath, "%s%c%s", configIniPath, osinterface_get_path_separator(), "config.ini");
+	sprintf(configIniPath, "%s%c%s", configIniPath, platform_get_path_separator(), "config.ini");
 	config_save_ini(configIniPath);
 
 	config_apply_to_old_addresses();
@@ -387,8 +386,8 @@ int config_find_or_browse_install_directory()
 	char *installPath;
 
 	if (!config_find_rct2_path(gGeneral_config.game_path)) {
-		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
-		installPath = osinterface_open_directory_browser("Please select your RCT2 directory");
+		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		installPath = platform_open_directory_browser("Please select your RCT2 directory");
 		if (installPath == NULL)
 			return 0;
 
@@ -779,7 +778,7 @@ static int config_parse_currency(char *currency)
  */
 static void config_error(char *msg){
 
-	osinterface_show_messagebox(msg);
+	platform_show_messagebox(msg);
 	//TODO:SHUT DOWN EVERYTHING!
 
 }

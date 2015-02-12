@@ -19,7 +19,6 @@
  *****************************************************************************/
 
 #include "addresses.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "scenario.h"
 
@@ -157,8 +156,8 @@ static int scenario_list_sort_compare(const void *a, const void *b)
  */
 static void scenario_scores_get_path(char *outPath)
 {
-	char *homePath = osinterface_get_orct2_homefolder();
-	sprintf(outPath, "%s%c%s", homePath, osinterface_get_path_separator(), "scores.dat");
+	char *homePath = platform_get_orct2_homefolder();
+	sprintf(outPath, "%s%c%s", homePath, platform_get_path_separator(), "scores.dat");
 	free(homePath);
 }
 

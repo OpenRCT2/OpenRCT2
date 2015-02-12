@@ -35,7 +35,6 @@
 #include "management/news_item.h"
 #include "object.h"
 #include "openrct2.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/track.h"
@@ -93,7 +92,7 @@ int rct2_init()
 
 	gfx_load_g1();
 	gfx_load_character_widths();
-	osinterface_init();
+	platform_init();
 	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();

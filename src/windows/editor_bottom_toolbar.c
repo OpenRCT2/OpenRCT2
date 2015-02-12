@@ -28,7 +28,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
 #include "error.h"
@@ -274,7 +274,7 @@ static int show_save_scenario_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
+	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
 	unpause_sounds();
 
 	if (result)

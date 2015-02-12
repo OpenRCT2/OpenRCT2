@@ -25,7 +25,6 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
-#include "../platform/osinterface.h"
 #include "../platform/platform.h"
 #include "../windows/error.h"
 #include "screenshot.h"
@@ -71,7 +70,7 @@ void screenshot_check()
 
 static int screenshot_get_next_path(char *path, int format)
 {
-	char *screenshotPath = osinterface_get_orct2_homesubfolder("screenshot");
+	char *screenshotPath = platform_get_orct2_homesubfolder("screenshot");
 	if (!platform_ensure_directory_exists(screenshotPath)) {
 		free(screenshotPath);
 
@@ -84,7 +83,7 @@ static int screenshot_get_next_path(char *path, int format)
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%s%cSCR%d%s", screenshotPath, osinterface_get_path_separator(), i, _screenshot_format_extension[format]);
+		sprintf(path, "%s%cSCR%d%s", screenshotPath, platform_get_path_separator(), i, _screenshot_format_extension[format]);
 
 		if (!platform_file_exists(path)) {
 			return i;

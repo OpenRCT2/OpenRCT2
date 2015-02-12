@@ -23,7 +23,7 @@
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "localisation/localisation.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "sprites.h"
 
 static void screen_intro_process_mouse_input();
