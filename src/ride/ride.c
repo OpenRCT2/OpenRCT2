@@ -2753,7 +2753,32 @@ void ride_music_update_final()
  */
 int ride_mode_check_valid_stations(rct_ride *ride)
 {
-	return (RCT2_CALLPROC_X(0x006B4CC1, 0, 0, 0, 0, (int)ride, 0, 0) & 0x100) == 0;
+	uint8 no_stations = 0;
+	for (uint8 station_index = 0; station_index < 4; ++station_index){
+		if (ride->station_starts[station_index] != 0xFFFF)no_stations++;
+	}
+
+	switch (ride->mode){
+	case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+	case RIDE_MODE_POWERED_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH_35:
+	case RIDE_MODE_LIM_POWERED_LAUNCH:
+		if (no_stations <= 0) return 1;
+		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
+		return 0;
+	case RIDE_MODE_SHUTTLE:
+		if (no_stations >= 2) return 1;
+		RCT2_GLOBAL(0x141E9AC, uint16) = 1016;
+		return 0;
+	}
+
+	if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF){
+		if (no_stations <= 0) return 1;
+		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
+		return 0;
+	}
+
+	return 1;
 }
 
 /**
@@ -2990,7 +3015,7 @@ void loc_6B51C0(int rideIndex)
 	if (w == NULL)
 		return;
 
-	uint8 entranceOrExit = -1;
+	sint8 entranceOrExit = -1;
 	for (i = 0; i < 4; i++) {
 		if (ride->station_starts[i] == 0xFFFF)
 			continue;
