@@ -498,6 +498,9 @@
     <ClCompile Include="..\src\localisation\convert.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\network\network.c">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\drawing\scrolling_text.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
@@ -739,6 +742,9 @@
     </ClInclude>
     <ClInclude Include="..\src\drawing\font.h">
       <Filter>Source\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\network.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
