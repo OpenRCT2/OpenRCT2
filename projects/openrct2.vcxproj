@@ -71,6 +71,7 @@
     <ClCompile Include="..\src\management\research.c" />
     <ClCompile Include="..\src\network\http.cpp" />
     <ClCompile Include="..\src\network\twitch.cpp" />
+    <ClCompile Include="..\src\network\network.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\openrct2.c" />
@@ -225,6 +226,7 @@
     <ClInclude Include="..\src\management\research.h" />
     <ClInclude Include="..\src\network\http.h" />
     <ClInclude Include="..\src\network\twitch.h" />
+    <ClInclude Include="..\src\network\network.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />

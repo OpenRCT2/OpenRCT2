@@ -495,6 +495,9 @@
     <ClCompile Include="..\src\cheats.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\network\network.c">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -724,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="..\src\cheats.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\network.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
