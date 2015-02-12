@@ -2763,7 +2763,7 @@ int ride_mode_check_valid_stations(rct_ride *ride)
 	case RIDE_MODE_POWERED_LAUNCH:
 	case RIDE_MODE_POWERED_LAUNCH_35:
 	case RIDE_MODE_LIM_POWERED_LAUNCH:
-		if (no_stations <= 0) return 1;
+		if (no_stations <= 1) return 1;
 		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
 		return 0;
 	case RIDE_MODE_SHUTTLE:
@@ -2773,7 +2773,7 @@ int ride_mode_check_valid_stations(rct_ride *ride)
 	}
 
 	if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF){
-		if (no_stations <= 0) return 1;
+		if (no_stations <= 1) return 1;
 		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
 		return 0;
 	}
@@ -2787,7 +2787,46 @@ int ride_mode_check_valid_stations(rct_ride *ride)
  */
 int ride_check_for_entrance_exit(int rideIndex)
 {
-	return (RCT2_CALLPROC_X(0x006B5872, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100) == 0;
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & 0x20000) return 1;
+
+	int i;
+	uint8 entrance = 0;
+	uint8 exit = 0;
+	for (i = 0; i < 4; i++) {
+		if (ride->station_starts[i] == 0xFFFF)
+			continue;
+
+		if (ride->entrances[i] != 0xFFFF) {
+			entrance = 2;
+		}
+		else if (ride->exits[i] != 0xFFFF) {
+			exit = 2;
+		}
+		else
+
+		// If station start and no entrance/exit
+		if (entrance == 1 && exit == 1){
+			entrance = 0;
+			break;
+		}
+
+		if (entrance) entrance = 1;
+		if (exit) exit = 1;
+	}
+
+	if (entrance == 0){
+		RCT2_GLOBAL(0x141E9AC, uint16) = 1146;
+		return 0;
+	}
+
+	if (exit == 0){
+		RCT2_GLOBAL(0x141E9AC, uint16) = 1147;
+		return 0;
+	}
+
+	return 1;
 }
 
 /**
