@@ -94,6 +94,7 @@ HANDLE osinterface_file_open(const char* filename);
 int osinterface_file_read(HANDLE handle, void* data, int size);
 int osinterface_file_close(HANDLE handle);
 int osinterface_file_move(const char* srcfilename, const char* dstfilename);
+int osinterface_file_delete(const char* filename);
 
 int osinterface_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
 void osinterface_show_messagebox(char* message);
