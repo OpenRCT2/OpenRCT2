@@ -1055,7 +1055,47 @@ rct_track_design *track_get_info(int index, uint8** preview)
  */
 int track_rename(const char *text)
 {
-	return (RCT2_CALLPROC_X(0x006D3664, 0, 0, 0, 0, 0, (int)text, 0) & 0x100) == 0;
+	const char* txt_chr = text;
+
+	while (*txt_chr != '\0'){
+		switch (*txt_chr){
+		case '.':
+		case '/':
+		case '\\':
+		case '*':
+		case '?':
+			// Invalid characters
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3353;
+			return 0;
+		}
+		txt_chr++;
+	}
+
+	char new_path[MAX_PATH];
+	subsitute_path(new_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), text);
+	strcat(new_path, ".TD6");
+
+	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
+
+	char old_path[MAX_PATH];
+	subsitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
+
+	if (osinterface_file_move(old_path, new_path)){
+		RCT2_GLOBAL(0x141E9AC, uint16) = 3354;
+		return 0;
+	}
+
+	ride_list_item item = { 0xFC, 0 };
+	track_load_list(item);
+
+	item.type = RCT2_GLOBAL(0xF44158, uint8);
+	item.entry_index = RCT2_GLOBAL(0xF44159, uint8);
+	track_load_list(item);
+
+	reset_track_list_cache();
+	
+	window_invalidate(w);
+	return 1;
 }
 
 /**
