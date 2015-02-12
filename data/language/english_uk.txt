@@ -3788,6 +3788,7 @@ STR_5451    :Open cheats window
 STR_5452    :Toggle visibility of toolbars
 STR_5453    :Select another ride
 STR_5454    :Uncap FPS
+
 STR_5458    :Rotate clockwise
 STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise

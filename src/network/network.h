@@ -114,6 +114,8 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 
 void network_open_chat_box();
 
+void network_open_chat_box();
+
 void network_print_error();
 
 #ifdef __cplusplus
