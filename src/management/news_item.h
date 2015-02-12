@@ -66,4 +66,6 @@ bool news_item_is_empty(int index);
 bool news_item_is_queue_empty();
 bool news_item_is_valid_idx(int index);
 
+void news_item_add_to_queue_custom(rct_news_item *newNewsItem);
+
 #endif
