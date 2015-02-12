@@ -81,6 +81,8 @@ void network_send_map();
 
 void network_open_chat_box();
 
+void network_open_chat_box();
+
 void network_print_error();
 
 #endif /* DISABLE_NETWORK */
