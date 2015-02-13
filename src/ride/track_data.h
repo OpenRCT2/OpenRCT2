@@ -17,31 +17,17 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
+#include "../common.h"
 
-#ifndef _TOOLBAR_H_
-#define _TOOLBAR_H_
+/* size 0x0A */
+typedef struct{
+	sint8 rotation_negative;	// 0x00
+	sint8 rotation_positive;	// 0x01
+	sint16 z_negative;			// 0x02
+	sint16 z_positive;			// 0x04
+	sint16 x;					// 0x06
+	sint16 y;					// 0x08
+}rct_track_coordinates;
 
-#include "interface/window.h"
-#include "interface/widget.h"
-
-typedef enum {
-	DDIDX_UNDERGROUND_INSIDE = 0,
-	DDIDX_HIDE_BASE = 1,
-	DDIDX_HIDE_VERTICAL = 2,
-	DDIDX_SEETHROUGH_RIDES = 4,
-	DDIDX_SEETHROUGH_SCENARY = 5,
-	DDIDX_INVISIBLE_SUPPORTS = 6,
-	DDIDX_INVISIBLE_PEEPS = 7,
-	DDIDX_LAND_HEIGHTS = 9,
-	DDIDX_TRACK_HEIGHTS = 10,
-	DDIDX_PATH_HEIGHTS = 11,
-} TOP_TOOLBAR_VIEW_MENU_DDIDX;
-
-void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
-void top_toolbar_view_menu_dropdown(short dropdownIndex);
-
-void toggle_footpath_window();
-void toggle_land_window(rct_window* topToolbar, int widgetIndex);
-void toggle_clear_scenery_window(rct_window* topToolbar, int widgetIndex);
-void toggle_water_window(rct_window* topToolbar, int widgetIndex);
-#endif
+// 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
+extern const rct_track_coordinates TrackCoordinates[256];

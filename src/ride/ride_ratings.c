@@ -236,11 +236,11 @@ static void ride_ratings_update_state_2()
 	y = RCT2_GLOBAL(0x0138B586, uint16) / 32;
 	z = RCT2_GLOBAL(0x0138B588, uint16) / 8;
 
-	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	mapElement = map_get_first_element_at(x, y);
 	trackType = RCT2_GLOBAL(0x0138B592, uint8);
 
 	do {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_TRACK)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
 		if (mapElement->base_height != z)
 			continue;
@@ -271,7 +271,7 @@ static void ride_ratings_update_state_2()
 			RCT2_GLOBAL(0x0138B588, uint16) = z;
 			RCT2_GLOBAL(0x0138B592, uint8) = mapElement->properties.track.type;
 		}
-	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement++));
 
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -333,11 +333,11 @@ static void ride_ratings_update_state_5()
 	y = RCT2_GLOBAL(0x0138B586, uint16) / 32;
 	z = RCT2_GLOBAL(0x0138B588, uint16) / 8;
 
-	mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	mapElement = map_get_first_element_at(x, y);
 	trackType = RCT2_GLOBAL(0x0138B592, uint8);
 
 	do {
-		if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) != MAP_ELEMENT_TYPE_TRACK)
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
 		if (mapElement->base_height != z)
 			continue;
@@ -363,7 +363,7 @@ static void ride_ratings_update_state_5()
 			RCT2_GLOBAL(0x0138B588, uint16) = z;
 			RCT2_GLOBAL(0x0138B592, uint8) = mapElement->properties.track.type;
 		}
-	} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	} while (!map_element_is_last_for_tile(mapElement++));
 
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -733,18 +733,18 @@ static int ride_ratings_get_scenery_score(rct_ride *ride)
 
 	// Count surrounding scenery items
 	numSceneryItems = 0;
-	for (yy = y - 5; yy <= y + 5; yy++) {
-		for (xx = x - 5; xx <= x + 5; xx++) {
+	for (yy = max(y - 5, 0); yy <= y + 5; yy++) {
+		for (xx = max(x - 5, 0); xx <= x + 5; xx++) {
 			// Count scenery items on this tile
-			mapElement = TILE_MAP_ELEMENT_POINTER(yy * 256 + xx);
+			mapElement = map_get_first_element_at(xx, yy);
 			do {
-				if (mapElement->flags & 0x10)
+				if (mapElement->flags & (1 << 4))
 					continue;
 
-				type = mapElement->type & MAP_ELEMENT_TYPE_MASK;
+				type = map_element_get_type(mapElement);
 				if (type == MAP_ELEMENT_TYPE_SCENERY || type == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
 					numSceneryItems++;
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+			} while (!map_element_is_last_for_tile(mapElement++));
 		}
 	}
 

@@ -23,6 +23,7 @@
 
 #include "../common.h"
 #include "ride.h"
+#include "../object.h"
 
 typedef struct {
 	uint8 type;
@@ -34,7 +35,56 @@ typedef struct {
 	uint8 pad[2];
 } rct_trackdefinition;
 
+/**
+* Size: 0x0A
+*/
+typedef struct {
+	uint8 var_00;
+	sint16 x;
+	sint16 y;
+	uint8 pad_05[3];
+	uint8 var_08;
+	uint8 unk_09;
+} rct_preview_track;
+
+/**
+* Size: 0x04
+*/
+typedef struct {
+	union {
+		uint32 all;
+		struct {
+			sint8 x;
+			sint8 y;
+			uint8 unk_2;
+			uint8 type;
+		};
+	};
+} rct_maze_element;
+
+/* Size: 0x02 */
+typedef struct{
+	uint8 type;
+	uint8 flags;
+}rct_track_element;
+
+enum{
+	TRACK_ELEMENT_FLAG_CHAIN_LIFT = (1<<7),
+	TRACK_ELEMENT_FLAG_INVERTED = (1<<6),
+	TRACK_ELEMENT_FLAG_TERMINAL_STATION = (1<<3),
+};
+
+#define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
+#define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
+#define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
+
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
+
+/* size: 0x2 */
+typedef struct{
+	uint8 body_colour;
+	uint8 trim_colour;
+} rct_track_vehicle_colour;
 
 /**
  * Track design structure.
@@ -42,13 +92,28 @@ typedef struct {
  */
 typedef struct {
 	uint8 type;										// 0x00
-	uint8 pad_01;
+	uint8 vehicle_type;
 	money32 cost;									// 0x02
 	uint8 var_06;
 	uint8 var_07;
-	uint8 pad_08[0x42];
-	uint8 total_air_time;							// 0x4A
-	uint8 pad_4B[0x06];
+	rct_track_vehicle_colour vehicle_colours[32];	// 0x08
+	union{
+		uint8 pad_48;
+		uint8 track_spine_colour_rct1;				// 0x48
+	};
+	union{
+		uint8 entrance_style;						// 0x49
+		uint8 track_rail_colour_rct1;				// 0x49
+	};
+	union{
+		uint8 total_air_time;						// 0x4A
+		uint8 track_support_colour_rct1;			// 0x4A
+	};
+	uint8 pad_4B;
+	uint8 number_of_trains;							// 0x4C
+	uint8 number_of_cars_per_train;					// 0x4D
+	uint8 pad_4E[2];
+	uint8 var_50;
 	uint8 max_speed;								// 0x51
 	uint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53
@@ -64,14 +129,23 @@ typedef struct {
 	uint8 excitement;								// 0x5B
 	uint8 intensity;								// 0x5C
 	uint8 nausea;									// 0x5D
-	uint8 pad_5E[0x0E];
+	uint8 pad_5E[2];
+	uint8 track_spine_colour[4];					// 0x60
+	uint8 track_rail_colour[4];						// 0x64
+	uint8 track_support_colour[4];					// 0x68
 	uint32 var_6C;
-	uint8 pad_70[0x10];
+	rct_object_entry vehicle_object;				// 0x70
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
-	uint8 pad_82[0x21];
+	uint8 vehicle_additional_colour[32];			// 0x82
+	uint8 var_A2;
+} rct_track_td6;
+
+typedef struct{
+	rct_track_td6 track_td6;
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
 } rct_track_design;
+
 
 enum {
 	TRACK_NONE = 0,
@@ -133,7 +207,10 @@ enum {
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
+rct_track_td6* load_track_design(const char *path);
 int track_rename(const char *text);
 int track_delete();
+void reset_track_list_cache();
+int sub_6D01B3(int bl, int x, int y, int z);
 
 #endif

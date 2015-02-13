@@ -983,28 +983,30 @@ STR_0973    :OK
 STR_0974    :Atrakcje
 STR_0975    :Sklepy
 STR_0976    :Toalety i Punkty Informacyjne
-# ------------------------------------------ Polish end
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0977    :Nowa atrakcja transportowa
+STR_0978    :Nowa łagodna atrakcja
+STR_0979    :Nowa kolejka górska
+STR_0980    :Nowa intensywna atrakcja
+STR_0981    :Nowa wodna atrakcja
+STR_0982    :Nowy sklep lub stoisko
+STR_0983    :Badania i rozwój
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
+# ------------------------------------------ Polish end
 STR_0987    :Too many rides/attractions
 STR_0988    :Can't create new ride/attraction...
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Construction
 STR_0991    :Station platform
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
-STR_0996    :Overall view
-STR_0997    :{SMALLFONT}{BLACK}View selection
+# ------------------------------------------ Polish start
+STR_0992    :{SMALLFONT}{BLACK}Zniszcz całą atrakcję
+STR_0993    :Zniszcz atrakcję
+STR_0994    :Zniszcz
+STR_0995    :{WINDOW_COLOUR_1}Jesteś pewien, że chcesz zniszczyć {STRINGID}?
+STR_0996    :Widok ogólny
+STR_0997    :{SMALLFONT}{BLACK}Wybór widoku
+# ------------------------------------------ Polish end
 STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
@@ -1015,13 +1017,15 @@ STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
-STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+# ------------------------------------------ Polish start
+STR_1008    :{SMALLFONT}{BLACK}Otwórz, zamknij lub testuj atrakcję
+STR_1009    :{SMALLFONT}{BLACK}Otwórz / zamknij wszystkie atrakcje
+STR_1010    :{SMALLFONT}{BLACK}Otwórz / zamknij park
+STR_1011    :Zamknij wszystkie
+STR_1012    :Otwórz wszystkie
+STR_1013    :Zamknij park
+STR_1014    :Otwórz park
+# ------------------------------------------ Polish end
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1043,27 +1047,29 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
-STR_1040    :Save Game
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
-STR_1044    :RollerCoaster Tycoon 2 Scenario File
-STR_1045    :RollerCoaster Tycoon 2 Landscape File
-STR_1046    :RollerCoaster Tycoon 2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
+# ------------------------------------------ Polish start
+STR_1036    :Wczytaj grę
+STR_1037    :Wczytaj krajobraz
+STR_1038    :Przekonwertuj zapis gry do scenariusza
+STR_1039    :Dodaj nowy projekt trasy
+STR_1040    :Zapisz grę
+STR_1041    :Zapisz scenariusz
+STR_1042    :Zapisz krajobraz
+STR_1043    :Zapis gry RollerCoaster Tycoon 2
+STR_1044    :Scenariusz RollerCoaster Tycoon 2
+STR_1045    :Krajobrazu RollerCoaster Tycoon 2
+STR_1046    :Projekt trasy RollerCoaster Tycoon 2
+STR_1047    :Zapis gry nieudany!
+STR_1048    :Zapis scenariusza nieudany!
+STR_1049    :Zapis krajobrazu nieudany!
+STR_1050    :Nie udało się wczytać...{NEWLINE}Plik zawiera błędne dane!
+STR_1051    :Przezroczyste wsporniki
+STR_1052    :Przezroczyści ludzie
+STR_1053    :{SMALLFONT}{BLACK}Atrakcje w parku
+STR_1054    :{SMALLFONT}{BLACK}Nazwij atrakcję
+STR_1055    :{SMALLFONT}{BLACK}Nazwij osobę
+STR_1056    :{SMALLFONT}{BLACK}Nazwij pracownika
+# ------------------------------------------ Polish end
 STR_1057    :Ride/attraction name
 STR_1058    :Enter new name for this ride/attraction:
 STR_1059    :Can't rename ride/attraction...
@@ -1155,25 +1161,25 @@ STR_1144    :Can't build/move entrance for this ride/attraction...
 STR_1145    :Can't build/move exit for this ride/attraction...
 STR_1146    :Entrance not yet built
 STR_1147    :Exit not yet built
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
-STR_1151    :Full load
-STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+# ------------------------------------------ Polish start
+STR_1148    :25% zapełnienia
+STR_1149    :50% zapełnienia
+STR_1150    :70% zapełnienia
+STR_1151    :100% zapełnienia
+STR_1152    :dowolne zapełnienie
+STR_1153    :Znaczniki wysokości torów
+STR_1154    :Znaczniki wysokości terenu
+STR_1155    :Znaczniki wysokości chodników
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1158    :Nie można tego usunąć...
+STR_1159    :{SMALLFONT}{BLACK}Buduj scenerię, ogrody i inne akcesoria
+STR_1160    :{SMALLFONT}{BLACK}Twórz i zmieniaj obszary wodne
+STR_1161    :Nie można tego tu umieścić...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(Kliknij PPM by zmodyfikować)
+STR_1164    :{STRINGID}{NEWLINE}(Kliknij PPM by usunąć)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-# ------------------------------------------ Polish start
 STR_1166    :Nie można tu obniżyć poziomu wody...
 STR_1167    :Nie można tu podnieść poziomu wody...
 STR_1168    :Opcje
@@ -1214,21 +1220,21 @@ STR_1202    :1 osoba w kolejce
 STR_1203    :{COMMA16} osób w kolejce
 STR_1204    :{COMMA16} minuta czekania
 STR_1205    :{COMMA16} minut czekania
-# ------------------------------------------ Polish end
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
-STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
-STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
-STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
-STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
-STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
-STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronize with adjacent stations
-STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronize departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1206    :{WINDOW_COLOUR_2}Czekaj na:
+STR_1207    :{WINDOW_COLOUR_2}Wyrusz, gdy inna kolejka trafi na tą samą stację
+STR_1208    :{WINDOW_COLOUR_2}Wyrusz, gdy inna łódka trafi na tą samą stację
+STR_1209    :{SMALLFONT}{BLACK}Ustal, czy pojazdy powinny czekać na pasażerów przed wyruszeniem ze stacji
+STR_1210    :{SMALLFONT}{BLACK}Ustal, czy pojazdy powinny wyruszać ze stacj gdy tylko inny pojazd dotrze do tej samej stacji
+STR_1211    :{WINDOW_COLOUR_2}Minimalny czas oczekiwania:
+STR_1212    :{WINDOW_COLOUR_2}Maksymalny czas oczekiwania:
+STR_1213    :{SMALLFONT}{BLACK}Wybierz minimalny czas oczekiwania na stacji przed wyruszeniem
+STR_1214    :{SMALLFONT}{BLACK}Wybierz maksymalny czas oczekiwania na stacji przed wyruszeniem
+STR_1215    :{WINDOW_COLOUR_2}Synchronizuj z sąsiadującymi stacjami
+STR_1216    :{SMALLFONT}{BLACK}Wybierz, czy kolejki mają synchronizować start z innymi stacjami (dla 'wyścigów')
+STR_1217    :{COMMA16} sekund
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
+# ------------------------------------------ Polish end
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit
@@ -1666,20 +1672,22 @@ STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
 STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
 STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
-STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
-STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
-STR_1657    :{WINDOW_COLOUR_2}Preferred ride
-STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
-STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
-STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
-STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
+# ------------------------------------------ Polish start
+STR_1654    :{WINDOW_COLOUR_2}Ostatnie myśli:
+STR_1655    :{SMALLFONT}{BLACK}Buduj ścieżki na ziemi
+STR_1656    :{SMALLFONT}{BLACK}Buduj ścieżki w powietrzu lub pod ziemią
+STR_1657    :{WINDOW_COLOUR_2}Preferowana
+STR_1658    :{WINDOW_COLOUR_2}intensywność: {BLACK}poniżej {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}intensywność: {BLACK}między {COMMA16} a {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}intensywność: {BLACK}powyżej {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Odporność na mdłości: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Szczęście:
+STR_1663    :{WINDOW_COLOUR_2}Mdłości:
+STR_1664    :{WINDOW_COLOUR_2}Energia:
+STR_1665    :{WINDOW_COLOUR_2}Głód:
+STR_1666    :{WINDOW_COLOUR_2}Pragnienie:
+STR_1667    :{WINDOW_COLOUR_2}Pęcherz:
+# ------------------------------------------ Polish end
 STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
@@ -1840,48 +1848,51 @@ STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
 STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
 STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
 STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
-STR_1826    :Status
-STR_1827    :Popularity
-STR_1828    :Satisfaction
-STR_1829    :Profit
-STR_1830    :Queue length
-STR_1831    :Queue time
-STR_1832    :Reliability
-STR_1833    :Down-time
-STR_1834    :Guests favorite
-STR_1835    :Popularity: Unknown
-STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
-STR_1839    :Reliability: {COMMA16}%
-STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY} per hour
-STR_1842    :Favorite of: {COMMA16} guest
-STR_1843    :Favorite of: {COMMA16} guests
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+# ------------------------------------------ Polish start
+STR_1826    :Stan
+STR_1827    :Popularność
+STR_1828    :Satysfakcja
+STR_1829    :Zysk
+STR_1830    :Długość kolejki
+STR_1831    :Czas w kolejce
+STR_1832    :Niezawodność
+STR_1833    :Przestoje
+STR_1834    :Ulubieniec gości
+STR_1835    :Popularność: Nieznana
+STR_1836    :Popularność: {COMMA16}%
+STR_1837    :Satysfakcja: Nieznana
+STR_1838    :Satysfakcja: {COMMA16}%
+STR_1839    :Niezawodność: {COMMA16}%
+STR_1840    :Przestoje w pracy: {COMMA16}%
+STR_1841    :Zysk: {CURRENCY} per hour
+STR_1842    :Ulubiony dla: {COMMA16} gościa
+STR_1843    :Ulubiony dla: {COMMA16} gości
+STR_1844    :{SMALLFONT}{BLACK}Wybierz rodzaj informacji do pokazania
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
-STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
-STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
-STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
-STR_1859    :Handymen
-STR_1860    :Mechanics
-STR_1861    :Security Guards
-STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
-STR_1866    :Entertainer
+STR_1846    :{COMMA16} gości
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gości
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gości
+STR_1849    :{WINDOW_COLOUR_2}Graj muzykę
+STR_1850    :{SMALLFONT}{BLACK}Wybierz, czy w tej atrakcji może grać muzyka
+STR_1851    :{WINDOW_COLOUR_2}Koszty utrzymania: {BLACK}{CURRENCY2DP} na godzinę
+STR_1852    :{WINDOW_COLOUR_2}Koszty utrzymania: {BLACK}Nieznane
+STR_1853    :{WINDOW_COLOUR_2}Zbudowany: {BLACK}W tym roku
+STR_1854    :{WINDOW_COLOUR_2}Zbudowany: {BLACK}W zeszłym roku
+STR_1855    :{WINDOW_COLOUR_2}Zbudowany: {BLACK}{COMMA16} lat temu
+STR_1856    :{WINDOW_COLOUR_2}Zysk na sztuce: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Strata na sztuce: {BLACK}{CURRENCY2DP}
+# could be "pensja" but I'm not sure if it's used outside of staff window
+STR_1858    :{WINDOW_COLOUR_2}Koszt: {BLACK}{CURRENCY} miesięcznie
+STR_1859    :dozorcy
+STR_1860    :mechanicy
+STR_1861    :strażnicy
+STR_1862    :klauni
+STR_1863    :dozorca
+STR_1864    :mechanik
+STR_1865    :strażnik
+STR_1866    :klaun
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
+# ------------------------------------------ Polish end
 STR_1868    :Can't change number of rotations...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
@@ -2273,7 +2284,7 @@ STR_2252    :Można budować tylko w poprzek chodników!
 STR_2253    :Transport
 STR_2254    :Łagodne atrakcje
 STR_2255    :Kolejki górskie
-STR_2256    :Mocne atrakcje
+STR_2256    :Intensywne atrakcje
 STR_2257    :Wodne atrakcje
 STR_2258    :Sklepy i stoiska
 STR_2259    :Scenerie i dekoracje
@@ -2298,7 +2309,7 @@ STR_2277    :Nieznany
 STR_2278    :Transport
 STR_2279    :Łagodne atrakcje
 STR_2280    :Kolejki górskie
-STR_2281    :Mocne atrakcje
+STR_2281    :Intensywne atrakcje
 STR_2282    :Wodne atrakcje
 STR_2283    :Sklepy i stoiska
 STR_2284    :Scenerie i dekoracje
@@ -2309,20 +2320,22 @@ STR_2288    :Nieznane
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Wybierz scenariusz dla nowej gry
+STR_2292    :{WINDOW_COLOUR_2}Odwiedzone atrakcje:
+STR_2293    :{BLACK} Nic
 # ------------------------------------------ Polish end
-STR_2292    :{WINDOW_COLOUR_2}Rides been on:
-STR_2293    :{BLACK} Nothing
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
-STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drinks
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenir
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenirs
+# ------------------------------------------ Polish start
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na wejście do parku
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcji
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcjach
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłku
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłkach
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napoju
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napojach
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiątce
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiątkach
+# ------------------------------------------ Polish end
 STR_2305    :Track design files
 STR_2306    :Save track design
 STR_2307    :Select {STRINGID} design
@@ -2367,18 +2380,16 @@ STR_2344    :Imperialne
 STR_2345    :Metryczne
 STR_2346    :Grafika
 STR_2347    :{RED}{STRINGID} utonął!
-# ------------------------------------------ Polish end
-STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
-STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
-STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
-STR_2357    :House
-# ------------------------------------------ Polish start
+STR_2348    :{SMALLFONT}{BLACK}Pokaż statystyki tego pracownika
+STR_2349    :{WINDOW_COLOUR_2}Pensja: {BLACK}{CURRENCY} miesięcznie
+STR_2350    :{WINDOW_COLOUR_2}Zatrudniony: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Skoszone trawniki: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Podlane ogrody: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Sprzątnięte śmieci: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA16}
+STR_2357    :Dom
 STR_2358    :Jednostki
 STR_2359    :Prawdziwe wartości
 STR_2360    :{WINDOW_COLOUR_2}Rozdzielczość:
@@ -2744,30 +2755,36 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :???
 STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+# New strings (previously these were ???)
+# sec, secs
+STR_2720    :{UINT16}sek
+STR_2721    :{UINT16}sek
+# min+sec, min+secs, mins+sec, mins+secs
+STR_2722    :{UINT16}min:{UINT16}sek
+STR_2723    :{UINT16}min:{UINT16}sek
+STR_2724    :{UINT16}min:{UINT16}sek
+STR_2725    :{UINT16}min:{UINT16}sek
+# min, mins
+STR_2726    :{UINT16}min
+STR_2727    :{UINT16}min
+# hour+min, hour+mins, hours+min, hours+mins
+STR_2728    :{UINT16}godz:{UINT16}min
+STR_2729    :{UINT16}godz:{UINT16}min
+STR_2730    :{UINT16}godz:{UINT16}min
+STR_2731    :{UINT16}godz:{UINT16}min
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, Rok {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Rok {COMMA16}
+STR_2738    :Muzyka tytułowa
+STR_2739    :Brak
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :Nie znaleziono css50.dat
+STR_2743    :Przekopiuj data\css17.dat z folderu RCT1 do data\css50.dat folderu instalacji RCT2.
+# End of new strings
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3137,9 +3154,11 @@ STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}List rides
 STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
-STR_3108    :Test
-STR_3109    :Open
+# ------------------------------------------ Polish start
+STR_3107    :Zamknij
+STR_3108    :Testuj
+STR_3109    :Otwórz
+# ------------------------------------------ Polish end
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
 STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it

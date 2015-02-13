@@ -249,7 +249,7 @@ void window_research_open()
 
 	w->widgets = window_research_page_widgets[0];
 	w->enabled_widgets = window_research_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[0];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
@@ -430,7 +430,7 @@ static void window_research_funding_mouseup()
 	case WIDX_SCENERY_AND_THEMING:
 		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
-		game_do_command(0, (1 << 8) | 1, 0, activeResearchTypes, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+		research_set_priority(activeResearchTypes);
 		break;
 	}
 }
@@ -482,7 +482,7 @@ static void window_research_funding_dropdown()
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
 
-	game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+	research_set_funding(dropdownIndex);
 	window_invalidate(w);
 }
 
@@ -591,7 +591,7 @@ static void window_research_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_research_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[page];
 	w->widgets = window_research_page_widgets[page];
 	w->disabled_widgets = 0;

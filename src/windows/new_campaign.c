@@ -152,7 +152,9 @@ void window_new_campaign_open(sint16 campaignType)
 		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
 		(1 << WIDX_WEEKS_DECREASE_BUTTON) |
 		(1 << WIDX_START_BUTTON);
-	w->var_020 = 0x300;
+	w->hold_down_widgets =
+		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
+		(1 << WIDX_WEEKS_DECREASE_BUTTON);
 	window_init_scroll_widgets(w);
 	w->colours[0] = 19;
 	w->colours[1] = 19;
@@ -232,8 +234,7 @@ static void window_new_campaign_mouseup()
 		window_close(w);
 		break;
 	case WIDX_START_BUTTON:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
-		game_do_command(0, (w->campaign.no_weeks << 8) | 1, 0, (w->campaign.ride_id << 8) | w->campaign.campaign_type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
+		marketing_start_campaign(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
 		window_close(w);
 		break;
 	}

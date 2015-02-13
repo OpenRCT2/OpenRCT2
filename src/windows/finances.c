@@ -508,6 +508,17 @@ static uint32 window_finances_page_enabled_widgets[] = {
 	(1 << WIDX_SCENERY_AND_THEMING)
 };
 
+static uint32 window_finances_page_hold_down_widgets[] = {
+	(1 << WIDX_LOAN_INCREASE) |
+	(1 << WIDX_LOAN_DECREASE),
+
+	0,
+	0,
+	0,
+	0,
+	0
+};
+
 #pragma endregion
 
 const int window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
@@ -527,28 +538,24 @@ void window_finances_open()
 	w = window_bring_to_front_by_class(WC_FINANCES);
 	if (w == NULL) {
 		w = window_create_auto_pos(530, 257, window_finances_page_events[0], WC_FINANCES, WF_10);
-		w->widgets = window_finances_page_widgets[0];
-		w->enabled_widgets = 0x1BF4;
 		w->number = 0;
-		w->page = 0;
 		w->frame_no = 0;
-		w->disabled_widgets = 0;
 		w->colours[0] = 1;
 		w->colours[1] = 19;
 		w->colours[2] = 19;
 		research_update_uncompleted_types();
 	}
 
-	w->page = 0;
+	w->page = WINDOW_FINANCES_PAGE_SUMMARY;
 	window_invalidate(w);
 	w->width = 530;
 	w->height = 257;
 	window_invalidate(w);
 
-	w->widgets = window_finances_page_widgets[0];
-	w->enabled_widgets = window_finances_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
-	w->event_handlers = window_finances_page_events[0];
+	w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->enabled_widgets = window_finances_page_enabled_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->hold_down_widgets = window_finances_page_hold_down_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+	w->event_handlers = window_finances_page_events[WINDOW_FINANCES_PAGE_SUMMARY];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
 	window_init_scroll_widgets(w);
@@ -599,13 +606,13 @@ static void window_finances_summary_mousedown(int widgetIndex, rct_window*w, rct
 	case WIDX_LOAN_INCREASE:
 		newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) + MONEY(1000, 00);
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_BORROW_ANY_MORE_MONEY;
-		game_do_command(0, 1, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+		finance_set_loan(newLoan);
 		break;
 	case WIDX_LOAN_DECREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > 0) {
 			newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) - MONEY(1000, 00);
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_PAY_BACK_LOAN;
-			game_do_command(0, 1, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+			finance_set_loan(newLoan);
 		}
 		break;
 	}
@@ -1177,9 +1184,8 @@ static void window_finances_marketing_invalidate()
 
 	// Count number of active campaigns
 	int numActiveCampaigns = 0;
-	uint8 *campaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			numActiveCampaigns++;
 
 	int y = max(1, numActiveCampaigns) * 10 + 92;
@@ -1204,7 +1210,7 @@ static void window_finances_marketing_invalidate()
 			continue;
 		}
 
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
 		campaginButton->type = WWT_DROPDOWN_BUTTON;
@@ -1235,27 +1241,24 @@ static void window_finances_marketing_paint()
 	y = w->y + 62;
 
 	int noCampaignsActive = 1;
-	uint8 *campaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
-	uint8 *campaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
-
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-		if (campaignDaysLeft[i] == 0)
+		if (gMarketingCampaignDaysLeft[i] == 0)
 			continue;
 
 		noCampaignsActive = 0;
-		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 
 		// Set special parameters
 		switch (i) {
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
-			ride = GET_RIDE(campaignRideIndex[i]);
+			ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			shopString = campaignRideIndex[i] + 2016; // STR_BALLOONS+
+			shopString = gMarketingCampaignRideIndex[i] + 2016; // STR_BALLOONS+
 			if (shopString >= 2048) // STR_AN_UMBRELLA
 				shopString += 96; // STR_ON_RIDE_PHOTOS+
 			RCT2_GLOBAL(0x013CE952, uint16) = shopString;
@@ -1266,7 +1269,7 @@ static void window_finances_marketing_paint()
 		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, x + 4, y, 296);
 
 		// Duration
-		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (campaignDaysLeft[i] % 128);
+		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (gMarketingCampaignDaysLeft[i] % 128);
 		gfx_draw_string_left(dpi, STR_MARKETING_WEEKS_REMAINING, &weeksRemainingStringId, 0, x + 304, y);
 
 		y += 10;
@@ -1294,7 +1297,7 @@ static void window_finances_marketing_paint()
 			continue;
 		}
 
-		if (campaignDaysLeft[i] != 0)
+		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
@@ -1344,7 +1347,7 @@ static void window_finances_research_mouseup()
 	case WIDX_SCENERY_AND_THEMING:
 		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
-		game_do_command(0, (1 << 8) | 1, 0, activeResearchTypes, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+		research_set_priority(activeResearchTypes);
 		break;
 	}
 }
@@ -1396,7 +1399,7 @@ static void window_finances_research_dropdown()
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
 
-	game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+	research_set_funding(dropdownIndex);
 }
 
 /**
@@ -1493,7 +1496,7 @@ static void window_finances_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_finances_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->hold_down_widgets = window_finances_page_hold_down_widgets[page];
 	w->event_handlers = window_finances_page_events[page];
 	w->widgets = window_finances_page_widgets[page];
 	w->disabled_widgets = 0;

@@ -55,4 +55,8 @@ void research_update_uncompleted_types();
 void research_update();
 void sub_684AC3();
 
+void research_set_funding(int amount);
+void research_set_priority(int activeCategories);
+void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
 #endif

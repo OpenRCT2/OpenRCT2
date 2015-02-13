@@ -23,7 +23,7 @@
 #include "../config.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "audio.h"
@@ -693,32 +693,32 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 	rct_sound_effect* sound_effect = sound_get_effect(sound_id);
 	if (sound_effect) {
 		if (sound_effect_loadvars(sound_effect, &bufferdesc.lpwfxFormat, &buffer, &bufferdesc.dwBufferBytes)) {
-			bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
-			if (channels) {
-				if (channels == 2) {
+			if (channels == 0){
+				bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_STATIC;
+			}
+			else if (channels == 2) {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRL3D | DSBCAPS_STATIC;
-				} else {
+			} else {
 					bufferdesc.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY | DSBCAPS_STATIC;
+			}
+			if (RCT2_GLOBAL(0x009E2B90, uint32)) {
+				bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
+			}
+			if (software) {
+				bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
+			}
+			if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
+				if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
+					sound->id = sound_id;
+					DSBCAPS caps;
+					caps.dwSize = sizeof(caps);
+					sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
+					sound->has_caps = caps.dwFlags;
+					sound_add(sound);
+					return 1;
 				}
-				if (RCT2_GLOBAL(0x009E2B90, uint32)) {
-					bufferdesc.dwFlags |= DSBCAPS_CTRLPAN;
-				}
-				if (software) {
-					bufferdesc.dwFlags |= DSBCAPS_LOCSOFTWARE;
-				}
-				if (SUCCEEDED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &sound->dsbuffer, 0))) {
-					if (sound_fill_buffer(sound->dsbuffer, buffer, bufferdesc.dwBufferBytes)) {
-						sound->id = sound_id;
-						DSBCAPS caps;
-						caps.dwSize = sizeof(caps);
-						sound->dsbuffer->lpVtbl->GetCaps(sound->dsbuffer, &caps);
-						sound->has_caps = caps.dwFlags;
-						sound_add(sound);
-						return 1;
-					}
-					sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
-					sound->dsbuffer = 0;
-				}
+				sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
+				sound->dsbuffer = 0;
 			}
 			sound->dsbuffer = 0;
 		}
@@ -1329,7 +1329,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 		if (FAILED(DirectSoundCreate(&dsdevice->guid, &RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), 0))) {
 			return 0;
 		}
-		if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), RCT2_GLOBAL(0x009E2D70, HWND), DSSCL_NORMAL)) || 
+		if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), windows_get_window_handle(), DSSCL_NORMAL)) || 
 			FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->CreateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), &bufferdesc, &RCT2_GLOBAL(0x009E2BA8, LPDIRECTSOUNDBUFFER), 0))) {
 			RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->Release(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND));
 			RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
@@ -1374,7 +1374,7 @@ int dsound_create_primary_buffer(int a, int device, int channels, int samples, i
 	if (FAILED(DirectSoundCreate(&dsdevice->guid, &RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), 0))) {
 		return 0;
 	}
-	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), RCT2_GLOBAL(0x009E2D70, HWND), DSSCL_PRIORITY))) {
+	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->SetCooperativeLevel(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), windows_get_window_handle(), DSSCL_PRIORITY))) {
 		RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->Release(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND));
 		RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
 		return 0;
@@ -1431,7 +1431,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 			sint16 y2 = y & 0xFFE0;
 			if (x2 < 0x1FFF && y2 < 0x1FFF) {
 				rct_map_element* mapelement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[((y2 * 256 + x2) & 0xFFFF) / 8];
-				while (mapelement->type & MAP_ELEMENT_TYPE_MASK) {
+				while (map_element_get_type(mapelement) != MAP_ELEMENT_TYPE_SURFACE) {
 					mapelement++;
 				}
 				if ((mapelement->base_height * 8) - 5 > z) {
@@ -1544,13 +1544,25 @@ void stop_completed_sounds()
 */
 void start_title_music()
 {
+	int musicPathId;
+	switch (gGeneral_config.title_music) {
+	default:
+		return;
+	case 1:
+		musicPathId = PATH_ID_CSS50;
+		break;
+	case 2:
+		musicPathId = PATH_ID_CSS17;
+		break;
+	}
+
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gTitleMusicChannel = Mixer_Play_Music(PATH_ID_CSS17);
+			gTitleMusicChannel = Mixer_Play_Music(musicPathId);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			int result = sound_channel_load_file2(3, (char*)get_file_path(PATH_ID_CSS17), 0);
+			int result = sound_channel_load_file2(3, (char*)get_file_path(musicPathId), 0);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (result) {
 				RCT2_GLOBAL(0x014241BC, uint32) = 1;
@@ -1690,13 +1702,10 @@ void audio_init1()
 	do {
 		rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[m];
 		const char* path = get_file_path(ride_music_info->pathid);
-		RCT2_GLOBAL(0x014241BC, uint32) = 3;
-		HANDLE hfile = osinterface_file_open(path);
-		RCT2_GLOBAL(0x014241BC, uint32) = 0;
-		if (hfile != INVALID_HANDLE_VALUE) {
-			RCT2_GLOBAL(0x014241BC, uint32) = 3;
-			osinterface_file_read(hfile, &RCT2_GLOBAL(0x009AF47E, uint32), 4);
-			osinterface_file_close(hfile);
+		FILE *file = fopen(path, "rb");
+		if (file != NULL) {
+			fread(&RCT2_GLOBAL(0x009AF47E, uint32), 4, 1, file);
+			fclose(file);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
 				ride_music_info->var_0 = 0;

@@ -31,5 +31,6 @@ void path_set_extension(char *path, const char *extension);
 long fsize(FILE *fp);
 
 int bitscanforward(int source);
+int strcicmp(char const *a, char const *b);
 
 #endif

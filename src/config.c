@@ -22,7 +22,6 @@
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 
 // Current keyboard shortcuts
@@ -88,10 +87,13 @@ general_configuration_t gGeneral_config_default = {
 	0,								// show_height_as_units
 	1,								// save_plugin_data
 	0,								// fullscreen mode (default: windowed)
+	-1,								// fullscreen_width
+	-1,								// fullscreen_height
 	-1,								// window_width
 	-1,								// window_height
 	LANGUAGE_ENGLISH_UK,			// language
-	5								// window_snap_proximity
+	5,								// window_snap_proximity
+	2								// title music
 };
 sound_configuration_t gSound_config;
 
@@ -252,6 +254,11 @@ void config_write_ini_general(FILE *fp)
 	else
 		fprintf(fp, "fullscreen_mode = borderless_fullscreen\n");
 
+	if (gGeneral_config.fullscreen_width != -1)
+		fprintf(fp, "fullscreen_width = %d\n", gGeneral_config.fullscreen_width);
+	if (gGeneral_config.fullscreen_height != -1)
+		fprintf(fp, "fullscreen_height = %d\n", gGeneral_config.fullscreen_height);
+
 	if (gGeneral_config.window_width != -1)
 		fprintf(fp, "window_width = %d\n", gGeneral_config.window_width);
 	if (gGeneral_config.window_height != -1)
@@ -260,6 +267,8 @@ void config_write_ini_general(FILE *fp)
 	fprintf(fp, "language = %d\n", gGeneral_config.language);
 
 	fprintf(fp, "window_snap_proximity = %d\n", gGeneral_config.window_snap_proximity);
+
+	fprintf(fp, "title_music = %d\n", gGeneral_config.title_music);
 }
 
 /**
@@ -275,6 +284,9 @@ void config_apply_to_old_addresses()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gGeneral_config.construction_marker_colour;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (gGeneral_config.measurement_format + 1) * 256;
+	if (gGeneral_config.show_height_as_units)
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
 
 	int configFlags = 0;
 	if (gGeneral_config.always_show_gridlines)
@@ -296,7 +308,7 @@ void config_apply_to_old_addresses()
  */
 void config_load()
 {	
-	char *path = osinterface_get_orct2_homefolder();
+	char *path = platform_get_orct2_homefolder();
 	FILE* fp;
 
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
@@ -307,7 +319,7 @@ void config_load()
 			return;
 		}
 		
-		sprintf(path, "%s%c%s", path, osinterface_get_path_separator(), "config.ini");
+		sprintf(path, "%s%c%s", path, platform_get_path_separator(), "config.ini");
 		
 		fp = fopen(path, "r");
 		if (!fp) {
@@ -329,9 +341,9 @@ void config_load()
 
 void config_save()
 {
-	char *configIniPath = osinterface_get_orct2_homefolder();;
+	char *configIniPath = platform_get_orct2_homefolder();;
 
-	sprintf(configIniPath, "%s%c%s", configIniPath, osinterface_get_path_separator(), "config.ini");
+	sprintf(configIniPath, "%s%c%s", configIniPath, platform_get_path_separator(), "config.ini");
 	config_save_ini(configIniPath);
 
 	config_apply_to_old_addresses();
@@ -374,8 +386,8 @@ int config_find_or_browse_install_directory()
 	char *installPath;
 
 	if (!config_find_rct2_path(gGeneral_config.game_path)) {
-		osinterface_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
-		installPath = osinterface_open_directory_browser("Please select your RCT2 directory");
+		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+		installPath = platform_open_directory_browser("Please select your RCT2 directory");
 		if (installPath == NULL)
 			return 0;
 
@@ -554,6 +566,12 @@ static void config_general(char *setting, char *value){
 		else
 			gGeneral_config.fullscreen_mode = 2;
 	}
+	else if (strcmp(setting, "fullscreen_width") == 0) {
+		gGeneral_config.fullscreen_width = atoi(value);
+	}
+	else if (strcmp(setting, "fullscreen_height") == 0) {
+		gGeneral_config.fullscreen_height = atoi(value);
+	}
 	else if (strcmp(setting, "window_width") == 0) {
 		gGeneral_config.window_width = atoi(value);
 	}
@@ -565,6 +583,9 @@ static void config_general(char *setting, char *value){
 	}
 	else if (strcmp(setting, "window_snap_proximity") == 0) {
 		gGeneral_config.window_snap_proximity = clamp(0, atoi(value), 255);
+	}
+	else if (strcmp(setting, "title_music") == 0) {
+		gGeneral_config.title_music = atoi(value);
 	}
 }
 
@@ -757,7 +778,7 @@ static int config_parse_currency(char *currency)
  */
 static void config_error(char *msg){
 
-	osinterface_show_messagebox(msg);
+	platform_show_messagebox(msg);
 	//TODO:SHUT DOWN EVERYTHING!
 
 }
@@ -835,28 +856,29 @@ void config_dat_load()
 			//	return;
 			
 			
-			RCT2_GLOBAL(0x009AB4C6, sint8) = 1; // no idea on what this does
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG, sint8) = 1; // Marks config as first time loaded
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 2) * 256;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-			RCT2_GLOBAL(0x009AA00D, sint8) = 0;
+			// No longer used (controls first time object load)
+			//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, sint8) = 0;
 		}
 	
 	}
 	
 	/* TODO: CLEANUP
 
-			if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG, sint8) == 1)
 				return;
-			RCT2_GLOBAL(0x009AB4C6, sint8) = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG, sint8) = 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = 0; 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = 1; 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-			RCT2_GLOBAL(0x009AA00D, sint8) = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, sint8) = 1;
 		}
 	
 	}
@@ -875,7 +897,7 @@ void config_dat_load()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
-	RCT2_GLOBAL(0x009AA00D, sint8) = 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, sint8) = 1;
 }
 
 /**

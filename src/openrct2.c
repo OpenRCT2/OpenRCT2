@@ -27,8 +27,8 @@
 #include "localisation/localisation.h"
 #include "openrct2.h"
 #include "platform/platform.h"
-#include "platform/osinterface.h"
 #include "util/sawyercoding.h"
+#include "world/mapgen.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -77,15 +77,17 @@ void openrct2_launch()
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 		break;
 	case STARTUP_ACTION_EDIT:
-		if (strlen(gOpenRCT2StartupActionPath) == 0)
+		if (strlen(gOpenRCT2StartupActionPath) == 0) {
 			editor_load();
-		else
+		} else {
 			editor_load_landscape(gOpenRCT2StartupActionPath);
+		}
 		break;
 	}
 
+	log_verbose("begin openrct2 loop");
 	openrct2_loop();
-	osinterface_free();
+	platform_free();
 
 	// HACK Some threads are still running which causes the game to not terminate. Investigation required!
 	exit(gExitCode);
@@ -110,9 +112,9 @@ static void openrct2_loop()
 
 		lastTick = currentTick;
 
-		osinterface_process_messages();
+		platform_process_messages();
 		rct2_update();
-		osinterface_draw();
+		platform_draw();
 	} while (!_finished);
 }
 

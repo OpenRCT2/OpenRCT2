@@ -136,13 +136,15 @@ void window_banner_open(rct_windownumber number)
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	int ebp = ((view_y << 8) | view_x) >> 5;
 	
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
-
-	while(1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
-			(map_element->properties.banner.index == w->number)) break;
+	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+	while(1) {
+		if (
+			(map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
+			(map_element->properties.banner.index == w->number)
+		) {
+			break;
+		}
 
 		map_element++;
 	}
@@ -186,10 +188,10 @@ static void window_banner_mouseup()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	while (1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
+		if ((map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
 			(map_element->properties.banner.index == w->number)) break;
 		map_element++;
 	}
@@ -285,17 +287,13 @@ static void window_banner_dropdown()
 
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		// Allocate text_buffer to a new string_id?
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId != 0) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 		break;
@@ -322,16 +320,13 @@ static void window_banner_textinput()
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 		strncpy(text_buffer + 1, text, 32);
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 	}

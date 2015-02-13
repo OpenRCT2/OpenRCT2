@@ -190,7 +190,7 @@ typedef struct rct_window {
 	uint64 enabled_widgets;		// 0x008
 	uint64 disabled_widgets;	// 0x010
 	uint64 pressed_widgets;		// 0x018
-	uint64 var_020;
+	uint64 hold_down_widgets;	// 0x020
 	rct_widget* widgets;		// 0x028
 	sint16 x;					// 0x02C
 	sint16 y;					// 0x02E
@@ -223,7 +223,7 @@ typedef struct rct_window {
 	};
 	sint16 page;					// 0x48A
 	sint16 var_48C;
-	sint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
+	uint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
 	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
 	sint16 var_492;
 	uint32 var_494;
@@ -397,7 +397,8 @@ enum {
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
 	WC_VIEWPORT = 112,
-	WC_TEXTINPUT = 113
+	WC_TEXTINPUT = 113,
+	WC_MAPGEN = 114
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -481,9 +482,10 @@ void window_update_viewport_ride_music();
 
 // Open window functions
 void window_main_open();
+void window_relocate_windows(int width, int height);
 void window_resize_gui(int width, int height);
 void window_resize_gui_scenario_editor(int width, int height);
-void window_game_top_toolbar_open();
+void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
 void window_footpath_open();
@@ -535,9 +537,9 @@ void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
+rct_window *window_mapgen_open();
 
 void window_editor_main_open();
-void window_editor_top_toolbar_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
 void window_editor_inventions_list_open();

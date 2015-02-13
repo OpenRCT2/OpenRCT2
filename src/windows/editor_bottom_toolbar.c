@@ -28,12 +28,12 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
 #include "error.h"
 
-enum WINDOW_EDITOR_TOP_TOOLBAR_WIDGET_IDX {
+enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
 	WIDX_PREVIOUS_STEP_BUTTON,	// 2
 	WIDX_NEXT_IMAGE,			// 4
@@ -166,8 +166,8 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	RCT2_CALLPROC(0x006DFED0);
-	RCT2_CALLPROC(0x006DFEE4);
+	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
 	gfx_invalidate_screen();
@@ -274,7 +274,7 @@ static int show_save_scenario_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
+	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
 	unpause_sounds();
 
 	if (result)

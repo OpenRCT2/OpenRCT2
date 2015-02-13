@@ -2526,6 +2526,7 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
+
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -2691,13 +2692,13 @@ STR_2686    :???
 STR_2687    :???
 STR_2688    :???
 STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2690    :Map Generation
+STR_2691    :{WINDOW_COLOUR_2}Base height:
+STR_2692    :{WINDOW_COLOUR_2}Water level:
+STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
@@ -2721,47 +2722,57 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :???
 STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+STR_2720    :{UINT16}sec
+STR_2721    :{UINT16}secs
+STR_2722    :{UINT16}min:{UINT16}sec
+STR_2723    :{UINT16}min:{UINT16}secs
+STR_2724    :{UINT16}mins:{UINT16}sec
+STR_2725    :{UINT16}mins:{UINT16}secs
+STR_2726    :{UINT16}min
+STR_2727    :{UINT16}mins
+STR_2728    :{UINT16}hour:{UINT16}min
+STR_2729    :{UINT16}hour:{UINT16}mins
+STR_2730    :{UINT16}hours:{UINT16}min
+STR_2731    :{UINT16}hours:{UINT16}mins
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, Year {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
+STR_2738    :Title screen music
+STR_2739    :None
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :css50.dat not found
+STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
 STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
+
+
+
+
+
+
+
+
+
+
 # New strings used in the cheats window previously these were ???
+STR_2750    :Move all items to top
+STR_2751    :Move all items to bottom
+STR_2752    :Clear grass
+STR_2753    :Mowed grass
+STR_2754    :Water plants
+STR_2755    :Fix vandalism
+STR_2756    :Remove litter
+STR_2757    :Force Sun
+STR_2758    :Force Thunder
+STR_2759    :Zero Clearance
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
@@ -2781,9 +2792,11 @@ STR_2775    :Fullscreen (desktop)
 STR_2776    :Language
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :Viewport #{COMMA16}
+STR_2780    :Extra viewport
 # End of new strings
-STR_2779    :???
-STR_2780    :???
+
+
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 

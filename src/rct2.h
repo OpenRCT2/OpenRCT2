@@ -43,6 +43,11 @@ typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 
+typedef char utf8;
+typedef wchar_t utf16;
+typedef utf8* utf8string;
+typedef utf16* utf16string;
+
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
 #define rol16(x, shift)		(((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))
@@ -98,10 +103,21 @@ typedef fixed32_1dp money32;
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
 #define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
 
+#define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
+
+typedef struct {
+	uint32 installLevel;
+	char title[260];
+	char path[260];
+	uint32 var_20C;
+	uint8 pad_210[256];
+	char expansionPackNames[16][128];
+	uint32 activeExpansionPacks;		//0xB10
+} rct2_install_info;
 
 enum {
 	// Although this is labeled a flag it actually means when
@@ -178,6 +194,7 @@ enum {
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
 	PATH_ID_CSS46,
+	PATH_ID_CSS50,
 	PATH_ID_END
 };
 
@@ -245,7 +262,8 @@ static const char * const file_paths[] =
 	"Data\\CSS43.DAT",
 	"Data\\CSS44.DAT",
 	"Data\\CSS45.DAT",
-	"Data\\CSS46.DAT"
+	"Data\\CSS46.DAT",
+	"Data\\CSS50.DAT"
 };
 
 // Files to check (rct2 @ 0x0097FB5A)

@@ -22,7 +22,6 @@
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
-#include "platform/osinterface.h"
 #include "ride/track.h"
 #include "util/sawyercoding.h"
 
@@ -79,7 +78,7 @@ rct_object_entry_group object_entry_groups[] = {
 	(uint8**)(0x009ACFA4 + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets
 	(uint8**)(0x009ACFA4 + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance
 	(uint8**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water
-	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))		// scenario text
+	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text
 };
 
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
@@ -90,9 +89,59 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 static void get_plugin_path(char *path)
 {
-	char *homePath = osinterface_get_orct2_homefolder();
-	sprintf(path, "%s%c%s", homePath, osinterface_get_path_separator(), "plugin.dat");
+	char *homePath = platform_get_orct2_homefolder();
+	sprintf(path, "%s%c%s", homePath, platform_get_path_separator(), "plugin.dat");
 	free(homePath);
+}
+
+static void object_list_sort()
+{
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry;
+	int numObjects, i, j, bufferSize, entrySize, lowestIndex;
+	char *objectName, *lowestString;
+	uint8 *copied;
+
+	objectBuffer = &RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	copied = calloc(numObjects, sizeof(uint8));
+
+	// Get buffer size
+	entry = *objectBuffer;
+	for (i = 0; i < numObjects; i++)
+		entry = object_get_next(entry);
+	bufferSize = (int)entry - (int)*objectBuffer;
+
+	// Create new buffer
+	newBuffer = rct2_malloc(bufferSize);
+	destEntry = newBuffer;
+
+	// Copy over sorted objects
+	for (i = 0; i < numObjects; i++) {
+		// Find next lowest string
+		lowestString = NULL;
+		entry = *objectBuffer;
+		for (j = 0; j < numObjects; j++) {
+			if (!copied[j]) {
+				objectName = object_get_name(entry);
+				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
+					lowestEntry = entry;
+					lowestString = objectName;
+					lowestIndex = j;
+				}
+			}
+			entry = object_get_next(entry);
+		}
+		entrySize = object_get_length(lowestEntry);
+		memcpy(destEntry, lowestEntry, entrySize);
+		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+		copied[lowestIndex] = 1;
+	}
+
+	// Replace old buffer
+	rct2_free(*objectBuffer);
+	*objectBuffer = newBuffer;
+
+	free(copied);
 }
 
 /**
@@ -111,6 +160,7 @@ static void object_list_examine()
 
 		object = object_get_next(object);
 	}
+	object_list_sort();
 
 	// Create a search index
 	object_list_create_hash_table();
@@ -136,7 +186,7 @@ void sub_6A9FC0()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_paint(type, 0, 0, 0, 0, (int)chunk, 0, 0);
+				object_paint(type, 0, j, type, 0, (int)chunk, 0, 0);
 		}
 	}
 }
@@ -194,8 +244,10 @@ void object_list_load()
 
 	// Reload object list
 
-	if (RCT2_GLOBAL(0x9AA00D, uint8) != 0)
-		RCT2_GLOBAL(0x9AA00D, uint8) = 0;
+	// RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS used to control if this was the first time loading objects
+	// and display the starting RCT2 for the first time message.
+	//if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) != 0)
+	//	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) = 0;
 
 	sub_6A9FC0();
 
@@ -390,6 +442,7 @@ int object_read_and_load_entries(FILE *file)
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	sawyercoding_read_chunk(file, (uint8*)entries);
 
+	uint8 load_fail = 0;
 	// Load each object
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		if (!check_object_entry(&entries[i]))
@@ -407,14 +460,18 @@ int object_read_and_load_entries(FILE *file)
 		if (!object_load(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
-			free(entries);
-			object_unload_all();
-			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			return 0;
+			load_fail = 1;
 		}
 	}
 
-	free(entries);
+	free(entries);	
+	if (load_fail){
+		object_unload_all();
+		RCT2_GLOBAL(0x14241BC, uint32) = 0;
+		return 0;
+	}
+
+	log_verbose("finished loading required objects");
 	return 1;
 }
 
@@ -481,10 +538,34 @@ void object_list_create_hash_table()
 		// Set hash table slot
 		_installedObjectHashTable[index] = installedObject;
 
-		// Next installde object
+		// Next installed object
 		installedObject = object_get_next(installedObject);
 	}
 }
+
+/* 0x006A9DA2
+ * bl = entry_index
+ * ecx = entry_type
+ */
+int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+	*entry_type = entry->flags & 0xF;
+
+	rct_object_entry_group entry_group = object_entry_groups[*entry_type];
+	for (*entry_index = 0; 
+		*entry_index < object_entry_group_counts[*entry_type]; 
+		++(*entry_index),
+		entry_group.chunks++,
+		entry_group.entries++){
+
+		if (*entry_group.chunks == (uint8*)-1) continue;
+
+		if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
+	}
+
+	if (*entry_index == object_entry_group_counts[*entry_type])return 0;
+	return 1;
+}
+
 
 rct_object_entry *object_list_find(rct_object_entry *entry)
 {

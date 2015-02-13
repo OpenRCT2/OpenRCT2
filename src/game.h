@@ -55,11 +55,11 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_STAFF_PATROL, //30
 	GAME_COMMAND_FIRE_STAFF_MEMBER, // 31
 	GAME_COMMAND_SET_STAFF_ORDER, // 32
-	GAME_COMMAND_33,
+	GAME_COMMAND_SET_PARK_NAME,
 	GAME_COMMAND_SET_PARK_OPEN, // 34
 	GAME_COMMAND_35,
-	GAME_COMMAND_36,
-	GAME_COMMAND_37,
+	GAME_COMMAND_PLACE_PARK_ENTRANCE,
+	GAME_COMMAND_REMOVE_PARK_ENTRANCE,
 	GAME_COMMAND_38,
 	GAME_COMMAND_SET_PARK_ENTRANCE_FEE, // 39
 	GAME_COMMAND_SET_STAFF_COLOUR, // 40
@@ -106,7 +106,7 @@ void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
 int game_load_save(const char *path);
-void game_pause_toggle();
+void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 char save_game();
 void rct2_exit();
 

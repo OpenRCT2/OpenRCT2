@@ -87,7 +87,7 @@ void window_editor_main_open()
 	RCT2_GLOBAL(0x009E32B3, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = 0;
 
-	window_editor_top_toolbar_open();
+	window_top_toolbar_open();
 	window_editor_bottom_toolbar_open();
 }
 

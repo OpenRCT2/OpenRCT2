@@ -23,7 +23,7 @@
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "localisation/localisation.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "sprites.h"
 
 static void screen_intro_process_mouse_input();
@@ -262,7 +262,7 @@ void intro_update()
 		(*part) = 0;
 
 		// Change palette
-		RCT2_CALLPROC_EBPSAFE(0x006837E3);
+		load_palette();
 
 		RCT2_GLOBAL(0x009E2C78, sint32) = 0;
 		gfx_invalidate_screen();

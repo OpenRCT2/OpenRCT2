@@ -143,12 +143,22 @@ static void scenario_list_sort()
 }
 
 /**
-* Basic scenario information compare function for sorting.
-*  rct2: 0x00677C08
-*/
+ * Basic scenario information compare function for sorting.
+ *  rct2: 0x00677C08
+ */
 static int scenario_list_sort_compare(const void *a, const void *b)
 {
 	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
+}
+
+/**
+ * Gets the path for the scenario scores path.
+ */
+static void scenario_scores_get_path(char *outPath)
+{
+	char *homePath = platform_get_orct2_homefolder();
+	sprintf(outPath, "%s%c%s", homePath, platform_get_path_separator(), "scores.dat");
+	free(homePath);
 }
 
 /**
@@ -158,6 +168,9 @@ static int scenario_list_sort_compare(const void *a, const void *b)
 static int scenario_scores_load()
 {
 	FILE *file;
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
 
 	// Free scenario list if already allocated
 	if (gScenarioList != NULL) {
@@ -166,10 +179,15 @@ static int scenario_scores_load()
 	}
 
 	// Try and load the scores file
-	file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+
+	// First check user folder and then fallback to install directory
+	file = fopen(scoresPath, "rb");
 	if (file == NULL) {
-		RCT2_ERROR("Unable to load scenario scores.");
-		return 0;
+		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+		if (file == NULL) {
+			RCT2_ERROR("Unable to load scenario scores.");
+			return 0;
+		}
 	}
 
 	// Load header
@@ -206,8 +224,11 @@ static int scenario_scores_load()
 int scenario_scores_save()
 {
 	FILE *file;
-	
-	file = fopen(get_file_path(PATH_ID_SCORES), "wb");
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
+
+	file = fopen(scoresPath, "wb");
 	if (file == NULL) {
 		RCT2_ERROR("Unable to save scenario scores.");
 		return 0;

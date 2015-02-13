@@ -27,7 +27,7 @@
 
 #include "../addresses.h"
 #include "../config.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
@@ -136,7 +136,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 		height,
 		(uint32*)window_text_input_events, 
 		WC_TEXTINPUT,
-		0
+		WF_STICK_TO_FRONT
 	);
 
 	w->widgets = window_text_input_widgets;
@@ -150,7 +150,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	calling_number = call_w->number;
 	calling_widget = call_widget;
 
-	osinterface_start_text_input(text_input, maxLength);
+	platform_start_text_input(text_input, maxLength);
 
 	window_init_scroll_widgets(w);
 	w->colours[0] = call_w->colours[0];
@@ -172,7 +172,7 @@ static void window_text_input_mouseup(){
 	switch (widgetIndex){
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:
-		osinterface_stop_text_input();
+		platform_stop_text_input();
 		// Pass back the text that has been entered.
 		// ecx when zero means text input failed
 		if (calling_w != NULL)
@@ -180,7 +180,7 @@ static void window_text_input_mouseup(){
 		window_close(w);
 		break;
 	case WIDX_OKAY:
-		osinterface_stop_text_input();
+		platform_stop_text_input();
 		// Pass back the text that has been entered.
 		// ecx when none zero means text input success
 		if (calling_w != NULL)
@@ -265,11 +265,11 @@ static void window_text_input_paint(){
 static void window_text_input_text(int key, rct_window* w){
 
 	int text = key;
-	char new_char = osinterface_scancode_to_rct_keycode(0xFF&key);
+	char new_char = platform_scancode_to_rct_keycode(0xFF&key);
 
 	// If the return button is pressed stop text input
 	if (new_char == '\r'){
-		osinterface_stop_text_input();
+		platform_stop_text_input();
 		window_close(w);
 		rct_window* calling_w = window_find_by_number(calling_class, calling_number);
 		// Pass back the text that has been entered.
@@ -300,10 +300,11 @@ void window_text_input_update7()
 	window_invalidate(w);
 }
 
-static void window_text_input_close(){
+static void window_text_input_close()
+{
 	// Make sure that we take it out of the text input
 	// mode otherwise problems may occur.
-	osinterface_stop_text_input();
+	platform_stop_text_input();
 }
 
 static void window_text_input_invalidate(){

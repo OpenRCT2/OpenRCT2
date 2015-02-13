@@ -35,7 +35,6 @@
 #include "management/news_item.h"
 #include "object.h"
 #include "openrct2.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/track.h"
@@ -93,7 +92,7 @@ int rct2_init()
 
 	gfx_load_g1();
 	gfx_load_character_widths();
-	osinterface_init();
+	platform_init();
 	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
 	viewport_init_all();
 	news_item_init_queue();
@@ -104,7 +103,7 @@ int rct2_init()
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
-	map_init();
+	map_init(150);
 	park_init();
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
 	date_reset();
@@ -119,6 +118,7 @@ int rct2_init()
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
 	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
 
+	log_verbose("initialising game finished");
 	return 1;
 }
 
@@ -128,13 +128,15 @@ int rct2_init()
  */
 int rct2_init_directories()
 {
+	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
+
 	// check install directory
 	if (!platform_directory_exists(gGeneral_config.game_path)) {
 		log_verbose("install directory does not exist, %s", gGeneral_config.game_path);
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
-		}
+	}
 	}
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
@@ -222,7 +224,10 @@ int rct2_open_file(const char *path)
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
+		return 1;
+	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
+		return 1;
 	}
 
 	return 0;
@@ -233,10 +238,10 @@ int rct2_open_file(const char *path)
  *  rct2: 0x00674C95
  */
 int check_file_paths()
-{
+	{
 	for (int pathId = 0; pathId < PATH_ID_END; pathId++)
 		if (!check_file_path(pathId))
-			return 0;
+	return 0;
 
 	return 1;
 }
@@ -251,24 +256,7 @@ int check_file_path(int pathId)
 	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 
 	switch (pathId) {
-	case PATH_ID_GAMECFG:
-	case PATH_ID_SCORES:
-	case PATH_ID_TRACKSIDX:
-	case PATH_ID_PLUGIN:
-		// Do nothing; these will be created later if they do not exist yet
-		break;
-
-	case PATH_ID_CUSTOM1:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
-		break;
-
-	case PATH_ID_CUSTOM2:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
-		break;
-
-	default:
+	case PATH_ID_G1:
 		if (file == INVALID_HANDLE_VALUE) {
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
@@ -280,6 +268,16 @@ int check_file_path(int pathId)
 			log_fatal("Could not find file %s", path);
 			return 0;
 		}
+		break;
+
+	case PATH_ID_CUSTOM1:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		break;
+
+	case PATH_ID_CUSTOM2:
+		if (file != INVALID_HANDLE_VALUE)
+			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 
@@ -294,11 +292,11 @@ int check_file_path(int pathId)
  *  rct2: 0x00674C0B
  */
 int check_files_integrity()
-{
+	{
 	int i;
 	const char *path;
 	HANDLE file;
-	WIN32_FIND_DATA find_data;
+		WIN32_FIND_DATA find_data;
 
 	for (i = 0; files_to_check[i].pathId != PATH_ID_END; i++) {
 		path = get_file_path(files_to_check[i].pathId);
@@ -324,16 +322,12 @@ void rct2_update_2()
 
 	tick = timeGetTime();
 
-	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
-	if (RCT2_GLOBAL(0x009DE588, sint16) > 500)
-		RCT2_GLOBAL(0x009DE588, sint16) = 500;
+	tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
+	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = min(tick2, 500);
 
 	RCT2_GLOBAL(0x009DE580, sint32) = tick;
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0)
-		RCT2_GLOBAL(0x009DE584, sint32) += tick2;
-
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0)
-		RCT2_GLOBAL(0x009DE584, sint32) += tick2;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
+		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0)
 		RCT2_GLOBAL(0x009DE588, sint16) = 31;

@@ -319,7 +319,7 @@ static uint64 window_editor_scenario_options_page_enabled_widgets[] = {
 	0x007F7B74
 };
 
-static uint32 dword_9A9DE8[] = {
+static uint32 window_editor_scenario_options_page_hold_down_widgets[] = {
 	0x000DB600,
 	0x0006DB00,
 	0x00031B00
@@ -350,7 +350,7 @@ void window_editor_scenario_options_open()
 	);
 	w->widgets = window_editor_scenario_options_widgets[0];
 	w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
-	w->var_020 = dword_9A9DE8[0];
+	w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
 	window_init_scroll_widgets(w);
 	w->var_4AE = 0;
 	w->page = 0;
@@ -422,7 +422,7 @@ static void window_editor_scenario_options_set_page(rct_window *w, int page)
 	w->frame_no = 0;
 	w->var_492 = 0;
 	w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[page];
-	w->var_020 = dword_9A9DE8[page];
+	w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
 	w->event_handlers = window_editor_scenario_options_page_events[page];
 	w->widgets = window_editor_scenario_options_widgets[page];
 	window_invalidate(w);

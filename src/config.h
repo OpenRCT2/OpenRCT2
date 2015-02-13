@@ -132,10 +132,13 @@ typedef struct general_configuration {
 
 	//new
 	uint8 fullscreen_mode;
+	sint16 fullscreen_width;
+	sint16 fullscreen_height;
 	sint16 window_width;
 	sint16 window_height;
 	uint16 language;
 	uint8 window_snap_proximity;
+	uint8 title_music;
 } general_configuration_t;
 
 static const struct { const char *key; int value; } _currencyLookupTable[] = {

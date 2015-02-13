@@ -39,6 +39,8 @@
 #include "world/park.h"
 #include "world/sprite.h"
 
+static int scenario_create_ducks();
+
 /**
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
@@ -271,13 +273,13 @@ int scenario_load_and_play_from_path(const char *path)
 		
 		// Set park name
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), GAME_COMMAND_33,
+		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), GAME_COMMAND_SET_PARK_NAME,
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 8)), 
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 4)));
-		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), GAME_COMMAND_33, 
+		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), GAME_COMMAND_SET_PARK_NAME, 
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 20)),
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 16)));
-		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), GAME_COMMAND_33,
+		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), GAME_COMMAND_SET_PARK_NAME,
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 32)),
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 28)));
 
@@ -327,12 +329,11 @@ int scenario_load_and_play_from_path(const char *path)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_18;
 
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
-
 	return 1;
 }
 
@@ -596,21 +597,24 @@ void scenario_update()
 
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
-		finance_update_daily_profit(); // daily profit update
+		finance_update_daily_profit();
 		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
 		get_local_time();
-		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging 
-		if (objective_type == 10 || objective_type == 9 || objective_type == 8 ||
-			objective_type == 6 || objective_type == 5) {
+		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging
+		switch (objective_type) {
+		case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+		case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+		case OBJECTIVE_GUESTS_AND_RATING:
+		case OBJECTIVE_10_ROLLERCOASTERS:
 			scenario_objectives_check();
+			break;
 		}
 
 		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 	}
 
-	
-	//if ( (unsigned int)((4 * current_day) & 0xFFFF) >= 0xFFEFu) {
-	if ( next_month_tick % 0x4000 == 0) {
+	if (next_month_tick % 0x4000 == 0) {
 		// weekly checks
 		finance_pay_wages();
 		finance_pay_research();
@@ -621,18 +625,9 @@ void scenario_update()
 		ride_update_favourited_stat();
 
 		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
-			for (int i = 0; i < 100; ++i) {
-				int carry;
-				RCT2_CALLPROC_EBPSAFE(0x006744A9); // clears carry flag on failure -.-
-				#ifdef _MSC_VER
-				__asm mov carry, 0;
-				__asm adc carry, 0;
-				#else
-				__asm__ ( "mov %[carry], 0; " : [carry] "+m" (carry) );
-				__asm__ ( "adc %[carry], 0; " : [carry] "+m" (carry) );
-				#endif
-
-				if (!carry)
+			// 100 attempts at finding some water to create a few ducks at
+			for (int i = 0; i < 100; i++) {
+				if (scenario_create_ducks())
 					break;
 			}
 		}
@@ -640,7 +635,6 @@ void scenario_update()
 		park_calculate_size();
 	}
 
-	//if ( (unsigned int)((2 * current_day) & 0xFFFF) >= 0xFFF8) {
 	if (next_month_tick % 0x8000 == 0) {
 		// fortnightly 
 		finance_pay_ride_upkeep();
@@ -656,13 +650,67 @@ void scenario_update()
 		scenario_entrance_fee_too_high_check();
 		award_update_all();
 	}
-	
 }
 
 /**
-*
-*  rct2: 0x006E37D2
-*/
+ *
+ *  rct2: 0x006744A9
+ */
+static int scenario_create_ducks()
+{
+	int i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+
+	r = scenario_rand();
+	x = ((r >> 16) & 0xFFFF) & 0x7F;
+	y = (r & 0xFFFF) & 0x7F;
+	x = (x + 64) * 32;
+	y = (y + 64) * 32;
+
+	if (!map_is_location_in_park(x, y))
+		return 0;
+
+	centreWaterZ = (map_element_height(x, y) >> 16) & 0xFFFF;
+	if (centreWaterZ == 0)
+		return 0;
+
+	// Check 7x7 area around centre tile
+	x2 = x - (32 * 3);
+	y2 = y - (32 * 3);
+	c = 0;
+	for (i = 0; i < 7; i++) {
+		for (j = 0; j < 7; j++) {
+			waterZ = (map_element_height(x2, y2) >> 16) & 0xFFFF;
+			if (waterZ == centreWaterZ)
+				c++;
+
+			x2 += 32;
+		}
+		x2 -= 224;
+		y2 += 32;
+	}
+
+	// Must be at least 25 water tiles of the same height in 7x7 area
+	if (c < 25)
+		return 0;
+
+	// Set x, y to the centre of the tile
+	x += 16;
+	y += 16;
+	c = (scenario_rand() & 3) + 2;
+	for (i = 0; i < c; i++) {
+		r = scenario_rand();
+		x2 = (r >> 16) & 0x7F;
+		y2 = (r & 0xFFFF) & 0x7F;
+		create_duck(x + x2 - 64, y + y2 - 64);
+	}
+
+	return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006E37D2
+ */
 unsigned int scenario_rand()
 {
 	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
@@ -676,26 +724,22 @@ unsigned int scenario_rand()
  */
 void scenario_prepare_rides_for_save()
 {
-	int i, x, y;
-	rct_map_element *mapElement;
+	int i;
 	rct_ride *ride;
+	map_element_iterator it;
 
 	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
-	for (y = 0; y < 256; y++) {
-		for (x = 0; x < 256; x++) {
-			mapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
-			do {
-				if ((mapElement->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK) {
-					if (isFiveCoasterObjective)
-						mapElement->flags |= 0x40;
-					else
-						mapElement->flags &= ~0x40;
-				}
-			} while (!((mapElement++)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK) {
+			if (isFiveCoasterObjective)
+				it.element->flags |= 0x40;
+			else
+				it.element->flags &= ~0x40;
 		}
-	}
+	} while (map_element_iterator_next(&it));
 
 	// Set all existing rides to have indestructible track
 	FOR_ALL_RIDES(i, ride) {
@@ -725,7 +769,7 @@ int scenario_prepare_for_save()
 	}
 
 	if (s6Info->name[0] == 0)
-		format_string(s6Info->name, RCT2_GLOBAL(0x013573D4, rct_string_id), (void*)0x013573D8);
+		format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 
 	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);

@@ -658,7 +658,7 @@ static void window_new_ride_scrollmousedown()
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		return;
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);

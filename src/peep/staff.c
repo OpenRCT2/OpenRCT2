@@ -28,38 +28,23 @@
 #include "staff.h"
 
 /**
-*
-*  rct2: 0x00669E55
-*/
-void game_command_update_staff_colour()
+ *
+ *  rct2: 0x00669E55
+ */
+void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	uint8 staff_type, colour, _bl;
+	uint8 staffType, colour;
 	int spriteIndex;
 	rct_peep *peep;
 	
-	#ifdef _MSC_VER
-	__asm mov _bl, bl
-	#else
-	__asm__("mov %[_bl], bl " : [_bl] "+m" (_bl));
-	#endif
+	staffType = (*ebx >> 8) & 0xFF;
+	colour = (*edx >> 8) & 0xFF;
 
-	#ifdef _MSC_VER
-	__asm mov staff_type, bh
-	#else
-	__asm__("mov %[staff_type], bh " : [staff_type] "+m" (staff_type));
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov colour, dh
-	#else
-	__asm__("mov %[colour], bh " : [colour] "+m" (colour));
-	#endif
-
-	if (_bl & 1) {
-		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type] = colour;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staffType] = colour;
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
-			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staff_type) {
+			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
 				peep->tshirt_colour = colour;
 				peep->trousers_colour = colour;
 			}
@@ -67,25 +52,19 @@ void game_command_update_staff_colour()
 	}
 
 	gfx_invalidate_screen();
-	
-	#ifdef _MSC_VER
-	__asm mov ebx, 0
-	#else
-	__asm__("mov ebx, 0 ");
-	#endif
+	*ebx = 0;
 }
 
 /**
-*
-*  rct2: 0x006BEFA1
-*/
-void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
-	int* esi, int* edi, int* ebp)
+ *
+ *  rct2: 0x006BEFA1
+ */
+void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
 	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 0x28;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
 	RCT2_GLOBAL(0x009DEA5E, uint16) = _ax;
 	RCT2_GLOBAL(0x009DEA60, uint16) = _cx;
 	RCT2_GLOBAL(0x009DEA62, uint16) = _dx;
@@ -204,7 +183,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 		sprite_move( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
 		invalidate_sprite((rct_sprite*)newPeep);
 
-		newPeep->var_AD = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8);
+		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 		newPeep->var_CC = 0xFFFFFFFF;
 
 		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];
@@ -234,30 +213,23 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx,
 
 /*
  * Updates the colour of the given staff type.
-*/
-void update_staff_colour(uint8 staff_type, uint16 colour)
+ */
+void update_staff_colour(uint8 staffType, uint16 colour)
 {
-	game_do_command(
-		0,
-		(staff_type << 8) + 1,
-		0,
-		(colour << 8) + 4,
-		GAME_COMMAND_SET_STAFF_COLOUR,
-		0,
-		0);
+	game_do_command(0, (staffType << 8) | GAME_COMMAND_FLAG_APPLY, 0, (colour << 8) | 4, GAME_COMMAND_SET_STAFF_COLOUR, 0, 0);
 }
 
 /*
  * Hires a new staff member of the given type. If the hire cannot be completed (eg. the maximum
  * number of staff is reached or there are too many people in the game) it returns 0xFFFF.
-*/
-uint16 hire_new_staff_member(uint8 staff_type)
+ */
+uint16 hire_new_staff_member(uint8 staffType)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_HIRE_NEW_STAFF;
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = 0x8000;
-	ebx = staff_type << 8 | 1;
+	ebx = staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
 	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 

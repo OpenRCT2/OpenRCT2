@@ -165,7 +165,9 @@ void window_map_open()
 		(1 << WIDX_BUILD_PARK_ENTRANCE) |
 		(1 << WIDX_ROTATE_90) |
 		(1 << WIDX_PEOPLE_STARTING_POSITION);
-	w->var_020 |= 0x300;
+	w->hold_down_widgets =
+		(1 << WIDX_MAP_SIZE_SPINNER_UP) |
+		(1 << WIDX_MAP_SIZE_SPINNER_DOWN);
 	window_init_scroll_widgets(w);
 
 	window_map_set_bounds(w);
@@ -342,10 +344,10 @@ static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widg
 	// The normal map window doesn't have widget 8 or 9.
 	// I assume these widgets refer to the Scenario Editor's map window.
 	if (widgetIndex == 8) {
-		RCT2_CALLPROC_EBPSAFE(0x0068D641);
+		RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 	}
 	else if (widgetIndex == 9) {
-		RCT2_CALLPROC_EBPSAFE(0x0068D6B4);
+		RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 	}
 }
 
@@ -355,7 +357,7 @@ static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widg
 */
 static void window_map_update(rct_window *w)
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068D7FB);
+	RCT2_CALLPROC_X(0x0068D7FB, 0, 0, 0, 0, (int)w, 0, 0);
 }
 
 /**
@@ -381,7 +383,11 @@ static void window_map_scrollgetsize()
 */
 static void window_map_scrollmousedown()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068D726);
+	short x, y, scrollIndex;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	RCT2_CALLPROC_X(0x0068D726, scrollIndex, 0, x, y, (int)w, 0, 0);
 }
 
 /**
@@ -626,11 +632,11 @@ static void window_map_scrollpaint()
 	*g1_element = pushed_g1_element;
 
 	if (w->selected_tab == 0)
-		RCT2_CALLPROC_EBPSAFE(0x68DADA);	//draws dots representing guests
+		RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
 	else
-		RCT2_CALLPROC_EBPSAFE(0x68DBC1);	//draws dots representing trains
+		RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
 	
-	RCT2_CALLPROC_EBPSAFE(0x68D8CE);	//draws the HUD rectangle on the map
+	RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws the HUD rectangle on the map
 }
 
 /**

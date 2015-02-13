@@ -31,12 +31,13 @@
 #include "interface/widget.h"
 #include "interface/window.h"
 #include "management/finance.h"
+#include "management/marketing.h"
 #include "management/news_item.h"
 #include "management/research.h"
 #include "object.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
-#include "platform/osinterface.h"
+#include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
@@ -70,7 +71,7 @@ void game_reduce_game_speed()
 void game_create_windows()
 {
 	window_main_open();
-	window_game_top_toolbar_open();
+	window_top_toolbar_open();
 	window_game_bottom_toolbar_open();
 	RCT2_CALLPROC_EBPSAFE(0x0066B905);
 }
@@ -96,7 +97,7 @@ void update_palette_effects()
 			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
 	} else {
@@ -125,7 +126,7 @@ void update_palette_effects()
 				q = 2;
 			}
 		}
-		uint32 j = RCT2_GLOBAL(0x009DE584, uint32);
+		uint32 j = RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32);
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
 		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
@@ -164,7 +165,7 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		j = ((uint16)(RCT2_GLOBAL(0x009DE584, uint32) * -960) * 3) >> 16;
+		j = ((uint16)(RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32) * -960) * 3) >> 16;
 		p = 1539;
 		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
 		vs = &g1_element.offset[j * 3];
@@ -182,11 +183,11 @@ void update_palette_effects()
 		}
 
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
+		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
 			RCT2_GLOBAL(0x014241BC, uint32) = 2;
-			osinterface_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+			platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
 		}
@@ -219,7 +220,7 @@ void game_update()
 	}
 
 	// Update the game one or more times
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		for (i = 0; i < numUpdates; i++) {
 			game_logic_update();
 			start_title_music();
@@ -435,7 +436,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			// 
 			if (!(flags & 0x20)) {
 				// Update money balance
-				finance_payment(cost, RCT2_GLOBAL(0x0141F56C, uint8));
+				finance_payment(cost, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
@@ -464,83 +465,40 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
  * 
  *  rct2: 0x00667C15
  */
-void game_pause_toggle()
+void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	char input_bl;
-
-	#ifdef _MSC_VER
-	__asm mov input_bl, bl
-	#else
-	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
-	#endif
-
-
-	if (input_bl & 1) {
-		RCT2_GLOBAL(0x009DEA6E, uint32) ^= 1;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
-		if (RCT2_GLOBAL(0x009DEA6E, uint32) & 1)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
 			pause_sounds();
 		else
 			unpause_sounds();
 	}
-
-	#ifdef _MSC_VER
-	__asm mov ebx, 0
-	#else
-	__asm__ ( "mov ebx, 0 "  );
-	#endif
-
+	*ebx = 0;
 }
 
 /**
  * 
  *  rct2: 0x0066DB5F
  */
-static void game_load_or_quit()
+static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	char input_bl, input_dl;
-	short input_di;
-
-	#ifdef _MSC_VER
-	__asm mov input_bl, bl
-	#else
-	__asm__ ( "mov %[input_bl], bl " : [input_bl] "+m" (input_bl) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov input_dl, dl
-	#else
-	__asm__ ( "mov %[input_dl], dl " : [input_dl] "+m" (input_dl) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov input_di, di
-	#else
-	__asm__ ( "mov %[input_di], di " : [input_di] "+m" (input_di) );
-	#endif
-
-	if (!(input_bl & 1))
-		return; // 0;
-
-	switch (input_dl) {
-	case 0:
-		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = input_di;
-		window_save_prompt_open();
-		break;
-	case 1:
-		window_close_by_class(WC_SAVE_PROMPT);
-		break;
-	default:
-		game_load_or_quit_no_save_prompt();
-		break;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		switch (*edx & 0xFF) {
+		case 0:
+			RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = *edi & 0xFF;
+			window_save_prompt_open();
+			break;
+		case 1:
+			window_close_by_class(WC_SAVE_PROMPT);
+			break;
+		default:
+			game_load_or_quit_no_save_prompt();
+			break;
+		}
 	}
-
-#ifdef _MSC_VER
-	__asm mov ebx, 0
-#else
-	__asm__ ( "mov ebx, 0 "  );
-#endif
-
+	*ebx = 0;
 }
 
 /**
@@ -554,7 +512,7 @@ static int open_landscape_file_dialog()
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
+	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -571,7 +529,7 @@ static int open_load_game_dialog()
 	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
+	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
 	unpause_sounds();
 	// window_proc
 	return result;
@@ -724,7 +682,7 @@ int game_load_save(const char *path)
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
 		sub_69E869();
 
-	RCT2_CALLPROC_EBPSAFE(0x006837E3); // (palette related)
+	load_palette();
 	gfx_invalidate_screen();
 	return 1;
 }
@@ -790,7 +748,7 @@ static int show_save_game_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
+	result = platform_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
 	unpause_sounds();
 
 	if (result)
@@ -860,15 +818,15 @@ void game_load_or_quit_no_save_prompt()
 static uint32 game_do_command_table[58] = {
 	0x006B2FC5,
 	0x0066397F,
-	(uint32)game_pause_toggle,
+	0,
 	0x006C511D,
 	0x006C5B69,
-	(uint32)game_load_or_quit,
+	0,
 	0x006B3F0F,
 	0x006B49D9,
 	0x006B4EA6,
 	0x006B52D4,
-	0x006B578B, // 10
+	0, // 10
 	0x006B5559,
 	0x006660A8,
 	0x0066640B,
@@ -892,21 +850,21 @@ static uint32 game_do_command_table[58] = {
 	0x006C0B83,
 	0x006C0BB5,
 	0x00669C6D,
-	0x00669D4A,
+	0,
 	0x006649BD,
 	0x006666E7,
-	0x00666A63,
+	0,
 	0x006CD8CE,
-	(uint32)game_command_set_park_entrance_fee,
-	(uint32)game_command_update_staff_colour, // 40
+	0,
+	0, // 40
 	0x006E519A,
 	0x006E5597,
 	0x006B893C,
 	0x006B8E1B,
-	0x0069DFB3,
-	0x00684A7F,
+	0,
+	0,
 	0x006D13FE,
-	0x0069E73C,
+	0,
 	0x006CDEE4,
 	0x006B9E6D, // 50
 	0x006BA058,
@@ -923,15 +881,15 @@ void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_emptysub,
+	game_pause_toggle,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_load_or_quit,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub, // 10
+	game_command_set_ride_name, // 10
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
@@ -954,22 +912,22 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub, // 30
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_set_park_name,
+	game_command_set_park_open,
+	game_command_emptysub,
+	game_command_emptysub,
+	game_command_remove_park_entrance,
+	game_command_emptysub,
+	game_command_set_park_entrance_fee,
+	game_command_update_staff_colour, // 40
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_set_current_loan,
+	game_command_set_research_funding,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub, // 40
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_emptysub, // 50
 	game_command_emptysub,

@@ -21,7 +21,6 @@
 #include "addresses.h"
 #include "localisation/localisation.h"
 #include "object.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 
@@ -51,7 +50,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
 
-	// log_verbose("loading object, %s", path);
+	log_verbose("loading object, %s", path);
 
 	file = fopen(path, "rb");
 	if (file == NULL)
@@ -495,7 +494,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(0x009ADAF8, void*) != NULL) {
-		free(RCT2_GLOBAL(0x009ADAF8, void*));
+		rct2_free(RCT2_GLOBAL(0x009ADAF8, void*));
 		RCT2_GLOBAL(0x009ADAF8, void*) = NULL;
 	}
 }
@@ -534,4 +533,20 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	pos += 4;
 
 	return (rct_object_entry*)pos;
+}
+
+char *object_get_name(rct_object_entry *entry)
+{
+	uint8 *pos = (uint8*)entry;
+
+	// Skip sizeof(rct_object_entry)
+	pos += 16;
+
+	// Skip filename
+	while (*pos++);
+
+	// Skip 
+	pos += 4;
+
+	return pos;
 }

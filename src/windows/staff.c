@@ -326,7 +326,7 @@ void window_staff_open(rct_peep* peep)
 
 	w->widgets = window_staff_overview_widgets;
 	w->enabled_widgets = window_staff_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x9929BC, uint32);
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_staff_page_events[0];
 	w->pressed_widgets = 0;
 	window_staff_disable_widgets(w);
@@ -413,7 +413,7 @@ void window_staff_set_page(rct_window* w, int page)
 	}
 
 	w->enabled_widgets = window_staff_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x9929BC, uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_staff_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_staff_page_widgets[page];

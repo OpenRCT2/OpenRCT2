@@ -23,7 +23,7 @@
 #include "../game.h"
 #include "../drawing/drawing.h"
 #include "../input.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "widget.h"
@@ -319,7 +319,7 @@ static void window_all_wheel_input()
 		w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
-			if (w->classification == WC_MAIN_WINDOW) {
+			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
 				window_viewport_wheel_input(w, wheel);
 				return;
 			}
@@ -417,7 +417,7 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 	w->enabled_widgets = 0;
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
-	w->var_020 = 0;
+	w->hold_down_widgets = 0;
 	w->viewport_focus_coordinates.var_480 = 0;
 	w->viewport_focus_coordinates.x = 0;
 	w->viewport_focus_coordinates.y = 0;
@@ -1007,7 +1007,7 @@ rct_window *window_get_main()
 
 /**
  * Based on 
- * rct2: 0x696ee9 & 0x66842F
+ * rct2: 0x696ee9 & 0x66842F & 0x006AF3B3
  * 
  */
 void window_scroll_to_viewport(rct_window *w)
@@ -1654,6 +1654,38 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position + 1] = swap;
 }
 
+/* rct2: 0x006ED710 
+ * Called after a window resize to move windows if they
+ * are going to be out of sight.
+ */
+void window_relocate_windows(int width, int height){
+	int new_location = 8;
+	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++){
+
+		// Work out if the window requires moving
+		if (w->x + 10 < width){
+			if (w->flags&(WF_STICK_TO_BACK | WF_STICK_TO_FRONT)){
+				if (w->y -22 < height)continue;
+			}
+			if (w->y + 10 < height)continue;
+		}
+
+		// Calculate the new locations
+		int x = w->x;
+		int y = w->y;
+		w->x = new_location;
+		w->y = new_location + 28;
+
+		// Move the next new location so windows are not directly on top
+		new_location += 8;
+
+		// Adjust the viewport if required.
+		if (w->viewport){
+			w->viewport->x -= x - w->x;
+			w->viewport->y -= y - w->y;
+		}
+	}
+}
 
 /**
 * rct2: 0x0066B905
@@ -1808,7 +1840,7 @@ void sub_6EA73F()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		RCT2_GLOBAL(0x01423604, uint32)++;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {

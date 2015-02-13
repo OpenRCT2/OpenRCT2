@@ -47,8 +47,8 @@ typedef struct {
 typedef struct {
 	uint8 type; //4
 	uint8 age; //5
-	uint8 colour; //6
-	uint8 unused; //7
+	uint8 colour_1; //6
+	uint8 colour_2; //7
 } rct_map_element_scenery_properties;
 
 typedef struct {
@@ -193,6 +193,8 @@ enum {
 
 #define MAP_ELEMENT_SLOPE_MASK 0x1F
 #define MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK 0xE0
+
+// Terrain
 #define MAP_ELEMENT_WATER_HEIGHT_MASK 0x1F
 #define MAP_ELEMENT_SURFACE_TERRAIN_MASK 0xE0
 
@@ -203,6 +205,13 @@ enum {
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
+typedef struct {
+	sint16 x, y;
+} rct_xy16;
+
+typedef struct {
+	sint16 x, y, z;
+} rct_xyz16;
 
 typedef struct {
 	uint16 x;
@@ -211,16 +220,14 @@ typedef struct {
 	uint8 direction;
 } rct2_peep_spawn;
 
-typedef struct {
-	sint16 x;
-	sint16 y;
-} rct_xy16;
-
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
 
-void map_init();
+void map_init(int size);
 void map_update_tile_pointers();
+rct_map_element *map_get_first_element_at(int x, int y);
+int map_element_is_last_for_tile(rct_map_element *element);
+int map_element_get_type(rct_map_element *element);
 int map_element_get_terrain(rct_map_element *element);
 int map_element_get_terrain_edge(rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, int terrain);
@@ -229,7 +236,7 @@ int map_height_from_slope(int x, int y, int slope);
 rct_map_element *map_get_surface_element_at(int x, int y);
 int map_element_height(int x, int y);
 void sub_68B089();
-int map_coord_is_connected(uint16 coordinate, uint8 height, uint8 face_direction);
+int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
 void map_invalidate_animations();
 void sub_6A876D();
 int map_is_location_owned(int x, int y, int z);
@@ -255,5 +262,15 @@ void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, i
 
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
 #define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
+
+typedef struct {
+	int x;
+	int y;
+	rct_map_element *element;
+} map_element_iterator;
+
+void map_element_iterator_begin(map_element_iterator *it);
+int map_element_iterator_next(map_element_iterator *it);
+void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
 #endif

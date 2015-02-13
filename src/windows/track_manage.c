@@ -146,15 +146,13 @@ static void window_track_delete_prompt_open();
  */
 void window_track_manage_open()
 {
-	// RCT2_CALLPROC_EBPSAFE(0x006D348F);
-
 	rct_window *w, *trackDesignListWindow;
 
 	window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
 	w = window_create(
 		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 250) / 2),
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 44) / 2,
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 44) / 2,
 		250,
 		44,
 		(uint32*)window_track_manage_events,
@@ -199,6 +197,7 @@ static void window_track_manage_mouseup()
 	uint8 *trackDesignList = (uint8*)0x00F441EC;
 	rct_window *w, *trackDesignListWindow;
 	short widgetIndex;
+	char *dst, *src;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -209,8 +208,12 @@ static void window_track_manage_mouseup()
 	case WIDX_RENAME:
 		trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
 		if (trackDesignListWindow != NULL) {
-			strcpy((char*)0x009BC677, (char*)trackDesignList[trackDesignListWindow->track_list.var_482 * 128]);
-			window_show_textinput(w, widgetIndex, 3350, 3351, 3165);
+			src = &trackDesignList[trackDesignListWindow->track_list.var_482 * 128];
+			dst = (char*)0x009BC677;
+			while (*src != 0 && *src != '.')
+				*dst++ = *src++;
+			*dst = 0;
+			window_text_input_open(w, widgetIndex, 3350, 3351, 3165, 0, 127);
 		}
 		break;
 	case WIDX_DELETE:

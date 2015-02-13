@@ -189,7 +189,7 @@ rct_window *window_construction_open()
 	RCT2_GLOBAL(0x00F440B6, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B7, uint8) = 0;
 
-	RCT2_GLOBAL(0x00F440AE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 0;
 	RCT2_GLOBAL(0x00F440A6, uint8) = 4;
 	RCT2_GLOBAL(0x00F440B0, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
@@ -216,12 +216,12 @@ void window_construction_close(){
 	rct_map_element* map_element = sub_6CAF80(ride_id, &x, &y);
 
 	if ((int)map_element == -1){
-		int eax = RCT2_GLOBAL(0x009DEA6E, uint8);
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
 		game_do_command(0, 9, 0, ride_id, GAME_COMMAND_7, 0, 0);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = eax;
 		return;
 	}
 
@@ -247,12 +247,12 @@ void window_construction_maze_close(){
 	rct_ride* ride = GET_RIDE(ride_id);
 
 	if (ride->overall_view == 0xFFFF){
-		int eax = RCT2_GLOBAL(0x009DEA6E, uint8);
+		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
 		game_do_command(0, 9, 0, ride_id, GAME_COMMAND_7, 0, 0);
 
-		RCT2_GLOBAL(0x009DEA6E, uint8) = eax;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = eax;
 		return;
 	}
 
@@ -314,11 +314,11 @@ void window_construction_mouseup_demolish(rct_window* w){
 	if (RCT2_GLOBAL(0xF440A6, uint8) != 2){
 		//6c9cc4
 		int eax = RCT2_GLOBAL(0xF440A8, uint16),
-			ebx = RCT2_GLOBAL(0xF440AF, uint8) || (RCT2_GLOBAL(0xF440AE, uint8) << 8),
+			ebx = RCT2_GLOBAL(0xF440AF, uint8) || (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) << 8),
 			ecx = RCT2_GLOBAL(0xF440AA, uint16),
 			edx = RCT2_GLOBAL(0xF440AC, uint16);
 
-		sub_6C683D(&eax, &ecx, edx, RCT2_GLOBAL(0xF440AE, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
+		sub_6C683D(&eax, &ecx, edx, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
 	}
 
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);

@@ -41,10 +41,16 @@ enum{
 	VOUCHER_TYPE_FOOD_OR_DRINK_FREE,
 };
 
+#define CAMPAIGN_ACTIVE_FLAG (1 << 7)
+
 extern const money16 AdvertisingCampaignPricePerWeek[6];
+extern uint8 *gMarketingCampaignDaysLeft;
+extern uint8 *gMarketingCampaignRideIndex;
 
 int marketing_get_campaign_guest_generation_probability(int campaign);
 void marketing_update();
 void marketing_set_guest_campaign(rct_peep *peep, int campaign);
+void marketing_start_campaign(int type, int rideOrItem, int numWeeks);
+void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 #endif

@@ -87,7 +87,11 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 rct_object_entry *object_get_next(rct_object_entry *entry);
 int sub_6A9F42(FILE *file, rct_object_entry* entry);
+void sub_6A9FC0();
+int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 
 rct_object_entry *object_list_find(rct_object_entry *entry);
+
+char *object_get_name(rct_object_entry *entry);
 
 #endif

@@ -516,7 +516,7 @@ void window_guest_open(rct_peep* peep){
 	
 	window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
 	window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
-	window->var_020 = RCT2_GLOBAL(0x981D54,uint32);
+	window->hold_down_widgets = 0;
 	window->event_handlers = window_guest_page_events[WINDOW_GUEST_OVERVIEW];
 	window->pressed_widgets = 0;
 	
@@ -568,7 +568,7 @@ void window_guest_overview_resize(){
 	window_get_register(w);
 	
 	window_guest_disable_widgets(w);
-	RCT2_CALLPROC_EBPSAFE(w->event_handlers[WE_INVALIDATE]);
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 	
 	widget_invalidate(w, WIDX_MARQUEE);
 	
@@ -627,7 +627,7 @@ void window_guest_overview_mouse_up(){
 		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_PICKED;
-		peep->var_2C = 0;
+		peep->sub_state = 0;
 		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:
@@ -670,7 +670,7 @@ void window_guest_set_page(rct_window* w, int page){
 	}
 	
 	w->enabled_widgets = window_guest_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x981D54,uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_guest_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_guest_page_widgets[page];
@@ -1376,7 +1376,7 @@ void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_d
 	int blink_flag = colour & (1 << 0x1F); //0x80000000
 	colour &= ~(1 << 0x1F);
 	if (!blink_flag ||
-		RCT2_GLOBAL(0x009DEA6E, uint8) != 0 ||
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 ||
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8) == 0)
 	{
 		if (value <= 2)

@@ -25,6 +25,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../scenario.h"
+#include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -230,6 +231,15 @@ static uint64 window_editor_objective_options_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_2)
 };
 
+static uint64 window_editor_objective_options_page_hold_down_widgets[] = {
+	(1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+	(1 << WIDX_OBJECTIVE_ARG_2_DECREASE),
+
+	0
+};
+
 #pragma endregion
 
 /**
@@ -254,12 +264,12 @@ void window_editor_objective_options_open()
 		WF_10
 	);
 	w->widgets = window_editor_objective_options_main_widgets;
-	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[0];
+	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
 	w->pressed_widgets = 0;
-	w->var_020 = 0x00003600;
+	w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
 	window_init_scroll_widgets(w);
 	w->var_4AE = 0;
-	w->selected_tab = 0;
+	w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	RCT2_CALLPROC_X(0x00672609, 0, 0, 0, 0, (int)w, 0, 0);
@@ -327,7 +337,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
-	w->var_020 = page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN ? 0x3600 : 0;
+	w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
 	w->event_handlers = window_editor_objective_options_page_events[page];
 	w->widgets = window_editor_objective_options_widgets[page];
 	window_invalidate(w);
@@ -405,7 +415,7 @@ static void window_editor_objective_options_main_mouseup()
 		break;
 	case WIDX_PARK_NAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
-		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, rct_string_id), 0, 32);
+		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
 		strcpy((char*)0x009BC677, s6Info->name);
@@ -799,13 +809,10 @@ static void window_editor_objective_options_main_textinput()
 
 	switch (widgetIndex) {
 	case WIDX_PARK_NAME:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-		game_do_command(1, 1, 0, *((int*)(text + 0)), GAME_COMMAND_33, *((int*)(text + 8)), *((int*)(text + 4)));
-		game_do_command(2, 1, 0, *((int*)(text + 12)), GAME_COMMAND_33, *((int*)(text + 20)), *((int*)(text + 16)));
-		game_do_command(0, 1, 0, *((int*)(text + 24)), GAME_COMMAND_33, *((int*)(text + 32)), *((int*)(text + 28)));
+		park_set_name(text);
 
 		if (s6Info->name[0] == 0)
-			format_string(s6Info->name, RCT2_GLOBAL(0x013573D4, uint16), (void*)0x013573D8);
+			format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 		break;
 	case WIDX_SCENARIO_NAME:
 		strncpy(s6Info->name, text, 64);
@@ -1018,7 +1025,7 @@ static void window_editor_objective_options_main_paint()
 	if (stex != NULL) {
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->park_name;
 	} else {
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
+		RCT2_GLOBAL(0x013CE952 + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
 	}
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);
 	gfx_draw_string_left_clipped(dpi, 3298, (void*)0x013CE952, 0, x, y, width);

@@ -19,12 +19,14 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../management/finance.h"
+#include "../scenario.h"
 #include "../world/scenery.h"
 #include "news_item.h"
 #include "research.h"
-#include "../scenario.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
@@ -262,7 +264,10 @@ void research_update()
 	}
 }
 
-/* rct2: 0x684AC3*/
+/**
+ *
+ *  rct2: 0x00684AC3
+ */
 void sub_684AC3(){
 	rct_research_item* research = gResearchItems;
 	for (; research->entryIndex != -2; research++);
@@ -317,4 +322,39 @@ void sub_684AC3(){
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
+}
+
+void research_set_funding(int amount)
+{
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, amount, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+
+}
+
+void research_set_priority(int activeCategories)
+{
+	game_do_command(0, (1 << 8) | GAME_COMMAND_FLAG_APPLY, 0, activeCategories, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00684A7F
+ */
+void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int setPriorities = (*ebx & (1 << 8)) != 0;
+	int fundingAmount = *edx;
+	int activeCategories = *edx;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RESEARCH * 4;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		if (!setPriorities)
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = fundingAmount;
+		else
+			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8) = activeCategories;
+
+		window_invalidate_by_class(WC_FINANCES);
+		window_invalidate_by_class(WC_RESEARCH);
+	}
+
+	*ebx = 0;
 }
