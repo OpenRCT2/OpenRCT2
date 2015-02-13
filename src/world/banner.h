@@ -23,6 +23,7 @@
 
 #include "../common.h"
 
+#define BANNER_NULL 255
 #define MAX_BANNERS 250
 
 typedef struct {

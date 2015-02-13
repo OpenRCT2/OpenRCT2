@@ -20,9 +20,11 @@
 
 #include "../addresses.h"
 #include "../game.h"
+#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "banner.h"
 #include "climate.h"
 #include "map.h"
 #include "park.h"
@@ -1085,4 +1087,43 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl)
 {
 	return map_can_construct_with_clear_at(x, y, zLow, zHigh, (void*)0xFFFFFFFF, bl);
+}
+
+/**
+ * 
+ *  rct2: 0x006E5935
+ */
+void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
+{
+	int bannerIndex;
+	rct_banner *banner;
+	rct_map_element *mapElement;
+	rct_scenery_entry *sceneryEntry;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+			continue;
+
+		if (mapElement->clearance_height <= z0 || mapElement->base_height >= z1)
+			continue;
+
+		if (direction != (mapElement->type & 3))
+			continue;
+
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.slope];
+		if (sceneryEntry->wall.var_0D != 255) {
+			bannerIndex = mapElement->properties.fence.item[0];
+			banner = &gBanners[bannerIndex];
+			if (banner->type != BANNER_NULL) {
+				window_close_by_number(WC_BANNER, bannerIndex);
+				banner->type = BANNER_NULL;
+				user_string_free(banner->string_idx);
+			}
+		}
+		
+		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->base_height * 8 + 72);
+		map_element_remove(mapElement);
+		mapElement -= 1;
+	} while (!map_element_is_last_for_tile(mapElement++));
 }
