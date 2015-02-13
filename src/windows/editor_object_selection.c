@@ -141,28 +141,52 @@ static void* window_editor_object_selection_events[] = {
 
 static void window_editor_object_set_page(rct_window *w, int page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
+static void window_editor_object_selection_select_default_objects();
+static int window_editor_object_selection_select_object(int flags, rct_object_entry *entry);
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry);
-static void sub_6D33E2();
+static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
 
-static void window_editor_object_selection_select_default_objects()
-{
-	int i;
-	rct_object_entry *entry;
+static rct_object_entry DefaultSelectedObjects[] = {
+	// Objects that are always required
+	{ 0x00000087, { "SCGTREES" }, 0 },		// Scenery: Trees
+	{ 0x00000087, { "SCGSHRUB" }, 0 },		// Scenery: Shrubs and Ornaments
+	{ 0x00000087, { "SCGGARDN" }, 0 },		// Scenery: Gardens
+	{ 0x00000087, { "SCGFENCE" }, 0 },		// Scenery: Fences and Walls
+	{ 0x00000087, { "SCGWALLS" }, 0 },		// Scenery: Walls and Roofs
+	{ 0x00000087, { "SCGPATHX" }, 0 },		// Scenery: Signs and Items for Footpaths
+	{ 0x00000085, { "TARMAC  " }, 0 },		// Footpath: Tarmac
 
-	if (RCT2_GLOBAL(0x00F433F7, uint16) == 0)
-		return;
+	// An initial default selection
+	{ 0x000080FF, { "TWIST1  " }, 0 },		// Ride: Twist
+	{ 0x00008000, { "PTCT1	 " }, 0 },		// Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
+	{ 0x00008000, { "ZLDB	 " }, 0 },		// Ride: Junior Roller Coaster (Ladybird Trains)
+	{ 0x00008000, { "LFB1	 " }, 0 },		// Ride: Log Flume
+	{ 0x00008000, { "VCR	 " }, 0 },		// Ride: Vintage Cars
+	{ 0x00008000, { "MGR1	 " }, 0 },		// Ride: Merry-Go-Round
+	{ 0x00008000, { "TLT1	 " }, 0 },		// Ride: Restroom
+	{ 0x00008000, { "ATM1	 " }, 0 },		// Ride: Cash Machine
+	{ 0x00008000, { "FAID1	 " }, 0 },		// Ride: First Aid Room
+	{ 0x00008000, { "INFOK	 " }, 0 },		// Ride: Information Kiosk
+	{ 0x00008000, { "DRNKS	 " }, 0 },		// Ride: Drinks Stall
+	{ 0x00008000, { "CNDYF	 " }, 0 },		// Ride: Cotten Candy Stall
+	{ 0x00008000, { "BURGB	 " }, 0 },		// Ride: Burger Bar
+	{ 0x00008000, { "BALLN	 " }, 0 },		// Ride: Balloon Stall
+	{ 0x00008000, { "ARRT1	 " }, 0 },		// Ride: Corkscrew Roller Coaster
+	{ 0x00008000, { "RBOAT	 " }, 0 },		// Ride: Rowing Boats
+	{ 0x00008800, { "PKENT1	 " }, 0 },		// Park Entrace: Traditional Park Entrance
+	{ 0x00008900, { "WTRCYAN " }, 0 },		// Water: Natural Water
+	{ 0x00008500, { "TARMACB " }, 0 },		// Footpath: Brown Tarmac Footpath
+	{ 0x00008500, { "PATHSPC " }, 0 },		// Footpath: Space Style Footpath
+	{ 0x00008500, { "PATHDIR " }, 0 },		// Footpath: Dirt Footpath
+	{ 0x00008500, { "PATHCRZ " }, 0 },		// Footpath: Crazy Paving Footpath
+	{ 0x00008500, { "PATHASH " }, 0 },		// Footpath: Ash Footpath
 
-	entry = (rct_object_entry*)0x0098DAE5;
-	for (i = 0; i < 22; i++)
-		RCT2_CALLPROC_X(0x006AB54F, 0, 7, 0, 0, 0, 0, (int)entry);
-
-	// Add snow and ice theme
-	unsigned char myEntry[16] = {
-		0x87, 0x8F, 0x18, 0x0A, 0x53, 0x43, 0x47, 0x53, 0x4E, 0x4F, 0x57, 0x20, 0xBF, 0x74, 0x51, 0x25
-	};
-	RCT2_CALLPROC_X(0x006AB54F, 0, 7, 0, 0, 0, 0, (int)myEntry);
-}
+	// The following are for all random map generation features to work out the box
+	{ 0x00000087, { "SCGJUNGL" }, 0 },		// Jungle Themeing
+	{ 0x00000087, { "SCGSNOW " }, 0 },		// Snow and Ice Themeing
+	{ 0x00000087, { "SCGWATER" }, 0 }		// Water Feature Themeing
+};
 
 /**
  *
@@ -332,13 +356,13 @@ static void window_editor_object_selection_scroll_mousedown()
 	sound_play_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-		if (RCT2_CALLPROC_X(0x6AB54F, 0, 1, 0, 0, 0, 0, (int)installed_entry) & 0x100)
+		if (!window_editor_object_selection_select_object(1, installed_entry))
 			return;
 
 		window_close(w);
 
 		//This function calls window_track_list_open
-		sub_6D33E2();
+		window_editor_object_selection_manage_tracks();
 		return;
 	}
 
@@ -348,12 +372,10 @@ static void window_editor_object_selection_scroll_mousedown()
 		ebx = 7;
 
 	RCT2_GLOBAL(0xF43411, uint8) = 0;
-	if (0x100 & RCT2_CALLPROC_X(0x6AB54F, 0, ebx, 0, 0, 0, 0, (int)installed_entry)) {
-		rct_string_id error_title;
-		if (ebx & 1)
-			error_title = 3176;
-		else
-			error_title = 3177;
+	if (!window_editor_object_selection_select_object(ebx, installed_entry)) {
+		rct_string_id error_title = ebx & 1 ?
+			STR_UNABLE_TO_SELECT_THIS_OBJECT :
+			STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
 		window_error_open(error_title, RCT2_GLOBAL(0x141E9AC, uint16));
 		return;
@@ -362,7 +384,7 @@ static void window_editor_object_selection_scroll_mousedown()
 	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)
 		return;
 
-	window_error_open(3374, 3375);
+	window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
 }
 
 /**
@@ -716,6 +738,30 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 }
 
 /**
+ *
+ *  rct2: 0x006AA7E9
+ */
+static void window_editor_object_selection_select_default_objects()
+{
+	int i;
+
+	if (RCT2_GLOBAL(0x00F433F7, uint16) == 0)
+		return;
+
+	for (i = 0; i < countof(DefaultSelectedObjects); i++)
+		window_editor_object_selection_select_object(7, &DefaultSelectedObjects[i]);
+}
+
+/**
+ *
+ *  rct2: 0x006AB54F
+ */
+static int window_editor_object_selection_select_object(int flags, rct_object_entry *entry)
+{
+	return (RCT2_CALLPROC_X(0x006AB54F, 0, flags, 0, 0, 0, 0, (int)entry) & 0x100) == 0;
+}
+
+/**
  * Takes the y coordinate of the clicked on scroll list
  * and converts this into an object selection.
  * Returns the position in the list.
@@ -748,7 +794,7 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
  * 
  *  rct2: 0x006D33E2
  */
-static void sub_6D33E2()
+static void window_editor_object_selection_manage_tracks()
 {
 	RCT2_GLOBAL(0x1357404, sint32) = -1;
 	RCT2_GLOBAL(0x1357408, sint32) = -1;
