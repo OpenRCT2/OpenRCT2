@@ -84,6 +84,8 @@ static void mapgen_blob(int cx, int cy, int size, int height);
 static void mapgen_smooth_height(int iterations);
 static void mapgen_set_height();
 
+static void mapgen_simplex();
+
 static int _heightSize;
 static uint8 *_height;
 
@@ -166,17 +168,22 @@ void mapgen_generate(mapgen_settings *settings)
 	_height = (uint8*)malloc(_heightSize * _heightSize * sizeof(uint8));
 	memset(_height, 0, _heightSize * _heightSize * sizeof(uint8));
 
-	// Keep overwriting the map with rough cicular blobs of different sizes and heights.
-	// This procedural method can produce intersecting contour like land and lakes.
-	// Large blobs, general shape of map
-	mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 2, 16);
-	// Medium blobs
-	mapgen_blobs(12, _heightSize / 16, _heightSize / 8, 2, 18);
-	// Small blobs, small hills and lakes
-	mapgen_blobs(32, _heightSize / 32, _heightSize / 16, 2, 18);
+	if (1) {
+		mapgen_simplex();
+		mapgen_smooth_height(2 + (rand() % 6));
+	} else {
+		// Keep overwriting the map with rough cicular blobs of different sizes and heights.
+		// This procedural method can produce intersecting contour like land and lakes.
+		// Large blobs, general shape of map
+		mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 4, 16);
+		// Medium blobs
+		mapgen_blobs(12, _heightSize / 16, _heightSize / 8, 4, 18);
+		// Small blobs, small hills and lakes
+		mapgen_blobs(32, _heightSize / 32, _heightSize / 16, 4, 18);
 
-	// Smooth the land so that their aren't cliffs round every blob.
-	mapgen_smooth_height(2);
+		// Smooth the land so that their aren't cliffs round every blob.
+		mapgen_smooth_height(2);
+	}
 
 	// Set the game map to the height map
 	mapgen_set_height();
@@ -186,7 +193,29 @@ void mapgen_generate(mapgen_settings *settings)
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 
 	// Add the water
-	mapgen_set_water_level(6 + (rand() % 4) * 2);
+	int waterLevel = 6 + (rand() % 8) * 2;
+	mapgen_set_water_level(waterLevel);
+
+	// Add sandy beaches
+	int beachTexture = floorTexture;
+	if (settings->floor == -1 && floorTexture == TERRAIN_GRASS) {
+		switch (rand() % 4) {
+		case 0:
+			beachTexture = TERRAIN_SAND;
+			break;
+		case 1:
+			beachTexture = TERRAIN_SAND_LIGHT;
+			break;
+		}
+	}
+	for (y = 1; y < mapSize - 1; y++) {
+		for (x = 1; x < mapSize - 1; x++) {
+			mapElement = map_get_surface_element_at(x, y);
+
+			if (mapElement->base_height < waterLevel + 6)
+				map_element_set_terrain(mapElement, beachTexture);
+		}
+	}
 
 	// Place the trees
 	if (settings->trees != 0)
@@ -290,8 +319,11 @@ static void mapgen_place_trees()
 	}
 
 	// Place trees
+	float treeToLandRatio = (10 + (rand() % 30)) / 100.0f;
+	int numTrees = max(4, (int)(availablePositionsCount * treeToLandRatio));
+
 	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
-	for (i = 0; i < min(availablePositionsCount, 2048 + (rand() % 10000)); i++) {
+	for (i = 0; i < numTrees; i++) {
 		pos = &availablePositions[i];
 
 		type = -1;
@@ -549,9 +581,9 @@ static void mapgen_smooth_height(int iterations)
 	int i, x, y, xx, yy, avg;
 	int arraySize = _heightSize * _heightSize * sizeof(uint8);
 	uint8 *copyHeight = malloc(arraySize);
-	memcpy(copyHeight, _height, arraySize);
 
 	for (i = 0; i < iterations; i++) {
+		memcpy(copyHeight, _height, arraySize);
 		for (y = 1; y < _heightSize - 1; y++) {
 			for (x = 1; x < _heightSize - 1; x++) {
 				avg = 0;
@@ -563,6 +595,8 @@ static void mapgen_smooth_height(int iterations)
 			}
 		}
 	}
+
+	free(copyHeight);
 }
 
 /**
@@ -587,7 +621,7 @@ static void mapgen_set_height()
 			uint8 baseHeight = (q00 + q01 + q10 + q11) / 4;
 			
 			mapElement = map_get_surface_element_at(x, y);
-			mapElement->base_height = baseHeight * 2;
+			mapElement->base_height = max(2, baseHeight * 2);
 			mapElement->clearance_height = mapElement->base_height;
 
 			if (q00 > baseHeight)
@@ -601,3 +635,144 @@ static void mapgen_set_height()
 		}
 	}
 }
+
+#pragma region Noise
+
+/**
+ * Simplex Noise Algorithm with Fractional Brownian Motion
+ * Based on:
+ *   - https://code.google.com/p/simplexnoise/
+ *   - https://code.google.com/p/fractalterraingeneration/wiki/Fractional_Brownian_Motion
+ */
+
+static float generate(float x, float y);
+static int fast_floor(float x);
+static float grad(int hash, float x, float y);
+
+static uint8 perm[512];
+
+static void noise_rand()
+{
+	for (int i = 0; i < countof(perm); i++)
+		perm[i] = rand() & 0xFF;
+}
+
+static float fractal_noise(int x, int y, float frequency, int octaves, float lacunarity, float persistence)
+{
+	float total = 0.0f;
+	float amplitude = persistence;
+	for (int i = 0; i < octaves; i++) {
+		total += generate(x * frequency, y * frequency) * amplitude;
+		frequency *= lacunarity;
+		amplitude *= persistence;
+	}
+	return total;
+}
+
+static float generate(float x, float y)
+{
+	const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
+	const float G2 = 0.211324865f; // G2 = (3.0-Math.sqrt(3.0))/6.0
+
+	float n0, n1, n2; // Noise contributions from the three corners
+
+	// Skew the input space to determine which simplex cell we're in
+	float s = (x + y) * F2; // Hairy factor for 2D
+	float xs = x + s;
+	float ys = y + s;
+	int i = fast_floor(xs);
+	int j = fast_floor(ys);
+
+	float t = (float)(i + j) * G2;
+	float X0 = i - t; // Unskew the cell origin back to (x,y) space
+	float Y0 = j - t;
+	float x0 = x - X0; // The x,y distances from the cell origin
+	float y0 = y - Y0;
+
+	// For the 2D case, the simplex shape is an equilateral triangle.
+	// Determine which simplex we are in.
+	int i1, j1; // Offsets for second (middle) corner of simplex in (i,j) coords
+	if (x0 > y0) { i1 = 1; j1 = 0; } // lower triangle, XY order: (0,0)->(1,0)->(1,1)
+	else { i1 = 0; j1 = 1; }      // upper triangle, YX order: (0,0)->(0,1)->(1,1)
+
+	// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
+	// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
+	// c = (3-sqrt(3))/6
+
+	float x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed coords
+	float y1 = y0 - j1 + G2;
+	float x2 = x0 - 1.0f + 2.0f * G2; // Offsets for last corner in (x,y) unskewed coords
+	float y2 = y0 - 1.0f + 2.0f * G2;
+
+	// Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
+	int ii = i % 256;
+	int jj = j % 256;
+
+	// Calculate the contribution from the three corners
+	float t0 = 0.5f - x0 * x0 - y0 * y0;
+	if (t0 < 0.0f) n0 = 0.0f;
+	else {
+		t0 *= t0;
+		n0 = t0 * t0 * grad(perm[ii + perm[jj]], x0, y0);
+	}
+
+	float t1 = 0.5f - x1 * x1 - y1 * y1;
+	if (t1 < 0.0f) n1 = 0.0f;
+	else {
+		t1 *= t1;
+		n1 = t1 * t1 * grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
+	}
+
+	float t2 = 0.5f - x2 * x2 - y2 * y2;
+	if (t2 < 0.0f) n2 = 0.0f;
+	else {
+		t2 *= t2;
+		n2 = t2 * t2 * grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
+	}
+
+	// Add contributions from each corner to get the final noise value.
+	// The result is scaled to return values in the interval [-1,1].
+	return 40.0f * (n0 + n1 + n2); // TODO: The scale factor is preliminary!
+}
+
+static int fast_floor(float x)
+{
+	return (x > 0) ? ((int)x) : (((int)x) - 1);
+}
+
+static int mod(int x, int m)
+{
+	int a = x % m;
+	return a < 0 ? a + m : a;
+}
+
+static float grad(int hash, float x, float y)
+{
+	int h = hash & 7;      // Convert low 3 bits of hash code
+	float u = h < 4 ? x : y;  // into 8 simple gradient directions,
+	float v = h < 4 ? y : x;  // and compute the dot product with (x,y).
+	return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
+}
+
+static void mapgen_simplex()
+{
+	int x, y;
+
+	float freq = 1.75f * (1.0f / _heightSize);
+	int octaves = 6;
+
+	int low = rand() % 4;
+	int high = 12 + (rand() % (32 - 12));
+
+	noise_rand();
+	for (y = 0; y < _heightSize; y++) {
+		for (x = 0; x < _heightSize; x++) {
+			float noiseValue = clamp(-1.0f, fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), 1.0f);
+			float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
+
+			set_height(x, y, low + (int)(normalisedNoiseValue * high));
+		}
+	}
+}
+
+#pragma endregion

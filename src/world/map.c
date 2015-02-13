@@ -133,7 +133,7 @@ void map_element_set_terrain(rct_map_element *element, int terrain)
 
 	// Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
 	element->properties.surface.terrain &= ~0xE0;
-	element->properties.surface.terrain = (terrain & 7) << 5;
+	element->properties.surface.terrain |= (terrain & 7) << 5;
 }
 
 void map_element_set_terrain_edge(rct_map_element *element, int terrain)
@@ -186,6 +186,7 @@ void map_init(int size)
 		map_element->properties.surface.slope = 0;
 		map_element->properties.surface.grass_length = 1;
 		map_element->properties.surface.ownership = 0;
+		map_element->properties.surface.terrain = 0;
 
 		map_element_set_terrain(map_element, TERRAIN_GRASS);
 		map_element_set_terrain_edge(map_element, TERRAIN_EDGE_ROCK);

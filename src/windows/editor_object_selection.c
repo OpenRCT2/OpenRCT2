@@ -145,6 +145,25 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
 static void sub_6D33E2();
 static void editor_load_selected_objects();
 
+static void window_editor_object_selection_select_default_objects()
+{
+	int i;
+	rct_object_entry *entry;
+
+	if (RCT2_GLOBAL(0x00F433F7, uint16) == 0)
+		return;
+
+	entry = (rct_object_entry*)0x0098DAE5;
+	for (i = 0; i < 22; i++)
+		RCT2_CALLPROC_X(0x006AB54F, 0, 7, 0, 0, 0, 0, (int)entry);
+
+	// Add snow and ice theme
+	unsigned char myEntry[16] = {
+		0x87, 0x8F, 0x18, 0x0A, 0x53, 0x43, 0x47, 0x53, 0x4E, 0x4F, 0x57, 0x20, 0xBF, 0x74, 0x51, 0x25
+	};
+	RCT2_CALLPROC_X(0x006AB54F, 0, 7, 0, 0, 0, 0, (int)myEntry);
+}
+
 /**
  *
  *  rct2: 0x006AA64E
@@ -159,6 +178,10 @@ void window_editor_object_selection_open()
 
 	RCT2_CALLPROC_EBPSAFE(0x006AB211);
 	RCT2_CALLPROC_EBPSAFE(0x006AA770);
+
+	// Not really where its called, but easy way to change default objects for now
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+		window_editor_object_selection_select_default_objects();
 
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300,
