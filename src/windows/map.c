@@ -695,7 +695,7 @@ static void sub_68C990()
 
 	w_map->scrolls[0].h_left = cx;
 	w_map->scrolls[0].v_top = dx;
-	widget_scroll_update_thumbs(w, WIDX_MAP);
+	widget_scroll_update_thumbs(w_map, WIDX_MAP);
 }
 
 /**
