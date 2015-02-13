@@ -703,7 +703,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	// Try and place path
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
-	cost = footpath_place(selectedType, x, y, z, presentType, (1 << 0));
+	cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
 
 	if (cost == MONEY32_UNDEFINED) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 1;
