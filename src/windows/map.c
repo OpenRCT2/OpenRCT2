@@ -690,7 +690,65 @@ static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
 */
 static void window_map_paint_train_overlay(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+	//RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+	//return;
+
+	rct_vehicle *train, *vehicle;
+	uint16 train_index, vehicle_index;
+
+	sint16 left, top, right, bottom;
+	sint16 temp;
+	sint16 color;
+
+	for (train_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); train_index != SPRITE_INDEX_NULL; train_index = train->next) {
+		train = GET_VEHICLE(train_index);
+		for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train) {
+			vehicle = GET_VEHICLE(vehicle_index);
+
+			left = vehicle->x;
+			top = vehicle->y;
+
+			if (left == SPRITE_LOCATION_NULL)
+				continue;
+
+			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+			case 3:
+				temp = left;
+				left = top;
+				top = temp;
+				left = 0x1FFF - left;
+				break;
+			case 2:
+				left = 0x1FFF - left;
+				top = 0x1FFF - top;
+				break;
+			case 1:
+				temp = left;
+				left = top;
+				top = temp;
+				top = 0x1FFF - top;
+				break;
+			case 0:
+				break;
+			}
+
+			left >>= 5;
+			top >>= 5;
+			bottom = top;
+			bottom += left;
+			left = -left;
+			left += top;
+			left += 0xF8;
+			bottom -= 8;
+
+			right = left;
+			top = bottom;
+
+			color = 0xAB;
+
+			gfx_fill_rect(dpi, left, top, right, bottom, color);
+		}
+	}
 }
 
 
