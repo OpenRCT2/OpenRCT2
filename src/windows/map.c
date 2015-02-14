@@ -603,6 +603,99 @@ static void window_map_tooltip()
 
 /**
 *
+*  rct2: 0x0068DADA
+*/
+static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	//RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
+	//return;
+
+	rct_peep *peep;
+	uint16 spriteIndex;
+
+	sint16 left, right, bottom, top;
+	sint16 temp;
+	sint16 color;
+
+	FOR_ALL_PEEPS(spriteIndex, peep) {
+		left = peep->x;
+		top = peep->y;
+
+		if (left == SPRITE_LOCATION_NULL)
+			continue;
+
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+		case 3:
+			temp = left;
+			left = top;
+			top = temp;
+			left = 0x1FFF - left;
+			break;
+		case 2:
+			left = 0x1FFF - left;
+			top = 0x1FFF - top;
+			break;
+		case 1:
+			temp = left;
+			left = top;
+			top = temp;
+			top = 0x1FFF - top;
+			break;
+		case 0:
+			break;
+		}
+		left >>= 5;
+		top >>= 5;
+		bottom = top;
+		bottom += left;
+		left = -left;
+		left += top;
+		left += 0xF8;
+		bottom -= 8;
+
+		right = left;
+		top = bottom;
+
+		color = 0x14;
+
+		if ((peep->var_0C & 0x200) != 0) {
+			if (peep->type == PEEP_TYPE_STAFF) {
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 8) == 0)
+					goto fill_rect;
+				color = 0x8A;
+				left--;
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) != 0)
+					goto fill_rect;
+				color = 0xA;
+			} else {
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 2) == 0)
+					goto fill_rect;
+				color = 0xAC;
+				left--;
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) != 0)
+					goto fill_rect;
+				color = 0x15;
+			}
+		}
+
+	fill_rect:
+		gfx_fill_rect(dpi, left, top, right, bottom, color);
+	}
+
+}
+
+/**
+*
+*  rct2: 0x0068DBC1
+*/
+static void window_map_paint_train_overlay(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+}
+
+
+/**
+*
 *  rct2: 0x0068CF23
 */
 static void window_map_scrollpaint()
@@ -632,9 +725,9 @@ static void window_map_scrollpaint()
 	*g1_element = pushed_g1_element;
 
 	if (w->selected_tab == 0)
-		RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
+		window_map_paint_peep_overlay(w, dpi);
 	else
-		RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+		window_map_paint_train_overlay(w, dpi);
 	
 	RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws the HUD rectangle on the map
 }

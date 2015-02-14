@@ -321,7 +321,7 @@ void window_staff_list_update(rct_window *w)
 				peep->var_0C &= 0xFDFF;
 
 				if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)) {
-					peep->var_0C &= 0x200;
+					peep->var_0C |= 0x200;
 				}
 			}
 		}
