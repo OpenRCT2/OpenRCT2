@@ -38,11 +38,69 @@ int _finished;
 
 static void openrct2_loop();
 
+static void openrct2_copy_files_over(const char *originalDirectory, const char *newDirectory, const char *extension)
+{
+	char *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
+	int fileEnumHandle;
+	file_info fileInfo;
+	
+	if (!platform_ensure_directory_exists(newDirectory)) {
+		log_error("Could not create directory %s.", newDirectory);
+		return;
+	}
+
+	// Create filter path
+	strcpy(filter, originalDirectory);
+	ch = strchr(filter, '*');
+	if (ch != NULL)
+		*ch = 0;
+	strcat(filter, "*");
+	strcat(filter, extension);
+
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		strcpy(newPath, newDirectory);
+		strcat(newPath, fileInfo.path);
+		
+		strcpy(oldPath, originalDirectory);
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		strcat(oldPath, fileInfo.path);
+
+		if (!platform_file_exists(newPath))
+			platform_file_copy(oldPath, newPath);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+}
+
+/**
+ * Copy saved games and landscapes to user directory
+ */
+static void openrct2_copy_original_user_files_over()
+{
+	char path[MAX_PATH];
+
+	platform_get_user_directory(path, "save");
+	openrct2_copy_files_over((char*)RCT2_ADDRESS_SAVED_GAMES_PATH, path, ".sv6");
+
+	platform_get_user_directory(path, "landscape");
+	openrct2_copy_files_over((char*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
+}
+
 /**
  * Launches the game, after command line arguments have been parsed and processed.
  */
 void openrct2_launch()
 {
+	char userPath[MAX_PATH];
+
+	platform_get_user_directory(userPath, NULL);
+	if (!platform_ensure_directory_exists(userPath)) {
+		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
+		return;
+	}
+
 	config_load();
 
 	// TODO add configuration option to allow multiple instances
@@ -58,6 +116,8 @@ void openrct2_launch()
 	language_open(gGeneral_config.language);
 	if (!rct2_init())
 		return;
+
+	openrct2_copy_original_user_files_over();
 
 	Mixer_Init(NULL);
 

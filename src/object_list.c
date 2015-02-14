@@ -87,11 +87,10 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 void object_list_create_hash_table();
 static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* installed_entry, const char* path);
 
-static void get_plugin_path(char *path)
+static void get_plugin_path(char *outPath)
 {
-	char *homePath = platform_get_orct2_homefolder();
-	sprintf(path, "%s%c%s", homePath, platform_get_path_separator(), "plugin.dat");
-	free(homePath);
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "plugin.dat");
 }
 
 static void object_list_sort()

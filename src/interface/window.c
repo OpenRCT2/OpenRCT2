@@ -457,6 +457,15 @@ rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers
 	return (rct_window*)esi;
 }
 
+rct_window *window_create_centred(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
+{
+	int x, y;
+
+	x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width) / 2;
+	y = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height) / 2;
+	return window_create(x, y, width, height, event_handlers, cls, flags);
+}
+
 /**
  * Closes the specified window.
  *  rct2: 0x006ECD4C
@@ -479,6 +488,8 @@ void window_close(rct_window* window)
 	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, (int)window, 0, 0);
 
 	window = window_find_by_number(cls, number);
+	if (window == NULL)
+		return;
 
 	// Remove viewport
 	if (window->viewport != NULL) {

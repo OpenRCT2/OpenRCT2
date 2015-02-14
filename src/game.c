@@ -541,6 +541,9 @@ static int open_load_game_dialog()
  */
 static void load_landscape()
 {
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+	return;
+
 	if (open_landscape_file_dialog() == 0) {
 		gfx_invalidate_screen();
 	} else {
@@ -704,6 +707,9 @@ void sub_69E9A7()
  */
 static void load_game()
 {
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+	return;
+
 	if (open_load_game_dialog() == 0) {
 		gfx_invalidate_screen();
 	} else {
@@ -758,6 +764,9 @@ static int show_save_game_dialog(char *resultPath)
 
 char save_game()
 {
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+	return 0;
+
 	char path[256];
 
 	if (!show_save_game_dialog(path)) {

@@ -398,7 +398,9 @@ enum {
 	WC_RESEARCH = 111,
 	WC_VIEWPORT = 112,
 	WC_TEXTINPUT = 113,
-	WC_MAPGEN = 114
+	WC_MAPGEN = 114,
+	WC_LOADSAVE = 115,
+	WC_LOADSAVE_OVERWRITE_PROMPT = 116
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -416,6 +418,15 @@ typedef enum {
 	BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
 } BTM_TOOLBAR_DIRTY_FLAGS;
 
+enum {
+	LOADSAVETYPE_LOAD = 0 << 0,
+	LOADSAVETYPE_SAVE = 1 << 0,
+
+	LOADSAVETYPE_GAME = 0 << 1,
+	LOADSAVETYPE_LANDSCAPE = 1 << 1,
+	LOADSAVETYPE_SCENARIO = 2 << 1
+};
+
 
 // rct2: 0x01420078
 extern rct_window* g_window_list;
@@ -427,6 +438,7 @@ void window_dispatch_update_all();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create_centred(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
@@ -538,6 +550,7 @@ void window_track_manage_open();
 void window_viewport_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 rct_window *window_mapgen_open();
+rct_window *window_loadsave_open(int type);
 
 void window_editor_main_open();
 void window_editor_bottom_toolbar_open();

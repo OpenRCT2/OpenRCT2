@@ -234,11 +234,10 @@ uint32* sub_6AB49A(rct_object_entry* entry){
 	return (((uint32*)object_get_next(object_list_entry)) - 1);
 }
 
-static void get_track_idx_path(char *path)
+static void get_track_idx_path(char *outPath)
 {
-	char *homePath = platform_get_orct2_homefolder();
-	sprintf(path, "%s%c%s", homePath, platform_get_path_separator(), "tracks.idx");
-	free(homePath);
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "tracks.idx");
 }
 
 static void track_list_query_directory(int *outTotalFiles){

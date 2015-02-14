@@ -192,6 +192,11 @@ void platform_enumerate_files_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_file_copy(const char *srcPath, const char *dstPath)
+{
+	return CopyFileA(srcPath, dstPath, TRUE);
+}
+
 int platform_file_move(const char *srcPath, const char *dstPath)
 {
 	return MoveFileA(srcPath, dstPath);
@@ -235,21 +240,21 @@ unsigned int platform_get_ticks()
 	return GetTickCount();
 }
 
-char* platform_get_orct2_homefolder()
+void platform_get_user_directory(char *outPath, const char *subDirectory)
 {
-	char *path = NULL;
-	path = malloc(sizeof(char) * MAX_PATH);
-	if (path == NULL){
-		log_fatal("Error allocating memory!");
-		exit(EXIT_FAILURE);
+	char seperator[2] = { platform_get_path_separator(), 0 };
+
+	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
+		strcat(outPath, seperator);
+		strcat(outPath, "OpenRCT2");
+		strcat(outPath, seperator);
+		if (subDirectory != NULL && subDirectory[0] != 0) {
+			strcat(outPath, subDirectory);
+			strcat(outPath, seperator);
+		}
+	} else {
+		outPath[0] = 0;
 	}
-
-	path[0] = '\0';
-
-	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, path)))
-		strcat(path, "\\OpenRCT2");
-
-	return path;
 }
 
 void platform_show_messagebox(char *message)

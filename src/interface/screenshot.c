@@ -70,10 +70,10 @@ void screenshot_check()
 
 static int screenshot_get_next_path(char *path, int format)
 {
-	char *screenshotPath = platform_get_orct2_homesubfolder("screenshot");
-	if (!platform_ensure_directory_exists(screenshotPath)) {
-		free(screenshotPath);
+	char screenshotPath[MAX_PATH];
 
+	platform_get_user_directory(screenshotPath, "screenshot");
+	if (!platform_ensure_directory_exists(screenshotPath)) {
 		fprintf(stderr, "Unable to save screenshots in OpenRCT2 screenshot directory.\n");
 		return -1;
 	}
@@ -83,14 +83,14 @@ static int screenshot_get_next_path(char *path, int format)
 		RCT2_GLOBAL(0x013CE952, uint16) = i;
 
 		// Glue together path and filename
-		sprintf(path, "%s%cSCR%d%s", screenshotPath, platform_get_path_separator(), i, _screenshot_format_extension[format]);
+		sprintf(path, "%sSCR%d%s", screenshotPath, i, _screenshot_format_extension[format]);
 
 		if (!platform_file_exists(path)) {
 			return i;
 		}
 	}
 
-	free(screenshotPath);
+	fprintf(stderr, "You have too many saved screenshots.\n");
 	return -1;
 }
 

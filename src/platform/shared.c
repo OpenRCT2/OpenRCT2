@@ -569,16 +569,6 @@ void platform_set_fullscreen_mode(int mode)
 	}
 }
 
-char *platform_get_orct2_homesubfolder(const char *subFolder)
-{
-	char seperator = platform_get_path_separator();
-
-	char *path = platform_get_orct2_homefolder();
-	strcat(path, &seperator);
-	strcat(path, subFolder);
-	return path;
-}
-
 /**
  *  This is not quite the same as the below function as we don't want to
  *  derfererence the cursor before the function.

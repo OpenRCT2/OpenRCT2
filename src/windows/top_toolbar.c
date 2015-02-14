@@ -396,7 +396,8 @@ static void window_top_toolbar_dropdown()
 			break;
 		case DDIDX_SAVE_GAME:
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				RCT2_CALLPROC_EBPSAFE(0x0066FE2A);
+				// RCT2_CALLPROC_EBPSAFE(0x0066FE2A);
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
 			} else {
 				tool_cancel();
 				save_game();

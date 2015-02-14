@@ -330,7 +330,6 @@
     <ClCompile Include="..\src\openrct2.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -359,7 +358,7 @@
     <ClCompile Include="..\src\windows\sign.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\ride\station.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -424,6 +423,9 @@
     </ClCompile>
     <ClCompile Include="..\src\cursors.c">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\loadsave.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

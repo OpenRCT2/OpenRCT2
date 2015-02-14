@@ -301,6 +301,12 @@ void config_apply_to_old_addresses()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
 }
 
+static void config_get_path(char *outPath)
+{
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "config.ini");
+}
+
 /**
  * Initialise the settings.
  * It checks if the OpenRCT2 folder exists and creates it if it does not
@@ -308,44 +314,35 @@ void config_apply_to_old_addresses()
  */
 void config_load()
 {	
-	char *path = platform_get_orct2_homefolder();
-	FILE* fp;
+	FILE *fp;
+	char configPath[MAX_PATH];
+
+	config_get_path(configPath);
 
 	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
 
-	if (strcmp(path, "") != 0){
-		if (!platform_ensure_directory_exists(path)) {
-			config_error("Could not create config file (do you have write access to your documents folder?)");
+	fp = fopen(configPath, "r");
+	if (fp == NULL) {
+		config_create_default(configPath);
+		fp = fopen(configPath, "r");
+		if (fp == NULL) {
+			config_error("Could not create config file.");
 			return;
 		}
-		
-		sprintf(path, "%s%c%s", path, platform_get_path_separator(), "config.ini");
-		
-		fp = fopen(path, "r");
-		if (!fp) {
-			config_create_default(path);
-			fp = fopen(path, "r");
-			if (!fp)
-				config_error("Could not create config file");
-		}
-
-		config_parse_settings(fp);
-
-		fclose(fp);
 	}
 
-	free(path);
+	config_parse_settings(fp);
+	fclose(fp);
 
 	config_apply_to_old_addresses();
 }
 
 void config_save()
 {
-	char *configIniPath = platform_get_orct2_homefolder();;
+	char configPath[MAX_PATH];
 
-	sprintf(configIniPath, "%s%c%s", configIniPath, platform_get_path_separator(), "config.ini");
-	config_save_ini(configIniPath);
-
+	config_get_path(configPath);
+	config_save_ini(configPath);
 	config_apply_to_old_addresses();
 }
 

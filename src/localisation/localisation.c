@@ -590,7 +590,9 @@ void format_string_part_from_raw(char **dest, const char *src, char **args)
 
 void format_string_part(char **dest, rct_string_id format, char **args)
 {
-	if (format < 0x8000) {
+	if (format == (rct_string_id)STR_NONE) {
+		**dest = 0;
+	} else if (format < 0x8000) {
 		// Language string
 		format_string_part_from_raw(dest, language_get_string(format), args);
 	} else if (format < 0x9000) {
