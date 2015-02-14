@@ -44,10 +44,10 @@ enum {
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_NONE,		STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	2,				STR_NONE },
+	{ WWT_FRAME,			0,	0,		WW - 1,		0,			WH - 1,		STR_NONE,		STR_NONE },
+	{ WWT_CAPTION,			0,	1,		WW - 2,		1,			14,			STR_NONE,		STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
+	{ WWT_SCROLL,			0,	4,		WW - 5,		18,			WH - 18,	2,				STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -110,6 +110,7 @@ loadsave_list_item *_listItems = NULL;
 char _directory[MAX_PATH];
 char _extension[32];
 int _loadsaveType;
+int _type;
 
 static void window_loadsave_populate_list(int includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
@@ -121,6 +122,7 @@ rct_window *window_loadsave_open(int type)
 	char path[MAX_PATH], *ch;
 	int includeNewItem;
 	rct_window* w;
+	_type = type;
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
 	if (w == NULL) {
@@ -132,9 +134,6 @@ rct_window *window_loadsave_open(int type)
 		w->colours[1] = 7;
 		w->colours[2] = 7;
 	}
-
-	w->no_list_items = 0;
-	w->selected_list_item = -1;
 
 	_loadsaveType = type;
 	switch (type) {
@@ -155,6 +154,9 @@ rct_window *window_loadsave_open(int type)
 		break;
 	}
 
+	w->no_list_items = 0;
+	w->selected_list_item = -1;
+
 	includeNewItem = (type & 1) == LOADSAVETYPE_SAVE;
 	switch (type & 6) {
 	case LOADSAVETYPE_GAME:
@@ -165,7 +167,7 @@ rct_window *window_loadsave_open(int type)
 			return NULL;
 		}
 
-		window_loadsave_populate_list(includeNewItem, path, ".sv6");
+		window_loadsave_populate_list(includeNewItem, 1, path, ".sv6");
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
 		platform_get_user_directory(path, "landscape");
@@ -175,7 +177,7 @@ rct_window *window_loadsave_open(int type)
 			return NULL;
 		}
 
-		window_loadsave_populate_list(includeNewItem, path, ".sc6");
+		window_loadsave_populate_list(includeNewItem, 1, path, ".sc6");
 		break;
 	case LOADSAVETYPE_SCENARIO:
 		/*
@@ -183,9 +185,9 @@ rct_window *window_loadsave_open(int type)
 
 		platform_get_user_directory(path, "scenario");
 		if (!platform_ensure_directory_exists(path)) {
-			fprintf(stderr, "Unable to create scenarios directory.");
-			window_close(w);
-			return NULL;
+		fprintf(stderr, "Unable to create scenarios directory.");
+		window_close(w);
+		return NULL;
 		}
 		*/
 
@@ -194,10 +196,11 @@ rct_window *window_loadsave_open(int type)
 		if (ch != NULL)
 			*ch = 0;
 
-		window_loadsave_populate_list(includeNewItem, path, ".sc6");
+		window_loadsave_populate_list(includeNewItem, 1, path, ".sc6");
 		break;
 	}
 	w->no_list_items = _listItemsCount;
+	
 	return w;
 }
 
@@ -366,13 +369,13 @@ static void window_loadsave_scrollpaint()
 	}
 }
 
-static void window_loadsave_populate_list(int includeNewItem, const char *directory, const char *extension)
+static void window_loadsave_populate_list(int includeNewItem, int browsable, const char *directory, const char *extension)
 {
 	int i, listItemCapacity, fileEnumHandle;
 	file_info fileInfo;
 	loadsave_list_item *listItem;
 	const char *src;
-	char *dst, filter[MAX_PATH];
+	char *dst, filter[MAX_PATH], subDir[MAX_PATH];
 
 	strncpy(_directory, directory, sizeof(_directory));
 	strncpy(_extension, extension, sizeof(_extension));
@@ -388,12 +391,51 @@ static void window_loadsave_populate_list(int includeNewItem, const char *direct
 	_listItems = (loadsave_list_item*)malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
 
+	if (browsable) {
+		int lastSlash = MAX_PATH;
+		for (int index = MAX_PATH - 3; index >= 0; index--){
+			if (directory[index] == '\\'){
+				if (lastSlash != MAX_PATH){
+					// The last slash has been changed before, we're now one up
+					lastSlash = index;
+					break;
+				} else {
+					// The last slash, after the whole path
+					lastSlash = index;
+				}
+			}
+		}
+		listItem = &_listItems[_listItemsCount];
+		strncpy(listItem->name, "(up) ", sizeof(listItem->name));
+		strncat(listItem->name, directory, sizeof(listItem->name) - strlen(listItem->name));
+		memset(listItem->path, '\0', MAX_PATH);
+		strncpy(listItem->path, directory, lastSlash + 1);
+		_listItemsCount++;
+	}
+
 	if (includeNewItem) {
 		listItem = &_listItems[_listItemsCount];
 		strncpy(listItem->name, "(new file)", sizeof(listItem->name));
 		listItem->path[0] = 0;
 		_listItemsCount++;
 	}
+
+	fileEnumHandle = platform_enumerate_directories_begin(directory);
+	while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
+		if (listItemCapacity <= _listItemsCount) {
+			listItemCapacity *= 2;
+			_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+		}
+
+		listItem = &_listItems[_listItemsCount];
+		memset(listItem->path, '\0', MAX_PATH);
+		strncpy(listItem->path, directory, MAX_PATH);
+		strncat(listItem->path, subDir, MAX_PATH);
+		strncpy(listItem->name, subDir, sizeof(listItem->name));
+
+		_listItemsCount++;
+	}
+	platform_enumerate_files_end(fileEnumHandle);
 
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
@@ -422,46 +464,66 @@ static void window_loadsave_populate_list(int includeNewItem, const char *direct
 
 static void window_loadsave_select(rct_window *w, const char *path)
 {
-	switch (_loadsaveType) {
-	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-		if (game_load_save(path)) {
-			window_close(w);
-			gfx_invalidate_screen();
-			rct2_endupdate();
-		} else {
-			// 1050, not the best message...
-			window_error_open(STR_LOAD_GAME, 1050);
-		}
-		break;
-	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-		if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 1 : 0)) {
-			window_close(w);
+	if (path[strlen(path) - 1] == '\\'){
 
-			game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
-			gfx_invalidate_screen();
-		} else {
-			window_error_open(STR_SAVE_GAME, 1047);
-		}
-		break;
-	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-		editor_load_landscape(path);
-		if (1) {
-			gfx_invalidate_screen();
-			rct2_endupdate();
-		} else {
-			// 1050, not the best message...
-			window_error_open(STR_LOAD_LANDSCAPE, 1050);
-		}
-		break;
-	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-		if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 3 : 2)) {
-			window_close(w);
-			gfx_invalidate_screen();
-		} else {
-			window_error_open(STR_SAVE_LANDSCAPE, 1049);
-		}
-		break;
-	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
+		int includeNewItem;
+
+		w->no_list_items = 0;
+		w->selected_list_item = -1;
+
+		includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
+
+		char directory[MAX_PATH];
+		strncpy(directory, path, sizeof(directory));
+
+		window_loadsave_populate_list(includeNewItem, 1, directory, _extension);
+
+		w->no_list_items = _listItemsCount;
+	} else {
+		switch (_loadsaveType) {
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
+			if (game_load_save(path)) {
+				window_close(w);
+				gfx_invalidate_screen();
+				rct2_endupdate();
+			}
+			else {
+				// 1050, not the best message...
+				window_error_open(STR_LOAD_GAME, 1050);
+			}
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
+			if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 1 : 0)) {
+				window_close(w);
+
+				game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
+				gfx_invalidate_screen();
+			}
+			else {
+				window_error_open(STR_SAVE_GAME, 1047);
+			}
+			break;
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
+			editor_load_landscape(path);
+			if (1) {
+				gfx_invalidate_screen();
+				rct2_endupdate();
+			}
+			else {
+				// 1050, not the best message...
+				window_error_open(STR_LOAD_LANDSCAPE, 1050);
+			}
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
+			if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 3 : 2)) {
+				window_close(w);
+				gfx_invalidate_screen();
+			}
+			else {
+				window_error_open(STR_SAVE_LANDSCAPE, 1049);
+			}
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 		{
 			rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 			int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
@@ -473,12 +535,14 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (success) {
 				window_close(w);
 				title_load();
-			} else {
+			}
+			else {
 				window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 				s6Info->var_000 = 4;
 			}
 		}
 		break;
+		}
 	}
 }
 
