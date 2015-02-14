@@ -603,9 +603,45 @@ static void window_map_tooltip()
 
 /**
 *
+*  part of window_map_paint_peep_overlay and window_map_paint_train_overlay
+*/
+static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
+{
+	sint16 x = *left, y = *top;
+	sint16 temp;
+
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	case 3:
+		temp = x;
+		x = y;
+		y = temp;
+		x = 0x1FFF - x;
+		break;
+	case 2:
+		x = 0x1FFF - x;
+		y = 0x1FFF - y;
+		break;
+	case 1:
+		temp = x;
+		x = y;
+		y = temp;
+		y = 0x1FFF - y;
+		break;
+	case 0:
+		break;
+	}
+	x >>= 5;
+	y >>= 5;
+
+	*left = -x + y + 0xF8;
+	*top = x + y - 8;
+}
+
+/**
+*
 *  rct2: 0x0068DADA
 */
-static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 {
 	//RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
 	//return;
@@ -614,7 +650,6 @@ static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
 	uint16 spriteIndex;
 
 	sint16 left, right, bottom, top;
-	sint16 temp;
 	sint16 color;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -624,37 +659,10 @@ static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
 		if (left == SPRITE_LOCATION_NULL)
 			continue;
 
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-		case 3:
-			temp = left;
-			left = top;
-			top = temp;
-			left = 0x1FFF - left;
-			break;
-		case 2:
-			left = 0x1FFF - left;
-			top = 0x1FFF - top;
-			break;
-		case 1:
-			temp = left;
-			left = top;
-			top = temp;
-			top = 0x1FFF - top;
-			break;
-		case 0:
-			break;
-		}
-		left >>= 5;
-		top >>= 5;
-		bottom = top;
-		bottom += left;
-		left = -left;
-		left += top;
-		left += 0xF8;
-		bottom -= 8;
+		window_map_transform_to_map_coords(&left, &top);
 
 		right = left;
-		top = bottom;
+		bottom = top;
 
 		color = 0x14;
 
@@ -677,18 +685,16 @@ static void window_map_paint_peep_overlay(rct_window *w, rct_drawpixelinfo *dpi)
 				color = 0x15;
 			}
 		}
-
 	fill_rect:
 		gfx_fill_rect(dpi, left, top, right, bottom, color);
 	}
-
 }
 
 /**
 *
 *  rct2: 0x0068DBC1
 */
-static void window_map_paint_train_overlay(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 {
 	//RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
 	//return;
@@ -697,8 +703,6 @@ static void window_map_paint_train_overlay(rct_window *w, rct_drawpixelinfo *dpi
 	uint16 train_index, vehicle_index;
 
 	sint16 left, top, right, bottom;
-	sint16 temp;
-	sint16 color;
 
 	for (train_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); train_index != SPRITE_INDEX_NULL; train_index = train->next) {
 		train = GET_VEHICLE(train_index);
@@ -711,46 +715,15 @@ static void window_map_paint_train_overlay(rct_window *w, rct_drawpixelinfo *dpi
 			if (left == SPRITE_LOCATION_NULL)
 				continue;
 
-			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-			case 3:
-				temp = left;
-				left = top;
-				top = temp;
-				left = 0x1FFF - left;
-				break;
-			case 2:
-				left = 0x1FFF - left;
-				top = 0x1FFF - top;
-				break;
-			case 1:
-				temp = left;
-				left = top;
-				top = temp;
-				top = 0x1FFF - top;
-				break;
-			case 0:
-				break;
-			}
-
-			left >>= 5;
-			top >>= 5;
-			bottom = top;
-			bottom += left;
-			left = -left;
-			left += top;
-			left += 0xF8;
-			bottom -= 8;
+			window_map_transform_to_map_coords(&left, &top);
 
 			right = left;
-			top = bottom;
+			bottom = top;
 
-			color = 0xAB;
-
-			gfx_fill_rect(dpi, left, top, right, bottom, color);
+			gfx_fill_rect(dpi, left, top, right, bottom, 0xAB);
 		}
 	}
 }
-
 
 /**
 *
@@ -783,9 +756,9 @@ static void window_map_scrollpaint()
 	*g1_element = pushed_g1_element;
 
 	if (w->selected_tab == 0)
-		window_map_paint_peep_overlay(w, dpi);
+		window_map_paint_peep_overlay(dpi);
 	else
-		window_map_paint_train_overlay(w, dpi);
+		window_map_paint_train_overlay(dpi);
 	
 	RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws the HUD rectangle on the map
 }
