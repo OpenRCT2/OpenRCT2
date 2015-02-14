@@ -89,9 +89,7 @@ void window_about_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 200,
-		max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 165),
+	window = window_create_centred(
 		400,
 		330,
 		(uint32*)window_about_events,

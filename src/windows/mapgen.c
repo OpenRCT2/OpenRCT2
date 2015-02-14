@@ -264,9 +264,7 @@ rct_window *window_mapgen_open()
 
 	w = window_bring_to_front_by_class(WC_MAPGEN);
 	if (w == NULL) {
-		w = window_create(
-			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 300) / 2, 
-			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 200) / 2,
+		w = window_create_centred(
 			300,
 			200,
 			window_mapgen_page_events[0],

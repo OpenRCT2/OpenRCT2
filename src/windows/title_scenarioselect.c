@@ -111,9 +111,7 @@ void window_scenarioselect_open()
 	// Load scenario list
 	scenario_load_list();
 
-	window = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - 305,
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - 167),
+	window = window_create_centred(
 		610,
 		334,
 		(uint32*)window_scenarioselect_events,

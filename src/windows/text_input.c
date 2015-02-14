@@ -130,9 +130,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	int height = no_lines * 10 + WH;
 
 	// Window will be in the center of the screen
-	rct_window* w = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - WW / 2,
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - height / 2,
+	rct_window* w = window_create_centred(
 		WW, 
 		height,
 		(uint32*)window_text_input_events, 

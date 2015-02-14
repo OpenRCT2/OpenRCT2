@@ -339,9 +339,7 @@ void window_editor_scenario_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 280) / 2,
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 148) / 2),
+	w = window_create_centred(
 		280,
 		148,
 		window_editor_scenario_options_page_events[0],

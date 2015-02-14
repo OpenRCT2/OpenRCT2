@@ -415,9 +415,7 @@ void window_editor_inventions_list_open()
 
 	sub_685901();
 
-	w = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 600) / 2,
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 400) / 2),
+	w = window_create_centred(
 		600,
 		400,
 		(uint32*)window_editor_inventions_list_events,

@@ -150,9 +150,7 @@ void window_track_manage_open()
 
 	window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
-	w = window_create(
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 250) / 2),
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 44) / 2,
+	w = window_create_centred(
 		250,
 		44,
 		(uint32*)window_track_manage_events,

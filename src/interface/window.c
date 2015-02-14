@@ -462,7 +462,7 @@ rct_window *window_create_centred(int width, int height, uint32 *event_handlers,
 	int x, y;
 
 	x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width) / 2;
-	y = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height) / 2;
+	y = max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 

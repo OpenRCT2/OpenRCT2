@@ -207,9 +207,7 @@ void window_editor_object_selection_open()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_editor_object_selection_select_default_objects();
 
-	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300,
-		max(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200, 28),
+	window = window_create_centred(
 		600,
 		400,
 		(uint32*)window_editor_object_selection_events,

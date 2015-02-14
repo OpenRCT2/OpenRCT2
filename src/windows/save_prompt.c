@@ -109,7 +109,7 @@ static void* window_save_prompt_events[] = {
  */
 void window_save_prompt_open()
 {
-	int stringId, x, y;
+	int stringId, width, height;
 	rct_window* window;
 	unsigned short prompt_mode;
 	rct_widget *widgets;
@@ -135,8 +135,8 @@ void window_save_prompt_open()
 			(1 << WQIDX_CLOSE) |
 			(1 << WQIDX_OK) |
 			(1 << WQIDX_CANCEL);
-		x = 177;
-		y = 34;
+		width = 177;
+		height = 34;
 	} else {
 		widgets = window_save_prompt_widgets;
 		enabled_widgets =
@@ -144,19 +144,17 @@ void window_save_prompt_open()
 			(1 << WIDX_SAVE) |
 			(1 << WIDX_DONT_SAVE) |
 			(1 << WIDX_CANCEL);
-		x = 260;
-		y = 50;
+		width = 260;
+		height = 50;
 	}
 
-	window = window_create(
-			(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2) - x / 2,
-			max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2) - y / 2),
-			x,
-			y,
-			(uint32*)window_save_prompt_events,
-			WC_SAVE_PROMPT,
-			WF_TRANSPARENT | WF_STICK_TO_FRONT
-			);
+	window = window_create_centred(
+		width,
+		height,
+		(uint32*)window_save_prompt_events,
+		WC_SAVE_PROMPT,
+		WF_TRANSPARENT | WF_STICK_TO_FRONT
+	);
 
 	window->widgets = widgets;
 	window->enabled_widgets = enabled_widgets;

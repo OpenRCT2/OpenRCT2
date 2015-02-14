@@ -88,9 +88,7 @@ void window_music_credits_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 255,
-		max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 157),
+	window = window_create_centred(
 		510,
 		314,
 		(uint32*)window_music_credits_events,

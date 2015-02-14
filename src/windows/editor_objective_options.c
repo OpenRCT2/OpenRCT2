@@ -254,9 +254,7 @@ void window_editor_objective_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 450) / 2,
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 228) / 2),
+	w = window_create_centred(
 		450,
 		228,
 		(uint32*)window_objective_options_main_events,

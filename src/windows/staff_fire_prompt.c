@@ -91,13 +91,7 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 		return;
 	}
 
-	// Find center of the screen.
-	int screen_height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	int screen_width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int x = screen_width / 2 - WW / 2;
-	int y = screen_height / 2 - WH / 2;
-
-	rct_window* w = window_create(x, y, WW, WH, (uint32*)0x992C3C, 0x1A, 0);
+	rct_window* w = window_create_centred(WW, WH, (uint32*)0x992C3C, 0x1A, 0);
 	w->widgets = window_staff_fire_widgets;
 	w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
