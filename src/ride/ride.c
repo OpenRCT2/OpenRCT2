@@ -2751,7 +2751,7 @@ void ride_music_update_final()
  * 
  *  rct2: 0x006B4CC1
  */
-int ride_mode_check_valid_stations(rct_ride *ride)
+int ride_mode_check_valid_station_numbers(rct_ride *ride)
 {
 	uint8 no_stations = 0;
 	for (uint8 station_index = 0; station_index < 4; ++station_index){
@@ -2781,6 +2781,33 @@ int ride_mode_check_valid_stations(rct_ride *ride)
 	return 1;
 }
 
+/* returns stationIndex of first station on success
+ * -1 on failure.
+ */
+int ride_mode_check_station_present(rct_ride* ride){
+	int stationIndex = -1;
+	for (int i = 0; i < 4; i++) {
+		if (ride->station_starts[i] != 0xFFFF) {
+			stationIndex = i;
+			break;
+		}
+	}
+
+	if (stationIndex == -1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x8000)
+			return -1;
+
+		if (ride->type == RIDE_TYPE_MAZE)
+			return -1;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_REQUIRES_A_STATION_PLATFORM;
+		return -1;
+	}
+
+	return stationIndex;
+}
+
 /**
  * 
  *  rct2: 0x006B5872
@@ -2799,21 +2826,19 @@ int ride_check_for_entrance_exit(int rideIndex)
 			continue;
 
 		if (ride->entrances[i] != 0xFFFF) {
-			entrance = 2;
+			entrance = 1;
 		}
-		else if (ride->exits[i] != 0xFFFF) {
-			exit = 2;
+		
+		if (ride->exits[i] != 0xFFFF) {
+			exit = 1;
 		}
-		else
-
+	
 		// If station start and no entrance/exit
-		if (entrance == 1 && exit == 1){
+		// Sets same error message as no entrance
+		if (ride->exits[i] == 0xFFFF && ride->entrances[i] == 0xFFFF){
 			entrance = 0;
 			break;
 		}
-
-		if (entrance) entrance = 1;
-		if (exit) exit = 1;
 	}
 
 	if (entrance == 0){
@@ -2907,8 +2932,8 @@ int ride_check_track_suitability_a(rct_xy_element *input, rct_xy_element *output
 	ecx = input->y;
 	esi = (int)input->element;
 	result = RCT2_CALLFUNC_X(0x006CB149, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = eax;
-	output->y = ecx;
+	output->x = (uint16)eax;
+	output->y = (uint16)ecx;
 	output->element = (rct_map_element*)esi;
 
 	return (result & 0x100) != 0;
@@ -2926,8 +2951,8 @@ int ride_check_track_suitability_b(rct_xy_element *input, rct_xy_element *output
 	ecx = input->y;
 	esi = (int)input->element;
 	result = RCT2_CALLFUNC_X(0x006CB1D3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = eax;
-	output->y = ecx;
+	output->x = (uint16)eax;
+	output->y = (uint16)ecx;
 	output->element = (rct_map_element*)esi;
 
 	return (result & 0x100) != 0;
@@ -2941,12 +2966,17 @@ int ride_check_station_length(rct_xy_element *input, rct_xy_element *output)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp, result;
 
+	// This function has a bug. If the station length is too short and it is
+	// the last station of a ride it will return a pointer to the map_element
+	// where the station piece should go. Instead it should pass the map_element
+	// of the last good station piece. This can cause null pointer dereferences
+	// and cause the map to move to the top left hand corner.
 	eax = input->x;
 	ecx = input->y;
 	esi = (int)input->element;
 	result = RCT2_CALLFUNC_X(0x006CB25D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = eax;
-	output->y = ecx;
+	output->x = (uint16)eax;
+	output->y = (uint16)ecx;
 	output->element = (rct_map_element*)esi;
 
 	return (result & 0x100) != 0;
@@ -2964,8 +2994,8 @@ int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *o
 	ecx = input->y;
 	esi = (int)input->element;
 	result = RCT2_CALLFUNC_X(0x006CB2DA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = eax;
-	output->y = ecx;
+	output->x = (uint16)eax;
+	output->y = (uint16)ecx;
 	output->element = (rct_map_element*)esi;
 
 	return (result & 0x100) != 0;
@@ -3146,14 +3176,18 @@ rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
  */
 int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 {
-	int i, stationIndex;
+	int stationIndex;
 	rct_ride *ride;
 	rct_xy_element trackElement, problematicTrackElement;
 
 	ride = GET_RIDE(rideIndex);
 
 	window_close_by_class(WC_RIDE_CONSTRUCTION);
-	if (!ride_mode_check_valid_stations(ride))
+
+	stationIndex = ride_mode_check_station_present(ride);
+	if (stationIndex == -1)return 0;
+
+	if (!ride_mode_check_valid_station_numbers(ride))
 		return 0;
 
 	if (!ride_check_for_entrance_exit(rideIndex)) {
@@ -3165,30 +3199,10 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		sub_6B5952(rideIndex);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
 	}
-
-	stationIndex = -1;
-	for (i = 0; i < 4; i++) {
-		if (ride->station_starts[i] != 0xFFFF) {
-			stationIndex = i;
-			break;
-		}
-	}
-
-	if (stationIndex == -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x8000)
-			return 0;
-
-		if (ride->type == RIDE_TYPE_MAZE)
-			return 0;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_REQUIRES_A_STATION_PLATFORM;
-		return 0;
-	}
 	
 	// z = ride->station_heights[i] * 8;
-	trackElement.x = (ride->station_starts[i] & 0xFF) * 32;
-	trackElement.y = (ride->station_starts[i] >> 8) * 32;
+	trackElement.x = (ride->station_starts[stationIndex] & 0xFF) * 32;
+	trackElement.y = (ride->station_starts[stationIndex] >> 8) * 32;
 	trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
 	if (trackElement.element == NULL) {
 		// Maze is strange, station start is 0... investigation required
@@ -3246,7 +3260,13 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
 		if (ride_check_station_length(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+
+			// This is to prevent a bug in the check_station_length function
+			// remove when check_station_length is reveresed and fixed. Prevents
+			// null dereference. Does not prevent moving screen to top left corner.
+			if (map_element_get_type(problematicTrackElement.element) != MAP_ELEMENT_TYPE_TRACK)
+				loc_6B528A(&trackElement);
+			else loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
