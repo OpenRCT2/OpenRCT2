@@ -2688,13 +2688,13 @@ STR_2686    :???
 STR_2687    :???
 STR_2688    :???
 STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2690    :Kaartgenerator
+STR_2691    :{WINDOW_COLOUR_2}Basishoogte:
+STR_2692    :{WINDOW_COLOUR_2}Waterniveau:
+STR_2693    :{WINDOW_COLOUR_2}Terrein:
+STR_2694    :Genereren
+STR_2695    :Willekeurig terrein
+STR_2696    :Bomen plaatsen
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
