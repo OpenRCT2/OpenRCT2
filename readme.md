@@ -59,9 +59,9 @@ A third-party offers [downloadable precompiled builds](https://openrct2.com/down
 
 ## 2.1 Prerequisites
 ### Windows:
-- Windows XP / Vista / 7 / 8
+- Windows XP / Vista / 7 / 8 / 10
 - RollerCoaster Tycoon 2
-- Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
+- Visual Studio 2013 (Professional / [Community](http://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) / [Express for Windows Desktop](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop))
 - [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
 ### Max OS X:
