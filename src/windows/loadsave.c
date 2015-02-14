@@ -39,15 +39,15 @@ enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
-	WIDX_SCROLL
+	WIDX_SCROLL,
 };
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW - 1,		0,			WH - 1,		STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,		1,			14,			STR_NONE,		STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,			0,	4,		WW - 5,		18,			WH - 18,	2,				STR_NONE },
+	{ WWT_FRAME,		0,		0,			WW - 1,			0,			WH - 1,		STR_NONE,			STR_NONE },
+	{ WWT_CAPTION,		0,		1,			WW - 2,			1,			14,			STR_NONE,			STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,		0,		WW - 13,	WW - 3,			2,			13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },
+	{ WWT_SCROLL,		0,		4,			WW - 5,			18,			WH - 18,	2,					STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -267,10 +267,27 @@ static void window_loadsave_scrollmousedown()
 		strcpy(templateString, (char*)RCT2_ADDRESS_SCENARIO_NAME);
 		window_text_input_open(w, WIDX_SCROLL, STR_NONE, 2710, templateStringId, 0, 64);
 	} else {
-		if ((_loadsaveType & 1) == LOADSAVETYPE_SAVE)
-			window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
-		else
-			window_loadsave_select(w, _listItems[selectedItem].path);
+		if (_listItems[selectedItem].path[strlen(_listItems[selectedItem].path) - 1] == '\\'){
+			// The selected item is a folder
+			int includeNewItem;
+
+			w->no_list_items = 0;
+			w->selected_list_item = -1;
+
+			includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
+
+			char directory[MAX_PATH];
+			strncpy(directory, _listItems[selectedItem].path, sizeof(directory));
+
+			window_loadsave_populate_list(includeNewItem, 1, directory, _extension);
+
+			w->no_list_items = _listItemsCount;
+		} else {
+			if ((_loadsaveType & 1) == LOADSAVETYPE_SAVE)
+				window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
+			else
+				window_loadsave_select(w, _listItems[selectedItem].path);
+		}
 	}
 }
 
@@ -392,12 +409,14 @@ static void window_loadsave_populate_list(int includeNewItem, int browsable, con
 	_listItemsCount = 0;
 
 	if (browsable) {
+		int topLevel = 1;
 		int lastSlash = MAX_PATH;
 		for (int index = MAX_PATH - 3; index >= 0; index--){
 			if (directory[index] == '\\'){
 				if (lastSlash != MAX_PATH){
 					// The last slash has been changed before, we're now one up
 					lastSlash = index;
+					topLevel = 0;
 					break;
 				} else {
 					// The last slash, after the whole path
@@ -405,12 +424,14 @@ static void window_loadsave_populate_list(int includeNewItem, int browsable, con
 				}
 			}
 		}
-		listItem = &_listItems[_listItemsCount];
-		strncpy(listItem->name, "(up) ", sizeof(listItem->name));
-		strncat(listItem->name, directory, sizeof(listItem->name) - strlen(listItem->name));
-		memset(listItem->path, '\0', MAX_PATH);
-		strncpy(listItem->path, directory, lastSlash + 1);
-		_listItemsCount++;
+		if (!topLevel){
+			listItem = &_listItems[_listItemsCount];
+			strncpy(listItem->name, "(up) ", sizeof(listItem->name));
+			strncat(listItem->name, directory, sizeof(listItem->name) - strlen(listItem->name));
+			memset(listItem->path, '\0', MAX_PATH);
+			strncpy(listItem->path, directory, lastSlash + 1);
+			_listItemsCount++;
+		}
 	}
 
 	if (includeNewItem) {
@@ -464,24 +485,9 @@ static void window_loadsave_populate_list(int includeNewItem, int browsable, con
 
 static void window_loadsave_select(rct_window *w, const char *path)
 {
-	if (path[strlen(path) - 1] == '\\'){
-
-		int includeNewItem;
-
-		w->no_list_items = 0;
-		w->selected_list_item = -1;
-
-		includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
-
-		char directory[MAX_PATH];
-		strncpy(directory, path, sizeof(directory));
-
-		window_loadsave_populate_list(includeNewItem, 1, directory, _extension);
-
-		w->no_list_items = _listItemsCount;
-	} else {
-		switch (_loadsaveType) {
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
+	
+	switch (_loadsaveType) {
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 			if (game_load_save(path)) {
 				window_close(w);
 				gfx_invalidate_screen();
@@ -543,7 +549,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		}
 		break;
 		}
-	}
 }
 
 #pragma region Overwrite prompt
