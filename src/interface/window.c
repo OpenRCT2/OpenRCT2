@@ -827,7 +827,40 @@ void window_init_scroll_widgets(rct_window *w)
  */
 void window_update_scroll_widgets(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, (int)w, 0, 0);
+	// RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, (int)w, 0, 0);
+
+	int widgetIndex, scrollIndex, width, height, scrollPositionChanged;
+	rct_scroll *scroll;
+	rct_widget *widget;
+
+	widgetIndex = 0;
+	scrollIndex = 0;
+	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+		if (widget->type != WWT_SCROLL)
+			continue;
+
+		scroll = &w->scrolls[scrollIndex];
+		window_get_scroll_size(w, scrollIndex, &width, &height);
+		width++;
+		height++;
+
+		scrollPositionChanged = 0;
+		if ((widget->image & 1) && width != scroll->h_right) {
+			scrollPositionChanged = 1;
+			scroll->h_right = width;
+		}
+
+		if ((widget->image & 2) && height != scroll->v_bottom) {
+			scrollPositionChanged = 1;
+			scroll->v_bottom = height;
+		}
+
+		if (scrollPositionChanged) {
+			widget_scroll_update_thumbs(w, widgetIndex);
+			window_invalidate(w);
+		}
+		scrollIndex++;
+	}
 }
 
 int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
