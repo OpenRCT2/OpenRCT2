@@ -2705,7 +2705,7 @@ STR_2703    :???
 STR_2704    :???
 STR_2705    :???
 STR_2706    :???
-STR_2707    :???
+STR_2707    :Open nieuw scherm
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
 STR_2710    :Kies een bestandsnaam.

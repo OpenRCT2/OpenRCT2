@@ -39,6 +39,7 @@ enum {
 	WIDX_TITLE,
 	WIDX_CLOSE,
 	WIDX_SCROLL,
+	WIDX_BROWSE,
 };
 
 // 0x9DE48C
@@ -46,7 +47,8 @@ static rct_widget window_loadsave_widgets[] = {
 	{ WWT_FRAME,		0,		0,			WW - 1,			0,			WH - 1,		STR_NONE,			STR_NONE },
 	{ WWT_CAPTION,		0,		1,			WW - 2,			1,			14,			STR_NONE,			STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,		0,		WW - 13,	WW - 3,			2,			13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,		0,		4,			WW - 5,			36,			WH - 18,	2,					STR_NONE },
+	{ WWT_SCROLL,		0,		4,			WW - 5,			36,			WH - 40,	2,					STR_NONE },
+	{ WWT_CLOSEBOX,		0,		4,			200,			WH - 36,	WH - 18,	2707,				STR_NONE }, // Use native browser
 	{ WIDGETS_END }
 };
 
@@ -114,6 +116,8 @@ int _type;
 static void window_loadsave_populate_list(int includeNewItem, bool browsable, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
 
+static int hasExtension(char *path, char *extension);
+
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
 rct_window *window_loadsave_open(int type)
@@ -127,7 +131,7 @@ rct_window *window_loadsave_open(int type)
 	if (w == NULL) {
 		w = window_create_centred(WW, WH, (uint32*)window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
-		w->enabled_widgets = (1 << WIDX_CLOSE);
+		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BROWSE);
 		w->colours[0] = 7;
 		w->colours[1] = 7;
 		w->colours[2] = 7;
@@ -223,7 +227,55 @@ static void window_loadsave_mouseup()
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
+	
+	case WIDX_BROWSE:
+		{
+		char filename[MAX_PATH], filter[MAX_PATH];
+		int result;
+
+		memset(filter, '\0', MAX_PATH);
+		strncpy(filter, "*", MAX_PATH);
+		strncat(filter, _extension, MAX_PATH);
+
+		switch (_type) {
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), filename, filter, _extension);
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), filename, filter, _extension);
+			break;
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), filename, filter, _extension);
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), filename, filter, _extension);
+			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), filename, filter, _extension);
+			break;
+		}
+		if (result){
+			if (!hasExtension(filename, _extension)){
+				strncat(filename, _extension, MAX_PATH);
+				puts("added extension");
+			}
+			window_loadsave_select(w, filename);
+		}
+		}
+		break;
 	}
+}
+
+static int hasExtension(char *path, char *extension)
+{
+	int extensionLength = strlen(extension);
+	int pathLength = strlen(path);
+	for (int u = 0; u < extensionLength; u++){
+		printf("%c, %c\n", tolower(path[pathLength - extensionLength + u]), tolower(extension[u]));
+		if (tolower(path[pathLength - extensionLength + u]) != tolower(extension[u]))
+			return 0;
+	}
+	return 1;
 }
 
 static void window_loadsave_update(rct_window *w)
