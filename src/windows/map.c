@@ -668,24 +668,21 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
 		if ((peep->var_0C & 0x200) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
-				if ((RCT2_GLOBAL(0x009AC861, uint16) & 8) == 0)
-					goto fill_rect;
-				color = 0x8A;
-				left--;
-				if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) != 0)
-					goto fill_rect;
-				color = 0xA;
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 8) != 0) {
+					color = 0x8A;
+					left--;
+					if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) == 0)
+						color = 0xA;
+				}
 			} else {
-				if ((RCT2_GLOBAL(0x009AC861, uint16) & 2) == 0)
-					goto fill_rect;
-				color = 0xAC;
-				left--;
-				if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) != 0)
-					goto fill_rect;
-				color = 0x15;
+				if ((RCT2_GLOBAL(0x009AC861, uint16) & 2) != 0) {
+					color = 0xAC;
+					left--;
+					if ((RCT2_GLOBAL(0x009AC861, uint16) & 0x8000) == 0)
+						color = 0x15;
+				}
 			}
 		}
-	fill_rect:
 		gfx_fill_rect(dpi, left, top, right, bottom, color);
 	}
 }
