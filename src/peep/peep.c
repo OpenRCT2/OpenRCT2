@@ -680,8 +680,8 @@ static void peep_update_queuing(rct_peep* peep){
 	if (peep->action < 0xFE)return;
 	if (peep->sprite_type == 0){
 		if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
-			// Look at watch
-			peep->action = PEEP_ACTION_CHECK_WATCH;
+			// Eat Food/Look at watch
+			peep->action = PEEP_ACTION_EAT_FOOD;
 			peep->action_frame = 0;
 			peep->var_70 = 0;
 			sub_693B58(peep);
@@ -718,8 +718,8 @@ static void peep_update_queuing(rct_peep* peep){
 			case 0x2D:
 			case 0x2E:
 			case 0x2F:
-				// Look at watch
-				peep->action = PEEP_ACTION_CHECK_WATCH;
+				// Eat food/Look at watch
+				peep->action = PEEP_ACTION_EAT_FOOD;
 				peep->action_frame = 0;
 				peep->var_70 = 0;
 				sub_693B58(peep);
@@ -1042,7 +1042,7 @@ static void peep_update_watching(rct_peep* peep){
 		else{
 			if (peep_has_food(peep)){
 				if ((scenario_rand() & 0xFFFF) <= 1310){
-					peep->action = PEEP_ACTION_CHECK_WATCH;
+					peep->action = PEEP_ACTION_EAT_FOOD;
 					peep->action_frame = 0;
 					peep->var_70 = 0;
 					sub_693B58(peep);
