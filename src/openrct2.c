@@ -72,6 +72,25 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 			platform_file_copy(oldPath, newPath);
 	}
 	platform_enumerate_files_end(fileEnumHandle);
+
+	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
+	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
+		strcpy(newPath, newDirectory);
+		strcat(newPath, filter);
+
+		strcpy(oldPath, originalDirectory);
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		strcat(oldPath, filter);
+
+		if (!platform_ensure_directory_exists(newPath)) {
+			log_error("Could not create directory %s.", newPath);
+			return;
+		}
+		openrct2_copy_files_over(oldPath, newPath, extension);
+	}
+	platform_enumerate_directories_end(fileEnumHandle);
 }
 
 /**

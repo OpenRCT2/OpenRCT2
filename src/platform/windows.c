@@ -234,8 +234,10 @@ int platform_enumerate_directories_next(int handle, char *path)
 		}
 	}
 
-	while ((enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
-		|| strchr(enumFileInfo->data.cFileName, '.') != NULL) {
+	while (
+		(enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
+		|| strchr(enumFileInfo->data.cFileName, '.') != NULL
+	) {
 		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
 			return 0;
 		}
@@ -246,7 +248,8 @@ int platform_enumerate_directories_next(int handle, char *path)
 	strncat(path, "\\", MAX_PATH);
 	return 1;
 }
-int platform_enumerate_directories_end(int handle)
+
+void platform_enumerate_directories_end(int handle)
 {
 	enumerate_file_info *enumFileInfo;
 
