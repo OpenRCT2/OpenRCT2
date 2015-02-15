@@ -91,7 +91,7 @@ int platform_enumerate_files_begin(const char *pattern);
 int platform_enumerate_files_next(int handle, file_info *outFileInfo);
 void platform_enumerate_files_end(int handle);
 int platform_enumerate_directories_begin(const char *directory);
-int platform_enumerate_directories_next(int handle, char *path[]);
+int platform_enumerate_directories_next(int handle, char *path);
 int platform_enumerate_directories_end(int handle);
 int platform_file_copy(const char *srcPath, const char *dstPath);
 int platform_file_move(const char *srcPath, const char *dstPath);

@@ -229,22 +229,20 @@ int platform_enumerate_directories_next(int handle, char *path)
 			return 0;
 		}
 	} else {
-		fileHandle = FindNextFile(enumFileInfo->handle, &enumFileInfo->data);
-		if (fileHandle == 0) {
+		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
 			return 0;
 		}
 	}
 
 	while ((enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
 		|| strchr(enumFileInfo->data.cFileName, '.') != NULL) {
-		fileHandle = FindNextFile(enumFileInfo->handle, &enumFileInfo->data);
-		if (fileHandle == 0) {
+		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
 			return 0;
 		}
 	}
 	
 	memset(path, '\0', MAX_PATH);
-	strncpy(path, &enumFileInfo->data.cFileName, MAX_PATH);
+	strncpy(path, enumFileInfo->data.cFileName, MAX_PATH);
 	strncat(path, "\\", MAX_PATH);
 	return 1;
 }
