@@ -726,20 +726,18 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 }
 
 /**
-*  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that top<bottom and left<right,
+*  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
 *  but it doesn't look like it's ever necessary here so the call was removed.
 * 
 *  rct2: 0x0068D8CE
 */
-static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 {
-	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, 0, (int)dpi, 0);
 	//return;
 
 	static const sint16 offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
 	static const sint16 offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
-
-	sint16 left, top;
 
 	rct_window *main_window = window_get_main();
 	if (main_window == NULL)
@@ -752,77 +750,26 @@ static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi
 	sint16 offset_x = offsets_x[rotation];
 	sint16 offset_y = offsets_y[rotation];
 
-	// top horizontal
+	sint16 left = (viewport->view_x >> 5) + offset_x;
+	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset_x;
+	sint16 top = (viewport->view_y >> 4) + offset_y;
+	sint16 bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset_y;
 
-	left = viewport->view_x;
-	top = viewport->view_y;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
+	// top horizontal lines
 	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
+	gfx_fill_rect(dpi, right - 3, top, right, top, 0x38);
 
-	left = viewport->view_x + viewport->view_width;
-	top = viewport->view_y;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left - 3, top, left, top, 0x38);
-
-	// left vertical
-
-	left = viewport->view_x;
-	top = viewport->view_y;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
+	// left vertical lines
 	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
+	gfx_fill_rect(dpi, left, bottom - 3, left, bottom, 0x38);
 
-	left = viewport->view_x;
-	top = viewport->view_y + viewport->view_height;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left, top - 3, left, top, 0x38);
+	// bottom horizontal lines
+	gfx_fill_rect(dpi, left, bottom, left + 3, bottom, 0x38);
+	gfx_fill_rect(dpi, right - 3, bottom, right, bottom, 0x38);
 
-	//bottom horizontal
-
-	left = viewport->view_x;
-	top = viewport->view_y + viewport->view_height;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
-
-	left = viewport->view_x + viewport->view_width;
-	top = viewport->view_y + viewport->view_height;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left - 3, top, left, top, 0x38);
-
-	// right vertical
-
-	left = viewport->view_x + viewport->view_width;
-	top = viewport->view_y;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
-
-	left = viewport->view_x + viewport->view_width;
-	top = viewport->view_y + viewport->view_height;
-	left >>= 5;
-	top >>= 4;
-	left += offset_x;
-	top += offset_y;
-	gfx_fill_rect(dpi, left, top - 3, left, top, 0x38);
+	// right vertical lines
+	gfx_fill_rect(dpi, right, top, right, top + 3, 0x38);
+	gfx_fill_rect(dpi, right, bottom - 3, right, bottom, 0x38);
 }
 
 /**
@@ -860,7 +807,7 @@ static void window_map_scrollpaint()
 	else
 		window_map_paint_train_overlay(dpi);
 	
-	window_map_paint_hud_rectangle(w, dpi);
+	window_map_paint_hud_rectangle(dpi);
 }
 
 /**
