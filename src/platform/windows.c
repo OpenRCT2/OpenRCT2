@@ -192,6 +192,72 @@ void platform_enumerate_files_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_enumerate_directories_begin(const char *directory)
+{
+	int i;
+	enumerate_file_info *enumFileInfo;
+
+	if (strlen(directory) + 3 >= MAX_PATH)
+		return INVALID_HANDLE;
+
+	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+		enumFileInfo = &_enumerateFileInfoList[i];
+		if (!enumFileInfo->active) {
+			strncpy(enumFileInfo->pattern, directory, MAX_PATH);
+			strncat(enumFileInfo->pattern, "*", MAX_PATH);
+			enumFileInfo->handle = NULL;
+			enumFileInfo->active = 1;
+			return i;
+		}
+	}
+
+	return INVALID_HANDLE;
+}
+
+int platform_enumerate_directories_next(int handle, char *path)
+{
+	enumerate_file_info *enumFileInfo;
+	HANDLE fileHandle;
+
+	enumFileInfo = &_enumerateFileInfoList[handle];
+
+	if (enumFileInfo->handle == NULL) {
+		fileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		if (fileHandle != 0) {
+			enumFileInfo->handle = fileHandle;
+		} else {
+			return 0;
+		}
+	} else {
+		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
+			return 0;
+		}
+	}
+
+	while ((enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
+		|| strchr(enumFileInfo->data.cFileName, '.') != NULL) {
+		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
+			return 0;
+		}
+	}
+	
+	memset(path, '\0', MAX_PATH);
+	strncpy(path, enumFileInfo->data.cFileName, MAX_PATH);
+	strncat(path, "\\", MAX_PATH);
+	return 1;
+}
+int platform_enumerate_directories_end(int handle)
+{
+	enumerate_file_info *enumFileInfo;
+
+	enumFileInfo = &_enumerateFileInfoList[handle];
+	if (enumFileInfo->handle != NULL) {
+		FindClose(enumFileInfo->handle);
+		enumFileInfo->handle = NULL;
+	}
+	enumFileInfo->active = 0;
+}
+
 int platform_file_copy(const char *srcPath, const char *dstPath)
 {
 	return CopyFileA(srcPath, dstPath, TRUE);
