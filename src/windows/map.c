@@ -727,6 +727,148 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 
 /**
 *
+*  rct2: 0x0068DABD
+*/
+static void sub_68DABD(sint16 left, sint16 top, sint16 right, sint16 bottom, rct_drawpixelinfo *dpi){
+	sint16 temp = right;
+	right = top;
+	top = temp;
+	if (left >= right) {
+		temp = left;
+		left = right;
+		right = temp;
+	}
+	if (top >= bottom) {
+		temp = top;
+		top = bottom;
+		bottom = temp;
+	}
+
+	gfx_fill_rect(dpi, left, top, right, bottom, 0x38);
+}
+
+/**
+*
+*  rct2: 0x0068D8CE
+*/
+static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);
+	//return;
+
+	static sint16 tab_x[4] = { 0xF8, 0x1F, 0xF8, 0xFFF8 };
+	static sint16 tab_y[4] = { 0, 0x100, 0x200, 0x100 };
+
+	sint16 ax, bx, cx, dx;
+
+	rct_window *main_window = window_get_main();
+	if (main_window == NULL)
+		return;
+	rct_viewport *viewport = main_window->viewport;
+	if (viewport == NULL)
+		return;
+
+	int ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+
+	// top horizontal
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	cx += 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax += viewport->view_width;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	ax -= 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	// left vertical
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	dx += 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	bx += viewport->view_height;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	bx -= 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	//bottom horizontal
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	bx += viewport->view_height;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	cx += 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax += viewport->view_width;
+	bx += viewport->view_height;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	ax -= 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	// right vertical
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax += viewport->view_width;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	dx += 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+
+	ax = viewport->view_x;
+	bx = viewport->view_y;
+	ax += viewport->view_width;
+	bx += viewport->view_height;
+	ax >>= 5;
+	bx >>= 4;
+	ax += tab_x[ebp];
+	bx += tab_y[ebp];
+	cx = ax, dx = bx;
+	bx -= 3;
+	sub_68DABD(ax, cx, bx, dx, dpi);
+}
+
+/**
+*
 *  rct2: 0x0068CF23
 */
 static void window_map_scrollpaint()
@@ -760,7 +902,7 @@ static void window_map_scrollpaint()
 	else
 		window_map_paint_train_overlay(dpi);
 	
-	RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws the HUD rectangle on the map
+	window_map_paint_hud_rectangle(w, dpi);
 }
 
 /**
