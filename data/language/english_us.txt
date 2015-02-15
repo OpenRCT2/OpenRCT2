@@ -2710,9 +2710,9 @@ STR_2704    :???
 STR_2705    :???
 STR_2706    :???
 STR_2707    :???
-STR_2708    :???
-STR_2709    :???
-STR_2710    :???
+STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
+STR_2709    :Overwrite
+STR_2710    :Type the name of the file.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
