@@ -827,8 +827,6 @@ void window_init_scroll_widgets(rct_window *w)
  */
 void window_update_scroll_widgets(rct_window *w)
 {
-	// RCT2_CALLPROC_X(0x006EAE4E, 0, 0, 0, 0, (int)w, 0, 0);
-
 	int widgetIndex, scrollIndex, width, height, scrollPositionChanged;
 	rct_scroll *scroll;
 	rct_widget *widget;

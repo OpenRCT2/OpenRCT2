@@ -128,7 +128,6 @@ rct_window *window_loadsave_open(int type)
 		w = window_create_centred(WW, WH, (uint32*)window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
 		w->enabled_widgets = (1 << WIDX_CLOSE);
-		window_init_scroll_widgets(w);
 		w->colours[0] = 7;
 		w->colours[1] = 7;
 		w->colours[2] = 7;
@@ -199,7 +198,7 @@ rct_window *window_loadsave_open(int type)
 		break;
 	}
 	w->no_list_items = _listItemsCount;
-	
+	window_init_scroll_widgets(w);
 	return w;
 }
 
@@ -279,6 +278,7 @@ static void window_loadsave_scrollmousedown()
 			strncpy(directory, _listItems[selectedItem].path, sizeof(directory));
 
 			window_loadsave_populate_list(includeNewItem, TRUE, directory, _extension);
+			window_init_scroll_widgets(w);
 
 			w->no_list_items = _listItemsCount;
 		} else {
@@ -392,6 +392,23 @@ static void window_loadsave_scrollpaint()
 	}
 }
 
+static int list_item_sort(const void *a, const void *b)
+{
+	const loadsave_list_item *itemA = (loadsave_list_item*)a;
+	const loadsave_list_item *itemB = (loadsave_list_item*)b;
+
+	return strcmp(itemA->name, itemB->name);
+}
+
+static void window_loadsave_sort_list(int index, int endIndex)
+{
+	int count = endIndex - index + 1;
+	if (count < 0)
+		return;
+
+	qsort(_listItems + index, count, sizeof(loadsave_list_item), list_item_sort);
+}
+
 static void window_loadsave_populate_list(int includeNewItem, bool browsable, const char *directory, const char *extension)
 {
 	int i, listItemCapacity, fileEnumHandle;
@@ -415,11 +432,12 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	_listItemsCount = 0;
 
 	if (browsable) {
+		int directoryLength = strlen(directory);
 		int topLevel = 1;
-		int lastSlash = MAX_PATH;
-		for (int index = MAX_PATH - 3; index >= 0; index--){
-			if (directory[index] == platform_get_path_separator()){
-				if (lastSlash != MAX_PATH){
+		int lastSlash = directoryLength;
+		for (int index = directoryLength; index >= 0; index--) {
+			if (directory[index] == platform_get_path_separator()) {
+				if (lastSlash != directoryLength){
 					// The last slash has been changed before, we're now one up
 					lastSlash = index;
 					topLevel = 0;
@@ -446,6 +464,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		_listItemsCount++;
 	}
 
+	int sortStartIndex = _listItemsCount;
 	fileEnumHandle = platform_enumerate_directories_begin(directory);
 	while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
 		if (listItemCapacity <= _listItemsCount) {
@@ -462,7 +481,9 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		_listItemsCount++;
 	}
 	platform_enumerate_files_end(fileEnumHandle);
+	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 
+	sortStartIndex = _listItemsCount;
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		if (listItemCapacity <= _listItemsCount) {
@@ -486,6 +507,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		_listItemsCount++;
 	}
 	platform_enumerate_files_end(fileEnumHandle);
+	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 }
 
 static void window_loadsave_select(rct_window *w, const char *path)
