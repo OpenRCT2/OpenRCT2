@@ -1091,7 +1091,7 @@ STR_1089    :Waanzinnige stand
 STR_1090    :Spookhuismodus
 STR_1091    :Circusmodus
 STR_1092    :Neerwaartse lancering
-STR_1093    :Crooked house-modus
+STR_1093    :Crookedhousemodus
 STR_1094    :Vrijevalmodus
 STR_1095    :Voortdurend circuit met blokken
 STR_1096    :Lancering
