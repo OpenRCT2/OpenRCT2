@@ -265,6 +265,7 @@ void object_list_load()
 
 	uint32 fileCount = 0;
 	uint32 current_item_offset = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) = 0;
 
 	log_verbose("building cache of available objects...");
 
@@ -343,6 +344,9 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 			RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
 			if (fread(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1, file) == 1) {
 				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
+
+				if (pluginHeader.object_list_no_items != (pluginHeader.total_files & 0xFFFFFF))
+					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
 				fclose(file);
 				sub_6A9FC0();
@@ -616,6 +620,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	/** Use object_load_file to fill in missing chunk information **/
 	int chunk_size;
 	if (!object_load_file(-1, entry, &chunk_size, installed_entry)){
+		log_error("Object Load File failed. Potentially corrupt file: %.8s", entry->name);
 		RCT2_GLOBAL(0x009ADAF4, sint32) = -1;
 		RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
@@ -629,9 +634,10 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
 
 	if ((entry->flags & 0xF0) == 0x80) {
-		RCT2_GLOBAL(0x00F42B70, uint32)++;
-		if (RCT2_GLOBAL(0x00F42B70, uint32) > 772){
-			RCT2_GLOBAL(0x00F42B70, uint32)--;
+		RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) > 772){
+			log_error("Incorrect number of vanilla RCT2 objects.");
+			RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)--;
 			RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
 			object_unload(objectType, (rct_object_entry_extended*)entry);
 			return 0;
