@@ -726,29 +726,9 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 }
 
 /**
-*
-*  rct2: 0x0068DABD
-*/
-static void sub_68DABD(sint16 left, sint16 top, sint16 right, sint16 bottom, rct_drawpixelinfo *dpi){
-	sint16 temp = right;
-	right = top;
-	top = temp;
-	if (left >= right) {
-		temp = left;
-		left = right;
-		right = temp;
-	}
-	if (top >= bottom) {
-		temp = top;
-		top = bottom;
-		bottom = temp;
-	}
-
-	gfx_fill_rect(dpi, left, top, right, bottom, 0x38);
-}
-
-/**
-*
+*  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that top<bottom and left<right,
+*  but it doesn't look like it's ever necessary here so the call was removed.
+* 
 *  rct2: 0x0068D8CE
 */
 static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi)
@@ -756,10 +736,10 @@ static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi
 	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);
 	//return;
 
-	static sint16 tab_x[4] = { 0xF8, 0x1F, 0xF8, 0xFFF8 };
-	static sint16 tab_y[4] = { 0, 0x100, 0x200, 0x100 };
+	static const sint16 offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
+	static const sint16 offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
 
-	sint16 ax, bx, cx, dx;
+	sint16 left, top;
 
 	rct_window *main_window = window_get_main();
 	if (main_window == NULL)
@@ -768,103 +748,81 @@ static void window_map_paint_hud_rectangle(rct_window *w, rct_drawpixelinfo *dpi
 	if (viewport == NULL)
 		return;
 
-	int ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	sint16 offset_x = offsets_x[rotation];
+	sint16 offset_y = offsets_y[rotation];
 
 	// top horizontal
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	cx += 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x;
+	top = viewport->view_y;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax += viewport->view_width;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	ax -= 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x + viewport->view_width;
+	top = viewport->view_y;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left - 3, top, left, top, 0x38);
 
 	// left vertical
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	dx += 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x;
+	top = viewport->view_y;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	bx += viewport->view_height;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	bx -= 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x;
+	top = viewport->view_y + viewport->view_height;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top - 3, left, top, 0x38);
 
 	//bottom horizontal
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	bx += viewport->view_height;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	cx += 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x;
+	top = viewport->view_y + viewport->view_height;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax += viewport->view_width;
-	bx += viewport->view_height;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	ax -= 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x + viewport->view_width;
+	top = viewport->view_y + viewport->view_height;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left - 3, top, left, top, 0x38);
 
 	// right vertical
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax += viewport->view_width;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	dx += 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x + viewport->view_width;
+	top = viewport->view_y;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
 
-	ax = viewport->view_x;
-	bx = viewport->view_y;
-	ax += viewport->view_width;
-	bx += viewport->view_height;
-	ax >>= 5;
-	bx >>= 4;
-	ax += tab_x[ebp];
-	bx += tab_y[ebp];
-	cx = ax, dx = bx;
-	bx -= 3;
-	sub_68DABD(ax, cx, bx, dx, dpi);
+	left = viewport->view_x + viewport->view_width;
+	top = viewport->view_y + viewport->view_height;
+	left >>= 5;
+	top >>= 4;
+	left += offset_x;
+	top += offset_y;
+	gfx_fill_rect(dpi, left, top - 3, left, top, 0x38);
 }
 
 /**
