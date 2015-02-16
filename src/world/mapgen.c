@@ -124,7 +124,7 @@ void mapgen_generate_blank(mapgen_settings *settings)
 
 void mapgen_generate(mapgen_settings *settings)
 {
-	int x, y, mapSize, floorTexture, wallTexture;
+	int x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
 	srand((unsigned int)time(NULL));
@@ -132,6 +132,7 @@ void mapgen_generate(mapgen_settings *settings)
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
 	wallTexture = settings->wall;
+	waterLevel = settings->waterLevel;
 
 	if (floorTexture == -1)
 		floorTexture = BaseTerrain[rand() % countof(BaseTerrain)];
@@ -169,7 +170,7 @@ void mapgen_generate(mapgen_settings *settings)
 	memset(_height, 0, _heightSize * _heightSize * sizeof(uint8));
 
 	if (1) {
-		mapgen_simplex();
+		mapgen_simplex(settings);
 		mapgen_smooth_height(2 + (rand() % 6));
 	} else {
 		// Keep overwriting the map with rough cicular blobs of different sizes and heights.
@@ -193,7 +194,6 @@ void mapgen_generate(mapgen_settings *settings)
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 
 	// Add the water
-	int waterLevel = 6 + (rand() % 8) * 2;
 	mapgen_set_water_level(waterLevel);
 
 	// Add sandy beaches
@@ -754,15 +754,15 @@ static float grad(int hash, float x, float y)
 	return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
 }
 
-static void mapgen_simplex()
+static void mapgen_simplex(mapgen_settings *settings)
 {
 	int x, y;
 
-	float freq = 1.75f * (1.0f / _heightSize);
-	int octaves = 6;
+	float freq = settings->simplex_base_freq * (1.0f / _heightSize);
+	int octaves = settings->simplex_octaves;
 
-	int low = rand() % 4;
-	int high = 12 + (rand() % (32 - 12));
+	int low = settings->simplex_low;
+	int high = settings->simplex_high;
 
 	noise_rand();
 	for (y = 0; y < _heightSize; y++) {
