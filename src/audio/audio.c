@@ -1545,7 +1545,7 @@ void stop_completed_sounds()
 void start_title_music()
 {
 	int musicPathId;
-	switch (gGeneral_config.title_music) {
+	switch (gConfigSound.title_music) {
 	default:
 		return;
 	case 1:
@@ -1751,7 +1751,7 @@ void audio_init2(int device)
 	rct_dsdevice dsdevice = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, rct_dsdevice*)[device];
 	RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_GUID, GUID) = dsdevice.guid;
 	RCT2_GLOBAL(0x009AAC5C, uint8) = 1;
-	config_save();
+	config_save_default();
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;
 	int successtimer = audio_create_timer();
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
@@ -1763,9 +1763,9 @@ void audio_init2(int device)
 		}
 	}
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4)) {
-		gSound_config.forced_software_buffering = RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B78, uint32) || RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B7C, uint32);
+		gConfigSound.forced_software_buffering = RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B78, uint32) || RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B7C, uint32);
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= 1 << 4;
-		config_save();
+		config_save_default();
 	}
 }
 

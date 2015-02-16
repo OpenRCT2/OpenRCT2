@@ -317,7 +317,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	// Save the scenario
 	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-	success = scenario_save(path, gGeneral_config.save_plugin_data ? 3 : 2);
+	success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 	if (success) {

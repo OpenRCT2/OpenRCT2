@@ -286,7 +286,7 @@ void game_update()
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
 		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
-			config_save();
+			config_save_default();
 	}
 }
 
@@ -784,7 +784,7 @@ char save_game()
 	// Ensure path has .SV6 extension
 	path_set_extension(path, ".SV6");
 	
-	if (scenario_save(path, gGeneral_config.save_plugin_data ? 1 : 0)) {
+	if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
 		game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
 		gfx_invalidate_screen();
 		return 1;

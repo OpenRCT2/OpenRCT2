@@ -96,30 +96,11 @@ enum{
 
 };
 
-extern uint16 gShortcutKeys[SHORTCUT_COUNT];
-
-void config_reset_shortcut_keys();
-void config_load();
-void config_save();
-int config_find_or_browse_install_directory();
-
-
-// New config format
-#define MAX_CONFIG_LENGTH 256
-
-typedef struct sound_configuration {
-
-	sint8 sound_quality;
-	sint8 forced_software_buffering;
-} sound_configuration_t;
-
-
-
 typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
-	char game_path[MAX_PATH];
+	utf8string game_path;
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
@@ -132,44 +113,35 @@ typedef struct general_configuration {
 
 	//new
 	uint8 fullscreen_mode;
-	sint16 fullscreen_width;
-	sint16 fullscreen_height;
-	sint16 window_width;
-	sint16 window_height;
+	sint32 fullscreen_width;
+	sint32 fullscreen_height;
+	sint32 window_width;
+	sint32 window_height;
 	uint16 language;
 	uint8 window_snap_proximity;
+} general_configuration;
+
+typedef struct sound_configuration {
+	sint8 forced_software_buffering;
+	sint8 sound_quality;
 	uint8 title_music;
-} general_configuration_t;
+} sound_configuration;
 
-static const struct { const char *key; int value; } _currencyLookupTable[] = {
-	{ "GBP", CURRENCY_POUNDS },
-	{ "USD", CURRENCY_DOLLARS },
-	{ "FRF", CURRENCY_FRANC },
-	{ "DEM", CURRENCY_DEUTSCHMARK },
-	{ "YEN", CURRENCY_YEN },
-	{ "ESP", CURRENCY_PESETA },
-	{ "ITL", CURRENCY_LIRA },
-	{ "NLG", CURRENCY_GUILDERS },
-	{ "NOK", CURRENCY_KRONA },
-	{ "SEK", CURRENCY_KRONA },
-	{ "DEK", CURRENCY_KRONA },
-	{ "EUR", CURRENCY_EUROS },
-
-	{ "\xA3", CURRENCY_POUNDS },
-	{ "\x24", CURRENCY_DOLLARS },
-	{ "\xA5", CURRENCY_YEN },
-	{ "\xB5", CURRENCY_EUROS }
-};
-
-typedef struct shortcut_entry{
+typedef struct shortcut_entry {
 	uint8 key;
 	uint8 modifier;
-}shortcut_entry;
+} shortcut_entry;
 
-//typedef struct hotkey_configuration{
+extern general_configuration gConfigGeneral;
+extern sound_configuration gConfigSound;
 
-//};
-extern general_configuration_t gGeneral_config;
-extern sound_configuration_t gSound_config;
+extern uint16 gShortcutKeys[SHORTCUT_COUNT];
+
+void config_set_defaults();
+bool config_open_default();
+bool config_save_default();
+
+void config_reset_shortcut_keys();
+bool config_find_or_browse_install_directory();
 
 #endif

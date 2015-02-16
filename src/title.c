@@ -295,7 +295,7 @@ void title_update()
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
 		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
-			config_save();
+			config_save_default();
 	}
 }
 

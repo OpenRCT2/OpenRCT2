@@ -120,9 +120,9 @@ void platform_update_fullscreen_resolutions()
 	gNumResolutions = (int)(resPlace - &gResolutions[0]) + 1;
 
 	// Update config fullscreen resolution if not set
-	if (gGeneral_config.fullscreen_width == -1 || gGeneral_config.fullscreen_height == -1) {
-		gGeneral_config.fullscreen_width = gResolutions[gNumResolutions - 1].width;
-		gGeneral_config.fullscreen_height = gResolutions[gNumResolutions - 1].height;
+	if (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1) {
+		gConfigGeneral.fullscreen_width = gResolutions[gNumResolutions - 1].width;
+		gConfigGeneral.fullscreen_height = gResolutions[gNumResolutions - 1].height;
 	}
 }
 
@@ -352,10 +352,10 @@ void platform_process_messages()
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
 			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT) {
-				int targetMode = gGeneral_config.fullscreen_mode == 0 ? 2 : 0;
+				int targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
 				platform_set_fullscreen_mode(targetMode);
-				gGeneral_config.fullscreen_mode = targetMode;
-				config_save();
+				gConfigGeneral.fullscreen_mode = targetMode;
+				config_save_default();
 				break;
 			}
 
@@ -473,8 +473,8 @@ static void platform_create_window()
 	RCT2_CALLPROC_EBPSAFE(0x0068371D);
 
 	// Get window size
-	width = gGeneral_config.window_width;
-	height = gGeneral_config.window_height;
+	width = gConfigGeneral.window_width;
+	height = gConfigGeneral.window_height;
 	if (width == -1) width = 640;
 	if (height == -1) height = 480;
 
@@ -496,7 +496,7 @@ static void platform_create_window()
 	platform_resize(width, height);
 
 	platform_update_fullscreen_resolutions();
-	platform_set_fullscreen_mode(gGeneral_config.fullscreen_mode);
+	platform_set_fullscreen_mode(gConfigGeneral.fullscreen_mode);
 }
 
 int platform_scancode_to_rct_keycode(int sdl_key)
@@ -555,10 +555,10 @@ void platform_set_fullscreen_mode(int mode)
 	// Set window size
 	if (mode == SDL_WINDOW_FULLSCREEN) {
 		platform_update_fullscreen_resolutions();
-		platform_get_closest_resolution(gGeneral_config.fullscreen_width, gGeneral_config.fullscreen_height, &width, &height);
+		platform_get_closest_resolution(gConfigGeneral.fullscreen_width, gConfigGeneral.fullscreen_height, &width, &height);
 		SDL_SetWindowSize(gWindow, width, height);
 	} else if (mode == 0) {
-		SDL_SetWindowSize(gWindow, gGeneral_config.window_width, gGeneral_config.window_height);
+		SDL_SetWindowSize(gWindow, gConfigGeneral.window_width, gConfigGeneral.window_height);
 	}
 
 	if (SDL_SetWindowFullscreen(gWindow, mode)) {

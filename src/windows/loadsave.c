@@ -577,7 +577,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 1 : 0)) {
+			if (scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
 				window_close(w);
 
 				game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
@@ -599,7 +599,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			if (scenario_save((char*)path, gGeneral_config.save_plugin_data ? 3 : 2)) {
+			if (scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 3 : 2)) {
 				window_close(w);
 				gfx_invalidate_screen();
 			}
@@ -613,7 +613,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
 			s6Info->var_000 = 255;
-			int success = scenario_save((char*)path, gGeneral_config.save_plugin_data ? 3 : 2);
+			int success = scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 3 : 2);
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 			if (success) {

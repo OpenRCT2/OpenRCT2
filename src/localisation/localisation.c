@@ -277,7 +277,7 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 
 void format_currency(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;
@@ -309,7 +309,7 @@ void format_currency(char **dest, long long value)
 
 void format_currency_2dp(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;
@@ -355,7 +355,7 @@ void format_length(char **dest, uint16 value)
 {
 	rct_string_id stringId = 2733;
 
-	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
 		value = metres_to_feet(value);
 		stringId--;
 	}
@@ -368,7 +368,7 @@ void format_velocity(char **dest, uint16 value)
 {
 	rct_string_id stringId = 2734;
 
-	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_METRIC) {
 		value = mph_to_kmph(value);
 		stringId++;
 	}

@@ -44,8 +44,9 @@ typedef unsigned long uint32;
 typedef unsigned long long uint64;
 
 typedef char utf8;
-typedef wchar_t utf16;
 typedef utf8* utf8string;
+typedef const utf8* const_utf8string;
+typedef wchar_t utf16;
 typedef utf16* utf16string;
 
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))

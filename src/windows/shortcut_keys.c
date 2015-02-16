@@ -128,7 +128,7 @@ static void window_shortcut_mouseup()
 		break;
 	case WIDX_RESET:
 		config_reset_shortcut_keys();
-		config_save();
+		config_save_default();
 		window_invalidate(w);
 		break;
 	}

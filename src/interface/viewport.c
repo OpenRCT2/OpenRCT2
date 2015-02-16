@@ -174,7 +174,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 	viewport->zoom = zoom;
 	viewport->flags = 0;
 
-	if (gGeneral_config.always_show_gridlines)
+	if (gConfigGeneral.always_show_gridlines)
 		viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
 	w->viewport = viewport;
 
@@ -1109,7 +1109,7 @@ void hide_gridlines()
 	RCT2_GLOBAL(0x009E32B0, uint8)--;
 	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
 		if ((mainWindow = window_get_main()) != NULL) {
-			if (!gGeneral_config.always_show_gridlines) {
+			if (!gConfigGeneral.always_show_gridlines) {
 				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
 				window_invalidate(mainWindow);
 			}

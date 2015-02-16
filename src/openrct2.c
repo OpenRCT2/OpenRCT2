@@ -120,7 +120,15 @@ void openrct2_launch()
 		return;
 	}
 
-	config_load();
+	config_set_defaults();
+	if (!config_open_default()) {
+		if (!config_find_or_browse_install_directory()) {
+			log_fatal("An RCT2 install directory must be specified!");
+			return;
+		}
+	}
+
+	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
 	if (!platform_lock_single_instance()) {
@@ -132,7 +140,7 @@ void openrct2_launch()
 	audio_init();
 	audio_get_devices();
 	get_dsound_devices();
-	language_open(gGeneral_config.language);
+	language_open(gConfigGeneral.language);
 	if (!rct2_init())
 		return;
 

@@ -57,7 +57,7 @@ static void rct2_update_2();
 static jmp_buf _end_update_jump;
 
 void rct2_quit() {
-	if (gGeneral_config.confirmation_prompt) {
+	if (gConfigGeneral.confirmation_prompt) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
 		window_save_prompt_open();
 	} else
@@ -116,7 +116,7 @@ int rct2_init()
 	title_load();
 
 	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gConfigGeneral.play_intro ? 8 : 255;
 
 	log_verbose("initialising game finished");
 	return 1;
@@ -131,15 +131,15 @@ int rct2_init_directories()
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
 	// check install directory
-	if (!platform_directory_exists(gGeneral_config.game_path)) {
-		log_verbose("install directory does not exist, %s", gGeneral_config.game_path);
+	if (!platform_directory_exists(gConfigGeneral.game_path)) {
+		log_verbose("install directory does not exist, %s", gConfigGeneral.game_path);
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
 	}
 	}
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
@@ -360,7 +360,7 @@ const char *get_file_path(int pathId)
 	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
 	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
 	// the sake of simplicity.
-	strcpy(path, gGeneral_config.game_path);
+	strcpy(path, gConfigGeneral.game_path);
 
 	// Make sure base path is terminated with a slash
 	if (strlen(path) == 0 || path[strlen(path) - 1] != '\\')

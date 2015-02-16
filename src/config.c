@@ -1,350 +1,608 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- *
+ * 
  * This file is part of OpenRCT2.
- *
+ * 
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <SDL_keycode.h>
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"
-#include "platform/platform.h"
-
-// Current keyboard shortcuts
-uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 // Magic number for original game cfg file
 static const int MagicNumber = 0x0003113A;
 
-// Default keyboard shortcuts
-static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
-	SDL_SCANCODE_BACKSPACE,				// SHORTCUT_CLOSE_TOP_MOST_WINDOW
-	0x0100 | SDL_SCANCODE_BACKSPACE,	// SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
-	SDL_SCANCODE_ESCAPE,				// SHORTCUT_CANCEL_CONSTRUCTION_MODE
-	SDL_SCANCODE_PAUSE,					// SHORTCUT_PAUSE_GAME
-	SDL_SCANCODE_PAGEUP,				// SHORTCUT_ZOOM_VIEW_OUT
-	SDL_SCANCODE_PAGEDOWN,				// SHORTCUT_ZOOM_VIEW_IN
-	SDL_SCANCODE_RETURN,				// SHORTCUT_ROTATE_VIEW
-	SDL_SCANCODE_Z,						// SHORTCUT_ROTATE_CONSTRUCTION_OBJECT
-	SDL_SCANCODE_1,						// SHORTCUT_UNDERGROUND_VIEW_TOGGLE
-	SDL_SCANCODE_H,						// SHORTCUT_REMOVE_BASE_LAND_TOGGLE
-	SDL_SCANCODE_V,						// SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE
-	SDL_SCANCODE_3,						// SHORTCUT_SEE_THROUGH_RIDES_TOGGLE
-	SDL_SCANCODE_4,						// SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE
-	SDL_SCANCODE_5,						// SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE
-	SDL_SCANCODE_6,						// SHORTCUT_INVISIBLE_PEOPLE_TOGGLE
-	SDL_SCANCODE_8,						// SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE
-	SDL_SCANCODE_9,						// SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE
-	SDL_SCANCODE_0,						// SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE
-	SDL_SCANCODE_F1,					// SHORTCUT_ADJUST_LAND
-	SDL_SCANCODE_F2,					// SHORTCUT_ADJUST_WATER
-	SDL_SCANCODE_F3,					// SHORTCUT_BUILD_SCENERY
-	SDL_SCANCODE_F4,					// SHORTCUT_BUILD_PATHS
-	SDL_SCANCODE_F5,					// SHORTCUT_BUILD_NEW_RIDE
-	SDL_SCANCODE_F,						// SHORTCUT_SHOW_FINANCIAL_INFORMATION
-	SDL_SCANCODE_D,						// SHORTCUT_SHOW_RESEARCH_INFORMATION
-	SDL_SCANCODE_R,						// SHORTCUT_SHOW_RIDES_LIST
-	SDL_SCANCODE_P,						// SHORTCUT_SHOW_PARK_INFORMATION
-	SDL_SCANCODE_G,						// SHORTCUT_SHOW_GUEST_LIST
-	SDL_SCANCODE_S,						// SHORTCUT_SHOW_STAFF_LIST
-	SDL_SCANCODE_M,						// SHORTCUT_SHOW_RECENT_MESSAGES
-	SDL_SCANCODE_TAB,					// SHORTCUT_SHOW_MAP
-	0x0200 | SDL_SCANCODE_S,			// SHORTCUT_SCREENSHOT
-
-	// New
-	SDL_SCANCODE_MINUS,					// SHORTCUT_REDUCE_GAME_SPEED,
-	SDL_SCANCODE_EQUALS,				// SHORTCUT_INCREASE_GAME_SPEED,
-	0x0200 | 0x0400 | SDL_SCANCODE_C 	// SHORTCUT_OPEN_CHEAT_WINDOW,
+enum {
+	CONFIG_VALUE_TYPE_BOOLEAN,
+	CONFIG_VALUE_TYPE_UINT8,
+	CONFIG_VALUE_TYPE_UINT16,
+	CONFIG_VALUE_TYPE_UINT32,
+	CONFIG_VALUE_TYPE_SINT8,
+	CONFIG_VALUE_TYPE_SINT16,
+	CONFIG_VALUE_TYPE_SINT32,
+	CONFIG_VALUE_TYPE_FLOAT,
+	CONFIG_VALUE_TYPE_DOUBLE,
+	CONFIG_VALUE_TYPE_STRING
 };
 
-general_configuration_t gGeneral_config;
-general_configuration_t gGeneral_config_default = {
-	0,								// play_intro
-	0,								// confirmation_prompt
-	SCREENSHOT_FORMAT_PNG,			// screenshot_format
-	"",								// game_path
-	MEASUREMENT_FORMAT_IMPERIAL,	// measurement_format
-	TEMPERATURE_FORMAT_C,			// temperature_format
-	CURRENCY_POUNDS,				// currency_format
-	0,								// construction_marker_colour
-	1,								// edge_scrolling
-	0,								// always_show_gridlines
-	1,								// landscape_smoothing
-	0,								// show_height_as_units
-	1,								// save_plugin_data
-	0,								// fullscreen mode (default: windowed)
-	-1,								// fullscreen_width
-	-1,								// fullscreen_height
-	-1,								// window_width
-	-1,								// window_height
-	LANGUAGE_ENGLISH_UK,			// language
-	5,								// window_snap_proximity
-	2								// title music
+size_t _configValueTypeSize[] = {
+	sizeof(bool),
+	sizeof(uint8),
+	sizeof(uint16),
+	sizeof(uint32),
+	sizeof(sint8),
+	sizeof(sint16),
+	sizeof(sint32),
+	sizeof(float),
+	sizeof(double),
+	sizeof(utf8string)
 };
-sound_configuration_t gSound_config;
 
-static char *config_show_directory_browser();
-static void config_parse_settings(FILE *fp);
-static void config_general(char *setting, char *value);
-static void config_sound(char *setting, char *value);
-static int config_get_line(FILE *fp, char *setting, char *value);
-static int config_parse_setting(FILE *fp, char *setting);
-static int config_parse_value(FILE *fp, char *value);
-static int config_parse_section(FILE *fp, char *setting, char *value);
-static void config_create_default(char *path);
-static int config_parse_currency(char* currency);
-static void config_error(char *msg);
+typedef union {
+	sint32 value_sint32;
 
-void config_save_ini(char *path);
-void config_write_ini_general(FILE *fp);
-void config_write_ini_sound(FILE *fp);
+	bool value_boolean;
+	sint8 value_sint8;
+	sint16 value_sint16;
+	uint8 value_uint8;
+	uint16 value_uint16;
+	uint32 value_uint32;
+	float value_float;
+	double value_double;
+	utf8string value_string;
+} value_union;
 
-/**
- * 
- *  rct2: 0x006E3604
- */
-void config_reset_shortcut_keys()
+typedef struct {
+	const_utf8string key;
+	value_union value;
+} config_enum_definition;
+
+#define END_OF_ENUM { NULL, 0 }
+
+typedef struct {
+	size_t offset;
+	const_utf8string property_name;
+	uint8 type;
+	value_union default_value;
+	config_enum_definition *enum_definitions;
+} config_property_definition;
+
+typedef struct {
+	void *base_address;
+	const_utf8string section_name;
+	config_property_definition *property_definitions;
+	int property_definitions_count;
+} config_section_definition;
+
+#pragma region Enum definitions
+
+config_enum_definition _screenShotFormatEnum[] = {
+	{ "BMP", SCREENSHOT_FORMAT_BMP },
+	{ "PNG", SCREENSHOT_FORMAT_PNG },
+	END_OF_ENUM
+};
+
+config_enum_definition _measurementFormatEnum[] = {
+	{ "IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL },
+	{ "METRIC", MEASUREMENT_FORMAT_METRIC },
+	END_OF_ENUM
+};
+
+config_enum_definition _temperatureFormatEnum[] = {
+	{ "CELSIUS", TEMPERATURE_FORMAT_C },
+	{ "FAHRENHEIT", TEMPERATURE_FORMAT_F },
+	END_OF_ENUM
+};
+
+config_enum_definition _currencyEnum[] = {
+	{ "GBP", CURRENCY_POUNDS },
+	{ "USD", CURRENCY_DOLLARS },
+	{ "FRF", CURRENCY_FRANC },
+	{ "DEM", CURRENCY_DEUTSCHMARK },
+	{ "JPY", CURRENCY_YEN },
+	{ "ESP", CURRENCY_PESETA },
+	{ "ITL", CURRENCY_LIRA },
+	{ "NLG", CURRENCY_GUILDERS },
+	{ "SEK", CURRENCY_KRONA },
+	{ "EUR", CURRENCY_EUROS },
+	END_OF_ENUM
+};
+
+config_enum_definition _languageEnum[] = {
+	{ "en-GB", LANGUAGE_ENGLISH_UK },
+	{ "en-US", LANGUAGE_ENGLISH_US },
+	{ "de-DE", LANGUAGE_GERMAN },
+	{ "nl-NL", LANGUAGE_DUTCH },
+	{ "fr-FR", LANGUAGE_FRENCH },
+	{ "hu-HU", LANGUAGE_HUNGARIAN },
+	{ "pl-PL", LANGUAGE_POLISH },
+	{ "es-ES", LANGUAGE_SPANISH },
+	{ "sv-SE", LANGUAGE_SWEDISH },
+	END_OF_ENUM
+};
+
+#pragma endregion
+
+#pragma region Section / property definitions
+
+config_property_definition _generalDefinitions[] = {
+	{ offsetof(general_configuration, always_show_gridlines),			"always_show_gridlines",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, confirmation_prompt),				"confirmation_prompt",			CONFIG_VALUE_TYPE_UINT8,		0,								NULL					},
+	{ offsetof(general_configuration, construction_marker_colour),		"construction_marker_colour",	CONFIG_VALUE_TYPE_UINT8,		false,							NULL					},
+	{ offsetof(general_configuration, currency_format),					"currency_format",				CONFIG_VALUE_TYPE_UINT8,		CURRENCY_POUNDS,				_currencyEnum			},
+	{ offsetof(general_configuration, edge_scrolling),					"edge_scrolling",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, fullscreen_mode),					"fullscreen_mode",				CONFIG_VALUE_TYPE_UINT8,		0,								NULL					},
+	{ offsetof(general_configuration, fullscreen_height),				"fullscreen_height",			CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
+	{ offsetof(general_configuration, fullscreen_width),				"fullscreen_width",				CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
+	{ offsetof(general_configuration, game_path),						"game_path",					CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(general_configuration, landscape_smoothing),				"landscape_smoothing",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, language),						"language",						CONFIG_VALUE_TYPE_UINT16,		LANGUAGE_ENGLISH_UK,			_languageEnum			},
+	{ offsetof(general_configuration, measurement_format),				"measurement_format",			CONFIG_VALUE_TYPE_UINT8,		MEASUREMENT_FORMAT_IMPERIAL,	_measurementFormatEnum	},
+	{ offsetof(general_configuration, play_intro),						"play_intro",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, save_plugin_data),				"save_plugin_data",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, screenshot_format),				"screenshot_format",			CONFIG_VALUE_TYPE_UINT8,		SCREENSHOT_FORMAT_PNG,			_screenShotFormatEnum	},
+	{ offsetof(general_configuration, show_height_as_units),			"show_height_as_units",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, temperature_format),				"temperature_format",			CONFIG_VALUE_TYPE_UINT8,		TEMPERATURE_FORMAT_C,			_temperatureFormatEnum	},
+	{ offsetof(general_configuration, window_height),					"window_height",				CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
+	{ offsetof(general_configuration, window_snap_proximity),			"window_snap_proximity",		CONFIG_VALUE_TYPE_UINT8,		5,								NULL					},
+	{ offsetof(general_configuration, window_width),					"window_width",					CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
+};
+
+config_property_definition _soundDefinitions[] = {
+	{ offsetof(sound_configuration, forced_software_buffering),			"forced_software_buffering",	CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(sound_configuration, sound_quality),						"sound_quality",				CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
+	{ offsetof(sound_configuration, title_music),						"title_music",					CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
+};
+
+config_section_definition _sectionDefinitions[] = {
+	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
+	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) }
+};
+
+#pragma endregion
+
+general_configuration gConfigGeneral;
+sound_configuration gConfigSound;
+
+bool config_open(const utf8string path);
+bool config_save(const utf8string path);
+static void config_read_properties(config_section_definition **currentSection, const_utf8string line);
+static void config_save_property_value(FILE *file, uint8 type, value_union *value);
+static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions);
+static void config_write_enum(FILE *file, uint8 type, value_union *value, config_enum_definition *enumDefinitions);
+
+static int utf8_read(utf8 **outch);
+static void utf8_skip_whitespace(utf8 **outch);
+static void utf8_skip_non_whitespace(utf8 **outch);
+
+void config_apply_to_old_addresses();
+
+void config_set_defaults()
 {
-	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
+	int i, j;
+
+	for (i = 0; i < countof(_sectionDefinitions); i++) {
+		config_section_definition *section = &_sectionDefinitions[i];
+		for (j = 0; j < section->property_definitions_count; j++) {
+			config_property_definition *property = &section->property_definitions[j];
+
+			value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
+			memcpy(destValue, &property->default_value, _configValueTypeSize[property->type]);
+		}
+	}
 }
 
-void config_save_ini(char *path)
+bool config_open_default()
 {
-	FILE *fp = NULL;
+	utf8 path[MAX_PATH];
 
+	platform_get_user_directory(path, NULL);
+	strcat(path, "config.ini");
+	if (config_open(path)) {
+		config_apply_to_old_addresses();
+		return true;
+	}
 
-	fp = fopen(path, "wt+");
-
-	config_write_ini_general(fp);
-	config_write_ini_sound(fp);
-
-	fclose(fp);
+	return false;
 }
 
-void config_write_ini_sound(FILE *fp)
+bool config_save_default()
 {
-	fprintf(fp, "[sound]\n");
-	if (gSound_config.sound_quality == SOUND_QUALITY_LOW) {
-		fprintf(fp, "sound_quality = low\n");
+	utf8 path[MAX_PATH];
+
+	platform_get_user_directory(path, NULL);
+	strcat(path, "config.ini");
+	if (config_save(path)) {
+		config_apply_to_old_addresses();
+		return true;
 	}
-	else if (gSound_config.sound_quality == SOUND_QUALITY_MEDIUM) {
-		fprintf(fp, "sound_quality = medium\n");
-	}
-	else{
-		fprintf(fp, "sound_quality = high\n");
-	}
-	
-	if (gSound_config.forced_software_buffering){
-		fprintf(fp, "forced_software_buffering = true\n");
-	}
-	else {
-		fprintf(fp, "forced_software_buffering = false\n");
-	}
+
+	return false;
 }
 
-void config_write_ini_general(FILE *fp)
+bool config_open(const utf8string path)
 {
-	int currencyIterator = 0;
+	FILE *file;
+	uint8 *lineBuffer;
+	size_t lineBufferCapacity;
+	size_t lineLength;
+	int c;
+	config_section_definition *currentSection;
 
-	fprintf(fp, "[general]\n");
-	fprintf(fp, "game_path = %s\n", gGeneral_config.game_path);
+	file = fopen(path, "rb");
+	if (file == NULL)
+		return false;
 
-	switch (gGeneral_config.screenshot_format)
-	{
-	case SCREENSHOT_FORMAT_BMP:
-		fprintf(fp, "screenshot_format = BMP\n");
-		break;
-	case SCREENSHOT_FORMAT_PNG:
-		fprintf(fp, "screenshot_format = PNG\n");
-		break;
-	default:
-		config_error("error saving config.ini: wrong screenshot_format");
-		break;
-	}
+	currentSection = NULL;
+	lineBufferCapacity = 64;
+	lineBuffer = malloc(lineBufferCapacity);
+	lineLength = 0;
+	while ((c = fgetc(file)) != EOF) {
+		if (c == '\n' || c == '\r') {
+			lineBuffer[lineLength++] = 0;
+			config_read_properties(&currentSection, (const_utf8string)lineBuffer);
+			lineLength = 0;
+		} else {
+			lineBuffer[lineLength++] = c;
+		}
 
-	if (gGeneral_config.play_intro){
-		fprintf(fp, "play_intro = true\n");
-	}
-	else {
-		fprintf(fp, "play_intro = false\n");
-	}
-
-	if (gGeneral_config.confirmation_prompt){
-		fprintf(fp, "confirmation_prompt = true\n");
-	}
-	else {
-		fprintf(fp, "confirmation_prompt = false\n");
-	}
-
-	if (gGeneral_config.edge_scrolling){
-		fprintf(fp, "edge_scrolling = true\n");
-	}
-	else {
-		fprintf(fp, "edge_scrolling = false\n");
-	}
-
-	for (currencyIterator = 0; currencyIterator < countof(_currencyLookupTable); currencyIterator++) {
-		if (_currencyLookupTable[currencyIterator].value == gGeneral_config.currency_format) {
-			gGeneral_config.currency_format = _currencyLookupTable[currencyIterator].value;
-			fprintf(fp, "currency = %s\n", _currencyLookupTable[currencyIterator].key);
-			break; // There are more than one valid item for Pound, Euro and Dollar ...
+		if (lineLength >= lineBufferCapacity) {
+			lineBufferCapacity *= 2;
+			lineBuffer = realloc(lineBuffer, lineBufferCapacity);
 		}
 	}
 
-	if (gGeneral_config.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
-		fprintf(fp, "measurement_format = imperial\n");
-	}
-	else {
-		fprintf(fp, "measurement_format = metric\n");
+	if (lineLength > 0) {
+		lineBuffer[lineLength++] = 0;
+		config_read_properties(&currentSection, lineBuffer);
 	}
 
-	if (gGeneral_config.temperature_format == TEMPERATURE_FORMAT_F) {
-		fprintf(fp, "temperature_format = fahrenheit\n");
-	}
-	else {
-		fprintf(fp, "temperature_format = celsius\n");
-	}
-
-	if (gGeneral_config.always_show_gridlines){
-		fprintf(fp, "always_show_gridlines = true\n");
-	}
-	else {
-		fprintf(fp, "always_show_gridlines = false\n");
-	}
-
-	if (gGeneral_config.landscape_smoothing){
-		fprintf(fp, "landscape_smoothing = true\n");
-	}
-	else {
-		fprintf(fp, "landscape_smoothing = false\n");
-	}
-
-	if (gGeneral_config.show_height_as_units){
-		fprintf(fp, "show_height_as_units = true\n");
-	}
-	else {
-		fprintf(fp, "show_height_as_units = false\n");
-	}
-
-	if (gGeneral_config.save_plugin_data){
-		fprintf(fp, "save_plugin_data = true\n");
-	}
-	else {
-		fprintf(fp, "save_plugin_data = false\n");
-	}
-
-	if (gGeneral_config.fullscreen_mode == 0)
-		fprintf(fp, "fullscreen_mode = window\n");
-	else if (gGeneral_config.fullscreen_mode == 1)
-		fprintf(fp, "fullscreen_mode = fullscreen\n");
-	else
-		fprintf(fp, "fullscreen_mode = borderless_fullscreen\n");
-
-	if (gGeneral_config.fullscreen_width != -1)
-		fprintf(fp, "fullscreen_width = %d\n", gGeneral_config.fullscreen_width);
-	if (gGeneral_config.fullscreen_height != -1)
-		fprintf(fp, "fullscreen_height = %d\n", gGeneral_config.fullscreen_height);
-
-	if (gGeneral_config.window_width != -1)
-		fprintf(fp, "window_width = %d\n", gGeneral_config.window_width);
-	if (gGeneral_config.window_height != -1)
-		fprintf(fp, "window_height = %d\n", gGeneral_config.window_height);
-
-	fprintf(fp, "language = %d\n", gGeneral_config.language);
-
-	fprintf(fp, "window_snap_proximity = %d\n", gGeneral_config.window_snap_proximity);
-
-	fprintf(fp, "title_music = %d\n", gGeneral_config.title_music);
+	free(lineBuffer);
+	fclose(file);
+	return true;
 }
 
-/**
- * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
- * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
- */
-void config_apply_to_old_addresses()
+bool config_save(const utf8string path)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gGeneral_config.construction_marker_colour;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (gGeneral_config.measurement_format + 1) * 256;
-	if (gGeneral_config.show_height_as_units)
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
+	FILE *file;
+	int i, j;
+	value_union *value;
 
-	int configFlags = 0;
-	if (gGeneral_config.always_show_gridlines)
-		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-	if (!gGeneral_config.landscape_smoothing)
-		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-	if (gGeneral_config.show_height_as_units)
-		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-	if (gGeneral_config.save_plugin_data)
-		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		log_error("Unable to write to config file.");
+		return false;
+	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
+	for (i = 0; i < countof(_sectionDefinitions); i++) {
+		config_section_definition *section = &_sectionDefinitions[i];
+
+		fputc('[', file);
+		fwrite(section->section_name, strlen(section->section_name), 1, file);
+		fputc(']', file);
+		fputc('\n', file);
+
+		for (j = 0; j < section->property_definitions_count; j++) {
+			config_property_definition *property = &section->property_definitions[j];
+
+			fwrite(property->property_name, strlen(property->property_name), 1, file);
+			fwrite(" = ", 3, 1, file);
+
+			value = (value_union*)((size_t)section->base_address + (size_t)property->offset);
+			if (property->enum_definitions != NULL)
+				config_write_enum(file, property->type, value, property->enum_definitions);
+			else
+				config_save_property_value(file, property->type, value);
+			fputc('\n', file);
+		}
+		fputc('\n', file);
+	}
+
+	fclose(file);
+	return true;
 }
 
-static void config_get_path(char *outPath)
+static void config_save_property_value(FILE *file, uint8 type, value_union *value)
 {
-	platform_get_user_directory(outPath, NULL);
-	strcat(outPath, "config.ini");
+	switch (type) {
+	case CONFIG_VALUE_TYPE_BOOLEAN:
+		if (value->value_boolean) fwrite("true", 4, 1, file);
+		else fwrite("false", 5, 1, file);
+		break;
+	case CONFIG_VALUE_TYPE_UINT8:
+		fprintf(file, "%d", value->value_uint8);
+		break;
+	case CONFIG_VALUE_TYPE_UINT16:
+		fprintf(file, "%d", value->value_uint16);
+		break;
+	case CONFIG_VALUE_TYPE_UINT32:
+		fprintf(file, "%d", value->value_uint32);
+		break;
+	case CONFIG_VALUE_TYPE_SINT8:
+		fprintf(file, "%d", value->value_sint8);
+		break;
+	case CONFIG_VALUE_TYPE_SINT16:
+		fprintf(file, "%d", value->value_sint16);
+		break;
+	case CONFIG_VALUE_TYPE_SINT32:
+		fprintf(file, "%d", value->value_sint32);
+		break;
+	case CONFIG_VALUE_TYPE_FLOAT:
+		fprintf(file, "%.3f", value->value_float);
+		break;
+	case CONFIG_VALUE_TYPE_DOUBLE:
+		fprintf(file, "%.6f", value->value_double);
+		break;
+	case CONFIG_VALUE_TYPE_STRING:
+		fputc('"', file);
+		if (value->value_string != NULL)
+			fwrite(value->value_string, strlen(value->value_string), 1, file);
+		fputc('"', file);
+		break;
+	}
 }
 
-/**
- * Initialise the settings.
- * It checks if the OpenRCT2 folder exists and creates it if it does not
- * parsing of the config file is done in config_parse_settings
- */
-void config_load()
-{	
-	FILE *fp;
-	char configPath[MAX_PATH];
+bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
+{
+	utf8 *ch;
+	int c;
 
-	config_get_path(configPath);
+	ch = line;
+	utf8_skip_whitespace(&ch);
+	if (*ch != '[') return false;
+	*sectionName = ++ch;
 
-	memcpy(&gGeneral_config, &gGeneral_config_default, sizeof(general_configuration_t));
+	while (*ch != 0) {
+		c = utf8_read(&ch);
+		if (c == '#') return false;
+		if (c == '[') return false;
+		if (c == ' ') break;
+		if (c == ']') break;
+	}
 
-	fp = fopen(configPath, "r");
-	if (fp == NULL) {
-		config_create_default(configPath);
-		fp = fopen(configPath, "r");
-		if (fp == NULL) {
-			config_error("Could not create config file.");
+	*sectionNameSize = ch - *sectionName - 1;
+	return true;
+}
+
+bool config_get_property_name_value(const utf8string line, const utf8 **propertyName, int *propertyNameSize, const utf8 **value, int *valueSize)
+{
+	utf8 *ch;
+	int c, lastC;
+	bool quotes;
+
+	ch = line;
+	utf8_skip_whitespace(&ch);
+	
+	if (*ch == 0) return false;
+	*propertyName = ch;
+
+	while (*ch != 0) {
+		c = utf8_read(&ch);
+		if (isspace(c) || c == '=') {
+			*propertyNameSize = ch - *propertyName - 1;
+			break;
+		} else if (c == '#') {
+			return false;
+		}
+	}
+
+	if (*ch == 0) return false;
+	utf8_skip_whitespace(&ch);
+	if (*ch != '=') return false;
+	ch++;
+	utf8_skip_whitespace(&ch);
+	if (*ch == 0) return false;
+
+	if (*ch == '"') {
+		ch++;
+		quotes = true;
+	} else {
+		quotes = false;
+	}
+	*value = ch;
+
+	while (*ch != 0) {
+		c = utf8_read(&ch);
+		if (isspace(c) || c == '#') {
+			if (!quotes) break;
+		}
+		lastC = c;
+	}
+	*valueSize = ch - *value - 1;
+	return true;
+}
+
+config_section_definition *config_get_section_def(const utf8 *name, int size)
+{
+	int i;
+
+	for (i = 0; i < countof(_sectionDefinitions); i++)
+		if (_strnicmp(_sectionDefinitions[i].section_name, name, size) == 0)
+			return &_sectionDefinitions[i];
+
+	return NULL;
+}
+
+config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
+{
+	int i;
+
+	for (i = 0; i < section->property_definitions_count; i++)
+		if (_strnicmp(section->property_definitions[i].property_name, name, size) == 0)
+			return &section->property_definitions[i];
+
+	return NULL;
+}
+
+void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
+{
+	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
+
+	if (property->enum_definitions != NULL)
+		if (config_read_enum(destValue, _configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+			return;
+
+	switch (property->type) {
+	case CONFIG_VALUE_TYPE_BOOLEAN:
+		if (_strnicmp(value, "false", valueSize) == 0) destValue->value_boolean = false;
+		else if (_strnicmp(value, "true", valueSize) == 0) destValue->value_boolean = true;
+		else destValue->value_boolean = strtol(value, NULL, 0) != 0;
+		break;
+	case CONFIG_VALUE_TYPE_UINT8:
+		destValue->value_uint8 = (uint8)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_UINT16:
+		destValue->value_uint16 = (uint16)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_UINT32:
+		destValue->value_uint32 = (uint32)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT8:
+		destValue->value_sint8 = (sint8)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT16:
+		destValue->value_sint16 = (sint16)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT32:
+		destValue->value_sint32 = (sint32)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_FLOAT:
+		destValue->value_float = strtof(value, NULL);
+		break;
+	case CONFIG_VALUE_TYPE_DOUBLE:
+		destValue->value_double = strtod(value, NULL);
+		break;
+	case CONFIG_VALUE_TYPE_STRING:
+		SafeFree(destValue->value_string);
+		destValue->value_string = malloc(valueSize + 1);
+		memcpy(destValue->value_string, value, valueSize);
+		destValue->value_string[valueSize] = 0;
+		break;
+	}
+}
+
+static void config_read_properties(config_section_definition **currentSection, const_utf8string line)
+{
+	utf8 *ch = (utf8*)line;
+	utf8_skip_whitespace(&ch);
+
+	if (*ch == '[') {
+		const utf8 *sectionName;
+		int sectionNameSize;
+		if (config_get_section(ch, &sectionName, &sectionNameSize))
+			*currentSection = config_get_section_def(sectionName, sectionNameSize);
+	} else {
+		if (*currentSection != NULL) {
+			const utf8 *propertyName, *value;
+			int propertyNameSize, valueSize;
+			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
+				config_property_definition *property;
+				property = config_get_property_def(*currentSection, propertyName, propertyNameSize);
+				if (property != NULL)
+					config_set_property(*currentSection, property, value, valueSize);
+			}
+		}
+	}
+}
+
+static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions)
+{
+	while (enumDefinitions->key != NULL) {
+		if (_strnicmp(enumDefinitions->key, key, keySize) == 0) {
+			memcpy(dest, &enumDefinitions->value.value_uint32, destSize);
+			return true;
+		}
+		enumDefinitions++;
+	}
+	return false;
+}
+
+static void config_write_enum(FILE *file, uint8 type, value_union *value, config_enum_definition *enumDefinitions)
+{
+	uint32 enumValue = (value->value_uint32) & ((1 << (_configValueTypeSize[type] * 8)) - 1);
+	while (enumDefinitions->key != NULL) {
+		if (enumDefinitions->value.value_uint32 == enumValue) {
+			fwrite(enumDefinitions->key, strlen(enumDefinitions->key), 1, file);
 			return;
 		}
+		enumDefinitions++;
+	}
+	config_save_property_value(file, type, value);
+}
+
+static int utf8_read(utf8 **outch)
+{
+	int result;
+	int numBytes;
+
+	utf8 *ch = *outch;
+	if (!(ch[0] & 0x80)) {
+		result = ch[0];
+		numBytes = 1;
+	} else if (!(ch[0] & 0x20)) {
+		result = ((ch[0] & 0x1F) << 6) | (ch[1] & 0x3F);
+		numBytes = 2;
+	} else {
+		numBytes = 1;
 	}
 
-	config_parse_settings(fp);
-	fclose(fp);
-
-	config_apply_to_old_addresses();
+	*outch = ch + numBytes;
+	return result;
 }
 
-void config_save()
+static void utf8_skip_whitespace(utf8 **outch)
 {
-	char configPath[MAX_PATH];
-
-	config_get_path(configPath);
-	config_save_ini(configPath);
-	config_apply_to_old_addresses();
+	utf8 *ch;
+	while (**outch != 0) {
+		ch = *outch;
+		if (!isspace(utf8_read(outch))) {
+			*outch = ch;
+			break;
+		}
+	}
 }
+
+static void utf8_skip_non_whitespace(utf8 **outch)
+{
+	while (**outch != 0) {
+		if (isspace(utf8_read(outch)))
+			break;
+	}
+}
+
+/*
+
+Code reserved for when we want more intelligent saving of config file which preserves comments and layout
+
+enum {
+	CONFIG_LINE_TYPE_WHITESPACE,
+	CONFIG_LINE_TYPE_COMMENT,
+	CONFIG_LINE_TYPE_SECTION,
+	CONFIG_LINE_TYPE_PROPERTY,
+	CONFIG_LINE_TYPE_INVALID
+};
+
+typedef struct {
+	uint8 type;
+	utf8string line;
+} config_line;
+
+static config_line *_configLines = NULL;
+
+*/
 
 /**
  * Attempts to find the RCT2 installation directory.
@@ -352,7 +610,7 @@ void config_save()
  * @param resultPath Pointer to where the absolute path of the RCT2 installation directory will be copied to.
  * @returns 1 if successful, otherwise 0.
  */
-static int config_find_rct2_path(char *resultPath)
+static bool config_find_rct2_path(char *resultPath)
 {
 	int i;
 
@@ -371,416 +629,66 @@ static int config_find_rct2_path(char *resultPath)
 	for (i = 0; i < countof(searchLocations); i++) {
 		if (platform_directory_exists(searchLocations[i]) ) {
 			strcpy(resultPath, searchLocations[i]);
-			return 1;
+			return true;
 		}
 	}
 
-	return 0;
+	return false;
 }
 
-int config_find_or_browse_install_directory()
+bool config_find_or_browse_install_directory()
 {
+	char path[MAX_PATH];
 	char *installPath;
 
-	if (!config_find_rct2_path(gGeneral_config.game_path)) {
+	if (config_find_rct2_path(path)) {
+		SafeFree(gConfigGeneral.game_path);
+		gConfigGeneral.game_path = malloc(strlen(path) + 1);
+		strcpy(gConfigGeneral.game_path, path);
+	} else {
 		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
 		installPath = platform_open_directory_browser("Please select your RCT2 directory");
 		if (installPath == NULL)
-			return 0;
+			return false;
 
-		strcpy(gGeneral_config.game_path, installPath);
-	}
-
-	config_save();
-	return 1;
-}
-
-/**
- * Create a new default settings file.
- * This should be created from some other resource when openRCT2 grows
- * @param path The aboslute path of the config file
- */
-static void config_create_default(char *path)
-{
-	gGeneral_config = gGeneral_config_default;
-	if (!config_find_or_browse_install_directory()) {
-		log_fatal("An RCT2 install directory must be specified!");
-		exit(-1);
-	}
-	
-	config_save_ini(path);
-}
-
-/**
- * Parse settings and set the game veriables
- * @param fp file pointer to the settings file
- */
-static void config_parse_settings(FILE *fp)
-{
-	int pos = 0;
-	char *setting;
-	char *value;
-	char *section;
-	setting = (char *)malloc(MAX_CONFIG_LENGTH);
-	value = (char *)malloc(MAX_CONFIG_LENGTH);
-	section = (char*)malloc(MAX_CONFIG_LENGTH);
-	
-	while (config_get_line(fp, setting, value) > 0) {
-		if (strcmp(setting, "section") == 0){ 
-			strcpy(section, value);
-			continue;
-		}
-		
-		if (strcmp(section, "sound") == 0){
-			config_sound(setting, value);
-		}
-		else if (strcmp(section, "general") == 0){
-			config_general(setting, value);
-		}
-		
-	
-		
-	}
-	//RCT2_GLOBAL(0x009AACBC, sint8) = CURRENCY_KRONA;
-	
-	
-	
-	free(setting);
-	free(value);
-	free(section);
-}
-
-static void config_sound(char *setting, char *value){
-	if (strcmp(setting, "sound_quality") == 0){
-		if (strcmp(value, "low") == 0){
-			gSound_config.sound_quality = SOUND_QUALITY_LOW;
-		}
-		else if (strcmp(value, "medium") == 0){
-			gSound_config.sound_quality = SOUND_QUALITY_MEDIUM;
-		}
-		else{
-			gSound_config.sound_quality = SOUND_QUALITY_HIGH;
-		}
-	}
-	else if (strcmp(setting, "forced_software_buffering") == 0){
-		if (strcmp(value, "true") == 0){
-			gSound_config.forced_software_buffering = 1;
-		}
-		else{
-			gSound_config.forced_software_buffering = 0;
-		}
+		SafeFree(gConfigGeneral.game_path);
+		gConfigGeneral.game_path = installPath;
 	}
 
-}
-
-static void config_general(char *setting, char *value){
-	if (strcmp(setting, "game_path") == 0){
-		strcpy(gGeneral_config.game_path, value);
-	}
-	else if (strcmp(setting, "screenshot_format") == 0) {
-		if (strcmp(value, "png") == 0) {
-			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
-		}
-		else if (strcmp(value, "1") == 0) { //TODO: REMOVE LINE AT LATER DATE WHEN EVERYONE HAS NEW CONFIG FORMAT
-			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_PNG;
-		}
-		else {
-			gGeneral_config.screenshot_format = SCREENSHOT_FORMAT_BMP;
-		}
-	}
-	else if (strcmp(setting, "play_intro") == 0) {
-		gGeneral_config.play_intro = (strcmp(value, "true") == 0);
-	}
-	else if (strcmp(setting, "confirmation_prompt") == 0) {
-		gGeneral_config.confirmation_prompt = (strcmp(value, "true") == 0);
-	}
-	else if (strcmp(setting, "edge_scrolling") == 0){
-		if (strcmp(value, "true") == 0){
-			gGeneral_config.edge_scrolling = 1;
-		}
-		else {
-			gGeneral_config.edge_scrolling = 0;
-		}
-	}
-	else if (strcmp(setting, "measurement_format") == 0){
-		if (strcmp(value, "imperial") == 0){
-			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_IMPERIAL;
-		}
-		else{
-			gGeneral_config.measurement_format = MEASUREMENT_FORMAT_METRIC;
-		}
-	}
-	else if (strcmp(setting, "temperature_format") == 0){
-		if (strcmp(value, "fahrenheit") == 0){
-			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_F;
-		}
-		else{
-			gGeneral_config.temperature_format = TEMPERATURE_FORMAT_C;
-		}
-	}
-	else if (strcmp(setting, "currency") == 0){
-		config_parse_currency(value);
-	}
-	else if (strcmp(setting, "always_show_gridlines") == 0){
-		if (strcmp(value, "true") == 0){
-			gGeneral_config.always_show_gridlines = 1;
-		}
-		else {
-			gGeneral_config.always_show_gridlines = 0;
-		}
-	}
-	else if (strcmp(setting, "landscape_smoothing") == 0){
-		if (strcmp(value, "true") == 0){
-			gGeneral_config.landscape_smoothing = 1;
-		}
-		else {
-			gGeneral_config.landscape_smoothing = 0;
-		}
-	}
-	else if (strcmp(setting, "show_height_as_units") == 0){
-		if (strcmp(value, "true") == 0){
-			gGeneral_config.show_height_as_units = 1;
-		}
-		else {
-			gGeneral_config.show_height_as_units = 0;
-		}
-	}
-	else if (strcmp(setting, "save_plugin_data") == 0){
-		if (strcmp(value, "true") == 0){
-			gGeneral_config.save_plugin_data = 1;
-		}
-		else {
-			gGeneral_config.save_plugin_data = 0;
-		}
-	}
-	else if (strcmp(setting, "fullscreen_mode") == 0){
-		if (strcmp(value, "window") == 0){
-			gGeneral_config.fullscreen_mode = 0;
-		}
-		else if (strcmp(value, "fullscreen") == 0){
-			gGeneral_config.fullscreen_mode = 1;
-		}
-		else
-			gGeneral_config.fullscreen_mode = 2;
-	}
-	else if (strcmp(setting, "fullscreen_width") == 0) {
-		gGeneral_config.fullscreen_width = atoi(value);
-	}
-	else if (strcmp(setting, "fullscreen_height") == 0) {
-		gGeneral_config.fullscreen_height = atoi(value);
-	}
-	else if (strcmp(setting, "window_width") == 0) {
-		gGeneral_config.window_width = atoi(value);
-	}
-	else if (strcmp(setting, "window_height") == 0) {
-		gGeneral_config.window_height = atoi(value);
-	}
-	else if (strcmp(setting, "language") == 0) {
-		gGeneral_config.language = atoi(value);
-	}
-	else if (strcmp(setting, "window_snap_proximity") == 0) {
-		gGeneral_config.window_snap_proximity = clamp(0, atoi(value), 255);
-	}
-	else if (strcmp(setting, "title_music") == 0) {
-		gGeneral_config.title_music = atoi(value);
-	}
-}
-
-/**
- * Read one line in the settings file
- * @param fp filepointer to the config file
- * @param setting pointer where to to store the setting
- * @param value pointer to where to store the value 
- * @return < 0 if EOF file is reached or other error
- */
-static int config_get_line(FILE *fp, char *setting, char *value)
-{
-	int c;
-	
-	c = fgetc(fp);
-	while (isspace(c)){
-		c = getc(fp);
-	}
-
-	if (c == '['){
-		return config_parse_section(fp, setting, value);
-	}
-	else if(c == '#'){
-		while (c != '\n'){
-			c = fgetc(fp);
-		}
-		return 1;
-	}
-	if (c == EOF){
-		return -1;
-	}
-	
-	while (!isalpha(c)){
-		c = fgetc(fp);
-	}
-	
-	//if the first char is not the '[' char, it belongs to the setting name. We want to leave that for the next fn
-	fseek(fp, -1, SEEK_CUR);
-	
-	config_parse_setting(fp, setting);
-
-	c = fgetc(fp);
-	while (isspace(c)){
-		c = getc(fp);
-	}
-	
-	if (c != '='){
-		config_error("There is an error in your configuration file");
-		return -1;
-	}
-
-	config_parse_value(fp, value);
-	return 1;
-
-	
-}
-
-/**
-* Parse the value of a setting
-* @param fp a filepointer to the config file
-* @param value a pointer to where to store the setting
-* @return < 0 if EOF is reached
-*/
-static int config_parse_setting(FILE *fp, char *setting){
-	long start, end;
-	int size, c, pos = 0;
-	
-	
-	start = ftell(fp);
-	c = fgetc(fp);
-	
-	while (isspace(c)){
-		start = ftell(fp);
-		c = fgetc(fp);
-
-	}
-	if (c == EOF){
-		return -1;
-	}
-
-	while (isalpha(c) || c == '_'){
-		c = fgetc(fp);
-	}
-
-	end = ftell(fp);
-	size = end - start;
-	
-	
-	fseek(fp, start, SEEK_SET);
-	c = fgetc(fp);
-	while (isalpha(c) || c == '_'){
-		setting[pos] = (char)c;
-		c = fgetc(fp);
-		pos++;
-	}
-	setting[pos] = '\0';
-	return 1;
-}
-
-/**
- * Parse the value of a setting
- * @param fp a filepointer to the config file
- * @param value a pointer to where to store the value
- * @return < 0 if EOF is reached
- */
-static int config_parse_value(FILE *fp, char *value)
-{
-	long start, end;
-	int size, c, pos = 0;
-
-	start = ftell(fp);
-	c = fgetc(fp);
-	while (isspace(c)) {
-		start = ftell(fp);
-		c = fgetc(fp);
-	}
-	
-	while (c != EOF && c != '\n') {
-		c = fgetc(fp);		
-	}
-
-	end = ftell(fp);
-	size = end - start;
-	if (size > MAX_CONFIG_LENGTH)
-		config_error("One of your settings is too long");
-	
-	fseek(fp, start, SEEK_SET);
-	c = fgetc(fp);
-	while (c != EOF && c != '\n') {
-		value[pos] = (char)tolower(c);
-		c = fgetc(fp);
-		pos++;
-	}
-	value[pos] = '\0';
-	return 0;
-}
-
-/**
- * Parse the current section
- * @param fp Filepointer to the config file
- * @param setting This is set to contain the string "section"
- * @param value Pointer to where the section name should be put
- * @return < 0 if EOF is reached
- */
-static int config_parse_section(FILE *fp, char *setting, char *value){
-	int size, c, pos = 0;
-	long start, end;
-		
-	strcpy(setting, "section\0");
-	c = fgetc(fp);
-	start = ftell(fp);
-	while (c != ']' && c != EOF){
-		c = fgetc(fp);
-	}
-	end = ftell(fp);
-	size = end - start;
-	fseek(fp, start - 1, SEEK_SET);
-	c = fgetc(fp);
-	while (c != ']' && c != EOF){
-		value[pos] = (char)c;
-		c = fgetc(fp);
-		pos++;
-	}
-	
-	value[pos] = '\0';
-	if (c != ']'){
-		config_error("There is an error with the section headers");
-	}
-	c = fgetc(fp); //devour ']'	
-	
-	return 1;
-}
-
-static int config_parse_currency(char *currency)
-{
-	int i;
-	for (i = 0; i < countof(_currencyLookupTable); i++) {
-		if (_strcmpi(currency, _currencyLookupTable[i].key) == 0) {
-			gGeneral_config.currency_format = _currencyLookupTable[i].value;
-			return 1;
-		}
-	}
-
-	config_error("Invalid currency set in config file");
-	return -1;
-}
-/**
- * Error with config file. Print error message an quit the game
- * @param msg Message to print in message box
- */
-static void config_error(char *msg){
-
-	platform_show_messagebox(msg);
-	//TODO:SHUT DOWN EVERYTHING!
-
+	return true;
 }
 
 #pragma region Obsolete
+
+/**
+ * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
+ * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
+ */
+void config_apply_to_old_addresses()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format; 
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gConfigSound.sound_quality;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gConfigSound.forced_software_buffering; 
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (gConfigGeneral.measurement_format + 1) * 256;
+	if (gConfigGeneral.show_height_as_units)
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
+
+	int configFlags = 0;
+	if (gConfigGeneral.always_show_gridlines)
+		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
+	if (!gConfigGeneral.landscape_smoothing)
+		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
+	if (gConfigGeneral.show_height_as_units)
+		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
+	if (gConfigGeneral.save_plugin_data)
+		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
+}
 
 // The following functions are related to the original configuration file. This has now been replaced with a new configuration
 // INI file located in the user's OpenRCT2 home directory.
@@ -807,13 +715,13 @@ void config_dat_load()
 			fclose(fp);
 
 			//general configuration
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gGeneral_config.edge_scrolling;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gGeneral_config.currency_format; 
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gGeneral_config.measurement_format;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gGeneral_config.temperature_format;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
 			
 			// always show gridlines
-			if (gGeneral_config.always_show_gridlines){
+			if (gConfigGeneral.always_show_gridlines){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
 			}
 			else {
@@ -821,7 +729,7 @@ void config_dat_load()
 			}
 
 			// landscape smoothing
-			if (!gGeneral_config.landscape_smoothing){
+			if (!gConfigGeneral.landscape_smoothing){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
 			}
 			else {
@@ -829,7 +737,7 @@ void config_dat_load()
 			}
 			
 			// show height as units
-			if (gGeneral_config.show_height_as_units){
+			if (gConfigGeneral.show_height_as_units){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
 			}
 			else {
@@ -837,7 +745,7 @@ void config_dat_load()
 			}
 
 			// save plugin data
-			if (gGeneral_config.save_plugin_data){
+			if (gConfigGeneral.save_plugin_data){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
 			}
 			else {
@@ -845,8 +753,8 @@ void config_dat_load()
 			}
 
 			//sound configuration
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gSound_config.sound_quality;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gSound_config.forced_software_buffering; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gConfigSound.sound_quality;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gConfigSound.forced_software_buffering; 
 
 			// Line below is temporaraly disabled until all config is in the new format.
 			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
@@ -909,6 +817,63 @@ void config_dat_save()
 		fwrite((void*)0x009AAC5C, 2155, 1, fp);
 		fclose(fp);
 	}
+}
+
+#pragma endregion
+
+#pragma region Shortcuts
+
+// Current keyboard shortcuts
+uint16 gShortcutKeys[SHORTCUT_COUNT];
+
+// Default keyboard shortcuts
+static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
+	SDL_SCANCODE_BACKSPACE,				// SHORTCUT_CLOSE_TOP_MOST_WINDOW
+	0x0100 | SDL_SCANCODE_BACKSPACE,	// SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
+	SDL_SCANCODE_ESCAPE,				// SHORTCUT_CANCEL_CONSTRUCTION_MODE
+	SDL_SCANCODE_PAUSE,					// SHORTCUT_PAUSE_GAME
+	SDL_SCANCODE_PAGEUP,				// SHORTCUT_ZOOM_VIEW_OUT
+	SDL_SCANCODE_PAGEDOWN,				// SHORTCUT_ZOOM_VIEW_IN
+	SDL_SCANCODE_RETURN,				// SHORTCUT_ROTATE_VIEW
+	SDL_SCANCODE_Z,						// SHORTCUT_ROTATE_CONSTRUCTION_OBJECT
+	SDL_SCANCODE_1,						// SHORTCUT_UNDERGROUND_VIEW_TOGGLE
+	SDL_SCANCODE_H,						// SHORTCUT_REMOVE_BASE_LAND_TOGGLE
+	SDL_SCANCODE_V,						// SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE
+	SDL_SCANCODE_3,						// SHORTCUT_SEE_THROUGH_RIDES_TOGGLE
+	SDL_SCANCODE_4,						// SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE
+	SDL_SCANCODE_5,						// SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE
+	SDL_SCANCODE_6,						// SHORTCUT_INVISIBLE_PEOPLE_TOGGLE
+	SDL_SCANCODE_8,						// SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE
+	SDL_SCANCODE_9,						// SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE
+	SDL_SCANCODE_0,						// SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE
+	SDL_SCANCODE_F1,					// SHORTCUT_ADJUST_LAND
+	SDL_SCANCODE_F2,					// SHORTCUT_ADJUST_WATER
+	SDL_SCANCODE_F3,					// SHORTCUT_BUILD_SCENERY
+	SDL_SCANCODE_F4,					// SHORTCUT_BUILD_PATHS
+	SDL_SCANCODE_F5,					// SHORTCUT_BUILD_NEW_RIDE
+	SDL_SCANCODE_F,						// SHORTCUT_SHOW_FINANCIAL_INFORMATION
+	SDL_SCANCODE_D,						// SHORTCUT_SHOW_RESEARCH_INFORMATION
+	SDL_SCANCODE_R,						// SHORTCUT_SHOW_RIDES_LIST
+	SDL_SCANCODE_P,						// SHORTCUT_SHOW_PARK_INFORMATION
+	SDL_SCANCODE_G,						// SHORTCUT_SHOW_GUEST_LIST
+	SDL_SCANCODE_S,						// SHORTCUT_SHOW_STAFF_LIST
+	SDL_SCANCODE_M,						// SHORTCUT_SHOW_RECENT_MESSAGES
+	SDL_SCANCODE_TAB,					// SHORTCUT_SHOW_MAP
+	0x0200 | SDL_SCANCODE_S,			// SHORTCUT_SCREENSHOT
+
+	// New
+	SDL_SCANCODE_MINUS,					// SHORTCUT_REDUCE_GAME_SPEED,
+	SDL_SCANCODE_EQUALS,				// SHORTCUT_INCREASE_GAME_SPEED,
+	0x0200 | 0x0400 | SDL_SCANCODE_C 	// SHORTCUT_OPEN_CHEAT_WINDOW,
+};
+
+/**
+ * 
+ *  rct2: 0x006E3604
+ */
+void config_reset_shortcut_keys()
+{
+	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
 }
 
 #pragma endregion

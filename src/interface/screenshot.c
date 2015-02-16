@@ -50,7 +50,7 @@ void screenshot_check()
 
 			if (screenshotIndex != -1) {
 				char *lang_3165 = (char*)0x009BC677;
-				sprintf(lang_3165, "SCR%d%s", screenshotIndex, _screenshot_format_extension[gGeneral_config.screenshot_format]);
+				sprintf(lang_3165, "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
 
 				RCT2_GLOBAL(0x013CE952, uint16) = 3165;
 				// RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
@@ -96,7 +96,7 @@ static int screenshot_get_next_path(char *path, int format)
 
 int screenshot_dump()
 {
-	switch (gGeneral_config.screenshot_format) {
+	switch (gConfigGeneral.screenshot_format) {
 	case SCREENSHOT_FORMAT_BMP:
 		return screenshot_dump_bmp();
 	case SCREENSHOT_FORMAT_PNG:

@@ -24,4 +24,6 @@
 #include "diagnostic.h"
 #include "rct2.h"
 
+#define SafeFree(x) if ((x) != NULL) { free(x); (x) = NULL; }
+
 #endif

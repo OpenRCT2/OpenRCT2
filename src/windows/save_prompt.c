@@ -174,7 +174,7 @@ void window_save_prompt_open()
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
 
-	if (!gGeneral_config.confirmation_prompt) {
+	if (!gConfigGeneral.confirmation_prompt) {
 		/* game_load_or_quit_no_save_prompt() will exec requested task and close this window
 		 * immediately again.
 		 * TODO restructure these functions when we're sure game_load_or_quit_no_save_prompt()

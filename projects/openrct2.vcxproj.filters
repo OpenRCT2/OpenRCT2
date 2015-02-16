@@ -222,9 +222,6 @@
     <ClCompile Include="..\src\util\util.c">
       <Filter>Source\Util</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\config.c">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\editor.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -333,14 +330,12 @@
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\staff_fire_prompt.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\viewport.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -362,11 +357,11 @@
     <ClCompile Include="..\src\ride\station.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\ride_construction.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
@@ -426,6 +421,9 @@
     </ClCompile>
     <ClCompile Include="..\src\windows\loadsave.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config.c">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
