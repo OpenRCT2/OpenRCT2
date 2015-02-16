@@ -97,10 +97,29 @@ rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
 	return NULL;
 }
 
+static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
+{
+	int direction, z;
+
+	if ((mapElement->properties.path.type & 4) && !(flags & (1 << 6))) {
+		direction = mapElement->properties.path.type & 3;
+		z = mapElement->base_height;
+		map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
+		map_remove_intersecting_walls(x, y, z, z + 6, direction);
+		mapElement = map_get_footpath_element(x / 32, y / 32, z);
+	}
+
+	if (!(flags & (1 << 7)))
+		sub_6A6C66(x, y, mapElement, flags);
+
+	sub_6A759F();
+	map_invalidate_tile_full(x, y);
+}
+
 static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags)
 {
 	rct_map_element *mapElement;
-	int bl, zHigh, direction;
+	int bl, zHigh;
 
 	if (!sub_68B044())
 		return MONEY32_UNDEFINED;
@@ -158,19 +177,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
-		if ((mapElement->properties.path.type & 4) && !(flags & (1 << 6))) {
-			direction = mapElement->properties.path.type & 3;
-			z = mapElement->base_height;
-			map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
-			map_remove_intersecting_walls(x, y, z, z + 6, direction);
-			mapElement = map_get_footpath_element(x / 32, y / 32, z);
-		}
-
-		if (!(flags & (1 << 7)))
-			sub_6A6C66(x, y, mapElement, flags);
-
-		sub_6A759F();
-		map_invalidate_tile_full(x, y);
+		loc_6A6620(flags, x, y, mapElement);
 	}
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
@@ -272,6 +279,8 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		mapElement->type = (mapElement->type & 0xFE) | (type >> 7);
 		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | RCT2_GLOBAL(0x00F3EF88, uint8);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+
+		loc_6A6620(flags, x, y, mapElement);
 	}
 
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
@@ -495,11 +504,48 @@ void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags)
 	RCT2_CALLPROC_X(0x006A6C66, x, flags, y, 0, (int)mapElement, 0, 0);
 }
 
+void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
+{
+	RCT2_CALLPROC_X(0x006A742F, x, direction, y, (entranceIndex << 8) | rideIndex, (int)mapElement, 0, 0);
+}
+
 /**
  * 
  *  rct2: 0x006A759F
  */
 void sub_6A759F()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006A759F);
+	uint8 *esi;
+	int i, x, y, z, direction, rideIndex;
+	rct_ride *ride;
+	rct_map_element *mapElement;
+
+	for (esi = (uint8*)0x00F3EFF8; esi < RCT2_GLOBAL(0x00F3EFF4, uint8*); esi++) {
+		rideIndex = *esi;
+		ride = GET_RIDE(rideIndex);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+
+		for (i = 0; i < 4; i++) {
+			if (ride->entrances[i] == 0xFFFF)
+				continue;
+
+			x = ride->entrances[i] & 0xFF;
+			y = ride->entrances[i] >> 8;
+			z = ride->station_heights[i];
+
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+					continue;
+				if (mapElement->base_height != z)
+					continue;
+				if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+					continue;
+
+				direction = (mapElement->type & 3) ^ 2;
+				sub_6A742F(rideIndex, i, x << 5, y << 5, mapElement, direction);
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
 }
