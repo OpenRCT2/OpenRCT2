@@ -598,7 +598,7 @@ static void window_guest_list_scrollpaint()
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-				RCT2_GLOBAL(0x009AC861, uint16) |= 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
 				peep->var_0C |= 0x200;
 			}
 

@@ -603,6 +603,174 @@ static void window_map_tooltip()
 
 /**
 *
+*  part of window_map_paint_peep_overlay and window_map_paint_train_overlay
+*/
+static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
+{
+	sint16 x = *left, y = *top;
+	sint16 temp;
+
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	case 3:
+		temp = x;
+		x = y;
+		y = temp;
+		x = 0x1FFF - x;
+		break;
+	case 2:
+		x = 0x1FFF - x;
+		y = 0x1FFF - y;
+		break;
+	case 1:
+		temp = x;
+		x = y;
+		y = temp;
+		y = 0x1FFF - y;
+		break;
+	case 0:
+		break;
+	}
+	x >>= 5;
+	y >>= 5;
+
+	*left = -x + y + 0xF8;
+	*top = x + y - 8;
+}
+
+/**
+*
+*  rct2: 0x0068DADA
+*/
+static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
+{
+	//RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
+	//return;
+
+	rct_peep *peep;
+	uint16 spriteIndex;
+
+	sint16 left, right, bottom, top;
+	sint16 color;
+
+	FOR_ALL_PEEPS(spriteIndex, peep) {
+		left = peep->x;
+		top = peep->y;
+
+		if (left == SPRITE_LOCATION_NULL)
+			continue;
+
+		window_map_transform_to_map_coords(&left, &top);
+
+		right = left;
+		bottom = top;
+
+		color = 0x14;
+
+		if ((peep->var_0C & 0x200) != 0) {
+			if (peep->type == PEEP_TYPE_STAFF) {
+				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
+					color = 0x8A;
+					left--;
+					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+						color = 0xA;
+				}
+			} else {
+				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 1)) != 0) {
+					color = 0xAC;
+					left--;
+					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+						color = 0x15;
+				}
+			}
+		}
+		gfx_fill_rect(dpi, left, top, right, bottom, color);
+	}
+}
+
+/**
+*
+*  rct2: 0x0068DBC1
+*/
+static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
+{
+	//RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+	//return;
+
+	rct_vehicle *train, *vehicle;
+	uint16 train_index, vehicle_index;
+
+	sint16 left, top, right, bottom;
+
+	for (train_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); train_index != SPRITE_INDEX_NULL; train_index = train->next) {
+		train = GET_VEHICLE(train_index);
+		for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train) {
+			vehicle = GET_VEHICLE(vehicle_index);
+
+			left = vehicle->x;
+			top = vehicle->y;
+
+			if (left == SPRITE_LOCATION_NULL)
+				continue;
+
+			window_map_transform_to_map_coords(&left, &top);
+
+			right = left;
+			bottom = top;
+
+			gfx_fill_rect(dpi, left, top, right, bottom, 0xAB);
+		}
+	}
+}
+
+/**
+*  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+*  but it doesn't look like it's ever necessary here so the call was removed.
+* 
+*  rct2: 0x0068D8CE
+*/
+static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
+{
+	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, 0, (int)dpi, 0);
+	//return;
+
+	static const sint16 offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
+	static const sint16 offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
+
+	rct_window *main_window = window_get_main();
+	if (main_window == NULL)
+		return;
+	rct_viewport *viewport = main_window->viewport;
+	if (viewport == NULL)
+		return;
+
+	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	sint16 offset_x = offsets_x[rotation];
+	sint16 offset_y = offsets_y[rotation];
+
+	sint16 left = (viewport->view_x >> 5) + offset_x;
+	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset_x;
+	sint16 top = (viewport->view_y >> 4) + offset_y;
+	sint16 bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset_y;
+
+	// top horizontal lines
+	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
+	gfx_fill_rect(dpi, right - 3, top, right, top, 0x38);
+
+	// left vertical lines
+	gfx_fill_rect(dpi, left, top, left, top + 3, 0x38);
+	gfx_fill_rect(dpi, left, bottom - 3, left, bottom, 0x38);
+
+	// bottom horizontal lines
+	gfx_fill_rect(dpi, left, bottom, left + 3, bottom, 0x38);
+	gfx_fill_rect(dpi, right - 3, bottom, right, bottom, 0x38);
+
+	// right vertical lines
+	gfx_fill_rect(dpi, right, top, right, top + 3, 0x38);
+	gfx_fill_rect(dpi, right, bottom - 3, right, bottom, 0x38);
+}
+
+/**
+*
 *  rct2: 0x0068CF23
 */
 static void window_map_scrollpaint()
@@ -632,11 +800,11 @@ static void window_map_scrollpaint()
 	*g1_element = pushed_g1_element;
 
 	if (w->selected_tab == 0)
-		RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
+		window_map_paint_peep_overlay(dpi);
 	else
-		RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
+		window_map_paint_train_overlay(dpi);
 	
-	RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws the HUD rectangle on the map
+	window_map_paint_hud_rectangle(dpi);
 }
 
 /**
