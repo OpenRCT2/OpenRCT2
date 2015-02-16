@@ -250,6 +250,12 @@ bool config_open(const utf8string path)
 	lineBufferCapacity = 64;
 	lineBuffer = malloc(lineBufferCapacity);
 	lineLength = 0;
+
+	// Skim UTF-8 byte order mark
+	fread(lineBuffer, 3, 1, file);
+	if (!(lineBuffer[0] == 0xEF && lineBuffer[1] == 0xBB && lineBuffer[2] == 0xBF))
+		fseek(file, 0, SEEK_SET);
+
 	while ((c = fgetc(file)) != EOF) {
 		if (c == '\n' || c == '\r') {
 			lineBuffer[lineLength++] = 0;
