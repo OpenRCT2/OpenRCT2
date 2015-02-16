@@ -277,17 +277,6 @@ void title_update()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x8000;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x02;
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & 0x01;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x01;
-	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= 0x02;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x08;
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & 0x04;
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~0x04;
-	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= 0x04;
 
 	window_map_tooltip_update_visibility();
 	window_update_all();

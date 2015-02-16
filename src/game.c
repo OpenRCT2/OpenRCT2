@@ -201,7 +201,7 @@ void update_palette_effects()
 
 void game_update()
 {
-	int i, numUpdates, tmp;
+	int i, numUpdates;
 
 	// Handles picked-up peep and rain redraw
 	redraw_peep_and_rain();
@@ -250,17 +250,20 @@ void game_update()
 	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
-	RCT2_GLOBAL(0x009AC861, uint16) ^= (1 << 15);
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 1);
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & (1 << 0);
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 0);
-	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= (1 << 1);
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 3);
-	tmp = RCT2_GLOBAL(0x009AC861, uint16) & (1 << 2);
-	RCT2_GLOBAL(0x009AC861, uint16) &= ~(1 << 2);
-	if (!tmp)
-		RCT2_GLOBAL(0x009AC861, uint16) |= (1 << 2);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) ^= (1 << 15);
+
+	// Handle guest map flashing
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 1);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 0))
+		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 1);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 0);
+
+	// Handle staff map flashing
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 3);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 2))
+		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 3);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 2);
 
 	window_map_tooltip_update_visibility();
 	window_update_all();
