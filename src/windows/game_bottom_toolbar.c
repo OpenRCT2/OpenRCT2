@@ -25,6 +25,7 @@
 #include "../interface/window.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
+#include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
@@ -565,95 +566,47 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		if (newsItem->flags & 1)
 			break;
 
-		/*
-		_edi = (int)e->paint.dpi;
-		_cx = x;
-		_dx = y;
-		#ifdef _MSC_VER
-	__asm {
-		mov cx, _cx
-		mov dx, _dx
-		mov esi, w
-		mov edi, _edi
-		push ebp
-		mov ebp, 0066C3B8h
-		push after
-		push esi
-		jmp ebp
-		after:
-		pop ebp
+		rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, y + 1, 22);
+		if (!cliped_dpi) break;
+
+		rct_peep* peep = GET_PEEP(newsItem->assoc);
+		int clip_x = 10, clip_y = 19;
+
+		if (peep->type == PEEP_TYPE_STAFF){
+			if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
+				clip_y += 3;
+			}
 		}
-	#else
-	__asm__ ( "\
-	\n\
-		mov cx, %[_cx] 	\n\
-		mov dx, %[_dx] 	\n\
-		mov esi, %[w] 	\n\
-		mov edi, %[_edi] 	\n\
-		push ebp 	\n\
-		mov ebp, 0x0066C3B8 	\n\
-		push %[after] 	\n\
-		push esi 	\n\
-		jmp ebp 	\n\
-		%[after]: 	\n\
-		pop ebp 	\n\
-		 " : [_cx] "+m" (_cx), [_dx] "+m" (_dx), [w] "+m" (w), [_edi] "+m" (_edi), [after] "+m" (after) );
-	#endif
-		break;
-		*/
 
-		//_ax = x + 1;
-		//_cx = y + 1;
-		//_edi = (int)dpi;
-		//__asm {
-		//	mov edi, _edi
-		//		mov ax, _ax
-		//		mov cx, _cx
-		//		mov bx, 22
-		//		mov dx, 22
-		//		push ebp
-		//}
-		//sub_6EE53B();
-		//__asm {
-		//	pop ebp
-		//		mov dpi, edi
-		//}
-		//if (dpi == NULL)
-		//	break;
+		uint32 image_id_base = *RCT2_ADDRESS(0x00982708, uint32*)[peep->sprite_type * 2];
+		image_id_base += w->frame_no & 0xFFFFFFFC;
+		image_id_base++;
 
-		//x = 10;
-		//y = 19;
+		uint32 image_id = image_id_base;
+		image_id |= 0xA0000000 | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
-		//peep = &rctmem->sprites[*((short*)&newsItem->assoc)].peep;
-		//if (peep->type == PEEP_TYPE_STAFF && peep->var_2F == 3)
-		//	y += 3;
+		gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
 
-		//_eax = *((int*)(0x00982708 + (peep->sprite_type * 8)));
-		//_ebx = w->frame_no & 0xFFFFFFFC;
-		//_ebx += *((int*)_eax);
-		//_ebx++;
+		if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->balloon_colour << 19);
 
-		//gfx_draw_sprite(dpi, _ebx | (peep->var_30 << 19) | (peep->var_31 << 24) | 0xA0000000, x, y);
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
+		else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->umbrella_colour << 19);
 
-		//if (_ebx >= 0x2A1D && _ebx >= 0x2A3D) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->balloon_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else if (_ebx >= 0x2BBD && _ebx >= 0x2BDD) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->umbrella_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else if (_ebx >= 0x29DD && _ebx >= 0x29FD) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->hat_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else {
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
+		else if (image_id_base >= 0x29DD && image_id_base < 0x29FD){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->hat_colour << 19);
 
-		//}
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
 
+		rct2_free(cliped_dpi);
 		break;
 	case NEWS_ITEM_MONEY:
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
