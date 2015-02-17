@@ -77,6 +77,12 @@ static rct_widget window_map_widgets[] = {
 	{ WIDGETS_END },
 };
 
+// used in transforming viewport view coordinates to minimap coordinates
+// rct2: 0x00981BBC (these two tables are interspersed)
+static const sint16 _minimap_offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
+// rct2: 0x00981BBE
+static const sint16 _minimap_offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
+
 static void window_map_emptysub() { }
 static void window_map_close();
 static void window_map_mouseup();
@@ -92,7 +98,7 @@ static void window_map_tooltip();
 static void window_map_set_bounds(rct_window* w);
 
 static void window_map_init_map();
-static void sub_68C990();
+static void window_map_center_on_view_point();
 
 static void* window_map_events[] = {
 	window_map_close,
@@ -176,7 +182,7 @@ void window_map_open()
 
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
-	sub_68C990();
+	window_map_center_on_view_point();
 
 	w->colours[0] = 12;
 	w->colours[1] = 24;
@@ -733,9 +739,6 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, 0, (int)dpi, 0);
 	//return;
 
-	static const sint16 offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
-	static const sint16 offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
-
 	rct_window *main_window = window_get_main();
 	if (main_window == NULL)
 		return;
@@ -744,8 +747,8 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 		return;
 
 	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	sint16 offset_x = offsets_x[rotation];
-	sint16 offset_y = offsets_y[rotation];
+	sint16 offset_x = _minimap_offsets_x[rotation];
+	sint16 offset_y = _minimap_offsets_y[rotation];
 
 	sint16 left = (viewport->view_x >> 5) + offset_x;
 	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset_x;
@@ -821,7 +824,7 @@ static void window_map_init_map()
 *
 *  rct2: 0x0068C990
 */
-static void sub_68C990()
+static void window_map_center_on_view_point()
 {
 	rct_window *w = window_get_main();
 	rct_window *w_map;
@@ -835,11 +838,17 @@ static void sub_68C990()
 	if (w_map == NULL)
 		return;
 
+	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+
+	// calculate center view point of viewport and transform it to minimap coordinates
+
 	cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
 	dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
-	cx += RCT2_GLOBAL(0x00981BBC + (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) * 4), uint16);
-	dx += RCT2_GLOBAL(0x00981BBE + (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) * 4), uint16);
+	cx += _minimap_offsets_x[rotation];
+	dx += _minimap_offsets_y[rotation];
 	
+	// calculate width and height of minimap
+
 	ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
 	bx = w_map->widgets[WIDX_MAP].bottom - w_map->widgets[WIDX_MAP].top - 11;
 	bp = ax;
@@ -847,13 +856,11 @@ static void sub_68C990()
 
 	ax >>= 1;
 	bx >>= 1;
-	cx = (cx - ax) > 0 ? cx - ax : 0;
-	dx = (dx - bx) > 0 ? dx - bx : 0;
+	cx = max(cx - ax, 0);
+	dx = max(dx - bx, 0);
 
-	bp = -bp;	// asm: neg bp
-	di = -di;
-	bp += w_map->scrolls[0].h_right;
-	di += w_map->scrolls[0].v_bottom;
+	bp = w_map->scrolls[0].h_right - bp;
+	di = w_map->scrolls[0].v_bottom - di;
 
 	if (bp < 0 && (bp - cx) < 0)
 		cx = 0;
