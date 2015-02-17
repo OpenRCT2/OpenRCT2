@@ -85,6 +85,7 @@ static const sint16 _minimap_offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
 
 static void window_map_emptysub() { }
 static void window_map_close();
+static void window_map_resize();
 static void window_map_mouseup();
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
@@ -103,7 +104,7 @@ static void window_map_center_on_view_point();
 static void* window_map_events[] = {
 	window_map_close,
 	window_map_mouseup,
-	window_map_emptysub,
+	window_map_resize,
 	window_map_mousedown,
 	window_map_emptysub,
 	window_map_emptysub,
@@ -176,8 +177,6 @@ void window_map_open()
 		(1 << WIDX_MAP_SIZE_SPINNER_DOWN);
 	window_init_scroll_widgets(w);
 
-	window_map_set_bounds(w);
-
 	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 
 	window_map_init_map();
@@ -204,6 +203,23 @@ static void window_map_close()
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == w->number) {
 		tool_cancel();
 	}
+}
+
+/**
+*
+*  rct2: 0x0068D7DC
+*/
+void window_map_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->flags |= WF_RESIZABLE; // (1 << 8)
+	w->min_width = 245;
+	w->max_width = 800;
+	w->min_height = 259;
+	w->max_height = 560;
 }
 
 /**
@@ -871,17 +887,4 @@ static void window_map_center_on_view_point()
 	w_map->scrolls[0].h_left = cx;
 	w_map->scrolls[0].v_top = dx;
 	widget_scroll_update_thumbs(w_map, WIDX_MAP);
-}
-
-/**
-* ref. by: window_map_scrollmousedown
-*  rct2: 0x0068D7DC
-*/
-void window_map_set_bounds(rct_window* w)
-{
-	w->flags |= WF_RESIZABLE; // (1 << 8)
-	w->min_width = 245;
-	w->max_width = 800;
-	w->min_height = 259;
-	w->max_height = 560;
 }
