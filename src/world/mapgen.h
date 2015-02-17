@@ -31,9 +31,16 @@ typedef struct {
 
 	// Features (e.g. tree, rivers, lakes etc.)
 	int trees;
+
+	// Simplex Noise Parameters
+	int simplex_low;
+	int simplex_high;
+	float simplex_base_freq;
+	int simplex_octaves;
 } mapgen_settings;
 
 void mapgen_generate_blank(mapgen_settings *settings);
 void mapgen_generate(mapgen_settings *settings);
+void mapgen_generate_custom_simplex(mapgen_settings *settings);
 
 #endif
