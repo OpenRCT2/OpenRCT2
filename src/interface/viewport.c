@@ -1125,7 +1125,7 @@ void show_land_rights()
 {
 	rct_window *mainWindow;
 
-	if (RCT2_GLOBAL(0x009E32B2, uint8) != 0) {
+	if (RCT2_GLOBAL(0x009E32B2, uint8) == 0) {
 		if ((mainWindow = window_get_main()) != NULL) {
 			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
 				mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
@@ -1138,7 +1138,7 @@ void show_land_rights()
 
 /**
  * 
- *  rct2: 0x00664E8E
+ *  rct2: 0x00664EB9
  */
 void hide_land_rights()
 {
@@ -1163,7 +1163,7 @@ void show_construction_rights()
 {
 	rct_window *mainWindow;
 
-	if (RCT2_GLOBAL(0x009E32B3, uint8) != 0) {
+	if (RCT2_GLOBAL(0x009E32B3, uint8) == 0) {
 		if ((mainWindow = window_get_main()) != NULL) {
 			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
 				mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
