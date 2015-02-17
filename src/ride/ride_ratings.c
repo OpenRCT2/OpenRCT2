@@ -65,20 +65,6 @@ static int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 	return 1;
 }
 
-static int sub_6C60C2(rct_map_element *mapElement, int *x, int *y, int *z)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-
-	eax = *x;
-	ecx = *y;
-	esi = (int)mapElement;
-	RCT2_CALLFUNC_X(0x006C6402, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = *((uint16*)&eax);
-	*y = *((uint16*)&ecx);
-	*z = *((uint8*)&edx);
-	return 1;
-}
-
 /**
  *
  *  rct2: 0x006B5A2A
@@ -217,13 +203,13 @@ static void loc_6B5BB2()
  */
 static void ride_ratings_update_state_2()
 {
-	// sub_6C6402 returns a carry, CALLFUNC doesn't support this
-	// so have to wait for sub_6C60C2 to be decompiled
+	// TODO test this function
 	RCT2_CALLPROC_EBPSAFE(0x006B5C66);
 	return;
 
 	rct_ride *ride;
 	rct_map_element *mapElement;
+	rct_xy_element trackElement, nextTrackElement;
 	int x, y, z, trackType, entranceIndex;
 
 	ride = GET_RIDE(_rideRatingsCurrentRide);
@@ -255,13 +241,18 @@ static void ride_ratings_update_state_2()
 			
 			RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
 
-			x = RCT2_GLOBAL(0x0138B584, uint16);
-			y = RCT2_GLOBAL(0x0138B586, uint16);
-			if (!sub_6C60C2(mapElement, &x, &y, &z)) {
+			trackElement.x = RCT2_GLOBAL(0x0138B584, uint16);
+			trackElement.y = RCT2_GLOBAL(0x0138B586, uint16);
+			trackElement.element = mapElement;
+			if (!track_get_next(&trackElement, &nextTrackElement)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_4;
 				return;
 			}
 
+			x = nextTrackElement.x;
+			y = nextTrackElement.y;
+			z = nextTrackElement.element->base_height * 8;
+			mapElement = nextTrackElement.element;
 			if (x == RCT2_GLOBAL(0x0138B58A, uint16) && y == RCT2_GLOBAL(0x0138B58C, uint16) && z == RCT2_GLOBAL(0x0138B58E, uint16)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;

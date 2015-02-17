@@ -22,8 +22,8 @@
 #define _TRACK_H_
 
 #include "../common.h"
-#include "ride.h"
 #include "../object.h"
+#include "ride.h"
 
 typedef struct {
 	uint8 type;
@@ -204,6 +204,8 @@ enum {
 	TRACK_CORKSCREW_DOWN = 224
 };
 
+extern const rct_trackdefinition *gTrackDefinitions;
+
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
@@ -211,6 +213,7 @@ rct_track_td6* load_track_design(const char *path);
 int track_rename(const char *text);
 int track_delete();
 void reset_track_list_cache();
+int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(int bl, int x, int y, int z);
 
 #endif

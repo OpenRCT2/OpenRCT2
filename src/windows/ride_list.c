@@ -707,7 +707,7 @@ static void window_ride_list_close_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		game_do_command(0, 1, 0, i, GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		ride_set_status(i, RIDE_STATUS_CLOSED);
 	}
 }
 
@@ -724,6 +724,6 @@ static void window_ride_list_open_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		game_do_command(0, 1, 0, (1 << 8) | i, GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		ride_set_status(i, RIDE_STATUS_OPEN);
 	}
 }

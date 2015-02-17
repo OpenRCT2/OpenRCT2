@@ -34,7 +34,10 @@
  *
  *  rct2: 0x00997C9D
  */
-const rct_trackdefinition gTrackDefinitions[] = {
+const rct_trackdefinition *gTrackDefinitions = (rct_trackdefinition*)0x00997C9D;
+
+// TODO This table is incorrect or at least missing 69 elements. There should be 256 in total!
+const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
     // TYPE							VANGLE END					VANGLE START				BANK END				BANK START				SPECIAL
     { TRACK_FLAT,					TRACK_NONE,					TRACK_NONE,					TRACK_BANK_NONE,		TRACK_BANK_NONE,		TRACK_NONE					},	// ELEM_FLAT
     { TRACK_FLAT,					TRACK_NONE,					TRACK_NONE,					TRACK_BANK_NONE,		TRACK_BANK_NONE,		TRACK_NONE					},	// ELEM_END_STATION
@@ -540,10 +543,10 @@ rct_track_td6* load_track_design(const char *path)
 			uint8* track_element = track_elements;
 			while (*track_element != 255) {
 				track_element += 2;
-			}
+		}
 			track_element++;
 			memset(track_element, 255, final_track_element_location - track_element);
-		}
+	}
 
 		// Edit the colours to use the new versions
 		// Unsure why it is 67
@@ -1029,7 +1032,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		}
 
 		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
-		
+
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
@@ -1123,4 +1126,41 @@ int track_delete()
 
 	window_invalidate(w);
 	return 1;
+}
+
+/**
+ * Helper method to determine if a connects to b by its bank and angle, not location.
+ */
+int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
+{
+	int trackType, aBank, aAngle, bBank, bAngle;
+	rct_ride *ride;
+
+	ride = GET_RIDE(a->properties.track.ride_index);
+	trackType = a->properties.track.type;
+	aBank = gTrackDefinitions[trackType].bank_end;
+	aAngle = gTrackDefinitions[trackType].vangle_end;
+	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (a->properties.track.colour & 4) {
+			if (aBank == TRACK_BANK_NONE)
+				aBank = TRACK_BANK_UPSIDE_DOWN;
+			else if (aBank == TRACK_BANK_UPSIDE_DOWN)
+				aBank = TRACK_BANK_NONE;
+		}
+	}
+
+	ride = GET_RIDE(b->properties.track.ride_index);
+	trackType = b->properties.track.type;
+	bBank = gTrackDefinitions[trackType].bank_start;
+	bAngle = gTrackDefinitions[trackType].vangle_start;
+	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (b->properties.track.colour & 4) {
+			if (bBank == TRACK_BANK_NONE)
+				bBank = TRACK_BANK_UPSIDE_DOWN;
+			else if (bBank == TRACK_BANK_UPSIDE_DOWN)
+				bBank = TRACK_BANK_NONE;
+		}
+	}
+
+	return aBank == bBank && aAngle == bAngle;
 }

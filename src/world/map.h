@@ -218,6 +218,11 @@ typedef struct {
 } rct_xyz16;
 
 typedef struct {
+	int x, y;
+	rct_map_element *element;
+} rct_xy_element;
+
+typedef struct {
 	uint16 x;
 	uint16 y;
 	uint8 z;
