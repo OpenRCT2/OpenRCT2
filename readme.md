@@ -23,6 +23,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 3.2 - [Naming of procedures and variables](#32-naming-of-procedures-and-variables)
   - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
   - 3.4 - [Implementing new features / fixing bugs](#34-implementing-new-features--fixing-bugs)
+  - 3.5 - [Translation](#35-translation)
 - 4 - [Licence](#4-license)
 
 # 1 Introduction
@@ -119,6 +120,9 @@ In general, small changes that improve code quality and make it easier to reason
 
 ## 3.4 Implementing new features / fixing bugs
 While decompilation is an ongoing process, this does not prohibit changes being made to the game. New features or bugfixes can be added, with caution, if the underlying code has been decompiled. When implementing these changes, ensure that comments are added to clearly identify where code has been intentionally changed so that it functions differently to the original game; this is essential to ensuring all research from reverse-engineering can still be applied.
+
+## 3.5 Translation
+You can translate the game into other languages by editing the language files in the data directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
 
 # 4 License
 **OpenRCT2** is licensed under the GNU General Public License version 3.
