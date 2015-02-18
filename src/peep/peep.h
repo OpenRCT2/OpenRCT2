@@ -348,14 +348,17 @@ typedef struct {
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-	uint8 var_09;					// 0x09
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
 	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 var_14;					// 0x14
-	uint8 var_15;					// 0x15
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
 	sint16 sprite_left;				// 0x16
 	sint16 sprite_top;				// 0x18
 	sint16 sprite_right;			// 0x1A
@@ -407,19 +410,19 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	union{
 		struct{
-			uint8 current_car;				// 0x6B
-			uint8 current_seat;				// 0x6C
+			uint8 current_car;		// 0x6B
+			uint8 current_seat;		// 0x6C
 		};
-		uint16 time_to_sitdown; //0x6B
+		uint16 time_to_sitdown;		//0x6B
 		struct{
 			uint8 time_to_stand;	//0x6B
 			uint8 standing_flags;	//0x6C
 		};
 	};
 	uint8 var_6D;					// 0x6D
-	uint8 var_6E;					// 0x6E
+	uint8 action_sprite_type;		// 0x6E
 	uint8 var_6F;
-	uint8 var_70;
+	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
 	uint8 action_frame;				// 0x72
 	uint8 var_73;
@@ -454,7 +457,7 @@ typedef struct {
 	uint32 flags;					// 0xC8
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
-	uint8 var_E0;					// 0xE0
+	uint8 no_action_frame_no;		// 0xE0
 	uint8 var_E1;
 	uint8 var_E2;					// 0xE2
 	uint8 var_E3;

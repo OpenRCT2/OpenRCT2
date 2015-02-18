@@ -325,9 +325,9 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->y = SPRITE_LOCATION_NULL;
 	sprite->z = 0;
 	sprite->name_string_idx = 0;
-	sprite->var_14 = 0x10;
-	sprite->var_09 = 0x14;
-	sprite->var_15 = 0x8;
+	sprite->sprite_width = 0x10;
+	sprite->sprite_height_negative = 0x14;
+	sprite->sprite_height_positive = 0x8;
 	sprite->pad_0C[0] = 0x0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
@@ -507,10 +507,10 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 		break;
 	}
 
-	sprite->unknown.sprite_left = new_x - sprite->unknown.var_14;
-	sprite->unknown.sprite_right = new_x + sprite->unknown.var_14;
-	sprite->unknown.sprite_top = new_y - sprite->unknown.var_09;
-	sprite->unknown.sprite_bottom = new_y + sprite->unknown.var_15;
+	sprite->unknown.sprite_left = new_x - sprite->unknown.sprite_width;
+	sprite->unknown.sprite_right = new_x + sprite->unknown.sprite_width;
+	sprite->unknown.sprite_top = new_y - sprite->unknown.sprite_height_negative;
+	sprite->unknown.sprite_bottom = new_y + sprite->unknown.sprite_height_positive;
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;
