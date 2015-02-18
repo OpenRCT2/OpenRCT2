@@ -43,4 +43,6 @@ enum{
 
 extern rct_banner *gBanners;
 
+void banner_init();
+
 #endif
