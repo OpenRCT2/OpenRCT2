@@ -22,3 +22,13 @@
 #include "banner.h"
 
 rct_banner *gBanners = (rct_banner*)0x0135A124;
+
+/**
+ *
+ * rct2: 0x006B9CB0
+ */
+void banner_init() {
+    for(int i = 0; i < MAX_BANNERS; i++) {
+        gBanners[i].type = BANNER_NULL;
+    }
+}

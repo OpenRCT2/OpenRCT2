@@ -63,7 +63,7 @@ void editor_load()
 	unpause_sounds();
 	object_unload_all();
 	map_init(150);
-	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	banner_init();
 	reset_park_entrances();
 	user_string_clear_all();
 	reset_sprite_list();
@@ -211,7 +211,7 @@ void trackdesigner_load()
 	object_unload_all();
 	map_init(150);
 	set_all_land_owned();
-	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	banner_init();
 	reset_park_entrances();
 	user_string_clear_all();
 	reset_sprite_list(); 
@@ -248,7 +248,7 @@ void trackmanager_load()
 	object_unload_all();
 	map_init(150);
 	set_all_land_owned();
-	RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+	banner_init();
 	reset_park_entrances();
 	user_string_clear_all();
 	reset_sprite_list();
@@ -362,7 +362,7 @@ static void sub_69F06A()
 	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 0) | (1 << 1) | (1 << 14) | (1 << 2) | (1 << 3);
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 4))) {
 		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 4);
-		RCT2_CALLPROC_EBPSAFE(0x006B9CB0);
+		banner_init(); // 6B9CB0
 	}
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 6))) {
 		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 6);
