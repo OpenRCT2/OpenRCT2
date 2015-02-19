@@ -594,17 +594,11 @@ static void window_options_dropdown()
 		break;
 	case WIDX_FULLSCREEN_DROPDOWN:
 		if (dropdownIndex != gConfigGeneral.fullscreen_mode){
-			if (dropdownIndex == 2){
-				w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
-				w->disabled_widgets |= (1 << WIDX_RESOLUTION);
-			} else {
-				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
-				w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
-			}
 			platform_set_fullscreen_mode(dropdownIndex);
 			
 			gConfigGeneral.fullscreen_mode = (uint8)dropdownIndex;
 			config_save_default();
+			gfx_invalidate_screen();
 		}
 		break;
 	case WIDX_TEMPERATURE_DROPDOWN:
@@ -655,6 +649,16 @@ static void window_options_invalidate()
 		RCT2_GLOBAL(0x013CE952 + 16, uint16) = (uint16)gConfigGeneral.fullscreen_width;
 		RCT2_GLOBAL(0x013CE952 + 18, uint16) = (uint16)gConfigGeneral.fullscreen_height;
 		RCT2_GLOBAL(0x013CE952 + 12, uint16) = 2773 + gConfigGeneral.fullscreen_mode;
+
+		// disable resolution dropdown on "Fullscreen (desktop)"
+		if (gConfigGeneral.fullscreen_mode == 2){
+			w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
+			w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+		}
+		else {
+			w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
+			w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+		}
 
 		// landscape tile smoothing checkbox
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
