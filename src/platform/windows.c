@@ -30,6 +30,7 @@
 #include "../localisation/currency.h"
 #include "../config.h"
 #include "platform.h"
+#include "winnls.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
