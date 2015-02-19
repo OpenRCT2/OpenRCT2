@@ -2662,7 +2662,7 @@ static int peep_should_find_bench(rct_peep* peep){
  * esi: peep
  */
 void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments){
-	int action = RCT2_ADDRESS(0x981DB0, uint16)[thought_type];
+	uint8 action = RCT2_ADDRESS(0x981DB0, uint16)[thought_type] & 0xFF;
 
 	if (action != 0xFF && peep->action >= 254){
 			peep->action = action;
