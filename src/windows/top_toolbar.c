@@ -844,7 +844,7 @@ void sub_6645B3(int ebx){
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x00664454
 */
-void window_top_toolbar_land_tool_drag(short x, short y, rct_window* w, short widgetIndex)
+void window_top_toolbar_land_tool_drag(short x, short y)
 {
 	//RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
 
@@ -852,7 +852,7 @@ void window_top_toolbar_land_tool_drag(short x, short y, rct_window* w, short wi
 	if (!window)
 		return;
 	int widget_index = window_find_widget_from_point(window, x, y);
-	if (widgetIndex == 0xFFFF)
+	if (widget_index == 0xFFFF)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
 	if (widget->type != WWT_VIEWPORT)
@@ -899,7 +899,7 @@ void window_top_toolbar_land_tool_drag(short x, short y, rct_window* w, short wi
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x006E6D4B
 */
-void window_top_toolbar_water_tool_drag(short x, short y, rct_window* w, short widgetIndex)
+void window_top_toolbar_water_tool_drag(short x, short y)
 {
 	//RCT2_CALLPROC_X(0x006E6D4B, x, y, 0, widgetIndex, (int)w, 0, 0);
 
@@ -907,7 +907,7 @@ void window_top_toolbar_water_tool_drag(short x, short y, rct_window* w, short w
 	if (!window)
 		return;
 	int widget_index = window_find_widget_from_point(window, x, y);
-	if (widgetIndex == 0xFFFF)
+	if (widget_index == 0xFFFF)
 		return;
 	rct_widget *widget = &window->widgets[widget_index];
 	if (widget->type != WWT_VIEWPORT)
@@ -998,10 +998,10 @@ static void window_top_toolbar_tool_drag()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:
-		window_top_toolbar_land_tool_drag(x, y, w, widgetIndex);
+		window_top_toolbar_land_tool_drag(x, y);
 		break;
 	case WIDX_WATER:
-		window_top_toolbar_water_tool_drag(x, y, w, widgetIndex);
+		window_top_toolbar_water_tool_drag(x, y);
 		break;
 	case WIDX_SCENERY:
 		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
