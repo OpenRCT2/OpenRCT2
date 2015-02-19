@@ -772,6 +772,130 @@ static void window_top_toolbar_tool_down(){
 }
 
 /**
+*  
+*  rct2: 0x006644DD
+*/
+void sub_6644DD(int ebx){
+
+	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
+	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
+	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
+	ax >>= 1;
+	cx >>= 1;
+	ax += 0x10;
+	cx += 0x10;
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
+	dx <<= 16;
+	bp <<= 16;
+	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
+	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+		int di = 1;
+
+		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+	}
+	else {
+		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
+
+		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_RAISE_LAND, di, bp);
+	}
+}
+
+/**
+*
+*  rct2: 0x006645B3
+*/
+void sub_6645B3(int ebx){
+
+	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
+	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
+	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
+	ax >>= 1;
+	cx >>= 1;
+	ax += 0x10;
+	cx += 0x10;
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
+	dx <<= 16;
+	bp <<= 16;
+	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
+	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+		int di = 0xFFFF;
+
+		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+	} else {
+		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
+
+		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_LOWER_LAND, di, bp);
+	}
+}
+
+/**
+*  part of window_top_toolbar_tool_drag(0x0066CB4E)
+*  rct2: 0x00664454
+*/
+void window_top_toolbar_land_tool_drag(short x, short y, rct_window* w, short widgetIndex)
+{
+	//RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
+
+	rct_window *window = window_find_from_point(x, y);
+	if (!window)
+		return;
+	int widget_index = window_find_widget_from_point(window, x, y);
+	if (widgetIndex == 0xFFFF)
+		return;
+	rct_widget *widget = &window->widgets[widget_index];
+	if (widget->type != WWT_VIEWPORT)
+		return;
+	rct_viewport *viewport = window->viewport;
+	if (!viewport)
+		return;
+
+	sint16 dx = 0xFFF0;
+	dx >>= viewport->zoom;
+
+	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+
+	if (y <= dx) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+
+		y = (y & 0xFF00) | 1; // mov bl, 1
+
+		sub_6644DD(y);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
+
+		return;
+	}
+
+	dx = -dx;
+
+	if (y >= dx) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+
+		y = (y & 0xFF00) | 1; // mov bl, 1
+
+		sub_6645B3(y);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
+
+		return;
+	}
+}
+
+/**
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x006E6D4B
 */
@@ -874,7 +998,7 @@ static void window_top_toolbar_tool_drag()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:
-		RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
+		window_top_toolbar_land_tool_drag(x, y, w, widgetIndex);
 		break;
 	case WIDX_WATER:
 		window_top_toolbar_water_tool_drag(x, y, w, widgetIndex);
