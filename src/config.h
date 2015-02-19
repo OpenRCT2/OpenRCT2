@@ -141,6 +141,8 @@ void config_set_defaults();
 bool config_open_default();
 bool config_save_default();
 
+uint16 getLanguage();
+
 void config_reset_shortcut_keys();
 bool config_find_or_browse_install_directory();
 
