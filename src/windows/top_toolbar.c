@@ -772,6 +772,75 @@ static void window_top_toolbar_tool_down(){
 }
 
 /**
+*  part of window_top_toolbar_tool_drag(0x0066CB4E)
+*  rct2: 0x006E6D4B
+*/
+void window_top_toolbar_water_tool_drag(short x, short y, rct_window* w, short widgetIndex)
+{
+	//RCT2_CALLPROC_X(0x006E6D4B, x, y, 0, widgetIndex, (int)w, 0, 0);
+
+	rct_window *window = window_find_from_point(x, y);
+	if (!window)
+		return;
+	int widget_index = window_find_widget_from_point(window, x, y);
+	if (widgetIndex == 0xFFFF)
+		return;
+	rct_widget *widget = &window->widgets[widget_index];
+	if (widget->type != WWT_VIEWPORT)
+		return;
+	rct_viewport *viewport = window->viewport;
+	if (!viewport)
+		return;
+
+	sint16 dx = 0xFFF0;
+	dx >>= viewport->zoom;
+
+	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+
+	if (y <= dx) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
+
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			1,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			dx,
+			GAME_COMMAND_RAISE_WATER,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+			);
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
+
+		return;
+	}
+
+	dx = -dx;
+
+	if (y >= dx) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
+
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			1,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			dx,
+			GAME_COMMAND_LOWER_WATER,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+			);
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
+
+		return;
+	}
+}
+
+/**
  *
  *  rct2: 0x0066CB4E
  */
@@ -808,7 +877,7 @@ static void window_top_toolbar_tool_drag()
 		RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_WATER:
-		RCT2_CALLPROC_X(0x006E6D4B, x, y, 0, widgetIndex, (int)w, 0, 0);
+		window_top_toolbar_water_tool_drag(x, y, w, widgetIndex);
 		break;
 	case WIDX_SCENERY:
 		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
