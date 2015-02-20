@@ -148,6 +148,8 @@ static void* window_footpath_events[] = {
 money32 _window_footpath_cost;
 sint8 _window_footpath_provisional_path_arrow_timer;
 
+static void window_footpath_mousedown_direction(int direction);
+static void window_footpath_mousedown_slope(int slope);
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 static void window_footpath_set_provisional_path_at_point(int x, int y);
 static void window_footpath_place_path_at_point(int x, int y);
@@ -297,25 +299,25 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
 		window_footpath_show_footpath_types_dialog(w, widget, 1);
 		break;
 	case WIDX_DIRECTION_NW:
-		RCT2_CALLPROC_X(0x006A8111, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_direction(0);
 		break;
 	case WIDX_DIRECTION_NE:
-		RCT2_CALLPROC_X(0x006A8135, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_direction(1);
 		break;
 	case WIDX_DIRECTION_SW:
-		RCT2_CALLPROC_X(0x006A815C, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_direction(2);
 		break;
 	case WIDX_DIRECTION_SE:
-		RCT2_CALLPROC_X(0x006A8183, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_direction(3);
 		break;
 	case WIDX_SLOPEDOWN:
-		RCT2_CALLPROC_X(0x006A81AA, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_slope(6);
 		break;
 	case WIDX_LEVEL:
-		RCT2_CALLPROC_X(0x006A81C5, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_slope(0);
 		break;
 	case WIDX_SLOPEUP:
-		RCT2_CALLPROC_X(0x006A81E0, 0, 0, 0, 0, (int)w, 0, 0);
+		window_footpath_mousedown_slope(2);
 		break;
 	}
 }
@@ -631,6 +633,30 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 		36,
 		gAppropriateImageDropdownItemsPerRow[numPathTypes]
 	);
+}
+
+/**
+ *
+ *  rct2: 0x006A8111 0x006A8135 0x006A815C 0x006A8183
+ */
+static void window_footpath_mousedown_direction(int direction)
+{
+	sub_6A7831();
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = (direction - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
+	_window_footpath_cost = MONEY32_UNDEFINED;
+	window_footpath_set_enabled_and_pressed_widgets();
+}
+
+/**
+*
+*  rct2: 0x006A81AA 0x006A81C5 0x006A81E0
+*/
+static void window_footpath_mousedown_slope(int slope)
+{
+	sub_6A7831();
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) = slope;
+	_window_footpath_cost = MONEY32_UNDEFINED;
+	window_footpath_set_enabled_and_pressed_widgets();
 }
 
 /**
