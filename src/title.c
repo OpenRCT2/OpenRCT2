@@ -135,6 +135,7 @@ static void title_create_windows()
 	window_main_open();
 	window_title_menu_open();
 	window_title_exit_open();
+	window_title_options_open();
 	window_title_logo_open();
 	RCT2_CALLPROC_EBPSAFE(0x0066B905);
 }
