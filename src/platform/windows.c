@@ -30,7 +30,6 @@
 #include "../localisation/currency.h"
 #include "../config.h"
 #include "platform.h"
-#include "winnls.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
@@ -595,8 +594,6 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 	return argv;
 }
 
-#endif
-
 uint16 platform_get_locale_language(){
 	WCHAR langCode[4];
 
@@ -718,3 +715,5 @@ uint8 platform_get_locale_temperature_format(){
 		return TEMPERATURE_FORMAT_C;
 	}
 }
+
+#endif
