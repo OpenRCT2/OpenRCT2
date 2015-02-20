@@ -78,7 +78,7 @@ void window_title_exit_open()
 		40, 64,
 		(uint32*)window_title_exit_events,
 		WC_TITLE_EXIT,
-		WF_STICK_TO_FRONT
+		WF_STICK_TO_BACK
 	);
 	window->widgets = window_title_exit_widgets;
 	window->enabled_widgets |= 1;
