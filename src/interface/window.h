@@ -400,7 +400,8 @@ enum {
 	WC_TEXTINPUT = 113,
 	WC_MAPGEN = 114,
 	WC_LOADSAVE = 115,
-	WC_LOADSAVE_OVERWRITE_PROMPT = 116
+	WC_LOADSAVE_OVERWRITE_PROMPT = 116,
+	WC_TITLE_OPTIONS = 117
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -504,6 +505,7 @@ void window_footpath_open();
 void window_save_prompt_open();
 void window_title_menu_open();
 void window_title_exit_open();
+void window_title_options_open();
 void window_title_logo_open();
 void window_news_open();
 void window_scenarioselect_open();

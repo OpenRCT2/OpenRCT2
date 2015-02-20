@@ -566,6 +566,10 @@ static void window_options_dropdown()
 			config_save_default();
 			window_invalidate(w);
 		}
+
+		stop_title_music();
+		if (dropdownIndex != 0)
+			start_title_music();
 		break;
 	case WIDX_CURRENCY_DROPDOWN:
 		gConfigGeneral.currency_format = (sint8)dropdownIndex;
