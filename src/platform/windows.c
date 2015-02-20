@@ -597,7 +597,7 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 uint16 platform_get_locale_language(){
 	WCHAR langCode[4];
 
-	if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT,
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SABBREVLANGNAME,
 		langCode,
 		sizeof(langCode) / sizeof(WCHAR)) == 0){
@@ -637,7 +637,7 @@ uint16 platform_get_locale_language(){
 uint8 platform_get_locale_currency(){
 	WCHAR currCode[4];
 
-	if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT,
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SINTLSYMBOL,
 		currCode,
 		sizeof(currCode) / sizeof(WCHAR)) == 0){
@@ -678,7 +678,7 @@ uint8 platform_get_locale_currency(){
 
 uint8 platform_get_locale_measurement_format(){
 	UINT measurement_system;
-	if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT,
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPWSTR)&measurement_system,
 		sizeof(measurement_system)) == 0){
@@ -698,7 +698,7 @@ uint8 platform_get_locale_temperature_format(){
 	// There does not seem to be a function to obtain this, just check the countries
 	// According
 	UINT country;
-	if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT,
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPWSTR)&country,
 		sizeof(country)) == 0){
