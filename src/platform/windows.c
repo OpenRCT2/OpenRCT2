@@ -715,5 +715,4 @@ uint8 platform_get_locale_temperature_format(){
 		return TEMPERATURE_FORMAT_C;
 	}
 }
-
 #endif

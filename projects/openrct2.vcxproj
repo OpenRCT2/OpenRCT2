@@ -123,6 +123,7 @@
     <ClCompile Include="..\src\windows\title_exit.c" />
     <ClCompile Include="..\src\windows\title_logo.c" />
     <ClCompile Include="..\src\windows\title_menu.c" />
+    <ClCompile Include="..\src\windows\title_options.c" />
     <ClCompile Include="..\src\windows\title_scenarioselect.c" />
     <ClCompile Include="..\src\windows\tooltip.c" />
     <ClCompile Include="..\src\windows\top_toolbar.c" />

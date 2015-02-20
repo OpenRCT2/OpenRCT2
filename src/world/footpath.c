@@ -141,7 +141,8 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	RCT2_GLOBAL(0x00F3EF86, uint16) = y;
 		
 	// Ugh, hack until 0x006A6733 is written
-	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 8);
+	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
+	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
 
 	if (!map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
 		return MONEY32_UNDEFINED;
