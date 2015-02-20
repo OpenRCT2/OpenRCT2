@@ -260,6 +260,7 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(0x013573DC, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
+
 	sub_69E869(); // (loan related)
 
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);

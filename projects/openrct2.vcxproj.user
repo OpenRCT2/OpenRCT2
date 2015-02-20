@@ -4,5 +4,7 @@
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>
+    </LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
