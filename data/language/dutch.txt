@@ -2698,11 +2698,11 @@ STR_2696    :Bomen plaatsen
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
+STR_2700    :Parameters voor Simplex noise
+STR_2701    :Laag:
+STR_2702    :Hoog:
+STR_2703    :Basisfrequentie:
+STR_2704    :Octaven:
 STR_2705    :???
 STR_2706    :???
 STR_2707    :Open nieuw scherm
