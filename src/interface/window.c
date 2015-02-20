@@ -1787,6 +1787,11 @@ void window_resize_gui(int width, int height)
 		exitWind->x = width - 40;
 		exitWind->y = height - 64;
 	}
+
+	rct_window *optionsWind = window_find_by_class(WC_TITLE_OPTIONS);
+	if (optionsWind != NULL) {
+		optionsWind->x = width - 80;
+	}
 }
 
 /**
