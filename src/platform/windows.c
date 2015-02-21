@@ -26,6 +26,9 @@
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
+#include "../localisation/language.h"
+#include "../localisation/currency.h"
+#include "../config.h"
 #include "platform.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
@@ -591,4 +594,120 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 	return argv;
 }
 
+uint16 platform_get_locale_language(){
+	CHAR langCode[4];
+
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
+		LOCALE_SABBREVLANGNAME,
+		(LPSTR)&langCode,
+		sizeof(langCode)) == 0){
+		return LANGUAGE_UNDEFINED;
+	}
+
+	if (strcmp(langCode, "ENG") == 0){
+		return LANGUAGE_ENGLISH_UK;
+	}
+	else if (strcmp(langCode, "ENU") == 0){
+		return LANGUAGE_ENGLISH_US;
+	}
+	else if (strcmp(langCode, "DEU") == 0){
+		return LANGUAGE_GERMAN;
+	}
+	else if (strcmp(langCode, "NLD") == 0){
+		return LANGUAGE_DUTCH;
+	}
+	else if (strcmp(langCode, "FRA") == 0){
+		return LANGUAGE_FRENCH;
+	}
+	else if (strcmp(langCode, "HUN") == 0){
+		return LANGUAGE_HUNGARIAN;
+	}
+	else if (strcmp(langCode, "PLK") == 0){
+		return LANGUAGE_POLISH;
+	}
+	else if (strcmp(langCode, "ESP") == 0){
+		return LANGUAGE_SPANISH;
+	}
+	else if (strcmp(langCode, "SVE") == 0){
+		return LANGUAGE_SWEDISH;
+	}
+	return LANGUAGE_UNDEFINED;
+}
+
+uint8 platform_get_locale_currency(){
+	CHAR currCode[4];
+
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
+		LOCALE_SINTLSYMBOL,
+		(LPSTR)&currCode,
+		sizeof(currCode)) == 0){
+		return CURRENCY_POUNDS;
+	}
+	if (strcmp(currCode, "GBP") == 0){
+		return CURRENCY_POUNDS;
+	}
+	else if (strcmp(currCode, "USD") == 0){
+		return CURRENCY_DOLLARS;
+	}
+	else if (strcmp(currCode, "EUR") == 0){
+		return CURRENCY_EUROS;
+	}
+	else if (strcmp(currCode, "SEK") == 0){
+		return CURRENCY_KRONA;
+	}
+	else if (strcmp(currCode, "DEM") == 0){
+		return CURRENCY_DEUTSCHMARK;
+	}
+	else if (strcmp(currCode, "ITL") == 0){
+		return CURRENCY_LIRA;
+	}
+	else if (strcmp(currCode, "JPY") == 0){
+		return CURRENCY_YEN;
+	}
+	else if (strcmp(currCode, "ESP") == 0){
+		return CURRENCY_PESETA;
+	}
+	else if (strcmp(currCode, "FRF") == 0){
+		return CURRENCY_FRANC;
+	}
+	else if (strcmp(currCode, "NLG") == 0){
+		return CURRENCY_GUILDERS;
+	}
+	return CURRENCY_POUNDS;
+}
+
+uint8 platform_get_locale_measurement_format(){
+	UINT measurement_system;
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
+		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
+		(LPSTR)&measurement_system,
+		sizeof(measurement_system)) == 0){
+		return MEASUREMENT_FORMAT_IMPERIAL;
+	}
+	switch (measurement_system){
+	case 0:
+		return MEASUREMENT_FORMAT_METRIC;
+	case 1:
+	default:
+		return MEASUREMENT_FORMAT_IMPERIAL;
+	}
+}
+
+uint8 platform_get_locale_temperature_format(){
+	// There does not seem to be a function to obtain this, just check the countries
+	UINT country;
+	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
+		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
+		(LPSTR)&country,
+		sizeof(country)) == 0){
+		return TEMPERATURE_FORMAT_C;
+	}
+	switch (country){
+	case CTRY_UNITED_STATES:
+	case CTRY_BELIZE:
+		return TEMPERATURE_FORMAT_F;
+	default:
+		return TEMPERATURE_FORMAT_C;
+	}
+}
 #endif
