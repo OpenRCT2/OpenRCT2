@@ -39,6 +39,9 @@
 #include "world/park.h"
 #include "world/sprite.h"
 
+static char _scenarioPath[MAX_PATH];
+static const char *_scenarioFileName;
+
 static int scenario_create_ducks();
 
 /**
@@ -210,6 +213,9 @@ int scenario_load_and_play_from_path(const char *path)
 	if (!scenario_load(path))
 		return 0;
 
+	strcpy(_scenarioPath, path);
+	_scenarioFileName = path_get_filename(_scenarioPath);
+
 	log_verbose("starting scenario, %s", path);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
@@ -351,18 +357,20 @@ void scenario_end()
 	window_park_objective_open();
 }
 
-/*
-* rct2: 0x0066A752
-**/
+/**
+ *
+ *  rct2: 0x0066A752
+ **/
 void scenario_failure()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
 	scenario_end();
 }
 
-/*
- * rct2: 0x0066A75E
- **/
+/**
+ *
+ *  rct2: 0x0066A75E
+ */
 void scenario_success()
 {
 	int i;
@@ -373,23 +381,51 @@ void scenario_success()
 	peep_applause();
 
 	for (i = 0; i < gScenarioListCount; i++) {
-		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
 		scenario = &gScenarioList[i];
 
-		if (0 == strncmp(cur_scenario_name, scenario->path, 256)){
-			if (scenario->flags & SCENARIO_FLAGS_COMPLETED && scenario->company_value < current_val)
-				break; // not a new high score -> no glory
+		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
+			// Check if record company value has been broken
+			if ((scenario->flags & SCENARIO_FLAGS_COMPLETED) && scenario->company_value >= current_val)
+				break;
 
+			// Allow name entry
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 			scenario->company_value = current_val;
 			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
 			scenario->completed_by[0] = 0;
-			RCT2_GLOBAL(0x013587C0, uint32) = current_val; // value used in window for score?
+			RCT2_GLOBAL(0x013587C0, uint32) = current_val;
 			scenario_scores_save();
 			break;
 		}
 	}
 	scenario_end();
+}
+
+/**
+ *
+ *  rct2: 0x006695E8
+ */
+void scenario_success_submit_name(const char *name)
+{
+	int i;
+	rct_scenario_basic* scenario;
+	uint32 scenarioWinCompanyValue;
+	
+	for (i = 0; i < gScenarioListCount; i++) {
+		scenario = &gScenarioList[i];
+
+		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
+			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
+			if (scenario->company_value == scenarioWinCompanyValue) {
+				strncpy(scenario->completed_by, name, 64);
+				strncpy((char*)0x013587D8, name, 32);
+				scenario_scores_save();
+			}
+			break;
+		}
+	}
+	
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -1060,28 +1096,4 @@ int scenario_save(char *path, int flags)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	return 1;
-}
-
-void scenario_success_submit_name(const char *name)
-{
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 scenarioWinCompanyValue;
-	
-	for (i = 0; i < gScenarioListCount; i++) {
-		char *cur_scenario_name = RCT2_ADDRESS(0x135936C, char);
-		scenario = &gScenarioList[i];
-
-		if (strncmp(cur_scenario_name, scenario->path, 256) == 0) {
-			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
-			if (scenario->company_value == scenarioWinCompanyValue) {
-				strncpy(scenario->completed_by, name, 64);
-				strncpy((char*)0x013587D8, name, 32);
-				scenario_scores_save();
-			}
-			break;
-		}
-	}
-	
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }

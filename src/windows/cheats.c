@@ -65,7 +65,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_MOWED_GRASS,
 	WIDX_WATER_PLANTS,
 	WIDX_FIX_VANDALISM,
-	WIDX_REMOVE_LITTER
+	WIDX_REMOVE_LITTER,
+	WIDX_WIN_SCENARIO
 };
 
 #pragma region MEASUREMENTS
@@ -134,6 +135,8 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(6), HPL(6),		2754,			STR_NONE},					// Water plants
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(6), HPL(6),		2755,			STR_NONE},					// Fix vandalism
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(7), HPL(7),		2756,			STR_NONE},					// Remove litter
+
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		2766,			STR_NONE},					// Win scenario
 	{ WIDGETS_END },
 };
 
@@ -147,8 +150,8 @@ static void window_cheats_emptysub() { }
 static void window_cheats_money_mouseup();
 static void window_cheats_guests_mouseup();
 static void window_cheats_misc_mouseup();
-void window_cheats_misc_tool_update();
-void window_cheats_misc_tool_down();
+static void window_cheats_misc_tool_update();
+static void window_cheats_misc_tool_down();
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate();
 static void window_cheats_paint();
@@ -256,7 +259,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -513,6 +516,9 @@ static void window_cheats_misc_mouseup()
 	case WIDX_REMOVE_LITTER:
 		cheat_remove_litter();
 		break;
+	case WIDX_WIN_SCENARIO:
+		scenario_success();
+		break;
 	}
 }
 
@@ -627,7 +633,8 @@ static void window_cheats_set_page(rct_window *w, int page)
 	window_invalidate(w);
 }
 
-void window_cheats_misc_tool_update(){
+static void window_cheats_misc_tool_update()
+{
 	short widgetIndex;
 	rct_window* w;
 	short x, y;
@@ -656,7 +663,8 @@ void window_cheats_misc_tool_update(){
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 }
 
-void window_cheats_misc_tool_down(){
+static void window_cheats_misc_tool_down()
+{
 	short widgetIndex;
 	rct_window* w;
 	short x, y;

@@ -2769,7 +2769,7 @@ STR_2762    :Pay For Rides
 STR_2763    :???
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
-STR_2766    :???
+STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :Open Park

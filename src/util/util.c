@@ -41,6 +41,21 @@ int mph_to_kmph(int mph)
 	return (mph * 1648) / 1024;
 }
 
+const char *path_get_filename(const char *path)
+{
+	const char *result, *ch;
+
+	result = path;
+	for (ch = path; *ch != 0; ch++) {
+		if (*ch == '/' || *ch == '\\') {
+			if (*(ch + 1) != 0)
+				result = ch + 1;
+		}
+	}
+
+	return result;
+}
+
 void path_set_extension(char *path, const char *extension)
 {
 	char *ch = path;
@@ -75,6 +90,13 @@ int bitscanforward(int source)
 			return i;
 
 	return -1;
+}
+
+bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
+{
+	return caseInsensitive ?
+		_strnicmp(a, b, length) == 0 :
+		strncmp(a, b, length) == 0;
 }
 
 /* case insensitve compare */
