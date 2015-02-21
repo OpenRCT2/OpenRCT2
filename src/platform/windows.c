@@ -631,7 +631,6 @@ uint16 platform_get_locale_language(){
 	else if (strcmp(langCode, "SVE") == 0){
 		return LANGUAGE_SWEDISH;
 	}
-	printf("%s\n", langCode);
 	return LANGUAGE_UNDEFINED;
 }
 
@@ -644,7 +643,7 @@ uint8 platform_get_locale_currency(){
 		sizeof(currCode)) == 0){
 		return CURRENCY_POUNDS;
 	}
-	if (wcscmp(strcmp, "GBP") == 0){
+	if (strcmp(currCode, "GBP") == 0){
 		return CURRENCY_POUNDS;
 	}
 	else if (strcmp(currCode, "USD") == 0){
