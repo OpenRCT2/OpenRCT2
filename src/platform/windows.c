@@ -595,82 +595,83 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 }
 
 uint16 platform_get_locale_language(){
-	WCHAR langCode[4];
+	CHAR langCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SABBREVLANGNAME,
-		langCode,
-		sizeof(langCode) / sizeof(WCHAR)) == 0){
+		(LPSTR)&langCode,
+		sizeof(langCode)) == 0){
 		return LANGUAGE_UNDEFINED;
 	}
 
-	if (wcscmp(langCode, L"ENG") == 0){
+	if (strcmp(langCode, "ENG") == 0){
 		return LANGUAGE_ENGLISH_UK;
 	}
-	else if (wcscmp(langCode, L"ENU") == 0){
+	else if (strcmp(langCode, "ENU") == 0){
 		return LANGUAGE_ENGLISH_US;
 	}
-	else if (wcscmp(langCode, L"DEU") == 0){
+	else if (strcmp(langCode, "DEU") == 0){
 		return LANGUAGE_GERMAN;
 	}
-	else if (wcscmp(langCode, L"NLD") == 0){
+	else if (strcmp(langCode, "NLD") == 0){
 		return LANGUAGE_DUTCH;
 	}
-	else if (wcscmp(langCode, L"FRA") == 0){
+	else if (strcmp(langCode, "FRA") == 0){
 		return LANGUAGE_FRENCH;
 	}
-	else if (wcscmp(langCode, L"HUN") == 0){
+	else if (strcmp(langCode, "HUN") == 0){
 		return LANGUAGE_HUNGARIAN;
 	}
-	else if (wcscmp(langCode, L"PLK") == 0){
+	else if (strcmp(langCode, "PLK") == 0){
 		return LANGUAGE_POLISH;
 	}
-	else if (wcscmp(langCode, L"ESP") == 0){
+	else if (strcmp(langCode, "ESP") == 0){
 		return LANGUAGE_SPANISH;
 	}
-	else if (wcscmp(langCode, L"SVE") == 0){
+	else if (strcmp(langCode, "SVE") == 0){
 		return LANGUAGE_SWEDISH;
 	}
+	printf("%s\n", langCode);
 	return LANGUAGE_UNDEFINED;
 }
 
 uint8 platform_get_locale_currency(){
-	WCHAR currCode[4];
+	CHAR currCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SINTLSYMBOL,
-		currCode,
-		sizeof(currCode) / sizeof(WCHAR)) == 0){
+		(LPSTR)&currCode,
+		sizeof(currCode)) == 0){
 		return CURRENCY_POUNDS;
 	}
-	if (wcscmp(currCode, L"GBP") == 0){
+	if (wcscmp(strcmp, "GBP") == 0){
 		return CURRENCY_POUNDS;
 	}
-	else if (wcscmp(currCode, L"USD") == 0){
+	else if (strcmp(currCode, "USD") == 0){
 		return CURRENCY_DOLLARS;
 	}
-	else if (wcscmp(currCode, L"EUR") == 0){
+	else if (strcmp(currCode, "EUR") == 0){
 		return CURRENCY_EUROS;
 	}
-	else if (wcscmp(currCode, L"SEK") == 0){
+	else if (strcmp(currCode, "SEK") == 0){
 		return CURRENCY_KRONA;
 	}
-	else if (wcscmp(currCode, L"SEK") == 0){
-		return CURRENCY_KRONA;
+	else if (strcmp(currCode, "DEM") == 0){
+		return CURRENCY_DEUTSCHMARK;
 	}
-	else if (wcscmp(currCode, L"ITL") == 0){
+	else if (strcmp(currCode, "ITL") == 0){
 		return CURRENCY_LIRA;
 	}
-	else if (wcscmp(currCode, L"JPY") == 0){
+	else if (strcmp(currCode, "JPY") == 0){
 		return CURRENCY_YEN;
 	}
-	else if (wcscmp(currCode, L"ESP") == 0){
+	else if (strcmp(currCode, "ESP") == 0){
 		return CURRENCY_PESETA;
 	}
-	else if (wcscmp(currCode, L"FRF") == 0){
+	else if (strcmp(currCode, "FRF") == 0){
 		return CURRENCY_FRANC;
 	}
-	else if (wcscmp(currCode, L"NLG") == 0){
+	else if (strcmp(currCode, "NLG") == 0){
 		return CURRENCY_GUILDERS;
 	}
 	return CURRENCY_POUNDS;
@@ -680,7 +681,7 @@ uint8 platform_get_locale_measurement_format(){
 	UINT measurement_system;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPWSTR)&measurement_system,
+		(LPSTR)&measurement_system,
 		sizeof(measurement_system)) == 0){
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
@@ -688,7 +689,6 @@ uint8 platform_get_locale_measurement_format(){
 	case 0:
 		return MEASUREMENT_FORMAT_METRIC;
 	case 1:
-		return MEASUREMENT_FORMAT_IMPERIAL;
 	default:
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
@@ -696,20 +696,16 @@ uint8 platform_get_locale_measurement_format(){
 
 uint8 platform_get_locale_temperature_format(){
 	// There does not seem to be a function to obtain this, just check the countries
-	// According
 	UINT country;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPWSTR)&country,
+		(LPSTR)&country,
 		sizeof(country)) == 0){
 		return TEMPERATURE_FORMAT_C;
 	}
 	switch (country){
 	case CTRY_UNITED_STATES:
-		//USA
-		return TEMPERATURE_FORMAT_F;
 	case CTRY_BELIZE:
-		// Belize
 		return TEMPERATURE_FORMAT_F;
 	default:
 		return TEMPERATURE_FORMAT_C;
