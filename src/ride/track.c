@@ -742,8 +742,8 @@ void load_track_scenery_objects(){
 * the track preview window to place the whole track. 
 * Depending on the value of bl it modifies the function.
 * bl == 0, Draw outlines on the ground
-* bl == 3, Returns the z value of a succesful placement
-* bl == 5, Returns cost to create the track. Places the track. (used by the preview)
+* bl == 3, Returns the z value of a succesful placement. Only lower 16 bits are the value, the rest may be garbage?
+* bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
 * bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
@@ -758,7 +758,9 @@ int sub_6D01B3(int bl, int x, int y, int z)
 	edi = 0;
 	ebp = 0;
 	RCT2_CALLFUNC_X(0x006D01B3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return *((short*)&ebx);
+	if (bl == 3)
+		ebx &= 0xFFFF;
+	return ebx;
 }
 
 /* rct2: 0x006D2189 
