@@ -109,5 +109,6 @@ int game_load_save(const char *path);
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 char save_game();
 void rct2_exit();
+void game_autosave();
 
 #endif

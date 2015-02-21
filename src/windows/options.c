@@ -96,6 +96,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
+	WIDX_AUTOSAVE,
+	WIDX_AUTOSAVE_DROPDOWN
 };
 
 #define WW 310
@@ -153,6 +155,8 @@ static rct_widget window_options_widgets[] = {
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
+	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		STR_NONE,		STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -258,7 +262,9 @@ void window_options_open()
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
 		(1ULL << WIDX_SOUND_SW_BUFFER_CHECKBOX) |
 		(1ULL << WIDX_SOUND_PAUSED_CHECKBOX) |
-		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX);	// doesn't seem to work?
+		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
+		(1ULL << WIDX_AUTOSAVE) |
+		(1ULL << WIDX_AUTOSAVE_DROPDOWN);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
@@ -493,6 +499,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
 		gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
 		break;
+	case WIDX_AUTOSAVE_DROPDOWN:
+		for (i = AUTOSAVE_EVERY_WEEK; i <= AUTOSAVE_NEVER; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = 2701 + i;
+		}
+		window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
+		gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
+		break;
 	}
 }
 
@@ -627,6 +641,13 @@ static void window_options_dropdown()
 			gfx_invalidate_screen();
 		}
 		break;
+	case WIDX_AUTOSAVE_DROPDOWN:
+		if (dropdownIndex != gConfigGeneral.autosave_frequency) {
+			gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
+			config_save_default();
+			window_invalidate(w);
+		}
+		break;
 	}
 }
 
@@ -643,7 +664,7 @@ static void window_options_invalidate()
 	window_get_register(w);
 
 	window_options_set_pressed_tab(w);
-	for (i = WIDX_RESOLUTION; i <= WIDX_SAVE_PLUGIN_DATA_CHECKBOX; i++) {
+	for (i = WIDX_RESOLUTION; i <= WIDX_AUTOSAVE_DROPDOWN; i++) {
 		window_options_widgets[i].type = WWT_EMPTY;
 	}
 
@@ -787,6 +808,8 @@ static void window_options_invalidate()
 
 		window_options_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
+		window_options_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	}
 }
@@ -848,6 +871,17 @@ static void window_options_paint()
 			12,
 			w->x + window_options_widgets[WIDX_TITLE_MUSIC].left + 1,
 			w->y + window_options_widgets[WIDX_TITLE_MUSIC].top
+		);
+		break;
+	case WINDOW_OPTIONS_PAGE_MISC:
+		gfx_draw_string_left(dpi, 2700, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_AUTOSAVE].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			2701 + gConfigGeneral.autosave_frequency,
+			NULL,
+			12,
+			w->x + window_options_widgets[WIDX_AUTOSAVE].left + 1,
+			w->y + window_options_widgets[WIDX_AUTOSAVE].top
 		);
 		break;
 	}

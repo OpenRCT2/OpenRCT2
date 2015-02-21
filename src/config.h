@@ -96,6 +96,15 @@ enum{
 
 };
 
+enum {
+	AUTOSAVE_EVERY_WEEK,
+	AUTOSAVE_EVERY_2_WEEKS,
+	AUTOSAVE_EVERY_MONTH,
+	AUTOSAVE_EVERY_4_MONTHS,
+	AUTOSAVE_EVERY_YEAR,
+	AUTOSAVE_NEVER
+};
+
 typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -119,6 +128,7 @@ typedef struct general_configuration {
 	sint32 window_height;
 	uint16 language;
 	uint8 window_snap_proximity;
+	uint8 autosave_frequency;
 } general_configuration;
 
 typedef struct sound_configuration {

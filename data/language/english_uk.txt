@@ -2702,13 +2702,13 @@ STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
-STR_2705    :???
-STR_2706    :???
+STR_2700    :Autosave frequency
+STR_2701    :Every week
+STR_2702    :Every 2 weeks
+STR_2703    :Every month
+STR_2704    :Every 4 months
+STR_2705    :Every year
+STR_2706    :Never
 STR_2707    :Open new window
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite

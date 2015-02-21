@@ -793,6 +793,16 @@ char save_game()
 	}
 }
 
+void game_autosave()
+{
+	char path[MAX_PATH];
+
+	platform_get_user_directory(path, "save");
+	strcat(path, "autosave.sv6");
+
+	scenario_save(path, 0);
+}
+
 /**
  * 
  *  rct2: 0x006E3879
