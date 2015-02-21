@@ -436,7 +436,7 @@ void peep_update_falling(rct_peep* peep){
 			int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
 				+ map_element->base_height * 8;
 
-			if (height < peep->z - 1 || height - 4 > peep->z) continue;
+			if (height < peep->z - 1 || height > peep->z + 4) continue;
 
 			saved_height = height;
 			saved_map = map_element;
@@ -504,7 +504,7 @@ void peep_update_falling(rct_peep* peep){
 	peep->next_z = saved_map->base_height;
 
 	int edx = saved_map->properties.surface.slope & 0x7;
-	if (saved_map->type != MAP_ELEMENT_TYPE_PATH){
+	if (map_element_get_type(saved_map) != MAP_ELEMENT_TYPE_PATH){
 		edx = 8;
 	}
 	peep->next_var_29 = edx;
