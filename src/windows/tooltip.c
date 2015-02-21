@@ -139,7 +139,14 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	memcpy(gTooltip_text_buffer, buffer, 512);
 	
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	y = clamp(22, y + 26, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height - 40);
+
+	int max_y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
+	y += 26; // Normally, we'd display the tooltip 26 lower
+	if (y > max_y)
+		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
+		// so we'll subtract a bit more
+		y -= height + 40;
+	y = clamp(22, y, max_y);
 
 	w = window_create(x, y, width, height, (uint32*)window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 	w->widgets = window_tooltip_widgets;
