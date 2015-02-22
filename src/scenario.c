@@ -358,6 +358,12 @@ void scenario_end()
 	window_park_objective_open();
 }
 
+void scenario_set_filename(const char *value)
+{
+	subsitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	_scenarioFileName = path_get_filename(_scenarioPath);
+}
+
 /**
  *
  *  rct2: 0x0066A752
