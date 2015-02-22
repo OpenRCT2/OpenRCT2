@@ -56,11 +56,46 @@ int map_smooth(int l, int t, int r, int b)
 
 			if (highest >= mapElement->base_height + 4) {
 				count = 0;
+				int canCompensate = 1;
 				for (i = 0; i < 4; i++)
-					if (cornerHeights[i] == highest)
+					if (cornerHeights[i] == highest){
 						count++;
 
-				if (count == 1) {
+						// Check if surrounding corners aren't too high. The current tile 
+						// can't compensate for all the height differences anymore if it has 
+						// the extra height slope.
+						int highestOnLowestSide;
+						switch (i){
+						case 0:
+							highestOnLowestSide = max(
+								map_get_surface_element_at(x + 1, y)->base_height,
+								map_get_surface_element_at(x, y + 1)->base_height);
+							break;
+						case 1:
+							highestOnLowestSide = max(
+								map_get_surface_element_at(x - 1, y)->base_height,
+								map_get_surface_element_at(x, y + 1)->base_height);
+							break;
+						case 2:
+							highestOnLowestSide = max(
+								map_get_surface_element_at(x - 1, y)->base_height,
+								map_get_surface_element_at(x, y - 1)->base_height);
+							break;
+						case 3:
+							highestOnLowestSide = max(
+								map_get_surface_element_at(x + 1, y)->base_height,
+								map_get_surface_element_at(x, y - 1)->base_height);
+							break;
+						}
+
+						if (highestOnLowestSide > mapElement->base_height){
+							mapElement->base_height = mapElement->clearance_height = highestOnLowestSide;
+							raisedLand = 1;
+							canCompensate = 0;
+						}
+					}
+
+				if (count == 1 && canCompensate) {
 					if (mapElement->base_height < highest - 4) {
 						mapElement->base_height = mapElement->clearance_height = highest - 4;
 						raisedLand = 1;
