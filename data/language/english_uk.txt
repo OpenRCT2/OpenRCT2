@@ -2687,11 +2687,11 @@ STR_2681    :???
 STR_2682    :???
 STR_2683    :???
 STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
+STR_2685    :Simplex Noise Parameters
+STR_2686    :{WINDOW_COLOUR_2}Low:
+STR_2687    :{WINDOW_COLOUR_2}High:
+STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
+STR_2689    :{WINDOW_COLOUR_2}Octaves:
 STR_2690    :Map Generation
 STR_2691    :{WINDOW_COLOUR_2}Base height:
 STR_2692    :{WINDOW_COLOUR_2}Water level:

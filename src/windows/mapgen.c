@@ -139,7 +139,7 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		2694,					STR_NONE },
 
-	{ WWT_12,				1,	4,		141,	52,		63,		2700,					STR_NONE },
+	{ WWT_12,				1,	4,		141,	52,		63,		2685,					STR_NONE },
 
 	{ WWT_SPINNER,			1,	104,	198,	70,		81,		STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	71,		75,		STR_NUMERIC_UP,			STR_NONE },
@@ -946,10 +946,10 @@ static void window_mapgen_simplex_paint()
 	window_draw_widgets(w, dpi);
 	window_mapgen_draw_tab_images(dpi, w);
 
-	gfx_draw_string_left(dpi, 2701, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
-	gfx_draw_string_left(dpi, 2702, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
-	gfx_draw_string_left(dpi, 2703, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
-	gfx_draw_string_left(dpi, 2704, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
+	gfx_draw_string_left(dpi, 2686, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
+	gfx_draw_string_left(dpi, 2687, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
+	gfx_draw_string_left(dpi, 2688, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
+	gfx_draw_string_left(dpi, 2689, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
 	gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
 	gfx_draw_string_left(dpi, 2692, 0, 0, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
 
