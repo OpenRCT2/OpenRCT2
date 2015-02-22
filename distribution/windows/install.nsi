@@ -17,8 +17,8 @@
 ; Define root variable relative to installer
 !define PATH_ROOT "..\..\"
 
-!define MUI_ICON "${PATH_ROOT}openrct2.ico"
-!define MUI_UNICON "${PATH_ROOT}openrct2.ico"
+!define MUI_ICON "${PATH_ROOT}resources\logo\icon.ico"
+!define MUI_UNICON "${PATH_ROOT}resources\logo\icon.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "welcome.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "top.bmp"
