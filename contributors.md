@@ -68,6 +68,9 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Spanish - (mdtrooper)
 * Swedish - (Jinxit), (mharrys)
 
+## Graphics
+* OpenRCT2 Logo - xzbobzx
+
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer
 Graphics by Simon Foster
