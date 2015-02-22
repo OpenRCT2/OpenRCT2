@@ -1319,6 +1319,7 @@ static void ride_breakdown_update(int rideIndex)
 			ride->var_19C +
 			ride->var_19D +
 			ride->var_19E +
+			ride->var_19F +
 			ride->var_1A0 +
 			ride->var_1A2 +
 			ride->var_1A3;
@@ -1355,11 +1356,12 @@ static void ride_breakdown_update(int rideIndex)
 		agePenalty = ax >> 2;
 		break;
 	case 3:
+	case 4:
 		agePenalty = ax >> 1;
 		break;
-	case 4:
 	case 5:
 	case 6:
+	case 7:
 		agePenalty = ax >> 0;
 		break;
 	default:

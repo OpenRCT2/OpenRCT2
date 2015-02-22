@@ -1927,7 +1927,7 @@ static void peep_update(rct_peep *peep)
 			RCT2_CALLPROC_X(0x006C0CB8, 0, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_FIXING:
-			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x006C0E8B, stepsToTake, 0, 0, 0, (int)peep, 0, 0);
 			break;
 		case PEEP_STATE_BUYING:
 			peep_update_buying(peep);
