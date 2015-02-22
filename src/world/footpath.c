@@ -337,6 +337,17 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		footpath_element_update(x, y, mapElement, type, flags);
 }
 
+/* rct2: 0x006BA23E */
+void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
+	while (!map_element_is_last_for_tile(mapElement++)){
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
+		else if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)continue;
+
+		game_do_command(x, 1, y, mapElement->base_height | mapElement->properties.banner.position << 8, GAME_COMMAND_51, 0, 0);
+		mapElement--;
+	}
+}
+
 money32 footpath_remove_real(int x, int y, int z, int flags)
 {
 	rct_map_element *mapElement;
@@ -362,7 +373,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
-		RCT2_CALLPROC_X(0x006BA23E, 0, 0, 0, 0, (int)mapElement, 0, 0);
+		remove_banners_at_element(x, y, mapElement);
 		sub_6A6AA7(x, y, mapElement);
 		map_invalidate_tile_full(x, y);
 		map_element_remove(mapElement);
