@@ -1,9 +1,9 @@
 # Version numbers to update
-!define APPV_MAJOR 0
-!define APPV_MINOR 2
-!define APPV_MAINT 0
-!define APPV_BUILD 0
-!define APPV_EXTRA "-beta"
+!define /ifndef APPV_MAJOR 0
+!define /ifndef APPV_MINOR 2
+!define /ifndef APPV_MAINT 0
+!define /ifndef APPV_BUILD 0
+!define /ifndef APPV_EXTRA "-beta"
 
 !define APPNAME "OpenRCT2"   ; Define application name
 !define APPVERSION "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}${APPV_EXTRA}"  ; Define application version
@@ -41,7 +41,10 @@ Name "${APPNAMEANDVERSION} ${APPBITS}-bit for Windows ${EXTRA_VERSION}"
 
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"
-OutFile "openrct2-${APPVERSION}-${APPARCH}.exe"
+!ifndef OUTFILE
+	!define OUTFILE "openrct2-${APPVERSION}-${APPARCH}.exe"
+!endif
+OutFile "${OUTFILE}"
 CRCCheck force
 
 ShowInstDetails show
