@@ -3176,8 +3176,8 @@ STR_3174    :Een ander object is afhankelijk van dit object
 STR_3175    :Dit object is altijd benodigd
 STR_3176    :Kan object niet selecteren
 STR_3177    :Kan object niet deselecteren
-STR_3178    :Er moet minimaal één voetpad worden geselecteerd
-STR_3179    :Er moet minimaal één attractie worden geselecteerd
+STR_3178    :Er moet minstens één voetpad worden geselecteerd
+STR_3179    :Er moet minstens één attractie worden geselecteerd
 STR_3180    :Ongeldige selectie van objecten
 STR_3181    :Objectselectie - {STRINGID}
 STR_3182    :Er moet een parkingang worden geselecteerd
