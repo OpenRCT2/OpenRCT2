@@ -8,10 +8,9 @@
 !define APPNAME "OpenRCT2"   ; Define application name
 !define APPVERSION "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}${APPV_EXTRA}"  ; Define application version
 !define APPVERSIONINTERNAL "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}.${APPV_BUILD}" ; Define application version in X.X.X.X
-!define INSTALLERVERSION ${APPV_MAJOR}${APPV_MINOR}${APPV_MAINT}${APPV_BUILD}
 !include ${VERSION_INCLUDE}
 
-!define APPURLLINK "https://github.com/IntelOrca/OpenRCT2"
+!define /ifndef APPURLLINK "https://github.com/IntelOrca/OpenRCT2"
 !define APPNAMEANDVERSION "${APPNAME} ${APPVERSION}"
 
 ; Define root variable relative to installer
@@ -154,7 +153,7 @@ Section "!OpenRCT2" Section1
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "UninstallString" "$INSTDIR\uninstall.exe"
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "URLInfoAbout" "${APPURLLINK}"
     ; This key sets the Version DWORD that new installers will check against
-    WriteRegDWORD HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version" ${INSTALLERVERSION}
+    WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version" "${APPVERSIONINTERNAL}"
 
     !insertmacro MUI_STARTMENU_WRITE_BEGIN "OpenRCT2"
     CreateShortCut "$DESKTOP\OpenRCT2.lnk" "$INSTDIR\openrct2.exe"
@@ -355,6 +354,99 @@ unix2dos_done:
 
 FunctionEnd
 
+;-----------------------------------------------------------------------------------
+; Properly compare 2 versions
+; syntax:
+;    ${VersionCompare} "[Version1]" "[Version2]" $var
+; output:
+;    $var=0  Versions are equal
+;    $var=1  Version1 is newer
+;    $var=2  Version2 is newer
+Function VersionCompare
+	!define VersionCompare `!insertmacro VersionCompareCall`
+ 
+	!macro VersionCompareCall _VER1 _VER2 _RESULT
+		Push `${_VER1}`
+		Push `${_VER2}`
+		Call VersionCompare
+		Pop ${_RESULT}
+	!macroend
+ 
+	Exch $1
+	Exch
+	Exch $0
+	Exch
+	Push $2
+	Push $3
+	Push $4
+	Push $5
+	Push $6
+	Push $7
+ 
+	begin:
+	StrCpy $2 -1
+	IntOp $2 $2 + 1
+	StrCpy $3 $0 1 $2
+	StrCmp $3 '' +2
+	StrCmp $3 '.' 0 -3
+	StrCpy $4 $0 $2
+	IntOp $2 $2 + 1
+	StrCpy $0 $0 '' $2
+ 
+	StrCpy $2 -1
+	IntOp $2 $2 + 1
+	StrCpy $3 $1 1 $2
+	StrCmp $3 '' +2
+	StrCmp $3 '.' 0 -3
+	StrCpy $5 $1 $2
+	IntOp $2 $2 + 1
+	StrCpy $1 $1 '' $2
+ 
+	StrCmp $4$5 '' equal
+ 
+	StrCpy $6 -1
+	IntOp $6 $6 + 1
+	StrCpy $3 $4 1 $6
+	StrCmp $3 '0' -2
+	StrCmp $3 '' 0 +2
+	StrCpy $4 0
+ 
+	StrCpy $7 -1
+	IntOp $7 $7 + 1
+	StrCpy $3 $5 1 $7
+	StrCmp $3 '0' -2
+	StrCmp $3 '' 0 +2
+	StrCpy $5 0
+ 
+	StrCmp $4 0 0 +2
+	StrCmp $5 0 begin newer2
+	StrCmp $5 0 newer1
+	IntCmp $6 $7 0 newer1 newer2
+ 
+	StrCpy $4 '1$4'
+	StrCpy $5 '1$5'
+	IntCmp $4 $5 begin newer2 newer1
+ 
+	equal:
+	StrCpy $0 0
+	goto end
+	newer1:
+	StrCpy $0 1
+	goto end
+	newer2:
+	StrCpy $0 2
+ 
+	end:
+	Pop $7
+	Pop $6
+	Pop $5
+	Pop $4
+	Pop $3
+	Pop $2
+	Pop $1
+	Exch $0
+FunctionEnd
+
 
 Var OLDVERSION
 Var UninstallString
@@ -367,7 +459,7 @@ Function .onInit
     SectionSetFlags 0 17
 
     ; Starts Setup - let's look for an older version of OpenRCT2
-    ReadRegDWORD $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
+    ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
 
     IfErrors ShowWelcomeMessage ShowUpgradeMessage
 ShowWelcomeMessage:
@@ -375,7 +467,8 @@ ShowWelcomeMessage:
     IfErrors FinishCallback
 
 ShowUpgradeMessage:
-    IntCmp ${INSTALLERVERSION} $R8 VersionsAreEqual InstallerIsOlder  WelcomeToSetup
+	${VersionCompare} "${APPVERSIONINTERNAL}" "$R8" $R0
+    IntCmp $R0 1 WelcomeToSetup VersionsAreEqual InstallerIsOlder
 WelcomeToSetup:
     ; An older version was found.  Let's let the user know there's an upgrade that will take place.
     ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"

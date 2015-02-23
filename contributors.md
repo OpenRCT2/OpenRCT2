@@ -48,7 +48,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Balletie) - OSX
 * Kevin Burke (kevinburke) - OSX, Unix
 * Miso Zmiric (mzmiric5) - OSX
-* (JarnoVgr) - Windows build server
+* Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 
 ## Documentation
