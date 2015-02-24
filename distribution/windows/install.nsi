@@ -113,11 +113,11 @@ Section "!OpenRCT2" Section1
 
     ; Copy language files
     SetOutPath "$INSTDIR\data\language\"
-    File ${PATH_ROOT}build\Release\Data\Language\*.txt
+    File ${PATH_ROOT}data\language\*.txt
 
     ; Copy data files
     SetOutPath "$INSTDIR\data\"
-    File /r ${PATH_ROOT}build\Release\Data\*
+    File /r ${PATH_ROOT}data\*
 
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
