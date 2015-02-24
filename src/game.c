@@ -802,7 +802,7 @@ void game_autosave()
 	platform_get_user_directory(path, "save");
 	strcat(path, "autosave.sv6");
 
-	scenario_save(path, 0);
+	scenario_save(path, 0x80000000);
 }
 
 /**
