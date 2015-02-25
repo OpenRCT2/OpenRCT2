@@ -1,0 +1,3450 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
+STR_0000    :
+STR_0001    :{STRINGID} {COMMA16}
+STR_0002    :Attrazione
+STR_0003    :Attrazione
+STR_0004    :Attrazione oscillante
+STR_0005    :Attrazione
+STR_0006    :Ottovolante per giovanissimi
+STR_0007    :Ferrovia in miniatura
+STR_0008    :Monorotaia
+STR_0009    :Mini-attrazione sospesa
+STR_0010    :Attrazione
+STR_0011    :Attrazione
+STR_0012    :Attrazione
+STR_0013    :Attrazione su carrozza
+STR_0014    :Attrazione
+STR_0015    :Attrazione
+STR_0016    :Attrazione
+STR_0017    :Ottovolante con giro d. morte
+STR_0018    :Attrazione
+STR_0019    :Attrazione
+STR_0020    :Seggiovia
+STR_0021    :Attrazione
+STR_0022    :Attrazione
+STR_0023    :Attrazione
+STR_0024    :Attrazione
+STR_0025    :Attrazione
+STR_0026    :Attrazione
+STR_0027    :Attrazione
+STR_0028    :Attrazione
+STR_0029    :Attrazione
+STR_0030    :Chiosco
+STR_0031    :Chiosco
+STR_0032    :Chiosco
+STR_0033    :Chiosco
+STR_0034    :Chiosco
+STR_0035    :Attrazione
+STR_0036    :Chiosco
+STR_0037    :Chiosco
+STR_0038    :Servizi igienici
+STR_0039    :Attrazione
+STR_0040    :Attrazione
+STR_0041    :Attrazione
+STR_0042    :Attrazione
+STR_0043    :Attrazione
+STR_0044    :Attraz. a caduta libera rov.
+STR_0045    :Traino
+STR_0046    :Attrazione
+STR_0047    :Attrazione
+STR_0048    :Attrazione
+STR_0049    :Attrazione
+STR_0050    :Attrazione
+STR_0051    :Attrazione
+STR_0052    :Attrazione
+STR_0053    :Ottov. super-serpentina
+STR_0054    :Ottovolante di legno
+STR_0055    :Ottov. a frizione laterale
+STR_0056    :Topo tutto matto
+STR_0057    :Ottov. multi-dimensionale
+STR_0058    :Attrazione
+STR_0059    :Ottovolante aereo invertito
+STR_0060    :Attrazione
+STR_0061    :Attrazione
+STR_0062    :Attrazione
+STR_0063    :Attrazione
+STR_0064    :Attrazione
+STR_0065    :Monorotaia sospesa
+STR_0066    :Attrazione
+STR_0067    :Attrazione
+STR_0068    :Serpentone volante
+STR_0069    :Attrazione
+STR_0070    :Attrazione
+STR_0071    :Attrazione
+STR_0072    :Attrazione
+STR_0073    :Attrazione
+STR_0074    :Attrazione
+STR_0075    :Attrazione
+STR_0076    :Attrazione acquatica
+STR_0077    :Attrazione
+STR_0078    :Attrazione
+STR_0079    :Attrazione
+STR_0080    :Attrazione
+STR_0081    :Attrazione
+STR_0082    :Attrazione
+STR_0083    :Attrazione
+STR_0084    :Attrazione
+STR_0085    :Attrazione
+STR_0086    :Attrazione
+STR_0087    :Attrazione
+STR_0088    :Attrazione
+STR_0089    :Mini-ottovolante
+STR_0090    :Attrazione
+STR_0091    :Attrazione
+STR_0092    :Attrazione
+STR_0093    :
+STR_0094    :
+STR_0095    :
+STR_0096    :
+STR_0097    :
+STR_0098    :
+STR_0099    :
+STR_0100    :
+STR_0101    :
+STR_0102    :
+STR_0103    :
+STR_0104    :
+STR_0105    :
+STR_0106    :
+STR_0107    :
+STR_0108    :
+STR_0109    :
+STR_0110    :
+STR_0111    :
+STR_0112    :
+STR_0113    :
+STR_0114    :
+STR_0115    :
+STR_0116    :
+STR_0117    :
+STR_0118    :
+STR_0119    :
+STR_0120    :
+STR_0121    :
+STR_0122    :
+STR_0123    :
+STR_0124    :
+STR_0125    :
+STR_0126    :
+STR_0127    :
+STR_0128    :
+STR_0129    :
+STR_0130    :
+STR_0131    :
+STR_0132    :
+STR_0133    :
+STR_0134    :
+STR_0135    :
+STR_0136    :
+STR_0137    :
+STR_0138    :
+STR_0139    :
+STR_0140    :
+STR_0141    :
+STR_0142    :
+STR_0143    :
+STR_0144    :
+STR_0145    :
+STR_0146    :
+STR_0147    :
+STR_0148    :
+STR_0149    :
+STR_0150    :
+STR_0151    :
+STR_0152    :
+STR_0153    :
+STR_0154    :
+STR_0155    :
+STR_0156    :
+STR_0157    :
+STR_0158    :
+STR_0159    :
+STR_0160    :
+STR_0161    :
+STR_0162    :
+STR_0163    :
+STR_0164    :
+STR_0165    :
+STR_0166    :
+STR_0167    :
+STR_0168    :
+STR_0169    :
+STR_0170    :
+STR_0171    :
+STR_0172    :
+STR_0173    :
+STR_0174    :
+STR_0175    :
+STR_0176    :
+STR_0177    :
+STR_0178    :
+STR_0179    :
+STR_0180    :
+STR_0181    :
+STR_0182    :
+STR_0183    :
+STR_0184    :
+STR_0185    :
+STR_0186    :
+STR_0187    :
+STR_0188    :
+STR_0189    :
+STR_0190    :
+STR_0191    :
+STR_0192    :
+STR_0193    :
+STR_0194    :
+STR_0195    :
+STR_0196    :
+STR_0197    :
+STR_0198    :
+STR_0199    :
+STR_0200    :
+STR_0201    :
+STR_0202    :
+STR_0203    :
+STR_0204    :
+STR_0205    :
+STR_0206    :
+STR_0207    :
+STR_0208    :
+STR_0209    :
+STR_0210    :
+STR_0211    :
+STR_0212    :
+STR_0213    :
+STR_0214    :
+STR_0215    :
+STR_0216    :
+STR_0217    :
+STR_0218    :
+STR_0219    :
+STR_0220    :
+STR_0221    :
+STR_0222    :
+STR_0223    :
+STR_0224    :
+STR_0225    :
+STR_0226    :
+STR_0227    :
+STR_0228    :
+STR_0229    :
+STR_0230    :
+STR_0231    :
+STR_0232    :
+STR_0233    :
+STR_0234    :
+STR_0235    :
+STR_0236    :
+STR_0237    :
+STR_0238    :
+STR_0239    :
+STR_0240    :
+STR_0241    :
+STR_0242    :
+STR_0243    :
+STR_0244    :
+STR_0245    :
+STR_0246    :
+STR_0247    :
+STR_0248    :
+STR_0249    :
+STR_0250    :
+STR_0251    :
+STR_0252    :
+STR_0253    :
+STR_0254    :
+STR_0255    :
+STR_0256    :
+STR_0257    :
+STR_0258    :
+STR_0259    :
+STR_0260    :
+STR_0261    :
+STR_0262    :
+STR_0263    :
+STR_0264    :
+STR_0265    :
+STR_0266    :
+STR_0267    :
+STR_0268    :
+STR_0269    :
+STR_0270    :
+STR_0271    :
+STR_0272    :
+STR_0273    :
+STR_0274    :
+STR_0275    :
+STR_0276    :
+STR_0277    :
+STR_0278    :
+STR_0279    :
+STR_0280    :
+STR_0281    :
+STR_0282    :
+STR_0283    :
+STR_0284    :
+STR_0285    :
+STR_0286    :
+STR_0287    :
+STR_0288    :
+STR_0289    :
+STR_0290    :
+STR_0291    :
+STR_0292    :
+STR_0293    :
+STR_0294    :
+STR_0295    :
+STR_0296    :
+STR_0297    :
+STR_0298    :
+STR_0299    :
+STR_0300    :
+STR_0301    :
+STR_0302    :
+STR_0303    :
+STR_0304    :
+STR_0305    :
+STR_0306    :
+STR_0307    :
+STR_0308    :
+STR_0309    :
+STR_0310    :
+STR_0311    :
+STR_0312    :
+STR_0313    :
+STR_0314    :
+STR_0315    :
+STR_0316    :
+STR_0317    :
+STR_0318    :
+STR_0319    :
+STR_0320    :
+STR_0321    :
+STR_0322    :
+STR_0323    :
+STR_0324    :
+STR_0325    :
+STR_0326    :
+STR_0327    :
+STR_0328    :
+STR_0329    :
+STR_0330    :
+STR_0331    :
+STR_0332    :
+STR_0333    :
+STR_0334    :
+STR_0335    :
+STR_0336    :
+STR_0337    :
+STR_0338    :
+STR_0339    :
+STR_0340    :
+STR_0341    :
+STR_0342    :
+STR_0343    :
+STR_0344    :
+STR_0345    :
+STR_0346    :
+STR_0347    :
+STR_0348    :
+STR_0349    :
+STR_0350    :
+STR_0351    :
+STR_0352    :
+STR_0353    :
+STR_0354    :
+STR_0355    :
+STR_0356    :
+STR_0357    :
+STR_0358    :
+STR_0359    :
+STR_0360    :
+STR_0361    :
+STR_0362    :
+STR_0363    :
+STR_0364    :
+STR_0365    :
+STR_0366    :
+STR_0367    :
+STR_0368    :
+STR_0369    :
+STR_0370    :
+STR_0371    :
+STR_0372    :
+STR_0373    :
+STR_0374    :
+STR_0375    :
+STR_0376    :
+STR_0377    :
+STR_0378    :
+STR_0379    :
+STR_0380    :
+STR_0381    :
+STR_0382    :
+STR_0383    :
+STR_0384    :
+STR_0385    :
+STR_0386    :
+STR_0387    :
+STR_0388    :
+STR_0389    :
+STR_0390    :
+STR_0391    :
+STR_0392    :
+STR_0393    :
+STR_0394    :
+STR_0395    :
+STR_0396    :
+STR_0397    :
+STR_0398    :
+STR_0399    :
+STR_0400    :
+STR_0401    :
+STR_0402    :
+STR_0403    :
+STR_0404    :
+STR_0405    :
+STR_0406    :
+STR_0407    :
+STR_0408    :
+STR_0409    :
+STR_0410    :
+STR_0411    :
+STR_0412    :
+STR_0413    :
+STR_0414    :
+STR_0415    :
+STR_0416    :
+STR_0417    :
+STR_0418    :
+STR_0419    :
+STR_0420    :
+STR_0421    :
+STR_0422    :
+STR_0423    :
+STR_0424    :
+STR_0425    :
+STR_0426    :
+STR_0427    :
+STR_0428    :
+STR_0429    :
+STR_0430    :
+STR_0431    :
+STR_0432    :
+STR_0433    :
+STR_0434    :
+STR_0435    :
+STR_0436    :
+STR_0437    :
+STR_0438    :
+STR_0439    :
+STR_0440    :
+STR_0441    :
+STR_0442    :
+STR_0443    :
+STR_0444    :
+STR_0445    :
+STR_0446    :
+STR_0447    :
+STR_0448    :
+STR_0449    :
+STR_0450    :
+STR_0451    :
+STR_0452    :
+STR_0453    :
+STR_0454    :
+STR_0455    :
+STR_0456    :
+STR_0457    :
+STR_0458    :
+STR_0459    :
+STR_0460    :
+STR_0461    :
+STR_0462    :
+STR_0463    :
+STR_0464    :
+STR_0465    :
+STR_0466    :
+STR_0467    :
+STR_0468    :
+STR_0469    :
+STR_0470    :
+STR_0471    :
+STR_0472    :
+STR_0473    :
+STR_0474    :
+STR_0475    :
+STR_0476    :
+STR_0477    :
+STR_0478    :
+STR_0479    :
+STR_0480    :
+STR_0481    :
+STR_0482    :
+STR_0483    :
+STR_0484    :
+STR_0485    :
+STR_0486    :
+STR_0487    :
+STR_0488    :
+STR_0489    :
+STR_0490    :
+STR_0491    :
+STR_0492    :
+STR_0493    :
+STR_0494    :
+STR_0495    :
+STR_0496    :
+STR_0497    :
+STR_0498    :
+STR_0499    :
+STR_0500    :
+STR_0501    :
+STR_0502    :
+STR_0503    :
+STR_0504    :
+STR_0505    :
+STR_0506    :
+STR_0507    :
+STR_0508    :
+STR_0509    :
+STR_0510    :
+STR_0511    :
+STR_0512    :
+STR_0513    :
+STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano lateralmente
+STR_0515    :
+STR_0516    :Un ottovolante tranquillo, per chi non ha ancora il coraggio di affrontare le attrazioni più impegnative
+STR_0517    :I passeggeri viaggiano su treni in miniatura su una strada ferrata di dimensioni ridotte
+STR_0518    :I passeggeri viaggiano su treni elettrici lungo un tracciato monorotaia
+STR_0519    :I passeggeri viaggiano a bordo di piccole carrozze appese al circuito, oscillando liberamente da lato a lato a ogni curva
+STR_0520    :
+STR_0521    :
+STR_0522    :
+STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
+STR_0524    :
+STR_0525    :
+STR_0526    :
+STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
+STR_0528    :
+STR_0529    :
+STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
+STR_0531    :
+STR_0532    :
+STR_0533    :
+STR_0534    :
+STR_0535    :
+STR_0536    :
+STR_0537    :
+STR_0538    :
+STR_0539    :
+STR_0540    :
+STR_0541    :
+STR_0542    :
+STR_0543    :
+STR_0544    :
+STR_0545    :
+STR_0546    :
+STR_0547    :
+STR_0548    :
+STR_0549    :
+STR_0550    :
+STR_0551    :
+STR_0552    :
+STR_0553    :
+STR_0554    :La carrozza acquista accelerazione a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una ripida salita per poi scendere in caduta libera e tornare alla stazione
+STR_0555    :
+STR_0556    :
+STR_0557    :
+STR_0558    :
+STR_0559    :
+STR_0560    :
+STR_0561    :
+STR_0562    :
+STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, sperimentando una piacevole sensazione di assenza di peso
+STR_0564    :Quest'attrazione, in cui si viaggia lungo un tracciato di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
+STR_0565    :Un semplice ottovolante di legno, adatto solo a curve e declivi  lenti, in cui le carrozze sono tenute in pista solo dalla frizione delle ruote sui i bordi della pista e dalla gravità
+STR_0566    :Carrozze individuali sfrecciano per uno stretto percorso a zig-zag con curve molto strette e corte e ripide discese
+STR_0567    :Seduti su sedili sospesi a entrambi i lati del tracciato, i passeggeri vengono capovolti mentre si tuffano per rapide discese e sperimentano numerose inversioni 
+STR_0568    :
+STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il tracciato, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
+STR_0570    :
+STR_0571    :
+STR_0572    :
+STR_0573    :
+STR_0574    :
+STR_0575    :Dei treni elettrici sospesi sotto una singola rotaia trasportano i passeggeri per tutto il parco
+STR_0576    :
+STR_0577    :
+STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
+STR_0579    :
+STR_0580    :
+STR_0581    :
+STR_0582    :
+STR_0583    :
+STR_0584    :
+STR_0585    :
+STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
+STR_0587    :
+STR_0588    :
+STR_0589    :
+STR_0590    :
+STR_0591    :
+STR_0592    :
+STR_0593    :
+STR_0594    :
+STR_0595    :
+STR_0596    :
+STR_0597    :
+STR_0598    :
+STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
+STR_0600    :
+STR_0601    :
+STR_0602    :
+STR_0603    :Visitatore {INT32}
+STR_0604    :Visitatore {INT32}
+STR_0605    :Visitatore {INT32}
+STR_0606    :Visitatore {INT32}
+STR_0607    :Visitatore {INT32}
+STR_0608    :Visitatore {INT32}
+STR_0609    :Visitatore {INT32}
+STR_0610    :Visitatore {INT32}
+STR_0611    :Visitatore {INT32}
+STR_0612    :Visitatore {INT32}
+STR_0613    :Visitatore {INT32}
+STR_0614    :Visitatore {INT32}
+STR_0615    :Visitatore {INT32}
+STR_0616    :Visitatore {INT32}
+STR_0617    :Visitatore {INT32}
+STR_0618    :Visitatore {INT32}
+STR_0619    :Visitatore {INT32}
+STR_0620    :Visitatore {INT32}
+STR_0621    :Visitatore {INT32}
+STR_0622    :Visitatore {INT32}
+STR_0623    :Visitatore {INT32}
+STR_0624    :Visitatore {INT32}
+STR_0625    :Visitatore {INT32}
+STR_0626    :Visitatore {INT32}
+STR_0627    :Visitatore {INT32}
+STR_0628    :Visitatore {INT32}
+STR_0629    :Visitatore {INT32}
+STR_0630    :Visitatore {INT32}
+STR_0631    :Visitatore {INT32}
+STR_0632    :Visitatore {INT32}
+STR_0633    :Visitatore {INT32}
+STR_0634    :Visitatore {INT32}
+STR_0635    :Visitatore {INT32}
+STR_0636    :Visitatore {INT32}
+STR_0637    :Visitatore {INT32}
+STR_0638    :Visitatore {INT32}
+STR_0639    :Visitatore {INT32}
+STR_0640    :Visitatore {INT32}
+STR_0641    :Visitatore {INT32}
+STR_0642    :Visitatore {INT32}
+STR_0643    :Visitatore {INT32}
+STR_0644    :Visitatore {INT32}
+STR_0645    :Visitatore {INT32}
+STR_0646    :Visitatore {INT32}
+STR_0647    :Visitatore {INT32}
+STR_0648    :Visitatore {INT32}
+STR_0649    :Visitatore {INT32}
+STR_0650    :Visitatore {INT32}
+STR_0651    :Visitatore {INT32}
+STR_0652    :Visitatore {INT32}
+STR_0653    :Visitatore {INT32}
+STR_0654    :Visitatore {INT32}
+STR_0655    :Visitatore {INT32}
+STR_0656    :Visitatore {INT32}
+STR_0657    :Visitatore {INT32}
+STR_0658    :Visitatore {INT32}
+STR_0659    :Visitatore {INT32}
+STR_0660    :Visitatore {INT32}
+STR_0661    :Visitatore {INT32}
+STR_0662    :Visitatore {INT32}
+STR_0663    :Visitatore {INT32}
+STR_0664    :Visitatore {INT32}
+STR_0665    :Visitatore {INT32}
+STR_0666    :Visitatore {INT32}
+STR_0667    :Visitatore {INT32}
+STR_0668    :Visitatore {INT32}
+STR_0669    :Visitatore {INT32}
+STR_0670    :Visitatore {INT32}
+STR_0671    :Visitatore {INT32}
+STR_0672    :Visitatore {INT32}
+STR_0673    :Visitatore {INT32}
+STR_0674    :Visitatore {INT32}
+STR_0675    :Visitatore {INT32}
+STR_0676    :Visitatore {INT32}
+STR_0677    :Visitatore {INT32}
+STR_0678    :Visitatore {INT32}
+STR_0679    :Visitatore {INT32}
+STR_0680    :Visitatore {INT32}
+STR_0681    :Visitatore {INT32}
+STR_0682    :Visitatore {INT32}
+STR_0683    :Visitatore {INT32}
+STR_0684    :Visitatore {INT32}
+STR_0685    :Visitatore {INT32}
+STR_0686    :Visitatore {INT32}
+STR_0687    :Visitatore {INT32}
+STR_0688    :Visitatore {INT32}
+STR_0689    :Visitatore {INT32}
+STR_0690    :Visitatore {INT32}
+STR_0691    :Visitatore {INT32}
+STR_0692    :Visitatore {INT32}
+STR_0693    :Visitatore {INT32}
+STR_0694    :Visitatore {INT32}
+STR_0695    :Visitatore {INT32}
+STR_0696    :Visitatore {INT32}
+STR_0697    :Visitatore {INT32}
+STR_0698    :Visitatore {INT32}
+STR_0699    :Visitatore {INT32}
+STR_0700    :Visitatore {INT32}
+STR_0701    :Visitatore {INT32}
+STR_0702    :Visitatore {INT32}
+STR_0703    :Visitatore {INT32}
+STR_0704    :Visitatore {INT32}
+STR_0705    :Visitatore {INT32}
+STR_0706    :Visitatore {INT32}
+STR_0707    :Visitatore {INT32}
+STR_0708    :Visitatore {INT32}
+STR_0709    :Visitatore {INT32}
+STR_0710    :Visitatore {INT32}
+STR_0711    :Visitatore {INT32}
+STR_0712    :Visitatore {INT32}
+STR_0713    :Visitatore {INT32}
+STR_0714    :Visitatore {INT32}
+STR_0715    :Visitatore {INT32}
+STR_0716    :Visitatore {INT32}
+STR_0717    :Visitatore {INT32}
+STR_0718    :Visitatore {INT32}
+STR_0719    :Visitatore {INT32}
+STR_0720    :Visitatore {INT32}
+STR_0721    :Visitatore {INT32}
+STR_0722    :Visitatore {INT32}
+STR_0723    :Visitatore {INT32}
+STR_0724    :Visitatore {INT32}
+STR_0725    :Visitatore {INT32}
+STR_0726    :Visitatore {INT32}
+STR_0727    :Visitatore {INT32}
+STR_0728    :Visitatore {INT32}
+STR_0729    :Visitatore {INT32}
+STR_0730    :Visitatore {INT32}
+STR_0731    :Visitatore {INT32}
+STR_0732    :Visitatore {INT32}
+STR_0733    :Visitatore {INT32}
+STR_0734    :Visitatore {INT32}
+STR_0735    :Visitatore {INT32}
+STR_0736    :Visitatore {INT32}
+STR_0737    :Visitatore {INT32}
+STR_0738    :Visitatore {INT32}
+STR_0739    :Visitatore {INT32}
+STR_0740    :Visitatore {INT32}
+STR_0741    :Visitatore {INT32}
+STR_0742    :Visitatore {INT32}
+STR_0743    :Visitatore {INT32}
+STR_0744    :Visitatore {INT32}
+STR_0745    :Visitatore {INT32}
+STR_0746    :Visitatore {INT32}
+STR_0747    :Visitatore {INT32}
+STR_0748    :Visitatore {INT32}
+STR_0749    :Visitatore {INT32}
+STR_0750    :Visitatore {INT32}
+STR_0751    :Visitatore {INT32}
+STR_0752    :Visitatore {INT32}
+STR_0753    :Visitatore {INT32}
+STR_0754    :Visitatore {INT32}
+STR_0755    :Visitatore {INT32}
+STR_0756    :Visitatore {INT32}
+STR_0757    :Visitatore {INT32}
+STR_0758    :Visitatore {INT32}
+STR_0759    :Visitatore {INT32}
+STR_0760    :Visitatore {INT32}
+STR_0761    :Visitatore {INT32}
+STR_0762    :Visitatore {INT32}
+STR_0763    :Visitatore {INT32}
+STR_0764    :Visitatore {INT32}
+STR_0765    :Visitatore {INT32}
+STR_0766    :Visitatore {INT32}
+STR_0767    :Visitatore {INT32}
+STR_0768    :Tuttofare {INT32}
+STR_0769    :Meccanico {INT32}
+STR_0770    :Vigilante {INT32}
+STR_0771    :Intrattenitore {INT32}
+STR_0772    :Parco senza nome{POP16}{POP16}
+STR_0773    :Parco senza nome{POP16}{POP16}
+STR_0774    :Parco senza nome{POP16}{POP16}
+STR_0775    :Parco senza nome{POP16}{POP16}
+STR_0776    :Parco senza nome{POP16}{POP16}
+STR_0777    :Parco senza nome{POP16}{POP16}
+STR_0778    :Cartello
+STR_0779    :1{DEGREE}
+STR_0780    :2{DEGREE}
+STR_0781    :3{DEGREE}
+STR_0782    :4{DEGREE}
+STR_0783    :5{DEGREE}
+STR_0784    :6{DEGREE}
+STR_0785    :7{DEGREE}
+STR_0786    :8{DEGREE}
+STR_0787    :9{DEGREE}
+STR_0788    :10{DEGREE}
+STR_0789    :11{DEGREE}
+STR_0790    :12{DEGREE}
+STR_0791    :13{DEGREE}
+STR_0792    :14{DEGREE}
+STR_0793    :15{DEGREE}
+STR_0794    :16{DEGREE}
+STR_0795    :17{DEGREE}
+STR_0796    :18{DEGREE}
+STR_0797    :19{DEGREE}
+STR_0798    :20{DEGREE}
+STR_0799    :21{DEGREE}
+STR_0800    :22{DEGREE}
+STR_0801    :23{DEGREE}
+STR_0802    :24{DEGREE}
+STR_0803    :25{DEGREE}
+STR_0804    :26{DEGREE}
+STR_0805    :27{DEGREE}
+STR_0806    :28{DEGREE}
+STR_0807    :29{DEGREE}
+STR_0808    :30{DEGREE}
+STR_0809    :31{DEGREE}
+STR_0810    :Gen
+STR_0811    :Feb
+STR_0812    :Mar
+STR_0813    :Apr
+STR_0814    :Mag
+STR_0815    :Giu
+STR_0816    :Lug
+STR_0817    :Ago
+STR_0818    :Set
+STR_0819    :Ott
+STR_0820    :Nov
+STR_0821    :Dic
+STR_0822    :Impossibile accedere ai file della grafica
+STR_0823    :File mancante o inaccessibile
+STR_0824    :{BLACK}{CROSS}
+STR_0825    :Il nome scelto è già in uso
+STR_0826    :I nomi stabiliti sono troppi
+STR_0827    :Denaro insufficiente - Costo: {CURRENCY2DP}
+STR_0828    :{SMALLFONT}{BLACK}Chiudi la finestra
+STR_0829    :{SMALLFONT}{BLACK}Titolo della finestra - Trascina questo per spostare la finestra
+STR_0830    :{SMALLFONT}{BLACK}Zoom in avanti
+STR_0831    :{SMALLFONT}{BLACK}Zoom indietro
+STR_0832    :{SMALLFONT}{BLACK}Ruota di 90{DEGREE} in senso orario
+STR_0833    :{SMALLFONT}{BLACK}Metti in pausa
+STR_0834    :{SMALLFONT}{BLACK}Opzioni di gioco e del disco
+STR_0835    :Inizializzazione del gioco fallita
+STR_0836    :Impossibile iniziare la partita se la finestra è ridotta a icona
+STR_0837    :Impossibile inizializzare il sistema grafico
+STR_0838    :Il codice CD {INT32} del CD del tuo RollerCoaster Tycoon 2 è errato!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Disinstalla RollerCoaster Tycoon 2% e installalo di nuovo digitando il codice CD corretto
+STR_0839    :{UINT16} x {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0841    :Finestra sul desktop
+STR_0842    :640x480 schermo intero
+STR_0843    :800x600 schermo intero
+STR_0844    :1024x768 schermo intero
+STR_0845    :1152x864 schermo intero
+STR_0846    :1280x1024 schermo intero
+STR_0847    :Informazioni su 'RollerCoaster Tycoon 2'
+STR_0848    :RollerCoaster Tycoon 2
+STR_0849    :{WINDOW_COLOUR_2}Versione 2.01.032
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, tutti i diritti riservati
+STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Grafica di Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Effetti sonori e musica di Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Audio aggiuntivo registrato da David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Rappresentazione di Jacqui Lyons a Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Grazie a: 
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
+STR_0858    :{WINDOW_COLOUR_2}
+STR_0859    :{WINDOW_COLOUR_2}
+STR_0860    :{WINDOW_COLOUR_2}
+STR_0861    :
+STR_0862    :
+STR_0863    :
+STR_0864    :
+STR_0865    :{STRINGID}
+STR_0866    :{POP16}{STRINGID}
+STR_0867    :{POP16}{POP16}{STRINGID}
+STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
+STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0876    :{BLACK}{DOWN}
+STR_0877    :Troppo basso!!
+STR_0878    :Troppo alto!!
+STR_0879    :Non posso abbassare il terreno in questo punto...
+STR_0880    :Non posso innalzare il terreno in questo punto...
+STR_0881    :Un oggetto è d'intralcio
+STR_0882    :Carica la partita
+STR_0883    :Salva la partita
+STR_0884    :Carica un paesaggio
+STR_0885    :Salva un paesaggio
+STR_0886    :Abbandona la partita
+STR_0887    :Abbandona l'editor degli scenari
+STR_0888    :Abbandona la progettazione degli ottovolanti
+STR_0889    :Abbandona il programma di progettazione dei tracciati
+STR_0890    :SCR{COMMA16}.BMP
+STR_0891    :Schermata
+STR_0892    :Schermata salvata su disco come '{STRINGID}'
+STR_0893    :Cattura della schermata fallita!!
+STR_0894    :Area dati per i paesaggi piena!!
+STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
+STR_0896    :{POP16}{POP16}{STRINGID} Costruzione
+STR_0897    :Direzione
+STR_0898    :{SMALLFONT}{BLACK}Curva a sinistra
+STR_0899    :{SMALLFONT}{BLACK}Curva a destra
+STR_0900    :{SMALLFONT}{BLACK}Curva a sinistra (a piccolo raggio)
+STR_0901    :{SMALLFONT}{BLACK}Curva a destra (a piccolo raggio)
+STR_0902    :{SMALLFONT}{BLACK}Curva a sinistra (a raggio molto piccolo)
+STR_0903    :{SMALLFONT}{BLACK}Curva a destra (a raggio molto piccolo)
+STR_0904    :{SMALLFONT}{BLACK}Curva a sinistra (a largo raggio)
+STR_0905    :{SMALLFONT}{BLACK}Curva a destra (a largo raggio)
+STR_0906    :{SMALLFONT}{BLACK}Linea retta
+STR_0907    :Pendio
+STR_0908    :Inclinazione
+STR_0909    :Rot. sedile
+STR_0910    :{SMALLFONT}{BLACK}Inclina per una curva a sinistra
+STR_0911    :{SMALLFONT}{BLACK}Inclina per una curva a destra
+STR_0912    :{SMALLFONT}{BLACK}Nessuna inclinazione
+STR_0913    :{SMALLFONT}{BLACK}Torna alla sezione precedente
+STR_0914    :{SMALLFONT}{BLACK}Vai alla sezione successiva
+STR_0915    :{SMALLFONT}{BLACK}Costruisci la sezione selezionata
+STR_0916    :{SMALLFONT}{BLACK}Cancella la sezione evidenziata
+STR_0917    :{SMALLFONT}{BLACK}Caduta verticale
+STR_0918    :{SMALLFONT}{BLACK}Pendio ripido
+STR_0919    :{SMALLFONT}{BLACK}Pendio
+STR_0920    :{SMALLFONT}{BLACK}Livello
+STR_0921    :{SMALLFONT}{BLACK}Salita
+STR_0922    :{SMALLFONT}{BLACK}Salita ripida
+STR_0923    :{SMALLFONT}{BLACK}Salita verticale
+STR_0924    :{SMALLFONT}{BLACK}Elica verso il basso
+STR_0925    :{SMALLFONT}{BLACK}Elica verso l'alto
+STR_0926    :Non posso rimuoverlo...
+STR_0927    :Non posso costruirlo qui...
+STR_0928    :{SMALLFONT}{BLACK}Catena da traino, per spostare le carrozze lungo le salite
+STR_0929    :Curva a 'S' (sinistra)
+STR_0930    :Curva a 'S' (destra)
+STR_0931    :Giro verticale (sx)
+STR_0932    :Giro verticale (dx)
+STR_0933    :Prima devi modificare l'altezza del terreno
+STR_0934    :L'entrata dell'attrazione è d'intralcio
+STR_0935    :L'uscita dell'attrazione è d'intralcio
+STR_0936    :L'entrata del parco è d'intralcio
+STR_0937    :{SMALLFONT}{BLACK}Visualizza le opzioni
+STR_0938    :{SMALLFONT}{BLACK}Regola l'altezza e la pendenza del terreno
+STR_0939    :Visuale sotterranea/interna
+STR_0940    :Rimuove il terreno della base
+STR_0941    :Rimuove le pareti verticali
+STR_0942    :Attrazioni trasparenti
+STR_0943    :Scenario trasparente
+STR_0944    :Salva
+STR_0945    :Non salv.
+STR_0946    :Annulla
+STR_0947    :Salvare prima di caricare?
+STR_0948    :Salvare prima di uscire?
+STR_0949    :Salvare prima di uscire?
+STR_0950    :Carica una partita
+STR_0951    :Esci dal gioco
+STR_0952    :Esci dal gioco
+STR_0953    :Carica un paesaggio
+STR_0954    :
+STR_0955    :{SMALLFONT}{BLACK}Seleziona l'angolo di rotazione dei sedili in questa sezione del tracciato
+STR_0956    :-180{DEGREE}
+STR_0957    :-135{DEGREE}
+STR_0958    :-90{DEGREE}
+STR_0959    :-45{DEGREE}
+STR_0960    :0{DEGREE}
+STR_0961    :+45{DEGREE}
+STR_0962    :+90{DEGREE}
+STR_0963    :+135{DEGREE}
+STR_0964    :+180{DEGREE}
+STR_0965    :+225{DEGREE}
+STR_0966    :+270{DEGREE}
+STR_0967    :+315{DEGREE}
+STR_0968    :+360{DEGREE}
+STR_0969    :+405{DEGREE}
+STR_0970    :+450{DEGREE}
+STR_0971    :+495{DEGREE}
+STR_0972    :Annulla
+STR_0973    :OK
+STR_0974    :Attrazioni
+STR_0975    :Negozi e chioschi
+STR_0976    :Servizi igienici e uffici informazione
+STR_0977    :Nuove attrazioni di trasporto
+STR_0978    :Nuove attrazioni tranquille
+STR_0979    :Nuovi ottovolanti
+STR_0980    :Nuove attrazioni eccitanti
+STR_0981    :Nuove attrazioni acquatiche
+STR_0982    :Nuovi negozi e chioschi
+STR_0983    :Ricerca & Sviluppo
+STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0986    :{BLACK}{CURRENCY2DP}
+STR_0987    :Troppe attrazioni
+STR_0988    :Impossibile creare nuove attrazioni...
+STR_0989    :{STRINGID}
+STR_0990    :{SMALLFONT}{BLACK}Costruzione
+STR_0991    :Piattaforma stazione
+STR_0992    :{SMALLFONT}{BLACK}Demolisci l'intera attrazione
+STR_0993    :Demolisci l'attrazione
+STR_0994    :Demolisci
+STR_0995    :{WINDOW_COLOUR_1}Sei sicuro di voler demolire completamente {STRINGID}?
+STR_0996    :Visuale generale
+STR_0997    :{SMALLFONT}{BLACK}Seleziona la visuale
+STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
+STR_0999    :È necessaria una piattaforma
+STR_1000    :Il tracciato non costituisce un circuito completo
+STR_1001    :Il tracciato non è adatto al tipo di treno
+STR_1002    :Impossibile aprire {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :Impossibile provare {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Impossibile chiudere {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Impossibile iniziare la costruzione su {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Prima dev'essere chiusa/o
+STR_1007    :Impossibile creare veicoli a sufficienza
+STR_1008    :{SMALLFONT}{BLACK}Apri, chiudi o prova un'attrazione
+STR_1009    :{SMALLFONT}{BLACK}Apri o chiudi tutte le attrazioni
+STR_1010    :{SMALLFONT}{BLACK}Apri o chiudi il parco
+STR_1011    :Chiudi tutto
+STR_1012    :Apri tutto
+STR_1013    :Chiudi il parco
+STR_1014    :Apri il parco
+STR_1015    :Impossibile operare con più di una piattaforma in questa modalità
+STR_1016    :Impossibile operare con meno di due stazioni in questa modalità
+STR_1017    :Impossibile cambiare la modalità operativa...
+STR_1018    :Impossibile effettuare modifiche...
+STR_1019    :Impossibile effettuare modifiche...
+STR_1020    :Impossibile effettuare modifiche...
+STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} carrozza per treno
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carrozze per treno
+STR_1024    :{COMMA16} carrozza per treno
+STR_1025    :{COMMA16} carrozze per treno
+STR_1026    :Piattaforma della stazione troppo lunga!!
+STR_1027    :{SMALLFONT}{BLACK}Individualo nella visuale principale
+STR_1028    :Fuori dalla mappa!!
+STR_1029    :Non si può costruire contemporaneamente sopra e sotto l'acqua!!
+STR_1030    :Si può costruire solo sott'acqua!!
+STR_1031    :Non può essere costruito sott'acqua!!
+STR_1032    :Si può costruire solo sopra l'acqua!!
+STR_1033    :Si può costruire solo sopra il terreno!!
+STR_1034    :Si può costruire solo sul terreno!!
+STR_1035    :Le autorità locali non permetteranno la costruzione a un'altezza superiore alle cime degli alberi!!
+STR_1036    :Carica una partita
+STR_1037    :Carica un paesaggio
+STR_1038    :Converti la partita salvata in uno scenario
+STR_1039    :Installa un nuovo design del tracciato
+STR_1040    :Salva la partita
+STR_1041    :Salva lo scenario
+STR_1042    :Salva il paesaggio
+STR_1043    :Partita di RollerCoaster Tycoon 2 salvata
+STR_1044    :File di scenario per RollerCoaster Tycoon 2
+STR_1045    :File di paesaggi per RollerCoaster Tycoon 2
+STR_1046    :File di design dei tracciati per RollerCoaster Tycoon 2
+STR_1047    :Salvataggio partita fallito!
+STR_1048    :Salvataggio scenario fallito!
+STR_1049    :Salvataggio terreno fallito!
+STR_1050    :Caricamento fallito...{NEWLINE}Il file contiene dati non validi!
+STR_1051    :Supporti invisibili
+STR_1052    :Persone invisibili
+STR_1053    :{SMALLFONT}{BLACK}Attrazioni nel parco
+STR_1054    :{SMALLFONT}{BLACK}Battezza attrazioni
+STR_1055    :{SMALLFONT}{BLACK}Battezza persone
+STR_1056    :{SMALLFONT}{BLACK}Battezza membri del personale
+STR_1057    :Nome dell'attrazione
+STR_1058    :Digita il nuovo nome di quest'attrazione:-
+STR_1059    :Impossibile ribattezzare l'attrazione...
+STR_1060    :Nome dell'attrazione non valido
+STR_1061    :Modalità normale
+STR_1062    :Modalità a circuito continuo
+STR_1063    :Mod. navetta a lancio rovesc. inclinato
+STR_1064    :Lancio a motore
+STR_1065    :Modalità navetta
+STR_1066    :Modalità affitto barche
+STR_1067    :Lancio in salita
+STR_1068    :Modalità traino rotante
+STR_1069    :Modalità stazione-stazione
+STR_1070    :Solo un'attrazione a biglietto
+STR_1071    :Attrazioni illimitate a biglietto
+STR_1072    :Modalità labirinto
+STR_1073    :Modalità corsa
+STR_1074    :Modalità auto-scontro
+STR_1075    :Modalità altalena
+STR_1076    :Modalità negozi
+STR_1077    :Modalità rotazione
+STR_1078    :Rotazione in avanti
+STR_1079    :Rotazione all'indietro
+STR_1080    :Film: {ENDQUOTES}La vendetta degli aviatori{ENDQUOTES}
+STR_1081    :Film 3D: {ENDQUOTES}Code di topo{ENDQUOTES}
+STR_1082    :Modalità anelli spaziali
+STR_1083    :Modalità principianti
+STR_1084    :Lancio a MIL
+STR_1085    :Film: {ENDQUOTES}Corse da paura{ENDQUOTES}
+STR_1086    :Film 3D: {ENDQUOTES}Via con la tempesta{ENDQUOTES}
+STR_1087    :Film 3D: {ENDQUOTES}I predatori dello spazio{ENDQUOTES}
+STR_1088    :Modalità intensa
+STR_1089    :Modalità berserk
+STR_1090    :Modalità casa stregata
+STR_1091    :Modalità spettacolo circense
+STR_1092    :Lancio in discesa
+STR_1093    :Modalità casa distorta
+STR_1094    :Modalità caduta libera
+STR_1095    :Mod. circuito continuo sezi. a blocchi
+STR_1096    :Lancio a motore
+STR_1097    :Mod. lancio a motore sez. a blocchi
+STR_1098    :In viaggio verso la fine della {POP16}{STRINGID}
+STR_1099    :In attesa di passeggeri a {POP16}{STRINGID}
+STR_1100    :In attesa di partire {POP16}{STRINGID}
+STR_1101    :In partenza {POP16}{STRINGID}
+STR_1102    :Velocità di {VELOCITY}
+STR_1103    :In arrivo a {POP16}{STRINGID}
+STR_1104    :Scarico dei passeggeri a {POP16}{STRINGID}
+STR_1105    :Velocità di {VELOCITY}
+STR_1106    :In pericolo!
+STR_1107    :Incidente!
+STR_1108    :Velocità di {VELOCITY}
+STR_1109    :In oscillazione
+STR_1110    :In rotazione
+STR_1111    :In rotazione
+STR_1112    :In funzione
+STR_1113    :Spettacolo in corso
+STR_1114    :In rotazione
+STR_1115    :In funzione
+STR_1116    :In funzione
+STR_1117    :Spettacolo circense in corso
+STR_1118    :In funzione
+STR_1119    :In attesa di traino con cavo
+STR_1120    :Velocità di {VELOCITY}
+STR_1121    :In frenata
+STR_1122    :In attesa di passeggeri
+STR_1123    :In attesa di partire
+STR_1124    :In partenza
+STR_1125    :In funzione
+STR_1126    :In frenata
+STR_1127    :Scarico dei passeggeri in corso
+STR_1128    :Frenato dai freni di blocco
+STR_1129    :Tutti i veicoli degli stessi colori
+STR_1130    :Colori diversi per {STRINGID}
+STR_1131    :Colori diversi per ogni veicolo
+STR_1132    :Veicolo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Veicolo {POP16}{COMMA16}
+STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1135    :{STRINGID} {COMMA16}
+STR_1136    :{SMALLFONT}{BLACK}Scegli il colore principale
+STR_1137    :{SMALLFONT}{BLACK}Scegli il colore secondario 1
+STR_1138    :{SMALLFONT}{BLACK}Scegli il colore secondario 2
+STR_1139    :{SMALLFONT}{BLACK}Scegli il colore della struttura di supporto
+STR_1140    :{SMALLFONT}{BLACK}Scegli il modello decorativo del veicolo
+STR_1141    :{SMALLFONT}{BLACK}Scegli quale veicolo/treno modificare
+STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1144    :Impossibile costruire/spostare l'entrata di quest'attrazione...
+STR_1145    :Impossibile costruire/spostare l'uscita di quest'attrazione...
+STR_1146    :Entrata non ancora costruita
+STR_1147    :Uscita non ancora costruita
+STR_1148    :Un quarto di carico
+STR_1149    :Mezzo carico
+STR_1150    :3/4 di carico
+STR_1151    :Pieno carico
+STR_1152    :Qualsiasi carico
+STR_1153    :Altezza indicata sul tracciato
+STR_1154    :Altezza indicata sul terreno
+STR_1155    :Altezza indicata sui sentieri
+STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1158    :Impossibile cancellarlo...
+STR_1159    :{SMALLFONT}{BLACK}Colloca lo scenario, i giardini e gli altri accessori
+STR_1160    :{SMALLFONT}{BLACK}Crea/regola i laghi e gli specchi d'acqua
+STR_1161    :Impossibile posizionarlo qui...
+STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
+STR_1163    :{STRINGID}{NEWLINE}(Clicca sul pulsante destro per modificare)
+STR_1164    :{STRINGID}{NEWLINE}(Clicca sul pulsante destro per cancellare)
+STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1166    :Impossibile abbassare il livello dell'acqua in questo punto...
+STR_1167    :Impossibile alzare il livello dell'acqua in questo punto...
+STR_1168    :Opzioni
+STR_1169    :(Nessuno)
+STR_1170    :{STRING}
+STR_1171    :{RED}Chiuso - - 
+STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1173    :{SMALLFONT}{BLACK}Costruisci sentieri e corsie d'attesa
+STR_1174    :Un'insegna è d'intralcio
+STR_1175    :Impossibile costruirlo su un sentiero in pendenza
+STR_1176    :Impossibile costruire un sentiero in questo punto...
+STR_1177    :Impossibile cancellare il sentiero da questo punto...
+STR_1178    :Pendenza del terreno inadatta
+STR_1179    :Un sentiero è d'intralcio
+STR_1180    :Impossibile costruirlo sott'acqua!!
+STR_1181    :Sentieri
+STR_1182    :Tipo
+STR_1183    :Direzione
+STR_1184    :Pendenza
+STR_1185    :{SMALLFONT}{BLACK}Direzione
+STR_1186    :{SMALLFONT}{BLACK}Discesa
+STR_1187    :{SMALLFONT}{BLACK}Pianeggiante
+STR_1188    :{SMALLFONT}{BLACK}Salita
+STR_1189    :{SMALLFONT}{BLACK}Costruisci la sezione di sentiero selezionata
+STR_1190    :{SMALLFONT}{BLACK}Cancella la sezione di sentiero precedente
+STR_1191    :{BLACK}{STRINGID}
+STR_1192    :{OUTLINE}{RED}{STRINGID}
+STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
+STR_1194    :Chiuso
+STR_1195    :Giro di prova
+STR_1196    :Aperto
+STR_1197    :Guasto
+STR_1198    :Schiantato!!
+STR_1199    :{COMMA16} persona a bordo
+STR_1200    :{COMMA16} persone a bordo
+STR_1201    :Niente fila
+STR_1202    :1 persona in fila
+STR_1203    :{COMMA16} persone in fila
+STR_1204    :{COMMA16} minuto in fila d'attesa
+STR_1205    :{COMMA16} minuti in fila d'attesa
+STR_1206    :{WINDOW_COLOUR_2}Attendi:
+STR_1207    :{WINDOW_COLOUR_2}Parti se arriva un altro treno in stazione
+STR_1208    :{WINDOW_COLOUR_2}Parti se arriva un'altra barca in stazione
+STR_1209    :{SMALLFONT}{BLACK}Scegli se deve attendere dei passeggeri prima di partire
+STR_1210    :{SMALLFONT}{BLACK}Scegli se deve partire se arriva un altro veicolo in stazione
+STR_1211    :{WINDOW_COLOUR_2}Min. tempo d'attesa:
+STR_1212    :{WINDOW_COLOUR_2}Max. tempo d'attesa:
+STR_1213    :{SMALLFONT}{BLACK}Scegli il tempo di attesa minimo prima di partire
+STR_1214    :{SMALLFONT}{BLACK}Scegli il tempo di attesa massimo prima di partire
+STR_1215    :{WINDOW_COLOUR_2}Sincron. con le stazioni adiacenti
+STR_1216    :{SMALLFONT}{BLACK}Scegli se sincronizzare la partenza con le stazioni adiacenti (per le 'corse')
+STR_1217    :{COMMA16} secondi
+STR_1218    :{BLACK}{SMALLUP}
+STR_1219    :{BLACK}{SMALLDOWN}
+STR_1220    :Solo uscita
+STR_1221    :Nessuna entrata
+STR_1222    :Nessuna uscita
+STR_1223    :{SMALLFONT}{BLACK}Attrazioni di trasporto
+STR_1224    :{SMALLFONT}{BLACK}Attrazioni tranquille
+STR_1225    :{SMALLFONT}{BLACK}Ottovolanti
+STR_1226    :{SMALLFONT}{BLACK}Attrazioni eccitanti
+STR_1227    :{SMALLFONT}{BLACK}Attrazioni acquatiche
+STR_1228    :{SMALLFONT}{BLACK}Negozi e chioschi
+STR_1229    :treno
+STR_1230    :treni
+STR_1231    :Treno
+STR_1232    :Treni
+STR_1233    :{COMMA16} treno
+STR_1234    :{COMMA16} treni
+STR_1235    :Treno {COMMA16}
+STR_1236    :barca
+STR_1237    :barche
+STR_1238    :Barca
+STR_1239    :Barche
+STR_1240    :{COMMA16} barca
+STR_1241    :{COMMA16} barche
+STR_1242    :Barca {COMMA16}
+STR_1243    :tracciato
+STR_1244    :tracciati
+STR_1245    :Tracciato
+STR_1246    :Tracciati
+STR_1247    :{COMMA16} tracciato
+STR_1248    :{COMMA16} tracciati
+STR_1249    :Tracciato {COMMA16}
+STR_1250    :banchina
+STR_1251    :banchine
+STR_1252    :Banchina
+STR_1253    :Banchine
+STR_1254    :{COMMA16} banchina
+STR_1255    :{COMMA16} banchine
+STR_1256    :Banchina {COMMA16}
+STR_1257    :stazione
+STR_1258    :stazioni
+STR_1259    :Stazione
+STR_1260    :Stazioni
+STR_1261    :{COMMA16} stazione
+STR_1262    :{COMMA16} stazioni
+STR_1263    :Stazione {COMMA16}
+STR_1264    :carrozza
+STR_1265    :carrozze
+STR_1266    :Carrozza
+STR_1267    :Carrozze
+STR_1268    :{COMMA16} carrozza
+STR_1269    :{COMMA16} carrozze
+STR_1270    :Carrozza {COMMA16}
+STR_1271    :edificio
+STR_1272    :edifici
+STR_1273    :Edificio
+STR_1274    :Edifici
+STR_1275    :{COMMA16} edificio
+STR_1276    :{COMMA16} edifici
+STR_1277    :Edificio {COMMA16}
+STR_1278    :struttura
+STR_1279    :strutture
+STR_1280    :Struttura
+STR_1281    :Strutture
+STR_1282    :{COMMA16} struttura
+STR_1283    :{COMMA16} strutture
+STR_1284    :Struttura {COMMA16}
+STR_1285    :nave
+STR_1286    :navi
+STR_1287    :Nave
+STR_1288    :Navi
+STR_1289    :{COMMA16} nave
+STR_1290    :{COMMA16} navi
+STR_1291    :Nave {COMMA16}
+STR_1292    :cabina
+STR_1293    :cabine
+STR_1294    :Cabina
+STR_1295    :Cabine
+STR_1296    :{COMMA16} cabina
+STR_1297    :{COMMA16} cabine
+STR_1298    :Cabina {COMMA16}
+STR_1299    :ruota
+STR_1300    :ruote
+STR_1301    :Ruota
+STR_1302    :Ruote
+STR_1303    :{COMMA16} ruota
+STR_1304    :{COMMA16} ruote
+STR_1305    :Ruota {COMMA16}
+STR_1306    :anello
+STR_1307    :anelli
+STR_1308    :Anello
+STR_1309    :Anelli
+STR_1310    :{COMMA16} anello
+STR_1311    :{COMMA16} anelli
+STR_1312    :Anello {COMMA16}
+STR_1313    :giocatore
+STR_1314    :giocatori
+STR_1315    :Giocatore
+STR_1316    :Giocatori
+STR_1317    :{COMMA16} giocatore
+STR_1318    :{COMMA16} giocatori
+STR_1319    :Giocatore {COMMA16}
+STR_1320    :buca
+STR_1321    :buche
+STR_1322    :Buca
+STR_1323    :Buche
+STR_1324    :{COMMA16}buca
+STR_1325    :{COMMA16}buche
+STR_1326    :Buca {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Ruota gli oggetti di 90{DEGREE}
+STR_1328    :Prima è necessario livellare il terreno
+STR_1329    :{WINDOW_COLOUR_2}Veloc. di lancio:
+STR_1330    :{SMALLFONT}{BLACK}Massima velocità alla partenza dalla stazione
+STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_1332    :{VELOCITY}
+STR_1333    :{STRINGID} - {STRINGID}{POP16}
+STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1335    :{STRINGID} - Entrata{POP16}{POP16}
+STR_1336    :{STRINGID} - Stazione {POP16}{COMMA16} Entrata
+STR_1337    :{STRINGID} - Uscita{POP16}{POP16}
+STR_1338    :{STRINGID} - Stazione {POP16}{COMMA16} Uscita
+STR_1339    :{BLACK}Risultati non disponibili...
+STR_1340    :{WINDOW_COLOUR_2}Max. veloc.: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Durata corsa: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1342    :{DURATION}
+STR_1343    :{DURATION} / 
+STR_1344    :{WINDOW_COLOUR_2}Lunghezza corsa: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1345    :{LENGTH}
+STR_1346    :{LENGTH} / 
+STR_1347    :{WINDOW_COLOUR_2}Veloc. media: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Max. forza G verticale positiva: {BLACK}{COMMA2DP32}G
+STR_1349    :{WINDOW_COLOUR_2}Max. forza G verticale positiva: {OUTLINE}{RED}{COMMA2DP32}G
+STR_1350    :{WINDOW_COLOUR_2}Max. forza G verticale negativa: {BLACK}{COMMA2DP32}G
+STR_1351    :{WINDOW_COLOUR_2}Max. forza G verticale negativa: {OUTLINE}{RED}{COMMA2DP32}G
+STR_1352    :{WINDOW_COLOUR_2}Max. forza G laterale: {BLACK}{COMMA2DP32}G
+STR_1353    :{WINDOW_COLOUR_2}Max. forza G laterale: {OUTLINE}{RED}{COMMA2DP32}G
+STR_1354    :{WINDOW_COLOUR_2}Picco più alto: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Discese: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Inversioni: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Buchi: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}Assenza di peso in totale: {BLACK}{COMMA2DP32}secondi
+STR_1359    :{WINDOW_COLOUR_2}Tempo d'attesa: {BLACK}{COMMA16} minuti.
+STR_1360    :{WINDOW_COLOUR_2}Tempo d'attesa: {BLACK}{COMMA16} minuti.
+STR_1361    :Impossibile cambiare la velocità...
+STR_1362    :Impossibile cambiare la velocità di lancio...
+STR_1363    :Troppo in alto per i supporti!!
+STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!!
+STR_1365    :Curva in-linea (sx)
+STR_1366    :Curva in-linea (dx)
+STR_1367    :Mezzo giro della morte
+STR_1368    :Mezzo avvitamento (sx)
+STR_1369    :Mezzo avvitamento (dx)
+STR_1370    :Avvitamento (sx)
+STR_1371    :Avvitamento (dx)
+STR_1372    :Sal.  x traino a lancio
+STR_1373    :1/2 giro morte gr. (sx)
+STR_1374    :1/2 giro morte gr. (dx)
+STR_1375    :Trasferimento in alto
+STR_1376    :Trasferimento in basso
+STR_1377    :Avvitamento ond. (sx)
+STR_1378    :Avvitamento ond.  (dx)
+STR_1379    :Invertitore (sinistra)
+STR_1380    :Invertitore (destra)
+STR_1381    :Sal. x traino in curva (sx)
+STR_1382    :Sal. x  traino in curva (dx)
+STR_1383    :1/4 di giro della morte
+STR_1384    :{YELLOW}{STRINGID}
+STR_1385    :{SMALLFONT}{BLACK}Altre configurazioni del tracciato
+STR_1386    :Speciali...
+STR_1387    :Impossibile cambiare il tipo di terreno...
+STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
+STR_1389    :{OUTLINE}{RED}- {CURRENCY}
+STR_1390    :{CURRENCY2DP}
+STR_1391    :{RED}{CURRENCY2DP}
+STR_1392    :{SMALLFONT}{BLACK}Visuale dell'attrazione
+STR_1393    :{SMALLFONT}{BLACK}Dettagli e opzioni del veicolo
+STR_1394    :{SMALLFONT}{BLACK}Opzioni operative
+STR_1395    :{SMALLFONT}{BLACK}Opzioni della manutenzione
+STR_1396    :{SMALLFONT}{BLACK}Opzioni della colorazione
+STR_1397    :{SMALLFONT}{BLACK}Opzioni audio
+STR_1398    :{SMALLFONT}{BLACK}Dati delle misurazioni e delle prove
+STR_1399    :{SMALLFONT}{BLACK}Grafici
+STR_1400    :Entrata
+STR_1401    :Uscita
+STR_1402    :{SMALLFONT}{BLACK}Costruisci o sposta l'entrata dell'attrazione
+STR_1403    :{SMALLFONT}{BLACK}Costruisci o sposta l'uscita dell'attrazione
+STR_1404    :{SMALLFONT}{BLACK}Ruota di 90{DEGREE}
+STR_1405    :{SMALLFONT}{BLACK}Immagine speculare
+STR_1406    :{SMALLFONT}{BLACK}Attiva/disattiva lo scenario (se disponibile in fase di progettazione)
+STR_1407    :{WINDOW_COLOUR_2}Costruiscilo...
+STR_1408    :{WINDOW_COLOUR_2}Costo: {BLACK}{CURRENCY}
+STR_1409    :Piatt. d'entrata/uscita
+STR_1410    :Torre verticale
+STR_1411    :{STRINGID} è d'intralcio
+STR_1412    :{WINDOW_COLOUR_3}La registrazione dei dati non è disponibile per questo tipo di attrazione
+STR_1413    :{WINDOW_COLOUR_3}La registrazione dati inizierà quando il prossimo {STRINGID} partirà da {STRINGID}
+STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1415    :{WINDOW_COLOUR_2}Velocità
+STR_1416    :{WINDOW_COLOUR_2}Altitud.
+STR_1417    :{WINDOW_COLOUR_2}G vertic.
+STR_1418    :{WINDOW_COLOUR_2}G lat.
+STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
+STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
+STR_1421    :{SMALLFONT}{BLACK}{COMMA16}G
+STR_1422    :{SMALLFONT}{BLACK}Registraz. dati {POP16}{STRINGID}
+STR_1423    :{SMALLFONT}{BLACK}Percorso della corsia d'attesa
+STR_1424    :{SMALLFONT}{BLACK}Sentiero
+STR_1425    :Sentiero
+STR_1426    :Corsia d'attesa
+STR_1427    :{WINDOW_COLOUR_2}Clienti: {BLACK}{COMMA32} l'ora
+STR_1428    :{WINDOW_COLOUR_2}Prezzo biglietto:
+STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1430    :Gratis
+STR_1431    :Sta camminando
+STR_1432    :In cammino verso {STRINGID}
+STR_1433    :In attesa per {STRINGID}
+STR_1434    :Sta annegando
+STR_1435    :Su {STRINGID}
+STR_1436    :In {STRINGID}
+STR_1437    :A {STRINGID}
+STR_1438    :Seduto
+STR_1439    :(scegli il luogo)
+STR_1440    :Sta tagliando l'erba
+STR_1441    :Sta scopando per terra
+STR_1442    :Sta svuotando i cassonetti
+STR_1443    :Sta innaffiando i giardini
+STR_1444    :Sta guardando {STRINGID}
+STR_1445    :Sta guardano la costruzione di: {STRINGID}
+STR_1446    :Sta guardando lo scenario
+STR_1447    :Sta lasciando il parco
+STR_1448    :Sta osservando la nuova attrazione in costruzione
+STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1450    :{INLINE_SPRITE}{MEDIUMFONT}□
+STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
+STR_1452    :Nome del visitatore
+STR_1453    :Digita il nome di questo visitatore:-
+STR_1454    :Impossibile battezzare il visitatore...
+STR_1455    :Il nome del visitatore non è valido
+STR_1456    :{WINDOW_COLOUR_2}Denaro speso: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Denaro in tasca: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Tempo del parco: {BLACK}{REALTIME}
+STR_1459    :Stile tracciato
+STR_1460    :{SMALLFONT}{BLACK}tracciato aperto a U
+STR_1461    :{SMALLFONT}{BLACK}tracciato chiuso a O
+STR_1462    :Troppo ripido per il traino in salita
+STR_1463    :Visitatori
+STR_1464    :Elica in su (piccola)
+STR_1465    :Elica in su (grande)
+STR_1466    :Elica in giù (piccola)
+STR_1467    :Elica in giù (grande)
+STR_1468    :Personale
+STR_1469    :L'attrazione deve iniziare e terminare con delle stazioni
+STR_1470    :La stazione non è abbastanza lunga
+STR_1471    :{WINDOW_COLOUR_2}Velocità:
+STR_1472    :{SMALLFONT}{BLACK}Velocità di quest'attrazione
+STR_1473    :{WINDOW_COLOUR_2}Livello di divertimento: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Livello di divertimento: {BLACK}Non disponibile
+STR_1475    :{WINDOW_COLOUR_2}Livello d'intensità: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Livello d'intensità: {BLACK}Non disponibile
+STR_1477    :{WINDOW_COLOUR_2}Livello d'intensità: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}Non disponibile
+STR_1480    :{SMALLFONT}{OPENQUOTES}Non posso permettermi {STRINGID}{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}Ho speso tutti i miei soldi{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}Mi sento male{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}Mi sento molto male{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}Voglio provare qualcosa di più eccitante {STRINGID}{ENDQUOTES}
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID}sembra troppo intenso per me{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}Non ho ancora finito {STRINGID}{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Solo guardando {STRINGID} mi fa stare male{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}Non pagherò così tanto per andare su {STRINGID}{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}Voglio tornare a casa{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} è a buon mercato{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}Ho già: {STRINGID}{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}Non posso permettermi: {STRINGID}{ENDQUOTES}
+STR_1493    :{SMALLFONT}{OPENQUOTES}Non ho fame{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}Non ho sete{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Aiuto!! Sto annegando!!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}Mi sono perso!!{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} è stato divertentissimo{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}Sono in fila per {STRINGID} da secoli{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}Sono stanco{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}Ho fame{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}Ho sete{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}Devo andare in bagno{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}Non riesco a trovare: {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}Non pagherò così tanto per usare: {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}Non andrò su {STRINGID} durante un temporale{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}Qui c'è troppa spazzatura in giro{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}Non riesco a trovare l'uscita del parco{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}Voglio scendere da {STRINGID}{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}Voglio uscire da {STRINGID}{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}Non andrò su {STRINGID} - Non è sicuro{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}Questo percorso è disgustoso{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}È troppo affollato qui{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}Qui ci sono troppi atti vandalici{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}Bello scenario!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}Questo parco è davvero pulito e ordinato{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}Le fontane zampillanti sono fantastiche{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}La musica qui è gradevole{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Questo palloncino comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Questo peluche comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Questa mappa del parco comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da  {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Quest'ombrello comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Questa bevanda comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Questo panino comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Queste patatine comprate da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Questo gelato comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Questo zucchero filato comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1528    :
+STR_1529    :
+STR_1530    :
+STR_1531    :{SMALLFONT}{OPENQUOTES}Questa pizza comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1532    :
+STR_1533    :{SMALLFONT}{OPENQUOTES}Questi pop-corn comprati da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Questo hot dog comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Questo tentacolo comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Questo cappellino comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Questa mela caramellata comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Questa maglietta comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Questa ciambella comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Questo caffè comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1541    :
+STR_1542    :{SMALLFONT}{OPENQUOTES}Questo pollo fritto comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Questa limonata comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1544    :
+STR_1545    :
+STR_1546    :
+STR_1547    :
+STR_1548    :
+STR_1549    :
+STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!!{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}Ho la strana sensazione che qualcuno mi stia osservando{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un palloncino da {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un peluche da {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una mappa del parco da {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un ombrello da {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una bevanda da {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un panino da {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per delle patatine da {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un gelato da {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per dello zucchero filato da {STRINGID}{ENDQUOTES}
+STR_1562    :
+STR_1563    :
+STR_1564    :
+STR_1565    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una pizza da {STRINGID}{ENDQUOTES}
+STR_1566    :
+STR_1567    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per dei pop-corn da {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un hot dog da {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un tentacolo da {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un cappellino da {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una mela caramellata da {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una maglietta da {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una ciambella da {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un caffè da {STRINGID}{ENDQUOTES}
+STR_1575    :
+STR_1576    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per del pollo fritto da {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per della limonata da {STRINGID}{ENDQUOTES}
+STR_1578    :
+STR_1579    :
+STR_1580    :
+STR_1581    :
+STR_1582    :
+STR_1583    :
+STR_1584    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Questo biscottino comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Questa cioccolata calda comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Questo tè freddo comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Questa torta a ciambella comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Questi occhiali da sole comprati da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Questi spaghetti al ragù comprati da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Questi spaghetti di riso fritto comprati da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Questa zuppa di wonton comprata da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Queste polpette in salsa comprate da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Questo succo di frutta comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Questo latte di soia comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Questo sujongkwa {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Questo sandwich comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Questo biscotto comprato da {STRINGID} vale il suo prezzo{ENDQUOTES}
+STR_1601    :
+STR_1602    :
+STR_1603    :
+STR_1604    :{SMALLFONT}{OPENQUOTES}Queste salsicce comprate da {STRINGID} valgono il loro prezzo{ENDQUOTES}
+STR_1605    :
+STR_1606    :
+STR_1607    :
+STR_1608    :
+STR_1609    :
+STR_1610    :
+STR_1611    :
+STR_1612    :
+STR_1613    :
+STR_1614    :
+STR_1615    :
+STR_1616    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una foto-in-corsa da {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un biscottino da {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una cioccolata calda da {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per del tè freddo da {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per una torta a ciambella da {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un paio di occhiali da sole da {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per degli spaghetti al ragù da {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per degli spaghetti di riso fritto da {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per della zuppa di wonton da {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per delle polpette in salsa da {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un succo di frutta da {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per del latte di soia da {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un sujongkwa da {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un sandwich da {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per un biscotto da {STRINGID}{ENDQUOTES}
+STR_1633    :
+STR_1634    :
+STR_1635    :
+STR_1636    :{SMALLFONT}{OPENQUOTES}Non pagherò quel prezzo per delle salsicce da {STRINGID}{ENDQUOTES}
+STR_1637    :
+STR_1638    :
+STR_1639    :
+STR_1640    :
+STR_1641    :
+STR_1642    :
+STR_1643    :
+STR_1644    :
+STR_1645    :
+STR_1646    :
+STR_1647    :
+STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto!! Fatemi scendere!!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow!! Presto ci sarà una nuova attrazione!!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Bell'attrazione!! Ma mai come la Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}Che eccitazione - è un'attrazione Intamin!!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...e qui siamo su {STRINGID}!!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}Pensieri più recenti:
+STR_1655    :{SMALLFONT}{BLACK}Costruisci un sentiero sul terreno
+STR_1656    :{SMALLFONT}{BLACK}Costruisci un ponte o una galleria
+STR_1657    :{WINDOW_COLOUR_2}Attrazione preferita
+STR_1658    :{WINDOW_COLOUR_2}intensità: {BLACK}meno di {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}intensità: {BLACK}fra {COMMA16} e {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}intensità: {BLACK}più di {COMMA16}
+STR_1661    :{WINDOW_COLOUR_2}Resist. a nausea: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}Felicità:
+STR_1663    :{WINDOW_COLOUR_2}Nausea:
+STR_1664    :{WINDOW_COLOUR_2}Energia:
+STR_1665    :{WINDOW_COLOUR_2}Fame:
+STR_1666    :{WINDOW_COLOUR_2}Sete:
+STR_1667    :{WINDOW_COLOUR_2}Toilet:
+STR_1668    :{WINDOW_COLOUR_2}Soddisfazione: {BLACK}Ignota
+STR_1669    :{WINDOW_COLOUR_2}Soddisfazione: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}Totale clienti: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}Profitto totale: {BLACK}{CURRENCY2DP}
+STR_1672    :Freni
+STR_1673    :Attivatore controllo di rotazione
+STR_1674    :Velocità freno
+STR_1675    :{POP16}{VELOCITY}
+STR_1676    :{SMALLFONT}{BLACK}Fissa un limite di velocità per i freni
+STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
+STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
+STR_1679    :Elica in su (sinistra)
+STR_1680    :Elica in su (destra)
+STR_1681    :Elica in giù (sinistra)
+STR_1682    :Elica in giù (destra)
+STR_1683    :Dimens. alla base 2 x 2
+STR_1684    :Dimens. alla base 4 x 4
+STR_1685    :Dimens. alla base 2 x 4
+STR_1686    :Dimens. alla base 5 x 1
+STR_1687    :Schizzo d'acqua
+STR_1688    :Dimens. alla base 4 x 1
+STR_1689    :Freni di blocco
+STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
+STR_1691    :{WINDOW_COLOUR_2}  Costo: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Costo: {BLACK}da {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}Visitatori
+STR_1694    :{SMALLFONT}{BLACK}Personale
+STR_1695    :{SMALLFONT}{BLACK}Entrate e uscite
+STR_1696    :{SMALLFONT}{BLACK}Informazioni per i clienti
+STR_1697    :Impossibile collocarli su un'area di attesa
+STR_1698    :Possono essere collocati solo su un'area di attesa
+STR_1699    :Ci sono troppe persone nella partita
+STR_1700    :Assumi un tuttofare
+STR_1701    :Assumi un meccanico
+STR_1702    :Assumi un vigilante
+STR_1703    :Assumi un intrattenitore
+STR_1704    :Impossibile assumere dell'altro personale...
+STR_1705    :{SMALLFONT}{BLACK}Licenzia questo dipendente
+STR_1706    :{SMALLFONT}{BLACK}Sposta questa persona in un altro luogo
+STR_1707    :Troppi dipendenti nella partita
+STR_1708    :{SMALLFONT}{BLACK}Fissa la zona che questo dipendente deve controllare
+STR_1709    :Licenzia il personale
+STR_1710    :Sì
+STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
+STR_1712    :{INLINE_SPRITE}÷□
+STR_1713    :{INLINE_SPRITE}ø□
+STR_1714    :{INLINE_SPRITE}ù□
+STR_1715    :{INLINE_SPRITE}ú□
+STR_1716    :Non è un nome valido per il parco
+STR_1717    :Impossibile ribattezzare il parco...
+STR_1718    :Nome del parco
+STR_1719    :Digita il nome del parco:-
+STR_1720    :{SMALLFONT}{BLACK}Battezza il parco
+STR_1721    :Parco chiuso
+STR_1722    :Parco aperto
+STR_1723    :Impossibile aprire il parco...
+STR_1724    :Impossibile chiudere il parco...
+STR_1725    :Impossibile comprare il terreno...
+STR_1726    :Il terreno non è in vendita!!
+STR_1727    :I diritti di costruzione non sono in vendita!!
+STR_1728    :Impossibile comprare i diritti di costruzione qui...
+STR_1729    :Questo terreno non è di proprietà del parco!!
+STR_1730    :{RED}Chiuso - - 
+STR_1731    :{WHITE}{STRINGID} - - 
+STR_1732    :Costruisci
+STR_1733    :Modalità
+STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
+STR_1735    :{SMALLFONT}{BLACK}Numero di giri del circuito
+STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1737    :{COMMA16}
+STR_1738    :Impossibile cambiare il numero di giri...
+STR_1739    :Corsa vinta dal visitatore {INT32}
+STR_1740    :Corsa vinta da {STRINGID}
+STR_1741    :Ancora non è costruito!!
+STR_1742    :{WINDOW_COLOUR_2}Max. persone a bordo:
+STR_1743    :{SMALLFONT}{BLACK}Numero massimo di persone che possono salire contemporaneamente su quest'attrazione
+STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1745    :{COMMA16}
+STR_1746    :Impossibile modificarlo...
+STR_1747    :{WINDOW_COLOUR_2}Tempo limite:
+STR_1748    :{SMALLFONT}{BLACK}Limite di tempo per attrazione
+STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
+STR_1750    :{DURATION}
+STR_1751    :Impossibile cambiare il limite di tempo per attrazione...
+STR_1752    :{SMALLFONT}{BLACK}Mostra la lista completa dei visitatori del parco
+STR_1753    :{SMALLFONT}{BLACK}Mostra il riassunto dei visitatori del parco
+STR_1754    :{BLACK}{COMMA16} visitatori
+STR_1755    :{BLACK}{COMMA16} visitatore
+STR_1756    :{WINDOW_COLOUR_2}Prezzo biglietto:
+STR_1757    :{WINDOW_COLOUR_2}Affidabilità: {MOVE_X}ÿ{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}Modalità costruzione
+STR_1759    :{SMALLFONT}{BLACK}Modalità spostamento
+STR_1760    :{SMALLFONT}{BLACK}Modalità riempimento
+STR_1761    :{SMALLFONT}{BLACK}Costruisci un labirinto in questa direzione
+STR_1762    :Cascate
+STR_1763    :Rapide
+STR_1764    :Salti sui dossi
+STR_1765    :Sezione foto-in-corsa
+STR_1766    :Piattaforma ribaltabile
+STR_1767    :Galleria rotante
+STR_1768    :Impossibile cambiare il numero di oscillazioni...
+STR_1769    :{WINDOW_COLOUR_2}Numero oscillaz.:
+STR_1770    :{SMALLFONT}{BLACK}Numero di oscillazioni complete
+STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1772    :{COMMA16}
+STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
+STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
+STR_1775    :Off
+STR_1776    :On
+STR_1777    :{WINDOW_COLOUR_2}Musica:
+STR_1778    :{STRINGID} - - 
+STR_1779    :{INLINE_SPRITE}þ□
+STR_1780    :{INLINE_SPRITE}ÿ□
+STR_1781    :{INLINE_SPRITE}
+STR_1782    :{INLINE_SPRITE}{MOVE_X}□
+STR_1783    :{INLINE_SPRITE}{ADJUST_PALETTE}□
+STR_1784    :{INLINE_SPRITE}□□
+STR_1785    :{INLINE_SPRITE}□□
+STR_1786    :{INLINE_SPRITE}{NEWLINE}□
+STR_1787    :{INLINE_SPRITE}{NEWLINE_SMALLER}□
+STR_1788    :{INLINE_SPRITE}{TINYFONT}□
+STR_1789    :{INLINE_SPRITE}{BIGFONT}□
+STR_1790    :{SMALLFONT}{BLACK}Scegli il colore dell'uniforme per questo tipo di dipendente
+STR_1791    :{WINDOW_COLOUR_2}Colore dell'uniforme:
+STR_1792    :Sta accorrendo alla chiamata d'emergenza venuta da: {STRINGID}
+STR_1793    :Si sta dirigendo verso {STRINGID} per un'ispezione
+STR_1794    :Sta riparando {STRINGID}
+STR_1795    :Sta rispondendo a una chiamata via radio
+STR_1796    :Si è guastato/a e ha bisogno di riparazioni
+STR_1797    :Quest'opzione non può essere modificata per quest'attrazione
+STR_1798    :Vortice
+STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1800    :Salvavita
+STR_1801    :Freni bloccati (chiusi)
+STR_1802    :Freni bloccati (aperti)
+STR_1803    :Porta bloccata (chiusa)
+STR_1804    :Porta bloccata (aperta)
+STR_1805    :Malfunz. del veicolo
+STR_1806    :Guasto freni stazione
+STR_1807    :Guasto dei comandi
+STR_1808    :{WINDOW_COLOUR_2}Ultimo guasto: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}Guasto attuale: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}Sta trasportando:
+STR_1811    :Impossibile costruirlo qui...
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1813    :Oggetti vari
+STR_1814    :Azioni
+STR_1815    :Pensieri
+STR_1816    :{SMALLFONT}{BLACK}Scegli il tipo di informazioni da mostrare nella lista dei visitatori
+STR_1817    :({COMMA16})
+STR_1818    :{WINDOW_COLOUR_2}Tutti i visitatori
+STR_1819    :{WINDOW_COLOUR_2}Tutti i visitatori (riassunto)
+STR_1820    :{WINDOW_COLOUR_2}Visitatori {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Pensiero dei visitatori {STRINGID}
+STR_1822    :{WINDOW_COLOUR_2}Pensiero dei visitatori su {POP16}{STRINGID}
+STR_1823    :{SMALLFONT}{BLACK}Mostra i pensieri dei visitatori relativi a quest'attrazione
+STR_1824    :{SMALLFONT}{BLACK}Mostra i visitatori a bordo di quest'attrazione
+STR_1825    :{SMALLFONT}{BLACK}Mostra i visitatori in fila d'attesa per quest'attrazione
+STR_1826    :Status
+STR_1827    :Popolarità
+STR_1828    :Soddisfazione
+STR_1829    :Profitto
+STR_1830    :Lunghezza fila
+STR_1831    :Tempo di attesa
+STR_1832    :Affidabilità
+STR_1833    :Tempi morti
+STR_1834    :Attraz. favorita
+STR_1835    :Popolarità: Sconosciuta
+STR_1836    :Popolarità: {COMMA16}%
+STR_1837    :Soddisfazione: Sconosciuta
+STR_1838    :Soddisfazione: {COMMA16}%
+STR_1839    :Affidabilità: {COMMA16}%
+STR_1840    :Tempi morti: {COMMA16}%
+STR_1841    :Profitto: {CURRENCY} all'ora
+STR_1842    :La preferita da: {COMMA16} visitatore
+STR_1843    :La preferita da: {COMMA16} visitatori
+STR_1844    :{SMALLFONT}{BLACK}Scegli il tipo di informazione da mostrare nella lista delle attrazioni
+STR_1845    :{MONTHYEAR}
+STR_1846    :{COMMA16} visitatori
+STR_1847    :{INLINE_SPRITE}{OUTLINE}□
+STR_1848    :{INLINE_SPRITE}{SMALLFONT}□
+STR_1849    :{WINDOW_COLOUR_2}Suona la musica
+STR_1850    :{SMALLFONT}{BLACK}Scegli quale musica dev'essere suonata in quest'attrazione
+STR_1851    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}{CURRENCY2DP} l'ora
+STR_1852    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}Ignoto
+STR_1853    :{WINDOW_COLOUR_2}Costruiti: {BLACK}quest'anno
+STR_1854    :{WINDOW_COLOUR_2}Costruiti: {BLACK}l'anno scorso
+STR_1855    :{WINDOW_COLOUR_2}Costruiti: {BLACK}{COMMA16} anni fa
+STR_1856    :{WINDOW_COLOUR_2}Profitto medio per vendita: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Perdita media per vendita: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Costo: {BLACK}{CURRENCY} al mese
+STR_1859    :Tuttofare
+STR_1860    :Meccanici
+STR_1861    :Vigilanti
+STR_1862    :Intrattenitori
+STR_1863    :Tuttofare
+STR_1864    :Meccanico
+STR_1865    :Vigilante
+STR_1866    :Intrattenitore
+STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1868    :Impossibile modificare il numero di rotazioni...
+STR_1869    :{WINDOW_COLOUR_2}Numero rotazioni:
+STR_1870    :{SMALLFONT}{BLACK}Numero di rotazioni complete
+STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1872    :{COMMA16}
+STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all'ora
+STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all'ora
+STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}û□
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}ü□
+STR_1878    :{WINDOW_COLOUR_2}Ispezione:
+STR_1879    :Ogni 10 minuti
+STR_1880    :Ogni 20 minuti
+STR_1881    :Ogni 30 minuti
+STR_1882    :Ogni 45 minuti
+STR_1883    :Ogni ora
+STR_1884    :Ogni 2 ore
+STR_1885    :Mai
+STR_1886    :Sta effettuando un'ispezione {STRINGID}
+STR_1887    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}{COMMA16} minuti
+STR_1888    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}più di 4 ore
+STR_1889    :{WINDOW_COLOUR_2}Tempi morti: {MOVE_X}ÿ{BLACK}{COMMA16}%
+STR_1890    :{SMALLFONT}{BLACK}Scegli la frequenza con cui un meccanico deve controllare quest'attrazione
+STR_1891    :Ancora non ci sono {STRINGID} nel parco!!
+STR_1892    :RollerCoaster Tycoon 2
+STR_1893    :Inserisci il tuo CD di RollerCoaster Tycoon 2 nella seguente unità:-
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} venduti/e: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}Costruisci una nuova attrazione
+STR_1896    :{WINDOW_COLOUR_2}Uscite/entrate
+STR_1897    :{WINDOW_COLOUR_2}Costruz. attrazioni
+STR_1898    :{WINDOW_COLOUR_2}Costo manten. attraz.
+STR_1899    :{WINDOW_COLOUR_2}Acquisto di terreni
+STR_1900    :{WINDOW_COLOUR_2}Modifica paesaggio
+STR_1901    :{WINDOW_COLOUR_2}Biglietti d'ingresso
+STR_1902    :{WINDOW_COLOUR_2}Biglietti attrazioni
+STR_1903    :{WINDOW_COLOUR_2}Vendite dei negozi
+STR_1904    :{WINDOW_COLOUR_2}Scorte dei negozi
+STR_1905    :{WINDOW_COLOUR_2}Vendite di cibo/bevande
+STR_1906    :{WINDOW_COLOUR_2}Scorte di cibo/bevande
+STR_1907    :{WINDOW_COLOUR_2}Stipendi personale
+STR_1908    :{WINDOW_COLOUR_2}Marketing
+STR_1909    :{WINDOW_COLOUR_2}Ricerca
+STR_1910    :{WINDOW_COLOUR_2}Interessi prestiti
+STR_1911    :{BLACK} al {COMMA16}% l'anno
+STR_1912    :{MONTH}
+STR_1913    :{BLACK}+{CURRENCY2DP}
+STR_1914    :{BLACK}{CURRENCY2DP}
+STR_1915    :{RED}{CURRENCY2DP}
+STR_1916    :{WINDOW_COLOUR_2}Prestito:
+STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
+STR_1918    :Impossibile chiedere altri prestiti!!
+STR_1919    :Fondi insufficienti!!
+STR_1920    :Il prestito non può essere restituito!!
+STR_1921    :{SMALLFONT}{BLACK}Inizia una nuova partita
+STR_1922    :{SMALLFONT}{BLACK}Continua a giocare alla partita salvata
+STR_1923    :{SMALLFONT}{BLACK}Mostra l'esercitazione
+STR_1924    :{SMALLFONT}{BLACK}Esci
+STR_1925    :Impossibile collocare una persona qui...
+STR_1926    :{SMALLFONT}
+STR_1927    :{YELLOW}{STRINGID} si è guastato/a
+STR_1928    :{RED}{STRINGID} ha avuto un incidente!!
+STR_1929    :{RED}{STRINGID} ancora non è stato riparato{NEWLINE}Guarda dove si trovano i tuoi meccanici e prendi in considerazione l'idea di organizzarli meglio
+STR_1930    :{SMALLFONT}{BLACK}Attiva/disattiva le informazioni in tempo reale su questo visitatore - (se l'opzione è attivata, i movimenti del visitatore saranno visualizzati nell'area messaggi)
+STR_1931    :{STRINGID} è in fila d'attesa per {STRINGID}
+STR_1932    :{STRINGID} si trova su {STRINGID}
+STR_1933    :{STRINGID} si trova in {STRINGID}
+STR_1934    :{STRINGID} ha lasciato {STRINGID}
+STR_1935    :{STRINGID} ha lasciato il parco
+STR_1936    :{STRINGID} ha comprato {STRINGID}
+STR_1937    :{SMALLFONT}{BLACK}Mostra informazioni sull'argomento di questo messaggio
+STR_1938    :{SMALLFONT}{BLACK}Mostra la visuale del visitatore
+STR_1939    :{SMALLFONT}{BLACK}Mostra la visuale del dipendente
+STR_1940    :{SMALLFONT}{BLACK}Mostra la felicità, l'energia, la fame, ecc. di questo visitatore
+STR_1941    :{SMALLFONT}{BLACK}Mostra le attrazioni provate da questo visitatore
+STR_1942    :{SMALLFONT}{BLACK}Mostra le informazioni finanziarie relative a questo visitatore
+STR_1943    :{SMALLFONT}{BLACK}Mostra i pensieri più recenti di questo visitatore
+STR_1944    :{SMALLFONT}{BLACK}Mostra l'oggetto che il visitatore sta trasportando
+STR_1945    :{SMALLFONT}{BLACK}Mostra le opzioni e gli ordini relativi a questo dipendente
+STR_1946    :{SMALLFONT}{BLACK}Scegli il costume di questo intrattenitore
+STR_1947    :{SMALLFONT}{BLACK}Mostra le zone sotto il controllo del tipo di dipendente selezionato e individua il dipendente più vicino
+STR_1948    :{SMALLFONT}{BLACK}Assumi un altro dipendente del tipo selezionato
+STR_1949    :Resoconto finanziario
+STR_1950    :Grafico delle finanze
+STR_1951    :Grafico del valore del parco
+STR_1952    :Grafico dei profitti
+STR_1953    :Marketing
+STR_1954    :Fondi per la ricerca
+STR_1955    :{WINDOW_COLOUR_2}Numero dei circuiti:
+STR_1956    :{SMALLFONT}{BLACK}Media dei circuiti del tracciato per attrazione
+STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1958    :{COMMA16}
+STR_1959    :Impossibile modificare il numero dei circuiti...
+STR_1960    :{WINDOW_COLOUR_2}Prezzo dei palloncini:
+STR_1961    :{WINDOW_COLOUR_2}Prezzo dei peluche:
+STR_1962    :{WINDOW_COLOUR_2}Prezzo delle mappe:
+STR_1963    :{WINDOW_COLOUR_2}Prezzo delle foto:
+STR_1964    :{WINDOW_COLOUR_2}Prezzo degli ombrelli:
+STR_1965    :{WINDOW_COLOUR_2}Prezzo delle bevande:
+STR_1966    :{WINDOW_COLOUR_2}Prezzo dei panini:
+STR_1967    :{WINDOW_COLOUR_2}Prezzo delle patatine:
+STR_1968    :{WINDOW_COLOUR_2}Prezzo dei gelati:
+STR_1969    :{WINDOW_COLOUR_2}Prezzo dello zucch. fil.:
+STR_1970    :{WINDOW_COLOUR_2}
+STR_1971    :{WINDOW_COLOUR_2}
+STR_1972    :{WINDOW_COLOUR_2}
+STR_1973    :{WINDOW_COLOUR_2}Prezzo delle pizze:
+STR_1974    :{WINDOW_COLOUR_2}
+STR_1975    :{WINDOW_COLOUR_2}Prezzo dei pop-corn:
+STR_1976    :{WINDOW_COLOUR_2}Prezzo degli hot dog:
+STR_1977    :{WINDOW_COLOUR_2}Prezzo dei tentacoli:
+STR_1978    :{WINDOW_COLOUR_2}Prezzo dei cappellini:
+STR_1979    :{WINDOW_COLOUR_2}Prezzo delle mele caram.:
+STR_1980    :{WINDOW_COLOUR_2}Prezzo delle magliette:
+STR_1981    :{WINDOW_COLOUR_2}Prezzo delle ciambelle:
+STR_1982    :{WINDOW_COLOUR_2}Prezzo del caffè:
+STR_1983    :{WINDOW_COLOUR_2}
+STR_1984    :{WINDOW_COLOUR_2}Prezzo del pollo fritto:
+STR_1985    :{WINDOW_COLOUR_2}Prezzo della limonate:
+STR_1986    :{WINDOW_COLOUR_2}
+STR_1987    :{WINDOW_COLOUR_2}
+STR_1988    :Palloncino
+STR_1989    :Peluche
+STR_1990    :Mappa del parco
+STR_1991    :Foto-in-corsa
+STR_1992    :Ombrello
+STR_1993    :Bevanda
+STR_1994    :Panino
+STR_1995    :Patatine
+STR_1996    :Gelato
+STR_1997    :Zucchero filato
+STR_1998    :Lattina vuota
+STR_1999    :Spazzatura
+STR_2000    :Confezione per panini vuota
+STR_2001    :Pizza
+STR_2002    :Buono-sconto
+STR_2003    :Pop-corn
+STR_2004    :Hot dog
+STR_2005    :Tentacolo
+STR_2006    :Cappellino
+STR_2007    :Mela caramellata
+STR_2008    :Maglietta
+STR_2009    :Ciambella
+STR_2010    :Caffè
+STR_2011    :Tazzina vuota
+STR_2012    :Pollo fritto
+STR_2013    :Limonata
+STR_2014    :Scatola vuota
+STR_2015    :Bottiglia vuota
+STR_2016    :Palloncini
+STR_2017    :Peluche
+STR_2018    :Mappe del parco
+STR_2019    :Foto-in-corsa
+STR_2020    :Ombrelli
+STR_2021    :Bevande
+STR_2022    :Panini
+STR_2023    :Patatine
+STR_2024    :Gelati
+STR_2025    :Zucchero filato
+STR_2026    :Lattine vuote
+STR_2027    :Spazzatura
+STR_2028    :Scatole per panini vuote
+STR_2029    :Pizze
+STR_2030    :Buoni-sconto
+STR_2031    :Pop-corn
+STR_2032    :Hot dog
+STR_2033    :Tentacoli
+STR_2034    :Cappellini
+STR_2035    :Mele caramellate
+STR_2036    :Magliette
+STR_2037    :Ciambelle
+STR_2038    :Caffè
+STR_2039    :Tazzine vuote
+STR_2040    :Polli fritti
+STR_2041    :Limonata
+STR_2042    :Scatole vuote
+STR_2043    :Bottiglie vuote
+STR_2044    :un palloncino
+STR_2045    :un peluche
+STR_2046    :una mappa del parco
+STR_2047    :una foto-in-corsa
+STR_2048    :un ombrello
+STR_2049    :una bevanda
+STR_2050    :un panino
+STR_2051    :delle patatine
+STR_2052    :un gelato
+STR_2053    :dello zucchero filato
+STR_2054    :una lattina vuota
+STR_2055    :della spazzatura
+STR_2056    :una scatola per panini vuota
+STR_2057    :una pizza
+STR_2058    :un buono-sconto
+STR_2059    :dei pop-corn
+STR_2060    :un hot dog
+STR_2061    :un tentacolo
+STR_2062    :un cappellino
+STR_2063    :una mela caramellata
+STR_2064    :una maglietta
+STR_2065    :una ciambella
+STR_2066    :un caffè
+STR_2067    :una tazzina vuota
+STR_2068    :del pollo fritto
+STR_2069    :della limonata
+STR_2070    :una scatola vuota
+STR_2071    :una bottiglia vuota
+STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Palloncino
+STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Peluche
+STR_2074    :Mappa di {STRINGID}
+STR_2075    :Foto-in-corsa di {STRINGID}
+STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ombrello
+STR_2077    :Bevanda
+STR_2078    :Panino
+STR_2079    :Patatine
+STR_2080    :Gelato
+STR_2081    :Zucchero filato
+STR_2082    :Lattina vuota
+STR_2083    :Spazzatura
+STR_2084    :Scatola per panini vuota
+STR_2085    :Pizza
+STR_2086    :Buono-sconto per {STRINGID}
+STR_2087    :Pop-corn
+STR_2088    :Hot dog
+STR_2089    :Tentacolo
+STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cappellino
+STR_2091    :Mela caramellata
+STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Maglietta
+STR_2093    :Ciambella
+STR_2094    :Caffè
+STR_2095    :Tazzina vuota
+STR_2096    :Pollo fritto
+STR_2097    :Limonata
+STR_2098    :Scatola vuota
+STR_2099    :Bottiglia vuota
+STR_2100    :{WINDOW_COLOUR_2}Prezzo delle foto:
+STR_2101    :{WINDOW_COLOUR_2}Prezzo delle foto:
+STR_2102    :{WINDOW_COLOUR_2}Prezzo delle foto:
+STR_2103    :{WINDOW_COLOUR_2}Prezzo dei biscottini:
+STR_2104    :{WINDOW_COLOUR_2}Prezzo delle ciocc. calde:
+STR_2105    :{WINDOW_COLOUR_2}Prezzo dei tè freddi:
+STR_2106    :{WINDOW_COLOUR_2}Prezzo delle torte:
+STR_2107    :{WINDOW_COLOUR_2}Prezzo occhiali da sole:
+STR_2108    :{WINDOW_COLOUR_2}Prezzo spaghetti al ragù:
+STR_2109    :{WINDOW_COLOUR_2}Prezzo spaghetti di riso:
+STR_2110    :{WINDOW_COLOUR_2}Prezzo zuppa di wonton:
+STR_2111    :{WINDOW_COLOUR_2}Prezzo polpette in salsa:
+STR_2112    :{WINDOW_COLOUR_2}Prezzo succhi di frutta:
+STR_2113    :{WINDOW_COLOUR_2}Prezzo del latte di soia:
+STR_2114    :{WINDOW_COLOUR_2}Prezzo dei sujongkwa:
+STR_2115    :{WINDOW_COLOUR_2}Prezzo dei sandwich:
+STR_2116    :{WINDOW_COLOUR_2}Prezzo del biscotto:
+STR_2117    :{WINDOW_COLOUR_2}
+STR_2118    :{WINDOW_COLOUR_2}
+STR_2119    :{WINDOW_COLOUR_2}
+STR_2120    :{WINDOW_COLOUR_2}Prezzo delle salsicce:
+STR_2121    :{WINDOW_COLOUR_2}
+STR_2122    :Prezzo delle foto-in-corsa
+STR_2123    :Prezzo delle foto-in-corsa
+STR_2124    :Prezzo delle foto-in-corsa
+STR_2125    :Biscottino
+STR_2126    :Cioccolata calda
+STR_2127    :Tè freddo
+STR_2128    :Torta a ciambella
+STR_2129    :Occhiali da sole
+STR_2130    :Spaghetti al ragù
+STR_2131    :Spaghetti di riso fritto
+STR_2132    :Zuppa di wonton
+STR_2133    :Polpette in salsa
+STR_2134    :Succo di frutta
+STR_2135    :Latte di soia
+STR_2136    :Sujongkwa
+STR_2137    :Sandwich
+STR_2138    :Biscotto
+STR_2139    :Scodella vuota
+STR_2140    :Confezione per bevande vuota
+STR_2141    :Tazza vuota
+STR_2142    :Salsicce
+STR_2143    :Scodella vuota
+STR_2144    :Foto-in.corsa
+STR_2145    :Foto-in-corsa
+STR_2146    :Foto-in-corsa
+STR_2147    :Biscottini
+STR_2148    :Cioccolate calde
+STR_2149    :Tè freddi
+STR_2150    :Torte a ciambella
+STR_2151    :Occhiali da sole
+STR_2152    :Spaghetti al ragù
+STR_2153    :Spaghetti di riso fritto
+STR_2154    :Zuppe di wonton
+STR_2155    :Polpette in salsa
+STR_2156    :Succhi di frutta
+STR_2157    :Latte di soia
+STR_2158    :Sujongkwa
+STR_2159    :Sandwich
+STR_2160    :Biscotti
+STR_2161    :Scodelle vuote
+STR_2162    :Confezioni per bevande vuote
+STR_2163    :Tazze vuote
+STR_2164    :Salsicce
+STR_2165    :Scodelle vuote
+STR_2166    :una foto-in-corsa
+STR_2167    :una foto-in-corsa
+STR_2168    :una foto-in-corsa
+STR_2169    :un biscottino
+STR_2170    :una cioccolata calda
+STR_2171    :un tè freddo
+STR_2172    :una torta a ciambella
+STR_2173    :un paio di occhiali da sole
+STR_2174    :degli spaghetti al ragù
+STR_2175    :degli spaghetti di riso fritto
+STR_2176    :della zuppa di wonton
+STR_2177    :delle polpette in salsa
+STR_2178    :un succo di frutta
+STR_2179    :del latte di soia
+STR_2180    :un sujongkwa
+STR_2181    :un sandwich
+STR_2182    :un biscotto
+STR_2183    :una scodella vuota
+STR_2184    :una confezione per bevande vuota
+STR_2185    :una tazza vuota
+STR_2186    :una salsiccia
+STR_2187    :una scodella vuota
+STR_2188    :foto-in-corsa di {STRINGID}
+STR_2189    :foto-in-corsa di {STRINGID}
+STR_2190    :foto-in-corsa di {STRINGID}
+STR_2191    :Biscottino
+STR_2192    :Cioccolata calda
+STR_2193    :Tè freddo
+STR_2194    :Torta a ciambella
+STR_2195    :Occhiali da sole
+STR_2196    :Spaghetti al ragù
+STR_2197    :Spaghetti di riso fritto
+STR_2198    :Zuppa di wonton
+STR_2199    :Polpette in salsa
+STR_2200    :Succo di frutta
+STR_2201    :Latte di soia
+STR_2202    :Sujongkwa
+STR_2203    :Sandwich
+STR_2204    :Biscotto
+STR_2205    :Scodella vuota
+STR_2206    :Confezione per bevande vuota
+STR_2207    :Tazza vuota
+STR_2208    :Salsicce
+STR_2209    :Scodella vuota
+STR_2210    :{SMALLFONT}{BLACK}Mostra la lista dei tuttofare del parco
+STR_2211    :{SMALLFONT}{BLACK}Mostra la lista dei meccanici del parco
+STR_2212    :{SMALLFONT}{BLACK}Mostra la lista dei vigilanti del parco
+STR_2213    :{SMALLFONT}{BLACK}Mostra la lista degli intrattenitori del parco
+STR_2214    :Non è possibile costruire quando il gioco è in pausa!!
+STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2218    :{RED}{STRINGID} sull'attrazione {STRINGID} non ha ancora fatto ritorno presso: {STRINGID} !!{NEWLINE}Controlla se si è bloccato o se è entrato in stallo
+STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRINGID}
+STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}Valutazione del parco: {COMMA16}
+STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2223    :{WINDOW_COLOUR_2}Visitatori nel parco: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}Denaro: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Denaro: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}Valore del parco: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}Valore della società: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Profitto dello scorso mese derivante da cibo e bevande e {NEWLINE}dalle vendite ai negozi: {BLACK}{CURRENCY}
+STR_2229    :Inclinato in alto
+STR_2230    :Tracciato verticale
+STR_2231    :Frenare in discesa
+STR_2232    :Sal. traino con cavo
+STR_2233    :{SMALLFONT}{BLACK}Informazioni sul parco
+STR_2234    :Messaggi recenti
+STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2236    :Gennaio
+STR_2237    :Febbraio
+STR_2238    :Marzo
+STR_2239    :Aprile
+STR_2240    :Maggio
+STR_2241    :Giugno
+STR_2242    :Luglio
+STR_2243    :Agosto
+STR_2244    :Settembre
+STR_2245    :Ottobre
+STR_2246    :Novembre
+STR_2247    :Dicembre
+STR_2248    :Impossibile demolire l'attrazione...
+STR_2249    :{BABYBLUE}È disponibile una nuova attrazione: {NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}È disponibile un nuovo scenario/tema: {NEWLINE}{STRINGID}
+STR_2251    :Può essere costruito solo su un percorso!!
+STR_2252    :Può essere costruito solo attraverso un percorso!!
+STR_2253    :Attrazioni di trasporto
+STR_2254    :Attrazioni tranquille
+STR_2255    :Ottovolanti
+STR_2256    :Attrazioni eccitanti
+STR_2257    :Attrazioni acquatiche
+STR_2258    :Negozi e chioschi
+STR_2259    :Scenari e temi
+STR_2260    :Niente fondi
+STR_2261    :Fondi minimi
+STR_2262    :Fondi normali
+STR_2263    :Fondi massimi
+STR_2264    :Ricerca dei fondi
+STR_2265    :{WINDOW_COLOUR_2}Costo: {BLACK}{CURRENCY} al mese
+STR_2266    :Priorità di ricerca
+STR_2267    :Attualmente in fase di sviluppo
+STR_2268    :Ultimo progetto sviluppato
+STR_2269    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}Progresso: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}Previsione: {BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}Attrazione:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}Scenario/tema:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}Mostra i dettagli di questa invenzione o progetto
+STR_2275    :{SMALLFONT}{BLACK}Mostra i fondi e le opzioni per la ricerca e sviluppo
+STR_2276    :{SMALLFONT}{BLACK}Mostra lo status della ricerca e sviluppo
+STR_2277    :Ignoto
+STR_2278    :Attrazione di trasporto
+STR_2279    :Attrazione tranquilla
+STR_2280    :Ottovolante
+STR_2281    :Attrazione eccitante
+STR_2282    :Attrazione acquatica
+STR_2283    :Negozio/chiosco
+STR_2284    :Scenario/tema
+STR_2285    :Ricerca iniziale
+STR_2286    :In progettazione
+STR_2287    :Progetto completato
+STR_2288    :Ignoto
+STR_2289    :{STRINGID} {STRINGID}
+STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2291    :Scegli uno scenario per una nuova partita
+STR_2292    :{WINDOW_COLOUR_2}Attrazioni provate:
+STR_2293    :{BLACK} Niente
+STR_2294    :{SMALLFONT}{BLACK}Modifica lo stile del terreno alla base
+STR_2295    :{SMALLFONT}{BLACK}Modifica gli spigoli verticali del terreno
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} pagati per entrare
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} corsa
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in  {BLACK}{COMMA16} corse
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} unità di cibo
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16}unità di cibo
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} bevanda
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} bevande
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} souvenir
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} souvenir
+STR_2305    :File dei progetti di tracciato
+STR_2306    :Salva il progetto di tracciato
+STR_2307    :Seleziona progetto {STRINGID}
+STR_2308    :{STRINGID} - Progetti di tracciato
+STR_2309    :Installa un nuovo progetto di tracciato
+STR_2310    :Costruisci un progetto personalizzato
+STR_2311    :{WINDOW_COLOUR_2}Livello di divertimento: {BLACK}{COMMA2DP32} (circa)
+STR_2312    :{WINDOW_COLOUR_2}Livello d'intensità: {BLACK}{COMMA2DP32} (circa)
+STR_2313    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32} (circa)
+STR_2314    :{WINDOW_COLOUR_2}Lunghezza: {BLACK}{STRINGID}
+STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
+STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
+STR_2317    :{WINDOW_COLOUR_2}Qualità audio:
+STR_2318    :Bassa
+STR_2319    :Media
+STR_2320    :Alta
+STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
+STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m{SQUARED}
+STR_2324    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}sq.ft.
+STR_2325    :{SMALLFONT}{BLACK}Compra del terreno per estendere il parco
+STR_2326    :{SMALLFONT}{BLACK}Compra dei diritti di costruzione per permettere la costruzione sopra o sotto il terreno al di fuori del parco
+STR_2327    :Opzioni
+STR_2328    :{WINDOW_COLOUR_2}Valuta:
+STR_2329    :{WINDOW_COLOUR_2}Distanza e velocità:
+STR_2330    :{WINDOW_COLOUR_2}Temperatura:
+STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
+STR_2332    :Unità
+STR_2333    :Audio
+STR_2334    :Sterline ({POUND})
+STR_2335    :Dollari ($)
+STR_2336    :Franchi (F)
+STR_2337    :Marchi tedeschi (DM)
+STR_2338    :Yen ({YEN})
+STR_2339    :Pesetas (Pts)
+STR_2340    :Lire (L)
+STR_2341    :Fiorini (Dfl.)
+STR_2342    :Corone (kr)
+STR_2343    :Euro ({EURO})
+STR_2344    :Imperiale
+STR_2345    :Metrico
+STR_2346    :Video
+STR_2347    :{RED}{STRINGID} è annegato!!
+STR_2348    :{SMALLFONT}{BLACK}Mostra le statistiche di questo dipendente
+STR_2349    :{WINDOW_COLOUR_2}Stipendio: {BLACK}{CURRENCY} al mese
+STR_2350    :{WINDOW_COLOUR_2}Assunto: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Erba tagliata: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}Giard. innaffiati: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Spazz. raccolta: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Cass. svuotati: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Riparazioni: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Ispezioni: {BLACK}{COMMA16}
+STR_2357    :Casa
+STR_2358    :Unità
+STR_2359    :Valori reali
+STR_2360    :{WINDOW_COLOUR_2}Risoluzione:
+STR_2361    :Addolcimento del paesaggio
+STR_2362    :{SMALLFONT}{BLACK}Attiva/disattiva l'addolcimento degli spigoli delle mattonelle del paesaggio
+STR_2363    :Griglia sovrapposta al paesaggio
+STR_2364    :{SMALLFONT}{BLACK}Attiva/disattiva la griglia sovrapposta al paesaggio
+STR_2365    :La banca si è rifiutata di concederti altri prestiti!!
+STR_2366    :Celsius ({DEGREE}C)
+STR_2367    :Fahrenheit (F)
+STR_2368    :Nessuno
+STR_2369    :Basso
+STR_2370    :Medio
+STR_2371    :Alto
+STR_2372    :Basso
+STR_2373    :Medio
+STR_2374    :Alto
+STR_2375    :Molto alto
+STR_2376    :Estremo
+STR_2377    :Super-estremo
+STR_2378    :{SMALLFONT}{BLACK}Regola un'area di terreno più piccola
+STR_2379    :{SMALLFONT}{BLACK}Regola un'area di terreno più grande
+STR_2380    :{SMALLFONT}{BLACK}Regola una superficie d'acqua più piccola
+STR_2381    :{SMALLFONT}{BLACK}Regola una superficie d'acqua più grande
+STR_2382    :Terreno
+STR_2383    :Acqua
+STR_2384    :{WINDOW_COLOUR_2}Il tuo obiettivo:
+STR_2385    :{BLACK}Nessuno
+STR_2386    :{BLACK}Avere almeno {COMMA16} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
+STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2388    :{BLACK}Divertitevii!!
+STR_2389    :{BLACK}Costruisci il migliore {STRINGID} che puoi!!
+STR_2390    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno con un livello di divertimento di almeno 6.00
+STR_2391    :{BLACK}Avere almeno {COMMA16} visitatori nel parco. E non devi mai avere una valutazione del parco inferiore a 700!!
+STR_2392    :{BLACK}Incassare mensilmente tramite i biglietti delle attrazioni almeno {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno della lunghezza minima di {LENGTH} e un livello di divertimento di almeno 7.00
+STR_2394    :{BLACK}Finire di costruire tutti e cinque gli ottovolanti parzialmente costruiti in questo parco, facendo loro raggiungere un livello di divertimento di almeno {POP16}{POP16}{COMMA2DP32} ciascuno
+STR_2395    :{BLACK}Restituire il prestito e far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}Incassare mensilmente tramite la vendita di cibo, bevande e oggetti vari almeno {POP16}{POP16}{CURRENCY}
+STR_2397    :Nessuno
+STR_2398    :Numero di visitatori a una certa data
+STR_2399    :Valore del parco a una certa data
+STR_2400    :Divertitevi
+STR_2401    :Costruisci la migliore attrazione che puoi
+STR_2402    :Costruisci 10 ottovolanti
+STR_2403    :Numero di visitatori nel parco
+STR_2404    :Incasso mensile biglietti attrazioni
+STR_2405    :Costruisci 10 ottov. di una certa lunghezza
+STR_2406    :Finisci di costruire 5 ottovolanti
+STR_2407    :Restit. prestito e parco a un certo valore 
+STR_2408    :Incasso mensile da cibo/oggetti
+STR_2409    :{WINDOW_COLOUR_2}Campagne di marketing all'opera
+STR_2410    :{BLACK}Nessuna
+STR_2411    :{WINDOW_COLOUR_2}Campagne di marketing disponibili
+STR_2412    :{SMALLFONT}{BLACK}Avvia questa campagna di marketing
+STR_2413    :{BLACK}({CURRENCY2DP} alla settimana)
+STR_2414    :(Non selezionata)
+STR_2415    :{WINDOW_COLOUR_2}Attrazione:
+STR_2416    :{WINDOW_COLOUR_2}Oggetto:
+STR_2417    :{WINDOW_COLOUR_2}Periodo:
+STR_2418    :Ingresso gratis a {STRINGID}
+STR_2419    :Corsa gratis su {STRINGID}
+STR_2420    :Metà prezzo per {STRINGID}
+STR_2421    :Gratis: {STRINGID}
+STR_2422    :Campagna pubblicitaria per {STRINGID}
+STR_2423    :Campagna pubblicitaria per {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Buoni-sconto con ingresso gratis
+STR_2425    :{WINDOW_COLOUR_2}Buoni-sconto con corse gratis specifiche 
+STR_2426    :{WINDOW_COLOUR_2}Buoni-sconto per ingresso a metà prezzo
+STR_2427    :{WINDOW_COLOUR_2}Buoni-sconto per cibo/bevanda gratis
+STR_2428    :{WINDOW_COLOUR_2}Campagna pubblicitaria per il parco
+STR_2429    :{WINDOW_COLOUR_2}Campagna pubblicitaria per un'attrazione
+STR_2430    :{BLACK}Buoni-sconto ingresso gratis a {STRINGID}
+STR_2431    :{BLACK}Buoni-sconto corsa gratis su {STRINGID}
+STR_2432    :{BLACK}Buoni-sconto metà prezzo per {STRINGID}
+STR_2433    :{BLACK}Buoni sconto gratis per: {STRINGID}
+STR_2434    :{BLACK}Campagna pubblicitaria per {STRINGID}
+STR_2435    :{BLACK}Campagna pubblicitaria per {STRINGID}
+STR_2436    :1 sett.
+STR_2437    :2 sett.
+STR_2438    :3 sett.
+STR_2439    :4 sett.
+STR_2440    :5 sett.
+STR_2441    :6 sett.
+STR_2442    :{BLACK}({STRINGID} rimanenti)
+STR_2443    :{WINDOW_COLOUR_2}Costo settimanale: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Costo totale: {BLACK}{CURRENCY2DP}
+STR_2445    :Comincia la campagna di marketing
+STR_2446    :{YELLOW}La campagna di marketing per l'ingresso gratis al parco è terminata
+STR_2447    :{YELLOW}La campagna di marketing per le corse gratis su  {STRINGID} è terminata
+STR_2448    :{YELLOW}La campagna di marketing per l'ingresso a metà prezzo al parco è terminata
+STR_2449    :{YELLOW}La campagna di marketing per {STRINGID} gratis è terminata
+STR_2450    :{YELLOW}La campagna pubblicitaria per il parco è terminata
+STR_2451    :{YELLOW}La campagna pubblicitaria per {STRINGID} è terminata
+STR_2452    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {RED}{CURRENCY2DP}
+STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
+STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2457    :{SMALLFONT}{BLACK}Mostra i conti economici
+STR_2458    :{SMALLFONT}{BLACK}Mostra il grafico di cassa (sottratti i prestiti) nel tempo
+STR_2459    :{SMALLFONT}{BLACK}Mostra il grafico del valore del parco nel tempo
+STR_2460    :{SMALLFONT}{BLACK}Mostra il grafico del profitto settimanale
+STR_2461    :{SMALLFONT}{BLACK}Mostra le campagne di marketing
+STR_2462    :{SMALLFONT}{BLACK}Mostra la visuale dell'entrata del parco
+STR_2463    :{SMALLFONT}{BLACK}Mostra il grafico della valutazione del parco nel tempo
+STR_2464    :{SMALLFONT}{BLACK}Mostra il grafico del numero di visitatori nel tempo
+STR_2465    :{SMALLFONT}{BLACK}Mostra il prezzo del biglietto e le informazioni sull'entrata al parco
+STR_2466    :{SMALLFONT}{BLACK}Mostra le statistiche del parco
+STR_2467    :{SMALLFONT}{BLACK}Mostra gli obiettivi di questa partita
+STR_2468    :{SMALLFONT}{BLACK}Mostra i premi che questo parco ha ricevuto recentemente
+STR_2469    :{SMALLFONT}{BLACK}Seleziona il livello della ricerca & sviluppo
+STR_2470    :{SMALLFONT}{BLACK}Ricerca nuove attrazioni di trasporto
+STR_2471    :{SMALLFONT}{BLACK}Ricerca nuove attrazioni tranquille
+STR_2472    :{SMALLFONT}{BLACK}Ricerca nuovi ottovolanti
+STR_2473    :{SMALLFONT}{BLACK}Ricerca nuove attrazioni eccitanti
+STR_2474    :{SMALLFONT}{BLACK}Ricerca nuove attrazioni acquatiche
+STR_2475    :{SMALLFONT}{BLACK}Ricerca nuovi negozi e nuovi chioschi
+STR_2476    :{SMALLFONT}{BLACK}Ricerca nuovi scenari e nuovi temi
+STR_2477    :{SMALLFONT}{BLACK}Seleziona la modalità operativa di quest'attrazione
+STR_2478    :{SMALLFONT}{BLACK}Mostra il grafico della velocità nel tempo
+STR_2479    :{SMALLFONT}{BLACK}Mostra il grafico dell'altitudine nel tempo
+STR_2480    :{SMALLFONT}{BLACK}Mostra il grafico dell'accelerazione verticale nel tempo
+STR_2481    :{SMALLFONT}{BLACK}Mostra il grafico dell'accelerazione laterale nel tempo
+STR_2482    :{SMALLFONT}{BLACK}Profitto: {CURRENCY} alla settimana,  valore del parco: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}Profitto settimanale: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}Profitto settimanale: {RED}{CURRENCY2DP}
+STR_2485    :Comandi
+STR_2486    :Generale
+STR_2487    :Mostra i {OPENQUOTES}veri{ENDQUOTES} nomi dei visitatori
+STR_2488    :{SMALLFONT}{BLACK}Svaria tra i {OPENQUOTES}veri{ENDQUOTES} nomi dei visitatori e i loro numeri
+STR_2489    :Tasti rapidi
+STR_2490    :Tasti rapidi
+STR_2491    :Ripristina
+STR_2492    :{SMALLFONT}{BLACK}Riporta le scorciatoie alle impostazioni predefinite
+STR_2493    :Chiudi la finestra in cima
+STR_2494    :Chiudi tutte le finestre volanti
+STR_2495    :Annulla la modalità costruzione
+STR_2496    :Metti il gioco in pausa
+STR_2497    :Zoom all'indietro
+STR_2498    :Zoom in avanti
+STR_2499    :Ruota la visuale
+STR_2500    :Ruota l'oggetto in costruzione
+STR_2501    :Attivatore visuale sotterranea
+STR_2502    :Attivatore rimuovi base
+STR_2503    :Attivatore rimuovi terr. vert.
+STR_2504    :Attivatore attraz. trasparenti
+STR_2505    :Attivatore scenario trasparente
+STR_2506    :Attivatore supporti invisibili
+STR_2507    :Attivatore persone invisibili
+STR_2508    :Attivatore indici altezza terreno
+STR_2509    :Attivatore indici altezza attraz.
+STR_2510    :Attivatore indici altezza percorso
+STR_2511    :Regola il terreno
+STR_2512    :Regola l'acqua
+STR_2513    :Costruisci uno scenario
+STR_2514    :Costruisci dei percorsi
+STR_2515    :Costruisci una nuova attrazione
+STR_2516    :Mostra le informazioni finanziarie
+STR_2517    :Mostra informazioni sulla ricerca
+STR_2518    :Mostra la lista delle attrazioni
+STR_2519    :Mostra informazioni sul parco
+STR_2520    :Mostra la lista dei visitatori
+STR_2521    :Mostra la lista del personale
+STR_2522    :Mostra i messaggi recenti
+STR_2523    :Mostra la mappa
+STR_2524    :Schermata
+STR_2525    :???
+STR_2526    :???
+STR_2527    :???
+STR_2528    :???
+STR_2529    :???
+STR_2530    :???
+STR_2531    :???
+STR_2532    :???
+STR_2533    :Tasto di ritorno
+STR_2534    :Tab
+STR_2535    :???
+STR_2536    :???
+STR_2537    :Cancella
+STR_2538    :Invio
+STR_2539    :???
+STR_2540    :???
+STR_2541    :???
+STR_2542    :???
+STR_2543    :Alt/Menu
+STR_2544    :Pausa
+STR_2545    :BlocMaiusc
+STR_2546    :???
+STR_2547    :???
+STR_2548    :???
+STR_2549    :???
+STR_2550    :???
+STR_2551    :???
+STR_2552    :Escape
+STR_2553    :???
+STR_2554    :???
+STR_2555    :???
+STR_2556    :???
+STR_2557    :Barra spaziatrice
+STR_2558    :Pagina su
+STR_2559    :Pagina giù
+STR_2560    :Fine
+STR_2561    :Home
+STR_2562    :Sinistra
+STR_2563    :Su
+STR_2564    :Destra
+STR_2565    :Giù
+STR_2566    :Seleziona
+STR_2567    :Stampa
+STR_2568    :Esegui
+STR_2569    :Istantanea
+STR_2570    :Inserisci
+STR_2571    :Elimina
+STR_2572    :Guida
+STR_2573    :0
+STR_2574    :1
+STR_2575    :2
+STR_2576    :3
+STR_2577    :4
+STR_2578    :5
+STR_2579    :6
+STR_2580    :7
+STR_2581    :8
+STR_2582    :9
+STR_2583    :???
+STR_2584    :???
+STR_2585    :???
+STR_2586    :???
+STR_2587    :???
+STR_2588    :???
+STR_2589    :???
+STR_2590    :A
+STR_2591    :B
+STR_2592    :C
+STR_2593    :D
+STR_2594    :E
+STR_2595    :F
+STR_2596    :G
+STR_2597    :H
+STR_2598    :I
+STR_2599    :J
+STR_2600    :K
+STR_2601    :L
+STR_2602    :M
+STR_2603    :N
+STR_2604    :O
+STR_2605    :P
+STR_2606    :Q
+STR_2607    :R
+STR_2608    :S
+STR_2609    :T
+STR_2610    :U
+STR_2611    :V
+STR_2612    :W
+STR_2613    :X
+STR_2614    :Y
+STR_2615    :Z
+STR_2616    :???
+STR_2617    :???
+STR_2618    :Menu
+STR_2619    :???
+STR_2620    :???
+STR_2621    :Tastierino numerico 0
+STR_2622    :Tastierino numerico 1
+STR_2623    :Tastierino numerico 2
+STR_2624    :Tastierino numerico 3
+STR_2625    :Tastierino numerico 4
+STR_2626    :Tastierino numerico 5
+STR_2627    :Tastierino numerico 6
+STR_2628    :Tastierino numerico 7
+STR_2629    :Tastierino numerico 8
+STR_2630    :Tastierino numerico 9
+STR_2631    :Tastierino numerico *
+STR_2632    :Tastierino numerico +
+STR_2633    :???
+STR_2634    :Tastierino numerico 
+STR_2635    :Tastierino numerico .
+STR_2636    :Tastierino numerico /
+STR_2637    :F1
+STR_2638    :F2
+STR_2639    :F3
+STR_2640    :F4
+STR_2641    :F5
+STR_2642    :F6
+STR_2643    :F7
+STR_2644    :F8
+STR_2645    :F9
+STR_2646    :F10
+STR_2647    :F11
+STR_2648    :F12
+STR_2649    :F13
+STR_2650    :F14
+STR_2651    :F15
+STR_2652    :F16
+STR_2653    :F17
+STR_2654    :F18
+STR_2655    :F19
+STR_2656    :F20
+STR_2657    :F21
+STR_2658    :F22
+STR_2659    :F23
+STR_2660    :F24
+STR_2661    :???
+STR_2662    :???
+STR_2663    :???
+STR_2664    :???
+STR_2665    :???
+STR_2666    :???
+STR_2667    :???
+STR_2668    :???
+STR_2669    :BlocNum
+STR_2670    :Scorr
+STR_2671    :???
+STR_2672    :???
+STR_2673    :???
+STR_2674    :???
+STR_2675    :???
+STR_2676    :???
+STR_2677    :???
+STR_2678    :???
+STR_2679    :???
+STR_2680    :???
+STR_2681    :???
+STR_2682    :???
+STR_2683    :???
+STR_2684    :???
+STR_2685    :???
+STR_2686    :???
+STR_2687    :???
+STR_2688    :???
+STR_2689    :???
+STR_2690    :???
+STR_2691    :???
+STR_2692    :???
+STR_2693    :???
+STR_2694    :???
+STR_2695    :???
+STR_2696    :???
+STR_2697    :???
+STR_2698    :???
+STR_2699    :???
+STR_2700    :???
+STR_2701    :???
+STR_2702    :???
+STR_2703    :???
+STR_2704    :???
+STR_2705    :???
+STR_2706    :???
+STR_2707    :???
+STR_2708    :???
+STR_2709    :???
+STR_2710    :???
+STR_2711    :;
+STR_2712    :=
+STR_2713    :,
+STR_2714    :-
+STR_2715    :.
+STR_2716    :/
+STR_2717    :'
+STR_2718    :???
+STR_2719    :???
+STR_2720    :???
+STR_2721    :???
+STR_2722    :???
+STR_2723    :???
+STR_2724    :???
+STR_2725    :???
+STR_2726    :???
+STR_2727    :???
+STR_2728    :???
+STR_2729    :???
+STR_2730    :???
+STR_2731    :???
+STR_2732    :???
+STR_2733    :???
+STR_2734    :???
+STR_2735    :???
+STR_2736    :???
+STR_2737    :???
+STR_2738    :???
+STR_2739    :???
+STR_2740    :???
+STR_2741    :???
+STR_2742    :???
+STR_2743    :???
+STR_2744    :[
+STR_2745    :???
+STR_2746    :]
+STR_2747    :#
+STR_2748    :Barra
+STR_2749    :???
+STR_2750    :???
+STR_2751    :???
+STR_2752    :???
+STR_2753    :???
+STR_2754    :???
+STR_2755    :???
+STR_2756    :???
+STR_2757    :???
+STR_2758    :???
+STR_2759    :???
+STR_2760    :???
+STR_2761    :???
+STR_2762    :???
+STR_2763    :???
+STR_2764    :???
+STR_2765    :???
+STR_2766    :???
+STR_2767    :???
+STR_2768    :???
+STR_2769    :???
+STR_2770    :???
+STR_2771    :???
+STR_2772    :???
+STR_2773    :???
+STR_2774    :???
+STR_2775    :???
+STR_2776    :???
+STR_2777    :???
+STR_2778    :???
+STR_2779    :???
+STR_2780    :???
+STR_2781    :{STRINGID}:{MOVE_X}Ã{STRINGID}{STRINGID}
+STR_2782    :SHIFT + 
+STR_2783    :CTRL + 
+STR_2784    :Modifica la scorciatoia
+STR_2785    :{WINDOW_COLOUR_2}Premi il nuovo tasto-scorciatoia per : {NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2786    :{SMALLFONT}{BLACK}Clicca sulla descrizione della scorciatoia per selezionare un nuovo tasto
+STR_2787    :{WINDOW_COLOUR_2}Valore del parco: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}Congratulazioni!!{NEWLINE}{BLACK}Hai raggiunto il tuo obiettivo: una società del valore di {CURRENCY} !!
+STR_2789    :{WINDOW_COLOUR_2}Non hai raggiunto il tuo obiettivo!!
+STR_2790    :Digita il tuo nome in classifica
+STR_2791    :Digita il tuo nome
+STR_2792    :Digita il tuo nome per la classifica degli scenari:-
+STR_2793    :{SMALLFONT}(Completato da {STRINGID})
+STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con una società del valore di: {BLACK}{CURRENCY}
+STR_2795    :Ordina
+STR_2796    :{SMALLFONT}{BLACK}Ordina la lista delle attrazioni secondo il tipo di informazioni visualizzate
+STR_2797    :Scorri lo schermo col puntatore sul bordo
+STR_2798    :{SMALLFONT}{BLACK}Seleziona se vuoi che lo schermo scorra quando il puntatore si trova ai bordi dello schermo
+STR_2799    :{SMALLFONT}{BLACK}Vedi o modifica le funzioni di comando dei tasti
+STR_2800    :{WINDOW_COLOUR_2}Ingressi totali: {BLACK}{COMMA32}
+STR_2801    :{WINDOW_COLOUR_2}Entrate dagli ingressi: {BLACK}{CURRENCY2DP}
+STR_2802    :Mappa
+STR_2803    :{SMALLFONT}{BLACK}Evidenzia questi visitatori sulla mappa
+STR_2804    :{SMALLFONT}{BLACK}Evidenzia questi dipendenti sulla mappa
+STR_2805    :{SMALLFONT}{BLACK}Mostra la mappa del parco
+STR_2806    :{RED}I visitatori si lamentano dello stato indecente dei percorsi del parco{NEWLINE}Guarda dove sono i tuoi tuttofare e prendi in considerazione l'idea di organizzarli meglio
+STR_2807    :{RED}I visitatori si lamentano della quantità di cartacce per terra nel parco{NEWLINE}Guarda dove sono i tuoi tuttofare e prendi in considerazione l'idea di organizzarli meglio
+STR_2808    :{RED}I visitatori si lamentano degli atti di vandalismo compiuti nel parco{NEWLINE}Guarda dove sono i tuoi vigilanti e prendi in considerazione l'idea di organizzarli meglio
+STR_2809    :{RED}I visitatori hanno fame e non riescono a trovare un posto dove comprare del cibo
+STR_2810    :{RED}I visitatori hanno sete e non riescono a trovare un posto dove comprare delle bevande
+STR_2811    :{RED}I visitatori si lamentano perché non riescono a trovare dei servizi igienici nel parco
+STR_2812    :{RED}I visitatori si perdono e rimangono bloccati{NEWLINE}Controlla se è il caso di migliorare la disposizione dei sentieri per aiutare i tuoi visitatori a orientarsi più facilmente
+STR_2813    :{RED}Il prezzo del biglietto d'ingresso per il parco è troppo alto!!{NEWLINE}Riduci il prezzo del biglietto o fai in modo di aumentare il valore del parco per attrarre più visitatori
+STR_2814    :{WINDOW_COLOUR_2}Premio parco più sporco
+STR_2815    :{WINDOW_COLOUR_2}Premio parco più pulito
+STR_2816    :{WINDOW_COLOUR_2}Premio parco con il miglior ottovolante
+STR_2817    :{WINDOW_COLOUR_2}Premio parco migliore
+STR_2818    :{WINDOW_COLOUR_2}Premio parco più bello
+STR_2819    :{WINDOW_COLOUR_2}Premio parco peggiore
+STR_2820    :{WINDOW_COLOUR_2}Premio parco più sicuro
+STR_2821    :{WINDOW_COLOUR_2}Premio miglior personale
+STR_2822    :{WINDOW_COLOUR_2}Premio miglior cibo
+STR_2823    :{WINDOW_COLOUR_2}Premio peggior cibo
+STR_2824    :{WINDOW_COLOUR_2}Premio migliori servizi igienici
+STR_2825    :{WINDOW_COLOUR_2}Premio parco più deludente
+STR_2826    :{WINDOW_COLOUR_2}Premio migliori attrazioni acquatiche
+STR_2827    :{WINDOW_COLOUR_2}Premio migliori attrazioni personalizzate
+STR_2828    :{WINDOW_COLOUR_2}Premio colori più sgargianti
+STR_2829    :{WINDOW_COLOUR_2}Premio parco più confuso
+STR_2830    :{WINDOW_COLOUR_2}Premio migliori attrazioni tranquille
+STR_2831    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più sporco del paese'!!
+STR_2832    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più pulito del paese'!!
+STR_2833    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i migliori ottovolanti'!!
+STR_2834    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Miglior parco del paese'!!
+STR_2835    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più bello del paese'!!
+STR_2836    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Peggior parco del paese'!!
+STR_2837    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più sicuro del paese'!!
+STR_2838    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il miglior personale'!!
+STR_2839    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il miglior cibo in tutto il paese'!!
+STR_2840    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il peggior cibo in tutto il paese'!!
+STR_2841    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i migliori servizi igienici in tutto il paese'!!
+STR_2842    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più deludente del paese'!!
+STR_2843    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni acquatiche del paese'!!
+STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni personalizzate del paese'!!
+STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i colori più sconvolgenti di tutto paese'!!
+STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più confuso'!!
+STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni tranquille del paese'!!
+STR_2848    :{WINDOW_COLOUR_2}Nessun premio di recente
+STR_2849    :Installazione del nuovo scenario eseguita correttamente
+STR_2850    :Installazione del nuovo progetto di tracciato eseguita correttamente
+STR_2851    :Scenario già installato
+STR_2852    :Progetto di tracciato già installato
+STR_2853    :Vietato dalle autorità locali!!
+STR_2854    :{RED}I visitatori non riescono a raggiungere l'entrata a {STRINGID} !{NEWLINE}Costruisci un percorso fino all'entrata
+STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!!{NEWLINE}Costruisci un percorso che parta dall'uscita dell'attrazione
+STR_2856    :{WINDOW_COLOUR_2}Esercitazione
+STR_2857    :{WINDOW_COLOUR_2}(Premi un tasto o un pulsante del mouse per assumere il controllo)
+STR_2858    :Impossibile avviare la campagna di marketing...
+STR_2859    :Al momento è in corso un'altra sezione di RollerCoaster Tycoon 2
+STR_2860    :Riconoscimenti Infogrames...
+STR_2861    :{WINDOW_COLOUR_2}Concesso in licenza a Infogrames Interactive
+STR_2862    :Riconoscimenti dei brani musicali...
+STR_2863    :Riconoscimento dei brani musicali
+STR_2864    :{WINDOW_COLOUR_2}Marcia - I Bambini del Reggimento:   (Fucik) senza copyright
+STR_2865    :{WINDOW_COLOUR_2}Serenata di Heyken:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Compositore ignoto) Copyright Control
+STR_2867    :{WINDOW_COLOUR_2}Viaggio della sposa:   (Tradizionale)
+STR_2868    :{WINDOW_COLOUR_2}Racconti dei boschi di Vienna:   (Johann Strauss) senza copyright
+STR_2869    :{WINDOW_COLOUR_2}Danza slava:   (Tradizionale)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Tradizionale)
+STR_2871    :{WINDOW_COLOUR_2}Il Biondo Marinaio:   (Tradizionale)
+STR_2872    :{WINDOW_COLOUR_2}Overture - Il poeta e il Contadino:   (Suppe) senza copyright
+STR_2873    :{WINDOW_COLOUR_2}Medley di waltzer:   (Johann Strauss) senza copyright
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradizionale)
+STR_2875    :{WINDOW_COLOUR_2}Orginal Recordings (P) 1976 C.J.Mears Organisation, usati per loro concessione
+STR_2876    :{WINDOW_COLOUR_2}Musica dei titoli di RollerCoaster Tycoon 2:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2900    :{WINDOW_COLOUR_2}
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, eseguita da Peter James Adcock) registrazione {COPYRIGHT} Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
+STR_2909    :{WINDOW_COLOUR_2}Produttore senior:  Thomas J. Zahorik
+STR_2910    :{WINDOW_COLOUR_2}Produttore esecutivo:  Bill Levay
+STR_2911    :{WINDOW_COLOUR_2}Responsabile senior di produzione marketing:  Scott Triola
+STR_2912    :{WINDOW_COLOUR_2}V.P. dello sviluppo del prodotto:  Scott Walker
+STR_2913    :{WINDOW_COLOUR_2}Responsabile generale:  John Hurlbut
+STR_2914    :{WINDOW_COLOUR_2}Direttore del Controllo qualità:  Michael Craighead
+STR_2915    :{WINDOW_COLOUR_2}Responsabile della certificazione C.Q.:  Kurt Boutin
+STR_2916    :{WINDOW_COLOUR_2}Capo della certificazione C.Q.:  Mark Huggins
+STR_2917    :{WINDOW_COLOUR_2}Controllo qualità:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
+STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
+STR_2919    :{WINDOW_COLOUR_2}Direttore del marketing:  Ann Marie Bland
+STR_2920    :{WINDOW_COLOUR_2}Responsabile dei servizi creativi:  Steve Martin
+STR_2921    :{WINDOW_COLOUR_2}Responsabile dei servizi editoriali e della documentazione:  Elizabeth Mackney
+STR_2922    :{WINDOW_COLOUR_2}Progettista grafico:  Paul Anselmi
+STR_2923    :{WINDOW_COLOUR_2}Redattore pubblicitario:  Kurt Carlson
+STR_2924    :{WINDOW_COLOUR_2}Ringraziamenti speciali a:  Peter Matiss
+STR_2925    :{WINDOW_COLOUR_2}Specialista in ingegneria:  Ken Edwards
+STR_2926    :{WINDOW_COLOUR_2}Responsabile dei servizi d'ingegneria:  Luis Rivas
+STR_2927    :{WINDOW_COLOUR_2}Capo analista compatibilità:  Geoffrey Smith
+STR_2928    :{WINDOW_COLOUR_2}Analisi compatibilità:  Jason Cordero, Burke McQuinn, Kim Jardin 
+STR_2929    :{WINDOW_COLOUR_2}Capo tester:  Daniel Frisoli
+STR_2930    :{WINDOW_COLOUR_2}Tester senior:  Matt Pantaleoni
+STR_2931    :{WINDOW_COLOUR_2}
+STR_2932    :{WINDOW_COLOUR_2}
+STR_2933    :{WINDOW_COLOUR_2}
+STR_2934    :{WINDOW_COLOUR_2}
+STR_2935    :{WINDOW_COLOUR_2}
+STR_2936    :{WINDOW_COLOUR_2}
+STR_2937    :{WINDOW_COLOUR_2}
+STR_2938    :{WINDOW_COLOUR_2}
+STR_2939    :{WINDOW_COLOUR_2}
+STR_2940    :{WINDOW_COLOUR_2}
+STR_2941    :{WINDOW_COLOUR_2}
+STR_2942    :{WINDOW_COLOUR_2}
+STR_2943    :{WINDOW_COLOUR_2}
+STR_2944    :{WINDOW_COLOUR_2}
+STR_2945    :{WINDOW_COLOUR_2}
+STR_2946    :{WINDOW_COLOUR_2}
+STR_2947    :{WINDOW_COLOUR_2}
+STR_2948    :{WINDOW_COLOUR_2}
+STR_2949    :{WINDOW_COLOUR_2}
+STR_2950    :{WINDOW_COLOUR_2}
+STR_2951    :{WINDOW_COLOUR_2}
+STR_2952    :{WINDOW_COLOUR_2}
+STR_2953    :{WINDOW_COLOUR_2}
+STR_2954    :{WINDOW_COLOUR_2}
+STR_2955    :{WINDOW_COLOUR_2}
+STR_2956    :{WINDOW_COLOUR_2}
+STR_2957    :{WINDOW_COLOUR_2}
+STR_2958    :{WINDOW_COLOUR_2}
+STR_2959    :{WINDOW_COLOUR_2}
+STR_2960    :{WINDOW_COLOUR_2}
+STR_2961    :{WINDOW_COLOUR_2}
+STR_2962    :{WINDOW_COLOUR_2}
+STR_2963    :{WINDOW_COLOUR_2}
+STR_2964    :{WINDOW_COLOUR_2}
+STR_2965    :{WINDOW_COLOUR_2}
+STR_2966    :
+STR_2967    :
+STR_2968    :
+STR_2969    :L'utilizzo di questo prodotto è soggetto alle condizioni della licenza
+STR_2970    :che si trova nel file {OPENQUOTES}ReadMe{ENDQUOTES} del prodotto e nel manuale
+STR_2971    :Modello decorativo principale
+STR_2972    :Modello decorativo alternativo 1
+STR_2973    :Modello decorativo alternativo 2
+STR_2974    :Modello decorativo alternativo 3
+STR_2975    :{SMALLFONT}{BLACK}Seleziona il modello decorativo da cambiare o da utilizzare
+STR_2976    :{SMALLFONT}{BLACK}Dipingi una determinata area di quest'attrazione secondo il modello decorativo selezionato
+STR_2977    :Nome del dipendente
+STR_2978    :Digita il nome di questo dipendente:-
+STR_2979    :Impossibile battezzare il dipendente...
+STR_2980    :Troppe insegne nella partita
+STR_2981    :{RED}Vietato l'ingresso - - 
+STR_2982    :Testo dell'insegna
+STR_2983    :Digita il testo di questa insegna:-
+STR_2984    :Impossibile fissare il testo dell'insegna...
+STR_2985    :Insegna
+STR_2986    :{SMALLFONT}{BLACK}Modifica il testo dell'insegna
+STR_2987    :{SMALLFONT}{BLACK}Imposta quest'insegna come cartello di {OPENQUOTES}Vietato l'ingresso{ENDQUOTES} per i visitatori
+STR_2988    :{SMALLFONT}{BLACK}Demolisci questa insegna
+STR_2989    :{SMALLFONT}{BLACK}Scegli il colore principale
+STR_2990    :{SMALLFONT}{BLACK}Scegli il colore del testo
+STR_2991    :Cartello
+STR_2992    :Testo del cartello
+STR_2993    :Digita il testo del cartello:-
+STR_2994    :{SMALLFONT}{BLACK}Modifica il testo del cartello
+STR_2995    :{SMALLFONT}{BLACK}Demolisci il cartello
+STR_2996    :{BLACK}ABC
+STR_2997    :{GREY}ABC
+STR_2998    :{WHITE}ABC
+STR_2999    :{RED}ABC
+STR_3000    :{GREEN}ABC
+STR_3001    :{YELLOW}ABC
+STR_3002    :{TOPAZ}ABC
+STR_3003    :{CELADON}ABC
+STR_3004    :{BABYBLUE}ABC
+STR_3005    :{PALELAVENDER}ABC
+STR_3006    :{PALEGOLD}ABC
+STR_3007    :{LIGHTPINK}ABC
+STR_3008    :{PEARLAQUA}ABC
+STR_3009    :{PALESILVER}ABC
+STR_3010    :Impossibile caricare il file...
+STR_3011    :Il file contiene dati non validi
+STR_3012    :Stile auto da scontro
+STR_3013    :Stile organo da fiera
+STR_3014    :Stile fanfara romana
+STR_3015    :Stile orientale
+STR_3016    :Stile marziano
+STR_3017    :Stile tamburi nella giungla
+STR_3018    :Stile egiziano
+STR_3019    :Stile giocattolo
+STR_3020    :
+STR_3021    :Stile spaziale
+STR_3022    :Stile horror
+STR_3023    :Stile techno
+STR_3024    :Stile tranquillo
+STR_3025    :Stile estivo
+STR_3026    :Stile acquatico
+STR_3027    :Stile far west
+STR_3028    :Stile giurassico
+STR_3029    :Stile rock
+STR_3030    :Stile ragtime
+STR_3031    :Stile fantastico
+STR_3032    :Stile rock 2
+STR_3033    :Stile ghiacciato
+STR_3034    :Stile nevoso
+STR_3035    :Musica personalizzata 1
+STR_3036    :Musica personalizzata 2
+STR_3037    :Stile medievale
+STR_3038    :Stile urbano
+STR_3039    :Stile organo
+STR_3040    :Stile meccanico
+STR_3041    :Stile moderno
+STR_3042    :Stile piratesco
+STR_3043    :Stile rock 3
+STR_3044    :Stile dolciumi
+STR_3045    :{SMALLFONT}{BLACK}Seleziona uno stile musicale da suonare
+STR_3046    :Quest'attrazione non può essere modificata
+STR_3047    :Le autorità locali vietano la demolizione o la modifica di quest'attrazione
+STR_3048    :Campagne di marketing vietate dalle autorità locali
+STR_3049    :Buca da golf A
+STR_3050    :Buca da golf B
+STR_3051    :Buca da golf C
+STR_3052    :Buca da golf D
+STR_3053    :Buca da golf E
+STR_3054    :Caricamento in corso...
+STR_3055    :Bianco
+STR_3056    :Traslucido
+STR_3057    :{WINDOW_COLOUR_2}Indicatore costruzione:
+STR_3058    :Muri di mattoni
+STR_3059    :Siepi
+STR_3060    :Blocchi di ghiaccio
+STR_3061    :Recinti di legno
+STR_3062    :{SMALLFONT}{BLACK}Tracciato standard per ottovolante
+STR_3063    :{SMALLFONT}{BLACK}Canale d'acqua (tracciato immerso)
+STR_3064    :Parchi per principianti
+STR_3065    :Parchi impegnativi
+STR_3066    :Parchi per esperti
+STR_3067    :{OPENQUOTES}Veri{ENDQUOTES} parchi
+STR_3068    :Altri parchi
+STR_3069    :Sezione superiore
+STR_3070    :Pendio a livellare
+STR_3071    :{WINDOW_COLOUR_2}Stesso prezzo in tutto il parco
+STR_3072    :{SMALLFONT}{BLACK}Scegli se imporre questo prezzo in tutto il parco
+STR_3073    :{RED}ATTENZIONE: La valutazione del parco è scesa sotto!!{NEWLINE}Se non farai alzare il punteggio entro 4 settimane, il parco verrà fatto chiudere
+STR_3074    :{RED}ATTENZIONE: La valutazione del parco è ancora sotto 700!!{NEWLINE}Hai ancora 3 settimane per rimediare
+STR_3075    :{RED}ATTENZIONE: La valutazione del parco è sempre sotto 700!!{NEWLINE}Hai appena 2 settimane per alzare il punteggio, poi il parco verrà fatto chiudere
+STR_3076    :{RED}ULTIMO AVVERTIMENTO: La valutazione del parco è rimasta sotto 700!!{NEWLINE}Hai 7 giorni di tempo, poi il parco verrà fatto chiudere se il punteggio non tornerà sopra 700
+STR_3077    :{RED}AVVISO DI CHIUSURA: Hanno fatto chiudere il tuo parco!!
+STR_3078    :Entrata semplice
+STR_3079    :Entrata di legno
+STR_3080    :Entrata a tenda
+STR_3081    :Entrata a castello (grigio)
+STR_3082    :Entrata a castello (marrone)
+STR_3083    :Entrata tropicale
+STR_3084    :Entrata a capanna
+STR_3085    :Entrata classica/romana
+STR_3086    :Entrata astratta
+STR_3087    :Entrata nevosa/ghiacciata
+STR_3088    :Entrata a pagoda
+STR_3089    :Entrata spaziale
+STR_3090    :{SMALLFONT}{BLACK}Scegli lo stile dell'entrata, dell'uscita e della stazione
+STR_3091    :Non ti è permesso cancellare questa sezione!!
+STR_3092    :Non ti è permesso spostare o modificare la stazione di quest'attrazione!!
+STR_3093    :{WINDOW_COLOUR_2}Preferito: {BLACK}{STRINGID}
+STR_3094    :N/A
+STR_3095    :{WINDOW_COLOUR_2}Vel. catena di traino:
+STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_3097    :{SMALLFONT}{BLACK}Seleziona la velocità della catena di traino sulla salita
+STR_3098    :Impossibile modificare la velocità della catena di traino sulla salita...
+STR_3099    :{SMALLFONT}{BLACK}Scegli il colore
+STR_3100    :{SMALLFONT}{BLACK}Scegli il secondo colore
+STR_3101    :{SMALLFONT}{BLACK}Scegli il terzo colore
+STR_3102    :{SMALLFONT}{BLACK}Ridipingi lo scenario colorato sul paesaggio
+STR_3103    :Impossibile ridipingerlo...
+STR_3104    :{SMALLFONT}{BLACK}Lista delle attrazioni
+STR_3105    :{SMALLFONT}{BLACK}Lista dei negozi e chioschi
+STR_3106    :{SMALLFONT}{BLACK}Lista degli uffici informazioni e delle altre risorse per i visitatori
+STR_3107    :Chiudi
+STR_3108    :Prova
+STR_3109    :Apri
+STR_3110    :{WINDOW_COLOUR_2}Blocca le sezioni: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Clicca sul progetto per costruirlo
+STR_3112    :{SMALLFONT}{BLACK}Clicca sul progetto per ribattezzarlo o cancellarlo
+STR_3113    :Scegli un altro progetto
+STR_3114    :{SMALLFONT}{BLACK}Torna alla finestra della scelta dei progetti
+STR_3115    :{SMALLFONT}{BLACK}Salva il progetto del tracciato
+STR_3116    :{SMALLFONT}{BLACK}Salva il progetto del tracciato (non è possibile finché non viene provata una corsa e così generate delle statistiche)
+STR_3117    :{BLACK}Chiamata al meccanico...
+STR_3118    :{BLACK}{STRINGID} si sta dirigendo verso l'attrazione
+STR_3119    :{BLACK}{STRINGID} sta riparando l'attrazione
+STR_3120    :{SMALLFONT}{BLACK}Individua il meccanico disponibile più vicino o il meccanico che sta riparando l'attrazione
+STR_3121    :Impossibile individuare il meccanico o tutti i meccanici nei paraggi sono già impegnati
+STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatore
+STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatori
+STR_3124    :Guasto: {STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Fattore d'intensità: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Fattore di nausea: {BLACK}+{COMMA16}%
+STR_3128    :Salva il progetto di tracciato
+STR_3129    :Salva il progetto di tracciato con scenario
+STR_3130    :Salva
+STR_3131    :Annulla
+STR_3132    :{BLACK}Clicca sulle parti dello scenario per selezionarle per il salvataggio insieme al progetto di tracciato...
+STR_3133    :Impossibile costruirlo su un pendio
+STR_3134    :{RED}(Il progetto include uno scenario non disponibile)
+STR_3135    :{RED}(Progetto del veicolo non disponibile - le prestazioni dell'attrazione potrebbero risentirne)
+STR_3136    :Attenzione: questo progetto verrà costruito con un veicolo alternativo e potrebbe non funzionare come ci si attende.
+STR_3137    :Seleziona uno scenario vicino
+STR_3138    :Ripristina la selezione
+STR_3139    :Il cavo di traino non può funzionare in questa modalità operativa
+STR_3140    :La salita per il traino deve iniziare subito dopo la stazione
+STR_3141    :Con la salita per il traino non è possibile usare la modalità multi-circuito.
+STR_3142    :{WINDOW_COLOUR_2}Capienza: {BLACK}{STRINGID}
+STR_3143    :{SMALLFONT}{BLACK}Mostra le persone sulla mappa
+STR_3144    :{SMALLFONT}{BLACK}Mostra le attrazioni e i negozi sulla mappa
+STR_3145    :{SMALLFONT}{BLACK}Scorri {STRINGID} a sinistra
+STR_3146    :{SMALLFONT}{BLACK}Scorri {STRINGID} a destra
+STR_3147    :{SMALLFONT}{BLACK}Scorri veloce {STRINGID} a sinistra
+STR_3148    :{SMALLFONT}{BLACK}Scorri veloce {STRINGID} a destra
+STR_3149    :{SMALLFONT}{BLACK}Scorri {STRINGID} a sinistra/destra
+STR_3150    :{SMALLFONT}{BLACK}Scorri {STRINGID} in alto
+STR_3151    :{SMALLFONT}{BLACK}Scorri {STRINGID} in basso
+STR_3152    :{SMALLFONT}{BLACK}Scorri veloce {STRINGID} in alto
+STR_3153    :{SMALLFONT}{BLACK}Scorri veloce {STRINGID} in basso
+STR_3154    :{SMALLFONT}{BLACK}Scorri {STRINGID} in alto/in basso
+STR_3155    :
+STR_3156    :
+STR_3157    :mappa
+STR_3158    :grafico
+STR_3159    :lista
+STR_3160    :RollerCoaster Tycoon 2: si sta avviando per la prima volta...
+STR_3161    :RollerCoaster Tycoon 2: sta cercando i file degli oggetti...
+STR_3162    :Impossibile assegnare abbastanza memoria
+STR_3163    :Installazione dei nuovi dati: 
+STR_3164    :{BLACK}{COMMA16}  selezionati (massimo {COMMA16})
+STR_3165    :
+STR_3166    :{BLACK}(ID: 
+STR_3167    :{WINDOW_COLOUR_2}Include: {BLACK}{COMMA16} oggetti
+STR_3168    :{WINDOW_COLOUR_2}Testo: {BLACK}{STRINGID}
+STR_3169    :Non sono stati trovati i dati di quest'oggetto: 
+STR_3170    :Spazio insufficiente per la grafica
+STR_3171    :Sono stati selezionati troppi oggetti di questo tipo
+STR_3172    :Quest'oggetto deve prima essere selezionato: 
+STR_3173    :Quest'oggetto è attualmente in uso
+STR_3174    :Quest'oggetto è indispensabile per un altro oggetto
+STR_3175    :Quest'oggetto è sempre necessario
+STR_3176    :Impossibile selezionare quest'oggetto
+STR_3177    :Impossibile deselezionare quest'oggetto
+STR_3178    :Dev'essere selezionato almeno un oggetto-percorso
+STR_3179    :Dev'essere selezionato almeno un oggetto-attrazione
+STR_3180    :Selezione degli oggetti non valida
+STR_3181    :Selezione degli oggetti - {STRINGID}
+STR_3182    :Dev'essere selezionato il tipo di entrata del parco
+STR_3183    :Dev'essere selezionato il tipo di acqua
+STR_3184    :Prova veicoli/attrazioni
+STR_3185    :Scenario piccolo
+STR_3186    :Scenario grande
+STR_3187    :Muri/recinti
+STR_3188    :Cartelli dei percorsi
+STR_3189    :Sentieri
+STR_3190    :Percorsi (extra)
+STR_3191    :Gruppi di scenari
+STR_3192    :Entrata del parco
+STR_3193    :Acqua
+STR_3194    :Descrizione dello scenario
+STR_3195    :Lista delle invenzioni
+STR_3196    :{WINDOW_COLOUR_2}Gruppo di ricerca: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Oggetti già inventati all'avvio della partita
+STR_3198    :{WINDOW_COLOUR_2}Oggetti da inventare durante la partita:
+STR_3199    :Mischia a caso
+STR_3200    :{SMALLFONT}{BLACK}Mischia a caso la lista degli oggetti da inventare durante la partita
+STR_3201    :Selezione degli oggetti
+STR_3202    :Editor del paesaggio
+STR_3203    :Impostazione lista invenzioni
+STR_3204    :Selezione delle opzioni
+STR_3205    :Selezioni degli obiettivi
+STR_3206    :Salva lo scenario
+STR_3207    :Progettista di ottovolanti
+STR_3208    :Responsabile dei progetti di tracciato
+STR_3209    :Torna un passo indietro:
+STR_3210    :Vai un passo avanti:
+STR_3211    :{WINDOW_COLOUR_2}Dimens. mappa:
+STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
+STR_3214    :Impossibile ingrandire ulteriormente la mappa
+STR_3215    :Troppo vicino al bordo della mappa
+STR_3216    :{SMALLFONT}{BLACK}Seleziona il terreno di proprietà del parco ecc.
+STR_3217    :Terreno posseduto
+STR_3218    :Dir. costruzione acquistati
+STR_3219    :Terreno in vendita
+STR_3220    :Dir. costruz. in vendita
+STR_3221    :{SMALLFONT}{BLACK}Il terreno sarà posseduto dal parco
+STR_3222    :{SMALLFONT}{BLACK}I diritti di costruzione potranno essere solo posseduti dal parco
+STR_3223    :{SMALLFONT}{BLACK}Il terreno potrà essere comprato dal parco
+STR_3224    :{SMALLFONT}{BLACK}I diritti di costruzione potranno essere comprati dal parco
+STR_3225    :{SMALLFONT}{BLACK}Attiva/disattiva la costruzione casuale di un gruppo di oggetti intorno alla punto selezionato
+STR_3226    :{SMALLFONT}{BLACK}Costruisci l'entrata del parco
+STR_3227    :Ci sono troppe entrate per il parco!!
+STR_3228    :{SMALLFONT}{BLACK}Fissa le posizioni iniziali delle persone
+STR_3229    :I freni di blocco non possono essere usati immediatamente dopo la stazione
+STR_3230    :I freni di blocco non possono essere usati l'uno immediatamente dopo l'altro
+STR_3231    :I freni di blocco non possono essere usati immediatamente dopo la cima di questa salita di traino
+STR_3232    :Opzioni - Finanze
+STR_3233    :Opzioni - Visitatori
+STR_3234    :Opzioni - Parco
+STR_3235    :{SMALLFONT}{BLACK}Mostra le opzioni sulle finanze
+STR_3236    :{SMALLFONT}{BLACK}Mostra le opzioni sui visitatori
+STR_3237    :{SMALLFONT}{BLACK}Mostra le opzioni sul parco
+STR_3238    :Niente denaro
+STR_3239    :{SMALLFONT}{BLACK}Rendi questo parco un parco {OPENQUOTES}senza denaro{ENDQUOTES} e senza restrizioni finanziarie
+STR_3240    :{WINDOW_COLOUR_2}Denaro iniziale:
+STR_3241    :{WINDOW_COLOUR_2}Prestito iniziale:
+STR_3242    :{WINDOW_COLOUR_2}Prestito massimo:
+STR_3243    :{WINDOW_COLOUR_2}Tasso d'interessi annuo:
+STR_3244    :Vieta le campagne di marketing
+STR_3245    :{SMALLFONT}{BLACK}Vieta la pubblicità, le campagne promozionali e le altre campagne di marketing
+STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
+STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3248    :Impossibile aumentare ulteriormente il denaro iniziale!!
+STR_3249    :Impossibile ridurre ulteriormente il denaro iniziale!!
+STR_3250    :Impossibile aumentare ulteriormente il prestito iniziale!!
+STR_3251    :Impossibile ridurre ulteriormente il prestito iniziale!!
+STR_3252    :Impossibile aumentare ulteriormente il prestito massimo!!
+STR_3253    :Impossibile ridurre ulteriormente il prestito massimo!!
+STR_3254    :Impossibile aumentare ulteriormente il tasso d'interessi!!
+STR_3255    :Impossibile ridurre ulteriormente il tasso d'interessi!!
+STR_3256    :Attrazioni meno intense preferite
+STR_3257    :{SMALLFONT}{BLACK}Stabilisci se i visitatori in generale dovrebbero preferire solo le attrazioni meno intense
+STR_3258    :Attrazioni più intense preferite
+STR_3259    :{SMALLFONT}{BLACK}Stabilisci se i visitatori in generale dovrebbero preferire solo attrazioni più intense
+STR_3260    :{WINDOW_COLOUR_2}Denaro per visitatore (media):
+STR_3261    :{WINDOW_COLOUR_2}Felicità iniziale visitat.:
+STR_3262    :{WINDOW_COLOUR_2}Fame iniziale visitat.:
+STR_3263    :{WINDOW_COLOUR_2}Sete iniziale visitat.:
+STR_3264    :Impossibile aumentarlo ulteriormente!!
+STR_3265    :Impossibile ridurlo ulteriormente!!
+STR_3266    :{SMALLFONT}{BLACK}Stabilisci il prezzo dell'ingresso e delle attrazioni
+STR_3267    :Vieta la rimozione degli alberi
+STR_3268    :{SMALLFONT}{BLACK}Vieta la rimozione degli alberi alti
+STR_3269    :Vieta la modifica del paesaggio
+STR_3270    :{SMALLFONT}{BLACK}Vieta qualsiasi modifica al paesaggio
+STR_3271    :Vieta costruzioni alte
+STR_3272    :{SMALLFONT}{BLACK}Vieta tutte le costruzioni alte
+STR_3273    :Valutazione del parco a un livello di difficoltà più elevato
+STR_3274    :{SMALLFONT}{BLACK}Rendi la valutazione del parco più impegnativa
+STR_3275    :Generazione dei visitatori a un livello di difficoltà più elevato
+STR_3276    :{SMALLFONT}{BLACK}Rendi più difficile attrarre visitatori al parco
+STR_3277    :{WINDOW_COLOUR_2}Costo del terreno:
+STR_3278    :{WINDOW_COLOUR_2}Costo dei diritti di costruzione:
+STR_3279    :Ingresso gratis/paga l'attraz.
+STR_3280    :Paga l'ingresso/attraz. gratis
+STR_3281    :{WINDOW_COLOUR_2}Prezzo d'ingresso:
+STR_3282    :{SMALLFONT}{BLACK}Seleziona gli obiettivi e il nome del parco
+STR_3283    :{SMALLFONT}{BLACK}Seleziona le attrazioni da proteggere
+STR_3284    :Selezione degli obiettivi
+STR_3285    :Attrazioni protette
+STR_3286    :{SMALLFONT}{BLACK}Seleziona l'obiettivo di questo scenario
+STR_3287    :{WINDOW_COLOUR_2}Obiettivo:
+STR_3288    :{SMALLFONT}{BLACK}Scegli il clima
+STR_3289    :{WINDOW_COLOUR_2}Clima:
+STR_3290    :Freddo e umido
+STR_3291    :Temperato
+STR_3292    :Caldo e secco
+STR_3293    :Freddo
+STR_3294    :Modifica...
+STR_3295    :{SMALLFONT}{BLACK}Ribattezza il parco
+STR_3296    :{SMALLFONT}{BLACK}Modifica il nome dello scenario
+STR_3297    :{SMALLFONT}{BLACK}Modifica le informazioni sul parco/scenario
+STR_3298    :{WINDOW_COLOUR_2}Nome parco: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}Inform. sul parco/scenario:
+STR_3300    :{WINDOW_COLOUR_2}Nome scenario: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}Data-obiettivo:
+STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
+STR_3303    :{WINDOW_COLOUR_2}Numero visitatori:
+STR_3304    :{WINDOW_COLOUR_2}Valore parco:
+STR_3305    :{WINDOW_COLOUR_2}Entrate mensili:
+STR_3306    :{WINDOW_COLOUR_2}Profitto mensile:
+STR_3307    :{WINDOW_COLOUR_2}Lunghezza minima:
+STR_3308    :{WINDOW_COLOUR_2}Liv. divertimento:
+STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
+STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
+STR_3312    :{WINDOW_COLOUR_2}Attrazioni sotto ordine di protezione:
+STR_3313    :Nome scenario
+STR_3314    :Digita il nome dello scenario:-
+STR_3315    :Informazioni sul parco/scenario
+STR_3316    :Scrivi una descrizione dello scenario:-
+STR_3317    :Ancora nessuna informazione
+STR_3318    :{SMALLFONT}{BLACK}Scegli in quale gruppo sarà incluso questo scenario
+STR_3319    :{WINDOW_COLOUR_2}Gruppo scenari:
+STR_3320    :Impossibile salvare il file di scenario...
+STR_3321    :Installazione dei nuovi oggetti eseguita correttamente
+STR_3322    :{WINDOW_COLOUR_2}Obiettivo: {BLACK}{STRINGID}
+STR_3323    :Dati sull'oggetto mancanti, ID: 
+STR_3324    :È necessaria l'espansione: 
+STR_3325    :È necessaria un'espansione
+STR_3326    :{WINDOW_COLOUR_2}(nessuna immagine)
+STR_3327    :Posizioni iniziali delle persone non fissate
+STR_3328    :Impossibile passare alla fase successiva dell'editor...
+STR_3329    :L'entrata del parco non è stata ancora costruita
+STR_3330    :Il parco deve possedere del terreno
+STR_3331    :Il percorso dall'entrata del parco al bordo della mappa non è completo o è troppo complesso. Dev'essere di larghezza singola con il minor numero possibile di collegamenti e curve
+STR_3332    :L'entrata del parco è oriantata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
+STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
+STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
+STR_3335    :Progettista degli ottovolanti - Seleziona il tipo di veicoli e attrazione
+STR_3336    :Responsabile dei progetti di tracciato - Seleziona il tipo di attrazione
+STR_3337    :Parco Six Flags
+STR_3338    :{BLACK}Disposizione personalizzata
+STR_3339    :{BLACK}{COMMA16} progetto disponibile o progetto personalizzato
+STR_3340    :{BLACK}{COMMA16} progetti disponibili o disposizioni personalizzate
+STR_3341    :{SMALLFONT}{BLACK}Strumenti di gioco
+STR_3342    :Editor degli scenari
+STR_3343    :Converti la partita salvata in uno scenario
+STR_3344    :Strumento di progettazione degli ottovolanti
+STR_3345    :Strumento di gestione dei progetti di tracciato
+STR_3346    :Impossibile salvare il progetto di tracciato...
+STR_3347    :L{GREEN}attrazione è troppo grande, contiene troppi elementi o lo scenario è sparso su un'area troppo vasta
+STR_3348    :Ribattezza
+STR_3349    :Cancella
+STR_3350    :Battezza il progetto di tracciato
+STR_3351    :Digita il nome di questo progetto di tracciato:-
+STR_3352    :Impossibile ribattezzare il  progetto di tracciato...
+STR_3353    :Il nuovo nome contiene dei caratteri non validi
+STR_3354    :Esiste già un altro file con quel nome, o il file è protetto dalla scrittura
+STR_3355    :Il file è protetto dalla scrittura o è chiuso all'accesso
+STR_3356    :Cancella il file
+STR_3357    :{WINDOW_COLOUR_2}Sei sicuro di voler cancellare permanentemente {STRINGID} ?
+STR_3358    :Impossibile cancellare il progetto di tracciato...
+STR_3359    :{BLACK}Non ci sono progetti di tracciato di questi tipo
+STR_3360    :Attenzione!
+STR_3361    :Troppi progetti di tracciato di questo tipo - qualcuno non verrà elencato.
+STR_3362    :Mixaggio software del buffer forzato
+STR_3363    :{SMALLFONT}{BLACK}Seleziona questa opzione per migliorare le prestazioni se quando viene avviato il sonoro il gioco rallenta leggermente o si sentono dei disturbi
+STR_3364    :Avanzato
+STR_3365    :{SMALLFONT}{BLACK}Permetti la selezione di oggetti singoli di uno scenario in aggiunta ai gruppi di scenario
+STR_3366    :{BLACK}= Attrazione
+STR_3367    :{BLACK}= Chiosco cibo
+STR_3368    :{BLACK}= Chiosco bevande
+STR_3369    :{BLACK}= Chiosco souvenir
+STR_3370    :{BLACK}= Chiosco inform.
+STR_3371    :{BLACK}= Pronto soccorso
+STR_3372    :{BLACK}= A.T.M.
+STR_3373    :{BLACK}= Servizi igien.
+STR_3374    :Attenzione: hai selezionato troppi oggetti!!
+STR_3375    :Non è stato possibile selezionare tutti gli oggetti di questo gruppo di scenari
+STR_3376    :Installa un nuovo progetto di tracciato...
+STR_3377    :{SMALLFONT}{BLACK}Installa un nuovo file di progetti di tracciato
+STR_3378    :Installa
+STR_3379    :Annulla
+STR_3380    :Impossibile installare questo progetto di tracciato...
+STR_3381    :Il file non è compatibile o contiene dati non validi
+STR_3382    :Tentativo di copia del file fallito
+STR_3383    :Scegli un nuovo nome per il progetto di tracciato
+STR_3384    :Questo nome è già usato da un progetto di tracciato esistente - scegli un altro nome per questo progetto:
+STR_3385    :Esercitazione per principianti
+STR_3386    :Esercitazione per le attrazioni personalizzate
+STR_3387    :Esercitazione per la costruzione di ottovolanti
+STR_3388    :Impossibile passare alla modalità selezionata: DirectX ha causato un errore
+STR_3389    :Impossibile selezionare l'oggetto aggiuntivo dello scenario...
+STR_3390    :Troppi oggetti selezionati
+STR_3391    :{SMALLFONT}{BLACK}Ecco il nostro parco - andiamo a dare un'occhiata in giro...
+STR_3392    :{SMALLFONT}{BLACK}Tenere premuto il pulsante DESTRO del mouse e muovere il mouse stesso è il modo più veloce per spostare la visuale...
+STR_3393    :{SMALLFONT}{BLACK}Per allargare la prospettiva, puoi zoomare in avanti tramite l'icona in cima allo schermo...
+STR_3394    :{SMALLFONT}{BLACK}Puoi anche ruotare la visuale di 90{DEGREE} alla volta...
+STR_3395    :{SMALLFONT}{BLACK}È difficile costruire qualcosa con questa scala, per cui torniamo a zoomare in dentro...
+STR_3396    :{SMALLFONT}{BLACK}Costruiamo un'attrazione semplice per avviare il parco...
+STR_3397    :{SMALLFONT}{BLACK}L'immagine fantasma bianca mostra la posizione in cui verrà costruita la nuova attrazione. Muoveremo il puntatore per scegliere la posizione e poi cliccheremo per costruire...
+STR_3398    :{SMALLFONT}{BLACK}Le attrazioni devono avere un'entrata e un'uscita. Muoveremo il puntatore su un riquadro adiacente  all'attrazione e poi cliccheremo per costruire prima l'entrata e poi l'uscita...
+STR_3399    :{SMALLFONT}{BLACK}Dobbiamo costruire dei sentieri per permettere ai visitatori di raggiungere la nostra nuova attrazione...
+STR_3400    :{SMALLFONT}{BLACK}Per il percorso che porta all'entrata dell'attrazione useremo un percorso speciale: la 'corsia d'attesa'...
+STR_3401    :{SMALLFONT}{BLACK}Per il percorso d'uscita basterà un percorso 'normale'...
+STR_3402    :{SMALLFONT}{BLACK}Bene, ora apriamo l'attrazione!  Per aprire l'attrazione clicchiamo sull'icona a bandiera nella finestra dell'attrazione e selezioniamo 'apri'...
+STR_3403    :{SMALLFONT}{BLACK}Ma dove sono i visitatori?
+STR_3404    :{SMALLFONT}{BLACK}Oh - il parco è ancora chiuso!  Beh, apriamolo...
+STR_3405    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi visitatori, costruiamo degli scenari...
+STR_3406    :{SMALLFONT}{BLACK}Ecco il nostro parco vuoto. Ora andremo a costruire un'attrazione personalizzata molto semplice...
+STR_3407    :{SMALLFONT}{BLACK}Prima dobbiamo selezionare la posizione di partenza...
+STR_3408    :{SMALLFONT}{BLACK}La sezione di tracciato che abbiamo appena costruito è la 'piattaforma di una stazione', che permette ai visitatori di salire e scendere dall'attrazione...
+STR_3409    :{SMALLFONT}{BLACK}Ora estenderemo un po' la piattaforma aggiungendo un altro paio di sezioni...
+STR_3410    :{SMALLFONT}{BLACK}Le icone in cima alla finestra di costruzione ti permettono di scegliere le varie parti del tracciato da aggiungere...
+STR_3411    :{SMALLFONT}{BLACK}Ora selezioneremo una curva a sinistra...
+STR_3412    :{SMALLFONT}{BLACK}La curva non è stata ancora costruita, ma una sua immagine fantasma bianca ci mostra dove verrà collocata. Per costruirla, clicchiamo sulla grande icona 'costruiscilo'...
+STR_3413    :{SMALLFONT}{BLACK}Ora vogliamo costruire una parte di tracciato diritta, per cui clicchiamo sull'icona del tracciato diritto...
+STR_3414    :{SMALLFONT}{BLACK}Ora che il circuito è completo, dobbiamo costruire l'entrata e l'uscita dell'attrazione...
+STR_3415    :{SMALLFONT}{BLACK}Ora proviamo a vedere se l'attrazione funziona...
+STR_3416    :{SMALLFONT}{BLACK}Mentre viene effettuata la prova, costruiremo la corsia d'attesa e il percorso d'uscita...
+STR_3417    :{SMALLFONT}{BLACK}OK - apriamo il parco e l'attrazione...
+STR_3418    :{SMALLFONT}{BLACK}La nostra nuova attrazione non è molto eccitante - forse dovremmo aggiungere qualche scenario in più?
+STR_3419    :{SMALLFONT}{BLACK}Per costruire uno scenario sopra un altro scenario o a mezz'aria, tieni premuto SHIFT e sposta il mouse per selezionare l'altezza...
+STR_3420    :{SMALLFONT}{BLACK}Alcuni tipi di scenario possono essere ridipinti dopo che li si è costruiti...
+STR_3421    :{SMALLFONT}{BLACK}Aggiungiamo della musica all'attrazione...
+STR_3422    :{SMALLFONT}{BLACK}Costruiamo un ottovolante!!
+STR_3423    :{SMALLFONT}{BLACK}Ci sono parecchi ottovolanti già progettati, ma ora noi ne cotruiremo uno personalizzato...
+STR_3424    :{SMALLFONT}{BLACK}Ecco costruita la piattaforma della stazione. Ora dobbiamo costruire una salita di traino...
+STR_3425    :{SMALLFONT}{BLACK}I treni degli ottovolanti non hanno un motore, per cui è necessaria una 'catena da traino' per far salire il treno sulla prima salita...
+STR_3426    :{SMALLFONT}{BLACK}Ecco completata la salita di traino - e ora pensiamo alla prima discesa...
+STR_3427    :{SMALLFONT}{BLACK}Quelle curve sono una cattiva idea - i passeggeri verranno sbalzati via dalla forza G laterale durante la corsa sfrenata del treno...
+STR_3428    :{SMALLFONT}{BLACK}Per migliorare l'attrazione occorre inclinare le curve - così i passeggeri verranno schiacciati verso i propri sedili invece di essere sbalzati fuori...
+STR_3429    :{SMALLFONT}{BLACK}No - non funzionerà! Guarda gli indici dell'altezza - la seconda salita è più alta di quella di traino...
+STR_3430    :{SMALLFONT}{BLACK}Per far sì che il treno possa arrivare fino alla fine, ogni salita dev'essere leggermente più bassa di quella precedente...
+STR_3431    :{SMALLFONT}{BLACK}Così va meglio - ora il nostro treno dovrebbe farcela! Ora proviamo con un tracciato più contorto...
+STR_3432    :{SMALLFONT}{BLACK}Dovremo rallentare la corsa del treno prima dell'ultima curva e della stazione, per cui aggiungiamo dei freni...
+STR_3433    :{SMALLFONT}{BLACK}E infine aggiungeremo i 'freni di blocco', che permettono a due treni di operare nel circuito con maggior sicurezza...
+STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!!
+STR_3435    :{SMALLFONT}{BLACK}Fantastico - ha funzionato! Ora aggiungiamo i sentieri e facciamo accomodare i visitatori sul nostro nuovo ottovolante...
+STR_3436    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi passeggeri, potremmo personalizzare un po' l'attrazione...
+STR_3437    :{SMALLFONT}{BLACK}Elimina gli alberi, i muri e i piccoli oggetti di scenario dal terreno
+STR_3438    :Impossibile rimuovere tutto lo scenario da qui...
+STR_3439    :Elimina scen.
+STR_3440    :Pagina 1
+STR_3441    :Pagina 2
+STR_3442    :Pagina 3
+STR_3443    :Pagina 4
+STR_3444    :Pagina 5
+STR_3445    :Imposta l'area da pattugliare
+STR_3446    :Annulla l'area da pattugliare
