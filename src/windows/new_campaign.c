@@ -288,7 +288,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 
 					rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
 					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = (ride->name_arguments << 16) | ride->name;
+					gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
 					numItems++;
 				}
 
