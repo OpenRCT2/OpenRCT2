@@ -129,8 +129,6 @@ int ride_name_compare(const void *a, const void *b)
  */
 void window_new_campaign_open(sint16 campaignType)
 {
-	// RCT2_CALLPROC_X(0x0069E16F, campaignType, 0, 0, 0, 0, 0, 0);
-
 	rct_window *w;
 	rct_ride *ride;
 	int i, numApplicableRides;
@@ -178,7 +176,6 @@ void window_new_campaign_open(sint16 campaignType)
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x03820000))
 			window_new_campaign_rides[numApplicableRides++] = i;
 	}
-	window_new_campaign_rides[numApplicableRides] = 255;
 
 	// Take top 40 most reliable rides
 	if (numApplicableRides > 40) {
@@ -188,6 +185,8 @@ void window_new_campaign_open(sint16 campaignType)
 
 	// Sort rides by name
 	qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_name_compare);
+
+	window_new_campaign_rides[numApplicableRides] = 255;
 }
 
 /**
@@ -280,28 +279,26 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 				);
 			}
 		} else {
-			if (window_new_campaign_rides[0] != 255) {
-				int numItems = 0;
-				for (int i = 0; i < 40; i++) {
-					if (window_new_campaign_rides[i] == 255)
-						break;
+			int numItems = 0;
+			for (int i = 0; i < 40; i++) {
+				if (window_new_campaign_rides[i] == 255)
+					break;
 
-					rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
-					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
-					numItems++;
-				}
-
-				window_dropdown_show_text_custom_width(
-					w->x + dropdownWidget->left,
-					w->y + dropdownWidget->top,
-					dropdownWidget->bottom - dropdownWidget->top + 1,
-					w->colours[1],
-					0x80,
-					numItems,
-					dropdownWidget->right - dropdownWidget->left - 3
-				);
+				rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
+				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
+				numItems++;
 			}
+
+			window_dropdown_show_text_custom_width(
+				w->x + dropdownWidget->left,
+				w->y + dropdownWidget->top,
+				dropdownWidget->bottom - dropdownWidget->top + 1,
+				w->colours[1],
+				0x80,
+				numItems,
+				dropdownWidget->right - dropdownWidget->left - 3
+			);
 		}
 		break;
 	case WIDX_WEEKS_INCREASE_BUTTON:
