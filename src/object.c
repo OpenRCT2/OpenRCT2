@@ -484,6 +484,54 @@ int paint_path_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int e
 	}
 }
 
+int paint_water_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+{
+	if ((eax & 0xFF) != 3)
+	{
+		if ((eax & 0xFF) != 1)
+		{
+			if ((eax & 0xFF) <= 1)//0
+			{
+				uint8_t* ebp = esi + 0x10;
+				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
+				int a = sub_6A9ED1(&ebp);
+				((uint32_t*)(esi + 2))[0] = a;
+				a++;
+				((uint32_t*)(esi + 6))[0] = a;
+				a += 3;
+				((uint32_t*)(esi + 0xA))[0] = a;
+				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+				if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
+				{
+					load_palette();
+					gfx_invalidate_screen();
+				}
+				return eax;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			((rct_string_id*)esi)[0] = 0;
+			((uint32_t*)(esi + 2))[0] = 0;
+			((uint32_t*)(esi + 6))[0] = 0;
+			((uint32_t*)(esi + 0xA))[0] = 0;
+			return eax;
+		}
+	}
+	else
+	{
+		if (!((eax >> 8) & 0xFF))
+		{
+			gfx_draw_string_centred(edi, 3326, ecx, edx, 0, esi);
+		}
+		return eax;
+	}
+}
+
 //0x0066B355
 int paint_stex_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
 {
@@ -543,6 +591,8 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	{
 	case OBJECT_TYPE_PATHS:
 		return paint_path_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+	case OBJECT_TYPE_WATER:
+		return paint_water_entry(eax, ebx, ecx, edx, edi, esi, ebp);
 	case OBJECT_TYPE_SCENARIO_TEXT:
 		return paint_stex_entry(eax, ebx, ecx, edx, edi, esi, ebp);
 	default:
