@@ -416,13 +416,13 @@ int sub_6A9ED1(uint8_t** ebp)
 	return result;
 }
 
-int paint_path_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((eax & 0xFF) != 3)
+	if ((flags & 0xFF) != 3)
 	{
-		if ((eax & 0xFF) != 1)
+		if ((flags & 0xFF) != 1)
 		{
-			if ((eax & 0xFF) <= 1)//0
+			if ((flags & 0xFF) <= 1)//0
 			{
 				uint8_t* ebp = esi + 0xE;
 				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
@@ -446,7 +446,7 @@ int paint_path_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int e
 					}
 					RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
 				}
-				return eax;
+				return flags;
 			}
 			else
 			{
@@ -459,38 +459,76 @@ int paint_path_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int e
 			((rct_string_id*)esi)[0] = 0;
 			((uint32_t*)(esi + 2))[0] = 0;
 			((uint32_t*)(esi + 6))[0] = 0;
-			return eax;
+			return flags;
 		}
 	}
 	else
 	{
-		if (!((eax >> 8) & 0xFF))
+		if (!((flags >> 8) & 0xFF))
 		{
 			//Draws preview for scenario editor!
 			int b = ((uint32_t*)(ebp + 2))[0];
 			b += 0x47;
 			ecx -= 0x31;
 			edx -= 0x11;
-			gfx_draw_sprite(edi, b, ecx, edx, ebp);
+			gfx_draw_sprite(dpi, b, ecx, edx, ebp);
 			b++;
 			ecx += 0x35;
-			gfx_draw_sprite(edi, b, ecx, edx, ebp);
-			return eax;
+			gfx_draw_sprite(dpi, b, ecx, edx, ebp);
 		}
-		else
-		{
-			return eax;
-		}
+		return flags;
 	}
 }
 
-int paint_water_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((eax & 0xFF) != 3)
+	if ((flags & 0xFF) != 3)
 	{
-		if ((eax & 0xFF) != 1)
+		if ((flags & 0xFF) != 1)
 		{
-			if ((eax & 0xFF) <= 1)//0
+			if ((flags & 0xFF) <= 1)//0
+			{
+				uint8_t* ebp = esi + 8;
+				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
+				int a = sub_6A9ED1(&ebp);
+				((uint32_t*)(esi + 2))[0] = a;
+				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+				return flags;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			((rct_string_id*)esi)[0] = 0;
+			((uint32_t*)(esi + 2))[0] = 0;
+			return flags;
+		}
+	}
+	else
+	{
+		if (!((flags >> 8) & 0xFF))
+		{
+			dpi = clip_drawpixelinfo(dpi, ecx - 0x38, 0x70, edx - 0x38, 0x70);
+			if (dpi == NULL) return flags;
+			int b = ((uint32_t*)(ebp + 2))[0];
+			gfx_draw_sprite(dpi, b + 1, 0x18, 0x44, ebp);
+			gfx_draw_sprite(dpi, b, 0x38, 0x54, ebp);
+			gfx_draw_sprite(dpi, b + 2, 0x58, 0x64, ebp);
+		}
+		return flags;
+	}
+}
+
+int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	if ((flags & 0xFF) != 3)
+	{
+		if ((flags & 0xFF) != 1)
+		{
+			if ((flags & 0xFF) <= 1)//0
 			{
 				uint8_t* ebp = esi + 0x10;
 				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
@@ -506,7 +544,7 @@ int paint_water_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int 
 					load_palette();
 					gfx_invalidate_screen();
 				}
-				return eax;
+				return flags;
 			}
 			else
 			{
@@ -519,34 +557,34 @@ int paint_water_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int 
 			((uint32_t*)(esi + 2))[0] = 0;
 			((uint32_t*)(esi + 6))[0] = 0;
 			((uint32_t*)(esi + 0xA))[0] = 0;
-			return eax;
+			return flags;
 		}
 	}
 	else
 	{
-		if (!((eax >> 8) & 0xFF))
+		if (!((flags >> 8) & 0xFF))
 		{
-			gfx_draw_string_centred(edi, 3326, ecx, edx, 0, esi);
+			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, esi);
 		}
-		return eax;
+		return flags;
 	}
 }
 
 //0x0066B355
-int paint_stex_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((eax & 0xFF) != 3)
+	if ((flags & 0xFF) != 3)
 	{
-		if ((eax & 0xFF) != 1)
+		if ((flags & 0xFF) != 1)
 		{
-			if ((eax & 0xFF) <= 1)//0
+			if ((flags & 0xFF) <= 1)//0
 			{
 				uint8_t* ebp = esi + 8;
 				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
 				((rct_string_id*)esi)[1] = object_get_localised_text(&ebp, ecx, ebx, 1);
 				((rct_string_id*)esi)[2] = object_get_localised_text(&ebp, ecx, ebx, 2);
 				if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				return eax;
+				return flags;
 			}
 			else//2
 			{
@@ -558,15 +596,14 @@ int paint_stex_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int e
 			((rct_string_id*)esi)[0] = 0;
 			((rct_string_id*)esi)[1] = 0;
 			((rct_string_id*)esi)[2] = 0;
-			return eax;
+			return flags;
 		}
 	}
 	else//3
 	{
-		if (!((eax >> 8) & 0xFF))
+		if (!((flags >> 8) & 0xFF))
 		{
-			gfx_draw_string_centred(edi, 0xCFE, ecx, edx, 0, esi);
-			return eax;
+			gfx_draw_string_centred(dpi, 0xCFE, ecx, edx, 0, esi);
 		}
 		else
 		{
@@ -575,8 +612,9 @@ int paint_stex_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int e
 			width += *((uint16_t*)(esi + 0x30));
 			width -= 4;
 			width -= ecx;
-			gfx_draw_string_left_wrapped(edi, RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
+			gfx_draw_string_left_wrapped(dpi, RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
 		}
+		return flags;
 	}
 }
 
@@ -591,6 +629,8 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	{
 	case OBJECT_TYPE_PATHS:
 		return paint_path_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+	case OBJECT_TYPE_PARK_ENTRANCE:
+		return paint_park_entrance_entry(eax, ebx, ecx, edx, edi, esi, ebp);
 	case OBJECT_TYPE_WATER:
 		return paint_water_entry(eax, ebx, ecx, edx, edi, esi, ebp);
 	case OBJECT_TYPE_SCENARIO_TEXT:
