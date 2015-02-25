@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "localisation.h"
+#include "../object.h"
 
 const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
@@ -223,4 +224,65 @@ void language_close()
 	language_num_strings = 0;
 
 	gCurrentLanguage = LANGUAGE_UNDEFINED;
+}
+
+const int OpenRCT2LangIdToObjectLangId[] = {
+	0, 0, 1, 3, 6, 2, 0, 0, 4, 7
+};
+
+//0x006A9E24
+rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
+{
+	char* pString;
+	int result = 0;
+	while (true)
+	{
+		uint8_t language_code = ((uint8_t*)*pStringTable)[0];
+		(*pStringTable)++;
+		if (language_code == 0xFF) //end of string table
+			break;
+		if (language_code == OpenRCT2LangIdToObjectLangId[gCurrentLanguage])//1)
+		{
+			pString = *pStringTable;
+			result |= 1;
+		}
+		if (language_code == 0 && !(result & 1))
+		{
+			pString = *pStringTable;
+			result |= 2;
+		}
+		if (!(result & 7))
+		{
+			pString = *pStringTable;
+			result |= 4;
+		}
+		while (true)
+		{
+			uint8_t character = ((uint8_t*)*pStringTable)[0];
+			(*pStringTable)++;
+			if (character == 0) break;
+		}
+	}
+	if (RCT2_GLOBAL(0x9ADAFC, uint8_t) == 0)
+	{
+		int stringid = 0xD87;
+		int i;
+		for (i = 0; i < type; i++)
+		{
+			int nrobjects = object_entry_group_counts[i];
+			int nrstringtables = RCT2_GLOBAL(0x98DA16 + i * 2, uint16_t);//the number of string tables in a type
+			stringid += nrobjects * nrstringtables;
+		}
+		stringid += index * RCT2_GLOBAL(0x98DA16 + type * 2, uint16_t);
+		RCT2_GLOBAL(0x00F42BBC, uint32) = stringid;
+		stringid += tableindex;
+		RCT2_GLOBAL(0x009BF2D4 + stringid * 4, char*) = pString;//put pointer in stringtable
+		return stringid;
+	}
+	else
+	{
+		int stringid = 0xD77 + tableindex;
+		RCT2_GLOBAL(0x009BF2D4 + stringid * 4, char*) = pString;//put pointer in stringtable
+		return stringid;
+	}
 }

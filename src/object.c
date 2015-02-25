@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -23,11 +23,12 @@
 #include "object.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
+#include "drawing/drawing.h"
 
 int object_load_entry(const char *path, rct_object_entry *outEntry)
 {
 	FILE *file;
-	
+
 	file = fopen(path, "rb");
 	if (file == NULL)
 		return 0;
@@ -70,7 +71,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	// Read chunk size
 	*chunkSize = *((uint32*)installedObject_pointer);
 	char *chunk;
-					
+
 	if (*chunkSize == 0xFFFFFFFF) {
 		chunk = rct2_malloc(0x600000);
 		*chunkSize = sawyercoding_read_chunk(file, chunk);
@@ -82,7 +83,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	}
 	fclose(file);
 
-					
+
 
 	// Calculate and check checksum
 	if (object_calculate_checksum(&openedEntry, chunk, *chunkSize) != openedEntry.checksum) {
@@ -109,7 +110,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		rct2_free(chunk);
 		return 0;
 	}
-	
+
 	uint8** chunk_list = object_entry_groups[objectType].chunks;
 	if (groupIndex == -1) {
 		for (groupIndex = 0; chunk_list[groupIndex] != (uint8*)-1; groupIndex++) {
@@ -136,7 +137,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A985D
  */
 int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
@@ -166,7 +167,7 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
 	return 0;
 }
 
-/** rct2: 0x006a9f42 
+/** rct2: 0x006a9f42
  *  ebx : file
  *  ebp : entry
  */
@@ -176,7 +177,7 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 	if (eax == 0) return 0;
 
 	object_paint(type, 1, entryGroupIndex, type, edx, chunk, edi, ebp);
-	
+
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
 	uint8* dst_buffer = malloc(0x600000);
@@ -184,7 +185,7 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 
 	uint32 size_dst = sizeof(rct_object_entry);
 
-	sawyercoding_chunk_header chunkHeader;	
+	sawyercoding_chunk_header chunkHeader;
 	// Encoding type (not used anymore)
 	RCT2_GLOBAL(0x9E3CBD, uint8) = object_entry_group_encoding[type];
 
@@ -328,7 +329,7 @@ int object_load_packed(FILE *file)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A9CAF
  */
 void object_unload(int groupIndex, rct_object_entry_extended *entry)
@@ -345,7 +346,8 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 			return 0;
 		if (*((uint32*)(&a->name[4])) != *((uint32*)(&b->name[4])))
 			return 0;
-	} else {
+	}
+	else {
 		if (a->flags != b->flags)
 			return 0;
 		if (*((uint32*)a->name) != *((uint32*)b->name))
@@ -380,27 +382,154 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 	return checksum;
 }
 
-/**
- *  rct2: 0x66B355 part 
- *  If al is 0
- *  chunk : esi
- */
-int object_scenario_load_custom_text(char* chunk){
-	int ebp = (int)(&((uint32*)chunk)[2]);
+int sub_6A9ED1(uint8_t** ebp)
+{
+	int result;
+	int eax = result = RCT2_GLOBAL(0x9ADAF0, uint32_t);
+	int ecx = ((uint32_t*)(*ebp))[0];
+	int ebx = ecx;
+	ebx += eax;
+	RCT2_GLOBAL(0x9ADAF0, uint32_t) = ebx;
+	ebx = ecx;
+	ebx *= 0x10;
+	(*ebp) += 8;
+	ebx += (uint32_t)(*ebp);
+	int esi = eax;
+	esi *= 0x10;
 	int edx = 0;
-	int eax, ebx, ecx, edi;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
-	*((uint16*)chunk) = eax;
-	edx++;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
-	*((uint16*)chunk + 1) = eax;
-	edx++;
-	RCT2_CALLFUNC_X(0x6A9E24, &eax, &ebx, &ecx, &edx, (int*)&chunk, &edi, &ebp);
-	*((uint16*)chunk + 2) = eax;
+	while (true)
+	{
+		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi, uint32_t) = ((uint32_t*)(edx + (*ebp)))[0];
+		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 4, uint32_t) = ((uint32_t*)(edx + (*ebp)))[1];
+		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 8, uint32_t) = ((uint32_t*)(edx + (*ebp)))[2];
+		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 0xC, uint32_t) = ((uint32_t*)(edx + (*ebp)))[3];
+		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi, uint32_t) += ebx;
+		esi += 0x10;
+		edx += 0x10;
+		ecx--;
+		if (ecx == 0) break;
+	}
+	ebx = ((uint32_t*)((*ebp) - 8))[0];
+	ebx *= 0x10;
+	(*ebp) += ((uint32_t*)((*ebp) - 4))[0];
+	(*ebp) += ebx;
+	return result;
+}
 
-	if (RCT2_GLOBAL(0x9ADAF4, int) == -1)return 0;
-	else *(RCT2_GLOBAL(0x9ADAF4, uint32*)) = 0;
-	return 1;
+int paint_path_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+{
+	if ((eax & 0xFF) != 3)
+	{
+		if ((eax & 0xFF) != 1)
+		{
+			if ((eax & 0xFF) <= 1)//0
+			{
+				uint8_t* ebp = esi + 0xE;
+				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
+				int a = sub_6A9ED1(&ebp);
+				((uint32_t*)(esi + 2))[0] = a;
+				a += 0x6D;
+				((uint32_t*)(esi + 6))[0] = a;
+				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
+				int b = -1;
+				while (true)
+				{
+					b++;
+					if (b >= 0x10) break;
+					uint8_t* edi = object_entry_groups[5].chunks[ebx];
+					if (edi == 0xFFFFFFFF) continue;
+					if (!(edi[0xB] & 4))
+					{
+						RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
+						break;
+					}
+					RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
+				}
+				return eax;
+			}
+			else
+			{
+				if (((uint8_t*)(esi + 0xA))[0] >= 2) return 1;//actually the carry bit should be set (stc)
+				else return 0;
+			}
+		}
+		else
+		{
+			((rct_string_id*)esi)[0] = 0;
+			((uint32_t*)(esi + 2))[0] = 0;
+			((uint32_t*)(esi + 6))[0] = 0;
+			return eax;
+		}
+	}
+	else
+	{
+		if (!((eax >> 8) & 0xFF))
+		{
+			//Draws preview for scenario editor!
+			int b = ((uint32_t*)(ebp + 2))[0];
+			b += 0x47;
+			ecx -= 0x31;
+			edx -= 0x11;
+			gfx_draw_sprite(edi, b, ecx, edx, ebp);
+			b++;
+			ecx += 0x35;
+			gfx_draw_sprite(edi, b, ecx, edx, ebp);
+			return eax;
+		}
+		else
+		{
+			return eax;
+		}
+	}
+}
+
+//0x0066B355
+int paint_stex_entry(int eax, int ebx, int ecx, int edx, int edi, int esi, int ebp)
+{
+	if ((eax & 0xFF) != 3)
+	{
+		if ((eax & 0xFF) != 1)
+		{
+			if ((eax & 0xFF) <= 1)//0
+			{
+				uint8_t* ebp = esi + 8;
+				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
+				((rct_string_id*)esi)[1] = object_get_localised_text(&ebp, ecx, ebx, 1);
+				((rct_string_id*)esi)[2] = object_get_localised_text(&ebp, ecx, ebx, 2);
+				if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+				return eax;
+			}
+			else//2
+			{
+				return 0;
+			}
+		}
+		else//1
+		{
+			((rct_string_id*)esi)[0] = 0;
+			((rct_string_id*)esi)[1] = 0;
+			((rct_string_id*)esi)[2] = 0;
+			return eax;
+		}
+	}
+	else//3
+	{
+		if (!((eax >> 8) & 0xFF))
+		{
+			gfx_draw_string_centred(edi, 0xCFE, ecx, edx, 0, esi);
+			return eax;
+		}
+		else
+		{
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = *((uint16_t*)(ebp + 4));
+			int width = *((uint16_t*)(esi + 0x2C));
+			width += *((uint16_t*)(esi + 0x30));
+			width -= 4;
+			width -= ecx;
+			gfx_draw_string_left_wrapped(edi, RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
+		}
+	}
 }
 
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
@@ -408,11 +537,21 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	//if (type == OBJECT_TYPE_SCENARIO_TEXT){
 	//	if (eax == 0) return object_scenario_load_custom_text((char*)esi);
 	//}
-	return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
+	//return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
+	//just use the rct2 function as long as this is not complete!
+	switch (type)
+	{
+	case OBJECT_TYPE_PATHS:
+		return paint_path_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+	case OBJECT_TYPE_SCENARIO_TEXT:
+		return paint_stex_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+	default:
+		return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
+	}
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A9428
  */
 int object_get_scenario_text(rct_object_entry *entry)
@@ -444,8 +583,9 @@ int object_get_scenario_text(rct_object_entry *entry)
 					if (chunkSize == 0xFFFFFFFF) {
 						chunk = malloc(0x600000);
 						chunkSize = sawyercoding_read_chunk(file, chunk);
-						chunk = realloc(chunk, chunkSize);						
-					} else {
+						chunk = realloc(chunk, chunkSize);
+					}
+					else {
 						chunk = malloc(chunkSize);
 						sawyercoding_read_chunk(file, chunk);
 					}
@@ -488,7 +628,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A982D
  */
 void object_free_scenario_text()
