@@ -569,15 +569,18 @@ void ride_construct_new(ride_list_item listItem)
  */
 void ride_construct(int rideIndex)
 {
+	rct_xy_element trackElement;
 	rct_window *w;
 
-	// Open construction window
-	// HACK In the original game this created a mouse up event. This has been
-	// replaced with a direct call to the function that gets called.
-	// Eventually should be changed so the ride window does not need to be opened.
-	w = window_ride_main_open(rideIndex);
-	window_ride_construct(w);
-	window_close_by_number(WC_RIDE, rideIndex);
+	if (sub_6CAF80(rideIndex, &trackElement)) {
+		ride_find_track_gap(&trackElement, &trackElement);
+
+		w = window_get_main();
+		if (w != NULL && ride_modify(&trackElement))
+			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
+	} else {
+		sub_6CC3FB(rideIndex);
+	}
 }
 
 /**
