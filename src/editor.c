@@ -152,7 +152,8 @@ void editor_convert_save_to_scenario()
 
 	if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
 		object_unload(0, (rct_object_entry_extended*)0x00F4287C);
-		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		sub_6A9FC0();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		s6Info->name[0] = 0;
@@ -460,7 +461,7 @@ static void sub_6A2B62()
 	object_unload_all();
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
-	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	RCT2_CALLPROC_EBPSAFE(0x006A2956);
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
@@ -503,7 +504,7 @@ static void sub_6A2B62()
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
 	);
 	RCT2_CALLPROC_EBPSAFE(0x0069E89B);
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	sub_69E869();//RCT2_CALLPROC_EBPSAFE(0x0069E869);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
 		MONEY(0,00),
@@ -832,7 +833,7 @@ static int editor_read_s6(const char *path)
 		// Check expansion pack
 		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
@@ -910,7 +911,7 @@ static int editor_read_s6(const char *path)
 
 		if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
 			object_unload(0, (rct_object_entry_extended*)0x00F4287C);
-			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+			sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 			s6Info->name[0] = 0;
