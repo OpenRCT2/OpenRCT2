@@ -713,12 +713,12 @@ void load_track_scenery_objects(){
 
 	if (track_design->type == RIDE_TYPE_MAZE){
 		// Skip all of the maze track elements
-		while (*(uint32*)track_elements != 0)track_elements += 4;
-		track_elements += 4;
+		while (*(uint32*)track_elements != 0)track_elements += sizeof(rct_maze_element);
+		track_elements += sizeof(rct_maze_element);
 	}
 	else{
 		// Skip track_elements
-		while (*track_elements != 255) track_elements += 2;
+		while (*track_elements != 255) track_elements += sizeof(rct_track_element);
 		track_elements++;
 		
 		// Skip entrance exit elements
@@ -727,11 +727,13 @@ void load_track_scenery_objects(){
 	}
 
 	while (*track_elements != 255){
-		if (!find_object_in_entry_group((rct_object_entry*)track_elements, &entry_type, &entry_index)){
-			object_load(-1, (rct_object_entry*)track_elements, 0);
+		rct_track_scenery* scenery_entry = (rct_track_scenery*)track_elements;
+
+		if (!find_object_in_entry_group(&scenery_entry->scenery_object, &entry_type, &entry_index)){
+			object_load(-1, &scenery_entry->scenery_object, 0);
 		}
 		// Skip object and location/direction/colour
-		track_elements += sizeof(rct_object_entry) + 6;
+		scenery_entry += sizeof(rct_track_scenery);
 	}
 
 	sub_6A9FC0();
@@ -1165,4 +1167,54 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 	}
 
 	return aBank == bBank && aAngle == bAngle;
+}
+
+
+void sub_6D2804(int al, rct_window* w){
+
+	if (al == 0){
+		//6d2808
+		return;
+	}
+
+	rct_ride* ride = GET_RIDE(w->number);
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
+		//6d2ad4
+		return;
+	}
+
+	if (ride->ratings.excitement == 0xFFFF){
+		//6d2ad4
+		return;
+	}
+
+	if (!(RCT2_ADDRESS(0x0097CF40, uint32)[ride->type] & 0x10000000)){
+		//6d2ad4
+		return;
+	}
+
+	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, w->number, 0, 0, 0) & 0x100){
+		//6d2ad4
+		return;
+	}
+
+	rct_track_scenery* edi = (rct_track_scenery*)(RCT2_GLOBAL(0x00F44058, uint8*)--);
+	rct_track_scenery* esi = RCT2_ADDRESS(0x009DA193, rct_track_scenery);
+
+	while (1){
+		int ebx = 0;
+		memcpy(edi, esi, sizeof(rct_track_scenery));
+		if ((edi->scenery_object.flags & 0xFF) == 0xFF) break;
+		if ((edi->scenery_object.flags & 0xF) == 5){
+			//6d28F4
+		}
+		else if ((edi->scenery_object.flags & 0xF) == 3){
+			//6d28dd
+		}
+		else {
+			//6d28ba
+		}
+		//6d292f
+	}
 }
