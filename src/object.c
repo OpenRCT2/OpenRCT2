@@ -384,34 +384,28 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 	return checksum;
 }
 
+/* ebp is made up of 3 pointers: no_elements, unknown, g1_source */
 int sub_6A9ED1(uint8_t** ebp)
 {
 	int result;
 	int eax = result = RCT2_GLOBAL(0x9ADAF0, uint32_t);
-	int ecx = ((uint32_t*)(*ebp))[0];
-	int ebx = ecx;
-	ebx += eax;
-	RCT2_GLOBAL(0x9ADAF0, uint32_t) = ebx;
-	ebx = ecx;
-	ebx *= 0x10;
-	(*ebp) += 8;
-	ebx += (uint32_t)(*ebp);
-	int g1_offset = eax;
-	g1_offset *= 0x10;
-	int edx = 0;
-	while (true)
-	{
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + g1_offset, rct_g1_element) = ((rct_g1_element*)(edx + (*ebp)))[0];
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + g1_offset, rct_g1_element).offset += ebx;
-		g1_offset += 0x10;
-		edx += 0x10;
-		ecx--;
-		if (ecx == 0) break;
+	int no_elements = ((uint32_t*)(*ebp))[0];
+
+	RCT2_GLOBAL(0x9ADAF0, uint32_t) = no_elements + eax;
+
+	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax];
+	rct_g1_element* g1_source = (rct_g1_element*)((*ebp) + 8);
+	int ebx = no_elements * sizeof(rct_g1_element) + (uint32)g1_source;
+
+	for (int i = 0; i < no_elements; ++i){
+		*g1_dest = *g1_source++;
+		g1_dest->offset += ebx;
+		g1_dest++;
 	}
-	ebx = ((uint32_t*)((*ebp) - 8))[0];
-	ebx *= 0x10;
-	(*ebp) += ((uint32_t*)((*ebp) - 4))[0];
-	(*ebp) += ebx;
+
+	(*ebp) += 8;
+	(*ebp) += *((uint32_t*)((*ebp) - 4));
+	(*ebp) += no_elements * sizeof(rct_g1_element);
 	return result;
 }
 
