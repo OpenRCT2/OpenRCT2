@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
@@ -27,6 +28,7 @@
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../world/park.h"
+#include "../windows/error.h"
 #include "ride.h"
 #include "track.h"
 
@@ -1170,33 +1172,44 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 }
 
 
-void sub_6D2804(int al, rct_window* w){
+int sub_6D2804(int al, uint8 rideIndex){
 
 	if (al == 0){
-		//6d2808
-		return;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
+		RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
+		unpause_sounds();
+
+		rct_window* main_w = window_get_main();
+
+		if (main_w){
+			main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+		}
+
+		gfx_invalidate_screen();
+		tool_cancel();
+		return 1;
 	}
 
-	rct_ride* ride = GET_RIDE(w->number);
+	rct_ride* ride = GET_RIDE(rideIndex);
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
-		//6d2ad4
-		return;
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
 	}
 
 	if (ride->ratings.excitement == 0xFFFF){
-		//6d2ad4
-		return;
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
 	}
 
 	if (!(RCT2_ADDRESS(0x0097CF40, uint32)[ride->type] & 0x10000000)){
-		//6d2ad4
-		return;
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
 	}
 
-	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, w->number, 0, 0, 0) & 0x100){
-		//6d2ad4
-		return;
+	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
 	}
 
 	rct_track_scenery* edi = (rct_track_scenery*)(RCT2_GLOBAL(0x00F44058, uint8*)--);
@@ -1206,14 +1219,41 @@ void sub_6D2804(int al, rct_window* w){
 		int ebx = 0;
 		memcpy(edi, esi, sizeof(rct_track_scenery));
 		if ((edi->scenery_object.flags & 0xFF) == 0xFF) break;
-		if ((edi->scenery_object.flags & 0xF) == 5){
-			//6d28F4
+
+		//0x00F4414D is direction of track?
+		if ((edi->scenery_object.flags & 0xF) == OBJECT_TYPE_PATHS){
+
+			uint8 slope = (edi->flags & 0x60) >> 5;
+			slope -= RCT2_GLOBAL(0x00F4414D, uint8);
+
+			edi->flags &= 0x9F;
+			edi->flags |= ((slope & 3) << 5);
+
+			// Direction of connection on path
+			uint8 direction = edi->flags & 0xF;
+			direction = ((direction << 4) >> RCT2_GLOBAL(0x00F4414D, uint8));
+			
+			edi->flags &= 0xF0;
+			edi->flags |= (direction & 0xF) | (direction >> 4);
+
 		}
-		else if ((edi->scenery_object.flags & 0xF) == 3){
-			//6d28dd
+		else if ((edi->scenery_object.flags & 0xF) == OBJECT_TYPE_WALLS){
+			uint8 direction = edi->flags & 3;
+
+			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
+
+			edi->flags &= 0xFC;
+			edi->flags |= (direction & 3);
 		}
 		else {
-			//6d28ba
+			uint8 direction = edi->flags & 3;
+			uint8 quadrant = (edi->flags & 0xC) >> 2;
+
+			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
+			quadrant -= RCT2_GLOBAL(0x00F4414D, uint8);
+
+			edi->flags &= 0xF0;
+			edi->flags |= (direction & 3) | ((quadrant & 3) << 2);
 		}
 		//6d292f
 	}
