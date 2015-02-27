@@ -33,6 +33,7 @@
 #include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "../audio/audio.h"
 #include "dropdown.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
@@ -4540,8 +4541,32 @@ static void window_ride_measurements_dropdown()
 
 	if (dropdownIndex == 0)
 		RCT2_CALLPROC_X(0x006D264D, 0, 0, 0, 0, (int)w, 0, 0);
-	else
-		RCT2_CALLPROC_X(0x006D27A3, 0, 0, 0, 0, (int)w, 0, 0);
+	else{
+		rct_ride* ride = GET_RIDE(w->number);
+
+		if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
+			sub_6D2804(0, 0);
+		}
+
+		while (tool_set(w, 0, 12));
+
+		RCT2_GLOBAL(0x00F64DE8, uint8) = w->number;
+		RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
+
+		RCT2_GLOBAL(0x00F63674, sint32) = -1;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
+		RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
+
+		pause_sounds();
+
+		rct_window* w_main = window_get_main();
+
+		if (w_main){
+			w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+		}
+
+		gfx_invalidate_screen();
+	}
 }
 
 /**
