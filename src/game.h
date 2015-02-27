@@ -73,7 +73,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_START_MARKETING_CAMPAIGN, // 48
 	GAME_COMMAND_49,
 	GAME_COMMAND_50, // New banner? (possibly scenery)
-	GAME_COMMAND_51,
+	GAME_COMMAND_51, // Remove banner
 	GAME_COMMAND_52,
 	GAME_COMMAND_53,
 	GAME_COMMAND_54,
@@ -109,5 +109,6 @@ int game_load_save(const char *path);
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 char save_game();
 void rct2_exit();
+void game_autosave();
 
 #endif

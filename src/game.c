@@ -694,6 +694,8 @@ int game_load_save(const char *path)
 
 	load_palette();
 	gfx_invalidate_screen();
+
+	scenario_set_filename((char*)0x0135936C);
 	return 1;
 }
 
@@ -791,6 +793,16 @@ char save_game()
 	} else {
 		return 0;
 	}
+}
+
+void game_autosave()
+{
+	char path[MAX_PATH];
+
+	platform_get_user_directory(path, "save");
+	strcat(path, "autosave.sv6");
+
+	scenario_save(path, 0x80000000);
 }
 
 /**

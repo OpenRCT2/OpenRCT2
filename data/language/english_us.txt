@@ -2683,15 +2683,15 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
+STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2685    :Simplex Noise Parameters
+STR_2686    :{WINDOW_COLOUR_2}Low:
+STR_2687    :{WINDOW_COLOUR_2}High:
+STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
+STR_2689    :{WINDOW_COLOUR_2}Octaves:
 STR_2690    :Map Generation
 STR_2691    :{WINDOW_COLOUR_2}Base height:
 STR_2692    :{WINDOW_COLOUR_2}Water level:
@@ -2702,13 +2702,13 @@ STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Simplex Noise Parameters
-STR_2701    :{WINDOW_COLOUR_2}Low:
-STR_2702    :{WINDOW_COLOUR_2}High:
-STR_2703    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2704    :{WINDOW_COLOUR_2}Octaves:
-STR_2705    :???
-STR_2706    :???
+STR_2700    :Autosave frequency
+STR_2701    :Every week
+STR_2702    :Every 2 weeks
+STR_2703    :Every month
+STR_2704    :Every 4 months
+STR_2705    :Every year
+STR_2706    :Never
 STR_2707    :Open new window
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite

@@ -190,7 +190,7 @@ void mapgen_generate(mapgen_settings *settings)
 	mapgen_set_height();
 	free(_height);
 
-	// Set the tile slopes so that their are no cliffs
+	// Set the tile slopes so that there are no cliffs
 	while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) { }
 
 	// Add the water

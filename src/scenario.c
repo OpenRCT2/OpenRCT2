@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "game.h"
 #include "interface/viewport.h"
 #include "localisation/date.h"
@@ -170,7 +171,7 @@ int scenario_load(const char *path)
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+			sub_6A9FC0();
 			map_update_tile_pointers();
 			reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 			return 1;
@@ -355,6 +356,12 @@ void scenario_end()
 			window_close(w);
 	}
 	window_park_objective_open();
+}
+
+void scenario_set_filename(const char *value)
+{
+	subsitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 
 /**
@@ -616,6 +623,36 @@ void scenario_entrance_fee_too_high_check()
 	}
 }
 
+static void scenario_autosave_check()
+{
+	uint32 next_month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) + 4;
+	uint16 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	bool shouldSave = 0;
+
+	switch (gConfigGeneral.autosave_frequency) {
+	case AUTOSAVE_EVERY_WEEK:
+		shouldSave = (next_month_tick % 0x4000 == 0);
+		break;
+	case AUTOSAVE_EVERY_2_WEEKS:
+		shouldSave = (next_month_tick % 0x8000 == 0);
+		break;
+	case AUTOSAVE_EVERY_MONTH:
+		shouldSave = (next_month_tick >= 0x10000);
+		break;
+	case AUTOSAVE_EVERY_4_MONTHS:
+		if (next_month_tick >= 0x10000)
+			shouldSave = (((month + 1) & 3) == 0);
+		break;
+	case AUTOSAVE_EVERY_YEAR:
+		if (next_month_tick >= 0x10000)
+			shouldSave = (((month + 1) & 7) == 0);
+		break;
+	}
+
+	if (shouldSave)
+		game_autosave();
+}
+
 /*
  * Scenario and finance related update iteration.
  * rct2: 0x006C44B1
@@ -631,6 +668,8 @@ void scenario_update()
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
 		return;
+
+	scenario_autosave_check();
 
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks

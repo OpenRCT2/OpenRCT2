@@ -48,7 +48,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Balletie) - OSX
 * Kevin Burke (kevinburke) - OSX, Unix
 * Miso Zmiric (mzmiric5) - OSX
-* (JarnoVgr) - Windows build server
+* Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 
 ## Documentation
@@ -67,6 +67,9 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Dutch - Michael Steenbeek (Gymnasiast), (hostbrute), (mrtnptrs), (xzbobzx)
 * Spanish - (mdtrooper)
 * Swedish - (Jinxit), (mharrys)
+
+## Graphics
+* OpenRCT2 Logo - xzbobzx
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

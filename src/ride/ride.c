@@ -569,15 +569,18 @@ void ride_construct_new(ride_list_item listItem)
  */
 void ride_construct(int rideIndex)
 {
+	rct_xy_element trackElement;
 	rct_window *w;
 
-	// Open construction window
-	// HACK In the original game this created a mouse up event. This has been
-	// replaced with a direct call to the function that gets called.
-	// Eventually should be changed so the ride window does not need to be opened.
-	w = window_ride_main_open(rideIndex);
-	window_ride_construct(w);
-	window_close_by_number(WC_RIDE, rideIndex);
+	if (sub_6CAF80(rideIndex, &trackElement)) {
+		ride_find_track_gap(&trackElement, &trackElement);
+
+		w = window_get_main();
+		if (w != NULL && ride_modify(&trackElement))
+			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
+	} else {
+		sub_6CC3FB(rideIndex);
+	}
 }
 
 /**
@@ -1319,6 +1322,7 @@ static void ride_breakdown_update(int rideIndex)
 			ride->var_19C +
 			ride->var_19D +
 			ride->var_19E +
+			ride->var_19F +
 			ride->var_1A0 +
 			ride->var_1A2 +
 			ride->var_1A3;
@@ -1355,11 +1359,12 @@ static void ride_breakdown_update(int rideIndex)
 		agePenalty = ax >> 2;
 		break;
 	case 3:
+	case 4:
 		agePenalty = ax >> 1;
 		break;
-	case 4:
 	case 5:
 	case 6:
+	case 7:
 		agePenalty = ax >> 0;
 		break;
 	default:

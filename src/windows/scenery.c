@@ -1099,7 +1099,7 @@ void window_scenery_scrollpaint()
 					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 						tertiaryColour);
 
-					imageId = (sceneryEntry->image + 0x40000006) | (window_scenery_primary_colour << 19);
+					imageId = (sceneryEntry->image + 0x40000006) | ((window_scenery_primary_colour + 0x70) << 19);
 					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 						tertiaryColour);
 				}

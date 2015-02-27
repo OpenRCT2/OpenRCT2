@@ -571,25 +571,12 @@ static void window_cheats_paint()
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		char buffer[256];
-		// Format text
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases your money by 5,000.");
-		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Toggle between Free and Paid Entry");
-		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, language_get_string(2681), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, language_get_string(2682), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		char buffer[256];
-		// Format text
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Increases every peeps happiness to max.");
-		// Draw shadow
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, "Large group of peeps arrive");
-		gfx_draw_string(dpi, buffer, 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 
 }

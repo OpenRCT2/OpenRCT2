@@ -89,6 +89,8 @@ void editor_load()
 	load_palette();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749));
 }
 
 /**
