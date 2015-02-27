@@ -24,6 +24,8 @@
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 #include "drawing/drawing.h"
+#include "world/footpath.h"
+#include "scenario.h"
 
 int object_load_entry(const char *path, rct_object_entry *outEntry)
 {
@@ -382,38 +384,407 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 	return checksum;
 }
 
+/* ebp is made up of 3 pointers: no_elements, unknown, g1_source */
 int sub_6A9ED1(uint8_t** ebp)
 {
 	int result;
 	int eax = result = RCT2_GLOBAL(0x9ADAF0, uint32_t);
-	int ecx = ((uint32_t*)(*ebp))[0];
-	int ebx = ecx;
-	ebx += eax;
-	RCT2_GLOBAL(0x9ADAF0, uint32_t) = ebx;
-	ebx = ecx;
-	ebx *= 0x10;
-	(*ebp) += 8;
-	ebx += (uint32_t)(*ebp);
-	int esi = eax;
-	esi *= 0x10;
-	int edx = 0;
-	while (true)
-	{
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi, uint32_t) = ((uint32_t*)(edx + (*ebp)))[0];
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 4, uint32_t) = ((uint32_t*)(edx + (*ebp)))[1];
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 8, uint32_t) = ((uint32_t*)(edx + (*ebp)))[2];
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi + 0xC, uint32_t) = ((uint32_t*)(edx + (*ebp)))[3];
-		RCT2_GLOBAL(RCT2_ADDRESS_G1_ELEMENTS + esi, uint32_t) += ebx;
-		esi += 0x10;
-		edx += 0x10;
-		ecx--;
-		if (ecx == 0) break;
+	int no_elements = ((uint32_t*)(*ebp))[0];
+
+	RCT2_GLOBAL(0x9ADAF0, uint32_t) = no_elements + eax;
+
+	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax];
+	rct_g1_element* g1_source = (rct_g1_element*)((*ebp) + 8);
+	int ebx = no_elements * sizeof(rct_g1_element) + (uint32)g1_source;
+
+	for (int i = 0; i < no_elements; ++i){
+		*g1_dest = *g1_source++;
+		g1_dest->offset += ebx;
+		g1_dest++;
 	}
-	ebx = ((uint32_t*)((*ebp) - 8))[0];
-	ebx *= 0x10;
-	(*ebp) += ((uint32_t*)((*ebp) - 4))[0];
-	(*ebp) += ebx;
+
+	(*ebp) += 8;
+	(*ebp) += *((uint32_t*)((*ebp) - 4));
+	(*ebp) += no_elements * sizeof(rct_g1_element);
 	return result;
+}
+
+int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	if ((flags & 0xFF) != 3)
+	{
+		if ((flags & 0xFF) != 1)
+		{
+			if ((flags & 0xFF) <= 1)//0
+			{
+				uint8_t* ebp = (uint8_t*)(esi + 0x1C2);
+				((rct_ride_type*)esi)->name = object_get_localised_text(&ebp, ecx, ebx, 0);
+				((rct_ride_type*)esi)->description = object_get_localised_text(&ebp, ecx, ebx, 1);
+				object_get_localised_text(&ebp, ecx, ebx, 2);
+				((uint32_t*)(esi + 0x1AE))[0] = (uint32_t)ebp;
+				if (ebp[0] != 0xFF)
+				{
+					int a = ebp[0];
+					ebp++;
+					ebp += a * 3;
+				}
+				else ebp += 0x61;
+				uint8_t* ebp_tmp = ebp;
+				int d = 4;
+				while (true)
+				{
+					int a = *ebp;
+					ebp++;
+					if (a == 0xFF)
+					{
+						a = ((uint16_t*)ebp)[0];
+						ebp += 2;
+					}
+					ebp += a;
+					d--;
+					if (d == 0) break;
+				}
+				int a = sub_6A9ED1(&ebp);
+				((uint32_t*)(esi + 4))[0] = a;
+				a += 3;
+				uint8_t* tmp = ebp;
+				ebp = ebp_tmp;
+				ebp_tmp = tmp;
+				int a_tmp = a;
+				int b_tmp = ebx;
+				int c_tmp = ecx;
+				d = 0;
+				int di = 0;
+				while (true)
+				{
+					if (((uint16_t*)(di + esi + 0x26))[0] & 1)
+					{
+						int al = 1;
+						if (((uint16_t*)(di + esi + 0x2E))[0] & 2)
+						{
+							int ax = ((uint16_t*)(di + esi + 0x2E))[0];
+							ax &= 0x820;
+							al = 0xD;
+							if (ax != 0x820)
+							{
+								al = 7;
+								if (!(((uint16_t*)(di + esi + 0x2E))[0] & 0x20))
+								{
+									if (!(((uint16_t*)(di + esi + 0x2E))[0] & 0x800))
+									{
+										al = 5;
+										if (((uint16_t*)(di + esi + 0x2E))[0] & 0x200) al = 3;
+									}
+								}
+							}
+						}
+						((uint8_t*)(di + esi + 0x1D))[0] = al;
+						al = 0x20;
+						if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x4000))
+						{
+							al = 1;
+							if (((uint16_t*)(di + esi + 0x2E))[0] & 0x80)
+							{
+								if (((uint8_t*)(di + esi + 0x2B))[0] != 6)
+								{
+									al = 2;
+									if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x80)) al = 4;
+								}
+							}
+						}
+						if (((uint16_t*)(di + esi + 0x2C))[0] & 0x1000) al = ((uint8_t*)(di + esi + 0x7A))[0];
+						((uint8_t*)(di + esi + 0x1C))[0] = al;
+						int a = ((uint8_t*)(di + esi + 0x1C))[0];
+						int b = ((uint8_t*)(di + esi + 0x1D))[0];
+						b *= a;
+						((uint16_t*)(di + esi + 0x30))[0] = b;
+						a = a_tmp;
+						((uint32_t*)(di + esi + 0x32))[0] = a;
+						if (((uint8_t*)(di + esi + 0x77))[0] != 4)
+						{
+							b = ((uint16_t*)(di + esi + 0x30))[0];
+							b *= 0x20;
+							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x800) b >>= 1;
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x8000) b >>= 3;
+							a += b;
+							if (((uint16_t*)(di + esi + 0x26))[0] & 2)
+							{
+								((uint32_t*)(di + esi + 0x3A))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x48;
+								if (((uint16_t*)(di + esi + 0x2C))[0] & 0x4000)
+								{
+									b = ((uint16_t*)(di + esi + 0x30))[0];
+									b *= 0x10;
+								}
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 4)
+							{
+								((uint32_t*)(di + esi + 0x3E))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x50;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 8)
+							{
+								((uint32_t*)(di + esi + 0x42))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x74;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x10)
+							{
+								((uint32_t*)(di + esi + 0x46))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x18;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x20)
+							{
+								((uint32_t*)(di + esi + 0x4A))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x50;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x40)
+							{
+								((uint32_t*)(di + esi + 0x4E))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x28;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x80)
+							{
+								((uint32_t*)(di + esi + 0x52))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x80;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x100)
+							{
+								((uint32_t*)(di + esi + 0x56))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x10;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x200)
+							{
+								((uint32_t*)(di + esi + 0x5A))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x10;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x400)
+							{
+								((uint32_t*)(di + esi + 0x5E))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x80;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x800)
+							{
+								((uint32_t*)(di + esi + 0x62))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x10;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x1000)
+							{
+								((uint32_t*)(di + esi + 0x66))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x50;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x2000)
+							{
+								((uint32_t*)(di + esi + 0x36))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0xC;
+								a += b;
+							}
+							if (((uint16_t*)(di + esi + 0x26))[0] & 0x4000)
+							{
+								((uint32_t*)(di + esi + 0x66))[0] = a;
+								b = ((uint16_t*)(di + esi + 0x30))[0];
+								b *= 0x20;
+								a += b;
+							}
+						}
+						else
+						{
+							b = ((uint16_t*)(di + esi + 0x30))[0];
+							b *= 0x24;
+							a += b;
+						}
+						a -= a_tmp;
+						((uint32_t*)(di + esi + 0x6A))[0] = a;
+						a_tmp += a;
+						int c = ((uint8_t*)(di + esi + 0x6E))[0];
+						c *= a;
+						a_tmp += c;
+						if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x400))
+						{
+							c = a_tmp;
+							b = ((uint32_t*)(di + esi + 0x32))[0];
+							c -= b;
+							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x2000) c <<= 1;
+							int d_tmp = d;
+							RCT2_CALLFUNC_X(0x6847BA, &a, &b, &c, &d, &esi, &di, (int*)&ebp);
+							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x2000) b += 0x10;
+							((uint8_t*)(di + esi + 0x28))[0] = a;
+							((uint8_t*)(di + esi + 0x29))[0] = b & 0xFF;
+							((uint8_t*)(di + esi + 0x2A))[0] = (b >> 8) & 0xFF;
+							d = d_tmp;
+						}
+						a = ((uint8_t*)ebp)[0];
+						ebp++;
+						if (a == 0xFF)
+						{
+							a = ((uint16_t*)ebp)[0];
+							ebp += 2;
+						}
+						((uint32_t*)(di + esi + 0x7B))[0] = (uint32_t)ebp;
+						ebp += a;
+					}
+					d++;
+					di += 0x65;
+					if (d >= 4) break;
+				}
+				if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
+				{
+					a = 0;
+					while (true)
+					{
+						int d = ((uint8_t*)(a + esi + 0xC))[0];
+						if (d != 0xFF)
+						{
+							uint8_t* di = (uint8_t*)0x9E32F8;
+							while (true)
+							{
+								if (di[0] != 0xFF)
+								{
+									di++;
+									continue;
+								}
+								d--;
+								if (d < 0) break;
+								di++;
+							}
+							d = b_tmp;
+							while (true)
+							{
+								int tmp = di[0];
+								di[0] = d;
+								d = tmp;
+								di++;
+								if ((uint32_t)di >= 0x9E34E4) break;
+							}
+						}
+						a++;
+						if (a >= 3) break;
+					}
+				}
+				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+				di = ((uint32_t*)(esi + 0xC))[0] & 0xFFFFFF;
+				if (((uint32_t*)(esi + 8))[0] & 0x1000) di |= 0x1000000;
+				RCT2_GLOBAL(0xF433DD, uint32_t) = di;
+				return 0;// flags;
+			}
+			else
+			{
+				int d = 0;
+				int di = 0;
+				while (true)
+				{
+					/*if (!(((uint16_t*)(di + esi + 0x26))[0] & 1))*/
+					d++;
+					di += 0x65;
+					if (d >= 4) break;
+				}
+				if (((uint8_t*)(esi + 0x1B2))[0] > 0x4B) return 1;
+				if (((uint8_t*)(esi + 0x1B3))[0] > 0x4B) return 1;
+				if (((uint8_t*)(esi + 0x1B4))[0] > 0x4B) return 1;
+				return 0;
+			}
+		}
+		else
+		{
+			((rct_ride_type*)esi)->name = 0;
+			((rct_ride_type*)esi)->description = 0;
+			((rct_ride_type*)esi)->var_004 = 0;
+			int d = 0;
+			int di = 0;
+			while (true)
+			{
+				((uint32_t*)(esi + di + 0x32))[0] = 0;
+				((uint32_t*)(esi + di + 0x36))[0] = 0;
+				((uint32_t*)(esi + di + 0x3A))[0] = 0;
+				((uint32_t*)(esi + di + 0x3E))[0] = 0;
+				((uint32_t*)(esi + di + 0x42))[0] = 0;
+				((uint32_t*)(esi + di + 0x46))[0] = 0;
+				((uint32_t*)(esi + di + 0x4A))[0] = 0;
+				((uint32_t*)(esi + di + 0x4E))[0] = 0;
+				((uint32_t*)(esi + di + 0x52))[0] = 0;
+				((uint32_t*)(esi + di + 0x56))[0] = 0;
+				((uint32_t*)(esi + di + 0x5A))[0] = 0;
+				((uint32_t*)(esi + di + 0x5E))[0] = 0;
+				((uint32_t*)(esi + di + 0x66))[0] = 0;
+				((uint32_t*)(esi + di + 0x62))[0] = 0;
+				((uint32_t*)(esi + di + 0x6A))[0] = 0;
+				((uint16_t*)(esi + di + 0x30))[0] = 0;
+				if (((uint16_t*)(esi + di + 0x2C))[0] & 0x400)
+				{
+					((uint8_t*)(esi + di + 0x28))[0] = 0;
+					((uint8_t*)(esi + di + 0x29))[0] = 0;
+					((uint8_t*)(esi + di + 0x2A))[0] = 0;
+				}
+				((uint8_t*)(esi + di + 0x1C))[0] = 0;
+				((uint8_t*)(esi + di + 0x1D))[0] = 0;
+				((uint32_t*)(esi + di + 0x7B))[0] = 0;
+				d++;
+				di += 0x65;
+				if (d >= 4) break;
+			}
+			((uint32_t*)(esi + 0x1AE))[0] = 0;
+			return flags;
+		}
+	}
+	else
+	{
+		if (!((flags >> 8) & 0xFF))
+		{
+			int image_id = ((rct_ride_type*)ebp)->var_004;
+			if (((rct_ride_type*)ebp)->var_00C == 0xFF)
+			{
+				image_id++;
+				if (((rct_ride_type*)ebp)->var_00D == 0xFF) image_id++;
+			}
+			gfx_draw_sprite(dpi, image_id, ecx - 56, edx - 56, ebp);
+			return flags;
+		}
+		else
+		{
+			int width = ((uint16_t*)(esi + 0x30))[0];
+			width += ((uint16_t*)(esi + 0x2C))[0];
+			width -= ecx;
+			width -= 4;
+			int format_args = ((rct_ride_type*)ebp)->description;
+			if (!(((rct_ride_type*)ebp)->var_008 & 0x1000))
+			{
+				format_args = ((rct_ride_type*)ebp)->var_00C;
+				if ((format_args & 0xFF) == 0xFF)
+				{
+					format_args = ((rct_ride_type*)ebp)->var_00D;
+					if ((format_args & 0xFF) == 0xFF) format_args = ((rct_ride_type*)ebp)->var_00E;
+				}
+				format_args += 0x200;
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = format_args;
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx + 5, width, 1191, 0);
+			return flags;
+		}
+	}
 }
 
 int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
@@ -424,12 +795,12 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		{
 			if ((flags & 0xFF) <= 1)//0
 			{
-				uint8_t* ebp = esi + 0xE;
-				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
-				int a = sub_6A9ED1(&ebp);
-				((uint32_t*)(esi + 2))[0] = a;
-				a += 0x6D;
-				((uint32_t*)(esi + 6))[0] = a;
+				uint8_t* pStringTable = (uint8_t*)(esi + 0xE);
+				((rct_path_type*)esi)->pad_00 = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+				int image_id = sub_6A9ED1(&pStringTable);
+				((rct_path_type*)esi)->image = image_id;
+				image_id += 0x6D;
+				((rct_path_type*)esi)->pad_06 = image_id;
 				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
 				int b = -1;
@@ -438,7 +809,7 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					b++;
 					if (b >= 0x10) break;
 					uint8_t* edi = object_entry_groups[5].chunks[ebx];
-					if (edi == 0xFFFFFFFF) continue;
+					if ((uint32_t)edi == 0xFFFFFFFF) continue;
 					if (!(edi[0xB] & 4))
 					{
 						RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
@@ -450,15 +821,15 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			}
 			else
 			{
-				if (((uint8_t*)(esi + 0xA))[0] >= 2) return 1;//actually the carry bit should be set (stc)
+				if (((rct_path_type*)esi)->pad_0A >= 2) return 1;//actually the carry bit should be set (stc)
 				else return 0;
 			}
 		}
 		else
 		{
-			((rct_string_id*)esi)[0] = 0;
-			((uint32_t*)(esi + 2))[0] = 0;
-			((uint32_t*)(esi + 6))[0] = 0;
+			((rct_path_type*)esi)->pad_00 = 0;
+			((rct_path_type*)esi)->image = 0;
+			((rct_path_type*)esi)->pad_06 = 0;
 			return flags;
 		}
 	}
@@ -467,14 +838,8 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		if (!((flags >> 8) & 0xFF))
 		{
 			//Draws preview for scenario editor!
-			int b = ((uint32_t*)(ebp + 2))[0];
-			b += 0x47;
-			ecx -= 0x31;
-			edx -= 0x11;
-			gfx_draw_sprite(dpi, b, ecx, edx, ebp);
-			b++;
-			ecx += 0x35;
-			gfx_draw_sprite(dpi, b, ecx, edx, ebp);
+			gfx_draw_sprite(dpi, ((rct_path_type*)ebp)->image + 71, ecx - 49, edx - 17, ebp);
+			gfx_draw_sprite(dpi, ((rct_path_type*)ebp)->image + 72, ecx + 4, edx - 17, ebp);
 		}
 		return flags;
 	}
@@ -488,10 +853,10 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 		{
 			if ((flags & 0xFF) <= 1)//0
 			{
-				uint8_t* ebp = esi + 8;
-				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
-				int a = sub_6A9ED1(&ebp);
-				((uint32_t*)(esi + 2))[0] = a;
+				uint8_t* pStringTable = (uint8_t*)(esi + 8);
+				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+				int image_id = sub_6A9ED1(&pStringTable);
+				((uint32_t*)(esi + 2))[0] = image_id;
 				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 				return flags;
 			}
@@ -511,12 +876,12 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 	{
 		if (!((flags >> 8) & 0xFF))
 		{
-			dpi = clip_drawpixelinfo(dpi, ecx - 0x38, 0x70, edx - 0x38, 0x70);
+			dpi = clip_drawpixelinfo(dpi, ecx - 56, 112, edx - 56, 112);
 			if (dpi == NULL) return flags;
-			int b = ((uint32_t*)(ebp + 2))[0];
-			gfx_draw_sprite(dpi, b + 1, 0x18, 0x44, ebp);
-			gfx_draw_sprite(dpi, b, 0x38, 0x54, ebp);
-			gfx_draw_sprite(dpi, b + 2, 0x58, 0x64, ebp);
+			int image_id = ((uint32_t*)(ebp + 2))[0];
+			gfx_draw_sprite(dpi, image_id + 1, 24, 68, ebp);
+			gfx_draw_sprite(dpi, image_id, 56, 84, ebp);
+			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
 		}
 		return flags;
 	}
@@ -530,14 +895,14 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 		{
 			if ((flags & 0xFF) <= 1)//0
 			{
-				uint8_t* ebp = esi + 0x10;
-				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
-				int a = sub_6A9ED1(&ebp);
-				((uint32_t*)(esi + 2))[0] = a;
-				a++;
-				((uint32_t*)(esi + 6))[0] = a;
-				a += 3;
-				((uint32_t*)(esi + 0xA))[0] = a;
+				uint8_t* pStringTable = (uint8_t*)(esi + 0x10);
+				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+				int image_id = sub_6A9ED1(&pStringTable);
+				((uint32_t*)(esi + 2))[0] = image_id;
+				image_id++;
+				((uint32_t*)(esi + 6))[0] = image_id;
+				image_id += 3;
+				((uint32_t*)(esi + 0xA))[0] = image_id;
 				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 				if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
 				{
@@ -562,10 +927,7 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 	}
 	else
 	{
-		if (!((flags >> 8) & 0xFF))
-		{
-			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, esi);
-		}
+		if (!((flags >> 8) & 0xFF)) gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
 		return flags;
 	}
 }
@@ -579,10 +941,10 @@ int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		{
 			if ((flags & 0xFF) <= 1)//0
 			{
-				uint8_t* ebp = esi + 8;
-				((rct_string_id*)esi)[0] = object_get_localised_text(&ebp, ecx, ebx, 0);
-				((rct_string_id*)esi)[1] = object_get_localised_text(&ebp, ecx, ebx, 1);
-				((rct_string_id*)esi)[2] = object_get_localised_text(&ebp, ecx, ebx, 2);
+				uint8_t* pStringTable = (uint8_t*)(esi + 8);
+				((rct_stex_entry*)esi)->scenario_name = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+				((rct_stex_entry*)esi)->park_name = object_get_localised_text(&pStringTable, ecx, ebx, 1);
+				((rct_stex_entry*)esi)->details = object_get_localised_text(&pStringTable, ecx, ebx, 2);
 				if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 				return flags;
 			}
@@ -593,26 +955,23 @@ int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		}
 		else//1
 		{
-			((rct_string_id*)esi)[0] = 0;
-			((rct_string_id*)esi)[1] = 0;
-			((rct_string_id*)esi)[2] = 0;
+			((rct_stex_entry*)esi)->scenario_name = 0;
+			((rct_stex_entry*)esi)->park_name = 0;
+			((rct_stex_entry*)esi)->details = 0;
 			return flags;
 		}
 	}
 	else//3
 	{
-		if (!((flags >> 8) & 0xFF))
-		{
-			gfx_draw_string_centred(dpi, 0xCFE, ecx, edx, 0, esi);
-		}
+		if (!((flags >> 8) & 0xFF)) gfx_draw_string_centred(dpi, 0xCFE, ecx, edx, 0, (void*)esi);
 		else
 		{
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = *((uint16_t*)(ebp + 4));
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = ((rct_stex_entry*)ebp)->details;
 			int width = *((uint16_t*)(esi + 0x2C));
 			width += *((uint16_t*)(esi + 0x30));
 			width -= 4;
 			width -= ecx;
-			gfx_draw_string_left_wrapped(dpi, RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
 		}
 		return flags;
 	}
@@ -627,14 +986,16 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	//just use the rct2 function as long as this is not complete!
 	switch (type)
 	{
+	case OBJECT_TYPE_RIDE:
+		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATHS:
-		return paint_path_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PARK_ENTRANCE:
-		return paint_park_entrance_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+		return paint_park_entrance_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_WATER:
-		return paint_water_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+		return paint_water_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_SCENARIO_TEXT:
-		return paint_stex_entry(eax, ebx, ecx, edx, edi, esi, ebp);
+		return paint_stex_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	default:
 		return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
 	}

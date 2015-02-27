@@ -657,7 +657,7 @@ int game_load_save(const char *path)
 	}
 
 	// The rest is the same as in scenario load and play
-	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 	map_update_tile_pointers();
 	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;

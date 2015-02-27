@@ -1130,7 +1130,7 @@ int scenario_save(char *path, int flags)
 	fclose(file);
 
 	if (!(flags & 0x80000000))
-		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
