@@ -30,7 +30,20 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
  */
 void create_balloon(int x, int y, int z, int colour)
 {
-	RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
+	//RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
+	rct_sprite* sprite = create_sprite(2);
+	if (sprite != NULL)
+	{
+		sprite->pad_00[0x14] = 13;
+		sprite->pad_00[9] = 22;
+		sprite->pad_00[0x15] = 11;
+		sprite->pad_00[0] = 2;
+		sprite_move(x, y, z, sprite);
+		sprite->pad_00[1] = 7;
+		*((uint16_t*)&sprite->pad_00[0x26]) = 0;
+		sprite->pad_00[0x2C] = colour;
+		sprite->pad_00[0x24] = 0;
+	}
 }
 
 /**
