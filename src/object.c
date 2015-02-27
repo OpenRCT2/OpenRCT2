@@ -882,6 +882,7 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 			gfx_draw_sprite(dpi, image_id + 1, 24, 68, ebp);
 			gfx_draw_sprite(dpi, image_id, 56, 84, ebp);
 			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
+			rct2_free(dpi);
 		}
 		return flags;
 	}

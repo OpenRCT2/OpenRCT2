@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../interface/viewport.h"
 #include "sprite.h"
+#include "../scenario.h"
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
@@ -52,7 +53,46 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void create_duck(int targetX, int targetY)
 {
-	RCT2_CALLPROC_X(0x0067440F, targetX, 0, targetY, 0, 0, 0, 0);
+	//RCT2_CALLPROC_X(0x0067440F, targetX, 0, targetY, 0, 0, 0, 0);
+	rct_sprite* sprite = create_sprite(2);
+	if (sprite != NULL)
+	{
+		sprite->pad_00[0] = 2;
+		sprite->pad_00[1] = 8;
+		sprite->pad_00[0x14] = 9;
+		sprite->pad_00[9] = 0xC;
+		sprite->pad_00[0x15] = 9;
+		int ebx = scenario_rand();
+		int ebp = ebx;
+		int edi = ebx;
+		ebp >>= 8;
+		edi >>= 16;
+		edi &= 0x3F;
+		ebp &= 0x1E;
+		targetX += ebp;
+		targetY += ebp;
+		*((uint16_t*)&sprite->pad_00[0x30]) = targetX;
+		*((uint16_t*)&sprite->pad_00[0x32]) = targetY;
+		switch (ebx & 3)
+		{
+		case 0:
+			targetX = 8191 - edi;
+			break;
+		case 1:
+			targetY = edi;
+			break;
+		case 2:
+			targetX = edi;
+			break;
+		case 3:
+			targetY = 8191 - edi;
+			break;
+		}
+		sprite->pad_00[0x1E] = (ebx << 3) & 0xFF;
+		sprite_move(targetX, targetY, 496, sprite);
+		sprite->pad_00[0x48] = 0;
+		*((uint16_t*)&sprite->pad_00[0x26]) = 0;
+	}
 }
 
 /* rct2: 0x006EC473 */
