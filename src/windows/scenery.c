@@ -690,9 +690,11 @@ static void window_scenery_update(rct_window *w)
 
 	gfx_invalidate_screen();
 	
-	if (!window_scenery_is_scenery_tool_active())
+	if (!window_scenery_is_scenery_tool_active()){
 		window_close(w);
-	
+		return;
+	}
+
 	if (window_scenery_is_repaint_scenery_tool_on == 1) { // the repaint scenery tool is active
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
 	} else {
