@@ -69,6 +69,17 @@ typedef struct{
 	uint8 flags;
 }rct_track_element;
 
+/* Track Scenery entry size: 0x16 */
+typedef struct{
+	rct_object_entry scenery_object; // 0x00
+	uint8 x;                        // 0x10
+	uint8 y;                        // 0x11
+	uint8 z;                        // 0x12
+	uint8 flags;                    // 0x13 direction quadrant tertiary colour
+	uint8 primary_colour;           // 0x14
+	uint8 secondary_colour;         // 0x15
+}rct_track_scenery;
+
 enum{
 	TRACK_ELEMENT_FLAG_CHAIN_LIFT = (1<<7),
 	TRACK_ELEMENT_FLAG_INVERTED = (1<<6),
@@ -216,5 +227,6 @@ int track_delete();
 void reset_track_list_cache();
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(int bl, int x, int y, int z);
+int save_track_design(uint8 rideIndex);
 
 #endif

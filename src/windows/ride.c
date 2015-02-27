@@ -28,10 +28,12 @@
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "../sprites.h"
 #include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "../audio/audio.h"
 #include "dropdown.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
@@ -4390,6 +4392,50 @@ static void window_ride_music_paint()
 
 #pragma region Measurements
 
+/* rct2: 0x006D2804 when al == 0*/
+static void cancel_scenery_selection(){
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
+	RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
+	unpause_sounds();
+
+	rct_window* main_w = window_get_main();
+
+	if (main_w){
+		main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+	}
+
+	gfx_invalidate_screen();
+	tool_cancel();
+}
+
+/* rct2: 0x006D27A3 */
+static void setup_scenery_selection(rct_window* w){
+	rct_ride* ride = GET_RIDE(w->number);
+
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
+		cancel_scenery_selection();
+	}
+
+	while (tool_set(w, 0, 12));
+
+	RCT2_GLOBAL(0x00F64DE8, uint8) = (uint8)w->number;
+	RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
+
+	RCT2_GLOBAL(0x00F63674, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
+	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
+
+	pause_sounds();
+
+	rct_window* w_main = window_get_main();
+
+	if (w_main){
+		w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+	}
+
+	gfx_invalidate_screen();
+}
+
 /**
  * 
  * rct2: 0x006D3026
@@ -4410,21 +4456,23 @@ static void window_ride_measurements_design_select_nearby_scenery()
 
 /**
  * 
- * rct2: 0x006AD4CD
- */
-static void window_ride_measurements_design_save(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006D2804, 1, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
  * rct2: 0x006AD4DA
  */
 static void window_ride_measurements_design_cancel()
 {
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
-		RCT2_CALLPROC_X(0x006D2804, 0, 0, 0, 0, 0, 0, 0);
+		cancel_scenery_selection();
+}
+
+/**
+ * 
+ * rct2: 0x006AD4CD
+ */
+static void window_ride_measurements_design_save(rct_window *w)
+{
+	if (save_track_design((uint8)w->number) == 0) return;
+
+	window_ride_measurements_design_cancel();
 }
 
 /**
@@ -4536,9 +4584,9 @@ static void window_ride_measurements_dropdown()
 		dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
 
 	if (dropdownIndex == 0)
-		RCT2_CALLPROC_X(0x006D264D, 0, 0, 0, 0, (int)w, 0, 0);
+		save_track_design((uint8)w->number);
 	else
-		RCT2_CALLPROC_X(0x006D27A3, 0, 0, 0, 0, (int)w, 0, 0);
+		setup_scenery_selection(w);
 }
 
 /**
