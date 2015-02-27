@@ -28,6 +28,7 @@
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "../sprites.h"
 #include "../windows/error.h"
 #include "../world/map.h"
@@ -4410,21 +4411,23 @@ static void window_ride_measurements_design_select_nearby_scenery()
 
 /**
  * 
- * rct2: 0x006AD4CD
- */
-static void window_ride_measurements_design_save(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006D2804, 1, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
  * rct2: 0x006AD4DA
  */
 static void window_ride_measurements_design_cancel()
 {
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
-		RCT2_CALLPROC_X(0x006D2804, 0, 0, 0, 0, 0, 0, 0);
+		sub_6D2804(0, 0);
+}
+
+/**
+ * 
+ * rct2: 0x006AD4CD
+ */
+static void window_ride_measurements_design_save(rct_window *w)
+{
+	if (sub_6D2804(1, (uint8)w->number) == 0) return;
+
+	window_ride_measurements_design_cancel();
 }
 
 /**

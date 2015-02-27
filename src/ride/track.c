@@ -1212,7 +1212,7 @@ int sub_6D2804(int al, uint8 rideIndex){
 		return 0;
 	}
 
-	rct_track_scenery* edi = (rct_track_scenery*)(RCT2_GLOBAL(0x00F44058, uint8*)--);
+	rct_track_scenery* edi = (rct_track_scenery*)(RCT2_GLOBAL(0x00F44058, uint8*) - 1);
 	rct_track_scenery* esi = RCT2_ADDRESS(0x009DA193, rct_track_scenery);
 
 	while (1){
@@ -1231,6 +1231,7 @@ int sub_6D2804(int al, uint8 rideIndex){
 
 			// Direction of connection on path
 			uint8 direction = edi->flags & 0xF;
+			// Rotate the direction by the track direction
 			direction = ((direction << 4) >> RCT2_GLOBAL(0x00F4414D, uint8));
 			
 			edi->flags &= 0xF0;
@@ -1255,6 +1256,102 @@ int sub_6D2804(int al, uint8 rideIndex){
 			edi->flags &= 0xF0;
 			edi->flags |= (direction & 3) | ((quadrant & 3) << 2);
 		}
-		//6d292f
+		int x = edi->x * 32 - RCT2_GLOBAL(0x00F44142, sint16);
+		int y = edi->y * 32 - RCT2_GLOBAL(0x00F44144, sint16);
+
+		switch (RCT2_GLOBAL(0x00F4414D, uint8)){
+		case 0:
+			break;
+		case 1:
+		{
+			int temp_y = y;
+			y = x;
+			x = -y; 
+		}
+			break;
+		case 2:
+			x = -x;
+			y = -y;
+			break;
+		case 3:
+		{
+			int temp_x = x;
+			x = y;
+			y = -x;
+		}
+			break;
+		}
+
+		x /= 32;
+		y /= 32;
+
+		if (x > 127 || y > 127 || x < -126 || y < -126){
+			window_error_open(3346, 3347);
+			return 0;
+		}
+
+		edi->x = x;
+		edi->y = y;
+
+		int z = edi->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
+
+		z /= 8;
+
+		if (z > 127 || z < -126){
+			window_error_open(3346, 3347);
+			return 0;
+		}
+
+		edi->z = z;
+
+		edi++;
+		esi++;
 	}
+
+	uint8* track_pointer = (uint8*)edi;
+	//Skip end of scenery elements byte
+	track_pointer++;
+	while (track_pointer < RCT2_ADDRESS(0x009DE217, uint8))*track_pointer++ = 0;
+
+	char track_name[MAX_PATH];
+	// Get track name
+	format_string(track_name, ride->name, &ride->name_arguments);
+
+	char path[MAX_PATH];
+	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	strcat(path, ".TD6");
+
+	// Save track design
+	format_string(RCT2_ADDRESS(0x141ED68, char), 2306, NULL);
+
+	// Track design files
+	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
+
+	pause_sounds();
+
+	int result = platform_open_common_file_dialog(
+		0, 
+		RCT2_ADDRESS(0x141ED68, char), 
+		path, 
+		"*.TD?", 
+		RCT2_ADDRESS(0x141EE68, char));
+
+	unpause_sounds();
+
+	if (result == 0){
+		ride_list_item item = { .type = 0xFD, .entry_index = 0 };
+		track_load_list(item);
+		return 1;
+	}
+
+	// Until 0x006771DC is finished we required to copy the path name.
+	strcpy(RCT2_ADDRESS(0x141EF68, char), path);
+	// This is the function that actually saves the track to a file
+	RCT2_CALLPROC_EBPSAFE(0x006771DC);
+
+	ride_list_item item = { .type = 0xFC, .entry_index = 0 };
+	track_load_list(item);
+	gfx_invalidate_screen();
+	return 1;
 }
