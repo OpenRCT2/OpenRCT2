@@ -343,144 +343,105 @@ void window_construction_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	window_paint_get_registers(w, dpi);
-	//RCT2_CALLPROC_X(0x6C6B86, 0, 0, 0, 0, w, dpi, 0);
-	//return;
 	window_draw_widgets(w, dpi);
 	if (RCT2_GLOBAL(0x9D7C00, uint8_t) == 0) return;
 	uint32_t eax = 0, esi = (uint32_t)w, ebp = 0;//nothing
 	uint32_t ebx = 0, ecx = 0, edx = 0, edi = (uint32_t)dpi;//returns
-	if (RCT2_CALLFUNC_X(0x6CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) &0x100) return;
+	if (RCT2_CALLFUNC_X(0x6CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100) return;
 	RCT2_GLOBAL(0xF44133, uint8_t) = edx & 0xFF;
 	RCT2_GLOBAL(0xF44134, uint8_t) = (ebx >> 8) & 0xFF;
 	RCT2_GLOBAL(0xF44135, uint8_t) = (edx >> 8) & 0xFF;
 	edx >>= 16;
 	RCT2_GLOBAL(0xF44136, int16_t) = edx;
-	eax = RCT2_GLOBAL(0xF44133, uint8_t);
-	eax *= 0x260;
-	eax = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_LIST + eax, uint8_t);
-	eax = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + eax * 8, uint32_t);
-	RCT2_GLOBAL(0xF44064, uint32_t) = eax;
+	rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0xF44133, uint8));
+	RCT2_GLOBAL(0xF44064, uint32_t) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32_t);
+	// 0x009D7C04 is a widget address remember to change when widget implemented 
+	short width = RCT2_GLOBAL(0x9D7C04, int16_t) - RCT2_GLOBAL(0x9D7C02, int16_t) - 1;
+	short height = RCT2_GLOBAL(0x9D7C08, int16_t) - RCT2_GLOBAL(0x9D7C06, int16_t) - 1;
 	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(
 		dpi,
+		// 0x009D7C02 is a widget address remember to change when widget implemented
 		w->x + RCT2_GLOBAL(0x9D7C02, int16_t) + 1,
-		RCT2_GLOBAL(0x9D7C04, int16_t) - RCT2_GLOBAL(0x9D7C02, int16_t) - 1,
+		width,
 		w->y + RCT2_GLOBAL(0x9D7C06, int16_t) + 1,
-		RCT2_GLOBAL(0x9D7C08, int16_t) - RCT2_GLOBAL(0x9D7C06, int16_t) - 1);
+		height);
 	if (clip_dpi != NULL)
 	{
-		short bp = RCT2_GLOBAL(0x9D7C04, int16_t) - RCT2_GLOBAL(0x9D7C02, int16_t) - 1;
-		short si = RCT2_GLOBAL(0x9D7C08, int16_t) - RCT2_GLOBAL(0x9D7C06, int16_t) - 1;
 		rct_preview_track *trackBlock;
 		ecx = RCT2_GLOBAL(0xF44135, uint8_t);
-		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000)
-		{
-			trackBlock = RCT2_GLOBAL(0x994A38 + ecx * 4, rct_preview_track*);
-		}
-		else trackBlock = RCT2_GLOBAL(0x994638 + ecx * 4, rct_preview_track*);
-		while (true)
-		{
-			if (trackBlock[1].var_00 == 0xFF) break;
-			trackBlock++;
-		}
-		//TODO: change these names
-		short ax = trackBlock->x;
-		short dx = ((uint16_t*)&trackBlock->pad_05)[0];
-		short cx = trackBlock->y;
-		if (trackBlock->unk_09 & 2) ax = cx = 0;
+		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) trackBlock = RCT2_ADDRESS(0x994A38, rct_preview_track*)[ecx];//RCT2_GLOBAL(0x994A38 + ecx * 4, rct_preview_track*);
+		else trackBlock = RCT2_ADDRESS(0x994638, rct_preview_track*)[ecx];//RCT2_GLOBAL(0x994638 + ecx * 4, rct_preview_track*);
+		while ((trackBlock + 1)->var_00 != 0xFF) trackBlock++;
+		short x = trackBlock->x;
+		short z = trackBlock->z;
+		short y = trackBlock->y;
+		if (trackBlock->var_09 & 2) x = y = 0;
 		short tmp;
 		switch (RCT2_GLOBAL(0xF44134, uint8_t) & 3)
 		{
 		case 1:
-			tmp = ax;
-			ax = cx;
-			cx = -tmp;
+			tmp = x;
+			x = y;
+			y = -tmp;
 			break;
 		case 2:
-			ax = -ax;
-			cx = -cx;
+			x = -x;
+			y = -y;
 			break;
 		case 3:
-			tmp = ax;
-			ax = -cx;
-			cx = tmp;
+			tmp = x;
+			x = -y;
+			y = tmp;
 			break;
 		case 0:
 			break;
 		}
 		//this is actually case 0, but the other cases all jump to it
-		ax /= 2;
-		cx /= 2;
-		ax += 4112;
-		cx += 4112;
-		dx += 1024;
+		x /= 2;
+		y /= 2;
+		x += 4112;
+		y += 4112;
+		z += 1024;
 		ebx = RCT2_GLOBAL(0xF44135, uint8_t);
 		short bx;
-		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000)
-			bx = RCT2_GLOBAL(0x9984A2 + ebx * 8, uint8_t);
+		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) bx = RCT2_GLOBAL(0x9984A2 + ebx * 8, uint8_t);
 		else bx = RCT2_GLOBAL(0x997CA2 + ebx * 8, uint8_t);
-		dx -= bx;
+		z -= bx;
+		int start_x = x;
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
 		{
 		case 0:
-			bx = ax;
-			ax = -ax;
-			ax += cx;
-			cx += bx;
-			cx /= 2;
-			cx -= dx;
+			x = y - x;
+			y = (y + start_x) / 2 - z;
 			break;
 		case 1:
-			ax = -ax;
-			bx = ax;
-			ax -= cx;
-			cx += bx;
-			cx /= 2;
-			cx -= dx;
+			x = -x - y;
+			y = (y - start_x) / 2 - z;
 			break;
 		case 2:
-			bx = ax;
-			ax -= cx;
-			cx = -cx;
-			cx -= bx;
-			cx /= 2;
-			cx -= dx;
+			x -= y;
+			y = (-y - start_x) / 2 - z;
 			break;
 		case 3:
-			bx = ax;
-			ax += cx;
-			cx = -cx;
-			cx += bx;
-			cx /= 2;
-			cx -= dx;
+			x += y;
+			y = (-y + start_x) / 2 - z;
 			break;
 		}
-		bp >>= 1;
-		si >>= 1;
-		si += 16;
-		ax -= bp;
-		cx -= si;
-		clip_dpi->x += ax;
-		clip_dpi->y += cx;
+		clip_dpi->x += x - width / 2;
+		clip_dpi->y += y - height / 2 - 16;
 		RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = clip_dpi;
 		uint32_t d = RCT2_GLOBAL(0xF44136, int16_t) << 16;
-		d |= RCT2_GLOBAL(0xF44133, uint8_t);
+		d |= RCT2_GLOBAL(0xF44133, uint8_t);// Ride id
 		d |= RCT2_GLOBAL(0xF44135, uint8_t) << 8;
-		RCT2_CALLPROC_X(0x6CBCE2, 0x1000, (((uint16_t)bx) & 0xFF) | (RCT2_GLOBAL(0xF44134, uint8_t) << 8), 0x1000, d, si, 0x400, bp);
+		RCT2_CALLPROC_X(0x6CBCE2, 0x1000, (((uint16_t)bx) & 0xFF) | (RCT2_GLOBAL(0xF44134, uint8_t) << 8), 0x1000, d, width, 0x400, height);
+		rct2_free(clip_dpi);
 	}
-	short cx = (RCT2_GLOBAL(0x9D7C02, int16_t) + RCT2_GLOBAL(0x9D7C04, int16_t)) / 2 + w->x;
-	short dx = RCT2_GLOBAL(0x9D7C08, int16_t) + w->y - 23;
-	if (RCT2_GLOBAL(0xF440A6, uint8_t) != 4)
-	{
-		gfx_draw_string_centred(dpi, 1407, cx, dx, 0, w);
-	}
-	dx += 11;
-	if (RCT2_GLOBAL(0xF44070, uint32_t) != 0x80000000)
-	{
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32_t) & 0x800))
-		{
-			gfx_draw_string_centred(dpi, 1408, cx, dx, 0, (void*)0xF44070);
-		}
-	}
+	short string_x = (RCT2_GLOBAL(0x9D7C02, int16_t) + RCT2_GLOBAL(0x9D7C04, int16_t)) / 2 + w->x;
+	short string_y = RCT2_GLOBAL(0x9D7C08, int16_t) + w->y - 23;
+	if (RCT2_GLOBAL(0xF440A6, uint8_t) != 4) gfx_draw_string_centred(dpi, 1407, string_x, string_y, 0, w);
+	string_y += 11;
+	if (RCT2_GLOBAL(0xF44070, uint32_t) != 0x80000000 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32_t) & 0x800))
+		gfx_draw_string_centred(dpi, 1408, string_x, string_y, 0, (void*)0xF44070);
 }
 
 //0x006CD45B

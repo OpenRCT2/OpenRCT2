@@ -131,10 +131,10 @@ void openrct2_launch()
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
-	if (!platform_lock_single_instance()) {
+	/*if (!platform_lock_single_instance()) {
 		fprintf(stderr, "OpenRCT2 is already running.\n");
 		return;
-	}
+	}*/
 
 	get_system_info();
 	audio_init();
