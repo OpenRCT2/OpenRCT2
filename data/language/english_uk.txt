@@ -2683,10 +2683,10 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
+STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2720,8 +2720,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
+STR_2718    :(up)
+STR_2719    :(new file)
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2751,7 +2751,7 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
+STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom

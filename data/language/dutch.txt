@@ -2679,15 +2679,15 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
+STR_2681    :{MEDIUMFONT}{BLACK}Krijg 5.000 extra geld
+STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
+STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
+STR_2684    :{MEDIUMFONT}{BLACK}Er arriveert een grote groep bezoekers
+STR_2685    :Parameters voor Simplex noise
+STR_2686    :Minimum:
+STR_2687    :Maximum:
+STR_2688    :Basisfrequentie:
+STR_2689    :Octaven:
 STR_2690    :Kaartgenerator
 STR_2691    :{WINDOW_COLOUR_2}Basishoogte:
 STR_2692    :{WINDOW_COLOUR_2}Waterniveau:
@@ -2698,13 +2698,13 @@ STR_2696    :Bomen plaatsen
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
-STR_2705    :???
-STR_2706    :???
+STR_2700    :Automatisch opslaan:
+STR_2701    :Elke week
+STR_2702    :Elke 2 weken
+STR_2703    :Elke maand
+STR_2704    :Elke 4 maanden
+STR_2705    :Elk jaar
+STR_2706    :Nooit
 STR_2707    :Open nieuw scherm
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
@@ -2764,7 +2764,7 @@ STR_2762    :Betalen per rit
 STR_2763    :???
 STR_2764    :Tevreden gasten
 STR_2765    :Grote groep
-STR_2766    :???
+STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
 STR_2768    :Weer vrijgeven
 STR_2769    :Park openen
