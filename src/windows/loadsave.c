@@ -502,7 +502,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		}
 		if (!topLevel){
 			listItem = &_listItems[_listItemsCount];
-			strncpy(listItem->name, "(up) ", sizeof(listItem->name));
+			strncpy(listItem->name, language_get_string(2718), sizeof(listItem->name));
 			memset(listItem->path, '\0', MAX_PATH);
 			strncpy(listItem->path, directory, lastSlash + 1);
 			_listItemsCount++;
@@ -511,7 +511,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 
 	if (includeNewItem) {
 		listItem = &_listItems[_listItemsCount];
-		strncpy(listItem->name, "(new file)", sizeof(listItem->name));
+		strncpy(listItem->name, language_get_string(2719), sizeof(listItem->name));
 		listItem->path[0] = 0;
 		_listItemsCount++;
 	}
