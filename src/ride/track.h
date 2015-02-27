@@ -227,6 +227,6 @@ int track_delete();
 void reset_track_list_cache();
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(int bl, int x, int y, int z);
-int sub_6D2804(int al, uint8 rideIndex);
+int save_track_design(uint8 rideIndex);
 
 #endif

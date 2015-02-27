@@ -1171,93 +1171,54 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 	return aBank == bBank && aAngle == bAngle;
 }
 
-
-int sub_6D2804(int al, uint8 rideIndex){
-
-	if (al == 0){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
-		RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
-		unpause_sounds();
-
-		rct_window* main_w = window_get_main();
-
-		if (main_w){
-			main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
-		}
-
-		gfx_invalidate_screen();
-		tool_cancel();
-		return 1;
-	}
-
-	rct_ride* ride = GET_RIDE(rideIndex);
-
-	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
-		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
-		return 0;
-	}
-
-	if (ride->ratings.excitement == 0xFFFF){
-		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
-		return 0;
-	}
-
-	if (!(RCT2_ADDRESS(0x0097CF40, uint32)[ride->type] & 0x10000000)){
-		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
-		return 0;
-	}
-
-	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
-		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
-		return 0;
-	}
-
-	rct_track_scenery* edi = (rct_track_scenery*)(RCT2_GLOBAL(0x00F44058, uint8*) - 1);
-	rct_track_scenery* esi = RCT2_ADDRESS(0x009DA193, rct_track_scenery);
+/* Based on rct2: 0x006D2897 */
+int copy_scenery_to_track(uint8** track_pointer){
+	rct_track_scenery* track_scenery = (rct_track_scenery*)(*track_pointer - 1);
+	rct_track_scenery* scenery_source = RCT2_ADDRESS(0x009DA193, rct_track_scenery);
 
 	while (1){
 		int ebx = 0;
-		memcpy(edi, esi, sizeof(rct_track_scenery));
-		if ((edi->scenery_object.flags & 0xFF) == 0xFF) break;
+		memcpy(track_scenery, scenery_source, sizeof(rct_track_scenery));
+		if ((track_scenery->scenery_object.flags & 0xFF) == 0xFF) break;
 
 		//0x00F4414D is direction of track?
-		if ((edi->scenery_object.flags & 0xF) == OBJECT_TYPE_PATHS){
+		if ((track_scenery->scenery_object.flags & 0xF) == OBJECT_TYPE_PATHS){
 
-			uint8 slope = (edi->flags & 0x60) >> 5;
+			uint8 slope = (track_scenery->flags & 0x60) >> 5;
 			slope -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			edi->flags &= 0x9F;
-			edi->flags |= ((slope & 3) << 5);
+			track_scenery->flags &= 0x9F;
+			track_scenery->flags |= ((slope & 3) << 5);
 
 			// Direction of connection on path
-			uint8 direction = edi->flags & 0xF;
+			uint8 direction = track_scenery->flags & 0xF;
 			// Rotate the direction by the track direction
 			direction = ((direction << 4) >> RCT2_GLOBAL(0x00F4414D, uint8));
-			
-			edi->flags &= 0xF0;
-			edi->flags |= (direction & 0xF) | (direction >> 4);
+
+			track_scenery->flags &= 0xF0;
+			track_scenery->flags |= (direction & 0xF) | (direction >> 4);
 
 		}
-		else if ((edi->scenery_object.flags & 0xF) == OBJECT_TYPE_WALLS){
-			uint8 direction = edi->flags & 3;
+		else if ((track_scenery->scenery_object.flags & 0xF) == OBJECT_TYPE_WALLS){
+			uint8 direction = track_scenery->flags & 3;
 
 			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			edi->flags &= 0xFC;
-			edi->flags |= (direction & 3);
+			track_scenery->flags &= 0xFC;
+			track_scenery->flags |= (direction & 3);
 		}
 		else {
-			uint8 direction = edi->flags & 3;
-			uint8 quadrant = (edi->flags & 0xC) >> 2;
+			uint8 direction = track_scenery->flags & 3;
+			uint8 quadrant = (track_scenery->flags & 0xC) >> 2;
 
 			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
 			quadrant -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			edi->flags &= 0xF0;
-			edi->flags |= (direction & 3) | ((quadrant & 3) << 2);
+			track_scenery->flags &= 0xF0;
+			track_scenery->flags |= (direction & 3) | ((quadrant & 3) << 2);
 		}
-		int x = edi->x * 32 - RCT2_GLOBAL(0x00F44142, sint16);
-		int y = edi->y * 32 - RCT2_GLOBAL(0x00F44144, sint16);
+		int x = track_scenery->x * 32 - RCT2_GLOBAL(0x00F44142, sint16);
+		int y = track_scenery->y * 32 - RCT2_GLOBAL(0x00F44144, sint16);
 
 		switch (RCT2_GLOBAL(0x00F4414D, uint8)){
 		case 0:
@@ -1266,7 +1227,7 @@ int sub_6D2804(int al, uint8 rideIndex){
 		{
 			int temp_y = y;
 			y = x;
-			x = -y; 
+			x = -y;
 		}
 			break;
 		case 2:
@@ -1290,10 +1251,10 @@ int sub_6D2804(int al, uint8 rideIndex){
 			return 0;
 		}
 
-		edi->x = x;
-		edi->y = y;
+		track_scenery->x = x;
+		track_scenery->y = y;
 
-		int z = edi->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
+		int z = track_scenery->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
 
 		z /= 8;
 
@@ -1302,15 +1263,48 @@ int sub_6D2804(int al, uint8 rideIndex){
 			return 0;
 		}
 
-		edi->z = z;
+		track_scenery->z = z;
 
-		edi++;
-		esi++;
+		track_scenery++;
+		scenery_source++;
 	}
 
-	uint8* track_pointer = (uint8*)edi;
+	*track_pointer = (uint8*)track_scenery;
 	//Skip end of scenery elements byte
-	track_pointer++;
+	(*track_pointer)++;
+	return 1;
+}
+
+/* rct2: 0x006D2804 & 0x006D264D */
+int save_track_design(uint8 rideIndex){
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
+	}
+
+	if (ride->ratings.excitement == 0xFFFF){
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
+	}
+
+	if (!(RCT2_ADDRESS(0x0097CF40, uint32)[ride->type] & 0x10000000)){
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
+	}
+
+	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
+		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+		return 0;
+	}
+
+	uint8* track_pointer = RCT2_GLOBAL(0x00F44058, uint8*);
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
+		if (!copy_scenery_to_track(&track_pointer))
+			return 0;
+	}
+
 	while (track_pointer < RCT2_ADDRESS(0x009DE217, uint8))*track_pointer++ = 0;
 
 	char track_name[MAX_PATH];
