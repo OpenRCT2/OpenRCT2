@@ -1095,6 +1095,7 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
  */
 void title_handle_keyboard_input()
 {
+	rct_window *w;
 	int key;
 
 	// Handle modifier keys and key scrolling
@@ -1114,7 +1115,10 @@ void title_handle_keyboard_input()
 
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
 
-		if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
+		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+		if (w != NULL) {
+			keyboard_shortcut_set(key);
+		} else if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
 			keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
 		}
 	}
@@ -1158,16 +1162,15 @@ void game_handle_keyboard_input()
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
 
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-		if (w != NULL)
+		if (w != NULL) {
 			keyboard_shortcut_set(key);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1)
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
 			tutorial_stop();
-		else{
+		} else {
 			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL){
 				((void(*)(int, rct_window*))w->event_handlers[WE_TEXT_INPUT])(key,w);
-			}
-			else{
+			} else {
 				keyboard_shortcut_handle(key);
 			}
 		}

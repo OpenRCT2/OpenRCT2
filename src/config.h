@@ -154,6 +154,9 @@ bool config_save_default();
 uint16 getLanguage();
 
 void config_reset_shortcut_keys();
+bool config_shortcut_keys_load();
+bool config_shortcut_keys_save();
+
 bool config_find_or_browse_install_directory();
 
 #endif

@@ -900,4 +900,48 @@ void config_reset_shortcut_keys()
 	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
 }
 
+void config_shortcut_keys_get_path(char *outPath)
+{
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "hotkeys.cfg");
+}
+
+bool config_shortcut_keys_load()
+{
+	char path[MAX_PATH];
+	FILE *file;
+	int result;
+
+	config_shortcut_keys_get_path(path);
+
+	file = fopen(path, "rb");
+	if (file != NULL) {
+		result = fread(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		fclose(file);
+	} else {
+		result = false;
+	}
+
+	return result;
+}
+
+bool config_shortcut_keys_save()
+{
+	char path[MAX_PATH];
+	FILE *file;
+	int result;
+
+	config_shortcut_keys_get_path(path);
+
+	file = fopen(path, "wb");
+	if (file != NULL) {
+		result = fwrite(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		fclose(file);
+	} else {
+		result = false;
+	}
+
+	return result;
+}
+
 #pragma endregion
