@@ -2716,8 +2716,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
+STR_2718    :(één map omhoog)
+STR_2719    :(nieuw bestand)
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -2747,7 +2747,7 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
+STR_2749    :Mijn nieuwe scenario
 STR_2750    :Alles naar boven verplaatsen
 STR_2751    :Alles naar beneden verplaatsen
 STR_2752    :Onkruid weg
