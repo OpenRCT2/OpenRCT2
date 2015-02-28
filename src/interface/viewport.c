@@ -436,6 +436,27 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
 
+//rct2: 0x006E7A15
+void viewport_set_underground_flag(int underground, rct_window* window, rct_viewport* viewport)
+{
+	if (window->classification != WC_MAIN_WINDOW)
+	{
+		if (!underground)
+		{
+			int bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			if (!bit) return;
+		}
+		else
+		{
+			int bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			if (bit) return;
+		}
+		window_invalidate(window);
+	}
+}
+
 /**
  * 
  *  rct2: 0x006E7A3A
@@ -455,7 +476,8 @@ void viewport_update_position(rct_window *window)
 		int height = map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF - 16;
 		int underground = sprite->unknown.z < height;
 
-		RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, (int)window, (int)viewport, 0);
+		viewport_set_underground_flag(underground, window, viewport);
+		//RCT2_CALLPROC_X(0x6E7A15, sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, underground, (int)window, (int)viewport, 0);
 
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
@@ -473,7 +495,8 @@ void viewport_update_position(rct_window *window)
 	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	sub_689174(&x, &y, &z, curr_rotation);
 	
-	RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
+	viewport_set_underground_flag(0, window, viewport);
+	//RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
 
 	//Clamp to the map minimum value
 	int at_map_edge = 0;

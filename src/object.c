@@ -385,6 +385,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 }
 
 /* ebp is made up of 3 pointers: no_elements, unknown, g1_source */
+//rct2: 0x006A9ED1
 int sub_6A9ED1(uint8_t** ebp)
 {
 	int result;
@@ -409,6 +410,7 @@ int sub_6A9ED1(uint8_t** ebp)
 	return result;
 }
 
+//rct2: 0x006DE83E
 int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) != 3)
@@ -787,6 +789,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	}
 }
 
+//rct2: 0x006A8621
 int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) != 3)
@@ -845,6 +848,7 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	}
 }
 
+//rct2: 0x00666E42
 int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) != 3)
@@ -882,11 +886,13 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 			gfx_draw_sprite(dpi, image_id + 1, 24, 68, ebp);
 			gfx_draw_sprite(dpi, image_id, 56, 84, ebp);
 			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
+			rct2_free(dpi);
 		}
 		return flags;
 	}
 }
 
+//rct2: 0x006E6E2A
 int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) != 3)
@@ -932,7 +938,7 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 	}
 }
 
-//0x0066B355
+//rct2: 0x0066B355
 int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) != 3)
