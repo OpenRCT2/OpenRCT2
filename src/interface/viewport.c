@@ -234,6 +234,9 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 			*y = start_y + start_x / 2 + height;			
 			
 			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+
+			// HACK: This is to prevent the x and y values being set to values outside
+			// of the map. This can happen when the height is larger than the map size.
 			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
 				*x = start_y - start_x / 2;
 				*y = start_y + start_x / 2;
@@ -246,6 +249,9 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 			*y = start_y - start_x / 2 + height;
 
 			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+
+			// HACK: This is to prevent the x and y values being set to values outside
+			// of the map. This can happen when the height is larger than the map size.
 			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
 				*x = -start_y - start_x / 2;
 				*y = start_y - start_x / 2;
@@ -258,6 +264,9 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 			*y = -start_y - start_x / 2 - height;
 
 			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+
+			// HACK: This is to prevent the x and y values being set to values outside
+			// of the map. This can happen when the height is larger than the map size.
 			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
 				*x = -start_y + start_x / 2;
 				*y = -start_y - start_x / 2;
@@ -270,6 +279,9 @@ void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
 			*y = start_x / 2 - start_y - height;
 
 			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
+
+			// HACK: This is to prevent the x and y values being set to values outside
+			// of the map. This can happen when the height is larger than the map size.
 			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
 				*x = start_y + start_x / 2;
 				*y = -start_y + start_x / 2;
