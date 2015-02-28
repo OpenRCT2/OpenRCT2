@@ -932,18 +932,18 @@ static int editor_read_s6(const char *path)
 		w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 		w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
+		int zoom_difference = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - viewport->zoom;
 		viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
 
-		int cx = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
-		if (cx != 0) {
-			if (cx >= 0) {
-				viewport->view_width <<= cx;
-				viewport->view_height <<= cx;
+		if (zoom_difference != 0) {
+			if (zoom_difference >= 0) {
+				viewport->view_width <<= zoom_difference;
+				viewport->view_height <<= zoom_difference;
 			} else {
-				cx = -cx;
-				viewport->view_width >>= cx;
-				viewport->view_height >>= cx;
+				zoom_difference = -zoom_difference;
+				viewport->view_width >>= zoom_difference;
+				viewport->view_height >>= zoom_difference;
 			}
 		}
 		w->saved_view_x -= viewport->view_width >> 1;
