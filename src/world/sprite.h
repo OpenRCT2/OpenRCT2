@@ -112,12 +112,12 @@ typedef struct {
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
 	uint8 pad_16[0x8];
-	uint8 var_1E;					// 0x1E
+	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[0x7];
 	uint16 var_26;
 	uint8 pad_28[0x8];
-	sint16 x;						// 0x30
-	sint16 y;						// 0x32
+	sint16 target_x;				// 0x30
+	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
 	uint8 var_48;					// 0x48
 } rct_duck;

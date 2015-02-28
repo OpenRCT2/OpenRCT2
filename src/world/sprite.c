@@ -60,18 +60,14 @@ void create_duck(int targetX, int targetY)
 		sprite->duck.var_14 = 9;
 		sprite->duck.var_09 = 0xC;
 		sprite->duck.var_15 = 9;
-		int ebx = scenario_rand();
-		int ebp = ebx;
-		int edi = ebx;
-		ebp >>= 8;
-		edi >>= 16;
-		edi &= 0x3F;
-		ebp &= 0x1E;
+		int edi = scenario_rand() & 0x3F;
+		int ebp = scenario_rand() & 0x1E;
 		targetX += ebp;
 		targetY += ebp;
-		sprite->duck.x = targetX;
-		sprite->duck.y = targetY;
-		switch (ebx & 3)
+		sprite->duck.target_x = targetX;
+		sprite->duck.target_y = targetY;
+		uint8 direction = scenario_rand() & 3;
+		switch (direction)
 		{
 		case 0:
 			targetX = 8191 - edi;
@@ -86,7 +82,7 @@ void create_duck(int targetX, int targetY)
 			targetY = 8191 - edi;
 			break;
 		}
-		sprite->duck.var_1E = (ebx << 3) & 0xFF;
+		sprite->duck.sprite_direction = direction << 3;
 		sprite_move(targetX, targetY, 496, sprite);
 		sprite->duck.var_48 = 0;
 		sprite->duck.var_26 = 0;
