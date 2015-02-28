@@ -409,10 +409,10 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
 
-//0x006E7A15
+//rct2: 0x006E7A15
 void viewport_set_underground_flag(int underground, rct_window* window, rct_viewport* viewport)
 {
-	if (window->classification != 0)
+	if (window->classification != WC_MAIN_WINDOW)
 	{
 		if (!underground)
 		{

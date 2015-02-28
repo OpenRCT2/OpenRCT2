@@ -31,19 +31,18 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
  */
 void create_balloon(int x, int y, int z, int colour)
 {
-	//RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL)
 	{
-		sprite->pad_00[0x14] = 13;
-		sprite->pad_00[9] = 22;
-		sprite->pad_00[0x15] = 11;
-		sprite->pad_00[0] = 2;
+		sprite->balloon.var_14 = 13;
+		sprite->balloon.var_09 = 22;
+		sprite->balloon.var_15 = 11;
+		sprite->balloon.sprite_identifier = 2;
 		sprite_move(x, y, z, sprite);
-		sprite->pad_00[1] = 7;
-		*((uint16_t*)&sprite->pad_00[0x26]) = 0;
-		sprite->pad_00[0x2C] = colour;
-		sprite->pad_00[0x24] = 0;
+		sprite->balloon.var_01 = 7;
+		sprite->balloon.var_26 = 0;
+		sprite->balloon.colour = colour;
+		sprite->balloon.var_24 = 0;
 	}
 }
 
@@ -53,15 +52,14 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void create_duck(int targetX, int targetY)
 {
-	//RCT2_CALLPROC_X(0x0067440F, targetX, 0, targetY, 0, 0, 0, 0);
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL)
 	{
-		sprite->pad_00[0] = 2;
-		sprite->pad_00[1] = 8;
-		sprite->pad_00[0x14] = 9;
-		sprite->pad_00[9] = 0xC;
-		sprite->pad_00[0x15] = 9;
+		sprite->duck.sprite_identifier = 2;
+		sprite->duck.var_01 = 8;
+		sprite->duck.var_14 = 9;
+		sprite->duck.var_09 = 0xC;
+		sprite->duck.var_15 = 9;
 		int ebx = scenario_rand();
 		int ebp = ebx;
 		int edi = ebx;
@@ -71,8 +69,8 @@ void create_duck(int targetX, int targetY)
 		ebp &= 0x1E;
 		targetX += ebp;
 		targetY += ebp;
-		*((uint16_t*)&sprite->pad_00[0x30]) = targetX;
-		*((uint16_t*)&sprite->pad_00[0x32]) = targetY;
+		sprite->duck.x = targetX;
+		sprite->duck.y = targetY;
 		switch (ebx & 3)
 		{
 		case 0:
@@ -88,10 +86,10 @@ void create_duck(int targetX, int targetY)
 			targetY = 8191 - edi;
 			break;
 		}
-		sprite->pad_00[0x1E] = (ebx << 3) & 0xFF;
+		sprite->duck.var_1E = (ebx << 3) & 0xFF;
 		sprite_move(targetX, targetY, 496, sprite);
-		sprite->pad_00[0x48] = 0;
-		*((uint16_t*)&sprite->pad_00[0x26]) = 0;
+		sprite->duck.var_48 = 0;
+		sprite->duck.var_26 = 0;
 	}
 }
 
