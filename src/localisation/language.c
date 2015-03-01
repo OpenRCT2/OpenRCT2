@@ -230,7 +230,7 @@ const int OpenRCT2LangIdToObjectLangId[] = {
 	0, 0, 1, 3, 6, 2, 0, 0, 4, 7
 };
 
-//0x006A9E24
+/* rct2: 0x006A9E24*/
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
 {
 	char* pString;

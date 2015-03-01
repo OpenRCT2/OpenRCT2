@@ -996,7 +996,6 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 	rct_ride *ride;
 	rct_widget *widget;
 	int widgetIndex, spriteIndex, x, y, width, height;
-	uint8 *ebp;
 	rct_ride_type *rideEntry;
 	vehicle_colour vehicleColour;
 
@@ -1035,18 +1034,18 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 			dpi->y *= 2;
 		}
 
-		ebp = (uint8*)rideEntry + (RCT2_ADDRESS(0x00F64E38, uint8)[rideEntry->var_013] * 101);
-		height += RCT2_GLOBAL(ebp + 0x24, sint8);
+		rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[RCT2_ADDRESS(0x00F64E38, uint8)[rideEntry->var_013]];
+		height += rideVehicleEntry->var_0A;
 
 		vehicleColour = ride_get_vehicle_colour(ride, 0);
 
 		spriteIndex = 32;
 		if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
 			spriteIndex += w->frame_no;
-		spriteIndex /= (RCT2_GLOBAL(ebp + 0x2C, uint16) & 0x800) ? 4 : 2;
-		spriteIndex &= RCT2_GLOBAL(ebp + 0x1A, uint16);
-		spriteIndex *= RCT2_GLOBAL(ebp + 0x30, uint16);
-		spriteIndex += RCT2_GLOBAL(ebp + 0x32, uint32);
+		spriteIndex /= (rideVehicleEntry->var_12 & 0x800) ? 4 : 2;
+		spriteIndex &= rideVehicleEntry->var_00;
+		spriteIndex *= rideVehicleEntry->var_16;
+		spriteIndex += rideVehicleEntry->base_image_id;
 		spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
 		spriteIndex |= 0x80000000;
 
@@ -2510,7 +2509,7 @@ static void window_ride_vehicle_scrollpaint()
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 	rct_widget *widget;
-	int x, y, startX, startY, i, j, vehicleColourIndex, spriteIndex, ebp;
+	int x, y, startX, startY, i, j, vehicleColourIndex, spriteIndex;
 	rct_vehichle_paintinfo *nextSpriteToDraw, *current, tmp;
 	vehicle_colour vehicleColour;
 
@@ -2528,8 +2527,8 @@ static void window_ride_vehicle_scrollpaint()
 	startX = max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
 	startY = widget->bottom - widget->top - 4;
 
-	ebp = (int)rideEntry + (RCT2_ADDRESS(0x00F64E38, uint8)[0] * 101);
-	startY += RCT2_GLOBAL(ebp + 0x24, sint8);
+	rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[RCT2_ADDRESS(0x00F64E38, uint8)[0]];
+	startY += rideVehicleEntry->var_0A;
 
 	// For each train
 	for (i = 0; i < ride->num_vehicles; i++) {
@@ -2539,9 +2538,9 @@ static void window_ride_vehicle_scrollpaint()
 
 		// For each car in train
 		for (j = 0; j < ride->num_cars_per_train; j++) {
-			int ebp = (int)rideEntry + (RCT2_ADDRESS(0x00F64E38, uint8)[j] * 101);
-			x += RCT2_GLOBAL(ebp + 0x1E, uint32) / 17432;
-			y -= (RCT2_GLOBAL(ebp + 0x1E, uint32) / 2) / 17432;
+			rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[RCT2_ADDRESS(0x00F64E38, uint8)[j]];
+			x += rideVehicleEntry->var_04 / 17432;
+			y -= (rideVehicleEntry->var_04 / 2) / 17432;
 
 			// Get colour of vehicle
 			switch (ride->colour_scheme_type & 3) {
@@ -2558,12 +2557,12 @@ static void window_ride_vehicle_scrollpaint()
 			vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
 			spriteIndex = 16;
-			if (RCT2_GLOBAL(ebp + 0x2C, uint16) & 0x800)
+			if (rideVehicleEntry->var_12 & 0x800)
 				spriteIndex /= 2;
 
-			spriteIndex &= RCT2_GLOBAL(ebp + 0x1A, uint16);
-			spriteIndex *= RCT2_GLOBAL(ebp + 0x30, uint16);
-			spriteIndex += RCT2_GLOBAL(ebp + 0x32, uint32);
+			spriteIndex &= rideVehicleEntry->var_00;
+			spriteIndex *= rideVehicleEntry->var_16;
+			spriteIndex += rideVehicleEntry->base_image_id;
 			spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
 			spriteIndex |= 0x80000000;
 
@@ -2573,8 +2572,8 @@ static void window_ride_vehicle_scrollpaint()
 			nextSpriteToDraw->tertiary_colour = vehicleColour.additional_2;
 			nextSpriteToDraw++;
 
-			x += RCT2_GLOBAL(ebp + 0x1E, uint32) / 17432;
-			y -= (RCT2_GLOBAL(ebp + 0x1E, uint32) / 2) / 17432;
+			x += rideVehicleEntry->var_04 / 17432;
+			y -= (rideVehicleEntry->var_04 / 2) / 17432;
 		}
 
 		if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
@@ -3947,9 +3946,9 @@ static void window_ride_colour_invalidate()
 		uint8 *unk;
 		uint32 unk_eax = 0;
 		for (unk = (uint8*)0x00F64E38; *unk != 0xFF; unk++) {
-			unk_eax |= RCT2_GLOBAL((int)rideEntry + 0x2E + (*unk * 101), uint16);
+			unk_eax |= rideEntry->vehicles[*unk].var_14;
 			unk_eax = ror32(unk_eax, 16);
-			unk_eax |= RCT2_GLOBAL((int)rideEntry + 0x2C + (*unk * 101), uint16);
+			unk_eax |= rideEntry->vehicles[*unk].var_12;
 			unk_eax = ror32(unk_eax, 16);
 		}
 
@@ -4115,7 +4114,6 @@ static void window_ride_colour_scrollpaint()
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 	rct_widget *vehiclePreviewWidget;
-	uint8 *unk;
 	int colour, x, y, spriteIndex;
 	vehicle_colour vehicleColour;
 
@@ -4137,16 +4135,16 @@ static void window_ride_colour_scrollpaint()
 	// ?
 	colour = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ?
 		w->var_48C : rideEntry->var_013;
-	colour = RCT2_ADDRESS(0x00F64E38, uint8)[colour];
-	unk = (uint8*)rideEntry + (colour * 101);
 
-	y += RCT2_GLOBAL(unk + 0x24, sint8);
+	rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[RCT2_ADDRESS(0x00F64E38, uint8)[colour]];
+
+	y += rideVehicleEntry->var_0A;
 
 	// Draw the coloured spinning vehicle
-	spriteIndex = RCT2_GLOBAL(unk + 0x2C, uint8) & 0x800 ? w->frame_no / 4 : w->frame_no / 2;
-	spriteIndex &= RCT2_GLOBAL(unk + 0x1A, uint16);
-	spriteIndex *= RCT2_GLOBAL(unk + 0x30, uint16);
-	spriteIndex += RCT2_GLOBAL(unk + 0x32, uint32);
+	spriteIndex = rideVehicleEntry->var_12 & 0x800 ? w->frame_no / 4 : w->frame_no / 2;
+	spriteIndex &= rideVehicleEntry->var_00;
+	spriteIndex *= rideVehicleEntry->var_16;
+	spriteIndex += rideVehicleEntry->base_image_id;
 	spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
 	spriteIndex |= 0x80000000;
 	gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);

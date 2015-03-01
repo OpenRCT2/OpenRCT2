@@ -22,6 +22,7 @@
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
+#include "ride/ride.h"
 #include "util/sawyercoding.h"
 #include "drawing/drawing.h"
 #include "world/footpath.h"
@@ -384,409 +385,397 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 	return checksum;
 }
 
-/* ebp is made up of 3 pointers: no_elements, unknown, g1_source */
-//rct2: 0x006A9ED1
-int sub_6A9ED1(uint8_t** ebp)
+/* rct2: 0x006A9ED1 */
+int object_chunk_load_image_directory(uint8_t** chunk)
 {
-	int result;
-	int eax = result = RCT2_GLOBAL(0x9ADAF0, uint32_t);
-	int no_elements = ((uint32_t*)(*ebp))[0];
+	int image_start_no = RCT2_GLOBAL(0x9ADAF0, uint32_t);
+	
+	// First dword of chunk is no_images
+	int no_images = *((uint32_t*)(*chunk));
+	*chunk += 4;
+	// Second dword of chunk is length of image data
+	int length_of_data = *((uint32_t*)(*chunk));
+	*chunk += 4;
 
-	RCT2_GLOBAL(0x9ADAF0, uint32_t) = no_elements + eax;
+	RCT2_GLOBAL(0x9ADAF0, uint32_t) = no_images + image_start_no;
 
-	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax];
-	rct_g1_element* g1_source = (rct_g1_element*)((*ebp) + 8);
-	int ebx = no_elements * sizeof(rct_g1_element) + (uint32)g1_source;
+	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_start_no];
 
-	for (int i = 0; i < no_elements; ++i){
+	// After length of data is the start of all g1 element structs
+	rct_g1_element* g1_source = (rct_g1_element*)(*chunk);
+
+	// After the g1 element structs is the actual images.
+	uint8* image_offset = no_images * sizeof(rct_g1_element) + (uint8*)g1_source;
+
+	for (int i = 0; i < no_images; ++i){
 		*g1_dest = *g1_source++;
-		g1_dest->offset += ebx;
+		g1_dest->offset += (uint32)image_offset;
 		g1_dest++;
 	}
 
-	(*ebp) += 8;
-	(*ebp) += *((uint32_t*)((*ebp) - 4));
-	(*ebp) += no_elements * sizeof(rct_g1_element);
-	return result;
+	*chunk = ((uint8*)g1_source) + length_of_data;
+	return image_start_no;
 }
 
-//rct2: 0x006DE83E
+/* rct2: 0x006DE83E */
 int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((flags & 0xFF) != 3)
-	{
-		if ((flags & 0xFF) != 1)
+	if ((flags & 0xFF) == 0){
+		// esi
+		rct_ride_type* ride_type = (rct_ride_type*)esi;
+
+		// After ride_type is 3 string tables
+		uint8_t* chunk = (uint8*)(ride_type + 1);
+		ride_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
+		object_get_localised_text(&chunk, ecx, ebx, 2);
+		// Offset to Unknown struct
+		ride_type->var_1AE = (uint32_t)chunk;
+
+		// If Unknown struct size is 0xFF then there are 32 3 byte structures
+		uint8 unknown_size = *chunk++;
+		if (unknown_size != 0xFF)
 		{
-			if ((flags & 0xFF) <= 1)//0
+			chunk += unknown_size * 3;
+		}
+		else {
+			chunk += 0x60;
+		}
+
+		uint8* peep_loading_positions = chunk;
+		// Peep loading positions variable size
+		// 4 different vehicle subtypes are available
+		for (int i = 0; i < 4; ++i){
+			uint16 no_peep_positions = *chunk++;
+			// If no_peep_positions is 0xFF then no_peep_positions is a word
+			if (no_peep_positions == 0xFF)
 			{
-				uint8_t* ebp = (uint8_t*)(esi + 0x1C2);
-				((rct_ride_type*)esi)->name = object_get_localised_text(&ebp, ecx, ebx, 0);
-				((rct_ride_type*)esi)->description = object_get_localised_text(&ebp, ecx, ebx, 1);
-				object_get_localised_text(&ebp, ecx, ebx, 2);
-				((uint32_t*)(esi + 0x1AE))[0] = (uint32_t)ebp;
-				if (ebp[0] != 0xFF)
-				{
-					int a = ebp[0];
-					ebp++;
-					ebp += a * 3;
-				}
-				else ebp += 0x61;
-				uint8_t* ebp_tmp = ebp;
-				int d = 4;
-				while (true)
-				{
-					int a = *ebp;
-					ebp++;
-					if (a == 0xFF)
-					{
-						a = ((uint16_t*)ebp)[0];
-						ebp += 2;
-					}
-					ebp += a;
-					d--;
-					if (d == 0) break;
-				}
-				int a = sub_6A9ED1(&ebp);
-				((uint32_t*)(esi + 4))[0] = a;
-				a += 3;
-				uint8_t* tmp = ebp;
-				ebp = ebp_tmp;
-				ebp_tmp = tmp;
-				int a_tmp = a;
-				int b_tmp = ebx;
-				int c_tmp = ecx;
-				d = 0;
-				int di = 0;
-				while (true)
-				{
-					if (((uint16_t*)(di + esi + 0x26))[0] & 1)
-					{
-						int al = 1;
-						if (((uint16_t*)(di + esi + 0x2E))[0] & 2)
-						{
-							int ax = ((uint16_t*)(di + esi + 0x2E))[0];
-							ax &= 0x820;
-							al = 0xD;
-							if (ax != 0x820)
-							{
-								al = 7;
-								if (!(((uint16_t*)(di + esi + 0x2E))[0] & 0x20))
-								{
-									if (!(((uint16_t*)(di + esi + 0x2E))[0] & 0x800))
-									{
-										al = 5;
-										if (((uint16_t*)(di + esi + 0x2E))[0] & 0x200) al = 3;
-									}
-								}
-							}
-						}
-						((uint8_t*)(di + esi + 0x1D))[0] = al;
-						al = 0x20;
-						if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x4000))
-						{
-							al = 1;
-							if (((uint16_t*)(di + esi + 0x2E))[0] & 0x80)
-							{
-								if (((uint8_t*)(di + esi + 0x2B))[0] != 6)
-								{
-									al = 2;
-									if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x80)) al = 4;
-								}
-							}
-						}
-						if (((uint16_t*)(di + esi + 0x2C))[0] & 0x1000) al = ((uint8_t*)(di + esi + 0x7A))[0];
-						((uint8_t*)(di + esi + 0x1C))[0] = al;
-						int a = ((uint8_t*)(di + esi + 0x1C))[0];
-						int b = ((uint8_t*)(di + esi + 0x1D))[0];
-						b *= a;
-						((uint16_t*)(di + esi + 0x30))[0] = b;
-						a = a_tmp;
-						((uint32_t*)(di + esi + 0x32))[0] = a;
-						if (((uint8_t*)(di + esi + 0x77))[0] != 4)
-						{
-							b = ((uint16_t*)(di + esi + 0x30))[0];
-							b *= 0x20;
-							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x800) b >>= 1;
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x8000) b >>= 3;
-							a += b;
-							if (((uint16_t*)(di + esi + 0x26))[0] & 2)
-							{
-								((uint32_t*)(di + esi + 0x3A))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x48;
-								if (((uint16_t*)(di + esi + 0x2C))[0] & 0x4000)
-								{
-									b = ((uint16_t*)(di + esi + 0x30))[0];
-									b *= 0x10;
-								}
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 4)
-							{
-								((uint32_t*)(di + esi + 0x3E))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x50;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 8)
-							{
-								((uint32_t*)(di + esi + 0x42))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x74;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x10)
-							{
-								((uint32_t*)(di + esi + 0x46))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x18;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x20)
-							{
-								((uint32_t*)(di + esi + 0x4A))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x50;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x40)
-							{
-								((uint32_t*)(di + esi + 0x4E))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x28;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x80)
-							{
-								((uint32_t*)(di + esi + 0x52))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x80;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x100)
-							{
-								((uint32_t*)(di + esi + 0x56))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x10;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x200)
-							{
-								((uint32_t*)(di + esi + 0x5A))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x10;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x400)
-							{
-								((uint32_t*)(di + esi + 0x5E))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x80;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x800)
-							{
-								((uint32_t*)(di + esi + 0x62))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x10;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x1000)
-							{
-								((uint32_t*)(di + esi + 0x66))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x50;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x2000)
-							{
-								((uint32_t*)(di + esi + 0x36))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0xC;
-								a += b;
-							}
-							if (((uint16_t*)(di + esi + 0x26))[0] & 0x4000)
-							{
-								((uint32_t*)(di + esi + 0x66))[0] = a;
-								b = ((uint16_t*)(di + esi + 0x30))[0];
-								b *= 0x20;
-								a += b;
-							}
-						}
-						else
-						{
-							b = ((uint16_t*)(di + esi + 0x30))[0];
-							b *= 0x24;
-							a += b;
-						}
-						a -= a_tmp;
-						((uint32_t*)(di + esi + 0x6A))[0] = a;
-						a_tmp += a;
-						int c = ((uint8_t*)(di + esi + 0x6E))[0];
-						c *= a;
-						a_tmp += c;
-						if (!(((uint16_t*)(di + esi + 0x2C))[0] & 0x400))
-						{
-							c = a_tmp;
-							b = ((uint32_t*)(di + esi + 0x32))[0];
-							c -= b;
-							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x2000) c <<= 1;
-							int d_tmp = d;
-							RCT2_CALLFUNC_X(0x6847BA, &a, &b, &c, &d, &esi, &di, (int*)&ebp);
-							if (((uint16_t*)(di + esi + 0x2C))[0] & 0x2000) b += 0x10;
-							((uint8_t*)(di + esi + 0x28))[0] = a;
-							((uint8_t*)(di + esi + 0x29))[0] = b & 0xFF;
-							((uint8_t*)(di + esi + 0x2A))[0] = (b >> 8) & 0xFF;
-							d = d_tmp;
-						}
-						a = ((uint8_t*)ebp)[0];
-						ebp++;
-						if (a == 0xFF)
-						{
-							a = ((uint16_t*)ebp)[0];
-							ebp += 2;
-						}
-						((uint32_t*)(di + esi + 0x7B))[0] = (uint32_t)ebp;
-						ebp += a;
-					}
-					d++;
-					di += 0x65;
-					if (d >= 4) break;
-				}
-				if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
-				{
-					a = 0;
-					while (true)
-					{
-						int d = ((uint8_t*)(a + esi + 0xC))[0];
-						if (d != 0xFF)
-						{
-							uint8_t* di = (uint8_t*)0x9E32F8;
-							while (true)
-							{
-								if (di[0] != 0xFF)
-								{
-									di++;
-									continue;
-								}
-								d--;
-								if (d < 0) break;
-								di++;
-							}
-							d = b_tmp;
-							while (true)
-							{
-								int tmp = di[0];
-								di[0] = d;
-								d = tmp;
-								di++;
-								if ((uint32_t)di >= 0x9E34E4) break;
-							}
-						}
-						a++;
-						if (a >= 3) break;
-					}
-				}
-				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				di = ((uint32_t*)(esi + 0xC))[0] & 0xFFFFFF;
-				if (((uint32_t*)(esi + 8))[0] & 0x1000) di |= 0x1000000;
-				RCT2_GLOBAL(0xF433DD, uint32_t) = di;
-				return 0;// flags;
+				no_peep_positions = *((uint16_t*)chunk);
+				chunk += 2;
 			}
-			else
-			{
-				int d = 0;
-				int di = 0;
-				while (true)
+			chunk += no_peep_positions;
+		}
+
+		int images_offset = object_chunk_load_image_directory(&chunk);
+		ride_type->images_offset = images_offset;
+
+		int cur_vehicle_images_offset = images_offset + 3;
+
+		for (int i = 0; i < 4; ++i){
+			rct_ride_type_vehicle* rideVehicleEntry = &ride_type->vehicles[i];
+
+			if (rideVehicleEntry->var_0C & 1){
+				int al = 1;
+				if (rideVehicleEntry->var_14 & 2)
 				{
-					/*if (!(((uint16_t*)(di + esi + 0x26))[0] & 1))*/
-					d++;
-					di += 0x65;
-					if (d >= 4) break;
+					al = 13;
+					if ((rideVehicleEntry->var_14 & 0x820) != 0x820)
+					{
+						al = 7;
+						if (!(rideVehicleEntry->var_14 & 0x20))
+						{
+							if (!(rideVehicleEntry->var_14 & 0x800))
+							{
+								al = 5;
+								if (rideVehicleEntry->var_14 & 0x200) al = 3;
+							}
+						}
+					}
 				}
-				if (((uint8_t*)(esi + 0x1B2))[0] > 0x4B) return 1;
-				if (((uint8_t*)(esi + 0x1B3))[0] > 0x4B) return 1;
-				if (((uint8_t*)(esi + 0x1B4))[0] > 0x4B) return 1;
-				return 0;
+				rideVehicleEntry->var_03 = al;
+				// 0x6DE90B
+
+				al = 0x20;
+				if (!(rideVehicleEntry->var_12 & 0x4000))
+				{
+					al = 1;
+					if (rideVehicleEntry->var_14 & 0x80)
+					{
+						if (rideVehicleEntry->var_11 != 6)
+						{
+							al = 2;
+							if (!(rideVehicleEntry->var_12 & 0x80)) al = 4;
+						}
+					}
+				}
+				if (rideVehicleEntry->var_12 & 0x1000) al = rideVehicleEntry->var_60;
+				rideVehicleEntry->var_02 = al;
+				// 0x6DE946
+
+				rideVehicleEntry->var_16 = rideVehicleEntry->var_02 * rideVehicleEntry->var_03;
+				rideVehicleEntry->base_image_id = cur_vehicle_images_offset;
+				int image_index = rideVehicleEntry->base_image_id;
+
+				if (rideVehicleEntry->var_5D != 4){
+					int b = rideVehicleEntry->var_16 * 32;
+
+					if (rideVehicleEntry->var_12 & 0x800) b /= 2;
+					if (rideVehicleEntry->var_0C & 0x8000) b /= 8;
+
+					image_index += b;
+
+					// Incline 25
+					if (rideVehicleEntry->var_0C & 0x2){
+						rideVehicleEntry->var_20 = image_index;
+						b = rideVehicleEntry->var_16 * 72;
+						if (rideVehicleEntry->var_12 & 0x4000)
+							b = rideVehicleEntry->var_16 * 16;
+
+						image_index += b;
+					}
+
+					// Incline 60
+					if (rideVehicleEntry->var_0C & 0x4){
+						rideVehicleEntry->var_24 = image_index;
+						b = rideVehicleEntry->var_16 * 80;
+						image_index += b;
+					}
+					// Verticle
+					if (rideVehicleEntry->var_0C & 0x8){
+						rideVehicleEntry->var_28 = image_index;
+						b = rideVehicleEntry->var_16 * 116;
+						image_index += b;
+					}
+					// Unknown
+					if (rideVehicleEntry->var_0C & 0x10){
+						rideVehicleEntry->var_2C = image_index;
+						b = rideVehicleEntry->var_16 * 24;
+						image_index += b;
+					}
+
+					// Bank
+					if (rideVehicleEntry->var_0C & 0x20){
+						rideVehicleEntry->var_30 = image_index;
+						b = rideVehicleEntry->var_16 * 80;
+						image_index += b;
+					}
+
+					if (rideVehicleEntry->var_0C & 0x40){
+						rideVehicleEntry->var_34 = image_index;
+						b = rideVehicleEntry->var_16 * 40;
+						image_index += b;
+					}
+
+					// Track half? Up/Down
+					if (rideVehicleEntry->var_0C & 0x80){
+						rideVehicleEntry->var_38 = image_index;
+						b = rideVehicleEntry->var_16 * 128;
+						image_index += b;
+					}
+					// Unknown
+					if (rideVehicleEntry->var_0C & 0x100){
+						rideVehicleEntry->var_3C = image_index;
+						b = rideVehicleEntry->var_16 * 16;
+						image_index += b;
+					}
+					// Unknown
+					if (rideVehicleEntry->var_0C & 0x200){
+						rideVehicleEntry->var_40 = image_index;
+						b = rideVehicleEntry->var_16 * 16;
+						image_index += b;
+					}
+
+					if (rideVehicleEntry->var_0C & 0x400){
+						rideVehicleEntry->var_44 = image_index;
+						b = rideVehicleEntry->var_16 * 128;
+						image_index += b;
+					}
+
+					if (rideVehicleEntry->var_0C & 0x800){
+						rideVehicleEntry->var_48 = image_index;
+						b = rideVehicleEntry->var_16 * 16;
+						image_index += b;
+					}
+
+					if (rideVehicleEntry->var_0C & 0x1000){
+						rideVehicleEntry->var_4C = image_index;
+						b = rideVehicleEntry->var_16 * 80;
+						image_index += b;
+					}
+					// Unknown
+					if (rideVehicleEntry->var_0C & 0x2000){
+						rideVehicleEntry->var_1C = image_index;
+						b = rideVehicleEntry->var_16 * 12;
+						image_index += b;
+					}
+
+					if (rideVehicleEntry->var_0C & 0x4000){
+						// Same offset as above???
+						rideVehicleEntry->var_4C = image_index;
+						b = rideVehicleEntry->var_16 * 32;
+						image_index += b;
+					}
+
+				}
+				else{
+					image_index += rideVehicleEntry->var_16 * 36;
+				}
+				// No vehicle images
+				rideVehicleEntry->no_vehicle_images = image_index - cur_vehicle_images_offset;
+
+				// Move the offset over this vehicles images. Including peeps
+				cur_vehicle_images_offset = image_index + rideVehicleEntry->no_seating_rows * rideVehicleEntry->no_vehicle_images;
+				// 0x6DEB0D
+
+				if (!(rideVehicleEntry->var_12 & 0x400)){
+					int ecx = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
+					if (rideVehicleEntry->var_12 & 0x2000){
+						ecx *= 2;
+					}
+
+					int bl, bh, eax = 0;
+					{
+						int ebx = rideVehicleEntry->base_image_id;
+						int edx = 0, esi = 0, ebp = 0, edi = 0;
+						RCT2_CALLFUNC_X(0x6847BA, &eax, &ebx, &ecx, &edx, &esi, &ebp, &edi);
+						bl = ebx & 0xFF;
+						bh = (ebx >> 8) & 0xFF;
+					}
+
+					if (rideVehicleEntry->var_12 & 0x2000){
+						bl += 16;
+					}
+
+					rideVehicleEntry->var_0E = eax & 0xFF;
+					rideVehicleEntry->var_0F = bl;
+					rideVehicleEntry->var_10 = bh;
+				}
+
+				uint16 no_positions = *peep_loading_positions++;
+				if (no_positions == 0xFF)
+				{
+					no_positions = *((uint16*)peep_loading_positions);
+					peep_loading_positions += 2;
+				}
+				rideVehicleEntry->var_61 = (uint32)peep_loading_positions;
+				peep_loading_positions += no_positions;
 			}
 		}
-		else
+
+		// 0x6DEB71
+		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
 		{
-			((rct_ride_type*)esi)->name = 0;
-			((rct_ride_type*)esi)->description = 0;
-			((rct_ride_type*)esi)->var_004 = 0;
-			int d = 0;
-			int di = 0;
-			while (true)
-			{
-				((uint32_t*)(esi + di + 0x32))[0] = 0;
-				((uint32_t*)(esi + di + 0x36))[0] = 0;
-				((uint32_t*)(esi + di + 0x3A))[0] = 0;
-				((uint32_t*)(esi + di + 0x3E))[0] = 0;
-				((uint32_t*)(esi + di + 0x42))[0] = 0;
-				((uint32_t*)(esi + di + 0x46))[0] = 0;
-				((uint32_t*)(esi + di + 0x4A))[0] = 0;
-				((uint32_t*)(esi + di + 0x4E))[0] = 0;
-				((uint32_t*)(esi + di + 0x52))[0] = 0;
-				((uint32_t*)(esi + di + 0x56))[0] = 0;
-				((uint32_t*)(esi + di + 0x5A))[0] = 0;
-				((uint32_t*)(esi + di + 0x5E))[0] = 0;
-				((uint32_t*)(esi + di + 0x66))[0] = 0;
-				((uint32_t*)(esi + di + 0x62))[0] = 0;
-				((uint32_t*)(esi + di + 0x6A))[0] = 0;
-				((uint16_t*)(esi + di + 0x30))[0] = 0;
-				if (((uint16_t*)(esi + di + 0x2C))[0] & 0x400)
-				{
-					((uint8_t*)(esi + di + 0x28))[0] = 0;
-					((uint8_t*)(esi + di + 0x29))[0] = 0;
-					((uint8_t*)(esi + di + 0x2A))[0] = 0;
+			for (int i = 0; i < 3; ++i){
+				sint16 dl = (&ride_type->var_00C)[i];
+
+				if (dl == 0xFF)continue;
+
+				uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+
+				while (dl >= 0){
+					if (*typeToRideEntryIndexMap++ == 0xFF)dl--;
 				}
-				((uint8_t*)(esi + di + 0x1C))[0] = 0;
-				((uint8_t*)(esi + di + 0x1D))[0] = 0;
-				((uint32_t*)(esi + di + 0x7B))[0] = 0;
-				d++;
-				di += 0x65;
-				if (d >= 4) break;
+
+				typeToRideEntryIndexMap--;
+				uint8 previous_entry = ebx;
+				while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
+					uint8 backup_entry = *typeToRideEntryIndexMap;
+					*typeToRideEntryIndexMap++ = previous_entry;
+					previous_entry = backup_entry;
+				}
 			}
-			((uint32_t*)(esi + 0x1AE))[0] = 0;
-			return flags;
 		}
+
+		// 0x6DEBAA
+		if (RCT2_GLOBAL(0x9ADAF4, sint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+
+		int di = ride_type->var_00C | (ride_type->var_00D << 8) | (ride_type->var_00E << 16);
+
+		if (ride_type->var_008 & 0x1000) di |= 0x1000000;
+
+		RCT2_GLOBAL(0xF433DD, uint32) = di;
+		return 0;// flags;
 	}
-	else
-	{
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_ride_type* ride_type = (rct_ride_type*)esi;
+		ride_type->name = 0;
+		ride_type->description = 0;
+		ride_type->images_offset = 0;
+
+		for (int i = 0; i < 4; ++i){
+			rct_ride_type_vehicle* rideVehicleEntry = &ride_type->vehicles[i];
+
+			rideVehicleEntry->base_image_id = 0;
+			rideVehicleEntry->var_1C = 0;
+			rideVehicleEntry->var_20 = 0;
+			rideVehicleEntry->var_24 = 0;
+			rideVehicleEntry->var_28 = 0;
+			rideVehicleEntry->var_2C = 0;
+			rideVehicleEntry->var_30 = 0;
+			rideVehicleEntry->var_34 = 0;
+			rideVehicleEntry->var_38 = 0;
+			rideVehicleEntry->var_3C = 0;
+			rideVehicleEntry->var_40 = 0;
+			rideVehicleEntry->var_44 = 0;
+			rideVehicleEntry->var_48 = 0;
+			rideVehicleEntry->var_4C = 0;
+			rideVehicleEntry->no_vehicle_images = 0;
+			rideVehicleEntry->var_16 = 0;
+
+			if (rideVehicleEntry->var_12 & 0x400){
+				rideVehicleEntry->var_0E = 0;
+				rideVehicleEntry->var_0F = 0;
+				rideVehicleEntry->var_10 = 0;
+			}
+			rideVehicleEntry->var_02 = 0;
+			rideVehicleEntry->var_03 = 0;
+			rideVehicleEntry->var_61 = 0;
+		}
+
+		ride_type->var_1AE = 0;
+		return flags;
+	}
+	else if ((flags & 0xFF) == 2){
+
+		rct_ride_type* ride_type = (rct_ride_type*)esi;
+
+		if (ride_type->excitement_multipler > 75) return 1;
+		if (ride_type->intensity_multipler > 75) return 1;
+		if (ride_type->nausea_multipler > 75) return 1;
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		// Paint object picture and description
+
+		rct_ride_type* ride_type = (rct_ride_type*)ebp;
+		int x = ecx, y = edx;
+
 		if (!((flags >> 8) & 0xFF))
 		{
-			int image_id = ((rct_ride_type*)ebp)->var_004;
-			if (((rct_ride_type*)ebp)->var_00C == 0xFF)
+			int image_id = ride_type->images_offset;
+			if (ride_type->var_00C == 0xFF)
 			{
 				image_id++;
-				if (((rct_ride_type*)ebp)->var_00D == 0xFF) image_id++;
+				if (ride_type->var_00D == 0xFF) image_id++;
 			}
-			gfx_draw_sprite(dpi, image_id, ecx - 56, edx - 56, ebp);
+			gfx_draw_sprite(dpi, image_id, x - 56, y - 56, ebp);
 			return flags;
 		}
 		else
-		{
-			int width = ((uint16_t*)(esi + 0x30))[0];
-			width += ((uint16_t*)(esi + 0x2C))[0];
-			width -= ecx;
-			width -= 4;
-			int format_args = ((rct_ride_type*)ebp)->description;
-			if (!(((rct_ride_type*)ebp)->var_008 & 0x1000))
+		{	
+			rct_window* w = (rct_window*)esi;
+			int width = w->x + w->width - x - 4;
+
+			int format_args = ride_type->description;
+			if (!(ride_type->var_008 & 0x1000))
 			{
-				format_args = ((rct_ride_type*)ebp)->var_00C;
+				format_args = ride_type->var_00C;
 				if ((format_args & 0xFF) == 0xFF)
 				{
-					format_args = ((rct_ride_type*)ebp)->var_00D;
-					if ((format_args & 0xFF) == 0xFF) format_args = ((rct_ride_type*)ebp)->var_00E;
+					format_args = ride_type->var_00D;
+					if ((format_args & 0xFF) == 0xFF) format_args = ride_type->var_00E;
 				}
 				format_args += 0x200;
 			}
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = format_args;
-			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx + 5, width, 1191, 0);
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y + 5, width, 1191, 0);
 			return flags;
 		}
 	}
+
+	return flags;
 }
 
 //rct2: 0x006A8621
@@ -800,7 +789,8 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			{
 				uint8_t* pStringTable = (uint8_t*)(esi + 0xE);
 				((rct_path_type*)esi)->pad_00 = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				int image_id = sub_6A9ED1(&pStringTable);
+
+				int image_id = object_chunk_load_image_directory(&pStringTable);
 				((rct_path_type*)esi)->image = image_id;
 				image_id += 0x6D;
 				((rct_path_type*)esi)->pad_06 = image_id;
@@ -859,7 +849,7 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 			{
 				uint8_t* pStringTable = (uint8_t*)(esi + 8);
 				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				int image_id = sub_6A9ED1(&pStringTable);
+				int image_id = object_chunk_load_image_directory(&pStringTable);
 				((uint32_t*)(esi + 2))[0] = image_id;
 				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 				return flags;
@@ -903,7 +893,7 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 			{
 				uint8_t* pStringTable = (uint8_t*)(esi + 0x10);
 				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				int image_id = sub_6A9ED1(&pStringTable);
+				int image_id = object_chunk_load_image_directory(&pStringTable);
 				((uint32_t*)(esi + 2))[0] = image_id;
 				image_id++;
 				((uint32_t*)(esi + 6))[0] = image_id;
