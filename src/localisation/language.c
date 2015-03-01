@@ -230,6 +230,9 @@ const int OpenRCT2LangIdToObjectLangId[] = {
 	0, 0, 1, 3, 6, 2, 0, 0, 4, 7
 };
 
+/* rct2: 0x0098DA16 */
+uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
+
 /* rct2: 0x006A9E24*/
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
 {
@@ -275,10 +278,10 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		for (int i = 0; i < type; i++)
 		{
 			int nrobjects = object_entry_group_counts[i];
-			int nrstringtables = RCT2_ADDRESS(0x98DA16, uint16)[i];//the number of string tables in a type
+			int nrstringtables = ObjectTypeStringTableCount[i];
 			stringid += nrobjects * nrstringtables;
 		}
-		stringid += index * RCT2_ADDRESS(0x98DA16, uint16)[type];
+		stringid += index * ObjectTypeStringTableCount[type];
 		// Used by the object list to allocate name in plugin.dat
 		RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32) = stringid;
 		stringid += tableindex;

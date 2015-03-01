@@ -839,33 +839,25 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 //rct2: 0x00666E42
 int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((flags & 0xFF) != 3)
-	{
-		if ((flags & 0xFF) != 1)
-		{
-			if ((flags & 0xFF) <= 1)//0
-			{
-				uint8_t* pStringTable = (uint8_t*)(esi + 8);
-				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				int image_id = object_chunk_load_image_directory(&pStringTable);
-				((uint32_t*)(esi + 2))[0] = image_id;
-				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				return flags;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-		else
-		{
-			((rct_string_id*)esi)[0] = 0;
-			((uint32_t*)(esi + 2))[0] = 0;
-			return flags;
-		}
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		uint8_t* pStringTable = (uint8_t*)(esi + 8);
+		((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+		int image_id = object_chunk_load_image_directory(&pStringTable);
+		((uint32_t*)(esi + 2))[0] = image_id;
+		if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
 	}
-	else
-	{
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		((rct_string_id*)esi)[0] = 0;
+		((uint32_t*)(esi + 2))[0] = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
 		if (!((flags >> 8) & 0xFF))
 		{
 			dpi = clip_drawpixelinfo(dpi, ecx - 56, 112, edx - 56, 112);
@@ -876,99 +868,88 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
 			rct2_free(dpi);
 		}
-		return flags;
 	}
+	return flags;
 }
 
 //rct2: 0x006E6E2A
 int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((flags & 0xFF) != 3)
-	{
-		if ((flags & 0xFF) != 1)
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		uint8_t* pStringTable = (uint8_t*)(esi + 0x10);
+		((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+		int image_id = object_chunk_load_image_directory(&pStringTable);
+		((uint32_t*)(esi + 2))[0] = image_id;
+		image_id++;
+		((uint32_t*)(esi + 6))[0] = image_id;
+		image_id += 3;
+		((uint32_t*)(esi + 0xA))[0] = image_id;
+		if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
 		{
-			if ((flags & 0xFF) <= 1)//0
-			{
-				uint8_t* pStringTable = (uint8_t*)(esi + 0x10);
-				((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				int image_id = object_chunk_load_image_directory(&pStringTable);
-				((uint32_t*)(esi + 2))[0] = image_id;
-				image_id++;
-				((uint32_t*)(esi + 6))[0] = image_id;
-				image_id += 3;
-				((uint32_t*)(esi + 0xA))[0] = image_id;
-				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
-				{
-					load_palette();
-					gfx_invalidate_screen();
-				}
-				return flags;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-		else
-		{
-			((rct_string_id*)esi)[0] = 0;
-			((uint32_t*)(esi + 2))[0] = 0;
-			((uint32_t*)(esi + 6))[0] = 0;
-			((uint32_t*)(esi + 0xA))[0] = 0;
-			return flags;
+			load_palette();
+			gfx_invalidate_screen();
 		}
 	}
-	else
-	{
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		((rct_string_id*)esi)[0] = 0;
+		((uint32_t*)(esi + 2))[0] = 0;
+		((uint32_t*)(esi + 6))[0] = 0;
+		((uint32_t*)(esi + 0xA))[0] = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
 		if (!((flags >> 8) & 0xFF)) gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
-		return flags;
+		
 	}
+	return flags;
 }
 
 //rct2: 0x0066B355
 int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((flags & 0xFF) != 3)
-	{
-		if ((flags & 0xFF) != 1)
-		{
-			if ((flags & 0xFF) <= 1)//0
-			{
-				uint8_t* pStringTable = (uint8_t*)(esi + 8);
-				((rct_stex_entry*)esi)->scenario_name = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-				((rct_stex_entry*)esi)->park_name = object_get_localised_text(&pStringTable, ecx, ebx, 1);
-				((rct_stex_entry*)esi)->details = object_get_localised_text(&pStringTable, ecx, ebx, 2);
-				if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				return flags;
-			}
-			else//2
-			{
-				return 0;
-			}
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_stex_entry* stex_entry = (rct_stex_entry*)esi;
+		uint8_t* pStringTable = (uint8_t*)(esi + 8);
+		stex_entry->scenario_name = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+		stex_entry->park_name = object_get_localised_text(&pStringTable, ecx, ebx, 1);
+		stex_entry->details = object_get_localised_text(&pStringTable, ecx, ebx, 2);
+		if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_stex_entry* stex_entry = (rct_stex_entry*)esi;
+		stex_entry->scenario_name = 0;
+		stex_entry->park_name = 0;
+		stex_entry->details = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+		rct_stex_entry* stex_entry = (rct_stex_entry*)ebp;
+		rct_window* w = (rct_window*)esi;
+
+		if (!((flags >> 8) & 0xFF)) {
+			gfx_draw_string_centred(dpi, 0xCFE, x, y, 0, NULL);
 		}
-		else//1
-		{
-			((rct_stex_entry*)esi)->scenario_name = 0;
-			((rct_stex_entry*)esi)->park_name = 0;
-			((rct_stex_entry*)esi)->details = 0;
-			return flags;
+		else{
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = stex_entry->details;
+			int width = w->x + w->width - 4 - x;
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 3168, 0);
 		}
 	}
-	else//3
-	{
-		if (!((flags >> 8) & 0xFF)) gfx_draw_string_centred(dpi, 0xCFE, ecx, edx, 0, (void*)esi);
-		else
-		{
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = ((rct_stex_entry*)ebp)->details;
-			int width = *((uint16_t*)(esi + 0x2C));
-			width += *((uint16_t*)(esi + 0x30));
-			width -= 4;
-			width -= ecx;
-			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, ecx, edx, width, 3168, 0);
-		}
-		return flags;
-	}
+	return flags;
 }
 
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
