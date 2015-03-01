@@ -26,6 +26,8 @@
 #include "util/sawyercoding.h"
 #include "drawing/drawing.h"
 #include "world/footpath.h"
+#include "world/water.h"
+#include "world/entrance.h"
 #include "scenario.h"
 
 int object_load_entry(const char *path, rct_object_entry *outEntry)
@@ -842,30 +844,40 @@ int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixe
 	if ((flags & 0xFF) == 0){
 		// Object Load
 
-		uint8_t* pStringTable = (uint8_t*)(esi + 8);
-		((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-		int image_id = object_chunk_load_image_directory(&pStringTable);
-		((uint32_t*)(esi + 2))[0] = image_id;
-		if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+		rct_entrance_type* entrance_type = (rct_entrance_type*)esi;
+		uint8* pStringTable = (uint8*)(esi + sizeof(rct_entrance_type));
+
+		entrance_type->string_idx = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+
+		entrance_type->image_id = object_chunk_load_image_directory(&pStringTable);
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
 	}
 	else if ((flags & 0xFF) == 1){
 		// Object Unload
 
-		((rct_string_id*)esi)[0] = 0;
-		((uint32_t*)(esi + 2))[0] = 0;
+		rct_entrance_type* entrance_type = (rct_entrance_type*)esi;
+		entrance_type->string_idx = 0;
+		entrance_type->image_id = 0;
 	}
 	else if ((flags & 0xFF) == 2){
 		return 0;
 	}
 	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
 		if (!((flags >> 8) & 0xFF))
 		{
-			dpi = clip_drawpixelinfo(dpi, ecx - 56, 112, edx - 56, 112);
+			rct_entrance_type* entrance_type = (rct_entrance_type*)ebp;
+
+			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
 			if (dpi == NULL) return flags;
-			int image_id = ((uint32_t*)(ebp + 2))[0];
+
+			int image_id = entrance_type->image_id;
+
 			gfx_draw_sprite(dpi, image_id + 1, 24, 68, ebp);
 			gfx_draw_sprite(dpi, image_id, 56, 84, ebp);
 			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
+
 			rct2_free(dpi);
 		}
 	}
@@ -878,15 +890,18 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 	if ((flags & 0xFF) == 0){
 		// Object Load
 
-		uint8_t* pStringTable = (uint8_t*)(esi + 0x10);
-		((rct_string_id*)esi)[0] = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+		rct_water_type* water_type = (rct_water_type*)esi;
+
+		uint8_t* pStringTable = (uint8_t*)(esi + sizeof(rct_water_type));
+		water_type->string_idx = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+
 		int image_id = object_chunk_load_image_directory(&pStringTable);
-		((uint32_t*)(esi + 2))[0] = image_id;
-		image_id++;
-		((uint32_t*)(esi + 6))[0] = image_id;
-		image_id += 3;
-		((uint32_t*)(esi + 0xA))[0] = image_id;
-		if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
+		water_type->image_id = image_id;
+		water_type->var_06 = image_id + 1;
+		water_type->var_0A = image_id + 4;
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+
 		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
 		{
 			load_palette();
@@ -896,17 +911,18 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 	else if ((flags & 0xFF) == 1){
 		// Object Unload
 
-		((rct_string_id*)esi)[0] = 0;
-		((uint32_t*)(esi + 2))[0] = 0;
-		((uint32_t*)(esi + 6))[0] = 0;
-		((uint32_t*)(esi + 0xA))[0] = 0;
+		rct_water_type* water_type = (rct_water_type*)esi;
+		water_type->string_idx = 0;
+		water_type->image_id = 0;
+		water_type->var_06 = 0;
+		water_type->var_0A = 0;
 	}
 	else if ((flags & 0xFF) == 2){
 		return 0;
 	}
 	else if ((flags & 0xFF) == 3){
-		if (!((flags >> 8) & 0xFF)) gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
-		
+		if (!((flags >> 8) & 0xFF)) 
+			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
 	}
 	return flags;
 }

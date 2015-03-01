@@ -51,6 +51,7 @@
 #include "world/climate.h"
 #include "world/park.h"
 #include "world/sprite.h"
+#include "world/water.h"
 
 int gGameSpeed = 1;
 
@@ -82,11 +83,14 @@ void game_create_windows()
 */
 void update_palette_effects()
 {
+	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 1) {
 		// change palette to lighter color during lightning
 		int palette = 1532;
-		if (RCT2_GLOBAL(0x009ADAE0, sint32) != -1) {
-			palette = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 2, int);
+
+		if ((sint32)water_type != -1) {
+			palette = water_type->image_id;
 		}
 		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
 		int xoffset = g1_element.x_offset;
@@ -104,9 +108,11 @@ void update_palette_effects()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
 			// change palette back to normal after lightning
 			int palette = 1532;
-			if (RCT2_GLOBAL(0x009ADAE0, sint32) != -1) {
-				palette = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 2, int);
+
+			if ((sint32)water_type != -1) {
+				palette = water_type->image_id;
 			}
+
 			rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
 			int xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
@@ -129,8 +135,8 @@ void update_palette_effects()
 		uint32 j = RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32);
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
-		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
-			p = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 0x6, int);
+		if ((sint32)water_type != -1) {
+			p = water_type->var_06;
 		}
 		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
 		uint8* vs = &g1_element.offset[j * 3];
@@ -148,8 +154,8 @@ void update_palette_effects()
 		}
 
 		p = 1536;
-		if (RCT2_GLOBAL(0x009ADAE0, int) != -1) {
-			p = RCT2_GLOBAL(RCT2_GLOBAL(0x009ADAE0, int) + 0xA, int);
+		if ((sint32)water_type != -1) {
+			p = water_type->var_0A;
 		}
 		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
 		vs = &g1_element.offset[j * 3];
