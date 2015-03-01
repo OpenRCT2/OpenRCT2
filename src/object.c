@@ -28,6 +28,7 @@
 #include "world/footpath.h"
 #include "world/water.h"
 #include "world/entrance.h"
+#include "world/scenery.h"
 #include "scenario.h"
 
 int object_load_entry(const char *path, rct_object_entry *outEntry)
@@ -776,6 +777,127 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	return flags;
 }
 
+/* rct2: 0x006E3466 */
+int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		uint8* chunk = (uint8*)(esi + 0x1A);
+
+		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		scenery_type->small_scenery.scenery_tab_id = 0xFF;
+
+		if (*chunk != 0xFF){
+			uint8 entry_type, entry_index;
+			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
+				scenery_type->small_scenery.scenery_tab_id = entry_index;
+			}
+		}
+
+		chunk += sizeof(rct_object_entry);
+
+		if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG16){
+			scenery_type->small_scenery.var_10 = (uint32)chunk;
+			while (*++chunk != 0xFF);
+			chunk++;
+		}
+
+		scenery_type->image = object_chunk_load_image_directory(&chunk);
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		scenery_type->name = 0;
+		scenery_type->image = 0;
+		scenery_type->small_scenery.var_10 = 0;
+		scenery_type->small_scenery.scenery_tab_id = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+
+		if (scenery_type->small_scenery.price <= 0)return 1;
+
+		if (scenery_type->small_scenery.removal_price > 0) return 0;
+
+		// Make sure you don't make a profit when placing then removing.
+		if (-scenery_type->small_scenery.removal_price > scenery_type->small_scenery.price)return 1;
+
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+		if (!((flags >> 8) & 0xFF))
+		{
+			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
+
+			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
+			if (dpi == NULL) return flags;
+
+			int image_id = scenery_type->image;
+
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_PRIMARY_COLOUR){
+				image_id |= 0x20D00000;
+
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+					image_id |= 0x92000000;
+			}
+
+			x = 56;
+			y = scenery_type->small_scenery.height / 4 + 78;
+
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG1){
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG2){
+					y -= 12;
+				}
+			}
+
+			gfx_draw_sprite(dpi, image_id, x, y, 0);
+
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG10){
+				image_id = scenery_type->image + 0x44500004;
+
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+					image_id |= 0x92000000;
+
+				gfx_draw_sprite(dpi, image_id, x, y, 0);
+			}
+
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG8){
+				image_id = scenery_type->image + 4;
+
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+					image_id |= 0x92000000;
+
+				gfx_draw_sprite(dpi, image_id, x, y, 0);
+			}
+
+			rct2_free(dpi);
+		}
+	}
+	return flags;
+}
+
+int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	return RCT2_CALLPROC_X(0x006B92A7, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+}
+
+int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	return RCT2_CALLPROC_X(0x006E5A25, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+}
+
+int paint_banner(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	return RCT2_CALLPROC_X(0x006BA84E, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+}
+
 //rct2: 0x006A8621
 int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
@@ -836,6 +958,16 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 	}
 	return flags;
+}
+
+int paint_path_bit(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	return RCT2_CALLPROC_X(0x006A86E2, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+}
+
+int paint_scenery_set(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+{
+	return RCT2_CALLPROC_X(0x006B93AA, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
 }
 
 //rct2: 0x00666E42
@@ -970,17 +1102,25 @@ int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	//if (type == OBJECT_TYPE_SCENARIO_TEXT){
-	//	if (eax == 0) return object_scenario_load_custom_text((char*)esi);
-	//}
 	//return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
-	//just use the rct2 function as long as this is not complete!
 	switch (type)
 	{
 	case OBJECT_TYPE_RIDE:
-		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);			
+	case OBJECT_TYPE_SMALL_SCENERY:
+		return paint_small_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+	case OBJECT_TYPE_LARGE_SCENERY:
+		return paint_large_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+	case OBJECT_TYPE_WALLS:
+		return paint_wall(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+	case OBJECT_TYPE_BANNERS:
+		return paint_banner(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATHS:
-		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);	
+	case OBJECT_TYPE_PATH_BITS:
+		return paint_path_bit(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
+	case OBJECT_TYPE_SCENERY_SETS:
+		return paint_scenery_set(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PARK_ENTRANCE:
 		return paint_park_entrance_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_WATER:
@@ -988,7 +1128,8 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	case OBJECT_TYPE_SCENARIO_TEXT:
 		return paint_stex_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	default:
-		return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
+		assert(false);
+		return 0;
 	}
 }
 

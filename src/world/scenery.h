@@ -27,9 +27,10 @@ typedef struct {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
-	uint16 price;			// 0x0C
+	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint8 pad_10[0x0A];
+	uint32 var_10;
+	uint8 pad_14[0x06];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
