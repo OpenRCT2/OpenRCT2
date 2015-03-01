@@ -179,7 +179,7 @@ void sub_6A9FC0()
 {
 	reset_9E32F8();
 
-	RCT2_GLOBAL(0x009ADAF0, uint32) = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	for (int type = 0; type < 11; ++type){
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
@@ -606,7 +606,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	*((uint16*)(installed_entry_pointer + 9)) = 0;
 	*((uint32*)(installed_entry_pointer + 11)) = 0;
 
-	RCT2_GLOBAL(0x9ADAF0, uint32) = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)++;
 
@@ -648,28 +648,31 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint8* chunk = RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*); // Loaded in object_load
 
-	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars);
-	if (objectType == OBJECT_TYPE_RIDE && !(*((uint32*)(chunk + 8)) & 0x1000)) {
-		rct_string_id obj_string = chunk[12];
+	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
+	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->var_008) & 0x1000)) {
+		rct_ride_type* ride_type = (rct_ride_type*)chunk;
+		rct_string_id obj_string = ride_type->var_00C;
 		if (obj_string == 0xFF){
-			obj_string = chunk[13];
+			obj_string = ride_type->var_00D;
 			if (obj_string == 0xFF) {
-				obj_string = chunk[14];
+				obj_string = ride_type->var_00E;
 			}
 		}
 
-		obj_string += 2;
-		format_string(installed_entry_pointer, obj_string, 0);
+		format_string(installed_entry_pointer, obj_string + 2, 0);
 		strcat(installed_entry_pointer, "\t (");
-		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
 		strcat(installed_entry_pointer, ")");
 		while (*installed_entry_pointer++);
 	}
 	else{
-		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
 		while (*installed_entry_pointer++);
 	}
-	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(0x009ADAF0, uint32) - 0xF26E;
+
+	// This is deceptive. Due to setting the total no images earlier to 0xF26E
+	// this is actually the no_images in this entry.
+	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) - 0xF26E;
 	installed_entry_pointer += 4;
 
 	uint8* esi = RCT2_ADDRESS(0x00F42BDB, uint8);

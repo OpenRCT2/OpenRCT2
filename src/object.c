@@ -105,10 +105,8 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		return 0;
 	}
 
-	int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
-
-	if (yyy >= 0x4726E){
-		log_error("Object Load failed due to yyy failure.");
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
+		log_error("Object Load failed due to too many images loaded.");
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
 		rct2_free(chunk);
 		return 0;
@@ -231,9 +229,7 @@ int object_load_packed(FILE *file)
 		return 0;
 	}
 
-	int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
-
-	if (yyy >= 0x4726E){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
 		rct2_free(chunk);
 		return 0;
 	}
@@ -388,7 +384,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 /* rct2: 0x006A9ED1 */
 int object_chunk_load_image_directory(uint8_t** chunk)
 {
-	int image_start_no = RCT2_GLOBAL(0x9ADAF0, uint32_t);
+	int image_start_no = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t);
 	
 	// First dword of chunk is no_images
 	int no_images = *((uint32_t*)(*chunk));
@@ -397,7 +393,7 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	int length_of_data = *((uint32_t*)(*chunk));
 	*chunk += 4;
 
-	RCT2_GLOBAL(0x9ADAF0, uint32_t) = no_images + image_start_no;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t) = no_images + image_start_no;
 
 	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_start_no];
 
@@ -781,61 +777,63 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 //rct2: 0x006A8621
 int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	if ((flags & 0xFF) != 3)
-	{
-		if ((flags & 0xFF) != 1)
-		{
-			if ((flags & 0xFF) <= 1)//0
-			{
-				uint8_t* pStringTable = (uint8_t*)(esi + 0xE);
-				((rct_path_type*)esi)->pad_00 = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+	if ((flags & 0xFF) == 0){
+		// Object Load
 
-				int image_id = object_chunk_load_image_directory(&pStringTable);
-				((rct_path_type*)esi)->image = image_id;
-				image_id += 0x6D;
-				((rct_path_type*)esi)->pad_06 = image_id;
-				if (RCT2_GLOBAL(0x9ADAF4, uint32_t) != 0xFFFFFFFF) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
-				int b = -1;
-				while (true)
-				{
-					b++;
-					if (b >= 0x10) break;
-					uint8_t* edi = object_entry_groups[5].chunks[ebx];
-					if ((uint32_t)edi == 0xFFFFFFFF) continue;
-					if (!(edi[0xB] & 4))
-					{
-						RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
-						break;
-					}
-					RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = ebx;
-				}
-				return flags;
-			}
-			else
+		rct_path_type* path_type = (rct_path_type*)esi;
+		// String table starts after path entry
+		// Note there are 2 spare bytes after
+		// the path entry.
+		uint8* chunk = (uint8*)(esi + 0xE);
+
+		// Only 1 string table for paths
+		path_type->string_idx = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		int image_id = object_chunk_load_image_directory(&chunk);
+		path_type->image = image_id;
+		path_type->bridge_image = image_id + 109;
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
+		// Set the default path for when opening footpath window
+		for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; ++i){
+			rct_path_type* path_type_entry = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
+			if ((uint32)path_type_entry == 0xFFFFFFFF) continue;
+			if (!(path_type_entry->flags & 4))
 			{
-				if (((rct_path_type*)esi)->pad_0A >= 2) return 1;//actually the carry bit should be set (stc)
-				else return 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+				break;
 			}
-		}
-		else
-		{
-			((rct_path_type*)esi)->pad_00 = 0;
-			((rct_path_type*)esi)->image = 0;
-			((rct_path_type*)esi)->pad_06 = 0;
-			return flags;
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+
 		}
 	}
-	else
-	{
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_path_type* path_type = (rct_path_type*)esi;
+		path_type->string_idx = 0;
+		path_type->image = 0;
+		path_type->bridge_image = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+
+		rct_path_type* path_type = (rct_path_type*)esi;
+		if (path_type->var_0A >= 2) return 1;//actually the carry bit should be set (stc)
+		else return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		rct_path_type* path_type = (rct_path_type*)ebp;
 		if (!((flags >> 8) & 0xFF))
 		{
 			//Draws preview for scenario editor!
-			gfx_draw_sprite(dpi, ((rct_path_type*)ebp)->image + 71, ecx - 49, edx - 17, ebp);
-			gfx_draw_sprite(dpi, ((rct_path_type*)ebp)->image + 72, ecx + 4, edx - 17, ebp);
+			gfx_draw_sprite(dpi, path_type->image + 71, ecx - 49, edx - 17, ebp);
+			gfx_draw_sprite(dpi, path_type->image + 72, ecx + 4, edx - 17, ebp);
 		}
-		return flags;
+
 	}
+	return flags;
 }
 
 //rct2: 0x00666E42
@@ -1051,8 +1049,10 @@ int object_get_scenario_text(rct_object_entry *entry)
 						return 0;
 					}
 
-					int yyy = RCT2_GLOBAL(0x009ADAF0, uint32);
-					RCT2_GLOBAL(0x009ADAF0, uint32) = 0x726E;
+					int total_no_images = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32);
+					// This is being changed to force the images to be loaded into a different
+					// image id.
+					RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
 					RCT2_GLOBAL(0x009ADAF8, uint32) = (int)chunk;
 					*((rct_object_entry*)0x00F42BC8) = openedEntry;
 
@@ -1061,7 +1061,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 					object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
 					RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 					RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
-					RCT2_GLOBAL(0x009ADAF0, uint32) = yyy;
+					RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = total_no_images;
 					return 1;
 				}
 				fclose(file);
@@ -1101,7 +1101,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	// Skip filename
 	while (*pos++);
 
-	// Skip 
+	// Skip no of images
 	pos += 4;
 
 	// Skip name

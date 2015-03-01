@@ -233,56 +233,71 @@ const int OpenRCT2LangIdToObjectLangId[] = {
 /* rct2: 0x006A9E24*/
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
 {
-	char* pString;
+	char* pString = NULL;
 	int result = 0;
 	while (true)
 	{
-		uint8_t language_code = ((uint8_t*)*pStringTable)[0];
-		(*pStringTable)++;
+		uint8_t language_code = *(*pStringTable)++;
+		
 		if (language_code == 0xFF) //end of string table
 			break;
+
+		// This is the ideal situation. Language found
 		if (language_code == OpenRCT2LangIdToObjectLangId[gCurrentLanguage])//1)
 		{
 			pString = *pStringTable;
 			result |= 1;
 		}
+
+		// Just in case always load english into pString
 		if (language_code == 0 && !(result & 1))
 		{
 			pString = *pStringTable;
 			result |= 2;
 		}
+
+		// Failing that fall back to whatever is first string
 		if (!(result & 7))
 		{
 			pString = *pStringTable;
 			result |= 4;
 		}
-		while (true)
-		{
-			uint8_t character = ((uint8_t*)*pStringTable)[0];
-			(*pStringTable)++;
-			if (character == 0) break;
-		}
+
+		// Skip over the actual string entry to get to the next
+		// entry
+		while (*(*pStringTable)++ != 0);
 	}
+
+	// If not scenario text
 	if (RCT2_GLOBAL(0x9ADAFC, uint8_t) == 0)
 	{
-		int stringid = 0xD87;
-		int i;
-		for (i = 0; i < type; i++)
+		int stringid = 3463;
+		for (int i = 0; i < type; i++)
 		{
 			int nrobjects = object_entry_group_counts[i];
-			int nrstringtables = RCT2_GLOBAL(0x98DA16 + i * 2, uint16_t);//the number of string tables in a type
+			int nrstringtables = RCT2_ADDRESS(0x98DA16, uint16)[i];//the number of string tables in a type
 			stringid += nrobjects * nrstringtables;
 		}
-		stringid += index * RCT2_GLOBAL(0x98DA16 + type * 2, uint16_t);
-		RCT2_GLOBAL(0x00F42BBC, uint32) = stringid;
+		stringid += index * RCT2_ADDRESS(0x98DA16, uint16)[type];
+		// Used by the object list to allocate name in plugin.dat
+		RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32) = stringid;
 		stringid += tableindex;
-		RCT2_GLOBAL(0x009BF2D4 + stringid * 4, char*) = pString;//put pointer in stringtable
+
+		//put pointer in stringtable
+		language_strings[stringid] = pString;
+		// Until all string related functions are finished copy
+		// to old array as well.
+		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
 		return stringid;
 	}
 	else
 	{
-		int stringid = 0xD77 + tableindex;
-		RCT2_GLOBAL(0x009BF2D4 + stringid * 4, char*) = pString;//put pointer in stringtable
+		int stringid = 3447 + tableindex;
+		//put pointer in stringtable
+		language_strings[stringid] = pString;
+		// Until all string related functions are finished copy
+		// to old array as well.
+		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
 		return stringid;
 	}
 }
