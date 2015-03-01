@@ -849,13 +849,13 @@ static void window_new_ride_scrollpaint()
 		
 		// Draw ride image
 		rideEntry = rideEntries[listItem->entry_index];
-		int unk = rideEntry->var_004;
+		int image_id = rideEntry->images_offset;
 		if (listItem->type != rideEntry->var_00C) {
-			unk++;
+			image_id++;
 			if (listItem->type != rideEntry->var_00D)
-				unk++;
+				image_id++;
 		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, unk);
+		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, image_id);
 
 		// Next position
 		x += 116;
