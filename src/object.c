@@ -883,9 +883,91 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 	return flags;
 }
 
+/* rct2: 0x006B92A7 */
 int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006B92A7, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		uint8* chunk = (uint8*)(esi + 0x1A);
+
+		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		scenery_type->large_scenery.scenery_tab_id = 0xFF;
+
+		if (*chunk != 0xFF){
+			uint8 entry_type, entry_index;
+			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
+				scenery_type->large_scenery.scenery_tab_id = entry_index;
+			}
+		}
+
+		chunk += sizeof(rct_object_entry);
+
+		if (scenery_type->large_scenery.flags & (1<<2)){
+			scenery_type->large_scenery.var_12 = (uint32)chunk;
+			chunk += 1038;
+		}
+
+		scenery_type->large_scenery.var_0C = (uint32)chunk;
+
+		while (*((uint16*)chunk) != 0xFFFF){
+			chunk += 9;
+		}
+
+		chunk += 2;
+
+		int image_id = object_chunk_load_image_directory(&chunk);
+		if (scenery_type->large_scenery.flags & (1 << 2)){
+			scenery_type->large_scenery.var_16 = image_id;
+
+			if (!(scenery_type->large_scenery.var_0C & 1)){
+				image_id += *((uint8*)(scenery_type->large_scenery.var_12 + 0xD)) * 4;
+			}
+			else{
+				image_id += *((uint8*)(scenery_type->large_scenery.var_12 + 0xD)) * 2;
+			}
+		}
+		scenery_type->image = image_id;
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		scenery_type->name = 0;
+		scenery_type->image = 0;
+		scenery_type->large_scenery.var_0C = 0;
+		scenery_type->large_scenery.scenery_tab_id = 0;
+		scenery_type->large_scenery.var_12 = 0;
+		scenery_type->large_scenery.var_16 = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+
+		if (scenery_type->large_scenery.price <= 0)return 1;
+
+		if (scenery_type->large_scenery.removal_price > 0) return 0;
+
+		// Make sure you don't make a profit when placing then removing.
+		if (-scenery_type->large_scenery.removal_price > scenery_type->large_scenery.price)return 1;
+
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+		if (!((flags >> 8) & 0xFF))
+		{
+			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
+
+			int image_id = scenery_type->image | 0xB2D00000;
+
+			gfx_draw_sprite(dpi, image_id, x, y - 39, 0);
+		}
+	}
+	return flags;
 }
 
 int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)

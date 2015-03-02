@@ -60,10 +60,13 @@ typedef enum {
 typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
-	uint8 pad_0A[6];
+	sint16 price;			// 0x08
+	sint16 removal_price;
+	uint32 var_0C;
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
+	uint32 var_12;
+	uint32 var_16;
 } rct_large_scenery_entry;
 
 
