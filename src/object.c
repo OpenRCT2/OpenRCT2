@@ -970,9 +970,85 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 	return flags;
 }
 
+/* rct2: 0x006E5A25 */
 int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006E5A25, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		uint8* chunk = (uint8*)(esi + 0xE);
+
+		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		scenery_type->wall.scenery_tab_id = 0xFF;
+
+		if (*chunk != 0xFF){
+			uint8 entry_type, entry_index;
+			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
+				scenery_type->wall.scenery_tab_id = entry_index;
+			}
+		}
+
+		chunk += sizeof(rct_object_entry);
+
+		scenery_type->image = object_chunk_load_image_directory(&chunk);
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		scenery_type->name = 0;
+		scenery_type->image = 0;
+		scenery_type->wall.scenery_tab_id = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+
+		if (scenery_type->wall.price <= 0)return 1;
+
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+
+		if (!((flags >> 8) & 0xFF))
+		{
+			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
+
+			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
+			if (dpi == NULL) return flags;
+
+			int image_id = scenery_type->image;
+
+
+			image_id |= 0x20D00000;
+
+			if (scenery_type->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+				image_id |= 0x92000000;
+
+
+			x = 70;
+			y = scenery_type->wall.height * 2 + 72;
+
+			gfx_draw_sprite(dpi, image_id, x, y, 0);
+
+			if (scenery_type->wall.flags & WALL_SCENERY_FLAG2){
+				image_id = scenery_type->image + 0x44500006;
+
+				gfx_draw_sprite(dpi, image_id, x, y, 0);
+			}
+			else if (scenery_type->wall.flags & WALL_SCENERY_FLAG5){
+				image_id++;
+
+				gfx_draw_sprite(dpi, image_id, x, y, 0);
+			}
+			rct2_free(dpi);
+		}
+	}
+	return flags;
 }
 
 int paint_banner(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)

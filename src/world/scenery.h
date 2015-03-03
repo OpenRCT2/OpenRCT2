@@ -75,7 +75,7 @@ typedef struct {
 	uint8 flags;			// 0x07
 	uint8 height;			// 0x08
 	uint8 flags2;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 	uint8 var_0D; 
 } rct_wall_scenery_entry;
