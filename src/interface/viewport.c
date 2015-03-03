@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -25,6 +25,8 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "../world/banner.h"
+#include "../world/scenery.h"
 #include "viewport.h"
 #include "window.h"
 
@@ -106,7 +108,7 @@ void viewport_init_all()
  *  z : cx
  *  out_x : ax
  *  out_y : bx
- *  Converts between 3d point of a sprite to 2d coordinates for centering on that sprite 
+ *  Converts between 3d point of a sprite to 2d coordinates for centering on that sprite
  */
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport){
 	int start_x = x;
@@ -130,8 +132,8 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 		break;
 	}
 
-	*out_x = x - viewport->view_width/2;
-	*out_y = y - viewport->view_height/2;
+	*out_x = x - viewport->view_width / 2;
+	*out_y = y - viewport->view_height / 2;
 }
 
 /**
@@ -205,7 +207,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE510
  */
 void viewport_update_pointers()
@@ -381,7 +383,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	}
 
 	if (viewport->width <= 0){
-		memcpy( viewport, &view_copy,sizeof(rct_viewport));
+		memcpy(viewport, &view_copy, sizeof(rct_viewport));
 		return;
 	}
 
@@ -431,7 +433,7 @@ void viewport_set_underground_flag(int underground, rct_window* window, rct_view
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E7A3A
  */
 void viewport_update_position(rct_window *window)
@@ -467,7 +469,7 @@ void viewport_update_position(rct_window *window)
 
 	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	sub_689174(&x, &y, &z, curr_rotation);
-	
+
 	viewport_set_underground_flag(0, window, viewport);
 	//RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
 
@@ -498,7 +500,7 @@ void viewport_update_position(rct_window *window)
 		int z = map_element_height(x & 0xFFFF, y & 0xFFFF);
 		int _2d_x, _2d_y;
 		center_2d_coordinates(x, y, z, &_2d_x, &_2d_y, viewport);
-	
+
 		if (window->saved_view_x > 0){
 			_2d_x = min(_2d_x, window->saved_view_x);
 		}
@@ -532,8 +534,8 @@ void viewport_update_position(rct_window *window)
 			y = -y;
 			flags |= 2;
 		}
-		x = (x + 7)/8;
-		y = (y + 7)/8;
+		x = (x + 7) / 8;
+		y = (y + 7) / 8;
 
 		//If we are at the final zoom position
 		if (!x && !y){
@@ -554,7 +556,7 @@ void viewport_update_position(rct_window *window)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00685C02
  *  ax: left
  *  bx: top
@@ -567,8 +569,8 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 {
 	if (right <= viewport->x) return;
 	if (bottom <= viewport->y) return;
-	if (left >= viewport->x + viewport->width )return;
-	if (top  >= viewport->y + viewport->height )return;
+	if (left >= viewport->x + viewport->width)return;
+	if (top >= viewport->y + viewport->height)return;
 
 	int l = left, t = top, r = right, b = bottom;
 
@@ -594,8 +596,8 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 		top += 384;
 	}
 	//Paint
-	viewport_paint(viewport, dpi, left, top, right, bottom);	
-	
+	viewport_paint(viewport, dpi, left, top, right, bottom);
+
 #ifdef DEBUG_SHOW_DIRTY_BOX
 	if (viewport != g_viewport_list){
 		gfx_fill_rect_inset(dpi, l, t, r-1, b-1, 0x2, 0x30);
@@ -605,7 +607,7 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 }
 
 /**
-*  
+*
 *  rct2: 0x0068615B
 *  ebp: ebp
 */
@@ -708,7 +710,7 @@ void sub_688485(){
 		if (!(ps->var_1A & 1))
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
 		else
-			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);	
+			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
 
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
@@ -759,7 +761,7 @@ void sub_0x6736FC(rct_litter* litter, int ebx, int edx){
 	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
 	RCT2_GLOBAL(0x9DEA56, uint16) = edx + 2;
 
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION,uint32)){
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
 		//0x686806
 		break;
@@ -785,19 +787,19 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 	rct_drawpixelinfo* dpi;
 
 
-	if (RCT2_GLOBAL(0x9DEA6F,uint8) & 1) return;
-	
-	dpi = RCT2_GLOBAL(0x140E9A8,rct_drawpixelinfo*);
-	
+	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) return;
+
+	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)return;
-	
+
 	if (dpi->zoom_level > 2) return;
-	
+
 	if (eax > 0x2000)return;
 	if (ecx > 0x2000)return;
-	
+
 	//push eax, ecx
-	eax = (eax&0x1FE0)<<3 | (ecx>>5);
+	eax = (eax & 0x1FE0) << 3 | (ecx >> 5);
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
@@ -844,6 +846,258 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 	//return;
 }
 
+/* rct2: 0x006B9CC4 */
+//This function is complete, but as long as 0x6C42D9 is not complete
+//it will cause glitches in the rendering of banners,
+//because the wrong (because localized) string length is used for calculating the scroll position
+void viewport_banner_paint_setup(uint32_t ecx, int edx, rct_map_element* map_element)
+{
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xC;
+	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
+	edx -= 16;
+	rct_scenery_entry* banner_scenery = g_bannerSceneryEntries[gBanners[map_element->properties.banner.index].type];
+	ecx += map_element->properties.banner.position;
+	ecx &= 3;
+	RCT2_GLOBAL(0x9DEA56, uint16_t) = edx + 2;
+	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D884, uint32_t)[ecx * 2];
+	int ebx = (ecx << 1) + banner_scenery->image;
+	ebx += (gBanners[map_element->properties.banner.index].colour << 19) | 0x20000000;
+	if (map_element->flags & 0x10)
+	{
+		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
+		ebx &= 0x7FFFF;
+		ebx |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8_t)];
+	}
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D888, uint32_t)[ecx * 2];
+	ebx++;
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	ecx ^= 2;
+	ecx--;
+	if (ecx >= 2 || (map_element->flags & 0x10)) return;
+	int ebp = banner_scenery->banner.var_06;
+	ebp += ecx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t) = 0;
+	RCT2_GLOBAL(0x13CE956, uint32_t) = 0;
+	int eax = 0xBA5;
+	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
+	{
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16_t) = gBanners[map_element->properties.banner.index].string_idx;
+		eax = 0x6C3;
+	}
+	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), eax, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16_t) = 0x1C0;
+	uint16_t string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
+	uint16_t ticks = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32_t) >> 1;
+	uint16_t cx = ticks % string_width;
+	int a = eax, b = ebx, c = cx, d = 0, si = 0, di = 0, p = ebp;
+	RCT2_CALLFUNC_X(0x6C42D9, &a, &b, &c, &d, &si, &di, &p);
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		0x1500, b, 0, edx + 22, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+}
+
+//rct2: 0x0068B35F
+void sub_68B35F(int ax, int cx)
+{
+	if (ax < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
+		cx < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
+		ax >= 32 && cx >= 32)
+	{
+		RCT2_GLOBAL(0x141E9B4, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9B8, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9BC, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9C0, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9C4, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9C8, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9CC, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9D0, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9D4, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9D8, uint32_t) = 0xFFFF;
+		RCT2_GLOBAL(0x141E9DC, uint32_t) = 0xFFFF;
+		//loc_68B3FB: Another function jumps to here. We need to split this!
+		RCT2_GLOBAL(0x141F56A, uint16_t) = 0;
+		RCT2_GLOBAL(0x9E3138, uint8_t) = 0xFF;
+		RCT2_GLOBAL(0x9E30B6, uint8_t) = 0xFF;
+		RCT2_GLOBAL(0x9E323C, uint8_t) = 0xFF;
+		RCT2_GLOBAL(0x9DE56A, uint16_t) = ax;
+		RCT2_GLOBAL(0x9DE56E, uint16_t) = cx;
+		RCT2_GLOBAL(0x9DE574, uint16_t) = ax;
+		RCT2_GLOBAL(0x9DE576, uint16_t) = cx;
+		int dx = cx;
+		int esi = dx;
+		esi <<= 8;
+		esi |= ax;
+		esi >>= 3;
+		int ax_tmp = ax;
+		int cx_tmp = cx;
+		rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[esi / 4];//8];
+		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
+		{
+		case 0:
+			dx = ax + cx;
+			break;
+		case 1:
+			ax += 32;
+			dx = cx - ax;
+			break;
+		case 2:
+			ax += 32;
+			cx += 32;
+			dx = -(ax + cx);
+			break;
+		case 3:
+			cx += 32;
+			dx = ax - cx;
+			break;
+		}
+		dx /= 2;
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16_t) & 4) &&
+			RCT2_GLOBAL(0x9DE56A, uint16_t) == RCT2_GLOBAL(0x9DEA48, uint16_t) &&
+			RCT2_GLOBAL(0x9DE56E, uint16_t) == RCT2_GLOBAL(0x9DEA4A, uint16_t))
+		{
+
+			int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t);
+			RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
+			RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
+			int dl = RCT2_GLOBAL(0x009DEA4E, uint8_t) & 3;
+			ebx += dl;
+			ebx &= 3;
+			dl = RCT2_GLOBAL(0x009DEA4E, uint8_t) & 0xFC;
+			ebx += dl;
+			ebx += 0x20900C27;
+			int d = RCT2_GLOBAL(0x009DEA4C, uint16_t);
+			RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
+			RCT2_GLOBAL(0x9DEA52, uint16_t) = 0;
+			RCT2_GLOBAL(0x9DEA54, uint16_t) = 0;
+			RCT2_GLOBAL(0x9DEA56, uint16_t) = d + 18;
+			RCT2_CALLPROC_X(
+				(int)RCT2_ADDRESS(0x0098197C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+				0xFF00, ebx, cx & 0xFF00, d, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		}
+		int bx = dx + 52;
+		if (bx > dpi->y)
+		{
+			rct_map_element* element = map_element;//push map_element
+			bx = element->clearance_height;
+			if (!(element->flags & MAP_ELEMENT_FLAG_LAST_TILE))
+			{
+				while (true)
+				{
+					element++;
+					if (bx < element->clearance_height) 
+						bx = element->clearance_height;
+					if (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) break;
+				}
+			}
+			if ((element->type & 0x3C) == MAP_ELEMENT_TYPE_SURFACE &&
+				(element->properties.surface.terrain & 0x1F) != 0)
+			{
+				bx = element->properties.surface.terrain & 0x1F;//water height
+				bx <<= 1;
+			}
+			bx <<= 3;
+			dx -= bx;
+			dx -= 32;
+			element = map_element;//pop map_element
+			dx -= dpi->height;
+			if (dx < dpi->y)
+			{
+				RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
+				RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
+				RCT2_GLOBAL(0x9DE57C, uint16_t) = 0;
+				while (true)
+				{
+					int ecx = map_element->type;
+					int edi = ecx;
+					ecx += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t);
+					ecx &= 3;
+					dx = map_element->base_height;
+					edi &= 0x3C;
+					dx <<= 3;
+					uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
+					RCT2_GLOBAL(0x9DE578, rct_map_element*) = map_element;
+					//setup the painting of for example: the underground, signs, rides, scenery, etc.
+					switch (edi)
+					{
+					case MAP_ELEMENT_TYPE_SURFACE:
+						RCT2_CALLPROC_X(0x66062C, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_PATH:
+						RCT2_CALLPROC_X(0x6A3590, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_TRACK:
+						RCT2_CALLPROC_X(0x6C4794, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_SCENERY:
+						RCT2_CALLPROC_X(0x6DFF47, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_ENTRANCE:
+						RCT2_CALLPROC_X(0x664FD4, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_FENCE:
+						RCT2_CALLPROC_X(0x6E44B0, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+						RCT2_CALLPROC_X(0x6B7F0C, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					case MAP_ELEMENT_TYPE_BANNER:
+						//Not used yet. See comment above viewport_banner_paint_setup
+						//viewport_banner_paint_setup(ecx, dx, map_element);
+						RCT2_CALLPROC_X(0x6B9CC4, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						break;
+					default:
+						break;
+					}
+					RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
+					int stop = map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+					map_element++;
+					if (stop) break;
+				}
+			}
+		}
+	}
+	else
+	{
+		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		int dx;
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
+		{
+		case 0:
+			dx = ax + cx;
+			break;
+		case 1:
+			ax += 32;
+			dx = cx - ax;
+			break;
+		case 2:
+			ax += 32;
+			cx += 32;
+			dx = -(ax + cx);
+			break;
+		case 3:
+			cx += 32;
+			dx = ax - cx;
+			break;
+		}
+		dx /= 2;
+		dx -= 16;
+		int bx = dx + 32;
+		if (bx <= dpi->y) return;
+		dx -= 20;
+		dx -= dpi->height;
+		if (dx >= dpi->y) return;
+		RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
+		RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
+		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
+		RCT2_CALLPROC_X((int)RCT2_ADDRESS(0x98196C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			0xFF00, 3123, cx & 0xFF00, 16, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	}
+}
+
 /**
 *
 *  rct2: 0x0068B6C2
@@ -869,13 +1123,13 @@ void sub_0x68B6C2(){
 		dx += 2128;
 		dx >>= 5;
 		for (int i = dx; i > 0; --i){
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
 			ax -= 0x20;
 			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
@@ -890,7 +1144,7 @@ void sub_0x68B6C2(){
 		bx &= 0xFFE0;
 		ax &= 0xFFE0;
 		bx >>= 1;
-		cx = ax;		
+		cx = ax;
 		ax = -ax;
 		ax -= bx;
 		cx -= bx;
@@ -901,13 +1155,13 @@ void sub_0x68B6C2(){
 		dx += 0x860;
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
 			sub_0x69E8B0(ax, cx);
 			cx += 0x20;
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
@@ -932,13 +1186,13 @@ void sub_0x68B6C2(){
 		dx += 0x860;
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx -= 0x20;
 			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx += 0x20;
@@ -964,13 +1218,13 @@ void sub_0x68B6C2(){
 		dx += 0x860;
 		dx >>= 5;
 		for (int i = dx; i > 0; i--){
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax += 0x20;
 			cx += 0x20;
 			sub_0x69E8B0(ax, cx);
 			cx -= 0x20;
-			RCT2_CALLPROC_X(0x68B35F, ax, 0, cx, 0, 0, 0, 0);
+			sub_68B35F(ax, cx);
 			sub_0x69E8B0(ax, cx);
 			ax -= 0x20;
 			cx -= 0x20;
@@ -1083,13 +1337,13 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}
 		RCT2_CALLPROC_EBPSAFE(0x6860C3); //string related
-	} 
+	}
 
 	//RCT2_CALLPROC_X(0x00685CBF, left, top, 0, right, (int)viewport, (int)dpi, bottom);
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068958D
  */
 void screen_pos_to_map_pos(short *x, short *y)
@@ -1103,7 +1357,7 @@ void screen_pos_to_map_pos(short *x, short *y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00664689
  */
 void show_gridlines()
@@ -1122,7 +1376,7 @@ void show_gridlines()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006646B4
  */
 void hide_gridlines()
@@ -1141,7 +1395,7 @@ void hide_gridlines()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00664E8E
  */
 void show_land_rights()
@@ -1160,7 +1414,7 @@ void show_land_rights()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00664EB9
  */
 void hide_land_rights()
@@ -1179,7 +1433,7 @@ void hide_land_rights()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00664EDD
  */
 void show_construction_rights()
@@ -1198,7 +1452,7 @@ void show_construction_rights()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00664F08
  */
 void hide_construction_rights()
@@ -1217,48 +1471,48 @@ void hide_construction_rights()
 }
 
 /**
- * 
+ *
  * rct2: 0x006CB70A
  */
 void viewport_set_visibility(uint8 mode)
 {
-        rct_window* window = window_get_main();
+	rct_window* window = window_get_main();
 
-        if(window != NULL) {
-                rct_viewport* edi = window->viewport;
-                uint32 invalidate = 0;
+	if (window != NULL) {
+		rct_viewport* edi = window->viewport;
+		uint32 invalidate = 0;
 
-                switch(mode) {
-                        case 0: { //Set all these flags to 0, and invalidate if any were active
-                                uint16 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
-                                        VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
-                                        VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
-                                        VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
-                                        VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
+		switch (mode) {
+		case 0: { //Set all these flags to 0, and invalidate if any were active
+			uint16 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
+				VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
+				VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
+				VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
+				VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
 
-                                invalidate += edi->flags & mask;
-                                edi->flags &= ~mask;
-                                break;
-                        }
-                        case 1: //6CB79D
-                        case 4: //6CB7C4
-                                //Set underground on, invalidate if it was off
-                                invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-                                edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                                break;
-                        case 2: //6CB7EB
-                                //Set track heights on, invalidate if off
-                                invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-                                edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
-                                break;
-                        case 3: //6CB7B1
-                        case 5: //6CB7D8
-                                //Set underground off, invalidate if it was on
-                                invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                                edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-                                break;
-                }
-                if (invalidate != 0)
+			invalidate += edi->flags & mask;
+			edi->flags &= ~mask;
+			break;
+		}
+		case 1: //6CB79D
+		case 4: //6CB7C4
+			//Set underground on, invalidate if it was off
+			invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+			edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			break;
+		case 2: //6CB7EB
+			//Set track heights on, invalidate if off
+			invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+			edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
+			break;
+		case 3: //6CB7B1
+		case 5: //6CB7D8
+			//Set underground off, invalidate if it was on
+			invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+			break;
+		}
+		if (invalidate != 0)
 			window_invalidate(window);
 	}
 }
