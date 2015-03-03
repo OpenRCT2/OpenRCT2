@@ -115,13 +115,13 @@ static void* window_guest_list_events[] = {
 	window_guest_list_scrollpaint
 };
 
-static int _window_guest_list_highlighted_index;
-static int _window_guest_list_selected_tab;
-static int _window_guest_list_selected_filter;
-static int _window_guest_list_selected_page;
-static int _window_guest_list_selected_view;
-static int _window_guest_list_num_pages;
-static int _window_guest_list_num_groups;
+static int _window_guest_list_highlighted_index; // 0x00F1EE10
+static int _window_guest_list_selected_tab;      // 0x00F1EE12
+static int _window_guest_list_selected_filter;   // 0x00F1EE06
+static int _window_guest_list_selected_page;     // 0x00F1EE07
+static int _window_guest_list_selected_view;     // 0x00F1EE13
+static int _window_guest_list_num_pages;         // 0x00F1EE08
+static int _window_guest_list_num_groups;        // 0x00F1AF22
 
 static uint16 _window_guest_list_groups_num_guests[240];
 static uint32 _window_guest_list_groups_argument_1[240];
@@ -176,6 +176,102 @@ void window_guest_list_open()
 	window->colours[0] = 1;
 	window->colours[1] = 15;
 	window->colours[2] = 15;
+}
+
+/**
+* type == 0 -> guests on ride
+* type == 1 -> guests in queue
+* type == 2 -> guests thinking about ride
+* type == 3 -> guests thinking X, opened from news item
+* ebx is number of the ride or index of the thought
+* values of eax and edx probably determine the filter name string
+*
+*  rct2: 0x006993BA
+*/
+void window_guest_list_open_with_filter(int type, int ebx)
+{
+	//RCT2_CALLPROC_X(0x006993BA, type, ebx, 0, 0, 0, 0, 0);
+
+	uint32 eax, edx, ebp;
+
+	window_guest_list_open();
+
+	_window_guest_list_selected_page = 0;
+	_window_guest_list_num_pages = 1;
+	
+	RCT2_GLOBAL(0x009AC7E0, uint8) = 0;
+	RCT2_GLOBAL(0x009AC7F0, uint8) = 0;
+
+	switch(type)
+	{
+	case 0:
+		_window_guest_list_selected_filter = 0;
+
+		ebp = ebx & 0x000000FF;
+
+		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
+		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
+
+		eax = (eax << 16) + 1435;
+
+		int ride_type = g_ride_list[ebp].type;
+		if ((RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 8] & 0x400000) != 0)
+			eax++;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 0;
+		break;
+	case 1:
+		_window_guest_list_selected_filter = 0;
+
+		ebp = ebx & 0x000000FF;
+
+		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
+		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
+
+		eax = (eax << 16) + 1433;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 0;
+		break;
+	case 2:
+		_window_guest_list_selected_filter = 1;
+
+		ebp = ebx & 0x000000FF;
+
+		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
+		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
+
+		eax = (eax << 16) + 0xFFFF;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 1;
+		break;
+	case 3:
+		_window_guest_list_selected_filter = 1;
+
+		ebx = (ebx & 0x000000FF) + 1480;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = ebx;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = 0;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 1;
+		break;
+	}
 }
 
 /**

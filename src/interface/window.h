@@ -515,6 +515,7 @@ void window_land_open();
 void window_water_open();
 void window_staff_list_open();
 void window_guest_list_open();
+void window_guest_list_open_with_filter(int type, int ebx);
 void window_map_open();
 void window_options_open();
 void window_shortcut_keys_open();
