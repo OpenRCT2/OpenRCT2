@@ -784,7 +784,7 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 		// Object Load
 
 		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0x1A);
+		uint8* chunk = (uint8*)(esi + 0x1C);
 
 		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
 
