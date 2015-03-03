@@ -600,7 +600,7 @@ STR_0595    :
 STR_0596    :
 STR_0597    :
 STR_0598    :
-STR_0599    :Montanha-russa compacta com os carros individuais e suaves quedas com inclinadas*
+STR_0599    :Montanha-russa compacta com os carros individuais e suaves quedas inclinadas*
 STR_0600    :
 STR_0601    :
 STR_0602    :
@@ -852,13 +852,13 @@ STR_0847    :Sobre 'RollerCoaster Tycoon 2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Versão 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, Todos os Direitos Reservados
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Gráficos por Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Som e musícas por Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Sons adicionais gravador por David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representação por Jacqui Lyons na Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
 STR_0860    :{WINDOW_COLOUR_2}
@@ -899,14 +899,14 @@ STR_0894    :Landscape data area full !
 STR_0895    :Impossível construir parcialmente em cima e em baixo do chão
 STR_0896    :{POP16}{POP16}{STRINGID} Construção
 STR_0897    :Sentido*
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
+STR_0898    :{SMALLFONT}{BLACK}Curva para esquerda
+STR_0899    :{SMALLFONT}{BLACK}Curva para direita
+STR_0900    :{SMALLFONT}{BLACK}Curva para esquerda (raio pequeno)
+STR_0901    :{SMALLFONT}{BLACK}Curva para direita (raio pequeno)
+STR_0902    :{SMALLFONT}{BLACK}Curva para esquerda (raio muito pequeno)
+STR_0903    :{SMALLFONT}{BLACK}Curva para esquerda (raio muito pequeno)
+STR_0904    :{SMALLFONT}{BLACK}Curva para esquerda (raio grande)
+STR_0905    :{SMALLFONT}{BLACK}Curva para esquerda (raio grande)
 STR_0906    :{SMALLFONT}{BLACK}Em Linha Reta*
 STR_0907    :Inclinação*
 STR_0908    :Rolar/Banking*
@@ -1000,15 +1000,15 @@ STR_0995    :{WINDOW_COLOUR_1}Você tem certeza que deseja demolir completamente
 STR_0996    :Visão Geral
 STR_0997    :{SMALLFONT}{BLACK}Ver seleção
 STR_0998    :Não há mais estações permitidas nesta atração
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
+STR_0999    :Requer uma plataforma da estação
+STR_1000    :A pista não é um circuito completo
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
-STR_1007    :Unable to create enough vehicles
+STR_1002    :Impossível Abrir {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :Impossível Testar {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Impossível Fechar {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Impossível começar a construção no {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Deve ser fechado primeiro
+STR_1007    :Impossível criar veículos suficientes
 STR_1008    :{SMALLFONT}{BLACK}Abrir, fechar ou testar atração*
 STR_1009    :{SMALLFONT}{BLACK}Abrir ou fechar todas as atrações
 STR_1010    :{SMALLFONT}{BLACK}Abrir ou fechar o parque
@@ -1016,20 +1016,20 @@ STR_1011    :Fechar todos
 STR_1012    :Abrir todos
 STR_1013    :Fechar parque
 STR_1014    :Abrir parque
-STR_1015    :Unable to operate with more than one station platform in this mode
-STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can't change operating mode...
+STR_1015    :Impossível operar com mais de uma plataforma de estação neste modo
+STR_1016    :Impossível operar com menos de duas estações neste modo
+STR_1017    :Impossível alterar o modo de operação...
 STR_1018    :Impossível fazer alterações...
 STR_1019    :Impossível fazer alterações...
 STR_1020    :Impossível fazer alterações...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
-STR_1024    :{COMMA16} car per train
-STR_1025    :{COMMA16} cars per train
-STR_1026    :Station platform too long!
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} carro por trem
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carros por trens
+STR_1024    :{COMMA16} carro por trem
+STR_1025    :{COMMA16} carros por trens
+STR_1026    :Plataforma da estação é muito longa!
 STR_1027    :{SMALLFONT}{BLACK}Localizar isto na Visão Principal
-STR_1028    :Off edge of map!
+STR_1028    :Fora da borada do mapa!
 STR_1029    :Cannot build partly above and partly below water!
 STR_1030    :Can only build this underwater!
 STR_1031    :Can't build this underwater!
