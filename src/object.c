@@ -922,11 +922,12 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 		if (scenery_type->large_scenery.flags & (1 << 2)){
 			scenery_type->large_scenery.var_16 = image_id;
 
-			if (!(scenery_type->large_scenery.var_0C & 1)){
-				image_id += *((uint8*)(scenery_type->large_scenery.var_12 + 0xD)) * 4;
+			uint8* edx = (uint8*)scenery_type->large_scenery.var_12;
+			if (!(edx[0xC] & 1)){
+				image_id += edx[0xD] * 4;
 			}
 			else{
-				image_id += *((uint8*)(scenery_type->large_scenery.var_12 + 0xD)) * 2;
+				image_id += edx[0xD] * 2;
 			}
 		}
 		scenery_type->image = image_id;

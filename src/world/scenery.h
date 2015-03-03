@@ -61,7 +61,7 @@ typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
-	sint16 removal_price;
+	sint16 removal_price;	// 0x0A
 	uint32 var_0C;
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
