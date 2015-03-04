@@ -95,14 +95,14 @@ typedef struct {
 	uint16 var_06;
 	uint8 pad_08;
 	uint8 tool_id;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
 typedef struct {
 	uint8 var_06;
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
+	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
 } rct_banner_scenery_entry;
 
@@ -123,7 +123,7 @@ typedef struct {
 	uint32 image;					// 0x02
 	uint16 scenery_entries[0x80];	// 0x06
 	uint8 entry_count;				// 0x106
-	uint8 pad_107;
+	uint8 var_107;
 	uint8 var_108;					// 0x108, order?
 	uint8 pad_109;
 	uint32 var_10A;

@@ -1052,9 +1052,64 @@ int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int
 	return flags;
 }
 
+/* rct2: 0x006BA84E */
 int paint_banner(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006BA84E, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		uint8* chunk = (uint8*)(esi + 0xC);
+
+		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		scenery_type->banner.scenery_tab_id = 0xFF;
+
+		if (*chunk != 0xFF){
+			uint8 entry_type, entry_index;
+			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
+				scenery_type->banner.scenery_tab_id = entry_index;
+			}
+		}
+
+		chunk += sizeof(rct_object_entry);
+
+		scenery_type->image = object_chunk_load_image_directory(&chunk);
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		scenery_type->name = 0;
+		scenery_type->image = 0;
+		scenery_type->banner.scenery_tab_id = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+			if (scenery_type->banner.price <= 0)return 1;
+
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+
+		if (!((flags >> 8) & 0xFF))
+		{
+			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
+
+			int image_id = scenery_type->image;
+
+			image_id |= 0x20D00000;
+
+
+			gfx_draw_sprite(dpi, image_id, x, y, 0);
+
+			gfx_draw_sprite(dpi, image_id + 1, x, y, 0);
+		}
+	}
+	return flags;
 }
 
 //rct2: 0x006A8621
@@ -1119,15 +1174,161 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	return flags;
 }
 
+/* rct2: 0x006A86E2 */
 int paint_path_bit(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006A86E2, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		uint8* chunk = (uint8*)(esi + 0xE);
+
+		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		scenery_type->path_bit.scenery_tab_id = 0xFF;
+
+		if (*chunk != 0xFF){
+			uint8 entry_type, entry_index;
+			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
+				scenery_type->path_bit.scenery_tab_id = entry_index;
+			}
+		}
+
+		chunk += sizeof(rct_object_entry);
+
+		scenery_type->image = object_chunk_load_image_directory(&chunk);
+
+		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+		scenery_type->name = 0;
+		scenery_type->image = 0;
+		scenery_type->path_bit.scenery_tab_id = 0;
+	}
+	else if ((flags & 0xFF) == 2){
+		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
+
+			if (scenery_type->path_bit.price <= 0)return 1;
+
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+
+		if (!((flags >> 8) & 0xFF))
+		{
+			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
+
+			int image_id = scenery_type->image;
+
+			x -= 22;
+			y -= 24;
+
+			gfx_draw_sprite(dpi, image_id, x, y, 0);
+		}
+	}
+	return flags;
 }
 
+/* rct2: 0x006B93AA */
 int paint_scenery_set(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
-	return RCT2_CALLPROC_X(0x006B93AA, flags, ebx, ecx, edx, esi, (int)dpi, ebp) & 0x100;
+	if ((flags & 0xFF) == 0){
+		// Object Load
+
+		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)esi;
+		uint8* chunk = (uint8*)(esi + sizeof(rct_scenery_set_entry));
+
+		scenery_set->name = object_get_localised_text(&chunk, ecx, ebx, 0);
+
+		rct_object_entry* entry_objects = NULL;
+		uint8* eax = RCT2_GLOBAL(0x9ADAF4, uint8*);
+		if ((uint32)eax != 0xFFFFFFFF){
+			*((uint16*)eax) = 0;
+			entry_objects = (rct_object_entry*)(eax + 2);
+		}
+
+		scenery_set->entry_count = 0;
+		scenery_set->var_107 = 0;
+
+		for (; *chunk != 0xFF; chunk += sizeof(rct_object_entry)){
+			scenery_set->var_107++;
+
+			if (entry_objects != NULL){
+				memcpy(entry_objects, chunk, sizeof(rct_object_entry));
+				entry_objects++;
+				(*(eax + 1))++;
+			}
+			uint8 entry_type;
+			uint8 entry_index = 0;
+			if (!find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index))
+				continue;
+
+			uint16 scenery_entry = entry_index;
+
+			switch (entry_type){
+			case OBJECT_TYPE_SMALL_SCENERY:
+				break;
+			case OBJECT_TYPE_LARGE_SCENERY:
+				scenery_entry |= 0x300;
+				break;
+			case OBJECT_TYPE_WALLS:
+				scenery_entry |= 0x200;
+				break;
+			case OBJECT_TYPE_PATH_BITS:
+				scenery_entry |= 0x100;
+				break;
+			default:
+				scenery_entry |= 0x400;
+				break;
+			}
+
+			scenery_set->scenery_entries[scenery_set->entry_count++] = scenery_entry;
+		}
+
+		chunk++;
+
+		scenery_set->image = object_chunk_load_image_directory(&chunk);
+	}
+	else if ((flags & 0xFF) == 1){
+		// Object Unload
+
+		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)esi;
+		scenery_set->name = 0;
+		scenery_set->image = 0;
+		scenery_set->entry_count = 0;
+		scenery_set->var_107 = 0;
+
+		memset(scenery_set->scenery_entries, 0, 256);
+	}
+	else if ((flags & 0xFF) == 2){
+		return 0;
+	}
+	else if ((flags & 0xFF) == 3){
+		int x = ecx, y = edx;
+
+		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)ebp;
+
+		if (!((flags >> 8) & 0xFF))
+		{
+			int image_id = scenery_set->image;
+
+			image_id += 0x20600001;
+
+			gfx_draw_sprite(dpi, image_id, x - 15, y - 14, 0);
+		}
+		else{
+			RCT2_GLOBAL(0x13CE952, uint16) = scenery_set->var_107;
+
+			gfx_draw_string_left(dpi, 3167, RCT2_ADDRESS(0x13CE952, void), 0, x, y);
+		}
+	}
+	return flags;
 }
+
 
 //rct2: 0x00666E42
 int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
