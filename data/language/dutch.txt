@@ -584,7 +584,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :
 STR_0585    :
-STR_0586    :Bootvormige karretjes rijden over een achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
+STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
 STR_0587    :
 STR_0588    :
 STR_0589    :
