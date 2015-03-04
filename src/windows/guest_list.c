@@ -183,39 +183,40 @@ void window_guest_list_open()
 * type == 1 -> guests in queue
 * type == 2 -> guests thinking about ride
 * type == 3 -> guests thinking X, opened from news item
-* ebx is number of the ride or index of the thought
+* index is number of the ride or index of the thought
 * values of eax and edx probably determine the filter name string
 *
 *  rct2: 0x006993BA
 */
-void window_guest_list_open_with_filter(int type, int ebx)
+void window_guest_list_open_with_filter(int type, int index)
 {
 	//RCT2_CALLPROC_X(0x006993BA, type, ebx, 0, 0, 0, 0, 0);
 
-	uint32 eax, edx, ebp;
+	uint32 eax, edx;
 
 	window_guest_list_open();
 
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
-	
+
 	RCT2_GLOBAL(0x009AC7E0, uint8) = 0;
 	RCT2_GLOBAL(0x009AC7F0, uint8) = 0;
+
+	rct_ride *ride;
+	if (type != 3) {	// common for cases 0, 1, 2
+		ride = GET_RIDE(index & 0x000000FF);
+		eax = ride->name;
+		edx = ride->name_arguments;
+	}
 
 	switch(type)
 	{
 	case 0:
 		_window_guest_list_selected_filter = 0;
 
-		ebp = ebx & 0x000000FF;
-
-		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
-		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
-
 		eax = (eax << 16) + 1435;
 
-		int ride_type = g_ride_list[ebp].type;
-		if ((RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 8] & 0x400000) != 0)
+		if ((RCT2_GLOBAL(0x97CF40 + ride->type * 8, uint32) & 0x400000) != 0)
 			eax++;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
@@ -227,11 +228,6 @@ void window_guest_list_open_with_filter(int type, int ebx)
 		break;
 	case 1:
 		_window_guest_list_selected_filter = 0;
-
-		ebp = ebx & 0x000000FF;
-
-		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
-		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
 
 		eax = (eax << 16) + 1433;
 
@@ -245,11 +241,6 @@ void window_guest_list_open_with_filter(int type, int ebx)
 	case 2:
 		_window_guest_list_selected_filter = 1;
 
-		ebp = ebx & 0x000000FF;
-
-		eax = RCT2_GLOBAL(0x1362942 + ebp * sizeof(rct_ride), uint16);
-		edx = RCT2_GLOBAL(0x1362942 + 2 + ebp * sizeof(rct_ride), uint32);
-
 		eax = (eax << 16) + 0xFFFF;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
@@ -262,9 +253,9 @@ void window_guest_list_open_with_filter(int type, int ebx)
 	case 3:
 		_window_guest_list_selected_filter = 1;
 
-		ebx = (ebx & 0x000000FF) + 1480;
+		index = (index & 0x000000FF) + 1480;
 
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = ebx;
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = index;
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = 0;
 
 		_window_guest_list_highlighted_index = 0xFFFF;
