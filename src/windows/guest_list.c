@@ -815,7 +815,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	_window_guest_list_selected_view = temp;
 
-	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && _window_guest_list_selected_filter == 1)
+	if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0xFFFF && _window_guest_list_selected_filter == 1)
 		argument1 |= 0xFFFF;
 
 	if (argument1 == RCT2_GLOBAL(0x00F1EDF6, uint32) && argument2 == RCT2_GLOBAL(0x00F1EDFA, uint32))
