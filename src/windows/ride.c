@@ -5649,13 +5649,13 @@ static void window_ride_customer_mouseup()
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_SHOW_GUESTS_THOUGHTS:
-		RCT2_CALLPROC_X(0x006993BA, 2, w->number, 0, 0, 0, 0, 0);
+		window_guest_list_open_with_filter(2, w->number);
 		break;
 	case WIDX_SHOW_GUESTS_ON_RIDE:
-		RCT2_CALLPROC_X(0x006993BA, 0, w->number, 0, 0, 0, 0, 0);
+		window_guest_list_open_with_filter(0, w->number);
 		break;
 	case WIDX_SHOW_GUESTS_QUEUING:
-		RCT2_CALLPROC_X(0x006993BA, 1, w->number, 0, 0, 0, 0, 0);
+		window_guest_list_open_with_filter(1, w->number);
 		break;
 	}
 }

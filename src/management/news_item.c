@@ -333,7 +333,7 @@ void news_item_open_subject(int type, int subject)
 		break;
 	case NEWS_ITEM_PEEPS:
 		// Open guest list to right tab
-		RCT2_CALLPROC_X(0x006993BA, 3, subject, 0, 0, 0, 0, 0);
+		window_guest_list_open_with_filter(3, subject);;
 		break;
 	case NEWS_ITEM_AWARD:
 		window_park_awards_open();
