@@ -176,16 +176,16 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebp : entry
  */
 int sub_6A9F42(FILE *file, rct_object_entry* entry){
-	int eax = 0, entryGroupIndex = 0, type = 0, edx = 0, edi = 0, ebp = (int)entry, chunk = 0;
-	RCT2_CALLFUNC_X(0x6A9DA2, &eax, &entryGroupIndex, &type, &edx, &chunk, &edi, &ebp);
-	if (eax == 0) return 0;
+	uint8 entryGroupIndex = 0, type = 0;
+	uint8* chunk = 0;
 
-	object_paint(type, 1, entryGroupIndex, type, edx, chunk, edi, ebp);
+	if (!find_object_in_entry_group(entry, &type, &entryGroupIndex))return 0;
 
+	object_paint(type, 1, entryGroupIndex, type, 0, (int)chunk, 0, 0);
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
 	uint8* dst_buffer = malloc(0x600000);
-	memcpy(dst_buffer, (uint8*)installed_entry, sizeof(rct_object_entry));
+	memcpy(dst_buffer, installed_entry, sizeof(rct_object_entry));
 
 	uint32 size_dst = sizeof(rct_object_entry);
 
@@ -196,7 +196,7 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 	chunkHeader.encoding = object_entry_group_encoding[type];
 	chunkHeader.length = installed_entry->chunk_size;
 
-	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), (uint8*)chunk, chunkHeader);
+	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
 	fwrite(dst_buffer, 1, size_dst, file);
 
 	free(dst_buffer);
