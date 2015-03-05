@@ -570,12 +570,16 @@ static void window_scenery_resize()
 	if (w->height < w->min_height) {
 		w->height = w->min_height;
 		window_invalidate(w);
+		// HACK: For some reason invalidate has not been called
+		window_event_invalidate_call(w);
 		window_scenery_update_scroll(w);
 	}
 
 	if (w->height > w->max_height) {
 		w->height = w->max_height;
 		window_invalidate(w);
+		// HACK: For some reason invalidate has not been called
+		window_event_invalidate_call(w);
 		window_scenery_update_scroll(w);
 	}
 }
