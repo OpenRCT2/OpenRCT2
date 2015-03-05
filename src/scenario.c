@@ -39,6 +39,7 @@
 #include "world/map.h"
 #include "world/park.h"
 #include "world/sprite.h"
+#include "world/water.h"
 
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName;
@@ -700,7 +701,9 @@ void scenario_update()
 		ride_check_all_reachable();
 		ride_update_favourited_stat();
 
-		if (month <= 1 && RCT2_GLOBAL(0x009ADAE0, sint32) != -1 && RCT2_GLOBAL(0x009ADAE0 + 14, uint16) & 1) {
+		rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+
+		if (month <= 1 && (sint32)water_type != -1 && water_type->var_0E & 1) {
 			// 100 attempts at finding some water to create a few ducks at
 			for (int i = 0; i < 100; i++) {
 				if (scenario_create_ducks())

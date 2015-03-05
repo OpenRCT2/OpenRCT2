@@ -29,11 +29,11 @@ enum {
 };
 
 typedef struct {
-	uint16 pad_00;
-	uint32 image;		// 0x02
-	uint32 pad_06;
-	uint8 pad_0A;
-	uint8 flags;		// 0x0B
+	rct_string_id string_idx;	// 0x00
+	uint32 image;				// 0x02
+	uint32 bridge_image;		// 0x06
+	uint8 var_0A;
+	uint8 flags;				// 0x0B
 } rct_path_type;
 
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

@@ -27,9 +27,10 @@ typedef struct {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
-	uint16 price;			// 0x0C
+	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint8 pad_10[0x0A];
+	uint32 var_10;
+	uint8 pad_14[0x06];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
@@ -59,10 +60,13 @@ typedef enum {
 typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
-	uint8 pad_0A[6];
+	sint16 price;			// 0x08
+	sint16 removal_price;	// 0x0A
+	uint32 var_0C;
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
+	uint32 var_12;
+	uint32 var_16;
 } rct_large_scenery_entry;
 
 
@@ -71,7 +75,7 @@ typedef struct {
 	uint8 flags;			// 0x07
 	uint8 height;			// 0x08
 	uint8 flags2;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 	uint8 var_0D; 
 } rct_wall_scenery_entry;
@@ -91,14 +95,14 @@ typedef struct {
 	uint16 var_06;
 	uint8 pad_08;
 	uint8 tool_id;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
 typedef struct {
 	uint8 var_06;
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
+	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
 } rct_banner_scenery_entry;
 
@@ -119,7 +123,7 @@ typedef struct {
 	uint32 image;					// 0x02
 	uint16 scenery_entries[0x80];	// 0x06
 	uint8 entry_count;				// 0x106
-	uint8 pad_107;
+	uint8 var_107;
 	uint8 var_108;					// 0x108, order?
 	uint8 pad_109;
 	uint32 var_10A;
