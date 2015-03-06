@@ -137,6 +137,7 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 		if (gResolutions[i].width == inWidth && gResolutions[i].height == inHeight) {
 			closestWidth = gResolutions[i].width;
 			closestHeight = gResolutions[i].height;
+			closestAreaDiff = 0;
 			break;
 		}
 
