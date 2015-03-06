@@ -1103,15 +1103,15 @@ void window_ride_disable_tabs(rct_window *w)
 {
 	//RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
 
-	int disabled_tabs = 0;
+	uint32 disabled_tabs = 0;
 	rct_ride *ride = GET_RIDE(w->number & 0xFF);
 
-	int ride_type = ride->type; // ecx
+	uint8 ride_type = ride->type; // ecx
 
 	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x200) == 0)
 		disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
 
-	if ((ride_type & 0xFF) == RIDE_TYPE_MINI_GOLF)
+	if (ride_type == RIDE_TYPE_MINI_GOLF)
 		disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
 
 	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x2000) != 0)
