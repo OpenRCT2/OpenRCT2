@@ -515,7 +515,7 @@ STR_0510    :
 STR_0511    :
 STR_0512    :
 STR_0513    :
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
+STR_0514    :Montanha-Russa com trens suspensos que balançam para os lados nas curvas 
 STR_0515    :
 STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
@@ -929,15 +929,15 @@ STR_0924    :{SMALLFONT}{BLACK}Helix down
 STR_0925    :{SMALLFONT}{BLACK}Helix up
 STR_0926    :Impossível remover isto...
 STR_0927    :Impossível construir isto aqui...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
-STR_0936    :Park entrance in the way
+STR_0928    :{SMALLFONT}{BLACK}Corrente elevador, para puxar os carros para cima**
+STR_0929    :Curva 'S' (esquerda)
+STR_0930    :Curva 'S' (direita)
+STR_0931    :Loop Vertical (esquerda)
+STR_0932    :Loop Vertical (direita)
+STR_0933    :Aumentar ou diminuir o terreno primeiro
+STR_0934    :Entrada da atração no caminho
+STR_0935    :Saída da atração no caminho
+STR_0936    :Entrada do parque no caminho
 STR_0937    :{SMALLFONT}{BLACK}Opções de visão
 STR_0938    :{SMALLFONT}{BLACK}Ajuste de altura do solo e inclinação
 STR_0939    :Subterrâneo/Visão interna
