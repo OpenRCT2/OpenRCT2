@@ -1289,7 +1289,7 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & 0x10000000)){
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_28)) {
 		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
 		return 0;
 	}

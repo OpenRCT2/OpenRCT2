@@ -623,6 +623,41 @@ enum {
 	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
+enum {
+	RIDE_TYPE_FLAG_0 = 1 << 0,
+	RIDE_TYPE_FLAG_1 = 1 << 1,
+	RIDE_TYPE_FLAG_2 = 1 << 2,
+	RIDE_TYPE_FLAG_3 = 1 << 3,
+	RIDE_TYPE_FLAG_4 = 1 << 4,
+	RIDE_TYPE_FLAG_5 = 1 << 5,
+	RIDE_TYPE_FLAG_6 = 1 << 6,
+	RIDE_TYPE_FLAG_7 = 1 << 7,
+	RIDE_TYPE_FLAG_8 = 1 << 8,
+	RIDE_TYPE_FLAG_9 = 1 << 9,
+	RIDE_TYPE_FLAG_10 = 1 << 10,
+	RIDE_TYPE_FLAG_11 = 1 << 11,
+	RIDE_TYPE_FLAG_12 = 1 << 12,
+	RIDE_TYPE_FLAG_13 = 1 << 13,
+	RIDE_TYPE_FLAG_14 = 1 << 14,
+	RIDE_TYPE_FLAG_15 = 1 << 15,
+	RIDE_TYPE_FLAG_16 = 1 << 16,
+	RIDE_TYPE_FLAG_17 = 1 << 17,
+	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_19 = 1 << 19,
+	RIDE_TYPE_FLAG_20 = 1 << 20,
+	RIDE_TYPE_FLAG_21 = 1 << 21,
+	RIDE_TYPE_FLAG_22 = 1 << 22,
+	RIDE_TYPE_FLAG_23 = 1 << 23,
+	RIDE_TYPE_FLAG_24 = 1 << 24,
+	RIDE_TYPE_FLAG_25 = 1 << 25,
+	RIDE_TYPE_FLAG_26 = 1 << 26,
+	RIDE_TYPE_FLAG_27 = 1 << 27,
+	RIDE_TYPE_FLAG_28 = 1 << 28,
+	RIDE_TYPE_FLAG_29 = 1 << 29,
+	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_31 = 1 << 31,
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -691,5 +726,7 @@ void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+bool ride_type_has_flag(int rideType, int flag);
 
 #endif

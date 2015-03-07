@@ -1990,7 +1990,7 @@ void peep_problem_warnings_update()
 				break;
 			}
 			ride = &g_ride_list[peep->guest_heading_to_ride_id];
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x80000))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_19))
 				hunger_counter++;
 			break;
 
@@ -2000,7 +2000,7 @@ void peep_problem_warnings_update()
 				break;
 			}
 			ride = &g_ride_list[peep->guest_heading_to_ride_id];
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x1000000))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_24))
 				thirst_counter++;
 			break;
 
@@ -2010,7 +2010,7 @@ void peep_problem_warnings_update()
 				break;
 			}
 			ride = &g_ride_list[peep->guest_heading_to_ride_id];
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32) & 0x2000000))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_25))
 				bathroom_counter++;
 			break;
 
@@ -2261,9 +2261,8 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	case PEEP_STATE_ENTERING_RIDE:
 		*argument_1 = STR_ON_RIDE;
 		ride = g_ride_list[peep->current_ride];
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride.type * 8, uint32) & 0x400000){
+		if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_22))
 			*argument_1 = STR_IN_RIDE;
-		}
 		*argument_1 |= (ride.name << 16);
 		*argument_2 = ride.name_arguments;
 		break;
