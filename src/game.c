@@ -663,7 +663,7 @@ int game_load_save(const char *path)
 	}
 
 	// The rest is the same as in scenario load and play
-	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
@@ -810,6 +810,26 @@ void game_autosave()
 
 	scenario_save(path, 0x80000000);
 }
+
+/**
+*
+*  rct2: 0x006E3838
+*/
+void rct2_exit_reason(rct_string_id title, rct_string_id body){
+	// Before this would set a quit message
+
+	char exit_title[255];
+	format_string(exit_title, title, 0);
+
+	char exit_body[255];
+	format_string(exit_body, body, 0);
+
+	log_error(exit_title);
+	log_error(exit_body);
+
+	rct2_exit();
+}
+
 
 /**
  * 

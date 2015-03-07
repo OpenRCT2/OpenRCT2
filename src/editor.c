@@ -156,7 +156,7 @@ void editor_convert_save_to_scenario()
 	if ((int)stex != 0xFFFFFFFF) {
 		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
-		sub_6A9FC0();
+		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		s6Info->name[0] = 0;
@@ -464,7 +464,7 @@ static void sub_6A2B62()
 	object_unload_all();
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
-	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	RCT2_CALLPROC_EBPSAFE(0x006A2956);
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
@@ -836,7 +836,7 @@ static int editor_read_s6(const char *path)
 		// Check expansion pack
 		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-		sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
@@ -915,7 +915,7 @@ static int editor_read_s6(const char *path)
 		rct_stex_entry* stex = g_stexEntries[0];
 		if ((int)stex != 0xFFFFFFFF) {
 			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-			sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+			reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 			s6Info->name[0] = 0;

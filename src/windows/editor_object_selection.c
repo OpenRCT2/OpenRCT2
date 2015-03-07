@@ -252,7 +252,7 @@ static void window_editor_object_selection_close()
 
 	RCT2_CALLPROC_EBPSAFE(0x6ABB66);
 	editor_load_selected_objects();
-	sub_6A9FC0();
+	reset_loaded_objects();
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
 	RCT2_CALLPROC_EBPSAFE(0x685675);

@@ -24,6 +24,7 @@
 #include "platform/platform.h"
 #include "ride/track.h"
 #include "util/sawyercoding.h"
+#include "game.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -165,19 +166,10 @@ static void object_list_examine()
 	object_list_create_hash_table();
 }
 
-/**
- * 
- *  rct2: 0x006DED68
- */
-void reset_9E32F8()
+/* rct2: 0x006A9FC0 */
+void reset_loaded_objects()
 {
-	uint8* edi = RCT2_ADDRESS(0x009E32F8, uint8);
-	memset(edi, 0xFF, 90);
-}
-
-void sub_6A9FC0()
-{
-	reset_9E32F8();
+	reset_type_to_ride_entry_index_map();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
@@ -248,7 +240,7 @@ void object_list_load()
 	//if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) != 0)
 	//	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) = 0;
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 
 	// Dispose installed object list
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
@@ -259,7 +251,8 @@ void object_list_load()
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(4096);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
-		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xC5A, 0, 0, 0, 0, 0);
+		log_error("Failed to allocate memory for object list");
+		rct2_exit_reason(835, 3162);
 		return;
 	}
 
@@ -280,7 +273,8 @@ void object_list_load()
 				installed_buffer_size += 0x1000;
 				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);			
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
-					RCT2_CALLPROC_X(0x006E3838, 0x343, 0xC5A, 0, 0, 0, 0, 0);
+					log_error("Failed to allocate memory for object list");
+					rct2_exit_reason(835, 3162);
 					return;
 				}
 			}
@@ -288,18 +282,18 @@ void object_list_load()
 			char path[MAX_PATH];
 			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
 
-			rct_object_entry* entry = RCT2_ADDRESS(0x00F42B74, rct_object_entry);
-			if (!object_load_entry(path, entry))
+			rct_object_entry entry;
+			if (!object_load_entry(path, &entry))
 				continue;
 
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 
-			current_item_offset += install_object_entry(entry, installed_entry, enumFileInfo.path);
+			current_item_offset += install_object_entry(&entry, installed_entry, enumFileInfo.path);
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 
 	object_list_cache_save(fileCount, totalFileSize, fileDateModifiedChecksum, current_item_offset);
 
@@ -349,7 +343,7 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
 				fclose(file);
-				sub_6A9FC0();
+				reset_loaded_objects();
 				object_list_examine();
 				return 1;
 			}
@@ -493,7 +487,7 @@ void object_unload_all()
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
 				object_unload(j, &object_entry_groups[i].entries[j]);
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 }
 
 
