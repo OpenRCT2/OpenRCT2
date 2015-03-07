@@ -459,7 +459,7 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 
 	customDesignedRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_28))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_18)
 			continue;
@@ -488,7 +488,7 @@ static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activ
 	countedRides = 0;
 	colourfulRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_28))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
 
 		countedRides++;

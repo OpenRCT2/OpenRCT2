@@ -422,7 +422,7 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 			*formatSecondary = STR_RACE_WON_BY;
 		}
 	} else {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_17)) {
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 			*argument = ride->num_riders;
 			*formatSecondary = STR_PERSON_ON_RIDE;
 			if(*argument != 1)
@@ -2020,7 +2020,7 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 	ride = GET_RIDE(rideIndex);
 
 	// Check if ride type supports data logging
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_9)) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING)) {
 		if (message != NULL) *message = STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE;
 		return NULL;
 	}
@@ -2053,7 +2053,7 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		measurement->ride_index = rideIndex;
 		ride->measurement_index = i;
 		measurement->flags = 0;
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_7))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
 			measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
 		measurement->num_items = 0;
 		measurement->current_item = 0;
@@ -2111,7 +2111,7 @@ void ride_check_all_reachable()
 		if (ride->status != RIDE_STATUS_OPEN || ride->connected_message_throttle != 0)
 			continue;
 
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_17))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
 			ride_shop_connected(ride, i);
 		else
 			ride_entrance_exit_connected(ride, i);
@@ -2202,7 +2202,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	uint16 entrance_directions = 0;
 	uint8 track_type = mapElement->properties.track.type;
 	ride = &g_ride_list[mapElement->properties.track.ride_index];
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_19)) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD)) {
 		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
 	} else {
 		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
@@ -2829,7 +2829,7 @@ int ride_check_for_entrance_exit(int rideIndex)
 {
 	rct_ride* ride = GET_RIDE(rideIndex);
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_17))
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
 		return 1;
 
 	int i;

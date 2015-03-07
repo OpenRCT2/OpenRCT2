@@ -385,9 +385,9 @@ static int park_calculate_guest_generation_probability()
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
 				continue;
 
-			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_28))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 				continue;
-			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_9))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
 				continue;
 			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 				continue;

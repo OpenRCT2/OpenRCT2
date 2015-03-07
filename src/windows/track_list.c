@@ -520,7 +520,7 @@ static void window_track_list_paint()
 		y += 10;
 	}
 
-	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_7)) {
+	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
 		// Maximum positive vertical Gs
 		gForces = track_td6->max_positive_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, 0, x, y);
@@ -546,7 +546,7 @@ static void window_track_list_paint()
 		}
 	}
 	
-	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_10)) {
+	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_HAS_DROPS)) {
 		// Drops
 		drops = track_td6->drops & 0x3F;
 		gfx_draw_string_left(dpi, STR_DROPS, &drops, 0, x, y);

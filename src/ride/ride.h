@@ -624,38 +624,38 @@ enum {
 };
 
 enum {
-	RIDE_TYPE_FLAG_0 = 1 << 0,
-	RIDE_TYPE_FLAG_1 = 1 << 1,
-	RIDE_TYPE_FLAG_2 = 1 << 2,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
 	RIDE_TYPE_FLAG_3 = 1 << 3,
-	RIDE_TYPE_FLAG_4 = 1 << 4,
-	RIDE_TYPE_FLAG_5 = 1 << 5,
+	RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
+	RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
 	RIDE_TYPE_FLAG_6 = 1 << 6,
-	RIDE_TYPE_FLAG_7 = 1 << 7,
-	RIDE_TYPE_FLAG_8 = 1 << 8,
-	RIDE_TYPE_FLAG_9 = 1 << 9,
-	RIDE_TYPE_FLAG_10 = 1 << 10,
-	RIDE_TYPE_FLAG_11 = 1 << 11,
+	RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
+	RIDE_TYPE_FLAG_8 = 1 << 8,									// something to do with track, maybe whether it can have gaps
+	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
+	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
+	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
 	RIDE_TYPE_FLAG_12 = 1 << 12,
-	RIDE_TYPE_FLAG_13 = 1 << 13,
-	RIDE_TYPE_FLAG_14 = 1 << 14,
-	RIDE_TYPE_FLAG_15 = 1 << 15,
-	RIDE_TYPE_FLAG_16 = 1 << 16,
-	RIDE_TYPE_FLAG_17 = 1 << 17,
+	RIDE_TYPE_FLAG_13 = 1 << 13,								// something to do with stations or vehicles
+	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
+	RIDE_TYPE_FLAG_15 = 1 << 15,								// something to do with station, price and viewport zoom
+	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
+	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
 	RIDE_TYPE_FLAG_18 = 1 << 18,
-	RIDE_TYPE_FLAG_19 = 1 << 19,
+	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 19,
 	RIDE_TYPE_FLAG_20 = 1 << 20,
 	RIDE_TYPE_FLAG_21 = 1 << 21,
-	RIDE_TYPE_FLAG_22 = 1 << 22,
-	RIDE_TYPE_FLAG_23 = 1 << 23,
-	RIDE_TYPE_FLAG_24 = 1 << 24,
-	RIDE_TYPE_FLAG_25 = 1 << 25,
-	RIDE_TYPE_FLAG_26 = 1 << 26,
+	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
+	RIDE_TYPE_FLAG_23 = 1 << 23,								// sells food?, seems to be used for food awards...
+	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
+	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
+	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
 	RIDE_TYPE_FLAG_27 = 1 << 27,
-	RIDE_TYPE_FLAG_28 = 1 << 28,
+	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,
 	RIDE_TYPE_FLAG_30 = 1 << 30,
-	RIDE_TYPE_FLAG_31 = 1 << 31,
+	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1 << 31,
 };
 
 #define MAX_RIDES 255

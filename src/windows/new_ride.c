@@ -934,7 +934,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, width, 1690, 0);
 
 	// Number of designs available
-	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_28)) {
+	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
 			_lastTrackDesignCountRideType = item;
 			_lastTrackDesignCount = get_num_track_designs(item);
@@ -960,7 +960,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		// Get price of ride
 		int unk2 = RCT2_GLOBAL(0x0097CC68 + (item.type * 2), uint8);
 		money32 price = RCT2_GLOBAL(0x0097DD78 + (item.type * 4), uint16);
-		if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_19)) {
+		if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_SELLS_FOOD)) {
 			price *= RCT2_ADDRESS(0x0099DE34, uint32)[unk2];
 		} else {
 			price *= RCT2_ADDRESS(0x0099DA34, uint32)[unk2];
@@ -988,7 +988,7 @@ static void window_new_ride_select(rct_window *w)
 
 	window_close(w);
 
-	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_28)) {
+	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
 
 		uint8 *trackDesignList = (uint8*)0x00F441EC;
