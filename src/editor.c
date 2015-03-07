@@ -152,8 +152,9 @@ void editor_convert_save_to_scenario()
 	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-	if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-		object_unload(0, (rct_object_entry_extended*)0x00F4287C);
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		sub_6A9FC0();
 
@@ -911,8 +912,9 @@ static int editor_read_s6(const char *path)
 
 		climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-		if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-			object_unload(0, (rct_object_entry_extended*)0x00F4287C);
+		rct_stex_entry* stex = g_stexEntries[0];
+		if ((int)stex != 0xFFFFFFFF) {
+			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 			sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
