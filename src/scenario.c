@@ -82,8 +82,8 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 	}
 
 	log_error("invalid scenario, %s", path);
-	// RCT2_GLOBAL(0x009AC31B, sint8) = -1;
-	// RCT2_GLOBAL(0x009AC31C, sint16) = 3011;
+	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, sint8) = -1;
+	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, sint16) = 3011;
 	return 0;
 }
 
@@ -105,8 +105,8 @@ int scenario_load(const char *path)
 	if (file != NULL) {
 		if (!sawyercoding_validate_checksum(file)) {
 			fclose(file);
-			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -182,8 +182,8 @@ int scenario_load(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 

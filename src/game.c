@@ -298,8 +298,6 @@ void game_update()
 
 void game_logic_update()
 {
-	short stringId, _dx;
-
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, sint32)++;
 	RCT2_GLOBAL(0x009DEA66, sint16)++;
@@ -329,16 +327,16 @@ void game_logic_update()
 	// Update windows
 	window_dispatch_update_all();
 
-	if (RCT2_GLOBAL(0x009AC31B, uint8) != 0) {
-		stringId = STR_UNABLE_TO_LOAD_FILE;
-		_dx = RCT2_GLOBAL(0x009AC31C, uint16);
-		if (RCT2_GLOBAL(0x009AC31B, uint8) != 254) {
-			stringId = RCT2_GLOBAL(0x009AC31C, uint16);
-			_dx = 0xFFFF;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
+		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+		rct_string_id body_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) == 254) {
+			title_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
+			body_text = 0xFFFF;
 		}
-		RCT2_GLOBAL(0x009AC31B, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0;
 
-		window_error_open(stringId, _dx);
+		window_error_open(title_text, body_text);
 	}
 }
 
@@ -601,7 +599,7 @@ int game_load_save(const char *path)
 	if (file == NULL) {
 		log_error("unable to open %s", path);
 
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
@@ -611,7 +609,7 @@ int game_load_save(const char *path)
 
 		log_error("invalid checksum, %s", path);
 
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}

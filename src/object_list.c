@@ -153,10 +153,12 @@ static void object_list_examine()
 	int i;
 	rct_object_entry *object;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) = 0;
+
 	object = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
-		if (object->flags & 0xF0)
-			RCT2_GLOBAL(0x00F42BDA, uint8) |= 1;
+		if (!(object->flags & 0xF0))
+			RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) |= 1;
 
 		object = object_get_next(object);
 	}
@@ -297,7 +299,7 @@ void object_list_load()
 
 	object_list_cache_save(fileCount, totalFileSize, fileDateModifiedChecksum, current_item_offset);
 
-	// 
+	// Reload track list
 	ride_list_item ride_list;
 	ride_list.entry_index = 0xFC;
 	ride_list.type = 0xFC;
@@ -402,15 +404,15 @@ void set_load_objects_fail_reason(){
 		format_string(string_buffer, 3323, 0); //Missing object data, ID:
 
 		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 		return;
 	}
 
 	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
 	if (*exapansion_name == '\0'){
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3325;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3325;
 		return;
 	}
 
@@ -418,8 +420,8 @@ void set_load_objects_fail_reason(){
 
 	format_string(string_buffer, 3324, 0); // Requires expansion pack
 	strcat(string_buffer, exapansion_name);
-	RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-	RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 }
 
 /**
@@ -595,7 +597,9 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// Chunk size is set to unknown
 	*((sint32*)installed_entry_pointer) = -1;
+	// No unknown objects set to 0
 	*(installed_entry_pointer + 4) = 0;
+	// No theme objects set to 0
 	*((sint32*)(installed_entry_pointer + 5)) = 0;
 	*((uint16*)(installed_entry_pointer + 9)) = 0;
 	*((uint32*)(installed_entry_pointer + 11)) = 0;

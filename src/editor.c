@@ -588,8 +588,8 @@ static int editor_load_landscape_from_sv4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -615,8 +615,8 @@ static int editor_load_landscape_from_sc4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -759,8 +759,8 @@ static int editor_read_s6(const char *path)
 	if (file != NULL) {
 		if (!sawyercoding_validate_checksum(file)) {
 			fclose(file);
-			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -963,8 +963,8 @@ static int editor_read_s6(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 
