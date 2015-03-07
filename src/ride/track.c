@@ -738,7 +738,7 @@ void load_track_scenery_objects(){
 		scenery_entry += sizeof(rct_track_scenery);
 	}
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 }
 
 /**

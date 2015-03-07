@@ -354,7 +354,7 @@ static void window_footpath_dropdown()
 
 		j = 0;
 		for (i = 0; i < 16; i++) {
-			pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[i];
+			pathType = g_pathTypeEntries[i];
 			if (pathType == (rct_path_type*)-1)
 				continue;
 			if (pathType->flags & flags)
@@ -533,7 +533,7 @@ static void window_footpath_invalidate()
 
 	// Set footpath and queue type button images
 	selectedPath = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16);
-	pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[selectedPath];
+	pathType = g_pathTypeEntries[selectedPath];
 
 	int pathImage = 71 + pathType->image;
 	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
@@ -570,7 +570,7 @@ static void window_footpath_paint()
 		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
 
 		selectedPath = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16);
-		pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[selectedPath];
+		pathType = g_pathTypeEntries[selectedPath];
 		image += pathType->image;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) != SELECTED_PATH_TYPE_NORMAL)
 			image += 51;
@@ -609,7 +609,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {
-		pathType = RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES, rct_path_type*)[i];
+		pathType = g_pathTypeEntries[i];
 		if (pathType == (rct_path_type*)-1)
 			continue;
 		if (pathType->flags & flags)

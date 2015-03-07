@@ -69,10 +69,10 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			// Checks for a scenario string object (possibly for localisation)
 			if ((info->entry.flags & 0xFF) != 255) {
 				if (object_get_scenario_text(&info->entry)) {
-					int ebp = RCT2_GLOBAL(0x009ADAF8, uint32);
-					format_string(info->name, RCT2_GLOBAL(ebp, sint16), NULL);
-					format_string(info->details, RCT2_GLOBAL(ebp + 4, sint16), NULL);
-					RCT2_GLOBAL(0x009AA00C, uint8) = RCT2_GLOBAL(ebp + 6, uint8);
+					rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+					format_string(info->name, stex_entry->scenario_name, NULL);
+					format_string(info->details, stex_entry->details, NULL);
+					RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
 					object_free_scenario_text();
 				}
 			}
@@ -82,8 +82,8 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 	}
 
 	log_error("invalid scenario, %s", path);
-	// RCT2_GLOBAL(0x009AC31B, sint8) = -1;
-	// RCT2_GLOBAL(0x009AC31C, sint16) = 3011;
+	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, sint8) = -1;
+	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, sint16) = 3011;
 	return 0;
 }
 
@@ -105,8 +105,8 @@ int scenario_load(const char *path)
 	if (file != NULL) {
 		if (!sawyercoding_validate_checksum(file)) {
 			fclose(file);
-			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -172,7 +172,7 @@ int scenario_load(const char *path)
 			// Check expansion pack
 			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-			sub_6A9FC0();
+			reset_loaded_objects();
 			map_update_tile_pointers();
 			reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 			return 1;
@@ -182,8 +182,8 @@ int scenario_load(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 
@@ -274,11 +274,10 @@ int scenario_load_and_play_from_path(const char *path)
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
 
-	if (RCT2_GLOBAL(0x009ADAE4, sint32) != -1) {
-		char *ebp = RCT2_GLOBAL(0x009ADAE4, char*);
-
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != -1) {
 		// 
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 2, uint16), 0);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->park_name, 0);
 		
 		// Set park name
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
@@ -293,12 +292,12 @@ int scenario_load_and_play_from_path(const char *path)
 			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 28)));
 
 		// 
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 0, uint16), 0);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->scenario_name, 0);
 		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 31);
 		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
 
 		// Set scenario details
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, RCT2_GLOBAL(ebp + 4, uint16), 0);
+		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->details, 0);
 		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 255);
 		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
 	}
@@ -840,11 +839,12 @@ int scenario_prepare_for_save()
 
 	s6Info->entry.flags = 255;
 
-	char *stex = RCT2_GLOBAL(0x009ADAE4, char*);
-	if (stex != (char*)0xFFFFFFFF) {
-		format_string(buffer, RCT2_GLOBAL(stex, uint16), NULL);
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		format_string(buffer, stex->scenario_name, NULL);
 		strncpy(s6Info->name, buffer, sizeof(s6Info->name));
-		s6Info->entry = *((rct_object_entry*)0x00F4287C);
+		
+		memcpy(&s6Info->entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
 	}
 
 	if (s6Info->name[0] == 0)
@@ -894,7 +894,7 @@ int scenario_write_packed_objects(FILE *file)
 		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
-		if (!sub_6A9F42(file, (rct_object_entry*)entry))
+		if (!write_object_file(file, (rct_object_entry*)entry))
 			return 0;
 	}
 
@@ -1133,7 +1133,7 @@ int scenario_save(char *path, int flags)
 	fclose(file);
 
 	if (!(flags & 0x80000000))
-		sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;

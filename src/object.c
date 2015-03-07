@@ -175,17 +175,19 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx : file
  *  ebp : entry
  */
-int sub_6A9F42(FILE *file, rct_object_entry* entry){
-	int eax = 0, entryGroupIndex = 0, type = 0, edx = 0, edi = 0, ebp = (int)entry, chunk = 0;
-	RCT2_CALLFUNC_X(0x6A9DA2, &eax, &entryGroupIndex, &type, &edx, &chunk, &edi, &ebp);
-	if (eax == 0) return 0;
+int write_object_file(FILE *file, rct_object_entry* entry){
+	uint8 entryGroupIndex = 0, type = 0;
+	uint8* chunk = 0;
 
-	object_paint(type, 1, entryGroupIndex, type, edx, chunk, edi, ebp);
+	if (!find_object_in_entry_group(entry, &type, &entryGroupIndex))return 0;
 
+	chunk = object_entry_groups[type].chunks[entryGroupIndex];
+
+	object_paint(type, 1, entryGroupIndex, type, 0, (int)chunk, 0, 0);
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
 	uint8* dst_buffer = malloc(0x600000);
-	memcpy(dst_buffer, (uint8*)installed_entry, sizeof(rct_object_entry));
+	memcpy(dst_buffer, installed_entry, sizeof(rct_object_entry));
 
 	uint32 size_dst = sizeof(rct_object_entry);
 
@@ -196,7 +198,7 @@ int sub_6A9F42(FILE *file, rct_object_entry* entry){
 	chunkHeader.encoding = object_entry_group_encoding[type];
 	chunkHeader.length = installed_entry->chunk_size;
 
-	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), (uint8*)chunk, chunkHeader);
+	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
 	fwrite(dst_buffer, 1, size_dst, file);
 
 	free(dst_buffer);
@@ -211,35 +213,39 @@ int object_load_packed(FILE *file)
 {
 	object_unload_all();
 
-	rct_object_entry* entry = RCT2_ADDRESS(0xF42B84, rct_object_entry);
+	rct_object_entry entry;
 
-	fread((void*)entry, 16, 1, file);
+	fread(&entry, 16, 1, file);
 
 	uint8* chunk = rct2_malloc(0x600000);
 	uint32 chunkSize = sawyercoding_read_chunk(file, chunk);
 	chunk = rct2_realloc(chunk, chunkSize);
+
 	if (chunk == NULL){
+		log_error("Failed to allocate memory for packed object.");
 		return 0;
 	}
 
-	if (object_calculate_checksum(entry, chunk, chunkSize) != entry->checksum){
+	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
+		log_error("Checksum missmatch from packed object: %.8s", entry.name);
 		rct2_free(chunk);
 		return 0;
 	}
 
-	if (object_paint(entry->flags & 0x0F, 2, 0, entry->flags & 0x0F, 0, (int)chunk, 0, 0)) {
+	int type = entry.flags & 0x0F;
+
+	if (object_paint(type, 2, 0, type, 0, (int)chunk, 0, 0)) {
+		log_error("Packed object failed paint test.");
 		rct2_free(chunk);
 		return 0;
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
+		log_error("Packed object has too many images.");
 		rct2_free(chunk);
 		return 0;
 	}
 
-	int type = entry->flags & 0x0F;
-
-	// ecx
 	int entryGroupIndex = 0;
 
 	for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
@@ -249,21 +255,24 @@ int object_load_packed(FILE *file)
 	}
 
 	if (entryGroupIndex == object_entry_group_counts[type]){
+		// This should never occur. Objects are not loaded before installing a 
+		// packed object. So there is only one object loaded at this point.
+		log_error("Too many objects of the same type loaded.");
 		rct2_free(chunk);
 		return 0;
 	}
 
+	// Copy the entry into the relevant entry group.
 	object_entry_groups[type].chunks[entryGroupIndex] = chunk;
-	rct_object_entry_extended* edx = &object_entry_groups[type].entries[entryGroupIndex];
-	memcpy(edx, (int*)entry, sizeof(rct_object_entry));
-	edx->chunk_size = chunkSize;
+	rct_object_entry_extended* extended_entry = &object_entry_groups[type].entries[entryGroupIndex];
+	memcpy(extended_entry, &entry, sizeof(rct_object_entry));
+	extended_entry->chunk_size = chunkSize;
 
-	//esi
+	// Ensure the entry does not already exist.
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)){
 		for (uint32 i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); ++i){
-			if (object_entry_compare(entry, installedObject)){
+			if (object_entry_compare(&entry, installedObject)){
 				object_unload_all();
 				return 0;
 			}
@@ -271,24 +280,23 @@ int object_load_packed(FILE *file)
 		}
 	}
 
-	//Installing new data
-	//format_string(0x141ED68, 3163, 0);
-	//Code for updating progress bar removed.
-
+	// Convert the entry name to a upper case path name
 	char path[260];
-	char objectPath[13] = { 0 };
+	char objectPath[9] = { 0 };
 	for (int i = 0; i < 8; ++i){
-		if (entry->name[i] != ' ')
-			objectPath[i] = toupper(entry->name[i]);
+		if (entry.name[i] != ' ')
+			objectPath[i] = toupper(entry.name[i]);
 		else
 			objectPath[i] = '\0';
 	}
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	// Require pointer to start of filename
 	char* last_char = path + strlen(path);
 	strcat(path, ".DAT");
 
-	// 
+	// Check that file does not exist
+	// Adjust filename if it does.
 	for (; platform_file_exists(path);){
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
@@ -304,30 +312,19 @@ int object_load_packed(FILE *file)
 		}
 	}
 
-	// Removed progress bar code
-
-	// The following section cannot be finished until 6A9F42 is finished
-	// Run the game once with vanila rct2 to not reach this part of code.
-	log_verbose("Function might not be finished.");
+	// Actually write the object to the file
 	FILE* obj_file = fopen(path, "wb");
 	if (obj_file){
-		// Removed progress bar code
-		sub_6A9F42(obj_file, entry);
+		uint8 result = write_object_file(obj_file, &entry);
+
 		fclose(obj_file);
-		// Removed progress bar code
 		object_unload_all();
-		// Removed progress bar code
-		return 1;
+
+		return result;
 	}
-	else{
-		object_unload_all();
-		return 0;
-	}
-	//create file
-	//6aa48C
-	int eax = 1;//, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-	//RCT2_CALLFUNC_X(0x006AA2B7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return 1;
+
+	object_unload_all();
+	return 0;
 }
 
 /**
@@ -341,6 +338,7 @@ void object_unload(int groupIndex, rct_object_entry_extended *entry)
 
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 {
+	// If an official object don't bother checking checksum
 	if (a->flags & 0xF0) {
 		if ((a->flags & 0x0F) != (b->flags & 0x0F))
 			return 0;
@@ -1501,73 +1499,89 @@ int object_get_scenario_text(rct_object_entry *entry)
 {
 	// RCT2_CALLPROC_X(0x006A9428, 0, 0, 0, 0, 0, 0, (int)entry); return;
 
-	int i;
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
-		if (object_entry_compare(installedObject, entry)) {
-			char path[260];
-			char *objectPath = (char*)installedObject + 16;
-			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 
-			rct_object_entry openedEntry;
-			FILE *file = fopen(path, "rb");
-			if (file != NULL) {
-				fread(&openedEntry, sizeof(rct_object_entry), 1, file);
-				if (object_entry_compare(&openedEntry, entry)) {
-
-					// Get chunk size
-					char *pos = (char*)installedObject + 16;
-					// Skip file name
-					while (*pos++);
-
-					// Read chunk
-					int chunkSize = *((uint32*)pos);
-					char *chunk;
-					if (chunkSize == 0xFFFFFFFF) {
-						chunk = malloc(0x600000);
-						chunkSize = sawyercoding_read_chunk(file, chunk);
-						chunk = realloc(chunk, chunkSize);
-					}
-					else {
-						chunk = malloc(chunkSize);
-						sawyercoding_read_chunk(file, chunk);
-					}
-					fclose(file);
-
-					// Calculate and check checksum
-					if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
-						RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
-						free(chunk);
-						return 0;
-					}
-
-					if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
-						RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-						free(chunk);
-						return 0;
-					}
-
-					int total_no_images = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32);
-					// This is being changed to force the images to be loaded into a different
-					// image id.
-					RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
-					RCT2_GLOBAL(0x009ADAF8, uint32) = (int)chunk;
-					*((rct_object_entry*)0x00F42BC8) = openedEntry;
-
-					RCT2_GLOBAL(0x009ADAFC, uint8) = 255;
-					RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-					object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
-					RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
-					RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
-					RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = total_no_images;
-					return 1;
-				}
-				fclose(file);
-			}
-		}
-		installedObject = object_get_next(installedObject);
+	installedObject = object_list_find(entry);
+	
+	if (installedObject == NULL){
+		log_error("Object not found: %.8s", entry->name);
+		RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
+		return 0;
 	}
 
+	char path[260];
+	char *objectPath = (char*)installedObject + 16;
+	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+
+	rct_object_entry openedEntry;
+	FILE *file = fopen(path, "rb");
+	if (file != NULL) {
+		fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+		if (object_entry_compare(&openedEntry, entry)) {
+
+			// Skip over the object entry
+			char *pos = (char*)installedObject + sizeof(rct_object_entry);
+			// Skip file name
+			while (*pos++);
+
+			// Read chunk
+			int chunkSize = *((uint32*)pos);
+
+			char *chunk;
+			if (chunkSize == 0xFFFFFFFF) {
+				chunk = malloc(0x600000);
+				chunkSize = sawyercoding_read_chunk(file, chunk);
+				chunk = realloc(chunk, chunkSize);
+			}
+			else {
+				chunk = malloc(chunkSize);
+				sawyercoding_read_chunk(file, chunk);
+			}
+			fclose(file);
+
+			// Calculate and check checksum
+			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
+				log_error("Opened object failed calculated checksum.");
+				RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
+				free(chunk);
+				return 0;
+			}
+
+			if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
+				// This is impossible for STEX entries to fail.
+				log_error("Opened object failed paitn test.");
+				RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
+				free(chunk);
+				return 0;
+			}
+
+			// Save the real total images.
+			int total_no_images = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32);
+
+			// This is being changed to force the images to be loaded into a different
+			// image id.
+			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, uint32) = (int)chunk;
+			// Not used anywhere.
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_OBJECT, rct_object_entry) = openedEntry;
+
+			// Tell text to be loaded into a different address
+			RCT2_GLOBAL(0x009ADAFC, uint8) = 255;
+			// Not used??
+			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
+			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);			
+			// Tell text to be loaded into normal address
+			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
+			// Not used??
+			RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = total_no_images;
+			return 1;
+		}
+		log_error("Opened object didn't match.");
+		fclose(file);
+		return 0;
+	}
+	log_error("File failed to open.");
 	RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
 	return 0;
 }
@@ -1578,9 +1592,9 @@ int object_get_scenario_text(rct_object_entry *entry)
  */
 void object_free_scenario_text()
 {
-	if (RCT2_GLOBAL(0x009ADAF8, void*) != NULL) {
-		rct2_free(RCT2_GLOBAL(0x009ADAF8, void*));
-		RCT2_GLOBAL(0x009ADAF8, void*) = NULL;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) != NULL) {
+		rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) = NULL;
 	}
 }
 
@@ -1630,7 +1644,7 @@ char *object_get_name(rct_object_entry *entry)
 	// Skip filename
 	while (*pos++);
 
-	// Skip 
+	// Skip no of images
 	pos += 4;
 
 	return pos;

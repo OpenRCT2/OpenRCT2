@@ -152,10 +152,11 @@ void editor_convert_save_to_scenario()
 	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-	if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-		object_unload(0, (rct_object_entry_extended*)0x00F4287C);
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
-		sub_6A9FC0();
+		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		s6Info->name[0] = 0;
@@ -463,7 +464,7 @@ static void sub_6A2B62()
 	object_unload_all();
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
-	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	RCT2_CALLPROC_EBPSAFE(0x006A2956);
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
@@ -587,8 +588,8 @@ static int editor_load_landscape_from_sv4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -614,8 +615,8 @@ static int editor_load_landscape_from_sc4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -758,8 +759,8 @@ static int editor_read_s6(const char *path)
 	if (file != NULL) {
 		if (!sawyercoding_validate_checksum(file)) {
 			fclose(file);
-			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -835,7 +836,7 @@ static int editor_read_s6(const char *path)
 		// Check expansion pack
 		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-		sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
@@ -911,9 +912,10 @@ static int editor_read_s6(const char *path)
 
 		climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-		if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-			object_unload(0, (rct_object_entry_extended*)0x00F4287C);
-			sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		rct_stex_entry* stex = g_stexEntries[0];
+		if ((int)stex != 0xFFFFFFFF) {
+			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+			reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 			s6Info->name[0] = 0;
@@ -961,8 +963,8 @@ static int editor_read_s6(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 

@@ -835,7 +835,7 @@ static void window_editor_objective_options_main_invalidate()
 
 	window_get_register(w);
 
-	stex = RCT2_GLOBAL(0x009ADAE4, rct_stex_entry*);
+	stex = g_stexEntries[0];
 	if (stex == (rct_stex_entry*)0xFFFFFFFF)
 		stex = NULL;
 
@@ -920,7 +920,7 @@ static void window_editor_objective_options_main_paint()
 	window_draw_widgets(w, dpi);
 	window_editor_objective_options_draw_tab_images(w, dpi);
 
-	stex = RCT2_GLOBAL(0x009ADAE4, rct_stex_entry*);
+	stex = g_stexEntries[0];
 	if (stex == (rct_stex_entry*)0xFFFFFFFF)
 		stex = NULL;
 

@@ -84,10 +84,13 @@ typedef struct {
 } rct_scenario_basic;
 
 typedef struct {
-	rct_string_id scenario_name;
-	rct_string_id park_name;
-	rct_string_id details;
+	rct_string_id scenario_name;	// 0x00
+	rct_string_id park_name;		// 0x02
+	rct_string_id details;			// 0x04
+	uint8 var_06;
 } rct_stex_entry;
+
+#define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
 /* This will be useful for backwards compatibility
 typedef struct {

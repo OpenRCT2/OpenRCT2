@@ -21,6 +21,8 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "common.h"
+
 enum GAME_COMMAND {
 	GAME_COMMAND_0,
 	GAME_COMMAND_1,
@@ -109,6 +111,7 @@ int game_load_save(const char *path);
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 char save_game();
 void rct2_exit();
+void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
 
 #endif

@@ -298,8 +298,6 @@ void game_update()
 
 void game_logic_update()
 {
-	short stringId, _dx;
-
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, sint32)++;
 	RCT2_GLOBAL(0x009DEA66, sint16)++;
@@ -329,16 +327,16 @@ void game_logic_update()
 	// Update windows
 	window_dispatch_update_all();
 
-	if (RCT2_GLOBAL(0x009AC31B, uint8) != 0) {
-		stringId = STR_UNABLE_TO_LOAD_FILE;
-		_dx = RCT2_GLOBAL(0x009AC31C, uint16);
-		if (RCT2_GLOBAL(0x009AC31B, uint8) != 254) {
-			stringId = RCT2_GLOBAL(0x009AC31C, uint16);
-			_dx = 0xFFFF;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
+		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+		rct_string_id body_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) == 254) {
+			title_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
+			body_text = 0xFFFF;
 		}
-		RCT2_GLOBAL(0x009AC31B, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0;
 
-		window_error_open(stringId, _dx);
+		window_error_open(title_text, body_text);
 	}
 }
 
@@ -601,7 +599,7 @@ int game_load_save(const char *path)
 	if (file == NULL) {
 		log_error("unable to open %s", path);
 
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
@@ -611,7 +609,7 @@ int game_load_save(const char *path)
 
 		log_error("invalid checksum, %s", path);
 
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
@@ -663,7 +661,7 @@ int game_load_save(const char *path)
 	}
 
 	// The rest is the same as in scenario load and play
-	sub_6A9FC0();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
@@ -810,6 +808,26 @@ void game_autosave()
 
 	scenario_save(path, 0x80000000);
 }
+
+/**
+*
+*  rct2: 0x006E3838
+*/
+void rct2_exit_reason(rct_string_id title, rct_string_id body){
+	// Before this would set a quit message
+
+	char exit_title[255];
+	format_string(exit_title, title, 0);
+
+	char exit_body[255];
+	format_string(exit_body, body, 0);
+
+	log_error(exit_title);
+	log_error(exit_body);
+
+	rct2_exit();
+}
+
 
 /**
  * 

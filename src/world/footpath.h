@@ -23,6 +23,7 @@
 
 #include "../common.h"
 #include "../interface/viewport.h"
+#include "../object.h"
 
 enum {
 	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0)
@@ -35,6 +36,8 @@ typedef struct {
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
 } rct_path_type;
+
+#define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
