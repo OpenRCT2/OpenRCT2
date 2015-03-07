@@ -93,6 +93,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 	WIDX_SCREEN_EDGE_SCROLLING,
 	WIDX_HOTKEY_DROPDOWN,
+	WIDX_TOOLBAR_SHOW_FINANCES,
+	WIDX_TOOLBAR_SHOW_RESEARCH,
 
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
@@ -151,6 +153,8 @@ static rct_widget window_options_widgets[] = {
 	// Controls tab
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
 	{ WWT_DROPDOWN_BUTTON,	0,	26,		185,	68,		78,		STR_HOTKEY,		STR_HOTKEY_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	82,		93,		5120,			STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	97,		108,	5121,			STR_NONE },
 
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
@@ -253,6 +257,8 @@ void window_options_open()
 		(1ULL << WIDX_TEMPERATURE_DROPDOWN) |
 		(1ULL << WIDX_HOTKEY_DROPDOWN) |
 		(1ULL << WIDX_SCREEN_EDGE_SCROLLING) |
+		(1ULL << WIDX_TOOLBAR_SHOW_FINANCES) |
+		(1ULL << WIDX_TOOLBAR_SHOW_RESEARCH) |
 		(1ULL << WIDX_REAL_NAME_CHECKBOX) |
 		(1ULL << WIDX_CONSTRUCTION_MARKER) |
 		(1ULL << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
@@ -302,6 +308,18 @@ static void window_options_mouseup()
 		gConfigGeneral.edge_scrolling ^= 1;
 		config_save_default();
 		window_invalidate(w);
+		break;
+	case WIDX_TOOLBAR_SHOW_FINANCES:
+		gConfigInterface.toolbar_show_finances ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		window_invalidate_by_class(WC_TOP_TOOLBAR);
+		break;
+	case WIDX_TOOLBAR_SHOW_RESEARCH:
+		gConfigInterface.toolbar_show_research ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		window_invalidate_by_class(WC_TOP_TOOLBAR);
 		break;
 	case WIDX_REAL_NAME_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -752,17 +770,8 @@ static void window_options_invalidate()
 		// sound quality: low/medium/high
 		RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW + gConfigSound.sound_quality;
 
-		//Sound pause checkbox
-		if (!g_sounds_disabled)
-			w->pressed_widgets |= (1ULL << WIDX_SOUND_PAUSED_CHECKBOX);
-		else
-			w->pressed_widgets &= ~(1ULL << WIDX_SOUND_PAUSED_CHECKBOX);
-		
-		// sound software mixing buffer checkbox
-		if (gConfigSound.forced_software_buffering)
-			w->pressed_widgets |= (1ULL << WIDX_SOUND_SW_BUFFER_CHECKBOX);
-		else 
-			w->pressed_widgets &= ~(1ULL << WIDX_SOUND_SW_BUFFER_CHECKBOX);
+		widget_set_checkbox_value(w, WIDX_SOUND_PAUSED_CHECKBOX, !g_sounds_disabled);
+		widget_set_checkbox_value(w, WIDX_SOUND_SW_BUFFER_CHECKBOX, gConfigSound.forced_software_buffering);
 
 		window_options_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_SOUND_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -776,14 +785,14 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_INPUT:
-		// screen edge scrolling checkbox
-		if (gConfigGeneral.edge_scrolling)
-			w->pressed_widgets |= (1ULL << WIDX_SCREEN_EDGE_SCROLLING);
-		else
-			w->pressed_widgets &= ~(1ULL << WIDX_SCREEN_EDGE_SCROLLING);
+		widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 
 		window_options_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
 		// real name checkbox

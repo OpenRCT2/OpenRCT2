@@ -1113,3 +1113,11 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 		}
 	}
 }
+
+void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value)
+{
+	if (value)
+		w->pressed_widgets |= (1ULL << widgetIndex);
+	else
+		w->pressed_widgets &= ~(1ULL << widgetIndex);
+}

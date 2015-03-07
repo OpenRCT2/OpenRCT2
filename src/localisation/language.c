@@ -82,10 +82,19 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 
 const char *language_get_string(rct_string_id id)
 {
-	const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
-	const char *openrct = language_strings == NULL ? NULL : language_strings[id];
-	const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
-	return str == NULL ? "" : str;
+	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
+		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
+		if (openrct != NULL)
+			return openrct;
+
+		// TODO Fall back to another language or otherwise English (UK)
+		return "(undefined string)";
+	} else {
+		const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
+		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
+		const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
+		return str == NULL ? "" : str;
+	}
 }
 
 int language_open(int id)
@@ -128,7 +137,7 @@ static int language_open_file(const char *filename)
 		return 0;
 
 	fseek(f, 0, SEEK_END);
-	language_buffer_size = ftell(f);
+	language_buffer_size = ftell(f) + 1;
 	language_buffer = calloc(1, language_buffer_size);
 	fseek(f, 0, SEEK_SET);
 	fread(language_buffer, language_buffer_size, 1, f);

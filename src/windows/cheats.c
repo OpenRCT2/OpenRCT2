@@ -571,12 +571,12 @@ static void window_cheats_paint()
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		gfx_draw_string(dpi, language_get_string(2681), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, language_get_string(2682), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(2681), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(2682), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		gfx_draw_string(dpi, language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 
 }

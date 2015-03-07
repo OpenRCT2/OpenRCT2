@@ -105,7 +105,7 @@ enum {
 	AUTOSAVE_NEVER
 };
 
-typedef struct general_configuration {
+typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
@@ -131,18 +131,24 @@ typedef struct general_configuration {
 	uint8 autosave_frequency;
 } general_configuration;
 
-typedef struct sound_configuration {
+typedef struct {
+	uint8 toolbar_show_finances;
+	uint8 toolbar_show_research;
+} interface_configuration;
+
+typedef struct {
 	sint8 forced_software_buffering;
 	sint8 sound_quality;
 	uint8 title_music;
 } sound_configuration;
 
-typedef struct shortcut_entry {
+typedef struct {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;
 
 extern general_configuration gConfigGeneral;
+extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];

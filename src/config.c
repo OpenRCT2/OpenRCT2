@@ -162,6 +162,11 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, window_width),					"window_width",					CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
 };
 
+config_property_definition _interfaceDefinitions[] = {
+	{ offsetof(interface_configuration, toolbar_show_finances),			"toolbar_show_finances",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(interface_configuration, toolbar_show_research),			"toolbar_show_research",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+};
+
 config_property_definition _soundDefinitions[] = {
 	{ offsetof(sound_configuration, forced_software_buffering),			"forced_software_buffering",	CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(sound_configuration, sound_quality),						"sound_quality",				CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
@@ -170,12 +175,14 @@ config_property_definition _soundDefinitions[] = {
 
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
+	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
 	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) }
 };
 
 #pragma endregion
 
 general_configuration gConfigGeneral;
+interface_configuration gConfigInterface;
 sound_configuration gConfigSound;
 
 bool config_open(const utf8string path);

@@ -1394,6 +1394,8 @@ enum {
 	STR_SET_PATROL_AREA = 3445,
 	STR_CLEAR_PATROL_AREA = 3446,
 
+	STR_OPENRCT2_BEGIN_STRING_ID = 5120,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
