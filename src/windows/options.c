@@ -82,12 +82,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 	WIDX_SOUND,
 	WIDX_SOUND_DROPDOWN,
-	WIDX_MUSIC,
-	WIDX_MUSIC_DROPDOWN,
-	WIDX_SOUND_QUALITY,
-	WIDX_SOUND_QUALITY_DROPDOWN,
-	WIDX_SOUND_SW_BUFFER_CHECKBOX,
-	WIDX_SOUND_PAUSED_CHECKBOX,
+	WIDX_SOUND_CHECKBOX,
+	WIDX_MUSIC_CHECKBOX,
 	WIDX_TITLE_MUSIC,
 	WIDX_TITLE_MUSIC_DROPDOWN,
 
@@ -141,14 +137,10 @@ static rct_widget window_options_widgets[] = {
 	// Audio tab
 	{ WWT_DROPDOWN,			0,	10,		299,	53,		64,		865,			STR_NONE },	// sound
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	68,		79,		869,			STR_NONE },	// music
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	69,		78,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		870,			STR_NONE },	// sound quality
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
-	{ WWT_CHECKBOX,			0,	10,		299,	99,		110,	STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING, STR_SOUND_FORCED_SOFTWARE_BUFFER_MIXING_TIP },
-	{ WWT_CHECKBOX,			0,	10,		229,	114,	125,	STR_SOUND,		STR_NONE }, // enable/disable sound
-	{ WWT_DROPDOWN,			0,	155,	299,	130,	141,	STR_NONE,		STR_NONE },	// title music
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	131,	140,	876,			STR_NONE },
+	{ WWT_CHECKBOX,			0,	10,		229,	68,		79,		STR_SOUND,		STR_NONE }, // enable / disable sound
+	{ WWT_CHECKBOX,			0,	10,		229,	83,		94,		STR_MUSIC,		STR_NONE }, // enable / disable music
+	{ WWT_DROPDOWN,			0,	155,	299,	98,		109,	STR_NONE,		STR_NONE },	// title music
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	99,		108,	876,			STR_NONE },
 
 	// Controls tab
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
@@ -237,10 +229,8 @@ void window_options_open()
 		(1ULL << WIDX_TAB_5) |
 		(1ULL << WIDX_SOUND) |
 		(1ULL << WIDX_SOUND_DROPDOWN) |
-		(1ULL << WIDX_MUSIC) |
-		(1ULL << WIDX_MUSIC_DROPDOWN) |
-		(1ULL << WIDX_SOUND_QUALITY) |
-		(1ULL << WIDX_SOUND_QUALITY_DROPDOWN) |
+		(1ULL << WIDX_SOUND_CHECKBOX) |
+		(1ULL << WIDX_MUSIC_CHECKBOX) |
 		(1ULL << WIDX_TITLE_MUSIC) |
 		(1ULL << WIDX_TITLE_MUSIC_DROPDOWN) |
 		(1ULL << WIDX_LANGUAGE) |
@@ -266,8 +256,6 @@ void window_options_open()
 		(1ULL << WIDX_HEIGHT_LABELS_DROPDOWN) |
 		(1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
-		(1ULL << WIDX_SOUND_SW_BUFFER_CHECKBOX) |
-		(1ULL << WIDX_SOUND_PAUSED_CHECKBOX) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN);
@@ -346,18 +334,15 @@ static void window_options_mouseup()
 		config_save_default();
 		window_invalidate(w);
 		break;
-	case WIDX_SOUND_SW_BUFFER_CHECKBOX:
-		pause_sounds();
-		gConfigSound.forced_software_buffering ^= 1;
-		config_save_default();
-		unpause_sounds();
-		window_invalidate(w);
-		break;
-	case WIDX_SOUND_PAUSED_CHECKBOX:
+	case WIDX_SOUND_CHECKBOX:
 		if (g_sounds_disabled)
 			unpause_sounds();
 		else
 			pause_sounds();
+		window_invalidate(w);
+		break;
+	case WIDX_MUSIC_CHECKBOX:
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) ^= 1;
 		window_invalidate(w);
 		break;
 	}
@@ -396,28 +381,6 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		window_options_show_dropdown(w, widget, 2);
 
 		gDropdownItemsChecked = gConfigGeneral.show_height_as_units ? 1 : 2;
-		break;
-	case WIDX_MUSIC_DROPDOWN:
-		gDropdownItemsFormat[0] = 1142;
-		gDropdownItemsFormat[1] = 1142;
-		gDropdownItemsArgs[0] = STR_OFF;
-		gDropdownItemsArgs[1] = STR_ON;
-
-		window_options_show_dropdown(w, widget, 2);
-
-		gDropdownItemsChecked = 1 << RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
-		break;
-	case WIDX_SOUND_QUALITY_DROPDOWN:
-		num_items = 3;
-
-		for (i = 0; i < num_items; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_SOUND_LOW + i; // low, medium, high
-		}
-
-		window_options_show_dropdown(w, widget, num_items);
-
-		gDropdownItemsChecked = 1 << gConfigSound.sound_quality;
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
 		num_items = 3;
@@ -578,19 +541,6 @@ static void window_options_dropdown()
 		}
 
 		window_options_update_height_markers();
-		break;
-	case WIDX_MUSIC_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = (uint8)dropdownIndex;
-		config_save_default();
-		stop_ride_music();//RCT2_CALLPROC_EBPSAFE(0x006BCA9F);
-		window_invalidate(w);
-		break;
-	case WIDX_SOUND_QUALITY_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS, uint8) = RCT2_GLOBAL(0x009AF601 + dropdownIndex, uint8);
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS, uint8) = RCT2_GLOBAL(0x009AF604 + dropdownIndex, uint8);
-		gConfigSound.sound_quality = (sint8)dropdownIndex;
-		config_save_default();
-		window_invalidate(w);
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
 		if (dropdownIndex == 1 && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
@@ -770,17 +720,13 @@ static void window_options_invalidate()
 		// sound quality: low/medium/high
 		RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW + gConfigSound.sound_quality;
 
-		widget_set_checkbox_value(w, WIDX_SOUND_PAUSED_CHECKBOX, !g_sounds_disabled);
-		widget_set_checkbox_value(w, WIDX_SOUND_SW_BUFFER_CHECKBOX, gConfigSound.forced_software_buffering);
+		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, !g_sounds_disabled);
+		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8));
 
 		window_options_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_SOUND_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_widgets[WIDX_MUSIC].type = WWT_DROPDOWN;
-		window_options_widgets[WIDX_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_widgets[WIDX_SOUND_QUALITY].type = WWT_DROPDOWN;
-		window_options_widgets[WIDX_SOUND_QUALITY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_widgets[WIDX_SOUND_SW_BUFFER_CHECKBOX].type = WWT_CHECKBOX;
-		window_options_widgets[WIDX_SOUND_PAUSED_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
@@ -872,8 +818,6 @@ static void window_options_paint()
 		gfx_draw_string_left(dpi, STR_HEIGHT_LABELS, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_HEIGHT_LABELS].top + 1);
 		break;
 	case WINDOW_OPTIONS_PAGE_AUDIO:
-		gfx_draw_string_left(dpi, STR_MUSIC, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_MUSIC].top + 1);
-		gfx_draw_string_left(dpi, STR_SOUND_QUALITY, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_SOUND_QUALITY].top + 1);
 		gfx_draw_string_left(dpi, 2738, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_TITLE_MUSIC].top + 1);
 		gfx_draw_string_left(
 			dpi,
