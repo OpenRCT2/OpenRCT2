@@ -1096,6 +1096,54 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 }
 
 /**
+*
+* rct2: 0x006AEB9F
+*/
+void window_ride_disable_tabs(rct_window *w)
+{
+	//RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+
+	uint32 disabled_tabs = 0;
+	rct_ride *ride = GET_RIDE(w->number & 0xFF);
+
+	uint8 ride_type = ride->type; // ecx
+
+	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x200) == 0)
+		disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
+
+	if (ride_type == RIDE_TYPE_MINI_GOLF)
+		disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
+
+	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x2000) != 0)
+		disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
+
+	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x4000007) == 0 &&
+		(RCT2_GLOBAL(0x97D4F2 + ride_type * 8, uint16) & 0x20) == 0)
+		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
+
+	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x20000) != 0)
+		disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
+
+	if ((RCT2_GLOBAL(0x97D4F2 + ride_type * 8, uint32) & 0x4) == 0)
+		disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
+
+	if (ride_type == RIDE_TYPE_ATM ||
+		ride_type == RIDE_TYPE_FIRST_AID ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) != 0)
+		disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint32) & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
+		disabled_tabs |= (1 << WIDX_TAB_4 | 1 << WIDX_TAB_6 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10); // 0x3280
+
+	rct_ride_type *type = GET_RIDE_ENTRY(ride->subtype);
+
+	if ((type->var_008 & 0x80000) != 0)
+		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
+
+	w->disabled_widgets = disabled_tabs;
+}
+
+/**
  * 
  * rct2: 0x006AEAB4
  */
@@ -1117,7 +1165,7 @@ rct_window *window_ride_open(int rideIndex)
 	w->list_information_type = 0;
 	w->var_492 = 0;
 	w->var_494 = 0;
-	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_disable_tabs(w);
 	w->min_width = 316;
 	w->min_height = 180;
 	w->max_width = 500;
@@ -1173,7 +1221,7 @@ rct_window *window_ride_main_open(int rideIndex)
 	w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
 	w->event_handlers = window_ride_page_events[WINDOW_RIDE_PAGE_MAIN];
 	w->pressed_widgets = 0;
-	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_disable_tabs(w);
 	window_init_scroll_widgets(w);
 	w->ride.view = 0;
 	window_ride_init_viewport(w);
@@ -1220,7 +1268,7 @@ rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 	w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
 	w->event_handlers = window_ride_page_events[w->page];
 	w->pressed_widgets = 0;
-	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_disable_tabs(w);
 	window_init_scroll_widgets(w);
 
 	// View
@@ -1329,7 +1377,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 	w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
 	w->event_handlers = window_ride_page_events[w->page];
 	w->pressed_widgets = 0;
-	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_disable_tabs(w);
 	window_init_scroll_widgets(w);
 
 	w->ride.view = view;
@@ -1369,7 +1417,7 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->event_handlers = window_ride_page_events[page];
 	w->pressed_widgets = 0;
 	w->widgets = window_ride_page_widgets[page];
-	RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
+	window_ride_disable_tabs(w);
 	window_invalidate(w);
 
 	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
