@@ -674,7 +674,7 @@ void scenario_update()
 	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
 		// daily checks
 		finance_update_daily_profit();
-		RCT2_CALLPROC_EBPSAFE(0x0069C35E); // some kind of peeps days_visited update loop
+		peep_update_days_in_queue();
 		get_local_time();
 		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging
 		switch (objective_type) {

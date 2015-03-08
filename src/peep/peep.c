@@ -2224,6 +2224,24 @@ void peep_applause()
 }
 
 /**
+*
+*  rct2: 0x0069C35E
+*/
+void peep_update_days_in_queue()
+{
+	uint16 sprite_index;
+	rct_peep *peep;
+
+	FOR_ALL_GUESTS(sprite_index, peep) {
+		if (peep->var_2A == 0 && peep->state == PEEP_STATE_QUEUING) {
+			if (peep->days_in_queue < 255) {
+				peep->days_in_queue += 1;
+			}
+		}
+	}
+}
+
+/**
  *
  *  rct2: 0x0069A05D
  */
