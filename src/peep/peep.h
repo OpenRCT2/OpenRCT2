@@ -485,7 +485,7 @@ typedef struct {
 	uint8 pad_F2;
 	uint8 var_F3;
 	uint8 var_F4;
-	uint8 pad_F5;
+	uint8 days_in_queue;			// 0xF5
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
@@ -547,6 +547,7 @@ int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
+void peep_update_days_in_queue();
 void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
