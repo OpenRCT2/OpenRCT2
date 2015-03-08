@@ -522,12 +522,12 @@ static void window_track_list_paint()
 
 	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
 		// Maximum positive vertical Gs
-		gForces = track_td6->max_positive_vertical_g * 32;
+		gForces = (sint8)track_td6->max_positive_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, 0, x, y);
 		y += 10;
 
 		// Maximum negative verical Gs
-		gForces = track_td6->max_negitive_vertical_g * 32;
+		gForces = (sint8)track_td6->max_negitive_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, 0, x, y);
 		y += 10;
 
