@@ -130,7 +130,7 @@ typedef struct {
 	uint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53
 	uint8 max_positive_vertical_g;					// 0x55
-	uint8 max_negitive_vertical_g;					// 0x56
+	sint8 max_negitive_vertical_g;					// 0x56
 	uint8 max_lateral_g;							// 0x57
 	union {
 		uint8 inversions;							// 0x58
