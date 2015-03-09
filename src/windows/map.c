@@ -231,9 +231,11 @@ static void window_map_mouseup()
 	//RCT2_CALLPROC_EBPSAFE(0x0068CFC1);
 	sint16 var_idx;
 	rct_window* var_w;
+	//Maximum land ownership tool size
+	int land_tool_limit;
 
 	window_widget_get_registers(var_w, var_idx);
-	
+
 	switch (var_idx)
 	{
 	case WIDX_CLOSE:
@@ -290,18 +292,20 @@ static void window_map_mouseup()
 
 	case WIDX_LAND_TOOL_SMALLER:
 		--RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+		land_tool_limit=1;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < 1)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < land_tool_limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = land_tool_limit;
 
 		window_invalidate(var_w);
 		break;
 
 	case WIDX_LAND_TOOL_LARGER:
 		++RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+		land_tool_limit=64;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 7;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > land_tool_limit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = land_tool_limit;
 
 		window_invalidate(var_w);
 		break;
@@ -538,8 +542,8 @@ static void window_map_invalidate()
 				w->widgets[WIDX_LAND_TOOL_LARGER].type = WWT_TRNBTN;
 				for (i = 0; i < 4; i++)
 					w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
-				w->widgets[WIDX_LAND_TOOL].image = SPR_LAND_TOOL_SIZE_0 +
-					RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16);
+				w->widgets[WIDX_LAND_TOOL].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) <= 7 ? SPR_LAND_TOOL_SIZE_0 +
+					RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) : 0xFFFFFFFF;
 			}
 		// if no tool is active: show the default scenario editor buttons
 		} else {
@@ -559,9 +563,22 @@ static void window_map_paint()
 	int image_id;
 	int i, x, y;
 
+	x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
+	y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
+
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+
+	// FEATURE larger land tool size support
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
+	RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
+	RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
+	RCT2_GLOBAL(0x009BC679, char) = 0;
+	RCT2_GLOBAL(0x013CE952, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	gfx_draw_string_centred(dpi, 3165, x, y + 27, 0, (void*)0x013CE952);
+}
+	y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
 	// guest tab image (animated)
 	image_id = SPR_TAB_GUESTS_0;
