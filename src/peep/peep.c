@@ -1156,7 +1156,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
 	uint8 free_edge = 3;
 
-	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
 		sprite = &g_sprite_list[sprite_id];
 
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
@@ -1742,7 +1742,7 @@ static void peep_update_walking(rct_peep* peep){
 	}
 
 	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
-	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.var_02){
+	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
 		sprite = &g_sprite_list[sprite_id];
 
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;

@@ -864,8 +864,8 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 	eax = (eax & 0x1FE0) << 3 | (ecx >> 5);
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
-
-	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.var_02){
+	
+	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant){
 		spr = &g_sprite_list[sprite_idx];
 		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 

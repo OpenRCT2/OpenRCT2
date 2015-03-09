@@ -47,14 +47,14 @@ typedef enum {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
-	uint16 var_02;
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint8 pad_0C[2];
+	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -78,7 +78,7 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;					// 0x01
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
@@ -91,7 +91,7 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
@@ -118,7 +118,7 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
@@ -140,7 +140,7 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
