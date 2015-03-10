@@ -31,7 +31,7 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
  * 
  *  rct2: 0x006736C7
  */
-void create_balloon(int x, int y, int z, int colour)
+void create_balloon(int x, int y, int z, int colour, uint8 bl)
 {
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL)
@@ -44,7 +44,7 @@ void create_balloon(int x, int y, int z, int colour)
 		sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
 		sprite->balloon.var_26 = 0;
 		sprite->balloon.colour = colour;
-		sprite->balloon.popped = 0;
+		sprite->balloon.popped = bl;
 	}
 }
 

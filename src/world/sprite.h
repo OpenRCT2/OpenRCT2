@@ -221,7 +221,7 @@ enum {
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
 
-void create_balloon(int x, int y, int z, int colour);
+void create_balloon(int x, int y, int z, int colour, uint8 bl);
 void create_duck(int targetX, int targetY);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();

@@ -352,6 +352,138 @@ void peep_decrement_num_riders(rct_peep* peep){
 	}
 }
 
+/* Part of 0x0069B8CC rct2:0x0069BC31 */
+void set_sprite_type(rct_peep* peep, uint8 type){
+	if (peep->sprite_type == type)return;
+
+	peep->sprite_type = type;
+	peep->action_sprite_image_offset = 0;
+	peep->no_action_frame_no = 0;
+	
+	if (peep->action >= PEEP_ACTION_NONE_1)
+		peep->action = PEEP_ACTION_NONE_2;
+
+	peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+	if (RCT2_ADDRESS(0x00982134, uint8)[type] & 1){
+		peep->flags |= PEEP_FLAGS_SLOW_WALK;
+	}
+
+	peep->action_sprite_type = 0xFF;
+	sub_693B58(peep);
+
+	if (peep->state == PEEP_STATE_SITTING){
+		peep->action = PEEP_ACTION_NONE_1;
+		peep->var_6F = 7;
+		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+	if (peep->state == PEEP_STATE_WATCHING){
+		peep->action = PEEP_ACTION_NONE_1;
+		peep->var_6F = 2;
+		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+}
+
+typedef struct{
+	uint8 type; // 0 for standard, 1 for extra
+	uint32 item; // And this with the relevant flags
+	uint8 sprite_type;
+} item_pref;
+
+item_pref item_order_preference[] = {
+		{ 0, PEEP_ITEM_ICE_CREAM, 15 },
+		{ 0, PEEP_ITEM_FRIES, 16},
+		{ 0, PEEP_ITEM_PIZZA, 22 },
+		{ 0, PEEP_ITEM_BURGER, 17 },
+		{ 0, PEEP_ITEM_DRINK, 18 },
+		{ 0, PEEP_ITEM_COFFEE, 35 },
+		{ 0, PEEP_ITEM_CHICKEN, 34 },
+		{ 0, PEEP_ITEM_LEMONADE, 37 },
+		{ 0, PEEP_ITEM_COTTON_CANDY, 20 },
+		{ 0, PEEP_ITEM_POPCORN, 22 },
+		{ 0, PEEP_ITEM_HOT_DOG, 31 },
+		{ 0, PEEP_ITEM_TENTACLE, 32 },
+		{ 0, PEEP_ITEM_CANDY_APPLE, 33 },
+		{ 0, PEEP_ITEM_DONUT, 34 },
+		{ 1, PEEP_ITEM_PRETZEL, 39 },
+		{ 1, PEEP_ITEM_COOKIE, 39 },
+		{ 1, PEEP_ITEM_CHOCOLATE, 35 },
+		{ 1, PEEP_ITEM_ICED_TEA, 35 },
+		{ 1, PEEP_ITEM_FUNNEL_CAKE, 43 },
+		{ 1, PEEP_ITEM_BEEF_NOODLES, 44 },
+		{ 1, PEEP_ITEM_FRIED_RICE_NOODLES, 44 },
+		{ 1, PEEP_ITEM_WONTON_SOUP, 46 },
+		{ 1, PEEP_ITEM_MEATBALL_SOUP, 46 },
+		{ 1, PEEP_ITEM_FRUIT_JUICE, 43 },
+		{ 1, PEEP_ITEM_SOYBEAN_MILK, 41 },
+		{ 1, PEEP_ITEM_SU_JONGKWA, 41 },
+		{ 1, PEEP_ITEM_SUB_SANDWICH, 47 },
+		{ 1, PEEP_ITEM_ROAST_SAUSAGE, 45 },
+		{ 0, PEEP_ITEM_BALLOON, 19 },
+		{ 0, PEEP_ITEM_HAT, 30},
+		{ 1, PEEP_ITEM_SUNGLASSES, 40},
+		{ 0xFF, 0xFFFFFFFF, 0xFF}
+};
+
+/* rct2: 0x0069B8CC */
+void sub_69B8CC(rct_peep* peep){
+	if (peep->sprite_type == 19 &&
+		(scenario_rand() & 0xFFFF) <= 327){
+		uint8 bl = 0;
+
+		if ((scenario_rand() & 0xFFFF) <= 13107 &&
+			peep->x != SPRITE_LOCATION_NULL){
+				
+			bl = 1;
+			sound_play_panned(SOUND_BALLOON_POP, 0x8001, peep->x, peep->y, peep->z);
+		}
+
+		if (peep->x != SPRITE_LOCATION_NULL){
+			create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, bl);
+		}
+
+		peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+
+		peep->var_45 |= (1 << 3);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 &&
+		peep->item_standard_flags & PEEP_ITEM_UMBRELLA &&
+		peep->x != SPRITE_LOCATION_NULL){
+		int x = peep->x & 0xFFE0;
+		int y = peep->y & 0xFFE0;
+
+		if (x < 0x1FFF && y < 0x1FFF){
+			rct_map_element* map_element = map_get_first_element_at(x, y);
+			while (1) {
+				if ((peep->z / 32) < map_element->base_height)break;
+
+				if (map_element_is_last_for_tile(map_element)){
+					set_sprite_type(peep, 21);
+					return;
+				}
+				map_element++;
+			}
+		}	
+	}
+
+	for (item_pref* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++){
+		if (item_pref->type == 0){
+			if (peep->item_standard_flags & item_pref->item){
+				set_sprite_type(peep, item_pref->sprite_type);
+				return;
+			}
+		}
+		else{
+			if (peep->item_extra_flags & item_pref->item){
+				set_sprite_type(peep, item_pref->sprite_type);
+				return;
+			}
+		}
+	}
+
+	//69BACA
+}
+
 /**
  *  rct2: 0x0069A42F
  * Call after changing a peeps state to insure that
@@ -455,7 +587,7 @@ void peep_update_falling(rct_peep* peep){
 						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
 						if (peep->sprite_type == 19 && peep->x != 0x8000){
-							create_balloon(peep->x, peep->y, height, peep->balloon_colour);
+							create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
 							peep->var_45 |= (1 << 3);
 							RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 						}
@@ -2202,7 +2334,7 @@ void peep_applause()
 		if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 			peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 			if (peep->x != 0x8000) {
-				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour);
+				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, 0);
 				peep->var_45 |= 8;
 				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
 			}
