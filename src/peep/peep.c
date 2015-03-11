@@ -549,6 +549,36 @@ void peep_window_state_update(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x0069A535*/
+void peep_sprite_remove(rct_peep* peep){
+	//RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+	//return;
+
+	RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+	invalidate_sprite((rct_sprite*)peep);
+
+	window_close_by_number(WC_PEEP, peep->sprite_index);
+
+	window_close_by_number(WC_FIRE_PROMPT, peep->sprite_identifier);
+
+	if (peep->type == PEEP_TYPE_GUEST){
+		window_invalidate_by_class(WC_GUEST_LIST);
+
+		RCT2_CALLPROC_X(0x0066E407, 2, 0, peep->sprite_index, 0, 0, 0, 0);
+	}
+	else{
+		window_invalidate_by_class(WC_STAFF_LIST);
+
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] = 0;
+		peep->type = 0xFF;
+		sub_6C0C3F();
+		peep->type = PEEP_TYPE_STAFF;
+
+		RCT2_CALLPROC_X(0x0066E407, 3, 0, peep->sprite_index, 0, 0, 0, 0);
+	}
+	sprite_remove((rct_sprite*)peep);
+}
+
 /** New function removes peep from 
  * park existance. Works with staff.
  */
@@ -562,7 +592,7 @@ void peep_remove(rct_peep* peep){
 			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
 		}
 	}
-	RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_sprite_remove(peep);
 }
 
 /**
@@ -1145,7 +1175,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 	if (peep->var_37 != 0){
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
-		RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_sprite_remove(peep);
 		return;
 	}
 
@@ -1167,7 +1197,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 
 	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
-	RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_sprite_remove(peep);
 }
 
 /* rct2: 0x6916D6 */
@@ -1262,7 +1292,7 @@ static void peep_update_entering_park(rct_peep* peep){
 		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
 			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
-			RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_sprite_remove(peep);
 		}
 		return;
 	}
