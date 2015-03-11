@@ -425,7 +425,7 @@ item_pref item_order_preference[] = {
 };
 
 /* rct2: 0x0069B8CC */
-void sub_69B8CC(rct_peep* peep){
+void peep_update_sprite_type(rct_peep* peep){
 	if (peep->sprite_type == 19 &&
 		(scenario_rand() & 0xFFFF) <= 327){
 		uint8 bl = 0;
@@ -481,7 +481,40 @@ void sub_69B8CC(rct_peep* peep){
 		}
 	}
 
-	//69BACA
+	if (peep->state == PEEP_STATE_WATCHING &&
+		peep->standing_flags & (1<<1)){
+		set_sprite_type(peep, 38);
+		return;
+	}
+	
+	if (peep->nausea > 170){
+		set_sprite_type(peep, 28);
+		return;
+	}
+	
+	if (peep->nausea > 140){
+		set_sprite_type(peep, 27);
+		return;
+	}
+	
+	if (peep->energy <= 64 &&
+		peep->happiness < 128){
+		set_sprite_type(peep, 26);
+		return;
+	}
+	
+	if (peep->energy <= 80 &&
+		peep->happiness < 128){
+		set_sprite_type(peep, 25);
+		return;
+	}
+	
+	if (peep->bathroom > 220){
+		set_sprite_type(peep, 29);
+		return;
+	}
+	
+	set_sprite_type(peep, 0);
 }
 
 /**
