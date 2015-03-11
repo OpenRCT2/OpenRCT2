@@ -3491,17 +3491,20 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 
 	newColourScheme = (uint8)(*((uint16*)&w->var_494));
 
+	int z;
+
+	get_map_coordinates_from_pos(x, y, -5, &x, &y, &z, &mapElement);
 	// Get map coordinates from point
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	/*int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
 	ebx = y;
 	edx = -5;
 	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	x = eax & 0xFFFF;
 	y = ecx & 0xFFFF;
-	mapElement = (rct_map_element*)edx;
+	mapElement = (rct_map_element*)edx;*/
 
-	if ((ebx & 0xFF) != 3)
+	if ((/*ebx*/z & 0xFF) != 3)
 		return;
 	if (mapElement->properties.track.ride_index != w->number)
 		return;

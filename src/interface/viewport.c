@@ -846,22 +846,116 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 	//return;
 }
 
+/*rct2: 0x006C42D9*/
+int sub_6C42D9(rct_string_id string_id, int scroll, int ebp)
+{
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level != 0) return 0x626;
+	RCT2_GLOBAL(0x9D7A80, uint32_t)++;
+	int edx = -1;
+	for (int i = 0; i < 0x20; i++)
+	{
+		uint8_t* unknown_pointer = RCT2_ADDRESS(0x9C3840, uint8_t) + 0xA12 * i;
+		if (edx >= *((int32_t*)(unknown_pointer + 0x0E)))
+		{
+			edx = *((int32_t*)(unknown_pointer + 0x0E));
+			RCT2_GLOBAL(0x9D7A84, uint32_t) = i;
+			RCT2_GLOBAL(0x9D7A88, uint32_t) = (uint32_t)unknown_pointer;
+		}
+		if (*((rct_string_id*)unknown_pointer) == string_id &&
+			*((uint32_t*)(unknown_pointer + 0x02)) == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t) &&
+			*((uint32_t*)(unknown_pointer + 0x06)) == RCT2_GLOBAL(0x13CE956, uint32_t) &&
+			*((uint16_t*)(unknown_pointer + 0x0A)) == scroll &&
+			*((uint16_t*)(unknown_pointer + 0x0C)) == ebp)
+		{
+			*((int32_t*)(unknown_pointer + 0x0E)) = RCT2_GLOBAL(0x9D7A80, uint32_t);
+			return i + 0x606;
+		}
+	}
+	uint8_t* unknown_pointer = RCT2_GLOBAL(0x9D7A88, uint8_t*);
+	*((rct_string_id*)unknown_pointer) = string_id;
+	*((uint32_t*)(unknown_pointer + 0x02)) = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t);
+	*((uint32_t*)(unknown_pointer + 0x06)) = RCT2_GLOBAL(0x13CE956, uint32_t);
+	*((uint16_t*)(unknown_pointer + 0x0A)) = scroll;
+	*((uint16_t*)(unknown_pointer + 0x0C)) = ebp;
+	*((int32_t*)(unknown_pointer + 0x0E)) = RCT2_GLOBAL(0x9D7A80, uint32_t);
+	unknown_pointer += 0x12;
+	memset(unknown_pointer, 0, 0x280 * 4);
+	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	int al = RCT2_GLOBAL(0x13CE959, uint8_t);
+	int edi = al & 0x7F;
+	int offs = 0;
+	if (al >= 0x80) offs = 2;
+	RCT2_GLOBAL(0x9D7A8C, uint8_t) = RCT2_ADDRESS(0x0141FC47, uint8_t)[offs + edi * 8];
+	int16_t* unk = RCT2_ADDRESS(0x992FB8, uint16_t*)[ebp];
+	uint8_t* format_result = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8_t);
+	while (true)
+	{
+		al = *format_result;
+		format_result++;
+		if (al == 0)
+		{
+			format_result = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+			continue;
+		}
+		if (al < 0x9C && al >= 0x8E)
+		{
+			al -= 0x8E;
+			RCT2_GLOBAL(0x9D7A8C, uint8_t) = RCT2_ADDRESS(RCT2_GLOBAL(0x9FF048, uint32_t), uint8_t)[al * 4];
+			continue;
+		}
+		if (al < 0x20) continue;
+		al -= 0x20;
+		int edx = RCT2_ADDRESS(0x141EBA8, uint8_t)[al];
+		uint8_t* unk2 = &(RCT2_ADDRESS(0xF4393C, uint8)[al * 8]);
+		while (true)
+		{
+			if (scroll != 0)
+			{
+				scroll--;
+				unk2++;
+				edx--;
+				if (edx == 0) break;
+			}
+			else
+			{
+				int16_t eax = *unk;
+				if (eax == -1) return RCT2_GLOBAL(0x9D7A84, uint32_t) + 0x606;
+				if (eax > -1)
+				{
+					uint8_t* dst = &unknown_pointer[eax];
+					int ah = *unk2;
+					int al = RCT2_GLOBAL(0x9D7A8C, uint8_t);
+					while (true)
+					{
+						if (ah & 1) *dst = al;
+						ah >>= 1;
+						dst += 0x40;
+						if (ah == 0) break;
+					}
+				}
+				unk2++;
+				unk++;
+				edx--;
+				if (edx == 0)  break;
+			}
+		}
+	}
+}
+
 /* rct2: 0x006B9CC4 */
-//This function is complete, but as long as 0x6C42D9 is not complete
-//it will cause glitches in the rendering of banners,
-//because the wrong (because localized) string length is used for calculating the scroll position
-void viewport_banner_paint_setup(uint32_t ecx, int edx, rct_map_element* map_element)
+void viewport_banner_paint_setup(uint32_t direction, int edx, rct_map_element* map_element)
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xC;
 	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
 	edx -= 16;
 	rct_scenery_entry* banner_scenery = g_bannerSceneryEntries[gBanners[map_element->properties.banner.index].type];
-	ecx += map_element->properties.banner.position;
-	ecx &= 3;
+	direction += map_element->properties.banner.position;
+	direction &= 3;
 	RCT2_GLOBAL(0x9DEA56, uint16_t) = edx + 2;
-	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D884, uint32_t)[ecx * 2];
-	int ebx = (ecx << 1) + banner_scenery->image;
+	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D884, uint32_t)[direction * 2];
+	int ebx = (direction << 1) + banner_scenery->image;
 	ebx += (gBanners[map_element->properties.banner.index].colour << 19) | 0x20000000;
 	if (map_element->flags & 0x10)
 	{
@@ -871,35 +965,32 @@ void viewport_banner_paint_setup(uint32_t ecx, int edx, rct_map_element* map_ele
 	}
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
-	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D888, uint32_t)[ecx * 2];
+	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D888, uint32_t)[direction * 2];
 	ebx++;
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
-	ecx ^= 2;
-	ecx--;
-	if (ecx >= 2 || (map_element->flags & 0x10)) return;
+	direction ^= 2;
+	direction--;
+	if (direction >= 2 || (map_element->flags & 0x10)) return;
 	int ebp = banner_scenery->banner.var_06;
-	ebp += ecx;
+	ebp += direction;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t) = 0;
 	RCT2_GLOBAL(0x13CE956, uint32_t) = 0;
-	int eax = 0xBA5;
+	rct_string_id string_id = 0xBA5;//no entry
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
 	{
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16_t) = gBanners[map_element->properties.banner.index].string_idx;
-		eax = 0x6C3;
+		string_id = 0x6C3;
 	}
-	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), eax, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16_t) = 0x1C0;
 	uint16_t string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
-	uint16_t ticks = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32_t) >> 1;
-	uint16_t cx = ticks % string_width;
-	int a = eax, b = ebx, c = cx, d = 0, si = 0, di = 0, p = ebp;
-	RCT2_CALLFUNC_X(0x6C42D9, &a, &b, &c, &d, &si, &di, &p);
+	uint16_t scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32_t) >> 1) % string_width;
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, b, 0, edx + 22, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		0x1500, sub_6C42D9(string_id, scroll, ebp), 0, edx + 22, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 }
 
-//rct2: 0x0068B35F
+/*rct2: 0x0068B35F*/
 void sub_68B35F(int ax, int cx)
 {
 	if (ax < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
@@ -933,7 +1024,7 @@ void sub_68B35F(int ax, int cx)
 		esi >>= 3;
 		int ax_tmp = ax;
 		int cx_tmp = cx;
-		rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[esi / 4];//8];
+		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(esi / 4);
 		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
 		{
@@ -983,21 +1074,19 @@ void sub_68B35F(int ax, int cx)
 		{
 			rct_map_element* element = map_element;//push map_element
 			bx = element->clearance_height;
-			if (!(element->flags & MAP_ELEMENT_FLAG_LAST_TILE))
+			if (!map_element_is_last_for_tile(element))
 			{
 				while (true)
 				{
 					element++;
-					if (bx < element->clearance_height) 
-						bx = element->clearance_height;
-					if (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) break;
+					bx = max(bx, element->clearance_height);
+					if (map_element_is_last_for_tile(element)) break;
 				}
 			}
-			if ((element->type & 0x3C) == MAP_ELEMENT_TYPE_SURFACE &&
-				(element->properties.surface.terrain & 0x1F) != 0)
+			if (map_element_get_type(element) == MAP_ELEMENT_TYPE_SURFACE &&
+				(element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) != 0)
 			{
-				bx = element->properties.surface.terrain & 0x1F;//water height
-				bx <<= 1;
+				bx = (element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 1;
 			}
 			bx <<= 3;
 			dx -= bx;
@@ -1011,49 +1100,44 @@ void sub_68B35F(int ax, int cx)
 				RCT2_GLOBAL(0x9DE57C, uint16_t) = 0;
 				while (true)
 				{
-					int ecx = map_element->type;
-					int edi = ecx;
-					ecx += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t);
-					ecx &= 3;
-					dx = map_element->base_height;
-					edi &= 0x3C;
-					dx <<= 3;
+					int direction = (map_element->type + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) & MAP_ELEMENT_DIRECTION_MASK;
+					dx = map_element->base_height * 8;
 					uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
 					RCT2_GLOBAL(0x9DE578, rct_map_element*) = map_element;
 					//setup the painting of for example: the underground, signs, rides, scenery, etc.
-					switch (edi)
+					switch (map_element_get_type(map_element))
 					{
 					case MAP_ELEMENT_TYPE_SURFACE:
-						RCT2_CALLPROC_X(0x66062C, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x66062C, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_PATH:
-						RCT2_CALLPROC_X(0x6A3590, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_TRACK:
-						RCT2_CALLPROC_X(0x6C4794, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x6C4794, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_SCENERY:
-						RCT2_CALLPROC_X(0x6DFF47, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_ENTRANCE:
-						RCT2_CALLPROC_X(0x664FD4, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x664FD4, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_FENCE:
-						RCT2_CALLPROC_X(0x6E44B0, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-						RCT2_CALLPROC_X(0x6B7F0C, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					case MAP_ELEMENT_TYPE_BANNER:
-						//Not used yet. See comment above viewport_banner_paint_setup
-						//viewport_banner_paint_setup(ecx, dx, map_element);
-						RCT2_CALLPROC_X(0x6B9CC4, 0, 0, ecx, dx, (int)map_element, 0, 0);
+						//there are still some small localisation glitches, because the old function seems to get called sometimes
+						viewport_banner_paint_setup(direction, dx, map_element);
+						//RCT2_CALLPROC_X(0x6B9CC4, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					default:
 						break;
 					}
 					RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
-					int stop = map_element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+					int stop = map_element_is_last_for_tile(map_element);
 					map_element++;
 					if (stop) break;
 				}
@@ -1530,13 +1614,43 @@ void viewport_set_visibility(uint8 mode)
  */
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = screenX;
-	ebx = screenY;
-	edx = flags;
-	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (x != NULL) *x = *((uint16*)&eax);
-	if (y != NULL) *y = *((uint16*)&ecx);
-	if (z != NULL) *z = *((uint8*)&ebx);
-	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
+	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
+	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
+	rct_window* window = window_find_from_point(screenX, screenY);
+	if (window != NULL && window->viewport != NULL)
+	{
+		rct_viewport* viewport = window->viewport;
+		RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
+		RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
+		screenX -= (int)viewport->x;
+		screenY -= (int)viewport->y;
+		if (screenX >= 0 && screenX < (int)viewport->width && screenY >= 0 && screenY < (int)viewport->height)
+		{
+			screenX <<= viewport->zoom;
+			screenY <<= viewport->zoom;
+			screenX += (int)viewport->view_x;
+			screenY += (int)viewport->view_y;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = viewport->zoom;
+			screenX &= (0xFFFF << viewport->zoom) & 0xFFFF;
+			screenY &= (0xFFFF << viewport->zoom) & 0xFFFF;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
+			rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
+			dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
+			dpi->height = 1;
+			dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
+			dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
+			dpi->width = 1;
+			RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
+			RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
+			sub_0x68615B(0xEE788C);
+			sub_0x68B6C2();
+			RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
+			RCT2_CALLPROC_X(0x68862C, 0, 0, 0, 0, 0, 0, 0);
+		}
+	}
+	if (z != NULL) *z = RCT2_GLOBAL(0x9AC148, uint8_t);
+	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);
+	if (y != NULL) *y = (int)RCT2_GLOBAL(0x9AC14E, int16_t);
+	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 }
