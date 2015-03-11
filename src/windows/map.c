@@ -203,6 +203,8 @@ static void window_map_close()
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16) == w->number) {
 		tool_cancel();
 	}
+	//Reset land tool size
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
 }
 
 /**
