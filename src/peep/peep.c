@@ -453,7 +453,7 @@ void peep_update_sprite_type(rct_peep* peep){
 		int y = peep->y & 0xFFE0;
 
 		if (x < 0x1FFF && y < 0x1FFF){
-			rct_map_element* map_element = map_get_first_element_at(x, y);
+			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 			while (1) {
 				if ((peep->z / 32) < map_element->base_height)break;
 
@@ -622,7 +622,7 @@ void peep_update_falling(rct_peep* peep){
 						if (peep->sprite_type == 19 && peep->x != 0x8000){
 							create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
 							peep->var_45 |= (1 << 3);
-							RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+							peep_update_sprite_type(peep);
 						}
 					}
 
@@ -1192,7 +1192,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep->sub_state++;
 
 		peep->time_to_stand = clamp(0, ((129 - peep->energy) * 16 + 50) / 2, 255);
-		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_update_sprite_type(peep);
 	}
 	else if (peep->sub_state == 1){
 		if (peep->action < 0xFE){
@@ -1245,7 +1245,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_WALKING;
 		peep_window_state_update(peep);
-		RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_update_sprite_type(peep);
 		// Send peep to the center of current tile.
 		peep->destination_x = (peep->x & 0xFFE0) + 16;
 		peep->destination_y = (peep->y & 0xFFE0) + 16;
@@ -1666,7 +1666,7 @@ static void peep_update_using_bin(rct_peep* peep){
 				if (scenario_rand() & 7) rubbish_in_bin--;
 				peep->item_standard_flags &= ~(1 << cur_container);
 				peep->var_45 |= 8;
-				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep_update_sprite_type(peep);
 				continue;
 			}
 			uint8 bp = RCT2_ADDRESS(0x97EFCC, uint8)[cur_container];
@@ -1679,7 +1679,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			peep->item_standard_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
-			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_sprite_type(peep);
 		}
 
 		// Original bug: This would clear any rubbish placed by the previous function
@@ -1697,7 +1697,7 @@ static void peep_update_using_bin(rct_peep* peep){
 				peep->item_extra_flags &= ~(1 << cur_container);
 				peep->var_45 |= 8;
 
-				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep_update_sprite_type(peep);
 				continue;
 			}
 			uint8 bp = RCT2_ADDRESS(0x97EFE8, uint8)[cur_container];
@@ -1710,7 +1710,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			peep->item_extra_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
-			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_sprite_type(peep);
 		}
 
 		// Place new amount in bin by first clearing the value
@@ -1809,7 +1809,7 @@ static void peep_update_walking(rct_peep* peep){
 			}
 
 			peep->var_45 |= 8;
-			RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_sprite_type(peep);
 
 			int x = peep->x + (scenario_rand() & 0x7) - 3;
 			int y = peep->y + (scenario_rand() & 0x7) - 3;
@@ -2369,7 +2369,7 @@ void peep_applause()
 			if (peep->x != 0x8000) {
 				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, 0);
 				peep->var_45 |= 8;
-				RCT2_CALLPROC_X(0x0069B8CC, 0, 0, 0, 0, (int)peep, 0, 0);
+				peep_update_sprite_type(peep);
 			}
 		}
 
