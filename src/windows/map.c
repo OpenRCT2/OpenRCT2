@@ -626,8 +626,8 @@ static void window_map_paint()
 		}
 	} else {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) != WC_MAP) &&
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) != WIDX_SET_LAND_RIGHTS))
+			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP) &&
+			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_SET_LAND_RIGHTS))
 			return;
 
 		gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
