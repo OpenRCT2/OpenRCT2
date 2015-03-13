@@ -1754,6 +1754,114 @@ static void peep_update_using_bin(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x006C16D7 */
+static void peep_update_heading_to_inspect(rct_peep* peep){
+	//RCT2_CALLPROC_X(0x006C16D7, 0, 0, 0, 0, (int)peep, 0, 0);
+	//return;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (ride->type == RIDE_TYPE_NULL){
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		return;
+	}
+
+	if (ride->exits[peep->current_ride_station] == 0xFFFF){
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		return;
+	}
+
+	if (ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING || 
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION)){
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		return;
+	}
+
+	if (peep->sub_state == 0){
+		peep->var_74 = 0;
+		RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep->sub_state = 2;
+	}
+	
+	if (peep->sub_state <= 3){
+		peep->var_74++;
+		if (peep->var_74 > 2500){
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION&&
+				ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING){
+				ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+			}
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_FALLING;
+			peep_window_state_update(peep);
+			return;
+		}
+
+		if (!sub_68F3AE(peep))return;
+
+		RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+
+		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 0xC))return;
+
+		rct_map_element* map_element = RCT2_GLOBAL(0x00F1EE1A, rct_map_element*);
+
+		if (peep->current_ride !=
+			map_element->properties.entrance.ride_index)
+			return;
+
+		uint8 exit_index = ((map_element->properties.entrance.index & 0x70) >> 4);
+
+		if (peep->current_ride_station != exit_index)
+			return;
+
+		if (RCT2_GLOBAL(0xF1EE18, uint16)&(1 << 3)){
+			if (ride->exits[exit_index] != 0xFFFF)return;
+		}
+
+		uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		peep->var_78 = direction;
+
+		int x = peep->next_x + 16 + RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2] * 53;
+		int y = peep->next_y + 16 + RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2] * 53;
+
+		peep->destination_x = x;
+		peep->destination_y = y;
+		peep->destination_tolerence = 2;
+		peep->sprite_direction = direction << 3;
+
+		peep->z = map_element->base_height * 4;
+		peep->sub_state = 4;
+		// Falls through into sub_state 4
+	}
+
+	invalidate_sprite((rct_sprite*)peep);
+
+	sint16 delta_y = abs(peep->y - peep->destination_y);
+
+	sint16 x, y;
+	if (!sub_6939EB(&x, &y, peep)){
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_INSPECTING;
+		peep->sub_state = 0;
+		peep_window_state_update(peep);
+		return;
+	}
+
+	int z = ride->station_heights[peep->current_ride_station] * 8;
+
+	if (delta_y < 20){
+		z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+	}
+
+	sprite_move(x, y, z, (rct_sprite*)peep);
+	invalidate_sprite((rct_sprite*)peep);
+}
+
 /* rct2: 0x006C0CB8 */
 static void peep_update_answering(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x006C0CB8, 0, 0, 0, 0, (int)peep, 0, 0);
@@ -2252,7 +2360,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_watering(peep);
 			break;
 		case PEEP_STATE_HEADING_TO_INSPECTION:
-			RCT2_CALLPROC_X(0x006C16D7, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_heading_to_inspect(peep);
 			break;
 		case PEEP_STATE_INSPECTING:
 			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
