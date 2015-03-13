@@ -394,12 +394,13 @@ typedef struct {
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
 	uint8 bathroom;					// 0x40
-	uint8 pad_41[0x2];
+	uint8 var_41;
+	uint8 var_42;
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
 	uint8 var_45;					//		Some sort of flags?
 	money16 paid_on_drink;			// 0x46
-	uint8 pad_48[0x10];
+	uint8 var_48[16];
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D
@@ -430,7 +431,7 @@ typedef struct {
 	uint8 var_76;
 	uint8 pad_77;
 	uint8 var_78;
-	uint8 pad_79;
+	uint8 var_79;
 	uint16 var_7A; // time waiting in line possibly
 	uint8 rides_been_on[32];		// 0x7C 
 	// 255 bit bitmap of every ride the peep has been on see
@@ -482,10 +483,10 @@ typedef struct {
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
-	uint8 pad_EF;
+	uint8 var_EF;
 	uint8 voucher_type;				// 0xF0
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
-	uint8 pad_F2;
+	uint8 var_F2;
 	uint8 var_F3;
 	uint8 var_F4;
 	uint8 days_in_queue;			// 0xF5
@@ -493,7 +494,8 @@ typedef struct {
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
-	uint16 pad_FA;
+	uint8 var_FA;
+	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 

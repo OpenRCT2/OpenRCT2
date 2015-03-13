@@ -2441,12 +2441,158 @@ void peep_update_days_in_queue()
  */
 rct_peep *peep_generate(int x, int y, int z)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ecx = y;
-	edx = z;
-	RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return (rct_peep*)esi;
+	//int eax, ebx, ecx, edx, esi, edi, ebp;
+	//eax = x;
+	//ecx = y;
+	//edx = z;
+	//RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	//return (rct_peep*)esi;
+
+	if (RCT2_GLOBAL(0x13573C8, uint16) < 400)
+		return NULL;
+
+	rct_peep* peep = (rct_peep*)create_sprite(1);
+
+	move_sprite_to_list((rct_sprite*)peep, SPRITE_LINKEDLIST_OFFSET_PEEP);
+
+	peep->sprite_identifier = 1;
+	peep->sprite_type = 0;
+	peep->var_2A = 1;
+	peep->state = PEEP_STATE_FALLING;
+	peep->action = PEEP_ACTION_NONE_2;
+	peep->var_6D = 0;
+	peep->action_sprite_image_offset = 0;
+	peep->no_action_frame_no = 0;
+	peep->action_sprite_type = 0;
+	peep->flags = 0;
+	peep->favourite_ride = 0xFF;
+	peep->var_FA = 0;
+
+	uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
+	peep->sprite_width = edx[peep->action_sprite_type * 4];
+	peep->sprite_height_negative = edx[peep->action_sprite_type * 4 + 1];
+	peep->sprite_height_positive = edx[peep->action_sprite_type * 4 + 2];
+
+	peep->sprite_direction = 0;
+
+	sprite_move(x, y, z, (rct_sprite*)peep);
+	invalidate_sprite((rct_sprite*)peep);
+
+	peep->var_41 = (scenario_rand() & 0x1F) + 45;
+	peep->var_C4 = 0;
+	peep->var_79 = 0xFF;
+	peep->type = PEEP_TYPE_GUEST;
+	peep->previous_ride = 0xFF;
+	peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
+	peep->var_45 = 0;
+
+	uint8 al = (scenario_rand() & 0x7) + 3;
+	sint8 ah = max(al, 7) - 3;
+
+	if (ah < 0) ah = 0;
+	if (al >= 7) al = 15;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
+		ah = 0;
+		al = 4;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+		ah = 9;
+		al = 15;
+	}
+
+	peep->intensity = (al << 4) | ah;
+
+	uint8 nausea_tolerance = scenario_rand() & 0x7;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+		nausea_tolerance += 4;
+	}
+
+	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
+
+	sint8 happiness = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) == 0)
+		happiness += 0x80;
+
+	peep->happiness = happiness;
+	peep->happiness_growth_rate = happiness;
+	peep->nausea = 0;
+	peep->nausea_growth_rate = 0;
+
+	sint8 hunger = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8);
+
+	peep->hunger = hunger;
+
+	sint8 thirst = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8);
+
+	peep->thirst = thirst;
+
+	peep->bathroom = 0;
+	peep->var_42 = 0;
+	memset(&peep->rides_been_on, 0, 32);
+
+	peep->no_of_rides = 0;
+	memset(&peep->var_48, 0, 16);
+	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
+	peep->name_string_idx = 767;
+
+	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+	if (cash < 0) cash = 0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0){
+		cash = 500;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+		cash = 0;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0xFFFF){
+		cash = 0;
+	}
+
+	peep->cash_in_pocket = cash;
+	peep->cash_spent = 0;
+	peep->time_in_park = -1;
+	peep->var_CC = 0xFFFF;
+	peep->item_standard_flags = 0;
+	peep->item_extra_flags = 0;
+	peep->guest_heading_to_ride_id = 0xFF;
+	peep->var_E1 = 0;
+	peep->var_E3 = 0;
+	peep->var_EF = 0;
+	peep->paid_to_enter = 0;
+	peep->paid_on_rides = 0;
+	peep->paid_on_food = 0;
+	peep->paid_on_drink = 0;
+	peep->paid_on_souvenirs = 0;
+	peep->no_of_food = 0;
+	peep->no_of_drinks = 0;
+	peep->no_of_souvenirs = 0;
+	peep->var_F2 = 0;
+	peep->var_F3 = 0;
+	peep->var_F4 = 0;
+
+	uint8 tshirt_colour = scenario_rand() % 33;
+	peep->tshirt_colour = RCT2_ADDRESS(0x009823D5, uint8)[tshirt_colour];
+
+	uint8 trousers_colour = scenario_rand() % 25;
+	peep->trousers_colour = RCT2_ADDRESS(0x009823BC, uint8)[trousers_colour];
+
+	uint8 energy = (scenario_rand() & 0x3F) + 65;
+	peep->energy = energy;
+	peep->energy_growth_rate = energy;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
+		RCT2_CALLPROC_X(0x0069C483, 0, 0, 0, 0, (int)peep, 0, 0);
+	}
+	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)++;
+
+	return peep;
 }
 
 /**
