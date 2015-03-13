@@ -1240,7 +1240,7 @@ void window_staff_overview_viewport_init_wrapper(){
 
 /* rct2: 0x006BEDA3 */
 void window_staff_viewport_init(rct_window* w){
-	RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x006BEDA3, 0, 0, 0, 0, (int)w, 0, 0);
 
 	if (w->page != WINDOW_STAFF_OVERVIEW) return;
 
