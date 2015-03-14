@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
@@ -2279,9 +2280,9 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 		for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
 			rideEntryIndex = *currentRideEntryIndex;
 			currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-			// Same track type, but not same subtype
-			/*if (currentRideEntry->var_008 & 0x3000)
-				continue;*/
+			// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
+			if ((currentRideEntry->var_008 & 0x3000) && !gConfigInterface.allow_subtype_switching)
+				continue;
 
 			quadIndex = rideEntryIndex >> 5;
 			bitIndex = rideEntryIndex & 0x1F;
@@ -2439,16 +2440,16 @@ static void window_ride_vehicle_invalidate()
 
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
-	// Always show a dropdown button
-	/*if (var_496(w) <= 1 || (rideEntry->var_008 & (1 << 13))) {
+	// Always show a dropdown button when changing subtypes is allowed
+	if ((var_496(w) <= 1 || (rideEntry->var_008 & (1 << 13))) && !gConfigInterface.allow_subtype_switching ) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
-	} else {*/
+	} else {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_DROPDOWN;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		w->enabled_widgets |= (1 << WIDX_VEHICLE_TYPE);
-	//}
+	}
 
 	// Trains
 	if (rideEntry->var_011 > 1) {

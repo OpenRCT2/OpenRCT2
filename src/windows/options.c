@@ -95,7 +95,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
 	WIDX_AUTOSAVE,
-	WIDX_AUTOSAVE_DROPDOWN
+	WIDX_AUTOSAVE_DROPDOWN,
+	WIDX_ALLOW_SUBTYPE_SWITCHING
 };
 
 #define WW 310
@@ -153,6 +154,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
 	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		STR_NONE,		STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype switching
 	{ WIDGETS_END },
 };
 
@@ -258,7 +260,8 @@ void window_options_open()
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
-		(1ULL << WIDX_AUTOSAVE_DROPDOWN);
+		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
+		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
@@ -308,6 +311,12 @@ static void window_options_mouseup()
 		config_save_default();
 		window_invalidate(w);
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
+		break;
+	case WIDX_ALLOW_SUBTYPE_SWITCHING:
+		gConfigInterface.allow_subtype_switching ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		window_invalidate_by_class(WC_RIDE);
 		break;
 	case WIDX_REAL_NAME_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -741,6 +750,8 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
+		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);
+
 		// real name checkbox
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
 			w->pressed_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
@@ -767,6 +778,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
 		break;
 	}
 }
