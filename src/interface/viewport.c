@@ -852,7 +852,7 @@ int sub_6C42D9(rct_string_id string_id, int scroll, int ebp)
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	if (dpi->zoom_level != 0) return 0x626;
 	RCT2_GLOBAL(0x9D7A80, uint32_t)++;
-	int edx = -1;
+	uint32_t edx = 0xFFFFFFFF;
 	for (int i = 0; i < 0x20; i++)
 	{
 		uint8_t* unknown_pointer = RCT2_ADDRESS(0x9C3840, uint8_t) + 0xA12 * i;
