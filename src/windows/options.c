@@ -96,7 +96,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
 	WIDX_AUTOSAVE,
 	WIDX_AUTOSAVE_DROPDOWN,
-	WIDX_ALLOW_SUBTYPE_SWITCHING
+	WIDX_ALLOW_SUBTYPE_SWITCHING,
+	WINDOW_OPTIONS_WIDGETS_SIZE // Marks the end of the widget list, leave as last item
 };
 
 #define WW 310
@@ -643,7 +644,7 @@ static void window_options_invalidate()
 	window_get_register(w);
 
 	window_options_set_pressed_tab(w);
-	for (i = WIDX_RESOLUTION; i <= WIDX_AUTOSAVE_DROPDOWN; i++) {
+	for (i = WIDX_RESOLUTION; i < WINDOW_OPTIONS_WIDGETS_SIZE; i++) {
 		window_options_widgets[i].type = WWT_EMPTY;
 	}
 
