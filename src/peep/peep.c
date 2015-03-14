@@ -1974,6 +1974,101 @@ static void peep_update_answering(rct_peep* peep){
 	invalidate_sprite((rct_sprite*)peep);
 }
 
+/* rct2: 0x006BF322 */
+static int peep_update_patrolling_find_grass(rct_peep* peep){
+	if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
+		return 0;
+
+	if (peep->var_E2 < 12)return 0;
+
+	if ((peep->next_var_29 & 0x18) != 8) return 0;
+
+	rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+
+	if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
+		return 0;
+
+	if (map_element->properties.surface.grass_length < GRASS_LENGTH_CLEAR_1)
+		return 0;
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_MOWING;
+	peep_window_state_update(peep);
+	peep->var_37 = 0;
+	peep->destination_x = peep->next_x + RCT2_ADDRESS(0x9929CA, uint16)[0 * 2];
+	peep->destination_y = peep->next_y + RCT2_ADDRESS(0x9929CA, uint16)[0 * 2];
+	peep->destination_tolerence = 3;
+	return 1;
+}
+
+/* rct2: 0x006BF295 */
+static int peep_update_patrolling_find_sweeping(rct_peep* peep){
+	if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
+		return 0;
+
+	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
+
+	for (rct_sprite* sprite = NULL;
+		sprite_id != 0xFFFF;
+		sprite_id = sprite->unknown.next_in_quadrant){
+
+		sprite = &g_sprite_list[sprite_id];
+
+		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_LITTER)continue;
+
+		uint16 z_diff = abs(peep->z - sprite->litter.z);
+
+		if (z_diff >= 16)continue;
+
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_SWEEPING;
+		peep_window_state_update(peep);
+		peep->var_37 = 0;
+		peep->destination_x = sprite->litter.x;
+		peep->destination_y = sprite->litter.y;
+		peep->destination_tolerence = 5;
+		return 1;
+	}
+
+	return 0;
+}
+
+/* rct2: 0x006BF1FD */
+static void peep_update_patroling(rct_peep* peep){
+
+	if (!sub_68F3AE(peep))return;
+
+	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+
+	if ((peep->next_var_29 & 0x18) == 8){
+		rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+
+		if (map_element != NULL){
+			int water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+			if (water_height){
+				invalidate_sprite((rct_sprite*)peep);
+				water_height *= 16;
+				sprite_move(peep->x, peep->y, water_height, (rct_sprite*)peep);
+				invalidate_sprite((rct_sprite*)peep);
+
+				peep_decrement_num_riders(peep);
+				peep->state = PEEP_STATE_FALLING;
+				peep_window_state_update(peep);
+				return;
+			}
+		}
+	}
+
+	if (peep->staff_type != STAFF_TYPE_HANDYMAN) return;
+
+	if (peep_update_patrolling_find_sweeping(peep))return;
+
+	if (peep_update_patrolling_find_grass(peep))return;
+
+	//0x006BF3A1
+}
+
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);

@@ -84,7 +84,11 @@ typedef struct {
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 pad_09;
 	uint16 sprite_index;			// 0x0A
-	uint8 pad_0B[0x19];
+	uint16 pad_0C;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x10];
 	uint32 var_24;
 } rct_litter;
 
