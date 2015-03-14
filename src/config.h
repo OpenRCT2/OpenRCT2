@@ -134,6 +134,7 @@ typedef struct {
 typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
+	uint8 allow_subtype_switching;
 } interface_configuration;
 
 typedef struct {
