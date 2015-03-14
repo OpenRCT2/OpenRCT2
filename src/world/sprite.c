@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../interface/viewport.h"
 #include "sprite.h"
+#include "../scenario.h"
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
@@ -30,7 +31,19 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
  */
 void create_balloon(int x, int y, int z, int colour)
 {
-	RCT2_CALLPROC_X(0x006736C7, x, colour << 8, y, z, 0, 0, 0);
+	rct_sprite* sprite = create_sprite(2);
+	if (sprite != NULL)
+	{
+		sprite->balloon.var_14 = 13;
+		sprite->balloon.var_09 = 22;
+		sprite->balloon.var_15 = 11;
+		sprite->balloon.sprite_identifier = 2;
+		sprite_move(x, y, z, sprite);
+		sprite->balloon.var_01 = 7;
+		sprite->balloon.var_26 = 0;
+		sprite->balloon.colour = colour;
+		sprite->balloon.var_24 = 0;
+	}
 }
 
 /**
@@ -39,7 +52,40 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void create_duck(int targetX, int targetY)
 {
-	RCT2_CALLPROC_X(0x0067440F, targetX, 0, targetY, 0, 0, 0, 0);
+	rct_sprite* sprite = create_sprite(2);
+	if (sprite != NULL)
+	{
+		sprite->duck.sprite_identifier = 2;
+		sprite->duck.var_01 = 8;
+		sprite->duck.var_14 = 9;
+		sprite->duck.var_09 = 0xC;
+		sprite->duck.var_15 = 9;
+		int offset_xy = scenario_rand() & 0x1E;
+		targetX += offset_xy;
+		targetY += offset_xy;
+		sprite->duck.target_x = targetX;
+		sprite->duck.target_y = targetY;
+		uint8 direction = scenario_rand() & 3;
+		switch (direction)
+		{
+		case 0:
+			targetX = 8191 - (scenario_rand() & 0x3F);
+			break;
+		case 1:
+			targetY = scenario_rand() & 0x3F;
+			break;
+		case 2:
+			targetX = scenario_rand() & 0x3F;
+			break;
+		case 3:
+			targetY = 8191 - (scenario_rand() & 0x3F);
+			break;
+		}
+		sprite->duck.sprite_direction = direction << 3;
+		sprite_move(targetX, targetY, 496, sprite);
+		sprite->duck.var_48 = 0;
+		sprite->duck.var_26 = 0;
+	}
 }
 
 /* rct2: 0x006EC473 */

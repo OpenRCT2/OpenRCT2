@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -503,8 +504,11 @@ static void window_top_toolbar_invalidate()
 			window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_EMPTY;
 		}
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
 			window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
+
+		if (!gConfigInterface.toolbar_show_research)
+			window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 	}
 
 	enabledWidgets = 0;

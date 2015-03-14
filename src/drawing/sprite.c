@@ -80,7 +80,7 @@ int gfx_load_g1()
  *  rct2: 0x0067A690
  */
 void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
-	uint8 zoom_level = dest_dpi->zoom_level;
+	uint16 zoom_level = dest_dpi->zoom_level;
 	uint8 zoom_amount = 1 << zoom_level;
 	//Requires use of palette?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){

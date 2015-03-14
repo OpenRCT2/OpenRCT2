@@ -288,7 +288,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x800000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
 			continue;
 
 		shops++;
@@ -334,7 +334,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x800000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
 			continue;
 
 		shops++;
@@ -459,7 +459,7 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 
 	customDesignedRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_18)
 			continue;
@@ -488,7 +488,7 @@ static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activ
 	countedRides = 0;
 	colourfulRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
 
 		countedRides++;

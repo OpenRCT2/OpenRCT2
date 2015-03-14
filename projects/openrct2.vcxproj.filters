@@ -342,7 +342,6 @@
     <ClCompile Include="..\src\windows\text_input.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -368,7 +367,7 @@
     <ClCompile Include="..\src\interface\viewport_interaction.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -621,6 +620,12 @@
     </ClInclude>
     <ClInclude Include="..\src\ride\track_data.h">
       <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\entrance.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\water.h">
+      <Filter>Source\World</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

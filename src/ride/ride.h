@@ -46,6 +46,50 @@ typedef struct {
 	uint8 entry_index;
 } ride_list_item;
 
+/** 
+ * Ride type vehicle structure.
+ * size: 0x65
+ */
+typedef struct{
+	uint16 var_00;				// 0x00 , 0x1A
+	uint8 var_02;				// 0x02 , 0x1C
+	uint8 var_03;				// 0x03 , 0x1D
+	uint32 var_04;				// 0x04 , 0x1E
+	uint16 var_08;				// 0x08 , 0x22
+	sint8 var_0A;				// 0x0A , 0x24
+	uint8 pad_0B;
+	uint16 var_0C;				// 0x0C , 0x26
+	uint8 var_0E;				// 0x0E , 0x28
+	uint8 var_0F;				// 0x0F , 0x29
+	uint8 var_10;				// 0x10 , 0x2A
+	uint8 var_11;				// 0x11 , 0x2B
+	uint16 var_12;				// 0x12 , 0x2C
+	uint16 var_14;				// 0x14 , 0x2E
+	uint16 var_16;				// 0x16 , 0x30
+	uint32 base_image_id;		// 0x18 , 0x32
+	uint32 var_1C;				// 0x1C , 0x36
+	uint32 var_20;				// 0x20 , 0x3A
+	uint32 var_24;				// 0x24 , 0x3E
+	uint32 var_28;				// 0x28 , 0x42
+	uint32 var_2C;				// 0x2C , 0x46
+	uint32 var_30;				// 0x30 , 0x4A
+	uint32 var_34;				// 0x34 , 0x4E
+	uint32 var_38;				// 0x38 , 0x52
+	uint32 var_3C;				// 0x3C , 0x56
+	uint32 var_40;				// 0x40 , 0x5A
+	uint32 var_44;				// 0x44 , 0x5E
+	uint32 var_48;				// 0x48 , 0x62
+	uint32 var_4C;				// 0x4C , 0x66
+	uint32 no_vehicle_images;	// 0x50 , 0x6A
+	uint8 no_seating_rows;		// 0x54 , 0x6E
+	uint8 pad_55[0x7];
+	uint8 var_5C;				// 0x5C , 0x76
+	uint8 var_5D;				// 0x5D , 0x77
+	uint8 pad_5E[0x2];
+	uint8 var_60;				// 0x60 , 0x7A
+	uint32 var_61;				// 0x61 , 0x7B
+} rct_ride_type_vehicle;
+
 /**
  * Ride type structure.
  * size: unknown
@@ -53,8 +97,9 @@ typedef struct {
 typedef struct {
 	rct_string_id name;				// 0x000
 	rct_string_id description;		// 0x002
-	uint32 var_004;
+	uint32 images_offset;			// 0x004
 	uint32 var_008;
+	// 0xC, D, E are related
 	uint8 var_00C;
 	uint8 var_00D;
 	uint8 var_00E;
@@ -63,7 +108,9 @@ typedef struct {
 	uint8 var_011;
 	uint8 var_012;
 	uint8 var_013;
-	uint8 pad_014[0x19E];
+	uint8 pad_014[0x6];
+	rct_ride_type_vehicle vehicles[4]; // 0x1A
+	uint32 var_1AE;
 	sint8 excitement_multipler;		// 0x1B2
 	sint8 intensity_multipler;		// 0x1B3
 	sint8 nausea_multipler;			// 0x1B4
@@ -576,6 +623,41 @@ enum {
 	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
+enum {
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
+	RIDE_TYPE_FLAG_3 = 1 << 3,
+	RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
+	RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
+	RIDE_TYPE_FLAG_6 = 1 << 6,
+	RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
+	RIDE_TYPE_FLAG_8 = 1 << 8,									// something to do with track, maybe whether it can have gaps
+	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
+	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
+	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
+	RIDE_TYPE_FLAG_12 = 1 << 12,
+	RIDE_TYPE_FLAG_13 = 1 << 13,								// something to do with stations or vehicles
+	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
+	RIDE_TYPE_FLAG_15 = 1 << 15,								// something to do with station, price and viewport zoom
+	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
+	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
+	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 19,
+	RIDE_TYPE_FLAG_20 = 1 << 20,
+	RIDE_TYPE_FLAG_21 = 1 << 21,
+	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
+	RIDE_TYPE_FLAG_23 = 1 << 23,								// sells food?, seems to be used for food awards...
+	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
+	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
+	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
+	RIDE_TYPE_FLAG_27 = 1 << 27,
+	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
+	RIDE_TYPE_FLAG_29 = 1 << 29,
+	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1 << 31,
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -627,6 +709,7 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
+void reset_type_to_ride_entry_index_map();
 void ride_measurement_clear(rct_ride *ride);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
@@ -643,5 +726,7 @@ void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+bool ride_type_has_flag(int rideType, int flag);
 
 #endif

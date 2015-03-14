@@ -80,6 +80,7 @@ int rct2_init()
 		return 0;
 
 	config_reset_shortcut_keys();
+	config_shortcut_keys_load();
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	// config_load();
 	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap

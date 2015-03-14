@@ -26,6 +26,7 @@
 #include "../localisation/localisation.h"
 #include "../object.h"
 #include "../ride/track.h"
+#include "../scenario.h"
 #include "error.h"
 
 enum {
@@ -251,7 +252,7 @@ static void window_editor_object_selection_close()
 
 	RCT2_CALLPROC_EBPSAFE(0x6ABB66);
 	editor_load_selected_objects();
-	sub_6A9FC0();
+	reset_loaded_objects();
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
 	RCT2_CALLPROC_EBPSAFE(0x685675);
@@ -571,7 +572,9 @@ static void window_editor_object_selection_paint()
 		gfx_draw_string_left(dpi, 3164, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
-	if (w->selected_list_item == -1 || RCT2_GLOBAL(0x009ADAF8, sint32) == -1)
+	rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+
+	if (w->selected_list_item == -1 || stex_entry == NULL)
 		return;
 
 	highlightedEntry = (rct_object_entry*)w->var_494;
@@ -581,7 +584,7 @@ static void window_editor_object_selection_paint()
 	widget = &w->widgets[WIDX_PREVIEW];
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	object_paint(type, 3, type, x, y, 0, (int)dpi, RCT2_GLOBAL(0x009ADAF8, sint32));
+	object_paint(type, 3, type, x, y, 0, (int)dpi, (int)stex_entry);
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
@@ -629,7 +632,7 @@ static void window_editor_object_selection_paint()
 	// Draw description of object
 	x = w->x + w->widgets[WIDX_LIST].right + 4;
 	y += 15;
-	object_paint(type, 259, type, x, y, (int)w, (int)dpi, RCT2_GLOBAL(0x009ADAF8, sint32));
+	object_paint(type, 259, type, x, y, (int)w, (int)dpi, (int)stex_entry);
 
 	// Draw object dat name
 	strcpy(stringBuffer, datName);

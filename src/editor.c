@@ -152,13 +152,15 @@ void editor_convert_save_to_scenario()
 	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-	if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-		object_unload(0, (rct_object_entry_extended*)0x00F4287C);
-		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		s6Info->name[0] = 0;
-}
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->var_000 = 4;
@@ -462,7 +464,7 @@ static void sub_6A2B62()
 	object_unload_all();
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
-	RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	RCT2_CALLPROC_EBPSAFE(0x006A2956);
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
@@ -505,7 +507,7 @@ static void sub_6A2B62()
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
 	);
 	RCT2_CALLPROC_EBPSAFE(0x0069E89B);
-	RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	sub_69E869();//RCT2_CALLPROC_EBPSAFE(0x0069E869);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
 		MONEY(0,00),
@@ -586,8 +588,8 @@ static int editor_load_landscape_from_sv4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -613,8 +615,8 @@ static int editor_load_landscape_from_sc4(const char *path)
 	// Open file
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
-		RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-		RCT2_GLOBAL(0x009AC31C, uint16) = 3011;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
 	}
 
@@ -757,8 +759,8 @@ static int editor_read_s6(const char *path)
 	if (file != NULL) {
 		if (!sawyercoding_validate_checksum(file)) {
 			fclose(file);
-			RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-			RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -834,7 +836,7 @@ static int editor_read_s6(const char *path)
 		// Check expansion pack
 		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-		RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
@@ -910,9 +912,10 @@ static int editor_read_s6(const char *path)
 
 		climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
-		if (RCT2_GLOBAL(0x009ADAE4, uint32) != 0xFFFFFFFF) {
-			object_unload(0, (rct_object_entry_extended*)0x00F4287C);
-			RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		rct_stex_entry* stex = g_stexEntries[0];
+		if ((int)stex != 0xFFFFFFFF) {
+			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+			reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 			s6Info->name[0] = 0;
@@ -931,18 +934,18 @@ static int editor_read_s6(const char *path)
 		w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 		w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
+		int zoom_difference = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - viewport->zoom;
 		viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
 
-		int cx = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
-		if (cx != 0) {
-			if (cx >= 0) {
-				viewport->view_width <<= cx;
-				viewport->view_height <<= cx;
+		if (zoom_difference != 0) {
+			if (zoom_difference >= 0) {
+				viewport->view_width <<= zoom_difference;
+				viewport->view_height <<= zoom_difference;
 			} else {
-				cx = -cx;
-				viewport->view_width >>= cx;
-				viewport->view_height >>= cx;
+				zoom_difference = -zoom_difference;
+				viewport->view_width >>= zoom_difference;
+				viewport->view_height >>= zoom_difference;
 			}
 		}
 		w->saved_view_x -= viewport->view_width >> 1;
@@ -960,8 +963,8 @@ static int editor_read_s6(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(0x009AC31B, uint8) = 255;
-	RCT2_GLOBAL(0x009AC31C, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 

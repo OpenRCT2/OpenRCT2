@@ -63,4 +63,7 @@ int widget_is_pressed(rct_window *w, int widgetIndex);
 int widget_is_highlighted(rct_window *w, int widgetIndex);
 int widget_is_active_tool(rct_window *w, int widgetIndex);
 void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *scroll_id);
+
+void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value);
+
 #endif

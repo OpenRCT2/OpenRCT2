@@ -81,6 +81,47 @@ typedef struct {
 	uint32 var_24;
 } rct_litter;
 
+typedef struct {
+	uint8 sprite_identifier;        // 0x00
+	uint8 var_01;					// 0x01
+	uint16 var_02;					// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;					// 0x09
+	uint8 pad_0A[0xA];
+	uint8 var_14;					// 0x14
+	uint8 var_15;					// 0x15
+	uint8 pad_16[0xE];
+	uint8 var_24;					// 0x24
+	uint8 pad_25;
+	uint16 var_26;					// 0x26
+	uint8 pad_28[4];
+	uint8 colour;					// 0x2C
+} rct_balloon;
+
+typedef struct {
+	uint8 sprite_identifier;        // 0x00
+	uint8 var_01;					// 0x01
+	uint16 var_02;					// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;					// 0x09
+	uint8 pad_0A[0xA];
+	uint8 var_14;					// 0x14
+	uint8 var_15;					// 0x15
+	uint8 pad_16[0x8];
+	uint8 sprite_direction;			// 0x1E
+	uint8 pad_1F[0x7];
+	uint16 var_26;
+	uint8 pad_28[0x8];
+	sint16 target_x;				// 0x30
+	sint16 target_y;				// 0x32
+	uint8 pad_34[0x14];
+	uint8 var_48;					// 0x48
+} rct_duck;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -91,6 +132,8 @@ typedef union {
 	rct_peep peep;
 	rct_litter litter;
 	rct_vehicle vehicle;
+	rct_balloon balloon;
+	rct_duck duck;
 } rct_sprite;
 
 // rct2: 0x010E63BC

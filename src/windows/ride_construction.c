@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -22,6 +22,8 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../game.h"
+#include "../ride/track.h"
+#include "../drawing/drawing.h"
 
 /* move to ride.c */
 void sub_6b2fa9(rct_windownumber number){
@@ -47,8 +49,11 @@ enum {
 void window_construction_emptysub(){}
 void window_construction_close();
 void window_construction_mouseup();
+void window_construction_paint();
 
 void window_construction_maze_close();
+void window_construction_maze_invalidate();
+void window_construction_maze_paint();
 
 // 0x993F6C
 static void* window_construction_maze_events[] = {
@@ -77,8 +82,8 @@ static void* window_construction_maze_events[] = {
 	window_construction_emptysub,
 	window_construction_emptysub,
 	window_construction_emptysub,
-	(void*)0x6CD435,
-	(void*)0x6CD45B,
+	window_construction_maze_invalidate,
+	window_construction_maze_paint,
 	window_construction_emptysub
 };
 
@@ -110,12 +115,12 @@ static void* window_construction_events[] = {
 	window_construction_emptysub,
 	window_construction_emptysub,
 	(void*)0x6C6AD5,
-	(void*)0x6C6B86,
+	window_construction_paint,//(void*)0x6C6B86,
 	window_construction_emptysub
 };
 
 /**
- * 
+ *
  * rct2: 0x006CB481
  */
 rct_window *window_construction_open()
@@ -177,7 +182,7 @@ rct_window *window_construction_open()
 		RCT2_GLOBAL(0xF440CE, uint8) = 30;
 	}
 
-	RCT2_GLOBAL(0xF440A0,uint16) = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
+	RCT2_GLOBAL(0xF440A0, uint16) = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
 	RCT2_GLOBAL(0x00F440B2, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B3, uint8) = 0;
 	RCT2_GLOBAL(0x00F440B4, uint8) = 0;
@@ -240,7 +245,7 @@ void window_construction_maze_close(){
 	RCT2_GLOBAL(0x9DE58A, uint16) &= 0xFFFD;
 
 	hide_gridlines();
-	
+
 	uint8 ride_id = RCT2_GLOBAL(0xF440A7, uint8);
 
 	rct_ride* ride = GET_RIDE(ride_id);
@@ -325,3 +330,125 @@ void window_construction_mouseup_demolish(rct_window* w){
 	//6c9BFE
 }
 
+void window_construction_maze_invalidate()
+{
+	int ride_idx = RCT2_GLOBAL(0x00F440A7, uint8);
+	RCT2_GLOBAL(0x13CE958, uint32_t) = RCT2_GLOBAL(0x1362944 + ride_idx * 0x260, uint32_t);
+	RCT2_GLOBAL(0x13CE956, uint16_t) = RCT2_GLOBAL(0x1362942 + ride_idx * 0x260, uint16_t);
+}
+
+//0x6C6B86
+void window_construction_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	window_paint_get_registers(w, dpi);
+	window_draw_widgets(w, dpi);
+	if (RCT2_GLOBAL(0x9D7C00, uint8_t) == 0) return;
+	uint32_t eax = 0, esi = (uint32_t)w, ebp = 0;//nothing
+	uint32_t ebx = 0, ecx = 0, edx = 0, edi = (uint32_t)dpi;//returns
+	if (RCT2_CALLFUNC_X(0x6CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100) return;
+	RCT2_GLOBAL(0xF44133, uint8_t) = edx & 0xFF;
+	RCT2_GLOBAL(0xF44134, uint8_t) = (ebx >> 8) & 0xFF;
+	RCT2_GLOBAL(0xF44135, uint8_t) = (edx >> 8) & 0xFF;
+	edx >>= 16;
+	RCT2_GLOBAL(0xF44136, int16_t) = edx;
+	rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0xF44133, uint8));
+	RCT2_GLOBAL(0xF44064, uint32_t) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + ride->type * 8, uint32_t);
+	// 0x009D7C04 is a widget address remember to change when widget implemented 
+	short width = RCT2_GLOBAL(0x9D7C04, int16_t) - RCT2_GLOBAL(0x9D7C02, int16_t) - 1;
+	short height = RCT2_GLOBAL(0x9D7C08, int16_t) - RCT2_GLOBAL(0x9D7C06, int16_t) - 1;
+	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(
+		dpi,
+		// 0x009D7C02 is a widget address remember to change when widget implemented
+		w->x + RCT2_GLOBAL(0x9D7C02, int16_t) + 1,
+		width,
+		w->y + RCT2_GLOBAL(0x9D7C06, int16_t) + 1,
+		height);
+	if (clip_dpi != NULL)
+	{
+		rct_preview_track *trackBlock;
+		ecx = RCT2_GLOBAL(0xF44135, uint8_t);
+		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) trackBlock = RCT2_ADDRESS(0x994A38, rct_preview_track*)[ecx];//RCT2_GLOBAL(0x994A38 + ecx * 4, rct_preview_track*);
+		else trackBlock = RCT2_ADDRESS(0x994638, rct_preview_track*)[ecx];//RCT2_GLOBAL(0x994638 + ecx * 4, rct_preview_track*);
+		while ((trackBlock + 1)->var_00 != 0xFF) trackBlock++;
+		short x = trackBlock->x;
+		short z = trackBlock->z;
+		short y = trackBlock->y;
+		if (trackBlock->var_09 & 2) x = y = 0;
+		short tmp;
+		switch (RCT2_GLOBAL(0xF44134, uint8_t) & 3)
+		{
+		case 1:
+			tmp = x;
+			x = y;
+			y = -tmp;
+			break;
+		case 2:
+			x = -x;
+			y = -y;
+			break;
+		case 3:
+			tmp = x;
+			x = -y;
+			y = tmp;
+			break;
+		case 0:
+			break;
+		}
+		//this is actually case 0, but the other cases all jump to it
+		x /= 2;
+		y /= 2;
+		x += 4112;
+		y += 4112;
+		z += 1024;
+		ebx = RCT2_GLOBAL(0xF44135, uint8_t);
+		short bx;
+		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) bx = RCT2_GLOBAL(0x9984A2 + ebx * 8, uint8_t);
+		else bx = RCT2_GLOBAL(0x997CA2 + ebx * 8, uint8_t);
+		z -= bx;
+		int start_x = x;
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
+		{
+		case 0:
+			x = y - x;
+			y = (y + start_x) / 2 - z;
+			break;
+		case 1:
+			x = -x - y;
+			y = (y - start_x) / 2 - z;
+			break;
+		case 2:
+			x -= y;
+			y = (-y - start_x) / 2 - z;
+			break;
+		case 3:
+			x += y;
+			y = (-y + start_x) / 2 - z;
+			break;
+		}
+		clip_dpi->x += x - width / 2;
+		clip_dpi->y += y - height / 2 - 16;
+		RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = clip_dpi;
+		uint32_t d = RCT2_GLOBAL(0xF44136, int16_t) << 16;
+		d |= RCT2_GLOBAL(0xF44133, uint8_t);// Ride id
+		d |= RCT2_GLOBAL(0xF44135, uint8_t) << 8;
+		RCT2_CALLPROC_X(0x6CBCE2, 0x1000, (((uint16_t)bx) & 0xFF) | (RCT2_GLOBAL(0xF44134, uint8_t) << 8), 0x1000, d, width, 0x400, height);
+		rct2_free(clip_dpi);
+	}
+	short string_x = (RCT2_GLOBAL(0x9D7C02, int16_t) + RCT2_GLOBAL(0x9D7C04, int16_t)) / 2 + w->x;
+	short string_y = RCT2_GLOBAL(0x9D7C08, int16_t) + w->y - 23;
+	if (RCT2_GLOBAL(0xF440A6, uint8_t) != 4) gfx_draw_string_centred(dpi, 1407, string_x, string_y, 0, w);
+	string_y += 11;
+	if (RCT2_GLOBAL(0xF44070, uint32_t) != 0x80000000 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32_t) & 0x800))
+		gfx_draw_string_centred(dpi, 1408, string_x, string_y, 0, (void*)0xF44070);
+}
+
+//0x006CD45B
+void window_construction_maze_paint()
+{
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	window_paint_get_registers(w, dpi);
+	window_draw_widgets(w, dpi);
+}

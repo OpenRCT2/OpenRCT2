@@ -22,14 +22,16 @@
 #define _SCENERY_H_
 
 #include "../common.h"
+#include "../object.h"
 
 typedef struct {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
-	uint16 price;			// 0x0C
+	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint8 pad_10[0x0A];
+	uint32 var_10;
+	uint8 pad_14[0x06];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
@@ -59,10 +61,13 @@ typedef enum {
 typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
-	uint8 pad_0A[6];
+	sint16 price;			// 0x08
+	sint16 removal_price;	// 0x0A
+	uint32 var_0C;
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
+	uint32 var_12;
+	uint32 var_16;
 } rct_large_scenery_entry;
 
 
@@ -71,7 +76,7 @@ typedef struct {
 	uint8 flags;			// 0x07
 	uint8 height;			// 0x08
 	uint8 flags2;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 	uint8 var_0D; 
 } rct_wall_scenery_entry;
@@ -91,14 +96,14 @@ typedef struct {
 	uint16 var_06;
 	uint8 pad_08;
 	uint8 tool_id;			// 0x09
-	uint16 price;			// 0x0A
+	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
 typedef struct {
 	uint8 var_06;
 	uint8 flags;			// 0x07
-	uint16 price;			// 0x08
+	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
 } rct_banner_scenery_entry;
 
@@ -119,18 +124,18 @@ typedef struct {
 	uint32 image;					// 0x02
 	uint16 scenery_entries[0x80];	// 0x06
 	uint8 entry_count;				// 0x106
-	uint8 pad_107;
+	uint8 var_107;
 	uint8 var_108;					// 0x108, order?
 	uint8 pad_109;
 	uint32 var_10A;
 } rct_scenery_set_entry;
 
-#define g_smallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_largeSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_wallSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_bannerSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_pathBitSceneryEntries RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_scenery_entry*)
-#define g_scenerySetEntries RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES, rct_scenery_set_entry*)
+#define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
+#define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
+#define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
+#define g_bannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
+#define g_pathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
+#define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
 void init_scenery();
 

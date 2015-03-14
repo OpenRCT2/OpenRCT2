@@ -1232,6 +1232,9 @@ void window_zoom_in(rct_window *w)
 	w->saved_view_x += v->view_width >> 1;
 	w->saved_view_y += v->view_height >> 1;
 
+	// HACK: Prevents the redraw from failing when there is
+	// a window on top of the viewport.
+	window_bring_to_front(w);
 	window_invalidate(w);
 }
 
@@ -1259,6 +1262,9 @@ void window_zoom_out(rct_window *w)
 	w->saved_view_x -= width / 2;
 	w->saved_view_y -= height >> 1;
 
+	// HACK: Prevents the redraw from failing when there is
+	// a window on top of the viewport.
+	window_bring_to_front(w);
 	window_invalidate(w);
 }
 

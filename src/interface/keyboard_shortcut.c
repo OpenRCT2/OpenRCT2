@@ -50,7 +50,7 @@ void keyboard_shortcut_set(int key)
 	gShortcutKeys[RCT2_GLOBAL(0x009DE511, uint8)] = key;
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
-	config_save_default();
+	config_shortcut_keys_save();
 }
 
 /**

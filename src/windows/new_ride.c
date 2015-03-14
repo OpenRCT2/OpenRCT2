@@ -849,13 +849,13 @@ static void window_new_ride_scrollpaint()
 		
 		// Draw ride image
 		rideEntry = rideEntries[listItem->entry_index];
-		int unk = rideEntry->var_004;
+		int image_id = rideEntry->images_offset;
 		if (listItem->type != rideEntry->var_00C) {
-			unk++;
+			image_id++;
 			if (listItem->type != rideEntry->var_00D)
-				unk++;
+				image_id++;
 		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, unk);
+		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, image_id);
 
 		// Next position
 		x += 116;
@@ -934,8 +934,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, width, 1690, 0);
 
 	// Number of designs available
-	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (item.type * 8), uint32);
-	if (rideTypeFlags & 0x10000000) {
+	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
 			_lastTrackDesignCountRideType = item;
 			_lastTrackDesignCount = get_num_track_designs(item);
@@ -961,7 +960,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		// Get price of ride
 		int unk2 = RCT2_GLOBAL(0x0097CC68 + (item.type * 2), uint8);
 		money32 price = RCT2_GLOBAL(0x0097DD78 + (item.type * 4), uint16);
-		if (rideTypeFlags & 0x80000) {
+		if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_SELLS_FOOD)) {
 			price *= RCT2_ADDRESS(0x0099DE34, uint32)[unk2];
 		} else {
 			price *= RCT2_ADDRESS(0x0099DA34, uint32)[unk2];
@@ -970,7 +969,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
 		// 
 		rct_string_id stringId = 1691;
-		if (!(rideTypeFlags & 0x8000))
+		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_15))
 			stringId++;
 
 		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 40);
@@ -989,8 +988,7 @@ static void window_new_ride_select(rct_window *w)
 
 	window_close(w);
 
-	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (item.type * 8), uint32);
-	if (rideTypeFlags & 0x10000000) {
+	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
 
 		uint8 *trackDesignList = (uint8*)0x00F441EC;

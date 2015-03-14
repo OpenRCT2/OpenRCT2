@@ -222,7 +222,7 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
  *  rct2: 0x006DFA00
  */
 void init_scenery() {
-	bool enabledScenerySets[0x13] = { false };
+	bool enabledScenerySets[0x14] = { false };
 
 	for (int scenerySetIndex = 0; scenerySetIndex < 0x14; scenerySetIndex++) {
 		window_scenery_tab_entries[scenerySetIndex][0] = -1;
@@ -345,7 +345,7 @@ void init_scenery() {
 		uint32 tabIndex = tabIndexes[i];
 		rct_widget* tabWidget = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
 
-		if (left != 3 || tabIndex == 0x13) {
+		if (left != 3 || tabIndex != 0x13) {
 			if (window_scenery_tab_entries[tabIndex][0] == -1)
 				continue;
 
@@ -570,12 +570,16 @@ static void window_scenery_resize()
 	if (w->height < w->min_height) {
 		w->height = w->min_height;
 		window_invalidate(w);
+		// HACK: For some reason invalidate has not been called
+		window_event_invalidate_call(w);
 		window_scenery_update_scroll(w);
 	}
 
 	if (w->height > w->max_height) {
 		w->height = w->max_height;
 		window_invalidate(w);
+		// HACK: For some reason invalidate has not been called
+		window_event_invalidate_call(w);
 		window_scenery_update_scroll(w);
 	}
 }
@@ -690,9 +694,11 @@ static void window_scenery_update(rct_window *w)
 
 	gfx_invalidate_screen();
 	
-	if (!window_scenery_is_scenery_tool_active())
+	if (!window_scenery_is_scenery_tool_active()){
 		window_close(w);
-	
+		return;
+	}
+
 	if (window_scenery_is_repaint_scenery_tool_on == 1) { // the repaint scenery tool is active
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
 	} else {

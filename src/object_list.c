@@ -24,6 +24,7 @@
 #include "platform/platform.h"
 #include "ride/track.h"
 #include "util/sawyercoding.h"
+#include "game.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -69,16 +70,16 @@ int object_entry_group_encoding[] = {
 // 0x98D97C chunk address', 0x98D980 object_entries
 rct_object_entry_group object_entry_groups[] = {
 	(uint8**)(0x009ACFA4            ), (rct_object_entry_extended*)(0x00F3F03C             ),	// rides
-	(uint8**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	
-	(uint8**)(0x009ACFA4 + (380 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (380 * 20)),	// large scenery
-	(uint8**)(0x009ACFA4 + (508 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (508 * 20)),	// walls
-	(uint8**)(0x009ACFA4 + (636 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (636 * 20)),	// banners
-	(uint8**)(0x009ACFA4 + (668 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (668 * 20)),	// paths
-	(uint8**)(0x009ACFA4 + (684 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (684 * 20)),	// path bits
-	(uint8**)(0x009ACFA4 + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets
-	(uint8**)(0x009ACFA4 + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance
-	(uint8**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water
-	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text
+	(uint8**)(0x009ACFA4 + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	0x009AD1A4, 0xF2FA3C
+	(uint8**)(0x009ACFA4 + (380 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (380 * 20)),	// large scenery	0x009AD594, 0xF40DEC
+	(uint8**)(0x009ACFA4 + (508 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (508 * 20)),	// walls			0x009AD794, 0xF417EC
+	(uint8**)(0x009ACFA4 + (636 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (636 * 20)),	// banners			0x009AD994, 0xF421EC
+	(uint8**)(0x009ACFA4 + (668 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (668 * 20)),	// paths			0x009ADA14, 0xF4246C
+	(uint8**)(0x009ACFA4 + (684 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (684 * 20)),	// path bits		0x009ADA54, 0xF425AC
+	(uint8**)(0x009ACFA4 + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets		0x009ADA90, 0xF426D8
+	(uint8**)(0x009ACFA4 + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance	0x009ADADC, 0xF42854
+	(uint8**)(0x009ACFA4 + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water			0x009ADAE0, 0xF42868
+	(uint8**)(0x009ACFA4 + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
 };
 
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
@@ -152,10 +153,12 @@ static void object_list_examine()
 	int i;
 	rct_object_entry *object;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) = 0;
+
 	object = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
-		if (object->flags & 0xF0)
-			RCT2_GLOBAL(0x00F42BDA, uint8) |= 1;
+		if (!(object->flags & 0xF0))
+			RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) |= 1;
 
 		object = object_get_next(object);
 	}
@@ -165,21 +168,12 @@ static void object_list_examine()
 	object_list_create_hash_table();
 }
 
-/**
- * 
- *  rct2: 0x006DED68
- */
-void reset_9E32F8()
+/* rct2: 0x006A9FC0 */
+void reset_loaded_objects()
 {
-	uint8* edi = RCT2_ADDRESS(0x009E32F8, uint8);
-	memset(edi, 0xFF, 90);
-}
+	reset_type_to_ride_entry_index_map();
 
-void sub_6A9FC0()
-{
-	reset_9E32F8();
-
-	RCT2_GLOBAL(0x009ADAF0, uint32) = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	for (int type = 0; type < 11; ++type){
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
@@ -248,7 +242,7 @@ void object_list_load()
 	//if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) != 0)
 	//	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) = 0;
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 
 	// Dispose installed object list
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
@@ -259,7 +253,8 @@ void object_list_load()
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(4096);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
-		RCT2_CALLPROC_X(0x006E3838, 0x343, 0xC5A, 0, 0, 0, 0, 0);
+		log_error("Failed to allocate memory for object list");
+		rct2_exit_reason(835, 3162);
 		return;
 	}
 
@@ -280,7 +275,8 @@ void object_list_load()
 				installed_buffer_size += 0x1000;
 				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);			
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
-					RCT2_CALLPROC_X(0x006E3838, 0x343, 0xC5A, 0, 0, 0, 0, 0);
+					log_error("Failed to allocate memory for object list");
+					rct2_exit_reason(835, 3162);
 					return;
 				}
 			}
@@ -288,22 +284,22 @@ void object_list_load()
 			char path[MAX_PATH];
 			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
 
-			rct_object_entry* entry = RCT2_ADDRESS(0x00F42B74, rct_object_entry);
-			if (!object_load_entry(path, entry))
+			rct_object_entry entry;
+			if (!object_load_entry(path, &entry))
 				continue;
 
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 
-			current_item_offset += install_object_entry(entry, installed_entry, enumFileInfo.path);
+			current_item_offset += install_object_entry(&entry, installed_entry, enumFileInfo.path);
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 
 	object_list_cache_save(fileCount, totalFileSize, fileDateModifiedChecksum, current_item_offset);
 
-	// 
+	// Reload track list
 	ride_list_item ride_list;
 	ride_list.entry_index = 0xFC;
 	ride_list.type = 0xFC;
@@ -349,7 +345,7 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
 				fclose(file);
-				sub_6A9FC0();
+				reset_loaded_objects();
 				object_list_examine();
 				return 1;
 			}
@@ -408,15 +404,15 @@ void set_load_objects_fail_reason(){
 		format_string(string_buffer, 3323, 0); //Missing object data, ID:
 
 		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 		return;
 	}
 
 	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
 	if (*exapansion_name == '\0'){
-		RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-		RCT2_GLOBAL(0x9AC31C, uint16) = 3325;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3325;
 		return;
 	}
 
@@ -424,8 +420,8 @@ void set_load_objects_fail_reason(){
 
 	format_string(string_buffer, 3324, 0); // Requires expansion pack
 	strcat(string_buffer, exapansion_name);
-	RCT2_GLOBAL(0x9AC31B, uint8) = 0xFF;
-	RCT2_GLOBAL(0x9AC31C, uint16) = 3165;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 }
 
 /**
@@ -493,7 +489,7 @@ void object_unload_all()
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
 				object_unload(j, &object_entry_groups[i].entries[j]);
 
-	sub_6A9FC0();
+	reset_loaded_objects();
 }
 
 
@@ -601,12 +597,14 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// Chunk size is set to unknown
 	*((sint32*)installed_entry_pointer) = -1;
+	// No unknown objects set to 0
 	*(installed_entry_pointer + 4) = 0;
+	// No theme objects set to 0
 	*((sint32*)(installed_entry_pointer + 5)) = 0;
 	*((uint16*)(installed_entry_pointer + 9)) = 0;
 	*((uint32*)(installed_entry_pointer + 11)) = 0;
 
-	RCT2_GLOBAL(0x9ADAF0, uint32) = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)++;
 
@@ -648,28 +646,31 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint8* chunk = RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*); // Loaded in object_load
 
-	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars);
-	if (objectType == OBJECT_TYPE_RIDE && !(*((uint32*)(chunk + 8)) & 0x1000)) {
-		rct_string_id obj_string = chunk[12];
+	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
+	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->var_008) & 0x1000)) {
+		rct_ride_type* ride_type = (rct_ride_type*)chunk;
+		rct_string_id obj_string = ride_type->var_00C;
 		if (obj_string == 0xFF){
-			obj_string = chunk[13];
+			obj_string = ride_type->var_00D;
 			if (obj_string == 0xFF) {
-				obj_string = chunk[14];
+				obj_string = ride_type->var_00E;
 			}
 		}
 
-		obj_string += 2;
-		format_string(installed_entry_pointer, obj_string, 0);
+		format_string(installed_entry_pointer, obj_string + 2, 0);
 		strcat(installed_entry_pointer, "\t (");
-		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
 		strcat(installed_entry_pointer, ")");
 		while (*installed_entry_pointer++);
 	}
 	else{
-		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(0x00F42BBC, uint32)));
+		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
 		while (*installed_entry_pointer++);
 	}
-	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(0x009ADAF0, uint32) - 0xF26E;
+
+	// This is deceptive. Due to setting the total no images earlier to 0xF26E
+	// this is actually the no_images in this entry.
+	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) - 0xF26E;
 	installed_entry_pointer += 4;
 
 	uint8* esi = RCT2_ADDRESS(0x00F42BDB, uint8);

@@ -163,10 +163,14 @@ int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding
 		free(encode_buffer);
 		break;
 	case CHUNK_ENCODING_ROTATE:
-		encode_chunk_rotate(buffer, chunkHeader.length);
+		encode_buffer = malloc(chunkHeader.length);
+		memcpy(encode_buffer, buffer, chunkHeader.length);
+		encode_chunk_rotate(encode_buffer, chunkHeader.length);
 		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
 		dst_file += sizeof(sawyercoding_chunk_header);
-		memcpy(dst_file, buffer, chunkHeader.length);
+		memcpy(dst_file, encode_buffer, chunkHeader.length);
+
+		free(encode_buffer);
 		break;
 	}
 

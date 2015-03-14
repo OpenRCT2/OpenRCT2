@@ -207,11 +207,32 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection() {
 }
 
 /**
-*
-*  rct2: 0x0066F6B0
-*/
-void window_editor_bottom_toolbar_jump_forward_from_object_selection() {
-	RCT2_CALLPROC_EBPSAFE(0x0066f6b0);
+ *
+ *  rct2: 0x006AB1CE
+ */
+int window_editor_bottom_toolbar_check_object_selection()
+{
+	return RCT2_CALLPROC_EBPSAFE(0x006AB1CE) & 0x100;
+}
+
+/**
+ *
+ *  rct2: 0x0066F6B0
+ */
+void window_editor_bottom_toolbar_jump_forward_from_object_selection()
+{
+	if (window_editor_bottom_toolbar_check_object_selection())
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+		RCT2_CALLPROC_EBPSAFE(0x0066F6E3);
+	} else {
+		RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+		RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+		RCT2_GLOBAL(0x00141F570, uint8) = 1;
+		window_map_open();
+		gfx_invalidate_screen();
+	}
 }
 
 /**
