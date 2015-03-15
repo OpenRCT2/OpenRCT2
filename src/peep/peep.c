@@ -1974,6 +1974,67 @@ static void peep_update_answering(rct_peep* peep){
 	invalidate_sprite((rct_sprite*)peep);
 }
 
+/* rct2: 0x006BF3A1 */
+static int peep_update_patrolling_find_bin(rct_peep* peep){
+	if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
+		return 0;
+
+	if ((peep->next_var_29 & 0x18) != 0) return 0;
+
+	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL)return 0;
+
+	for (;; map_element++){
+
+		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH
+			&& (map_element->base_height == peep->next_z))
+			break;
+
+		if (map_element_is_last_for_tile(map_element))
+			return 0;
+	}
+
+	uint8 additions = map_element->properties.path.additions & 0xF;
+
+	if (additions == 0)return 0;
+
+	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+
+	if (!(sceneryEntry->path_bit.var_06 & 1))
+		return 0;
+
+	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)
+		return 0;
+
+	if (map_element->properties.path.additions & 0x80)
+		return 0;
+
+	uint8 bin_positions = map_element->properties.path.edges & 0xF;
+	uint8 bin_quantity = map_element->properties.path.addition_status;
+	uint8 chosen_position = 0;
+
+	for (; chosen_position < 4; ++chosen_position){
+		if ((bin_positions & 1) &&
+			!(bin_quantity & 3))
+			break;
+		bin_positions >>= 1;
+		bin_quantity >>= 2;
+	}
+
+	if (chosen_position == 4)return 0;
+
+	peep->var_37 = chosen_position;
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_EMPTYING_BIN;
+	peep_window_state_update(peep);
+
+	peep->sub_state = 0;
+	peep->destination_x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x992A4C, uint16)[chosen_position * 2];
+	peep->destination_y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x992A4E, uint16)[chosen_position * 2];
+	peep->destination_tolerence = 3;
+	return 1;
+}
+
 /* rct2: 0x006BF322 */
 static int peep_update_patrolling_find_grass(rct_peep* peep){
 	if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
@@ -2066,7 +2127,9 @@ static void peep_update_patroling(rct_peep* peep){
 
 	if (peep_update_patrolling_find_grass(peep))return;
 
-	//0x006BF3A1
+	if (peep_update_patrolling_find_bin(peep))return;
+
+	//0x006BF483
 }
 
 /* rct2: 0x0069030A */
