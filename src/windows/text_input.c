@@ -114,6 +114,10 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	if (existing_text != (rct_string_id)STR_NONE)
 		format_string(text_input, existing_text, &existing_args);
 
+	// In order to prevent strings that exceed the maxLength
+	// from crashing the game.
+	text_input[maxLength - 1] = '\0';
+
 	// This is the text displayed above the input box
 	input_text_description = description;
 
