@@ -1974,6 +1974,68 @@ static void peep_update_answering(rct_peep* peep){
 	invalidate_sprite((rct_sprite*)peep);
 }
 
+/* rct2: 0x006BF483 */
+static int peep_update_patrolling_find_watering(rct_peep* peep){
+	if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
+		return 0;
+
+	uint8 chosen_position = scenario_rand() & 7;
+	for (int i = 0; i < 8; ++i, ++chosen_position){
+		chosen_position &= 7;
+
+		int x = peep->next_x + RCT2_ADDRESS(0x00993CCC, sint16)[chosen_position];
+		int y = peep->next_y + RCT2_ADDRESS(0x00993CCE, sint16)[chosen_position];
+
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+
+		do {
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY){
+				map_element++;
+				continue;
+			}
+
+			uint8 z_diff = abs(peep->next_z - map_element->base_height);
+
+			if (z_diff > 4){
+				map_element++;
+				continue;
+			}
+
+			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[map_element->properties.scenery.type];
+
+			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG7)){
+				map_element++;
+				continue;
+			}
+
+			if (map_element->properties.scenery.age < 55){
+				if (chosen_position >= 4){
+					map_element++;
+					continue;
+				}
+
+				if (map_element->properties.scenery.age < 40){
+					map_element++;
+					continue;
+				}
+			}
+
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_WATERING;
+			peep->var_37 = chosen_position;
+			peep_window_state_update(peep);
+
+			peep->sub_state = 0;
+			peep->destination_x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x992A5C, uint16)[chosen_position * 2];
+			peep->destination_y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x992A5E, uint16)[chosen_position * 2];
+			peep->destination_tolerence = 3;
+
+			return 1;
+		} while (!map_element_is_last_for_tile(map_element));
+	}
+	return 0;
+}
+
 /* rct2: 0x006BF3A1 */
 static int peep_update_patrolling_find_bin(rct_peep* peep){
 	if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
@@ -2095,7 +2157,7 @@ static int peep_update_patrolling_find_sweeping(rct_peep* peep){
 }
 
 /* rct2: 0x006BF1FD */
-static void peep_update_patroling(rct_peep* peep){
+static void peep_update_patrolling(rct_peep* peep){
 
 	if (!sub_68F3AE(peep))return;
 
@@ -2129,7 +2191,7 @@ static void peep_update_patroling(rct_peep* peep){
 
 	if (peep_update_patrolling_find_bin(peep))return;
 
-	//0x006BF483
+	peep_update_patrolling_find_watering(peep);
 }
 
 /* rct2: 0x0069030A */
@@ -2482,7 +2544,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_picked(peep);
 			break;
 		case PEEP_STATE_PATROLLING:
-			RCT2_CALLPROC_X(0x006BF1FD, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_patrolling(peep);
 			break;
 		case PEEP_STATE_MOWING:
 			peep_update_mowing(peep);
