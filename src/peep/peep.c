@@ -1983,8 +1983,8 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 	for (int i = 0; i < 8; ++i, ++chosen_position){
 		chosen_position &= 7;
 
-		int x = peep->next_x + RCT2_ADDRESS(0x00993CCC, sint16)[chosen_position];
-		int y = peep->next_y + RCT2_ADDRESS(0x00993CCE, sint16)[chosen_position];
+		int x = peep->next_x + RCT2_ADDRESS(0x00993CCC, sint16)[chosen_position * 2];
+		int y = peep->next_y + RCT2_ADDRESS(0x00993CCE, sint16)[chosen_position * 2];
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
@@ -1996,7 +1996,7 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 
 			uint8 z_diff = abs(peep->next_z - map_element->base_height);
 
-			if (z_diff > 4){
+			if (z_diff >= 4){
 				map_element++;
 				continue;
 			}
@@ -2026,8 +2026,8 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 			peep_window_state_update(peep);
 
 			peep->sub_state = 0;
-			peep->destination_x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x992A5C, uint16)[chosen_position * 2];
-			peep->destination_y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x992A5E, uint16)[chosen_position * 2];
+			peep->destination_x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A5C, uint16)[chosen_position * 2];
+			peep->destination_y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A5E, uint16)[chosen_position * 2];
 			peep->destination_tolerence = 3;
 
 			return 1;
@@ -2076,7 +2076,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	uint8 chosen_position = 0;
 
 	for (; chosen_position < 4; ++chosen_position){
-		if ((bin_positions & 1) &&
+		if (!(bin_positions & 1) &&
 			!(bin_quantity & 3))
 			break;
 		bin_positions >>= 1;
@@ -2091,8 +2091,8 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	peep_window_state_update(peep);
 
 	peep->sub_state = 0;
-	peep->destination_x = peep->x & 0xFFE0 + RCT2_ADDRESS(0x992A4C, uint16)[chosen_position * 2];
-	peep->destination_y = peep->y & 0xFFE0 + RCT2_ADDRESS(0x992A4E, uint16)[chosen_position * 2];
+	peep->destination_x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A4C, uint16)[chosen_position * 2];
+	peep->destination_y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A4E, uint16)[chosen_position * 2];
 	peep->destination_tolerence = 3;
 	return 1;
 }
