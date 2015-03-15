@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, free falling back down to return to the station
 STR_0555    :
 STR_0556    :
 STR_0557    :
