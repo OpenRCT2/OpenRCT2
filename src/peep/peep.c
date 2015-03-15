@@ -834,6 +834,23 @@ static void peep_update_leaving_ride(rct_peep* peep){
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
+/* rct2: 0x006C0E8B 
+ * Also used by inspecting.
+ */
+static void peep_update_fixing(int steps, rct_peep* peep){
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		return;
+	}
+
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x006C0EB0, uint32)[peep->sub_state], steps, 0, 0, 0, (int)peep, (int)ride, 0);
+}
+
 /**
  * rct2: 0x69185D
  */
@@ -2562,7 +2579,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_answering(peep);
 			break;
 		case PEEP_STATE_FIXING:
-			RCT2_CALLPROC_X(0x006C0E8B, stepsToTake, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_fixing(stepsToTake, peep);
 			break;
 		case PEEP_STATE_BUYING:
 			peep_update_buying(peep);
@@ -2583,11 +2600,11 @@ static void peep_update(rct_peep *peep)
 			peep_update_heading_to_inspect(peep);
 			break;
 		case PEEP_STATE_INSPECTING:
-			RCT2_CALLPROC_X(0x006C0E8B, 0, 0, 0, 0, (int)peep, 0, 0);
+			peep_update_fixing(stepsToTake, peep);
 			break;
 			//There shouldnt be any more
 		default:		
-			RCT2_CALLPROC_X(0x0068FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
+			assert(0);
 			break;
 		}
 	}
