@@ -67,9 +67,11 @@ typedef struct {
 	uint8 status;					// 0x50
 	uint8 var_51;
 	uint16 peep[32];				// 0x52
-	uint8 pad_92[0x21];
+	uint8 pad_92[0x20];
+	uint8 var_B2;
 	uint8 num_peeps;				// 0xB3
-	uint8 pad_B4[0x07];
+	uint8 var_B4;
+	uint8 pad_B5[0x06];
 	uint8 sound1_id;				// 0xBB
 	uint8 sound1_volume;			// 0xBC
 	uint8 sound2_id;				// 0xBD

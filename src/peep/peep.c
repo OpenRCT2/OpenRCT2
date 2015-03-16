@@ -828,10 +828,79 @@ void peep_update_sitting(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x00691A3B */
+static void peep_leaving_ride_sub_state_0(rct_peep* peep){
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep->destination_tolerence != 0){
+		invalidate_sprite((rct_sprite*)peep);
+		sint16 y_diff = abs(peep->y - peep->destination_y);
+		sint16 x, y;
+		if (sub_6939EB(&x, &y, peep)){
+			sint16 z = peep->z;
+			if (y_diff < 16){
+				z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+			}
+			sprite_move(x, y, z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+		}
+		else{
+			peep->destination_tolerence = 0;
+			peep->sprite_direction ^= (1 << 4);
+		}
+	}
+
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_13){
+		if (ride->num_riders >= ride->var_0D0)
+			return;
+
+		//ebx = peep->current_ride_station
+	}
+	else{
+		uint8 chosen_train;
+
+		if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE){
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+				return;
+
+			for (int i = 0; i < ride->num_vehicles; ++i){
+				rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+
+				if (vehicle->var_B4 >= vehicle->var_B2)
+					continue;
+
+				if (vehicle->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
+					continue;
+				chosen_train = i;
+				break;
+			}
+		}
+		else{
+			chosen_train = ride->var_066[peep->current_ride_station];
+		}	
+		if (chosen_train == -1){
+			return;
+		}
+
+		peep->current_train = chosen_train;
+
+		rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[chosen_train]);
+
+		// 0x00691B36
+	}
+	//691bc7
+}
+
 /* rct2: 0x691A30 
  * Also used by entering_ride and queueing_front */
 static void peep_update_leaving_ride(rct_peep* peep){
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
+	switch (peep->sub_state){
+	case 0:
+		peep_leaving_ride_sub_state_0(peep);
+		break;
+	default:
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
+	}
 }
 
 /* rct2: 0x006C0E8B 
