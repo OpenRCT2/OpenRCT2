@@ -883,8 +883,34 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 		}
 
 		peep->current_train = chosen_train;
+		uint8* edx = RCT2_ADDRESS(0xF1AD78, uint8);
 
-		rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[chosen_train]);
+		int i = 0;
+		for (rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[chosen_train]);
+			vehicle->next_vehicle_on_train != 0xFFFF;
+			vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train),
+			i++){
+
+			uint8 al = vehicle->var_B2;
+			if (al & 0x80){
+				al &= ~0x80;
+				if (vehicle->var_B4 & 1){
+					//goto 0x691CCE
+				}
+			}
+			if (al == vehicle->var_B4)
+				continue;
+
+			if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
+				ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+			{
+				uint8 position = ((~vehicle->var_1F + 1) >> 3) & 0xF;
+				if (vehicle->peep[position] != 0xFFFF)
+					continue;
+			}
+
+			*edx++ = i;
+		}
 
 		// 0x00691B36
 	}
