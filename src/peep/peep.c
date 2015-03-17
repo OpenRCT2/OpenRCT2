@@ -847,6 +847,8 @@ static rct_vehicle* peep_choose_car_from_ride(rct_peep* peep, rct_ride* ride, ui
 	for (int i = peep->current_car; i > 0; --i){
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	}
+
+	return vehicle;
 }
 
 /* rct2: 0x00691CD1 */
@@ -888,8 +890,8 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction];
+	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2];
+	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
 
 	uint8 shift_multiplier = 21;
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
@@ -970,7 +972,7 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 		else{
 			chosen_train = ride->var_066[peep->current_ride_station];
 		}	
-		if (chosen_train == -1){
+		if (chosen_train == 0xFF){
 			return;
 		}
 
