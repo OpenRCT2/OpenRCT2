@@ -59,6 +59,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_DECREASE_GAME_SPEED,
 	WIDX_INCREASE_GAME_SPEED,
 	WIDX_ZERO_CLEARANCE,
+	WIDX_ZERO_CLEARANCE_ALL,
 	WIDX_WEATHER_SUN,
 	WIDX_WEATHER_THUNDER,
 	WIDX_CLEAR_GRASS,
@@ -126,7 +127,8 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2769,			STR_NONE},					// open / close park
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2771,			STR_NONE},					// decrease game speed
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2772,			STR_NONE},					// increase game speed
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2763,			STR_NONE},					// Zero Clearance All
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2757,			STR_NONE},					// Sun
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2758,			STR_NONE},					// Thunder
 
@@ -259,12 +261,25 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED)
+	| (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_ZERO_CLEARANCE_ALL) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
 #pragma region Cheat functions
+
+static void cheat_zero_clearance_all()
+{
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+	do {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_SURFACE) {
+			it.element->clearance_height = 0;
+		}
+	} while (map_element_iterator_next(&it));
+}
 
 static void cheat_set_grass_length(int length)
 {
@@ -494,6 +509,9 @@ static void window_cheats_misc_mouseup()
 		if (tool_set(w, widgetIndex, 7)) {
 			return;
 		}
+		break;
+	case WIDX_ZERO_CLEARANCE_ALL:
+		cheat_zero_clearance_all();
 		break;
 	case WIDX_WEATHER_SUN:
 		climate_force_weather(WEATHER_SUNNY);

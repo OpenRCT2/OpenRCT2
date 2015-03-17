@@ -2776,7 +2776,7 @@ STR_2759    :Zero Clearance
 STR_2760    :+5K Money
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
-STR_2763    :???
+STR_2763    :Zero Clearance All
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
 STR_2766    :???
