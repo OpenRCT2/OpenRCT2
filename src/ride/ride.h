@@ -108,7 +108,8 @@ typedef struct {
 	uint8 var_011;
 	uint8 var_012;
 	uint8 var_013;
-	uint8 pad_014[0x6];
+	uint8 var_014;
+	uint8 pad_015[0x5];
 	rct_ride_type_vehicle vehicles[4]; // 0x1A
 	uint32 var_1AE;
 	sint8 excitement_multipler;		// 0x1B2

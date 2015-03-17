@@ -68,10 +68,13 @@ typedef struct {
 	uint8 status;					// 0x50
 	uint8 var_51;
 	uint16 peep[32];				// 0x52
-	uint8 pad_92[0x20];
-	uint8 var_B2;
+	uint8 peep_tshirt_colours[32];	// 0x92
+	uint8 num_seats;				// 0xB2
 	uint8 num_peeps;				// 0xB3
-	uint8 var_B4;
+	union{
+		uint8 var_B4; // When Forward/Backward rotation this variable is used differently
+		uint8 next_free_seat;		// 0xB4
+	};
 	uint8 pad_B5[0x06];
 	uint8 sound1_id;				// 0xBB
 	uint8 sound1_volume;			// 0xBC
