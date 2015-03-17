@@ -339,7 +339,7 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(i
 		researchItem++;
 	}
 
-	for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR || researchItem->entryIndex == RESEARCHED_ITEMS_END; researchItem++) {
+	for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
 		y -= 10;
 		if (y < 0)
 			return researchItem;

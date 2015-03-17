@@ -18,9 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _MSC_VER
 #include <time.h>
-#endif
 #include <argparse/argparse.h>
 #include "addresses.h"
 #include "cmdline.h"
