@@ -427,7 +427,10 @@ typedef struct {
 	uint8 action;					// 0x71
 	uint8 action_frame;				// 0x72
 	uint8 var_73;
-	uint16 var_74; // time getting to ride to fix
+	union {
+		uint16 var_74; // time getting to ride to fix
+		uint16 next_in_queue;		// 0x74
+	};
 	uint8 var_76;
 	uint8 pad_77;
 	uint8 var_78;

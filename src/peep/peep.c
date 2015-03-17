@@ -829,6 +829,27 @@ void peep_update_sitting(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x006966A9 */
+static void remove_peep_from_queue(rct_peep* peep){
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	uint8 cur_station = peep->current_ride_station;
+	ride->queue_length[cur_station]--;
+	if (peep->sprite_index == ride->first_peep_in_queue[cur_station])
+	{
+		ride->first_peep_in_queue[cur_station] = peep->next_in_queue;
+		return;
+	}
+
+	for (rct_peep* other_peep = GET_PEEP(ride->first_peep_in_queue[cur_station]);;
+		other_peep = GET_PEEP(other_peep->next_in_queue)){
+		if (peep->sprite_index == other_peep->next_in_queue){
+			other_peep->next_in_queue = peep->next_in_queue;
+			return;
+		}
+	}
+}
+
 /* rct2: 0x00691C6E */
 static rct_vehicle* peep_choose_car_from_ride(rct_peep* peep, rct_ride* ride, uint8* car_array, uint8 car_array_size){
 	uint8 chosen_car = scenario_rand();
@@ -918,7 +939,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	peep->var_AC = 0;
 	peep->var_E2 = 0;
 
-	RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+	remove_peep_from_queue(peep);
 }
 
 /* rct2: 0x00691A3B */
@@ -1017,7 +1038,7 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 	if (ride->status != RIDE_STATUS_OPEN || 
 		ride->var_1CA != 0){
 		if (peep->destination_tolerence == 0){
-			RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+			remove_peep_from_queue(peep);
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_FALLING;
 			peep_window_state_update(peep);
@@ -1036,7 +1057,7 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 			if (peep->cash_in_pocket <= 0){
 				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
 				if (peep->destination_tolerence == 0){
-					RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+					remove_peep_from_queue(peep);
 					peep_decrement_num_riders(peep);
 					peep->state = PEEP_STATE_FALLING;
 					peep_window_state_update(peep);
@@ -1047,7 +1068,7 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 			if (ride->price > peep->cash_in_pocket){
 				peep_insert_new_thought(peep, 0, peep->current_ride);
 				if (peep->destination_tolerence == 0){
-					RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+					remove_peep_from_queue(peep);
 					peep_decrement_num_riders(peep);
 					peep->state = PEEP_STATE_FALLING;
 					peep_window_state_update(peep);
@@ -1060,7 +1081,7 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 				if (reliability * 2 < ride->price){
 					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
 					if (peep->destination_tolerence == 0){
-						RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+						remove_peep_from_queue(peep);
 						peep_decrement_num_riders(peep);
 						peep->state = PEEP_STATE_FALLING;
 						peep_window_state_update(peep);
@@ -1112,12 +1133,12 @@ static void peep_update_fixing(int steps, rct_peep* peep){
  */
 static void peep_update_queuing(rct_peep* peep){
 	if (!sub_68F3AE(peep)){
-		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_queue(peep);
 		return;
 	}
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 	if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
-		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_queue(peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
@@ -1125,7 +1146,7 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 
 	if (peep->sub_state != 0xA){
-		if (peep->var_74 == 0xFFFF){
+		if (peep->next_in_queue == 0xFFFF){
 			//Happens every time peep goes onto ride.
 			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
@@ -1137,7 +1158,7 @@ static void peep_update_queuing(rct_peep* peep){
 		//Give up queueing for the ride
 		peep->sprite_direction ^= (1 << 4);
 		invalidate_sprite((rct_sprite*)peep);
-		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_queue(peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
@@ -1202,7 +1223,7 @@ static void peep_update_queuing(rct_peep* peep){
 		//Give up queueing for the ride
 		peep->sprite_direction ^= (1 << 4);
 		invalidate_sprite((rct_sprite*)peep);
-		RCT2_CALLPROC_X(0x6966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_queue(peep);
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_1;
 		peep_window_state_update(peep);
