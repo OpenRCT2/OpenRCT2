@@ -37,5 +37,8 @@
     <Text Include="..\..\data\language\swedish.txt">
       <Filter>Resource Files\Language</Filter>
     </Text>
+    <Text Include="..\..\data\language\portugues_br.txt">
+      <Filter>Resource Files\Language</Filter>
+    </Text>
   </ItemGroup>
 </Project>
