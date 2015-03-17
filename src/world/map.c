@@ -42,6 +42,7 @@ const rct_xy16 TileDirectionDelta[] = {
 };
 
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
+rct_animated_object *gAnimatedObjects = (rct_animated_object*)0x013886A0;
 
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
@@ -458,13 +459,39 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
 	return 0;
 }
 
+/** rct2: 0x009819DC */
+const uint32 *_animatedObjectEventHandlers = (uint32*)0x009819DC;
+
+/**
+ * @returns true if the animation should be removed.
+ */
+bool map_invalidate_animation(rct_animated_object *obj)
+{
+	uint32 address = _animatedObjectEventHandlers[obj->type];
+	int result = RCT2_CALLPROC_X(address, obj->x, 0, obj->y, obj->baseZ, 0, 0, 0);
+	return (result & 0x100) != 0;
+}
+
 /**
  *
  *  rct2: 0x0068AFAD
  */
 void map_invalidate_animations()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
+	rct_animated_object *aobj = &gAnimatedObjects[0];
+	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	while (numAnimatedObjects > 0) {
+		if (map_invalidate_animation(aobj)) {
+			// Remove animated object
+			RCT2_GLOBAL(0x0138B580, uint16)--;
+			numAnimatedObjects--;
+			if (numAnimatedObjects > 0)
+				memmove(aobj, aobj + 1, numAnimatedObjects);
+		} else {
+			numAnimatedObjects--;
+			aobj++;
+		}
+	}
 }
 
 /**

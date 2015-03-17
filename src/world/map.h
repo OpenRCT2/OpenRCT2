@@ -229,8 +229,20 @@ typedef struct {
 	uint8 direction;
 } rct2_peep_spawn;
 
+/**
+ * Animated object
+ * size: 0x06
+ */
+typedef struct {
+	uint8 baseZ;
+	uint8 type;
+	uint16 x;
+	uint16 y;
+} rct_animated_object;
+
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
+extern rct_animated_object *gAnimatedObjects;
 
 void map_init(int size);
 void map_update_tile_pointers();
