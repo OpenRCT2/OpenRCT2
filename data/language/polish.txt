@@ -2442,49 +2442,52 @@ STR_2405    :Build 10 roller coasters of a given length
 STR_2406    :Finish building 5 roller coasters
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
-STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
-STR_2410    :{BLACK}None
-STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
-STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
-STR_2413    :{BLACK}({CURRENCY2DP} per week)
-STR_2414    :(Not Selected)
-STR_2415    :{WINDOW_COLOUR_2}Ride:
-STR_2416    :{WINDOW_COLOUR_2}Item:
-STR_2417    :{WINDOW_COLOUR_2}Length of time:
-STR_2418    :Free entry to {STRINGID}
-STR_2419    :Free ride on {STRINGID}
-STR_2420    :Half-price entry to {STRINGID}
-STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
-STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
-STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
-STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
-STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
-STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
-STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
-STR_2433    :{BLACK}Vouchers for free {STRINGID}
-STR_2434    :{BLACK}Advertising campaign for {STRINGID}
-STR_2435    :{BLACK}Advertising campaign for {STRINGID}
-STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
-STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
-STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
-STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
-STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
-STR_2450    :{YELLOW}Your advertising campaign for the park has finished
-STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
+# ------------------------------------------ Polish start
+STR_2409    :{WINDOW_COLOUR_2}Trwające kampanie marketingowe
+STR_2410    :{BLACK}Brak
+STR_2411    :{WINDOW_COLOUR_2}Dostępne kampanie marketingowe
+STR_2412    :{SMALLFONT}{BLACK}Rozpocznij tą kampanię
+STR_2413    :{BLACK}({CURRENCY2DP} tygodniowo)
+STR_2414    :(Nie wybrano)
+STR_2415    :{WINDOW_COLOUR_2}Atrakcja:
+STR_2416    :{WINDOW_COLOUR_2}Przedmiot:
+STR_2417    :{WINDOW_COLOUR_2}Czas trwania:
+# I think they are only used in "Voucher for ___" strings, so lower case fits here better
+STR_2418    :darmowe wejście do {STRINGID}
+STR_2419    :darmową przejażdżkę {STRINGID}
+STR_2420    :wejście do {STRINGID} za połowę ceny
+STR_2421    :darmowe {STRINGID}
+STR_2422    :Kampania reklamowa dla {STRINGID}
+STR_2423    :Kampania reklamowa dla {STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}Kupony na darmowe wejście do parku
+STR_2425    :{WINDOW_COLOUR_2}Kupony na darmową przejażdżkę wybraną atrakcję
+STR_2426    :{WINDOW_COLOUR_2}Kupony na wejście do parku za połowę ceny
+STR_2427    :{WINDOW_COLOUR_2}Kupony na darmowe jedzenie lub picie
+STR_2428    :{WINDOW_COLOUR_2}Kampania reklamująca park
+STR_2429    :{WINDOW_COLOUR_2}Kampania reklamująca wybraną przejażdżkę
+STR_2430    :{BLACK}Kupony na darmowe wejście do {STRINGID}
+STR_2431    :{BLACK}Kupony na darmową przejażdżkę {STRINGID}
+STR_2432    :{BLACK}Kupony na wejście do {STRINGID} za połowę ceny
+STR_2433    :{BLACK}Kupony na darmowe {STRINGID}
+STR_2434    :{BLACK}Kampania reklamowa dla {STRINGID}
+STR_2435    :{BLACK}Kampania reklamowa dla {STRINGID}
+STR_2436    :1 tydzień
+STR_2437    :2 tygodnie
+STR_2438    :3 tygodnie
+STR_2439    :4 tygodnie
+STR_2440    :5 tygodnie
+STR_2441    :6 tygodnie
+STR_2442    :{BLACK}(został/y {STRINGID})
+STR_2443    :{WINDOW_COLOUR_2}Koszt tygodniowy: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Koszt łączny: {BLACK}{CURRENCY2DP}
+STR_2445    :Rozpocznij kampanię
+STR_2446    :{YELLOW}Twoja kampania marketingowa na darmowe wejście do parku zakończyła się
+STR_2447    :{YELLOW}Twoja kampania marketingowa na darmowe przejażdżki {STRINGID} zakończyła się
+STR_2448    :{YELLOW}Twoja kampania marketingowa na wejście do parku za połowę ceny zakończyła się
+STR_2449    :{YELLOW}Twoja kampania marketingowa na darmowe {STRINGID} zakończyła się
+STR_2450    :{YELLOW}Twoja kmapania reklamująca park zakończyła się
+STR_2451    :{YELLOW}Twoja kampania reklamująca {STRINGID} zakończyła się
+# ------------------------------------------ Polish end
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
@@ -2753,9 +2756,9 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
 # New strings (previously these were ???)
+STR_2718    :(..)
+STR_2719    :(nowy plik)
 # sec, secs
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
@@ -2790,25 +2793,25 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
-# New strings used in the cheats window previously these were ???
+# New strings (previously these were ???)
+STR_2749    :Mój nowy scenariusz
+STR_2750    :Przenieś wszystkie do góry
+STR_2751    :Przenieś wszystkie na dół
+STR_2752    :Czysta trawa
+STR_2753    :Skoszona trawa
+STR_2754    :Podlej kwiaty
+STR_2755    :Usuń wandalizm
+STR_2756    :Usuń śmieci
+STR_2757    :Wymuś słońce
+STR_2758    :Wymuś burzę
+STR_2759    :Mniejsze odstępy
 STR_2760    :+5K Pieniędzy
 STR_2761    :Płatne Wejście
 STR_2762    :Płatne Atrakcje
 STR_2763    :???
 STR_2764    :Szczęśliwi Goście
 STR_2765    :Przypływ Gości
-STR_2766    :???
+STR_2766    :Wygraj scenariusz
 STR_2767    :Zablokuj Klimat
 STR_2768    :Odblokuj Klimat
 STR_2769    :Otwórz Park
@@ -2821,9 +2824,9 @@ STR_2775    :Pełny ekran w oknie
 STR_2776    :Język
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :Podgląd #{COMMA16}
+STR_2780    :Dodatkowe okno podglądu
 # End of new strings
-STR_2779    :???
-STR_2780    :???
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 

@@ -3463,3 +3463,8 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
+
+# New strings, cleaner
+STR_5120    :Show finances button on toolbar
+STR_5121    :Show research button on toolbar
+STR_5122    :Show all vehicles sharing a track/ride type
