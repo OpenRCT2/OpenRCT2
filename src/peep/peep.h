@@ -209,6 +209,7 @@ enum PEEP_STATE {
 };
 
 enum PEEP_ACTION_EVENTS {	
+	PEEP_ACTION_CHECK_TIME = 0,
 	// If no food then check watch
 	PEEP_ACTION_EAT_FOOD = 1,
 	PEEP_ACTION_SHAKE_HEAD = 2,
