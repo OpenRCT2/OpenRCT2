@@ -182,6 +182,10 @@ enum {
 };
 
 enum {
+	PATH_FLAG_QUEUE_BANNER = 1 << 3
+};
+
+enum {
 	ENTRANCE_TYPE_RIDE_ENTRANCE,
 	ENTRANCE_TYPE_RIDE_EXIT,
 	ENTRANCE_TYPE_PARK_ENTRANCE
@@ -229,20 +233,8 @@ typedef struct {
 	uint8 direction;
 } rct2_peep_spawn;
 
-/**
- * Animated object
- * size: 0x06
- */
-typedef struct {
-	uint8 baseZ;
-	uint8 type;
-	uint16 x;
-	uint16 y;
-} rct_animated_object;
-
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
-extern rct_animated_object *gAnimatedObjects;
 
 void map_init(int size);
 void map_update_tile_pointers();
@@ -258,7 +250,6 @@ rct_map_element *map_get_surface_element_at(int x, int y);
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
-void map_invalidate_animations();
 void sub_6A876D();
 int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);

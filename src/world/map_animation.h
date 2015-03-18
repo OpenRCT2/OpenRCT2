@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Kevin Burke
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -18,36 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _RIDE_DATA_H_
-#define _RIDE_DATA_H_
+#ifndef _MAP_ANIMATION_H_
+#define _MAP_ANIMATION_H_
 
 #include "../common.h"
 
+/**
+ * Animated object
+ * size: 0x06
+ */
 typedef struct {
-	rct_string_id vehicle_name;
-	rct_string_id structure_name;
-	rct_string_id station_name;
-	rct_string_id unk_name;
-} rct_ride_name_convention;
+	uint8 baseZ;
+	uint8 type;
+	uint16 x;
+	uint16 y;
+} rct_animated_object;
 
-typedef struct {
-	uint32 spriteIndex;
-	uint16 height;
-	uint16 var_06;
-} rct_ride_entrance_definition;
+extern rct_animated_object *gAnimatedObjects;
 
-extern const bool hasRunningTrack[0x60];
-extern const uint8 initialUpkeepCosts[0x60];
-extern const uint8 costPerTrackPiece[0x60];
-
-extern const uint8 rideUnknownData1[0x60];
-extern const bool rideUnknownData2[0x60];
-extern const uint8 rideUnknownData3[0x60];
-
-extern const rct_ride_name_convention RideNameConvention[96];
-extern const uint8 RideAvailableModes[];
-extern const uint8 RideAvailableBreakdowns[];
-
-extern const rct_ride_entrance_definition RideEntranceDefinitions[12];
+void map_animation_invalidate_all();
 
 #endif

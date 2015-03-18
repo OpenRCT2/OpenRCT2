@@ -4132,7 +4132,7 @@ static void window_ride_colour_paint()
 
 			spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
 			spriteIndex |= 0xA0000000;
-			spriteIndex += RCT2_GLOBAL(0x00993E7C + (ride->entrance_style * 8), uint32);
+			spriteIndex += RideEntranceDefinitions[ride->entrance_style].spriteIndex;
 
 			// Back
 			gfx_draw_sprite(clippedDpi, spriteIndex, 34, 20, terniaryColour);

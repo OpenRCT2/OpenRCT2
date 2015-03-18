@@ -66,6 +66,10 @@ typedef struct {
 	uint8  sprite_direction; //direction of sprite? 0x1e
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
+	uint8 pad_24[7];
+	uint8 var_2B;
+	uint8 pad_2C[0x45];
+	uint8 var_71;
 } rct_unk_sprite;
 
 typedef struct {
