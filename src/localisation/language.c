@@ -242,7 +242,7 @@ const int OpenRCT2LangIdToObjectLangId[] = {
 };
 
 /* rct2: 0x0098DA16 */
-uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
+uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
 /* rct2: 0x006A9E24*/
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
