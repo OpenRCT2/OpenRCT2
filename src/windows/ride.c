@@ -5880,7 +5880,8 @@ static void window_ride_customer_paint()
 	y += 2;
 
 	// Age
-	age = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date) / 8;
+	//If the ride has a build date that is in the future, show it as built this year.
+	age = max((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date) / 8, 0);
 	stringId = age == 0 ?
 		STR_BUILT_THIS_YEAR :
 		age == 1 ?
