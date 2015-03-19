@@ -1158,6 +1158,70 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (vehicle_type->var_14 & (1 << 10)){
 		//692378
+		sint16 x, y, z;
+		x = ride->entrances[peep->current_ride_station] & 0xFF;
+		y = ride->entrances[peep->current_ride_station] >> 8;
+		z = ride->station_heights[peep->current_ride_station];
+
+		rct_map_element* map_element = map_get_first_element_at(x, y);
+		for (;; map_element++){
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+			if (map_element->base_height == z)
+				break;
+		}
+
+		uint8 direction_entrance = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+		x = ride->station_starts[peep->current_ride_station] & 0xFF;
+		y = ride->station_starts[peep->current_ride_station] >> 8;
+
+		map_element = map_get_first_element_at(x, y);
+		for (;; map_element++){
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+			if (map_element->base_height == z)
+				break;
+		}
+
+		uint8 direction_track = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+		vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+		vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+		uint8 cl = peep->current_seat;
+		uint8 ch = (peep->current_seat & 0xF8) << 8;
+
+		if (ride->type != RIDE_TYPE_ENTERPRISE)
+			direction_track *= 2;
+
+		if (*vehicle_type->peep_loading_positions == 0){
+			direction_track /= 2;
+			cl = 0;
+			ch = 0;
+		}
+		cl += direction_track;
+		cl &= 0x7;
+		cl += ch;
+		peep->var_37 = (direction_entrance | cl * 4) * 4;
+
+		x *= 32;
+		y *= 32;
+		x += 16;
+		y += 16;
+
+		if (ride->type == RIDE_TYPE_ENTERPRISE)
+		{
+			x = vehicle->x;
+			y = vehicle->y;
+		}
+
+		x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
+		y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+
+		peep->destination_x = x;
+		peep->destination_y = y;
+		peep->sub_state = 12;
 		return;
 	}
 
