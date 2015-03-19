@@ -1157,7 +1157,6 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle_type->var_14 & (1 << 10)){
-		//692378
 		sint16 x, y, z;
 		x = ride->entrances[peep->current_ride_station] & 0xFF;
 		y = ride->entrances[peep->current_ride_station] >> 8;

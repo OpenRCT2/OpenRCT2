@@ -105,8 +105,8 @@ typedef struct {
 	uint8 var_00C;
 	uint8 var_00D;
 	uint8 var_00E;
-	uint8 var_00F;
-	uint8 var_010;
+	uint8 min_cars_in_train;		// 0x00F
+	uint8 max_cars_in_train;		// 0x010
 	uint8 var_011;
 	uint8 var_012;
 	uint8 var_013;
