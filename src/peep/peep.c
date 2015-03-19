@@ -1005,10 +1005,14 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 		uint8* car_array_pointer = car_array;
 
 		int i = 0;
-		for (rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[chosen_train]);
-			vehicle->next_vehicle_on_train != 0xFFFF;
-			vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train),
+
+		uint16 vehicle_id = ride->vehicles[chosen_train];
+		rct_vehicle* vehicle = GET_VEHICLE(vehicle_id);
+
+		for (; vehicle_id != 0xFFFF;
+			vehicle_id = vehicle->next_vehicle_on_train,
 			i++){
+			vehicle = GET_VEHICLE(vehicle_id);
 
 			uint8 al = vehicle->num_seats;
 			if (al & 0x80){
@@ -1141,6 +1145,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] &RIDE_TYPE_FLAG_13)
 	{
+		return;
 		// 0x006924E1
 	}
 
@@ -1153,6 +1158,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (vehicle_type->var_14 & (1 << 10)){
 		//692378
+		return;
 	}
 
 	if (vehicle_type->var_14 & (1 << 15)){
