@@ -1,25 +1,26 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- *
- * This file is part of OpenRCT2.
- *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************/
+* Copyright (c) 2014 Ted John
+* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+*
+* This file is part of OpenRCT2.
+*
+* OpenRCT2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*****************************************************************************/
 
 #include "../addresses.h"
 #include "localisation.h"
+#include "../object.h"
 
 const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
@@ -32,6 +33,7 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"Polski",			// LANGUAGE_POLISH
 	"Espa\u00F1ol",		// LANGUAGE_SPANISH
 	"Svenska",			// LANGUAGE_SWEDISH
+	"Italiano",			// LANGUAGE_ITALIAN
 	"Portugês (BR)"		// LANGUAGE_PORTUGUESE_BR
 };
 
@@ -46,6 +48,7 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"polish",			// LANGUAGE_POLISH
 	"spanish_sp",		// LANGUAGE_SPANISH
 	"swedish",			// LANGUAGE_SWEDISH
+	"italian",			// LANGUAGE_ITALIAN
 	"portugues_br"		// LANGUAGE_PORTUGUESE_BR
 };
 
@@ -69,10 +72,12 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 	if (!(char_ptr[0] & 0x80)) {
 		result = char_ptr[0];
 		numBytes = 1;
-	} else if (!(char_ptr[0] & 0x20)) {
+	}
+	else if (!(char_ptr[0] & 0x20)) {
 		result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
 		numBytes = 2;
-	} else {
+	}
+	else {
 		numBytes = 1;
 	}
 
@@ -83,10 +88,20 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 
 const char *language_get_string(rct_string_id id)
 {
-	const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
-	const char *openrct = language_strings == NULL ? NULL : language_strings[id];
-	const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
-	return str == NULL ? "" : str;
+	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
+		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
+		if (openrct != NULL)
+			return openrct;
+
+		// TODO Fall back to another language or otherwise English (UK)
+		return "(undefined string)";
+	}
+	else {
+		const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
+		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
+		const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
+		return str == NULL ? "" : str;
+	}
 }
 
 int language_open(int id)
@@ -107,21 +122,21 @@ int language_open(int id)
 }
 
 /**
- * Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
- * code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
- * get_string will use those if the same entry in the loaded language is empty.
- * 
- * Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
- * strings for the time being. Further investigation is required.
- *
- * Also note that all strings are currently still ASCII. It probably can't be converted to UTF-8 until all game functions that
- * read / write strings in some way is decompiled. The original game used a DIY extended 8-bit extended ASCII set for special
- * characters, format codes and accents.
- *
- * In terms of reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
- * colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
- * Use # at the beginning of a line to leave a comment.
- */
+* Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
+* code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
+* get_string will use those if the same entry in the loaded language is empty.
+*
+* Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
+* strings for the time being. Further investigation is required.
+*
+* Also note that all strings are currently still ASCII. It probably can't be converted to UTF-8 until all game functions that
+* read / write strings in some way is decompiled. The original game used a DIY extended 8-bit extended ASCII set for special
+* characters, format codes and accents.
+*
+* In terms of reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
+* colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
+* Use # at the beginning of a line to leave a comment.
+*/
 static int language_open_file(const char *filename)
 {
 	FILE *f = fopen(filename, "rb");
@@ -129,7 +144,7 @@ static int language_open_file(const char *filename)
 		return 0;
 
 	fseek(f, 0, SEEK_END);
-	language_buffer_size = ftell(f);
+	language_buffer_size = ftell(f) + 1;
 	language_buffer = calloc(1, language_buffer_size);
 	fseek(f, 0, SEEK_SET);
 	fread(language_buffer, language_buffer_size, 1, f);
@@ -163,13 +178,15 @@ static int language_open_file(const char *filename)
 			// Search for a comment
 			if (utf8Char == '#') {
 				mode = 3;
-			} else if (utf8Char == ':' && string_no != -1) {
+			}
+			else if (utf8Char == ':' && string_no != -1) {
 				// Search for colon
 				dst = src + 1;
 				language_strings[string_no] = dst;
 				stringIndex++;
 				mode = 1;
-			} else if (!strncmp(src, "STR_", 4)){
+			}
+			else if (!strncmp(src, "STR_", 4)){
 				// Copy in the string number, 4 characters only
 				if (sscanf(src, "STR_%4d", &string_no) != 1) {
 					string_no = -1;
@@ -181,10 +198,12 @@ static int language_open_file(const char *filename)
 			if (utf8Char == '{') {
 				token = src + 1;
 				mode = 2;
-			} else if (utf8Char == '\n' || *src == '\r') {
+			}
+			else if (utf8Char == '\n' || *src == '\r') {
 				*dst = 0;
 				mode = 0;
-			} else {
+			}
+			else {
 				*dst++ = utf8Char;
 			}
 			break;
@@ -225,4 +244,83 @@ void language_close()
 	language_num_strings = 0;
 
 	gCurrentLanguage = LANGUAGE_UNDEFINED;
+}
+
+const int OpenRCT2LangIdToObjectLangId[] = {
+	0, 0, 1, 3, 6, 2, 0, 0, 4, 7, 5
+};
+
+/* rct2: 0x0098DA16 */
+uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
+
+/* rct2: 0x006A9E24*/
+rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
+{
+	char* pString = NULL;
+	int result = 0;
+	while (true)
+	{
+		uint8_t language_code = *(*pStringTable)++;
+
+		if (language_code == 0xFF) //end of string table
+			break;
+
+		// This is the ideal situation. Language found
+		if (language_code == OpenRCT2LangIdToObjectLangId[gCurrentLanguage])//1)
+		{
+			pString = *pStringTable;
+			result |= 1;
+		}
+
+		// Just in case always load english into pString
+		if (language_code == 0 && !(result & 1))
+		{
+			pString = *pStringTable;
+			result |= 2;
+		}
+
+		// Failing that fall back to whatever is first string
+		if (!(result & 7))
+		{
+			pString = *pStringTable;
+			result |= 4;
+		}
+
+		// Skip over the actual string entry to get to the next
+		// entry
+		while (*(*pStringTable)++ != 0);
+	}
+
+	// If not scenario text
+	if (RCT2_GLOBAL(0x9ADAFC, uint8_t) == 0)
+	{
+		int stringid = 3463;
+		for (int i = 0; i < type; i++)
+		{
+			int nrobjects = object_entry_group_counts[i];
+			int nrstringtables = ObjectTypeStringTableCount[i];
+			stringid += nrobjects * nrstringtables;
+		}
+		stringid += index * ObjectTypeStringTableCount[type];
+		// Used by the object list to allocate name in plugin.dat
+		RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32) = stringid;
+		stringid += tableindex;
+
+		//put pointer in stringtable
+		language_strings[stringid] = pString;
+		// Until all string related functions are finished copy
+		// to old array as well.
+		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
+		return stringid;
+	}
+	else
+	{
+		int stringid = 3447 + tableindex;
+		//put pointer in stringtable
+		language_strings[stringid] = pString;
+		// Until all string related functions are finished copy
+		// to old array as well.
+		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
+		return stringid;
+	}
 }
