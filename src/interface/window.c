@@ -594,7 +594,7 @@ void window_close_top()
 		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
 			return;
 
-		for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			return;
