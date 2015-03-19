@@ -244,12 +244,12 @@ void peep_check_cant_find_exit(rct_peep* peep){
 }
 
 /* rct2: 0x6939EB 
- * Possibly peep update action frame.
  * Also used to move peeps to the correct position to
  * start an action. Returns 1 if the correct destination 
- * has not yet been reached.
+ * has not yet been reached. xy_distance is how close the
+ * peep is to the target.
  */
-int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
+int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->action_sprite_image_offset;
 	if (peep->action == 0xFE){
 		peep->action = 0xFF;
@@ -260,9 +260,11 @@ int sub_6939EB(sint16* x, sint16* y, rct_peep* peep){
 
 	int x_delta = abs(*x);
 	int y_delta = abs(*y);
-
+	
+	*xy_distance = x_delta + y_delta;
+	
 	if (peep->action >= 0xFE){
-		if (x_delta + y_delta <= peep->destination_tolerence){
+		if (*xy_distance <= peep->destination_tolerence){
 			return 0;
 		}
 		int direction = 0;
@@ -604,8 +606,9 @@ void peep_remove(rct_peep* peep){
 void peep_update_falling(rct_peep* peep){
 	if (peep->action == PEEP_ACTION_DROWNING){
 		// Check to see if we are ready to drown.
-		sint16 x, y;
-		sub_6939EB(&x, &y, peep);
+		sint16 x, y, xy_distance;
+
+		peep_update_action(&x, &y, &xy_distance, peep);
 		//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->action == PEEP_ACTION_DROWNING) return;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
@@ -762,8 +765,8 @@ void peep_update_sitting(rct_peep* peep){
 	}
 	else if (peep->sub_state == 1){
 		if (peep->action < 0xFE){
-			sint16 x, y;
-			sub_6939EB(&x, &y, peep);
+			sint16 x, y, xy_distance;
+			peep_update_action(&x, &y, &xy_distance, peep);
 			//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 			if (peep->action != 0xFF) return;
 
@@ -943,16 +946,17 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 }
 
 /* rct2: 0x00691A3B */
-static void peep_leaving_ride_sub_state_0(rct_peep* peep){
+static void peep_update_ride_sub_state_0(rct_peep* peep){
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	if (peep->destination_tolerence != 0){
 		invalidate_sprite((rct_sprite*)peep);
-		sint16 y_diff = abs(peep->y - peep->destination_y);
-		sint16 x, y;
-		if (sub_6939EB(&x, &y, peep)){
+
+		sint16 x, y, xy_distance;
+
+		if (peep_update_action(&x, &y, &xy_distance, peep)){
 			sint16 z = peep->z;
-			if (y_diff < 16){
+			if (xy_distance < 16){
 				z = ride->station_heights[peep->current_ride_station] * 8 + 2;
 			}
 			sprite_move(x, y, z, (rct_sprite*)peep);
@@ -1099,12 +1103,95 @@ static void peep_leaving_ride_sub_state_0(rct_peep* peep){
 	peep_go_to_ride_entrance(peep, ride);
 }
 
+/* rct2: 0x006921D3 */
+void peep_update_ride_sub_state_1(rct_peep* peep){
+	sint16 x, y, xy_distance;
+
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride_type* ride_entry = gRideTypeList[ride->subtype];
+
+	if (peep_update_action(&x, &y, &xy_distance, peep))
+	{
+		uint8 vehicle = ride_entry->var_014;
+
+		if (ride_entry->vehicles[vehicle].var_12 & (1 << 3) || 
+			ride_entry->vehicles[vehicle].var_14 & ((1 << 14) | (1<<12)))
+			RCT2_GLOBAL(0xF1AECA, uint16) = 0x1C;
+		else
+			RCT2_GLOBAL(0xF1AECA, uint16) = 0x10;
+
+		if (peep->sub_state == 1 &&
+			xy_distance < RCT2_GLOBAL(0xF1AECA, uint16))
+				peep->sub_state = 2;
+		
+		invalidate_sprite((rct_sprite*)peep);
+
+		sint16 z = ride->station_heights[peep->current_ride_station] * 8;
+
+		RCT2_GLOBAL(0xF1AECA, uint16) += 4;
+
+		if (xy_distance < RCT2_GLOBAL(0xF1AECA, uint16)){
+			z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+		}
+
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] &RIDE_TYPE_FLAG_13)
+	{
+		// 0x006924E1
+	}
+
+	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+	for (int i = peep->current_car; i != 0; --i){
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+	if (vehicle_type->var_14 & (1 << 10)){
+		//692378
+	}
+
+	if (vehicle_type->var_14 & (1 << 15)){
+		peep->destination_x = vehicle->x;
+		peep->destination_y = vehicle->y;
+		peep->destination_tolerence = 15;
+		peep->sub_state = 4;
+		return;
+	}
+
+	uint8 load_position = vehicle_type->peep_loading_positions[peep->current_seat];
+	
+	switch (vehicle->sprite_direction / 8){
+	case 0:
+		peep->destination_x = vehicle->x - load_position;
+		break;
+	case 1:
+		peep->destination_y = vehicle->y + load_position;
+		break;
+	case 2:
+		peep->destination_x = vehicle->x + load_position;
+		break;
+	case 3:
+		peep->destination_y = vehicle->y - load_position;
+		break;
+	}
+
+	peep->sub_state = 4;
+	return;
+}
 /* rct2: 0x691A30 
- * Also used by entering_ride and queueing_front */
-static void peep_update_leaving_ride(rct_peep* peep){
+ * Used by entering_ride and queueing_front */
+static void peep_update_ride(rct_peep* peep){
 	switch (peep->sub_state){
 	case 0:
-		peep_leaving_ride_sub_state_0(peep);
+		peep_update_ride_sub_state_0(peep);
+		break;
+	case 1:
+		peep_update_ride_sub_state_1(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
@@ -1145,7 +1232,7 @@ static void peep_update_queuing(rct_peep* peep){
 		return;
 	}
 
-	if (peep->sub_state != 0xA){
+	if (peep->sub_state != 10){
 		if (peep->next_in_queue == 0xFFFF){
 			//Happens every time peep goes onto ride.
 			peep->destination_tolerence = 0;
@@ -1168,7 +1255,7 @@ static void peep_update_queuing(rct_peep* peep){
 	RCT2_CALLPROC_X(0x693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
 	if (peep->action < 0xFE)return;
 	if (peep->sprite_type == 0){
-		if (peep->var_7A >= 2000 && (0xFFFF & scenario_rand()) <= 119){
+		if (peep->time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119){
 			// Eat Food/Look at watch
 			peep->action = PEEP_ACTION_EAT_FOOD;
 			peep->action_frame = 0;
@@ -1176,14 +1263,14 @@ static void peep_update_queuing(rct_peep* peep){
 			sub_693B58(peep);
 			invalidate_sprite((rct_sprite*)peep);
 		}
-		if (peep->var_7A >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+		if (peep->time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
 		{
 			//Create the ive been waiting in line ages thought
 			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
 		}
 	}
 	else{
-		if (!(peep->var_7A & 0x3F) && peep->action == 0xFE && peep->var_6F == 2){
+		if (!(peep->time_in_queue & 0x3F) && peep->action == 0xFE && peep->var_6F == 2){
 			switch (peep->sprite_type){
 			case 0xF:
 			case 0x10:
@@ -1217,7 +1304,7 @@ static void peep_update_queuing(rct_peep* peep){
 			}
 		}
 	}
-	if (peep->var_7A < 4300) return;
+	if (peep->time_in_queue < 4300) return;
 
 	if (peep->happiness <= 65 && (0xFFFF & scenario_rand()) < 2184){
 		//Give up queueing for the ride
@@ -1237,8 +1324,8 @@ static void peep_update_mowing(rct_peep* peep){
 
 	invalidate_sprite((rct_sprite*)peep);
 	while (1){
-		sint16 x = 0, y = 0;
-		if (sub_6939EB(&x, &y, peep)){
+		sint16 x = 0, y = 0, xy_distance;
+		if (peep_update_action(&x, &y, &xy_distance, peep)){
 			int eax = x, ebx, ecx = y, z, ebp, edi;
 
 			RCT2_CALLFUNC_X(0x662783, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
@@ -1298,8 +1385,8 @@ static void peep_update_watering(rct_peep* peep){
 	}
 	else if (peep->sub_state == 1){
 		if (peep->action != PEEP_ACTION_NONE_2){
-			sint16 x, y;
-			sub_6939EB(&x, &y, peep);
+			sint16 x, y, xy_distance;
+			peep_update_action(&x, &y, &xy_distance, peep);
 			return;
 		}
 
@@ -1355,8 +1442,8 @@ static void peep_update_emptying_bin(rct_peep* peep){
 			return;
 		}
 
-		sint16 x = 0, y = 0;
-		sub_6939EB(&x, &y, peep);
+		sint16 x = 0, y = 0, xy_distance;
+		peep_update_action(&x, &y, &xy_distance, peep);
 
 		if (peep->action_frame != 11)return;
 
@@ -1410,8 +1497,8 @@ static void peep_update_sweeping(rct_peep* peep){
 		peep->staff_litter_swept++;
 		peep->var_45 |= (1 << 4);
 	}
-	sint16 x = 0, y = 0;
-	if (sub_6939EB(&x, &y, peep)){
+	sint16 x = 0, y = 0, xy_distance;
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		int eax = x, ebx, ecx = y, z, ebp, edi;
 
 		RCT2_CALLFUNC_X(0x694921, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
@@ -1474,8 +1561,8 @@ static void peep_update_leaving_park(rct_peep* peep){
 		return;
 	}
 
-	sint16 x = 0, y = 0;
-	if (sub_6939EB(&x, &y, peep)){
+	sint16 x = 0, y = 0, xy_distance;
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		invalidate_sprite((rct_sprite*)peep);
 		sprite_move(x, y, peep->z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
@@ -1522,8 +1609,8 @@ static void peep_update_watching(rct_peep* peep){
 	else if (peep->sub_state == 1){
 		if (peep->action < 0xFE){
 			//6917F6
-			sint16 x = 0, y = 0;
-			sub_6939EB(&x, &y, peep);
+			sint16 x = 0, y = 0, xy_distance;
+			peep_update_action(&x, &y, &xy_distance, peep);
 
 			if (peep->action != 0xFF)return;
 			peep->action = 0xFE;
@@ -1591,8 +1678,8 @@ static void peep_update_entering_park(rct_peep* peep){
 		}
 		return;
 	}
-	sint16 x = 0, y = 0;
-	if (sub_6939EB(&x, &y, peep)){
+	sint16 x = 0, y = 0, xy_distance;
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		invalidate_sprite((rct_sprite*)peep); 
 		sprite_move(x, y, peep->z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
@@ -1838,8 +1925,8 @@ static void peep_update_buying(rct_peep* peep)
 
 	if (peep->sub_state == 1){
 		if (peep->action != 0xFF){
-			sint16 x, y;
-			sub_6939EB(&x, &y, peep);
+			sint16 x, y, xy_distance;
+			peep_update_action(&x, &y, &xy_distance, peep);
 			return;
 		}
 
@@ -1932,8 +2019,8 @@ static void peep_update_using_bin(rct_peep* peep){
 	else if (peep->sub_state == 1){
 
 		if (peep->action != PEEP_ACTION_NONE_2){
-			sint16 x, y;
-			sub_6939EB(&x, &y, peep);
+			sint16 x, y, xy_distance;
+			peep_update_action(&x, &y, &xy_distance, peep);
 			return;
 		}
 
@@ -2137,8 +2224,8 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 
 	sint16 delta_y = abs(peep->y - peep->destination_y);
 
-	sint16 x, y;
-	if (!sub_6939EB(&x, &y, peep)){
+	sint16 x, y, xy_distance;
+	if (!peep_update_action(&x, &y, &xy_distance, peep)){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_INSPECTING;
 		peep->sub_state = 0;
@@ -2191,8 +2278,8 @@ static void peep_update_answering(rct_peep* peep){
 			RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
 			return;
 		}
-		sint16 x, y;
-		sub_6939EB(&x, &y, peep);
+		sint16 x, y, xy_distance;
+		peep_update_action(&x, &y, &xy_distance, peep);
 		return;
 	}
 	else if (peep->sub_state <= 3){
@@ -2249,8 +2336,8 @@ static void peep_update_answering(rct_peep* peep){
 
 	sint16 delta_y = abs(peep->y - peep->destination_y);
 
-	sint16 x, y;
-	if (!sub_6939EB(&x, &y, peep)){
+	sint16 x, y, xy_distance;
+	if (!peep_update_action(&x, &y, &xy_distance, peep)){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_FIXING;
 		peep->sub_state = 0;
@@ -2813,13 +2900,13 @@ static void peep_update(rct_peep *peep)
 			peep_update_1(peep);
 			break;
 		case PEEP_STATE_QUEUING_FRONT:
-			peep_update_leaving_ride(peep);
+			peep_update_ride(peep);
 			break;
 		case PEEP_STATE_ON_RIDE:
 			// No action
 			break;
 		case PEEP_STATE_LEAVING_RIDE:
-			peep_update_leaving_ride(peep);
+			peep_update_ride(peep);
 			break;
 		case PEEP_STATE_WALKING:
 			peep_update_walking(peep);
@@ -2828,8 +2915,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_queuing(peep);
 			break;
 		case PEEP_STATE_ENTERING_RIDE:
-			// Calls the same function as leaving ride
-			peep_update_leaving_ride(peep);
+			peep_update_ride(peep);
 			break;
 		case PEEP_STATE_SITTING:
 			peep_update_sitting(peep);

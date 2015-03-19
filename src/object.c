@@ -644,7 +644,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					no_positions = *((uint16*)peep_loading_positions);
 					peep_loading_positions += 2;
 				}
-				rideVehicleEntry->var_61 = (uint32)peep_loading_positions;
+				rideVehicleEntry->peep_loading_positions = peep_loading_positions;
 				peep_loading_positions += no_positions;
 			}
 		}
@@ -718,7 +718,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			}
 			rideVehicleEntry->var_02 = 0;
 			rideVehicleEntry->var_03 = 0;
-			rideVehicleEntry->var_61 = 0;
+			rideVehicleEntry->peep_loading_positions = 0;
 		}
 
 		ride_type->var_1AE = 0;

@@ -99,9 +99,8 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 
 							sint32 v19 = vehicle->velocity;
 
-							int testaddr = (vehicle->var_31 * 0x65);
-							testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
-							uint8 test = ((uint8*)testaddr)[0x74];
+							rct_ride_type* ride_type = GET_RIDE_ENTRY(vehicle->var_D6);
+							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {
 								v19 *= 2;

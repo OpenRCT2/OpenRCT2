@@ -82,12 +82,14 @@ typedef struct{
 	uint32 var_4C;				// 0x4C , 0x66
 	uint32 no_vehicle_images;	// 0x50 , 0x6A
 	uint8 no_seating_rows;		// 0x54 , 0x6E
-	uint8 pad_55[0x7];
+	uint8 pad_55[0x5];
+	uint8 var_5A;				// 0x5A , 0x74
+	uint8 pad_5B;				// 0x5B , 0x75
 	uint8 var_5C;				// 0x5C , 0x76
 	uint8 var_5D;				// 0x5D , 0x77
 	uint8 pad_5E[0x2];
 	uint8 var_60;				// 0x60 , 0x7A
-	uint32 var_61;				// 0x61 , 0x7B
+	uint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_type_vehicle;
 
 /**
