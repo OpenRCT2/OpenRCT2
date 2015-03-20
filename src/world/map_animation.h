@@ -18,33 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#ifndef _MAP_ANIMATION_H_
+#define _MAP_ANIMATION_H_
 
 #include "../common.h"
 
-enum {
-	LANGUAGE_UNDEFINED,
-	LANGUAGE_ENGLISH_UK,
-	LANGUAGE_ENGLISH_US,
-	LANGUAGE_GERMAN,
-	LANGUAGE_DUTCH,
-	LANGUAGE_FRENCH,
-	LANGUAGE_HUNGARIAN,
-	LANGUAGE_POLISH,
-	LANGUAGE_SPANISH,
-	LANGUAGE_SWEDISH,
-	LANGUAGE_ITALIAN,
-	LANGUAGE_COUNT
-};
+/**
+ * Animated object
+ * size: 0x06
+ */
+typedef struct {
+	uint8 baseZ;
+	uint8 type;
+	uint16 x;
+	uint16 y;
+} rct_animated_object;
 
-extern const char *language_names[LANGUAGE_COUNT];
-extern int gCurrentLanguage;
+extern rct_animated_object *gAnimatedObjects;
 
-const char *language_get_string(rct_string_id id);
-int language_open(int id);
-void language_close();
-
-rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);
+void map_animation_invalidate_all();
 
 #endif

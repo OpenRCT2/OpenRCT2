@@ -49,6 +49,7 @@
 #include "windows/error.h"
 #include "windows/tooltip.h"
 #include "world/climate.h"
+#include "world/map_animation.h"
 #include "world/park.h"
 #include "world/sprite.h"
 #include "world/water.h"
@@ -317,7 +318,7 @@ void game_logic_update()
 	research_update();
 	ride_ratings_update_all();
 	ride_measurements_update();
-	map_invalidate_animations();
+	map_animation_invalidate_all();
 	vehicle_sounds_update();
 	peep_update_crowd_noise();
 	climate_update_sound();

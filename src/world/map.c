@@ -460,15 +460,6 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
 
 /**
  *
- *  rct2: 0x0068AFAD
- */
-void map_invalidate_animations()
-{
-	RCT2_CALLPROC_EBPSAFE(0x0068AFAD);
-}
-
-/**
- *
  *  rct2: 0x006A876D
  */
 void sub_6A876D()

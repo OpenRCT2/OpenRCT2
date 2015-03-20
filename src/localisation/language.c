@@ -32,7 +32,8 @@ const char *language_names[LANGUAGE_COUNT] = {
 	"Magyar",			// LANGUAGE_HUNGARIAN
 	"Polski",			// LANGUAGE_POLISH
 	"Espa\u00F1ol",		// LANGUAGE_SPANISH
-	"Svenska"			// LANGUAGE_SWEDISH
+	"Svenska",			// LANGUAGE_SWEDISH
+	"Italiano"			// LANGUAGE_ITALIAN
 };
 
 const char *language_filenames[LANGUAGE_COUNT] = {
@@ -45,7 +46,8 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 	"hungarian",		// LANGUAGE_HUNGARIAN
 	"polish",			// LANGUAGE_POLISH
 	"spanish_sp",		// LANGUAGE_SPANISH
-	"swedish"			// LANGUAGE_SWEDISH
+	"swedish",			// LANGUAGE_SWEDISH
+	"italian"			// LANGUAGE_ITALIAN
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -236,7 +238,7 @@ void language_close()
 }
 
 const int OpenRCT2LangIdToObjectLangId[] = {
-	0, 0, 1, 3, 6, 2, 0, 0, 4, 7
+	0, 0, 1, 3, 6, 2, 0, 0, 4, 7, 5
 };
 
 /* rct2: 0x0098DA16 */
