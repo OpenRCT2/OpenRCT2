@@ -493,11 +493,11 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 
 	if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 		upkeep += 30;
-	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH) {
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) {
 		upkeep += 160;
 	} else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH) {
 		upkeep += 320;
-	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH_35 || 
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH || 
 			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		upkeep += 220;
 	}

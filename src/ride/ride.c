@@ -451,7 +451,7 @@ int ride_can_have_multiple_circuits(rct_ride *ride)
 	if (
 		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT &&
 		ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
-		ride->mode != RIDE_MODE_POWERED_LAUNCH
+		ride->mode != RIDE_MODE_POWERED_LAUNCH_PASSTROUGH
 	) {
 		return 0;
 	}
@@ -2773,8 +2773,8 @@ int ride_mode_check_valid_station_numbers(rct_ride *ride)
 
 	switch (ride->mode){
 	case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
 	case RIDE_MODE_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH_35:
 	case RIDE_MODE_LIM_POWERED_LAUNCH:
 		if (no_stations <= 1) return 1;
 		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;

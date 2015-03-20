@@ -3095,8 +3095,8 @@ static void window_ride_operating_invalidate()
 	// Mode specific functionality
 	RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
 	switch (ride->mode) {
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
 	case RIDE_MODE_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH_35:
 	case RIDE_MODE_UPWARD_LAUNCH:
 	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
 		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
