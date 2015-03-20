@@ -1983,7 +1983,7 @@ static void window_ride_main_invalidate()
 	w->disabled_widgets &= ~((1 << 22) | (1 << 19));
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
 		w->disabled_widgets |= (1 << 22);
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_19)
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
 		w->disabled_widgets |= (1 << 19);
 
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
@@ -2647,7 +2647,7 @@ static void window_ride_vehicle_scrollpaint()
 static void set_operating_setting(int rideNumber, uint8 setting, uint8 value)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
-	game_do_command(0, (value << 8) | 1, 0, (setting << 8) | rideNumber, GAME_COMMAND_11, 0, 0);
+	game_do_command(0, (value << 8) | 1, 0, (setting << 8) | rideNumber, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
 static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
@@ -2674,7 +2674,7 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 	)
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
 
-	game_do_command(0, (value << 8) | 1, 0, (4 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+	game_do_command(0, (value << 8) | 1, 0, (4 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
 /**
@@ -3095,8 +3095,8 @@ static void window_ride_operating_invalidate()
 	// Mode specific functionality
 	RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
 	switch (ride->mode) {
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
 	case RIDE_MODE_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH_35:
 	case RIDE_MODE_UPWARD_LAUNCH:
 	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
 		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
@@ -3344,7 +3344,7 @@ static void window_ride_maintenance_dropdown()
 	ride = GET_RIDE(w->number);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
-	game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+	game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
 /**
@@ -4245,7 +4245,7 @@ static void window_ride_toggle_music(rct_window *w)
 	int activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
-	game_do_command(0, (activateMusic << 8) | 1, 0, (6 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+	game_do_command(0, (activateMusic << 8) | 1, 0, (6 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
 /**
@@ -4360,7 +4360,7 @@ static void window_ride_music_dropdown()
 	ride = GET_RIDE(w->number);
 	musicStyle = window_ride_current_music_style_order[dropdownIndex];
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
-	game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_11, 0, 0);
+	game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
 /**
@@ -4702,7 +4702,7 @@ static void window_ride_measurements_invalidate()
 		window_ride_measurements_widgets[WIDX_RESET_SELECTION].type = WWT_EMPTY;
 		window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_EMPTY;
 		window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WWT_EMPTY;
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_19)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)) {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 				window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
 				w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
@@ -4753,7 +4753,7 @@ static void window_ride_measurements_paint()
 	} else {
 		ride = GET_RIDE(w->number);
 		
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_19)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
 			gfx_draw_sprite(dpi, 23225, w->x + w->width - 53, w->y + w->height - 73, 0);
 
 		x = w->x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;

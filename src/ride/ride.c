@@ -451,7 +451,7 @@ int ride_can_have_multiple_circuits(rct_ride *ride)
 	if (
 		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT &&
 		ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
-		ride->mode != RIDE_MODE_POWERED_LAUNCH
+		ride->mode != RIDE_MODE_POWERED_LAUNCH_PASSTROUGH
 	) {
 		return 0;
 	}
@@ -937,7 +937,7 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 	}
 
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_19) {
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS) {
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_THIS_RIDE_CANNOT_BE_MODIFIED);
@@ -1445,7 +1445,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 
 	// Again the probability is lower, this time if young or two other unknown reasons...
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
-	if (monthsOld < 16 || ride->var_196 > 12800 || ride->lifecycle_flags & RIDE_LIFECYCLE_19)
+	if (monthsOld < 16 || ride->var_196 > 12800 || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
 		return -1;
 
 	return BREAKDOWN_BRAKES_FAILURE;
@@ -2760,6 +2760,135 @@ void ride_music_update_final()
 
 #pragma endregion
 
+/* rct2: 0x006B5559 */
+void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_GLOBAL(0x141F56C, uint8) = 4;
+	
+	uint8 ride_id = *edx & 0xFF;
+	rct_ride* ride = GET_RIDE(ride_id);
+
+	uint8 flags = *ebx & 0xFF;
+	uint8 new_value = (*ebx >> 8) & 0xFF;
+
+	uint8 setting = (*edx >> 8) & 0xFF;
+
+	if (setting == 0){
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 1796;
+			*ebx = 0x80000000;
+			return;
+		}
+
+		if (ride->status != RIDE_STATUS_CLOSED){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 1006;
+			*ebx = 0x80000000;
+			return;
+		}
+	}
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS){
+		if (setting == 0 || setting == 4 || setting == 8 || setting == 9)
+		{ 
+			RCT2_GLOBAL(0x141E9AC, uint16) = 1797;
+			*ebx = 0x80000000;
+			return;
+		}
+	}
+
+	if (setting == 9 &&
+		ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT &&
+		new_value > 1){
+		RCT2_GLOBAL(0x141E9AC, uint16) = 3141;
+		*ebx = 0x80000000;
+		return;
+	}
+
+	if (flags == 0){
+		*ebx = 0;
+		return;
+	}
+
+	switch (setting){
+	case 0:
+		RCT2_CALLPROC_X(0x006B59C6, 0, 0, 0, ride_id, 0, 0, 0);
+		ride_clear_for_construction(ride_id);
+		ride_remove_peeps(ride_id);
+
+		rct_ride_type* ride_entry = GET_RIDE_ENTRY(ride->subtype);
+		const uint8* available_modes = RideAvailableModes;
+
+		for (int i = 0; i < ride->type; i++) {
+			while (*(available_modes++) != 255) {}
+		}
+		if (ride_entry->var_008 & (1 << 17)){
+			available_modes += 2;
+		}
+
+		uint8 default_mode = available_modes[0];
+		for (; *available_modes != 0xFF; available_modes++){
+			if (*available_modes == new_value)
+				break;
+		}
+
+		if (*available_modes == 0xFF) new_value = default_mode;
+
+		if (available_modes[1] == 0xFF){
+			if (ride_entry->var_008 & (1 << 15))
+				new_value = default_mode;
+		}
+
+		ride->mode = new_value;
+		RCT2_CALLPROC_X(0x6DD57D, 0, 0, 0, ride_id, 0, 0, 0);
+		break;
+	case 1:
+		ride->depart_flags = new_value;
+		break;
+	case 2:
+		ride->min_waiting_time = new_value;
+		ride->max_waiting_time = max(new_value, ride->max_waiting_time);
+		break;
+	case 3:
+		ride->max_waiting_time = new_value;
+		ride->min_waiting_time = min(new_value, ride->min_waiting_time);
+		break;
+	case 4:
+		RCT2_CALLPROC_X(0x006B59C6, 0, 0, 0, ride_id, 0, 0, 0);
+		ride->time_limit = new_value;
+		break;
+	case 5:
+		ride->inspection_interval = new_value;
+		break;
+	case 6:
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_MUSIC;
+		if (new_value){
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+		}
+		break;
+	case 7:
+		if (new_value != ride->music){
+			ride->music = new_value;
+			ride->music_tune_id = 0xFF;
+		}
+		break;
+	case 8:
+		if (new_value != ride->lift_hill_speed){
+			ride->lift_hill_speed = new_value;
+			RCT2_CALLPROC_X(0x006B59C6, 0, 0, 0, ride_id, 0, 0, 0);
+		}
+		break;
+	case 9:
+		if (new_value != ride->num_circuits){
+			ride->num_circuits = new_value;
+			RCT2_CALLPROC_X(0x006B59C6, 0, 0, 0, ride_id, 0, 0, 0);
+		}
+		break;
+	}
+
+	window_invalidate_by_number(WC_RIDE, ride_id);
+	*ebx = 0;
+}
+
 /**
  * 
  *  rct2: 0x006B4CC1
@@ -2773,8 +2902,8 @@ int ride_mode_check_valid_station_numbers(rct_ride *ride)
 
 	switch (ride->mode){
 	case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
 	case RIDE_MODE_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH_35:
 	case RIDE_MODE_LIM_POWERED_LAUNCH:
 		if (no_stations <= 1) return 1;
 		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;

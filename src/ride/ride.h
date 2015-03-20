@@ -343,7 +343,7 @@ enum {
 	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
 	RIDE_LIFECYCLE_18 = 1 << 18,
-	RIDE_LIFECYCLE_19 = 1 << 19
+	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19
 };
 
 enum {
@@ -451,7 +451,7 @@ enum {
 	RIDE_MODE_NORMAL,
 	RIDE_MODE_CONTINUOUS_CIRCUIT,
 	RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
-	RIDE_MODE_POWERED_LAUNCH,						// RCT1 style?
+	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH,						// RCT2 style, pass through station
 	RIDE_MODE_SHUTTLE,
 	RIDE_MODE_BOAT_HIRE,
 	RIDE_MODE_UPWARD_LAUNCH,
@@ -483,7 +483,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH_35,					// RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH,					// RCT1 style, don't pass through station
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 
@@ -726,6 +726,7 @@ void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 bool ride_type_has_flag(int rideType, int flag);
 
