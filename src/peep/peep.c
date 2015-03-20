@@ -3406,11 +3406,11 @@ void peep_update_days_in_queue()
  */
 rct_peep *peep_generate(int x, int y, int z)
 {
-	//int eax, ebx, ecx, edx, esi, edi, ebp;
+	//int eax, ebx, ecx, _edx, esi, edi, ebp;
 	//eax = x;
 	//ecx = y;
-	//edx = z;
-	//RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	//_edx = z;
+	//RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &_edx, &esi, &edi, &ebp);
 	//return (rct_peep*)esi;
 
 	if (RCT2_GLOBAL(0x13573C8, uint16) < 400)
@@ -3452,9 +3452,8 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->var_45 = 0;
 
 	uint8 al = (scenario_rand() & 0x7) + 3;
-	sint8 ah = max(al, 7) - 3;
+	uint8 ah = min(al, 7) - 3;
 
-	if (ah < 0) ah = 0;
 	if (al >= 7) al = 15;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
