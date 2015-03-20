@@ -343,7 +343,7 @@ enum {
 	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
 	RIDE_LIFECYCLE_18 = 1 << 18,
-	RIDE_LIFECYCLE_19 = 1 << 19
+	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19
 };
 
 enum {
@@ -726,6 +726,7 @@ void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 bool ride_type_has_flag(int rideType, int flag);
 
