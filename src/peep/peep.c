@@ -1145,8 +1145,83 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] &RIDE_TYPE_FLAG_13)
 	{
+		sint16 x, y, z;
+		x = ride->entrances[peep->current_ride_station] & 0xFF;
+		y = ride->entrances[peep->current_ride_station] >> 8;
+		z = ride->station_heights[peep->current_ride_station];
+
+		rct_map_element* map_element = map_get_first_element_at(x, y);
+		for (;; map_element++){
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+			if (map_element->base_height == z)
+				break;
+		}
+
+		uint8 direction_entrance = (map_element->type & MAP_ELEMENT_DIRECTION_MASK);
+
+		if (ride->type == RIDE_TYPE_MAZE){	
+			peep->var_78 = direction_entrance + 1;
+			x *= 32;
+			y *= 32;
+
+			x += RCT2_ADDRESS(0x993CCC, sint16)[direction_entrance * 2];
+			y += RCT2_ADDRESS(0x993CCE, sint16)[direction_entrance * 2];
+
+			uint8 direction = direction_entrance * 4 + 11;
+			if (scenario_rand() & 0x40){
+				direction += 4;
+				peep->var_78 += 2;
+			}
+
+			direction &= 0xF;
+			peep->var_37 = direction;
+			peep->var_78 &= 3;
+
+			x += RCT2_GLOBAL(0x981FD1 + direction, sint16);
+			y += RCT2_GLOBAL(0x981FD3 + direction, sint16);
+
+			peep->destination_x = x;
+			peep->destination_y = y;
+			peep->destination_tolerence = 3;
+
+			ride->var_120++;
+			RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
+			peep->sub_state = 17;
+			return;
+		}
+
+		x = ride->station_starts[peep->current_ride_station] & 0xFF;
+		y = ride->station_starts[peep->current_ride_station] >> 8;
+
+		map_element = map_get_first_element_at(x, y);
+		for (;; map_element++){
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+			if (map_element->base_height == z)
+				break;
+		}
+
+		uint8 direction_track = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+		peep->var_37 = (direction_entrance << 2) | (direction_track << 4);
+
+		x *= 32;
+		y *= 32;
+
+		sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
+
+		x += edx[0];
+		y += edx[1];
+
+		peep->destination_x = x;
+		peep->destination_y = y;
+		peep->current_car = 0;
+
+		ride->var_120++;
+		RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
+		peep->sub_state = 14;
 		return;
-		// 0x006924E1
 	}
 
 	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
