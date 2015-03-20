@@ -880,7 +880,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0x006B52D4,
 	0, // 10
-	0x006B5559,
+	0,
 	0x006660A8,
 	0x0066640B,
 	0x006E0E01,
@@ -943,7 +943,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_ride_status,
 	game_command_emptysub,
 	game_command_set_ride_name, // 10
-	game_command_emptysub,
+	game_command_set_ride_setting,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_emptysub,
