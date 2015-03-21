@@ -1030,7 +1030,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 				ride->mode == RIDE_MODE_BACKWARD_ROTATION)
 			{
-				uint8 position = ((~vehicle->var_1F + 1) >> 3) & 0xF;
+				uint8 position = (((~vehicle->var_1F + 1) >> 3) & 0xF) * 2;
 				if (vehicle->peep[position] != 0xFFFF)
 					continue;
 			}
@@ -1508,8 +1508,8 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 		!(GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4))
 		return;
 	
-	if (!ride->mode == RIDE_MODE_FORWARD_ROTATION &&
-		!ride->mode == RIDE_MODE_BACKWARD_ROTATION){
+	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
+		ride->mode != RIDE_MODE_BACKWARD_ROTATION){
 		if (vehicle->next_free_seat - 1 != peep->current_seat)
 			return;
 	}
@@ -1518,6 +1518,59 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 	vehicle->peep[peep->current_seat] = 0xFFFF;
 
 	peep_update_ride_sub_state_2_rejoin_queue(peep, ride);
+}
+
+static void peep_update_ride_sub_state_5(rct_peep* peep){
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+	for (int i = peep->current_car; i != 0; --i){
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
+		ride->mode != RIDE_MODE_BACKWARD_ROTATION){
+		if (peep->current_seat != vehicle->num_peeps)
+			return;
+	}
+
+	if (vehicle->num_seats & 0x80){
+		rct_peep* seated_peep = GET_PEEP(vehicle->peep[peep->current_seat ^ 1]);
+		if (seated_peep->sub_state != 5)
+			return;
+
+		vehicle->num_peeps++;
+		ride->var_120++;
+
+		vehicle->var_46 += seated_peep->var_41;
+		invalidate_sprite((rct_sprite*)seated_peep);
+		sprite_move(0x8000, 0, 0, (rct_sprite*)seated_peep);
+
+		peep_decrement_num_riders(seated_peep);
+		seated_peep->state = PEEP_STATE_ON_RIDE;
+		peep_window_state_update(seated_peep);
+		seated_peep->var_E2 = 0;
+		seated_peep->sub_state = 6;
+		RCT2_CALLPROC_X(0x00695444, 0, 0, 0, seated_peep->current_ride, (int)seated_peep, 0, 0);
+	}
+
+	vehicle->num_peeps++;
+	ride->var_120++;
+
+	vehicle->var_46 += peep->var_41;
+	invalidate_sprite((rct_sprite*)vehicle);
+
+	invalidate_sprite((rct_sprite*)peep);
+	sprite_move(0x8000, 0, 0, (rct_sprite*)peep);
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_ON_RIDE;
+	peep_window_state_update(peep);
+
+	peep->var_E2 = 0;
+	peep->sub_state = 6;
+
+	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
 }
 
 /* rct2: 0x691A30 
@@ -1535,6 +1588,26 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 3:
 		peep_update_ride_sub_state_1(peep);
+		break;
+	case 4:
+	{
+		sint16 x, y, xy_distance;
+		if (!peep_update_action(&x, &y, &xy_distance, peep))
+		{
+			peep->sub_state = 5;
+			break;
+		}
+
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		break;
+	}
+	case 5:
+		peep_update_ride_sub_state_5(peep);
+		break;
+	case 6:
+		// No action, on ride.
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
