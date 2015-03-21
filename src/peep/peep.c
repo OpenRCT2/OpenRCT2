@@ -1266,7 +1266,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 		uint8 cl = peep->current_seat;
-		uint8 ch = (peep->current_seat & 0xF8) << 8;
+		uint8 ch = peep->current_seat & 0xF8;
 
 		if (ride->type != RIDE_TYPE_ENTERPRISE)
 			direction_track *= 2;
@@ -1327,6 +1327,45 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 	}
 
 	peep->sub_state = 4;
+	return;
+}
+
+/* rct2: 0x0069321D */
+static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint16 y, sint16 z, uint8 exit_direction){
+	sprite_move(x, y, z, (rct_sprite*)peep);
+	invalidate_sprite((rct_sprite*)peep);
+
+	x = ride->exits[peep->current_ride_station] & 0xFF;
+	y = ride->exits[peep->current_ride_station] >> 8;
+	x *= 32;
+	y *= 32;
+	x += 16;
+	y += 16;
+
+	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
+	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+
+	sint16 shift_multiplier = 21;
+
+	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	if (vehicle_entry->var_12 & (1 << 3) ||
+		vehicle_entry->var_14 & 0x5000){
+		shift_multiplier = 32;
+	}
+
+	x_shift *= shift_multiplier;
+	y_shift *= shift_multiplier;
+
+	x += x_shift;
+	y += y_shift;
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 2;
+
+	peep->sprite_direction = exit_direction;
+	peep->sub_state = 8;
 	return;
 }
 
@@ -1667,44 +1706,115 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			z *= 8;
 			z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
 
-			sprite_move(x, y, z, (rct_sprite*)peep);
-			invalidate_sprite((rct_sprite*)peep);
-
-			x = ride->exits[peep->current_ride_station] & 0xFF;
-			y = ride->exits[peep->current_ride_station] >> 8;
-			x *= 32;
-			y *= 32;
-			x += 16;
-			y += 16;
-
-			x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
-			y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
-
-			shift_multiplier = 21;
-
-			rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-			if (vehicle_entry->var_12 & (1 << 3) ||
-				vehicle_entry->var_14 & 0x5000){
-				shift_multiplier = 32;
-			}
-
-			x_shift *= shift_multiplier;
-			y_shift *= shift_multiplier;
-
-			x += x_shift;
-			y += y_shift;
-
-			peep->destination_x = x;
-			peep->destination_y = y;
-			peep->destination_tolerence = 2;
-
-			peep->sprite_direction = exit_direction;
-			peep->sub_state = 8;
+			peep_go_to_ride_exit(peep, ride, x, y, z, exit_direction);
 			return;
 		}
-		//6934ef
+
+		x = vehicle->x + RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2] * 12;
+		y = vehicle->y + RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2] * 12;
+
+		uint8 load_position = vehicle_entry->peep_loading_positions[peep->current_seat];
+
+		switch (vehicle->sprite_direction / 8){
+		case 0:
+			x -= load_position;
+			break;
+		case 1:
+			y += load_position;
+			break;
+		case 2:
+			x += load_position;
+			break;
+		case 3:
+			y -= load_position;
+			break;
+		}
+
+		z = ride->station_heights[peep->current_ride_station] * 8;
+
+		peep_go_to_ride_exit(peep, ride, x, y, z, exit_direction);
+		return;
 	}
-	//6932cd
+
+	sint16 x, y, z;
+	x = ride->exits[peep->current_ride_station] & 0xFF;
+	y = ride->exits[peep->current_ride_station] >> 8;
+	z = ride->station_heights[peep->current_ride_station];
+
+	rct_map_element* map_element = map_get_first_element_at(x, y);
+	for (;; map_element++){
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->base_height == z)
+			break;
+	}
+
+	uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+	x = ride->station_starts[peep->current_ride_station] & 0xFF;
+	y = ride->station_starts[peep->current_ride_station] >> 8;
+
+	map_element = map_get_first_element_at(x, y);
+	for (;; map_element++){
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (map_element->base_height == z)
+			break;
+	}
+
+	uint8 station_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+	vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+	
+	ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+	uint8 cl = peep->current_seat;
+	uint8 ch = peep->current_seat & 0xF8;
+
+	if (ride->type != RIDE_TYPE_ENTERPRISE)
+		station_direction *= 2;
+
+	if (*vehicle_type->peep_loading_positions == 0){
+		station_direction /= 2;
+		cl = 0;
+		ch = 0;
+	}
+	cl += station_direction;
+	cl &= 0x7;
+	cl += ch;
+	peep->var_37 = ((exit_direction | cl * 4) * 4) | 1;
+
+	x *= 32;
+	y *= 32;
+	x += 16;
+	y += 16;
+
+	if (ride->type == RIDE_TYPE_ENTERPRISE)
+	{
+		x = vehicle->x;
+		y = vehicle->y;
+	}
+
+	sint16 exit_x = x + ((sint8*)vehicle_type->peep_loading_positions)[(peep->var_37 + 1) * 2 + 1];
+	sint16 exit_y = y + ((sint8*)vehicle_type->peep_loading_positions)[(peep->var_37 + 1) * 2 + 2];
+
+	z *= 8;
+	z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+
+	if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+		z += 15;
+
+	sprite_move(exit_x, exit_y, z, (rct_sprite*)peep);
+	invalidate_sprite((rct_sprite*)peep);
+
+	x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
+	y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 2;
+	peep->sub_state = 13;
 }
 
 /* rct2: 0x691A30 
