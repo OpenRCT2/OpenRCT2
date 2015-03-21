@@ -1229,6 +1229,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	}
 
+	ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle_type->var_14 & (1 << 10)){
@@ -1261,6 +1262,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		uint8 direction_track = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 
 		vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+		ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 		vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 		uint8 cl = peep->current_seat;
@@ -1328,6 +1330,106 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 	return;
 }
 
+/* rct2: 0x006920B4 */
+static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride){
+	if (ride->price != 0){
+		if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
+			(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
+			(peep->voucher_arguments == peep->current_ride)){
+
+			peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+			peep->var_45 |= (1 << 3);
+		}
+		else{
+			ride->total_profit += ride->price;
+			ride->var_14D |= (1 << 1);
+			RCT2_GLOBAL(0x0141F56C, uint8) = 20;
+			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
+
+			RCT2_CALLPROC_X(0x0069926C, 0, ride->price, 0, 0, (int)peep, 0, 0);
+		}
+	}
+
+	peep->sub_state++;
+	uint8 queue_time = peep->days_in_queue;
+	if (queue_time < 253)queue_time += 3;
+
+	queue_time /= 2;
+	if (queue_time != ride->queue_time[peep->current_ride_station]){
+		ride->queue_time[peep->current_ride_station] = queue_time;
+		window_invalidate_by_number(WC_RIDE, peep->current_ride);
+	}
+
+	if (peep->flags & PEEP_FLAGS_TRACKING){
+		RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+		RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+		RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
+		RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
+
+		rct_string_id msg_string;
+		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_IN_RIDE)
+			msg_string = 1932;
+		else
+			msg_string = 1933;
+
+		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
+	}
+
+	if (ride->type == RIDE_TYPE_SPIRAL_SLIDE){
+		sub_693BE5(peep, 1);
+	}
+
+	peep_update_ride_sub_state_1(peep);
+}
+
+/* rct2: 0x00691FD4 */
+static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* ride){
+	sint16 x, y, z;
+	x = ride->entrances[peep->current_ride_station] & 0xFF;
+	y = ride->entrances[peep->current_ride_station] >> 8;
+	z = ride->station_heights[peep->current_ride_station];
+
+	rct_map_element* map_element = map_get_first_element_at(x, y);
+	for (;; map_element++){
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->base_height == z)
+			break;
+	}
+
+	uint8 direction_entrance = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+	x *= 32;
+	y *= 32;
+	x += 16 - RCT2_ADDRESS(0x981D6C, sint16)[direction_entrance * 2] * 20;
+	y += 16 - RCT2_ADDRESS(0x981D6E, sint16)[direction_entrance * 2] * 20;
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 2;
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_QUEUING_FRONT;
+	peep->sub_state = 0;
+	peep_window_state_update(peep);
+
+	peep->next_in_queue = 0xFFFF;
+
+	ride->queue_length[peep->current_ride_station]++;
+
+	uint16 current_first = ride->first_peep_in_queue[peep->current_ride_station];
+	if (current_first == 0xFFFF){
+		ride->first_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
+		return;
+	}
+
+	rct_peep* queue_peep;
+	for (queue_peep = GET_PEEP(current_first);
+		queue_peep->next_in_queue != 0xFFFF;
+		queue_peep = GET_PEEP(queue_peep->next_in_queue));
+
+	queue_peep->next_in_queue = peep->sprite_index;
+}
 /* rct2: 0x00691E42 
  * Note: Before this was the entry
  * point for sub state 1 and 3. The
@@ -1343,105 +1445,79 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 			ride->var_1CA != 0 || 
 			(++peep->var_AC) == 0){
 
-			sint16 x, y, z;
-			x = ride->entrances[peep->current_ride_station] & 0xFF;
-			y = ride->entrances[peep->current_ride_station] >> 8;
-			z = ride->station_heights[peep->current_ride_station];
-
-			rct_map_element* map_element = map_get_first_element_at(x, y);
-			for (;; map_element++){
-				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
-					continue;
-				if (map_element->base_height == z)
-					break;
-			}
-
-			uint8 direction_entrance = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
-
-			x *= 32;
-			y *= 32;
-			x += 16 - RCT2_ADDRESS(0x981D6C, sint16)[direction_entrance * 2] * 20;
-			y += 16 - RCT2_ADDRESS(0x981D6E, sint16)[direction_entrance * 2] * 20;
-
-			peep->destination_x = x;
-			peep->destination_y = y;
-			peep->destination_tolerence = 2;
-
-			peep_decrement_num_riders(peep);
-			peep->state = PEEP_STATE_QUEUING_FRONT;
-			peep->sub_state = 0;
-			peep_window_state_update(peep);
-
-			peep->next_in_queue = 0xFFFF;
-
-			ride->queue_length[peep->current_ride_station]++;
-
-			uint16 current_first = ride->first_peep_in_queue[peep->current_ride_station];
-			if (current_first == 0xFFFF){
-				ride->first_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
-				return;
-			}
-
-			rct_peep* queue_peep;
-			for (queue_peep = GET_PEEP(current_first);
-				queue_peep->next_in_queue != 0xFFFF;
-				queue_peep = GET_PEEP(queue_peep->next_in_queue));
-
-			queue_peep->next_in_queue = peep->sprite_index;
+			peep_update_ride_sub_state_2_rejoin_queue(peep, ride);
 			return;
 		}
 
-		if (ride->price != 0){
-			if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
-				(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
-				(peep->voucher_arguments == peep->current_ride)){
-
-				peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
-				peep->var_45 |= (1 << 3);
-			}
-			else{
-				ride->total_profit += ride->price;
-				ride->var_14D |= (1 << 1);
-				RCT2_GLOBAL(0x0141F56C, uint8) = 20;
-				RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
-
-				RCT2_CALLPROC_X(0x0069926D, 0, ride->price, 0, 0, peep, 0, 0);
-			}
-		}
-
-		peep->sub_state++;
-		uint8 queue_time = peep->days_in_queue;
-		if (queue_time < 253)queue_time += 3;
-
-		queue_time /= 2;
-		if (queue_time != ride->queue_time[peep->current_ride_station]){
-			ride->queue_time[peep->current_ride_station] = queue_time;
-			window_invalidate_by_number(WC_RIDE, peep->current_ride);
-		}
-
-		if (peep->flags & PEEP_FLAGS_TRACKING){
-			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-			RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
-			RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
-			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
-
-			rct_string_id msg_string;
-			if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_IN_RIDE)
-				msg_string = 1932;
-			else
-				msg_string = 1933;
-
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
-		}
-
-		if (ride->type == RIDE_TYPE_SPIRAL_SLIDE){
-			sub_693BE5(peep, 1);
-		}
-
-		peep_update_ride_sub_state_1(peep);
+		peep_update_ride_sub_state_2_enter_ride(peep, ride);
 		return;
 	}
-	//691E96
+
+	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+	for (int i = peep->current_car; i != 0; --i){
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	if (ride_entry->vehicles[0].var_12 & (1 << 3)){
+		vehicle->var_D5 &= ~(1 << 5);
+
+
+		for (int i = 0; i < ride->num_vehicles; ++i){
+			if (ride->vehicles[i] == 0xFFFF)
+				continue;
+
+			rct_vehicle* train = GET_VEHICLE(ride->vehicles[i]);
+			rct_vehicle* second_vehicle = GET_VEHICLE(train->next_vehicle_on_train);
+
+			if (second_vehicle->num_peeps == 0)
+				continue;
+
+			if (second_vehicle->var_D5 & (1 << 5))
+				continue;
+
+			return;
+		}
+	}
+
+	if (!(vehicle->num_seats & 0x80)){
+		peep_update_ride_sub_state_2_enter_ride(peep, ride);
+		return;
+	}
+
+	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
+		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
+		if (peep->current_seat & 1 || 
+			!(vehicle->var_B4 & 1)){
+			peep_update_ride_sub_state_2_enter_ride(peep, ride);
+			return;
+		}
+	}
+	else{
+		uint8 current_seat = (peep->current_seat & 0xFE) + 1;
+		if (current_seat < vehicle->next_free_seat)
+		{
+			peep_update_ride_sub_state_2_enter_ride(peep, ride);
+			return;
+		}
+	}
+
+	if (ride->status == RIDE_STATUS_OPEN &&
+		++peep->var_AC != 0 &&
+		!(GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4))
+		return;
+	
+	if (!ride->mode == RIDE_MODE_FORWARD_ROTATION &&
+		!ride->mode == RIDE_MODE_BACKWARD_ROTATION){
+		if (vehicle->next_free_seat - 1 != peep->current_seat)
+			return;
+	}
+
+	vehicle->next_free_seat--;
+	vehicle->peep[peep->current_seat] = 0xFFFF;
+
+	peep_update_ride_sub_state_2_rejoin_queue(peep, ride);
 }
 
 /* rct2: 0x691A30 

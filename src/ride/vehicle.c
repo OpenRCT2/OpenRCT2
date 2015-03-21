@@ -99,7 +99,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 
 							sint32 v19 = vehicle->velocity;
 
-							rct_ride_type* ride_type = GET_RIDE_ENTRY(vehicle->var_D6);
+							rct_ride_type* ride_type = GET_RIDE_ENTRY(vehicle->ride_subtype);
 							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {

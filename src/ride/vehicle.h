@@ -88,10 +88,11 @@ typedef struct {
 	uint8 var_CD;
 	union {
 		uint8 var_CE;
-		uint8 num_laps;					// 0xCE
+		uint8 num_laps;				// 0xCE
 	};
-	uint8 pad_CF[0x07];
-	uint8 var_D6;
+	uint8 pad_CF[0x06];
+	uint8 var_D5;
+	uint8 ride_subtype;				// 0xD6
 } rct_vehicle;
 
 enum {
