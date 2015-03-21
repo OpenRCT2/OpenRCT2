@@ -71,10 +71,7 @@ typedef struct {
 	uint8 peep_tshirt_colours[32];	// 0x92
 	uint8 num_seats;				// 0xB2
 	uint8 num_peeps;				// 0xB3
-	union{
-		uint8 var_B4; // When Forward/Backward rotation this variable is used differently
-		uint8 next_free_seat;		// 0xB4
-	};
+	uint8 next_free_seat;		// 0xB4
 	uint8 pad_B5[0x06];
 	uint8 sound1_id;				// 0xBB
 	uint8 sound1_volume;			// 0xBC
@@ -129,13 +126,16 @@ enum {
 	VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
+#define VEHICLE_SEAT_PAIR_FLAG	0x80
+#define VEHICLE_SEAT_NUM_MASK	0x7F
+
 void vehicle_update_all();
 int sub_6BC2F3(rct_vehicle* vehicle);
 void sub_6BB9FF(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
-
+int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 
 /** Helper macro until rides are stored in this module. */

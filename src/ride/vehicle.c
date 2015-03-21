@@ -633,3 +633,8 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 
 	return vehicle;
 }
+
+int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
+{
+	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
+}

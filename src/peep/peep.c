@@ -883,7 +883,7 @@ static void peep_choose_seat_from_car(rct_peep* peep, rct_ride* ride, rct_vehicl
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
 
 		chosen_seat = (((~vehicle->var_1F + 1) >> 3) & 0xF) * 2;
-		if (vehicle->var_B4 & 1){
+		if (vehicle->next_free_seat & 1){
 			chosen_seat++;
 		}
 	}
@@ -1014,17 +1014,17 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			i++){
 			vehicle = GET_VEHICLE(vehicle_id);
 
-			uint8 al = vehicle->num_seats;
-			if (al & 0x80){
-				al &= ~0x80;
-				if (vehicle->var_B4 & 1){
+			uint8 num_seats = vehicle->num_seats;
+			if (vehicle_is_used_in_pairs(vehicle)){
+				num_seats &= VEHICLE_SEAT_NUM_MASK;
+				if (vehicle->next_free_seat & 1){
 					peep->current_car = i;
 					peep_choose_seat_from_car(peep, ride, vehicle);
 					peep_go_to_ride_entrance(peep, ride);
 					return;
 				}
 			}
-			if (al == vehicle->next_free_seat)
+			if (num_seats == vehicle->next_free_seat)
 				continue;
 
 			if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
@@ -1481,7 +1481,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 		}
 	}
 
-	if (!(vehicle->num_seats & 0x80)){
+	if (!vehicle_is_used_in_pairs(vehicle)){
 		peep_update_ride_sub_state_2_enter_ride(peep, ride);
 		return;
 	}
@@ -1489,7 +1489,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
 		if (peep->current_seat & 1 || 
-			!(vehicle->var_B4 & 1)){
+			!(vehicle->next_free_seat & 1)){
 			peep_update_ride_sub_state_2_enter_ride(peep, ride);
 			return;
 		}
@@ -1534,7 +1534,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 			return;
 	}
 
-	if (vehicle->num_seats & 0x80){
+	if (vehicle_is_used_in_pairs(vehicle)){
 		rct_peep* seated_peep = GET_PEEP(vehicle->peep[peep->current_seat ^ 1]);
 		if (seated_peep->sub_state != 5)
 			return;
