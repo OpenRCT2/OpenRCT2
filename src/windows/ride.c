@@ -2070,7 +2070,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 		stringId += 23;
 
 	RCT2_GLOBAL((int)arguments + 4, uint16) = RideNameConvention[ride->type].station_name;
-	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->var_4B + 1;
+	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->current_station + 1;
 	if (ride->num_stations > 1)
 		RCT2_GLOBAL((int)arguments + 4, uint16) += 6;
 

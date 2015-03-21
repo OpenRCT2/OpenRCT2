@@ -1573,6 +1573,140 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
 }
 
+/* rct2: 0x00693028*/
+static void peep_update_ride_sub_state_7(rct_peep* peep){
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+	uint8 ride_station = vehicle->current_station;
+
+	for (int i = peep->current_car; i != 0; --i){
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	// Unsure why backward rotation is missing.
+	if (ride->mode != RIDE_MODE_FORWARD_ROTATION){
+		if (vehicle->num_peeps - 1 != peep->current_seat)
+			return;
+	}
+
+	peep->action_sprite_image_offset++;
+	if (peep->action_sprite_image_offset & 3)
+		return;
+
+	peep->action_sprite_image_offset = 0;
+
+	vehicle->num_peeps--;
+	vehicle->var_46 -= peep->var_41;
+	invalidate_sprite((rct_sprite*)vehicle);
+
+	peep->current_ride_station = ride_station;
+
+	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
+
+	if (!(vehicle_entry->var_14 & (1 << 10))){
+		sint16 x, y, z;
+		x = ride->exits[peep->current_ride_station] & 0xFF;
+		y = ride->exits[peep->current_ride_station] >> 8;
+		z = ride->station_heights[peep->current_ride_station];
+
+		rct_map_element* map_element = map_get_first_element_at(x, y);
+		for (;; map_element++){
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+			if (map_element->base_height == z)
+				break;
+		}
+
+		uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		exit_direction ^= (1 << 1);
+
+		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_16)){
+			
+			for (; vehicle->var_01 != 0; vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_train)){
+				uint16 eax = vehicle->var_36 / 4;
+				if (eax == 0 || eax > 3)
+					continue;
+
+				rct_map_element* inner_map = map_get_first_element_at(vehicle->var_38 / 32, vehicle->var_3A / 32);
+				for (;; map_element++){
+					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+						continue;
+					if (map_element->base_height == vehicle->var_3C)
+						break;
+				}
+
+				uint8 al = (inner_map->properties.track.sequence & 0x70) >> 4;
+				if (al == peep->current_ride_station)
+					break;
+			}
+
+			ride_entry = GET_RIDE_ENTRY(ride->subtype);
+			vehicle_entry = &ride_entry->vehicles[ride_entry->var_014];
+
+			uint8 shift_multiplier = 12;
+			if (vehicle_entry->var_14 & (1 << 14)){
+				shift_multiplier = 9;
+			}
+
+			uint8 direction = exit_direction;
+			if (vehicle_entry->var_14 & ((1 << 14) | (1 << 12))){
+				direction = ((vehicle->sprite_direction + 3) / 8) + 1;
+				direction &= 3;
+
+				if (vehicle->var_CD == 6)
+					direction ^= (1 << 1);
+			}
+
+			sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2];
+			sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
+
+			x = vehicle->x + x_shift * shift_multiplier;
+			y = vehicle->y + y_shift * shift_multiplier;
+			z *= 8;
+			z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+
+			sprite_move(x, y, z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+
+			x = ride->exits[peep->current_ride_station] & 0xFF;
+			y = ride->exits[peep->current_ride_station] >> 8;
+			x *= 32;
+			y *= 32;
+			x += 16;
+			y += 16;
+
+			x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
+			y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+
+			shift_multiplier = 21;
+
+			rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+			if (vehicle_entry->var_12 & (1 << 3) ||
+				vehicle_entry->var_14 & 0x5000){
+				shift_multiplier = 32;
+			}
+
+			x_shift *= shift_multiplier;
+			y_shift *= shift_multiplier;
+
+			x += x_shift;
+			y += y_shift;
+
+			peep->destination_x = x;
+			peep->destination_y = y;
+			peep->destination_tolerence = 2;
+
+			peep->sprite_direction = exit_direction;
+			peep->sub_state = 8;
+			return;
+		}
+		//6934ef
+	}
+	//6932cd
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -1608,6 +1742,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 6:
 		// No action, on ride.
+		break;
+	case 7:
+		peep_update_ride_sub_state_7(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);

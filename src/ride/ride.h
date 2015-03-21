@@ -318,7 +318,7 @@ typedef struct {
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
 	uint8 vehicle_index;						// 0x000A
-	uint8 var_0B;
+	uint8 current_station;						// 0x000B
 	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C

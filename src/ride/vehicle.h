@@ -55,7 +55,9 @@ typedef struct {
 	uint8 pad_32[0x02];
 	uint16 var_34;
 	sint16 var_36;
-	uint8 pad_38[0x06];
+	uint16 var_38;
+	uint16 var_3A;
+	uint16 var_3C;
 	uint16 next_vehicle_on_train;	// 0x3E
 	uint16 prev_vehicle_on_train;	// 0x40
 	uint16 pad_42;
@@ -63,7 +65,7 @@ typedef struct {
 	uint16 var_46;
 	uint16 var_48;
 	uint8 pad_4A;
-	uint8 var_4B;
+	uint8 current_station;			// 0x4B
 	uint8 pad_4C[0x4];
 	uint8 status;					// 0x50
 	uint8 var_51;
