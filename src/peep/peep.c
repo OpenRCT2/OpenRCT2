@@ -1872,6 +1872,36 @@ static void peep_update_ride_sub_state_8(rct_peep* peep){
 	peep->sub_state = 9;
 }
 
+/* rct2: 0x0069382E */
+static void peep_update_ride_sub_state_9(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		
+		if (xy_distance >= 16){
+			sint16 z = ride->station_heights[peep->current_ride_station] * 8;
+
+			z += RCT2_ADDRESS(0x97D21C, uint8)[ride->type * 8];
+			sprite_move(x, y, z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+			return;
+		}
+		
+		sub_693BE5(peep, 0);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+	}
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO){
+		uint8 secondaryItem = RCT2_ADDRESS(0x0097D7CB, uint8)[ride->type * 4];
+		if (!(RCT2_CALLPROC_X(0x0069AF1E, secondaryItem | (peep->current_ride << 8), 0, ride->price_secondary, 0, (int)peep, 0, 0) & 0x100)){
+			ride->no_secondary_items_sold++;
+		}
+	}
+	peep->sub_state = 18;
+}
 
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
@@ -1914,6 +1944,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 8:
 		peep_update_ride_sub_state_8(peep);
+		break;
+	case 9:
+		peep_update_ride_sub_state_9(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
