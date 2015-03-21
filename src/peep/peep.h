@@ -444,7 +444,7 @@ typedef struct {
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
 	sint32 time_in_park;			// 0xA8
-	uint8 var_AC;					// 0xAC
+	sint8 var_AC;					// 0xAC
 	uint8 previous_ride;			// 0xAD
 	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
