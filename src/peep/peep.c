@@ -1332,6 +1332,8 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 /* rct2: 0x0069321D */
 static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint16 y, sint16 z, uint8 exit_direction){
+	z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+
 	sprite_move(x, y, z, (rct_sprite*)peep);
 	invalidate_sprite((rct_sprite*)peep);
 
@@ -1345,7 +1347,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
 	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
 
-	sint16 shift_multiplier = 21;
+	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
 	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
@@ -1357,14 +1359,14 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	x_shift *= shift_multiplier;
 	y_shift *= shift_multiplier;
 
-	x += x_shift;
-	y += y_shift;
+	x -= x_shift;
+	y -= y_shift;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
 	peep->destination_tolerence = 2;
 
-	peep->sprite_direction = exit_direction;
+	peep->sprite_direction = exit_direction * 8;
 	peep->sub_state = 8;
 	return;
 }
@@ -1704,7 +1706,6 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			x = vehicle->x + x_shift * shift_multiplier;
 			y = vehicle->y + y_shift * shift_multiplier;
 			z *= 8;
-			z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
 
 			peep_go_to_ride_exit(peep, ride, x, y, z, exit_direction);
 			return;
