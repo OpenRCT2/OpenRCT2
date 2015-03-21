@@ -20,4 +20,5 @@
 - Feature: RollerCoaster Tycoon 1 scenarios can now be opened in the scenario editor or by using the 'edit' command line action.
 - Feature: Title sequence music can now be disabled or changed to the RollerCoaster Tycoon 1 theme music.
 - Feature: (Random) map generator available in scenario editor, accessible via the view menu.
+- Feature: Looping RollerCoaster now supports both "Powered launch (passing station)" and "Powered launch (without passing station)"
 - Fix: Litter bins now get full and require emptying by handymen.
