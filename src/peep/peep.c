@@ -2161,7 +2161,7 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 		switch (peep->destination_x){
 		case 0:
 			peep->destination_y++;
-			if (peep->destination_y < 30)
+			if (peep->destination_y >= 30)
 				peep->destination_x++;
 			return;
 		case 1:
@@ -2186,7 +2186,7 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 			
 			uint8 direction = (peep->var_37 / 4) & 3;
 			sint16 dest_x = x + RCT2_ADDRESS(0x981F1C, sint16)[direction * 2];
-			sint16 dest_y = y + RCT2_ADDRESS(0x981F1C, sint16)[direction * 2];
+			sint16 dest_y = y + RCT2_ADDRESS(0x981F1E, sint16)[direction * 2];
 
 			peep->destination_x = dest_x;
 			peep->destination_y = dest_y;
@@ -2266,7 +2266,6 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 
 		peep->destination_x = x;
 		peep->destination_y = y;
-		peep->sub_state = 14;
 		return;
 	}
 
