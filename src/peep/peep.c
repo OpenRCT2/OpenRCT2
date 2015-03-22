@@ -2234,6 +2234,79 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 	peep->sub_state = 14;
 }
 
+/* rct2: 0x00692C6B */
+static void peep_update_ride_sub_state_16(rct_peep* peep){
+	sint16 x, y, xy_distance;
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if ((peep->var_37 & 0x3) != 0){
+		if ((peep->var_37 & 0x3) == 3){
+			peep_update_ride_prepare_for_state_9(peep);
+			return;
+		}
+
+		peep->var_37--;
+		x = ride->station_starts[peep->current_ride_station] & 0xFF;
+		y = ride->station_starts[peep->current_ride_station] >> 8;
+
+		x *= 32;
+		y *= 32;
+		sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
+
+		x += edx[0];
+		y += edx[1];
+
+		peep->destination_x = x;
+		peep->destination_y = y;
+		peep->sub_state = 14;
+		return;
+	}
+
+	peep->var_37 |= 3;
+
+	x = ride->exits[peep->current_ride_station] & 0xFF;
+	y = ride->exits[peep->current_ride_station] >> 8;
+	sint16 z = ride->station_heights[peep->current_ride_station];
+
+	rct_map_element* map_element = map_get_first_element_at(x, y);
+	for (;; map_element++){
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->base_height == z)
+			break;
+	}
+
+	uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	exit_direction ^= (1 << 1);
+
+	x *= 32;
+	y *= 32;
+	x += 16;
+	y += 16;
+
+	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
+	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+
+	sint16 shift_multiplier = 20;
+
+	x_shift *= shift_multiplier;
+	y_shift *= shift_multiplier;
+
+	x -= x_shift;
+	y -= y_shift;
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -2294,6 +2367,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 15:
 		peep_update_ride_sub_state_15(peep);
+		break;
+	case 16:
+		peep_update_ride_sub_state_16(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
