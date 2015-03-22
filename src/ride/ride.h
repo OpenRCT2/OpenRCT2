@@ -743,7 +743,8 @@ int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi,
 void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
-
+rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
+rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
 void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);
