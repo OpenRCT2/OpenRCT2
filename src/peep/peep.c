@@ -1818,21 +1818,13 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 	peep->sub_state = 13;
 }
 
-/* rct2: 0x0069374F */
-static void peep_update_ride_sub_state_8(rct_peep* peep){
-	sint16 x, y, xy_distance;
-	if (peep_update_action(&x, &y, &xy_distance, peep)){
-		invalidate_sprite((rct_sprite*)peep);
-		sprite_move(x, y, peep->z, (rct_sprite*)peep);
-		invalidate_sprite((rct_sprite*)peep);
-		return;
-	}
-
+/* rct2: 0x0069376A */
+static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 	rct_ride* ride = GET_RIDE(peep->current_ride);
-	sint16 z;
-	x = ride->exits[peep->current_ride_station] & 0xFF;
-	y = ride->exits[peep->current_ride_station] >> 8;
-	z = ride->station_heights[peep->current_ride_station];
+	
+	sint16 x = ride->exits[peep->current_ride_station] & 0xFF;
+	sint16 y = ride->exits[peep->current_ride_station] >> 8;
+	sint16 z = ride->station_heights[peep->current_ride_station];
 
 	rct_map_element* map_element = map_get_first_element_at(x, y);
 	for (;; map_element++){
@@ -1872,6 +1864,19 @@ static void peep_update_ride_sub_state_8(rct_peep* peep){
 	peep->sub_state = 9;
 }
 
+/* rct2: 0x0069374F */
+static void peep_update_ride_sub_state_8(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	peep_update_ride_prepare_for_state_9(peep);
+}
+
 /* rct2: 0x0069382E */
 static void peep_update_ride_sub_state_9(rct_peep* peep){
 	sint16 x, y, xy_distance;
@@ -1901,6 +1906,169 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 		}
 	}
 	peep->sub_state = 18;
+}
+
+/* rct2: 0x006926AD */
+static void peep_update_ride_sub_state_12(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		sint16 z;
+		if (ride->type == RIDE_TYPE_MOTION_SIMULATOR){
+			z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+
+			if ((peep->var_37 & 3) == 2){
+				xy_distance -= 12;
+				if (xy_distance < 0)
+					xy_distance = 0;
+
+				if (xy_distance <= 15){
+					z += 15 - xy_distance;
+				}
+			}
+		}
+		else{
+			z = peep->z;
+		}
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	if ((peep->var_37 & 3) == 2){
+		peep->sub_state = 5;
+		return;
+	}
+
+	peep->var_37++;
+
+	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+
+	x = ride->station_starts[peep->current_ride_station] & 0xFF;
+	y = ride->station_starts[peep->current_ride_station] >> 8;
+
+	x *= 32;
+	y *= 32;
+	x += 16;
+	y += 16;
+
+	if (ride->type == RIDE_TYPE_ENTERPRISE){
+		x = vehicle->x;
+		y = vehicle->y;
+	}
+
+	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+	x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
+	y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+}
+
+/* rct2: 0x0069357D */
+static void peep_udpate_ride_sub_state_13(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		sint16 z;
+		if (ride->type == RIDE_TYPE_MOTION_SIMULATOR){
+			z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+
+			if ((peep->var_37 & 3) == 1){
+				
+				if (xy_distance > 15)
+					xy_distance = 15;
+
+				z += xy_distance;
+			}
+		}
+		else{
+			z = peep->z;
+		}
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	if ((peep->var_37 & 3) != 0){
+		if ((peep->var_37 & 3) == 3){
+			peep_update_ride_prepare_for_state_9(peep);
+			return;
+		}
+
+		peep->var_37--;
+		rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+
+		x = ride->station_starts[peep->current_ride_station] & 0xFF;
+		y = ride->station_starts[peep->current_ride_station] >> 8;
+
+		x *= 32;
+		y *= 32;
+		x += 16;
+		y += 16;
+
+		if (ride->type == RIDE_TYPE_ENTERPRISE){
+			x = vehicle->x;
+			y = vehicle->y;
+		}
+
+		rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+		x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
+		y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+
+		peep->destination_x = x;
+		peep->destination_y = y;
+	}
+
+	peep->var_37 |= 3;
+
+	x = ride->exits[peep->current_ride_station] & 0xFF;
+	y = ride->exits[peep->current_ride_station] >> 8;
+	sint16 z = ride->station_heights[peep->current_ride_station];
+
+	rct_map_element* map_element = map_get_first_element_at(x, y);
+	for (;; map_element++){
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->base_height == z)
+			break;
+	}
+
+	uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	exit_direction ^= (1 << 1);
+
+	x *= 32;
+	y *= 32;
+	x += 16;
+	y += 16;
+
+	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
+	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+
+	sint16 shift_multiplier = 20;
+
+	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	if (vehicle_entry->var_14 & 0x5000){
+		shift_multiplier = 32;
+	}
+
+	x_shift *= shift_multiplier;
+	y_shift *= shift_multiplier;
+
+	x -= x_shift;
+	y -= y_shift;
+
+	peep->destination_x = x;
+	peep->destination_y = y;
 }
 
 /* rct2: 0x691A30 
@@ -1947,6 +2115,16 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 9:
 		peep_update_ride_sub_state_9(peep);
+		break;
+	case 10:
+	case 11:
+		assert(false);
+		break;
+	case 12:
+		peep_update_ride_sub_state_12(peep);
+		break;
+	case 13:
+		peep_udpate_ride_sub_state_13(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
