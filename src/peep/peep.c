@@ -2269,23 +2269,23 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	uint16 ax = mapElement->properties.track.maze_entry;
+	uint16 maze_entry = mapElement->properties.track.maze_entry;
 	uint16 open_hedges = 0;
 	uint8 var_37 = peep->var_37;
 
-	if (ax & (1 << RCT2_ADDRESS(0x981FF4, uint8)[var_37])){
+	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF4, uint8)[var_37])){
 		open_hedges = 1;
 	}
 	open_hedges <<= 1;
-	if (ax & (1 << RCT2_ADDRESS(0x981FF3, uint8)[var_37])){
+	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF3, uint8)[var_37])){
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (ax & (1 << RCT2_ADDRESS(0x981FF2, uint8)[var_37])){
+	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF2, uint8)[var_37])){
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (ax & (1 << RCT2_ADDRESS(0x981FF1, uint8)[var_37])){
+	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF1, uint8)[var_37])){
 		open_hedges |= 1;
 	}
 
@@ -2366,6 +2366,56 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 	}
 }
 
+/* rct2: 0x006938D2 */
+static void peep_update_ride_sub_state_18(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, ride->station_heights[peep->current_ride_station] * 8, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride | (1 << 8), (int)peep, 0, 0);
+
+	if (peep->flags & PEEP_FLAGS_TRACKING){
+		RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
+		RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+		RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
+		RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
+
+		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1934, peep->sprite_index);
+	}
+
+	peep->var_79 = 0xFF;
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_FALLING;
+	peep_window_state_update(peep);
+
+	x = peep->x & 0xFFE0;
+	y = peep->y & 0xFFE0;
+
+	// Find the station track element
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		sint16 z = map_height_from_slope(peep->x, peep->y, mapElement->properties.path.type);
+		z += mapElement->base_height * 8;
+
+		sint16 z_diff = peep->z - z;
+		if (z_diff > 0 || z_diff < -16)
+			continue;
+
+		sprite_move(peep->x, peep->y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -2432,6 +2482,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 17:
 		peep_update_ride_sub_state_17(peep);
+		break;
+	case 18:
+		peep_update_ride_sub_state_18(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
