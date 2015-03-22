@@ -1327,7 +1327,7 @@ static int get_age_penalty(rct_ride *ride) {
 	case 5:
 	case 6:
 	case 7:
-		return 0;
+		return ride->unreliability_factor;
 	default:
 		return ride->unreliability_factor * 2;
 	}
