@@ -1084,9 +1084,9 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 				return;
 			}
 
-			uint16 reliability = ride->reliability;
-			if (reliability != 0xFFFF){
-				if (reliability * 2 < ride->price){
+			uint16 value = ride->value;
+			if (value != RIDE_VALUE_UNDEFINED){
+				if (value * 2 < ride->price){
 					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
 					if (peep->destination_tolerence == 0){
 						remove_peep_from_queue(peep);
