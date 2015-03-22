@@ -1245,10 +1245,12 @@ static void ride_spiral_slide_update(rct_ride *ride)
 
 		mapElement = ride_get_station_start_track_element(ride, i);
 		int rotation = ((mapElement->type & 3) << 2) | RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), uint16);
-		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), uint16);
+		x *= 32;
+		y *= 32;
+		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
+		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), sint16);
 
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		gfx_invalidate_scrollingtext(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
 
