@@ -242,7 +242,9 @@ typedef struct {
 		uint16 slide_peep;			// 0x15E
 		uint16 maze_tiles;			// 0x15E
 	};
-	uint8 pad_160[0x16];
+	uint8 pad_160[0xE];
+	uint8 slide_peep_t_shirt_colour;// 0x16E
+	uint8 pad_16F[0x7];
 	uint8 var_176;
 	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
