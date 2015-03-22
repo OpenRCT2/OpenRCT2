@@ -2071,6 +2071,85 @@ static void peep_udpate_ride_sub_state_13(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/* rct2: 0x006927B3 */
+static void peep_update_ride_sub_state_14(rct_peep* peep){
+	sint16 x, y, xy_distance;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	if ((peep->var_37 & 3) == 3){
+		peep->sub_state = 15;
+		peep->destination_x = 0;
+		peep->destination_y = 0;
+		peep->var_37 = (peep->var_37 / 4) & 0xC;
+		sprite_move(0x8000, y, peep->z, (rct_sprite*)peep);
+		return;
+	}
+	else if ((peep->var_37 & 3) == 2){
+		uint8 last_ride = 0;
+		if (ride->status != RIDE_STATUS_OPEN)
+			last_ride = 1;
+		else if (peep->current_car++ != 0){
+			if (ride->mode == RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
+				last_ride = 1;
+			if ((uint8)(peep->current_car - 1) > (scenario_rand() & 0xF))
+				last_ride = 1;
+		}
+
+		if (last_ride){
+			x = ride->exits[peep->current_ride_station] & 0xFF;
+			y = ride->exits[peep->current_ride_station] >> 8;
+			sint16 z = ride->station_heights[peep->current_ride_station];
+
+			rct_map_element* map_element = map_get_first_element_at(x, y);
+			for (;; map_element++){
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+					continue;
+				if (map_element->base_height == z)
+					break;
+			}
+
+			uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+			
+			peep->var_37 = (exit_direction * 4) | (peep->var_37 & 0x30) |  1;
+			x = ride->station_starts[peep->current_ride_station] & 0xFF;
+			y = ride->station_starts[peep->current_ride_station] >> 8;
+
+			x *= 32;
+			y *= 32;
+			sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
+
+			x += edx[0];
+			y += edx[1];
+
+			peep->destination_x = x;
+			peep->destination_y = y;
+			peep->sub_state = 16;
+			return;
+		}
+	}		
+	peep->var_37++;
+
+	x = ride->station_starts[peep->current_ride_station] & 0xFF;
+	y = ride->station_starts[peep->current_ride_station] >> 8;
+
+	x *= 32;
+	y *= 32;
+	sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
+
+	x += edx[0];
+	y += edx[1];
+
+	peep->destination_x = x;
+	peep->destination_y = y;
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -2125,6 +2204,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 13:
 		peep_udpate_ride_sub_state_13(peep);
+		break;
+	case 14:
+		peep_update_ride_sub_state_14(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
