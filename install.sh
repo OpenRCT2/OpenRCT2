@@ -55,7 +55,7 @@ if [[ `uname` == "Darwin" ]]; then
     if [[ ! -f $cachedir/$mingw_tar ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
-    if [[ ! -d $ming_path ]]; then
+    if [[ ! -d "$mingw_path" ]]; then
 
         pushd /usr/local/
             sudo mkdir $mingw_name
