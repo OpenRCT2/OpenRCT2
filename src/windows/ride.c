@@ -3434,7 +3434,7 @@ static void window_ride_maintenance_paint()
 	x = w->x + widget->left + 4;
 	y = w->y + widget->top + 4;
 
-	reliability = ride->var_196 >> 8;
+	reliability = ride->reliability >> 8;
 	gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, 0, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), 14);
 	y += 11;

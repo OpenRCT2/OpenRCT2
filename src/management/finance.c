@@ -127,7 +127,7 @@ void finance_pay_ride_upkeep()
 	FOR_ALL_RIDES(i, ride) {
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-			ride->var_196 = 25855; // durability?
+			ride->reliability = RIDE_INITIAL_RELIABILITY;
 
 		}
 		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {

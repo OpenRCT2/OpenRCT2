@@ -1309,13 +1309,35 @@ static void ride_inspection_update(rct_ride *ride)
 	}
 }
 
+static int get_age_penalty(rct_ride *ride) {
+	int years;
+	years = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+	switch (years) {
+	case 0:
+		return 0;
+	case 1:
+		return ride->unreliability_factor / 8;
+	case 2:
+		return ride->unreliability_factor / 4;
+	case 3:
+	case 4:
+		return ride->unreliability_factor / 2;
+	case 5:
+	case 6:
+	case 7:
+		return 0;
+	default:
+		return ride->unreliability_factor * 2;
+	}
+}
+
 /**
  *
  *  rct2: 0x006AC622
  */
 static void ride_breakdown_update(int rideIndex)
 {
-	int agePenalty, years, ax, breakdownReason;
+	int breakdownReason, unreliabilityAccumulator;
 	rct_ride *ride = GET_RIDE(rideIndex);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 255)
@@ -1354,38 +1376,17 @@ static void ride_breakdown_update(int rideIndex)
 		return;
 
 	// Calculate breakdown probability?
-	ax = ride->var_198;
-	agePenalty;
-	years = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
-	switch (years) {
-	case 0:
-		agePenalty = 0;
-		break;
-	case 1:
-		agePenalty = ax >> 3;
-		break;
-	case 2:
-		agePenalty = ax >> 2;
-		break;
-	case 3:
-	case 4:
-		agePenalty = ax >> 1;
-		break;
-	case 5:
-	case 6:
-	case 7:
-		agePenalty = ax >> 0;
-		break;
-	default:
-		agePenalty = ax << 1;
-		break;
-	}
-	ax += agePenalty;
-	ride->var_196 = max(0, ride->var_196 - ax);
+	unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
+	ride->reliability = max(0, ride->reliability - unreliabilityAccumulator);
 	ride->var_14D |= 32;
 
-	// Random probability of a breakdown
-	if (ride->var_196 == 0 || (int)(scenario_rand() & 0x2FFFFF) <= 25856 - ride->var_196) {
+	// Random probability of a breakdown. Roughly this is 1 in
+	//
+	// (25000 - reliability) / 3 000 000
+	//
+	// a 0.8% chance, less the breakdown factor which accumulates as the game
+	// continues.
+	if (ride->reliability == 0 || (int)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability) {
 		breakdownReason = ride_get_new_breakdown_problem(ride);
 		if (breakdownReason != -1)
 			ride_prepare_breakdown(rideIndex, breakdownReason);
@@ -1443,9 +1444,8 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 		if (ride->num_vehicles != 1)
 			return -1;
 
-	// Again the probability is lower, this time if young or two other unknown reasons...
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
-	if (monthsOld < 16 || ride->var_196 > 12800 || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
+	if (monthsOld < 16 || ride->reliability > (50 << 8) || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
 		return -1;
 
 	return BREAKDOWN_BRAKES_FAILURE;
