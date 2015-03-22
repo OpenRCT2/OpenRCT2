@@ -459,7 +459,7 @@ void footpath_provisional_remove()
  * 
  *  rct2: 0x006A7831
  */
-void sub_6A7831()
+void footpath_provisional_update()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
