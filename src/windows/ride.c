@@ -3439,8 +3439,7 @@ static void window_ride_maintenance_paint()
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), 14);
 	y += 11;
 
-	// Down time
-	downTime = ride->var_199;
+	downTime = ride->downtime;
 	gfx_draw_string_left(dpi, STR_DOWN_TIME_LABEL_1889, &downTime, 0, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, downTime, 28);
 	y += 26;

@@ -259,8 +259,8 @@ typedef struct {
 	// Small constant used to increase the unreliability as the game continues,
 	// making breakdowns more and more likely.
 	uint8 unreliability_factor;
-	// Down time
-	uint8 var_199;
+	// Range from [0, 100]
+	uint8 downtime;                 // 0x199
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
 	uint8 var_19C;
