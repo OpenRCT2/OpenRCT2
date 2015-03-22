@@ -3677,7 +3677,7 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 
 			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
-			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG7)){
+			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)){
 				map_element++;
 				continue;
 			}
