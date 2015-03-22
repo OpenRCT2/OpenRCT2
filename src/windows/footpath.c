@@ -441,7 +441,8 @@ static void window_footpath_toolup()
 	window_tool_get_registers(w, widgetIndex, x, y);
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A8380, x, y, 0, 0, (int)w, 0, 0);
+		// Below is a 'function chunk' at 0x006A8380 in rct2
+		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 	}
 }
 
