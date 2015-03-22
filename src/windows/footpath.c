@@ -424,7 +424,7 @@ static void window_footpath_tooldrag()
 	window_tool_get_registers(w, widgetIndex, x, y);
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		RCT2_CALLPROC_X(0x006A82C5, x, y, 0, 0, (int)w, 0, 0);
+		window_footpath_place_path_at_point(x, y);
 	}
 }
 
