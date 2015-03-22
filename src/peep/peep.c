@@ -1149,7 +1149,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		uint8 direction_entrance = (map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
 		if (ride->type == RIDE_TYPE_MAZE){	
-			peep->var_78 = direction_entrance + 1;
+			peep->maze_last_edge = direction_entrance + 1;
 			x *= 32;
 			y *= 32;
 
@@ -1159,12 +1159,12 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			uint8 direction = direction_entrance * 4 + 11;
 			if (scenario_rand() & 0x40){
 				direction += 4;
-				peep->var_78 += 2;
+				peep->maze_last_edge += 2;
 			}
 
 			direction &= 0xF;
 			peep->var_37 = direction;
-			peep->var_78 &= 3;
+			peep->maze_last_edge &= 3;
 
 			x += RCT2_GLOBAL(0x981FD1 + direction, sint16);
 			y += RCT2_GLOBAL(0x981FD3 + direction, sint16);
@@ -2228,6 +2228,144 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/* rct2: 0x00692A83 */
+static void peep_update_ride_sub_state_17(rct_peep* peep){
+	sint16 x, y, xy_distance;
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+	if (peep->var_37 == 16){
+		peep_update_ride_prepare_for_state_9(peep);
+		return;
+	}
+
+	if (peep->action >= PEEP_ACTION_NONE_1){
+		if (peep->energy > 64 &&
+			(scenario_rand() & 0xFFFF) <= 2427){
+
+			peep->action = PEEP_ACTION_JUMP;
+			peep->action_frame = 0;
+			peep->action_sprite_image_offset = 0;
+			sub_693B58(peep);
+			invalidate_sprite((rct_sprite*)peep);
+		}
+	}
+
+	x = peep->destination_x & 0xFFE0;
+	y = peep->destination_y & 0xFFE0;
+	sint16 z = ride->station_heights[0];
+
+	// Find the station track element
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK && z == mapElement->base_height)
+			break;
+
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	uint16 ax = mapElement->properties.track.maze_entry;
+	uint16 open_hedges = 0;
+	uint8 var_37 = peep->var_37;
+
+	if (ax & (1 << RCT2_ADDRESS(0x981FF4, uint8)[var_37])){
+		open_hedges = 1;
+	}
+	open_hedges <<= 1;
+	if (ax & (1 << RCT2_ADDRESS(0x981FF3, uint8)[var_37])){
+		open_hedges |= 1;
+	}
+	open_hedges <<= 1;
+	if (ax & (1 << RCT2_ADDRESS(0x981FF2, uint8)[var_37])){
+		open_hedges |= 1;
+	}
+	open_hedges <<= 1;
+	if (ax & (1 << RCT2_ADDRESS(0x981FF1, uint8)[var_37])){
+		open_hedges |= 1;
+	}
+
+	open_hedges ^= 0xF;
+	if (open_hedges == 0)
+		return;
+
+	uint8 maze_last_edge = peep->maze_last_edge ^ (1 << 1);
+	open_hedges &= ~(1 << maze_last_edge);
+	if (open_hedges == 0)
+		open_hedges |= (1 << maze_last_edge);
+
+	uint8 chosen_edge = scenario_rand() & 0x3;
+	while (!(open_hedges & (1 << chosen_edge))){
+		chosen_edge = (chosen_edge + 1) & 3;
+	}
+
+	x = RCT2_ADDRESS(0x993CCC, sint16)[chosen_edge * 2] / 2;
+	y = RCT2_ADDRESS(0x993CCE, sint16)[chosen_edge * 2] / 2;
+
+	x += peep->destination_x;
+	y += peep->destination_y;
+
+	uint8 type = 0;
+
+	mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (z != mapElement->base_height)
+			continue;
+		
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK){
+			type = 1;
+			break;
+		}
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE &&
+			mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT){
+			type = 2;
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	switch (type){
+	case 0:
+		peep->maze_last_edge++;
+		peep->maze_last_edge &= 3;
+		return;
+	case 1:
+		peep->destination_x = x;
+		peep->destination_y = y;
+
+		peep->var_37 = RCT2_ADDRESS(0x981FE1, uint8)[peep->var_37 + chosen_edge];
+		peep->maze_last_edge = chosen_edge;
+		break;
+	case 2:
+		x = peep->destination_x;
+		y = peep->destination_y;
+		if (chosen_edge & 1){
+			x &= 0xFFE0;
+			x += 16;
+		}
+		else{
+			y &= 0xFFE0;
+			y += 16;
+		}
+		peep->destination_x = x;
+		peep->destination_y = y;
+		peep->var_37 = 16;
+		peep->maze_last_edge = chosen_edge;
+		break;
+	}
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -2291,6 +2429,9 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 16:
 		peep_update_ride_sub_state_16(peep);
+		break;
+	case 17:
+		peep_update_ride_sub_state_17(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);

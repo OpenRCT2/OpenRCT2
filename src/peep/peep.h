@@ -434,7 +434,10 @@ typedef struct {
 	};
 	uint8 var_76;
 	uint8 pad_77;
-	uint8 var_78;
+	union{
+		uint8 maze_last_edge;			// 0x78
+		uint8 var_78;
+	};
 	uint8 var_79;
 	uint16 time_in_queue;			// 0x7A
 	uint8 rides_been_on[32];		// 0x7C 
