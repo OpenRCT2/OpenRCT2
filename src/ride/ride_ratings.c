@@ -49,7 +49,7 @@ static void ride_ratings_update_state_4();
 static void ride_ratings_update_state_5();
 static void loc_6B5BB2();
 static void ride_ratings_calculate(rct_ride *ride);
-static void ride_ratings_fair_value_calculate(rct_ride *ride);
+static void ride_ratings_calculate_value(rct_ride *ride);
 
 static int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 {
@@ -283,7 +283,7 @@ static void ride_ratings_update_state_3()
 
 	ride_ratings_calculate(ride);
 	RCT2_CALLPROC_X(0x00655F64, 0, 0, 0, 0, 0, (int)ride, 0);
-	ride_ratings_fair_value_calculate(ride);
+	ride_ratings_calculate_value(ride);
 
 	window_invalidate_by_number(WC_RIDE, _rideRatingsCurrentRide);
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -372,7 +372,7 @@ static void ride_ratings_calculate(rct_ride *ride)
 	}
 }
 
-static void ride_ratings_fair_value_calculate(rct_ride *ride)
+static void ride_ratings_calculate_value(rct_ride *ride)
 {
 	rct_ride *ride2;
 	int i, otherRidesOfSameType;
@@ -380,7 +380,7 @@ static void ride_ratings_fair_value_calculate(rct_ride *ride)
 	if (ride->excitement == (ride_rating)0xFFFF)
 		return;
 
-	int fair_value =
+	int value =
 		(((ride->excitement * RCT2_GLOBAL(0x0097CD1E + (ride->type * 6), sint16)) * 32) >> 15) +
 		(((ride->intensity  * RCT2_GLOBAL(0x0097CD20 + (ride->type * 6), sint16)) * 32) >> 15) +
 		(((ride->nausea     * RCT2_GLOBAL(0x0097CD22 + (ride->type * 6), sint16)) * 32) >> 15);
@@ -389,19 +389,19 @@ static void ride_ratings_fair_value_calculate(rct_ride *ride)
 
 	// New ride reward
 	if (monthsOld <= 12) {
-		fair_value += 10;
+		value += 10;
 		if (monthsOld <= 4)
-			fair_value += 20;
+			value += 20;
 	}
 
 	// Old ride penalty
-	if (monthsOld >= 40) fair_value -= fair_value / 4;
-	if (monthsOld >= 64) fair_value -= fair_value / 4;
+	if (monthsOld >= 40) value -= value / 4;
+	if (monthsOld >= 64) value -= value / 4;
 	if (monthsOld < 200) {
-		if (monthsOld >= 88) fair_value -= fair_value / 4;
-		if (monthsOld >= 104) fair_value -= fair_value / 4;
-		if (monthsOld >= 120) fair_value -= fair_value / 2;
-		if (monthsOld >= 128) fair_value -= fair_value / 2;
+		if (monthsOld >= 88) value -= value / 4;
+		if (monthsOld >= 104) value -= value / 4;
+		if (monthsOld >= 120) value -= value / 2;
+		if (monthsOld >= 128) value -= value / 2;
 	}
 
 	// Other ride of same type penalty
@@ -411,9 +411,9 @@ static void ride_ratings_fair_value_calculate(rct_ride *ride)
 			otherRidesOfSameType++;
 	}
 	if (otherRidesOfSameType > 1)
-		fair_value -= fair_value / 4;
+		value -= value / 4;
 
-	ride->fair_value = max(0, fair_value);
+	ride->value = max(0, value);
 }
 
 /**

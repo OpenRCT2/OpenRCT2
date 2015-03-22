@@ -218,8 +218,7 @@ typedef struct {
 			ride_rating nausea;		// 0x144
 		};
 	};
-	// Max price customers will pay before they think the ride is bad value
-	uint16 fair_value;				// 0x146
+	uint16 value;					// 0x146
 	uint16 var_148;
 	uint8 satisfaction;				// 0x14A
 	uint8 satisfaction_time_out;	// 0x14B
@@ -666,7 +665,7 @@ enum {
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
-#define RIDE_FAIR_VALUE_UNDEFINED 0xFFFF
+#define RIDE_VALUE_UNDEFINED 0xFFFF
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) - 1)
 
 #define STATION_DEPART_FLAG (1 << 7)
