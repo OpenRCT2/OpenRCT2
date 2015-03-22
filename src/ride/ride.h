@@ -98,6 +98,11 @@ typedef struct {
 	rct_string_id name;				// 0x000
 	rct_string_id description;		// 0x002
 	uint32 images_offset;			// 0x004
+	// Flags of various kinds.
+	// 0x800:  if true, air time hurts ride excitement
+	// 0x1000: if set, use the ride_entry->name in 0x000
+	// 0x2000: ride is available for this park
+	// 0x3000
 	uint32 var_008;
 	// 0xC, D, E are related
 	uint8 var_00C;
