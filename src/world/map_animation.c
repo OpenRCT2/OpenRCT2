@@ -21,45 +21,52 @@
 #include "../addresses.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "map_animation.h"
 #include "map.h"
 #include "scenery.h"
 #include "sprite.h"
 
-rct_animated_object *gAnimatedObjects = (rct_animated_object*)0x013886A0;
-
 typedef bool (*map_animation_invalidate_event_handler)(int x, int y, int baseZ);
 
-static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ);
-static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ);
-static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ);
-static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ);
-static bool map_animation_invalidate_remove(int x, int y, int baseZ);
-static bool map_animation_invalidate_banner(int x, int y, int baseZ);
-static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ);
-static bool sub_6E5B50(int x, int y, int baseZ);
-static bool map_animation_invalidate_wall(int x, int y, int baseZ);
+static bool map_animation_invalidate(rct_map_animation *obj);
 
-/** rct2: 0x009819DC */
-const uint32 _animatedObjectEventHandlers[] = {
-	(uint32)map_animation_invalidate_ride_entrance,			// ride entrance
-	(uint32)map_animation_invalidate_queue_banner,			// queue banner
-	(uint32)map_animation_invalidate_small_scenery,			// small scenery + peep
-	(uint32)map_animation_invalidate_park_entrance,			// park entrance
-	0x006CE29E,												// track
-	0x006CE2F3,												// track
-	0x006CE39D,												// track
-	0x006CE348,												// track
-	0x006CE3FA,												// track
-	(uint32)map_animation_invalidate_remove,				// simply return true
-	(uint32)map_animation_invalidate_banner,				// banner
-	(uint32)map_animation_invalidate_large_scenery,			// large scenery
-	(uint32)sub_6E5B50,										// wall
-	(uint32)map_animation_invalidate_wall					// wall
-};
+static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT];
 
+rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
 
-static bool map_animation_invalidate(rct_animated_object *obj);
+/**
+ * 
+ *  rct2: 0x0068AF67
+ *
+ * @param type (dh)
+ * @param x (ax)
+ * @param y (cx)
+ * @param z (dl)
+ */
+void map_animation_create(int type, int x, int y, int z)
+{
+	rct_map_animation *aobj = &gAnimatedObjects[0];
+	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	for (; numAnimatedObjects > 0; aobj++) {
+		if (aobj->x != x)
+			continue;
+		if (aobj->y != y)
+			continue;
+		if (aobj->baseZ != z)
+			continue;
+
+		// Animation already exists
+		return;
+	}
+
+	// Create new animation
+	RCT2_GLOBAL(0x0138B580, uint16)++;
+	aobj->type = type;
+	aobj->x = x;
+	aobj->y = y;
+	aobj->baseZ = z;
+}
 
 /**
  *
@@ -67,7 +74,7 @@ static bool map_animation_invalidate(rct_animated_object *obj);
  */
 void map_animation_invalidate_all()
 {
-	rct_animated_object *aobj = &gAnimatedObjects[0];
+	rct_map_animation *aobj = &gAnimatedObjects[0];
 	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
 	while (numAnimatedObjects > 0) {
 		if (map_animation_invalidate(aobj)) {
@@ -86,16 +93,11 @@ void map_animation_invalidate_all()
 /**
  * @returns true if the animation should be removed.
  */
-static bool map_animation_invalidate(rct_animated_object *obj)
+static bool map_animation_invalidate(rct_map_animation *obj)
 {
-	uint32 address = _animatedObjectEventHandlers[obj->type];
-	if (((address >> 20) & 0xFFF) == 0x006) {
-		int result = RCT2_CALLPROC_X(address, obj->x, 0, obj->y, obj->baseZ, 0, 0, 0);
-		return (result & 0x100) != 0;
-	} else {
-		map_animation_invalidate_event_handler handler = (map_animation_invalidate_event_handler)address;
-		return handler(obj->x, obj->y, obj->baseZ);
-	}
+	assert(obj->type < MAP_ANIMATION_TYPE_COUNT);
+
+	return _animatedObjectEventHandlers[obj->type](obj->x, obj->y, obj->baseZ);
 }
 
 /**
@@ -185,6 +187,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 		}
 
 		if (sceneryEntry->small_scenery.flags & 0x2000) {
+			// Peep, looking at scenery
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)) {
 				int direction = mapElement->type & 3;
 				int x2 = x - TileDirectionDelta[direction].x;
@@ -241,6 +244,137 @@ static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ)
 		baseZ = mapElement->base_height * 8;
 		map_invalidate_tile(x, y, baseZ + 32, baseZ + 64);
 		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006CE29E
+ */
+static bool map_animation_invalidate_track_waterfall(int x, int y, int baseZ)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height != baseZ)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.type == TRACK_ELEM_WATERFALL) {
+			int z = mapElement->base_height * 8;
+			map_invalidate_tile(x, y, z + 14, z + 46);
+			return false;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006CE2F3
+ */
+static bool map_animation_invalidate_track_rapids(int x, int y, int baseZ)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height != baseZ)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.type == TRACK_ELEM_RAPIDS) {
+			int z = mapElement->base_height * 8;
+			map_invalidate_tile(x, y, z + 14, z + 18);
+			return false;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006CE39D
+ */
+static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
+{
+	rct_map_element *mapElement;
+
+	bool wasInvalidated = false;
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height != baseZ)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
+			int z = mapElement->base_height * 8;
+			map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+			if (mapElement->properties.track.sequence & 0xF0) {
+				mapElement->properties.track.sequence -= 0x10;
+				return false;
+			} else {
+				return true;
+			}
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006CE348
+ */
+static bool map_animation_invalidate_track_whirlpool(int x, int y, int baseZ)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height != baseZ)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.type == TRACK_ELEM_WHIRLPOOL) {
+			int z = mapElement->base_height * 8;
+			map_invalidate_tile(x, y, z + 14, z + 18);
+			return false;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006CE3FA
+ */
+static bool map_animation_invalidate_track_spinningtunnel(int x, int y, int baseZ)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height != baseZ)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.type == TRACK_ELEM_SPINNING_TUNNEL) {
+			int z = mapElement->base_height * 8;
+			map_invalidate_tile(x, y, z + 14, z + 32);
+			return false;
+		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return true;
@@ -310,7 +444,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
  *
  *  rct2: 0x006E5B50
  */
-static bool sub_6E5B50(int x, int y, int baseZ)
+static bool map_animation_invalidate_wall_unknown(int x, int y, int baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -390,3 +524,21 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 
 	return !wasInvalidated;
 }
+
+/** rct2: 0x009819DC */
+static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
+	map_animation_invalidate_ride_entrance,
+	map_animation_invalidate_queue_banner,
+	map_animation_invalidate_small_scenery,
+	map_animation_invalidate_park_entrance,
+	map_animation_invalidate_track_waterfall,
+	map_animation_invalidate_track_rapids,
+	map_animation_invalidate_track_onridephoto,
+	map_animation_invalidate_track_whirlpool,
+	map_animation_invalidate_track_spinningtunnel,
+	map_animation_invalidate_remove,
+	map_animation_invalidate_banner,
+	map_animation_invalidate_large_scenery,
+	map_animation_invalidate_wall_unknown,
+	map_animation_invalidate_wall
+};

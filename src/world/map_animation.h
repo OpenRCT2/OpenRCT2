@@ -32,10 +32,29 @@ typedef struct {
 	uint8 type;
 	uint16 x;
 	uint16 y;
-} rct_animated_object;
+} rct_map_animation;
 
-extern rct_animated_object *gAnimatedObjects;
+enum {
+	MAP_ANIMATION_TYPE_RIDE_ENTRANCE,
+	MAP_ANIMATION_TYPE_QUEUE_BANNER,
+	MAP_ANIMATION_TYPE_SMALL_SCENERY,
+	MAP_ANIMATION_TYPE_PARK_ENTRANCE,
+	MAP_ANIMATION_TYPE_TRACK_WATERFALL,
+	MAP_ANIMATION_TYPE_TRACK_RAPIDS,
+	MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
+	MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL,
+	MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL,
+	MAP_ANIMATION_TYPE_REMOVE,
+	MAP_ANIMATION_TYPE_BANNER,
+	MAP_ANIMATION_TYPE_LARGE_SCENERY,
+	MAP_ANIMATION_TYPE_WALL_UNKNOWN,
+	MAP_ANIMATION_TYPE_WALL,
+	MAP_ANIMATION_TYPE_COUNT
+};
 
+extern rct_map_animation *gAnimatedObjects;
+
+void map_animation_create(int type, int x, int y, int z);
 void map_animation_invalidate_all();
 
 #endif
