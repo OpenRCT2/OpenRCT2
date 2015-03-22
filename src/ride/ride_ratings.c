@@ -49,7 +49,7 @@ static void ride_ratings_update_state_4();
 static void ride_ratings_update_state_5();
 static void loc_6B5BB2();
 static void ride_ratings_calculate(rct_ride *ride);
-static void ride_ratings_reliability_calculate(rct_ride *ride);
+static void ride_ratings_fair_value_calculate(rct_ride *ride);
 
 static int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
 {
@@ -283,7 +283,7 @@ static void ride_ratings_update_state_3()
 
 	ride_ratings_calculate(ride);
 	RCT2_CALLPROC_X(0x00655F64, 0, 0, 0, 0, 0, (int)ride, 0);
-	ride_ratings_reliability_calculate(ride);
+	ride_ratings_fair_value_calculate(ride);
 
 	window_invalidate_by_number(WC_RIDE, _rideRatingsCurrentRide);
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -372,7 +372,7 @@ static void ride_ratings_calculate(rct_ride *ride)
 	}
 }
 
-static void ride_ratings_reliability_calculate(rct_ride *ride)
+static void ride_ratings_fair_value_calculate(rct_ride *ride)
 {
 	rct_ride *ride2;
 	int i, otherRidesOfSameType;
@@ -380,7 +380,7 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
 	if (ride->excitement == (ride_rating)0xFFFF)
 		return;
 
-	int reliability =
+	int fair_value =
 		(((ride->excitement * RCT2_GLOBAL(0x0097CD1E + (ride->type * 6), sint16)) * 32) >> 15) +
 		(((ride->intensity  * RCT2_GLOBAL(0x0097CD20 + (ride->type * 6), sint16)) * 32) >> 15) +
 		(((ride->nausea     * RCT2_GLOBAL(0x0097CD22 + (ride->type * 6), sint16)) * 32) >> 15);
@@ -389,19 +389,19 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
 
 	// New ride reward
 	if (monthsOld <= 12) {
-		reliability += 10;
+		fair_value += 10;
 		if (monthsOld <= 4)
-			reliability += 20;
+			fair_value += 20;
 	}
 
 	// Old ride penalty
-	if (monthsOld >= 40) reliability -= reliability / 4;
-	if (monthsOld >= 64) reliability -= reliability / 4;
+	if (monthsOld >= 40) fair_value -= fair_value / 4;
+	if (monthsOld >= 64) fair_value -= fair_value / 4;
 	if (monthsOld < 200) {
-		if (monthsOld >= 88) reliability -= reliability / 4;
-		if (monthsOld >= 104) reliability -= reliability / 4;
-		if (monthsOld >= 120) reliability -= reliability / 2;
-		if (monthsOld >= 128) reliability -= reliability / 2;
+		if (monthsOld >= 88) fair_value -= fair_value / 4;
+		if (monthsOld >= 104) fair_value -= fair_value / 4;
+		if (monthsOld >= 120) fair_value -= fair_value / 2;
+		if (monthsOld >= 128) fair_value -= fair_value / 2;
 	}
 
 	// Other ride of same type penalty
@@ -411,9 +411,9 @@ static void ride_ratings_reliability_calculate(rct_ride *ride)
 			otherRidesOfSameType++;
 	}
 	if (otherRidesOfSameType > 1)
-		reliability -= reliability / 4;
+		fair_value -= fair_value / 4;
 
-	ride->reliability = max(0, reliability);
+	ride->fair_value = max(0, fair_value);
 }
 
 /**
@@ -564,12 +564,16 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 }
 
 /**
- *
  *  rct2: 0x00655FD6
  */
-static void sub_655FD6(rct_ride *ride)
+static void set_unreliability_factor(rct_ride *ride)
 {
-    ride->var_198 += (ride->lift_hill_speed - RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4]) * 2;
+    // The higher the number, the lower the breakdown
+    // possibility. Range is [3, 7]. values are here:
+    // https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
+    // inlining this per ride
+	uint8 lift_speed_adjustment = RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4];
+    ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
 /**
@@ -752,13 +756,13 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 	
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	// Base ratings
-	ratings.excitement =	RIDE_RATING(2,90);
-	ratings.intensity =		RIDE_RATING(2,30);
-	ratings.nausea =		RIDE_RATING(2,10);
+	ratings.excitement = RIDE_RATING(2,90);
+	ratings.intensity  = RIDE_RATING(2,30);
+	ratings.nausea     = RIDE_RATING(2,10);
 
 	// Apply length of ride factor
 	totalLength = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
@@ -868,8 +872,8 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 8;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 8;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement =	RIDE_RATING(1,30);
@@ -901,8 +905,8 @@ static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 8;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 8;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement =	RIDE_RATING(1,50);
@@ -936,8 +940,8 @@ static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 10;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 10;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement =	RIDE_RATING(1,50);
@@ -968,8 +972,8 @@ static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement =	RIDE_RATING(2,50);
@@ -1018,8 +1022,8 @@ static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	int unk = ride->var_0D0 * 5;
 	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 19521) >> 16);
@@ -1056,8 +1060,8 @@ static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	int unk = ride->var_0D0 * 25;
 	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 41831) >> 16);
@@ -1082,8 +1086,8 @@ static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 21;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 21;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS) {
@@ -1114,8 +1118,8 @@ static void ride_ratings_calculate_3d_cinema(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 21;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 21;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	switch (ride->mode) {
@@ -1155,8 +1159,8 @@ static void ride_ratings_calculate_top_spin(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 19;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 19;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	switch (ride->mode) {
@@ -1198,8 +1202,8 @@ static void ride_ratings_calculate_space_rings(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 7;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 7;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement	= RIDE_RATING(1,50);
@@ -1228,8 +1232,8 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
-	ride->var_198 = 15;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 15;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement	= RIDE_RATING(1,11);
@@ -1270,8 +1274,8 @@ static void ride_ratings_calculate_twist(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement	= RIDE_RATING(1,13);
@@ -1302,8 +1306,8 @@ static void ride_ratings_calculate_haunted_house(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 8;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 8;
+	set_unreliability_factor(ride);
 
 	ratings.excitement	= RIDE_RATING(3,41);
 	ratings.intensity	= RIDE_RATING(1,53);
@@ -1330,8 +1334,8 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
-	ride->var_198 = 0;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 0;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement =	RIDE_RATING(1,50);
@@ -1391,8 +1395,8 @@ static void ride_ratings_calculate_circus_show(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 9;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 9;
+	set_unreliability_factor(ride);
 
 	ratings.excitement	= RIDE_RATING(2,10);
 	ratings.intensity	= RIDE_RATING(0,30);
@@ -1416,8 +1420,8 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 5;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 5;
+	set_unreliability_factor(ride);
 
 	ratings.excitement	= RIDE_RATING(2,15);
 	ratings.intensity	= RIDE_RATING(0,62);
@@ -1441,8 +1445,8 @@ static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 16;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement	= RIDE_RATING(2,45);
@@ -1473,8 +1477,8 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-	ride->var_198 = 22;
-	sub_655FD6(ride);
+	ride->unreliability_factor = 22;
+	set_unreliability_factor(ride);
 
 	// Base ratings
 	ratings.excitement	= RIDE_RATING(3,60);

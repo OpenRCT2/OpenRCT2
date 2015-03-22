@@ -100,13 +100,13 @@ static void* window_new_campaign_events[] = {
 uint8 window_new_campaign_rides[MAX_RIDES];
 uint8 window_new_campaign_shop_items[64];
 
-int ride_reliability_compare(const void *a, const void *b)
+int ride_fair_value_compare(const void *a, const void *b)
 {
 	rct_ride *rideA, *rideB;
 
 	rideA = GET_RIDE(*((uint8*)a));
 	rideB = GET_RIDE(*((uint8*)b));
-	return rideB->reliability - rideA->reliability;
+	return rideB->fair_value - rideA->fair_value;
 }
 
 int ride_name_compare(const void *a, const void *b)
@@ -179,7 +179,7 @@ void window_new_campaign_open(sint16 campaignType)
 
 	// Take top 40 most reliable rides
 	if (numApplicableRides > 40) {
-		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_reliability_compare);
+		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_fair_value_compare);
 		numApplicableRides = 40;
 	}
 

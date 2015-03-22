@@ -218,7 +218,8 @@ typedef struct {
 			ride_rating nausea;		// 0x144
 		};
 	};
-	uint16 reliability;				// 0x146
+	// Max price customers will pay before they think the ride is bad value
+	uint16 fair_value;				// 0x146
 	uint16 var_148;
 	uint8 satisfaction;				// 0x14A
 	uint8 satisfaction_time_out;	// 0x14B
@@ -253,9 +254,13 @@ typedef struct {
 	uint8 broken_car;				// 0x192
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194
-	uint16 var_196;
-	// used in computing excitement, nausea, etc
-	uint8 var_198;
+	// Starts at RIDE_INITIAL_RELIABILITY and decreases from there. Right shift
+	// this number by 8 to get a reliability percentage 0-100
+	uint16 reliability;
+	// Small constant used to increase the unreliability as the game continues,
+	// making breakdowns more and more likely.
+	uint8 unreliability_factor;
+	// Down time
 	uint8 var_199;
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
@@ -661,7 +666,8 @@ enum {
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
-#define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+#define RIDE_FAIR_VALUE_UNDEFINED 0xFFFF
+#define RIDE_INITIAL_RELIABILITY ((100 << 8) - 1)
 
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)

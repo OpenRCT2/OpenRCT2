@@ -276,11 +276,11 @@ money32 calculate_ride_value(rct_ride *ride)
 {
 	if (ride->type == RIDE_TYPE_NULL)
 		return 0;
-	if (ride->reliability == 0xFFFF)
+	if (ride->fair_value == RIDE_FAIR_VALUE_UNDEFINED)
 		return 0;
 
-	// Reliability * (...)
-	return (ride->reliability * 10) * (
+	// Fair value * (...)
+	return (ride->fair_value * 10) * (
 		ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A +
 		ride->var_12C + ride->var_12E + ride->age + ride->running_cost +
 		ride->var_134 + ride->var_136 +
@@ -369,8 +369,8 @@ static int park_calculate_guest_generation_probability()
 		suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8);
 
 		// Add ride value
-		if (ride->reliability != RIDE_RELIABILITY_UNDEFINED) {
-			int rideValue = ride->reliability - ride->price;
+		if (ride->fair_value != RIDE_FAIR_VALUE_UNDEFINED) {
+			int rideValue = ride->fair_value - ride->price;
 			if (rideValue > 0)
 				totalRideValue += rideValue * 2;
 		}
