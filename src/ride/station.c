@@ -128,7 +128,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		// Begin the match
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
 		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-		ride->var_14D |= 12;
+		ride->window_invalidate_flags |= 12;
 	}
 }
 
@@ -188,7 +188,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 				if (vehicle->num_peeps != 0) {
 					peep = &(g_sprite_list[vehicle->peep[0]].peep);
 					ride->race_winner = peep->sprite_index;
-					ride->var_14D |= 12;
+					ride->window_invalidate_flags |= 12;
 				}
 
 				// Race is over
@@ -214,7 +214,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 		ride_race_init_vehicle_speeds(ride);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
 		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-		ride->var_14D |= 12;
+		ride->window_invalidate_flags |= 12;
 	}
 }
 

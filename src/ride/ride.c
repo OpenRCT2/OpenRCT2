@@ -210,7 +210,7 @@ void ride_update_favourited_stat()
 		if (peep->favourite_ride != 0xff) {
 			ride = &g_ride_list[peep->favourite_ride];
 			ride->guests_favourite++;
-			ride->var_14D |= 1;
+			ride->window_invalidate_flags |= 1;
 
 		}
 
@@ -667,7 +667,7 @@ static void ride_clear_for_construction(int rideIndex)
 	ride_measurement_clear(ride);
 	
 	ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-	ride->var_14D |= 0x0C;
+	ride->window_invalidate_flags |= 0x0C;
 
 	ride_remove_cable_lift(ride);
 	ride_remove_vehicles(ride);
@@ -764,7 +764,7 @@ static void ride_remove_peeps(int rideIndex)
 
 	ride->num_riders = 0;
 	ride->var_15D = 0;
-	ride->var_14D |= 4;
+	ride->window_invalidate_flags |= 4;
 }
 
 int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi, int ebp)
@@ -1136,10 +1136,10 @@ static void ride_update(int rideIndex)
 		ride->var_126 = ride->var_124;
 		ride->var_124 = ride->var_120;
 		ride->var_120 = 0;
-		ride->var_14D |= 1;
+		ride->window_invalidate_flags |= 1;
 
 		ride->income_per_hour = ride_calculate_income_per_hour(ride);
-		ride->var_14D |= 2;
+		ride->window_invalidate_flags |= 2;
 
 		if (ride->upkeep_cost != (money16)0xFFFF)
 			ride->profit = (ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
@@ -1208,7 +1208,7 @@ void ride_update_popularity(rct_ride* ride, uint8 pop_amount){
 	ride->popularity = ride->popularity_next;
 	ride->popularity_next = 0;
 	ride->popularity_time_out = 0;
-	ride->var_14D |= 1;
+	ride->window_invalidate_flags |= 1;
 }
 
 /**
@@ -1369,7 +1369,7 @@ static void ride_breakdown_update(int rideIndex)
 		ride->var_19E = ride->var_19D;
 		ride->var_19D = ride->var_19C;
 		ride->var_19C = 0;
-		ride->var_14D |= 32;
+		ride->window_invalidate_flags |= 32;
 	}
 
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -1380,7 +1380,7 @@ static void ride_breakdown_update(int rideIndex)
 	// Calculate breakdown probability?
 	unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
 	ride->reliability = max(0, ride->reliability - unreliabilityAccumulator);
-	ride->var_14D |= 32;
+	ride->window_invalidate_flags |= 32;
 
 	// Random probability of a breakdown. Roughly this is 1 in
 	//
@@ -1582,7 +1582,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 			breakdownReason == BREAKDOWN_CONTROL_FAILURE
 		) {
 			ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-			ride->var_14D |= 0x2C;
+			ride->window_invalidate_flags |= 0x2C;
 			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 			ride->breakdown_reason = breakdownReason;
 			ride_breakdown_add_news_item(rideIndex);
@@ -1604,7 +1604,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 			mechanic->current_ride != rideIndex
 		) {
 			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-			ride->var_14D |= 0x20;
+			ride->window_invalidate_flags |= 0x20;
 			ride_mechanic_status_update(rideIndex, RIDE_MECHANIC_STATUS_CALLING);
 		}
 		break;
@@ -1620,7 +1620,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 			)
 		) {
 			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-			ride->var_14D |= 0x20;
+			ride->window_invalidate_flags |= 0x20;
 			ride_mechanic_status_update(rideIndex, RIDE_MECHANIC_STATUS_CALLING);
 		}
 		break;
@@ -1641,7 +1641,7 @@ static void ride_call_mechanic(int rideIndex, rct_peep *mechanic, int forInspect
 	peep_window_state_update(mechanic);
 	mechanic->sub_state = 0;
 	ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
-	ride->var_14D |= 0x20;
+	ride->window_invalidate_flags |= 0x20;
 	ride->mechanic = mechanic->sprite_index;
 	mechanic->current_ride = rideIndex;
 	mechanic->current_ride_station = ride->inspection_station;
@@ -3481,7 +3481,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 			ride->status = RIDE_STATUS_CLOSED;
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
 			ride->race_winner = 0xFFFF;
-			ride->var_14D |= (1 << 2) | (1 << 3);
+			ride->window_invalidate_flags |= (1 << 2) | (1 << 3);
 			window_invalidate_by_number(WC_RIDE, rideIndex);
 		}
 		*ebx = 0;
@@ -3502,7 +3502,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 			ride->race_winner = 0xFFFF;
 			ride->status = targetStatus;
 			ride_get_measurement(rideIndex, NULL);
-			ride->var_14D |= (1 << 2) | (1 << 3);
+			ride->window_invalidate_flags |= (1 << 2) | (1 << 3);
 			window_invalidate_by_number(WC_RIDE, rideIndex);
 		}
 		*ebx = 0;

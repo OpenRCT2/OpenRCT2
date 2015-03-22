@@ -349,7 +349,7 @@ void peep_decrement_num_riders(rct_peep* peep){
 
 		rct_ride* ride = GET_RIDE(peep->current_ride);
 		ride->num_riders--;
-		ride->var_14D |= 0xC;
+		ride->window_invalidate_flags |= 0xC;
 	}
 }
 
@@ -373,7 +373,7 @@ void peep_window_state_update(rct_peep* peep){
 		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
 			rct_ride* ride = GET_RIDE(peep->current_ride);
 			ride->num_riders++;
-			ride->var_14D |= 0xC;
+			ride->window_invalidate_flags |= 0xC;
 		}
 
 		window_invalidate_by_class(WC_GUEST_LIST);

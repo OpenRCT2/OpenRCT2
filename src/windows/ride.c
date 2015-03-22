@@ -1901,7 +1901,7 @@ static void window_ride_main_update(rct_window *w)
 
 	// Update status
 	ride = GET_RIDE(w->number);
-	if (!(ride->var_14D & 4)) {
+	if (!(ride->window_invalidate_flags & 4)) {
 		if (w->ride.view == 0)
 			return;
 
@@ -1923,7 +1923,7 @@ static void window_ride_main_update(rct_window *w)
 		}
 	}
 
-	ride->var_14D &= ~4;
+	ride->window_invalidate_flags &= ~4;
 	widget_invalidate(w, WIDX_STATUS);
 }
 
@@ -2950,8 +2950,8 @@ static void window_ride_operating_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_3);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 10) {
-		ride->var_14D &= ~10;
+	if (ride->window_invalidate_flags & 10) {
+		ride->window_invalidate_flags &= ~10;
 		window_invalidate(w);
 	}
 }
@@ -3360,8 +3360,8 @@ static void window_ride_maintenance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_4);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 20) {
-		ride->var_14D &= ~20;
+	if (ride->window_invalidate_flags & 20) {
+		ride->window_invalidate_flags &= ~20;
 		window_invalidate(w);
 	}
 }
@@ -5451,8 +5451,8 @@ static void window_ride_income_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_9);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 2) {
-		ride->var_14D &= ~2;
+	if (ride->window_invalidate_flags & 2) {
+		ride->window_invalidate_flags &= ~2;
 		window_invalidate(w);
 	}
 }
@@ -5735,8 +5735,8 @@ static void window_ride_customer_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_10);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 1) {
-		ride->var_14D &= ~1;
+	if (ride->window_invalidate_flags & 1) {
+		ride->window_invalidate_flags &= ~1;
 		window_invalidate(w);
 	}
 }
