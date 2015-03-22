@@ -149,7 +149,7 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
 		if (!(mapElement->properties.path.type & PATH_FLAG_QUEUE_BANNER))
 			continue;
 
-		int direction = ((mapElement->type >> 6) & 3) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		int direction = ((mapElement->type >> 6) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
 		if (direction == MAP_ELEMENT_DIRECTION_NORTH || direction == MAP_ELEMENT_DIRECTION_EAST) {
 			baseZ = mapElement->base_height * 8;
 			map_invalidate_tile(x, y, baseZ + 16, baseZ + 30);
