@@ -1359,7 +1359,7 @@ static void ride_breakdown_update(int rideIndex)
 			ride->var_1A0 +
 			ride->var_1A2 +
 			ride->var_1A3;
-		ride->var_199 = min(ax / 2, 100);
+		ride->downtime = min(ax / 2, 100);
 
 		ride->var_1A3 = ride->var_1A2;
 		ride->var_1A2 = ride->var_1A1;

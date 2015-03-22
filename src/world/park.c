@@ -203,15 +203,13 @@ int calculate_park_rating()
 	// Rides
 	{
 		int i;
-		short _ax, total_ride_intensity = 0, total_ride_excitement = 0, average_intensity, average_excitement;
+		short total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0, average_intensity, average_excitement;
 		int num_rides, num_exciting_rides = 0;
 		rct_ride* ride;
 
-		// 
-		_ax = 0;
 		num_rides = 0;
 		FOR_ALL_RIDES(i, ride) {
-			_ax += 100 - ride->var_199;
+			total_ride_uptime += 100 - ride->downtime;
 
 			if (ride->excitement != -1){
 				total_ride_excitement += ride->excitement / 8;
@@ -222,7 +220,7 @@ int calculate_park_rating()
 		}
 		result -= 200;
 		if (num_rides > 0)
-			result += (_ax / num_rides) * 2;
+			result += (total_ride_uptime / num_rides) * 2;
 
 		result -= 100;
 
