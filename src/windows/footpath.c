@@ -756,14 +756,18 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
-		// ?
-		uint8 dl = ((mapElement->properties.surface.slope & 0x0F) << direction) & 0xFF;
-		uint8 dh = dl;
-		dl = (dl >> 4) & 0x0F;
-		dh = (dh & 0x0F) | dl;
+		// If we start the path on a slope, the arrow is slightly raised, so we
+		// expect the path to be slightly raised as well.
+		uint8_t slope = mapElement->properties.surface.slope;
 		z = mapElement->base_height;
-		if ((dh & 0x0C) == 0x0C)
+		if (slope & 0x10) {
+			// Steep diagonal slope
+			z += 4;
+		}
+		else if (slope & 0x0f) {
+			// Normal slope
 			z += 2;
+		}
 	} else {
 		z = mapElement->base_height;
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
