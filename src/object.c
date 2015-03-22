@@ -839,18 +839,18 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 
 			int image_id = scenery_type->image;
 
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_PRIMARY_COLOUR){
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
 				image_id |= 0x20D00000;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 			}
 
 			x = 56;
 			y = scenery_type->small_scenery.height / 4 + 78;
 
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG1){
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG2){
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE){
 					y -= 12;
 				}
 			}
@@ -860,7 +860,7 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG10){
 				image_id = scenery_type->image + 0x44500004;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 
 				gfx_draw_sprite(dpi, image_id, x, y, 0);
@@ -869,7 +869,7 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG8){
 				image_id = scenery_type->image + 4;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 
 				gfx_draw_sprite(dpi, image_id, x, y, 0);

@@ -36,26 +36,26 @@ typedef struct {
 } rct_small_scenery_entry;
 
 typedef enum {
-	SMALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
-	SMALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
-	SMALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
-	SMALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
-	SMALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
-	SMALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
-	SMALL_SCENERY_FLAG7 = (1 << 6),		// 0x40
-	SMALL_SCENERY_FLAG8 = (1 << 7),		// 0x80
-	SMALL_SCENERY_FLAG9 = (1 << 8),		// 0x100
-	SMALL_SCENERY_FLAG10 = (1 << 9),	// 0x200
-	SMALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 10),	// 0x400
-	SMALL_SCENERY_FLAG12 = (1 << 11),	// 0x800
-	SMALL_SCENERY_FLAG13 = (1 << 12),	// 0x1000
-	SMALL_SCENERY_FLAG14 = (1 << 13),	// 0x2000
-	SMALL_SCENERY_FLAG15 = (1 << 14),	// 0x4000
-	SMALL_SCENERY_FLAG16 = (1 << 15),	// 0x8000
-	SMALL_SCENERY_FLAG17 = (1 << 16),	// 0x10000
-	SMALL_SCENERY_FLAG18 = (1 << 17),	// 0x20000
-	SMALL_SCENERY_FLAG19 = (1 << 18),	// 0x40000
-	SMALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 19),	// 0x80000
+	SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),					// 0x1
+	SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),				// 0x2
+	SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE = (1 << 2),			// 0x4
+	SMALL_SCENERY_FLAG4 = (1 << 3),								// 0x8
+	SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),						// 0x10
+	SMALL_SCENERY_FLAG6 = (1 << 5),								// 0x20
+	SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),				// 0x40
+	SMALL_SCENERY_FLAG8 = (1 << 7),								// 0x80
+	SMALL_SCENERY_FLAG9 = (1 << 8),								// 0x100
+	SMALL_SCENERY_FLAG10 = (1 << 9),							// 0x200
+	SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),			// 0x400
+	SMALL_SCENERY_FLAG12 = (1 << 11),							// 0x800
+	SMALL_SCENERY_FLAG13 = (1 << 12),							// 0x1000
+	SMALL_SCENERY_FLAG_IS_CLOCK = (1 << 13),					// 0x2000
+	SMALL_SCENERY_FLAG15 = (1 << 14),							// 0x4000
+	SMALL_SCENERY_FLAG16 = (1 << 15),							// 0x8000
+	SMALL_SCENERY_FLAG17 = (1 << 16),							// 0x10000
+	SMALL_SCENERY_FLAG18 = (1 << 17),							// 0x20000
+	SMALL_SCENERY_FLAG19 = (1 << 18),							// 0x40000
+	SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),		// 0x80000
 } SMALL_SCENERY_FLAGS;
 
 typedef struct {
@@ -138,5 +138,10 @@ typedef struct {
 #define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
 void init_scenery();
+void scenery_update_tile(int x, int y);
+void scenery_update_age(int x, int y, rct_map_element *mapElement);
+
+void jumping_fountain_create_water(int x, int y, rct_map_element *mapElement);
+void jumping_fountain_create_snowball(int x, int y, rct_map_element *mapElement);
 
 #endif

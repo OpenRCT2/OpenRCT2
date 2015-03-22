@@ -641,7 +641,7 @@ static void window_sign_small_dropdown()
 		((w->var_492 & 0x7) << 5);
 	map_element->flags |= ((w->var_492 & 0x18) << 2);
 
-	RCT2_CALLPROC_X(0x6EC847, x, 0, y, 0, map_element->clearance_height << 3, map_element->base_height << 3, 0);
+	sub_6EC847(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	window_invalidate(w);
 }
 

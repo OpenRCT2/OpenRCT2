@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill
+ * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -19,19 +19,23 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "../game.h"
-#include "../common.h"
+#include "map.h"
+#include "scenery.h"
 
 /**
  *
- *  rct2: 0x006646E1
+ *  rct2: 0x00673DBA
  */
-void fountain_update_all()
+void jumping_fountain_create_water(int x, int y, rct_map_element *mapElement)
 {
-	int ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ignoreScreenFlags)
-		return;
+	RCT2_CALLPROC_X(0x00673DBA, x, 0, y, 0, (int)mapElement, 0, 0);
+}
 
-	// Probably not just fountains... may include scenery aging and grass growth.
-	RCT2_CALLPROC_EBPSAFE(0x006646EE);
+/**
+ *
+ *  rct2: 0x00673F51
+ */
+void jumping_fountain_create_snowball(int x, int y, rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x00673F51, x, 0, y, 0, (int)mapElement, 0, 0);
 }

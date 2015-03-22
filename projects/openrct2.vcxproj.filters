@@ -351,7 +351,6 @@
     <ClCompile Include="..\src\windows\sign.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\ride\station.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -374,7 +373,7 @@
     <ClCompile Include="..\src\diagnostic.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -427,6 +426,9 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\world\map_animation.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\scenery.c">
       <Filter>Source\World</Filter>
     </ClCompile>
   </ItemGroup>

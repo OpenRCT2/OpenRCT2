@@ -186,7 +186,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 			return false;
 		}
 
-		if (sceneryEntry->small_scenery.flags & 0x2000) {
+		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 			// Peep, looking at scenery
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)) {
 				int direction = mapElement->type & 3;

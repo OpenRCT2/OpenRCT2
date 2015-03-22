@@ -267,8 +267,6 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags);
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 
-void fountain_update_all();
-
 void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
@@ -286,5 +284,8 @@ int map_element_iterator_next(map_element_iterator *it);
 void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
 void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction);
+void map_update_tiles();
+void map_update_grass_length(int x, int y, rct_map_element *mapElement);
+void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 
 #endif

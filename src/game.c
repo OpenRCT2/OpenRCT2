@@ -308,7 +308,7 @@ void game_logic_update()
 	sub_68B089();
 	scenario_update();
 	climate_update();
-	fountain_update_all();
+	map_update_tiles();
 	sub_6A876D();
 	peep_update_all();
 	vehicle_update_all();
