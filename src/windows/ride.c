@@ -2950,8 +2950,8 @@ static void window_ride_operating_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_3);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 10) {
-		ride->window_invalidate_flags &= ~10;
+	if (ride->window_invalidate_flags & 0x10) {
+		ride->window_invalidate_flags &= ~0x10;
 		window_invalidate(w);
 	}
 }
@@ -3360,8 +3360,8 @@ static void window_ride_maintenance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_4);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 20) {
-		ride->window_invalidate_flags &= ~20;
+	if (ride->window_invalidate_flags & 0x20) {
+		ride->window_invalidate_flags &= ~0x20;
 		window_invalidate(w);
 	}
 }
