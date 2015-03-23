@@ -441,7 +441,7 @@ static void window_footpath_toolup()
 	window_tool_get_registers(w, widgetIndex, x, y);
 
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
-		// Below is a 'function chunk' at 0x006A8380 in rct2
+		// The function at 0x006A8380 in rct2 is just the following:
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 	}
 }
@@ -763,8 +763,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 		if (slope & 0x10) {
 			// Steep diagonal slope
 			z += 4;
-		}
-		else if (slope & 0x0f) {
+		} else if (slope & 0x0f) {
 			// Normal slope
 			z += 2;
 		}
@@ -792,7 +791,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 }
 
 /**
- * 
+ *  Construct a piece of footpath while in bridge building mode.
  *  rct2: 0x006A79B7
  */
 static void window_footpath_construct()
@@ -803,31 +802,38 @@ static void window_footpath_construct()
 	int type, x, y, z, slope;
 	footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
+	// Try to place the path at the desired location
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
 	money32 cost = footpath_place(type, x, y, z, slope, 0);
 
 	if (cost != MONEY32_UNDEFINED) {
+		// It is possible, let's remove walls between the old and new piece of path
 		uint8 direction = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
 		map_remove_intersecting_walls(x, y, z, z + 4 + (slope & 0xf ? 2 : 0), direction ^ 2);
 		map_remove_intersecting_walls(
 			x - TileDirectionDelta[direction].x,
 			y - TileDirectionDelta[direction].y,
-			z, z + 4, direction);
+			z, z + 4, direction
+		);
 	}
 
+	// Actually place the path now
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
+
 	if (cost != MONEY32_UNDEFINED) {
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001,
+		sound_play_panned(
+			SOUND_PLACE_ITEM,
+			0x8001,
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16));
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16)
+		);
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8) = 0xff;
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8)
-				= RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
 		}
 
 		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
