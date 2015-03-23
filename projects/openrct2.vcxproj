@@ -204,6 +204,7 @@
     <ClInclude Include="..\src\world\climate.h" />
     <ClInclude Include="..\src\world\entrance.h" />
     <ClInclude Include="..\src\world\footpath.h" />
+    <ClInclude Include="..\src\world\fountain.h" />
     <ClInclude Include="..\src\world\map.h" />
     <ClInclude Include="..\src\world\mapgen.h" />
     <ClInclude Include="..\src\world\map_animation.h" />

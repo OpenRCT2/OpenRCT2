@@ -130,6 +130,11 @@ typedef struct {
 	uint32 var_10A;
 } rct_scenery_set_entry;
 
+enum {
+	PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER = 1 << 4,
+	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5
+};
+
 #define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
 #define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
 #define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
@@ -140,8 +145,5 @@ typedef struct {
 void init_scenery();
 void scenery_update_tile(int x, int y);
 void scenery_update_age(int x, int y, rct_map_element *mapElement);
-
-void jumping_fountain_create_water(int x, int y, rct_map_element *mapElement);
-void jumping_fountain_create_snowball(int x, int y, rct_map_element *mapElement);
 
 #endif

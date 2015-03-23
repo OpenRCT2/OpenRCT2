@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../scenario.h"
 #include "climate.h"
+#include "fountain.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
@@ -43,10 +44,10 @@ void scenery_update_tile(int x, int y)
 			if (additions != 0 && !(mapElement->properties.path.additions & 0x80)) {
 				rct_scenery_entry *sceneryEntry;
 				sceneryEntry = g_pathBitSceneryEntries[additions - 1];
-				if (sceneryEntry->path_bit.var_06 & (1 << 4)) {
-					jumping_fountain_create_water(x, y, mapElement);
-				} else if (sceneryEntry->path_bit.var_06 & (1 << 5)) {
-					jumping_fountain_create_snowball(x, y, mapElement);
+				if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
+					jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
+				} else if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW) {
+					jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_SNOW, x, y, mapElement);
 				}
 			}
 		}

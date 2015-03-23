@@ -858,7 +858,7 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 		case SPRITE_IDENTIFIER_PEEP:
 			RCT2_CALLPROC_X(0x68F0FB, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
 			break;
-		case SPRITE_IDENTIFIER_FLOATING_TEXT:
+		case SPRITE_IDENTIFIER_MISC:
 			RCT2_CALLPROC_X(0x672AC9, eax, ebx, ecx, edx, (int)spr, (int)dpi, ebp);
 			break;
 		case SPRITE_IDENTIFIER_LITTER:

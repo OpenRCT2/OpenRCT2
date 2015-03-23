@@ -37,9 +37,9 @@ void create_balloon(int x, int y, int z, int colour)
 		sprite->balloon.var_14 = 13;
 		sprite->balloon.var_09 = 22;
 		sprite->balloon.var_15 = 11;
-		sprite->balloon.sprite_identifier = 2;
+		sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z, sprite);
-		sprite->balloon.var_01 = 7;
+		sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
 		sprite->balloon.var_26 = 0;
 		sprite->balloon.colour = colour;
 		sprite->balloon.var_24 = 0;
@@ -55,8 +55,8 @@ void create_duck(int targetX, int targetY)
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL)
 	{
-		sprite->duck.sprite_identifier = 2;
-		sprite->duck.var_01 = 8;
+		sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
 		sprite->duck.var_14 = 9;
 		sprite->duck.var_09 = 0xC;
 		sprite->duck.var_15 = 9;
@@ -205,7 +205,7 @@ void reset_0x69EBE4(){
 
 /*
 * rct2: 0x0069EC6B
-* bl: if bl & 2 > 0, the sprite ends up in the FLOATING_TEXT linked list.
+* bl: if bl & 2 > 0, the sprite ends up in the MISC linked list.
 */
 rct_sprite *create_sprite(uint8 bl)
 {
@@ -220,7 +220,7 @@ rct_sprite *create_sprite(uint8 bl)
 			return NULL;
 		}
 
-		linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_FLOATING_TEXT;
+		linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_MISC;
 	}
 	else if (RCT2_GLOBAL(0x13573C8, uint16) <= 0)
 	{
@@ -301,11 +301,28 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 
 /**
  *
+ *  rct: 0x006731CD
+ */
+void sprite_misc_update(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x006731CD, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
  *  rct: 0x00672AA4
  */
-void texteffect_update_all()
+void sprite_misc_update_all()
 {
-	RCT2_CALLPROC_EBPSAFE(0x00672AA4);
+	rct_sprite *sprite;
+	uint16 spriteIndex;
+
+	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16);
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		sprite = &g_sprite_list[spriteIndex];
+		spriteIndex = sprite->unknown.next;
+		sprite_misc_update(sprite);
+	}
 }
 
 /**

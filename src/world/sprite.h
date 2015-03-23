@@ -32,15 +32,15 @@
 enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_VEHICLE = 0,
 	SPRITE_IDENTIFIER_PEEP = 1,
-	SPRITE_IDENTIFIER_FLOATING_TEXT = 2,
+	SPRITE_IDENTIFIER_MISC = 2,
 	SPRITE_IDENTIFIER_LITTER = 3,
 };
 
 typedef enum {
 	SPRITE_LINKEDLIST_OFFSET_VEHICLE = 2,
 	SPRITE_LINKEDLIST_OFFSET_PEEP = 4,
-	SPRITE_LINKEDLIST_OFFSET_FLOATING_TEXT = 6,
-	SPRITE_LINKEDLIST_OFFSET_FLOATING_LITTER = 8,
+	SPRITE_LINKEDLIST_OFFSET_MISC = 6,
+	SPRITE_LINKEDLIST_OFFSET_LITTER = 8,
 	SPRITE_LINKEDLIST_OFFSET_UNKNOWN = 10
 } SPRITE_LINKEDLIST_OFFSET;
 
@@ -73,7 +73,7 @@ typedef struct {
 } rct_unk_sprite;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
+	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;					// 0x01
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
@@ -86,8 +86,8 @@ typedef struct {
 } rct_litter;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
-	uint8 var_01;					// 0x01
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
@@ -105,8 +105,8 @@ typedef struct {
 } rct_balloon;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
-	uint8 var_01;					// 0x01
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
 	uint16 var_02;					// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
@@ -126,6 +126,29 @@ typedef struct {
 	uint8 var_48;					// 0x48
 } rct_duck;
 
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 var_02;					// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;
+	uint8 pad_0A[0xA];
+	uint8 var_14;
+	uint8 var_15;
+	uint8 pad_16[0x8];
+	uint8 sprite_direction;			// 0x1E
+	uint8 pad_1F[0x7];
+	uint16 var_26;
+	uint8 pad_28[0x6];
+	uint16 var_2E;
+	sint16 target_x;				// 0x30
+	sint16 target_y;				// 0x32
+	uint8 pad_34[0x12];
+	uint16 var_46;
+} rct_jumping_fountain;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -138,7 +161,15 @@ typedef union {
 	rct_vehicle vehicle;
 	rct_balloon balloon;
 	rct_duck duck;
+	rct_jumping_fountain jumping_fountain;
 } rct_sprite;
+
+enum {
+	SPRITE_MISC_JUMPING_FOUNTAIN_WATER = 6,
+	SPRITE_MISC_BALLOON,
+	SPRITE_MISC_DUCK,
+	SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+};
 
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
@@ -149,7 +180,7 @@ rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
-void texteffect_update_all();
+void sprite_misc_update_all();
 void sprite_move(int x, int y, int z, rct_sprite* sprite);
 void balloon_pop(rct_sprite *sprite);
 void invalidate_sprite(rct_sprite *sprite);

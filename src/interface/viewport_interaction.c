@@ -131,7 +131,7 @@ int viewport_interaction_left_click(int x, int y)
 		case SPRITE_IDENTIFIER_PEEP:
 			window_guest_open(info.peep);
 			break;
-		case SPRITE_IDENTIFIER_FLOATING_TEXT:
+		case SPRITE_IDENTIFIER_MISC:
 			balloon_pop(info.sprite);
 			break;
 		}
