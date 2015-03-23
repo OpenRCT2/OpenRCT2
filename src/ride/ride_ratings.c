@@ -860,7 +860,7 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= sub_65E72D(ride) << 5;
@@ -893,7 +893,7 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -928,7 +928,7 @@ static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 2 << 5;
@@ -960,7 +960,7 @@ static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -992,7 +992,7 @@ static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1001,19 +1001,19 @@ static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
 static void ride_ratings_calculate_food_stall(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_drink_stall(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_shop(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
@@ -1036,7 +1036,7 @@ static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
@@ -1045,13 +1045,13 @@ static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
 static void ride_ratings_calculate_information_kiosk(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_bathroom(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
@@ -1074,7 +1074,7 @@ static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1106,7 +1106,7 @@ static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
@@ -1147,7 +1147,7 @@ static void ride_ratings_calculate_3d_cinema(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
@@ -1190,7 +1190,7 @@ static void ride_ratings_calculate_top_spin(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1218,7 +1218,7 @@ static void ride_ratings_calculate_space_rings(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1253,7 +1253,7 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
@@ -1265,7 +1265,7 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 static void ride_ratings_calculate_atm(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_twist(rct_ride *ride)
@@ -1294,7 +1294,7 @@ static void ride_ratings_calculate_twist(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1319,7 +1319,7 @@ static void ride_ratings_calculate_haunted_house(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0xE0;
@@ -1377,7 +1377,7 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= sub_65E72D(ride) << 5;
@@ -1386,7 +1386,7 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 static void ride_ratings_calculate_first_aid(rct_ride *ride)
 {
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
 static void ride_ratings_calculate_circus_show(rct_ride *ride)
@@ -1408,7 +1408,7 @@ static void ride_ratings_calculate_circus_show(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 7 << 5;
@@ -1433,7 +1433,7 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0xE0;
@@ -1465,7 +1465,7 @@ static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0 << 5;
@@ -1497,7 +1497,7 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
-	ride->var_14D |= 2;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 3 << 5;

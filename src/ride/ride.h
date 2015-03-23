@@ -223,7 +223,8 @@ typedef struct {
 	uint8 satisfaction;				// 0x14A
 	uint8 satisfaction_time_out;	// 0x14B
 	uint8 satisfaction_next;		// 0x14C
-	uint8 var_14D;
+	// Various flags stating whether a window needs to be refreshed
+	uint8 window_invalidate_flags;
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154
@@ -607,6 +608,16 @@ enum {
 	RIDE_INSPECTION_EVERY_HOUR,
 	RIDE_INSPECTION_EVERY_2_HOURS,
 	RIDE_INSPECTION_NEVER
+};
+
+// Flags used by ride->window_invalidate_flags
+enum {
+	RIDE_INVALIDATE_RIDE_CUSTOMER    = 1,
+	RIDE_INVALIDATE_RIDE_INCOME      = 1 << 1,
+	RIDE_INVALIDATE_RIDE_MAIN        = 1 << 2,
+	RIDE_INVALIDATE_RIDE_LIST        = 1 << 3,
+	RIDE_INVALIDATE_RIDE_OPERATING   = 1 << 4,
+	RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
 };
 
 typedef struct {

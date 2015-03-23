@@ -579,8 +579,8 @@ static void window_ride_list_refresh_list(rct_window *w)
 			continue;
 
 		countA++;
-		if (ride->var_14D & 8) {
-			ride->var_14D &= ~8;
+		if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST) {
+			ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
 			countB++;
 		}
 	}
