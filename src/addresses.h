@@ -192,11 +192,22 @@
 
 #define RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO		0x009DE584
 
+// Flags:
+// 0x1 Enable selection
+// 0x2 Enable construct selection, see CONSTRUCT_PATH_*
+// 0x4 Show yellow arrow, see MAP_ARROW_*
+// 0x8 ?
 #define RCT2_ADDRESS_MAP_SELECTION_FLAGS			0x009DE58A
 #define RCT2_ADDRESS_MAP_SELECTION_A_X				0x009DE58C
 #define RCT2_ADDRESS_MAP_SELECTION_B_X				0x009DE58E
 #define RCT2_ADDRESS_MAP_SELECTION_A_Y				0x009DE590
 #define RCT2_ADDRESS_MAP_SELECTION_B_Y				0x009DE592
+// Types:
+// 0-3   Corners
+// 4     Whole tile
+// 5     ?
+// 6-9   Quarters
+// 10-13 Edges
 #define RCT2_ADDRESS_MAP_SELECTION_TYPE				0x009DE594
 
 #define RCT2_ADDRESS_MAP_ARROW_X					0x009DEA48
