@@ -610,6 +610,16 @@ enum {
 	RIDE_INSPECTION_NEVER
 };
 
+// Flags used by ride->window_invalidate_flags
+enum {
+	RIDE_INVALIDATE_RIDE_CUSTOMER    = 1,
+	RIDE_INVALIDATE_RIDE_INCOME      = 1 << 1,
+	RIDE_INVALIDATE_RIDE_MAIN        = 1 << 2,
+	RIDE_INVALIDATE_RIDE_LIST        = 1 << 3,
+	RIDE_INVALIDATE_RIDE_OPERATING   = 1 << 4,
+	RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
+};
+
 typedef struct {
 	uint8 main;
 	uint8 additional;

@@ -1901,7 +1901,7 @@ static void window_ride_main_update(rct_window *w)
 
 	// Update status
 	ride = GET_RIDE(w->number);
-	if (!(ride->window_invalidate_flags & 4)) {
+	if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN)) {
 		if (w->ride.view == 0)
 			return;
 
@@ -1923,7 +1923,7 @@ static void window_ride_main_update(rct_window *w)
 		}
 	}
 
-	ride->window_invalidate_flags &= ~4;
+	ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAIN;
 	widget_invalidate(w, WIDX_STATUS);
 }
 
@@ -2950,8 +2950,8 @@ static void window_ride_operating_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_3);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 0x10) {
-		ride->window_invalidate_flags &= ~0x10;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
 		window_invalidate(w);
 	}
 }
@@ -3360,8 +3360,8 @@ static void window_ride_maintenance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_4);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 0x20) {
-		ride->window_invalidate_flags &= ~0x20;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
 		window_invalidate(w);
 	}
 }
@@ -5451,8 +5451,8 @@ static void window_ride_income_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_9);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 2) {
-		ride->window_invalidate_flags &= ~2;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_INCOME;
 		window_invalidate(w);
 	}
 }
@@ -5735,8 +5735,8 @@ static void window_ride_customer_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_10);
 
 	ride = GET_RIDE(w->number);
-	if (ride->window_invalidate_flags & 1) {
-		ride->window_invalidate_flags &= ~1;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
 		window_invalidate(w);
 	}
 }

@@ -134,7 +134,7 @@ void finance_pay_ride_upkeep()
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->total_profit -= upkeep;
-				ride->window_invalidate_flags |= 2;
+				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 				finance_payment(upkeep, RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS);
 			}
 		}
