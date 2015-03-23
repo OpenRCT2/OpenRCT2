@@ -797,7 +797,54 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
  */
 static void window_footpath_construct()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006A79B7);
+	_window_footpath_cost = MONEY32_UNDEFINED;
+	footpath_provisional_update();
+
+	int type, x, y, z, slope;
+	footpath_get_next_path_info(&type, &x, &y, &z, &slope);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
+	money32 cost = footpath_place(type, x, y, z, slope, 0);
+
+	if (cost != MONEY32_UNDEFINED) {
+		uint8 direction = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+		map_remove_intersecting_walls(x, y, z, z + 4 + (slope & 0xf ? 2 : 0), direction ^ 2);
+		map_remove_intersecting_walls(
+			x - TileDirectionDelta[direction].x,
+			y - TileDirectionDelta[direction].y,
+			z, z + 4, direction);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
+	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
+	if (cost != MONEY32_UNDEFINED) {
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001,
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16));
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8) = 0xff;
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_VALID_DIRECTIONS, uint8)
+				= RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8);
+		}
+
+		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
+			viewport_set_visibility(1);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) != 0) {
+			z += 2;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) != 2)
+				z -= 4;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Z, uint16) = z << 3;
+	}
+
+	window_footpath_set_enabled_and_pressed_widgets();
 }
 
 /**
