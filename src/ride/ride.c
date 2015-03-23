@@ -1582,8 +1582,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 			breakdownReason == BREAKDOWN_CONTROL_FAILURE
 		) {
 			ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-			// 0x06b7670: or byte_1362A45[esi], 2Ch
-			ride->window_invalidate_flags |= 0x2C;
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAIN;
 			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 			ride->breakdown_reason = breakdownReason;
 			ride_breakdown_add_news_item(rideIndex);
