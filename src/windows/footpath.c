@@ -727,9 +727,9 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
 
-	RCT2_GLOBAL(0x009DEA4E, uint8) = direction;
-	RCT2_GLOBAL(0x009DEA48, uint16) = x;
-	RCT2_GLOBAL(0x009DEA4A, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
 
 	int z = mapElement->base_height;
 
@@ -741,7 +741,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 			z += 2; // Add another 2 for a steep slope
 	}
 
-	RCT2_GLOBAL(0x009DEA4C, uint16) = z << 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z << 3;
 
 	map_invalidate_selection_rect();
 }
