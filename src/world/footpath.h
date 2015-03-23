@@ -45,7 +45,7 @@ money32 footpath_place(int type, int x, int y, int z, int slope, int flags);
 void footpath_remove(int x, int y, int z, int flags);
 money32 footpath_provisional_set(int type, int x, int y, int z, int slope);
 void footpath_provisional_remove();
-void sub_6A7831();
+void footpath_provisional_update();
 void sub_68A0C9(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
 
 #endif

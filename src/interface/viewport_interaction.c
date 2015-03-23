@@ -399,7 +399,7 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 	
 	w = window_find_by_class(WC_FOOTPATH);
 	if (w != NULL)
-		sub_6A7831();
+		footpath_provisional_update();
 
 	mapElement2 = map_get_first_element_at(x / 32, y / 32);
 	do {
