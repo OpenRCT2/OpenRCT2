@@ -141,6 +141,8 @@ typedef struct {
 	sint8 forced_software_buffering;
 	sint8 sound_quality;
 	uint8 title_music;
+	uint8 sound;
+	uint8 ride_music;
 } sound_configuration;
 
 typedef struct {

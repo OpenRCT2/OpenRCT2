@@ -345,14 +345,17 @@ static void window_options_mouseup()
 		window_invalidate(w);
 		break;
 	case WIDX_SOUND_CHECKBOX:
-		if (g_sounds_disabled)
-			unpause_sounds();
-		else
-			pause_sounds();
+		toggle_all_sounds();
+		config_save_default();
 		window_invalidate(w);
 		break;
 	case WIDX_MUSIC_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) ^= 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) == 0)
+			stop_ride_music();
+
+		gConfigSound.ride_music ^= 1;
+		config_save_default();
 		window_invalidate(w);
 		break;
 	}
@@ -730,7 +733,7 @@ static void window_options_invalidate()
 		// sound quality: low/medium/high
 		RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW + gConfigSound.sound_quality;
 
-		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, !g_sounds_disabled);
+		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8));
 
 		window_options_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
