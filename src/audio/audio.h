@@ -218,12 +218,9 @@ void audio_init1();
 void audio_init2(int device);
 void audio_close();
 void pause_sounds();
+void toggle_all_sounds();
 void unpause_sounds();
 void stop_vehicle_sounds();
-
-// 0x009AF59C probably does the same job
-// once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
-int g_sounds_disabled;
 
 typedef enum {
 	SOUND_LIFT_1 = 0,

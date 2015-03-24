@@ -67,6 +67,7 @@
 #define RCT2_ADDRESS_DSOUND_GUID					0x009AAC5D
 
 #define RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER			0x009AAC6E
+// When all sounds reversed replace with gConfigSound.ride_music
 #define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
 
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74

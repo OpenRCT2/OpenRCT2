@@ -172,6 +172,8 @@ config_property_definition _soundDefinitions[] = {
 	{ offsetof(sound_configuration, forced_software_buffering),			"forced_software_buffering",	CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(sound_configuration, sound_quality),						"sound_quality",				CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
 	{ offsetof(sound_configuration, title_music),						"title_music",					CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
+	{ offsetof(sound_configuration, sound),								"sound",						CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(sound_configuration, ride_music),						"ride_music",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 };
 
 config_section_definition _sectionDefinitions[] = {
