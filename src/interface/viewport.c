@@ -1073,21 +1073,22 @@ void sub_68B35F(int ax, int cx)
 			break;
 		}
 		dx /= 2;
+		// Display little yellow arrow when building footpaths?
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16_t) & 4) &&
-			RCT2_GLOBAL(0x9DE56A, uint16_t) == RCT2_GLOBAL(0x9DEA48, uint16_t) &&
-			RCT2_GLOBAL(0x9DE56E, uint16_t) == RCT2_GLOBAL(0x9DEA4A, uint16_t))
+			RCT2_GLOBAL(0x9DE56A, uint16_t) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16_t) &&
+			RCT2_GLOBAL(0x9DE56E, uint16_t) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16_t))
 		{
 
 			int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t);
 			RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
 			RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
-			int dl = RCT2_GLOBAL(0x009DEA4E, uint8_t) & 3;
+			int dl = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8_t) & 3;
 			ebx += dl;
 			ebx &= 3;
-			dl = RCT2_GLOBAL(0x009DEA4E, uint8_t) & 0xFC;
+			dl = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8_t) & 0xFC;
 			ebx += dl;
 			ebx += 0x20900C27;
-			int d = RCT2_GLOBAL(0x009DEA4C, uint16_t);
+			int d = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16_t);
 			RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
 			RCT2_GLOBAL(0x9DEA52, uint16_t) = 0;
 			RCT2_GLOBAL(0x9DEA54, uint16_t) = 0;
