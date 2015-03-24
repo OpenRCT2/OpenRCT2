@@ -228,7 +228,7 @@ typedef struct {
 	uint8 satisfaction_time_out;	// 0x14B
 	uint8 satisfaction_next;		// 0x14C
 	// Various flags stating whether a window needs to be refreshed
-	uint8 window_invalidate_flags;
+	uint8 window_invalidate_flags;	// 0x14D
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154

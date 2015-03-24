@@ -1353,7 +1353,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		}
 		else{
 			ride->total_profit += ride->price;
-			ride->var_14D |= (1 << 1);
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			RCT2_GLOBAL(0x0141F56C, uint8) = 20;
 			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
 
@@ -1629,10 +1629,10 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 					continue;
 
 				rct_map_element* inner_map = map_get_first_element_at(vehicle->var_38 / 32, vehicle->var_3A / 32);
-				for (;; map_element++){
-					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+				for (;; inner_map++){
+					if (map_element_get_type(inner_map) != MAP_ELEMENT_TYPE_TRACK)
 						continue;
-					if (map_element->base_height == vehicle->var_3C)
+					if (inner_map->base_height == vehicle->var_3C / 8)
 						break;
 				}
 
@@ -3580,7 +3580,7 @@ static void peep_update_answering(rct_peep* peep){
 		if (peep->var_74 > 2500){
 			if (ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING){
 				ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-				ride->var_14D |= (1 << 5);
+				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 			}
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_FALLING;

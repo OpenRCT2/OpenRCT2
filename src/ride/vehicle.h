@@ -55,8 +55,11 @@ typedef struct {
 	uint8 pad_32[0x02];
 	uint16 var_34;
 	sint16 var_36;
+	//x related
 	uint16 var_38;
+	// y related
 	uint16 var_3A;
+	// z related
 	uint16 var_3C;
 	uint16 next_vehicle_on_train;	// 0x3E
 	uint16 prev_vehicle_on_train;	// 0x40
