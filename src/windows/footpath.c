@@ -714,7 +714,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0) & (1 << 2);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0) & ~(1 << 2);
 
 	sub_68A0C9(screenX, screenY, &x, &y, &direction, &mapElement);
 	if (x == 0x8000)
@@ -733,7 +733,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 
 	int z = mapElement->base_height;
 
-	if ((mapElement->type & 0x3C) == 0) {
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
 		uint8 slope = mapElement->properties.surface.slope;
 		if (slope & 0xf)
 			z += 2; // Add 2 for a slope
