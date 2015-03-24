@@ -2416,6 +2416,93 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
+/* rct2: 0x0069299C */
+static void peep_update_ride_sub_state_19(rct_peep* peep){
+	sint16 x, y, xy_distance;
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return;
+	}
+
+	peep->sub_state++;
+}
+
+/* rct2: 0x006929BB */
+static void peep_update_ride_sub_state_20(rct_peep* peep){
+	sint16 x, y;
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+
+	if (ride->type == RIDE_TYPE_FIRST_AID){
+		if (peep->nausea <= 35){
+			peep->sub_state++;
+
+			x = peep->next_x + 16;
+			y = peep->next_y + 16;
+			peep->destination_x = x;
+			peep->destination_y = y;
+			peep->destination_tolerence = 3;
+			peep->happiness_growth_rate = min(peep->happiness_growth_rate + 30, 0xFF);
+			peep->happiness = peep->happiness_growth_rate;
+		}
+		else{
+			peep->nausea--;
+			peep->nausea_growth_rate = peep->nausea;
+		}
+		return;
+	}
+
+	if (peep->bathroom != 0){
+		peep->bathroom--;
+		return;
+	}
+
+	sound_play_panned(SOUND_TOILET_FLUSH, 0x8001, peep->x, peep->y, peep->z);
+
+	peep->sub_state++;
+
+	x = peep->next_x + 16;
+	y = peep->next_y + 16;
+	peep->destination_x = x;
+	peep->destination_y = y;
+	peep->destination_tolerence = 3;
+
+	peep->happiness_growth_rate = min(peep->happiness_growth_rate + 30, 0xFF);
+	peep->happiness = peep->happiness_growth_rate;
+
+	peep_stop_purchase_thought(peep, ride->type);
+}
+
+/* rct2: 0x00692935 */
+static void peep_update_ride_sub_state_21(rct_peep* peep){
+	sint16 x, y, xy_distance;
+
+	if (peep_update_action(&x, &y, &xy_distance, peep)){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+
+		x = peep->x & 0xFFE0;
+		y = peep->y & 0xFFE0;
+		if (x != peep->next_x)
+			return;
+		if (y != peep->next_y)
+			return;
+	}
+
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_WALKING;
+	peep_window_state_update(peep);
+
+	rct_ride* ride = GET_RIDE(peep->current_ride);
+	ride->total_customers++;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+
+	RCT2_CALLPROC_X(0x0069A3A2, 0, peep->happiness / 64, 0, 0, 0, peep->current_ride * sizeof(rct_ride), 0);
+}
+
 /* rct2: 0x691A30 
  * Used by entering_ride and queueing_front */
 static void peep_update_ride(rct_peep* peep){
@@ -2485,6 +2572,15 @@ static void peep_update_ride(rct_peep* peep){
 		break;
 	case 18:
 		peep_update_ride_sub_state_18(peep);
+		break;
+	case 19:
+		peep_update_ride_sub_state_19(peep);
+		break;
+	case 20:
+		peep_update_ride_sub_state_20(peep);
+		break;
+	case 21:
+		peep_update_ride_sub_state_21(peep);
 		break;
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
