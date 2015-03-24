@@ -2152,7 +2152,7 @@ void window_guest_inventory_paint(){
 		no_items++;
 
 		RCT2_GLOBAL(0x13CE952, uint32) = 5089 + i;
-		RCT2_GLOBAL(0x13CE956, uint16) = 2188;
+		RCT2_GLOBAL(0x13CE956, uint16) = 2188 + i;
 		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
 		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
 
