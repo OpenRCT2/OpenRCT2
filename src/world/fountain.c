@@ -146,3 +146,20 @@ void jumping_fountain_create(int type, int x, int y, int z, uint16 bl, uint16 bh
 		SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
 	jumpingFountain->var_26 = 0;
 }
+
+/**
+ *
+ *  rct: 0x006733CB (water)
+ *  rct: 0x00673407 (snow)
+ */
+void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
+{
+	switch (jumpingFountain->misc_identifier) {
+	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+		RCT2_CALLPROC_X(0x006733CB, 0, 0, 0, 0, (int)jumpingFountain, 0, 0);
+		break;
+	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+		RCT2_CALLPROC_X(0x00673407, 0, 0, 0, 0, (int)jumpingFountain, 0, 0);
+		break;
+	}
+}

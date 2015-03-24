@@ -46,7 +46,7 @@ typedef enum {
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
-	uint8 pad_01;
+	uint8 misc_identifier;			// 0x01
 	uint16 var_02;
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
@@ -165,7 +165,13 @@ typedef union {
 } rct_sprite;
 
 enum {
-	SPRITE_MISC_JUMPING_FOUNTAIN_WATER = 6,
+	SPRITE_MISC_0,
+	SPRITE_MISC_MONEY_EFFECT,
+	SPRITE_MISC_2,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_4,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_5,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
 	SPRITE_MISC_BALLOON,
 	SPRITE_MISC_DUCK,
 	SPRITE_MISC_JUMPING_FOUNTAIN_SNOW

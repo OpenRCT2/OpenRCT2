@@ -20,8 +20,9 @@
 
 #include "../addresses.h"
 #include "../interface/viewport.h"
-#include "sprite.h"
 #include "../scenario.h"
+#include "fountain.h"
+#include "sprite.h"
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
@@ -47,14 +48,31 @@ void create_balloon(int x, int y, int z, int colour)
 }
 
 /**
+ *
+ *  rct: 0x0067342C
+ */
+void balloon_update(rct_balloon *balloon)
+{
+	RCT2_CALLPROC_X(0x0067342C, 0, 0, 0, 0, (int)balloon, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006E88D7
+ */
+void balloon_pop(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x006E88D7, 0, 0, 0, (int)sprite, 0, 0, 0);
+}
+
+/**
  * 
  *  rct2: 0x0067440F
  */
 void create_duck(int targetX, int targetY)
 {
 	rct_sprite* sprite = create_sprite(2);
-	if (sprite != NULL)
-	{
+	if (sprite != NULL) {
 		sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
 		sprite->duck.var_14 = 9;
@@ -88,7 +106,19 @@ void create_duck(int targetX, int targetY)
 	}
 }
 
-/* rct2: 0x006EC473 */
+/**
+ *
+ *  rct: 0x006740E8
+ */
+void duck_update(rct_duck *duck)
+{
+	RCT2_CALLPROC_X(0x006740E8, 0, 0, 0, 0, (int)duck, 0, 0);
+}
+
+/*
+ *
+ * rct2: 0x006EC473
+ */
 void invalidate_sprite(rct_sprite* sprite){
 	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
 
@@ -305,7 +335,36 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
  */
 void sprite_misc_update(rct_sprite *sprite)
 {
-	RCT2_CALLPROC_X(0x006731CD, 0, 0, 0, 0, (int)sprite, 0, 0);
+	switch (sprite->unknown.misc_identifier) {
+	case SPRITE_MISC_0:
+		RCT2_CALLPROC_X(0x00673200, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_MONEY_EFFECT:
+		RCT2_CALLPROC_X(0x00673232, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_2:
+		RCT2_CALLPROC_X(0x00673298, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_3:
+		RCT2_CALLPROC_X(0x00673385, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_4:
+		RCT2_CALLPROC_X(0x0067339D, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_5:
+		RCT2_CALLPROC_X(0x006733B4, 0, 0, 0, 0, (int)sprite, 0, 0);
+		break;
+	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+		jumping_fountain_update(&sprite->jumping_fountain);
+		break;
+	case SPRITE_MISC_BALLOON:
+		balloon_update(&sprite->balloon);
+		break;
+	case SPRITE_MISC_DUCK:
+		duck_update(&sprite->duck);
+		break;
+	}
 }
 
 /**
@@ -395,15 +454,6 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;
-}
-
-/**
- *
- *  rct2: 0x006E88D7
- */
-void balloon_pop(rct_sprite *sprite)
-{
-	RCT2_CALLPROC_X(0x006E88D7, 0, 0, 0, (int)sprite, 0, 0, 0);
 }
 
 /**
