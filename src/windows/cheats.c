@@ -355,7 +355,12 @@ static void cheat_renew_rides()
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride)
+	{
+		// Set build date to current date (so the ride is brand new)
 		ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		// Set reliability to 100
+		ride->reliability = (100 << 8);
+	}
 	window_invalidate_by_class(WC_RIDE);
 }
 
