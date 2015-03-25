@@ -216,7 +216,7 @@ void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
 	if (original_var_26a <= 255 - 160)
 		return;
 
-	RCT2_CALLPROC_X(0x006EC60B, 0, 0, 0, 0, (int)jumpingFountain, 0, 0);
+	sub_6EC60B((rct_sprite*)jumpingFountain);
 	jumpingFountain->var_26b++;
 
 	switch (jumpingFountain->misc_identifier) {

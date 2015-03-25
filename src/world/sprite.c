@@ -21,11 +21,26 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../interface/viewport.h"
+#include "../localisation/date.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
 
+enum {
+	DUCK_STATE_FLY_TO_WATER,
+	DUCK_STATE_SWIM,
+	DUCK_STATE_DRINK,
+	DUCK_STATE_DOUBLE_DRINK,
+	DUCK_STATE_FLY_AWAY
+};
+
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+
+static void duck_update_fly_to_water(rct_duck *duck);
+static void duck_update_swim(rct_duck *duck);
+static void duck_update_drink(rct_duck *duck);
+static void duck_update_double_drink(rct_duck *duck);
+static void duck_update_fly_away(rct_duck *duck);
 
 /**
  * 
@@ -108,6 +123,25 @@ void balloon_press(rct_balloon *balloon)
 	);
 }
 
+// rct2: 0x009A3B04
+static const rct_xy16 duck_move_offset[] = {
+	{ -1,  0 },
+	{  0,  1 },
+	{  1,  0 },
+	{  0, -1 }
+};
+
+// rct2: 0x0097F073
+static const uint8 duck_drink_animation[] = {
+	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 255
+};
+
+// rct2: 0x0097F08C
+static const uint8 duck_double_drink_animation[] = {
+	4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
+	6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 255
+};
+
 /**
  * 
  *  rct2: 0x0067440F
@@ -144,7 +178,7 @@ void create_duck(int targetX, int targetY)
 		}
 		sprite->duck.sprite_direction = direction << 3;
 		sprite_move(targetX, targetY, 496, sprite);
-		sprite->duck.var_48 = 0;
+		sprite->duck.state = DUCK_STATE_FLY_TO_WATER;
 		sprite->duck.var_26 = 0;
 	}
 }
@@ -155,7 +189,205 @@ void create_duck(int targetX, int targetY)
  */
 void duck_update(rct_duck *duck)
 {
-	RCT2_CALLPROC_X(0x006740E8, 0, 0, 0, 0, (int)duck, 0, 0);
+	switch (duck->state) {
+	case DUCK_STATE_FLY_TO_WATER:
+		duck_update_fly_to_water(duck);
+		break;
+	case DUCK_STATE_SWIM:
+		duck_update_swim(duck);
+		break;
+	case DUCK_STATE_DRINK:
+		duck_update_drink(duck);
+		break;
+	case DUCK_STATE_DOUBLE_DRINK:
+		duck_update_double_drink(duck);
+		break;
+	case DUCK_STATE_FLY_AWAY:
+		duck_update_fly_away(duck);
+		break;
+	}
+}
+
+static void duck_invalidate(rct_duck *duck)
+{
+	sub_6EC60B((rct_sprite*)duck);
+}
+
+/**
+ *
+ *  rct: 0x00674108
+ */
+static void duck_update_fly_to_water(rct_duck *duck)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+		return;
+
+	duck->var_26++;
+	if (duck->var_26 >= 6)
+		duck->var_26 = 0;
+
+	duck_invalidate(duck);
+	int manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
+	int direction = duck->sprite_direction >> 3;
+	int x = duck->x + duck_move_offset[direction].x;
+	int y = duck->y + duck_move_offset[direction].y;
+	int manhattanDistanceN = abs(duck->target_x - x) + abs(duck->target_y - y);
+
+	rct_map_element *mapElement = map_get_surface_element_at(duck->target_x >> 5, duck->target_y >> 5);
+	int waterHeight = mapElement->properties.surface.terrain & 0x1F;
+	if (waterHeight == 0) {
+		duck->state = DUCK_STATE_FLY_AWAY;
+		duck_update_fly_away(duck);
+		return;
+	}
+	waterHeight <<= 4;
+	int z = abs(duck->z - waterHeight);
+
+	if (manhattanDistanceN <= manhattanDistance) {
+		if (z > manhattanDistanceN) {
+			z = duck->z - 2;
+			if (waterHeight >= duck->z)
+				z += 4;
+
+			duck->var_26 = 1;
+		} else {
+			z = duck->z;
+		}
+		sprite_move(x, y, z, (rct_sprite*)duck);
+		duck_invalidate(duck);
+	} else {
+		if (z > 4) {
+			duck->state = DUCK_STATE_FLY_AWAY;
+			duck_update_fly_away(duck);
+		} else {
+			duck->state = DUCK_STATE_SWIM;
+			duck->var_26 = 0;
+			duck_update_swim(duck);
+		}
+	}
+}
+
+/**
+ *
+ *  rct: 0x00674282
+ */
+static void duck_update_swim(rct_duck *duck)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + duck->var_0A) & 3)
+		return;
+
+	uint32 randomNumber = scenario_rand();
+	if ((randomNumber & 0xFFFF) < 0x666) {
+		if (randomNumber & 0x80000000) {
+			duck->state = DUCK_STATE_DOUBLE_DRINK;
+			duck->var_26 = -1;
+			duck_update_double_drink(duck);
+		} else {
+			duck->state = DUCK_STATE_DRINK;
+			duck->var_26 = -1;
+			duck_update_drink(duck);
+		}
+		return;
+	}
+
+	int currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
+	if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218) {
+		duck->state = DUCK_STATE_FLY_AWAY;
+		duck_update_fly_away(duck);
+		return;
+	}
+
+	duck_invalidate(duck);
+	int landZ = map_element_height(duck->x, duck->y);
+	int waterZ = (landZ >> 16) & 0xFFFF;
+	landZ &= 0xFFFF;
+
+	if (duck->z < landZ || waterZ == 0) {
+		duck->state = DUCK_STATE_FLY_AWAY;
+		duck_update_fly_away(duck);
+		return;
+	}
+
+	duck->z = waterZ;
+	randomNumber = scenario_rand();
+	if ((randomNumber & 0xFFFF) <= 0xAAA) {
+		randomNumber >>= 16;
+		duck->sprite_direction = randomNumber & 0x18;
+	}
+
+	int direction = duck->sprite_direction >> 3;
+	int x = duck->x + duck_move_offset[direction].x;
+	int y = duck->y + duck_move_offset[direction].y;
+	landZ = map_element_height(x, y);
+	waterZ = (landZ >> 16) & 0xFFFF;
+	landZ &= 0xFFFF;
+
+	if (duck->z < landZ || duck->z != waterZ)
+		return;
+
+	sprite_move(x, y, waterZ, (rct_sprite*)duck);
+	duck_invalidate(duck);
+}
+
+/**
+ *
+ *  rct: 0x00674357
+ */
+static void duck_update_drink(rct_duck *duck)
+{
+	duck->var_26++;
+	if (duck_drink_animation[duck->var_26] == 255) {
+		duck->state = DUCK_STATE_SWIM;
+		duck->var_26 = 0;
+		duck_update_swim(duck);
+	} else {
+		duck_invalidate(duck);
+	}
+}
+
+/**
+ *
+ *  rct: 0x00674372
+ */
+static void duck_update_double_drink(rct_duck *duck)
+{
+	duck->var_26++;
+	if (duck_double_drink_animation[duck->var_26] == 255) {
+		duck->var_26 = 0;
+		return;
+		duck->state = DUCK_STATE_SWIM;
+		duck->var_26 = 0;
+		duck_update_swim(duck);
+	} else {
+		duck_invalidate(duck);
+	}
+}
+
+/**
+ *
+ *  rct: 0x0067438D
+ */
+static void duck_update_fly_away(rct_duck *duck)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+		return;
+
+	duck->var_26++;
+	if (duck->var_26 >= 6)
+		duck->var_26 = 0;
+
+	duck_invalidate(duck);
+	int direction = duck->sprite_direction >> 3;
+	int x = duck->x + (duck_move_offset[direction].x * 2);
+	int y = duck->y + (duck_move_offset[direction].y * 2);
+	if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256)) {
+		sprite_remove((rct_sprite*)duck);
+		return;
+	}
+
+	int z = z = min(duck->z + 2, 496);
+	sprite_move(x, y, z, (rct_sprite*)duck);
+	duck_invalidate(duck);
 }
 
 /**
@@ -245,6 +477,15 @@ void invalidate_sprite(rct_sprite* sprite){
 
 		gfx_set_dirty_blocks(left + viewport->x, top + viewport->y, right + viewport->x, bottom + viewport->y);
 	}
+}
+
+/**
+ * Similar to invalidate sprite...
+ * rct2: 0x006EC60B
+ */
+void sub_6EC60B(rct_sprite* sprite)
+{
+	RCT2_CALLPROC_X(0x006EC60B, 0, 0, 0, 0, (int)sprite, 0, 0);
 }
 
 /*

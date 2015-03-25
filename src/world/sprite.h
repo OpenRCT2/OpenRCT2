@@ -128,7 +128,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0x4];
+	uint16 var_0A;
+	uint8 pad_0C[0x2];
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -142,7 +143,7 @@ typedef struct {
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
-	uint8 var_48;					// 0x48
+	uint8 state;					// 0x48
 } rct_duck;
 
 typedef struct {
@@ -240,6 +241,7 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void sprite_misc_update_all();
 void sprite_move(int x, int y, int z, rct_sprite* sprite);
 void invalidate_sprite(rct_sprite *sprite);
+void sub_6EC60B(rct_sprite* sprite);
 void sprite_remove(rct_sprite *sprite);
 
 #endif
