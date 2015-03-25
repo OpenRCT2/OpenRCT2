@@ -128,27 +128,7 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 
 	return NULL;
 }
-static void RCT2_CALLPROC_WE_UPDATE(int address, rct_window* w)
-{
-	#ifdef _MSC_VER
-	__asm {
-			push address
-			push w
-			mov esi, w
-			call[esp + 4]
-			add esp, 8
-	}
-	#else
-	__asm__ ( "\
-				push %[address]\n\
-				mov eax, %[w]  \n\
-				push eax		\n\
-				mov esi, %[w]	\n\
-				call [esp+4]	\n\
-				add esp, 8	\n\
-			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
-	#endif
-}
+
 /**
  * 
  *  rct2: 0x006ED7B0
@@ -160,7 +140,7 @@ void window_dispatch_update_all()
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
-		RCT2_CALLPROC_WE_UPDATE(w->event_handlers[WE_UPDATE], w);
+		window_event_update_call(w);
 
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
@@ -1689,6 +1669,30 @@ void window_event_mouse_down_call(rct_window *w, int widgetIndex)
 void window_event_invalidate_call(rct_window* w)
 {
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+void window_event_update_call(rct_window *w)
+{
+	int address = w->event_handlers[WE_UPDATE];
+
+	#ifdef _MSC_VER
+	__asm {
+			push address
+			push w
+			mov esi, w
+			call[esp + 4]
+			add esp, 8
+	}
+	#else
+	__asm__ ( "\
+				push %[address]\n\
+				mov eax, %[w]  \n\
+				push eax		\n\
+				mov esi, %[w]	\n\
+				call [esp+4]	\n\
+				add esp, 8	\n\
+			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
+	#endif
 }
 
 /**
