@@ -970,7 +970,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			return;
 	}
 	else{
-		uint8 chosen_train;
+		uint8 chosen_train = 0xFF;
 
 		if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE){
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
