@@ -31,7 +31,7 @@ enum {
 };
 
 void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement);
-void jumping_fountain_create(int type, int x, int y, int z, uint16 bl, uint16 bh, uint16 bp);
+void jumping_fountain_create(int type, int x, int y, int z, int direction, int flags, int iteration);
 void jumping_fountain_update(rct_jumping_fountain *jumpingFountain);
 
 #endif

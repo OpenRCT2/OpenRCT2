@@ -134,19 +134,29 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;
-	uint8 pad_0A[0xA];
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 	uint8 var_14;
 	uint8 var_15;
 	uint8 pad_16[0x8];
 	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[0x7];
-	uint16 var_26;
+	union {
+		uint16 var_26;
+		struct {
+			uint8 var_26a;
+			uint8 var_26b;
+		};
+	};
 	uint8 pad_28[0x6];
-	uint16 var_2E;
+	uint8 var_2E;
+	uint8 flags;
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x12];
-	uint16 var_46;
+	uint16 iteration;
 } rct_jumping_fountain;
 
 /**
