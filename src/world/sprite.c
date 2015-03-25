@@ -31,7 +31,7 @@ rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
  * 
  *  rct2: 0x006736C7
  */
-void create_balloon(int x, int y, int z, int colour)
+void create_balloon(int x, int y, int z, int colour, uint8 bl)
 {
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL)
@@ -44,7 +44,7 @@ void create_balloon(int x, int y, int z, int colour)
 		sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
 		sprite->balloon.var_26 = 0;
 		sprite->balloon.colour = colour;
-		sprite->balloon.popped = 0;
+		sprite->balloon.popped = bl;
 	}
 }
 
@@ -288,7 +288,7 @@ void reset_0x69EBE4(){
 			}
 			uint16 ax = RCT2_ADDRESS(0xF1EF60,uint16)[edi];
 			RCT2_ADDRESS(0xF1EF60,uint16)[edi] = spr->unknown.sprite_index;
-			spr->unknown.var_02 = ax;
+			spr->unknown.next_in_quadrant = ax;
 		}
 	}
 }
@@ -325,14 +325,14 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->y = SPRITE_LOCATION_NULL;
 	sprite->z = 0;
 	sprite->name_string_idx = 0;
-	sprite->var_14 = 0x10;
-	sprite->var_09 = 0x14;
-	sprite->var_15 = 0x8;
-	sprite->pad_0C[0] = 0x0;
+	sprite->sprite_width = 0x10;
+	sprite->sprite_height_negative = 0x14;
+	sprite->sprite_height_positive = 0x8;
+	sprite->var_0C = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
-	sprite->var_02 = RCT2_GLOBAL(0xF3EF60, uint16);
-	RCT2_GLOBAL(0xF3EF60, uint16) = sprite->sprite_index;
+	sprite->next_in_quadrant = RCT2_ADDRESS(0xF1EF60, uint16)[0x10000];
+	RCT2_ADDRESS(0xF1EF60, uint16)[0x10000] = sprite->sprite_index;
 
 	return (rct_sprite*)sprite;
 }
@@ -470,14 +470,14 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 		uint16* sprite_idx = &RCT2_ADDRESS(0xF1EF60, uint16)[current_position];
 		rct_sprite* sprite2 = &g_sprite_list[*sprite_idx];
 		while (sprite != sprite2){
-			sprite_idx = &sprite2->unknown.var_02;
+			sprite_idx = &sprite2->unknown.next_in_quadrant;
 			sprite2 = &g_sprite_list[*sprite_idx];
 		}
-		*sprite_idx = sprite->unknown.var_02;
+		*sprite_idx = sprite->unknown.next_in_quadrant;
 
 		int temp_sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[new_position];
 		RCT2_ADDRESS(0xF1EF60, uint16)[new_position] = sprite->unknown.sprite_index;
-		sprite->unknown.var_02 = temp_sprite_idx;
+		sprite->unknown.next_in_quadrant = temp_sprite_idx;
 	}
 
 	if (x == 0x8000){
@@ -507,10 +507,10 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 		break;
 	}
 
-	sprite->unknown.sprite_left = new_x - sprite->unknown.var_14;
-	sprite->unknown.sprite_right = new_x + sprite->unknown.var_14;
-	sprite->unknown.sprite_top = new_y - sprite->unknown.var_09;
-	sprite->unknown.sprite_bottom = new_y + sprite->unknown.var_15;
+	sprite->unknown.sprite_left = new_x - sprite->unknown.sprite_width;
+	sprite->unknown.sprite_right = new_x + sprite->unknown.sprite_width;
+	sprite->unknown.sprite_top = new_y - sprite->unknown.sprite_height_negative;
+	sprite->unknown.sprite_bottom = new_y + sprite->unknown.sprite_height_positive;
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;

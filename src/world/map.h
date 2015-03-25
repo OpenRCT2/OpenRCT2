@@ -39,8 +39,13 @@ typedef struct {
 
 typedef struct {
 	uint8 type; //4
-	uint8 sequence; //5
-	uint8 colour; //6
+	union{
+		struct{
+			uint8 sequence; //5
+			uint8 colour; //6
+		};
+		uint16 maze_entry; // 5
+	};
 	uint8 ride_index; //7
 } rct_map_element_track_properties;
 

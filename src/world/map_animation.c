@@ -194,7 +194,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 				int y2 = y - TileDirectionDelta[direction].y;
 
 				uint16 spriteIdx = RCT2_ADDRESS(0x00F1EF60, uint16)[((x2 & 0x1FE0) << 3) | (y2 >> 5)];
-				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.var_02) {
+				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.next_in_quadrant) {
 					sprite = &g_sprite_list[spriteIdx];
 					if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
 						continue;
@@ -207,9 +207,9 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 					if (peep->action < PEEP_ACTION_NONE_1)
 						continue;
 
-					peep->action = 0;
+					peep->action = PEEP_ACTION_CHECK_TIME;
 					peep->action_frame = 0;
-					peep->var_70 = 0;
+					peep->action_sprite_image_offset = 0;
 					sub_693B58(peep);
 					RCT2_CALLPROC_X(0x006EC53F, 0, 0, 0, 0, (int)peep, 0, 0);
 					break;

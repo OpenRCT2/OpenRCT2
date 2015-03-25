@@ -82,12 +82,14 @@ typedef struct{
 	uint32 var_4C;				// 0x4C , 0x66
 	uint32 no_vehicle_images;	// 0x50 , 0x6A
 	uint8 no_seating_rows;		// 0x54 , 0x6E
-	uint8 pad_55[0x7];
+	uint8 pad_55[0x5];
+	uint8 var_5A;				// 0x5A , 0x74
+	uint8 pad_5B;				// 0x5B , 0x75
 	uint8 var_5C;				// 0x5C , 0x76
 	uint8 var_5D;				// 0x5D , 0x77
 	uint8 pad_5E[0x2];
 	uint8 var_60;				// 0x60 , 0x7A
-	uint32 var_61;				// 0x61 , 0x7B
+	uint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_type_vehicle;
 
 /**
@@ -103,12 +105,13 @@ typedef struct {
 	uint8 var_00C;
 	uint8 var_00D;
 	uint8 var_00E;
-	uint8 var_00F;
-	uint8 var_010;
+	uint8 min_cars_in_train;		// 0x00F
+	uint8 max_cars_in_train;		// 0x010
 	uint8 var_011;
 	uint8 var_012;
 	uint8 var_013;
-	uint8 pad_014[0x6];
+	uint8 var_014;
+	uint8 pad_015[0x5];
 	rct_ride_type_vehicle vehicles[4]; // 0x1A
 	uint32 var_1AE;
 	sint8 excitement_multipler;		// 0x1B2
@@ -148,7 +151,8 @@ typedef struct {
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
-	uint8 pad_07A[0x0C];
+	uint16 first_peep_in_queue[4];	// 0x07A
+	uint8 pad_082[4];
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
 	uint8 depart_flags;				// 0x0C6
 
@@ -224,7 +228,7 @@ typedef struct {
 	uint8 satisfaction_time_out;	// 0x14B
 	uint8 satisfaction_next;		// 0x14C
 	// Various flags stating whether a window needs to be refreshed
-	uint8 window_invalidate_flags;
+	uint8 window_invalidate_flags;	// 0x14D
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154
@@ -238,7 +242,9 @@ typedef struct {
 		uint16 slide_peep;			// 0x15E
 		uint16 maze_tiles;			// 0x15E
 	};
-	uint8 pad_160[0x16];
+	uint8 pad_160[0xE];
+	uint8 slide_peep_t_shirt_colour;// 0x16E
+	uint8 pad_16F[0x7];
 	uint8 var_176;
 	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
@@ -314,7 +320,7 @@ typedef struct {
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
 	uint8 vehicle_index;						// 0x000A
-	uint8 var_0B;
+	uint8 current_station;						// 0x000B
 	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
@@ -363,7 +369,7 @@ enum {
 	RIDE_TYPE_MINI_SUSPENDED_COASTER,
 	RIDE_TYPE_BUMPER_BOATS,
 	RIDE_TYPE_WOODEN_WILD_MOUSE,
-	RIDE_TYPE_STEEPLECHASE,
+	RIDE_TYPE_STEEPLECHASE = 10,
 	RIDE_TYPE_CAR_RIDE,
 	RIDE_TYPE_LAUNCHED_FREEFALL,
 	RIDE_TYPE_BOBSLEIGH_COASTER,
@@ -373,7 +379,7 @@ enum {
 	RIDE_TYPE_MINE_TRAIN_COASTER,
 	RIDE_TYPE_CHAIRLIFT,
 	RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-	RIDE_TYPE_MAZE,
+	RIDE_TYPE_MAZE = 20,
 	RIDE_TYPE_SPIRAL_SLIDE,
 	RIDE_TYPE_GO_KARTS,
 	RIDE_TYPE_LOG_FLUME,
@@ -383,7 +389,7 @@ enum {
 	RIDE_TYPE_SWINGING_INVERTER_SHIP,
 	RIDE_TYPE_FOOD_STALL,
 	RIDE_TYPE_1D,
-	RIDE_TYPE_DRINK_STALL,
+	RIDE_TYPE_DRINK_STALL = 30,
 	RIDE_TYPE_1F,
 	RIDE_TYPE_SHOP,
 	RIDE_TYPE_MERRY_GO_ROUND,
@@ -393,7 +399,7 @@ enum {
 	RIDE_TYPE_FERRIS_WHEEL,
 	RIDE_TYPE_MOTION_SIMULATOR,
 	RIDE_TYPE_3D_CINEMA,
-	RIDE_TYPE_TOP_SPIN,
+	RIDE_TYPE_TOP_SPIN = 40,
 	RIDE_TYPE_SPACE_RINGS,
 	RIDE_TYPE_REVERSE_FREEFALL_COASTER,
 	RIDE_TYPE_ELEVATOR,
@@ -403,7 +409,7 @@ enum {
 	RIDE_TYPE_HAUNTED_HOUSE,
 	RIDE_TYPE_FIRST_AID,
 	RIDE_TYPE_CIRCUS_SHOW,
-	RIDE_TYPE_GHOST_TRAIN,
+	RIDE_TYPE_GHOST_TRAIN = 50,
 	RIDE_TYPE_TWISTER_ROLLER_COASTER,
 	RIDE_TYPE_WOODEN_ROLLER_COASTER,
 	RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
@@ -413,7 +419,7 @@ enum {
 	RIDE_TYPE_FLYING_ROLLER_COASTER,
 	RIDE_TYPE_3A,
 	RIDE_TYPE_VIRGINIA_REEL,
-	RIDE_TYPE_SPLASH_BOATS,
+	RIDE_TYPE_SPLASH_BOATS = 60,
 	RIDE_TYPE_MINI_HELICOPTERS,
 	RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
 	RIDE_TYPE_SUSPENDED_MONORAIL,
@@ -423,7 +429,7 @@ enum {
 	RIDE_TYPE_MINI_GOLF,
 	RIDE_TYPE_GIGA_COASTER,
 	RIDE_TYPE_ROTO_DROP,
-	RIDE_TYPE_FLYING_SAUCERS,
+	RIDE_TYPE_FLYING_SAUCERS = 70,
 	RIDE_TYPE_CROOKED_HOUSE,
 	RIDE_TYPE_MONORAIL_CYCLES,
 	RIDE_TYPE_COMPACT_INVERTED_COASTER,
@@ -433,7 +439,7 @@ enum {
 	RIDE_TYPE_MAGIC_CARPET,
 	RIDE_TYPE_SUBMARINE_RIDE,
 	RIDE_TYPE_RIVER_RAFTS,
-	RIDE_TYPE_50,
+	RIDE_TYPE_50 = 80,
 	RIDE_TYPE_ENTERPRISE,
 	RIDE_TYPE_52,
 	RIDE_TYPE_53,
@@ -443,7 +449,7 @@ enum {
 	RIDE_TYPE_MINI_ROLLER_COASTER,
 	RIDE_TYPE_MINE_RIDE,
 	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
-	RIDE_TYPE_90
+	RIDE_TYPE_90 = 90
 };
 
 enum {
@@ -737,7 +743,8 @@ int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi,
 void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
-
+rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
+rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
 void ride_set_status(int rideIndex, int status);
 void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_set_name(int rideIndex, const char *name);

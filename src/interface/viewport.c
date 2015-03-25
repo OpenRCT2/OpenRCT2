@@ -751,19 +751,54 @@ void sub_688485(){
 
 }
 
-int sub_0x686806(rct_sprite* sprite, int eax, int ecx, int edx){
+int sub_0x686806(rct_sprite* sprite, int eax, int image_id, int ecx, int edx){
 	int ebp = (eax >> 8) & 0xFF;
 	edx <<= 16;
 	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
 	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 	edx = (edx >> 16) | (ebp << 16);
-	ebp = RCT2_GLOBAL(0xEE7888, uint32);
-	if ((uint32)ebp >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
-	//686840 not finished
+
+	//Not a paint struct but something similar
+	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+
+	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+
+	ps->image_id = image_id;
+
+	rct_g1_element *g1Element = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_id & 0x7FFFF];
+
+	eax = (eax & 0xFF) + RCT2_GLOBAL(0x9DE568, uint16);
+	ecx = (ecx & 0xFF) + RCT2_GLOBAL(0x9DE56C, uint16);
+
+	int x = ecx - eax;
+	int y = (ecx + eax) / 2 - (edx & 0xFFFF);
+
+	ps->x = x;
+	ps->y = y;
+
+	int left = x + g1Element->x_offset;
+	int bottom = y + g1Element->y_offset;
+
+	int right = left + g1Element->width;
+	int top = bottom + g1Element->height;
+
+	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
+	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
+
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (right <= dpi->x)return 1;
+	if (top <= dpi->y)return 1;
+	if (left > dpi->x + dpi->width) return 1;
+	if (bottom > dpi->y + dpi->height) return 1;
+
+	RCT2_GLOBAL(0x9DE568, uint16);
+	//686918 not finished
 
 	return 0;
 }
+
 
 /**
 *  Litter Paint Setup??
@@ -829,8 +864,8 @@ void sub_0x69E8B0(uint32 eax, uint32 ecx){
 	eax = (eax & 0x1FE0) << 3 | (ecx >> 5);
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
-
-	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.var_02){
+	
+	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant){
 		spr = &g_sprite_list[sprite_idx];
 		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 

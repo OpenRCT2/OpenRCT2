@@ -234,9 +234,9 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
 		vehicle->var_48 &= ~(1 << 6);
 
-		rideEntry = GET_RIDE_ENTRY(vehicle->var_D6);
+		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 
-		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->var_31].var_5C;
+		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].var_5C;
 
 		if (vehicle->num_peeps != 0) {
 			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;

@@ -1884,7 +1884,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 			return;
 
 		measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-		if (measurement->var_0B == vehicle->var_4B)
+		if (measurement->current_station == vehicle->current_station)
 			measurement->current_item = 0;
 	}
 
@@ -1968,7 +1968,7 @@ void ride_measurements_update()
 				vehicle = &(g_sprite_list[spriteIndex].vehicle);
 				if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_STOPPING) {
 					measurement->vehicle_index = j;
-					measurement->var_0B = vehicle->var_4B;
+					measurement->current_station = vehicle->current_station;
 					measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
 					measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
 					ride_measurement_update(measurement);
