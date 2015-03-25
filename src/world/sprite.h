@@ -93,13 +93,21 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0xA];
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
 	uint8 pad_16[0xE];
-	uint8 var_24;					// 0x24
-	uint8 pad_25;
-	uint16 var_26;					// 0x26
+	uint16 popped;					// 0x24
+	union {
+		uint16 var_26;
+		struct {
+			uint8 var_26a;
+			uint8 var_26b;
+		};
+	};
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
 } rct_balloon;
@@ -156,8 +164,27 @@ typedef struct {
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x12];
-	uint16 iteration;
+	uint16 iteration;				// 0x46
 } rct_jumping_fountain;
+
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 var_02;					// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x10];
+	uint16 move_delay;				// 0x24
+	uint16 num_movements;			// 0x26
+	uint8 pad_28[0x1E];
+	uint16 wiggle;					// 0x46
+} rct_money_effect;
 
 /**
  * Sprite structure.
@@ -172,6 +199,7 @@ typedef union {
 	rct_balloon balloon;
 	rct_duck duck;
 	rct_jumping_fountain jumping_fountain;
+	rct_money_effect money_effect;
 } rct_sprite;
 
 enum {

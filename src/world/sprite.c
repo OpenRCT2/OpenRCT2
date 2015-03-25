@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../interface/viewport.h"
 #include "../scenario.h"
 #include "fountain.h"
@@ -43,7 +44,7 @@ void create_balloon(int x, int y, int z, int colour)
 		sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
 		sprite->balloon.var_26 = 0;
 		sprite->balloon.colour = colour;
-		sprite->balloon.var_24 = 0;
+		sprite->balloon.popped = 0;
 	}
 }
 
@@ -53,7 +54,31 @@ void create_balloon(int x, int y, int z, int colour)
  */
 void balloon_update(rct_balloon *balloon)
 {
-	RCT2_CALLPROC_X(0x0067342C, 0, 0, 0, 0, (int)balloon, 0, 0);
+	invalidate_sprite((rct_sprite*)balloon);
+	if (balloon->popped == 1) {
+		balloon->var_26 += 256;
+		if (balloon->var_26 >= 1280)
+			sprite_remove((rct_sprite*)balloon);
+
+		return;
+	}
+
+	int original_var26a = balloon->var_26a;
+	balloon->var_26a += 85;
+	if (original_var26a < 255 - 85)
+		return;
+
+	balloon->var_26b++;
+	sprite_move(balloon->x, balloon->y, balloon->z + 1, (rct_sprite*)balloon);
+
+	int maxZ = 1967 - ((balloon->x ^ balloon->y) & 31);
+	if (balloon->z < maxZ)
+		return;
+
+	balloon->popped = 1;
+	balloon->var_26 = 0;
+
+	sound_play_panned(SOUND_BALLOON_POP, 0x8001, balloon->x, balloon->y, balloon->z);
 }
 
 /**
@@ -113,6 +138,41 @@ void create_duck(int targetX, int targetY)
 void duck_update(rct_duck *duck)
 {
 	RCT2_CALLPROC_X(0x006740E8, 0, 0, 0, 0, (int)duck, 0, 0);
+}
+
+static const rct_xy16 _moneyEffectMoveOffset[] = {
+	{  1, -1 },
+	{  1,  1 },
+	{ -1,  1 },
+	{ -1, -1 }
+};
+
+/**
+ *
+ *  rct: 0x00673232
+ */
+void money_effect_update(rct_money_effect *moneyEffect)
+{
+	invalidate_sprite((rct_sprite*)moneyEffect);
+	moneyEffect->wiggle++;
+	if (moneyEffect->wiggle >= 22)
+		moneyEffect->wiggle = 0;
+
+	moneyEffect->move_delay++;
+	if (moneyEffect->move_delay < 2)
+		return;
+
+	moneyEffect->move_delay = 0;
+	int x = moneyEffect->x + _moneyEffectMoveOffset[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)].x;
+	int y = moneyEffect->y + _moneyEffectMoveOffset[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)].y;
+	int z = moneyEffect->z;
+	sprite_move(x, y, z, (rct_sprite*)moneyEffect);
+
+	moneyEffect->num_movements++;
+	if (moneyEffect->num_movements < 55)
+		return;
+
+	sprite_remove((rct_sprite*)moneyEffect);
 }
 
 /*
@@ -340,7 +400,7 @@ void sprite_misc_update(rct_sprite *sprite)
 		RCT2_CALLPROC_X(0x00673200, 0, 0, 0, 0, (int)sprite, 0, 0);
 		break;
 	case SPRITE_MISC_MONEY_EFFECT:
-		RCT2_CALLPROC_X(0x00673232, 0, 0, 0, 0, (int)sprite, 0, 0);
+		money_effect_update(&sprite->money_effect);
 		break;
 	case SPRITE_MISC_2:
 		RCT2_CALLPROC_X(0x00673298, 0, 0, 0, 0, (int)sprite, 0, 0);
