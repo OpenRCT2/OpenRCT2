@@ -48,6 +48,13 @@ void create_balloon(int x, int y, int z, int colour, uint8 bl)
 	}
 }
 
+void balloon_pop(rct_balloon *balloon)
+{
+	balloon->popped = 1;
+	balloon->var_26 = 0;
+	sound_play_panned(SOUND_BALLOON_POP, 0x8001, balloon->x, balloon->y, balloon->z);
+}
+
 /**
  *
  *  rct: 0x0067342C
@@ -75,19 +82,30 @@ void balloon_update(rct_balloon *balloon)
 	if (balloon->z < maxZ)
 		return;
 
-	balloon->popped = 1;
-	balloon->var_26 = 0;
-
-	sound_play_panned(SOUND_BALLOON_POP, 0x8001, balloon->x, balloon->y, balloon->z);
+	balloon_pop(balloon);
 }
 
 /**
  *
- *  rct2: 0x006E88D7
+ *  rct2: 0x006E88ED
  */
-void balloon_pop(rct_sprite *sprite)
+void balloon_press(rct_balloon *balloon)
 {
-	RCT2_CALLPROC_X(0x006E88D7, 0, 0, 0, (int)sprite, 0, 0, 0);
+	if (balloon->popped == 1)
+		return;
+
+	uint32 random = scenario_rand();
+	if ((balloon->var_0A & 7) || (random & 0xFFFF) < 0x2000) {
+		balloon_pop(balloon);
+		return;
+	}
+
+	sprite_move(
+		balloon->x + ((random & 0x80000000) ? -6 : 6),
+		balloon->y,
+		balloon->z,
+		(rct_sprite*)balloon
+	);
 }
 
 /**
@@ -138,6 +156,15 @@ void create_duck(int targetX, int targetY)
 void duck_update(rct_duck *duck)
 {
 	RCT2_CALLPROC_X(0x006740E8, 0, 0, 0, 0, (int)duck, 0, 0);
+}
+
+/**
+ *
+ *  rct: 0x006E895D
+ */
+void duck_press(rct_duck *duck)
+{
+	sound_play_panned(SOUND_QUACK, 0x8001, duck->x, duck->y, duck->z);
 }
 
 static const rct_xy16 _moneyEffectMoveOffset[] = {

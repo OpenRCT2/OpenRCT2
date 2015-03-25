@@ -132,7 +132,16 @@ int viewport_interaction_left_click(int x, int y)
 			window_guest_open(info.peep);
 			break;
 		case SPRITE_IDENTIFIER_MISC:
-			balloon_pop(info.sprite);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+				switch (info.sprite->unknown.misc_identifier) {
+				case SPRITE_MISC_BALLOON:
+					balloon_press(&info.sprite->balloon);
+					break;
+				case SPRITE_MISC_DUCK:
+					duck_press(&info.sprite->duck);
+					break;
+				}
+			}
 			break;
 		}
 		return 1;

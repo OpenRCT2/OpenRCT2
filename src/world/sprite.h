@@ -100,7 +100,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0x4];
+	uint16 var_0A;
+	uint8 pad_0C[0x2];
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -127,7 +128,10 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0xA];
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
 	uint8 pad_16[0x8];
@@ -226,14 +230,15 @@ enum {
 extern rct_sprite* g_sprite_list;
 
 void create_balloon(int x, int y, int z, int colour, uint8 bl);
+void balloon_press(rct_balloon *balloon);
 void create_duck(int targetX, int targetY);
+void duck_press(rct_duck *duck);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void sprite_misc_update_all();
 void sprite_move(int x, int y, int z, rct_sprite* sprite);
-void balloon_pop(rct_sprite *sprite);
 void invalidate_sprite(rct_sprite *sprite);
 void sprite_remove(rct_sprite *sprite);
 
