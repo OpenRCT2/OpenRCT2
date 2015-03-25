@@ -976,7 +976,10 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
 				return;
 
-			for (int i = 0; i < ride->num_vehicles; ++i){
+			for (int i = 0; i <= ride->num_vehicles; ++i){
+				if (i == ride->num_vehicles)
+					return;
+
 				rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
 
 				if (vehicle->next_free_seat >= vehicle->num_seats)
