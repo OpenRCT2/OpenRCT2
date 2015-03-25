@@ -446,7 +446,7 @@ void window_new_ride_focus(ride_list_item rideItem)
 
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != RIDE_TYPE_NULL) {
-		if (listItem->type == rideItem.type && listItem->entry_index == rideItem.type) {
+		if (listItem->type == rideItem.type && listItem->entry_index == rideItem.entry_index) {
 			RCT2_GLOBAL(0x00F43825, uint8) = rideItem.type;
 			RCT2_GLOBAL(0x00F43826, uint8) = rideItem.entry_index;
 			w->new_ride.highlighted_ride_id = (rideItem.entry_index << 8) | rideItem.type;
