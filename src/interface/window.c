@@ -1671,10 +1671,8 @@ void window_event_invalidate_call(rct_window* w)
 	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
 }
 
-void window_event_update_call(rct_window *w)
+static void window_event_call_address(int address, rct_window *w)
 {
-	int address = w->event_handlers[WE_UPDATE];
-
 	#ifdef _MSC_VER
 	__asm {
 			push address
@@ -1693,6 +1691,11 @@ void window_event_update_call(rct_window *w)
 				add esp, 8	\n\
 			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
 	#endif
+}
+
+void window_event_update_call(rct_window *w)
+{
+	window_event_call_address(w->event_handlers[WE_UPDATE], w);
 }
 
 /**
