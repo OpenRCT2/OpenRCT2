@@ -107,9 +107,9 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
 
 		newPeep->sprite_identifier = 1;
-		newPeep->var_09 = 0x0F;
-		newPeep->var_15 = 5;
-		newPeep->var_14 = 8;
+		newPeep->sprite_height_negative = 0x0F;
+		newPeep->sprite_height_positive = 5;
+		newPeep->sprite_width = 8;
 		newPeep->sprite_direction = 0;
 
 		sprite_move(_ax, *ecx, _dx, (rct_sprite*)newPeep);
@@ -122,9 +122,9 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->var_45 = 0;
 		newPeep->action = 0xFF;
 		newPeep->var_6D = 0;
-		newPeep->var_70 = 0;
-		newPeep->var_E0 = 0;
-		newPeep->var_6E = 0;
+		newPeep->action_sprite_image_offset = 0;
+		newPeep->no_action_frame_no = 0;
+		newPeep->action_sprite_type = 0;
 		newPeep->var_C4 = 0;
 		newPeep->type = PEEP_TYPE_STAFF;
 		newPeep->var_2A = 0;
@@ -176,9 +176,9 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->sprite_type = _eax;
 
 		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
-		newPeep->var_14 = *((uint8*)_edx);
-		newPeep->var_09 = *((uint8*)(_edx + 1));
-		newPeep->var_15 = *((uint8*)(_edx + 2));
+		newPeep->sprite_width = *((uint8*)_edx);
+		newPeep->sprite_height_negative = *((uint8*)(_edx + 1));
+		newPeep->sprite_height_positive = *((uint8*)(_edx + 2));
 
 		sprite_move( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
 		invalidate_sprite((rct_sprite*)newPeep);

@@ -1235,8 +1235,8 @@ void window_guest_overview_tool_down(){
 	peep_window_state_update(peep);
 	peep->action = 0xFF;
 	peep->var_6D = 0;
-	peep->var_70 = 0;
-	peep->var_6E = 0xFF;
+	peep->action_sprite_image_offset = 0;
+	peep->action_sprite_type = 0xFF;
 	peep->var_C4 = 0;
 
 	peep->happiness_growth_rate -= 10;
@@ -1268,8 +1268,8 @@ void window_guest_overview_tool_abort(){
 		peep_window_state_update(peep);
 		peep->action = 0xFF;
 		peep->var_6D = 0;
-		peep->var_70 = 0;
-		peep->var_6E = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
 		peep->var_C4 = 0;
 	}
 
@@ -2152,7 +2152,7 @@ void window_guest_inventory_paint(){
 		no_items++;
 
 		RCT2_GLOBAL(0x13CE952, uint32) = 5089 + i;
-		RCT2_GLOBAL(0x13CE956, uint16) = 2188;
+		RCT2_GLOBAL(0x13CE956, uint16) = 2188 + i;
 		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
 		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
 

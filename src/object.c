@@ -439,7 +439,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			chunk += 0x60;
 		}
 
-		uint8* peep_loading_positions = chunk;
+		sint8* peep_loading_positions = chunk;
 		// Peep loading positions variable size
 		// 4 different vehicle subtypes are available
 		for (int i = 0; i < 4; ++i){
@@ -644,7 +644,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					no_positions = *((uint16*)peep_loading_positions);
 					peep_loading_positions += 2;
 				}
-				rideVehicleEntry->var_61 = (uint32)peep_loading_positions;
+				rideVehicleEntry->peep_loading_positions = peep_loading_positions;
 				peep_loading_positions += no_positions;
 			}
 		}
@@ -718,7 +718,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			}
 			rideVehicleEntry->var_02 = 0;
 			rideVehicleEntry->var_03 = 0;
-			rideVehicleEntry->var_61 = 0;
+			rideVehicleEntry->peep_loading_positions = 0;
 		}
 
 		ride_type->var_1AE = 0;
@@ -839,18 +839,18 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 
 			int image_id = scenery_type->image;
 
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_PRIMARY_COLOUR){
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
 				image_id |= 0x20D00000;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 			}
 
 			x = 56;
 			y = scenery_type->small_scenery.height / 4 + 78;
 
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG1){
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG2){
+			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE){
 					y -= 12;
 				}
 			}
@@ -860,7 +860,7 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG10){
 				image_id = scenery_type->image + 0x44500004;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 
 				gfx_draw_sprite(dpi, image_id, x, y, 0);
@@ -869,7 +869,7 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG8){
 				image_id = scenery_type->image + 4;
 
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					image_id |= 0x92000000;
 
 				gfx_draw_sprite(dpi, image_id, x, y, 0);

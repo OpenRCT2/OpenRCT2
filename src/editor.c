@@ -707,7 +707,7 @@ static int editor_read_s4(rct1_s4 *src)
 
 	read((void*)0x0135A8F4, &src->string_table, 0x2F51C);
 	memset((void*)0x013CA672, 0, 204);
-	read((void*)0x0138B580, &src->animated_objects, 0x258F2);
+	read((void*)0x0138B580, &src->map_animations, 0x258F2);
 	read((void*)0x013C6A72, &src->patrol_areas, sizeof(src->patrol_areas));
 
 	char *esi = (char*)0x13C6A72;

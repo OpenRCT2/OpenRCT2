@@ -931,10 +931,10 @@ void window_scenery_invalidate()
 		} else if (tabSelectedSceneryId < 0x100) {
 			sceneryEntry = g_smallSceneryEntries[tabSelectedSceneryId];
 
-			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
+			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
 
-				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR)
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
 					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
 			}
 		}
@@ -1145,18 +1145,18 @@ void window_scenery_scrollpaint()
 
 				uint32 imageId = sceneryEntry->image + window_scenery_rotation;
 
-				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_PRIMARY_COLOUR) {
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
 					imageId |= (window_scenery_primary_colour << 19) | 0x20000000;
 
-					if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_HAS_SECONDARY_COLOUR) {
+					if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 						imageId |= (window_scenery_secondary_colour << 24) | 0x80000000;
 					}
 				}
 
 				uint16 spriteTop = (sceneryEntry->small_scenery.height / 4) + 0x2B;
 
-				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG1 &&
-					sceneryEntry->small_scenery.flags &  SMALL_SCENERY_FLAG2) {
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE &&
+					sceneryEntry->small_scenery.flags &  SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
 					spriteTop -= 0x0C;
 				}
 

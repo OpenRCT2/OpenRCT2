@@ -99,9 +99,8 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 
 							sint32 v19 = vehicle->velocity;
 
-							int testaddr = (vehicle->var_31 * 0x65);
-							testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
-							uint8 test = ((uint8*)testaddr)[0x74];
+							rct_ride_type* ride_type = GET_RIDE_ENTRY(vehicle->ride_subtype);
+							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {
 								v19 *= 2;
@@ -633,4 +632,9 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 	}
 
 	return vehicle;
+}
+
+int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
+{
+	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
 }

@@ -579,6 +579,7 @@ void window_event_mouse_up_call(rct_window* w, int widgetIndex);
 void window_event_resize_call(rct_window* w);
 void window_event_mouse_down_call(rct_window* w, int widgetIndex);
 void window_event_invalidate_call(rct_window* w);
+void window_event_update_call(rct_window *w);
 
 void sub_6EA73F();
 

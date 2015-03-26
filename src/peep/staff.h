@@ -40,6 +40,13 @@ enum STAFF_TYPE {
 	STAFF_TYPE_ENTERTAINER
 };
 
+enum STAFF_ORDERS{
+	STAFF_ORDERS_SWEEPING = (1 << 0),
+	STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
+	STAFF_ORDERS_EMPTY_BINS = (1 << 2),
+	STAFF_ORDERS_MOWING = (1 << 3)
+};
+
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 

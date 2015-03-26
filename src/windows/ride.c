@@ -1901,7 +1901,7 @@ static void window_ride_main_update(rct_window *w)
 
 	// Update status
 	ride = GET_RIDE(w->number);
-	if (!(ride->var_14D & 4)) {
+	if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN)) {
 		if (w->ride.view == 0)
 			return;
 
@@ -1923,7 +1923,7 @@ static void window_ride_main_update(rct_window *w)
 		}
 	}
 
-	ride->var_14D &= ~4;
+	ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAIN;
 	widget_invalidate(w, WIDX_STATUS);
 }
 
@@ -2070,7 +2070,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 		stringId += 23;
 
 	RCT2_GLOBAL((int)arguments + 4, uint16) = RideNameConvention[ride->type].station_name;
-	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->var_4B + 1;
+	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->current_station + 1;
 	if (ride->num_stations > 1)
 		RCT2_GLOBAL((int)arguments + 4, uint16) += 6;
 
@@ -2390,7 +2390,7 @@ static void window_ride_vehicle_dropdown()
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1019;
-		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->var_00F + dropdownIndex) << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->min_cars_in_train + dropdownIndex) << 8) | w->number, GAME_COMMAND_9, 0, 0);
 		break;
 	}
 }
@@ -2461,7 +2461,7 @@ static void window_ride_vehicle_invalidate()
 	}
 
 	// Cars per train
-	if (rideEntry->var_012 + 1 < rideEntry->var_010) {
+	if (rideEntry->var_012 + 1 < rideEntry->max_cars_in_train) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = carsPerTrain > 1 ? 1023 : 1022;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_DROPDOWN;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -2950,8 +2950,8 @@ static void window_ride_operating_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_3);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 10) {
-		ride->var_14D &= ~10;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
 		window_invalidate(w);
 	}
 }
@@ -3360,8 +3360,8 @@ static void window_ride_maintenance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_4);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 20) {
-		ride->var_14D &= ~20;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
 		window_invalidate(w);
 	}
 }
@@ -3434,13 +3434,12 @@ static void window_ride_maintenance_paint()
 	x = w->x + widget->left + 4;
 	y = w->y + widget->top + 4;
 
-	reliability = ride->var_196 >> 8;
+	reliability = ride->reliability >> 8;
 	gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, 0, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), 14);
 	y += 11;
 
-	// Down time
-	downTime = ride->var_199;
+	downTime = ride->downtime;
 	gfx_draw_string_left(dpi, STR_DOWN_TIME_LABEL_1889, &downTime, 0, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, downTime, 28);
 	y += 26;
@@ -3740,7 +3739,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
 			0,
-			rideEntry->var_010 > 1 ? 3 : 2,
+			rideEntry->max_cars_in_train > 1 ? 3 : 2,
 			widget->right - dropdownWidget->left
 		);
 
@@ -5452,8 +5451,8 @@ static void window_ride_income_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_9);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 2) {
-		ride->var_14D &= ~2;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_INCOME;
 		window_invalidate(w);
 	}
 }
@@ -5736,8 +5735,8 @@ static void window_ride_customer_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_10);
 
 	ride = GET_RIDE(w->number);
-	if (ride->var_14D & 1) {
-		ride->var_14D &= ~1;
+	if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER) {
+		ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
 		window_invalidate(w);
 	}
 }

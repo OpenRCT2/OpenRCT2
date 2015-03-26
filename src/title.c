@@ -266,7 +266,6 @@ static void DrawOpenRCT2(int x, int y)
 void game_handle_input();
 void title_update()
 {
-
 	screenshot_check();
 	title_handle_keyboard_input();
 

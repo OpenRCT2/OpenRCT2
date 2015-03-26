@@ -174,8 +174,8 @@ typedef struct {
 	uint16 view_y;
 	uint8 view_zoom;
 	uint8 view_rotation;
-	uint8 animated_objects[6000];
-	uint32 num_animated_objects;
+	uint8 map_animations[6000];
+	uint32 num_map_animations;
 	uint8 unk_1CADBC[12];
 	uint16 scrolling_text_step;
 	uint32 unk_1CADCA;

@@ -67,7 +67,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		switch (sprite->unknown.sprite_identifier) {
 		case SPRITE_IDENTIFIER_VEHICLE:
 			vehicle = &(sprite->vehicle);
-			if (vehicle->var_D6 != 255)
+			if (vehicle->ride_subtype != 255)
 				vehicle_set_map_toolbar(vehicle);
 			else
 				info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -131,8 +131,17 @@ int viewport_interaction_left_click(int x, int y)
 		case SPRITE_IDENTIFIER_PEEP:
 			window_guest_open(info.peep);
 			break;
-		case SPRITE_IDENTIFIER_FLOATING_TEXT:
-			balloon_pop(info.sprite);
+		case SPRITE_IDENTIFIER_MISC:
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+				switch (info.sprite->unknown.misc_identifier) {
+				case SPRITE_MISC_BALLOON:
+					balloon_press(&info.sprite->balloon);
+					break;
+				case SPRITE_MISC_DUCK:
+					duck_press(&info.sprite->duck);
+					break;
+				}
+			}
 			break;
 		}
 		return 1;
@@ -399,7 +408,7 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 	
 	w = window_find_by_class(WC_FOOTPATH);
 	if (w != NULL)
-		sub_6A7831();
+		footpath_provisional_update();
 
 	mapElement2 = map_get_first_element_at(x / 32, y / 32);
 	do {

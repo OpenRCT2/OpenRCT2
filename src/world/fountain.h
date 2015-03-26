@@ -18,43 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _MAP_ANIMATION_H_
-#define _MAP_ANIMATION_H_
+#ifndef _WORLD_FOUNTAIN_H_
+#define _WORLD_FOUNTAIN_H_
 
 #include "../common.h"
-
-/**
- * Animated object
- * size: 0x06
- */
-typedef struct {
-	uint8 baseZ;
-	uint8 type;
-	uint16 x;
-	uint16 y;
-} rct_map_animation;
+#include "map.h"
+#include "sprite.h"
 
 enum {
-	MAP_ANIMATION_TYPE_RIDE_ENTRANCE,
-	MAP_ANIMATION_TYPE_QUEUE_BANNER,
-	MAP_ANIMATION_TYPE_SMALL_SCENERY,
-	MAP_ANIMATION_TYPE_PARK_ENTRANCE,
-	MAP_ANIMATION_TYPE_TRACK_WATERFALL,
-	MAP_ANIMATION_TYPE_TRACK_RAPIDS,
-	MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
-	MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL,
-	MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL,
-	MAP_ANIMATION_TYPE_REMOVE,
-	MAP_ANIMATION_TYPE_BANNER,
-	MAP_ANIMATION_TYPE_LARGE_SCENERY,
-	MAP_ANIMATION_TYPE_WALL_UNKNOWN,
-	MAP_ANIMATION_TYPE_WALL,
-	MAP_ANIMATION_TYPE_COUNT
+	JUMPING_FOUNTAIN_TYPE_WATER,
+	JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-extern rct_map_animation *gAnimatedObjects;
-
-void map_animation_create(int type, int x, int y, int z);
-void map_animation_invalidate_all();
+void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement);
+void jumping_fountain_create(int type, int x, int y, int z, int direction, int flags, int iteration);
+void jumping_fountain_update(rct_jumping_fountain *jumpingFountain);
 
 #endif

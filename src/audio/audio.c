@@ -1768,6 +1768,18 @@ void audio_init2(int device)
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= 1 << 4;
 		config_save_default();
 	}
+
+	// When all sound code is reversed this can be removed.
+	if (!gConfigSound.sound){
+		toggle_all_sounds();
+	}
+
+	// When all sound code is reversed this can be removed.
+	if (!gConfigSound.ride_music){
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) ^= 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) == 0)
+			stop_ride_music();
+	}
 }
 
 /**
@@ -1794,19 +1806,34 @@ void audio_close()
 	}
 }
 
+/* rct2: 0x006BAB8A */
+void toggle_all_sounds(){
+	// When all sound code is reversed replace with gConfigSound.sound
+	RCT2_GLOBAL(0x009AF59D, uint8) ^= 1;
+	if (RCT2_GLOBAL(0x009AF59D, uint8) == 0) {
+		stop_title_music();
+		pause_sounds();
+	}
+	else{
+		unpause_sounds();
+	}
+}
+
 /**
 *
 *  rct2: 0x006BABB4
 */
 void pause_sounds()
 {
-	if (++RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
+	// When all sound code is reversed replace with gConfigSound.sound
+	RCT2_GLOBAL(0x009AF59C, uint8) = 1;
+	if (RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
 		stop_other_sounds();
 		stop_vehicle_sounds();
 		stop_ride_music();
 		stop_crowd_sound();
 	}
-	g_sounds_disabled = 1;
+	gConfigSound.sound = 0;
 }
 
 /**
@@ -1815,8 +1842,9 @@ void pause_sounds()
 */
 void unpause_sounds()
 {
-	RCT2_GLOBAL(0x009AF59C, uint8)--;
-	g_sounds_disabled = 0;
+	// When all sound code is reversed replace with gConfigSound.sound
+	RCT2_GLOBAL(0x009AF59C, uint8) = 0;
+	gConfigSound.sound = 1;
 }
 
 /**

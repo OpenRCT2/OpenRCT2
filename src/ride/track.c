@@ -735,7 +735,7 @@ void load_track_scenery_objects(){
 			object_load(-1, &scenery_entry->scenery_object, 0);
 		}
 		// Skip object and location/direction/colour
-		scenery_entry += sizeof(rct_track_scenery);
+		track_elements += sizeof(rct_track_scenery);
 	}
 
 	reset_loaded_objects();
@@ -1227,7 +1227,7 @@ int copy_scenery_to_track(uint8** track_pointer){
 		{
 			int temp_y = y;
 			y = x;
-			x = -y;
+			x = -temp_y;
 		}
 			break;
 		case 2:
@@ -1238,7 +1238,7 @@ int copy_scenery_to_track(uint8** track_pointer){
 		{
 			int temp_x = x;
 			x = y;
-			y = -x;
+			y = -temp_x;
 		}
 			break;
 		}

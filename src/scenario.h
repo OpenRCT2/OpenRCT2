@@ -281,9 +281,9 @@ typedef struct {
 	uint16 saved_view_x;
 	uint16 saved_view_y;
 	uint16 saved_view_zoom_and_rotation;
-	uint8 byte_013886A0[6000];
+	uint8 map_animations[6000];
 	uint8 byte_01389E10[6000];
-	uint16 word_0138B580;
+	uint16 num_map_animations;
 	uint8 pad_0138B580[2];
 	uint16 word_0138B584;
 	uint16 word_0138B586;

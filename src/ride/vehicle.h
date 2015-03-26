@@ -26,31 +26,41 @@
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;
-	uint8 pad_02[0x02];
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-	uint8 pad_09;
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
 	uint8 pad_0C[2];
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x02];
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
 	sint16 sprite_left;				// 0x16
 	sint16 sprite_top;				// 0x18
 	sint16 sprite_right;			// 0x1A
 	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
-	uint8 pad_1F[0x09];
+	uint8 var_1F;
+	uint8 pad_20[0x08];
 	sint32 velocity;				// 0x28
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30
-	uint8 var_31;
+	uint8 vehicle_type;				// 0x31
 	uint8 pad_32[0x02];
 	uint16 var_34;
 	sint16 var_36;
-	uint8 pad_38[0x06];
+	//x related
+	uint16 var_38;
+	// y related
+	uint16 var_3A;
+	// z related
+	uint16 var_3C;
 	uint16 next_vehicle_on_train;	// 0x3E
 	uint16 prev_vehicle_on_train;	// 0x40
 	uint16 pad_42;
@@ -58,14 +68,16 @@ typedef struct {
 	uint16 var_46;
 	uint16 var_48;
 	uint8 pad_4A;
-	uint8 var_4B;
+	uint8 current_station;			// 0x4B
 	uint8 pad_4C[0x4];
 	uint8 status;					// 0x50
 	uint8 var_51;
 	uint16 peep[32];				// 0x52
-	uint8 pad_92[0x21];
+	uint8 peep_tshirt_colours[32];	// 0x92
+	uint8 num_seats;				// 0xB2
 	uint8 num_peeps;				// 0xB3
-	uint8 pad_B4[0x07];
+	uint8 next_free_seat;		// 0xB4
+	uint8 pad_B5[0x06];
 	uint8 sound1_id;				// 0xBB
 	uint8 sound1_volume;			// 0xBC
 	uint8 sound2_id;				// 0xBD
@@ -78,10 +90,11 @@ typedef struct {
 	uint8 var_CD;
 	union {
 		uint8 var_CE;
-		uint8 num_laps;					// 0xCE
+		uint8 num_laps;				// 0xCE
 	};
-	uint8 pad_CF[0x07];
-	uint8 var_D6;
+	uint8 pad_CF[0x06];
+	uint8 var_D5;
+	uint8 ride_subtype;				// 0xD6
 } rct_vehicle;
 
 enum {
@@ -118,13 +131,16 @@ enum {
 	VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
+#define VEHICLE_SEAT_PAIR_FLAG	0x80
+#define VEHICLE_SEAT_NUM_MASK	0x7F
+
 void vehicle_update_all();
 int sub_6BC2F3(rct_vehicle* vehicle);
 void sub_6BB9FF(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
-
+int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 
 /** Helper macro until rides are stored in this module. */

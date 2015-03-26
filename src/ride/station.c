@@ -128,7 +128,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		// Begin the match
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
 		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-		ride->var_14D |= 12;
+		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 	}
 }
 
@@ -188,7 +188,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 				if (vehicle->num_peeps != 0) {
 					peep = &(g_sprite_list[vehicle->peep[0]].peep);
 					ride->race_winner = peep->sprite_index;
-					ride->var_14D |= 12;
+					ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 				}
 
 				// Race is over
@@ -214,7 +214,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 		ride_race_init_vehicle_speeds(ride);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
 		ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-		ride->var_14D |= 12;
+		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 	}
 }
 
@@ -234,9 +234,9 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
 		vehicle->var_48 &= ~(1 << 6);
 
-		rideEntry = GET_RIDE_ENTRY(vehicle->var_D6);
+		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 
-		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->var_31].var_5C;
+		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].var_5C;
 
 		if (vehicle->num_peeps != 0) {
 			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;

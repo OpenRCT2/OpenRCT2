@@ -1568,7 +1568,7 @@ static void window_park_stats_paint()
 	y += 10;
 
 	// Draw number of rides / attractions
-	if (w->list_information_type != -1) {
+	if (w->list_information_type != (uint16)-1) {
 		RCT2_GLOBAL(0x013CE952, uint32) = w->list_information_type;
 		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)0x013CE952, 0, x, y);
 	}
@@ -1941,8 +1941,9 @@ static void window_park_set_page(rct_window *w, int page)
 	window_park_set_disabled_tabs(w);
 	window_invalidate(w);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
+	window_event_update_call(w);
 	if (listen != 0 && w->viewport != NULL)
 		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }

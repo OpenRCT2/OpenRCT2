@@ -24,6 +24,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../scenario.h"
 #include "banner.h"
 #include "climate.h"
 #include "map.h"
@@ -48,6 +49,8 @@ int _sub_6A876D_save_y;
 
 static void tiles_init();
 static void sub_6A87BB(int x, int y);
+static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
+static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 
 void map_element_iterator_begin(map_element_iterator *it)
 {
@@ -194,7 +197,7 @@ void map_init(int size)
 		map_element_set_terrain_edge(map_element, TERRAIN_EDGE_ROCK);
 	}
 
-	RCT2_GLOBAL(0x013B0E70, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) = 0;
 	_sub_6A876D_save_x = 0;
 	_sub_6A876D_save_y = 0;
 	RCT2_GLOBAL(0x01358830, sint16) = size * 32 - 32;
@@ -1117,4 +1120,110 @@ void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
 		map_element_remove(mapElement);
 		mapElement -= 1;
 	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ * Updates grass length, scenery age and jumping fountains.
+ *
+ *  rct2: 0x006646E1
+ */
+void map_update_tiles()
+{
+	int ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ignoreScreenFlags)
+		return;
+
+	// Update 43 more tiles
+	for (int j = 0; j < 43; j++) {
+		int x = 0;
+		int y = 0;
+
+		uint16 interleaved_xy = RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16);
+		for (int i = 0; i < 8; i++) {
+			x = (x << 1) | (interleaved_xy & 1);
+			interleaved_xy >>= 1;
+			y = (y << 1) | (interleaved_xy & 1);
+			interleaved_xy >>= 1;
+		}
+
+		rct_map_element *mapElement = map_get_surface_element_at(x, y);
+		if (mapElement != NULL) {
+			map_update_grass_length(x * 32, y * 32, mapElement);
+			scenery_update_tile(x * 32, y * 32);
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16)++;
+		RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) &= 0xFFFF;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006647A1
+ */
+static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
+{
+	// Check if tile is grass
+	if ((mapElement->properties.surface.terrain & 0xE0) && !(mapElement->type & 3))
+		return;
+
+	int grassLength = mapElement->properties.surface.grass_length & 7;
+
+	// Check if grass is underwater or outside park
+	int waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 2;
+	if (waterHeight > mapElement->base_height || !map_is_location_in_park(x, y)) {
+		if (grassLength != GRASS_LENGTH_CLEAR_0)
+			map_set_grass_length(x, y, mapElement, GRASS_LENGTH_CLEAR_0);
+
+		return;
+	}
+
+	// Grass can't grow any further
+	if (grassLength == GRASS_LENGTH_CLUMPS_2)
+		return;
+
+	int z0 = mapElement->base_height;
+	int z1 = mapElement->base_height + 2;
+	if (mapElement->properties.surface.slope & 0x10)
+		z1 += 2;
+
+	// Check objects above grass
+	rct_map_element *mapElementAbove = mapElement;
+	for (;;) {
+		if (mapElementAbove->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+			// Grow grass
+			if (mapElement->properties.surface.grass_length < 0xF0) {
+				mapElement->properties.surface.grass_length += 0x10;
+			} else {
+				mapElement->properties.surface.grass_length += 0x10;
+				mapElement->properties.surface.grass_length ^= 8;
+				if (mapElement->properties.surface.grass_length & 8) {
+					// Random growth rate
+					mapElement->properties.surface.grass_length |= scenario_rand() & 0x70;
+				} else {
+					// Increase length
+					map_set_grass_length(x, y, mapElement, grassLength + 1);
+				}
+			}
+		} else {
+			mapElementAbove++;
+			if (map_element_get_type(mapElementAbove) == MAP_ELEMENT_TYPE_FENCE)
+				continue;
+			if (z0 >= mapElementAbove->clearance_height)
+				continue;
+			if (z1 < mapElementAbove->base_height)
+				continue;
+		}
+		break;
+	}
+}
+
+static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length)
+{
+	int z0, z1;
+
+	mapElement->properties.surface.grass_length = length;
+	z0 = mapElement->base_height * 8;
+	z1 = z0 + 16;
+	sub_6EC847(x, y, z0, z1);
 }

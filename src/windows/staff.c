@@ -1158,8 +1158,8 @@ void window_staff_overview_tool_down(){
 		peep_window_state_update(peep);
 		peep->action = 0xFF;
 		peep->var_6D = 0;
-		peep->var_70 = 0;
-		peep->var_6E = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
 		peep->var_C4 = 0;
 
 		tool_cancel();
@@ -1196,8 +1196,8 @@ void window_staff_overview_tool_abort(){
 			peep_window_state_update(peep);
 			peep->action = 0xFF;
 			peep->var_6D = 0;
-			peep->var_70 = 0;
-			peep->var_6E = 0;
+			peep->action_sprite_image_offset = 0;
+			peep->action_sprite_type = 0;
 			peep->var_C4 = 0;
 		}
 

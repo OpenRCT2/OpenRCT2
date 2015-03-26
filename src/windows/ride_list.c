@@ -507,13 +507,13 @@ static void window_ride_list_scrollpaint()
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_196 >> 8;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->reliability >> 8;
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_199;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->downtime;
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
@@ -579,8 +579,8 @@ static void window_ride_list_refresh_list(rct_window *w)
 			continue;
 
 		countA++;
-		if (ride->var_14D & 8) {
-			ride->var_14D &= ~8;
+		if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST) {
+			ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
 			countB++;
 		}
 	}
@@ -661,7 +661,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
+				if (ride->reliability >> 8 <= otherRide->reliability >> 8)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -670,7 +670,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if (ride->var_199 <= otherRide->var_199)
+				if (ride->downtime <= otherRide->downtime)
 					break;
 
 				window_bubble_list_item(w, current_list_position);

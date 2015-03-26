@@ -39,8 +39,13 @@ typedef struct {
 
 typedef struct {
 	uint8 type; //4
-	uint8 sequence; //5
-	uint8 colour; //6
+	union{
+		struct{
+			uint8 sequence; //5
+			uint8 colour; //6
+		};
+		uint16 maze_entry; // 5
+	};
 	uint8 ride_index; //7
 } rct_map_element_track_properties;
 
@@ -267,8 +272,6 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags);
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 
-void fountain_update_all();
-
 void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
@@ -286,5 +289,6 @@ int map_element_iterator_next(map_element_iterator *it);
 void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
 void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction);
+void map_update_tiles();
 
 #endif

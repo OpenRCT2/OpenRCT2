@@ -32,33 +32,36 @@
 enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_VEHICLE = 0,
 	SPRITE_IDENTIFIER_PEEP = 1,
-	SPRITE_IDENTIFIER_FLOATING_TEXT = 2,
+	SPRITE_IDENTIFIER_MISC = 2,
 	SPRITE_IDENTIFIER_LITTER = 3,
 };
 
 typedef enum {
 	SPRITE_LINKEDLIST_OFFSET_VEHICLE = 2,
 	SPRITE_LINKEDLIST_OFFSET_PEEP = 4,
-	SPRITE_LINKEDLIST_OFFSET_FLOATING_TEXT = 6,
-	SPRITE_LINKEDLIST_OFFSET_FLOATING_LITTER = 8,
+	SPRITE_LINKEDLIST_OFFSET_MISC = 6,
+	SPRITE_LINKEDLIST_OFFSET_LITTER = 8,
 	SPRITE_LINKEDLIST_OFFSET_UNKNOWN = 10
 } SPRITE_LINKEDLIST_OFFSET;
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
-	uint8 pad_01;
-	uint16 var_02;
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-	uint8 var_09;
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint8 pad_0C[2];
+	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 var_14;					// 0x14
-	uint8 var_15;					// 0x15
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
 	sint16 sprite_left;				// 0x16
 	sint16 sprite_top;				// 0x18
 	sint16 sprite_right;			// 0x1A
@@ -73,46 +76,63 @@ typedef struct {
 } rct_unk_sprite;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
+	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;					// 0x01
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 pad_09;
 	uint16 sprite_index;			// 0x0A
-	uint8 pad_0B[0x19];
+	uint16 pad_0C;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x10];
 	uint32 var_24;
 } rct_litter;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
-	uint8 var_01;					// 0x01
-	uint16 var_02;					// 0x02
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0xA];
+	uint16 var_0A;
+	uint8 pad_0C[0x2];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
 	uint8 pad_16[0xE];
-	uint8 var_24;					// 0x24
-	uint8 pad_25;
-	uint16 var_26;					// 0x26
+	uint16 popped;					// 0x24
+	union {
+		uint16 var_26;
+		struct {
+			uint8 var_26a;
+			uint8 var_26b;
+		};
+	};
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
 } rct_balloon;
 
 typedef struct {
-	uint8 sprite_identifier;        // 0x00
-	uint8 var_01;					// 0x01
-	uint16 var_02;					// 0x02
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint8 pad_0A[0xA];
+	uint16 var_0A;
+	uint8 pad_0C[0x2];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
 	uint8 var_14;					// 0x14
 	uint8 var_15;					// 0x15
 	uint8 pad_16[0x8];
@@ -123,8 +143,60 @@ typedef struct {
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
-	uint8 var_48;					// 0x48
+	uint8 state;					// 0x48
 } rct_duck;
+
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 var_14;
+	uint8 var_15;
+	uint8 pad_16[0x8];
+	uint8 sprite_direction;			// 0x1E
+	uint8 pad_1F[0x7];
+	union {
+		uint16 var_26;
+		struct {
+			uint8 var_26a;
+			uint8 var_26b;
+		};
+	};
+	uint8 pad_28[0x6];
+	uint8 var_2E;
+	uint8 flags;
+	sint16 target_x;				// 0x30
+	sint16 target_y;				// 0x32
+	uint8 pad_34[0x12];
+	uint16 iteration;				// 0x46
+} rct_jumping_fountain;
+
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 var_02;					// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	uint8 var_09;
+	uint8 pad_0A[0x4];
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0x10];
+	uint16 move_delay;				// 0x24
+	uint16 num_movements;			// 0x26
+	uint8 pad_28[0x1E];
+	uint16 wiggle;					// 0x46
+} rct_money_effect;
 
 /**
  * Sprite structure.
@@ -138,21 +210,38 @@ typedef union {
 	rct_vehicle vehicle;
 	rct_balloon balloon;
 	rct_duck duck;
+	rct_jumping_fountain jumping_fountain;
+	rct_money_effect money_effect;
 } rct_sprite;
+
+enum {
+	SPRITE_MISC_0,
+	SPRITE_MISC_MONEY_EFFECT,
+	SPRITE_MISC_2,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_4,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_5,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
+	SPRITE_MISC_BALLOON,
+	SPRITE_MISC_DUCK,
+	SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+};
 
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
 
-void create_balloon(int x, int y, int z, int colour);
+void create_balloon(int x, int y, int z, int colour, uint8 bl);
+void balloon_press(rct_balloon *balloon);
 void create_duck(int targetX, int targetY);
+void duck_press(rct_duck *duck);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
-void texteffect_update_all();
+void sprite_misc_update_all();
 void sprite_move(int x, int y, int z, rct_sprite* sprite);
-void balloon_pop(rct_sprite *sprite);
 void invalidate_sprite(rct_sprite *sprite);
+void sub_6EC60B(rct_sprite* sprite);
 void sprite_remove(rct_sprite *sprite);
 
 #endif
