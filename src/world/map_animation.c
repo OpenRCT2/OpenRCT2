@@ -55,7 +55,8 @@ void map_animation_create(int type, int x, int y, int z)
 			continue;
 		if (aobj->baseZ != z)
 			continue;
-
+		if (aobj->type != type)
+			continue;
 		// Animation already exists
 		return;
 	}
