@@ -1262,8 +1262,8 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			y = vehicle->y;
 		}
 
-		x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
-		y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+		x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
+		y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
 
 		peep->destination_x = x;
 		peep->destination_y = y;
@@ -1279,7 +1279,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		return;
 	}
 
-	uint8 load_position = vehicle_type->peep_loading_positions[peep->current_seat];
+	sint8 load_position = vehicle_type->peep_loading_positions[peep->current_seat];
 	
 	switch (vehicle->sprite_direction / 8){
 	case 0:
@@ -1672,7 +1672,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 		x = vehicle->x + RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2] * 12;
 		y = vehicle->y + RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2] * 12;
 
-		uint8 load_position = vehicle_entry->peep_loading_positions[peep->current_seat];
+		sint8 load_position = vehicle_entry->peep_loading_positions[peep->current_seat];
 
 		switch (vehicle->sprite_direction / 8){
 		case 0:
@@ -1743,8 +1743,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 		y = vehicle->y;
 	}
 
-	sint16 exit_x = x + ((sint8*)vehicle_type->peep_loading_positions)[(peep->var_37 + 1) * 2 + 1];
-	sint16 exit_y = y + ((sint8*)vehicle_type->peep_loading_positions)[(peep->var_37 + 1) * 2 + 2];
+	sint16 exit_x = x + vehicle_type->peep_loading_positions[(peep->var_37 + 1) * 2 + 1];
+	sint16 exit_y = y + vehicle_type->peep_loading_positions[(peep->var_37 + 1) * 2 + 2];
 
 	z *= 8;
 	z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
@@ -1755,8 +1755,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 	sprite_move(exit_x, exit_y, z, (rct_sprite*)peep);
 	invalidate_sprite((rct_sprite*)peep);
 
-	x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
-	y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+	x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
+	y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -1902,8 +1902,8 @@ static void peep_update_ride_sub_state_12(rct_peep* peep){
 	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-	x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
-	y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+	x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
+	y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -1961,8 +1961,8 @@ static void peep_udpate_ride_sub_state_13(rct_peep* peep){
 		rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 		rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-		x += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 1];
-		y += ((sint8*)vehicle_type->peep_loading_positions)[peep->var_37 * 2 + 2];
+		x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
+		y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
 
 		peep->destination_x = x;
 		peep->destination_y = y;

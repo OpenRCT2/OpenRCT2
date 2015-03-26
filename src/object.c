@@ -439,7 +439,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			chunk += 0x60;
 		}
 
-		uint8* peep_loading_positions = chunk;
+		sint8* peep_loading_positions = chunk;
 		// Peep loading positions variable size
 		// 4 different vehicle subtypes are available
 		for (int i = 0; i < 4; ++i){
