@@ -89,7 +89,7 @@ typedef struct{
 	uint8 var_5D;				// 0x5D , 0x77
 	uint8 pad_5E[0x2];
 	uint8 var_60;				// 0x60 , 0x7A
-	uint8* peep_loading_positions;	// 0x61 , 0x7B
+	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_type_vehicle;
 
 /**
