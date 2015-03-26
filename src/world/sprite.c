@@ -353,8 +353,6 @@ static void duck_update_double_drink(rct_duck *duck)
 {
 	duck->var_26++;
 	if (duck_double_drink_animation[duck->var_26] == 255) {
-		duck->var_26 = 0;
-		return;
 		duck->state = DUCK_STATE_SWIM;
 		duck->var_26 = 0;
 		duck_update_swim(duck);
