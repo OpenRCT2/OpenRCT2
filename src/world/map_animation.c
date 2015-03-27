@@ -55,7 +55,8 @@ void map_animation_create(int type, int x, int y, int z)
 			continue;
 		if (aobj->baseZ != z)
 			continue;
-
+		if (aobj->type != type)
+			continue;
 		// Animation already exists
 		return;
 	}
@@ -82,7 +83,7 @@ void map_animation_invalidate_all()
 			RCT2_GLOBAL(0x0138B580, uint16)--;
 			numAnimatedObjects--;
 			if (numAnimatedObjects > 0)
-				memmove(aobj, aobj + 1, numAnimatedObjects);
+				memmove(aobj, aobj + 1, numAnimatedObjects * sizeof(rct_map_animation));
 		} else {
 			numAnimatedObjects--;
 			aobj++;
