@@ -505,6 +505,9 @@ const uint64 window_ride_page_hold_down_widgets[] = {
 	0x0000000000000000
 };
 
+const money16 MaxPrice = 200;
+const money16 MinPrice = 0;
+
 #pragma endregion
 
 #pragma region Events
@@ -5333,42 +5336,6 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
 
 /**
  * 
- * rct2: 0x006AE1E4
- */
-static void window_ride_income_increase_primary_price(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006AE1E4, 0, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
- * rct2: 0x006AE237
- */
-static void window_ride_income_decrease_primary_price(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006AE237, 0, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
- * rct2: 0x006AE269
- */
-static void window_ride_income_increase_secondary_price(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006AE269, 0, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
- * rct2: 0x006AE28D
- */
-static void window_ride_income_decrease_secondary_price(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x006AE28D, 0, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
- * 
  * rct2: 0x006ADEA9
  */
 static void window_ride_income_mouseup()
@@ -5422,19 +5389,71 @@ static void window_ride_income_resize()
  */
 static void window_ride_income_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
+	rct_ride *ride;
+	ride = GET_RIDE(w->number);
+
 	switch (widgetIndex) {
 	case WIDX_PRIMARY_PRICE_INCREASE:
-		window_ride_income_increase_primary_price(w);
+		if (ride->price < MaxPrice)
+			ride->price++;
 		break;
 	case WIDX_PRIMARY_PRICE_DECREASE:
-		window_ride_income_decrease_primary_price(w);
+		if (ride->price > MinPrice)
+			ride->price--;
 		break;
 	case WIDX_SECONDARY_PRICE_INCREASE:
-		window_ride_income_increase_secondary_price(w);
+		if (ride->price_secondary < MaxPrice)
+			ride->price_secondary++;
 		break;
 	case WIDX_SECONDARY_PRICE_DECREASE:
-		window_ride_income_decrease_secondary_price(w);
+		if (ride->price_secondary > MinPrice)
+			ride->price_secondary--;
 		break;
+	default:
+		//if we're not changing the price we're done
+		return;
+	}
+
+	int primaryPriceSame = (w->pressed_widgets & (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK)) ==
+		(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+	int secondaryPriceSame = (w->pressed_widgets & (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK)) ==
+		(1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+
+	// If we're updating a value without the same price box checked, update the window and then return
+	if ((!primaryPriceSame && (widgetIndex == WIDX_PRIMARY_PRICE_INCREASE || widgetIndex == WIDX_PRIMARY_PRICE_DECREASE)) ||
+		(!secondaryPriceSame && (widgetIndex == WIDX_SECONDARY_PRICE_INCREASE || widgetIndex == WIDX_SECONDARY_PRICE_DECREASE)))
+	{
+		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+		widget_invalidate(w, WIDX_TAB_9);
+		window_invalidate(w);
+
+		return;
+	}
+
+	// We have the same price box checked, change the price on the rest of the rides of that type
+	int i;
+	rct_ride *otherRide;
+	rct_window *otherWindow;
+	FOR_ALL_RIDES(i, otherRide)
+	{
+		if (otherRide->type == ride->type && otherRide->subtype == ride->subtype)
+		{
+			if (widgetIndex == WIDX_PRIMARY_PRICE_INCREASE || widgetIndex == WIDX_PRIMARY_PRICE_DECREASE)
+			{
+				otherRide->price = ride->price;
+			}
+			else
+			{
+				otherRide->price_secondary = ride->price_secondary;
+			}
+
+			otherWindow = window_find_by_number(WC_RIDE, i);
+
+			// update the other window
+			RCT2_CALLPROC_X(otherWindow->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+			widget_invalidate(otherWindow, WIDX_TAB_9);
+			window_invalidate(otherWindow);
+		}
 	}
 }
 
