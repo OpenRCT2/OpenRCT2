@@ -174,6 +174,8 @@ typedef struct {
 	uint8 measurement_index;		// 0x0D4
 	uint8 var_0D5;
 	uint8 pad_0D6[0x2];
+	// Divide this value by 29127 to get the human-readable max speed 
+	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
 	uint8 pad_0E0[0x4];
