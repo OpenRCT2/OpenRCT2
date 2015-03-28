@@ -128,8 +128,10 @@ static void research_next_design()
 				continue;
 			} else {
 				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
-				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_INITIAL_RESEARCH;
+				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_FINISHED_ALL;
 				research_invalidate_related_windows();
+				// Reset funding to 0 if no more rides.
+				research_set_funding(0);
 				return;
 			}
 		} else if (ignoreActiveResearchTypes || (activeResearchTypes & (1 << researchItem->category))) {

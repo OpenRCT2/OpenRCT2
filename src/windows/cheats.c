@@ -715,13 +715,15 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 	// Misc tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_3))) {
-		sprite_idx = SPR_TAB_QUESTION;
+		sprite_idx = STR_TAB_PARK;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 	}
 
 	// Rides tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_4))) {
-		sprite_idx = SPR_RIDE;
+		sprite_idx = SPR_TAB_RIDE_0;
+		if (w->page == WINDOW_CHEATS_PAGE_RIDES)
+			sprite_idx += (w->frame_no / 4) % 16;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_4].left, w->y + w->widgets[WIDX_TAB_4].top, 0);
 	}
 }
@@ -729,6 +731,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 static void window_cheats_set_page(rct_window *w, int page)
 {
 	w->page = page;
+	w->frame_no = 0;
 	
 	w->enabled_widgets = window_cheats_page_enabled_widgets[page];
 	

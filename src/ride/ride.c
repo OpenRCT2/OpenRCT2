@@ -1083,9 +1083,8 @@ void ride_update_all()
 	rct_ride *ride;
 	int i;
 
-	// Remove all rides if certain flags are set (possible scenario editor?)
-	int *esi = (int*)0x9DCE9E;
-	if (esi[0x1BCA] & 2) {
+	// Remove all rides if scenario editor
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 		if (s6Info->var_000 <= 2)
 			FOR_ALL_RIDES(i, ride)
 				ride->type = RIDE_TYPE_NULL;
