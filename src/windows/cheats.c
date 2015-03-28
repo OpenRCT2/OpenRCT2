@@ -70,7 +70,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_REMOVE_LITTER,
 	WIDX_WIN_SCENARIO,
 	WIDX_RENEW_RIDES = 8,
-	WIDX_REMOVE_SIX_FLAGS
+	WIDX_REMOVE_SIX_FLAGS,
+	WIDX_MAKE_DESTRUCTIBLE
 };
 
 #pragma region MEASUREMENTS
@@ -155,8 +156,9 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(7), HPL(7),		5123,			STR_NONE},					// Renew rides
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(8), HPL(8),		5124,			STR_NONE},					// Remove flags
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		5123,			STR_NONE},					// Renew rides
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		5124,			STR_NONE},					// Remove flags
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
 	{ WIDGETS_END },
 };
 
@@ -315,7 +317,7 @@ static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -426,6 +428,18 @@ static void cheat_remove_six_flags()
 	{
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
 			ride->lifecycle_flags&=~RIDE_LIFECYCLE_SIX_FLAGS;
+	}
+	window_invalidate_by_class(WC_RIDE);
+}
+
+static void cheat_make_destructible()
+{
+	int i;
+	rct_ride *ride;
+	FOR_ALL_RIDES(i, ride)
+	{
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+			ride->lifecycle_flags&=~RIDE_LIFECYCLE_INDESTRUCTIBLE;
 	}
 	window_invalidate_by_class(WC_RIDE);
 }
@@ -630,6 +644,9 @@ static void window_cheats_rides_mouseup()
 		break;
 	case WIDX_REMOVE_SIX_FLAGS:
 		cheat_remove_six_flags();
+		break;
+	case WIDX_MAKE_DESTRUCTIBLE:
+		cheat_make_destructible();
 		break;
 	}
 }
