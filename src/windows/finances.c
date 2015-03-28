@@ -1430,7 +1430,10 @@ static void window_finances_research_invalidate()
 	}
 
 	window_finances_set_pressed_tab(w);
-	
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL) {
+		window_finances_research_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
+		window_finances_research_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
+	}
 	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
 
 	// Current funding

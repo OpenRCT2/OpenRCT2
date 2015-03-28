@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../management/news_item.h"
+#include "../management/research.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
 #include "../world/scenery.h"
@@ -759,43 +760,58 @@ static void window_new_ride_paint()
 
 	int x = w->x + 10;
 	int y = w->y + window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12;
+	rct_string_id stringId;
 
-	// Research type
-	rct_string_id stringId = STR_RESEARCH_UNKNOWN;
-	if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
-		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
-		if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
-			uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
-			if (typeId >= 0x10000) {
-				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-				stringId = rideEntry->var_008 & 0x1000 ?
-					rideEntry->name :
-					(typeId & 0xFF00) + 2;
-			} else {
-				stringId = g_scenerySetEntries[typeId]->name;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL){
+		stringId = STR_RESEARCH_UNKNOWN;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		y += 25;
+		// Progress
+		stringId = 2680;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		y += 15;
+
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
+	}
+	else{
+		// Research type
+		stringId = STR_RESEARCH_UNKNOWN;
+		if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
+			stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
+			if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
+				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
+				if (typeId >= 0x10000) {
+					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+					stringId = rideEntry->var_008 & 0x1000 ?
+						rideEntry->name :
+						(typeId & 0xFF00) + 2;
+				}
+				else {
+					stringId = g_scenerySetEntries[typeId]->name;
+				}
 			}
 		}
-	}
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
-	y += 25;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		y += 25;
 
-	// Progress
-	stringId = 2285 + RCT2_GLOBAL(0x01357CF3, uint8);
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
-	y += 15;
+		// Progress
+		stringId = 2285 + RCT2_GLOBAL(0x01357CF3, uint8);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		y += 15;
 
-	// Expected
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
-	if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
-		uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
-		if (expectedDay != 255) {
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
-			RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
-			RCT2_GLOBAL(0x013CE952, uint16) = 2289;
+		// Expected
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
+		if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
+			uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
+			if (expectedDay != 255) {
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
+				RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
+				RCT2_GLOBAL(0x013CE952, uint16) = 2289;
+			}
 		}
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
 	}
-	gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
-
 	// Last development
 	x = w->x + 10;
 	y = w->y + window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
