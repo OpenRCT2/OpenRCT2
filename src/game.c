@@ -51,6 +51,7 @@
 #include "world/climate.h"
 #include "world/map_animation.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
 
@@ -691,7 +692,7 @@ int game_load_save(const char *path)
 	window_invalidate(mainWindow);
 
 	sub_69E9A7(); 
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play

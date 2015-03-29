@@ -41,6 +41,7 @@
 #include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 
 static void set_all_land_owned();
@@ -196,7 +197,7 @@ void editor_convert_save_to_scenario()
 
 	window_invalidate(w);
 	sub_69E9A7();
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	load_palette();
@@ -566,7 +567,7 @@ static void sub_6A2B62()
 
 	window_invalidate(w);
 	sub_69E9A7();
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	load_palette();
@@ -953,7 +954,7 @@ static int editor_read_s6(const char *path)
 
 		window_invalidate(w);
 		sub_69E9A7();
-		RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+		scenery_set_default_placement_configuration();
 		window_new_ride_init_vars();
 		RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 		load_palette(); 

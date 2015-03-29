@@ -43,6 +43,7 @@
 #include "world/map.h"
 #include "world/park.h"
 #include "world/climate.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 
 typedef struct tm tm_t;
@@ -109,7 +110,7 @@ int rct2_init()
 	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();

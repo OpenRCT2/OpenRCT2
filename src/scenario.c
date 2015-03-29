@@ -38,6 +38,7 @@
 #include "util/util.h"
 #include "world/map.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
 
@@ -258,7 +259,7 @@ int scenario_load_and_play_from_path(const char *path)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
 	sub_684AC3();
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
 		window_park_objective_open();

@@ -1318,9 +1318,8 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	init_scenery();
 
 	int ebx = 0;
-	for (int i = 0; i < 19;++i){
-		sint16* ebp = RCT2_ADDRESS(0xF64F2C, sint16*)[i];
-		if (*ebp != -1){
+	for (int i = 0; i < 19; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
 			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
 			ebx |= scenery_entry->var_10A;
 		}

@@ -25,7 +25,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../sprites.h"
-#include "../windows/scenery.h"
+#include "../world/scenery.h"
 
 
 enum WINDOW_MAP_WIDGET_IDX {

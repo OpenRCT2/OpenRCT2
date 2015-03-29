@@ -135,6 +135,8 @@ enum {
 	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5
 };
 
+#define SCENERY_ENTRIES_BY_TAB 128
+
 #define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
 #define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
 #define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
@@ -142,8 +144,20 @@ enum {
 #define g_pathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
 #define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
+#define window_scenery_active_tab_index RCT2_GLOBAL(0x00F64EDC, uint8)
+#define window_scenery_selected_scenery_by_tab RCT2_ADDRESS(0x00F64EDD, sint16)
+#define window_scenery_is_build_cluster_tool_on RCT2_GLOBAL(0x00F64F1A, uint8)
+#define window_scenery_is_repaint_scenery_tool_on RCT2_GLOBAL(0x00F64F19, uint8)
+#define window_scenery_rotation RCT2_GLOBAL(0x00F64F05, uint8)
+#define window_scenery_primary_colour RCT2_GLOBAL(0x00F64F06, uint8)
+#define window_scenery_secondary_colour RCT2_GLOBAL(0x00F64F07, uint8)
+#define window_scenery_tertiary_colour RCT2_GLOBAL(0x00F64F08, uint8)
+
+extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
+
 void init_scenery();
 void scenery_update_tile(int x, int y);
 void scenery_update_age(int x, int y, rct_map_element *mapElement);
+void scenery_set_default_placement_configuration();
 
 #endif

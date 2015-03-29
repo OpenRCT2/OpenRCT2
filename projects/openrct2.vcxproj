@@ -198,7 +198,6 @@
     <ClInclude Include="..\src\util\util.h" />
     <ClInclude Include="..\src\windows\dropdown.h" />
     <ClInclude Include="..\src\windows\error.h" />
-    <ClInclude Include="..\src\windows\scenery.h" />
     <ClInclude Include="..\src\windows\tooltip.h" />
     <ClInclude Include="..\src\world\banner.h" />
     <ClInclude Include="..\src\world\climate.h" />

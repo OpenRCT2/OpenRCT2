@@ -37,6 +37,7 @@
 #include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 
 static const int gOldMusic = 0;
@@ -107,7 +108,7 @@ void title_load()
 	park_init();
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
@@ -206,7 +207,7 @@ static void title_update_showcase()
 				sub_69E9A7();
 				window_new_ride_init_vars();
 				sub_684AC3();
-				RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+				scenery_set_default_placement_configuration();
 				news_item_init_queue();
 				gfx_invalidate_screen();
 				RCT2_GLOBAL(0x009DEA66, sint16) = 0;
