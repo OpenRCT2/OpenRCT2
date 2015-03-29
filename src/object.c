@@ -638,14 +638,13 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					rideVehicleEntry->var_10 = bh;
 				}
 
-				uint16 no_positions = *peep_loading_positions++;
+				uint8 no_positions = *peep_loading_positions++;
 				if (no_positions == 0xFF)
 				{
-					no_positions = *((uint16*)peep_loading_positions);
+					// The no_positions is 16 bit skip over
 					peep_loading_positions += 2;
 				}
 				rideVehicleEntry->peep_loading_positions = peep_loading_positions;
-				peep_loading_positions += no_positions;
 			}
 		}
 
