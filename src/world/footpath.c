@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 #include "footpath.h"
 #include "map.h"
 
@@ -476,13 +477,52 @@ void footpath_provisional_update()
 /**
  * 
  *  rct2: 0x0068A0C9
+ * screenX: eax
+ * screenY: ebx
+ * x: ax
+ * y: bx
+ * direction: cl
+ * mapElement: edx
  */
-void sub_68A0C9(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
 {
+	// First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
+	int z;
+	rct_viewport *viewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, x, y, &z, mapElement, &viewport);
+	if (z == 3
+		&& viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
+		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		int ebp = (*mapElement)->properties.entrance.type << 4;
+		int bl = (*mapElement)->properties.entrance.index & 0xF;
+		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
+			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+			bx += (*mapElement)->type;
+			bx &= 3;
+			if (direction != NULL) *direction = bx;
+			return;
+		}
+	}
+	
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFDA, x, y, &z, mapElement, &viewport);
+	if (z == 3 && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		int ebp = (*mapElement)->properties.entrance.type << 4;
+		int bl = (*mapElement)->properties.entrance.index & 0xF; // Seems to be always 0?
+		// The table at 0x0097B974 is only 48 bytes big
+		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
+			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+			bx += (*mapElement)->type; // First two bits seem to contain the direction of entrance/exit
+			bx &= 3;
+			if (direction != NULL) *direction = bx;
+			return;
+		}
+	}
+
+	// We point at something else
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = screenX;
 	ebx = screenY;
-	RCT2_CALLFUNC_X(0x0068A0C9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	RCT2_CALLFUNC_X(0x00689726, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	if (x != NULL) *x = *((uint16*)&eax);
 	if (y != NULL) *y = *((uint16*)&ebx);
 	if (direction != NULL) *direction = *((uint8*)&ecx);

@@ -1086,7 +1086,7 @@ void window_staff_overview_tool_update(){
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int z;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL, NULL);
 	if (z == 0)
 		return;
 

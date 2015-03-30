@@ -1676,28 +1676,29 @@ void viewport_set_visibility(uint8 mode)
  * y: cx
  * z: bl
  * mapElement: edx
+ * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement)
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
 	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
 	rct_window* window = window_find_from_point(screenX, screenY);
 	if (window != NULL && window->viewport != NULL)
 	{
-		rct_viewport* viewport = window->viewport;
+		rct_viewport* myviewport = window->viewport;
 		RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
 		RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-		screenX -= (int)viewport->x;
-		screenY -= (int)viewport->y;
-		if (screenX >= 0 && screenX < (int)viewport->width && screenY >= 0 && screenY < (int)viewport->height)
+		screenX -= (int)myviewport->x;
+		screenY -= (int)myviewport->y;
+		if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
 		{
-			screenX <<= viewport->zoom;
-			screenY <<= viewport->zoom;
-			screenX += (int)viewport->view_x;
-			screenY += (int)viewport->view_y;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = viewport->zoom;
-			screenX &= (0xFFFF << viewport->zoom) & 0xFFFF;
-			screenY &= (0xFFFF << viewport->zoom) & 0xFFFF;
+			screenX <<= myviewport->zoom;
+			screenY <<= myviewport->zoom;
+			screenX += (int)myviewport->view_x;
+			screenY += (int)myviewport->view_y;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
+			screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+			screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
 			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
 			rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
@@ -1713,6 +1714,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 			RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
 			RCT2_CALLPROC_X(0x68862C, 0, 0, 0, 0, 0, 0, 0);
 		}
+		if (viewport != NULL) *viewport = myviewport;
 	}
 	if (z != NULL) *z = RCT2_GLOBAL(0x9AC148, uint8_t);
 	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);

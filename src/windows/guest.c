@@ -1160,7 +1160,7 @@ void window_guest_overview_tool_update(){
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
 	if (ebx == 0)
 		return;
 

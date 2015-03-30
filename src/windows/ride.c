@@ -3542,7 +3542,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 
 	int z;
 
-	get_map_coordinates_from_pos(x, y, -5, &x, &y, &z, &mapElement);
+	get_map_coordinates_from_pos(x, y, -5, &x, &y, &z, &mapElement, NULL);
 	// Get map coordinates from point
 	/*int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;

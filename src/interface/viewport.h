@@ -94,7 +94,7 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport);
 
 int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_left_over(int x, int y);
