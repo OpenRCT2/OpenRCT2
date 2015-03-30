@@ -2784,24 +2784,25 @@ static void peep_update_watering(rct_peep* peep){
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
-		for (;; map_element++){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY){
-				if (abs(((int)peep->next_z) - map_element->base_height) <= 4){
-					rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+		do{
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
+				continue;
+			
+			if (abs(((int)peep->next_z) - map_element->base_height) > 4)
+				continue;
+			
+			rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
-					if (scenery_entry->small_scenery.flags& SMALL_SCENERY_FLAG6){
-						map_element->properties.scenery.age = 0;
-						gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
-						peep->staff_gardens_watered++;
-						peep->var_45 |= (1 << 4);
-					}
-				}
-			}
-			if (map_element_is_last_for_tile(map_element)) {
-				peep_state_reset(peep);
-				return;
-			}
-		}
+			if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+				continue;
+			
+			map_element->properties.scenery.age = 0;
+			gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+			peep->staff_gardens_watered++;
+			peep->var_45 |= (1 << 4);	
+		} while (map_element_is_last_for_tile(map_element++));
+
+		peep_state_reset(peep);
 	}
 }
 
@@ -3760,32 +3761,27 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 
 		do {
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY){
-				map_element++;
 				continue;
 			}
 
 			uint8 z_diff = abs(peep->next_z - map_element->base_height);
 
 			if (z_diff >= 4){
-				map_element++;
 				continue;
 			}
 
 			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
 			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)){
-				map_element++;
 				continue;
 			}
 
 			if (map_element->properties.scenery.age < 55){
 				if (chosen_position >= 4){
-					map_element++;
 					continue;
 				}
 
 				if (map_element->properties.scenery.age < 40){
-					map_element++;
 					continue;
 				}
 			}
@@ -3801,7 +3797,7 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 			peep->destination_tolerence = 3;
 
 			return 1;
-		} while (!map_element_is_last_for_tile(map_element));
+		} while (!map_element_is_last_for_tile(map_element++));
 	}
 	return 0;
 }
