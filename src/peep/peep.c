@@ -2800,7 +2800,7 @@ static void peep_update_watering(rct_peep* peep){
 			gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 			peep->staff_gardens_watered++;
 			peep->var_45 |= (1 << 4);	
-		} while (map_element_is_last_for_tile(map_element++));
+		} while (!map_element_is_last_for_tile(map_element++));
 
 		peep_state_reset(peep);
 	}
