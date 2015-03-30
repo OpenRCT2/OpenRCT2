@@ -19,6 +19,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (hexdec) - Misc.
 * Dennis Devriendt (ddevrien) - Misc.
 * Maciek Baron (MaciekBaron) - Misc.
+* Michael Steenbeek (Gymnasiast) - Cheats and misc. features
 * (AngeloG) - Scrollbar input, misc.
 * (jcdavis) - Misc.
 * (marcotc) - Rain drawing, misc.
