@@ -234,6 +234,7 @@ void create_balloon(int x, int y, int z, int colour, uint8 bl);
 void balloon_press(rct_balloon *balloon);
 void create_duck(int targetX, int targetY);
 void duck_press(rct_duck *duck);
+void duck_remove_all();
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();

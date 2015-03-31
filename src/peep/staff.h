@@ -54,5 +54,6 @@ void update_staff_colour(uint8 staffType, uint16 color);
 uint16 hire_new_staff_member(uint8 staffType);
 void sub_6C0C3F();
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
+void staff_reset_stats();
 
 #endif

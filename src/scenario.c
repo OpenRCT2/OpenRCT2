@@ -30,6 +30,7 @@
 #include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
@@ -323,9 +324,9 @@ int scenario_load_and_play_from_path(const char *path)
 	award_reset();
 	reset_all_ride_build_dates();
 	date_reset();
-	RCT2_CALLPROC_EBPSAFE(0x00674576);
+	duck_remove_all();
 	park_calculate_size();
-	RCT2_CALLPROC_EBPSAFE(0x006C1955);
+	staff_reset_stats();
 	RCT2_GLOBAL(0x01358840, uint8) = 0;
 	memset((void*)0x001358102, 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;

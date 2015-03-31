@@ -397,6 +397,23 @@ void duck_press(rct_duck *duck)
 	sound_play_panned(SOUND_QUACK, 0x8001, duck->x, duck->y, duck->z);
 }
 
+/**
+ *
+ *  rct: 0x00674576
+ */
+void duck_remove_all()
+{
+	rct_unk_sprite* sprite;
+	uint16 spriteIndex, nextSpriteIndex;
+
+	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		sprite = &(g_sprite_list[spriteIndex].unknown);
+		nextSpriteIndex = sprite->next;
+		if (sprite->misc_identifier == SPRITE_MISC_DUCK)
+			sprite_remove((rct_sprite*)sprite);
+	}
+}
+
 static const rct_xy16 _moneyEffectMoveOffset[] = {
 	{  1, -1 },
 	{  1,  1 },
