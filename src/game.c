@@ -453,7 +453,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
-						RCT2_CALLPROC_X(0x0069C5D0, 0, cost, 0, 0, 0, 0, 0);
+						money_effect_create(cost);
 				}
 			}
 
@@ -669,7 +669,7 @@ int game_load_save(const char *path)
 	// The rest is the same as in scenario load and play
 	reset_loaded_objects();
 	map_update_tile_pointers();
-	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();

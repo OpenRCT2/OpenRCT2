@@ -191,10 +191,14 @@ typedef struct {
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 pad_14[0x10];
+	uint8 var_14;
+	uint8 var_15;
+	uint8 pad_16[0xE];
 	uint16 move_delay;				// 0x24
 	uint16 num_movements;			// 0x26
-	uint8 pad_28[0x1E];
+	money32 value;					// 0x28
+	uint8 pad_2C[0x18];
+	sint16 offset_x;				// 0x44
 	uint16 wiggle;					// 0x46
 } rct_money_effect;
 
@@ -235,6 +239,7 @@ void balloon_press(rct_balloon *balloon);
 void create_duck(int targetX, int targetY);
 void duck_press(rct_duck *duck);
 void duck_remove_all();
+void money_effect_create(money32 value);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
