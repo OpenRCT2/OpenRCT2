@@ -55,6 +55,7 @@ void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
 void sub_684AC3();
+void research_remove_non_separate_vehicle_types();
 
 void research_set_funding(int amount);
 void research_set_priority(int activeCategories);

@@ -53,6 +53,8 @@ static int editor_read_s4(rct1_s4 *data);
 static int editor_read_s6(const char *path);
 
 static void editor_load_rct1_default_objects();
+static void editor_fix_rct1_scenery();
+static void editor_rct1_reset_research();
 
 typedef struct {
 	const rct_object_entry* entries;
@@ -165,7 +167,6 @@ void editor_convert_save_to_scenario()
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
 		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-		//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
 		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -475,12 +476,12 @@ static void sub_6A2B62()
 	editor_load_rct1_default_objects();
 	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
-	RCT2_CALLPROC_EBPSAFE(0x006A2956);
+	editor_fix_rct1_scenery();
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
 	RCT2_CALLPROC_EBPSAFE(0x006A2A68);
-	RCT2_CALLPROC_EBPSAFE(0x0069F509);
+	editor_rct1_reset_research();
 	RCT2_CALLPROC_EBPSAFE(0x00685675);
-	RCT2_CALLPROC_EBPSAFE(0x0068585B);
+	research_remove_non_separate_vehicle_types();
 
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
@@ -607,6 +608,53 @@ static void editor_load_rct1_default_objects()
 		error_string_quit(0x99990900, -1);
 		return;
 	}
+}
+
+/**
+ *
+ *  rct2: 0x006A2956
+ */
+static void editor_fix_rct1_scenery()
+{
+	rct_map_element *element;
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		element = it.element;
+
+		if (map_element_get_type(element) != MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+
+		switch (element->properties.scenery.type) {
+		case 157:	// TGE1	(Geometric Sculpture)
+		case 162:	// TGE2	(Geometric Sculpture)
+		case 168:	// TGE3	(Geometric Sculpture)
+		case 170:	// TGE4	(Geometric Sculpture)
+		case 171:	// TGE5	(Geometric Sculpture)
+			element->properties.scenery.colour_2 = 2;
+			break;
+		}
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0069F509
+ */
+static void editor_rct1_reset_research()
+{
+	rct_research_item *researchItem;
+
+	researchItem = gResearchItems;
+	researchItem->entryIndex = RESEARCHED_ITEMS_SEPERATOR;
+	researchItem++;
+	researchItem->entryIndex = RESEARCHED_ITEMS_END;
+	researchItem++;
+	researchItem->entryIndex = RESEARCHED_ITEMS_END_2;
+	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
+	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
+	news_item_init_queue();
 }
 
 /**
@@ -870,7 +918,7 @@ static int editor_read_s6(const char *path)
 		// Check expansion pack
 		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
-		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
@@ -900,7 +948,7 @@ static int editor_read_s6(const char *path)
 		RCT2_GLOBAL(0x013573FE, uint16) = 0;
 		if (s6Header->type != S6_TYPE_SCENARIO) {
 			RCT2_CALLPROC_EBPSAFE(0x00685675);
-			RCT2_CALLPROC_EBPSAFE(0x0068585B);
+			research_remove_non_separate_vehicle_types();
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
@@ -949,7 +997,7 @@ static int editor_read_s6(const char *path)
 		rct_stex_entry* stex = g_stexEntries[0];
 		if ((int)stex != 0xFFFFFFFF) {
 			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-			reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+			reset_loaded_objects();
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 			s6Info->name[0] = 0;

@@ -326,6 +326,54 @@ void sub_684AC3(){
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 }
 
+/**
+ *
+ *  rct2: 0x0068585B
+ */
+void research_remove_non_separate_vehicle_types()
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	while ((researchItem + 1)->entryIndex != RESEARCHED_ITEMS_END) {
+		researchItem++;
+	}
+
+	do {
+		loopBeginning:
+		if (
+			researchItem != gResearchItems &&
+			researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
+			researchItem->entryIndex >= 0x10000			
+		) {
+			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
+			if (!(rideEntry->var_008 & 0x3000)) {
+				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
+				researchItem2 = researchItem - 1;
+				do {
+					if (
+						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+						researchItem2->entryIndex >= 0x10000
+					) {
+						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
+						if (!(rideEntry->var_008 & 0x3000)) {
+							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
+								// Remove item
+								researchItem2 = researchItem;
+								do {
+									*researchItem2 = *(researchItem2 + 1);
+								} while ((researchItem2++)->entryIndex != RESEARCHED_ITEMS_END);
+								goto loopBeginning;
+							}
+						}
+					}
+				} while ((researchItem2--) != gResearchItems);
+			}
+		}
+	} while ((researchItem--) != gResearchItems);
+}
+
 void research_set_funding(int amount)
 {
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, amount, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);

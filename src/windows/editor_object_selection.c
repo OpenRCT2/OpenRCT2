@@ -24,6 +24,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../management/research.h"
 #include "../object.h"
 #include "../ride/track.h"
 #include "../scenario.h"
@@ -256,7 +257,7 @@ static void window_editor_object_selection_close()
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
 	RCT2_CALLPROC_EBPSAFE(0x685675);
-	RCT2_CALLPROC_EBPSAFE(0x68585B);
+	research_remove_non_separate_vehicle_types();
 	window_new_ride_init_vars();
 }
 
