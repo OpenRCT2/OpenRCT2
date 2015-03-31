@@ -291,17 +291,17 @@ static void set_all_land_owned()
 }
 
 /**
-*
-*  rct2: 0x006BD3A4
-*/
-void sub_6BD3A4() {
-	for (short i = 0; i < 200; i++) {
+ *
+ *  rct2: 0x006BD3A4
+ */
+void sub_6BD3A4()
+{
+	for (int i = 0; i < 200; i++)
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
-	}
-	for (short i = 200; i < 204; i++) {
+
+	for (int i = 200; i < 204; i++)
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
-	}
-	//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
+
 	sub_6C0C3F();
 }
 

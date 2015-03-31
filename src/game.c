@@ -473,6 +473,15 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	return 0x80000000;
 }
 
+void pause_toggle()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
+		pause_sounds();
+	else
+		unpause_sounds();
+}
 
 /**
  * 
@@ -480,14 +489,9 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
  */
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
-		window_invalidate_by_class(WC_TOP_TOOLBAR);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
-			pause_sounds();
-		else
-			unpause_sounds();
-	}
+	if (*ebx & GAME_COMMAND_FLAG_APPLY)
+		pause_toggle();
+
 	*ebx = 0;
 }
 

@@ -530,9 +530,8 @@ void peep_update_sprite_type(rct_peep* peep){
 void peep_window_state_update(rct_peep* peep){
 	
 	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
-	if (w){
-		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	}
+	if (w != NULL)
+		window_event_invalidate_call(w);
 
 	if (peep->type == PEEP_TYPE_GUEST){
 		// Update action label

@@ -1018,7 +1018,7 @@ static void window_park_init_viewport(rct_window *w)
 	}
 
 	// Call invalidate event
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	w->viewport_focus_coordinates.x = x;
 	w->viewport_focus_coordinates.y = y;

@@ -109,6 +109,7 @@ void game_reduce_game_speed();
 void game_load_or_quit_no_save_prompt();
 int game_load_save(const char *path);
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void pause_toggle();
 char save_game();
 void rct2_exit();
 void rct2_exit_reason(rct_string_id title, rct_string_id body);

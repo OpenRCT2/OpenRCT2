@@ -382,13 +382,13 @@ static void window_new_ride_scroll_to_focused_ride(rct_window *w)
  *
  *  rct2: 0x006B3CFF
  */
-void window_new_ride_open()
+rct_window *window_new_ride_open()
 {
 	rct_window *w;
 
 	w = window_bring_to_front_by_class(WC_CONSTRUCT_RIDE);
 	if (w != NULL)
-		return;
+		return w;
 
 	// Not sure what these windows are
 	window_close_by_class(WC_TRACK_DESIGN_LIST);
@@ -427,6 +427,17 @@ void window_new_ride_open()
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
 	window_new_ride_scroll_to_focused_ride(w);
+
+	return w;
+}
+
+rct_window *window_new_ride_open_research()
+{
+	rct_window *w;
+	
+	w = window_new_ride_open();
+	window_new_ride_set_page(w, WINDOW_NEW_RIDE_PAGE_RESEARCH);
+	return w;
 }
 
 /**

@@ -182,8 +182,8 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 		w->selected_tab = widgetIndex - 4;
 		w->var_494 = 0;
 		window_invalidate(w);
-		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+		window_event_resize_call(w);
+		window_event_invalidate_call(w);
 		window_init_scroll_widgets(w);
 		window_invalidate(w);
 	}
