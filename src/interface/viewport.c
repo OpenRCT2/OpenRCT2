@@ -45,15 +45,25 @@ struct paint_struct{
 	uint32 var_04;
 	uint16 attached_x;		// 0x08
 	uint16 attached_y;		// 0x0A
-	uint8 var_0C;
-	uint8 pad_0D;
-	paint_struct* next_attached_ps;	//0x0E
-	uint8 pad_12[2];
+	union {
+		struct {
+			uint8 var_0C;
+			uint8 pad_0D;
+			paint_struct* next_attached_ps;	//0x0E
+			uint16 pad_12;
+		};
+		struct {
+			uint16 some_x; // 0x0C
+			uint16 some_y; // 0x0E
+			uint16 other_x; // 0x10
+			uint16 other_y; // 0x12
+		};
+	};
 	uint16 x;				// 0x14
 	uint16 y;				// 0x16
-	uint8 pad_18[2];
+	uint16 var_18;
 	uint8 var_1A;
-	uint8 pad_1B;
+	uint8 var_1B;
 	paint_struct* attached_ps;	//0x1C
 	paint_struct* var_20;
 	paint_struct* var_24;
@@ -1346,6 +1356,118 @@ void sub_0x68B6C2(){
 	}
 }
 
+void sub_688217_helper(uint16 ax, uint8 flag)
+{
+	paint_struct *ps;
+	uint32 edi;
+
+	paint_struct *ps_next = RCT2_GLOBAL(0x00EE7884, paint_struct*);
+
+	do {
+		ps = ps_next;
+		ps_next = ps_next->var_24;
+		if (ps_next == NULL) return;
+	} while (ax > ps_next->var_18);
+
+	RCT2_GLOBAL(0x00F1AD14, paint_struct*) = ps;
+
+	do {
+		ps = ps->var_24;
+		if (ps == NULL) break;
+
+		if (ps->var_18 > ax + 1) {
+			ps->var_1B = 1 << 7;
+		} else if (ps->var_18 == ax + 1) {
+			ps->var_1B = (1 << 1) | (1 << 0);
+		} else if (ps->var_18 == ax) {
+			ps->var_1B = flag | (1 << 0);
+		}
+	} while (ps->var_18 <= ax + 1);
+
+	ps = RCT2_GLOBAL(0x00F1AD14, paint_struct*);
+
+	while (true) {
+		while (true) {
+			ps_next = ps->var_24;
+			if (ps_next == NULL) return;
+			if (ps_next->var_1B & (1 << 7)) return;
+			if (ps_next->var_1B & (1 << 0)) break;
+			ps = ps_next;
+		}
+
+		ps_next->var_1B &= ~(1 << 0);
+		RCT2_GLOBAL(0x00F1AD18, paint_struct*) = ps;
+
+		uint16 my_attached_x = ps_next->attached_x;
+		uint16 my_attached_y = ps_next->attached_y;
+		uint16 my_some_x = ps_next->some_x;
+		uint16 my_some_y = ps_next->some_y;
+		uint16 my_other_x = ps_next->other_x;
+		uint16 my_other_y = ps_next->other_y;
+
+		while (true) {
+			ps = ps_next;
+			ps_next = ps_next->var_24;
+			if (ps_next == NULL) break;
+			if (ps_next->var_1B & (1 << 7)) break;
+			if (!(ps_next->var_1B & (1 << 1))) continue;
+			edi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) << 6;
+			if (my_attached_x < ps_next->other_x)	edi |= (1 << 5);
+			if (my_attached_y < ps_next->other_y)	edi |= (1 << 4);
+			if (my_some_x < ps_next->some_y)		edi |= (1 << 3);
+			if (my_other_x < ps_next->attached_x)	edi |= (1 << 2);
+			if (my_other_y < ps_next->attached_y)	edi |= (1 << 1);
+			if (my_some_y < ps_next->some_x)		edi |= (1 << 0);
+
+			if (RCT2_GLOBAL(0x0098185C + edi, uint8) == 0) continue;
+
+			ps->var_24 = ps_next->var_24;
+			paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24;
+			RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24 = ps_next;
+			ps_next->var_24 = ps_temp;
+			ps_next = ps;
+		}
+
+		ps = RCT2_GLOBAL(0x00F1AD18, paint_struct*);
+	}
+}
+
+/**
+*
+*  rct2: 0x00688217
+*/
+void sub_688217()
+{
+	paint_struct *ps = RCT2_GLOBAL(0x00EE7888, paint_struct*);
+	paint_struct *ps_next;
+	RCT2_GLOBAL(0x00EE7888, uint32) += 0x34; // 0x34 is size of paint_struct?
+	RCT2_GLOBAL(0x00EE7884, paint_struct*) = ps;
+	ps->var_24 = NULL;
+	uint32 edi = RCT2_GLOBAL(0x00F1AD0C, uint32);
+	if (edi == -1)
+		return;
+
+	do {
+		ps_next = RCT2_GLOBAL(0x00F1A50C + 4 * edi, paint_struct*);
+		if (ps_next != NULL) {
+			ps->var_24 = ps_next;
+			do {
+				ps = ps_next;
+				ps_next = ps_next->var_24;
+			} while (ps_next != NULL);
+		}
+	} while (++edi <= RCT2_GLOBAL(0x00F1AD10, uint32));
+
+	uint32 eax = RCT2_GLOBAL(0x00F1AD0C, uint32);
+
+	sub_688217_helper(eax & 0xFFFF, 1 << 1);
+
+	eax = RCT2_GLOBAL(0x00F1AD0C, uint32);
+
+	while (++eax < RCT2_GLOBAL(0x00F1AD10, uint32))
+		sub_688217_helper(eax & 0xFFFF, 0);
+}
+
 /**
  *
  *  rct2:0x00685CBF
@@ -1439,7 +1561,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_0x68615B(0xEE788C); //Memory copy
 		sub_0x68B6C2();
 		//RCT2_CALLPROC_X(0x68B6C2, 0, 0, 0, 0, 0, 0, 0); //Big function call 4 rotation versions
-		RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, (int)dpi2, ebp); //Move memory
+		sub_688217();
+		//RCT2_CALLPROC_X(0x688217, start_x, ebx, ecx, (int)bits_pointer, esi, (int)dpi2, ebp); //Move memory
 		sub_688485();
 		//RCT2_CALLPROC_EBPSAFE(0x688485); //Big function call
 
@@ -1772,7 +1895,8 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 			RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
 			sub_0x68615B(0xEE788C);
 			sub_0x68B6C2();
-			RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
+			sub_688217();
+			//RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
 			RCT2_CALLPROC_X(0x68862C, 0, 0, 0, 0, 0, 0, 0);
 		}
 		if (viewport != NULL) *viewport = myviewport;
