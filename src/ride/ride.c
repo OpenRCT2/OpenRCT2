@@ -3590,3 +3590,32 @@ bool ride_type_has_flag(int rideType, int flag)
 {
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
 }
+
+bool ride_has_spinning_tunnel(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_water_splash(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_rapids(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_log_reverser(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+}
+
+bool ride_has_waterfall(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+}
+
+bool ride_has_whirlpool(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_WHIRLPOOL;
+}
+
+uint8 ride_get_helix_sections(rct_ride *ride) {
+	// Helix sections stored in the low 5 bits.
+	return ride->special_track_elements & 0x1F;
+}

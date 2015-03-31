@@ -172,13 +172,17 @@ typedef struct {
 	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
-	uint8 var_0D5;
-	uint8 pad_0D6[0x2];
+    // bits 0 through 4 are the number of helix sections
+    // bit 5: spinning tunnel, water splash, or rapids
+    // bit 6: log reverser, waterfall
+    // bit 7: whirlpool
+	uint8 special_track_elements;   // 0x0D5
+	uint8 pad_0D6[2];
 	// Divide this value by 29127 to get the human-readable max speed 
 	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 pad_0E0[0x4];
+	uint8 pad_0E0[4];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
@@ -646,6 +650,13 @@ enum {
 	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
+// Constants for ride->special_track_elements
+enum {
+    RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS = 1 << 5,
+    RIDE_ELEMENT_REVERSER_OR_WATERFALL   = 1 << 6,
+    RIDE_ELEMENT_WHIRLPOOL               = 1 << 7
+};
+
 enum {
 	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
 	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
@@ -752,6 +763,14 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+uint8 ride_get_helix_sections(rct_ride *ride);
+bool ride_has_spinning_tunnel(rct_ride *ride);
+bool ride_has_water_splash(rct_ride *ride);
+bool ride_has_rapids(rct_ride *ride);
+bool ride_has_log_reverser(rct_ride *ride);
+bool ride_has_waterfall(rct_ride *ride);
+bool ride_has_whirlpool(rct_ride *ride);
 
 bool ride_type_has_flag(int rideType, int flag);
 

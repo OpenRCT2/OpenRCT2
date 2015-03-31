@@ -730,43 +730,44 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 /*
  *
  */
-static rating_tuple get_var_0D5_rating(uint8 type, uint8 var_0D5) {
+static rating_tuple get_special_track_elements_rating(uint8 type, uint8 special_track_elements) {
 	int excitement = 0, intensity = 0, nausea = 0;
 	if (type == RIDE_TYPE_GHOST_TRAIN) {
-		if (var_0D5 & 0x20) {
+		if (special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS) {
 			excitement += 40;
 			intensity  += 25;
 			nausea     += 55;
 		}
 	} else if (type == RIDE_TYPE_LOG_FLUME) {
-		if (var_0D5 & 0x40) {
+		// Reverser for log flume
+		if (special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL) {
 			excitement += 48;
 			intensity  += 55;
 			nausea     += 65;
 		}
 	} else {
-		if (var_0D5 & 0x20) {
+		if (special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS) {
 			excitement += 50;
 			intensity  += 30;
 			nausea     += 20;
 		} 
-		if (var_0D5 & 0x40) {
+		if (special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL) {
 			excitement += 55;
 			intensity  += 30;
 		}
-		if (var_0D5 & 0x80) {
+		if (special_track_elements & RIDE_ELEMENT_WHIRLPOOL) {
 			excitement += 35;
 			intensity  += 20;
 			nausea     += 23;
 		}
 	}
-	int al = min(var_0D5, 9);
+	int al = min(special_track_elements, 9);
 	excitement += (al * 254862) >> 16;
 
-	al = min(var_0D5, 11);
+	al = min(special_track_elements, 11);
 	intensity += (al * 148945) >> 16;
 
-	al = max(var_0D5 - 5, 0);
+	al = max(special_track_elements - 5, 0);
 	al = min(al, 10);
 	nausea += (al * 1310720) >> 16;
 
@@ -781,10 +782,10 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 {
 	int excitement = 0, intensity = 0, nausea = 0;
 
-	rating_tuple var_0D5_rating = get_var_0D5_rating(ride->type, ride->var_0D5);
-	excitement += var_0D5_rating.excitement;
-	intensity  += var_0D5_rating.intensity;
-	nausea     += var_0D5_rating.nausea;
+	rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride->special_track_elements);
+	excitement += special_track_element_rating.excitement;
+	intensity  += special_track_element_rating.intensity;
+	nausea     += special_track_element_rating.nausea;
 
 	rating_tuple var_10E_rating = get_var_10E_rating(ride->var_10E);
 	excitement += var_10E_rating.excitement;
