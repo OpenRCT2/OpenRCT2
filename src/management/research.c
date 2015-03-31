@@ -426,10 +426,6 @@ static void research_insert_researched(int entryIndex, int category)
 	} while (entryIndex != (researchItem++)->entryIndex);
 }
 
-/**
- *
- *  rct2: 0x00685826
- */
 static void research_insert(int researched, int entryIndex, int category)
 {
 	if (researched)

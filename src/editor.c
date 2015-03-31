@@ -54,6 +54,8 @@ static int editor_read_s6(const char *path);
 
 static void editor_load_rct1_default_objects();
 static void editor_fix_rct1_scenery();
+static void editor_fix_rct1_terrain();
+static void map_update_entrance_positions();
 static void editor_rct1_reset_research();
 
 typedef struct {
@@ -477,8 +479,8 @@ static void sub_6A2B62()
 	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	editor_fix_rct1_scenery();
-	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
-	RCT2_CALLPROC_EBPSAFE(0x006A2A68);
+	editor_fix_rct1_terrain();
+	map_update_entrance_positions();
 	editor_rct1_reset_research();
 	research_populate_list_random();
 	research_remove_non_separate_vehicle_types();
@@ -635,6 +637,103 @@ static void editor_fix_rct1_scenery()
 			element->properties.scenery.colour_2 = 2;
 			break;
 		}
+	}
+}
+
+const uint8 RCT1TerrainConvertTable[] = {
+	TERRAIN_GRASS,
+	TERRAIN_SAND,
+	TERRAIN_DIRT,
+	TERRAIN_ROCK,
+	TERRAIN_MARTIAN,
+	TERRAIN_CHECKERBOARD,
+	TERRAIN_GRASS_CLUMPS,
+	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_BROWN
+	TERRAIN_ICE,
+	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_LOG
+	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_IRON
+	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_GREY
+	TERRAIN_GRID_RED,
+	TERRAIN_GRID_YELLOW,
+	TERRAIN_GRID_BLUE,
+	TERRAIN_GRID_GREEN
+};
+
+const uint8 RCT1TerrainEdgeConvertTable[] = {
+	TERRAIN_EDGE_ROCK,
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_BRICK
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_IRON
+	TERRAIN_EDGE_WOOD_RED,
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_GREY
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_YELLOW
+	TERRAIN_EDGE_WOOD_BLACK,
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_RED
+	TERRAIN_EDGE_ICE,
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_PURPLE
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_GREEN
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_STONE_BROWN
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_STONE_GREY
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_SKYSCRAPER_A
+	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_SKYSCRAPER_B
+	TERRAIN_EDGE_ROCK			// Unused
+};
+
+/**
+ * 
+ *  rct2: 0x006A29B9
+ */
+static void editor_fix_rct1_terrain()
+{
+	rct_map_element *element;
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		element = it.element;
+
+		if (map_element_get_type(element) != MAP_ELEMENT_TYPE_SURFACE)
+			continue;
+		
+		// Convert terrain
+		map_element_set_terrain(element, RCT1TerrainConvertTable[map_element_get_terrain(element)]);
+		map_element_set_terrain_edge(element, RCT1TerrainEdgeConvertTable[map_element_get_terrain_edge(element)]);
+	}
+}
+
+/**
+ * This was originally only for RCT1 imported parks.
+ *  rct2: 0x006A2A68
+ */
+static void map_update_entrance_positions()
+{
+	rct_map_element *element;
+	map_element_iterator it;
+	
+	for (int i = 0; i < 4; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
+
+	int entranceIndex = 0;
+
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		element = it.element;
+
+		if (map_element_get_type(element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+		if ((element->properties.entrance.index & 0x0F) != 0)
+			continue;
+
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = it.x;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[entranceIndex] = it.y;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[entranceIndex] = element->base_height * 8;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] = element->type & 3;
+		entranceIndex++;
+
+		// Prevent overflow
+		if (entranceIndex == 4)
+			return;
 	}
 }
 
