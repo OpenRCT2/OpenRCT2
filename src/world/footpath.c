@@ -474,6 +474,151 @@ void footpath_provisional_update()
 	footpath_provisional_remove();
 }
 
+void sub_689726_helper(uint16 *ax, uint16 *bx, uint16 *cx, uint16 *dx, uint32 rotation)
+{
+	*ax = ((sint16)*ax >> 1); // Arithmetic shift!
+	*dx = *ax;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	case 0:
+		*ax = -*ax;
+		*ax += *bx;
+		*bx += *dx;
+		*ax += *cx;
+		*bx += *cx;
+		break;
+	case 1:
+		*ax = -*ax;
+		*ax -= *bx;
+		*bx -= *dx;
+		*ax -= *cx;
+		*bx += *cx;
+		break;
+	case 2:
+		*ax -= *bx;
+		*bx = -*bx;
+		*bx -= *dx;
+		*ax -= *cx;
+		*bx -= *cx;
+		break;
+	case 3:
+		*ax += *bx;
+		*bx = -*bx;
+		*bx += *dx;
+		*ax += *cx;
+		*bx -= *cx;
+		break;
+	}
+}
+
+/**
+ *  Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
+ *  then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
+ *  when we are going to build a footpath bridge/tunnel.
+ *  rct2: 0x00689726
+ *  In:
+ *		screenX: eax
+ *		screenY: ebx
+ *  Out:
+ *		x: ax
+ *		y: bx
+ *		direction: ecx
+ *		mapElement: edx
+ */
+void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+{
+	int z;
+	rct_map_element *myMapElement;
+	rct_viewport *viewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFDF, x, y, &z, &myMapElement, &viewport);
+	if (z != 6 || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
+		get_map_coordinates_from_pos(screenX, screenY, 0xFFDE, x, y, &z, &myMapElement, &viewport);
+		if (z == 0) {
+			if (x != NULL) *x = 0x8000;
+			return;
+		}
+	}
+
+	RCT2_GLOBAL(0x00F1AD3E, uint8) = z;
+	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
+
+	if (z == 6) {
+		// mapElement appears to be a footpath
+		z = myMapElement->base_height * 8;
+		if (myMapElement->properties.path.type & 0x4)
+			z += 8;
+	}
+
+	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
+	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
+	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
+	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 0x1F;
+	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 0x1F;
+
+	uint16 dx;
+	if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
+		dx = map_element_height(*x + 0x10, *y + 0x10);
+	} else {
+		dx = z;
+	}
+
+	uint16 ax = screenX, bx = screenY;
+	ax -= viewport->x;
+	bx -= viewport->y;
+	ax <<= viewport->zoom;
+	bx <<= viewport->zoom;
+	ax += viewport->view_x;
+	bx += viewport->view_y;
+
+	uint16 cx = dx;
+	uint16 old_ax = ax, old_bx = bx;
+	for (int i = 0; i < 4; i++) {
+		ax = old_ax;
+		bx = old_bx;
+		sub_689726_helper(&ax, &bx, &cx, &dx, 0);
+		cx = bx;
+		ax = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), ax, RCT2_GLOBAL(0x00F1AD38, uint16));
+		cx = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), cx, RCT2_GLOBAL(0x00F1AD3A, uint16));
+		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
+			dx = map_element_height(ax + 0x10, bx + 0x10);
+		} else {
+			dx = RCT2_GLOBAL(0x00F1AD3C, uint16);
+		}
+		cx = dx;
+	}
+	ax = old_ax;
+	bx = old_bx;
+	sub_689726_helper(&ax, &bx, &cx, &dx, 0);
+	ax = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), ax, RCT2_GLOBAL(0x00F1AD38, uint16));
+	bx = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), bx, RCT2_GLOBAL(0x00F1AD3A, uint16));
+
+	// Determine to which edge the cursor is closest
+	uint16 bp;
+	uint32 ecx;
+	dx = ax;
+	bp = bx;
+	ax &= 0xFFE0;
+	bx &= 0xFFE0;
+	dx &= 0x1F;
+	bp &= 0x1F;
+	if (dx < bp) {
+		dx += bp;
+		ecx = 0;
+		if (dx >= 0x20)
+			ecx++;
+	} else {
+		dx += bp;
+		ecx = 3;
+		if (dx >= 0x20)
+			ecx--;
+	}
+
+	if (x != NULL) *x = ax;
+	if (y != NULL) *y = bx;
+	if (direction != NULL) *direction = ecx;
+	if (mapElement != NULL) *mapElement = myMapElement;
+	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
+}
+
 /**
  * 
  *  rct2: 0x0068A0C9
@@ -519,14 +664,7 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 	}
 
 	// We point at something else
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = screenX;
-	ebx = screenY;
-	RCT2_CALLFUNC_X(0x00689726, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (x != NULL) *x = *((uint16*)&eax);
-	if (y != NULL) *y = *((uint16*)&ebx);
-	if (direction != NULL) *direction = *((uint8*)&ecx);
-	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
+	footpath_get_coordinates_from_pos(screenX, screenY, x, y, direction, mapElement);
 }
 
 /**
