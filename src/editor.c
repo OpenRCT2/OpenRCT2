@@ -480,7 +480,7 @@ static void sub_6A2B62()
 	RCT2_CALLPROC_EBPSAFE(0x006A29B9);
 	RCT2_CALLPROC_EBPSAFE(0x006A2A68);
 	editor_rct1_reset_research();
-	RCT2_CALLPROC_EBPSAFE(0x00685675);
+	research_populate_list_random();
 	research_remove_non_separate_vehicle_types();
 
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
@@ -947,7 +947,7 @@ static int editor_read_s6(const char *path)
 		RCT2_GLOBAL(0x01357BC8, uint16) = 0;
 		RCT2_GLOBAL(0x013573FE, uint16) = 0;
 		if (s6Header->type != S6_TYPE_SCENARIO) {
-			RCT2_CALLPROC_EBPSAFE(0x00685675);
+			research_populate_list_random();
 			research_remove_non_separate_vehicle_types();
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)

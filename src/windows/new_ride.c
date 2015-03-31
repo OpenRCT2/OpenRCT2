@@ -326,7 +326,7 @@ static void window_new_ride_populate_list()
 					nextListItem->entry_index = rideEntryIndex;
 					nextListItem++;
 				} else if (dh & 4) {
-					if (rideType == rideEntry->var_00C) {
+					if (rideType == rideEntry->ride_type[0]) {
 						nextListItem--;
 						nextListItem->type = rideType;
 						nextListItem->entry_index = rideEntryIndex;
@@ -877,9 +877,9 @@ static void window_new_ride_scrollpaint()
 		// Draw ride image
 		rideEntry = rideEntries[listItem->entry_index];
 		int image_id = rideEntry->images_offset;
-		if (listItem->type != rideEntry->var_00C) {
+		if (listItem->type != rideEntry->ride_type[0]) {
 			image_id++;
-			if (listItem->type != rideEntry->var_00D)
+			if (listItem->type != rideEntry->ride_type[1])
 				image_id++;
 		}
 		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, image_id);

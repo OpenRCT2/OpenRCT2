@@ -101,10 +101,7 @@ typedef struct {
 	rct_string_id description;		// 0x002
 	uint32 images_offset;			// 0x004
 	uint32 var_008;
-	// 0xC, D, E are related
-	uint8 var_00C;
-	uint8 var_00D;
-	uint8 var_00E;
+	uint8 ride_type[3];				// 0x00C
 	uint8 min_cars_in_train;		// 0x00F
 	uint8 max_cars_in_train;		// 0x010
 	uint8 var_011;

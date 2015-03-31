@@ -189,7 +189,7 @@ void research_finish_item(sint32 entryIndex)
 				if (rideEntry2->var_008 & 0x2000)
 					continue;
 
-				if (rideEntry2->var_00C == ecx || rideEntry2->var_00D == ecx || rideEntry2->var_00E == ecx)
+				if (rideEntry2->ride_type[0] == ecx || rideEntry2->ride_type[1] == ecx || rideEntry2->ride_type[2] == ecx)
 					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
 			}
 		}
@@ -372,6 +372,105 @@ void research_remove_non_separate_vehicle_types()
 			}
 		}
 	} while ((researchItem--) != gResearchItems);
+}
+
+/**
+ *
+ *  rct2: 0x006857FA
+ */
+static void research_insert_unresearched(int entryIndex, int category)
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	do {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) {
+			// Insert slot
+			researchItem2 = researchItem;
+			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {
+				researchItem2++;
+			}
+			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
+
+			// Place new item
+			researchItem->entryIndex = entryIndex;
+			researchItem->category = category;
+			break;
+		}
+	} while (entryIndex != (researchItem++)->entryIndex);
+}
+
+/**
+ *
+ *  rct2: 0x00685826
+ */
+static void research_insert_researched(int entryIndex, int category)
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	do {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPERATOR) {
+			// Insert slot
+			researchItem2 = researchItem;
+			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {
+				researchItem2++;
+			}
+			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(researchItem));
+
+			// Place new item
+			researchItem->entryIndex = entryIndex;
+			researchItem->category = category;
+			break;
+		}
+	} while (entryIndex != (researchItem++)->entryIndex);
+}
+
+/**
+ *
+ *  rct2: 0x00685826
+ */
+static void research_insert(int researched, int entryIndex, int category)
+{
+	if (researched)
+		research_insert_researched(entryIndex, category);
+	else
+		research_insert_unresearched(entryIndex, category);
+}
+
+/**
+ *
+ *  rct2: 0x00685675
+ */
+void research_populate_list_random()
+{
+	rct_ride_type *rideEntry;
+	rct_scenery_set_entry *scenerySetEntry;
+	int rideType, researched;
+
+	// Rides
+	for (int i = 0; i < 128; i++) {
+		rideEntry = GET_RIDE_ENTRY(i);
+		if (rideEntry == (rct_ride_type*)-1)
+			continue;
+
+		researched = (scenario_rand() & 0xFF) > 128;
+		for (int j = 0; j < 3; j++) {
+			rideType = rideEntry->ride_type[j];
+			if (rideType != 255)
+				research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
+		}
+	}
+
+	// Scenery
+	for (int i = 0; i < 19; i++) {
+		scenerySetEntry = g_scenerySetEntries[i];
+		if (scenerySetEntry == (rct_scenery_set_entry*)-1)
+			continue;
+
+		researched = (scenario_rand() & 0xFF) > 85;
+		research_insert(researched, i, RESEARCH_CATEGORY_SCENERYSET);
+	}
 }
 
 void research_set_funding(int amount)

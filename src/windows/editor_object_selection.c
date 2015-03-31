@@ -256,7 +256,7 @@ static void window_editor_object_selection_close()
 	reset_loaded_objects();
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
-	RCT2_CALLPROC_EBPSAFE(0x685675);
+	research_populate_list_random();
 	research_remove_non_separate_vehicle_types();
 	window_new_ride_init_vars();
 }
@@ -820,7 +820,7 @@ static void window_editor_object_selection_manage_tracks()
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
 	rct_ride_type* ride_entry = GET_RIDE_ENTRY(entry_index);
-	uint8* ride_type_array = &ride_entry->var_00C;
+	uint8* ride_type_array = &ride_entry->ride_type[0];
 
 	int ride_type;
 	for (int i = 0; (ride_type = ride_type_array[i]) == 0xFF; i++);
