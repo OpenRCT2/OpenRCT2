@@ -735,7 +735,7 @@ static void ride_remove_peeps(int rideIndex)
 
 			peep_decrement_num_riders(peep);
 			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == 0)
-				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+				remove_peep_from_queue(peep);
 
 			invalidate_sprite((rct_sprite*)peep);
 

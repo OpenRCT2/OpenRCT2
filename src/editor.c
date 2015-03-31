@@ -52,6 +52,15 @@ static int editor_read_sv4(char *src, int length);
 static int editor_read_s4(rct1_s4 *data);
 static int editor_read_s6(const char *path);
 
+static void editor_load_rct1_default_objects();
+
+typedef struct {
+	const rct_object_entry* entries;
+	int count;
+} RCT1DefaultObjectsGroup;
+
+static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10];
+
 /**
  *
  *  rct2: 0x0066FFE1
@@ -463,8 +472,7 @@ static void sub_6A2B62()
 	} while (map_element_iterator_next(&it));
 
 	object_unload_all();
-
-	RCT2_CALLPROC_EBPSAFE(0x0069F53D);
+	editor_load_rct1_default_objects();
 	reset_loaded_objects();
 	RCT2_CALLPROC_EBPSAFE(0x006A2730);
 	RCT2_CALLPROC_EBPSAFE(0x006A2956);
@@ -508,7 +516,7 @@ static void sub_6A2B62()
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
 	);
 	RCT2_CALLPROC_EBPSAFE(0x0069E89B);
-	sub_69E869();//RCT2_CALLPROC_EBPSAFE(0x0069E869);
+	sub_69E869();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
 		MONEY(0,00),
@@ -574,6 +582,31 @@ static void sub_6A2B62()
 	gfx_invalidate_screen();
 
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+}
+
+/**
+ *
+ *  rct2: 0x0069F53D
+ */
+static void editor_load_rct1_default_objects()
+{
+	for (int i = 0; i < 9; i++) {
+		rct_object_entry *entries = (rct_object_entry*)RCT1DefaultObjects[i].entries;
+		for (int j = 0; j < RCT1DefaultObjects[i].count; j++) {
+			if (!object_load(j, &entries[j], NULL)) {
+				error_string_quit(0x99990000 + (i * 0x100) + j, -1);
+				return;
+			}
+		}
+	}
+
+	// Water is a special case
+	rct_object_entry *waterEntries = (rct_object_entry*)RCT1DefaultObjects[9].entries;
+	rct_object_entry *waterEntry = &waterEntries[RCT2_GLOBAL(0x01358841, uint8) == 0 ? 0 : 1];
+	if (!object_load(0, waterEntry, NULL)) {
+		error_string_quit(0x99990900, -1);
+		return;
+	}
 }
 
 /**
@@ -1012,3 +1045,461 @@ void editor_open_windows_for_current_step()
 		break;
 	}
 }
+
+#pragma region RCT1 Default Objects
+
+// rct2: 0x0098BD0E
+static const rct_object_entry RCT1DefaultObjectsSmallScenery[] = {
+	{ 0x00000081, { "TL0     " }, 0 },
+	{ 0x00000081, { "TL1     " }, 0 },
+	{ 0x00000081, { "TL2     " }, 0 },
+	{ 0x00000081, { "TL3     " }, 0 },
+	{ 0x00000081, { "TM0     " }, 0 },
+	{ 0x00000081, { "TM1     " }, 0 },
+	{ 0x00000081, { "TM2     " }, 0 },
+	{ 0x00000081, { "TM3     " }, 0 },
+	{ 0x00000081, { "TS0     " }, 0 },
+	{ 0x00000081, { "TS1     " }, 0 },
+	{ 0x00000081, { "TS2     " }, 0 },
+	{ 0x00000081, { "TS3     " }, 0 },
+	{ 0x00000081, { "TS4     " }, 0 },
+	{ 0x00000081, { "TS5     " }, 0 },
+	{ 0x00000081, { "TS6     " }, 0 },
+	{ 0x00000081, { "TIC     " }, 0 },
+	{ 0x00000081, { "TLC     " }, 0 },
+	{ 0x00000081, { "TMC     " }, 0 },
+	{ 0x00000081, { "TMP     " }, 0 },
+	{ 0x00000081, { "TITC    " }, 0 },
+	{ 0x00000081, { "TGHC    " }, 0 },
+	{ 0x00000081, { "TAC     " }, 0 },
+	{ 0x00000081, { "TGHC2   " }, 0 },
+	{ 0x00000081, { "TCJ     " }, 0 },
+	{ 0x00000081, { "TMBJ    " }, 0 },
+	{ 0x00000081, { "TCF     " }, 0 },
+	{ 0x00000081, { "TCL     " }, 0 },
+	{ 0x00000081, { "TRF     " }, 0 },
+	{ 0x00000081, { "TRF2    " }, 0 },
+	{ 0x00000081, { "TEL     " }, 0 },
+	{ 0x00000081, { "TAP     " }, 0 },
+	{ 0x00000081, { "TSP     " }, 0 },
+	{ 0x00000081, { "TMZP    " }, 0 },
+	{ 0x00000081, { "TCRP    " }, 0 },
+	{ 0x00000081, { "TBP     " }, 0 },
+	{ 0x00000081, { "TLP     " }, 0 },
+	{ 0x00000081, { "TWP     " }, 0 },
+	{ 0x00000081, { "TAS     " }, 0 },
+	{ 0x00000081, { "TMG     " }, 0 },
+	{ 0x00000081, { "TWW     " }, 0 },
+	{ 0x00000081, { "TSB     " }, 0 },
+	{ 0x00000081, { "TVL     " }, 0 },
+	{ 0x00000081, { "TCT     " }, 0 },
+	{ 0x00000081, { "TEF     " }, 0 },
+	{ 0x00000081, { "TAL     " }, 0 },
+	{ 0x00000081, { "TSQ     " }, 0 },
+	{ 0x00000081, { "THT     " }, 0 },
+	{ 0x00000081, { "TCB     " }, 0 },
+	{ 0x00000081, { "TDM     " }, 0 },
+	{ 0x00000081, { "TSD     " }, 0 },
+	{ 0x00000081, { "TGS     " }, 0 },
+	{ 0x00000081, { "TUS     " }, 0 },
+	{ 0x00000081, { "TH1     " }, 0 },
+	{ 0x00000081, { "TBC     " }, 0 },
+	{ 0x00000081, { "TH2     " }, 0 },
+	{ 0x00000081, { "TPM     " }, 0 },
+	{ 0x00000081, { "TSC     " }, 0 },
+	{ 0x00000081, { "TG1     " }, 0 },
+	{ 0x00000081, { "TWF     " }, 0 },
+	{ 0x00000081, { "TSH0    " }, 0 },
+	{ 0x00000081, { "TSH1    " }, 0 },
+	{ 0x00000081, { "TSH2    " }, 0 },
+	{ 0x00000081, { "TSH3    " }, 0 },
+	{ 0x00000081, { "TSH4    " }, 0 },
+	{ 0x00000081, { "TSH5    " }, 0 },
+	{ 0x00000081, { "TG2     " }, 0 },
+	{ 0x00000081, { "TG3     " }, 0 },
+	{ 0x00000081, { "TG4     " }, 0 },
+	{ 0x00000081, { "TG5     " }, 0 },
+	{ 0x00000081, { "TG6     " }, 0 },
+	{ 0x00000081, { "TG7     " }, 0 },
+	{ 0x00000081, { "TG8     " }, 0 },
+	{ 0x00000081, { "TG9     " }, 0 },
+	{ 0x00000081, { "TG10    " }, 0 },
+	{ 0x00000081, { "TG11    " }, 0 },
+	{ 0x00000081, { "TG12    " }, 0 },
+	{ 0x00000081, { "TG13    " }, 0 },
+	{ 0x00000081, { "TG14    " }, 0 },
+	{ 0x00000081, { "TT1     " }, 0 },
+	{ 0x00000081, { "TDF     " }, 0 },
+	{ 0x00000081, { "TSH     " }, 0 },
+	{ 0x00000081, { "THRS    " }, 0 },
+	{ 0x00000081, { "TSTD    " }, 0 },
+	{ 0x00000081, { "TRMS    " }, 0 },
+	{ 0x00000081, { "TRWS    " }, 0 },
+	{ 0x00000081, { "TRC     " }, 0 },
+	{ 0x00000081, { "TQF     " }, 0 },
+	{ 0x00000081, { "TES1    " }, 0 },
+	{ 0x00000081, { "TEN     " }, 0 },
+	{ 0x00000081, { "TERS    " }, 0 },
+	{ 0x00000081, { "TERB    " }, 0 },
+	{ 0x00000081, { "TEP     " }, 0 },
+	{ 0x00000081, { "TST1    " }, 0 },
+	{ 0x00000081, { "TST2    " }, 0 },
+	{ 0x00000081, { "TMS1    " }, 0 },
+	{ 0x00000081, { "TAS1    " }, 0 },
+	{ 0x00000081, { "TAS2    " }, 0 },
+	{ 0x00000081, { "TAS3    " }, 0 },
+	{ 0x00000081, { "TST3    " }, 0 },
+	{ 0x00000081, { "TST4    " }, 0 },
+	{ 0x00000081, { "TST5    " }, 0 },
+	{ 0x00000081, { "TAS4    " }, 0 },
+	{ 0x00000081, { "TCY     " }, 0 },
+	{ 0x00000081, { "TBW     " }, 0 },
+	{ 0x00000081, { "TBR1    " }, 0 },
+	{ 0x00000081, { "TBR2    " }, 0 },
+	{ 0x00000081, { "TML     " }, 0 },
+	{ 0x00000081, { "TMW     " }, 0 },
+	{ 0x00000081, { "TBR3    " }, 0 },
+	{ 0x00000081, { "TBR4    " }, 0 },
+	{ 0x00000081, { "TMJ     " }, 0 },
+	{ 0x00000081, { "TBR     " }, 0 },
+	{ 0x00000081, { "TMO1    " }, 0 },
+	{ 0x00000081, { "TMO2    " }, 0 },
+	{ 0x00000081, { "TMO3    " }, 0 },
+	{ 0x00000081, { "TMO4    " }, 0 },
+	{ 0x00000081, { "TMO5    " }, 0 },
+	{ 0x00000081, { "TWH1    " }, 0 },
+	{ 0x00000081, { "TWH2    " }, 0 },
+	{ 0x00000081, { "TNS     " }, 0 },
+	{ 0x00000081, { "TP1     " }, 0 },
+	{ 0x00000081, { "TP2     " }, 0 },
+	{ 0x00000081, { "TK1     " }, 0 },
+	{ 0x00000081, { "TK2     " }, 0 },
+	{ 0x00000081, { "TR1     " }, 0 },
+	{ 0x00000081, { "TR2     " }, 0 },
+	{ 0x00000081, { "TQ1     " }, 0 },
+	{ 0x00000081, { "TQ2     " }, 0 },
+	{ 0x00000081, { "TWN     " }, 0 },
+	{ 0x00000081, { "TCE     " }, 0 },
+	{ 0x00000081, { "TCO     " }, 0 },
+	{ 0x00000081, { "THL     " }, 0 },
+	{ 0x00000081, { "TCC     " }, 0 },
+	{ 0x00000081, { "TB1     " }, 0 },
+	{ 0x00000081, { "TB2     " }, 0 },
+	{ 0x00000081, { "TK3     " }, 0 },
+	{ 0x00000081, { "TK4     " }, 0 },
+	{ 0x00000081, { "TBN     " }, 0 },
+	{ 0x00000081, { "TBN1    " }, 0 },
+	{ 0x00000081, { "TDT1    " }, 0 },
+	{ 0x00000081, { "TDT2    " }, 0 },
+	{ 0x00000081, { "TDT3    " }, 0 },
+	{ 0x00000081, { "TMM1    " }, 0 },
+	{ 0x00000081, { "TMM2    " }, 0 },
+	{ 0x00000081, { "TMM3    " }, 0 },
+	{ 0x00000081, { "TGS1    " }, 0 },
+	{ 0x00000081, { "TGS2    " }, 0 },
+	{ 0x00000081, { "TGS3    " }, 0 },
+	{ 0x00000081, { "TGS4    " }, 0 },
+	{ 0x00000081, { "TDN4    " }, 0 },
+	{ 0x00000081, { "TDN5    " }, 0 },
+	{ 0x00000081, { "TJT1    " }, 0 },
+	{ 0x00000081, { "TJT2    " }, 0 },
+	{ 0x00000081, { "TJB1    " }, 0 },
+	{ 0x00000081, { "TTF     " }, 0 },
+	{ 0x00000081, { "TF1     " }, 0 },
+	{ 0x00000081, { "TF2     " }, 0 },
+	{ 0x00000081, { "TGE1    " }, 0 },
+	{ 0x00000081, { "TJT3    " }, 0 },
+	{ 0x00000081, { "TJT4    " }, 0 },
+	{ 0x00000081, { "TJP1    " }, 0 },
+	{ 0x00000081, { "TJB2    " }, 0 },
+	{ 0x00000081, { "TGE2    " }, 0 },
+	{ 0x00000081, { "TJT5    " }, 0 },
+	{ 0x00000081, { "TJB3    " }, 0 },
+	{ 0x00000081, { "TJB4    " }, 0 },
+	{ 0x00000081, { "TJT6    " }, 0 },
+	{ 0x00000081, { "TJP2    " }, 0 },
+	{ 0x00000081, { "TGE3    " }, 0 },
+	{ 0x00000081, { "TCK     " }, 0 },
+	{ 0x00000081, { "TGE4    " }, 0 },
+	{ 0x00000081, { "TGE5    " }, 0 },
+	{ 0x00000081, { "TG15    " }, 0 },
+	{ 0x00000081, { "TG16    " }, 0 },
+	{ 0x00000081, { "TG17    " }, 0 },
+	{ 0x00000081, { "TG18    " }, 0 },
+	{ 0x00000081, { "TG19    " }, 0 },
+	{ 0x00000081, { "TG20    " }, 0 },
+	{ 0x00000081, { "TG21    " }, 0 },
+	{ 0x00000081, { "TSM     " }, 0 },
+	{ 0x00000081, { "TIG     " }, 0 },
+	{ 0x00000081, { "TCFS    " }, 0 },
+	{ 0x00000081, { "TRFS    " }, 0 },
+	{ 0x00000081, { "TRF3    " }, 0 },
+	{ 0x00000081, { "TNSS    " }, 0 },
+	{ 0x00000081, { "TCT1    " }, 0 },
+	{ 0x00000081, { "TCT2    " }, 0 },
+	{ 0x00000081, { "TSF1    " }, 0 },
+	{ 0x00000081, { "TSF2    " }, 0 },
+	{ 0x00000081, { "TSF3    " }, 0 },
+	{ 0x00000081, { "TCN     " }, 0 },
+	{ 0x00000081, { "TTG     " }, 0 },
+	{ 0x00000081, { "TSNC    " }, 0 },
+	{ 0x00000081, { "TSNB    " }, 0 },
+	{ 0x00000081, { "TSCP    " }, 0 },
+	{ 0x00000081, { "TCD     " }, 0 },
+	{ 0x00000081, { "TSG     " }, 0 },
+	{ 0x00000081, { "TSK     " }, 0 },
+	{ 0x00000081, { "TGH1    " }, 0 },
+	{ 0x00000081, { "TGH2    " }, 0 },
+	{ 0x00000081, { "TSMP    " }, 0 },
+	{ 0x00000081, { "TJF     " }, 0 },
+	{ 0x00000081, { "TLY     " }, 0 },
+	{ 0x00000081, { "TGC1    " }, 0 },
+	{ 0x00000081, { "TGC2    " }, 0 },
+	{ 0x00000081, { "TGG     " }, 0 },
+	{ 0x00000081, { "TSPH    " }, 0 },
+	{ 0x00000081, { "TOH1    " }, 0 },
+	{ 0x00000081, { "TOH2    " }, 0 },
+	{ 0x00000081, { "TOT1    " }, 0 },
+	{ 0x00000081, { "TOT2    " }, 0 },
+	{ 0x00000081, { "TOS     " }, 0 },
+	{ 0x00000081, { "TOT3    " }, 0 },
+	{ 0x00000081, { "TOT4    " }, 0 },
+	{ 0x00000081, { "TSC2    " }, 0 },
+	{ 0x00000081, { "TSP1    " }, 0 },
+	{ 0x00000081, { "TOH3    " }, 0 },
+	{ 0x00000081, { "TSP2    " }, 0 },
+	{ 0x00000081, { "ROMROOF1" }, 0 },
+	{ 0x00000081, { "GEOROOF1" }, 0 },
+	{ 0x00000081, { "TNTROOF1" }, 0 },
+	{ 0x00000081, { "JNGROOF1" }, 0 },
+	{ 0x00000081, { "MINROOF1" }, 0 },
+	{ 0x00000081, { "ROMROOF2" }, 0 },
+	{ 0x00000081, { "GEOROOF2" }, 0 },
+	{ 0x00000081, { "PAGROOF1" }, 0 },
+	{ 0x00000081, { "SPCROOF1" }, 0 },
+	{ 0x00000081, { "ROOF1   " }, 0 },
+	{ 0x00000081, { "ROOF2   " }, 0 },
+	{ 0x00000081, { "ROOF3   " }, 0 },
+	{ 0x00000081, { "ROOF4   " }, 0 },
+	{ 0x00000081, { "ROOF5   " }, 0 },
+	{ 0x00000081, { "ROOF6   " }, 0 },
+	{ 0x00000081, { "ROOF7   " }, 0 },
+	{ 0x00000081, { "ROOF8   " }, 0 },
+	{ 0x00000081, { "ROOF9   " }, 0 },
+	{ 0x00000081, { "ROOF10  " }, 0 },
+	{ 0x00000081, { "ROOF11  " }, 0 },
+	{ 0x00000081, { "ROOF12  " }, 0 },
+	{ 0x00000081, { "ROOF13  " }, 0 },
+	{ 0x00000081, { "ROOF14  " }, 0 },
+	{ 0x00000081, { "IGROOF  " }, 0 },
+	{ 0x00000081, { "CORROOF " }, 0 },
+	{ 0x00000081, { "CORROOF2" }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsLargeScenery[] = {
+	{ 0x00000082, { "SCOL    " }, 0 },
+	{ 0x00000082, { "SHS1    " }, 0 },
+	{ 0x00000082, { "SSPX    " }, 0 },
+	{ 0x00000082, { "SHS2    " }, 0 },
+	{ 0x00000082, { "SCLN    " }, 0 },
+	{ 0x00000082, { "SMH1    " }, 0 },
+	{ 0x00000082, { "SMH2    " }, 0 },
+	{ 0x00000082, { "SVLC    " }, 0 },
+	{ 0x00000082, { "SPYR    " }, 0 },
+	{ 0x00000082, { "SMN1    " }, 0 },
+	{ 0x00000082, { "SMB     " }, 0 },
+	{ 0x00000082, { "SSK1    " }, 0 },
+	{ 0x00000082, { "SDN1    " }, 0 },
+	{ 0x00000082, { "SDN2    " }, 0 },
+	{ 0x00000082, { "SDN3    " }, 0 },
+	{ 0x00000082, { "SIP     " }, 0 },
+	{ 0x00000082, { "STB1    " }, 0 },
+	{ 0x00000082, { "STB2    " }, 0 },
+	{ 0x00000082, { "STG1    " }, 0 },
+	{ 0x00000082, { "STG2    " }, 0 },
+	{ 0x00000082, { "SCT     " }, 0 },
+	{ 0x00000082, { "SOH1    " }, 0 },
+	{ 0x00000082, { "SOH2    " }, 0 },
+	{ 0x00000082, { "SOH3    " }, 0 },
+	{ 0x00000082, { "SGP     " }, 0 },
+	{ 0x00000082, { "SSR     " }, 0 },
+	{ 0x00000082, { "STH     " }, 0 },
+	{ 0x00000082, { "SAH     " }, 0 },
+	{ 0x00000082, { "SPS     " }, 0 },
+	{ 0x00000082, { "SPG     " }, 0 },
+	{ 0x00000082, { "SOB     " }, 0 },
+	{ 0x00000082, { "SAH2    " }, 0 },
+	{ 0x00000082, { "SST     " }, 0 },
+	{ 0x00000082, { "SSH     " }, 0 },
+	{ 0x00000082, { "SAH3    " }, 0 },
+	{ 0x00000082, { "SSIG1   " }, 0 },
+	{ 0x00000082, { "SSIG2   " }, 0 },
+	{ 0x00000082, { "SSIG3   " }, 0 },
+	{ 0x00000082, { "SSIG4   " }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsWall[] = {
+	{ 0x00000083, { "WMF     " }, 0 },
+	{ 0x00000083, { "WMFG    " }, 0 },
+	{ 0x00000083, { "WRW     " }, 0 },
+	{ 0x00000083, { "WEW     " }, 0 },
+	{ 0x00000083, { "WHG     " }, 0 },
+	{ 0x00000083, { "WHGG    " }, 0 },
+	{ 0x00000083, { "WCW1    " }, 0 },
+	{ 0x00000083, { "WCW2    " }, 0 },
+	{ 0x00000083, { "WSW     " }, 0 },
+	{ 0x00000083, { "WSWG    " }, 0 },
+	{ 0x00000083, { "WMW     " }, 0 },
+	{ 0x00000083, { "WFW1    " }, 0 },
+	{ 0x00000083, { "WFWG    " }, 0 },
+	{ 0x00000083, { "WPW1    " }, 0 },
+	{ 0x00000083, { "WPW2    " }, 0 },
+	{ 0x00000083, { "WPF     " }, 0 },
+	{ 0x00000083, { "WPFG    " }, 0 },
+	{ 0x00000083, { "WWTW    " }, 0 },
+	{ 0x00000083, { "WMWW    " }, 0 },
+	{ 0x00000083, { "WSW1    " }, 0 },
+	{ 0x00000083, { "WSW2    " }, 0 },
+	{ 0x00000083, { "WGW2    " }, 0 },
+	{ 0x00000083, { "WBW     " }, 0 },
+	{ 0x00000083, { "WBR1    " }, 0 },
+	{ 0x00000083, { "WBRG    " }, 0 },
+	{ 0x00000083, { "WBR2    " }, 0 },
+	{ 0x00000083, { "WBR3    " }, 0 },
+	{ 0x00000083, { "WPW3    " }, 0 },
+	{ 0x00000083, { "WJF     " }, 0 },
+	{ 0x00000083, { "WCH     " }, 0 },
+	{ 0x00000083, { "WCHG    " }, 0 },
+	{ 0x00000083, { "WC1     " }, 0 },
+	{ 0x00000083, { "WC2     " }, 0 },
+	{ 0x00000083, { "WC3     " }, 0 },
+	{ 0x00000083, { "WC4     " }, 0 },
+	{ 0x00000083, { "WC5     " }, 0 },
+	{ 0x00000083, { "WC6     " }, 0 },
+	{ 0x00000083, { "WC7     " }, 0 },
+	{ 0x00000083, { "WC8     " }, 0 },
+	{ 0x00000083, { "WC9     " }, 0 },
+	{ 0x00000083, { "WC10    " }, 0 },
+	{ 0x00000083, { "WC11    " }, 0 },
+	{ 0x00000083, { "WC12    " }, 0 },
+	{ 0x00000083, { "WC13    " }, 0 },
+	{ 0x00000083, { "WC14    " }, 0 },
+	{ 0x00000083, { "WC15    " }, 0 },
+	{ 0x00000083, { "WC16    " }, 0 },
+	{ 0x00000083, { "WC17    " }, 0 },
+	{ 0x00000083, { "WC18    " }, 0 },
+	{ 0x00000083, { "WALLBRDR" }, 0 },
+	{ 0x00000083, { "WALLBR32" }, 0 },
+	{ 0x00000083, { "WALLBR16" }, 0 },
+	{ 0x00000083, { "WALLBR8 " }, 0 },
+	{ 0x00000083, { "WALLCF8 " }, 0 },
+	{ 0x00000083, { "WALLCF16" }, 0 },
+	{ 0x00000083, { "WALLCF32" }, 0 },
+	{ 0x00000083, { "WALLBB8 " }, 0 },
+	{ 0x00000083, { "WALLBB16" }, 0 },
+	{ 0x00000083, { "WALLBB32" }, 0 },
+	{ 0x00000083, { "WALLRS8 " }, 0 },
+	{ 0x00000083, { "WALLRS16" }, 0 },
+	{ 0x00000083, { "WALLRS32" }, 0 },
+	{ 0x00000083, { "WALLCB8 " }, 0 },
+	{ 0x00000083, { "WALLCB16" }, 0 },
+	{ 0x00000083, { "WALLCB32" }, 0 },
+	{ 0x00000083, { "WALLGL8 " }, 0 },
+	{ 0x00000083, { "WALLGL16" }, 0 },
+	{ 0x00000083, { "WALLGL32" }, 0 },
+	{ 0x00000083, { "WALLWD8 " }, 0 },
+	{ 0x00000083, { "WALLWD16" }, 0 },
+	{ 0x00000083, { "WALLWD32" }, 0 },
+	{ 0x00000083, { "WALLTN32" }, 0 },
+	{ 0x00000083, { "WALLJN32" }, 0 },
+	{ 0x00000083, { "WALLMN32" }, 0 },
+	{ 0x00000083, { "WALLSP32" }, 0 },
+	{ 0x00000083, { "WALLPG32" }, 0 },
+	{ 0x00000083, { "WALLU132" }, 0 },
+	{ 0x00000083, { "WALLU232" }, 0 },
+	{ 0x00000083, { "WALLCZ32" }, 0 },
+	{ 0x00000083, { "WALLCW32" }, 0 },
+	{ 0x00000083, { "WALLCY32" }, 0 },
+	{ 0x00000083, { "WALLCX32" }, 0 },
+	{ 0x00000083, { "WBR1A   " }, 0 },
+	{ 0x00000083, { "WBR2A   " }, 0 },
+	{ 0x00000083, { "WRWA    " }, 0 },
+	{ 0x00000083, { "WWTWA   " }, 0 },
+	{ 0x00000083, { "WALLIG16" }, 0 },
+	{ 0x00000083, { "WALLIG24" }, 0 },
+	{ 0x00000083, { "WALLCO16" }, 0 },
+	{ 0x00000083, { "WALLCFDR" }, 0 },
+	{ 0x00000083, { "WALLCBDR" }, 0 },
+	{ 0x00000083, { "WALLBRWN" }, 0 },
+	{ 0x00000083, { "WALLCFWN" }, 0 },
+	{ 0x00000083, { "WALLCBWN" }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsBanner[] = {
+	{ 0x00000084, { "BN1     " }, 0 },
+	{ 0x00000084, { "BN2     " }, 0 },
+	{ 0x00000084, { "BN3     " }, 0 },
+	{ 0x00000084, { "BN4     " }, 0 },
+	{ 0x00000084, { "BN5     " }, 0 },
+	{ 0x00000084, { "BN6     " }, 0 },
+	{ 0x00000084, { "BN7     " }, 0 },
+	{ 0x00000084, { "BN8     " }, 0 },
+	{ 0x00000084, { "BN9     " }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsPath[] = {
+	{ 0x00000085, { "TARMAC  " }, 0 },
+	{ 0x00000085, { "TARMACB " }, 0 },
+	{ 0x00000085, { "PATHSPCE" }, 0 },
+	{ 0x00000085, { "PATHDIRT" }, 0 },
+	{ 0x00000085, { "ROAD    " }, 0 },
+	{ 0x00000085, { "PATHCRZY" }, 0 },
+	{ 0x00000085, { "PATHASH " }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsPathBits[] = {
+	{ 0x00000086, { "LAMP1   " }, 0 },
+	{ 0x00000086, { "LAMP2   " }, 0 },
+	{ 0x00000086, { "LITTER1 " }, 0 },
+	{ 0x00000086, { "BENCH1  " }, 0 },
+	{ 0x00000086, { "JUMPFNT1" }, 0 },
+	{ 0x00000086, { "LAMP3   " }, 0 },
+	{ 0x00000086, { "LAMP4   " }, 0 },
+	{ 0x00000086, { "JUMPSNW1" }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsSceneryGroup[] = {
+	{ 0x00000087, { "SCGTREES" }, 0 },
+	{ 0x00000087, { "SCGSHRUB" }, 0 },
+	{ 0x00000087, { "SCGGARDN" }, 0 },
+	{ 0x00000087, { "SCGPATHX" }, 0 },
+	{ 0x00000087, { "SCGFENCE" }, 0 },
+	{ 0x00000087, { "SCGMART " }, 0 },
+	{ 0x00000087, { "SCGWOND " }, 0 },
+	{ 0x00000087, { "SCGSNOW " }, 0 },
+	{ 0x00000087, { "SCGWALLS" }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsParkEntrance[] = {
+	{ 0x00000088, { "PKENT1  " }, 0 }
+};
+
+static const rct_object_entry RCT1DefaultObjectsWater[] = {
+	{ 0x00000089, { "WTRCYAN " }, 0 },
+	{ 0x00000089, { "WTRORNG " }, 0 }
+};
+
+static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10] = {
+	{ NULL,								0											},
+	{ RCT1DefaultObjectsSmallScenery,	countof(RCT1DefaultObjectsSmallScenery)		},
+	{ RCT1DefaultObjectsLargeScenery,	countof(RCT1DefaultObjectsLargeScenery)		},
+	{ RCT1DefaultObjectsWall,			countof(RCT1DefaultObjectsWall)				},
+	{ RCT1DefaultObjectsBanner,			countof(RCT1DefaultObjectsBanner)			},
+	{ RCT1DefaultObjectsPath,			countof(RCT1DefaultObjectsPath)				},
+	{ RCT1DefaultObjectsPathBits,		countof(RCT1DefaultObjectsPathBits)			},
+	{ RCT1DefaultObjectsSceneryGroup,	countof(RCT1DefaultObjectsSceneryGroup)		},
+	{ RCT1DefaultObjectsParkEntrance,	countof(RCT1DefaultObjectsParkEntrance)		},
+	{ RCT1DefaultObjectsWater,			countof(RCT1DefaultObjectsWater)			}
+};
+
+#pragma endregion

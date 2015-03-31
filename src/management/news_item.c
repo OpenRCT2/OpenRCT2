@@ -320,16 +320,17 @@ void news_item_open_subject(int type, int subject)
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
 				window_invalidate(window);
-				if (tool_set(window, 9, 0)){
-					RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+				if (!tool_set(window, 9, 0)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+					window_scenery_open();
 				}
-				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-				window_scenery_open();
 			}
 		}
 		
 		// Switch to new scenery tab
-		RCT2_CALLPROC_X(0x006E1172, (subject & 0xFFFF), 0, subject, 0, 0, 0, 0);
+		window = window_find_by_class(WC_SCENERY);
+		if (window != NULL)
+			window_event_mouse_down_call(window, 4 + subject);
 		break;
 	case NEWS_ITEM_PEEPS:
 		// Open guest list to right tab

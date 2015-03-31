@@ -831,8 +831,12 @@ void peep_update_sitting(rct_peep* peep){
 	}
 }
 
-/* rct2: 0x006966A9 */
-static void remove_peep_from_queue(rct_peep* peep){
+/**
+ *
+ * rct2: 0x006966A9 
+ */
+void remove_peep_from_queue(rct_peep* peep)
+{
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	uint8 cur_station = peep->current_ride_station;
