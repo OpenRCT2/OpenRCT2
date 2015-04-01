@@ -605,14 +605,14 @@ static rating_tuple get_var_10E_rating(rct_ride* ride) {
 	int var_10E_unk_3 = get_var_10E_unk_3(ride);
 
 	int excitement = (var_10E_unk_1 * 0x28000) >> 16;
-	excitement += var_10E_unk_2 / 3;
+	excitement += var_10E_unk_2 * 3;
 	excitement += (var_10E_unk_3 * 63421) >> 16;
 
 	int intensity = (var_10E_unk_1 * 81920) >> 16;
 	intensity += (var_10E_unk_2 * 49152) >> 16;
 	intensity += (var_10E_unk_3 * 21140) >> 16;
 
-	int nausea = var_10E_unk_1 / 5;
+	int nausea = var_10E_unk_1 * 5;
 	nausea += (var_10E_unk_2 * 0x3200) >> 16;
 	nausea += (var_10E_unk_3 * 42281) >> 16;
 
@@ -636,7 +636,7 @@ static rating_tuple get_var_110_rating(rct_ride* ride) {
 	intensity += (var_10E_unk_2 * 49152) >> 16;
 	intensity += (var_10E_unk_3 * 21140) >> 16;
 
-	int nausea = var_10E_unk_1 / 5;
+	int nausea = var_10E_unk_1 * 5;
 	nausea += (var_10E_unk_2 * 0x32000) >> 16;
 	nausea += (var_10E_unk_3 * 48623) >> 16;
 
@@ -682,7 +682,7 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 	int a = min(inversions, 6);
 	int excitement = (a * 0x1aaaaa) >> 16;
 
-	int intensity = inversions / 5;
+	int intensity = inversions * 5;
 	int nausea = (inversions * 0x15aaaa) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
@@ -1044,7 +1044,7 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 	// Apply size factor
 	int unk = min(ride->maze_tiles, 100);
 	ratings.excitement += unk;
-	ratings.intensity += unk / 2;
+	ratings.intensity += unk * 2;
 	
 	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 22310) >> 16;
 
