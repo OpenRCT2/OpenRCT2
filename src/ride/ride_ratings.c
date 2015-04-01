@@ -730,44 +730,45 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 /*
  *
  */
-static rating_tuple get_special_track_elements_rating(uint8 type, uint8 special_track_elements) {
+static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride) {
 	int excitement = 0, intensity = 0, nausea = 0;
 	if (type == RIDE_TYPE_GHOST_TRAIN) {
-		if (special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS) {
+		if (ride_has_spinning_tunnel(ride)) {
 			excitement += 40;
 			intensity  += 25;
 			nausea     += 55;
 		}
 	} else if (type == RIDE_TYPE_LOG_FLUME) {
 		// Reverser for log flume
-		if (special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL) {
+		if (ride_has_log_reverser(ride)) {
 			excitement += 48;
 			intensity  += 55;
 			nausea     += 65;
 		}
 	} else {
-		if (special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS) {
+		if (ride_has_water_splash(ride)) {
 			excitement += 50;
 			intensity  += 30;
 			nausea     += 20;
 		} 
-		if (special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL) {
+		if (ride_has_waterfall(ride)) {
 			excitement += 55;
 			intensity  += 30;
 		}
-		if (special_track_elements & RIDE_ELEMENT_WHIRLPOOL) {
+		if (ride_has_whirlpool(ride)) {
 			excitement += 35;
 			intensity  += 20;
 			nausea     += 23;
 		}
 	}
-	int al = min(special_track_elements, 9);
+	uint8 helix_sections = ride_get_helix_sections(ride);
+	int al = min(helix_sections, 9);
 	excitement += (al * 254862) >> 16;
 
-	al = min(special_track_elements, 11);
+	al = min(helix_sections, 11);
 	intensity += (al * 148945) >> 16;
 
-	al = max(special_track_elements - 5, 0);
+	al = max(helix_sections - 5, 0);
 	al = min(al, 10);
 	nausea += (al * 1310720) >> 16;
 
@@ -782,7 +783,7 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 {
 	int excitement = 0, intensity = 0, nausea = 0;
 
-	rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride->special_track_elements);
+	rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride);
 	excitement += special_track_element_rating.excitement;
 	intensity  += special_track_element_rating.intensity;
 	nausea     += special_track_element_rating.nausea;
