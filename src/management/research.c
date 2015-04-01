@@ -416,7 +416,7 @@ static void research_insert_researched(int entryIndex, int category)
 			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {
 				researchItem2++;
 			}
-			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(researchItem));
+			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
 
 			// Place new item
 			researchItem->entryIndex = entryIndex;
