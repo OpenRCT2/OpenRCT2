@@ -194,7 +194,7 @@ typedef struct {
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
 	uint32 var_118;
-	uint8 pad_11C[0x02];
+	uint16 var_11C;
 	uint8 var_11E;
 	uint8 var_11F;
 	sint16 var_120;
