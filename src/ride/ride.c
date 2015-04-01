@@ -3592,8 +3592,8 @@ bool ride_type_has_flag(int rideType, int flag)
 }
 
 /*
- * The next three functions are helpers to access ride data at the offset 10E.
- * We believe it stores three distinct values in the following format:
+ * The next six functions are helpers to access ride data at the offset 10E &
+ * 110. We believe it stores three distinct values in the following format:
  *
  * unknown1: bits 9-11
  * unknown2: bits 6-8
@@ -3610,6 +3610,18 @@ int get_var_10E_unk_2(rct_ride* ride) {
 
 int get_var_10E_unk_3(rct_ride* ride) {
 	return ride->var_10E & 0x1F;
+}
+
+int get_var_110_unk_1(rct_ride* ride) {
+	return (ride->var_110 >> 8) & 0x7;
+}
+
+int get_var_110_unk_2(rct_ride* ride) {
+	return (ride->var_110 >> 5) & 0x7;
+}
+
+int get_var_110_unk_3(rct_ride* ride) {
+	return ride->var_110 & 0x1F;
 }
 
 bool ride_has_spinning_tunnel(rct_ride *ride) {

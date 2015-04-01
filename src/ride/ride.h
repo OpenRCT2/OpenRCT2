@@ -767,6 +767,9 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 int get_var_10E_unk_1(rct_ride* ride);
 int get_var_10E_unk_2(rct_ride* ride);
 int get_var_10E_unk_3(rct_ride* ride);
+int get_var_110_unk_1(rct_ride* ride);
+int get_var_110_unk_2(rct_ride* ride);
+int get_var_110_unk_3(rct_ride* ride);
 
 uint8 ride_get_helix_sections(rct_ride *ride);
 bool ride_has_spinning_tunnel(rct_ride *ride);

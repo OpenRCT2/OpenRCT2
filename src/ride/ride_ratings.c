@@ -623,41 +623,22 @@ static rating_tuple get_var_10E_rating(rct_ride* ride) {
 /**
  * rct2: 0x0065DF72
  */
-static rating_tuple get_var_110_rating(uint16 var_110) {
-	int al;
+static rating_tuple get_var_110_rating(rct_ride* ride) {
+	int var_10E_unk_1 = get_var_10E_unk_1(ride);
+	int var_10E_unk_2 = get_var_10E_unk_2(ride);
+	int var_10E_unk_3 = get_var_10E_unk_3(ride);
 
-	al = var_110 >> 8;
-	al = al & 7;
-	int excitement = (al * 0x3c000) >> 16;
+	int excitement = (var_10E_unk_1 * 0x3c000) >> 16;
+	excitement += (var_10E_unk_2 * 0x3c000) >> 16;
+	excitement += (var_10E_unk_3 * 73992) >> 16;
 
-	al = var_110 >> 5;
-	al = al & 7;
-	excitement += (al * 0x3c000) >> 16;
+	int intensity = (var_10E_unk_1 * 0x14000) >> 16;
+	intensity += (var_10E_unk_2 * 49152) >> 16;
+	intensity += (var_10E_unk_3 * 21140) >> 16;
 
-	al = var_110 & 0x1F;
-	excitement += (al * 73992) >> 16;
-
-	al = var_110 >> 8;
-	al = al & 7;
-	int intensity = (al * 0x14000) >> 16;
-
-	al = var_110 >> 5;
-	al = al & 7;
-	intensity += (al * 49152) >> 16;
-
-	al = var_110 & 0x1F;
-	intensity += (al * 21140) >> 16;
-
-	al = var_110 >> 8;
-	al = al & 7;
-	int nausea = al / 5;
-
-	al = var_110 >> 5;
-	al = al & 7;
-	nausea += (al * 0x32000) >> 16;
-
-	al = var_110 & 0x1F;
-	nausea += (al * 48623) >> 16;
+	int nausea = var_10E_unk_1 / 5;
+	nausea += (var_10E_unk_2 * 0x32000) >> 16;
+	nausea += (var_10E_unk_3 * 48623) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -774,7 +755,7 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 	intensity  += var_10E_rating.intensity;
 	nausea     += var_10E_rating.nausea;
 
-	rating_tuple var_110_rating = get_var_110_rating(ride->var_110);
+	rating_tuple var_110_rating = get_var_110_rating(ride);
 	excitement += var_110_rating.excitement;
 	intensity  += var_110_rating.intensity;
 	nausea     += var_110_rating.nausea;
