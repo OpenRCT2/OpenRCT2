@@ -436,7 +436,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 	dl = dl & 3;
 	upkeep += trackCost * dl;
 
-	uint32 totalLength = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
+	uint32 totalLength = ride_get_total_length(ride) >> 16;
 
 	// The data originally here was 20's and 0's. The 20's all represented
 	// rides that had tracks. The 0's were fixed rides like crooked house or
@@ -765,7 +765,7 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 	ratings.nausea     = RIDE_RATING(2,10);
 
 	// Apply length of ride factor
-	totalLength = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
+	totalLength = ride_get_total_length(ride) >> 16;
 	ratings.excitement += (min(6000, totalLength) * 764) >> 16;
 
 	// Apply racing coaster factor
@@ -1241,11 +1241,11 @@ static void ride_ratings_calculate_elevator(rct_ride *ride)
 	ratings.nausea		= RIDE_RATING(0,30);
 
 	// Apply length factor
-	totalLength = ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3];
-	ratings.excitement += ((totalLength >> 16) * 45875) >> 16;
+	totalLength = ride_get_total_length(ride) >> 16;
+	ratings.excitement += (totalLength * 45875) >> 16;
 	ratings.excitement += (sub_65E277() * 11183) >> 16;
 	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 83662) >> 16;
-	ratings.nausea += ((totalLength >> 16) * 26214) >> 16;
+	ratings.nausea += (totalLength * 26214) >> 16;
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1343,7 +1343,7 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 	ratings.nausea =		RIDE_RATING(0,00);
 
 	// Apply length factor
-	int length = (ride->length[0] + ride->length[1] + ride->length[2] + ride->length[3]) >> 16;
+	int length = ride_get_total_length(ride) >> 16;
 	ratings.excitement += (min(6000, length) * 873) >> 16;
 
 	// Apply ?
