@@ -1065,7 +1065,7 @@ STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
+STR_1064    :Powered launch (passing station)
 STR_1065    :Shuttle mode
 STR_1066    :Boat hire mode
 STR_1067    :Upward launch
@@ -1097,7 +1097,7 @@ STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode
 STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
+STR_1096    :Powered launch (without passing station)
 STR_1097    :Powered launch block sectioned mode
 STR_1098    :Moving to end of {POP16}{STRINGID}
 STR_1099    :Waiting for passengers at {POP16}{STRINGID}
@@ -3468,3 +3468,6 @@ STR_3446    :Cancel Patrol Area
 STR_5120    :Show finances button on toolbar
 STR_5121    :Show research button on toolbar
 STR_5122    :Show all vehicles sharing a track/ride type
+STR_5123    :Renew rides
+STR_5124    :No Six Flags
+STR_5125    :All destructable

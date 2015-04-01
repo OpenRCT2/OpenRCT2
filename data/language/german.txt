@@ -2738,8 +2738,8 @@ STR_2732    :???
 STR_2733    :???
 STR_2734    :???
 STR_2735    :???
-STR_2736    :???
-STR_2737    :???
+STR_2736    :{MONTH}, Jahr {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Jahr {COMMA16}
 STR_2738    :???
 STR_2739    :???
 STR_2740    :???
@@ -2769,7 +2769,7 @@ STR_2762    :Bezahlen für Bahnen
 STR_2763    :???
 STR_2764    :Glückliche Gäste
 STR_2765    :Große Menschenmenge
-STR_2766    :???
+STR_2766    :Szenario gewinnen
 STR_2767    :Wetter stoppen
 STR_2768    :Wetter fortsetzen
 STR_2769    :Park öffnen
@@ -2782,9 +2782,9 @@ STR_2775    :Vollbild (Desktop)
 STR_2776    :Sprache
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
-# End of new strings
 STR_2779    :???
 STR_2780    :???
+# End of new strings
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :UMSCHALT +
 STR_2783    :STRG +
