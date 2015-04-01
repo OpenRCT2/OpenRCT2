@@ -599,41 +599,22 @@ static int sub_65E72D(rct_ride *ride)
 	return edx & 0xFFFF;
 }
 
-static rating_tuple get_var_10E_rating(uint16 var_10E) {
-	int al;
-	al = var_10E >> 8;
-	al = al & 7;
-	int excitement = (al * 163840) >> 16;
+static rating_tuple get_var_10E_rating(rct_ride* ride) {
+	int var_10E_unk_1 = get_var_10E_unk_1(ride);
+	int var_10E_unk_2 = get_var_10E_unk_2(ride);
+	int var_10E_unk_3 = get_var_10E_unk_3(ride);
 
-	al = var_10E >> 5;
-	al = al & 7;
-	excitement += (al * 196608) >> 16;
+	int excitement = (var_10E_unk_1 * 0x28000) >> 16;
+	excitement += var_10E_unk_2 / 3;
+	excitement += (var_10E_unk_3 * 63421) >> 16;
 
-	// Low bits, 0x0065DF3A
-	al = var_10E & 0x1F;
-	excitement += (al * 63421) >> 16;
+	int intensity = (var_10E_unk_1 * 81920) >> 16;
+	intensity += (var_10E_unk_2 * 49152) >> 16;
+	intensity += (var_10E_unk_3 * 21140) >> 16;
 
-	al = var_10E >> 8;
-	al = al & 7;
-	int intensity = (al * 81920) >> 16;
-
-	al = var_10E >> 5;
-	al = al & 7;
-	intensity += (al * 49152) >> 16;
-
-	al = var_10E & 0x1F;
-	intensity += (al * 21140) >> 16;
-
-	al = var_10E >> 8;
-	al = al & 7;
-	int nausea = (al * 327680) >> 16;
-
-	al = var_10E >> 5;
-	al = al & 7;
-	nausea += (al * 204800) >> 16;
-
-	al = var_10E & 0x1F;
-	nausea += (al * 42281) >> 16;
+	int nausea = var_10E_unk_1 / 5;
+	nausea += (var_10E_unk_2 * 0x3200) >> 16;
+	nausea += (var_10E_unk_3 * 42281) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -647,18 +628,18 @@ static rating_tuple get_var_110_rating(uint16 var_110) {
 
 	al = var_110 >> 8;
 	al = al & 7;
-	int excitement = (al * 245760) >> 16;
+	int excitement = (al * 0x3c000) >> 16;
 
 	al = var_110 >> 5;
 	al = al & 7;
-	excitement += (al * 245760) >> 16;
+	excitement += (al * 0x3c000) >> 16;
 
 	al = var_110 & 0x1F;
 	excitement += (al * 73992) >> 16;
 
 	al = var_110 >> 8;
 	al = al & 7;
-	int intensity = (al * 81920) >> 16;
+	int intensity = (al * 0x14000) >> 16;
 
 	al = var_110 >> 5;
 	al = al & 7;
@@ -669,11 +650,11 @@ static rating_tuple get_var_110_rating(uint16 var_110) {
 
 	al = var_110 >> 8;
 	al = al & 7;
-	int nausea = (al * 327680) >> 16;
+	int nausea = al / 5;
 
 	al = var_110 >> 5;
 	al = al & 7;
-	nausea += (al * 204800) >> 16;
+	nausea += (al * 0x32000) >> 16;
 
 	al = var_110 & 0x1F;
 	nausea += (al * 48623) >> 16;
@@ -690,11 +671,11 @@ static rating_tuple get_var_112_rating(uint16 var_112) {
 
 	al = var_112 >> 11;
 	al = min(al & 0x3F, 4);
-	int excitement = (al * 491520) >> 16;
+	int excitement = (al * 0x78000) >> 16;
 
 	al = var_112 >> 11;
 	al = min(al & 0x3F, 8);
-	int nausea = (al * 491520) >> 16;
+	int nausea = (al * 0x78000) >> 16;
 
 	al = var_112 >> 8;
 	al = min(al & 7, 6);
@@ -702,7 +683,7 @@ static rating_tuple get_var_112_rating(uint16 var_112) {
 
 	al = var_112 >> 5;
 	al = min(al & 7, 6);
-	excitement += (al * 240298) >> 16;
+	excitement += (al * 0x3aaaa) >> 16;
 
 	al = min(var_112 & 0x1F, 7);
 	excitement += (al * 187245) >> 16;
@@ -718,10 +699,10 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 	inversions = inversions & 0x1F;
 
 	int a = min(inversions, 6);
-	int excitement = (a * 1747626) >> 16;
+	int excitement = (a * 0x1aaaaa) >> 16;
 
-	int intensity = (inversions * 3276800) >> 16;
-	int nausea = (inversions * 1419946) >> 16;
+	int intensity = inversions / 5;
+	int nausea = (inversions * 0x15aaaa) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -770,7 +751,7 @@ static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride
 
 	al = max(helix_sections - 5, 0);
 	al = min(al, 10);
-	nausea += (al * 1310720) >> 16;
+	nausea += (al * 0x140000) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -788,7 +769,7 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 	intensity  += special_track_element_rating.intensity;
 	nausea     += special_track_element_rating.nausea;
 
-	rating_tuple var_10E_rating = get_var_10E_rating(ride->var_10E);
+	rating_tuple var_10E_rating = get_var_10E_rating(ride);
 	excitement += var_10E_rating.excitement;
 	intensity  += var_10E_rating.intensity;
 	nausea     += var_10E_rating.nausea;
@@ -852,7 +833,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 
 	// Apply lateral G force factor
 	result.excitement += (min(FIXED_2DP(1,50), ride->max_lateral_g) * 26214) >> 16;
-	result.intensity += (ride->max_lateral_g * 65536) >> 16;
+	result.intensity += ride->max_lateral_g;
 	result.nausea += (ride->max_lateral_g * 21845) >> 16;
 
 	// Very high lateral G force penalty

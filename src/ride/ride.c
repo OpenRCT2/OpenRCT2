@@ -3591,6 +3591,27 @@ bool ride_type_has_flag(int rideType, int flag)
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
 }
 
+/*
+ * The next three functions are helpers to access ride data at the offset 10E.
+ * We believe it stores three distinct values in the following format:
+ *
+ * unknown1: bits 9-11
+ * unknown2: bits 6-8
+ * unknown3: low 5 bits
+ */
+
+int get_var_10E_unk_1(rct_ride* ride) {
+	return (ride->var_10E >> 8) & 0x7;
+}
+
+int get_var_10E_unk_2(rct_ride* ride) {
+	return (ride->var_10E >> 5) & 0x7;
+}
+
+int get_var_10E_unk_3(rct_ride* ride) {
+	return ride->var_10E & 0x1F;
+}
+
 bool ride_has_spinning_tunnel(rct_ride *ride) {
 	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 }

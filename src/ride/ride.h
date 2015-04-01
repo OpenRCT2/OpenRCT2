@@ -764,6 +764,10 @@ void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+int get_var_10E_unk_1(rct_ride* ride);
+int get_var_10E_unk_2(rct_ride* ride);
+int get_var_10E_unk_3(rct_ride* ride);
+
 uint8 ride_get_helix_sections(rct_ride *ride);
 bool ride_has_spinning_tunnel(rct_ride *ride);
 bool ride_has_water_splash(rct_ride *ride);
