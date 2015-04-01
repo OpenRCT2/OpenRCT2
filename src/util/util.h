@@ -30,6 +30,7 @@ int mph_to_kmph(int mph);
 const char *path_get_filename(const char *path);
 void path_set_extension(char *path, const char *extension);
 long fsize(FILE *fp);
+bool readentirefile(const char *path, void **outBuffer, long *outLength);
 
 int bitscanforward(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);

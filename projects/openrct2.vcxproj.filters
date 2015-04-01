@@ -363,7 +363,6 @@
     <ClCompile Include="..\src\interface\viewport_interaction.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -428,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="..\src\world\scenery.c">
       <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rct1.c">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -81,6 +81,32 @@ long fsize(FILE *fp)
 	return size;
 }
 
+bool readentirefile(const char *path, void **outBuffer, long *outLength)
+{
+	FILE *fp;
+	long fpLength;
+	void *fpBuffer;
+
+	// Open file
+	fp = fopen(path, "rb");
+	if (fp == NULL)
+		return 0;
+
+	// Get length
+	fseek(fp, 0, SEEK_END);
+	fpLength = ftell(fp);
+	rewind(fp);
+
+	// Read whole file into a buffer
+	fpBuffer = malloc(fpLength);
+	fread(fpBuffer, fpLength, 1, fp);
+	fclose(fp);
+
+	*outBuffer = fpBuffer;
+	*outLength = fpLength;
+	return 1;
+}
+
 int bitscanforward(int source)
 {
 	int i;

@@ -62,6 +62,7 @@
     <ClCompile Include="..\src\platform\unix.c" />
     <ClCompile Include="..\src\platform\osx.c" />
     <ClCompile Include="..\src\platform\windows.c" />
+    <ClCompile Include="..\src\rct1.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride\ride.c" />
     <ClCompile Include="..\src\ride\ride_data.c" />
