@@ -41,6 +41,7 @@ const uint8 RCT1TerrainConvertTable[16];
 const uint8 RCT1TerrainEdgeConvertTable[16];
 static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10];
 
+static void rct1_remove_rides();
 static void rct1_load_default_objects();
 static void rct1_fix_terrain();
 static void rct1_fix_scenery();
@@ -115,20 +116,20 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
  *
  *  rct2: 0x0069EEA0
  */
-void rct1_import_s4(rct1_s4 *src)
+void rct1_import_s4(rct1_s4 *s4)
 {
 	int i;
 	rct_banner *banner;
 
-	read((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &src->month, 16);
+	read((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &s4->month, 16);
 	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, 0x30000 * sizeof(rct_map_element));
-	read((void*)RCT2_ADDRESS_MAP_ELEMENTS, src->map_elements, sizeof(src->map_elements));
-	read((void*)0x010E63B8, &src->unk_counter, 4 + sizeof(src->sprites));
+	read((void*)RCT2_ADDRESS_MAP_ELEMENTS, s4->map_elements, sizeof(s4->map_elements));
+	read((void*)0x010E63B8, &s4->unk_counter, 4 + sizeof(s4->sprites));
 
 	for (i = 0; i < MAX_BANNERS; i++)
 		gBanners[i].type = 255;
 
-	read((void*)0x013573BC, &src->next_sprite_index, 12424);
+	read((void*)0x013573BC, &s4->next_sprite_index, 12424);
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
@@ -136,10 +137,10 @@ void rct1_import_s4(rct1_s4 *src)
 			banner->string_idx = 778;
 	}
 
-	read((void*)0x0135A8F4, &src->string_table, 0x2F51C);
+	read((void*)0x0135A8F4, &s4->string_table, 0x2F51C);
 	memset((void*)0x013CA672, 0, 204);
-	read((void*)0x0138B580, &src->map_animations, 0x258F2);
-	read((void*)0x013C6A72, &src->patrol_areas, sizeof(src->patrol_areas));
+	read((void*)0x0138B580, &s4->map_animations, 0x258F2);
+	read((void*)0x013C6A72, &s4->patrol_areas, sizeof(s4->patrol_areas));
 
 	char *esi = (char*)0x13C6A72;
 	char *edi = (char*)0x13B0E72;
@@ -164,9 +165,9 @@ void rct1_import_s4(rct1_s4 *src)
 		memset(edi, 0, 64); edi += 64;
 	} while (--edx);
 
-	read((void*)0x013CA672, &src->unk_1F42AA, 116);
-	read((void*)0x013CA73A, &src->unk_1F431E, 4);
-	read((void*)0x013CA73E, &src->unk_1F4322, 0x41EA);
+	read((void*)0x013CA672, &s4->unk_1F42AA, 116);
+	read((void*)0x013CA73A, &s4->unk_1F431E, 4);
+	read((void*)0x013CA73E, &s4->unk_1F4322, 0x41EA);
 }
 
 /**
@@ -178,7 +179,6 @@ void rct1_fix_landscape()
 	int i;
 	rct_sprite *sprite;
 	rct_ride *ride;
-	map_element_iterator it;
 
 	RCT2_CALLPROC_EBPSAFE(0x0069F007);
 
@@ -205,36 +205,7 @@ void rct1_fix_landscape()
 	RCT2_CALLPROC_EBPSAFE(0x0069F143);
 	RCT2_CALLPROC_EBPSAFE(0x0069F2D0);
 	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
-
-	// Fix paths and remove all ride track / entrance / exit
-	map_element_iterator_begin(&it);
-	do {
-		switch (map_element_get_type(it.element)) {
-		case MAP_ELEMENT_TYPE_PATH:
-			if (it.element->type & 1) {
-				it.element->properties.path.type &= 0xF7;
-				it.element->properties.path.addition_status = 255;
-			}
-			break;
-
-		case MAP_ELEMENT_TYPE_TRACK:
-			RCT2_CALLPROC_EBPSAFE(0x006A7594);
-			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
-			map_element_remove(it.element);
-			map_element_iterator_restart_for_tile(&it);
-			break;
-
-		case MAP_ELEMENT_TYPE_ENTRANCE:
-			if (it.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
-				RCT2_CALLPROC_EBPSAFE(0x006A7594);
-				sub_6A6AA7(it.x * 32, it.y * 32, it.element);
-				map_element_remove(it.element);
-				map_element_iterator_restart_for_tile(&it);
-			}
-			break;
-		}
-	} while (map_element_iterator_next(&it));
-
+	rct1_remove_rides();
 	object_unload_all();
 	rct1_load_default_objects();
 	reset_loaded_objects();
@@ -311,6 +282,39 @@ void rct1_fix_landscape()
 	}
 
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
+}
+
+static void rct1_remove_rides()
+{
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+	do {
+		switch (map_element_get_type(it.element)) {
+		case MAP_ELEMENT_TYPE_PATH:
+			if (it.element->type & 1) {
+				it.element->properties.path.type &= 0xF7;
+				it.element->properties.path.addition_status = 255;
+			}
+			break;
+
+		case MAP_ELEMENT_TYPE_TRACK:
+			RCT2_CALLPROC_EBPSAFE(0x006A7594);
+			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+			map_element_remove(it.element);
+			map_element_iterator_restart_for_tile(&it);
+			break;
+
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (it.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
+				RCT2_CALLPROC_EBPSAFE(0x006A7594);
+				sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+				map_element_remove(it.element);
+				map_element_iterator_restart_for_tile(&it);
+			}
+			break;
+		}
+	} while (map_element_iterator_next(&it));
 }
 
 /**
@@ -413,8 +417,8 @@ static void rct1_fix_entrance_positions()
 		if ((element->properties.entrance.index & 0x0F) != 0)
 			continue;
 
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = it.x;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[entranceIndex] = it.y;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = it.x * 32;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[entranceIndex] = it.y * 32;
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[entranceIndex] = element->base_height * 8;
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] = element->type & 3;
 		entranceIndex++;
@@ -555,6 +559,94 @@ const uint8 RCT1TerrainEdgeConvertTable[16] = {
 #pragma endregion
 
 #pragma region RCT1 Default Objects
+
+static const rct_object_entry RCT1DefaultObjectsRides[] = {
+	{ 0x00008000, { "PTCT1   " }, 0 },
+	{ 0x00008000, { "TOGST   " }, 0 },
+	{ 0x00008000, { "ARRSW1  " }, 0 },
+	{ 0x00008000, { "NEMT    " }, 0 },
+	{ 0x00008000, { "ZLDB    " }, 0 },
+	{ 0x00008000, { "NRL     " }, 0 },
+	{ 0x00008000, { "MONO2   " }, 0 },
+	{ 0x00008000, { "BATFL   " }, 0 },
+	{ 0x00008000, { "RBOAT   " }, 0 },
+	{ 0x00008000, { "WMOUSE  " }, 0 },
+	{ 0x00008000, { "STEEP1  " }, 0 },
+	{ 0x00008000, { "SPCAR   " }, 0 },
+	{ 0x00008000, { "SSC1    " }, 0 },
+	{ 0x00008000, { "BOB1    " }, 0 },
+	{ 0x00008000, { "OBS1    " }, 0 },
+	{ 0x00008000, { "SCHT1   " }, 0 },
+	{ 0x00008000, { "DING1   " }, 0 },
+	{ 0x00008000, { "AMT1    " }, 0 },
+	{ 0x00008000, { "CLIFT1  " }, 0 },
+	{ 0x00008000, { "ARRT1   " }, 0 },
+	{ 0x00008000, { "HMAZE   " }, 0 },
+	{ 0x00008000, { "HSKELT  " }, 0 },
+	{ 0x00008000, { "KART1   " }, 0 },
+	{ 0x00008000, { "LFB1    " }, 0 },
+	{ 0x00008000, { "RAPBOAT " }, 0 },
+	{ 0x00008000, { "DODG1   " }, 0 },
+	{ 0x00008000, { "SWSH1   " }, 0 },
+	{ 0x00008000, { "SWSH2   " }, 0 },
+	{ 0x00008000, { "ICECR1  " }, 0 },
+	{ 0x00008000, { "CHPSH2  " }, 0 },
+	{ 0x00008000, { "DRNKS   " }, 0 },
+	{ 0x00008000, { "CNDYF   " }, 0 },
+	{ 0x00008000, { "BURGB   " }, 0 },
+	{ 0x00008000, { "MGR1    " }, 0 },
+	{ 0x00008000, { "BALLN   " }, 0 },
+	{ 0x00008000, { "INFOK   " }, 0 },
+	{ 0x00008000, { "TLT1    " }, 0 },
+	{ 0x00008000, { "FWH1    " }, 0 },
+	{ 0x00008000, { "SIMPOD  " }, 0 },
+	{ 0x00008000, { "C3D     " }, 0 },
+	{ 0x00008000, { "TOPSP1  " }, 0 },
+	{ 0x00008000, { "SRINGS  " }, 0 },
+	{ 0x00008000, { "REVF1   " }, 0 },
+	{ 0x00008000, { "SOUVS   " }, 0 },
+	{ 0x00008000, { "BMVD    " }, 0 },
+	{ 0x00008000, { "PIZZS   " }, 0 },
+	{ 0x00008000, { "TWIST1  " }, 0 },
+	{ 0x00008000, { "HHBUILD " }, 0 },
+	{ 0x00008000, { "POPCS   " }, 0 },
+	{ 0x00008000, { "CIRCUS1 " }, 0 },
+	{ 0x00008000, { "GTC     " }, 0 },
+	{ 0x00008000, { "BMSD    " }, 0 },
+	{ 0x00008000, { "PTCT1   " }, 0 },
+	{ 0x00008000, { "SFRIC1  " }, 0 },
+	{ 0x00008000, { "SMC1    " }, 0 },
+	{ 0x00008000, { "HOTDS   " }, 0 },
+	{ 0x00008000, { "SQDST   " }, 0 },
+	{ 0x00008000, { "HATST   " }, 0 },
+	{ 0x00008000, { "TOFFS   " }, 0 },
+	{ 0x00008000, { "VREEL   " }, 0 },
+	{ 0x00008000, { "SPBOAT  " }, 0 },
+	{ 0x00008000, { "MONBK   " }, 0 },
+	{ 0x00008000, { "BMAIR   " }, 0 },
+	{ 0x00008000, { "SMONO   " }, 0 },
+	{ 0x00000000, { "        " }, 0 },
+	{ 0x00008000, { "REVCAR  " }, 0 },
+	{ 0x00008000, { "UTCAR   " }, 0 },
+	{ 0x00008000, { "GOLF1   " }, 0 },
+	{ 0x00000000, { "        " }, 0 },
+	{ 0x00008000, { "GDROP1  " }, 0 },
+	{ 0x00008000, { "FSAUC   " }, 0 },
+	{ 0x00008000, { "CHBUILD " }, 0 },
+	{ 0x00008000, { "HELICAR " }, 0 },
+	{ 0x00008000, { "SLCT    " }, 0 },
+	{ 0x00008000, { "CSTBOAT " }, 0 },
+	{ 0x00008000, { "THCAR   " }, 0 },
+	{ 0x00008000, { "IVMC1   " }, 0 },
+	{ 0x00008000, { "JSKI    " }, 0 },
+	{ 0x00008000, { "TSHRT   " }, 0 },
+	{ 0x00008000, { "RFTBOAT " }, 0 },
+	{ 0x00008000, { "DOUGH   " }, 0 },
+	{ 0x00008000, { "ENTERP  " }, 0 },
+	{ 0x00008000, { "COFFS   " }, 0 },
+	{ 0x00008000, { "CHCKS   " }, 0 },
+	{ 0x00008000, { "LEMST   " }, 0 }
+};
 
 // rct2: 0x0098BD0E
 static const rct_object_entry RCT1DefaultObjectsSmallScenery[] = {

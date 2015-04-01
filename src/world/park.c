@@ -710,6 +710,11 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	}
 
 	entranceIndex = park_get_entrance_index(x, y, z);
+	if (entranceIndex == -1) {
+		*ebx = 0;
+		return;
+	}
+
 	RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = 0x8000;
 	direction = (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] - 1) & 3;
 	z = (*edx & 0xFF) * 2;

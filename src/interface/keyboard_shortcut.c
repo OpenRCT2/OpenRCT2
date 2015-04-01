@@ -204,6 +204,13 @@ static void shortcut_rotate_construction_object()
 		window_event_mouse_up_call(w, 3);
 		return;
 	}
+
+	// Rotate park entrance
+	w = window_find_by_class(WC_MAP);
+	if (w != NULL && !widget_is_disabled(w, 20) && w->widgets[20].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, 20);
+		return;
+	}
 }
 
 static void shortcut_underground_view_toggle()
