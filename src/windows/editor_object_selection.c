@@ -303,12 +303,7 @@ static void window_editor_object_selection_mouseup()
 		}
 		window_invalidate(w);
 
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		RCT2_CALLFUNC_X(0x00674FCE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		if (eax == 1) {
-			window_close(w);
-			RCT2_CALLPROC_EBPSAFE(0x006D386D);
-		}
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
 		break;
 	}
 }
