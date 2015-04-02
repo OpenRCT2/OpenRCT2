@@ -474,38 +474,24 @@ void footpath_provisional_update()
 	footpath_provisional_remove();
 }
 
-void sub_689726_helper(uint16 *ax, uint16 *bx, uint16 *cx, uint16 *dx, uint32 rotation)
+void sub_689726_helper(int x, int y, int z, int *out_x, int *out_y)
 {
-	*ax = ((sint16)*ax >> 1); // Arithmetic shift!
-	*dx = *ax;
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
 	case 0:
-		*ax = -*ax;
-		*ax += *bx;
-		*bx += *dx;
-		*ax += *cx;
-		*bx += *cx;
+		*out_x = -x / 2 + y + z;
+		*out_y = x / 2 + y + z;
 		break;
 	case 1:
-		*ax = -*ax;
-		*ax -= *bx;
-		*bx -= *dx;
-		*ax -= *cx;
-		*bx += *cx;
+		*out_x = -x / 2 - y - z;
+		*out_y = -x / 2 + y + z;
 		break;
 	case 2:
-		*ax -= *bx;
-		*bx = -*bx;
-		*bx -= *dx;
-		*ax -= *cx;
-		*bx -= *cx;
+		*out_x = x / 2 - y - z;
+		*out_y = -x / 2 - y - z;
 		break;
 	case 3:
-		*ax += *bx;
-		*bx = -*bx;
-		*bx += *dx;
-		*ax += *cx;
-		*bx -= *cx;
+		*out_x = x / 2 + y + z;
+		*out_y = x / 2 - y - z;
 		break;
 	}
 }
@@ -554,67 +540,46 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 0x1F;
 	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 0x1F;
 
-	uint16 dx;
-	if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
-		dx = map_element_height(*x + 0x10, *y + 0x10);
-	} else {
-		dx = z;
-	}
+	*x += 0x10;
+	*y += 0x10;
 
-	uint16 ax = screenX, bx = screenY;
-	ax -= viewport->x;
-	bx -= viewport->y;
-	ax <<= viewport->zoom;
-	bx <<= viewport->zoom;
-	ax += viewport->view_x;
-	bx += viewport->view_y;
+	int start_x, start_y;
+	start_x = ((screenX - viewport->x) << viewport->zoom) + viewport->view_x;
+	start_y = ((screenY - viewport->y) << viewport->zoom) + viewport->view_y;
 
-	uint16 cx = dx;
-	uint16 old_ax = ax, old_bx = bx;
-	for (int i = 0; i < 4; i++) {
-		ax = old_ax;
-		bx = old_bx;
-		sub_689726_helper(&ax, &bx, &cx, &dx, 0);
-		cx = bx;
-		ax = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), ax, RCT2_GLOBAL(0x00F1AD38, uint16));
-		cx = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), cx, RCT2_GLOBAL(0x00F1AD3A, uint16));
+	int out_x = *x, out_y = *y;
+
+	for (int i = 0; i < 5; i++) {
 		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
-			dx = map_element_height(ax + 0x10, bx + 0x10);
+			z = map_element_height(out_x, out_y);
 		} else {
-			dx = RCT2_GLOBAL(0x00F1AD3C, uint16);
+			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
 		}
-		cx = dx;
+		sub_689726_helper(start_x, start_y, z, &out_x, &out_y);
+		out_x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), out_x, RCT2_GLOBAL(0x00F1AD38, uint16));
+		out_y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), out_y, RCT2_GLOBAL(0x00F1AD3A, uint16));
 	}
-	ax = old_ax;
-	bx = old_bx;
-	sub_689726_helper(&ax, &bx, &cx, &dx, 0);
-	ax = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), ax, RCT2_GLOBAL(0x00F1AD38, uint16));
-	bx = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), bx, RCT2_GLOBAL(0x00F1AD3A, uint16));
 
 	// Determine to which edge the cursor is closest
-	uint16 bp;
-	uint32 ecx;
-	dx = ax;
-	bp = bx;
-	ax &= 0xFFE0;
-	bx &= 0xFFE0;
-	dx &= 0x1F;
-	bp &= 0x1F;
-	if (dx < bp) {
-		dx += bp;
-		ecx = 0;
-		if (dx >= 0x20)
-			ecx++;
+	uint32 myDirection;
+	int mod_x = out_x & 0x1F, mod_y = out_y & 0x1F;
+	if (mod_x < mod_y) {
+		if (mod_x + mod_y < 0x20) {
+			myDirection = 0;
+		} else {
+			myDirection = 1;
+		}
 	} else {
-		dx += bp;
-		ecx = 3;
-		if (dx >= 0x20)
-			ecx--;
+		if (mod_x + mod_y < 0x20) {
+			myDirection = 3;
+		} else {
+			myDirection = 2;
+		}
 	}
 
-	if (x != NULL) *x = ax;
-	if (y != NULL) *y = bx;
-	if (direction != NULL) *direction = ecx;
+	if (x != NULL) *x = out_x & 0xFFE0;
+	if (y != NULL) *y = out_y & 0xFFE0;
+	if (direction != NULL) *direction = myDirection;
 	if (mapElement != NULL) *mapElement = myMapElement;
 	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
 }
