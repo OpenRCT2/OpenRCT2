@@ -471,9 +471,9 @@ static void window_install_track_text_input(){
 	short widgetIndex;
 	rct_window *w;
 	char _cl;
-	char* new_name;
+	char* text;
 
-	window_text_input_get_registers(w, widgetIndex, _cl, new_name);
+	window_text_input_get_registers(w, widgetIndex, _cl, text);
 	if (_cl == 0)
 	{
 		window_close(w);
@@ -485,8 +485,8 @@ static void window_install_track_text_input(){
 		char* extension_pointer = track_dest_name;
 		while (*extension_pointer++ != '.');
 		--extension_pointer;
-		strcat(new_name, extension_pointer);
-		strcpy(track_dest_name, new_name);
+		strcat(text, extension_pointer);
+		strcpy(track_dest_name, text);
 		window_event_mouse_up_call(w, WIDX_INSTALL);
 	}
 }
