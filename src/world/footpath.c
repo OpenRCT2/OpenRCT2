@@ -530,18 +530,18 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	if (z == 6) {
 		// mapElement appears to be a footpath
 		z = myMapElement->base_height * 8;
-		if (myMapElement->properties.path.type & 0x4)
+		if (myMapElement->properties.path.type & (1 << 2))
 			z += 8;
 	}
 
 	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
 	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
 	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
-	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 0x1F;
-	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 0x1F;
+	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 31;
 
-	*x += 0x10;
-	*y += 0x10;
+	*x += 16;
+	*y += 16;
 
 	int start_x, start_y;
 	start_x = ((screenX - viewport->x) << viewport->zoom) + viewport->view_x;
@@ -564,21 +564,21 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	uint32 myDirection;
 	int mod_x = out_x & 0x1F, mod_y = out_y & 0x1F;
 	if (mod_x < mod_y) {
-		if (mod_x + mod_y < 0x20) {
+		if (mod_x + mod_y < 32) {
 			myDirection = 0;
 		} else {
 			myDirection = 1;
 		}
 	} else {
-		if (mod_x + mod_y < 0x20) {
+		if (mod_x + mod_y < 32) {
 			myDirection = 3;
 		} else {
 			myDirection = 2;
 		}
 	}
 
-	if (x != NULL) *x = out_x & 0xFFE0;
-	if (y != NULL) *y = out_y & 0xFFE0;
+	if (x != NULL) *x = out_x & ~0x1F;
+	if (y != NULL) *y = out_y & ~0x1F;
 	if (direction != NULL) *direction = myDirection;
 	if (mapElement != NULL) *mapElement = myMapElement;
 	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
