@@ -94,24 +94,6 @@ static void* window_track_list_events[] = {
 
 ride_list_item _window_track_list_item;
 
-void window_track_list_format_name(char *dst, const char *src, char colour, char quotes)
-{
-	if (colour != 0)
-		*dst++ = colour;
-
-	if (quotes != 0)
-		*dst++ = FORMAT_OPENQUOTES;
-
-	while (*src != '.' && *src != 0) {
-		*dst++ = *src++;
-	}
-
-	if (quotes != 0)
-		*dst++ = FORMAT_ENDQUOTES;
-
-	*dst = 0;
-}
-
 /**
  *
  *  rct2: 0x006CF1A2

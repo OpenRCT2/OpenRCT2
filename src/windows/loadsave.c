@@ -154,6 +154,9 @@ rct_window *window_loadsave_open(int type)
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 		w->widgets[WIDX_TITLE].image = STR_SAVE_SCENARIO;
 		break;
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+		w->widgets[WIDX_TITLE].image = 1039;
+		break;
 	}
 
 	w->no_list_items = 0;
@@ -199,6 +202,25 @@ rct_window *window_loadsave_open(int type)
 			*ch = 0;
 
 		window_loadsave_populate_list(includeNewItem, TRUE, path, ".sc6");
+		break;
+	case LOADSAVETYPE_TRACK:
+		/*
+		Uncomment when user tracks are separated
+
+		platform_get_user_directory(path, "tracks");
+		if (!platform_ensure_directory_exists(path)) {
+		fprintf(stderr, "Unable to create tracks directory.");
+		window_close(w);
+		return NULL;
+		}
+		*/
+
+		strcpy(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
+		ch = strchr(path, '*');
+		if (ch != NULL)
+			*ch = 0;
+
+		window_loadsave_populate_list(includeNewItem, TRUE, path, ".td?");
 		break;
 	}
 	w->no_list_items = _listItemsCount;
@@ -252,6 +274,9 @@ static void window_loadsave_mouseup()
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), filename, filter, _extension);
+			break;
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), filename, filter, _extension);
 			break;
 		}
 		if (result){
@@ -626,6 +651,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 		}
 		break;
+		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+			window_install_track_open(path);
+			window_close_by_class(WC_LOADSAVE);
+			break;
 		}
 }
 
