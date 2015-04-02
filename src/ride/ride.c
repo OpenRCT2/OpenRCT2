@@ -1714,14 +1714,18 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 		if (peep->staff_type != STAFF_TYPE_MECHANIC)
 			continue;
 
-		if (forInspection) {
-			if ((peep->state == PEEP_STATE_HEADING_TO_INSPECTION && peep->sub_state >= 4) && peep->state != PEEP_STATE_PATROLLING)
+		if (!forInspection) {
+			if (peep->state == PEEP_STATE_HEADING_TO_INSPECTION){
+				if (peep->sub_state >= 4)
+					continue;
+			}
+			else if (peep->state != PEEP_STATE_PATROLLING)
 				continue;
 
-			if (!(peep->staff_orders & 2))
+			if (!(peep->staff_orders & STAFF_ORDERS_FIX_RIDES))
 				continue;
 		} else {
-			if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & 1))
+			if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & STAFF_ORDERS_INSPECT_RIDES))
 				continue;
 		}
 
