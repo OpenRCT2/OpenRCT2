@@ -544,12 +544,14 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 						b = rideVehicleEntry->var_16 * 80;
 						image_index += b;
 					}
+
 					// Verticle
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
 						rideVehicleEntry->var_28 = image_index;
 						b = rideVehicleEntry->var_16 * 116;
 						image_index += b;
 					}
+
 					// Unknown
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
 						rideVehicleEntry->var_2C = image_index;
@@ -576,12 +578,14 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 						b = rideVehicleEntry->var_16 * 128;
 						image_index += b;
 					}
+
 					// Unknown
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_3C = image_index;
 						b = rideVehicleEntry->var_16 * 16;
 						image_index += b;
 					}
+
 					// Unknown
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_40 = image_index;
@@ -606,6 +610,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 						b = rideVehicleEntry->var_16 * 80;
 						image_index += b;
 					}
+
 					// Unknown
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
 						rideVehicleEntry->var_1C = image_index;

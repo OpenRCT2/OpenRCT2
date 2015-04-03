@@ -2647,8 +2647,8 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 		// For each car in train
 		for (j = 0; j < ride->num_cars_per_train; j++) {
 			rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[j]];
-			x += rideVehicleEntry->var_04 / 17432;
-			y -= (rideVehicleEntry->var_04 / 2) / 17432;
+			x += rideVehicleEntry->spacing / 17432;
+			y -= (rideVehicleEntry->spacing / 2) / 17432;
 
 			// Get colour of vehicle
 			switch (ride->colour_scheme_type & 3) {
@@ -2680,8 +2680,8 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 			nextSpriteToDraw->tertiary_colour = vehicleColour.additional_2;
 			nextSpriteToDraw++;
 
-			x += rideVehicleEntry->var_04 / 17432;
-			y -= (rideVehicleEntry->var_04 / 2) / 17432;
+			x += rideVehicleEntry->spacing / 17432;
+			y -= (rideVehicleEntry->spacing / 2) / 17432;
 		}
 
 		if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
