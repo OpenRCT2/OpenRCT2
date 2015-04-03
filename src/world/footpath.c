@@ -474,28 +474,6 @@ void footpath_provisional_update()
 	footpath_provisional_remove();
 }
 
-void sub_689726_helper(int x, int y, int z, int *out_x, int *out_y)
-{
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-	case 0:
-		*out_x = -x / 2 + y + z;
-		*out_y = x / 2 + y + z;
-		break;
-	case 1:
-		*out_x = -x / 2 - y - z;
-		*out_y = -x / 2 + y + z;
-		break;
-	case 2:
-		*out_x = x / 2 - y - z;
-		*out_y = -x / 2 - y - z;
-		break;
-	case 3:
-		*out_x = x / 2 + y + z;
-		*out_y = x / 2 - y - z;
-		break;
-	}
-}
-
 /**
  *  Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
  *  then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
@@ -543,26 +521,23 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	*x += 16;
 	*y += 16;
 
-	int start_x, start_y;
-	start_x = ((screenX - viewport->x) << viewport->zoom) + viewport->view_x;
-	start_y = ((screenY - viewport->y) << viewport->zoom) + viewport->view_y;
-
-	int out_x = *x, out_y = *y;
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+	rct_xy16 map_pos = { *x, *y };
 
 	for (int i = 0; i < 5; i++) {
 		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
-			z = map_element_height(out_x, out_y);
+			z = map_element_height(map_pos.x, map_pos.y);
 		} else {
 			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
 		}
-		sub_689726_helper(start_x, start_y, z, &out_x, &out_y);
-		out_x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), out_x, RCT2_GLOBAL(0x00F1AD38, uint16));
-		out_y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), out_y, RCT2_GLOBAL(0x00F1AD3A, uint16));
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, uint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, uint16));
 	}
 
 	// Determine to which edge the cursor is closest
 	uint32 myDirection;
-	int mod_x = out_x & 0x1F, mod_y = out_y & 0x1F;
+	int mod_x = map_pos.x & 0x1F, mod_y = map_pos.y & 0x1F;
 	if (mod_x < mod_y) {
 		if (mod_x + mod_y < 32) {
 			myDirection = 0;
@@ -577,8 +552,8 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 		}
 	}
 
-	if (x != NULL) *x = out_x & ~0x1F;
-	if (y != NULL) *y = out_y & ~0x1F;
+	if (x != NULL) *x = map_pos.x & ~0x1F;
+	if (y != NULL) *y = map_pos.y & ~0x1F;
 	if (direction != NULL) *direction = myDirection;
 	if (mapElement != NULL) *mapElement = myMapElement;
 	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
