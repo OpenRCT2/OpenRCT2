@@ -513,10 +513,10 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	}
 
 	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
-	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
-	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 31;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = *x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = *y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = *x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = *y + 31;
 
 	*x += 16;
 	*y += 16;
@@ -531,8 +531,8 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
 		}
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, uint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, uint16));
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
 	}
 
 	// Determine to which edge the cursor is closest

@@ -304,12 +304,12 @@ static void window_track_place_draw_mini_preview()
  *
  *  rct2: 0x0068A15E
  */
-static void sub_68A15E(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+static void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
 {
-	int z;
+	int my_x, my_y, z;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	get_map_coordinates_from_pos(screenX, screenY, 0xFFF6, x, y, &z, &myMapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFF6, &my_x, &my_y, &z, &myMapElement, &viewport);
 
 	if (z == 0) {
 		*x = 0x8000;
@@ -326,13 +326,13 @@ static void sub_68A15E(int screenX, int screenY, int *x, int *y, int *direction,
 	}
 
 	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
-	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
-	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 31;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-	rct_xy16 map_pos = { *x + 16, *y + 16 };
+	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
 	for (int i = 0; i < 5; i++) {
 		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 4) {
@@ -341,8 +341,8 @@ static void sub_68A15E(int screenX, int screenY, int *x, int *y, int *direction,
 			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
 		}
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, uint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, uint16));
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
 	}
 
 	// Determine to which edge the cursor is closest

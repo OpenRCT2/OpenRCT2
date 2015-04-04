@@ -1466,27 +1466,27 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  *		viewport: edi
  */
 void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-	int z;
+	int my_x, my_y, z;
 	rct_viewport *myViewport;
-	get_map_coordinates_from_pos(screenX, screenY, 0xFFFE, x, y, &z, NULL, &myViewport);
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFE, &my_x, &my_y, &z, NULL, &myViewport);
 	if (z == 0) {
 		*x = 0x8000;
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
-	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
-	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 31;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-	rct_xy16 map_pos = { *x + 16, *y + 16 };
+	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
 	for (int i = 0; i < 5; i++) {
 		z = map_element_height(map_pos.x, map_pos.y);
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, uint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, uint16));
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
 	}
 
 	*x = map_pos.x;
