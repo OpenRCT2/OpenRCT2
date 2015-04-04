@@ -1457,14 +1457,42 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(short *x, short *y)
+void screen_pos_to_map_pos(short *x, short *y, int *direction)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = *x;
 	ebx = *y;
-	RCT2_CALLFUNC_X(0x0068958D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = eax & 0xFFFF;
-	*y = ebx & 0xFFFF;
+	RCT2_CALLFUNC_X(0x00688972, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*x = eax & ~0x1F;
+	*y = ebx & ~0x1F;
+	if (*x == 0x8000)
+		return;
+
+	int my_direction;
+	int dist_from_center_x = abs(*x % 32);
+	int dist_from_center_y = abs(*y % 32);
+	if (dist_from_center_x > 8 && dist_from_center_x < 24 &&
+		dist_from_center_y > 8 && dist_from_center_y < 24) {
+		my_direction = 4;
+	} else {
+		sint16 mod_x = *x & 0x1F;
+		sint16 mod_y = *y & 0x1F;
+		if (mod_x <= 16) {
+			if (mod_y < 16) {
+				my_direction = 2;
+			} else {
+				my_direction = 3;
+			}
+		} else {
+			if (mod_y < 16) {
+				my_direction = 0;
+			} else {
+				my_direction = 1;
+			}
+		}
+	}
+
+	if (direction != NULL) *direction = my_direction;
 }
 
 rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
