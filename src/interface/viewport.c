@@ -1455,16 +1455,53 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 /**
  *
+ *  rct2: 0x00688972
+ *  In:
+ *		screen_x: eax
+ *		screen_y: ebx
+ *  Out:
+ *		x: ax
+ *		y: bx
+ *		map_element: edx ?
+ *		viewport: edi
+ */
+void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
+	int z;
+	rct_viewport *myViewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFE, x, y, &z, NULL, &myViewport);
+	if (z == 0) {
+		*x = 0x8000;
+		return;
+	}
+
+	RCT2_GLOBAL(0x00F1AD34, uint16) = *x;
+	RCT2_GLOBAL(0x00F1AD36, uint16) = *y;
+	RCT2_GLOBAL(0x00F1AD38, uint16) = *x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, uint16) = *y + 31;
+
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
+	rct_xy16 map_pos = { *x + 16, *y + 16 };
+
+	for (int i = 0; i < 5; i++) {
+		z = map_element_height(map_pos.x, map_pos.y);
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, uint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, uint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, uint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, uint16));
+	}
+
+	*x = map_pos.x;
+	*y = map_pos.y;
+
+	if (viewport != NULL) *viewport = myViewport;
+}
+
+/**
+ *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(short *x, short *y, int *direction)
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = *x;
-	ebx = *y;
-	RCT2_CALLFUNC_X(0x00688972, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = eax & ~0x1F;
-	*y = ebx & ~0x1F;
+	sub_688972(*x, *y, x, y, NULL);
 	if (*x == 0x8000)
 		return;
 
@@ -1492,6 +1529,8 @@ void screen_pos_to_map_pos(short *x, short *y, int *direction)
 		}
 	}
 
+	*x = *x & ~0x1F;
+	*y = *y & ~0x1F;
 	if (direction != NULL) *direction = my_direction;
 }
 

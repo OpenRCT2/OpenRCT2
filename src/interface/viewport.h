@@ -86,7 +86,8 @@ void sub_689174(sint16* x, sint16* y, sint16 *z);
 
 rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
 rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
-void screen_pos_to_map_pos(short *x, short *y, int *direction);
+void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
 
 void show_gridlines();
 void hide_gridlines();

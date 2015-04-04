@@ -1156,10 +1156,9 @@ void window_rotate_camera(rct_window *w)
 	sint16 y = (viewport->height >> 1) + viewport->y;
 	sint16 z;
 
-	int ecx, edx, esi, edi = (int)viewport, ebp;
 	//has something to do with checking if middle of the viewport is obstructed
-	RCT2_CALLFUNC_X(0x00688972, (int*)&x, (int*)&y, &ecx, &edx, &esi, &edi, &ebp);
-	rct_viewport *other = (rct_viewport*)edi;
+	rct_viewport *other;
+	sub_688972(x, y, &x, &y, &other);
 
 	// other != viewport probably triggers on viewports in ride or guest window?
 	// x is 0x8000 if middle of viewport is obstructed by another window?
