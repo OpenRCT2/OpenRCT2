@@ -599,17 +599,178 @@ static int sub_65E72D(rct_ride *ride)
 	return edx & 0xFFFF;
 }
 
+static rating_tuple get_var_10E_rating(rct_ride* ride) {
+	int var_10E_unk_1 = get_var_10E_unk_1(ride);
+	int var_10E_unk_2 = get_var_10E_unk_2(ride);
+	int var_10E_unk_3 = get_var_10E_unk_3(ride);
+
+	int excitement = (var_10E_unk_1 * 0x28000) >> 16;
+	excitement += var_10E_unk_2 * 3;
+	excitement += (var_10E_unk_3 * 63421) >> 16;
+
+	int intensity = (var_10E_unk_1 * 81920) >> 16;
+	intensity += (var_10E_unk_2 * 49152) >> 16;
+	intensity += (var_10E_unk_3 * 21140) >> 16;
+
+	int nausea = var_10E_unk_1 * 5;
+	nausea += (var_10E_unk_2 * 0x3200) >> 16;
+	nausea += (var_10E_unk_3 * 42281) >> 16;
+
+	rating_tuple rating = { excitement, intensity, nausea };
+	return rating;
+}
+
 /**
+ * rct2: 0x0065DF72
+ */
+static rating_tuple get_var_110_rating(rct_ride* ride) {
+	int var_10E_unk_1 = get_var_10E_unk_1(ride);
+	int var_10E_unk_2 = get_var_10E_unk_2(ride);
+	int var_10E_unk_3 = get_var_10E_unk_3(ride);
+
+	int excitement = (var_10E_unk_1 * 0x3c000) >> 16;
+	excitement += (var_10E_unk_2 * 0x3c000) >> 16;
+	excitement += (var_10E_unk_3 * 73992) >> 16;
+
+	int intensity = (var_10E_unk_1 * 0x14000) >> 16;
+	intensity += (var_10E_unk_2 * 49152) >> 16;
+	intensity += (var_10E_unk_3 * 21140) >> 16;
+
+	int nausea = var_10E_unk_1 * 5;
+	nausea += (var_10E_unk_2 * 0x32000) >> 16;
+	nausea += (var_10E_unk_3 * 48623) >> 16;
+
+	rating_tuple rating = { excitement, intensity, nausea };
+	return rating;
+}
+
+/**
+ * rct2: 0x0065E047
+ */
+static rating_tuple get_var_112_rating(uint16 var_112) {
+	int al;
+
+	al = var_112 >> 11;
+	al = min(al & 0x3F, 4);
+	int excitement = (al * 0x78000) >> 16;
+
+	al = var_112 >> 11;
+	al = min(al & 0x3F, 8);
+	int nausea = (al * 0x78000) >> 16;
+
+	al = var_112 >> 8;
+	al = min(al & 7, 6);
+	excitement += (al * 273066) >> 16;
+
+	al = var_112 >> 5;
+	al = min(al & 7, 6);
+	excitement += (al * 0x3aaaa) >> 16;
+
+	al = min(var_112 & 0x1F, 7);
+	excitement += (al * 187245) >> 16;
+
+	rating_tuple rating = { excitement, 0, nausea };
+	return rating;
+}
+
+/**
+ * rct2: 0x0065E0F2
+ */
+static rating_tuple get_inversions_ratings(uint8 inversions) {
+	inversions = inversions & 0x1F;
+
+	int a = min(inversions, 6);
+	int excitement = (a * 0x1aaaaa) >> 16;
+
+	int intensity = inversions * 5;
+	int nausea = (inversions * 0x15aaaa) >> 16;
+
+	rating_tuple rating = { excitement, intensity, nausea };
+	return rating;
+}
+
+/*
  *
+ */
+static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride) {
+	int excitement = 0, intensity = 0, nausea = 0;
+	if (type == RIDE_TYPE_GHOST_TRAIN) {
+		if (ride_has_spinning_tunnel(ride)) {
+			excitement += 40;
+			intensity  += 25;
+			nausea     += 55;
+		}
+	} else if (type == RIDE_TYPE_LOG_FLUME) {
+		// Reverser for log flume
+		if (ride_has_log_reverser(ride)) {
+			excitement += 48;
+			intensity  += 55;
+			nausea     += 65;
+		}
+	} else {
+		if (ride_has_water_splash(ride)) {
+			excitement += 50;
+			intensity  += 30;
+			nausea     += 20;
+		} 
+		if (ride_has_waterfall(ride)) {
+			excitement += 55;
+			intensity  += 30;
+		}
+		if (ride_has_whirlpool(ride)) {
+			excitement += 35;
+			intensity  += 20;
+			nausea     += 23;
+		}
+	}
+	uint8 helix_sections = ride_get_helix_sections(ride);
+	int al = min(helix_sections, 9);
+	excitement += (al * 254862) >> 16;
+
+	al = min(helix_sections, 11);
+	intensity += (al * 148945) >> 16;
+
+	al = max(helix_sections - 5, 0);
+	al = min(al, 10);
+	nausea += (al * 0x140000) >> 16;
+
+	rating_tuple rating = { excitement, intensity, nausea };
+	return rating;
+}
+
+/**
  *  rct2: 0x0065DDD1
  */
 static rating_tuple sub_65DDD1(rct_ride *ride)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edi = (int)ride;
-	RCT2_CALLFUNC_X(0x0065DDD1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	int excitement = 0, intensity = 0, nausea = 0;
 
-	rating_tuple rating = { ebx, ecx, ebp };
+	rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride);
+	excitement += special_track_element_rating.excitement;
+	intensity  += special_track_element_rating.intensity;
+	nausea     += special_track_element_rating.nausea;
+
+	rating_tuple var_10E_rating = get_var_10E_rating(ride);
+	excitement += var_10E_rating.excitement;
+	intensity  += var_10E_rating.intensity;
+	nausea     += var_10E_rating.nausea;
+
+	rating_tuple var_110_rating = get_var_110_rating(ride);
+	excitement += var_110_rating.excitement;
+	intensity  += var_110_rating.intensity;
+	nausea     += var_110_rating.nausea;
+
+	rating_tuple var_112_rating = get_var_112_rating(ride->var_112);
+	excitement += var_112_rating.excitement;
+	intensity  += var_112_rating.intensity;
+	nausea     += var_112_rating.nausea;
+
+	rating_tuple inversions_rating = get_inversions_ratings(ride->inversions);
+	excitement += inversions_rating.excitement;
+	intensity  += inversions_rating.intensity;
+	nausea     += inversions_rating.nausea;
+
+	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
 }
 
@@ -653,7 +814,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 
 	// Apply lateral G force factor
 	result.excitement += (min(FIXED_2DP(1,50), ride->max_lateral_g) * 26214) >> 16;
-	result.intensity += (ride->max_lateral_g * 65536) >> 16;
+	result.intensity += ride->max_lateral_g;
 	result.nausea += (ride->max_lateral_g * 21845) >> 16;
 
 	// Very high lateral G force penalty
@@ -883,7 +1044,7 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 	// Apply size factor
 	int unk = min(ride->maze_tiles, 100);
 	ratings.excitement += unk;
-	ratings.intensity += unk / 2;
+	ratings.intensity += unk * 2;
 	
 	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 22310) >> 16;
 
