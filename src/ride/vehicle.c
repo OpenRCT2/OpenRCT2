@@ -553,15 +553,15 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 		uint16 track_elem_type = vehicle->track_type / 4;
 		if (track_elem_type == TRACK_ELEM_POWERED_LIFT || !(vehicle->var_48 & (1 << 0))){
-			if (!(ride->var_108 & (1 << 6))){
-				ride->var_108 |= (1 << 6);
+			if (!(ride->testing_flags & RIDE_TESTING_POWERED_LIFT)){
+				ride->testing_flags |= RIDE_TESTING_POWERED_LIFT;
 				if (ride->drops + 64 < 0xFF){
 					ride->drops += 64;
 				}
 			}
 		}
 		else{
-			ride->var_108 &= ~(1 << 6);
+			ride->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
 		}
 
 		if (ride->type == RIDE_TYPE_WATER_COASTER){
@@ -592,92 +592,77 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		// ax
 		uint16 track_flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
 
-		uint32 var_108 = ride->var_108;
-		if (var_108 & (1 << 1) && track_flags & TRACK_ELEM_FLAG_TURN_LEFT){
-			ride->var_10E += 0x800;
+		uint32 testing_flags = ride->testing_flags;
+		if (testing_flags & RIDE_TESTING_TURN_LEFT && 
+			track_flags & TRACK_ELEM_FLAG_TURN_LEFT){
+			// 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+			ride->turn_count_default += 0x800;
 		}
-		else if (var_108 & (1 << 2) && track_flags & TRACK_ELEM_FLAG_TURN_RIGHT){
-			ride->var_10E += 0x800;
+		else if (testing_flags & RIDE_TESTING_TURN_RIGHT && 
+			track_flags & TRACK_ELEM_FLAG_TURN_RIGHT){
+			// 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
+			ride->turn_count_default += 0x800;
 		}
-		else if (var_108 & (1 << 2) || var_108 & (1 << 1)){
-			ride->var_108 &= ~(0x6);
-			ride->var_108 &= ~(0x18);
+		else if (testing_flags & RIDE_TESTING_TURN_RIGHT || 
+			testing_flags & RIDE_TESTING_TURN_LEFT){
 
-			uint16* ebp = &ride->var_110;
-			if (!(var_108 & (1 << 3))){
-				ebp = &ride->var_112;
-				if (!(var_108 & (1 << 4))){
-					ebp = &ride->var_10E;
+			ride->testing_flags &= ~(
+				RIDE_TESTING_TURN_LEFT | 
+				RIDE_TESTING_TURN_RIGHT | 
+				RIDE_TESTING_TURN_BANKED | 
+				RIDE_TESTING_TURN_SLOPED);
+
+			uint8 turn_type = 1;
+			if (!(testing_flags & RIDE_TESTING_TURN_BANKED)){
+				turn_type = 2;
+				if (!(testing_flags & RIDE_TESTING_TURN_SLOPED)){
+					turn_type = 0;
 				}
 			}
-			uint16 bx;
-			switch (ride->var_10E >> 11){
+			switch (ride->turn_count_default >> 11){
 			case 0:
-				bx = *ebp & 0x1F;
-				if (bx != 0x1F){
-					bx++;
-				}
-				*ebp &= 0xFFE0;
-				*ebp |= bx;
+				increment_turn_count_1_element(ride, turn_type);
 				break;
 			case 1:
-				bx = *ebp & 0xE0;
-				if (bx != 0xE0){
-					bx += 0x20;
-				}
-				*ebp &= 0xFF1F;
-				*ebp |= bx;
+				increment_turn_count_2_elements(ride, turn_type);
 				break;
-			default:
-				if (var_108&(1 << 4)){
-					bx = *ebp & 0xF800;
-					if (bx != 0xF800){
-						bx += 0x800;
-					}
-					*ebp &= 0x7FF;
-					*ebp |= bx;
-					break;
-				}
-				// fall through to case 2
 			case 2:
-				bx = *ebp & 0x700;
-				if (bx != 0x700){
-					bx += 0x100;
-				}
-				*ebp &= 0xF8FF;
-				*ebp |= bx;
+				increment_turn_count_3_elements(ride, turn_type);
+				break;			
+			default:
+				increment_turn_count_4_plus_elements(ride, turn_type);
 				break;
 			}
 		}
 		else {
 			if (track_flags & TRACK_ELEM_FLAG_TURN_LEFT){
-				ride->var_108 |= (1 << 1);
-				ride->var_10E &= 0x7FF;
+				ride->testing_flags |= RIDE_TESTING_TURN_LEFT;
+				ride->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
 				if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED){
-					ride->var_108 |= (1 << 3);
+					ride->testing_flags |= RIDE_TESTING_TURN_BANKED;
 				}
 				if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED){
-					ride->var_108 |= (1 << 4);
+					ride->testing_flags |= RIDE_TESTING_TURN_SLOPED;
 				}
 			}
 
 			if (track_flags & TRACK_ELEM_FLAG_TURN_RIGHT){
-				ride->var_108 |= (1 << 2);
-				ride->var_10E &= 0x7FF;
+				ride->testing_flags |= RIDE_TESTING_TURN_RIGHT;
+				ride->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
 				if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED){
-					ride->var_108 |= (1 << 3);
+					ride->testing_flags |= RIDE_TESTING_TURN_BANKED;
 				}
 				if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED){
-					ride->var_108 |= (1 << 4);
+					ride->testing_flags |= RIDE_TESTING_TURN_SLOPED;
 				}
 			}
 		}
 			
-		if (var_108 & (1 << 5)){
+		if (testing_flags & RIDE_TESTING_DROP_DOWN){
 			if (vehicle->velocity < 0 || !(track_flags & TRACK_ELEM_FLAG_DOWN)){
-				ride->var_108 &= ~(1 << 5);
+				ride->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
 				sint16 z = vehicle->z / 8 - ride->start_drop_height;
 				if (z < 0){
@@ -689,8 +674,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			}
 		}
 		else if (track_flags & TRACK_ELEM_FLAG_DOWN && vehicle->velocity >= 0){
-			ride->var_108 &= ~(1 << 7);
-			ride->var_108 |= (1 << 5);
+			ride->testing_flags &= ~RIDE_TESTING_DROP_UP;
+			ride->testing_flags |= RIDE_TESTING_DROP_DOWN;
 
 			uint8 drops = ride->drops & 0x3F;
 			if (drops != 0x3F)
@@ -699,12 +684,12 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			ride->drops |= drops;
 
 			ride->start_drop_height = vehicle->z / 8;
-			var_108 &= ~(1 << 7);
+			testing_flags &= ~RIDE_TESTING_DROP_UP;
 		}
 
-		if (var_108 & (1 << 7)){
+		if (testing_flags & RIDE_TESTING_DROP_UP){
 			if (vehicle->velocity > 0 || !(track_flags & TRACK_ELEM_FLAG_UP)){
-				ride->var_108 &= ~(1 << 7);
+				ride->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
 				sint16 z = vehicle->z / 8 - ride->start_drop_height;
 				if (z < 0){
@@ -716,8 +701,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			}
 		}
 		else if (track_flags & TRACK_ELEM_FLAG_UP && vehicle->velocity <= 0){
-			ride->var_108 &= ~(1 << 5);
-			ride->var_108 |= (1 << 7);
+			ride->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
+			ride->testing_flags |= RIDE_TESTING_DROP_UP;
 
 			uint8 drops = ride->drops & 0x3F;
 			if (drops != 0x3F)
@@ -726,7 +711,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			ride->drops |= drops;
 
 			ride->start_drop_height = vehicle->z / 8;
-			var_108 &= ~(1 << 7);
+			testing_flags &= ~RIDE_TESTING_DROP_UP;
 		}
 
 		if (track_flags & TRACK_ELEM_FLAG_INVERSION){
@@ -757,7 +742,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	y = vehicle->y;
 
 	if (x == SPRITE_LOCATION_NULL){
-		ride->var_108 &= (1 << 0);
+		ride->testing_flags &= RIDE_TESTING_FLAG_0;
 		return;
 	}
 
@@ -766,7 +751,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 		for (;; map_element++){
 			if (map_element_is_last_for_tile(map_element)){
-				ride->var_108 &= (1 << 0);
+				ride->testing_flags &= RIDE_TESTING_FLAG_0;
 				return;
 			}
 
@@ -785,8 +770,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 	}
 
-	if (!(ride->var_108 & (1 << 0))){
-		ride->var_108 |= (1 << 0);
+	if (!(ride->testing_flags & RIDE_TESTING_FLAG_0)){
+		ride->testing_flags |= RIDE_TESTING_FLAG_0;
 
 		uint8 num_sheltered_sections = ride->num_sheltered_sections & 0x1F;
 		if (num_sheltered_sections != 0x1F)

@@ -5880,52 +5880,164 @@ bool ride_type_has_flag(int rideType, int flag)
 }
 
 /*
- * The next six functions are helpers to access ride data at the offset 10E &
- * 110. We believe it stores three distinct values in the following format:
+ * The next eight functions are helpers to access ride data at the offset 10E &
+ * 110. Known as the turn counts. There are 3 different types (default, banked, sloped)
+ * and there are 4 counts as follows:
  *
- * unknown1: bits 9-11
- * unknown2: bits 6-8
- * unknown3: low 5 bits
+ * 1 element turns: low 5 bits
+ * 2 element turns: bits 6-8
+ * 3 element turns: bits 9-11
+ * 4 element or more turns: bits 12-15
+ *
+ * 4 plus elements only possible on sloped type. Falls back to 3 element
+ * if by some miracle you manage 4 element none sloped.
  */
 
-int get_var_10E_unk_1(rct_ride* ride) {
-	return (ride->var_10E >> 8) & 0x7;
+void increment_turn_count_1_element(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+	uint16 value = (*turn_count & TURN_MASK_1_ELEMENT) + 1;
+	*turn_count &= ~TURN_MASK_1_ELEMENT;
+	if (value > TURN_MASK_1_ELEMENT)
+		value = TURN_MASK_1_ELEMENT;
+	*turn_count |= value;
 }
 
-int get_var_10E_unk_2(rct_ride* ride) {
-	return (ride->var_10E >> 5) & 0x7;
+void increment_turn_count_2_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+	uint16 value = (*turn_count & TURN_MASK_2_ELEMENTS) + 0x20;
+	*turn_count &= ~TURN_MASK_2_ELEMENTS;
+	value <<= 5;
+	if (value > TURN_MASK_2_ELEMENTS)
+		value = TURN_MASK_2_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_10E_unk_3(rct_ride* ride) {
-	return ride->var_10E & 0x1F;
+void increment_turn_count_3_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+	uint16 value = (*turn_count & TURN_MASK_3_ELEMENTS) + 0x100;
+	*turn_count &= ~TURN_MASK_3_ELEMENTS;
+	value <<= 8;
+	if (value > TURN_MASK_3_ELEMENTS)
+		value = TURN_MASK_3_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_110_unk_1(rct_ride* ride) {
-	return (ride->var_110 >> 8) & 0x7;
+void increment_turn_count_4_plus_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+	case 1:
+		// Just incase fallback to 3 element turn
+		increment_turn_count_3_elements(ride, type);
+		return;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+	uint16 value = (*turn_count & TURN_MASK_4_PLUS_ELEMENTS) + 0x800;
+	*turn_count &= ~TURN_MASK_4_PLUS_ELEMENTS;
+	value <<= 11;
+	if (value > TURN_MASK_4_PLUS_ELEMENTS)
+		value = TURN_MASK_4_PLUS_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_110_unk_2(rct_ride* ride) {
-	return (ride->var_110 >> 5) & 0x7;
+int get_turn_count_1_element(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+
+	return (*turn_count) & TURN_MASK_1_ELEMENT;
 }
 
-int get_var_110_unk_3(rct_ride* ride) {
-	return ride->var_110 & 0x1F;
+int get_turn_count_2_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+
+	return (*turn_count >> 5) & TURN_MASK_2_ELEMENTS;
 }
 
-int get_var_112_unk_1(rct_ride* ride) {
-	return (ride->var_112 >> 11) & 0x3F;
+int get_turn_count_3_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;		
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
+
+	return (*turn_count >> 8) & TURN_MASK_3_ELEMENTS;
 }
 
-int get_var_112_unk_2(rct_ride* ride) {
-	return (ride->var_112 >> 8) & 7;
-}
+int get_turn_count_4_plus_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+	case 1:
+		return 0;
+	case 2:		
+		turn_count = &ride->turn_count_sloped;
+		break;
+	}
 
-int get_var_112_unk_3(rct_ride* ride) {
-	return (ride->var_112 >> 5) & 7;
-}
-
-int get_var_112_unk_4(rct_ride* ride) {
-	return ride->var_112 & 0x1F;
+	return (*turn_count >> 11) & TURN_MASK_4_PLUS_ELEMENTS;
 }
 
 bool ride_has_spinning_tunnel(rct_ride *ride) {

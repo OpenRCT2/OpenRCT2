@@ -930,22 +930,22 @@ static int sub_65E72D(rct_ride *ride)
 	return (dh << 8) | numShelteredEighths;
 }
 
-static rating_tuple get_var_10E_rating(rct_ride* ride) {
-	int var_10E_unk_1 = get_var_10E_unk_1(ride);
-	int var_10E_unk_2 = get_var_10E_unk_2(ride);
-	int var_10E_unk_3 = get_var_10E_unk_3(ride);
+static rating_tuple get_flat_turns_rating(rct_ride* ride) {
+	int no_3_plus_turns = get_turn_count_3_elements(ride, 0);
+	int no_2_turns = get_turn_count_2_elements(ride, 0);
+	int no_1_turns = get_turn_count_1_element(ride, 0);
 
-	int excitement = (var_10E_unk_1 * 0x28000) >> 16;
-	excitement += (var_10E_unk_2 * 0x30000) >> 16;
-	excitement += (var_10E_unk_3 * 63421) >> 16;
+	int excitement = (no_3_plus_turns * 0x28000) >> 16;
+	excitement += no_2_turns * 3;
+	excitement += (no_1_turns * 63421) >> 16;
 
-	int intensity = (var_10E_unk_1 * 81920) >> 16;
-	intensity += (var_10E_unk_2 * 49152) >> 16;
-	intensity += (var_10E_unk_3 * 21140) >> 16;
+	int intensity = (no_3_plus_turns * 81920) >> 16;
+	intensity += (no_2_turns * 49152) >> 16;
+	intensity += (no_1_turns * 21140) >> 16;
 
-	int nausea = (var_10E_unk_1 * 0x50000) >> 16;
-	nausea += (var_10E_unk_2 * 0x32000) >> 16;
-	nausea += (var_10E_unk_3 * 42281) >> 16;
+	int nausea = no_3_plus_turns * 5;
+	nausea += (no_2_turns * 0x3200) >> 16;
+	nausea += (no_1_turns * 42281) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -954,22 +954,22 @@ static rating_tuple get_var_10E_rating(rct_ride* ride) {
 /**
  * rct2: 0x0065DF72
  */
-static rating_tuple get_var_110_rating(rct_ride* ride) {
-	int var_110_unk_1 = get_var_110_unk_1(ride);
-	int var_110_unk_2 = get_var_110_unk_2(ride);
-	int var_110_unk_3 = get_var_110_unk_3(ride);
+static rating_tuple get_banked_turns_rating(rct_ride* ride) {
+	int no_3_plus_turns = get_turn_count_3_elements(ride, 1);
+	int no_2_turns = get_turn_count_2_elements(ride, 1);
+	int no_1_turns = get_turn_count_1_element(ride, 1);
 
-	int excitement = (var_110_unk_1 * 0x3C000) >> 16;
-	excitement += (var_110_unk_2 * 0x3C000) >> 16;
-	excitement += (var_110_unk_3 * 73992) >> 16;
+	int excitement = (no_3_plus_turns * 0x3c000) >> 16;
+	excitement += (no_2_turns * 0x3c000) >> 16;
+	excitement += (no_1_turns * 73992) >> 16;
 
-	int intensity = (var_110_unk_1 * 0x14000) >> 16;
-	intensity += (var_110_unk_2 * 49152) >> 16;
-	intensity += (var_110_unk_3 * 21140) >> 16;
+	int intensity = (no_3_plus_turns * 0x14000) >> 16;
+	intensity += (no_2_turns * 49152) >> 16;
+	intensity += (no_1_turns * 21140) >> 16;
 
-	int nausea = (var_110_unk_1 * 0x50000) >> 16;
-	nausea += (var_110_unk_2 * 0x32000) >> 16;
-	nausea += (var_110_unk_3 * 48623) >> 16;
+	int nausea = no_3_plus_turns * 5;
+	nausea += (no_2_turns * 0x32000) >> 16;
+	nausea += (no_1_turns * 48623) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -978,27 +978,26 @@ static rating_tuple get_var_110_rating(rct_ride* ride) {
 /**
  * rct2: 0x0065E047
  */
-static rating_tuple get_var_112_rating(rct_ride *ride) {
+static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
+	int no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
+	int no_3_turns = get_turn_count_3_elements(ride, 2);
+	int no_2_turns = get_turn_count_2_elements(ride, 2);
+	int no_1_turns = get_turn_count_1_element(ride, 2);
 	int al;
 
-	al = get_var_112_unk_1(ride);
-	al = min(al, 4);
+	al = min(no_4_plus_turns, 4);
 	int excitement = (al * 0x78000) >> 16;
 
-	al = get_var_112_unk_1(ride);
-	al = min(al, 8);
+	al = min(no_4_plus_turns, 8);
 	int nausea = (al * 0x78000) >> 16;
 
-	al = get_var_112_unk_2(ride);
-	al = min(al, 6);
+	al = min(no_3_turns, 6);
 	excitement += (al * 273066) >> 16;
 
-	al = get_var_112_unk_3(ride);
-	al = min(al, 6);
-	excitement += (al * 0x3AAAA) >> 16;
+	al = min(no_2_turns, 6);
+	excitement += (al * 0x3aaaa) >> 16;
 
-	al = get_var_112_unk_4(ride);
-	al = min(al, 7);
+	al = min(no_1_turns, 7);
 	excitement += (al * 187245) >> 16;
 
 	rating_tuple rating = { excitement, 0, nausea };
@@ -1078,17 +1077,17 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 	intensity  += special_track_element_rating.intensity;
 	nausea     += special_track_element_rating.nausea;
 
-	rating_tuple var_10E_rating = get_var_10E_rating(ride);
+	rating_tuple var_10E_rating = get_flat_turns_rating(ride);
 	excitement += var_10E_rating.excitement;
 	intensity  += var_10E_rating.intensity;
 	nausea     += var_10E_rating.nausea;
 
-	rating_tuple var_110_rating = get_var_110_rating(ride);
+	rating_tuple var_110_rating = get_banked_turns_rating(ride);
 	excitement += var_110_rating.excitement;
 	intensity  += var_110_rating.intensity;
 	nausea     += var_110_rating.nausea;
 
-	rating_tuple var_112_rating = get_var_112_rating(ride);
+	rating_tuple var_112_rating = get_sloped_turns_rating(ride);
 	excitement += var_112_rating.excitement;
 	intensity  += var_112_rating.intensity;
 	nausea     += var_112_rating.nausea;
