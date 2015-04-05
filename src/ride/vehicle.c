@@ -478,14 +478,14 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	rct_ride *ride;
 
 	ride = GET_RIDE(vehicle->ride);
-	//RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride, 0);
+	//RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride * sizeof(rct_ride), 0);
 	//return;
 
 	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_07){
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-		vehicle->var_48 &= ~(1 << 1);
+		vehicle->var_48 &= ~(1 << 5);
 		window_invalidate_by_number(WC_RIDE, vehicle->ride);
 		return;
 	}
@@ -742,16 +742,16 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	y = vehicle->y;
 
 	if (x == SPRITE_LOCATION_NULL){
-		ride->testing_flags &= RIDE_TESTING_FLAG_0;
+		ride->testing_flags &= ~RIDE_TESTING_FLAG_0;
 		return;
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
-	if (map_element->base_height * 8 > vehicle->z){
+	if (map_element->base_height * 8 <= vehicle->z){
 
 		for (;; map_element++){
 			if (map_element_is_last_for_tile(map_element)){
-				ride->testing_flags &= RIDE_TESTING_FLAG_0;
+				ride->testing_flags &= ~RIDE_TESTING_FLAG_0;
 				return;
 			}
 
