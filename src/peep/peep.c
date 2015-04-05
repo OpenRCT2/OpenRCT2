@@ -567,7 +567,7 @@ void peep_sprite_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		window_invalidate_by_class(WC_GUEST_LIST);
 
-		news_item_peep_removed(NEWS_ITEM_PEEP_ON_RIDE, peep->sprite_index);
+		news_item_disable_news(NEWS_ITEM_PEEP_ON_RIDE, peep->sprite_index);
 	}
 	else{
 		window_invalidate_by_class(WC_STAFF_LIST);
@@ -577,7 +577,7 @@ void peep_sprite_remove(rct_peep* peep){
 		sub_6C0C3F();
 		peep->type = PEEP_TYPE_STAFF;
 
-		news_item_peep_removed(NEWS_ITEM_PEEP, peep->sprite_index);
+		news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
 	}
 	sprite_remove((rct_sprite*)peep);
 }

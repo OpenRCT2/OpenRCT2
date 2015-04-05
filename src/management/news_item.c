@@ -28,6 +28,8 @@
 #include "../world/sprite.h"
 #include "news_item.h"
 
+rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
@@ -348,10 +350,10 @@ void news_item_open_subject(int type, int subject)
 /**
  * rct2: 0x0066E407
  */
-void news_item_peep_removed(uint8 type, uint32 sprite_index) {
-        rct_news_item* newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+void news_item_disable_news(uint8 type, uint32 assoc) {
+        rct_news_item* newsItem = newsItems;
         while (newsItem->type != NEWS_ITEM_NULL) {
-                if (type == newsItem->type && sprite_index == newsItem->assoc) {
+                if (type == newsItem->type && assoc == newsItem->assoc) {
                         newsItem->flags |= 0x1;
                         if (newsItem == RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)) {
                                 window_game_bottom_toolbar_invalidate_news_item();
@@ -360,9 +362,9 @@ void news_item_peep_removed(uint8 type, uint32 sprite_index) {
                 newsItem++;
         }
 
-        newsItem = RCT2_ADDRESS(0x013CB2D8, rct_news_item);
+        newsItem = &newsItems[11]; //0x13CB2D8
         while (newsItem->type != NEWS_ITEM_NULL) {
-                if (type == newsItem->type && sprite_index == newsItem->assoc) {
+                if (type == newsItem->type && assoc == newsItem->assoc) {
                         newsItem->flags |= 0x1;
                         window_invalidate_by_class(WC_RECENT_NEWS);
                 }
