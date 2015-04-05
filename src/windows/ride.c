@@ -2114,7 +2114,12 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
 		int trackType = vehicle->track_type >> 2;
-		if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155) {
+		if (trackType == 216 ||
+			trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
+			trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
 			if ((RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
 				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return 1191;

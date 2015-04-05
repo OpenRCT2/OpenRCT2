@@ -2703,7 +2703,12 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	}
 
 	uint8 trackType = (vehicle->track_type >> 2) & 0xFF;
-	if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155)
+	if (trackType == 216 ||
+		trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
+		trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
 		if (vehicle->velocity == 0)
 			return;
 

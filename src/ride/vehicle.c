@@ -27,6 +27,7 @@
 #include "../openrct2.h"
 #include "../scenario.h"
 #include "../world/sprite.h"
+#include "track.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
@@ -545,8 +546,8 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 
 		if (ride->entrances[ride->var_1F6] != 0xFFFF){
 
-			sint16 var_36 = vehicle->var_36 / 4;
-			if (var_36 == 182 || !(vehicle->var_48 & (1<<0))){
+			uint16 track_elem_type = vehicle->track_type / 4;
+			if (track_elem_type == TRACK_ELEM_POWERED_LIFT || !(vehicle->var_48 & (1 << 0))){
 				if (!(ride->var_108 & (1 << 6))){
 					ride->var_108 |= (1 << 6);
 					if (ride->drops + 64 < 0xFF){
@@ -559,16 +560,121 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 			}
 
 			if (ride->type == RIDE_TYPE_WATER_COASTER){
-				if (var_36 >= 68 && var_36 < 87){
+				if (track_elem_type >= TRACK_ELEM_FLAT_COVERED && track_elem_type <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED){
 					ride->special_track_elements |= (1 << 5);
 				}
 			}
 
-			//0x6d6edf
+			switch (track_elem_type)
+			{
+			case TRACK_ELEM_RAPIDS:
+			case TRACK_ELEM_SPINNING_TUNNEL:
+				ride->special_track_elements |= (1 << 5);
+				break;
+			case TRACK_ELEM_WATERFALL:
+			case TRACK_ELEM_LOG_FLUME_REVERSER:
+				ride->special_track_elements |= (1 << 6);
+				break;
+			case TRACK_ELEM_WHIRLPOOL:
+				ride->special_track_elements |= (1 << 7);
+				break;
+			case TRACK_ELEM_WATER_SPLASH:
+				if (vehicle->velocity >= 0xB0000){
+					ride->special_track_elements |= (1 << 5);
+				}
+			}
+
+			// ax
+			uint16 flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
+
+			uint32 var_108 = ride->var_108;
+			if (var_108 & (1 << 1) && flags & (1 << 1)){
+				ride->var_10E += 0x800;
+			}
+			else if (!(flags & (1 << 2))){
+				if (flags & (1 << 1)){
+					ride->var_108 |= (1 << 1);
+					ride->var_10E &= 0x7FF;
+
+					if (flags & (1 << 3)){
+						ride->var_108 |= (1 << 3);
+					}
+					if (flags & (1 << 4)){
+						ride->var_108 |= (1 << 4);
+					}
+				}
+
+				if (flags & (1 << 2)){
+					ride->var_108 |= (1 << 2);
+					ride->var_10E &= 0x7FF;
+
+					if (flags & (1 << 3)){
+						ride->var_108 |= (1 << 3);
+					}
+					if (flags & (1 << 4)){
+						ride->var_108 |= (1 << 4);
+					}
+				}
+			}
+			else if (var_108 & (1 << 2)){
+				ride->var_10E += 0x800;
+			}
+			else{
+				ride->var_108 &= ~(0x6);
+				ride->var_108 &= ~(0x18);
+
+				uint16* ebp = &ride->var_110;
+				if (!(var_108 & (1 << 3))){
+					ebp = &ride->var_112;
+					if (!(var_108 & (1 << 4))){
+						ebp = &ride->var_10E;
+					}
+				}
+				uint16 bx;
+				switch (ride->var_10E >> 11){
+				case 0:
+					bx = *ebp & 0x1F;
+					if (bx != 0x1F){
+						bx++;
+					}
+					*ebp &= 0xFFE0;
+					*ebp |= bx;
+					break;
+				case 1:
+					bx = *ebp & 0xE0;
+					if (bx != 0xE0){
+						bx += 0x20;
+					}
+					*ebp &= 0xFF1F;
+					*ebp |= bx;
+					break;
+				default:
+					if (var_108&(1 << 4)){
+						bx = *ebp & 0xF800;
+						if (bx != 0xF800){
+							bx += 0x800;
+						}
+						*ebp &= 0x7FF;
+						*ebp |= bx;
+						break;
+					}
+					// fall through to case 2
+				case 2:
+					bx = *ebp & 0x700;
+					if (bx != 0x700){
+						bx += 0x100;
+					}
+					*ebp &= 0xF8FF;
+					*ebp |= bx;
+					break;
+				}
+			}				
+			
+			//6d70b8
 		}
 	}
 	//6d7211
-	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)ride, 0);
+	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride, 0);
 }
 
 static uint16 sub_6D7AC0(int currentSoundId, int currentVolume, int targetSoundId, int targetVolume)
@@ -917,7 +1023,6 @@ produceScream:
 
 /**
  * 
->>>>>>> try to make sense of vehicle_update_sound
  *  rct2: 0x006D73D0
  * ax: verticalG
  * dx: lateralG

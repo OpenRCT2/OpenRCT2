@@ -246,6 +246,7 @@ typedef struct {
 	uint32 var_108;
 	// x y map location
 	uint16 var_10C;
+	// Next 3 variables are related (XXXX XYYY ZZZa aaaa)
 	uint16 var_10E;
 	uint16 var_110;
 	uint16 var_112;

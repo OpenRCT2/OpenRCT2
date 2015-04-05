@@ -37,6 +37,7 @@
 #include "../world/footpath.h"
 #include "../management/marketing.h"
 #include "../game.h"
+#include "../ride/track.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -2326,7 +2327,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 
 			for (; vehicle->is_child; vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride)){
 				uint16 trackType = vehicle->track_type >> 2;
-				if (trackType == 0 || trackType > 3)
+				if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
 					continue;
 
 				rct_map_element* inner_map = map_get_first_element_at(vehicle->track_x / 32, vehicle->track_y / 32);
