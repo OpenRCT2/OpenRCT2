@@ -548,204 +548,205 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		ride->var_11F = vehicle->var_3C / 8;
 		ride->var_10C = map_location;
 
-		if (ride->entrances[ride->var_1F6] != 0xFFFF){
+		if (ride->entrances[ride->var_1F6] == 0xFFFF)
+			return;
 
-			uint16 track_elem_type = vehicle->track_type / 4;
-			if (track_elem_type == TRACK_ELEM_POWERED_LIFT || !(vehicle->var_48 & (1 << 0))){
-				if (!(ride->var_108 & (1 << 6))){
-					ride->var_108 |= (1 << 6);
-					if (ride->drops + 64 < 0xFF){
-						ride->drops += 64;
-					}
+		uint16 track_elem_type = vehicle->track_type / 4;
+		if (track_elem_type == TRACK_ELEM_POWERED_LIFT || !(vehicle->var_48 & (1 << 0))){
+			if (!(ride->var_108 & (1 << 6))){
+				ride->var_108 |= (1 << 6);
+				if (ride->drops + 64 < 0xFF){
+					ride->drops += 64;
 				}
-			}
-			else{
-				ride->var_108 &= ~(1 << 6);
-			}
-
-			if (ride->type == RIDE_TYPE_WATER_COASTER){
-				if (track_elem_type >= TRACK_ELEM_FLAT_COVERED && track_elem_type <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED){
-					ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-				}
-			}
-
-			switch (track_elem_type)
-			{
-			case TRACK_ELEM_RAPIDS:
-			case TRACK_ELEM_SPINNING_TUNNEL:
-				ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-				break;
-			case TRACK_ELEM_WATERFALL:
-			case TRACK_ELEM_LOG_FLUME_REVERSER:
-				ride->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
-				break;
-			case TRACK_ELEM_WHIRLPOOL:
-				ride->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
-				break;
-			case TRACK_ELEM_WATER_SPLASH:
-				if (vehicle->velocity >= 0xB0000){
-					ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-				}
-			}
-
-			// ax
-			uint16 flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
-
-			uint32 var_108 = ride->var_108;
-			if (var_108 & (1 << 1) && flags & (1 << 1)){
-				ride->var_10E += 0x800;
-			}
-			else if (!(flags & (1 << 2))){
-				if (flags & (1 << 1)){
-					ride->var_108 |= (1 << 1);
-					ride->var_10E &= 0x7FF;
-
-					if (flags & (1 << 3)){
-						ride->var_108 |= (1 << 3);
-					}
-					if (flags & (1 << 4)){
-						ride->var_108 |= (1 << 4);
-					}
-				}
-
-				if (flags & (1 << 2)){
-					ride->var_108 |= (1 << 2);
-					ride->var_10E &= 0x7FF;
-
-					if (flags & (1 << 3)){
-						ride->var_108 |= (1 << 3);
-					}
-					if (flags & (1 << 4)){
-						ride->var_108 |= (1 << 4);
-					}
-				}
-			}
-			else if (var_108 & (1 << 2)){
-				ride->var_10E += 0x800;
-			}
-			else{
-				ride->var_108 &= ~(0x6);
-				ride->var_108 &= ~(0x18);
-
-				uint16* ebp = &ride->var_110;
-				if (!(var_108 & (1 << 3))){
-					ebp = &ride->var_112;
-					if (!(var_108 & (1 << 4))){
-						ebp = &ride->var_10E;
-					}
-				}
-				uint16 bx;
-				switch (ride->var_10E >> 11){
-				case 0:
-					bx = *ebp & 0x1F;
-					if (bx != 0x1F){
-						bx++;
-					}
-					*ebp &= 0xFFE0;
-					*ebp |= bx;
-					break;
-				case 1:
-					bx = *ebp & 0xE0;
-					if (bx != 0xE0){
-						bx += 0x20;
-					}
-					*ebp &= 0xFF1F;
-					*ebp |= bx;
-					break;
-				default:
-					if (var_108&(1 << 4)){
-						bx = *ebp & 0xF800;
-						if (bx != 0xF800){
-							bx += 0x800;
-						}
-						*ebp &= 0x7FF;
-						*ebp |= bx;
-						break;
-					}
-					// fall through to case 2
-				case 2:
-					bx = *ebp & 0x700;
-					if (bx != 0x700){
-						bx += 0x100;
-					}
-					*ebp &= 0xF8FF;
-					*ebp |= bx;
-					break;
-				}
-			}				
-			
-			if (var_108 & (1 << 5)){
-				if (vehicle->velocity < 0 || !(flags & (1 << 5))){
-					ride->var_108 &= ~(1 << 5);
-
-					sint16 z = vehicle->z / 8 - ride->start_drop_height;
-					if (z < 0){
-						z = abs(z);
-						if (z > ride->highest_drop_height){
-							ride->highest_drop_height = (uint8)z;
-						}
-					}
-				}
-			}
-			else if (flags & (1 << 5) && vehicle->velocity >= 0){
-				ride->var_108 &= ~(1 << 7);
-				ride->var_108 |= (1 << 5);
-
-				uint8 drops = ride->drops & 0x3F;
-				if (drops != 0x3F)
-					drops++;
-				ride->drops &= ~0x3F;
-				ride->drops |= drops;
-
-				ride->start_drop_height = vehicle->z / 8;
-				var_108 &= ~(1 << 7);
-			}
-
-			if (var_108 & (1 << 7)){
-				if (vehicle->velocity > 0 || !(flags & (1 << 6))){
-					ride->var_108 &= ~(1 << 7);
-
-					sint16 z = vehicle->z / 8 - ride->start_drop_height;
-					if (z < 0){
-						z = abs(z);
-						if (z > ride->highest_drop_height){
-							ride->highest_drop_height = (uint8)z;
-						}
-					}
-				}
-			}
-			else if (flags & (1 << 6) && vehicle->velocity <= 0){
-				ride->var_108 &= ~(1 << 5);
-				ride->var_108 |= (1 << 7);
-
-				uint8 drops = ride->drops & 0x3F;
-				if (drops != 0x3F)
-					drops++;
-				ride->drops &= ~0x3F;
-				ride->drops |= drops;
-
-				ride->start_drop_height = vehicle->z / 8;
-				var_108 &= ~(1 << 7);
-			}
-
-			if (flags & (1 << 7)){
-				uint8 inversions = ride->inversions & 0x1F;
-				if (inversions != 0x1F)
-					inversions++;
-
-				ride->inversions &= ~0x1F;
-				ride->inversions |= inversions;
-			}
-
-			if (flags & (1 << 11)){
-				uint8 helixes = ride_get_helix_sections(ride);
-				if (helixes != 0x1F)
-					helixes++;
-
-				ride->special_track_elements &= ~0x1F;
-				ride->special_track_elements |= helixes;
 			}
 		}
+		else{
+			ride->var_108 &= ~(1 << 6);
+		}
+
+		if (ride->type == RIDE_TYPE_WATER_COASTER){
+			if (track_elem_type >= TRACK_ELEM_FLAT_COVERED && track_elem_type <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED){
+				ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+			}
+		}
+
+		switch (track_elem_type)
+		{
+		case TRACK_ELEM_RAPIDS:
+		case TRACK_ELEM_SPINNING_TUNNEL:
+			ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+			break;
+		case TRACK_ELEM_WATERFALL:
+		case TRACK_ELEM_LOG_FLUME_REVERSER:
+			ride->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+			break;
+		case TRACK_ELEM_WHIRLPOOL:
+			ride->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
+			break;
+		case TRACK_ELEM_WATER_SPLASH:
+			if (vehicle->velocity >= 0xB0000){
+				ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+			}
+		}
+
+		// ax
+		uint16 track_flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
+
+		uint32 var_108 = ride->var_108;
+		if (var_108 & (1 << 1) && track_flags & TRACK_ELEM_FLAG_TURN_LEFT){
+			ride->var_10E += 0x800;
+		}
+		else if (var_108 & (1 << 2) && track_flags & TRACK_ELEM_FLAG_TURN_RIGHT){
+			ride->var_10E += 0x800;
+		}
+		else if (var_108 & (1 << 2) || var_108 & (1 << 1)){
+			ride->var_108 &= ~(0x6);
+			ride->var_108 &= ~(0x18);
+
+			uint16* ebp = &ride->var_110;
+			if (!(var_108 & (1 << 3))){
+				ebp = &ride->var_112;
+				if (!(var_108 & (1 << 4))){
+					ebp = &ride->var_10E;
+				}
+			}
+			uint16 bx;
+			switch (ride->var_10E >> 11){
+			case 0:
+				bx = *ebp & 0x1F;
+				if (bx != 0x1F){
+					bx++;
+				}
+				*ebp &= 0xFFE0;
+				*ebp |= bx;
+				break;
+			case 1:
+				bx = *ebp & 0xE0;
+				if (bx != 0xE0){
+					bx += 0x20;
+				}
+				*ebp &= 0xFF1F;
+				*ebp |= bx;
+				break;
+			default:
+				if (var_108&(1 << 4)){
+					bx = *ebp & 0xF800;
+					if (bx != 0xF800){
+						bx += 0x800;
+					}
+					*ebp &= 0x7FF;
+					*ebp |= bx;
+					break;
+				}
+				// fall through to case 2
+			case 2:
+				bx = *ebp & 0x700;
+				if (bx != 0x700){
+					bx += 0x100;
+				}
+				*ebp &= 0xF8FF;
+				*ebp |= bx;
+				break;
+			}
+		}
+		else {
+			if (track_flags & TRACK_ELEM_FLAG_TURN_LEFT){
+				ride->var_108 |= (1 << 1);
+				ride->var_10E &= 0x7FF;
+
+				if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED){
+					ride->var_108 |= (1 << 3);
+				}
+				if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED){
+					ride->var_108 |= (1 << 4);
+				}
+			}
+
+			if (track_flags & TRACK_ELEM_FLAG_TURN_RIGHT){
+				ride->var_108 |= (1 << 2);
+				ride->var_10E &= 0x7FF;
+
+				if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED){
+					ride->var_108 |= (1 << 3);
+				}
+				if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED){
+					ride->var_108 |= (1 << 4);
+				}
+			}
+		}
+			
+		if (var_108 & (1 << 5)){
+			if (vehicle->velocity < 0 || !(track_flags & TRACK_ELEM_FLAG_DOWN)){
+				ride->var_108 &= ~(1 << 5);
+
+				sint16 z = vehicle->z / 8 - ride->start_drop_height;
+				if (z < 0){
+					z = abs(z);
+					if (z > ride->highest_drop_height){
+						ride->highest_drop_height = (uint8)z;
+					}
+				}
+			}
+		}
+		else if (track_flags & TRACK_ELEM_FLAG_DOWN && vehicle->velocity >= 0){
+			ride->var_108 &= ~(1 << 7);
+			ride->var_108 |= (1 << 5);
+
+			uint8 drops = ride->drops & 0x3F;
+			if (drops != 0x3F)
+				drops++;
+			ride->drops &= ~0x3F;
+			ride->drops |= drops;
+
+			ride->start_drop_height = vehicle->z / 8;
+			var_108 &= ~(1 << 7);
+		}
+
+		if (var_108 & (1 << 7)){
+			if (vehicle->velocity > 0 || !(track_flags & TRACK_ELEM_FLAG_UP)){
+				ride->var_108 &= ~(1 << 7);
+
+				sint16 z = vehicle->z / 8 - ride->start_drop_height;
+				if (z < 0){
+					z = abs(z);
+					if (z > ride->highest_drop_height){
+						ride->highest_drop_height = (uint8)z;
+					}
+				}
+			}
+		}
+		else if (track_flags & TRACK_ELEM_FLAG_UP && vehicle->velocity <= 0){
+			ride->var_108 &= ~(1 << 5);
+			ride->var_108 |= (1 << 7);
+
+			uint8 drops = ride->drops & 0x3F;
+			if (drops != 0x3F)
+				drops++;
+			ride->drops &= ~0x3F;
+			ride->drops |= drops;
+
+			ride->start_drop_height = vehicle->z / 8;
+			var_108 &= ~(1 << 7);
+		}
+
+		if (track_flags & TRACK_ELEM_FLAG_INVERSION){
+			uint8 inversions = ride->inversions & 0x1F;
+			if (inversions != 0x1F)
+				inversions++;
+
+			ride->inversions &= ~0x1F;
+			ride->inversions |= inversions;
+		}
+
+		if (track_flags & TRACK_ELEM_FLAG_HELIX){
+			uint8 helixes = ride_get_helix_sections(ride);
+			if (helixes != 0x1F)
+				helixes++;
+
+			ride->special_track_elements &= ~0x1F;
+			ride->special_track_elements |= helixes;
+		}
+		
 	}
 
 	if (ride->entrances[ride->var_1F6] == 0xFFFF)
