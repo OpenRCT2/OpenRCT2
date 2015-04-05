@@ -366,5 +366,7 @@ void news_item_peep_removed(uint8 type, uint32 sprite_index) {
                         newsItem->flags |= 0x1;
                         window_invalidate_by_class(WC_RECENT_NEWS);
                 }
+		newsItem++;
         }
 }
+
