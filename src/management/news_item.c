@@ -344,3 +344,27 @@ void news_item_open_subject(int type, int subject)
 		break;
 	}
 }
+
+/**
+ * rct2: 0x0066E407
+ */
+void news_item_peep_removed(uint8 type, uint32 sprite_index) {
+        rct_news_item* newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+        while (newsItem->type != NEWS_ITEM_NULL) {
+                if (type == newsItem->type && sprite_index == newsItem->assoc) {
+                        newsItem->flags |= 0x1;
+                        if (newsItem == RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)) {
+                                window_game_bottom_toolbar_invalidate_news_item();
+                        }
+                }
+                newsItem++;
+        }
+
+        newsItem = RCT2_ADDRESS(0x013CB2D8, rct_news_item);
+        while (newsItem->type != NEWS_ITEM_NULL) {
+                if (type == newsItem->type && sprite_index == newsItem->assoc) {
+                        newsItem->flags |= 0x1;
+                        window_invalidate_by_class(WC_RECENT_NEWS);
+                }
+        }
+}
