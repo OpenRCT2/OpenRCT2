@@ -475,6 +475,99 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 	rct_ride *ride;
 
 	ride = GET_RIDE(vehicle->ride);
+
+	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_07){
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+		vehicle->var_48 &= ~(1 << 1);
+		window_invalidate_by_number(WC_RIDE, vehicle->ride);
+		return;
+	}
+
+	uint8 entrance = ride->var_1F6;
+	if (ride->entrances[entrance] != 0xFFFF){
+
+		//ecx
+		uint8 var_E0 = ride->var_0E0;
+
+		ride->var_0E1++;
+		if (ride->var_0E1 >= 32)ride->var_0E1 = 0;
+
+		sint32 velocity = abs(vehicle->velocity);
+		if (velocity > ride->max_speed){
+			ride->max_speed = velocity;
+		}
+
+		if (ride->var_0E1 == 0 && velocity > 0x8000){
+			ride->average_speed += velocity;
+			ride->time[var_E0]++;
+		}
+
+		sint32 distance = abs(((vehicle->velocity + vehicle->var_2C) / 1024) * 42);
+		if (vehicle->var_CE != 0){
+			ride->length[var_E0] += distance;
+		}
+
+		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_G_FORCES){
+			int vertical_g, lateral_g;
+			vehicle_get_g_forces(vehicle, &vertical_g, &lateral_g);
+
+			vertical_g += ride->previous_vertical_g;
+			lateral_g += ride->previous_lateral_g;
+			vertical_g /= 2;
+			lateral_g /= 2;
+
+			ride->previous_vertical_g = vertical_g;
+			ride->previous_lateral_g = lateral_g;
+
+			if (vertical_g <= 0){
+				ride->total_air_time++;
+			}
+
+			if (vertical_g > ride->max_positive_vertical_g)
+				ride->max_positive_vertical_g = vertical_g;
+
+			if (vertical_g < ride->max_negative_vertical_g)
+				ride->max_negative_vertical_g = vertical_g;
+
+			lateral_g = abs(lateral_g);
+
+			if (lateral_g > ride->max_lateral_g)
+				ride->max_lateral_g = lateral_g;
+		}
+	}
+
+	uint16 map_location = (vehicle->var_38 / 32) | ((vehicle->var_3A / 32) << 8);
+	if (vehicle->var_3C / 8 != ride->var_11F && map_location != ride->var_10C){
+		ride->var_11F = vehicle->var_3C / 8;
+		ride->var_10C = map_location;
+
+		if (ride->entrances[ride->var_1F6] != 0xFFFF){
+
+			sint16 var_36 = vehicle->var_36 / 4;
+			if (var_36 == 182 || !(vehicle->var_48 & (1<<0))){
+				if (!(ride->var_108 & (1 << 6))){
+					ride->var_108 |= (1 << 6);
+					if (ride->drops + 64 < 0xFF){
+						ride->drops += 64;
+					}
+				}
+			}
+			else{
+				ride->var_108 &= ~(1 << 6);
+			}
+
+			if (ride->type == RIDE_TYPE_WATER_COASTER){
+				if (var_36 >= 68 && var_36 < 87){
+					ride->special_track_elements |= (1 << 5);
+				}
+			}
+
+			//0x6d6edf
+		}
+	}
+	//6d7211
 	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)ride, 0);
 }
 

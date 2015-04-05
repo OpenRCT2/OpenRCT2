@@ -232,13 +232,20 @@ typedef struct {
 	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 pad_0E0[4];
+	uint8 var_0E0;
+	uint8 var_0E1;
+	uint8 pad_0E2[0x2];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
 	fixed16_2dp max_negative_vertical_g;	// 0x0FE
 	fixed16_2dp max_lateral_g;		// 0x100
-	uint8 pad_102[0xC];
+	fixed16_2dp previous_vertical_g;// 0x102
+	fixed16_2dp previous_lateral_g;	// 0x104
+	uint8 pad_106[0x2];
+	uint32 var_108;
+	// x y map location
+	uint16 var_10C;
 	uint16 var_10E;
 	uint16 var_110;
 	uint16 var_112;
@@ -253,7 +260,7 @@ typedef struct {
 	uint8 var_116;
 	uint8 highest_drop_height;		// 0x117
 	sint32 sheltered_length;		// 0x118
-	uint8 pad_11C[0x2];
+	uint16 var_11C;
 	uint8 num_sheltered_sections;   // 0x11E
 	uint8 var_11F;
 	sint16 var_120;
@@ -358,7 +365,7 @@ typedef struct {
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 vehicle_colours_extended[32];	// 0x1D4
 	uint16 total_air_time;			// 0x1F4
-	uint8 pad_1F6;
+	uint8 var_1F6;
 	uint8 num_circuits;				// 0x1F7
 	sint16 cable_lift_x;			// 0x1F8
 	sint16 cable_lift_y;			// 0x1FA
