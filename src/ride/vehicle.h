@@ -105,6 +105,7 @@ typedef struct {
 	uint8 var_20;
 	uint8 pad_21[3];
 	uint32 var_24;
+	uint8 pad_21[0x07];
 	sint32 velocity;				// 0x28
 	sint32 var_2C;
 	uint8 ride;						// 0x30

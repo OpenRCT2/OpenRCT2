@@ -258,7 +258,7 @@ typedef struct {
 		uint8 undercover_portion;	// 0x114 (XXX?-????)
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
-	uint8 var_116;
+	uint8 start_drop_height;		// 0x116
 	uint8 highest_drop_height;		// 0x117
 	sint32 sheltered_length;		// 0x118
 	uint16 var_11C;

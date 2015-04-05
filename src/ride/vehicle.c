@@ -27,6 +27,7 @@
 #include "../openrct2.h"
 #include "../scenario.h"
 #include "../world/sprite.h"
+#include "../world/scenery.h"
 #include "track.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -471,11 +472,14 @@ void vehicle_update_all()
 	}
 }
 
-static void sub_6D6D1F(rct_vehicle *vehicle)
+/* rct2: 0x006D6D1F */
+static void vehicle_update_measurements(rct_vehicle *vehicle)
 {
 	rct_ride *ride;
 
 	ride = GET_RIDE(vehicle->ride);
+	//RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride, 0);
+	//return;
 
 	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_07){
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
@@ -506,7 +510,7 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 		}
 
 		sint32 distance = abs(((vehicle->velocity + vehicle->var_2C) / 1024) * 42);
-		if (vehicle->var_CE != 0){
+		if (vehicle->var_CE == 0){
 			ride->length[var_E0] += distance;
 		}
 
@@ -540,7 +544,7 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 	}
 
 	uint16 map_location = (vehicle->var_38 / 32) | ((vehicle->var_3A / 32) << 8);
-	if (vehicle->var_3C / 8 != ride->var_11F && map_location != ride->var_10C){
+	if (vehicle->var_3C / 8 != ride->var_11F || map_location != ride->var_10C){
 		ride->var_11F = vehicle->var_3C / 8;
 		ride->var_10C = map_location;
 
@@ -561,7 +565,7 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 
 			if (ride->type == RIDE_TYPE_WATER_COASTER){
 				if (track_elem_type >= TRACK_ELEM_FLAT_COVERED && track_elem_type <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED){
-					ride->special_track_elements |= (1 << 5);
+					ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 				}
 			}
 
@@ -569,18 +573,18 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 			{
 			case TRACK_ELEM_RAPIDS:
 			case TRACK_ELEM_SPINNING_TUNNEL:
-				ride->special_track_elements |= (1 << 5);
+				ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 				break;
 			case TRACK_ELEM_WATERFALL:
 			case TRACK_ELEM_LOG_FLUME_REVERSER:
-				ride->special_track_elements |= (1 << 6);
+				ride->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
 				break;
 			case TRACK_ELEM_WHIRLPOOL:
-				ride->special_track_elements |= (1 << 7);
+				ride->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
 				break;
 			case TRACK_ELEM_WATER_SPLASH:
 				if (vehicle->velocity >= 0xB0000){
-					ride->special_track_elements |= (1 << 5);
+					ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 				}
 			}
 
@@ -670,11 +674,138 @@ static void sub_6D6D1F(rct_vehicle *vehicle)
 				}
 			}				
 			
-			//6d70b8
+			if (var_108 & (1 << 5)){
+				if (vehicle->velocity < 0 || !(flags & (1 << 5))){
+					ride->var_108 &= ~(1 << 5);
+
+					sint16 z = vehicle->z / 8 - ride->start_drop_height;
+					if (z < 0){
+						z = abs(z);
+						if (z > ride->highest_drop_height){
+							ride->highest_drop_height = (uint8)z;
+						}
+					}
+				}
+			}
+			else if (flags & (1 << 5) && vehicle->velocity >= 0){
+				ride->var_108 &= ~(1 << 7);
+				ride->var_108 |= (1 << 5);
+
+				uint8 drops = ride->drops & 0x3F;
+				if (drops != 0x3F)
+					drops++;
+				ride->drops &= ~0x3F;
+				ride->drops |= drops;
+
+				ride->start_drop_height = vehicle->z / 8;
+				var_108 &= ~(1 << 7);
+			}
+
+			if (var_108 & (1 << 7)){
+				if (vehicle->velocity > 0 || !(flags & (1 << 6))){
+					ride->var_108 &= ~(1 << 7);
+
+					sint16 z = vehicle->z / 8 - ride->start_drop_height;
+					if (z < 0){
+						z = abs(z);
+						if (z > ride->highest_drop_height){
+							ride->highest_drop_height = (uint8)z;
+						}
+					}
+				}
+			}
+			else if (flags & (1 << 6) && vehicle->velocity <= 0){
+				ride->var_108 &= ~(1 << 5);
+				ride->var_108 |= (1 << 7);
+
+				uint8 drops = ride->drops & 0x3F;
+				if (drops != 0x3F)
+					drops++;
+				ride->drops &= ~0x3F;
+				ride->drops |= drops;
+
+				ride->start_drop_height = vehicle->z / 8;
+				var_108 &= ~(1 << 7);
+			}
+
+			if (flags & (1 << 7)){
+				uint8 inversions = ride->inversions & 0x1F;
+				if (inversions != 0x1F)
+					inversions++;
+
+				ride->inversions &= ~0x1F;
+				ride->inversions |= inversions;
+			}
+
+			if (flags & (1 << 11)){
+				uint8 helixes = ride_get_helix_sections(ride);
+				if (helixes != 0x1F)
+					helixes++;
+
+				ride->special_track_elements &= ~0x1F;
+				ride->special_track_elements |= helixes;
+			}
 		}
 	}
-	//6d7211
-	RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride, 0);
+
+	if (ride->entrances[ride->var_1F6] == 0xFFFF)
+		return;
+
+	sint16 x, y;
+	x = vehicle->x;
+	y = vehicle->y;
+
+	if (x == SPRITE_LOCATION_NULL){
+		ride->var_108 &= (1 << 0);
+		return;
+	}
+
+	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
+	if (map_element->base_height * 8 > vehicle->z){
+
+		for (;; map_element++){
+			if (map_element_is_last_for_tile(map_element)){
+				ride->var_108 &= (1 << 0);
+				return;
+			}
+
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+				break;
+
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH)
+				break;
+
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
+				continue;
+
+			rct_scenery_entry* scenery = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[map_element->properties.scenery.type];
+			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+				break;
+		}
+	}
+
+	if (!(ride->var_108 & (1 << 0))){
+		ride->var_108 |= (1 << 0);
+
+		uint8 num_sheltered_sections = ride->num_sheltered_sections & 0x1F;
+		if (num_sheltered_sections != 0x1F)
+			num_sheltered_sections++;
+		ride->num_sheltered_sections &= ~0x1F;
+		ride->num_sheltered_sections |= num_sheltered_sections;
+
+		if (vehicle->var_1F != 0){
+			ride->num_sheltered_sections |= (1 << 5);
+		}
+
+		if (vehicle->var_20 != 0){
+			ride->num_sheltered_sections |= (1 << 6);
+		}
+	}
+
+	sint32 distance = ((vehicle->velocity + vehicle->var_2C) / 1024) * 42;
+	if (distance < 0)return;
+
+	ride->sheltered_length += distance;
 }
 
 static uint16 sub_6D7AC0(int currentSoundId, int currentVolume, int targetSoundId, int targetVolume)
@@ -735,7 +866,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 
 	ride = GET_RIDE(vehicle->ride);
 	if (vehicle->var_48 & 0x20)
-		sub_6D6D1F(vehicle);
+		vehicle_update_measurements(vehicle);
 
 	RCT2_GLOBAL(0x00F64E34, uint8) = 255;
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
