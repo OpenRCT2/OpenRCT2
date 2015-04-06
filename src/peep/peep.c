@@ -916,8 +916,8 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 
 	uint8 shift_multiplier = 21;
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	if (ride_type->vehicles[ride_type->var_014].var_12 & (1 << 3) ||
-		ride_type->vehicles[ride_type->var_014].var_14 & 0x5000){
+	if (ride_type->vehicles[ride_type->default_vehicle].var_12 & (1 << 3) ||
+		ride_type->vehicles[ride_type->default_vehicle].var_14 & 0x5000){
 		shift_multiplier = 32;
 	}
 
@@ -1113,7 +1113,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (peep_update_action(&x, &y, &xy_distance, peep))
 	{
-		uint8 vehicle = ride_entry->var_014;
+		uint8 vehicle = ride_entry->default_vehicle;
 
 		if (ride_entry->vehicles[vehicle].var_12 & (1 << 3) || 
 			ride_entry->vehicles[vehicle].var_14 & ((1 << 14) | (1<<12)))
@@ -1323,7 +1323,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_12 & (1 << 3) ||
 		vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
@@ -1645,7 +1645,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			}
 
 			ride_entry = GET_RIDE_ENTRY(ride->subtype);
-			vehicle_entry = &ride_entry->vehicles[ride_entry->var_014];
+			vehicle_entry = &ride_entry->vehicles[ride_entry->default_vehicle];
 
 			uint8 shift_multiplier = 12;
 			if (vehicle_entry->var_14 & (1 << 14)){
@@ -1790,7 +1790,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
 	}
@@ -1993,7 +1993,7 @@ static void peep_udpate_ride_sub_state_13(rct_peep* peep){
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
 	}

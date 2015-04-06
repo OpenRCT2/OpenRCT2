@@ -97,29 +97,33 @@ typedef struct{
  * size: unknown
  */
 typedef struct {
-	rct_string_id name;				// 0x000
-	rct_string_id description;		// 0x002
-	uint32 images_offset;			// 0x004
+	rct_string_id name;						// 0x000
+	rct_string_id description;				// 0x002
+	uint32 images_offset;					// 0x004
 	uint32 var_008;
-	uint8 ride_type[3];				// 0x00C
-	uint8 min_cars_in_train;		// 0x00F
-	uint8 max_cars_in_train;		// 0x010
-	uint8 var_011;
-	uint8 var_012;
-	uint8 var_013;
-	uint8 var_014;
-	uint8 pad_015[0x5];
-	rct_ride_type_vehicle vehicles[4]; // 0x1A
+	uint8 ride_type[3];						// 0x00C
+	uint8 min_cars_in_train;				// 0x00F
+	uint8 max_cars_in_train;				// 0x010
+	uint8 cars_per_flat_ride;				// 0x011
+	uint8 zero_cars;						// 0x012
+	uint8 tab_vehicle;						// 0x013
+	uint8 default_vehicle;					// 0x014
+	uint8 front_vehicle;					// 0x015
+	uint8 second_vehicle;					// 0x016
+	uint8 rear_vehicle;						// 0x017
+	uint8 third_vehicle;					// 0x018
+	uint8 pad_019;
+	rct_ride_type_vehicle vehicles[4];		// 0x1A
 	uint32 var_1AE;
-	sint8 excitement_multipler;		// 0x1B2
-	sint8 intensity_multipler;		// 0x1B3
-	sint8 nausea_multipler;			// 0x1B4
-	uint8 pad_1B5;
-	uint32 var_1B6;
-	uint8 pad_1BA[0x04];
-	uint8 category[2];				// 0x1BE
-	uint8 shop_item;				// 0x1C0
-	uint8 shop_item_secondary;		// 0x1C1
+	sint8 excitement_multipler;				// 0x1B2
+	sint8 intensity_multipler;				// 0x1B3
+	sint8 nausea_multipler;					// 0x1B4
+	uint8 max_height;						// 0x1B5
+	uint32 enabledTrackPieces;				// 0x1B6
+	uint32 enabledTrackPiecesAdditional;	// 0x1BA
+	uint8 category[2];						// 0x1BE
+	uint8 shop_item;						// 0x1C0
+	uint8 shop_item_secondary;				// 0x1C1
 } rct_ride_type;
 
 /**
