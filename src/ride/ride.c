@@ -3628,6 +3628,22 @@ int get_var_110_unk_3(rct_ride* ride) {
 	return ride->var_110 & 0x1F;
 }
 
+int get_var_112_unk_1(rct_ride* ride) {
+	return (ride->var_112 >> 11) & 0x3F;
+}
+
+int get_var_112_unk_2(rct_ride* ride) {
+	return (ride->var_112 >> 8) & 7;
+}
+
+int get_var_112_unk_3(rct_ride* ride) {
+	return (ride->var_112 >> 5) & 7;
+}
+
+int get_var_112_unk_4(rct_ride* ride) {
+	return ride->var_112 & 0x1F;
+}
+
 bool ride_has_spinning_tunnel(rct_ride *ride) {
 	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 }

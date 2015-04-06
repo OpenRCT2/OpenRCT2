@@ -647,26 +647,27 @@ static rating_tuple get_var_110_rating(rct_ride* ride) {
 /**
  * rct2: 0x0065E047
  */
-static rating_tuple get_var_112_rating(uint16 var_112) {
+static rating_tuple get_var_112_rating(rct_ride *ride) {
 	int al;
 
-	al = var_112 >> 11;
-	al = min(al & 0x3F, 4);
+	al = get_var_112_unk_1(ride);
+	al = min(al, 4);
 	int excitement = (al * 0x78000) >> 16;
 
-	al = var_112 >> 11;
-	al = min(al & 0x3F, 8);
+	al = get_var_112_unk_1(ride);
+	al = min(al, 8);
 	int nausea = (al * 0x78000) >> 16;
 
-	al = var_112 >> 8;
-	al = min(al & 7, 6);
+	al = get_var_112_unk_2(ride);
+	al = min(al, 6);
 	excitement += (al * 273066) >> 16;
 
-	al = var_112 >> 5;
-	al = min(al & 7, 6);
+	al = get_var_112_unk_3(ride);
+	al = min(al, 6);
 	excitement += (al * 0x3aaaa) >> 16;
 
-	al = min(var_112 & 0x1F, 7);
+	al = get_var_112_unk_4(ride);
+	al = min(al, 7);
 	excitement += (al * 187245) >> 16;
 
 	rating_tuple rating = { excitement, 0, nausea };
@@ -760,7 +761,7 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
 	intensity  += var_110_rating.intensity;
 	nausea     += var_110_rating.nausea;
 
-	rating_tuple var_112_rating = get_var_112_rating(ride->var_112);
+	rating_tuple var_112_rating = get_var_112_rating(ride);
 	excitement += var_112_rating.excitement;
 	intensity  += var_112_rating.intensity;
 	nausea     += var_112_rating.nausea;
