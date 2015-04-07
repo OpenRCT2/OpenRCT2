@@ -710,7 +710,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			rideVehicleEntry->no_vehicle_images = 0;
 			rideVehicleEntry->var_16 = 0;
 
-			if (rideVehicleEntry->var_12 & 0x400){
+			if (!(rideVehicleEntry->var_12 & 0x400)){
 				rideVehicleEntry->var_0E = 0;
 				rideVehicleEntry->var_0F = 0;
 				rideVehicleEntry->var_10 = 0;
