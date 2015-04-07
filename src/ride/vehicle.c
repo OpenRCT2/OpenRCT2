@@ -742,7 +742,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	y = vehicle->y;
 
 	if (x == SPRITE_LOCATION_NULL){
-		ride->testing_flags &= ~RIDE_TESTING_FLAG_0;
+		ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
 		return;
 	}
 
@@ -751,7 +751,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 		for (;; map_element++){
 			if (map_element_is_last_for_tile(map_element)){
-				ride->testing_flags &= ~RIDE_TESTING_FLAG_0;
+				ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
 				return;
 			}
 
@@ -770,8 +770,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 	}
 
-	if (!(ride->testing_flags & RIDE_TESTING_FLAG_0)){
-		ride->testing_flags |= RIDE_TESTING_FLAG_0;
+	if (!(ride->testing_flags & RIDE_TESTING_SHELTERED)){
+		ride->testing_flags |= RIDE_TESTING_SHELTERED;
 
 		uint8 num_sheltered_sections = ride->num_sheltered_sections & 0x1F;
 		if (num_sheltered_sections != 0x1F)

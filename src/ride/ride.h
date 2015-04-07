@@ -263,7 +263,8 @@ typedef struct {
 	uint8 highest_drop_height;		// 0x117
 	sint32 sheltered_length;		// 0x118
 	uint16 var_11C;
-	uint8 num_sheltered_sections;   // 0x11E
+	uint8 num_sheltered_sections;   // 0x11E (?abY YYYY)
+	// z related to var_10C
 	uint8 var_11F;
 	sint16 var_120;
 	sint16 var_122;
@@ -477,7 +478,7 @@ enum {
 };
 
 enum{
-	RIDE_TESTING_FLAG_0 = (1 << 0),
+	RIDE_TESTING_SHELTERED = (1 << 0),
 	RIDE_TESTING_TURN_LEFT = (1 << 1),
 	RIDE_TESTING_TURN_RIGHT = (1 << 2),
 	RIDE_TESTING_TURN_BANKED = (1 << 3),
