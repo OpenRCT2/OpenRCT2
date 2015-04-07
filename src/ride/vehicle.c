@@ -43,6 +43,7 @@ static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle);
 static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle);
 
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
+static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -871,6 +872,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 
 	switch (vehicle->status) {
 	case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
+		vehicle_update_moving_to_end_of_station(vehicle);
+		break;
 	case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
 	case VEHICLE_STATUS_WAITING_TO_DEPART:
 	case VEHICLE_STATUS_DEPARTING:
@@ -930,6 +933,115 @@ static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle)
 	vehicle->var_51++;
 	if (vehicle->var_51 >= 64)
 		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+}
+
+static void sub_6DAB4C(rct_vehicle* vehicle, int* eax, int* ebx){
+	int eax_, ebx_, ecx, edx, esi, ebp, edi;
+	esi = (int)vehicle;
+	RCT2_CALLFUNC_X(0x006DAB4C, &eax_, &ebx_, &ecx, &edx, &esi, &edi, &ebp);
+
+	*eax = eax_;
+	*ebx = ebx_;
+}
+
+/**
+*
+*  rct2: 0x006D7BCC
+*/
+static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	int eax, ebx;
+
+	switch (ride->mode){
+	case RIDE_MODE_UPWARD_LAUNCH:
+	case RIDE_MODE_ROTATING_LIFT:
+	case RIDE_MODE_DOWNWARD_LAUNCH:
+	case RIDE_MODE_FREEFALL_DROP:
+		if (vehicle->velocity >= -131940){
+			vehicle->var_2C = -3298;
+		}
+		if (vehicle->velocity < -131940){
+			vehicle->velocity = vehicle->velocity / 16;
+			vehicle->var_2C = 0;
+		}
+
+		sub_6DAB4C(vehicle, &eax, &ebx);
+		if (!(eax&(1 << 5)))
+			break;
+		//Fall through to next case
+	case RIDE_MODE_BUMPERCAR:
+	case RIDE_MODE_SWING:
+	case RIDE_MODE_ROTATION:
+	case RIDE_MODE_FORWARD_ROTATION:
+	case RIDE_MODE_BACKWARD_ROTATION:
+	case RIDE_MODE_FILM_AVENGING_AVIATORS:
+	case RIDE_MODE_FILM_THRILL_RIDERS:
+	case RIDE_MODE_BEGINNERS:
+	case RIDE_MODE_INTENSE:
+	case RIDE_MODE_BERSERK:
+	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+	case RIDE_MODE_3D_FILM_STORM_CHASERS:
+	case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+	case RIDE_MODE_SPACE_RINGS:
+	case RIDE_MODE_HAUNTED_HOUSE:
+	case RIDE_MODE_CROOKED_HOUSE:
+	case RIDE_MODE_CIRCUS_SHOW:
+		vehicle->current_station = 0;
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+		vehicle->var_51 = 0;
+		vehicle_invalidate_window(vehicle);
+		break;
+	default:
+	{
+		rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+		if (!(vehicleEntry->var_14 & (1 << 3))){
+			if (vehicle->velocity <= 131940){
+				vehicle->var_2C = 3298;
+			}
+		}
+		if (vehicle->velocity > 131940){
+			vehicle->velocity = vehicle->velocity / 16;
+			vehicle->var_2C = 0;
+		}
+
+		int station;
+		sub_6DAB4C(vehicle, &eax, &station);
+
+		if (eax & (1 << 1)){
+			vehicle->velocity = 0;
+			vehicle->var_2C = 0;
+			vehicle->var_51++;
+
+			if (ride->mode == RIDE_MODE_RACE &&
+				vehicle->var_51 >= 40){
+				vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+				vehicle->var_51 = 0;
+				vehicle_invalidate_window(vehicle);
+				break;
+			}
+		}
+		else{
+			if (vehicle->velocity > 98955){
+				vehicle->var_51 = 0;
+			}
+		}
+
+		if (!(eax & (1 << 0)))
+			break;
+
+		vehicle->current_station = station;
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+		vehicle->var_51 = 0;
+		vehicle_invalidate_window(vehicle);
+		break; 
+	}
+	}
 }
 
 /**
