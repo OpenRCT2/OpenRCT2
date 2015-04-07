@@ -36,11 +36,11 @@
 
 static void vehicle_update(rct_vehicle *vehicle);
 
-static void vehicle_D6_255_update_moving_to_end_of_station(rct_vehicle *vehicle);
-static void vehicle_D6_255_update_waiting_to_depart(rct_vehicle *vehicle);
-static void vehicle_D6_255_update_departing(rct_vehicle *vehicle);
-static void vehicle_D6_255_update_travelling(rct_vehicle *vehicle);
-static void vehicle_D6_255_update_arriving(rct_vehicle *vehicle);
+static void vehicle_ride_null_update_moving_to_end_of_station(rct_vehicle *vehicle);
+static void vehicle_ride_null_update_waiting_to_depart(rct_vehicle *vehicle);
+static void vehicle_ride_null_update_departing(rct_vehicle *vehicle);
+static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle);
+static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle);
 
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 
@@ -825,22 +825,22 @@ static void vehicle_update(rct_vehicle *vehicle)
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 
-	if (vehicle->ride_subtype == 255) {
+	if (vehicle->ride_subtype == RIDE_TYPE_NULL) {
 		switch (vehicle->status) {
 		case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-			vehicle_D6_255_update_moving_to_end_of_station(vehicle);
+			vehicle_ride_null_update_moving_to_end_of_station(vehicle);
 			break;
 		case VEHICLE_STATUS_WAITING_TO_DEPART:
-			vehicle_D6_255_update_waiting_to_depart(vehicle);
+			vehicle_ride_null_update_waiting_to_depart(vehicle);
 			break;
 		case VEHICLE_STATUS_DEPARTING:
-			vehicle_D6_255_update_departing(vehicle);
+			vehicle_ride_null_update_departing(vehicle);
 			break;
 		case VEHICLE_STATUS_TRAVELLING:
-			vehicle_D6_255_update_travelling(vehicle);
+			vehicle_ride_null_update_travelling(vehicle);
 			break;
 		case VEHICLE_STATUS_ARRIVING:
-			vehicle_D6_255_update_arriving(vehicle);
+			vehicle_ride_null_update_arriving(vehicle);
 			break;
 		}
 		return;
@@ -905,27 +905,27 @@ static void vehicle_update(rct_vehicle *vehicle)
 	vehicle_update_sound(vehicle);
 }
 
-static void vehicle_D6_255_update_moving_to_end_of_station(rct_vehicle *vehicle)
+static void vehicle_ride_null_update_moving_to_end_of_station(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_D6_255_update_waiting_to_depart(rct_vehicle *vehicle)
+static void vehicle_ride_null_update_waiting_to_depart(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8F1, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_D6_255_update_departing(rct_vehicle *vehicle)
+static void vehicle_ride_null_update_departing(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF97A, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_D6_255_update_travelling(rct_vehicle *vehicle)
+static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF99C, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_D6_255_update_arriving(rct_vehicle *vehicle)
+static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle)
 {
 	vehicle->var_51++;
 	if (vehicle->var_51 >= 64)
