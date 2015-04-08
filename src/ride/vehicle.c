@@ -44,6 +44,7 @@ static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle);
 
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
+static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -473,6 +474,103 @@ void vehicle_update_all()
 	}
 }
 
+/* rct2: 0x006D6A2C */
+static int sub_6D6A2C(rct_vehicle* vehicle){
+
+	int ebp = 0;
+	uint16 vehicle_id = vehicle->sprite_index;
+
+	do {
+		vehicle = GET_VEHICLE(vehicle_id);
+
+		vehicle->var_4C = 0;
+		vehicle->var_4E = 0;
+		vehicle->var_4A = 0;
+
+		rct_ride* ride = GET_RIDE(vehicle->ride);
+		rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+		if (vehicleEntry->var_14 & (1 << 2) &&
+			abs(vehicle->var_B6) <= 700 &&
+			!(vehicle->var_BA & 0x30) &&
+			(
+			!(vehicleEntry->var_12 & (1 << 14)) ||
+			!(vehicle->var_BA & 0xF8))
+			){
+			vehicle->var_B6 = 0;
+		}
+		else{
+			ebp++;
+
+			if (abs(vehicle->var_B6) < 600){
+				vehicle->var_B6 = 600;
+			}
+			sint16 value = vehicle->var_B6 / 256;
+			vehicle->var_BA += value;
+			vehicle->var_B6 -= value;
+
+			invalidate_sprite((rct_sprite*)vehicle);
+			continue;
+		}
+
+		if (vehicleEntry->var_12 == 6 &&
+			vehicle->var_C5 != 0){
+
+			if (vehicle->var_C8 + 0x3333 < 0xFFFF){
+				vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
+				vehicle->var_C5++;
+				vehicle->var_C5 &= 7;
+				invalidate_sprite((rct_sprite*)vehicle);
+			}
+			else{
+				vehicle->var_C8 += 0x3333;
+			}
+			ebp++;
+			continue;
+		}
+
+		if (vehicle->var_48 & (1 << 8) &&
+			vehicle->var_B5 != 0xFF &&
+			(
+			ride->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED ||
+			ride->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_CLOSED)
+			){
+
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
+
+				ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+
+				ride_breakdown_add_news_item(vehicle->ride);
+
+				ride->window_invalidate_flags |=
+					RIDE_INVALIDATE_RIDE_MAIN |
+					RIDE_INVALIDATE_RIDE_LIST |
+					RIDE_INVALIDATE_RIDE_MAINTENANCE;
+
+				ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+
+				rct_vehicle* broken_vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
+				ride->inspection_station = broken_vehicle->current_station;
+
+				ride->breakdown_reason = ride->breakdown_reason_pending;
+			}
+
+		}
+		else{
+			if (vehicle->var_B5 + 20 > 0xFF){
+				vehicle->var_B5 = 255;
+				continue;
+			}
+			invalidate_sprite((rct_sprite*)vehicle);
+			ebp++;
+		}
+
+	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
+
+	return ebp;
+}
+
 /* rct2: 0x006D6D1F */
 static void vehicle_update_measurements(rct_vehicle *vehicle)
 {
@@ -875,6 +973,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 		vehicle_update_moving_to_end_of_station(vehicle);
 		break;
 	case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
+		vehicle_update_waiting_for_passengers(vehicle);
+		break;
 	case VEHICLE_STATUS_WAITING_TO_DEPART:
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
@@ -1041,6 +1141,19 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 		vehicle_invalidate_window(vehicle);
 		break; 
 	}
+	}
+}
+
+/* 0x006D7DA1 */
+static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
+	vehicle->velocity = 0;
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	if (vehicle->var_51 == 0){
+		if (sub_6D6A2C(vehicle))
+			return;
+		//0x6d7dc1
 	}
 }
 
@@ -1370,6 +1483,8 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->var_C4 = 0;
 	current->var_C5 = 0;
 	current->var_C8 = 0;
+	current->pad_CA[0] = 0;
+	current->pad_CA[1] = 0;
 	current->scream_sound_id = 0xFF;
 	current->var_1F = 0;
 	current->var_20 = 0;

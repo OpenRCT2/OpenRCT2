@@ -142,7 +142,7 @@ typedef struct {
 	uint8 num_peeps;				// 0xB3
 	uint8 next_free_seat;			// 0xB4
 	uint8 var_B5;
-	uint16 var_B6;
+	sint16 var_B6;
 	uint16 var_B8;
 	uint8 var_BA;
 	uint8 sound1_id;				// 0xBB
@@ -155,8 +155,9 @@ typedef struct {
 	uint8 acceleration;				// 0xC3
 	uint8 var_C4;
 	uint8 var_C5;
-	uint8 pad_C6[2];
-	uint32 var_C8;
+	uint8 pad_C6[0x2];
+	uint16 var_C8;
+	uint8 pad_CA[0x2];
 	uint8 scream_sound_id;			// 0xCC
 	uint8 var_CD;
 	union {
