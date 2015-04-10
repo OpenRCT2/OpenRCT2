@@ -562,6 +562,7 @@ static int sub_6D6A2C(rct_vehicle* vehicle){
 				vehicle->var_B5 = 255;
 				continue;
 			}
+			vehicle->var_B5 += 20;
 			invalidate_sprite((rct_sprite*)vehicle);
 			ebp++;
 		}
@@ -1153,8 +1154,94 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 	if (vehicle->var_51 == 0){
 		if (sub_6D6A2C(vehicle))
 			return;
-		//0x6d7dc1
+
+		if (ride->entrances[vehicle->current_station] == 0xFFFF){
+			ride->train_at_station[vehicle->current_station] = 0xFF;
+			vehicle->var_51 = 2;
+			return;
+		}
+
+		uint8 train_index = 0;
+		while (ride->vehicles[train_index] != vehicle->sprite_index)train_index++;
+
+		if (ride->train_at_station[vehicle->current_station] != 0xFF)
+			return;
+
+		ride->train_at_station[vehicle->current_station] = train_index;
+		vehicle->var_51 = 1;
+		vehicle->var_C0 = 0;
+
+		invalidate_sprite((rct_sprite*)vehicle);
+		return;
 	}
+	else if (vehicle->var_51 == 1){
+		if (vehicle->var_C0 != 0xFFFF)
+			vehicle->var_C0++;
+
+		vehicle->var_48 &= ~(1 << 4);
+
+		// 0xF64E31, 0xF64E32, 0xF64E33
+		uint8 num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
+
+		for (uint16 sprite_id = vehicle->sprite_index; sprite_id != 0xFFFF;){
+			rct_vehicle* train_vehicle = GET_VEHICLE(sprite_id);
+
+			num_peeps_on_train += train_vehicle->num_peeps;
+			num_used_seats_on_train += train_vehicle->next_free_seat;
+			num_seats_on_train += train_vehicle->num_seats;
+
+			sprite_id = train_vehicle->next_vehicle_on_train;
+		}
+
+		num_seats_on_train &= 0x7F;
+
+		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_NO_TEST_MODE)){
+			if (vehicle->var_C0 < 20){
+				//0x6D7FB9
+			}
+		}
+		else{
+			if (num_peeps_on_train == 0){
+				//0x6D7FB9
+			}
+		}
+
+		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS){
+			if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH){
+				if (ride->min_waiting_time * 32 > vehicle->var_C0){
+					//0x6D7FB9
+				}
+			}
+			if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH){
+				if (ride->max_waiting_time * 32 < vehicle->var_C0){
+					//***0x6D7FB4
+				}
+			}
+		}
+
+		if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES){
+
+			for (int i = 0; i < 32; ++i){
+				uint16 train_id = ride->vehicles[i];
+				if (train_id == 0xFFFF)
+					continue;
+
+				if (train_id == vehicle->sprite_index)
+					continue;
+
+				rct_vehicle* train = GET_VEHICLE(train_id);
+
+				if (train->status == VEHICLE_STATUS_UNLOADING_PASSENGERS ||
+					train->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION){
+					if (train->current_station == vehicle->current_station){
+						//0x6d7FB4
+					}
+				}
+			}
+		}
+		//0x6d7f49
+	}
+	//0x6d8085
 }
 
 /**

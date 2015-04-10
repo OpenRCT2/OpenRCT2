@@ -193,7 +193,9 @@ typedef struct {
 	uint8 station_heights[4];		// 0x05A
 	uint8 station_length[4];		// 0x05E
 	uint8 station_depart[4];		// 0x062
-	uint8 var_066[4];
+	// ride->vehicle index for current train waiting for passengers
+	// at station
+	uint8 train_at_station[4];		// 0x066
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint16 last_peep_in_queue[4];	// 0x07A
