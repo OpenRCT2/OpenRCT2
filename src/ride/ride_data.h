@@ -49,5 +49,6 @@ extern const uint8 RideAvailableModes[];
 extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[12];
+extern const uint8 rct_ride_lift_hill_adjustments[0x60];
 
 #endif
