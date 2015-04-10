@@ -943,7 +943,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 		}
 
 		for (i = 0; i < 4; i++)
-			ride->var_066[i] = 255;
+			ride->train_at_station[i] = 255;
 	}
 }
 
