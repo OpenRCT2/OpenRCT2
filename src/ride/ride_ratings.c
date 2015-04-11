@@ -572,7 +572,7 @@ static void set_unreliability_factor(rct_ride *ride)
     // possibility. Range is [3, 7]. values are here:
     // https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
     // inlining this per ride
-	uint8 lift_speed_adjustment = RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4];
+	uint8 lift_speed_adjustment = RideLiftHillAdjustments[ride->type];
     ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
