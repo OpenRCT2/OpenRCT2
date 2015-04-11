@@ -27,12 +27,14 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"
+#include "../world/banner.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "ride.h"
@@ -3588,6 +3590,131 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	*ebx = 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006B49D9
+ */
+void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	uint8 *bl = (uint8*)ebx;
+	uint8 ride_id = *(uint8*)edx;
+
+	RCT2_GLOBAL(0x009DEA5E, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA60, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA62, uint16) = 0;
+	rct_ride *ride = &g_ride_list[ride_id];
+	if(ride->overall_view != (uint16)-1){
+		int x = (ride->overall_view & 0xFF) * 32 + 16;
+		int y = (ride->overall_view >> 8) * 32 + 16;
+		int z = map_element_height(x, y);
+		RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+		RCT2_GLOBAL(0x009DEA60, uint16) = y;
+		RCT2_GLOBAL(0x009DEA62, uint16) = z;
+	}
+	if(!(*bl & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}else{
+		if(*bl & 1){
+			if(!(*bl & 8)){
+				window_close_by_number(WC_RIDE_CONSTRUCTION, ride_id);
+			}
+			window_close_by_number(WC_RIDE, ride_id);
+			window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, ride_id);
+			window_close_by_class(WC_NEW_CAMPAIGN);
+			if(RCT2_GLOBAL(0x01358103, uint8) && ride_id == RCT2_GLOBAL(0x01358117, uint8)){
+				RCT2_GLOBAL(0x01358103, uint8) = 0;
+			}
+			if(RCT2_GLOBAL(0x01358107, uint8) && ride_id == RCT2_GLOBAL(0x0135811B, uint8)){
+				RCT2_GLOBAL(0x01358107, uint8) = 0;
+			}
+			ride_clear_for_construction(ride_id);
+			ride_remove_peeps(ride_id);
+			RCT2_CALLPROC_X(0x00696707, 0, 0, 0, ride_id, 0, 0, 0);
+			RCT2_CALLPROC_X(0x006CB7FB, 0, 0, 0, ride_id, 0, 0, 0); // get ride refund price
+			*ebx = RCT2_GLOBAL(0x00F4413A, int);
+			RCT2_CALLPROC(0x006CB945);
+			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
+			
+			for(int i = 0; i < MAX_BANNERS; i++){
+				rct_banner *banner = &gBanners[i];
+				if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_2 && banner->colour == ride_id){
+					banner->flags &= 0xFB;
+					banner->string_idx = 778;
+				}
+			}
+
+			uint16 spriteIndex;
+			rct_peep *peep;	
+			FOR_ALL_GUESTS(spriteIndex, peep){
+				uint8 ride_id_bit = ride_id & 0x3;
+				uint8 ride_id_offset = ride_id / 8;
+				peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit); // clear ride from potentially being in rides_been_on
+				if(peep->state == PEEP_STATE_WATCHING){
+					if(peep->current_ride == ride_id){
+						peep->current_ride = MAX_RIDES;
+						if(peep->time_to_stand >= 50){ // make peep stop watching the ride
+							peep->time_to_stand = 50;
+						}
+					}
+				}
+				// remove any free voucher for this ride from peep
+				if(peep->item_standard_flags & PEEP_ITEM_VOUCHER){
+					if(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == ride_id){
+						peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
+					}
+				}
+				// remove any photos of this ride from peep
+				if(peep->item_standard_flags & PEEP_ITEM_PHOTO){
+					if(peep->photo1_ride_ref == ride_id){
+						peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO2){
+					if(peep->photo2_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO3){
+					if(peep->photo3_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO4){
+					if(peep->photo4_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+					}
+				}
+				if(peep->guest_heading_to_ride_id == ride_id){
+					peep->guest_heading_to_ride_id = MAX_RIDES;
+				}
+				if(peep->favourite_ride == ride_id){
+					peep->favourite_ride = MAX_RIDES;
+				}
+				for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+					if(peep->thoughts[i].item == ride_id){
+						// Clear top thought, push others up
+						memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
+						peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+					}
+				}
+			}
+
+			user_string_free(ride->name);
+			ride->type = RIDE_TYPE_NULL;
+			window_invalidate_by_class(WC_RIDE_LIST);
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+			return;
+		}else{
+			*ebx = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+			return;
+		}
+	}
 }
 
 bool ride_type_has_flag(int rideType, int flag)
