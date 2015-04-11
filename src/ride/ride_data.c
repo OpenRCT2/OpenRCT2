@@ -883,7 +883,7 @@ const rct_ride_entrance_definition RideEntranceDefinitions[12] = {
 };
 
 // Data read from 0x0097D7C9 4 bytes at a time
-const uint8 rct_ride_lift_hill_adjustments[0x60] = {
+const uint8 RideLiftHillAdjustments[0x60] = {
 		7,		 // Spiral Roller coaster     
 		4,		 // Stand Up Coaster     
 		4,		 // Suspended Swinging     
