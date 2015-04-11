@@ -3594,6 +3594,77 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 
 /**
  * 
+ *  rct2: 0x006CB7FB
+ */
+int ride_get_refund_price(int ride_id)
+{
+	uint8 oldpaused = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
+	RCT2_GLOBAL(0x00F4413A, int) = 0;
+	for(int x = 0; x < 8192; x += 32){
+		for(int y = 0; y < 8192; y += 32){
+			int tile_idx = ((y * 256) + x) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			do{
+				if((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK && map_element->properties.track.ride_index == ride_id){
+					int eax, ebx, ecx, edx, esi, edi, ebp;
+					eax = x;
+					ebx = ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8) | 0x01;
+					ecx = y;
+					edx = map_element->properties.track.type;
+					edi = map_element->base_height * 8;
+					if(map_element->properties.track.type == 101){
+						edx = 2 << 8 | map_element->properties.track.ride_index;
+						int oldeax = eax;
+						int oldebx = ebx;
+						int oldecx = ecx;
+						int oldedx = edx;
+
+						ebx = oldebx;
+						ebx |= 0 << 0;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						
+						ebx = oldebx;
+						ebx |= 1 << 8;
+						ecx = oldecx;
+						ecx += 16;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+						ebx = oldebx;
+						ebx |= 2 << 8;
+						eax = oldeax;
+						eax += 16;
+						ecx = oldecx;
+						ecx += 16;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+						ebx = oldebx;
+						ebx |= 3 << 8;
+						eax = oldeax;
+						eax += 16;
+						ecx = oldecx;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					}else{
+						edx |= 0xFF << 8;
+						edx &= ((map_element->properties.track.sequence & 0xF) << 8) | 0xFF;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					}
+					y -= 32;
+					break;
+				}
+				map_element++;
+			}while(!((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = oldpaused;
+	return RCT2_GLOBAL(0x00F4413A, int);
+}
+
+/**
+ * 
  *  rct2: 0x006B49D9
  */
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
@@ -3605,10 +3676,11 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	RCT2_GLOBAL(0x009DEA60, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA62, uint16) = 0;
 	rct_ride *ride = &g_ride_list[ride_id];
+	int x = 0, y = 0, z = 0;
 	if(ride->overall_view != (uint16)-1){
-		int x = (ride->overall_view & 0xFF) * 32 + 16;
-		int y = (ride->overall_view >> 8) * 32 + 16;
-		int z = map_element_height(x, y);
+		x = ((ride->overall_view & 0xFF) * 32) + 16;
+		y = ((ride->overall_view >> 8) * 32) + 16;
+		z = map_element_height(x, y);
 		RCT2_GLOBAL(0x009DEA5E, uint16) = x;
 		RCT2_GLOBAL(0x009DEA60, uint16) = y;
 		RCT2_GLOBAL(0x009DEA62, uint16) = z;
@@ -3634,8 +3706,8 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride_clear_for_construction(ride_id);
 			ride_remove_peeps(ride_id);
 			RCT2_CALLPROC_X(0x00696707, 0, 0, 0, ride_id, 0, 0, 0);
-			RCT2_CALLPROC_X(0x006CB7FB, 0, 0, 0, ride_id, 0, 0, 0); // get ride refund price
-			*ebx = RCT2_GLOBAL(0x00F4413A, int);
+			*ebx = ride_get_refund_price(ride_id);
+
 			RCT2_CALLPROC(0x006CB945);
 			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 			
@@ -3707,6 +3779,9 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride->type = RIDE_TYPE_NULL;
 			window_invalidate_by_class(WC_RIDE_LIST);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+			RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+			RCT2_GLOBAL(0x009DEA60, uint16) = y;
+			RCT2_GLOBAL(0x009DEA62, uint16) = z;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 			return;
 		}else{
