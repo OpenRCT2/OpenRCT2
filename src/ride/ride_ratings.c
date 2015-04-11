@@ -619,31 +619,30 @@ static rating_tuple sub_65DDD1(rct_ride *ride)
  */
 static rating_tuple sub_65E1C2(rct_ride *ride)
 {
-	// EBX, ECX, EBP
-	int var_118_shifted = (ride->var_118) >> 16;
-	uint32 eax = min(var_118_shifted, 1000);
+	int sheltered_length_shifted = (ride->sheltered_length) >> 16;
+	uint32 eax = min(sheltered_length_shifted, 1000);
 	int excitement = (eax * 9175) >> 16;
 
-	eax = min(var_118_shifted, 2000);
+	eax = min(sheltered_length_shifted, 2000);
 	int intensity = (eax * 0x2666) >> 16;
 
-	eax = min(var_118_shifted, 1000);
+	eax = min(sheltered_length_shifted, 1000);
 	int nausea = (eax * 0x4000) >> 16;
 
-	eax = (ride->var_11C * 30340) >> 16;
-	nausea += eax;
+	/*eax = (ride->var_11C * 30340) >> 16;*/
+	/*nausea += eax;*/
 
-	if (ride->var_11E & 0x40) {
+	if (ride->no_sheltered_sections & 0x40) {
 		excitement += 20;
 		nausea     += 15;
 	}
 
-	if (ride->var_11E & 0x20) {
+	if (ride->no_sheltered_sections & 0x20) {
 		excitement += 20;
 		nausea     += 15;
 	}
 
-	uint8 lowerval = ride->var_11E & 0x1F;
+	uint8 lowerval = ride->no_sheltered_sections & 0x1F;
 	lowerval = min(lowerval, 11);
 	excitement += (lowerval * 774516) >> 16;
 
