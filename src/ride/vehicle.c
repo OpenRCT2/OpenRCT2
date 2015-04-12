@@ -474,8 +474,60 @@ void vehicle_update_all()
 	}
 }
 
-/* rct2: 0x006D6A2C */
-static int sub_6D6A2C(rct_vehicle* vehicle){
+/* rct2: 0x006D6956 
+ * returns 0 when all closed
+ */
+static int vehicle_close_restraints(rct_vehicle* vehicle){
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	int ebp = 0;
+	uint16 vehicle_id = vehicle->sprite_index;
+
+	do {
+		vehicle = GET_VEHICLE(vehicle_id);
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_CAR &&
+			vehicle->var_B5 != 0 &&
+			(
+			ride->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_OPEN ||
+			ride->breakdown_reason_pending == BREAKDOWN_DOORS_STUCK_OPEN)
+			){
+
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
+
+				ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+
+				ride_breakdown_add_news_item(vehicle->ride);
+
+				ride->window_invalidate_flags |=
+					RIDE_INVALIDATE_RIDE_MAIN |
+					RIDE_INVALIDATE_RIDE_LIST |
+					RIDE_INVALIDATE_RIDE_MAINTENANCE;
+
+				ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+
+				rct_vehicle* broken_vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
+				ride->inspection_station = broken_vehicle->current_station;
+
+				ride->breakdown_reason = ride->breakdown_reason_pending;
+			}
+		}
+		else{
+			if (vehicle->var_B5 - 20 < 0){
+				vehicle->var_B5 = 0;
+				continue;
+			}
+			vehicle->var_B5 -= 20;
+		}		
+		invalidate_sprite((rct_sprite*)vehicle);
+		ebp++;
+	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
+
+	return ebp;
+}
+
+/* rct2: 0x006D6A2C 
+ * returns 0 when all open
+ */
+static int vehicle_open_restraints(rct_vehicle* vehicle){
 	//return RCT2_CALLPROC_X(0x006d6a2c, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100;
 
 	int ebp = 0;
@@ -570,7 +622,7 @@ static int sub_6D6A2C(rct_vehicle* vehicle){
 
 	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
 
-	return !ebp;
+	return ebp;
 }
 
 /* rct2: 0x006D6D1F */
@@ -1205,7 +1257,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 
 	if (vehicle->var_51 == 0){
-		if (sub_6D6A2C(vehicle))
+		if (!vehicle_open_restraints(vehicle))
 			return;
 
 		if (ride->entrances[vehicle->current_station] == 0xFFFF){
@@ -1361,7 +1413,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		return;
 	}
 
-	if (RCT2_CALLPROC_X(0x006D6956, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100)
+	if (vehicle_close_restraints(vehicle))
 		return;
 
 	vehicle->velocity = 0;
