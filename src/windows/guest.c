@@ -32,6 +32,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../world/footpath.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -1141,24 +1142,23 @@ void window_guest_overview_tool_update(){
 	map_invalidate_selection_rect();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	int temp_y = y + 16;
 
-	int eax = x, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	RCT2_CALLFUNC_X(0x689726, &eax, &temp_y, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax != 0x8000){
+	int map_x, map_y;
+	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
+	if (map_x != 0x8000){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = map_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = map_y;
 		map_invalidate_selection_rect();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
 	if (ebx == 0)
 		return;
 
@@ -1174,8 +1174,8 @@ void window_guest_overview_tool_update(){
 	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
 	ebx += w->var_492 >> 2;
 
-	ebp = peep->tshirt_colour << 19;
-	ecx = peep->trousers_colour << 24;
+	int ebp = peep->tshirt_colour << 19;
+	int ecx = peep->trousers_colour << 24;
 
 	ebx |= ebp | ecx | 0xA0000000;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
@@ -1191,9 +1191,9 @@ void window_guest_overview_tool_down(){
 
 	if (widgetIndex != WIDX_PICKUP) return;
 
-	int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	dest_y += 16;
-	RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+	int dest_x, dest_y;
+	rct_map_element *mapElement;
+	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
 	if (dest_x == 0x8000)return;
 
@@ -1205,7 +1205,7 @@ void window_guest_overview_tool_down(){
 	int tile_y = dest_y & 0xFFE0;
 	int tile_x = dest_x & 0xFFE0;
 
-	int dest_z = ((uint8*)edx)[2] * 8 + 16;
+	int dest_z = mapElement->base_height * 8 + 16;
 
 	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
 		window_error_open(0x785,-1);

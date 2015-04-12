@@ -176,7 +176,7 @@ static void window_viewport_mouseup()
 	case WIDX_LOCATE:
 		mainWindow = window_get_main();
 		if (mainWindow != NULL) {
-			get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), 0, &x, &y, NULL, NULL);
+			get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), 0, &x, &y, NULL, NULL, NULL);
 			window_scroll_to_location(mainWindow, x, y, map_element_height(x, y));
 		}
 		break;

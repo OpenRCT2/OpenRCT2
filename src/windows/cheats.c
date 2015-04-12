@@ -29,6 +29,7 @@
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../world/climate.h"
+#include "../world/footpath.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 
@@ -771,17 +772,16 @@ static void window_cheats_misc_tool_update()
 	map_invalidate_selection_rect();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	int temp_y = y + 16;
 
-	int eax = x, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	RCT2_CALLFUNC_X(0x689726, &eax, &temp_y, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax != 0x8000){
+	int map_x, map_y;
+	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
+	if (map_x != 0x8000){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = map_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = map_y;
 		map_invalidate_selection_rect();
 	}
 
@@ -798,9 +798,8 @@ static void window_cheats_misc_tool_down()
 
 	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
 
-	int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	dest_y += 16;
-	RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+	int dest_x, dest_y;
+	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, NULL);
 
 	if (dest_x == 0x8000)return;
 

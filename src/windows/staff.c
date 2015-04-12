@@ -27,6 +27,7 @@
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../sprites.h"
+#include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
@@ -1085,7 +1086,7 @@ void window_staff_overview_tool_update(){
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int z;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL, NULL);
 	if (z == 0)
 		return;
 
@@ -1115,9 +1116,9 @@ void window_staff_overview_tool_down(){
 
 	if (widgetIndex == WIDX_PICKUP){
 		
-		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-		dest_y += 16;
-		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+		int dest_x, dest_y;
+		rct_map_element *mapElement;
+		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
 		if (dest_x == 0x8000)return;
 
@@ -1129,7 +1130,7 @@ void window_staff_overview_tool_down(){
 		int tile_y = dest_y & 0xFFE0;
 		int tile_x = dest_x & 0xFFE0;
 
-		int dest_z = ((uint8*)edx)[2] * 8 + 16;
+		int dest_z = mapElement->base_height * 8 + 16;
 
 		if (!map_is_location_owned(tile_x, tile_y, dest_z)){
 			window_error_open(0x785, -1);
@@ -1165,8 +1166,8 @@ void window_staff_overview_tool_down(){
 		RCT2_GLOBAL(0x9DE550, sint32) = -1;
 	}
 	else if (widgetIndex == WIDX_PATROL){
-		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+		int dest_x, dest_y;
+		footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, NULL, NULL);
 
 		if (dest_x == 0x8000)return;
 
