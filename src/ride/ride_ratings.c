@@ -632,17 +632,17 @@ static rating_tuple sub_65E1C2(rct_ride *ride)
 	/*eax = (ride->var_11C * 30340) >> 16;*/
 	/*nausea += eax;*/
 
-	if (ride->no_sheltered_sections & 0x40) {
+	if (ride->num_sheltered_sections & 0x40) {
 		excitement += 20;
 		nausea     += 15;
 	}
 
-	if (ride->no_sheltered_sections & 0x20) {
+	if (ride->num_sheltered_sections & 0x20) {
 		excitement += 20;
 		nausea     += 15;
 	}
 
-	uint8 lowerval = ride->no_sheltered_sections & 0x1F;
+	uint8 lowerval = ride->num_sheltered_sections & 0x1F;
 	lowerval = min(lowerval, 11);
 	excitement += (lowerval * 774516) >> 16;
 
