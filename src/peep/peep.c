@@ -41,6 +41,7 @@ static int peep_empty_container_standard_flag(rct_peep* peep);
 static int peep_empty_container_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
+static void sub_693BAB(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -378,12 +379,12 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 	if (peep->state == PEEP_STATE_SITTING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->var_6F = 7;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 	}
 	if (peep->state == PEEP_STATE_WATCHING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->var_6F = 2;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 	}
 }
 
@@ -755,7 +756,7 @@ void peep_update_sitting(rct_peep* peep){
 		invalidate_sprite((rct_sprite*)peep);
 		peep->action = 254;
 		peep->var_6F = 7;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 
 		peep->sub_state++;
 
@@ -2992,7 +2993,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep->action = 0xFE;
 		peep->var_6F = 2;
 
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 
 		peep->sub_state++;
 
@@ -5307,3 +5308,18 @@ void peep_set_map_tooltip(rct_peep *peep)
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint32) = arg1;
 	}
 }
+
+
+void sub_693BAB(rct_peep* peep) {
+	uint8 bl = peep->var_6F;
+	if (bl != peep->action_sprite_type) {
+		invalidate_sprite((rct_sprite*)peep);
+		peep->action_sprite_type = bl;
+		uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
+		peep->sprite_width = edx[bl * 4];
+		peep->sprite_height_negative = edx[bl * 4 + 1];
+		peep->sprite_height_positive = edx[bl * 4 + 2];
+		invalidate_sprite((rct_sprite*)peep);
+	}
+}
+
