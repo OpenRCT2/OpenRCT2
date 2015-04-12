@@ -3669,7 +3669,6 @@ int ride_get_refund_price(int ride_id)
  */
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	uint8 *bl = (uint8*)ebx;
 	uint8 ride_id = *(uint8*)edx;
 
 	RCT2_GLOBAL(0x009DEA5E, uint16) = 0;
@@ -3685,13 +3684,13 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		RCT2_GLOBAL(0x009DEA60, uint16) = y;
 		RCT2_GLOBAL(0x009DEA62, uint16) = z;
 	}
-	if(!(*bl & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8)){
+	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8)){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}else{
-		if(*bl & 1){
-			if(!(*bl & 8)){
+		if(*ebx & GAME_COMMAND_FLAG_APPLY){
+			if(!(*ebx & 8)){
 				window_close_by_number(WC_RIDE_CONSTRUCTION, ride_id);
 			}
 			window_close_by_number(WC_RIDE, ride_id);

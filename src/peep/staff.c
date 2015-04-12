@@ -218,10 +218,9 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 40;
-	uint8 bl = *ebx;
 	uint8 order_id = *ebx >> 8;
 	uint16 sprite_id = *edx;
-	if(bl & 1){
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		rct_peep *peep = &g_sprite_list[sprite_id].peep;
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
@@ -240,6 +239,44 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 			peep->staff_orders = order_id;
 			window_invalidate_by_number(WC_PEEP, sprite_id);
 			window_invalidate_by_class(WC_STAFF_LIST);
+		}
+	}
+	*ebx = 0;
+}
+
+/**
+ *
+ *  rct2: 0x006C09D1
+ */
+void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		int x = *eax;
+		int y = *ecx;
+		uint16 sprite_id = *edx;
+		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		int patrolOffset = peep->staff_id * (64 * 64 / 8);
+		int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
+		int mask = 1 << (patrolIndex & 0x1F);
+		int base = patrolIndex >> 5;
+
+		uint32 *patrolBits = (uint32*)(0x013B0E72 + patrolOffset + (base * 4));
+		*patrolBits ^= mask;
+
+		int eax2 = 0;
+		for(int i = 0; i < 128; i++){
+			eax2 |= *(uint32*)(0x013B0E72 + patrolOffset + (i * 4));
+		}
+
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
+		if(eax2){
+			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] |= 2;
+		}
+
+		for(int y2 = 0; y2 < 4; y2++){
+			for(int x2 = 0; x2 < 4; x2++){
+				map_invalidate_tile_full((x & 0x1F80) + (x2 * 32), (y & 0x1F80) + (y2 * 32));
+			}
 		}
 	}
 	*ebx = 0;
