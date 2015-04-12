@@ -475,7 +475,7 @@ void viewport_update_position(rct_window *window)
 	if (window->viewport_target_sprite != -1){
 		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
 
-		int height = map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF - 16;
+		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
 		int underground = sprite->unknown.z < height;
 
 		viewport_set_underground_flag(underground, window, viewport);

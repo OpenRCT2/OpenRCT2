@@ -293,7 +293,7 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		return 1;
 	}
 	
-	int* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
+	uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
 	uint8* _edi = (uint8*)(edi[peep->action_sprite_type * 2 + 1]);
 	peep->action_frame++;
 	int ebx = _edi[peep->action_frame + 1];
@@ -1513,7 +1513,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 
 	if (ride->status == RIDE_STATUS_OPEN &&
 		++peep->var_AC != 0 &&
-		!(GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4))
+		!((GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4)))
 		return;
 	
 	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
@@ -3477,8 +3477,8 @@ static void peep_update_using_bin(rct_peep* peep){
 			uint8 bp = RCT2_ADDRESS(0x97EFCC, uint8)[cur_container];
 
 			int x, y;
-			x = peep->x + scenario_rand() & 7 - 3;
-			y = peep->y + scenario_rand() & 7 - 3;
+			x = peep->x + (scenario_rand() & 7) - 3;
+			y = peep->y + (scenario_rand() & 7) - 3;
 
 			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
 			peep->item_standard_flags &= ~(1 << cur_container);
@@ -3508,8 +3508,8 @@ static void peep_update_using_bin(rct_peep* peep){
 			uint8 bp = RCT2_ADDRESS(0x97EFE8, uint8)[cur_container];
 
 			int x, y;
-			x = peep->x + scenario_rand() & 7 - 3;
-			y = peep->y + scenario_rand() & 7 - 3;
+			x = peep->x + (scenario_rand() & 7) - 3;
+			y = peep->y + (scenario_rand() & 7) - 3;
 
 			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
 			peep->item_extra_flags &= ~(1 << cur_container);

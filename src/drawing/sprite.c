@@ -593,7 +593,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		ecx >>= 3;//SAR
 		int eax = ((int)no_pixels)<<8;
 		ecx = -ecx;//Odd
-		eax = eax & 0xFF00 + *(source_pointer+1);
+		eax = (eax & 0xFF00) + *(source_pointer+1);
 		total_no_pixels -= ecx;
 		source_pointer += 2;
 		ebx = (uint32)new_source_pointer - eax;

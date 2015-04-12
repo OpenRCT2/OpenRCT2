@@ -728,7 +728,7 @@ void window_guest_viewport_init(rct_window* w){
 		}
 		if (peep->x == SPRITE_LOCATION_NULL && final_check){
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
-			int x = ride->overall_view & 0xFF * 32 + 16;
+			int x = (ride->overall_view & 0xFF) * 32 + 16;
 			int y = (ride->overall_view >> 8) * 32 + 16;
 			int height = map_element_height(x, y);
 			height += 32;

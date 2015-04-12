@@ -229,7 +229,7 @@ void vehicle_sounds_update()
 					vehicle_sound->id = (uint16)-1;
 				}
 			label26:
-				1;
+				;
 			}
 
 			//for (rct_vehicle_sound_params* vehicle_sound_params = &RCT2_GLOBAL(0x00F438B4, rct_vehicle_sound_params); ; vehicle_sound_params++) {
@@ -534,7 +534,7 @@ void vehicle_sounds_update()
 					}
 				}
 			label114:
-				1;
+				;
 			}
 		}
 	}
