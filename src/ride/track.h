@@ -138,9 +138,13 @@ typedef struct {
 	};
 	uint8 drops;									// 0x59
 	uint8 highest_drop_height;						// 0x5A
+
+    // Integer ratings are stored to one decimal point, so excitement of 6.43
+    // stored as 64
 	uint8 excitement;								// 0x5B
 	uint8 intensity;								// 0x5C
 	uint8 nausea;									// 0x5D
+
 	uint8 pad_5E[2];
 	uint8 track_spine_colour[4];					// 0x60
 	uint8 track_rail_colour[4];						// 0x64
