@@ -905,7 +905,7 @@ static uint32 game_do_command_table[58] = {
 	0x006C5AE9,
 	0, // use new_game_command_table, original: 0x006BEFA1, 29
 	0, // 30
-	0x006C0B83,
+	0,
 	0,
 	0,
 	0,
@@ -968,7 +968,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_hire_new_staff_member, //game_command_emptysub,
 	game_command_set_staff_patrol, // 30
-	game_command_emptysub,
+	game_command_fire_staff_member,
 	game_command_set_staff_order,
 	game_command_set_park_name,
 	game_command_set_park_open,

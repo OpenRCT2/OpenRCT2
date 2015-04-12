@@ -282,6 +282,23 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 	*ebx = 0;
 }
 
+/**
+ *
+ *  rct2: 0x006C0B83
+ */
+void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 40;
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		window_close_by_class(WC_FIRE_PROMPT);
+		uint16 sprite_id = *edx;
+		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_sprite_remove(peep);
+	}
+	*ebx = 0;
+}
+
 /*
  * Updates the colour of the given staff type.
  */
