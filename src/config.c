@@ -357,13 +357,13 @@ static void config_save_property_value(FILE *file, uint8 type, value_union *valu
 		else fwrite("false", 5, 1, file);
 		break;
 	case CONFIG_VALUE_TYPE_UINT8:
-		fprintf(file, "%d", value->value_uint8);
+		fprintf(file, "%u", value->value_uint8);
 		break;
 	case CONFIG_VALUE_TYPE_UINT16:
-		fprintf(file, "%d", value->value_uint16);
+		fprintf(file, "%u", value->value_uint16);
 		break;
 	case CONFIG_VALUE_TYPE_UINT32:
-		fprintf(file, "%d", value->value_uint32);
+		fprintf(file, "%u", value->value_uint32);
 		break;
 	case CONFIG_VALUE_TYPE_SINT8:
 		fprintf(file, "%d", value->value_sint8);

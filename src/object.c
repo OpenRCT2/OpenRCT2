@@ -1622,10 +1622,10 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	pos += 4;
 
 	// Skip 
-	pos += *pos++ * 16;
+	pos += *pos * 16 + 1;
 
 	// Skip theme objects
-	pos += *pos++ * 16;
+	pos += *pos * 16 + 1;
 
 	// Skip 
 	pos += 4;

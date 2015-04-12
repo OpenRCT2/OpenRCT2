@@ -22,6 +22,7 @@
   #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
+#include <time.h>
 #include "../addresses.h"
 #include "../object.h"
 #include "map.h"
@@ -445,7 +446,7 @@ static void mapgen_blob_fill(int height)
 
 		for (int x = left; x <= right; x++)
 			if (x >= firstLand && x <= lastLand)
-				landX[x, y] = 1;
+				landX[x * _heightSize + y] = 1;
 	}
 
 	// Do the same for Y
@@ -474,7 +475,7 @@ static void mapgen_blob_fill(int height)
 		}
 
 		for (int y = top; y <= bottom; y++) {
-			if (y >= firstLand && y <= lastLand && landX[x, y]) {
+			if (y >= firstLand && y <= lastLand && landX[x * _heightSize + y]) {
 				// Not only do we know its landlocked to both x and y
 				// we can change the land too
 				set_height(x, y, BLOB_HEIGHT);

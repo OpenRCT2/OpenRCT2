@@ -21,7 +21,9 @@
 #ifndef _ADDRESSES_H_
 #define _ADDRESSES_H_
 
+#ifdef _MSC_VER
 #pragma warning(disable : 4731)
+#endif
 
 #define RCT2_ADDRESS(address, type)				((type*)(address))
 #define RCT2_GLOBAL(address, type)				(*((type*)(address)))

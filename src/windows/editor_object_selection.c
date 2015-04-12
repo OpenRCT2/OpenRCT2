@@ -606,8 +606,8 @@ static void window_editor_object_selection_paint()
 			text++;
 		} while (*(text - 1) != 0);
 		text += 4;
-		text += *text++ * 16;
-		text += *text++ * 16;
+		text += *text * 16 + 1;
+		text += *text * 16 + 1;
 
 		if (RCT2_GLOBAL(text, uint32) & 0x1000000) {
 			strcpy(stringBuffer, name);
