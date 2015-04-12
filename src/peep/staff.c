@@ -255,7 +255,7 @@ void sub_6C0C3F()
 			if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
 			{
 				for (register uint8 i = 0; i < 128; ++i)
-					RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + (peep->staff_id * 512) * 512, uint32)[i];
+					RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + peep->staff_id * 512, uint32)[i];
 
 			}
 		}
