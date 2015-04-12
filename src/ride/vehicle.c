@@ -476,6 +476,7 @@ void vehicle_update_all()
 
 /* rct2: 0x006D6A2C */
 static int sub_6D6A2C(rct_vehicle* vehicle){
+	//return RCT2_CALLPROC_X(0x006d6a2c, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100;
 
 	int ebp = 0;
 	uint16 vehicle_id = vehicle->sprite_index;
@@ -569,7 +570,7 @@ static int sub_6D6A2C(rct_vehicle* vehicle){
 
 	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
 
-	return ebp;
+	return !ebp;
 }
 
 /* rct2: 0x006D6D1F */
@@ -1249,7 +1250,6 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_NO_TEST_MODE)){
 			if (vehicle->var_C0 < 20){
-				vehicle->var_48 |= (1 << 4);
 				train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 				return;
 			}
@@ -1355,6 +1355,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 				return;
 			}
 		}
+		vehicle->var_48 |= (1 << 4);
 		train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 		return;
 	}
@@ -1363,7 +1364,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		return;
 
 	vehicle->velocity = 0;
-	vehicle->status = VEHICLE_STATUS_DEPARTING;
+	vehicle->status = VEHICLE_STATUS_WAITING_TO_DEPART;
 	vehicle->var_51 = 0;
 	vehicle->var_48 &= ~(1 << 2);
 
