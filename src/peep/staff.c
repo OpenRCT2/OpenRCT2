@@ -211,6 +211,40 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	*edi = newPeep->sprite_index;
 }
 
+/**
+ *
+ *  rct2: 0x006C0BB5
+ */
+void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 40;
+	uint8 bl = *ebx;
+	uint8 order_id = *ebx >> 8;
+	uint16 sprite_id = *edx;
+	if(bl & 1){
+		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		if(order_id & 0x80){ // change costume
+			uint8 sprite_type = order_id & ~0x80;
+			sprite_type += 4;
+			peep->sprite_type = sprite_type;
+			peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+			if(RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
+				peep->flags |= PEEP_FLAGS_SLOW_WALK;
+			}
+			peep->action_frame = 0;
+			sub_693B58(peep);
+			invalidate_sprite((rct_sprite*)peep);
+			window_invalidate_by_number(WC_PEEP, sprite_id);
+			window_invalidate_by_class(WC_STAFF_LIST);
+		}else{
+			peep->staff_orders = order_id;
+			window_invalidate_by_number(WC_PEEP, sprite_id);
+			window_invalidate_by_class(WC_STAFF_LIST);
+		}
+	}
+	*ebx = 0;
+}
+
 /*
  * Updates the colour of the given staff type.
  */
