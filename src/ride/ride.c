@@ -2261,6 +2261,10 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 		}
 		if (vehicle != NULL)
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+		vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+		for (i = ride->broken_car; i > 0; i--)
+			vehicle = &(g_sprite_list[vehicle->next_vehicle_on_train].vehicle);
+		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
 		break;
 	case BREAKDOWN_VEHICLE_MALFUNCTION:
 		// Choose a random train

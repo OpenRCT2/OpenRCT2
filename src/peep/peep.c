@@ -2210,8 +2210,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 	rct_vehicle *currentTrain = GET_VEHICLE(ride->vehicles[peep->current_train]);
 	if (ride->status == RIDE_STATUS_OPEN &&
 		++peep->var_AC != 0 &&
-		!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART)
-	) {
+		!(currentTrain->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART)){
 		return;
 	}
 
