@@ -573,19 +573,18 @@ void window_staff_overview_dropdown()
 
 		for (int i = 0; i < 128; i++)
 		{
-			RCT2_GLOBAL(0x13B0E72 + ebx + i * 4, uint32) = 0;
+			RCT2_ADDRESS(0x13B0E72 + (peep->staff_id * 512), uint32)[i] = 0;
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_MODE_ARRAY + edi, uint16) &= 0xFD; // bug??
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
 
-		window_invalidate(w);
-		//RCT2_CALLPROC_EBPSAFE(0x006C0C3F);
-		sub_6C0C3F();
+		gfx_invalidate_screen();
+		staff_update_greyed_patrol_areas();
 	}
 	else {
 		if (!tool_set(w, widgetIndex, 22)) {
 			show_gridlines();
 			RCT2_GLOBAL(0x009DEA50, sint16) = w->number;
-			window_invalidate(w);
+			gfx_invalidate_screen();
 		}
 	}
 }

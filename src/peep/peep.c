@@ -573,7 +573,7 @@ void peep_sprite_remove(rct_peep* peep){
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] = 0;
 		peep->type = 0xFF;
-		sub_6C0C3F();
+		staff_update_greyed_patrol_areas();
 		peep->type = PEEP_TYPE_STAFF;
 
 		news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);

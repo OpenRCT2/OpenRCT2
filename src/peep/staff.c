@@ -263,13 +263,13 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 		uint32 *patrolBits = (uint32*)(0x013B0E72 + patrolOffset + (base * 4));
 		*patrolBits ^= mask;
 
-		int eax2 = 0;
+		int ispatrolling = 0;
 		for(int i = 0; i < 128; i++){
-			eax2 |= *(uint32*)(0x013B0E72 + patrolOffset + (i * 4));
+			ispatrolling |= *(uint32*)(0x013B0E72 + patrolOffset + (i * 4));
 		}
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
-		if(eax2){
+		if(ispatrolling){
 			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] |= 2;
 		}
 
@@ -278,6 +278,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 				map_invalidate_tile_full((x & 0x1F80) + (x2 * 32), (y & 0x1F80) + (y2 * 32));
 			}
 		}
+		staff_update_greyed_patrol_areas();
 	}
 	*ebx = 0;
 }
@@ -327,23 +328,27 @@ uint16 hire_new_staff_member(uint8 staffType)
 	return edi;
 }
 
-void sub_6C0C3F()
+/**
+ *
+ *  rct2: 0x006C0C3F
+ */
+void staff_update_greyed_patrol_areas()
 {
-	register rct_peep* peep;
+	rct_peep* peep;
 
-	for (register uint8 staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
+	for (int staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
 	{
-		for (register uint8 i = 0; i < 128; ++i)
-			RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] = 0;
+		for (int i = 0; i < 128; ++i)
+			RCT2_ADDRESS(0x13B0E72 + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] = 0;
 		
-		for (register uint16 sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
+		for (uint16 sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
 		{
 			peep = GET_PEEP(sprite_index);
 
 			if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
 			{
-				for (register uint8 i = 0; i < 128; ++i)
-					RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + peep->staff_id * 512, uint32)[i];
+				for (int i = 0; i < 128; ++i)
+					RCT2_ADDRESS(0x13B0E72 + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + (peep->staff_id * 512), uint32)[i];
 
 			}
 		}

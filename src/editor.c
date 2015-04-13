@@ -265,7 +265,7 @@ void sub_6BD3A4()
 	for (int i = 200; i < 204; i++)
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
 
-	sub_6C0C3F();
+	staff_update_greyed_patrol_areas();
 }
 
 /**
