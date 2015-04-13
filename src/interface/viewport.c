@@ -1359,8 +1359,6 @@ void sub_0x68B6C2(){
 void sub_688217_helper(uint16 ax, uint8 flag)
 {
 	paint_struct *ps;
-	uint32 edi;
-
 	paint_struct *ps_next = RCT2_GLOBAL(0x00EE7884, paint_struct*);
 
 	do {
@@ -1411,21 +1409,38 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 			if (ps_next == NULL) break;
 			if (ps_next->var_1B & (1 << 7)) break;
 			if (!(ps_next->var_1B & (1 << 1))) continue;
-			edi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) << 6;
-			if (my_attached_x < ps_next->other_x)	edi |= (1 << 5);
-			if (my_attached_y < ps_next->other_y)	edi |= (1 << 4);
-			if (my_some_x < ps_next->some_y)		edi |= (1 << 3);
-			if (my_other_x < ps_next->attached_x)	edi |= (1 << 2);
-			if (my_other_y < ps_next->attached_y)	edi |= (1 << 1);
-			if (my_some_y < ps_next->some_x)		edi |= (1 << 0);
 
-			if (RCT2_GLOBAL(0x0098185C + edi, uint8) == 0) continue;
+			int yes = 0;
+			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+			case 0:
+				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x >= ps_next->attached_x
+					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x < ps_next->other_x))
+					yes = 1;
+				break;
+			case 1:
+				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x < ps_next->attached_x
+					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x >= ps_next->other_x))
+					yes = 1;
+				break;
+			case 2:
+				if (my_some_y >= ps_next->some_x && my_other_y < ps_next->attached_y && my_other_x < ps_next->attached_x
+					&& !(my_some_x < ps_next->some_y && my_attached_y >= ps_next->other_y && my_attached_x >= ps_next->other_x))
+					yes = 1;
+				break;
+			case 3:
+				if (my_some_y >= ps_next->some_x && my_other_y < ps_next->attached_y && my_other_x >= ps_next->attached_x
+					&& !(my_some_x < ps_next->some_y && my_attached_y >= ps_next->other_y && my_attached_x < ps_next->other_x))
+					yes = 1;
+				break;
+			}
 
-			ps->var_24 = ps_next->var_24;
-			paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24;
-			RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24 = ps_next;
-			ps_next->var_24 = ps_temp;
-			ps_next = ps;
+			if (yes) {
+				ps->var_24 = ps_next->var_24;
+				paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24;
+				RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24 = ps_next;
+				ps_next->var_24 = ps_temp;
+				ps_next = ps;
+			}
 		}
 
 		ps = RCT2_GLOBAL(0x00F1AD18, paint_struct*);
