@@ -809,7 +809,7 @@ static void window_park_entrance_toolupdate()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
+	if (widgetIndex == WIDX_BUY_LAND_RIGHTS || widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
 		map_invalidate_selection_rect();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
 		screen_pos_to_map_pos(&x, &y, NULL);
