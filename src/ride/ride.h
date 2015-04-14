@@ -97,32 +97,33 @@ typedef struct{
  * size: unknown
  */
 typedef struct {
-	rct_string_id name;				// 0x000
-	rct_string_id description;		// 0x002
-	uint32 images_offset;			// 0x004
+	rct_string_id name;						// 0x000
+	rct_string_id description;				// 0x002
+	uint32 images_offset;					// 0x004
 	uint32 var_008;
-	// 0xC, D, E are related
-	uint8 var_00C;
-	uint8 var_00D;
-	uint8 var_00E;
-	uint8 min_cars_in_train;		// 0x00F
-	uint8 max_cars_in_train;		// 0x010
-	uint8 var_011;
-	uint8 var_012;
-	uint8 var_013;
-	uint8 var_014;
-	uint8 pad_015[0x5];
-	rct_ride_type_vehicle vehicles[4]; // 0x1A
+	uint8 ride_type[3];						// 0x00C
+	uint8 min_cars_in_train;				// 0x00F
+	uint8 max_cars_in_train;				// 0x010
+	uint8 cars_per_flat_ride;				// 0x011
+	uint8 zero_cars;						// 0x012
+	uint8 tab_vehicle;						// 0x013
+	uint8 default_vehicle;					// 0x014
+	uint8 front_vehicle;					// 0x015
+	uint8 second_vehicle;					// 0x016
+	uint8 rear_vehicle;						// 0x017
+	uint8 third_vehicle;					// 0x018
+	uint8 pad_019;
+	rct_ride_type_vehicle vehicles[4];		// 0x1A
 	uint32 var_1AE;
-	sint8 excitement_multipler;		// 0x1B2
-	sint8 intensity_multipler;		// 0x1B3
-	sint8 nausea_multipler;			// 0x1B4
-	uint8 pad_1B5;
-	uint32 var_1B6;
-	uint8 pad_1BA[0x04];
-	uint8 category[2];				// 0x1BE
-	uint8 shop_item;				// 0x1C0
-	uint8 shop_item_secondary;		// 0x1C1
+	sint8 excitement_multipler;				// 0x1B2
+	sint8 intensity_multipler;				// 0x1B3
+	sint8 nausea_multipler;					// 0x1B4
+	uint8 max_height;						// 0x1B5
+	uint32 enabledTrackPieces;				// 0x1B6
+	uint32 enabledTrackPiecesAdditional;	// 0x1BA
+	uint8 category[2];						// 0x1BE
+	uint8 shop_item;						// 0x1C0
+	uint8 shop_item_secondary;				// 0x1C1
 } rct_ride_type;
 
 /**
@@ -172,11 +173,17 @@ typedef struct {
 	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
-	uint8 var_0D5;
-	uint8 pad_0D6[0x2];
+    // bits 0 through 4 are the number of helix sections
+    // bit 5: spinning tunnel, water splash, or rapids
+    // bit 6: log reverser, waterfall
+    // bit 7: whirlpool
+	uint8 special_track_elements;   // 0x0D5
+	uint8 pad_0D6[2];
+	// Divide this value by 29127 to get the human-readable max speed 
+	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 pad_0E0[0x4];
+	uint8 pad_0E0[4];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
@@ -193,9 +200,9 @@ typedef struct {
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
-	uint32 var_118;
-	uint8 pad_11C[0x02];
-	uint8 var_11E;
+	sint32 sheltered_length;		// 0x118
+	uint8 pad_11C[0x2];
+	uint8 num_sheltered_sections;   // 0x11E
 	uint8 var_11F;
 	sint16 var_120;
 	sint16 var_122;
@@ -644,6 +651,13 @@ enum {
 	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
+// Constants for ride->special_track_elements
+enum {
+    RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS = 1 << 5,
+    RIDE_ELEMENT_REVERSER_OR_WATERFALL   = 1 << 6,
+    RIDE_ELEMENT_WHIRLPOOL               = 1 << 7
+};
+
 enum {
 	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
 	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
@@ -750,6 +764,25 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+int get_var_10E_unk_1(rct_ride* ride);
+int get_var_10E_unk_2(rct_ride* ride);
+int get_var_10E_unk_3(rct_ride* ride);
+int get_var_110_unk_1(rct_ride* ride);
+int get_var_110_unk_2(rct_ride* ride);
+int get_var_110_unk_3(rct_ride* ride);
+int get_var_112_unk_1(rct_ride* ride);
+int get_var_112_unk_2(rct_ride* ride);
+int get_var_112_unk_3(rct_ride* ride);
+int get_var_112_unk_4(rct_ride* ride);
+
+uint8 ride_get_helix_sections(rct_ride *ride);
+bool ride_has_spinning_tunnel(rct_ride *ride);
+bool ride_has_water_splash(rct_ride *ride);
+bool ride_has_rapids(rct_ride *ride);
+bool ride_has_log_reverser(rct_ride *ride);
+bool ride_has_waterfall(rct_ride *ride);
+bool ride_has_whirlpool(rct_ride *ride);
 
 bool ride_type_has_flag(int rideType, int flag);
 

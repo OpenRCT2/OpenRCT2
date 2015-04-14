@@ -51,6 +51,7 @@
 #include "world/climate.h"
 #include "world/map_animation.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
 
@@ -452,7 +453,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
-						RCT2_CALLPROC_X(0x0069C5D0, 0, cost, 0, 0, 0, 0, 0);
+						money_effect_create(cost);
 				}
 			}
 
@@ -472,6 +473,15 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	return 0x80000000;
 }
 
+void pause_toggle()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
+		pause_sounds();
+	else
+		unpause_sounds();
+}
 
 /**
  * 
@@ -479,14 +489,9 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
  */
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
-		window_invalidate_by_class(WC_TOP_TOOLBAR);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
-			pause_sounds();
-		else
-			unpause_sounds();
-	}
+	if (*ebx & GAME_COMMAND_FLAG_APPLY)
+		pause_toggle();
+
 	*ebx = 0;
 }
 
@@ -664,7 +669,7 @@ int game_load_save(const char *path)
 	// The rest is the same as in scenario load and play
 	reset_loaded_objects();
 	map_update_tile_pointers();
-	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
@@ -691,7 +696,7 @@ int game_load_save(const char *path)
 	window_invalidate(mainWindow);
 
 	sub_69E9A7(); 
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play

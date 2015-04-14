@@ -638,14 +638,13 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					rideVehicleEntry->var_10 = bh;
 				}
 
-				uint16 no_positions = *peep_loading_positions++;
+				uint8 no_positions = *peep_loading_positions++;
 				if (no_positions == 0xFF)
 				{
-					no_positions = *((uint16*)peep_loading_positions);
+					// The no_positions is 16 bit skip over
 					peep_loading_positions += 2;
 				}
 				rideVehicleEntry->peep_loading_positions = peep_loading_positions;
-				peep_loading_positions += no_positions;
 			}
 		}
 
@@ -653,7 +652,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
 		{
 			for (int i = 0; i < 3; ++i){
-				sint16 dl = (&ride_type->var_00C)[i];
+				int dl = ride_type->ride_type[i];
 
 				if (dl == 0xFF)continue;
 
@@ -676,7 +675,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		// 0x6DEBAA
 		if (RCT2_GLOBAL(0x9ADAF4, sint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
 
-		int di = ride_type->var_00C | (ride_type->var_00D << 8) | (ride_type->var_00E << 16);
+		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
 
 		if (ride_type->var_008 & 0x1000) di |= 0x1000000;
 
@@ -711,7 +710,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			rideVehicleEntry->no_vehicle_images = 0;
 			rideVehicleEntry->var_16 = 0;
 
-			if (rideVehicleEntry->var_12 & 0x400){
+			if (!(rideVehicleEntry->var_12 & 0x400)){
 				rideVehicleEntry->var_0E = 0;
 				rideVehicleEntry->var_0F = 0;
 				rideVehicleEntry->var_10 = 0;
@@ -742,10 +741,10 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		if (!((flags >> 8) & 0xFF))
 		{
 			int image_id = ride_type->images_offset;
-			if (ride_type->var_00C == 0xFF)
+			if (ride_type->ride_type[0] == 0xFF)
 			{
 				image_id++;
-				if (ride_type->var_00D == 0xFF) image_id++;
+				if (ride_type->ride_type[1] == 0xFF) image_id++;
 			}
 			gfx_draw_sprite(dpi, image_id, x - 56, y - 56, ebp);
 			return flags;
@@ -758,11 +757,11 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			int format_args = ride_type->description;
 			if (!(ride_type->var_008 & 0x1000))
 			{
-				format_args = ride_type->var_00C;
+				format_args = ride_type->ride_type[0];
 				if ((format_args & 0xFF) == 0xFF)
 				{
-					format_args = ride_type->var_00D;
-					if ((format_args & 0xFF) == 0xFF) format_args = ride_type->var_00E;
+					format_args = ride_type->ride_type[1];
+					if ((format_args & 0xFF) == 0xFF) format_args = ride_type->ride_type[2];
 				}
 				format_args += 0x200;
 			}
@@ -1623,10 +1622,10 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	pos += 4;
 
 	// Skip 
-	pos += *pos++ * 16;
+	pos += *pos * 16 + 1;
 
 	// Skip theme objects
-	pos += *pos++ * 16;
+	pos += *pos * 16 + 1;
 
 	// Skip 
 	pos += 4;

@@ -256,8 +256,8 @@ typedef struct {
 	uint16 suggested_max_guests;
 	uint16 word_0135883E;
 	uint8 word_01358840;
-	uint8 word_01358841;
-	uint8 pad_01358842[4];
+	uint8 rct1_water_colour;
+	uint8 pad_01358842[2];
 	rct_research_item research_items[500];
 	uint16 word_01359208;
 	char scenario_name[64];

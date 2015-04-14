@@ -1778,7 +1778,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1777    :{WINDOW_COLOUR_2}Music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
@@ -2342,7 +2342,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (Dfl.)
+STR_2341    :Guilders (fl.)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -3458,3 +3458,4 @@ STR_5121    :Show research button on toolbar
 STR_5122    :Show all vehicles sharing a track/ride type
 STR_5123    :Renew rides
 STR_5124    :No Six Flags
+STR_5125    :All destructable

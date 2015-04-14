@@ -519,7 +519,7 @@ static int award_is_deserved_most_confusing_layout(int awardType, int activeAwar
 			continue;
 
 		peepsCounted++;
-		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND)
+		if (peep->thoughts[0].var_2 <= 5 && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
 			peepsLost++;
 	}
 

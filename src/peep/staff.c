@@ -255,7 +255,7 @@ void sub_6C0C3F()
 			if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
 			{
 				for (register uint8 i = 0; i < 128; ++i)
-					RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + (peep->staff_id * 512) * 512, uint32)[i];
+					RCT2_ADDRESS(0x13B0E72 + (staff_type + STAFF_MAX_COUNT) * 512, uint32)[i] |= RCT2_ADDRESS(0x13B0E72 + peep->staff_id * 512, uint32)[i];
 
 			}
 		}
@@ -291,4 +291,24 @@ int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y)
 		return 1;
 
 	return staff_is_location_in_patrol_area(mechanic, x, y);
+}
+
+/**
+ *
+ *  rct2: 0x006C1955
+ */
+void staff_reset_stats()
+{
+	uint16 spriteIndex;
+	rct_peep *peep;
+
+	FOR_ALL_STAFF(spriteIndex, peep) {
+		peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		peep->staff_lawns_mown = 0;
+		peep->staff_rides_fixed = 0;
+		peep->staff_gardens_watered = 0;
+		peep->staff_rides_inspected = 0;
+		peep->staff_litter_swept = 0;
+		peep->staff_bins_emptied = 0;
+	}
 }

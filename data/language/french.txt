@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Ride
-STR_0003    :Ride
+STR_0002    :Attraction
+STR_0003    :Attraction
 STR_0004    :Suspended Swinging Coaster
-STR_0005    :Ride
+STR_0005    :Attraction
 STR_0006    :Junior Roller Coaster
 STR_0007    :Miniature Railway
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Ride
-STR_0011    :Ride
-STR_0012    :Ride
+STR_0010    :Attraction
+STR_0011    :Attraction
+STR_0012    :Attraction
 STR_0013    :Car Ride
-STR_0014    :Ride
-STR_0015    :Ride
-STR_0016    :Ride
+STR_0014    :Attraction
+STR_0015    :Attraction
+STR_0016    :Attraction
 STR_0017    :Looping Roller Coaster
-STR_0018    :Ride
-STR_0019    :Ride
+STR_0018    :Attraction
+STR_0019    :Attraction
 STR_0020    :Chairlift
-STR_0021    :Ride
-STR_0022    :Ride
-STR_0023    :Ride
-STR_0024    :Ride
-STR_0025    :Ride
-STR_0026    :Ride
-STR_0027    :Ride
-STR_0028    :Ride
-STR_0029    :Ride
+STR_0021    :Attraction
+STR_0022    :Attraction
+STR_0023    :Attraction
+STR_0024    :Attraction
+STR_0025    :Attraction
+STR_0026    :Attraction
+STR_0027    :Attraction
+STR_0028    :Attraction
+STR_0029    :Attraction
 STR_0030    :Stall
 STR_0031    :Stall
 STR_0032    :Stall
 STR_0033    :Stall
 STR_0034    :Stall
-STR_0035    :Ride
+STR_0035    :Attraction
 STR_0036    :Stall
 STR_0037    :Kiosk
-STR_0038    :Restroom
-STR_0039    :Ride
-STR_0040    :Ride
-STR_0041    :Ride
-STR_0042    :Ride
-STR_0043    :Ride
+STR_0038    :Toilettes
+STR_0039    :Attraction
+STR_0040    :Attraction
+STR_0041    :Attraction
+STR_0042    :Attraction
+STR_0043    :Attraction
 STR_0044    :Reverse Freefall Coaster
 STR_0045    :Lift
-STR_0046    :Ride
-STR_0047    :Ride
-STR_0048    :Ride
-STR_0049    :Ride
-STR_0050    :Ride
-STR_0051    :Ride
-STR_0052    :Ride
+STR_0046    :Attraction
+STR_0047    :Attraction
+STR_0048    :Attraction
+STR_0049    :Attraction
+STR_0050    :Attraction
+STR_0051    :Attraction
+STR_0052    :Attraction
 STR_0053    :Hyper-Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Ride
+STR_0058    :Attraction
 STR_0059    :Aerial Inverted Roller Coaster
-STR_0060    :Ride
-STR_0061    :Ride
-STR_0062    :Ride
-STR_0063    :Ride
-STR_0064    :Ride
+STR_0060    :Attraction
+STR_0061    :Attraction
+STR_0062    :Attraction
+STR_0063    :Attraction
+STR_0064    :Attraction
 STR_0065    :Suspended Monorail
-STR_0066    :Ride
-STR_0067    :Ride
+STR_0066    :Attraction
+STR_0067    :Attraction
 STR_0068    :Heartline Twister Coaster
-STR_0069    :Ride
-STR_0070    :Ride
-STR_0071    :Ride
-STR_0072    :Ride
-STR_0073    :Ride
-STR_0074    :Ride
-STR_0075    :Ride
+STR_0069    :Attraction
+STR_0070    :Attraction
+STR_0071    :Attraction
+STR_0072    :Attraction
+STR_0073    :Attraction
+STR_0074    :Attraction
+STR_0075    :Attraction
 STR_0076    :Water Coaster
-STR_0077    :Ride
-STR_0078    :Ride
-STR_0079    :Ride
-STR_0080    :Ride
-STR_0081    :Ride
-STR_0082    :Ride
-STR_0083    :Ride
-STR_0084    :Ride
-STR_0085    :Ride
-STR_0086    :Ride
-STR_0087    :Ride
-STR_0088    :Ride
+STR_0077    :Attraction
+STR_0078    :Attraction
+STR_0079    :Attraction
+STR_0080    :Attraction
+STR_0081    :Attraction
+STR_0082    :Attraction
+STR_0083    :Attraction
+STR_0084    :Attraction
+STR_0085    :Attraction
+STR_0086    :Attraction
+STR_0087    :Attraction
+STR_0088    :Attraction
 STR_0089    :Mini Roller Coaster
-STR_0090    :Ride
-STR_0091    :Ride
-STR_0092    :Ride
+STR_0090    :Attraction
+STR_0091    :Attraction
+STR_0092    :Attraction
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -973,7 +973,7 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Annuler
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
@@ -1065,7 +1065,7 @@ STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
+STR_1064    :Lancement (avec passage de la station)
 STR_1065    :Shuttle mode
 STR_1066    :Boat hire mode
 STR_1067    :Upward launch
@@ -1097,7 +1097,7 @@ STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode
 STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
+STR_1096    :Lancement (sans passage de la station)
 STR_1097    :Powered launch block sectioned mode
 STR_1098    :Moving to end of {POP16}{STRINGID}
 STR_1099    :Waiting for passengers at {POP16}{STRINGID}
@@ -1272,13 +1272,13 @@ STR_1267    :Cars
 STR_1268    :{COMMA16} car
 STR_1269    :{COMMA16} cars
 STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
+STR_1271    :bâtiment
+STR_1272    :bâtiments
+STR_1273    :Bâtiment
+STR_1274    :Bâtiment
+STR_1275    :{COMMA16} bâtiment
+STR_1276    :{COMMA16} bâtiments
+STR_1277    :Bâtiment {COMMA16}
 STR_1278    :structure
 STR_1279    :structures
 STR_1280    :Structure
@@ -1431,7 +1431,7 @@ STR_1426    :Queue Line
 STR_1427    :{WINDOW_COLOUR_2}Clients: {BLACK}{COMMA32} par heure
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
+STR_1430    :Gratuit
 STR_1431    :Marche
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
@@ -1453,7 +1453,7 @@ STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
+STR_1452    :Nom du visiteur
 STR_1453    :Enter name for this guest:
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
@@ -1464,7 +1464,7 @@ STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
-STR_1463    :Guests
+STR_1463    :Visiteurs
 STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
@@ -1472,7 +1472,7 @@ STR_1467    :Helix down (large)
 STR_1468    :Staff
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
+STR_1471    :{WINDOW_COLOUR_2}Vitesse:
 STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
@@ -1673,7 +1673,7 @@ STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
+STR_1672    :Freins
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Brake speed
 STR_1675    :{POP16}{VELOCITY}
@@ -1694,7 +1694,7 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
+STR_1693    :{SMALLFONT}{BLACK}Visiteurs
 STR_1694    :{SMALLFONT}{BLACK}Staff
 STR_1695    :{SMALLFONT}{BLACK}Income and costs
 STR_1696    :{SMALLFONT}{BLACK}Customer information
@@ -1711,7 +1711,7 @@ STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
 STR_1709    :Sack staff
-STR_1710    :Yes
+STR_1710    :Oui
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
@@ -2334,7 +2334,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
 STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
-STR_2333    :Sound
+STR_2333    :Son
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
@@ -2342,7 +2342,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (Dfl.)
+STR_2341    :Florins (fl.)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -2386,7 +2386,7 @@ STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Votre objectif:
-STR_2385    :{BLACK}None
+STR_2385    :{BLACK}Aucun
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
@@ -2398,7 +2398,7 @@ STR_2393    :{BLACK}To have 10 different types of roller coasters operating in y
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
-STR_2397    :None
+STR_2397    :Aucun
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
@@ -2412,7 +2412,7 @@ STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Campagnes marketing en cours
 STR_2410    :{BLACK}Aucune
-STR_2411    :{WINDOW_COLOUR_2}Campagnes marrketing disponibles
+STR_2411    :{WINDOW_COLOUR_2}Campagnes marketing disponibles
 STR_2412    :{SMALLFONT}{BLACK}Commencer campagne marketing
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(Not Selected)
@@ -2737,8 +2737,8 @@ STR_2732    :???
 STR_2733    :???
 STR_2734    :???
 STR_2735    :???
-STR_2736    :???
-STR_2737    :???
+STR_2736    :{MONTH}, an {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, an {COMMA16}
 STR_2738    :???
 STR_2739    :???
 STR_2740    :???
@@ -2778,7 +2778,7 @@ STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2776    :Langue
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
@@ -3058,7 +3058,7 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
+STR_3055    :Blanc
 STR_3056    :Translucent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
@@ -3133,8 +3133,8 @@ STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
+STR_3130    :Sauvegarder
+STR_3131    :Annuler
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3316,7 +3316,7 @@ STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
-STR_3313    :Scenario Name
+STR_3313    :Nom du scénario:
 STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
 STR_3316    :Décrire ce scénario:

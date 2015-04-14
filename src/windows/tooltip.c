@@ -79,7 +79,7 @@ void window_tooltip_reset(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(1 << 4);
 }
 
-extern uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
+uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
 /**
  * 
  *  rct2: 0x006EA10D

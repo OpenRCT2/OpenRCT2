@@ -812,7 +812,7 @@ static void window_park_entrance_toolupdate()
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		map_invalidate_selection_rect();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		screen_pos_to_map_pos(&x, &y);
+		screen_pos_to_map_pos(&x, &y, NULL);
 		if (x != SPRITE_LOCATION_NULL) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
@@ -1018,7 +1018,7 @@ static void window_park_init_viewport(rct_window *w)
 	}
 
 	// Call invalidate event
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	w->viewport_focus_coordinates.x = x;
 	w->viewport_focus_coordinates.y = y;

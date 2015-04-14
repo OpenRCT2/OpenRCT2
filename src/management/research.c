@@ -31,7 +31,7 @@
 const int _researchRate[] = { 0, 160, 250, 400 };
 
 // 0x01358844[500]
-extern rct_research_item *gResearchItems = (rct_research_item*)RCT2_RESEARCH_ITEMS;
+rct_research_item *gResearchItems = (rct_research_item*)RCT2_RESEARCH_ITEMS;
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
@@ -189,7 +189,7 @@ void research_finish_item(sint32 entryIndex)
 				if (rideEntry2->var_008 & 0x2000)
 					continue;
 
-				if (rideEntry2->var_00C == ecx || rideEntry2->var_00D == ecx || rideEntry2->var_00E == ecx)
+				if (rideEntry2->ride_type[0] == ecx || rideEntry2->ride_type[1] == ecx || rideEntry2->ride_type[2] == ecx)
 					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
 			}
 		}
@@ -324,6 +324,149 @@ void sub_684AC3(){
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
+}
+
+/**
+ *
+ *  rct2: 0x0068585B
+ */
+void research_remove_non_separate_vehicle_types()
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	while ((researchItem + 1)->entryIndex != RESEARCHED_ITEMS_END) {
+		researchItem++;
+	}
+
+	do {
+		loopBeginning:
+		if (
+			researchItem != gResearchItems &&
+			researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
+			researchItem->entryIndex >= 0x10000			
+		) {
+			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
+			if (!(rideEntry->var_008 & 0x3000)) {
+				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
+				researchItem2 = researchItem - 1;
+				do {
+					if (
+						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+						researchItem2->entryIndex >= 0x10000
+					) {
+						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
+						if (!(rideEntry->var_008 & 0x3000)) {
+							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
+								// Remove item
+								researchItem2 = researchItem;
+								do {
+									*researchItem2 = *(researchItem2 + 1);
+								} while ((researchItem2++)->entryIndex != RESEARCHED_ITEMS_END);
+								goto loopBeginning;
+							}
+						}
+					}
+				} while ((researchItem2--) != gResearchItems);
+			}
+		}
+	} while ((researchItem--) != gResearchItems);
+}
+
+/**
+ *
+ *  rct2: 0x006857FA
+ */
+static void research_insert_unresearched(int entryIndex, int category)
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	do {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) {
+			// Insert slot
+			researchItem2 = researchItem;
+			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {
+				researchItem2++;
+			}
+			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
+
+			// Place new item
+			researchItem->entryIndex = entryIndex;
+			researchItem->category = category;
+			break;
+		}
+	} while (entryIndex != (researchItem++)->entryIndex);
+}
+
+/**
+ *
+ *  rct2: 0x00685826
+ */
+static void research_insert_researched(int entryIndex, int category)
+{
+	rct_research_item *researchItem, *researchItem2;
+
+	researchItem = gResearchItems;
+	do {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPERATOR) {
+			// Insert slot
+			researchItem2 = researchItem;
+			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {
+				researchItem2++;
+			}
+			memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
+
+			// Place new item
+			researchItem->entryIndex = entryIndex;
+			researchItem->category = category;
+			break;
+		}
+	} while (entryIndex != (researchItem++)->entryIndex);
+}
+
+static void research_insert(int researched, int entryIndex, int category)
+{
+	if (researched)
+		research_insert_researched(entryIndex, category);
+	else
+		research_insert_unresearched(entryIndex, category);
+}
+
+/**
+ *
+ *  rct2: 0x00685675
+ */
+void research_populate_list_random()
+{
+	rct_ride_type *rideEntry;
+	rct_scenery_set_entry *scenerySetEntry;
+	int rideType, researched;
+
+	// Rides
+	for (int i = 0; i < 128; i++) {
+		rideEntry = GET_RIDE_ENTRY(i);
+		if (rideEntry == (rct_ride_type*)-1)
+			continue;
+
+		researched = (scenario_rand() & 0xFF) > 128;
+		for (int j = 0; j < 3; j++) {
+			rideType = rideEntry->ride_type[j];
+			if (rideType != 255)
+				research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
+		}
+	}
+
+	// Scenery
+	for (int i = 0; i < 19; i++) {
+		scenerySetEntry = g_scenerySetEntries[i];
+		if (scenerySetEntry == (rct_scenery_set_entry*)-1)
+			continue;
+
+		researched = (scenario_rand() & 0xFF) > 85;
+		research_insert(researched, i, RESEARCH_CATEGORY_SCENERYSET);
+	}
 }
 
 void research_set_funding(int amount)

@@ -24,6 +24,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../management/research.h"
 #include "../object.h"
 #include "../ride/track.h"
 #include "../scenario.h"
@@ -255,8 +256,8 @@ static void window_editor_object_selection_close()
 	reset_loaded_objects();
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
-	RCT2_CALLPROC_EBPSAFE(0x685675);
-	RCT2_CALLPROC_EBPSAFE(0x68585B);
+	research_populate_list_random();
+	research_remove_non_separate_vehicle_types();
 	window_new_ride_init_vars();
 }
 
@@ -302,12 +303,7 @@ static void window_editor_object_selection_mouseup()
 		}
 		window_invalidate(w);
 
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		RCT2_CALLFUNC_X(0x00674FCE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		if (eax == 1) {
-			window_close(w);
-			RCT2_CALLPROC_EBPSAFE(0x006D386D);
-		}
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
 		break;
 	}
 }
@@ -610,8 +606,8 @@ static void window_editor_object_selection_paint()
 			text++;
 		} while (*(text - 1) != 0);
 		text += 4;
-		text += *text++ * 16;
-		text += *text++ * 16;
+		text += *text * 16 + 1;
+		text += *text * 16 + 1;
 
 		if (RCT2_GLOBAL(text, uint32) & 0x1000000) {
 			strcpy(stringBuffer, name);
@@ -819,7 +815,7 @@ static void window_editor_object_selection_manage_tracks()
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
 	rct_ride_type* ride_entry = GET_RIDE_ENTRY(entry_index);
-	uint8* ride_type_array = &ride_entry->var_00C;
+	uint8* ride_type_array = &ride_entry->ride_type[0];
 
 	int ride_type;
 	for (int i = 0; (ride_type = ride_type_array[i]) == 0xFF; i++);

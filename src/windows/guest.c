@@ -32,6 +32,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../world/footpath.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -568,7 +569,7 @@ void window_guest_overview_resize(){
 	window_get_register(w);
 	
 	window_guest_disable_widgets(w);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 	
 	widget_invalidate(w, WIDX_MARQUEE);
 	
@@ -676,10 +677,8 @@ void window_guest_set_page(rct_window* w, int page){
 	w->widgets = window_guest_page_widgets[page];
 	window_guest_disable_widgets(w);
 	window_invalidate(w);
-	
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
 	window_init_scroll_widgets(w);
 	window_invalidate(w);
 	
@@ -730,7 +729,7 @@ void window_guest_viewport_init(rct_window* w){
 		}
 		if (peep->x == SPRITE_LOCATION_NULL && final_check){
 			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
-			int x = ride->overall_view & 0xFF * 32 + 16;
+			int x = (ride->overall_view & 0xFF) * 32 + 16;
 			int y = (ride->overall_view >> 8) * 32 + 16;
 			int height = map_element_height(x, y);
 			height += 32;
@@ -768,7 +767,7 @@ void window_guest_viewport_init(rct_window* w){
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	w->viewport_focus_coordinates.x = focus.coordinate.x;
 	w->viewport_focus_coordinates.y = focus.coordinate.y;
@@ -1143,24 +1142,23 @@ void window_guest_overview_tool_update(){
 	map_invalidate_selection_rect();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	int temp_y = y + 16;
 
-	int eax = x, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	RCT2_CALLFUNC_X(0x689726, &eax, &temp_y, &ecx, &edx, &esi, &edi, &ebp);
-	if (eax != 0x8000){
+	int map_x, map_y;
+	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
+	if (map_x != 0x8000){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = eax;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = temp_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = temp_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = map_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = map_y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = map_y;
 		map_invalidate_selection_rect();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
 	if (ebx == 0)
 		return;
 
@@ -1176,8 +1174,8 @@ void window_guest_overview_tool_update(){
 	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
 	ebx += w->var_492 >> 2;
 
-	ebp = peep->tshirt_colour << 19;
-	ecx = peep->trousers_colour << 24;
+	int ebp = peep->tshirt_colour << 19;
+	int ecx = peep->trousers_colour << 24;
 
 	ebx |= ebp | ecx | 0xA0000000;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
@@ -1193,9 +1191,9 @@ void window_guest_overview_tool_down(){
 
 	if (widgetIndex != WIDX_PICKUP) return;
 
-	int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-	dest_y += 16;
-	RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+	int dest_x, dest_y;
+	rct_map_element *mapElement;
+	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
 	if (dest_x == 0x8000)return;
 
@@ -1207,7 +1205,7 @@ void window_guest_overview_tool_down(){
 	int tile_y = dest_y & 0xFFE0;
 	int tile_x = dest_x & 0xFFE0;
 
-	int dest_z = ((uint8*)edx)[2] * 8 + 16;
+	int dest_z = mapElement->base_height * 8 + 16;
 
 	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
 		window_error_open(0x785,-1);

@@ -62,6 +62,7 @@
     <ClCompile Include="..\src\platform\unix.c" />
     <ClCompile Include="..\src\platform\osx.c" />
     <ClCompile Include="..\src\platform\windows.c" />
+    <ClCompile Include="..\src\rct1.c" />
     <ClCompile Include="..\src\rct2.c" />
     <ClCompile Include="..\src\ride\ride.c" />
     <ClCompile Include="..\src\ride\ride_data.c" />
@@ -93,6 +94,7 @@
     <ClCompile Include="..\src\windows\footpath.c" />
     <ClCompile Include="..\src\windows\game_bottom_toolbar.c" />
     <ClCompile Include="..\src\windows\guest_list.c" />
+    <ClCompile Include="..\src\windows\install_track.c" />
     <ClCompile Include="..\src\windows\land.c" />
     <ClCompile Include="..\src\windows\loadsave.c" />
     <ClCompile Include="..\src\windows\main.c" />
@@ -198,7 +200,6 @@
     <ClInclude Include="..\src\util\util.h" />
     <ClInclude Include="..\src\windows\dropdown.h" />
     <ClInclude Include="..\src\windows\error.h" />
-    <ClInclude Include="..\src\windows\scenery.h" />
     <ClInclude Include="..\src\windows\tooltip.h" />
     <ClInclude Include="..\src\world\banner.h" />
     <ClInclude Include="..\src\world\climate.h" />

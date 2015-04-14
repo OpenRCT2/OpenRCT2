@@ -393,6 +393,7 @@ enum {
 	WC_EDTIOR_OBJECTIVE_OPTIONS = 46,
 	WC_MANAGE_TRACK_DESIGN = 47,
 	WC_TRACK_DELETE_PROMPT = 48,
+	WC_INSTALL_TRACK = 49,
 	WC_CLEAR_SCENERY = 50,
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
@@ -425,7 +426,8 @@ enum {
 
 	LOADSAVETYPE_GAME = 0 << 1,
 	LOADSAVETYPE_LANDSCAPE = 1 << 1,
-	LOADSAVETYPE_SCENARIO = 2 << 1
+	LOADSAVETYPE_SCENARIO = 2 << 1,
+	LOADSAVETYPE_TRACK = 3 << 1,
 };
 
 
@@ -540,7 +542,9 @@ void window_ride_construct(rct_window *w);
 void window_ride_list_open();
 rct_window * window_construction_open();
 void window_track_place_open();
-void window_new_ride_open();
+rct_window *window_new_ride_open();
+rct_window *window_new_ride_open_research();
+void window_install_track_open(const char* path);
 void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);

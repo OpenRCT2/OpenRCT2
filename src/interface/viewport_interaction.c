@@ -58,7 +58,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, 0xFF79, &info->x, &info->y, &info->type, &info->mapElement);
+	get_map_coordinates_from_pos(x, y, 0xFF79, &info->x, &info->y, &info->type, &info->mapElement, NULL);
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 
@@ -178,7 +178,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, 9, &info->x, &info->y, &info->type, &info->mapElement);
+	get_map_coordinates_from_pos(x, y, 9, &info->x, &info->y, &info->type, &info->mapElement, NULL);
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 

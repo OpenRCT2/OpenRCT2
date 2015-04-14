@@ -25,8 +25,8 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../sprites.h"
-#include "../windows/scenery.h"
 #include "../world/mapgen.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
 
 enum {

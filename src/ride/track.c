@@ -448,10 +448,10 @@ void track_load_list(ride_list_item item)
     //RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }
 
-static void read(void *dst, void **src, int length)
+static void read(void *dst, char **src, int length)
 {
 	memcpy(dst, *src, length);
-	*((char**)src) += length;
+	*src += length;
 }
 
 /**
@@ -553,13 +553,13 @@ rct_track_td6* load_track_design(const char *path)
 		// Edit the colours to use the new versions
 		// Unsure why it is 67
 		edi = (uint8*)&track_design->vehicle_colours;
-		for (i = 0; i < 67; i++)
-			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+		for (i = 0; i < 67; i++, edi++)
+			*edi = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
 		// Edit the colours to use the new versions
 		edi = (uint8*)&track_design->track_spine_colour;
-		for (i = 0; i < 12; i++)
-			*edi++ = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+		for (i = 0; i < 12; i++, edi++)
+			*edi = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
 
 		// Highest drop height is 1bit = 3/4 a meter in td6
 		// Highest drop height is 1bit = 1/3 a meter in td4
@@ -1348,4 +1348,133 @@ int save_track_design(uint8 rideIndex){
 	track_load_list(item);
 	gfx_invalidate_screen();
 	return 1;
+}
+
+/**
+*
+*  rct2: 0x006D399D
+*/
+rct_track_design *temp_track_get_info(char* path, uint8** preview)
+{
+	rct_track_design *trackDesign;
+	uint8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	int i;
+
+	trackDesign = NULL;
+
+	// Check if track design has already been loaded
+	for (i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] == 0) {
+			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
+			break;
+		}
+	}
+
+	if (trackDesign == NULL) {
+		// Load track design
+		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) >= 4)
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
+
+		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = 0;
+
+		rct_track_td6* loaded_track = NULL;
+
+		log_verbose("Loading track: %s", path);
+
+		if (!(loaded_track = load_track_design(path))) {
+			if (preview != NULL) *preview = NULL;
+			log_error("Failed to load track: %s", path);
+			return NULL;
+		}
+
+		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
+
+		object_unload_all();
+		if (loaded_track->type == RIDE_TYPE_NULL){
+			if (preview != NULL) *preview = NULL;
+			log_error("Failed to load track (ride type null): %s", path);
+			return NULL;
+		}
+
+		if (!object_load(0, &loaded_track->vehicle_object, NULL)){
+			if (preview != NULL) *preview = NULL;
+			log_error("Failed to load track (vehicle load fail): %s", path);
+			return NULL;
+		}
+
+		// Copy the track design apart from the preview image
+		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
+		// Load in a new preview image, calculate cost variable, calculate var_06
+		draw_track_preview((uint8**)trackDesign->preview);
+		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
+
+		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
+		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+	}
+
+	// Set preview to correct preview image based on rotation
+	if (preview != NULL)
+		*preview = trackDesign->preview[RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)];
+
+	return trackDesign;
+}
+
+void window_track_list_format_name(char *dst, const char *src, char colour, char quotes)
+{
+	if (colour != 0)
+		*dst++ = colour;
+
+	if (quotes != 0)
+		*dst++ = FORMAT_OPENQUOTES;
+
+	while (*src != '.' && *src != 0) {
+		*dst++ = *src++;
+	}
+
+	if (quotes != 0)
+		*dst++ = FORMAT_ENDQUOTES;
+
+	*dst = 0;
+}
+
+
+/**
+*
+*  rct2: 0x006D40B2
+* returns 0 for copy fail, 1 for success, 2 for file exists.
+*/
+int install_track(char* source_path, char* dest_name){
+
+	// Make a copy of the track name (no extension)
+	char track_name[MAX_PATH] = { 0 };
+	char* dest = track_name;
+	char* dest_name_pointer = dest_name;
+	while (*dest_name_pointer != '.') *dest++ = *dest_name_pointer++;
+
+	// Check if .TD4 file exists under that name
+	char* temp_extension_pointer = dest;
+	strcat(track_name, ".TD4");
+
+	char dest_path[MAX_PATH];
+	subsitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Allow a concat onto the track_name but before extension
+	*temp_extension_pointer = '\0';
+
+	// Check if .TD6 file exists under that name
+	strcat(track_name, ".TD6");
+
+	subsitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Set path for actual copy
+	subsitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
+
+	return platform_file_copy(source_path, dest_path);
 }

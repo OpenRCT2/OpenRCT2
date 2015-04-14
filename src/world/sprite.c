@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
@@ -397,12 +398,100 @@ void duck_press(rct_duck *duck)
 	sound_play_panned(SOUND_QUACK, 0x8001, duck->x, duck->y, duck->z);
 }
 
+/**
+ *
+ *  rct: 0x00674576
+ */
+void duck_remove_all()
+{
+	rct_unk_sprite* sprite;
+	uint16 spriteIndex, nextSpriteIndex;
+
+	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		sprite = &(g_sprite_list[spriteIndex].unknown);
+		nextSpriteIndex = sprite->next;
+		if (sprite->misc_identifier == SPRITE_MISC_DUCK)
+			sprite_remove((rct_sprite*)sprite);
+	}
+}
+
 static const rct_xy16 _moneyEffectMoveOffset[] = {
 	{  1, -1 },
 	{  1,  1 },
 	{ -1,  1 },
 	{ -1, -1 }
 };
+
+/**
+ *
+ *  rct: 0x0067351F
+ */
+void money_effect_create_at(money32 value, int x, int y, int z)
+{
+	rct_money_effect *moneyEffect;
+	rct_string_id stringId;
+	char buffer[128];
+
+	moneyEffect = (rct_money_effect*)create_sprite(2);
+	if (moneyEffect == NULL)
+		return;
+
+	moneyEffect->value = value;
+	moneyEffect->var_14 = 64;
+	moneyEffect->var_09 = 20;
+	moneyEffect->var_15 = 30;
+	moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+	sprite_move(x, y, z, (rct_sprite*)moneyEffect);
+	moneyEffect->misc_identifier = SPRITE_MISC_MONEY_EFFECT;
+	moneyEffect->num_movements = 0;
+	moneyEffect->move_delay = 0;
+
+	stringId = 1388;
+	if (value < 0) {
+		value *= -1;
+		stringId = 1399;
+	}
+	format_string(buffer, stringId, &value);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
+	moneyEffect->wiggle = 0;
+}
+
+/**
+ *
+ *  rct: 0x0069C5D0
+ */
+void money_effect_create(money32 value)
+{
+	rct_window *mainWindow;
+	rct_viewport *mainViewport;
+	rct_xyz16 mapPosition;
+
+	mapPosition.x = RCT2_GLOBAL(0x009DEA5E, uint16);
+	mapPosition.y = RCT2_GLOBAL(0x009DEA60, uint16);
+	mapPosition.z = RCT2_GLOBAL(0x009DEA62, uint16);
+	if (mapPosition.x == (sint16)0x8000) {
+		mainWindow = window_get_main();
+		if (mainWindow == NULL)
+			return;
+
+		mainViewport = mainWindow->viewport;
+		mapPosition.x = mainViewport->x + (mainViewport->width / 2);
+		mapPosition.y = mainViewport->y + (mainViewport->height / 2);
+
+		int eax = mapPosition.x, ebx = mapPosition.y, ecx, edx, esi, edi, ebp;
+		RCT2_CALLFUNC_X(0x00688972, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+		mapPosition.x = eax;
+		mapPosition.y = ebx;
+
+		if (mapPosition.x == (sint16)0x8000)
+			return;
+
+		mapPosition.z = map_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;
+	}
+	mapPosition.z += 10;
+	money_effect_create_at(-value, mapPosition.x, mapPosition.y, mapPosition.z);
+}
 
 /**
  *

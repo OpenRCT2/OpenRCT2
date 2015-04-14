@@ -32,7 +32,11 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "scenery.h"
+
+#define WINDOW_SCENERY_WIDTH	634
+#define WINDOW_SCENERY_HEIGHT	142
+#define SCENERY_BUTTON_WIDTH	66
+#define SCENERY_BUTTON_HEIGHT	80
 
 enum {
 	WINDOW_SCENERY_TAB_1,
@@ -174,7 +178,10 @@ static rct_widget window_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint16 window_scenery_tab_entries[0x14][SCENERY_ENTRIES_BY_TAB + 1];
+// rct2: 0x00F64F2C
+sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
+
+void window_scenery_update_scroll(rct_window *w);
 
 /**
  * Was part of 0x006DFA00
@@ -221,7 +228,8 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
  *
  *  rct2: 0x006DFA00
  */
-void init_scenery() {
+void init_scenery()
+{
 	bool enabledScenerySets[0x14] = { false };
 
 	for (int scenerySetIndex = 0; scenerySetIndex < 0x14; scenerySetIndex++) {
@@ -369,6 +377,37 @@ void init_scenery() {
 
 /**
  *
+ *  rct2: 0x006DFEE4
+ */
+void scenery_set_default_placement_configuration()
+{
+	window_scenery_rotation = 3;
+	window_scenery_primary_colour = 26;
+	window_scenery_secondary_colour = 18;
+	window_scenery_tertiary_colour = 24;
+	init_scenery();
+
+	for (int i = 0; i < 20; i++)
+		window_scenery_selected_scenery_by_tab[i] = -1;
+
+	for (int i = 0; i < 20; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
+			window_scenery_active_tab_index = i;
+			return;
+		}
+	}
+
+	for (int i = 0; i < 16; i++) {
+		rct_widget *tabWidget = &window_scenery_widgets[WIDX_SCENERY_TAB_1 + i];
+		if (tabWidget->type != WWT_EMPTY) {
+			window_scenery_active_tab_index = i;
+			return;
+		}
+	}
+}
+
+/**
+ *
  *  rct2: 0x006E0FEF
  */
 void window_scenery_open()
@@ -416,7 +455,7 @@ void window_scenery_open()
 		(1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
 	window_init_scroll_widgets(window);
-	RCT2_CALLPROC_X(0x006E1EB4, 0, 0, 0, 0, (int)window, 0, 0);
+	window_scenery_update_scroll(window);
 	show_gridlines();
 	window_scenery_rotation = 3;
 	RCT2_GLOBAL(0x00F64F12, uint8) = 0;

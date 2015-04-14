@@ -47,7 +47,7 @@ typedef struct {
 	// Rate is relative to 0.1 GBP
 	int rate;
 	char symbol[8];
-	char affix;
+	int affix;
 } rct_currency_spec;
 
 // List of currency formats

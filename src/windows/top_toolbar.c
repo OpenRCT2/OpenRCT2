@@ -29,8 +29,8 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
-#include "scenery.h"
 
 enum {
 	WIDX_PAUSE,

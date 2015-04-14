@@ -27,6 +27,7 @@
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../sprites.h"
+#include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
@@ -332,9 +333,8 @@ void window_staff_open(rct_peep* peep)
 	window_staff_disable_widgets(w);
 	window_init_scroll_widgets(w);
 	window_staff_viewport_init(w);
-	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED) {
-		RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, 10, (int)w, 0, 0);
-	}
+	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED)
+		window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 }
 
 /**
@@ -421,8 +421,8 @@ void window_staff_set_page(rct_window* w, int page)
 	window_staff_disable_widgets(w);
 	window_invalidate(w);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
 
 	window_init_scroll_widgets(w);
 	window_invalidate(w);
@@ -1086,7 +1086,7 @@ void window_staff_overview_tool_update(){
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
 	int z;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL);
+	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL, NULL);
 	if (z == 0)
 		return;
 
@@ -1116,9 +1116,9 @@ void window_staff_overview_tool_down(){
 
 	if (widgetIndex == WIDX_PICKUP){
 		
-		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-		dest_y += 16;
-		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+		int dest_x, dest_y;
+		rct_map_element *mapElement;
+		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
 		if (dest_x == 0x8000)return;
 
@@ -1130,7 +1130,7 @@ void window_staff_overview_tool_down(){
 		int tile_y = dest_y & 0xFFE0;
 		int tile_x = dest_x & 0xFFE0;
 
-		int dest_z = ((uint8*)edx)[2] * 8 + 16;
+		int dest_z = mapElement->base_height * 8 + 16;
 
 		if (!map_is_location_owned(tile_x, tile_y, dest_z)){
 			window_error_open(0x785, -1);
@@ -1166,8 +1166,8 @@ void window_staff_overview_tool_down(){
 		RCT2_GLOBAL(0x9DE550, sint32) = -1;
 	}
 	else if (widgetIndex == WIDX_PATROL){
-		int dest_x = x, dest_y = y, ecx = 0, edx = widgetIndex, edi = 0, esi = (int)w, ebp = 0;
-		RCT2_CALLFUNC_X(0x689726, &dest_x, &dest_y, &ecx, &edx, &esi, &edi, &ebp);
+		int dest_x, dest_y;
+		footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, NULL, NULL);
 
 		if (dest_x == 0x8000)return;
 
@@ -1279,7 +1279,7 @@ void window_staff_viewport_init(rct_window* w){
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	w->viewport_focus_sprite.sprite_id = focus.sprite_id;
 	w->viewport_focus_sprite.type = focus.type;
@@ -1318,9 +1318,8 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	init_scenery();
 
 	int ebx = 0;
-	for (int i = 0; i < 19;++i){
-		sint16* ebp = RCT2_ADDRESS(0xF64F2C, sint16*)[i];
-		if (*ebp != -1){
+	for (int i = 0; i < 19; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
 			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
 			ebx |= scenery_entry->var_10A;
 		}

@@ -1044,7 +1044,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			uint32 char_offset = al - 0x20 + *current_font_sprite_base;
 			RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
 				
-			gfx_draw_sprite_palette_set(dpi, (IMAGE_TYPE_USE_PALETTE << 28) | char_offset + SPR_CHAR_START, max_x, max_y, palette_pointer, NULL);
+			gfx_draw_sprite_palette_set(dpi, ((IMAGE_TYPE_USE_PALETTE << 28) | char_offset) + SPR_CHAR_START, max_x, max_y, palette_pointer, NULL);
 			max_x += (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[char_offset] & 0xFF);
 			continue;
 		} 

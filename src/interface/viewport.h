@@ -82,9 +82,12 @@ void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
 
-void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation);
+void sub_689174(sint16* x, sint16* y, sint16 *z);
 
-void screen_pos_to_map_pos(short *x, short *y);
+rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
+rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
+void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -94,7 +97,7 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport);
 
 int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_left_over(int x, int y);

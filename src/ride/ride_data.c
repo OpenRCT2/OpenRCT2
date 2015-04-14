@@ -881,3 +881,97 @@ const rct_ride_entrance_definition RideEntranceDefinitions[12] = {
 	{ 22840, 33, 19 },		// RIDE_ENTRANCE_STYLE_PAGODA
 	{ 22856, 33,  2 }		// RIDE_ENTRANCE_STYLE_SPACE
 };
+
+// Data read from 0x0097D7C9 4 bytes at a time
+const uint8 RideLiftHillAdjustments[0x60] = {
+		7,		 // Spiral Roller coaster     
+		4,		 // Stand Up Coaster     
+		4,		 // Suspended Swinging     
+		5,		 // Inverted     
+		4,		 // Steel Mini Coaster     
+		5,		 // Mini Railroad     
+		5,		 // Monorail     
+		4,		 // Mini Suspended Coaster     
+		5,		 // Bumper Boats     
+		4,		 // Wooden Wild Mine/Mouse     
+		4,		 // Steeplechase/Motorbike/Soap Box Derby     
+		5,		 // Car Ride     
+		5,		 // Launched Freefall     
+		4,		 // Bobsleigh Coaster     
+		5,		 // Observation Tower     
+		4,		 // Looping Roller Coaster     
+		4,		 // Dinghy Slide     
+		4,		 // Mine Train Coaster     
+		5,		 // Chairlift     
+		4,		 // Corkscrew Roller Coaster     
+		5,		 // Maze     
+		5,		 // Spiral Slide     
+		5,		 // Go Karts     
+		5,		 // Log Flume     
+		5,		 // River Rapids     
+		5,		 // Bumper Cars     
+		5,		 // Pirate Ship     
+		5,		 // Swinging Inverter Ship     
+		5,		 // Food Stall     
+		5,		 // (none)     
+		5,		 // Drink Stall     
+		5,		 // (none)     
+		5,		 // Shop (all types)     
+		5,		 // Merry Go Round     
+		5,		 // Balloon Stall (maybe)     
+		5,		 // Information Kiosk     
+		5,		 // Bathroom     
+		5,		 // Ferris Wheel     
+		5,		 // Motion Simulator     
+		5,		 // 3D Cinema     
+		5,		 // Gravitron     
+		5,		 // Space Rings     
+		5,		 // Reverse Freefall Coaster     
+		5,		 // Elevator     
+		4,		 // Vertical Drop Roller Coaster     
+		5,		 // ATM     
+		5,		 // Twist     
+		5,		 // Haunted House     
+		5,		 // First Aid     
+		5,		 // Circus Show     
+		5,		 // Ghost Train     
+		5,		 // Twister Roller Coaster     
+		5,		 // Wooden Roller Coaster     
+		3,		 // Side-Friction Roller Coaster     
+		4,		 // Wild Mouse     
+		4,		 // Multi Dimension Coaster     
+		4,		 // (none)     
+		4,		 // Flying Roller Coaster     
+		4,		 // (none)     
+		3,		 // Virginia Reel     
+		5,		 // Splash Boats     
+		5,		 // Mini Helicopters     
+		4,		 // Lay-down Roller Coaster     
+		5,		 // Suspended Monorail     
+		4,		 // (none)     
+		3,		 // Reverser Roller Coaster     
+		4,		 // Heartline Twister Roller Coaster     
+		5,		 // Mini Golf     
+		5,		 // Giga Coaster     
+		5,		 // Roto-Drop     
+		5,		 // Flying Saucers     
+		5,		 // Crooked House     
+		5,		 // Monorail Cycles     
+		4,		 // Compact Inverted Coaster     
+		4,		 // Water Coaster     
+		5,		 // Air Powered Vertical Coaster     
+		4,		 // Inverted Hairpin Coaster     
+		5,		 // Magic Carpet     
+		5,		 // Submarine Ride     
+		5,		 // River Rafts     
+		5,		 // (none)     
+		5,		 // Enterprise     
+		5,		 // (none)     
+		5,		 // (none)     
+		5,		 // (none)     
+		4,		 // (none)     
+		4,		 // Inverted Impulse Coaster     
+		4,		 // Mini Roller Coaster     
+		5,		 // Mine Ride     
+		4		 // LIM Launched Roller Coaster     
+};

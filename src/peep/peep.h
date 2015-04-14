@@ -583,5 +583,6 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 
 void peep_set_map_tooltip(rct_peep *peep);
 void sub_693B58(rct_peep* peep);
+void remove_peep_from_queue(rct_peep* peep);
 
 #endif

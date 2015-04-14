@@ -30,6 +30,7 @@
 #include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
@@ -38,6 +39,7 @@
 #include "util/util.h"
 #include "world/map.h"
 #include "world/park.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
 
@@ -174,7 +176,7 @@ int scenario_load(const char *path)
 
 			reset_loaded_objects();
 			map_update_tile_pointers();
-			reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+			reset_0x69EBE4();
 			return 1;
 		}
 
@@ -258,7 +260,7 @@ int scenario_load_and_play_from_path(const char *path)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
 	sub_684AC3();
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
 		window_park_objective_open();
@@ -322,9 +324,9 @@ int scenario_load_and_play_from_path(const char *path)
 	award_reset();
 	reset_all_ride_build_dates();
 	date_reset();
-	RCT2_CALLPROC_EBPSAFE(0x00674576);
+	duck_remove_all();
 	park_calculate_size();
-	RCT2_CALLPROC_EBPSAFE(0x006C1955);
+	staff_reset_stats();
 	RCT2_GLOBAL(0x01358840, uint8) = 0;
 	memset((void*)0x001358102, 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
@@ -1133,7 +1135,7 @@ int scenario_save(char *path, int flags)
 	fclose(file);
 
 	if (!(flags & 0x80000000))
-		reset_loaded_objects();//RCT2_CALLPROC_EBPSAFE(0x006A9FC0);
+		reset_loaded_objects();
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;

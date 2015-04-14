@@ -223,74 +223,37 @@ void viewport_update_pointers()
 	*vp = NULL;
 }
 
-void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation){
+/**
+ * edx is assumed to be (and always is) the current rotation, so it is not needed as parameter.
+ * rct2: 0x00689174
+ */
+void sub_689174(sint16* x, sint16* y, sint16 *z)
+{
 	//RCT2_CALLFUNC_X(0x00689174, (int*)&x, (int*)&y, (int*)&z, &curr_rotation, (int*)&window, (int*)&viewport, &ebp);
 
 	sint16 start_x = *x;
 	sint16 start_y = *y;
 	sint16 height = 0;
-	switch (curr_rotation){
-	case 0:
-		for (int i = 0; i < 6; ++i){
-			*x = start_y - start_x / 2 + height;
-			*y = start_y + start_x / 2 + height;			
-			
-			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
 
-			// HACK: This is to prevent the x and y values being set to values outside
-			// of the map. This can happen when the height is larger than the map size.
-			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-				*x = start_y - start_x / 2;
-				*y = start_y + start_x / 2;
-			}
+	rct_xy16 pos;
+	for (int i = 0; i < 6; i++) {
+		pos = viewport_coord_to_map_coord(start_x, start_y, height);
+		height = map_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
+
+		// HACK: This is to prevent the x and y values being set to values outside
+		// of the map. This can happen when the height is larger than the map size.
+		sint16 max = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		if (pos.x > max && pos.y > max) {
+			int x_corr[] = { -1, 1, 1, -1 };
+			int y_corr[] = { -1, -1, 1, 1 };
+			uint32 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			pos.x += x_corr[rotation] * height;
+			pos.y += y_corr[rotation] * height;
 		}
-		break;
-	case 1:
-		for (int i = 0; i < 6; ++i){
-			*x = -start_y - start_x / 2 - height;
-			*y = start_y - start_x / 2 + height;
-
-			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
-
-			// HACK: This is to prevent the x and y values being set to values outside
-			// of the map. This can happen when the height is larger than the map size.
-			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-				*x = -start_y - start_x / 2;
-				*y = start_y - start_x / 2;
-			}
-		}
-		break;
-	case 2:
-		for (int i = 0; i < 6; ++i){
-			*x = -start_y + start_x / 2 - height;
-			*y = -start_y - start_x / 2 - height;
-
-			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
-
-			// HACK: This is to prevent the x and y values being set to values outside
-			// of the map. This can happen when the height is larger than the map size.
-			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-				*x = -start_y + start_x / 2;
-				*y = -start_y - start_x / 2;
-			}
-		}
-		break;
-	case 3:
-		for (int i = 0; i < 6; ++i){
-			*x = start_x / 2 + start_y + height;
-			*y = start_x / 2 - start_y - height;
-
-			height = map_element_height((0xFFFF) & *x, (0xFFFF) & *y);
-
-			// HACK: This is to prevent the x and y values being set to values outside
-			// of the map. This can happen when the height is larger than the map size.
-			if (*x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) && *y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-				*x = start_y + start_x / 2;
-				*y = -start_y + start_x / 2;
-			}
-		}
-		break;
 	}
+
+	*x = pos.x;
+	*y = pos.y;
 	*z = height;
 }
 
@@ -475,7 +438,7 @@ void viewport_update_position(rct_window *window)
 	if (window->viewport_target_sprite != -1){
 		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
 
-		int height = map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF - 16;
+		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
 		int underground = sprite->unknown.z < height;
 
 		viewport_set_underground_flag(underground, window, viewport);
@@ -494,8 +457,7 @@ void viewport_update_position(rct_window *window)
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
 	sint16 z;
 
-	int curr_rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	sub_689174(&x, &y, &z, curr_rotation);
+	sub_689174(&x, &y, &z);
 
 	viewport_set_underground_flag(0, window, viewport);
 	//RCT2_CALLPROC_X(0x006E7A15, x, y, z, 0, (int)window, (int)viewport, 0);
@@ -1493,16 +1455,115 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 /**
  *
+ *  rct2: 0x00688972
+ *  In:
+ *		screen_x: eax
+ *		screen_y: ebx
+ *  Out:
+ *		x: ax
+ *		y: bx
+ *		map_element: edx ?
+ *		viewport: edi
+ */
+void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
+	int my_x, my_y, z;
+	rct_viewport *myViewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFE, &my_x, &my_y, &z, NULL, &myViewport);
+	if (z == 0) {
+		*x = 0x8000;
+		return;
+	}
+
+	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
+
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
+	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
+
+	for (int i = 0; i < 5; i++) {
+		z = map_element_height(map_pos.x, map_pos.y);
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+	}
+
+	*x = map_pos.x;
+	*y = map_pos.y;
+
+	if (viewport != NULL) *viewport = myViewport;
+}
+
+/**
+ *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(short *x, short *y)
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = *x;
-	ebx = *y;
-	RCT2_CALLFUNC_X(0x0068958D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*x = eax & 0xFFFF;
-	*y = ebx & 0xFFFF;
+	sub_688972(*x, *y, x, y, NULL);
+	if (*x == 0x8000)
+		return;
+
+	int my_direction;
+	int dist_from_center_x = abs(*x % 32);
+	int dist_from_center_y = abs(*y % 32);
+	if (dist_from_center_x > 8 && dist_from_center_x < 24 &&
+		dist_from_center_y > 8 && dist_from_center_y < 24) {
+		my_direction = 4;
+	} else {
+		sint16 mod_x = *x & 0x1F;
+		sint16 mod_y = *y & 0x1F;
+		if (mod_x <= 16) {
+			if (mod_y < 16) {
+				my_direction = 2;
+			} else {
+				my_direction = 3;
+			}
+		} else {
+			if (mod_y < 16) {
+				my_direction = 0;
+			} else {
+				my_direction = 1;
+			}
+		}
+	}
+
+	*x = *x & ~0x1F;
+	*y = *y & ~0x1F;
+	if (direction != NULL) *direction = my_direction;
+}
+
+rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
+{
+	rct_xy16 ret;
+	ret.x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
+	ret.y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
+	return ret;
+}
+
+rct_xy16 viewport_coord_to_map_coord(int x, int y, int z)
+{
+	rct_xy16 ret;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	case 0:
+		ret.x = -x / 2 + y + z;
+		ret.y = x / 2 + y + z;
+		break;
+	case 1:
+		ret.x = -x / 2 - y - z;
+		ret.y = -x / 2 + y + z;
+		break;
+	case 2:
+		ret.x = x / 2 - y - z;
+		ret.y = -x / 2 - y - z;
+		break;
+	case 3:
+		ret.x = x / 2 + y + z;
+		ret.y = x / 2 - y - z;
+		break;
+	}
+	return ret;
 }
 
 /**
@@ -1676,28 +1737,29 @@ void viewport_set_visibility(uint8 mode)
  * y: cx
  * z: bl
  * mapElement: edx
+ * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement)
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
 	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
 	rct_window* window = window_find_from_point(screenX, screenY);
 	if (window != NULL && window->viewport != NULL)
 	{
-		rct_viewport* viewport = window->viewport;
+		rct_viewport* myviewport = window->viewport;
 		RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
 		RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-		screenX -= (int)viewport->x;
-		screenY -= (int)viewport->y;
-		if (screenX >= 0 && screenX < (int)viewport->width && screenY >= 0 && screenY < (int)viewport->height)
+		screenX -= (int)myviewport->x;
+		screenY -= (int)myviewport->y;
+		if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
 		{
-			screenX <<= viewport->zoom;
-			screenY <<= viewport->zoom;
-			screenX += (int)viewport->view_x;
-			screenY += (int)viewport->view_y;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = viewport->zoom;
-			screenX &= (0xFFFF << viewport->zoom) & 0xFFFF;
-			screenY &= (0xFFFF << viewport->zoom) & 0xFFFF;
+			screenX <<= myviewport->zoom;
+			screenY <<= myviewport->zoom;
+			screenX += (int)myviewport->view_x;
+			screenY += (int)myviewport->view_y;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
+			screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+			screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
 			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
 			rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
@@ -1713,6 +1775,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 			RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
 			RCT2_CALLPROC_X(0x68862C, 0, 0, 0, 0, 0, 0, 0);
 		}
+		if (viewport != NULL) *viewport = myviewport;
 	}
 	if (z != NULL) *z = RCT2_GLOBAL(0x9AC148, uint8_t);
 	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);

@@ -31,6 +31,7 @@
 #include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/scenery.h"
 #include "error.h"
 
 enum {
@@ -167,7 +168,7 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
 	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
 	gfx_invalidate_screen();
@@ -228,7 +229,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 		RCT2_CALLPROC_EBPSAFE(0x0066F6E3);
 	} else {
 		RCT2_CALLPROC_EBPSAFE(0x006DFED0);
-		RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+		scenery_set_default_placement_configuration();
 		RCT2_GLOBAL(0x00141F570, uint8) = 1;
 		window_map_open();
 		gfx_invalidate_screen();

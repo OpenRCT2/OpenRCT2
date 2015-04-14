@@ -41,23 +41,23 @@ rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
 float window_scroll_locations[][2] = {
-	0.5f,	0.5f,
-	0.75f,	0.5f,
-	0.25f,	0.5f,
-	0.5f,	0.75f,
-	0.5f,	0.25f,
-	0.75f,	0.75f,
-	0.75f,	0.25f,
-	0.25f,	0.75f,
-	0.25f,	0.25f,
-	0.125f,	0.5f,
-	0.875f,	0.5f,
-	0.5f,	0.125f,
-	0.5f,	0.875f,
-	0.875f,	0.125f,
-	0.875f,	0.875f,
-	0.125f,	0.875f,
-	0.125f,	0.125f,
+	{0.5f,		0.5f},
+	{0.75f,		0.5f},
+	{0.25f,		0.5f},
+	{0.5f,		0.75f},
+	{0.5f,		0.25f},
+	{0.75f,		0.75f},
+	{0.75f,		0.25f},
+	{0.25f,		0.75f},
+	{0.25f,		0.25f},
+	{0.125f,	0.5f},
+	{0.875f,	0.5f},
+	{0.5f,		0.125f},
+	{0.5f,		0.875f},
+	{0.875f,	0.125f},
+	{0.875f,	0.875f},
+	{0.125f,	0.875f},
+	{0.125f,	0.125f},
 };
 
 static void window_all_wheel_input();
@@ -642,7 +642,7 @@ int window_find_widget_from_point(rct_window *w, int x, int y)
 	int i, widget_index;
 
 	// Invalidate the window
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	// Find the widget at point x, y
 	widget_index = -1;
@@ -1142,12 +1142,22 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 
 /**
  * 
+ *  rct2: 0x00688956
+ */
+void sub_688956()
+{
+	rct_window *w;
+
+	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--)
+		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_14], 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ * 
  *  rct2: 0x0068881A
  */
 void window_rotate_camera(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x0068881A, 0, 0, 0, 0, (int)w, 0, 0);
-
 	rct_viewport *viewport = w->viewport;
 	if (viewport == NULL)
 		return;
@@ -1156,12 +1166,9 @@ void window_rotate_camera(rct_window *w)
 	sint16 y = (viewport->height >> 1) + viewport->y;
 	sint16 z;
 
-	uint8 rot = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-
-	int ecx, edx, esi, edi = (int)viewport, ebp;
 	//has something to do with checking if middle of the viewport is obstructed
-	RCT2_CALLFUNC_X(0x00688972, (int*)&x, (int*)&y, &ecx, &edx, &esi, &edi, &ebp);
-	rct_viewport *other = (rct_viewport*)edi;
+	rct_viewport *other;
+	sub_688972(x, y, &x, &y, &other);
 
 	// other != viewport probably triggers on viewports in ride or guest window?
 	// x is 0x8000 if middle of viewport is obstructed by another window?
@@ -1169,12 +1176,12 @@ void window_rotate_camera(rct_window *w)
 		x = (viewport->view_width >> 1) + viewport->view_x;
 		y = (viewport->view_height >> 1) + viewport->view_y;
 
-		sub_689174(&x, &y, &z, rot);
+		sub_689174(&x, &y, &z);
 	} else {
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (rot + 1) % 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) + 1) % 4;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
@@ -1186,8 +1193,7 @@ void window_rotate_camera(rct_window *w)
 
 	window_invalidate(w);
 
-	RCT2_CALLPROC_EBPSAFE(0x00688956);
-
+	sub_688956();
 	sub_69E9A7();
 }
 
@@ -1345,7 +1351,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
 
 		// Invalidate the window
-		RCT2_CALLPROC_X(v->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)v, 0, 0);
+		window_event_invalidate_call(v);
 
 		// Paint the window
 		RCT2_CALLPROC_X(v->event_handlers[WE_PAINT], 0, 0, 0, 0, (int)v, (int)dpi, 0);
@@ -1484,8 +1490,8 @@ void window_resize(rct_window *w, int dw, int dh)
 	w->width = clamp(w->min_width, w->width + dw, w->max_width);
 	w->height = clamp(w->min_height, w->height + dh, w->max_height);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], w->width, w->height, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
 
 	// Update scroll widgets
 	for (i = 0; i < 3; i++) {
@@ -1906,7 +1912,7 @@ void sub_6EA73F()
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		window_update_scroll_widgets(w);
 		window_invalidate_pressed_image_buttons(w);
-		RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+		window_event_resize_call(w);
 	}
 }
 

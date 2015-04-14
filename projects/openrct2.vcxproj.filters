@@ -357,14 +357,12 @@
     <ClCompile Include="..\src\windows\ride_construction.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\interface\viewport_interaction.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
     </ClCompile>
@@ -386,7 +384,7 @@
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
+    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_inventions_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -429,6 +427,12 @@
     </ClCompile>
     <ClCompile Include="..\src\world\scenery.c">
       <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rct1.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\install_track.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -484,9 +488,6 @@
       <Filter>Source\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\src\windows\error.h">
-      <Filter>Source\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\windows\scenery.h">
       <Filter>Source\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\src\windows\tooltip.h">

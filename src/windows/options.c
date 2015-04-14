@@ -888,10 +888,8 @@ static void window_options_set_page(rct_window *w, int page)
 	w->frame_no = 0;
 
 	window_invalidate(w);
-
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
 	window_init_scroll_widgets(w);
 	window_invalidate(w);
 }

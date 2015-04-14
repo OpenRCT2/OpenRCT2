@@ -43,6 +43,7 @@
 #include "world/map.h"
 #include "world/park.h"
 #include "world/climate.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 
 typedef struct tm tm_t;
@@ -94,7 +95,7 @@ int rct2_init()
 	gfx_load_g1();
 	gfx_load_character_widths();
 	platform_init();
-	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
+	audio_init1();
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
@@ -103,13 +104,13 @@ int rct2_init()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
+	sub_6BD3A4();
 	map_init(150);
 	park_init();
-	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
+	window_title_menu_open();
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();

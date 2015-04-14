@@ -48,6 +48,16 @@ enum {
 	RESEARCH_STAGE_FINISHED_ALL
 };
 
+enum {
+	RESEARCH_CATEGORY_TRANSPORT,
+	RESEARCH_CATEGORY_GENTLE,
+	RESEARCH_CATEGORY_ROLLERCOASTER,
+	RESEARCH_CATEGORY_THRILL,
+	RESEARCH_CATEGORY_WATER,
+	RESEARCH_CATEGORY_SHOP,
+	RESEARCH_CATEGORY_SCENERYSET
+};
+
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
 
@@ -55,6 +65,8 @@ void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
 void sub_684AC3();
+void research_remove_non_separate_vehicle_types();
+void research_populate_list_random();
 
 void research_set_funding(int amount);
 void research_set_priority(int activeCategories);

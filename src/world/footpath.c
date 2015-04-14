@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 #include "footpath.h"
 #include "map.h"
 
@@ -474,19 +475,136 @@ void footpath_provisional_update()
 }
 
 /**
+ *  Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
+ *  then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
+ *  when we are going to build a footpath bridge/tunnel.
+ *  rct2: 0x00689726
+ *  In:
+ *		screenX: eax
+ *		screenY: ebx
+ *  Out:
+ *		x: ax
+ *		y: bx
+ *		direction: ecx
+ *		mapElement: edx
+ */
+void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+{
+	int z;
+	rct_map_element *myMapElement;
+	rct_viewport *viewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFDF, x, y, &z, &myMapElement, &viewport);
+	if (z != 6 || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
+		get_map_coordinates_from_pos(screenX, screenY, 0xFFDE, x, y, &z, &myMapElement, &viewport);
+		if (z == 0) {
+			if (x != NULL) *x = 0x8000;
+			return;
+		}
+	}
+
+	RCT2_GLOBAL(0x00F1AD3E, uint8) = z;
+	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
+
+	if (z == 6) {
+		// mapElement appears to be a footpath
+		z = myMapElement->base_height * 8;
+		if (myMapElement->properties.path.type & (1 << 2))
+			z += 8;
+	}
+
+	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = *x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = *y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = *x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = *y + 31;
+
+	*x += 16;
+	*y += 16;
+
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+	rct_xy16 map_pos = { *x, *y };
+
+	for (int i = 0; i < 5; i++) {
+		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
+			z = map_element_height(map_pos.x, map_pos.y);
+		} else {
+			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
+		}
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+	}
+
+	// Determine to which edge the cursor is closest
+	uint32 myDirection;
+	int mod_x = map_pos.x & 0x1F, mod_y = map_pos.y & 0x1F;
+	if (mod_x < mod_y) {
+		if (mod_x + mod_y < 32) {
+			myDirection = 0;
+		} else {
+			myDirection = 1;
+		}
+	} else {
+		if (mod_x + mod_y < 32) {
+			myDirection = 3;
+		} else {
+			myDirection = 2;
+		}
+	}
+
+	if (x != NULL) *x = map_pos.x & ~0x1F;
+	if (y != NULL) *y = map_pos.y & ~0x1F;
+	if (direction != NULL) *direction = myDirection;
+	if (mapElement != NULL) *mapElement = myMapElement;
+	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
+}
+
+/**
  * 
  *  rct2: 0x0068A0C9
+ * screenX: eax
+ * screenY: ebx
+ * x: ax
+ * y: bx
+ * direction: cl
+ * mapElement: edx
  */
-void sub_68A0C9(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
+void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = screenX;
-	ebx = screenY;
-	RCT2_CALLFUNC_X(0x0068A0C9, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (x != NULL) *x = *((uint16*)&eax);
-	if (y != NULL) *y = *((uint16*)&ebx);
-	if (direction != NULL) *direction = *((uint8*)&ecx);
-	if (mapElement != NULL) *mapElement = (rct_map_element*)edx;
+	// First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
+	int z;
+	rct_viewport *viewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, x, y, &z, mapElement, &viewport);
+	if (z == 3
+		&& viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
+		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		int ebp = (*mapElement)->properties.entrance.type << 4;
+		int bl = (*mapElement)->properties.entrance.index & 0xF;
+		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
+			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+			bx += (*mapElement)->type;
+			bx &= 3;
+			if (direction != NULL) *direction = bx;
+			return;
+		}
+	}
+	
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFDA, x, y, &z, mapElement, &viewport);
+	if (z == 3 && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		int ebp = (*mapElement)->properties.entrance.type << 4;
+		int bl = (*mapElement)->properties.entrance.index & 0xF; // Seems to be always 0?
+		// The table at 0x0097B974 is only 48 bytes big
+		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
+			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+			bx += (*mapElement)->type; // First two bits seem to contain the direction of entrance/exit
+			bx &= 3;
+			if (direction != NULL) *direction = bx;
+			return;
+		}
+	}
+
+	// We point at something else
+	footpath_get_coordinates_from_pos(screenX, screenY, x, y, direction, mapElement);
 }
 
 /**

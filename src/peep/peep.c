@@ -41,6 +41,7 @@ static int peep_empty_container_standard_flag(rct_peep* peep);
 static int peep_empty_container_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
+static void sub_693BAB(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -293,7 +294,7 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		return 1;
 	}
 	
-	int* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
+	uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
 	uint8* _edi = (uint8*)(edi[peep->action_sprite_type * 2 + 1]);
 	peep->action_frame++;
 	int ebx = _edi[peep->action_frame + 1];
@@ -378,12 +379,12 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 	if (peep->state == PEEP_STATE_SITTING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->var_6F = 7;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 	}
 	if (peep->state == PEEP_STATE_WATCHING){
 		peep->action = PEEP_ACTION_NONE_1;
 		peep->var_6F = 2;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 	}
 }
 
@@ -530,9 +531,8 @@ void peep_update_sprite_type(rct_peep* peep){
 void peep_window_state_update(rct_peep* peep){
 	
 	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
-	if (w){
-		RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
-	}
+	if (w != NULL)
+		window_event_invalidate_call(w);
 
 	if (peep->type == PEEP_TYPE_GUEST){
 		// Update action label
@@ -568,7 +568,7 @@ void peep_sprite_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		window_invalidate_by_class(WC_GUEST_LIST);
 
-		RCT2_CALLPROC_X(0x0066E407, 2, 0, peep->sprite_index, 0, 0, 0, 0);
+		news_item_disable_news(NEWS_ITEM_PEEP_ON_RIDE, peep->sprite_index);
 	}
 	else{
 		window_invalidate_by_class(WC_STAFF_LIST);
@@ -578,7 +578,7 @@ void peep_sprite_remove(rct_peep* peep){
 		sub_6C0C3F();
 		peep->type = PEEP_TYPE_STAFF;
 
-		RCT2_CALLPROC_X(0x0066E407, 3, 0, peep->sprite_index, 0, 0, 0, 0);
+		news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
 	}
 	sprite_remove((rct_sprite*)peep);
 }
@@ -756,7 +756,7 @@ void peep_update_sitting(rct_peep* peep){
 		invalidate_sprite((rct_sprite*)peep);
 		peep->action = 254;
 		peep->var_6F = 7;
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 
 		peep->sub_state++;
 
@@ -832,8 +832,12 @@ void peep_update_sitting(rct_peep* peep){
 	}
 }
 
-/* rct2: 0x006966A9 */
-static void remove_peep_from_queue(rct_peep* peep){
+/**
+ *
+ * rct2: 0x006966A9 
+ */
+void remove_peep_from_queue(rct_peep* peep)
+{
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	uint8 cur_station = peep->current_ride_station;
@@ -913,8 +917,8 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 
 	uint8 shift_multiplier = 21;
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	if (ride_type->vehicles[ride_type->var_014].var_12 & (1 << 3) ||
-		ride_type->vehicles[ride_type->var_014].var_14 & 0x5000){
+	if (ride_type->vehicles[ride_type->default_vehicle].var_12 & (1 << 3) ||
+		ride_type->vehicles[ride_type->default_vehicle].var_14 & 0x5000){
 		shift_multiplier = 32;
 	}
 
@@ -1110,7 +1114,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (peep_update_action(&x, &y, &xy_distance, peep))
 	{
-		uint8 vehicle = ride_entry->var_014;
+		uint8 vehicle = ride_entry->default_vehicle;
 
 		if (ride_entry->vehicles[vehicle].var_12 & (1 << 3) || 
 			ride_entry->vehicles[vehicle].var_14 & ((1 << 14) | (1<<12)))
@@ -1320,7 +1324,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_12 & (1 << 3) ||
 		vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
@@ -1510,7 +1514,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 
 	if (ride->status == RIDE_STATUS_OPEN &&
 		++peep->var_AC != 0 &&
-		!(GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4))
+		!((GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4)))
 		return;
 	
 	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
@@ -1642,7 +1646,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			}
 
 			ride_entry = GET_RIDE_ENTRY(ride->subtype);
-			vehicle_entry = &ride_entry->vehicles[ride_entry->var_014];
+			vehicle_entry = &ride_entry->vehicles[ride_entry->default_vehicle];
 
 			uint8 shift_multiplier = 12;
 			if (vehicle_entry->var_14 & (1 << 14)){
@@ -1787,7 +1791,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
 	}
@@ -1990,7 +1994,7 @@ static void peep_udpate_ride_sub_state_13(rct_peep* peep){
 	sint16 shift_multiplier = 20;
 
 	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
-	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->var_014];
+	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->var_14 & 0x5000){
 		shift_multiplier = 32;
 	}
@@ -2784,24 +2788,25 @@ static void peep_update_watering(rct_peep* peep){
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
-		for (;; map_element++){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY){
-				if (abs(((int)peep->next_z) - map_element->base_height) <= 4){
-					rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+		do{
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
+				continue;
+			
+			if (abs(((int)peep->next_z) - map_element->base_height) > 4)
+				continue;
+			
+			rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
-					if (scenery_entry->small_scenery.flags& SMALL_SCENERY_FLAG6){
-						map_element->properties.scenery.age = 0;
-						gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
-						peep->staff_gardens_watered++;
-						peep->var_45 |= (1 << 4);
-					}
-				}
-			}
-			if (map_element_is_last_for_tile(map_element)) {
-				peep_state_reset(peep);
-				return;
-			}
-		}
+			if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+				continue;
+			
+			map_element->properties.scenery.age = 0;
+			gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+			peep->staff_gardens_watered++;
+			peep->var_45 |= (1 << 4);	
+		} while (!map_element_is_last_for_tile(map_element++));
+
+		peep_state_reset(peep);
 	}
 }
 
@@ -2988,7 +2993,7 @@ static void peep_update_watching(rct_peep* peep){
 		peep->action = 0xFE;
 		peep->var_6F = 2;
 
-		RCT2_CALLPROC_X(0x693BAB, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_693BAB(peep);
 
 		peep->sub_state++;
 
@@ -3473,8 +3478,8 @@ static void peep_update_using_bin(rct_peep* peep){
 			uint8 bp = RCT2_ADDRESS(0x97EFCC, uint8)[cur_container];
 
 			int x, y;
-			x = peep->x + scenario_rand() & 7 - 3;
-			y = peep->y + scenario_rand() & 7 - 3;
+			x = peep->x + (scenario_rand() & 7) - 3;
+			y = peep->y + (scenario_rand() & 7) - 3;
 
 			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
 			peep->item_standard_flags &= ~(1 << cur_container);
@@ -3504,8 +3509,8 @@ static void peep_update_using_bin(rct_peep* peep){
 			uint8 bp = RCT2_ADDRESS(0x97EFE8, uint8)[cur_container];
 
 			int x, y;
-			x = peep->x + scenario_rand() & 7 - 3;
-			y = peep->y + scenario_rand() & 7 - 3;
+			x = peep->x + (scenario_rand() & 7) - 3;
+			y = peep->y + (scenario_rand() & 7) - 3;
 
 			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
 			peep->item_extra_flags &= ~(1 << cur_container);
@@ -3760,32 +3765,27 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 
 		do {
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY){
-				map_element++;
 				continue;
 			}
 
 			uint8 z_diff = abs(peep->next_z - map_element->base_height);
 
 			if (z_diff >= 4){
-				map_element++;
 				continue;
 			}
 
 			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[map_element->properties.scenery.type];
 
 			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)){
-				map_element++;
 				continue;
 			}
 
 			if (map_element->properties.scenery.age < 55){
 				if (chosen_position >= 4){
-					map_element++;
 					continue;
 				}
 
 				if (map_element->properties.scenery.age < 40){
-					map_element++;
 					continue;
 				}
 			}
@@ -3801,7 +3801,7 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 			peep->destination_tolerence = 3;
 
 			return 1;
-		} while (!map_element_is_last_for_tile(map_element));
+		} while (!map_element_is_last_for_tile(map_element++));
 	}
 	return 0;
 }
@@ -5308,3 +5308,18 @@ void peep_set_map_tooltip(rct_peep *peep)
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint32) = arg1;
 	}
 }
+
+
+void sub_693BAB(rct_peep* peep) {
+	uint8 bl = peep->var_6F;
+	if (bl != peep->action_sprite_type) {
+		invalidate_sprite((rct_sprite*)peep);
+		peep->action_sprite_type = bl;
+		uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
+		peep->sprite_width = edx[bl * 4];
+		peep->sprite_height_negative = edx[bl * 4 + 1];
+		peep->sprite_height_positive = edx[bl * 4 + 2];
+		invalidate_sprite((rct_sprite*)peep);
+	}
+}
+

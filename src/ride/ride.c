@@ -735,7 +735,7 @@ static void ride_remove_peeps(int rideIndex)
 
 			peep_decrement_num_riders(peep);
 			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == 0)
-				RCT2_CALLPROC_X(0x006966A9, 0, 0, 0, 0, (int)peep, 0, 0);
+				remove_peep_from_queue(peep);
 
 			invalidate_sprite((rct_sprite*)peep);
 
@@ -1714,14 +1714,18 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 		if (peep->staff_type != STAFF_TYPE_MECHANIC)
 			continue;
 
-		if (forInspection) {
-			if ((peep->state != PEEP_STATE_HEADING_TO_INSPECTION || peep->sub_state >= 4) && peep->state != PEEP_STATE_PATROLLING)
+		if (!forInspection) {
+			if (peep->state == PEEP_STATE_HEADING_TO_INSPECTION){
+				if (peep->sub_state >= 4)
+					continue;
+			}
+			else if (peep->state != PEEP_STATE_PATROLLING)
 				continue;
 
-			if (!(peep->staff_orders & 2))
+			if (!(peep->staff_orders & STAFF_ORDERS_FIX_RIDES))
 				continue;
 		} else {
-			if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & 1))
+			if (peep->state != PEEP_STATE_PATROLLING || !(peep->staff_orders & STAFF_ORDERS_INSPECT_RIDES))
 				continue;
 		}
 
@@ -3589,4 +3593,82 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 bool ride_type_has_flag(int rideType, int flag)
 {
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
+}
+
+/*
+ * The next six functions are helpers to access ride data at the offset 10E &
+ * 110. We believe it stores three distinct values in the following format:
+ *
+ * unknown1: bits 9-11
+ * unknown2: bits 6-8
+ * unknown3: low 5 bits
+ */
+
+int get_var_10E_unk_1(rct_ride* ride) {
+	return (ride->var_10E >> 8) & 0x7;
+}
+
+int get_var_10E_unk_2(rct_ride* ride) {
+	return (ride->var_10E >> 5) & 0x7;
+}
+
+int get_var_10E_unk_3(rct_ride* ride) {
+	return ride->var_10E & 0x1F;
+}
+
+int get_var_110_unk_1(rct_ride* ride) {
+	return (ride->var_110 >> 8) & 0x7;
+}
+
+int get_var_110_unk_2(rct_ride* ride) {
+	return (ride->var_110 >> 5) & 0x7;
+}
+
+int get_var_110_unk_3(rct_ride* ride) {
+	return ride->var_110 & 0x1F;
+}
+
+int get_var_112_unk_1(rct_ride* ride) {
+	return (ride->var_112 >> 11) & 0x3F;
+}
+
+int get_var_112_unk_2(rct_ride* ride) {
+	return (ride->var_112 >> 8) & 7;
+}
+
+int get_var_112_unk_3(rct_ride* ride) {
+	return (ride->var_112 >> 5) & 7;
+}
+
+int get_var_112_unk_4(rct_ride* ride) {
+	return ride->var_112 & 0x1F;
+}
+
+bool ride_has_spinning_tunnel(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_water_splash(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_rapids(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+}
+
+bool ride_has_log_reverser(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+}
+
+bool ride_has_waterfall(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+}
+
+bool ride_has_whirlpool(rct_ride *ride) {
+	return ride->special_track_elements & RIDE_ELEMENT_WHIRLPOOL;
+}
+
+uint8 ride_get_helix_sections(rct_ride *ride) {
+	// Helix sections stored in the low 5 bits.
+	return ride->special_track_elements & 0x1F;
 }
