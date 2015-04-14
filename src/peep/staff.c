@@ -294,7 +294,7 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 		window_close_by_class(WC_FIRE_PROMPT);
 		uint16 sprite_id = *edx;
 		rct_peep *peep = &g_sprite_list[sprite_id].peep;
-		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_ride(peep);
 		peep_sprite_remove(peep);
 	}
 	*ebx = 0;
