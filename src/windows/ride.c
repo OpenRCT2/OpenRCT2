@@ -1408,6 +1408,12 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->page = page;
 	w->frame_no = 0;
 	w->var_492 = 0;
+
+	if (page == WINDOW_RIDE_PAGE_VEHICLE){
+		// Reload the vehicle settings
+		RCT2_CALLPROC_X(0x006DD57D, 0, 0, 0, w->number, 0, 0, 0);
+	}
+
 	if (w->viewport != NULL) {
 		w->viewport->width = 0;
 		w->viewport = NULL;
