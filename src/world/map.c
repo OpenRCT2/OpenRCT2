@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -888,6 +889,164 @@ void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, i
 		(*edx & 0xFF00) >> 8,
 		*ebx & 0xFF
 		);
+}
+
+/**
+ *
+ *  rct2: 0x0068C542
+ */
+void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int x = *eax;
+	int y = *ecx;
+	int z = map_element_height(*eax, *ecx);
+	int ax = (uint16)*edx;
+	int ay = (uint16)*ebp;
+	int bx = (uint16)(*edx >> 16);
+	int by = (uint16)(*ebp >> 16);
+	uint16 selection_type = *edi;
+
+	int cost = 0x80000000;
+
+	if(*ebx & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1){
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	}
+
+	uint8 dh = 0xFF;
+
+	// find lowest map element in selection
+	for(int yi = ay; yi <= by; yi += 32){
+		for(int xi = ax; xi <= bx; xi += 32){
+			int tile_idx = (((yi & 0x1FE0) * 256) + (xi & 0x1FE0)) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			while(map_element->type & MAP_ELEMENT_TYPE_MASK){
+				map_element++;
+			}
+			if(dh > map_element->base_height){
+				dh = map_element->base_height;
+			}
+		}
+	}
+
+	for(int yi = ay; yi <= by; yi += 32){
+		for(int xi = ax; xi <= bx; xi += 32){
+			int tile_idx = (((yi & 0x1FE0) * 256) + (xi & 0x1FE0)) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			while(map_element->type & MAP_ELEMENT_TYPE_MASK){
+				map_element++;
+			}
+			uint8 dl = map_element->base_height;
+			if(dl <= dh){
+				uint8 dh = RCT2_ADDRESS(0x00981A1E, uint8)[(selection_type * 32) + (map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK)]; // lookup table
+				if(dh & 0x20){ // needs to be raised, otherwise just the slope type changes
+					dl += 2;
+					dh &= ~0x20;
+				}
+				int ebx2 = *ebx;
+				int edx2 = (dh << 8) + dl;
+				int edi2 = selection_type * 32;
+				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
+				if(ebx2 != 0x80000000){
+					if(cost == 0x80000000){
+						cost = ebx2;
+					}else{
+						cost += ebx2;
+					}
+				}
+			}
+		}
+	}
+	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
+	RCT2_GLOBAL(0x009DEA60, uint32) = y;
+	RCT2_GLOBAL(0x009DEA62, uint32) = z;
+	*ebx = cost;
+}
+
+/**
+ *
+ *  rct2: 0x0068C6D1
+ */
+void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int x = *eax;
+	int y = *ecx;
+	int z = map_element_height(*eax, *ecx);
+	int ax = (uint16)*edx;
+	int ay = (uint16)*ebp;
+	int bx = (uint16)(*edx >> 16);
+	int by = (uint16)(*ebp >> 16);
+	uint16 selection_type = *edi;
+
+	int cost = 0x80000000;
+
+	if(*ebx & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1){
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	}
+
+	uint8 dh = 0;
+
+	// find highest map element in selection
+	for(int yi = ay; yi <= by; yi += 32){
+		for(int xi = ax; xi <= bx; xi += 32){
+			int tile_idx = (((yi & 0x1FE0) * 256) + (xi & 0x1FE0)) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			while(map_element->type & MAP_ELEMENT_TYPE_MASK){
+				map_element++;
+			}
+			uint8 dl = map_element->base_height;
+			if(map_element->properties.surface.slope & 0xF){
+				dl += 2;
+			}
+			if(map_element->properties.surface.slope & 0x10){
+				dl += 2;
+			}
+			if(dh < dl){
+				dh = dl;
+			}
+		}
+	}
+
+	for(int yi = ay; yi <= by; yi += 32){
+		for(int xi = ax; xi <= bx; xi += 32){
+			int tile_idx = (((yi & 0x1FE0) * 256) + (xi & 0x1FE0)) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			while(map_element->type & MAP_ELEMENT_TYPE_MASK){
+				map_element++;
+			}
+			uint8 dl = map_element->base_height;
+			if(map_element->properties.surface.slope & 0xF){
+				dl += 2;
+			}
+			if(map_element->properties.surface.slope & 0x10){
+				dl += 2;
+			}
+			if(dl >= dh){
+				dl =  map_element->base_height;
+				uint8 dh = RCT2_ADDRESS(0x00981ABE, uint8)[(selection_type * 32) + (map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK)]; // lookup table
+				if(dh & 0x20){ // needs to be lowered, otherwise just the slope type changes
+					dl -= 2;
+					dh &= ~0x20;
+				}
+				int ebx2 = *ebx;
+				int edx2 = (dh << 8) + dl;
+				int edi2 = selection_type * 32;
+				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
+				if(ebx2 != 0x80000000){
+					if(cost == 0x80000000){
+						cost = ebx2;
+					}else{
+						cost += ebx2;
+					}
+				}
+			}
+		}
+	}
+	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
+	RCT2_GLOBAL(0x009DEA60, uint32) = y;
+	RCT2_GLOBAL(0x009DEA62, uint32) = z;
+	*ebx = cost;
 }
 
 /**
