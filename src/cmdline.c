@@ -24,14 +24,18 @@
 #include "cmdline.h"
 #include "openrct2.h"
 #include "platform/platform.h"
+#include "util/util.h"
 
 typedef struct tm tm_t;
 typedef struct argparse_option argparse_option_t;
 typedef struct argparse argparse_t;
 
+typedef int (*cmdline_action)(const char **argv, int argc);
+
 int gExitCode = 0;
 
 static void print_launch_information();
+static int cmdline_call_action(const char **argv, int argc);
 
 static const char *const usage[] = {
 	"openrct2 <command> [options] [<args>]",
@@ -73,21 +77,9 @@ int cmdline_run(const char **argv, int argc)
 		_log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
 
 	if (argc != 0) {
-		if (_stricmp(argv[0], "intro") == 0) {
-			gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
-		} else if (_stricmp(argv[0], "edit") == 0) {
-			gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
-			if (argc >= 2)
-				strcpy(gOpenRCT2StartupActionPath, argv[1]);
-		} else {
-			if (platform_file_exists(argv[0])) {
-				gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
-				strcpy(gOpenRCT2StartupActionPath, argv[0]);
-			} else {
-				fprintf(stderr, "error: %s does not exist\n", argv[0]);
-				return 0;
-			}
-		}
+		int exitCode = cmdline_call_action(argv, argc);
+		if (exitCode != 0)
+			return exitCode;
 	}
 
 	print_launch_information();
@@ -112,4 +104,51 @@ static void print_launch_information()
 	printf("Time: %s\n", buffer);
 
 	// TODO Print other potential information (e.g. user, hardware)
+}
+
+static int cmdline_for_intro(const char **argv, int argc)
+{
+	gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+	return 0;
+}
+
+static int cmdline_for_edit(const char **argv, int argc)
+{
+	gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
+	if (argc >= 1)
+		strcpy(gOpenRCT2StartupActionPath, argv[1]);
+
+	return 0;
+}
+
+static int cmdline_for_none(const char **argv, int argc)
+{
+	assert(argc >= 1);
+
+	if (platform_file_exists(argv[0])) {
+		gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+		strcpy(gOpenRCT2StartupActionPath, argv[0]);
+		return 0;
+	} else {
+		fprintf(stderr, "error: %s does not exist\n", argv[0]);
+		return -1;
+	}
+}
+
+struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
+	{ "intro", cmdline_for_intro },
+	{ "edit", cmdline_for_edit },
+	{ "sprite", cmdline_for_sprite }
+};
+
+static int cmdline_call_action(const char **argv, int argc)
+{
+	for (int i = 0; i < countof(cmdline_table); i++) {
+		if (_stricmp(cmdline_table[i].firstArg, argv[0]) != 0)
+			continue;
+
+		return cmdline_table[i].action(argv + 1, argc - 1);
+	}
+
+	return cmdline_for_none(argv, argc);
 }

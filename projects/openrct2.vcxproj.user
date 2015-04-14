@@ -4,7 +4,6 @@
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>sprite export "C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2\data\g1.dat" 5511 "C:\Users\Ted\Desktop\exportg1\5111.png"</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
