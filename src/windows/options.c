@@ -221,7 +221,7 @@ void window_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_centred(WW, WH, (uint32*)window_options_events, WC_OPTIONS, 0);
+	w = window_create_centred(WW, WH, (uint32*)window_options_events, WC_OPTIONS, WF_STICK_TO_FRONT);
 	w->widgets = window_options_widgets;
 	w->enabled_widgets =
 		(1ULL << WIDX_CLOSE) |
