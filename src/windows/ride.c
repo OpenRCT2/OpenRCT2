@@ -5262,11 +5262,12 @@ static void window_ride_graphs_scrollpaint()
 
 		gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width - 1, y, colour);
 
+		sint16 scaled_yUnit = yUnit;
 		// Scale modifier
 		if (ax == 1420)
-			yUnit /= 2;
+			scaled_yUnit /= 2;
 
-		gfx_draw_string_left(dpi, ax, &yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
+		gfx_draw_string_left(dpi, ax, &scaled_yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
 	}
 
 	// Time marks
