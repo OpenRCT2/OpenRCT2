@@ -558,7 +558,7 @@ int ride_create_ride(ride_list_item listItem)
 
 	esi = GAME_COMMAND_6;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx == 0x80000000 ? -1 : edi;
+	return ebx == MONEY32_UNDEFINED ? -1 : edi;
 }
 
 /**
@@ -2783,13 +2783,13 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 	if (setting == 0){
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1796;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 
 		if (ride->status != RIDE_STATUS_CLOSED){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1006;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
@@ -2798,7 +2798,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		if (setting == 0 || setting == 4 || setting == 8 || setting == 9)
 		{ 
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1797;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
@@ -2807,7 +2807,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT &&
 		new_value > 1){
 		RCT2_GLOBAL(0x141E9AC, uint16) = 3141;
-		*ebx = 0x80000000;
+		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 

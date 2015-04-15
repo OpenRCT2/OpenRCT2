@@ -358,7 +358,7 @@ static int game_check_affordability(int cost)
 	}
 	RCT2_GLOBAL(0x13CE952, uint32) = cost;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
-	return 0x80000000;
+	return MONEY32_UNDEFINED;
 }
 
 static uint32 game_do_command_table[58];
@@ -411,13 +411,13 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 	cost = *ebx;
 
-	if (cost != 0x80000000) {
+	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
 		insufficientFunds = 0;
 		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
-		if (insufficientFunds != 0x80000000) {
+		if (insufficientFunds != MONEY32_UNDEFINED) {
 			*ebx = original_ebx;
 			*edx = original_edx;
 			*esi = original_esi;
@@ -438,7 +438,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 			*edx = *ebx;
 
-			if (*edx != 0x80000000 && *edx < cost)
+			if (*edx != MONEY32_UNDEFINED && *edx < cost)
 				cost = *edx;
 
 			// Decrement nest count
@@ -470,7 +470,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
 		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 
-	return 0x80000000;
+	return MONEY32_UNDEFINED;
 }
 
 void pause_toggle()

@@ -898,7 +898,7 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	int by = (uint16)(*ebp >> 16);
 	uint16 selection_type = *edi;
 
-	int cost = 0x80000000;
+	int cost = MONEY32_UNDEFINED;
 
 	if(*ebx & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1){
 		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
@@ -930,8 +930,8 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 				int edx2 = (dh << 8) + height;
 				int edi2 = selection_type * 32;
 				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
-				if(ebx2 != 0x80000000){
-					if(cost == 0x80000000){
+				if(ebx2 != MONEY32_UNDEFINED){
+					if(cost == MONEY32_UNDEFINED){
 						cost = ebx2;
 					}else{
 						cost += ebx2;
@@ -962,7 +962,7 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	int by = (uint16)(*ebp >> 16);
 	uint16 selection_type = *edi;
 
-	int cost = 0x80000000;
+	int cost = MONEY32_UNDEFINED;
 
 	if(*ebx & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1){
 		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
@@ -1008,8 +1008,8 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 				int edx2 = (dh << 8) + height;
 				int edi2 = selection_type * 32;
 				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
-				if(ebx2 != 0x80000000){
-					if(cost == 0x80000000){
+				if(ebx2 != MONEY32_UNDEFINED){
+					if(cost == MONEY32_UNDEFINED){
 						cost = ebx2;
 					}else{
 						cost += ebx2;
@@ -1070,8 +1070,8 @@ void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				}
 				int eax2 = xi, ebx2 = *ebx, ecx2 = yi, edx2 = (max_height << 8) + height, esi2, edi2, ebp2;
 				ebx2 = game_do_command_p(GAME_COMMAND_16, &eax2, &ebx2, &ecx2, &edx2, &esi2, &edi2, &ebp2);
-				if(ebx2 == 0x80000000){
-					*ebx = 0x80000000;
+				if(ebx2 == MONEY32_UNDEFINED){
+					*ebx = MONEY32_UNDEFINED;
 					return;
 				}else{
 					cost += ebx2;
@@ -1139,8 +1139,8 @@ void game_command_lower_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				height -= 2;
 				int eax2 = xi, ebx2 = *ebx, ecx2 = yi, edx2 = (min_height << 8) + height, esi2, edi2, ebp2;
 				ebx2 = game_do_command_p(GAME_COMMAND_16, &eax2, &ebx2, &ecx2, &edx2, &esi2, &edi2, &ebp2);
-				if(ebx2 == 0x80000000){
-					*ebx = 0x80000000;
+				if(ebx2 == MONEY32_UNDEFINED){
+					*ebx = MONEY32_UNDEFINED;
 					return;
 				}else{
 					cost += ebx2;
@@ -1180,12 +1180,12 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	RCT2_GLOBAL(0x141F56C, uint8) = 12;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-		*ebx = 0x80000000;
+		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if((*ebx & 0x40) || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
 		if(!map_is_location_owned(x, y, base_height * 8)){
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 		rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);

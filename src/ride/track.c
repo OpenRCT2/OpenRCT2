@@ -784,7 +784,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	edx = track_design->type | (entry_index << 8);
 	esi = GAME_COMMAND_6;
 
-	if (0x80000000 == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
+	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
 
 	// bh
 	*ride_id = edi & 0xFF;
@@ -840,7 +840,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	edi = sub_6D01B3((*ride_id << 8) | bl, map_size, map_size, z);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
 
-	if (edi != 0x80000000){
+	if (edi != MONEY32_UNDEFINED){
 
 		if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index)){
 			RCT2_GLOBAL(0xF44151, uint8) |= 4;
