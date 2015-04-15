@@ -503,9 +503,9 @@ void window_scenery_close() {
 
 	window_get_register(w);
 
-	RCT2_CALLPROC_EBPSAFE(0x006E2712);
+	scenery_remove_ghost_tool_placement();
 	hide_gridlines();
-	RCT2_CALLPROC_X(0x006CB70A, 0, 0, 0, 0, 0, 0, 0);
+	viewport_set_visibility(0);
 
 	if (window_scenery_is_scenery_tool_active())
 		tool_cancel();
@@ -543,7 +543,7 @@ static void window_scenery_mouseup()
 	case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
 		window_scenery_rotation++;
 		window_scenery_rotation = window_scenery_rotation % 4;
-		RCT2_CALLPROC_EBPSAFE(0x006E2712);
+		scenery_remove_ghost_tool_placement();
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:

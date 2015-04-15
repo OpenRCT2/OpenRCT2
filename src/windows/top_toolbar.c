@@ -630,7 +630,7 @@ static void window_top_toolbar_paint()
  * rct2: 0x6e2cc6
  */
 static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
-	RCT2_CALLPROC_EBPSAFE(0x006E2712);
+	scenery_remove_ghost_tool_placement();
 	if (window_scenery_is_repaint_scenery_tool_on & 1){
 		//6e3158
 		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);

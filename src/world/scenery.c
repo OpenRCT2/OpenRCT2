@@ -110,3 +110,89 @@ void scenery_increase_age(int x, int y, rct_map_element *mapElement)
 		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
+
+
+/* 0x006E2712 */
+void scenery_remove_ghost_tool_placement(){
+	sint16 x, y, z;
+
+	x = RCT2_GLOBAL(0x00F64EC4, sint16);
+	y = RCT2_GLOBAL(0x00F64EC6, sint16);
+	z = RCT2_GLOBAL(0x00F64F09, uint8);
+
+	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 0)){
+		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 0);
+
+		game_do_command(
+			x, 
+			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8), 
+			y, 
+			z | (RCT2_GLOBAL(0x00F64EDA, uint8) << 8), 
+			GAME_COMMAND_REMOVE_SCENERY,
+			0, 
+			0);
+	}
+
+	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 1)){
+		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 1);
+
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+
+		do{
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_PATH)
+				continue;
+
+			if (map_element->base_height != z)
+				continue;
+
+			game_do_command(
+				x,
+				233 | (RCT2_GLOBAL(0x00F64F0F, uint8) << 8),
+				y,
+				z | (RCT2_GLOBAL(0x00F64F10, uint8) << 8),
+				GAME_COMMAND_PLACE_PATH,
+				RCT2_GLOBAL(0x00F64EAC, uint32) & 0xFFFF0000,
+				0);
+			break;
+		} while (!map_element_is_last_for_tile(map_element++));
+	}
+
+	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 2)){
+		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 2);
+
+		game_do_command(
+			x,
+			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8),
+			y,
+			RCT2_GLOBAL(0x00F64F11, uint8) |(z << 8),
+			GAME_COMMAND_REMOVE_FENCE,
+			0,
+			0);
+	}
+
+	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 3)){
+		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 3);
+
+		game_do_command(
+			x,
+			105 | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
+			y,
+			z,
+			GAME_COMMAND_44,
+			0,
+			0);
+	}
+
+	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 4)){
+		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 4);
+
+		game_do_command(
+			x,
+			105,
+			y,
+			z | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
+			GAME_COMMAND_51,
+			0,
+			0);
+	}
+}
