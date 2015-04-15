@@ -214,7 +214,7 @@ void window_editor_object_selection_open()
 		400,
 		(uint32*)window_editor_object_selection_events,
 		WC_EDITOR_OBJECT_SELECTION,
-		WF_STICK_TO_FRONT
+		WF_10
 	);
 	window->widgets = window_editor_object_selection_widgets;
 

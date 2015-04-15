@@ -116,7 +116,7 @@ void window_scenarioselect_open()
 		334,
 		(uint32*)window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
-		WF_STICK_TO_FRONT | WF_10
+		WF_10
 	);
 	window->widgets = window_scenarioselect_widgets;
 	
