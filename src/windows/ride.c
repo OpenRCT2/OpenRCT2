@@ -1408,6 +1408,12 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->page = page;
 	w->frame_no = 0;
 	w->var_492 = 0;
+
+	if (page == WINDOW_RIDE_PAGE_VEHICLE){
+		// Reload the vehicle settings
+		RCT2_CALLPROC_X(0x006DD57D, 0, 0, 0, w->number, 0, 0, 0);
+	}
+
 	if (w->viewport != NULL) {
 		w->viewport->width = 0;
 		w->viewport = NULL;
@@ -5256,11 +5262,12 @@ static void window_ride_graphs_scrollpaint()
 
 		gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width - 1, y, colour);
 
+		sint16 scaled_yUnit = yUnit;
 		// Scale modifier
 		if (ax == 1420)
-			yUnit /= 2;
+			scaled_yUnit /= 2;
 
-		gfx_draw_string_left(dpi, ax, &yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
+		gfx_draw_string_left(dpi, ax, &scaled_yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
 	}
 
 	// Time marks
