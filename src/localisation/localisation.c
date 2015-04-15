@@ -351,7 +351,7 @@ void format_date(char **dest, uint16 value)
 	(*dest)--;
 }
 
-void format_length(char **dest, uint16 value)
+void format_length(char **dest, sint16 value)
 {
 	rct_string_id stringId = 2733;
 
