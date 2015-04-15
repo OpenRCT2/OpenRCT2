@@ -626,14 +626,29 @@ static void window_top_toolbar_paint()
 	}
 }
 
+/* rct2: 0x006E3158 */
+static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
+	RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
+	return;
+	// ax, cx, bl
+	sint16 grid_x, grid_y, grid_z;
+	// edx
+	rct_map_element* map_element;
+	// not used
+	rct_viewport* viewport;
+	get_map_coordinates_from_pos(x, y, 0xF8EF, &grid_x, &grid_y, &grid_z, &map_element, &viewport);
+
+	//6e315c
+}
+
 /**
  * rct2: 0x6e2cc6
  */
 static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
 	scenery_remove_ghost_tool_placement();
 	if (window_scenery_is_repaint_scenery_tool_on & 1){
-		//6e3158
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		repaint_scenery_tool_down(x, y, widgetIndex);
+		return;
 	}
 
 	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
