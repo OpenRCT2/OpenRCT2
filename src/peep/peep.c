@@ -197,8 +197,8 @@ void peep_check_if_lost(rct_peep* peep){
 		peep->var_F4 = 230;
 	}
 	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, 0xFF);
-	if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-	else peep->happiness_growth_rate -= 30;
+
+	peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 }
 
 /* rct2: 0x69C26B
@@ -210,8 +210,7 @@ void peep_check_cant_find_ride(rct_peep* peep){
 	if (peep->var_C6 == 30 || peep->var_C6 == 60){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND, peep->guest_heading_to_ride_id);
 
-		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-		else peep->happiness_growth_rate -= 30;
+		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
 	peep->var_C6--;
@@ -236,8 +235,7 @@ void peep_check_cant_find_exit(rct_peep* peep){
 	if (peep->var_C6 == 1){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
 
-		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-		else peep->happiness_growth_rate -= 30;
+		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
 	if (--peep->var_C6 == 0) peep->var_C6 = 90;
