@@ -1237,8 +1237,7 @@ void window_guest_overview_tool_down(){
 	peep->action_sprite_type = 0xFF;
 	peep->var_C4 = 0;
 
-	peep->happiness_growth_rate -= 10;
-	if (peep->happiness_growth_rate < 0)peep->happiness_growth_rate = 0;
+	peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
 
 	sub_693B58(peep);
 	tool_cancel();
