@@ -3791,6 +3791,63 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x006B2FC5
+ */
+void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		uint8 ride_id = *edx;
+		uint8 type = *ebx >> 8;
+		uint8 value = *edx >> 8;
+		int index = *edi;
+		rct_ride *ride = &g_ride_list[ride_id];
+		switch(type){
+			case 0:
+				ride->track_colour_main[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 1:
+				ride->track_colour_additional[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 2:
+				*((uint8*)(&ride->vehicle_colours[index])) = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 3:
+				*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 4:
+				ride->track_colour_supports[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 5:
+				ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
+				ride->colour_scheme_type |= value;
+				for(int i = 1; i < countof(ride->vehicle_colours); i++){
+					ride->vehicle_colours[i] = ride->vehicle_colours[0];
+					ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
+				}
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 6:
+				ride->entrance_style = value;
+				RCT2_GLOBAL(0x01358840, uint8) = value;
+				gfx_invalidate_screen();
+				break;
+			case 7:
+				ride->vehicle_colours_extended[index] = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+		}
+		window_invalidate_by_number(WC_RIDE, ride_id);
+	}
+	*ebx = 0;
+}
+
 bool ride_type_has_flag(int rideType, int flag)
 {
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;

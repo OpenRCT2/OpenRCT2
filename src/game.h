@@ -24,7 +24,7 @@
 #include "common.h"
 
 enum GAME_COMMAND {
-	GAME_COMMAND_0,
+	GAME_COMMAND_SET_RIDE_APPEARANCE,
 	GAME_COMMAND_1,
 	GAME_COMMAND_TOGGLE_PAUSE, // 2
 	GAME_COMMAND_3, //Has something to do with ride construction

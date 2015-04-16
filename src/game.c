@@ -797,7 +797,7 @@ char save_game()
 	path_set_extension(path, ".SV6");
 	
 	if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
-		game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
+		game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 		gfx_invalidate_screen();
 		return 1;
 	} else {
@@ -874,7 +874,7 @@ void game_load_or_quit_no_save_prompt()
 #pragma region Game command function table
 
 static uint32 game_do_command_table[58] = {
-	0x006B2FC5,
+	0,
 	0x0066397F,
 	0,
 	0x006C511D,
@@ -937,7 +937,7 @@ static uint32 game_do_command_table[58] = {
 void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
 
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
-	game_command_emptysub,
+	game_command_set_ride_appearance,
 	game_command_emptysub,
 	game_pause_toggle,
 	game_command_emptysub,

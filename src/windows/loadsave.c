@@ -605,7 +605,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
 				window_close(w);
 
-				game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
+				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 				gfx_invalidate_screen();
 			}
 			else {
