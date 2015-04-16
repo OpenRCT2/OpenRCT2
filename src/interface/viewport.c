@@ -1900,51 +1900,43 @@ void sub_688697(paint_struct *ps)
 void sub_68862C()
 {
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
-	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *attached_ps;
+	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *next_ps, *attached_ps;
 	uint32 eax = 0xBBBBBBBB, ebx = 0xBBBBBBBB, ecx = 0xBBBBBBBB, edx = 0xBBBBBBBB, esi = 0xBBBBBBBB, edi = 0xBBBBBBBB, ebp = 0xBBBBBBBB;
 
-loc_688638:
-	ps = ps->var_24;
-	if (ps == NULL) return;
-	old_ps = ps;
+	while ((ps = ps->var_24) != NULL) {
+		old_ps = ps;
 
-loc_688640:
-	ebx = ps->image_id;
-	ecx = ps->x;
-	edx = ps->y;
-	edi = (uint32)dpi;
-	ebp = (uint32)ps;
-	//sub_679023(ps->image_id, ps->x, ps->y, dpi);
-	RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	sub_688697(ps);
+		next_ps = ps;
+		while (next_ps != NULL) {
+			ps = next_ps;
+			ebx = ps->image_id;
+			ecx = ps->x;
+			edx = ps->y;
+			edi = (uint32)dpi;
+			ebp = (uint32)ps;
+			//sub_679023(ps->image_id, ps->x, ps->y, dpi);
+			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			sub_688697(ps);
 
-	if (ps->var_20 != NULL) {
-		ps = ps->var_20;
-		goto loc_688640;
+			next_ps = ps->var_20;
+		}
+
+		attached_ps = ps->attached_ps;
+		while (attached_ps != NULL) {
+			esi = (uint32)attached_ps;
+			ebp = (uint32)ps;
+			ecx = (attached_ps->attached_x + ps->x) & 0xFFFF;
+			edx = (attached_ps->attached_y + ps->y) & 0xFFFF;
+			ebx = attached_ps->image_id;
+			//sub_679023(ebx, ecx, edx, dpi);
+			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			sub_688697(ps);
+
+			attached_ps = attached_ps->next_attached_ps;
+		}
+
+		ps = old_ps;
 	}
-
-	attached_ps = ps->attached_ps;
-	if (attached_ps != NULL)
-		goto loc_68866D;
-
-	ps = old_ps;
-	goto loc_688638;
-
-loc_68866D:
-	esi = (uint32)attached_ps;
-	ebp = (uint32)ps;
-	ecx = (attached_ps->attached_x + ps->x) & 0xFFFF;
-	edx = (attached_ps->attached_y + ps->y) & 0xFFFF;
-	ebx = attached_ps->image_id;
-	//sub_679023(ebx, ecx, edx, dpi);
-	RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	sub_688697(ps);
-	
-	attached_ps = attached_ps->next_attached_ps;
-	if (attached_ps != NULL) goto loc_68866D;
-
-	ps = old_ps;
-	goto loc_688638;
 }
 
 /**
