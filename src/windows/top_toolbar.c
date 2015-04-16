@@ -30,6 +30,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../world/scenery.h"
+#include "../world/banner.h"
 #include "dropdown.h"
 
 enum {
@@ -628,17 +629,106 @@ static void window_top_toolbar_paint()
 
 /* rct2: 0x006E3158 */
 static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
-	RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
-	return;
+	//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
+	//return;
 	// ax, cx, bl
-	sint16 grid_x, grid_y, grid_z;
+	int grid_x, grid_y, type;
 	// edx
 	rct_map_element* map_element;
+	uint16 flags =
+		~((1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)));
+	// This is -2 as banner is 12 but flags are offset different
+
 	// not used
 	rct_viewport* viewport;
-	get_map_coordinates_from_pos(x, y, 0xF8EF, &grid_x, &grid_y, &grid_z, &map_element, &viewport);
+	get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &map_element, &viewport);
 
-	//6e315c
+	switch (type){
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+	{
+		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+
+		// If can't repaint
+		if (!(scenery_entry->small_scenery.flags &
+			(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR |
+			SMALL_SCENERY_FLAG10)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | (map_element->type << 8),
+			grid_y,
+			map_element->base_height | (map_element->properties.scenery.type << 8),
+			GAME_COMMAND_52,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+	}
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+	{
+		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+
+		// If can't repaint
+		if (!(scenery_entry->wall.flags &
+			(WALL_SCENERY_FLAG1 |
+			WALL_SCENERY_FLAG2)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | (window_scenery_primary_colour << 8),
+			grid_y,
+			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
+			GAME_COMMAND_53,
+			0,
+			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
+	}
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+	{
+		rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
+
+		// If can't repaint
+		if (!(scenery_entry->large_scenery.flags &
+			(1 << 0)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+			grid_y,
+			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
+			GAME_COMMAND_54,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+	}
+	case VIEWPORT_INTERACTION_ITEM_BANNER:
+	{
+		rct_banner* banner = &gBanners[map_element->properties.banner.index];
+		rct_scenery_entry* scenery_entry = g_bannerSceneryEntries[banner->type];
+
+		// If can't repaint
+		if (!(scenery_entry->banner.flags &
+			(1 << 0)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1,
+			grid_y,
+			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
+			GAME_COMMAND_55,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+	}
+	default:
+		return;
+	}
 }
 
 /**
@@ -1023,7 +1113,8 @@ static void window_top_toolbar_tool_drag()
 		window_top_toolbar_water_tool_drag(x, y);
 		break;
 	case WIDX_SCENERY:
-		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
+		if (window_scenery_is_repaint_scenery_tool_on & 1)
+			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}
 }
