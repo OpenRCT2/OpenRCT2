@@ -1157,9 +1157,9 @@ void window_guest_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
-	if (ebx == 0)
+	int interactionType;
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	x--;
@@ -1171,7 +1171,7 @@ void window_guest_overview_tool_update(){
 	
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
-	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
+	int ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
 	ebx += w->var_492 >> 2;
 
 	int ebp = peep->tshirt_colour << 19;

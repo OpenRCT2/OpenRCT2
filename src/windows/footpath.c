@@ -667,15 +667,15 @@ static void window_footpath_mousedown_slope(int slope)
  */
 static void window_footpath_set_provisional_path_at_point(int x, int y)
 {
-	int z, slope, pathType;
+	int slope, pathType, interactionType;
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
 
-	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement, NULL);
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &x, &y, &interactionType, &mapElement, NULL);
 
-	if (z == 0) {
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 		footpath_provisional_update();
 	} else {
@@ -695,7 +695,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 
 		// Set provisional path
 		slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
-		if (z == 6)
+		if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
 			slope = mapElement->properties.surface.slope & 7;
 		pathType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
@@ -752,7 +752,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
  */
 static void window_footpath_place_path_at_point(int x, int y)
 {
-	int z, presentType, selectedType, cost;
+	int interactionType, presentType, selectedType, z, cost;
 	rct_map_element *mapElement;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) != 0)
@@ -760,13 +760,13 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	footpath_provisional_update();
 
-	get_map_coordinates_from_pos(x, y, 0xFFDE, &x, &y, &z, &mapElement, NULL);
-	if (z == 0)
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &x, &y, &interactionType, &mapElement, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	// Set path
 	presentType = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.path.type & 0x1F];
-	if (z == 6)
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
 		presentType = mapElement->properties.path.type & 7;
 	z = mapElement->base_height;
 	selectedType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);

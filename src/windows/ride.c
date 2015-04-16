@@ -3545,9 +3545,9 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 
 	newColourScheme = (uint8)(*((uint16*)&w->var_494));
 
-	int z;
+	int interactionType;
 
-	get_map_coordinates_from_pos(x, y, -5, &x, &y, &z, &mapElement, NULL);
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &x, &y, &interactionType, &mapElement, NULL);
 	// Get map coordinates from point
 	/*int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
@@ -3558,7 +3558,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 	y = ecx & 0xFFFF;
 	mapElement = (rct_map_element*)edx;*/
 
-	if ((/*ebx*/z & 0xFF) != 3)
+	if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
 		return;
 	if (mapElement->properties.track.ride_index != w->number)
 		return;

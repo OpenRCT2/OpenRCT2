@@ -70,9 +70,9 @@ struct paint_struct{
 	uint8 sprite_type;		//0x28
 	uint8 var_29;
 	uint16 pad_2A;
-	uint16 map_x;
-	uint16 map_y;
-	rct_map_element *mapElement;
+	uint16 map_x;			// 0x2C
+	uint16 map_y;			// 0x2E
+	rct_map_element *mapElement; // 0x30
 };
 
 /**
@@ -1609,10 +1609,10 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  *		viewport: edi
  */
 void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-	int my_x, my_y, z;
+	int my_x, my_y, z, interactionType;
 	rct_viewport *myViewport;
-	get_map_coordinates_from_pos(screenX, screenY, 0xFFFE, &my_x, &my_y, &z, NULL, &myViewport);
-	if (z == 0) {
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 		*x = 0x8000;
 		return;
 	}
@@ -1877,10 +1877,13 @@ void sub_688697(paint_struct *ps)
 {
 	if (RCT2_GLOBAL(0x0141F569, uint8) == 0) return;
 
-	if (ps->sprite_type == 0 || ps->sprite_type == 11 || ps->sprite_type > 12) return;
+	if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_NONE
+		|| ps->sprite_type == 11 // 11 as a type seems to not exist, maybe part of the typo mentioned later on.
+		|| ps->sprite_type > VIEWPORT_INTERACTION_ITEM_BANNER) return;
 
 	uint16 mask;
-	if (ps->sprite_type == 12)
+	if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER)
+		// I think CS made a typo here. Let's replicate the original behaviour.
 		mask = 1 << 9;
 	else
 		mask = 1 << (ps->sprite_type - 1);
@@ -1951,7 +1954,7 @@ void sub_68862C()
  * mapElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
 	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -1989,7 +1992,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
-	if (z != NULL) *z = RCT2_GLOBAL(0x9AC148, uint8_t);
+	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
 	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);
 	if (y != NULL) *y = (int)RCT2_GLOBAL(0x9AC14E, int16_t);
 	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
