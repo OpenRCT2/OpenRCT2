@@ -68,6 +68,11 @@ struct paint_struct{
 	paint_struct* var_20;
 	paint_struct* var_24;
 	uint8 sprite_type;		//0x28
+	uint8 var_29;
+	uint16 pad_2A;
+	uint16 map_x;
+	uint16 map_y;
+	rct_map_element *mapElement;
 };
 
 /**
@@ -1866,6 +1871,83 @@ void viewport_set_visibility(uint8 mode)
 }
 
 /**
+ * rct2: 0x00688697
+ */
+void sub_688697(paint_struct *ps)
+{
+	if (RCT2_GLOBAL(0x0141F569, uint8) == 0) return;
+
+	if (ps->sprite_type == 0 || ps->sprite_type == 11 || ps->sprite_type > 12) return;
+
+	uint16 mask;
+	if (ps->sprite_type == 12)
+		mask = 1 << 9;
+	else
+		mask = 1 << (ps->sprite_type - 1);
+
+	if (!(RCT2_GLOBAL(0x009AC154, uint16) & mask)) {
+		RCT2_GLOBAL(0x009AC148, uint8) = ps->sprite_type;
+		RCT2_GLOBAL(0x009AC149, uint8) = ps->var_29;
+		RCT2_GLOBAL(0x009AC14C, uint32) = ps->map_x;
+		RCT2_GLOBAL(0x009AC14E, uint32) = ps->map_y;
+		RCT2_GLOBAL(0x009AC150, rct_map_element*) = ps->mapElement;
+	}
+}
+
+/**
+ * rct2: 0x0068862C
+ */
+void sub_68862C()
+{
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *attached_ps;
+	uint32 eax = 0xBBBBBBBB, ebx = 0xBBBBBBBB, ecx = 0xBBBBBBBB, edx = 0xBBBBBBBB, esi = 0xBBBBBBBB, edi = 0xBBBBBBBB, ebp = 0xBBBBBBBB;
+
+loc_688638:
+	ps = ps->var_24;
+	if (ps == NULL) return;
+	old_ps = ps;
+
+loc_688640:
+	ebx = ps->image_id;
+	ecx = ps->x;
+	edx = ps->y;
+	edi = (uint32)dpi;
+	ebp = (uint32)ps;
+	//sub_679023(ps->image_id, ps->x, ps->y, dpi);
+	RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	sub_688697(ps);
+
+	if (ps->var_20 != NULL) {
+		ps = ps->var_20;
+		goto loc_688640;
+	}
+
+	attached_ps = ps->attached_ps;
+	if (attached_ps != NULL)
+		goto loc_68866D;
+
+	ps = old_ps;
+	goto loc_688638;
+
+loc_68866D:
+	esi = (uint32)attached_ps;
+	ebp = (uint32)ps;
+	ecx = (attached_ps->attached_x + ps->x) & 0xFFFF;
+	edx = (attached_ps->attached_y + ps->y) & 0xFFFF;
+	ebx = attached_ps->image_id;
+	//sub_679023(ebx, ecx, edx, dpi);
+	RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	sub_688697(ps);
+	
+	attached_ps = attached_ps->next_attached_ps;
+	if (attached_ps != NULL) goto loc_68866D;
+
+	ps = old_ps;
+	goto loc_688638;
+}
+
+/**
  *
  *  rct2: 0x00685ADC
  * screenX: eax
@@ -1911,8 +1993,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 			sub_0x68615B(0xEE788C);
 			sub_0x68B6C2();
 			sub_688217();
-			//RCT2_CALLPROC_X(0x688217, 0, 0, 0, 0, 0, 0, 0);
-			RCT2_CALLPROC_X(0x68862C, 0, 0, 0, 0, 0, 0, 0);
+			sub_68862C();
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
