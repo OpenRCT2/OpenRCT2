@@ -62,7 +62,7 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 	long length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, &buffer, &length)) {
+	if (!readentirefile(path, (void**)&buffer, &length)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
@@ -92,7 +92,7 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	long length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, &buffer, &length)) {
+	if (!readentirefile(path, (void**)&buffer, &length)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
@@ -230,17 +230,17 @@ void rct1_fix_landscape()
 	s6Info->category = 4;
 	format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 	s6Info->name[0] = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) & PARK_FLAGS_NO_MONEY) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= PARK_FLAGS_NO_MONEY_SCENARIO;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 	}
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY_FREE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) |= PARK_FLAGS_PARK_FREE_ENTRY;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint8) &= ~PARK_FLAGS_18;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
 		MONEY(10,00),
 		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
