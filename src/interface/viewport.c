@@ -1871,9 +1871,10 @@ void viewport_set_visibility(uint8 mode)
 }
 
 /**
+ * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
  * rct2: 0x00688697
  */
-void sub_688697(paint_struct *ps)
+void store_interaction_info(paint_struct *ps)
 {
 	if (RCT2_GLOBAL(0x0141F569, uint8) == 0) return;
 
@@ -1919,7 +1920,7 @@ void sub_68862C()
 			ebp = (uint32)ps;
 			//sub_679023(ps->image_id, ps->x, ps->y, dpi);
 			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			sub_688697(ps);
+			store_interaction_info(ps);
 
 			next_ps = ps->var_20;
 		}
@@ -1933,7 +1934,7 @@ void sub_68862C()
 			ebx = attached_ps->image_id;
 			//sub_679023(ebx, ecx, edx, dpi);
 			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			sub_688697(ps);
+			store_interaction_info(ps);
 
 			attached_ps = attached_ps->next_attached_ps;
 		}
