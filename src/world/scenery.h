@@ -59,11 +59,18 @@ typedef enum {
 } SMALL_SCENERY_FLAGS;
 
 typedef struct {
+	sint16 x_offset;
+	sint16 y_offset;
+	sint16 z_offset;
+	uint8 pad_6[3];
+} rct_large_scenery_tile;
+
+typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	sint16 removal_price;	// 0x0A
-	uint32 var_0C;
+	rct_large_scenery_tile* tiles; // 0x0C
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
 	uint32 var_12;

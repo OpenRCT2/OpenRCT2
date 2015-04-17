@@ -512,7 +512,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 			1 | ((mapElement->type & 0x3) << 8), 
 			y, 
 			mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_44, 
+			GAME_COMMAND_REMOVE_LARGE_SCENERY, 
 			0, 
 			0
 		);
