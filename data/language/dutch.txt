@@ -2678,7 +2678,7 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :???
+STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Krijg 5.000 extra geld
 STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
 STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
