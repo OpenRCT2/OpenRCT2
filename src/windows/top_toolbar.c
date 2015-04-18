@@ -731,6 +731,114 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
+/* rct2: 0x006E1F34 */
+void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y){
+	rct_window* w = window_find_by_class(WC_SCENERY);
+
+	if (w = NULL)
+	{
+		*grid_x = 0x8000;
+		return;
+	}
+
+	uint8 scenery_type = selected_scenery >> 8;
+	// Not sure what this type is yet.
+	uint8 type = 0;
+
+	if (scenery_type == 0){
+		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[selected_scenery];
+
+		if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG17){
+			type = 1;
+		}
+	}
+	else if (scenery_type == 2 || scenery_type == 3){
+		type = 1;
+	}
+
+	if (type == 0){
+		RCT2_GLOBAL(0x00F64F12, uint8) = 0;
+		RCT2_GLOBAL(0x00F64F13, uint8) = 0;
+	}
+	else{
+		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+			// CTRL pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1)){
+				rct_map_element* map_element;
+				uint16 flags = 0xFCCA;
+				int interaction_type;
+				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
+
+				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
+					RCT2_GLOBAL(0x00F64F12, uint8) = 1;
+					RCT2_GLOBAL(0x00F64ECC, uint16) = map_element->base_height * 8;
+				}
+			}
+		}
+		else{
+			// CTRL not pressed
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1))){
+				RCT2_GLOBAL(0x00F64F12, uint8) = 0;
+			}
+		}
+
+		if (RCT2_GLOBAL(0x00F64F13, uint8) == 0){
+			// SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+				RCT2_GLOBAL(0x00F64F13, uint8) = 1;
+				RCT2_GLOBAL(0x00F64ECE, uint16) = x;
+				RCT2_GLOBAL(0x00F64ED0, uint16) = y;
+				RCT2_GLOBAL(0x00F64ED2, uint16) = 0;
+			}
+		}
+		else{
+			// SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+				RCT2_GLOBAL(0x00F64ED2, sint16) = (RCT2_GLOBAL(0x00F64ED0, sint16) - y + 4) & 0xFFF8;
+
+				x = RCT2_GLOBAL(0x00F64ECE, sint16);
+				y = RCT2_GLOBAL(0x00F64ED0, sint16);
+			}
+			else{
+				// SHIFT not pressed
+				RCT2_GLOBAL(0x00F64F13, uint8) = 0;
+			}
+		}
+	}
+	
+	switch (scenery_type){
+	case 0:
+	{
+		// Small scenery
+		rct_scenery_entry* scenery = g_smallSceneryEntries[selected_scenery];
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+
+			if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+				// 6e2090
+			}
+		}
+		// 6e2183
+		break;
+	}
+	case 1:
+		// Path bits
+		// 6e23dd
+		break;
+	case 2:
+		// Walls
+		// 6e2415
+		break;
+	case 3:
+		// Large scenery
+		// 6e22a4
+		break;
+	case 4:
+		// Banner
+		// 6e2385
+		break;
+	}
+}
+
 /**
  * rct2: 0x6e2cc6
  */
