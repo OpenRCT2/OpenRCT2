@@ -625,7 +625,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	while(map_element->type != map_element_type ||
 		map_element->base_height != base_height ||
 		map_element->properties.scenery.type != scenery_type ||
-		(*ebx & 0x40) && !(map_element->flags & 0x10)){
+		(*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 		map_element++;
 		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 			*ebx = 0;
@@ -675,7 +675,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 			return;
 		}
 	}
-	if((*ebx & 0x40) && !(map_element->flags & 0x10)){
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 		*ebx = 0;
 		return;
 	}
@@ -801,7 +801,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 				return;
 			}
 		}
-		if((*ebx & 0x40) && !(map_element->flags & 0x10)){
+		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 			*ebx = 0;
 			return;
 		}
@@ -850,7 +850,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 				return;
 			}
 		}
-		if((*ebx & 0x40) && !(map_element->flags & 0x10)){
+		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 			*ebx = 0;
 			return;
 		}
@@ -902,7 +902,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 			return;
 		}
 	}
-	if((*ebx & 0x40) && !(map_element->flags & 0x10)){
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 		*ebx = 0;
 		return;
 	}
@@ -982,6 +982,49 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 			}
 		}
 		i++;
+	}
+	*ebx = 0;
+}
+
+/**
+ *
+ *  rct2: 0x006BA16A
+ */
+void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	int x = *eax;
+	int y = *ecx;
+	uint8 base_height = *edx;
+	uint8 banner_position = *edx >> 8;
+	uint8 color = *ebp;
+	int z = (base_height * 8);
+	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+		if(!map_is_location_owned(x, y, z - 16)){
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if(*ebx & GAME_COMMAND_FLAG_APPLY){
+			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+			while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
+				map_element->properties.banner.position != banner_position){
+				map_element++;
+				if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
+					*ebx = MONEY32_UNDEFINED;
+					return;
+				}
+			}
+			rct_window* window = window_find_by_number(WC_BANNER, map_element->properties.banner.index);
+			if(window){
+				window_invalidate(window);
+			}
+			gBanners[map_element->properties.banner.index].colour = color;
+			map_invalidate_tile(x, y, z, z + 32);
+		}
 	}
 	*ebx = 0;
 }
@@ -1502,8 +1545,7 @@ void game_command_lower_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 					continue;
 				}
 				height -= 2;
-				int eax2 = xi, ebx2 = *ebx, ecx2 = yi, edx2 = (min_height << 8) + height, esi2, edi2, ebp2;
-				ebx2 = game_do_command_p(GAME_COMMAND_16, &eax2, &ebx2, &ecx2, &edx2, &esi2, &edi2, &ebp2);
+				int ebx2 = game_do_command(xi, *ebx, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
 				if(ebx2 == MONEY32_UNDEFINED){
 					*ebx = MONEY32_UNDEFINED;
 					return;
