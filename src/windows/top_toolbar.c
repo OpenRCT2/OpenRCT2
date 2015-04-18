@@ -781,6 +781,38 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		window_banner_open(banner_id);
 	}
 	else if (ebp >= 768){
+		//large scenery
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
+			RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			bl = 20;
+		}
+		int esi = 0;
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			int ebx = (model_type << 8) | 1;
+			int large_scenery_id = item_colour;
+			ebp = RCT2_GLOBAL(0x00F64ED4, uint16);
+			{
+				int eax = grid_x, ecx = grid_y, edx = grid_z;
+				game_do_command_p(GAME_COMMAND_43, &eax, &ebx, &ecx, &edx, &esi, &large_scenery_id, &ebp);
+				esi = ebx;
+			}
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (ebx != MONEY32_UNDEFINED){
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+		}
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		return;
 		//6e301c
 		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
 	}
