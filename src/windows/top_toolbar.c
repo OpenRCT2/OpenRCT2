@@ -884,34 +884,33 @@ static void window_top_toolbar_tool_down(){
 *  
 *  rct2: 0x006644DD
 */
-void sub_6644DD(int ebx){
+void selection_raise_land(uint8 flags){
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
+		) / 2;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		) / 2;
 
-	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
-	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	ax >>= 1;
-	cx >>= 1;
-	ax += 0x10;
-	cx += 0x10;
-	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	dx <<= 16;
-	bp <<= 16;
-	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	center_x += 16;
+	center_y += 16;
+
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) << 16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 1;
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	}
 	else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_RAISE_LAND, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_RAISE_LAND, di, bp);
 	}
 }
 
@@ -919,33 +918,32 @@ void sub_6644DD(int ebx){
 *
 *  rct2: 0x006645B3
 */
-void sub_6645B3(int ebx){
+void selection_lower_land(uint8 flags){
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) + 
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
+		) / 2;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		) / 2;
 
-	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
-	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	ax >>= 1;
-	cx >>= 1;
-	ax += 0x10;
-	cx += 0x10;
-	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	dx <<= 16;
-	bp <<= 16;
-	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	center_x += 16;
+	center_y += 16;
+
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) | 
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) << 16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 0xFFFF;
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	} else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_LOWER_LAND, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_LOWER_LAND, di, bp);
 	}
 }
 
@@ -970,32 +968,24 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 	if (!viewport)
 		return;
 
-	sint16 dx = 0xFFF0;
-	dx >>= viewport->zoom;
+	sint16 tile_height = -16 / (1 << viewport->zoom);
 
-	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+	int y_diff = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
 
-	if (y <= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+	if (y_diff <= tile_height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += tile_height;
 
-		y = (y & 0xFF00) | 1; // mov bl, 1
-
-		sub_6644DD(y);
+		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
-
 		return;
 	}
 
-	dx = -dx;
+	if (y_diff >= -tile_height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) -= tile_height;
 
-	if (y >= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
-
-		y = (y & 0xFF00) | 1; // mov bl, 1
-
-		sub_6645B3(y);
+		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
