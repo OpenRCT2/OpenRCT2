@@ -29,6 +29,7 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../scenario.h"
 #include "../world/scenery.h"
 #include "../world/banner.h"
 #include "dropdown.h"
@@ -731,11 +732,47 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-/* rct2: 0x006E1F34 */
-void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y){
+void sub_689604(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+
+	RCT2_CALLFUNC_X(0x00689604, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_68964B(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x0068964B, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_6894D4(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x006894D4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+}
+
+/* rct2: 0x006E1F34 
+ * Outputs
+ * eax : grid_x
+ * ebx : parameter_1
+ * ecx : grid_y
+ * edx : parameter_2
+ * edi : parameter_3
+ */
+void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
 	rct_window* w = window_find_by_class(WC_SCENERY);
 
-	if (w = NULL)
+	if (w == NULL)
 	{
 		*grid_x = 0x8000;
 		return;
@@ -748,7 +785,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	if (scenery_type == 0){
 		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[selected_scenery];
 
-		if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG17){
+		if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
 			type = 1;
 		}
 	}
@@ -812,12 +849,147 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Small scenery
 		rct_scenery_entry* scenery = g_smallSceneryEntries[selected_scenery];
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+			uint8 cl = 0;
 
+			// If CTRL not pressed
 			if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
-				// 6e2090
+				sub_689604(x, y, grid_x, grid_y, &cl);
+
+				if (*grid_x == 0x8000)
+					return;
+
+				RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+
+				// If SHIFT pressed
+				if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+
+					rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+					if (map_element == NULL){
+						*grid_x = 0x8000;
+						return;
+					}
+
+					sint16 z = (map_element->base_height * 8) & 0xFFF0;
+					z += RCT2_GLOBAL(0x00F64ED2, sint16);
+
+					if (z < 16){
+						z = 16;
+					}
+
+					RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+				}
+			}
+			else{
+				sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+
+				sub_68964B(x, y, z, grid_x, grid_y, &cl);
+
+				// If SHIFT pressed
+				if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+					z += RCT2_GLOBAL(0x00F64ED2, sint16);
+				}
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			}
+
+			if (*grid_x == 0x8000)
+				return;
+
+			uint8 rotation = window_scenery_rotation;
+
+			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+				rotation = scenario_rand() & 0xFF;
+			}
+				
+			rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			rotation &= 0x3;
+
+			// Also places it in lower but think thats for clobering
+			*parameter_1 = (selected_scenery & 0xFF) << 8;
+			*parameter_2 = cl ^ (1 << 1) | (window_scenery_primary_colour << 8);
+			*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+			return;
+		}
+		
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+			uint16 flags = 0xFFF6;
+			int interaction_type = 0;
+			rct_map_element* map_element;
+
+			get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
+
+			if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+			{
+				*grid_x = 0x8000;
+				return;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+			uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+			if (water_height != 0){
+				RCT2_GLOBAL(0x00F64ED4, sint16) = water_height * 16;
+			}
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
 			}
 		}
-		// 6e2183
+		else{
+			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sub_6894D4(x, y, z, grid_x, grid_y);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		*grid_x &= 0xFFE0;
+		*grid_y &= 0xFFE0;
+		uint8 rotation = window_scenery_rotation;
+
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+			rotation = scenario_rand() & 0xFF;
+		}
+
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = 0 | (window_scenery_primary_colour << 8);
+		*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+		return;
 		break;
 	}
 	case 1:
@@ -856,8 +1028,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 	uint8 item_colour;
 	uint8 model_type;
 	int ebp = selected_tab;
+	uint32 parameter_1, parameter_2, parameter_3;
 
 	{
+		sint16 grid_x2, grid_y2;
+		sub_6E1F34(x, y, selected_tab, &grid_x2, &grid_y2, &parameter_1, &parameter_2, &parameter_3);
 		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0;
 		RCT2_CALLFUNC_X(0x6E1F34, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 		item_colour = edi;
@@ -865,6 +1040,12 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		grid_x = eax;
 		grid_y = ecx;
 		grid_z = edx;
+		
+		assert(grid_x2 == grid_x);
+		assert(grid_y2 == grid_y);
+		assert(parameter_1 == (ebx & 0xFF00));
+		assert(parameter_2 == (edx & 0xFFFF));
+		//assert(parameter_3 == edi); // involves a rand so usually fails
 	}
 
 	if (grid_x == 0x8000)return;
