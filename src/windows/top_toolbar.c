@@ -752,6 +752,26 @@ void sub_68964B(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, ui
 	*cl = ecx;
 }
 
+void sub_689692(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+
+	RCT2_CALLFUNC_X(0x00689692, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_6896DC(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x006896DC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
 void sub_6894D4(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y){
 	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
 
@@ -905,7 +925,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
 				rotation = scenario_rand() & 0xFF;
 			}
-				
+
 			rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
 			rotation &= 0x3;
 
@@ -915,7 +935,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
 			return;
 		}
-		
+
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
 			uint16 flags = 0xFFF6;
@@ -989,25 +1009,190 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = 0 | (window_scenery_primary_colour << 8);
 		*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
-		return;
 		break;
 	}
 	case 1:
+	{
 		// Path bits
-		// 6e23dd
+
+		uint16 flags = 0xFF9F;
+		int interaction_type = 0;
+		rct_map_element* map_element;
+
+		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
+
+		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+		{
+			*grid_x = 0x8000;
+			return;
+		}
+
+		*parameter_1 = 0 | map_element->properties.path.type & 0x7;
+		*parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
+		if (map_element->type & 1){
+			*parameter_2 |= 0x8000;
+		}
+		*parameter_3 = (selected_scenery & 0xFF) + 1;
 		break;
+	}
 	case 2:
+	{
 		// Walls
-		// 6e2415
+		uint8 cl;
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+			sub_689692(x, y, grid_x, grid_y, &cl);
+
+			if (*grid_x == 0x8000)
+				return;
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			}
+		}
+		else{
+			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sub_6896DC(x, y, z, grid_x, grid_y, &cl);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		RCT2_GLOBAL(0x00F64F15, uint8) = window_scenery_secondary_colour;
+		RCT2_GLOBAL(0x00F64F16, uint8) = window_scenery_tertiary_colour;
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = cl | (window_scenery_primary_colour << 8);
+		*parameter_3 = 0;
 		break;
+	}
 	case 3:
+	{
 		// Large scenery
-		// 6e22a4
+
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
+
+			if (*grid_x == 0x8000)
+				return;
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			}
+		}
+		else{
+			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sub_6894D4(x, y, z, grid_x, grid_y);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		*grid_x &= 0xFFE0;
+		*grid_y &= 0xFFE0;
+
+		uint8 rotation = window_scenery_rotation;
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+
+		*parameter_1 = (rotation << 8);
+		*parameter_2 = window_scenery_primary_colour | (window_scenery_secondary_colour << 8);
+		*parameter_3 = selected_scenery & 0xFF;
 		break;
+	}
 	case 4:
+	{
 		// Banner
-		// 6e2385
+
+		uint16 flags = 0xFF9F;
+		int interaction_type = 0;
+		rct_map_element* map_element;
+
+		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
+
+		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+		{
+			*grid_x = 0x8000;
+			return;
+		}
+
+		uint8 rotation = window_scenery_rotation;
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+		
+		sint16 z = map_element->base_height;
+
+		if (map_element->properties.path.type & (1 << 2)){
+			if (rotation != ((map_element->properties.path.type & 3) ^ 2)){
+				z += 2;
+			}
+		}
+
+		z /= 2;
+
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = z | (rotation << 8);
+		*parameter_3 = window_scenery_primary_colour;
 		break;
+	}
 	}
 }
 

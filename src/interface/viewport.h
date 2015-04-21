@@ -105,5 +105,6 @@ int viewport_interaction_left_click(int x, int y);
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
+void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
 
 #endif
