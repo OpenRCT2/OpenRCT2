@@ -1416,8 +1416,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 		int cost;
 		{
-			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2, ebx = (parameter_1 & 0xFF00) | 1;
-			cost = game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp);
+			int esi = 0, eax = grid_x, ecx = grid_y, edx = grid_z;
+			game_do_command_p(GAME_COMMAND_PLACE_BANNER, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
 		}
 
 		if (ebx == MONEY32_UNDEFINED)return;

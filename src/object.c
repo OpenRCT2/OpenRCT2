@@ -909,8 +909,9 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 
 		scenery_type->large_scenery.tiles = (rct_large_scenery_tile*)chunk;
 
+		// skip over large scenery tiles
 		while (*((uint16*)chunk) != 0xFFFF){
-			chunk += 9;
+			chunk += sizeof(rct_large_scenery_tile);
 		}
 
 		chunk += 2;

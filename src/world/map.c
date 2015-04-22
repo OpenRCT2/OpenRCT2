@@ -29,6 +29,7 @@
 #include "banner.h"
 #include "climate.h"
 #include "map.h"
+#include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
 
@@ -797,19 +798,20 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		map_element->properties.banner.position != banner_position){
 		map_element++;
 		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = 0;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
+	rct_banner *banner = &gBanners[map_element->properties.banner.index];
+	uint8 banner_type = banner->type;
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		window_close_by_number(WC_BANNER, map_element->properties.banner.index);
-		rct_banner *banner = &gBanners[map_element->properties.banner.index];
 		user_string_free(banner->string_idx);
 		banner->type = BANNER_NULL;
 		map_invalidate_tile(x, y, z, z + 32);
 		map_element_remove(map_element);
 	}
-	rct_scenery_entry *scenery_entry = object_entry_groups[OBJECT_TYPE_BANNERS].chunks[map_element->properties.banner.index];
+	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[banner_type];
 	*ebx = (scenery_entry->banner.price * -3) / 4;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
@@ -1669,6 +1671,90 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 
 /**
  *
+ *  rct2: 0x006B9E6D
+ */
+void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int x = (uint16)*eax;
+	int y = (uint16)*ecx;
+	uint8 base_height = *edx;
+	uint8 edge = *edx >> 8;
+	uint8 colour = *edi;
+	uint8 type = *ebx >> 8;
+	RCT2_GLOBAL(0x009DEA5E, uint32) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, uint32) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, uint32) = base_height * 16;
+	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0){
+		if(sub_68B044() && x < 8192 && y < 8192){
+			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+			int dl = base_height * 2;
+			int ch = (base_height - 1) * 2;
+			while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_PATH ||
+			(map_element->base_height != dl && map_element->base_height != ch) ||
+			!(map_element->properties.path.edges & (1 << edge))){
+				map_element++;
+				if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
+					*ebx = MONEY32_UNDEFINED;
+					return;
+				}
+			}
+			if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, base_height * 16)){
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
+			map_element = map_get_first_element_at(x / 32, y / 32);
+			dl = (base_height + 1) * 2;
+			while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
+			map_element->base_height != dl ||
+			(map_element->properties.banner.position & 0x3) != edge){
+				map_element++;
+				if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
+					uint8 a = sub_6BA278(*ebx);
+					if(a == 0xFF){
+						*ebx = MONEY32_UNDEFINED;
+						return;
+					}
+					*edi = a;
+					if(*ebx & GAME_COMMAND_FLAG_APPLY){
+						rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, (base_height + 1) * 2, 0);
+						gBanners[a].type = type;
+						gBanners[a].colour = colour;
+						gBanners[a].x = x / 32;
+						gBanners[a].y = y / 32;
+						new_map_element->type = MAP_ELEMENT_TYPE_BANNER;
+						new_map_element->clearance_height = new_map_element->base_height + 2;
+						new_map_element->properties.banner.position = edge;
+						new_map_element->properties.banner.flags = 0xFF;
+						new_map_element->properties.banner.unused = 0;
+						new_map_element->properties.banner.index = a;
+						if(*ebx & 0x40){
+							new_map_element->flags |= 0x10;
+						}
+						map_invalidate_tile_full(x, y);
+						map_animation_create(0x0A, x, y, new_map_element->base_height);
+					}
+					rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[type];
+					*ebx = scenery_entry->banner.price;
+					if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+						*ebx = 0;
+					}
+					return;
+				}
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BANNER_SIGN_IN_THE_WAY;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}else{
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	}
+	*ebx = MONEY32_UNDEFINED;
+}
+
+/**
+ *
  *  rct2: 0x006EC6D7
  */
 void map_invalidate_tile_full(int x, int y)
@@ -1858,6 +1944,17 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl)
 {
 	return map_can_construct_with_clear_at(x, y, zLow, zHigh, (void*)0xFFFFFFFF, bl);
+}
+
+/**
+ *
+ *  rct2: 0x006BA278
+ */
+int sub_6BA278(int ebx)
+{
+	int eax, ecx, edx, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x006BA278, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
 }
 
 /**
