@@ -3107,7 +3107,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x2))return 0;
 
@@ -3184,7 +3184,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x1))return 0;
 
@@ -3261,7 +3261,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x4))return;
 
@@ -3437,7 +3437,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
-		rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 		if (!(sceneryEntry->path_bit.var_06 & 1)){
 			peep_state_reset(peep);
 			return;
@@ -3828,7 +3828,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 
 	if (additions == 0)return 0;
 
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 1))
 		return 0;
@@ -4121,7 +4121,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (additions){
 		if (!(map_element->properties.path.additions & 0x80)){
-			rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+			rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 			if (!(sceneryEntry->path_bit.var_06 & 0x2)) ebp = 9;
 		}
