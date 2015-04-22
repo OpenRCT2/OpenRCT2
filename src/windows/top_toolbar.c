@@ -1209,42 +1209,24 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
 	if (selected_tab == -1) return;
 
-	sint16 grid_x, grid_y, grid_z;
-	uint8 item_colour;
-	uint8 model_type;
+	sint16 grid_x, grid_y;
 	int ebp = selected_tab;
 	uint32 parameter_1, parameter_2, parameter_3;
 
-	{
-		sint16 grid_x2, grid_y2;
-		sub_6E1F34(x, y, selected_tab, &grid_x2, &grid_y2, &parameter_1, &parameter_2, &parameter_3);
-		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0;
-		RCT2_CALLFUNC_X(0x6E1F34, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		item_colour = edi;
-		model_type = (ebx & 0xFF00) >> 8;
-		grid_x = eax;
-		grid_y = ecx;
-		grid_z = edx;
-		
-		assert(grid_x2 == grid_x);
-		assert(grid_y2 == grid_y);
-		assert(parameter_1 == (ebx & 0xFF00));
-		assert(parameter_2 == (edx & 0xFFFF));
-		//assert(parameter_3 == edi); // involves a rand so usually fails
-	}
+	sub_6E1F34(x, y, selected_tab, &grid_x, &grid_y, &parameter_1, &parameter_2, &parameter_3);
 
 	if (grid_x == 0x8000)return;
 	
 	if (ebp >= 1024){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
 
-		// The return value will be banner id but the input is colour
-		int banner_id = item_colour;
+		// The return value will be banner id but the input is colour (param 3)
+		int banner_id = parameter_3;
 		
-		int ebx = (model_type << 8) | 1;
+		int ebx = (parameter_1 & 0xFF00) | 1;
 
 		{
-			int esi = 0, eax = grid_x, ecx = grid_y, edx = grid_z;
+			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2;
 			game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
 		}
 
@@ -1264,18 +1246,19 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		int esi = 0;
 		for (; bl != 0; bl--){
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-			int ebx = (model_type << 8) | 1;
-			int large_scenery_id = item_colour;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
 			ebp = RCT2_GLOBAL(0x00F64ED4, uint16);
 			{
-				int eax = grid_x, ecx = grid_y, edx = grid_z;
-				game_do_command_p(GAME_COMMAND_43, &eax, &ebx, &ecx, &edx, &esi, &large_scenery_id, &ebp);
+				int eax = grid_x, ecx = grid_y, edx = parameter_2, edi = parameter_3;
+				game_do_command_p(GAME_COMMAND_43, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 				esi = ebx;
 			}
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (ebx != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
 				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 				return;
 			}
@@ -1284,15 +1267,51 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
 				break;
 			}
+
+			RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
 		}
+
 		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-		return;
-		//6e301c
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
 	}
 	else if (ebp >= 512){
-		//6e2f2e
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		// Walls
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
+			RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			bl = 20;
+		}
+
+		int esi = 0;
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1811;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
+			{
+				int eax = grid_x, ecx = grid_y, edx = parameter_2, edi = RCT2_GLOBAL(0x00F64ED4, uint16);
+				ebp = RCT2_GLOBAL(0x00F64F15, uint16);
+				game_do_command_p(GAME_COMMAND_41, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				esi = ebx;
+			}
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (ebx != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
+		}
+
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 	}
 	else if (ebp >= 256){
 		//6e2eda
