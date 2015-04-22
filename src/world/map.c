@@ -770,6 +770,54 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 
 /**
  *
+ *  rct2: 0x006BA058
+ */
+void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int x = *eax;
+	int y = *ecx;
+	uint8 base_height = *edx;
+	uint8 banner_position = *edx >> 8;
+	int z = base_height * 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+ 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+	if(!(*ebx & 0x40) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, z - 16)){
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
+		map_element->properties.banner.position != banner_position){
+		map_element++;
+		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
+			*ebx = 0;
+			return;
+		}
+	}
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		window_close_by_number(WC_BANNER, map_element->properties.banner.index);
+		rct_banner *banner = &gBanners[map_element->properties.banner.index];
+		user_string_free(banner->string_idx);
+		banner->type = BANNER_NULL;
+		map_invalidate_tile(x, y, z, z + 32);
+		map_element_remove(map_element);
+	}
+	rct_scenery_entry *scenery_entry = object_entry_groups[OBJECT_TYPE_BANNERS].chunks[map_element->properties.banner.index];
+	*ebx = (scenery_entry->banner.price * -3) / 4;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+		*ebx = 0;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006E0F26
  */
 void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)

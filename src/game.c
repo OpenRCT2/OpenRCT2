@@ -925,7 +925,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0x006CDEE4,
 	0x006B9E6D, // 50
-	0x006BA058,
+	0,
 	0,
 	0,
 	0,
@@ -988,7 +988,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_emptysub, // 50
-	game_command_emptysub,
+	game_command_remove_banner,
 	game_command_set_scenery_colour,
 	game_command_set_fence_colour,
 	game_command_set_large_scenery_colour,

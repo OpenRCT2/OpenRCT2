@@ -345,7 +345,7 @@ void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
 		else if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)continue;
 
-		game_do_command(x, 1, y, mapElement->base_height | mapElement->properties.banner.position << 8, GAME_COMMAND_51, 0, 0);
+		game_do_command(x, 1, y, mapElement->base_height | mapElement->properties.banner.position << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
 		mapElement--;
 	}
 }
