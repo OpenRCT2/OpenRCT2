@@ -289,7 +289,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
-static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags)
+static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 path_bit_type)
 {
 	rct_map_element *mapElement;
 
@@ -308,7 +308,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 
 	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
-	RCT2_GLOBAL(0x00F3EF88, uint16) = 0; // di
+	RCT2_GLOBAL(0x00F3EF88, uint16) = path_bit_type; // di
 
 	if (x >= RCT2_GLOBAL(0x01358830, uint16) || y >= RCT2_GLOBAL(0x01358830, uint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
@@ -394,7 +394,7 @@ void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *es
 	if (*ebx & (1 << 5))
 		RCT2_CALLFUNC_X(0x006A61DE, eax, ebx, ecx, edx, esi, edi, ebp);
 	else
-		*ebx = footpath_place_real((*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF);
+		*ebx = footpath_place_real((*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF, *edi & 0xFF);
 }
 
 /**

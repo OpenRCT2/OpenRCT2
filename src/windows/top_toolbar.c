@@ -1314,8 +1314,20 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 	}
 	else if (ebp >= 256){
-		//6e2eda
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		// Path Bits
+		int ebx = parameter_1;
+		ebx &= 0xFF00;
+		ebx |= 0x81;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		ebx = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+
+		if (ebx == MONEY32_UNDEFINED){
+			return;
+		}
+
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 	}
 	else{
 		//6e2d2d
