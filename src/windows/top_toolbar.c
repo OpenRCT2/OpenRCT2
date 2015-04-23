@@ -814,11 +814,11 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	}
 
 	if (type == 0){
-		RCT2_GLOBAL(0x00F64F12, uint8) = 0;
-		RCT2_GLOBAL(0x00F64F13, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
 	}
 	else{
-		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			// CTRL pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1)){
 				rct_map_element* map_element;
@@ -827,38 +827,39 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
 				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
-					RCT2_GLOBAL(0x00F64F12, uint8) = 1;
-					RCT2_GLOBAL(0x00F64ECC, uint16) = map_element->base_height * 8;
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 1;
+					RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, uint16) = map_element->base_height * 8;
 				}
 			}
 		}
 		else{
 			// CTRL not pressed
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1))){
-				RCT2_GLOBAL(0x00F64F12, uint8) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
 			}
 		}
 
-		if (RCT2_GLOBAL(0x00F64F13, uint8) == 0){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) == 0){
 			// SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
-				RCT2_GLOBAL(0x00F64F13, uint8) = 1;
-				RCT2_GLOBAL(0x00F64ECE, uint16) = x;
-				RCT2_GLOBAL(0x00F64ED0, uint16) = y;
-				RCT2_GLOBAL(0x00F64ED2, uint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, uint16) = x;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, uint16) = y;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, uint16) = 0;
 			}
 		}
 		else{
 			// SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
-				RCT2_GLOBAL(0x00F64ED2, sint16) = (RCT2_GLOBAL(0x00F64ED0, sint16) - y + 4) & 0xFFF8;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16) =
+					(RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16) - y + 4) & 0xFFF8;
 
-				x = RCT2_GLOBAL(0x00F64ECE, sint16);
-				y = RCT2_GLOBAL(0x00F64ED0, sint16);
+				x = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, sint16);
+				y = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16);
 			}
 			else{
 				// SHIFT not pressed
-				RCT2_GLOBAL(0x00F64F13, uint8) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
 			}
 		}
 	}
@@ -872,16 +873,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			uint8 cl = 0;
 
 			// If CTRL not pressed
-			if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 				sub_689604(x, y, grid_x, grid_y, &cl);
 
 				if (*grid_x == 0x8000)
 					return;
 
-				RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
 
 				// If SHIFT pressed
-				if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
 
 					rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
@@ -891,30 +892,30 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 					}
 
 					sint16 z = (map_element->base_height * 8) & 0xFFF0;
-					z += RCT2_GLOBAL(0x00F64ED2, sint16);
+					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 
 					if (z < 16){
 						z = 16;
 					}
 
-					RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 				}
 			}
 			else{
-				sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+				sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 
 				sub_68964B(x, y, z, grid_x, grid_y, &cl);
 
 				// If SHIFT pressed
-				if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-					z += RCT2_GLOBAL(0x00F64ED2, sint16);
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 				}
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 			}
 
 			if (*grid_x == 0x8000)
@@ -937,7 +938,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			uint16 flags = 0xFFF6;
 			int interaction_type = 0;
 			rct_map_element* map_element;
@@ -950,14 +951,14 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				return;
 			}
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
 			uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 			if (water_height != 0){
-				RCT2_GLOBAL(0x00F64ED4, sint16) = water_height * 16;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = water_height * 16;
 			}
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -966,29 +967,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 			sub_6894D4(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
 		if (*grid_x == 0x8000)
@@ -1040,16 +1041,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Walls
 		uint8 cl;
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			sub_689692(x, y, grid_x, grid_y, &cl);
 
 			if (*grid_x == 0x8000)
 				return;
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -1058,29 +1059,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 			sub_6896DC(x, y, z, grid_x, grid_y, &cl);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
 		if (*grid_x == 0x8000)
@@ -1099,16 +1100,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Large scenery
 
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(0x00F64F12, uint8) == 0){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
 
 			if (*grid_x == 0x8000)
 				return;
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -1117,29 +1118,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(0x00F64ECC, sint16);
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 			sub_6894D4(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-				z += RCT2_GLOBAL(0x00F64ED2, sint16);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = z;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
 		if (*grid_x == 0x8000)
@@ -1207,6 +1208,9 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 	}
 
 	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
+	uint8 selected_scenery = selected_tab & 0xFF;
+
 	if (selected_tab == -1) return;
 
 	sint16 grid_x, grid_y;
@@ -1217,119 +1221,9 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 	if (grid_x == 0x8000)return;
 	
-	if (ebp >= 1024){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-		// The return value will be banner id but the input is colour (param 3)
-		int banner_id = parameter_3;
-		
-		int ebx = (parameter_1 & 0xFF00) | 1;
-
-		{
-			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2;
-			game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
-		}
-
-		if (ebx == 0x80000000)return;
-
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-
-		window_banner_open(banner_id);
-	}
-	else if (ebp >= 768){
-		//large scenery
-		uint8 bl = 1;
-		if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
-			RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-			bl = 20;
-		}
-		int esi = 0;
-		for (; bl != 0; bl--){
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-			int ebx = (parameter_1 & 0xFF00) | 1;
-			ebp = RCT2_GLOBAL(0x00F64ED4, uint16);
-			{
-				int eax = grid_x, ecx = grid_y, edx = parameter_2, edi = parameter_3;
-				game_do_command_p(GAME_COMMAND_43, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				esi = ebx;
-			}
-
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-
-			if (ebx != MONEY32_UNDEFINED){
-				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-				return;
-			}
-
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
-				break;
-			}
-
-			RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
-		}
-
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-	}
-	else if (ebp >= 512){
-		// Walls
-		uint8 bl = 1;
-		if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
-			RCT2_GLOBAL(0x00F64F13, uint8) != 0){
-			bl = 20;
-		}
-
-		int esi = 0;
-		for (; bl != 0; bl--){
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1811;
-
-			int ebx = (parameter_1 & 0xFF00) | 1;
-			{
-				int eax = grid_x, ecx = grid_y, edx = parameter_2, edi = RCT2_GLOBAL(0x00F64ED4, uint16);
-				ebp = RCT2_GLOBAL(0x00F64F15, uint16);
-				game_do_command_p(GAME_COMMAND_41, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				esi = ebx;
-			}
-
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-
-			if (ebx != MONEY32_UNDEFINED){
-				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-				return;
-			}
-
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
-				break;
-			}
-
-			RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
-		}
-
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-	}
-	else if (ebp >= 256){
-		// Path Bits
-		int ebx = parameter_1;
-		ebx &= 0xFF00;
-		ebx |= 0x81;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-		ebx = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
-
-		if (ebx == MONEY32_UNDEFINED){
-			return;
-		}
-
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-	}
-	else{
+	switch (scenery_type){
+	case 0:
+	{
 		int cluster_size = 1;
 		if (window_scenery_is_build_cluster_tool_on){
 			cluster_size = 35;
@@ -1337,7 +1231,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 		for (; cluster_size > 0; cluster_size--){
 
-			int _esi = RCT2_GLOBAL(0x00F64ED4, uint16);
+			int cluster_z_coordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
 			rct_scenery_entry* scenery = g_smallSceneryEntries[(parameter_1 >> 8) & 0xFF];
 
 			sint16 cur_grid_x = grid_x;
@@ -1359,38 +1253,32 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 			}
 
 			uint8 bl = 1;
-			if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
-				RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
 				bl = 20;
 			}
-			int esi = 0;
 			uint8 success = 0;
 
 			for (; bl != 0; bl--){
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-				{
-					int eax = cur_grid_x, ecx = cur_grid_y, 
-						edx = parameter_2, edi = RCT2_GLOBAL(0x00F64EC0, uint8),
-						ebx = parameter_1;
-					ebx &= 0xFF00;
-					if (window_scenery_is_build_cluster_tool_on){
-						ebx |= 0x9;
-					}
-					else{
-						ebx |= GAME_COMMAND_FLAG_APPLY;
-					}
 
-					ebp = RCT2_GLOBAL(0x00F64ED4, sint16);
-
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-					game_do_command_p(GAME_COMMAND_15, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-					esi = ebx;
+				int ebx = parameter_1;
+				ebx &= 0xFF00;
+				if (window_scenery_is_build_cluster_tool_on){
+					ebx |= 0x9;
 				}
+				else{
+					ebx |= GAME_COMMAND_FLAG_APPLY;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_15, RCT2_GLOBAL(0x00F64EC0, uint8), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+
 
 				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
-				if (esi != MONEY32_UNDEFINED){
+				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
 					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 					success = 1;
@@ -1402,7 +1290,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 					break;
 				}
 
-				RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 			}
 
 			if (!success && !window_scenery_is_build_cluster_tool_on){
@@ -1410,10 +1298,122 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 				return;
 			}
 
-			RCT2_GLOBAL(0x00F64ED4, sint16) = _esi;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = cluster_z_coordinate;
 		}
-		//6e2d2d
-		//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	}
+	case 1:
+	{
+		// Path Bits
+		int ebx = parameter_1;
+		ebx &= 0xFF00;
+		ebx |= 0x81;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+
+		if (cost == MONEY32_UNDEFINED){
+			return;
+		}
+
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		break;
+	}
+	case 2:
+	{
+		// Walls
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1811;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
+
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_41, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (cost != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		break;
+	}
+	case 3:
+	{
+		// Large Scenery
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
+
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_43, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (cost != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+	}
+		break;
+	case 4:
+	{
+		// Banners
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		// The return value will be banner id but the input is colour (param 3)
+		int banner_id = parameter_3;
+
+		int cost;
+		{
+			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2, ebx = (parameter_1 & 0xFF00) | 1;
+			cost = game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp);
+		}
+
+		if (cost == MONEY32_UNDEFINED)return;
+
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+
+		window_banner_open(banner_id);
+		break;
+	}
 	}
 }
 

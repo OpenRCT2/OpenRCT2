@@ -458,8 +458,8 @@ void window_scenery_open()
 	window_scenery_update_scroll(window);
 	show_gridlines();
 	window_scenery_rotation = 3;
-	RCT2_GLOBAL(0x00F64F12, uint8) = 0;
-	RCT2_GLOBAL(0x00F64F13, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
 	window->scenery.selected_scenery_id = -1;
 	window->scenery.hover_counter = 0;
 	window_push_others_below(window);
