@@ -1330,8 +1330,90 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 	}
 	else{
+		int cluster_size = 1;
+		if (window_scenery_is_build_cluster_tool_on){
+			cluster_size = 35;
+		}
+
+		for (; cluster_size > 0; cluster_size--){
+
+			int _esi = RCT2_GLOBAL(0x00F64ED4, uint16);
+			rct_scenery_entry* scenery = g_smallSceneryEntries[(parameter_1 >> 8) & 0xFF];
+
+			sint16 cur_grid_x = grid_x;
+			sint16 cur_grid_y = grid_y;
+
+			if (window_scenery_is_build_cluster_tool_on){
+				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+					parameter_2 &= 0xFF00;
+					parameter_2 |= scenario_rand() & 3;
+				}
+
+				cur_grid_x += ((scenario_rand() % 16) - 8) * 32;
+				cur_grid_y += ((scenario_rand() % 16) - 8) * 32;
+
+				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+					RCT2_GLOBAL(0x00F64EC0, uint16)++;
+					RCT2_GLOBAL(0x00F64EC0, uint16) &= 3;
+				}
+			}
+
+			uint8 bl = 1;
+			if (RCT2_GLOBAL(0x00F64ED4, uint16) != 0 &&
+				RCT2_GLOBAL(0x00F64F13, uint8) != 0){
+				bl = 20;
+			}
+			int esi = 0;
+			uint8 success = 0;
+
+			for (; bl != 0; bl--){
+				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+				{
+					int eax = cur_grid_x, ecx = cur_grid_y, 
+						edx = parameter_2, edi = RCT2_GLOBAL(0x00F64EC0, uint8),
+						ebx = parameter_1;
+					ebx &= 0xFF00;
+					if (window_scenery_is_build_cluster_tool_on){
+						ebx |= 0x9;
+					}
+					else{
+						ebx |= GAME_COMMAND_FLAG_APPLY;
+					}
+
+					ebp = RCT2_GLOBAL(0x00F64ED4, sint16);
+
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+					game_do_command_p(GAME_COMMAND_15, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					esi = ebx;
+				}
+
+				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+				if (esi != MONEY32_UNDEFINED){
+					window_close_by_class(WC_ERROR);
+					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+					success = 1;
+					break;
+				}
+
+				if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+					RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+					break;
+				}
+
+				RCT2_GLOBAL(0x00F64ED4, uint16) += 8;
+			}
+
+			if (!success && !window_scenery_is_build_cluster_tool_on){
+				sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			RCT2_GLOBAL(0x00F64ED4, sint16) = _esi;
+		}
 		//6e2d2d
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
 	}
 }
 
