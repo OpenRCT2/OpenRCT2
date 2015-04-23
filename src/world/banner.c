@@ -19,6 +19,8 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
 #include "banner.h"
 
 rct_banner *gBanners = (rct_banner*)0x0135A124;
@@ -31,4 +33,35 @@ void banner_init() {
     for(int i = 0; i < MAX_BANNERS; i++) {
         gBanners[i].type = BANNER_NULL;
     }
+}
+
+/* rct2: 0x006BA278
+ * Creates a new banner and returns the index of the banner
+ * If the flag GAME_COMMAND_FLAG_APPLY is NOT set then returns
+ * the first unused index but does NOT mark the banner as created.
+ * returns 0xFF on failure.
+ */
+int create_new_banner(uint8 flags){
+    int banner_index = 0;
+    for (; banner_index < MAX_BANNERS; banner_index++){
+        if (gBanners[banner_index].type == BANNER_NULL){
+            break;
+        }
+    }
+
+    if (banner_index == MAX_BANNERS){
+        RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_BANNERS_IN_GAME;
+        return BANNER_NULL;
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY){
+        rct_banner* banner = &gBanners[banner_index];
+
+        banner->flags = 0;
+        banner->type = 0;
+        banner->string_idx = 778;
+        banner->colour = 2;
+        banner->text_colour = 2;
+    }
+	return banner_index;
 }

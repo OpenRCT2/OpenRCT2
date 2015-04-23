@@ -1711,24 +1711,24 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 			(map_element->properties.banner.position & 0x3) != edge){
 				map_element++;
 				if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-					uint8 a = sub_6BA278(*ebx);
-					if(a == 0xFF){
+					int banner_index = create_new_banner(*ebx);
+					if(banner_index == BANNER_NULL){
 						*ebx = MONEY32_UNDEFINED;
 						return;
 					}
-					*edi = a;
+					*edi = banner_index;
 					if(*ebx & GAME_COMMAND_FLAG_APPLY){
 						rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, (base_height + 1) * 2, 0);
-						gBanners[a].type = type;
-						gBanners[a].colour = colour;
-						gBanners[a].x = x / 32;
-						gBanners[a].y = y / 32;
+						gBanners[banner_index].type = type;
+						gBanners[banner_index].colour = colour;
+						gBanners[banner_index].x = x / 32;
+						gBanners[banner_index].y = y / 32;
 						new_map_element->type = MAP_ELEMENT_TYPE_BANNER;
 						new_map_element->clearance_height = new_map_element->base_height + 2;
 						new_map_element->properties.banner.position = edge;
 						new_map_element->properties.banner.flags = 0xFF;
 						new_map_element->properties.banner.unused = 0;
-						new_map_element->properties.banner.index = a;
+						new_map_element->properties.banner.index = banner_index;
 						if(*ebx & 0x40){
 							new_map_element->flags |= 0x10;
 						}
