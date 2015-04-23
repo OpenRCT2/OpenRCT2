@@ -231,7 +231,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & (1 << 4))
 			return MONEY32_UNDEFINED;
 
-		if (!(flags & (1 << 6))) {
+		if (flags & (1 << 6)) {
 			if (mapElement->properties.path.additions & 0x0F) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
 				return MONEY32_UNDEFINED;

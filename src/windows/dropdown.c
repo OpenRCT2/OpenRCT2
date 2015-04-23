@@ -411,6 +411,17 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		if (availableColours & (1 << i))
 			numItems++;
 
+	// Set items
+	for (i = 0; i < 32; i++) {
+		if (availableColours & (1 << i)) {
+			if (selectedColour == i)
+				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+
+			gDropdownItemsFormat[i] = 0xFFFE;
+			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
+		}
+	}
+
 	// Show dropdown
 	window_dropdown_show_image(
 		w->x + widget->left,
@@ -424,14 +435,4 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		gAppropriateImageDropdownItemsPerRow[numItems]
 	);
 
-	// Set items
-	for (i = 0; i < 32; i++) {
-		if (availableColours & (1 << i)) {
-			if (selectedColour == i)
-				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
-
-			gDropdownItemsFormat[i] = 0xFFFE;
-			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
-		}
-	}
 }
