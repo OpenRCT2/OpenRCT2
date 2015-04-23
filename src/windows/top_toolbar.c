@@ -667,6 +667,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			GAME_COMMAND_52,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	{
@@ -687,6 +688,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			GAME_COMMAND_53,
 			0,
 			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
+		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 	{
@@ -706,6 +708,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			GAME_COMMAND_54,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_BANNER:
 	{
@@ -726,6 +729,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			GAME_COMMAND_55,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
 	}
 	default:
 		return;
