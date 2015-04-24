@@ -64,13 +64,12 @@ typedef struct {
 } rct_map_element_entrance_properties;
 
 typedef struct {
-	uint8 slope; //4
+	uint8 type; //4
 	uint8 item[3]; //5
 } rct_map_element_fence_properties;
 
 typedef struct {
-	uint8 type; //4
-	uint8 index; //5
+	uint16 type; //4
 	uint8 colour[2]; //6
 } rct_map_element_scenerymultiple_properties;
 
@@ -211,6 +210,8 @@ enum {
 
 #define MAX_MAP_ELEMENTS 196608
 #define MAX_TILE_MAP_ELEMENT_POINTERS (256 * 256)
+
+#define MAP_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 

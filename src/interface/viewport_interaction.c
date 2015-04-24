@@ -283,7 +283,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-		sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[mapElement->properties.path.additions & 0x0F];
+		sceneryEntry = g_pathBitSceneryEntries[(mapElement->properties.path.additions & 0x0F) - 1];
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		if (mapElement->flags & 0x20) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;
@@ -473,7 +473,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
 {
 	rct_scenery_entry* sceneryEntry;
 
-	sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.slope];
+	sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
@@ -496,12 +496,9 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
  */
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y)
 {
-	int ebx;
 	rct_scenery_entry* sceneryEntry;
 
-	ebx = mapElement->properties.scenerymultiple.type;
-	ebx |= (mapElement->properties.scenerymultiple.index & 0x3) << 8;
-	sceneryEntry = g_largeSceneryEntries[ebx];
+	sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
 
 	if (sceneryEntry->large_scenery.var_11 != 0xFF){
 		int id = (mapElement->type & 0xC0) |
@@ -514,7 +511,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 			x, 
 			1 | ((mapElement->type & 0x3) << 8), 
 			y, 
-			mapElement->base_height | ((mapElement->properties.scenerymultiple.index >> 2) << 8),
+			mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
 			GAME_COMMAND_44, 
 			0, 
 			0
@@ -560,4 +557,73 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
 	}
 
 	return closestPeep;
+}
+
+/**
+ *
+ *  rct2: 0x0068A15E
+ */
+void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
+{
+	int my_x, my_y, z;
+	rct_map_element *myMapElement;
+	rct_viewport *viewport;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFF6, &my_x, &my_y, &z, &myMapElement, &viewport);
+
+	if (z == 0) {
+		*x = 0x8000;
+		return;
+	}
+
+	RCT2_GLOBAL(0x00F1AD3E, uint8) = z;
+	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
+
+	if (z == 4) {
+		// myMapElement appears to be water
+		z = myMapElement->properties.surface.terrain;
+		z = (z & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
+	}
+
+	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
+
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
+
+	for (int i = 0; i < 5; i++) {
+		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 4) {
+			z = map_element_height(map_pos.x, map_pos.y);
+		} else {
+			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
+		}
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+	}
+
+	// Determine to which edge the cursor is closest
+	int myDirection;
+	int mod_x = map_pos.x & 0x1F;
+	int mod_y = map_pos.y & 0x1F;
+	if (mod_x < mod_y) {
+		if (mod_x + mod_y < 32) {
+			myDirection = 0;
+		} else {
+			myDirection = 1;
+		}
+	} else {
+		if (mod_x + mod_y < 32) {
+			myDirection = 3;
+		} else {
+			myDirection = 2;
+		}
+	}
+
+	*x = map_pos.x & ~0x1F;
+	*y = map_pos.y & ~0x1F;
+	if (direction != NULL) *direction = myDirection;
+	if (mapElement != NULL) *mapElement = myMapElement;
 }

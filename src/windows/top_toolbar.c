@@ -29,7 +29,9 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../scenario.h"
 #include "../world/scenery.h"
+#include "../world/banner.h"
 #include "dropdown.h"
 
 enum {
@@ -626,70 +628,805 @@ static void window_top_toolbar_paint()
 	}
 }
 
+/* rct2: 0x006E3158 */
+static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
+	//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
+	//return;
+	// ax, cx, bl
+	int grid_x, grid_y, type;
+	// edx
+	rct_map_element* map_element;
+	uint16 flags =
+		~((1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)) |
+		(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)));
+	// This is -2 as banner is 12 but flags are offset different
+
+	// not used
+	rct_viewport* viewport;
+	get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &map_element, &viewport);
+
+	switch (type){
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+	{
+		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+
+		// If can't repaint
+		if (!(scenery_entry->small_scenery.flags &
+			(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR |
+			SMALL_SCENERY_FLAG10)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | (map_element->type << 8),
+			grid_y,
+			map_element->base_height | (map_element->properties.scenery.type << 8),
+			GAME_COMMAND_52,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+	{
+		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+
+		// If can't repaint
+		if (!(scenery_entry->wall.flags &
+			(WALL_SCENERY_FLAG1 |
+			WALL_SCENERY_FLAG2)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | (window_scenery_primary_colour << 8),
+			grid_y,
+			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
+			GAME_COMMAND_53,
+			0,
+			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+	{
+		rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
+
+		// If can't repaint
+		if (!(scenery_entry->large_scenery.flags &
+			(1 << 0)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+			grid_y,
+			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
+			GAME_COMMAND_54,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
+	}
+	case VIEWPORT_INTERACTION_ITEM_BANNER:
+	{
+		rct_banner* banner = &gBanners[map_element->properties.banner.index];
+		rct_scenery_entry* scenery_entry = g_bannerSceneryEntries[banner->type];
+
+		// If can't repaint
+		if (!(scenery_entry->banner.flags &
+			(1 << 0)))
+			return;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		game_do_command(
+			grid_x,
+			1,
+			grid_y,
+			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
+			GAME_COMMAND_55,
+			0,
+			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+		break;
+	}
+	default:
+		return;
+	}
+}
+
+void sub_689604(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+
+	RCT2_CALLFUNC_X(0x00689604, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_68964B(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x0068964B, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_689692(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
+
+	RCT2_CALLFUNC_X(0x00689692, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_6896DC(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x006896DC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+	*cl = ecx;
+}
+
+void sub_6894D4(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y){
+	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
+
+	RCT2_CALLFUNC_X(0x006894D4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	*grid_x = eax;
+	*grid_y = ebx;
+}
+
+/* rct2: 0x006E1F34 
+ * Outputs
+ * eax : grid_x
+ * ebx : parameter_1
+ * ecx : grid_y
+ * edx : parameter_2
+ * edi : parameter_3
+ */
+void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
+	rct_window* w = window_find_by_class(WC_SCENERY);
+
+	if (w == NULL)
+	{
+		*grid_x = 0x8000;
+		return;
+	}
+
+	uint8 scenery_type = selected_scenery >> 8;
+	// Not sure what this type is yet.
+	uint8 type = 0;
+
+	if (scenery_type == 0){
+		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[selected_scenery];
+
+		if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
+			type = 1;
+		}
+	}
+	else if (scenery_type == 2 || scenery_type == 3){
+		type = 1;
+	}
+
+	if (type == 0){
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
+	}
+	else{
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+			// CTRL pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1)){
+				rct_map_element* map_element;
+				uint16 flags = 0xFCCA;
+				int interaction_type;
+				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
+
+				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 1;
+					RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, uint16) = map_element->base_height * 8;
+				}
+			}
+		}
+		else{
+			// CTRL not pressed
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1))){
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
+			}
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) == 0){
+			// SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, uint16) = x;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, uint16) = y;
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, uint16) = 0;
+			}
+		}
+		else{
+			// SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16) =
+					(RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16) - y + 4) & 0xFFF8;
+
+				x = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, sint16);
+				y = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16);
+			}
+			else{
+				// SHIFT not pressed
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
+			}
+		}
+	}
+	
+	switch (scenery_type){
+	case 0:
+	{
+		// Small scenery
+		rct_scenery_entry* scenery = g_smallSceneryEntries[selected_scenery];
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+			uint8 cl = 0;
+
+			// If CTRL not pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+				sub_689604(x, y, grid_x, grid_y, &cl);
+
+				if (*grid_x == 0x8000)
+					return;
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+
+				// If SHIFT pressed
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+
+					rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+					if (map_element == NULL){
+						*grid_x = 0x8000;
+						return;
+					}
+
+					sint16 z = (map_element->base_height * 8) & 0xFFF0;
+					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+
+					if (z < 16){
+						z = 16;
+					}
+
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+				}
+			}
+			else{
+				sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+
+				sub_68964B(x, y, z, grid_x, grid_y, &cl);
+
+				// If SHIFT pressed
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+				}
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			}
+
+			if (*grid_x == 0x8000)
+				return;
+
+			uint8 rotation = window_scenery_rotation;
+
+			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+				rotation = scenario_rand() & 0xFF;
+			}
+
+			rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			rotation &= 0x3;
+
+			// Also places it in lower but think thats for clobering
+			*parameter_1 = (selected_scenery & 0xFF) << 8;
+			*parameter_2 = cl ^ (1 << 1) | (window_scenery_primary_colour << 8);
+			*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+			return;
+		}
+
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+			uint16 flags = 0xFFF6;
+			int interaction_type = 0;
+			rct_map_element* map_element;
+
+			int map_x, map_y;
+			get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
+			*grid_x = (sint16)map_x;
+			*grid_y = (sint16)map_y;
+
+			if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+			{
+				*grid_x = 0x8000;
+				return;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+			uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+			if (water_height != 0){
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = water_height * 16;
+			}
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			}
+		}
+		else{
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sub_6894D4(x, y, z, grid_x, grid_y);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		*grid_x &= 0xFFE0;
+		*grid_y &= 0xFFE0;
+		uint8 rotation = window_scenery_rotation;
+
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+			rotation = scenario_rand() & 0xFF;
+		}
+
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = 0 | (window_scenery_primary_colour << 8);
+		*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+		break;
+	}
+	case 1:
+	{
+		// Path bits
+
+		uint16 flags = 0xFF9F;
+		int interaction_type = 0;
+		rct_map_element* map_element;
+
+		int map_x, map_y;
+		get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
+		*grid_x = (sint16)map_x;
+		*grid_y = (sint16)map_y;
+
+		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+		{
+			*grid_x = 0x8000;
+			return;
+		}
+
+		*parameter_1 = 0 | map_element->properties.path.type & 0x7;
+		*parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
+		if (map_element->type & 1){
+			*parameter_2 |= 0x8000;
+		}
+		*parameter_3 = (selected_scenery & 0xFF) + 1;
+		break;
+	}
+	case 2:
+	{
+		// Walls
+		uint8 cl;
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+			sub_689692(x, y, grid_x, grid_y, &cl);
+
+			if (*grid_x == 0x8000)
+				return;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			}
+		}
+		else{
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sub_6896DC(x, y, z, grid_x, grid_y, &cl);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		RCT2_GLOBAL(0x00F64F15, uint8) = window_scenery_secondary_colour;
+		RCT2_GLOBAL(0x00F64F16, uint8) = window_scenery_tertiary_colour;
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = cl | (window_scenery_primary_colour << 8);
+		*parameter_3 = 0;
+		break;
+	}
+	case 3:
+	{
+		// Large scenery
+
+		// If CTRL not pressed
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
+
+			if (*grid_x == 0x8000)
+				return;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+
+				if (map_element == NULL){
+					*grid_x = 0x8000;
+					return;
+				}
+
+				sint16 z = (map_element->base_height * 8) & 0xFFF0;
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+
+				if (z < 16){
+					z = 16;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			}
+		}
+		else{
+			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sub_6894D4(x, y, z, grid_x, grid_y);
+
+			// If SHIFT pressed
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			}
+
+			if (z < 16){
+				z = 16;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+		}
+
+		if (*grid_x == 0x8000)
+			return;
+
+		*grid_x &= 0xFFE0;
+		*grid_y &= 0xFFE0;
+
+		uint8 rotation = window_scenery_rotation;
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+
+		*parameter_1 = (rotation << 8);
+		*parameter_2 = window_scenery_primary_colour | (window_scenery_secondary_colour << 8);
+		*parameter_3 = selected_scenery & 0xFF;
+		break;
+	}
+	case 4:
+	{
+		// Banner
+
+		uint16 flags = 0xFF9F;
+		int interaction_type = 0;
+		rct_map_element* map_element;
+
+		int map_x, map_y;
+		get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
+		*grid_x = (sint16)map_x;
+		*grid_y = (sint16)map_y;
+
+		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+		{
+			*grid_x = 0x8000;
+			return;
+		}
+
+		uint8 rotation = window_scenery_rotation;
+		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation &= 0x3;
+		
+		sint16 z = map_element->base_height;
+
+		if (map_element->properties.path.type & (1 << 2)){
+			if (rotation != ((map_element->properties.path.type & 3) ^ 2)){
+				z += 2;
+			}
+		}
+
+		z /= 2;
+
+		// Also places it in lower but think thats for clobering
+		*parameter_1 = (selected_scenery & 0xFF) << 8;
+		*parameter_2 = z | (rotation << 8);
+		*parameter_3 = window_scenery_primary_colour;
+		break;
+	}
+	}
+}
+
 /**
  * rct2: 0x6e2cc6
  */
 static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
-	RCT2_CALLPROC_EBPSAFE(0x006E2712);
+	scenery_remove_ghost_tool_placement();
 	if (window_scenery_is_repaint_scenery_tool_on & 1){
-		//6e3158
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
+		repaint_scenery_tool_down(x, y, widgetIndex);
+		return;
 	}
 
 	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
+	uint8 selected_scenery = selected_tab & 0xFF;
+
 	if (selected_tab == -1) return;
 
-	sint16 grid_x, grid_y, grid_z;
-	uint8 item_colour;
-	uint8 model_type;
+	sint16 grid_x, grid_y;
 	int ebp = selected_tab;
+	uint32 parameter_1, parameter_2, parameter_3;
 
-	{
-		int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0;
-		RCT2_CALLFUNC_X(0x6E1F34, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		item_colour = edi;
-		model_type = (ebx & 0xFF00) >> 8;
-		grid_x = eax;
-		grid_y = ecx;
-		grid_z = edx;
-	}
+	sub_6E1F34(x, y, selected_tab, &grid_x, &grid_y, &parameter_1, &parameter_2, &parameter_3);
 
 	if (grid_x == 0x8000)return;
 	
-	if (ebp >= 1024){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-		// The return value will be banner id but the input is colour
-		int banner_id = item_colour;
-		
-		int ebx = (model_type << 8) | 1;
-
-		{
-			int esi = 0, eax = grid_x, ecx = grid_y, edx = grid_z;
-			game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
+	switch (scenery_type){
+	case 0:
+	{
+		int cluster_size = 1;
+		if (window_scenery_is_build_cluster_tool_on){
+			cluster_size = 35;
 		}
 
-		if (ebx == 0x80000000)return;
+		for (; cluster_size > 0; cluster_size--){
+
+			int cluster_z_coordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+			rct_scenery_entry* scenery = g_smallSceneryEntries[(parameter_1 >> 8) & 0xFF];
+
+			sint16 cur_grid_x = grid_x;
+			sint16 cur_grid_y = grid_y;
+
+			if (window_scenery_is_build_cluster_tool_on){
+				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+					parameter_2 &= 0xFF00;
+					parameter_2 |= scenario_rand() & 3;
+				}
+
+				cur_grid_x += ((scenario_rand() % 16) - 8) * 32;
+				cur_grid_y += ((scenario_rand() % 16) - 8) * 32;
+
+				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
+					RCT2_GLOBAL(0x00F64EC0, uint16)++;
+					RCT2_GLOBAL(0x00F64EC0, uint16) &= 3;
+				}
+			}
+
+			uint8 bl = 1;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				bl = 20;
+			}
+			uint8 success = 0;
+
+			for (; bl != 0; bl--){
+				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+				int ebx = parameter_1;
+				ebx &= 0xFF00;
+				if (window_scenery_is_build_cluster_tool_on){
+					ebx |= 0x9;
+				}
+				else{
+					ebx |= GAME_COMMAND_FLAG_APPLY;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_15, RCT2_GLOBAL(0x00F64EC0, uint8), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+
+
+				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+				if (cost != MONEY32_UNDEFINED){
+					window_close_by_class(WC_ERROR);
+					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+					success = 1;
+					break;
+				}
+
+				if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+					RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+					break;
+				}
+
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			}
+
+			if (!success && !window_scenery_is_build_cluster_tool_on){
+				sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = cluster_z_coordinate;
+		}
+		break;
+	}
+	case 1:
+	{
+		// Path Bits
+		int ebx = parameter_1;
+		ebx &= 0xFF00;
+		ebx |= 0x81;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+
+		if (cost == MONEY32_UNDEFINED){
+			return;
+		}
+
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		break;
+	}
+	case 2:
+	{
+		// Walls
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1811;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
+
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_41, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (cost != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		break;
+	}
+	case 3:
+	{
+		// Large Scenery
+		uint8 bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		for (; bl != 0; bl--){
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+
+			int ebx = (parameter_1 & 0xFF00) | 1;
+
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_43, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (cost != MONEY32_UNDEFINED){
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				return;
+			}
+
+			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
+				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				break;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+	}
+		break;
+	case 4:
+	{
+		// Banners
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
+		// The return value will be banner id but the input is colour (param 3)
+		int banner_id = parameter_3;
+
+		int cost;
+		{
+			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2, ebx = (parameter_1 & 0xFF00) | 1;
+			cost = game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp);
+		}
+
+		if (cost == MONEY32_UNDEFINED)return;
 
 		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 
 		window_banner_open(banner_id);
+		break;
 	}
-	else if (ebp >= 768){
-		//6e301c
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
-	}
-	else if (ebp >= 512){
-		//6e2f2e
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
-	}
-	else if (ebp >= 256){
-		//6e2eda
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
-	}
-	else{
-		//6e2d2d
-		RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, (int)w, 0, 0);
 	}
 }
 
@@ -779,34 +1516,33 @@ static void window_top_toolbar_tool_down(){
 *  
 *  rct2: 0x006644DD
 */
-void sub_6644DD(int ebx){
+void selection_raise_land(uint8 flags){
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
+		) / 2;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		) / 2;
 
-	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
-	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	ax >>= 1;
-	cx >>= 1;
-	ax += 0x10;
-	cx += 0x10;
-	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	dx <<= 16;
-	bp <<= 16;
-	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	center_x += 16;
+	center_y += 16;
+
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) << 16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 1;
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	}
 	else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_RAISE_LAND, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_RAISE_LAND, di, bp);
 	}
 }
 
@@ -814,33 +1550,32 @@ void sub_6644DD(int ebx){
 *
 *  rct2: 0x006645B3
 */
-void sub_6645B3(int ebx){
+void selection_lower_land(uint8 flags){
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) + 
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
+		) / 2;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) +
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		) / 2;
 
-	int ax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	int cx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
-	ax += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	cx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	ax >>= 1;
-	cx >>= 1;
-	ax += 0x10;
-	cx += 0x10;
-	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16);
-	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16);
-	dx <<= 16;
-	bp <<= 16;
-	dx += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16);
-	bp += RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16);
+	center_x += 16;
+	center_y += 16;
+
+	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) | 
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) << 16);
+	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) |
+		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 0xFFFF;
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	} else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(ax, ebx, cx, dx, GAME_COMMAND_LOWER_LAND, di, bp);
+		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_LOWER_LAND, di, bp);
 	}
 }
 
@@ -865,32 +1600,24 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 	if (!viewport)
 		return;
 
-	sint16 dx = 0xFFF0;
-	dx >>= viewport->zoom;
+	sint16 tile_height = -16 / (1 << viewport->zoom);
 
-	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+	int y_diff = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
 
-	if (y <= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+	if (y_diff <= tile_height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += tile_height;
 
-		y = (y & 0xFF00) | 1; // mov bl, 1
-
-		sub_6644DD(y);
+		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
-
 		return;
 	}
 
-	dx = -dx;
+	if (y_diff >= -tile_height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) -= tile_height;
 
-	if (y >= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
-
-		y = (y & 0xFF00) | 1; // mov bl, 1
-
-		sub_6645B3(y);
+		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
@@ -1008,7 +1735,8 @@ static void window_top_toolbar_tool_drag()
 		window_top_toolbar_water_tool_drag(x, y);
 		break;
 	case WIDX_SCENERY:
-		RCT2_CALLPROC_X(0x006E2CBC, x, y, 0, widgetIndex, (int)w, 0, 0);
+		if (window_scenery_is_repaint_scenery_tool_on & 1)
+			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}
 }

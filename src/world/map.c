@@ -1105,7 +1105,7 @@ void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
 		if (direction != (mapElement->type & 3))
 			continue;
 
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.slope];
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
 		if (sceneryEntry->wall.var_0D != 255) {
 			bannerIndex = mapElement->properties.fence.item[0];
 			banner = &gBanners[bannerIndex];
