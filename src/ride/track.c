@@ -454,6 +454,23 @@ static void read(void *dst, char **src, int length)
 	*src += length;
 }
 
+/* rct2: 0x00677530 
+ * Returns 1 if it has booster track elements
+ */
+uint8 td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements){
+	if (track_design->type == RCT1_RIDE_TYPE_HEDGE_MAZE)
+		return 0;
+
+	rct_track_element* track_element = (rct_track_element*)track_elements;
+
+	for (; track_element->type != 0xFF; track_element++){
+		if (track_element->type == RCT1_TRACK_ELEM_BOOSTER)
+			return 1;
+	}
+
+	return 0;
+}
+
 /**
  *
  *  rct2: 0x0067726A
@@ -535,20 +552,21 @@ rct_track_td6* load_track_design(const char *path)
 
 		// Set any element passed the tracks to 0xFF
 		if (track_design->type == RIDE_TYPE_MAZE) {
-			uint32* maze_element = (uint32*)track_elements;
-			while (*maze_element != 0) {
+			rct_maze_element* maze_element = (rct_maze_element*)track_elements;
+			while (maze_element->all != 0) {
 				maze_element++;
 			}
 			maze_element++;
 			memset(maze_element, 255, final_track_element_location - (uint8*)maze_element);
-		} else {
-			uint8* track_element = track_elements;
-			while (*track_element != 255) {
-				track_element += 2;
 		}
-			track_element++;
-			memset(track_element, 255, final_track_element_location - track_element);
-	}
+		else {
+			rct_track_element* track_element = (rct_track_element*)track_elements;
+			while (track_element->type != 255) {
+				track_element++;
+			}
+			memset(((uint8*)track_element) + 1, 255, final_track_element_location - (uint8*)track_element);
+		
+		}
 
 		// Edit the colours to use the new versions
 		// Unsure why it is 67
@@ -565,7 +583,9 @@ rct_track_td6* load_track_design(const char *path)
 		// Highest drop height is 1bit = 1/3 a meter in td4
 		// Not sure if this is correct??
 		track_design->highest_drop_height >>= 1;
-		if (0x100 & RCT2_CALLPROC_X(0x00677530, 0, 0, 0, 0, 0, 0, 0))
+
+		// If it has boosters then sadly track has to be discarded.
+		if (td4_track_has_boosters(track_design, track_elements))
 			track_design->type = RIDE_TYPE_NULL;
 
 		if (track_design->type == RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER)
