@@ -4577,7 +4577,7 @@ void peep_update_crowd_noise()
 			// Load and play crowd noise
 #ifdef USE_MIXER
 			if (!gCrowdSoundChannel) {
-				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2);
+				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, false);
 			}
 			if (gCrowdSoundChannel) {
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));

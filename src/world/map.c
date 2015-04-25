@@ -28,6 +28,7 @@
 #include "../scenario.h"
 #include "banner.h"
 #include "climate.h"
+#include "footpath.h"
 #include "map.h"
 #include "map_animation.h"
 #include "park.h"
@@ -905,7 +906,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 			return;
 		}
 		if(*ebx & GAME_COMMAND_FLAG_APPLY){
-			rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.slope];
+			rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
 			map_element->properties.fence.item[1] &= 0xE0;
 			map_element->properties.fence.item[1] |= color1;
 			map_element->flags &= 0x9F;
@@ -1655,7 +1656,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 			return;
 		}
 	}
-	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.slope];
+	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
 	if(scenery_entry->wall.var_0D != 0xFF){
 		rct_banner* banner = &gBanners[map_element->properties.fence.item[0]];
 		if(banner->type != BANNER_NULL){

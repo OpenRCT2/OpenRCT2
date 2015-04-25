@@ -2662,7 +2662,7 @@ void ride_music_update_final()
 								rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
 #ifdef USE_MIXER
 								rct_ride_music* ride_music = &gRideMusicList[ebx];
-								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid);
+								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, true);
 								if (ride_music->sound_channel) {
 									ride_music->volume = ride_music_params->volume;
 									ride_music->pan = ride_music_params->pan;
@@ -2678,7 +2678,7 @@ void ride_music_update_final()
 									}
 									Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
 								} else {
-									RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
+									//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 								}
 #else
 								const char* filename = get_file_path(ride_music_info->pathid);

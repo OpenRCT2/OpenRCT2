@@ -178,7 +178,7 @@ void scenery_remove_ghost_tool_placement(){
 			105 | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
 			y,
 			z,
-			GAME_COMMAND_44,
+			GAME_COMMAND_REMOVE_LARGE_SCENERY,
 			0,
 			0);
 	}
@@ -191,7 +191,7 @@ void scenery_remove_ghost_tool_placement(){
 			105,
 			y,
 			z | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
-			GAME_COMMAND_51,
+			GAME_COMMAND_REMOVE_BANNER,
 			0,
 			0);
 	}
