@@ -141,7 +141,7 @@ typedef struct {
 	uint8 excitement;								// 0x5B
 	uint8 intensity;								// 0x5C
 	uint8 nausea;									// 0x5D
-	uint8 pad_5E[2];
+	money16 upkeep_cost;							// 0x5E
 	uint8 track_spine_colour[4];					// 0x60
 	uint8 track_rail_colour[4];						// 0x64
 	uint8 track_support_colour[4];					// 0x68

@@ -29,6 +29,7 @@
 #include "../util/util.h"
 #include "../world/park.h"
 #include "../windows/error.h"
+#include "ride_ratings.h"
 #include "ride.h"
 #include "track.h"
 
@@ -1295,7 +1296,8 @@ int copy_scenery_to_track(uint8** track_pointer){
 	return 1;
 }
 
-int sub_6CE44F(rct_ride* ride){
+int sub_6CE44F(uint8 rideIndex){
+	rct_ride* ride = GET_RIDE(rideIndex);
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 
 	track_design->type = ride->type;
@@ -1307,8 +1309,8 @@ int sub_6CE44F(rct_ride* ride){
 
 	track_design->ride_mode = ride->mode;
 
-	track_design->version_and_colour_scheme = 
-		(ride->colour_scheme_type & 3) | 
+	track_design->version_and_colour_scheme =
+		(ride->colour_scheme_type & 3) |
 		(1 << 3); // Version .TD6
 
 	for (int i = 0; i < 32; ++i){
@@ -1328,8 +1330,8 @@ int sub_6CE44F(rct_ride* ride){
 	track_design->min_waiting_time = ride->min_waiting_time;
 	track_design->max_waiting_time = ride->max_waiting_time;
 	track_design->var_50 = ride->var_0D0;
-	track_design->lift_hill_speed_num_circuits = 
-		ride->lift_hill_speed | 
+	track_design->lift_hill_speed_num_circuits =
+		ride->lift_hill_speed |
 		(ride->num_circuits << 5);
 
 	track_design->entrance_style = ride->entrance_style;
@@ -1347,7 +1349,66 @@ int sub_6CE44F(rct_ride* ride){
 	if (total_air_time > 255)
 		total_air_time = 0;
 	track_design->total_air_time = (uint8)total_air_time;
-	//6ce5fd
+
+	track_design->excitement = ride->ratings.excitement / 10;
+	track_design->intensity = ride->ratings.intensity / 10;
+	track_design->nausea = ride->ratings.nausea / 10;
+
+	track_design->upkeep_cost = ride->upkeep_cost;
+	track_design->cost = 0;
+	track_design->var_6C = 0;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
+		track_design->var_6C |= (1 << 31);
+
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	memset(track_elements, 0, 8000);
+
+	if (track_design->type == RIDE_TYPE_MAZE){
+		//6CEAAE
+	}
+
+	rct_xy_element trackElement;
+	if (sub_6CAF80(rideIndex, &trackElement) == 0){
+		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+		return 0;
+	}
+
+	int x = trackElement.x, y = trackElement.y, z = 0;
+	rct_map_element* map_element = trackElement.element; 
+
+	//6ce69e
+
+	if (!(sub_6C6402(&map_element, &x, &y, &z))){
+		trackElement.element = map_element;
+		trackElement.x = x;
+		trackElement.y = y;
+		rct_map_element* initial_map = map_element;
+		do {
+			x = trackElement.x;
+			y = trackElement.y;
+			map_element = trackElement.element;
+			if (sub_6C6402(&map_element, &x, &y, &z)){
+				break;
+			}
+			trackElement.x = x;
+			trackElement.y = y;
+			trackElement.element = map_element;
+		} while (initial_map != trackElement.element);
+	}
+
+	z = map_element->base_height * 8;
+	uint8 track_type = map_element->properties.track.type;
+	uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	RCT2_GLOBAL(0x00F4414D, uint8) = direction;
+
+	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, 0, 0)){
+		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+		return 0;
+	}
+
+
+
 }
 
 /* rct2: 0x006D2804 & 0x006D264D */
@@ -1369,7 +1430,7 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	if (sub_6CE44F(ride)){
+	if (!sub_6CE44F(rideIndex)){
 		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
 		return 0;
 	}
