@@ -80,6 +80,14 @@ typedef struct{
 	uint8 secondary_colour;         // 0x15
 }rct_track_scenery;
 
+/* Track Entrance entry size: 0x6 */
+typedef struct{
+	sint8 z;
+	uint8 direction;			// 0x01
+	sint16 x;					// 0x02
+	sint16 y;					// 0x04
+}rct_track_entrance;
+
 enum{
 	TRACK_ELEMENT_FLAG_CHAIN_LIFT = (1<<7),
 	TRACK_ELEMENT_FLAG_INVERTED = (1<<6),

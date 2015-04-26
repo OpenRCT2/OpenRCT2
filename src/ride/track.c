@@ -32,6 +32,7 @@
 #include "ride_ratings.h"
 #include "ride.h"
 #include "track.h"
+#include "track_data.h"
 
 /**
  *
@@ -745,7 +746,7 @@ void load_track_scenery_objects(){
 		track_elements++;
 		
 		// Skip entrance exit elements
-		while (*track_elements != 255) track_elements += 6;
+		while (*track_elements != 255) track_elements += sizeof(rct_track_entrance);
 		track_elements++;
 	}
 
@@ -1402,13 +1403,221 @@ int sub_6CE44F(uint8 rideIndex){
 	uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 	RCT2_GLOBAL(0x00F4414D, uint8) = direction;
 
-	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, 0, 0)){
+	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)){
 		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
 		return 0;
 	}
 
+	rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackElement.element->properties.track.type];
+	// Used in the following loop to know when we have
+	// completed all of the elements and are back at the
+	// start.
+	rct_map_element* initial_map = trackElement.element;
 
+	sint16 start_x = trackElement.x;
+	sint16 start_y = trackElement.y;
+	sint16 start_z = z + trackCoordinates->z_negative;
+	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
+	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
+	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
+	rct_track_element* track = (rct_track_element*)track_elements;
+	do{
+		track->type = trackElement.element->properties.track.type;
+		if (track->type == 0xFF)
+			track->type = 101;
+
+		if (track->type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
+			track->type == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+			track_design->cost |= (1 << 7);
+
+		if (track->type == TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP ||
+			track->type == TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP ||
+			track->type == TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN ||
+			track->type == TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN)
+			track_design->cost |= (1 << 17);
+
+		if (track->type == TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN ||
+			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN ||
+			track->type == TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP ||
+			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP)
+			track_design->cost |= (1 << 29);
+
+		if (track->type == TRACK_ELEM_HALF_LOOP_UP ||
+			track->type == TRACK_ELEM_HALF_LOOP_DOWN)
+			track_design->cost |= (1 << 18);
+
+		if (track->type == TRACK_ELEM_LEFT_CORKSCREW_UP ||
+			track->type == TRACK_ELEM_RIGHT_CORKSCREW_UP ||
+			track->type == TRACK_ELEM_LEFT_CORKSCREW_DOWN ||
+			track->type == TRACK_ELEM_RIGHT_CORKSCREW_DOWN)
+			track_design->cost |= (1 << 19);
+
+		if (track->type == TRACK_ELEM_WATER_SPLASH)
+			track_design->cost |= (1 << 27);
+
+		if (track->type == TRACK_ELEM_POWERED_LIFT)
+			track_design->cost |= (1 << 30);
+
+		if (track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP ||
+			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP ||
+			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN ||
+			track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN)
+			track_design->cost |= (1 << 31);
+
+		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER)
+			track_design->cost |= (1 << 1);
+
+		uint8 bh;
+		if (track->type == TRACK_ELEM_BRAKES){
+			bh = trackElement.element->properties.track.sequence >> 4;
+		}
+		else{
+			bh = trackElement.element->properties.track.colour >> 4;
+		}
+
+		uint8 flags = trackElement.element->type & (1 << 7) |  bh;
+		flags |= (trackElement.element->properties.track.colour & 3) << 4;
+
+		if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & (1 << 3) &&
+			trackElement.element->properties.track.colour & (1<<2)){
+			flags |= (1 << 6);
+		}
+
+		track->flags = flags;
+		track++;
+
+		if (!track_get_next(&trackElement, &trackElement))
+			break;
+
+		z = trackElement.element->base_height * 8;
+		direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
+		track_type = trackElement.element->properties.track.type;
+		
+		if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
+			break;
+
+	} while (trackElement.element != initial_map);
+
+	track_elements = (uint8*)track;
+	// Mark the elements as finished.
+	*track_elements++ = 0xFF;
+
+	rct_track_entrance* entrance = (rct_track_entrance*)track_elements;
+
+	// First entrances, second exits
+	for (int i = 0; i < 2; ++i){
+
+		for (int station_index = 0; station_index < 4; ++station_index){
+
+			z = ride->station_heights[station_index];
+
+			uint16 location;
+			if (i == 0)location = ride->entrances[station_index];
+			else location = ride->exits[station_index];
+
+			if (location == 0xFFFF)
+				continue;
+
+			x = (location & 0xFF) * 32;
+			y = ((location & 0xFF00) >> 8) * 32;
+
+			map_element = map_get_first_element_at(x / 32, y / 32);
+
+			do{
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+					continue;
+				if (map_element->base_height == z)
+					break;
+			} while (!map_element_is_last_for_tile(map_element++));
+			// Add something that stops this from walking off the end
+
+			uint8 entrance_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+			entrance_direction -= RCT2_GLOBAL(0x00F4414D, uint8);
+			entrance_direction &= MAP_ELEMENT_DIRECTION_MASK;
+
+			entrance->direction = entrance_direction;
+
+			x -= RCT2_GLOBAL(0x00F44142, sint16);
+			y -= RCT2_GLOBAL(0x00F44144, sint16);
+
+			switch (RCT2_GLOBAL(0x00F4414D, uint8)){
+			case MAP_ELEMENT_DIRECTION_WEST:
+				// Nothing required
+				break;
+			case MAP_ELEMENT_DIRECTION_NORTH:
+			{
+				int temp_y = -y;
+				y = x;
+				x = temp_y;
+			}
+				break;
+			case MAP_ELEMENT_DIRECTION_EAST:
+				x = -x;
+				y = -y;
+				break;
+			case MAP_ELEMENT_DIRECTION_SOUTH:
+			{
+				int temp_x = -x;
+				x = y;
+				y = temp_x;
+			}
+				break;
+			}
+
+			entrance->x = x;
+			entrance->y = y;
+
+			z *= 8;
+			z -= RCT2_GLOBAL(0x00F44146, sint16);
+			z /= 8;
+
+			if (z > 127 || z < -126){
+				RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+				return 0;
+			}
+
+			if (z == 0xFF)
+				z = 0x80;
+
+			entrance->z = z;
+
+			// If this is the exit version
+			if (i == 1){
+				entrance->direction |= (1 << 7);
+			}
+			entrance++;
+		}
+	}
+
+	track_elements = (uint8*)entrance;
+	*track_elements++ = 0xFF;
+	*track_elements++ = 0xFF;
+
+	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
+
+	// Previously you had to save start_x, y, z but 
+	// no need since global vars not used
+	sub_6D01B3(0, 4096, 4096, 0);
+
+	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
+	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
+
+	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - 
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
+
+	y = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) -
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
+
+	x /= 32;
+	y /= 32;
+	x++;
+	y++;
+
+	track_design->space_required_x = x;
+	track_design->space_required_y = y;
+
+	return 1;
 }
 
 /* rct2: 0x006D2804 & 0x006D264D */

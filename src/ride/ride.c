@@ -769,7 +769,16 @@ static void ride_remove_peeps(int rideIndex)
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
-int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element* output_element, uint16 flags)
+/* rct2: 0x006C683D 
+ * ax : x
+ * bx : direction << 8, type
+ * cx : y
+ * dx : z
+ * si : extra_params
+ * di : output_element
+ * bp : flags
+ */
+int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element** output_element, uint16 flags)
 {
 	//int ebx = (direction << 8) | type;
 	//return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
@@ -894,8 +903,8 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 			return 1;
 		}
 
-		if (i == 0)
-			output_element = map_element;
+		if (i == 0 && output_element != NULL)
+			*output_element = map_element;
 
 		if (flags & (1 << 0)){
 			// Quadrant related ??
