@@ -2094,8 +2094,8 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 {
 	vehicle_colour result;
-	result.main = ride->vehicle_colours[vehicleIndex] & 0xFF;
-	result.additional_1 = ride->vehicle_colours[vehicleIndex] >> 8;
+	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
+	result.additional_1 = ride->vehicle_colours[vehicleIndex].trim_colour;
 	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
 	return result;
 }

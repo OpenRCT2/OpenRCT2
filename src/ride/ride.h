@@ -24,6 +24,7 @@
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
+#include "vehicle.h"
 
 typedef fixed16_2dp ride_rating;
 
@@ -138,7 +139,7 @@ typedef struct {
 	uint16 pad_002;
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
-	uint16 vehicle_colours[32];		// 0x006
+	rct_vehicle_colour vehicle_colours[32];		// 0x006
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049

@@ -92,12 +92,6 @@ enum{
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
-/* size: 0x2 */
-typedef struct{
-	uint8 body_colour;
-	uint8 trim_colour;
-} rct_track_vehicle_colour;
-
 /**
  * Track design structure.
  * size: 0x4E72B
@@ -106,9 +100,14 @@ typedef struct {
 	uint8 type;										// 0x00
 	uint8 vehicle_type;
 	money32 cost;									// 0x02
-	uint8 var_06;
-	uint8 var_07;
-	rct_track_vehicle_colour vehicle_colours[32];	// 0x08
+	union{
+		// After loading the track this is converted to 
+		// a flags register
+		uint8 ride_mode;							// 0x06
+		uint8 track_flags;							// 0x06
+	};
+	uint8 version_and_colour_scheme;				// 0x07 0b0000_VVCC
+	rct_vehicle_colour vehicle_colours[32];	// 0x08
 	union{
 		uint8 pad_48;
 		uint8 track_spine_colour_rct1;				// 0x48
@@ -121,16 +120,17 @@ typedef struct {
 		uint8 total_air_time;						// 0x4A
 		uint8 track_support_colour_rct1;			// 0x4A
 	};
-	uint8 pad_4B;
+	uint8 depart_flags;								// 0x4B
 	uint8 number_of_trains;							// 0x4C
 	uint8 number_of_cars_per_train;					// 0x4D
-	uint8 pad_4E[2];
+	uint8 min_waiting_time;							// 0x4E
+	uint8 max_waiting_time;							// 0x4F
 	uint8 var_50;
-	uint8 max_speed;								// 0x51
-	uint8 average_speed;							// 0x52
+	sint8 max_speed;								// 0x51
+	sint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53
 	uint8 max_positive_vertical_g;					// 0x55
-	sint8 max_negitive_vertical_g;					// 0x56
+	sint8 max_negative_vertical_g;					// 0x56
 	uint8 max_lateral_g;							// 0x57
 	union {
 		uint8 inversions;							// 0x58
@@ -150,7 +150,7 @@ typedef struct {
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
 	uint8 vehicle_additional_colour[32];			// 0x82
-	uint8 var_A2;
+	uint8 lift_hill_speed_num_circuits;				// 0xA2 0bCCCL_LLLL
 } rct_track_td6;
 
 typedef struct{

@@ -522,7 +522,7 @@ rct_track_td6* load_track_design(const char *path)
 	// Read start of track_design
 	read(track_design, &src, 32);
 
-	uint8 version = track_design->var_07 >> 2;
+	uint8 version = track_design->version_and_colour_scheme >> 2;
 
 	if (version > 2){
 		free(decoded);
@@ -595,11 +595,11 @@ rct_track_td6* load_track_design(const char *path)
 			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
 		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
-			if (track_design->var_06 == 3)
-				track_design->var_06 = 35;
+			if (track_design->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
+				track_design->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 			if (track_design->vehicle_type == 79) {
-				if (track_design->var_06 == 2)
-					track_design->var_06 = 1;
+				if (track_design->ride_mode == 2)
+					track_design->ride_mode = 1;
 			}
 		}
 
@@ -619,7 +619,7 @@ rct_track_td6* load_track_design(const char *path)
 
 		track_design->space_required_x = 255;
 		track_design->space_required_y = 255;
-		track_design->var_A2 = 5;
+		track_design->lift_hill_speed_num_circuits = 5;
 	}
 
 	track_design->var_50 = min(
@@ -820,7 +820,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		user_string_free(old_name);
 	}
 
-	uint8 version = track_design->var_07 >> 2;
+	uint8 version = track_design->version_and_colour_scheme >> 2;
 
 	if (version == 2){
 		ride->entrance_style = track_design->entrance_style;
@@ -1066,7 +1066,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
-		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
 	// Set preview to correct preview image based on rotation
@@ -1295,6 +1295,61 @@ int copy_scenery_to_track(uint8** track_pointer){
 	return 1;
 }
 
+int sub_6CE44F(rct_ride* ride){
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+
+	track_design->type = ride->type;
+	rct_object_entry_extended* object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
+
+	// Note we are only copying rct_object_entry in size and 
+	// not the extended as we don't need the chunk size.
+	memcpy(&track_design->vehicle_object, object, sizeof(rct_object_entry));
+
+	track_design->ride_mode = ride->mode;
+
+	track_design->version_and_colour_scheme = 
+		(ride->colour_scheme_type & 3) | 
+		(1 << 3); // Version .TD6
+
+	for (int i = 0; i < 32; ++i){
+		track_design->vehicle_colours[i] = ride->vehicle_colours[i];
+		track_design->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
+	}
+
+	for (int i = 0; i < 4; ++i){
+		track_design->track_spine_colour[i] = ride->track_colour_main[i];
+		track_design->track_rail_colour[i] = ride->track_colour_additional[i];
+		track_design->track_support_colour[i] = ride->track_colour_supports[i];
+	}
+
+	track_design->depart_flags = ride->depart_flags;
+	track_design->number_of_trains = ride->num_vehicles;
+	track_design->number_of_cars_per_train = ride->num_cars_per_train;
+	track_design->min_waiting_time = ride->min_waiting_time;
+	track_design->max_waiting_time = ride->max_waiting_time;
+	track_design->var_50 = ride->var_0D0;
+	track_design->lift_hill_speed_num_circuits = 
+		ride->lift_hill_speed | 
+		(ride->num_circuits << 5);
+
+	track_design->entrance_style = ride->entrance_style;
+	track_design->max_speed = (sint8)(ride->max_speed / 65536);
+	track_design->average_speed = (sint8)(ride->average_speed / 65536);
+	track_design->ride_length = ride_get_total_length(ride) / 65536;
+	track_design->max_positive_vertical_g = ride->max_positive_vertical_g / 32;
+	track_design->max_negative_vertical_g = ride->max_negative_vertical_g / 32;
+	track_design->max_lateral_g = ride->max_lateral_g / 32;
+	track_design->inversions = ride->inversions;
+	track_design->drops = ride->drops;
+	track_design->highest_drop_height = ride->highest_drop_height;
+
+	uint16 total_air_time = (ride->total_air_time * 123) / 1024;
+	if (total_air_time > 255)
+		total_air_time = 0;
+	track_design->total_air_time = (uint8)total_air_time;
+	//6ce5fd
+}
+
 /* rct2: 0x006D2804 & 0x006D264D */
 int save_track_design(uint8 rideIndex){
 	rct_ride* ride = GET_RIDE(rideIndex);
@@ -1314,10 +1369,15 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
+	if (sub_6CE44F(ride)){
 		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
 		return 0;
 	}
+
+	//if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
+	//	window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
+	//	return 0;
+	//}
 
 	uint8* track_pointer = RCT2_GLOBAL(0x00F44058, uint8*);
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
@@ -1430,7 +1490,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
-		trackDesign->track_td6.var_06 = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
 	// Set preview to correct preview image based on rotation
