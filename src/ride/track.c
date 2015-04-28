@@ -508,7 +508,10 @@ rct_track_td6* load_track_design(const char *path)
 
 	// Validate the checksum
 	// Not the same checksum algorithm as scenarios and saved games
-	// sub_6770C1();
+	if (!sawyercoding_validate_track_checksum(fpBuffer, fpLength)){
+		log_error("Track checksum failed.");
+		return 0;
+	}
 
 	// Decode the track data
 	decoded = malloc(0x10000);
@@ -1055,6 +1058,8 @@ rct_track_design *track_get_info(int index, uint8** preview)
 
 		if (!(loaded_track = load_track_design(track_path))) {
 			if (preview != NULL) *preview = NULL;
+			// Mark cache as empty.
+			RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = 0;
 			log_error("Failed to load track: %s", trackDesignList + (index * 128));
 			return NULL;
 		}
@@ -1790,6 +1795,33 @@ int ride_to_td6(uint8 rideIndex){
 	return tracked_ride_to_td6(rideIndex, track_design, track_elements);
 }
 
+/* rct2: 0x006771DC but not really its branched from that
+ * quite far.
+ */
+int save_track_to_file(rct_track_td6* track_design, char* path){
+	window_close_construction_windows();
+
+	uint8* track_file = malloc(0x8000);
+
+	int length = sawyercoding_encode_td6((char*)track_design, track_file, 0x609F);
+
+	FILE *file;
+
+	log_verbose("saving track %s", path);
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		free(track_file);
+		log_error("Failed to save %s", path);
+		return 0;
+	}
+
+	fwrite(track_file, length, 1, file);
+	fclose(file);
+	free(track_file);
+
+	return 1;
+}
+
 /* rct2: 0x006D2804 & 0x006D264D */
 int save_track_design(uint8 rideIndex){
 	rct_ride* ride = GET_RIDE(rideIndex);
@@ -1859,10 +1891,7 @@ int save_track_design(uint8 rideIndex){
 		return 1;
 	}
 
-	// Until 0x006771DC is finished we required to copy the path name.
-	strcpy(RCT2_ADDRESS(0x141EF68, char), path);
-	// This is the function that actually saves the track to a file
-	RCT2_CALLPROC_EBPSAFE(0x006771DC);
+	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 
 	ride_list_item item = { .type = 0xFC, .entry_index = 0 };
 	track_load_list(item);
