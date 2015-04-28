@@ -1297,86 +1297,180 @@ int copy_scenery_to_track(uint8** track_pointer){
 	return 1;
 }
 
-int sub_6CE44F(uint8 rideIndex){
+/* rct2: 0x006CEAAE */
+int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements){
+	rct_map_element* map_element;
+	uint8 map_found = 0;
+
+	sint16 start_x, start_y;
+
+	for (start_y = 0; start_y < 8192; start_y += 32){
+		for (start_x = 0; start_x < 8192; start_x += 32){
+			map_element = map_get_first_element_at(start_x / 32, start_y / 32);
+
+			do{
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+				if (map_element->properties.track.ride_index == rideIndex){
+					map_found = 1;
+					break;
+				}
+			} while (!map_element_is_last_for_tile(map_element++));
+
+			if (map_found)
+				break;
+		}
+		if (map_found)
+			break;
+	}
+
+	if (map_found == 0){
+		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+		return 0;
+	}
+
+	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
+	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
+	RCT2_GLOBAL(0x00F44146, sint16) = map_element->base_height * 8;
+
+	rct_maze_element* maze = (rct_maze_element*)track_elements;
+
+	// x is defined here as we can start the search
+	// on tile start_x, start_y but then the next row
+	// must restart on 0
+	for (sint16 y = start_y, x = start_x; y < 8192; y += 32){
+		for (; x < 8192; x += 32){
+			map_element = map_get_first_element_at(x / 32, y / 32);
+
+			do{
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+				if (map_element->properties.track.ride_index != rideIndex)
+					continue;
+
+				maze->maze_entry = map_element->properties.track.maze_entry;
+				maze->x = (x - start_x) / 32;
+				maze->y = (y - start_y) / 32;
+				maze++;
+
+				if (maze >= RCT2_ADDRESS(0x009DA151, rct_maze_element)){
+					RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+					return 0;
+				}
+			} while (!map_element_is_last_for_tile(map_element++));
+
+		}
+		x = 0;
+	}
+
 	rct_ride* ride = GET_RIDE(rideIndex);
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint16 location = ride->entrances[0];
 
-	track_design->type = ride->type;
-	rct_object_entry_extended* object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
-
-	// Note we are only copying rct_object_entry in size and 
-	// not the extended as we don't need the chunk size.
-	memcpy(&track_design->vehicle_object, object, sizeof(rct_object_entry));
-
-	track_design->ride_mode = ride->mode;
-
-	track_design->version_and_colour_scheme =
-		(ride->colour_scheme_type & 3) |
-		(1 << 3); // Version .TD6
-
-	for (int i = 0; i < 32; ++i){
-		track_design->vehicle_colours[i] = ride->vehicle_colours[i];
-		track_design->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
+	if (location == 0xFFFF){
+		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+		return 0;
 	}
 
-	for (int i = 0; i < 4; ++i){
-		track_design->track_spine_colour[i] = ride->track_colour_main[i];
-		track_design->track_rail_colour[i] = ride->track_colour_additional[i];
-		track_design->track_support_colour[i] = ride->track_colour_supports[i];
+	sint16 x = (location & 0xFF) * 32;
+	sint16 y = ((location & 0xFF00) >> 8) * 32;
+
+	map_element = map_get_first_element_at(x / 32, y / 32);
+
+	do{
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+			continue;
+		if (map_element->properties.entrance.ride_index == rideIndex)
+			break;
+	} while (!map_element_is_last_for_tile(map_element++));
+	// Add something that stops this from walking off the end
+
+	uint8 entrance_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	maze->unk_2 = entrance_direction;
+	maze->type = 8;
+
+	maze->x = (sint8)((x - start_x) / 32);
+	maze->y = (sint8)((y - start_y) / 32);
+
+	maze++;
+
+	location = ride->exits[0];
+
+	if (location == 0xFFFF){
+		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
+		return 0;
 	}
 
-	track_design->depart_flags = ride->depart_flags;
-	track_design->number_of_trains = ride->num_vehicles;
-	track_design->number_of_cars_per_train = ride->num_cars_per_train;
-	track_design->min_waiting_time = ride->min_waiting_time;
-	track_design->max_waiting_time = ride->max_waiting_time;
-	track_design->var_50 = ride->var_0D0;
-	track_design->lift_hill_speed_num_circuits =
-		ride->lift_hill_speed |
-		(ride->num_circuits << 5);
+	x = (location & 0xFF) * 32;
+	y = ((location & 0xFF00) >> 8) * 32;
 
-	track_design->entrance_style = ride->entrance_style;
-	track_design->max_speed = (sint8)(ride->max_speed / 65536);
-	track_design->average_speed = (sint8)(ride->average_speed / 65536);
-	track_design->ride_length = ride_get_total_length(ride) / 65536;
-	track_design->max_positive_vertical_g = ride->max_positive_vertical_g / 32;
-	track_design->max_negative_vertical_g = ride->max_negative_vertical_g / 32;
-	track_design->max_lateral_g = ride->max_lateral_g / 32;
-	track_design->inversions = ride->inversions;
-	track_design->drops = ride->drops;
-	track_design->highest_drop_height = ride->highest_drop_height;
+	map_element = map_get_first_element_at(x / 32, y / 32);
 
-	uint16 total_air_time = (ride->total_air_time * 123) / 1024;
-	if (total_air_time > 255)
-		total_air_time = 0;
-	track_design->total_air_time = (uint8)total_air_time;
+	do{
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+		if (map_element->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+			continue;
+		if (map_element->properties.entrance.ride_index == rideIndex)
+			break;
+	} while (!map_element_is_last_for_tile(map_element++));
+	// Add something that stops this from walking off the end
 
-	track_design->excitement = ride->ratings.excitement / 10;
-	track_design->intensity = ride->ratings.intensity / 10;
-	track_design->nausea = ride->ratings.nausea / 10;
+	uint8 exit_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	maze->unk_2 = exit_direction;
+	maze->type = 0x80;
 
-	track_design->upkeep_cost = ride->upkeep_cost;
-	track_design->cost = 0;
-	track_design->var_6C = 0;
+	maze->x = (sint8)((x - start_x) / 32);
+	maze->y = (sint8)((y - start_y) / 32);
 
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
-		track_design->var_6C |= (1 << 31);
+	maze++;
 
-	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
-	memset(track_elements, 0, 8000);
+	maze->all = 0;
+	maze++;
 
-	if (track_design->type == RIDE_TYPE_MAZE){
-		//6CEAAE
-	}
+	track_elements = (uint8*)maze;
+	*track_elements++ = 0xFF;
+
+	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
+
+	// Previously you had to save start_x, y, z but 
+	// no need since global vars not used
+	sub_6D01B3(0, 4096, 4096, 0);
+
+	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
+	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
+
+	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
+
+	y = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) -
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
+
+	x /= 32;
+	y /= 32;
+	x++;
+	y++;
+
+	track_design->space_required_x = (uint8)x;
+	track_design->space_required_y = (uint8)y;
+
+	return 1;
+}
+
+/* rct2: 0x006CE68D */
+int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements){
+	rct_ride* ride = GET_RIDE(rideIndex);
 
 	rct_xy_element trackElement;
+
 	if (sub_6CAF80(rideIndex, &trackElement) == 0){
 		RCT2_GLOBAL(0x00141E9AC, uint16) = 3347;
 		return 0;
 	}
 
 	int x = trackElement.x, y = trackElement.y, z = 0;
-	rct_map_element* map_element = trackElement.element; 
+	rct_map_element* map_element = trackElement.element;
 
 	//6ce69e
 
@@ -1408,7 +1502,7 @@ int sub_6CE44F(uint8 rideIndex){
 		return 0;
 	}
 
-	rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackElement.element->properties.track.type];
+	const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackElement.element->properties.track.type];
 	// Used in the following loop to know when we have
 	// completed all of the elements and are back at the
 	// start.
@@ -1429,44 +1523,44 @@ int sub_6CE44F(uint8 rideIndex){
 
 		if (track->type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
 			track->type == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
-			track_design->cost |= (1 << 7);
+			track_design->flags |= (1 << 7);
 
 		if (track->type == TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP ||
 			track->type == TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP ||
 			track->type == TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN ||
 			track->type == TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN)
-			track_design->cost |= (1 << 17);
+			track_design->flags |= (1 << 17);
 
 		if (track->type == TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN ||
 			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN ||
 			track->type == TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP ||
 			track->type == TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP)
-			track_design->cost |= (1 << 29);
+			track_design->flags |= (1 << 29);
 
 		if (track->type == TRACK_ELEM_HALF_LOOP_UP ||
 			track->type == TRACK_ELEM_HALF_LOOP_DOWN)
-			track_design->cost |= (1 << 18);
+			track_design->flags |= (1 << 18);
 
 		if (track->type == TRACK_ELEM_LEFT_CORKSCREW_UP ||
 			track->type == TRACK_ELEM_RIGHT_CORKSCREW_UP ||
 			track->type == TRACK_ELEM_LEFT_CORKSCREW_DOWN ||
 			track->type == TRACK_ELEM_RIGHT_CORKSCREW_DOWN)
-			track_design->cost |= (1 << 19);
+			track_design->flags |= (1 << 19);
 
 		if (track->type == TRACK_ELEM_WATER_SPLASH)
-			track_design->cost |= (1 << 27);
+			track_design->flags |= (1 << 27);
 
 		if (track->type == TRACK_ELEM_POWERED_LIFT)
-			track_design->cost |= (1 << 30);
+			track_design->flags |= (1 << 30);
 
 		if (track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP ||
 			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP ||
 			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN ||
 			track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN)
-			track_design->cost |= (1 << 31);
+			track_design->flags |= (1 << 31);
 
 		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER)
-			track_design->cost |= (1 << 1);
+			track_design->flags |= (1 << 1);
 
 		uint8 bh;
 		if (track->type == TRACK_ELEM_BRAKES){
@@ -1476,11 +1570,11 @@ int sub_6CE44F(uint8 rideIndex){
 			bh = trackElement.element->properties.track.colour >> 4;
 		}
 
-		uint8 flags = trackElement.element->type & (1 << 7) |  bh;
+		uint8 flags = trackElement.element->type & (1 << 7) | bh;
 		flags |= (trackElement.element->properties.track.colour & 3) << 4;
 
 		if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & (1 << 3) &&
-			trackElement.element->properties.track.colour & (1<<2)){
+			trackElement.element->properties.track.colour & (1 << 2)){
 			flags |= (1 << 6);
 		}
 
@@ -1493,7 +1587,7 @@ int sub_6CE44F(uint8 rideIndex){
 		z = trackElement.element->base_height * 8;
 		direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
 		track_type = trackElement.element->properties.track.type;
-		
+
 		if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
 			break;
 
@@ -1603,7 +1697,7 @@ int sub_6CE44F(uint8 rideIndex){
 	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - 
+	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
 
 	y = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) -
@@ -1618,6 +1712,82 @@ int sub_6CE44F(uint8 rideIndex){
 	track_design->space_required_y = y;
 
 	return 1;
+}
+
+/* rct2: 0x006CE44F */
+int ride_to_td6(uint8 rideIndex){
+	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+
+	track_design->type = ride->type;
+	rct_object_entry_extended* object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
+
+	// Note we are only copying rct_object_entry in size and 
+	// not the extended as we don't need the chunk size.
+	memcpy(&track_design->vehicle_object, object, sizeof(rct_object_entry));
+
+	track_design->ride_mode = ride->mode;
+
+	track_design->version_and_colour_scheme =
+		(ride->colour_scheme_type & 3) |
+		(1 << 3); // Version .TD6
+
+	for (int i = 0; i < 32; ++i){
+		track_design->vehicle_colours[i] = ride->vehicle_colours[i];
+		track_design->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
+	}
+
+	for (int i = 0; i < 4; ++i){
+		track_design->track_spine_colour[i] = ride->track_colour_main[i];
+		track_design->track_rail_colour[i] = ride->track_colour_additional[i];
+		track_design->track_support_colour[i] = ride->track_colour_supports[i];
+	}
+
+	track_design->depart_flags = ride->depart_flags;
+	track_design->number_of_trains = ride->num_vehicles;
+	track_design->number_of_cars_per_train = ride->num_cars_per_train;
+	track_design->min_waiting_time = ride->min_waiting_time;
+	track_design->max_waiting_time = ride->max_waiting_time;
+	track_design->var_50 = ride->var_0D0;
+	track_design->lift_hill_speed_num_circuits =
+		ride->lift_hill_speed |
+		(ride->num_circuits << 5);
+
+	track_design->entrance_style = ride->entrance_style;
+	track_design->max_speed = (sint8)(ride->max_speed / 65536);
+	track_design->average_speed = (sint8)(ride->average_speed / 65536);
+	track_design->ride_length = ride_get_total_length(ride) / 65536;
+	track_design->max_positive_vertical_g = ride->max_positive_vertical_g / 32;
+	track_design->max_negative_vertical_g = ride->max_negative_vertical_g / 32;
+	track_design->max_lateral_g = ride->max_lateral_g / 32;
+	track_design->inversions = ride->inversions;
+	track_design->drops = ride->drops;
+	track_design->highest_drop_height = ride->highest_drop_height;
+
+	uint16 total_air_time = (ride->total_air_time * 123) / 1024;
+	if (total_air_time > 255)
+		total_air_time = 0;
+	track_design->total_air_time = (uint8)total_air_time;
+
+	track_design->excitement = ride->ratings.excitement / 10;
+	track_design->intensity = ride->ratings.intensity / 10;
+	track_design->nausea = ride->ratings.nausea / 10;
+
+	track_design->upkeep_cost = ride->upkeep_cost;
+	track_design->flags = 0;
+	track_design->var_6C = 0;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
+		track_design->var_6C |= (1 << 31);
+
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	memset(track_elements, 0, 8000);
+
+	if (track_design->type == RIDE_TYPE_MAZE){
+		return maze_ride_to_td6(rideIndex, track_design, track_elements);
+	}
+
+	return tracked_ride_to_td6(rideIndex, track_design, track_elements);
 }
 
 /* rct2: 0x006D2804 & 0x006D264D */
@@ -1639,7 +1809,7 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	if (!sub_6CE44F(rideIndex)){
+	if (!ride_to_td6(rideIndex)){
 		window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
 		return 0;
 	}

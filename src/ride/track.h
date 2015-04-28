@@ -57,8 +57,13 @@ typedef struct {
 		struct {
 			sint8 x;
 			sint8 y;
-			uint8 unk_2;
-			uint8 type;
+			union{
+				uint16 maze_entry;
+				struct{
+					uint8 unk_2;
+					uint8 type;
+				};
+			};
 		};
 	};
 } rct_maze_element;
@@ -107,7 +112,12 @@ enum{
 typedef struct {
 	uint8 type;										// 0x00
 	uint8 vehicle_type;
-	money32 cost;									// 0x02
+	union{
+		// After loading the track this is converted to
+		// a cost but before its a flags register
+		money32 cost;								// 0x02
+		uint32 flags;								// 0x02
+	};
 	union{
 		// After loading the track this is converted to 
 		// a flags register
