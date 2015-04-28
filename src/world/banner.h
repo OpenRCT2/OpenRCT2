@@ -44,5 +44,6 @@ enum{
 extern rct_banner *gBanners;
 
 void banner_init();
+int create_new_banner(uint8 flags);
 
 #endif

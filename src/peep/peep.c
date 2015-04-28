@@ -175,6 +175,21 @@ static void sub_693BE5(rct_peep* peep, uint8 al){
 	sub_693B58(peep);
 }
 
+/**
+*
+*  rct2: 0x0069A512
+*/
+void remove_peep_from_ride(rct_peep* peep)
+{
+	if (peep->state == PEEP_STATE_QUEUING) {
+		remove_peep_from_queue(peep);
+	}
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_1;
+	peep_window_state_update(peep);
+	sub_693BE5(peep, 0);
+}
+
 static void peep_state_reset(rct_peep* peep){
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
@@ -556,7 +571,7 @@ void peep_sprite_remove(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
 	//return;
 
-	RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+	remove_peep_from_ride(peep);
 	invalidate_sprite((rct_sprite*)peep);
 
 	window_close_by_number(WC_PEEP, peep->sprite_index);
@@ -573,7 +588,7 @@ void peep_sprite_remove(rct_peep* peep){
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] = 0;
 		peep->type = 0xFF;
-		sub_6C0C3F();
+		staff_update_greyed_patrol_areas();
 		peep->type = PEEP_TYPE_STAFF;
 
 		news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
@@ -4562,7 +4577,7 @@ void peep_update_crowd_noise()
 			// Load and play crowd noise
 #ifdef USE_MIXER
 			if (!gCrowdSoundChannel) {
-				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2);
+				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, false);
 			}
 			if (gCrowdSoundChannel) {
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));

@@ -56,14 +56,27 @@ typedef enum {
 	SMALL_SCENERY_FLAG18 = (1 << 17),							// 0x20000
 	SMALL_SCENERY_FLAG19 = (1 << 18),							// 0x40000
 	SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),		// 0x80000
+	SMALL_SCENERY_FLAG20 = (1 << 20),							// 0x100000
+	SMALL_SCENERY_FLAG21 = (1 << 21),							// 0x200000
+	SMALL_SCENERY_FLAG22 = (1 << 22),							// 0x400000
+	SMALL_SCENERY_FLAG23 = (1 << 23),							// 0x800000
+	SMALL_SCENERY_FLAG24 = (1 << 24),							// 0x1000000
+	SMALL_SCENERY_FLAG25 = (1 << 25),							// 0x2000000
 } SMALL_SCENERY_FLAGS;
+
+typedef struct {
+	sint16 x_offset;
+	sint16 y_offset;
+	sint16 z_offset;
+	uint8 pad_6[3];
+} rct_large_scenery_tile;
 
 typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	sint16 removal_price;	// 0x0A
-	uint32 var_0C;
+	rct_large_scenery_tile* tiles; // 0x0C
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
 	uint32 var_12;

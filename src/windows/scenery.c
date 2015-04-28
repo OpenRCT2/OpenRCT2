@@ -464,7 +464,7 @@ void window_scenery_open()
 	window->scenery.hover_counter = 0;
 	window_push_others_below(window);
 	RCT2_GLOBAL(0x00F64F0D, uint8) = 0;
-	RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
+	RCT2_GLOBAL(0x00F64EB4, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(0x00F64EC0, uint16) = 0;
 	window_scenery_is_repaint_scenery_tool_on = 0; // repaint colored scenery tool state
 	window_scenery_is_build_cluster_tool_on = 0; // build cluster tool state
@@ -643,7 +643,7 @@ static void window_scenery_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	if (widgetIndex >= WIDX_SCENERY_TAB_1 && widgetIndex <= WIDX_SCENERY_TAB_20) {
 		window_scenery_active_tab_index = widgetIndex - WIDX_SCENERY_TAB_1;
 		window_invalidate(w);
-		RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
+		RCT2_GLOBAL(0x00F64EB4, uint32) = MONEY32_UNDEFINED;
 		window_scenery_update_scroll(w);
 	}
 }
@@ -817,7 +817,7 @@ void window_scenery_scrollmousedown()
 	window_scenery_is_repaint_scenery_tool_on &= 0xFE;
 	sound_play_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
 	w->scenery.hover_counter = -16;
-	RCT2_GLOBAL(0x00F64EB4, uint32) = 0x80000000;
+	RCT2_GLOBAL(0x00F64EB4, uint32) = MONEY32_UNDEFINED;
 	window_invalidate(w);
 }
 
@@ -1057,7 +1057,7 @@ void window_scenery_paint()
 		price = sceneryEntry->small_scenery.price * 10;
 	}
 
-	if (w->scenery.selected_scenery_id == -1 && RCT2_GLOBAL(0x00F64EB4, uint32) != 0x80000000) {
+	if (w->scenery.selected_scenery_id == -1 && RCT2_GLOBAL(0x00F64EB4, uint32) != MONEY32_UNDEFINED) {
 		price = RCT2_GLOBAL(0x00F64EB4, uint32);
 	}
 

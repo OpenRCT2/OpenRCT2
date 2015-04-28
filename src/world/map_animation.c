@@ -48,7 +48,7 @@ void map_animation_create(int type, int x, int y, int z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
 	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
-	for (; numAnimatedObjects > 0; aobj++) {
+	for (int i = 0; i < numAnimatedObjects; i++, aobj++) {
 		if (aobj->x != x)
 			continue;
 		if (aobj->y != y)

@@ -256,7 +256,7 @@ static void window_sign_mouseup()
 			1 | ((map_element->type&0x3) << 8),
 			y,
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_44, 
+			GAME_COMMAND_REMOVE_LARGE_SCENERY, 
 			0, 
 			0);
 		break;

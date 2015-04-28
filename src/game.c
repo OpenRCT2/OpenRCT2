@@ -358,7 +358,7 @@ static int game_check_affordability(int cost)
 	}
 	RCT2_GLOBAL(0x13CE952, uint32) = cost;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
-	return 0x80000000;
+	return MONEY32_UNDEFINED;
 }
 
 static uint32 game_do_command_table[58];
@@ -411,13 +411,13 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 	cost = *ebx;
 
-	if (cost != 0x80000000) {
+	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
 		insufficientFunds = 0;
 		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
-		if (insufficientFunds != 0x80000000) {
+		if (insufficientFunds != MONEY32_UNDEFINED) {
 			*ebx = original_ebx;
 			*edx = original_edx;
 			*esi = original_esi;
@@ -438,7 +438,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 			*edx = *ebx;
 
-			if (*edx != 0x80000000 && *edx < cost)
+			if (*edx != MONEY32_UNDEFINED && *edx < cost)
 				cost = *edx;
 
 			// Decrement nest count
@@ -470,7 +470,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
 		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 
-	return 0x80000000;
+	return MONEY32_UNDEFINED;
 }
 
 void pause_toggle()
@@ -797,7 +797,7 @@ char save_game()
 	path_set_extension(path, ".SV6");
 	
 	if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
-		game_do_command(0, 1047, 0, -1, GAME_COMMAND_0, 0, 0);
+		game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 		gfx_invalidate_screen();
 		return 1;
 	} else {
@@ -874,21 +874,21 @@ void game_load_or_quit_no_save_prompt()
 #pragma region Game command function table
 
 static uint32 game_do_command_table[58] = {
-	0x006B2FC5,
+	0,
 	0x0066397F,
 	0,
 	0x006C511D,
 	0x006C5B69,
 	0,
 	0x006B3F0F,
-	0x006B49D9,
+	0,
 	0,
 	0x006B52D4,
 	0, // 10
 	0,
 	0x006660A8,
 	0x0066640B,
-	0x006E0E01,
+	0,
 	0x006E08F4,
 	0x006E650F,
 	0,
@@ -897,17 +897,17 @@ static uint32 game_do_command_table[58] = {
 	0, // use new_game_command_table, original: 0x00663CCD, // 20
 	0x006B53E9,
 	0x00698D6C, // text input
-	0x0068C542,
-	0x0068C6D1,
+	0,
+	0,
 	0x0068BC01,
-	0x006E66A0,
-	0x006E6878,
+	0,
+	0,
 	0x006C5AE9,
 	0, // use new_game_command_table, original: 0x006BEFA1, 29
-	0x006C09D1, // 30
-	0x006C0B83,
-	0x006C0BB5,
-	0x00669C6D,
+	0, // 30
+	0,
+	0,
+	0,
 	0,
 	0x006649BD,
 	0x006666E7,
@@ -916,20 +916,20 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0, // 40
 	0x006E519A,
-	0x006E5597,
+	0,
 	0x006B893C,
-	0x006B8E1B,
+	0,
 	0,
 	0,
 	0x006D13FE,
 	0,
 	0x006CDEE4,
-	0x006B9E6D, // 50
-	0x006BA058,
-	0x006E0F26,
-	0x006E56B5,
-	0x006B909A,
-	0x006BA16A,
+	0, // 50
+	0,
+	0,
+	0,
+	0,
+	0,
 	0x006648E3,
 	0
 };
@@ -937,21 +937,21 @@ static uint32 game_do_command_table[58] = {
 void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
 
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
-	game_command_emptysub,
+	game_command_set_ride_appearance,
 	game_command_emptysub,
 	game_pause_toggle,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_load_or_quit,
 	game_command_emptysub,
-	game_command_emptysub,
+	game_command_demolish_ride,
 	game_command_set_ride_status,
 	game_command_emptysub,
 	game_command_set_ride_name, // 10
 	game_command_set_ride_setting,
 	game_command_emptysub,
 	game_command_emptysub,
-	game_command_emptysub,
+	game_command_remove_scenery,
 	game_command_emptysub,
 	game_command_emptysub,
 	game_command_place_footpath,
@@ -960,16 +960,16 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_change_surface_style, // 20
 	game_command_emptysub,
 	game_command_emptysub,
+	game_command_raise_land,
+	game_command_lower_land,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_raise_water,
+	game_command_lower_water,
 	game_command_emptysub,
 	game_command_hire_new_staff_member, //game_command_emptysub,
-	game_command_emptysub, // 30
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_set_staff_patrol, // 30
+	game_command_fire_staff_member,
+	game_command_set_staff_order,
 	game_command_set_park_name,
 	game_command_set_park_open,
 	game_command_emptysub,
@@ -979,20 +979,20 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_park_entrance_fee,
 	game_command_update_staff_colour, // 40
 	game_command_emptysub,
+	game_command_remove_fence,
 	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
 	game_command_emptysub,
 	game_command_start_campaign,
 	game_command_emptysub,
-	game_command_emptysub, // 50
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_place_banner, // 50
+	game_command_remove_banner,
+	game_command_set_scenery_colour,
+	game_command_set_fence_colour,
+	game_command_set_large_scenery_colour,
+	game_command_set_banner_colour,
 	game_command_emptysub,
 	game_command_clear_scenery
 };

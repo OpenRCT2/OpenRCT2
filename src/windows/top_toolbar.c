@@ -1417,7 +1417,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		int cost;
 		{
 			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2, ebx = (parameter_1 & 0xFF00) | 1;
-			cost = game_do_command_p(GAME_COMMAND_50, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp);
+			cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
 		}
 
 		if (cost == MONEY32_UNDEFINED)return;
@@ -1609,8 +1609,8 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 
 		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
 		return;
 	}
 
@@ -1619,8 +1619,8 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 
 		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = 0x80000000;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
 
 		return;
 	}
@@ -1666,8 +1666,8 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
 			);
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
 
 		return;
 	}
@@ -1688,8 +1688,8 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
 			);
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = 0x80000000;
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = 0x80000000;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
 
 		return;
 	}

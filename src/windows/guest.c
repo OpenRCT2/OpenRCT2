@@ -622,7 +622,7 @@ void window_guest_overview_mouse_up(){
 		
 		w->var_48C = peep->x;
 
-		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_ride(peep);
 		invalidate_sprite((rct_sprite*)peep);
 
 		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
