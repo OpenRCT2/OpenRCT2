@@ -341,6 +341,8 @@ Channel::Channel()
 	SetRate(1);
 	SetVolume(SDL_MIX_MAXVOLUME);
 	oldvolume = 0;
+	oldvolume_l = 0;
+	oldvolume_r = 0;
 	SetPan(0.5f);
 	done = true;
 	stopping = false;
@@ -395,8 +397,15 @@ void Channel::SetPan(float pan)
 	if (pan < 0) {
 		Channel::pan = 0;
 	}
-	volume_l = (float)sin((1.0 - Channel::pan) * M_PI / 2.0);
-	volume_r = (float)sin(Channel::pan * M_PI / 2.0);
+	double decibels = (abs(Channel::pan - 0.5) * 2.0) * 100.0;
+	double attenuation = pow(10, decibels / 20.0);
+	if (Channel::pan <= 0.5) {
+		volume_l = 1.0;
+		volume_r = float(1.0 / attenuation);
+	} else {
+		volume_r = 1.0;
+		volume_l = float(1.0 / attenuation);
+	}
 }
 
 bool Channel::IsPlaying()
@@ -692,6 +701,8 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 		} while(loaded < length && channel.loop != 0 && !channel.stopping);
 
 		channel.oldvolume = channel.volume;
+		channel.oldvolume_l = channel.volume_l;
+		channel.oldvolume_r = channel.volume_r;
 		if (channel.loop == 0 && channel.offset >= channel.source->Length()) {
 			channel.done = true;
 		}
@@ -700,21 +711,19 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 
 void Mixer::EffectPanS16(Channel& channel, sint16* data, int length)
 {
-	float left = channel.volume_l;
-	float right = channel.volume_r;
 	for (int i = 0; i < length * 2; i += 2) {
-		data[i] = (sint16)(data[i] * left);
-		data[i + 1] = (sint16)(data[i + 1] * right);
+		float t = (float)i / (length * 2);
+		data[i] = (sint16)(data[i] * ((1.0 - t) * channel.oldvolume_l + t * channel.volume_l));
+		data[i + 1] = (sint16)(data[i + 1] * ((1.0 - t) * channel.oldvolume_r + t * channel.volume_r));
 	}
 }
 
 void Mixer::EffectPanU8(Channel& channel, uint8* data, int length)
 {
-	float left = channel.volume_l;
-	float right = channel.volume_r;
 	for (int i = 0; i < length * 2; i += 2) {
-		data[i] = (uint8)(data[i] * left);
-		data[i + 1] = (uint8)(data[i + 1] * right);
+		float t = (float)i / (length * 2);
+		data[i] = (uint8)(data[i] * ((1.0 - t) * channel.oldvolume_l + t * channel.volume_l));
+		data[i + 1] = (uint8)(data[i + 1] * ((1.0 - t) * channel.oldvolume_r + t * channel.volume_r));
 	}
 }
 
