@@ -378,6 +378,8 @@ static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widg
 	}
 	else if (widgetIndex == WIDX_SET_LAND_RIGHTS)
 	{
+		// When unselecting the land rights tool, reset the size so the number doesn't
+		// stay in the map window.
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 	}
 }
