@@ -1038,7 +1038,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			return;
 		}
 
-		*parameter_1 = 0 | map_element->properties.path.type & 0x7;
+		*parameter_1 = 0 | ((map_element->properties.path.type & 0x7) << 8);
 		*parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
 		if (map_element->type & 1){
 			*parameter_2 |= 0x8000;
