@@ -421,7 +421,9 @@ void track_load_list(ride_list_item item)
 				*new_file_pointer++ = loaded_track->type;
 			}
 			else{
-				*new_file_pointer++ = 0xFF;
+				//*new_file_pointer++ = 0xFF;
+				// Unsure why it previously didn't continue on load fail??
+				continue;
 			}
 			memcpy(new_file_pointer, &loaded_track->vehicle_object, sizeof(rct_object_entry));
 			new_file_pointer += sizeof(rct_object_entry);
@@ -1846,11 +1848,6 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	//if (RCT2_CALLPROC_X(0x006CE44F, 0, 0, 0, rideIndex, 0, 0, 0) & 0x100){
-	//	window_error_open(3346, RCT2_GLOBAL(0x141E9AC, rct_string_id));
-	//	return 0;
-	//}
-
 	uint8* track_pointer = RCT2_GLOBAL(0x00F44058, uint8*);
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
 		if (!copy_scenery_to_track(&track_pointer))
@@ -2026,4 +2023,150 @@ int install_track(char* source_path, char* dest_name){
 	subsitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
 
 	return platform_file_copy(source_path, dest_path);
+}
+
+/* rct2: 0x006D13FE */
+void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
+	int x = *eax;
+	int y = *ecx;
+	int z = *edi;
+	uint8 flags = *ebx;
+
+	RCT2_GLOBAL(0x009DEA5E, sint16) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, sint16) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, sint16) = z;
+
+	if (!(flags & (1 << 3))){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}
+
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	rct_object_entry* ride_object = &track_design->vehicle_object;
+
+	uint8 entry_type, entry_index;
+	if (!find_object_in_entry_group(ride_object, &entry_type, &entry_index)){
+		entry_index = 0xFF;
+	}
+
+	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 988;
+	int rideIndex = 0;
+	{
+		int _eax = 0, 
+			_ebx = GAME_COMMAND_FLAG_APPLY, 
+			_ecx = 0, 
+			_edx = track_design->type | (entry_index << 8), 
+			_esi = GAME_COMMAND_6,
+			_edi = 0, 
+			_ebp = 0;
+		game_do_command_p(GAME_COMMAND_6, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+		if (_ebx == MONEY32_UNDEFINED){
+			*ebx = MONEY32_UNDEFINED;
+			RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+			RCT2_GLOBAL(0x00F44121, money32) = MONEY32_UNDEFINED;
+			return;
+		}
+		rideIndex = _edi & 0xFF;
+	}
+
+	money32 cost = 0;
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)){
+		RCT2_GLOBAL(0x00F44150, uint8) = 0;
+		cost = sub_6D01B3(1 | (rideIndex << 8), x, y, z);
+		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 1)){
+			RCT2_GLOBAL(0x00F44150, uint8) |= 1 << 7;
+			cost = sub_6D01B3(0x81 | (rideIndex << 8), x, y, z);
+		}
+	}
+	else{
+		uint8 bl = 0;
+		if (flags & (1 << 6)){
+			bl = 4;
+		}
+		else{
+			bl = 2;
+		}
+		bl |= RCT2_GLOBAL(0x00F44150, uint8);
+		cost = sub_6D01B3(bl | (rideIndex << 8), x, y, z);
+	}
+
+	if (cost == MONEY32_UNDEFINED || 
+		!(flags & GAME_COMMAND_FLAG_APPLY)){
+		rct_string_id error_reason = RCT2_GLOBAL(0x00141E9AC, rct_string_id);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_7, 0, 0);
+		*ebx = cost;
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = error_reason;
+		RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+		RCT2_GLOBAL(0x00F44121, money32) = cost;
+		return;
+	}
+
+	if (entry_index != 0xFF){
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entry_index << 8), GAME_COMMAND_9, 0, 0);
+	}
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (track_design->number_of_trains << 8), GAME_COMMAND_9, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (track_design->number_of_cars_per_train << 8), GAME_COMMAND_9, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->var_50 << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | ((track_design->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	uint8 num_circuits = track_design->lift_hill_speed_num_circuits >> 5;
+	if (num_circuits == 0) num_circuits = 1;
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_18;
+
+	if (track_design->var_6C & (1 << 31)){
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_SIX_FLAGS;
+	}
+
+	ride->colour_scheme_type = track_design->version_and_colour_scheme & 3;
+
+	uint8 version = track_design->version_and_colour_scheme >> 2;
+	if (version >= 2){
+		ride->entrance_style = track_design->entrance_style;
+	}
+
+	if (version > 1){
+		for (int i = 0; i < 4; ++i){
+			ride->track_colour_main[i] = track_design->track_spine_colour[i];
+			ride->track_colour_additional[i] = track_design->track_rail_colour[i];
+			ride->track_colour_supports[i] = track_design->track_support_colour[i];
+		}
+	}
+	else{
+		for (int i = 0; i < 4; ++i){
+			ride->track_colour_main[i] = track_design->track_spine_colour_rct1;
+			ride->track_colour_additional[i] = track_design->track_rail_colour_rct1;
+			ride->track_colour_supports[i] = track_design->track_support_colour_rct1;
+		}
+	}
+
+	for (int i = 0; i < 32; ++i){
+		ride->vehicle_colours[i].body_colour = track_design->vehicle_colours[i].body_colour;
+		ride->vehicle_colours[i].trim_colour = track_design->vehicle_colours[i].trim_colour;
+		ride->vehicle_colours_extended[i] = track_design->vehicle_additional_colour[i];
+	}
+
+	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504,const char));
+
+	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+	*ebx = RCT2_GLOBAL(0x00F44121, money32);
+	*edi = rideIndex;
 }

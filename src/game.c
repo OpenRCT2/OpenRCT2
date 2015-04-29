@@ -41,6 +41,7 @@
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
+#include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
 #include "tutorial.h"
@@ -921,7 +922,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0x006D13FE,
+	0,
 	0,
 	0x006CDEE4,
 	0, // 50
@@ -984,7 +985,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
-	game_command_emptysub,
+	game_command_place_track,
 	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_place_banner, // 50
