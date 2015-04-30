@@ -773,13 +773,150 @@ void load_track_scenery_objects(){
 * the track preview window to place the whole track. 
 * Depending on the value of bl it modifies the function.
 * bl == 0, Draw outlines on the ground
+* bl == 1,
+* bl == 2,
 * bl == 3, Returns the z value of a succesful placement. Only lower 16 bits are the value, the rest may be garbage?
+* bl == 4,
 * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
 * bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
 int sub_6D01B3(int bl, int x, int y, int z)
 {
+	RCT2_GLOBAL(0x00F4414E, uint8) = bl & 0x80;
+	RCT2_GLOBAL(0x00F440D4, uint8) = bl & 0x7F;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) != 0){
+		RCT2_GLOBAL(0x00F4414E, uint8) |= 0x80;
+	}
+	RCT2_GLOBAL(0x00F440A7, uint8) = (bl >> 8) & 0xFF;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
+
+	RCT2_GLOBAL(0x00F44129, uint16) = 0;
+
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	if (track_design->type == RIDE_TYPE_MAZE){
+		// 0x006D1011
+	}
+
+	RCT2_GLOBAL(0x00F44142, sint16) = x;
+	RCT2_GLOBAL(0x00F44144, sint16) = y;
+	RCT2_GLOBAL(0x00F44146, sint16) = z;
+
+	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
+		gMapSelectionTiles->x = -1;
+		RCT2_GLOBAL(0x009DEA48, sint16) = x;
+		RCT2_GLOBAL(0x009DEA4A, sint16) = y;
+
+		RCT2_GLOBAL(0x009DEA4C, sint16) = map_element_height(x, y) & 0xFFFF;
+		RCT2_GLOBAL(0x009DEA4E, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	}
+
+	RCT2_GLOBAL(0x00F440D5, uint8) = 0;
+	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+
+	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
+
+	rct_track_element* track = (rct_track_element*)track_elements;
+	for (; track->type != 0xFF; track++){
+
+		uint8 track_type = track->type;
+		if (track_type == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+			track_type = 0xFF;
+
+		if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
+		}
+
+		if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
+		}
+
+		if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
+		}
+
+		if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
+		}
+
+		if (z < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
+		}
+
+		if (z > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)){
+			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
+		}
+
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
+			for (rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
+				trackBlock->var_00 != 0xFF;
+				trackBlock++){
+
+				switch (rotation & 3){
+				case MAP_ELEMENT_DIRECTION_WEST:
+					x += trackBlock->x;
+					y += trackBlock->y;
+					break;
+				case MAP_ELEMENT_DIRECTION_NORTH:
+					x += trackBlock->y;
+					y -= trackBlock->x;
+					break;
+				case MAP_ELEMENT_DIRECTION_EAST:
+					x -= trackBlock->x;
+					y -= trackBlock->y;
+					break;
+				case MAP_ELEMENT_DIRECTION_SOUTH:
+					x -= trackBlock->y;
+					y += trackBlock->x;
+					break;
+				}
+
+				if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
+				}
+
+				if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
+				}
+
+				if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
+				}
+
+				if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
+				}
+
+				uint8 new_tile = 1;
+				rct_xy16* selectionTile = gMapSelectionTiles;
+				for (; selectionTile->x != -1; selectionTile++){
+					if (selectionTile->x == x && selectionTile->y == y){
+						new_tile = 0;
+						break;
+					}
+					if (selectionTile + 1 >= &gMapSelectionTiles[300]){
+						new_tile = 0;
+						break;
+					}
+				}
+				if (new_tile){
+					selectionTile->x = x;
+					selectionTile->y = y;
+					selectionTile++;
+					selectionTile->x = -1;
+				}
+			}
+		}
+
+		//6d03d8
+	}
+
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
 	ebx = bl;
