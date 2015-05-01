@@ -488,9 +488,14 @@ DoUninstall: ; You have the same version as this installer.  This allows you to 
     Quit
 
 InstallerIsOlder:
-    MessageBox MB_OK|MB_ICONSTOP \
-        "You have a newer version of ${APPNAME}.$\nSetup will now exit."
-    Quit
+    ;MessageBox MB_OK|MB_ICONSTOP \
+    ;    "You have a newer version of ${APPNAME}.$\nSetup will now exit."
+	;Quit
+	MessageBox MB_OK|MB_ICONSTOP \
+        "You have a newer version of ${APPNAME}.$\nPlease note downgrading is currently untested."
+	MessageBox MB_OK|MB_ICONQUESTION \
+        "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to downgrade from version $OLDVERSION."
+    Goto FinishCallback
 
 FinishCallback:
     ClearErrors
