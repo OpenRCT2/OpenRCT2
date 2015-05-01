@@ -1704,7 +1704,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			track_design->flags |= (1 << 31);
 
 		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER)
-			track_design->flags |= (1 << 1);
+			track_design->var_6C |= (1 << 1);
 
 		uint8 bh;
 		if (track->type == TRACK_ELEM_BRAKES){
