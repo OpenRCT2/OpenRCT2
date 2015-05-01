@@ -77,9 +77,8 @@ int cmdline_run(const char **argv, int argc)
 		_log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
 
 	if (argc != 0) {
-		int exitCode = cmdline_call_action(argv, argc);
-		if (exitCode != 0)
-			return exitCode;
+		gExitCode = cmdline_call_action(argv, argc);
+		return 0;
 	}
 
 	print_launch_information();
