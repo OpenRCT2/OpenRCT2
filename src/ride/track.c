@@ -857,46 +857,49 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			for (rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
 				trackBlock->var_00 != 0xFF;
 				trackBlock++){
+				rct_xy16 tile;
+				tile.x = x;
+				tile.y = y;
 
 				switch (rotation & 3){
 				case MAP_ELEMENT_DIRECTION_WEST:
-					x += trackBlock->x;
-					y += trackBlock->y;
+					tile.x += trackBlock->x;
+					tile.y += trackBlock->y;
 					break;
 				case MAP_ELEMENT_DIRECTION_NORTH:
-					x += trackBlock->y;
-					y -= trackBlock->x;
+					tile.x += trackBlock->y;
+					tile.y -= trackBlock->x;
 					break;
 				case MAP_ELEMENT_DIRECTION_EAST:
-					x -= trackBlock->x;
-					y -= trackBlock->y;
+					tile.x -= trackBlock->x;
+					tile.y -= trackBlock->y;
 					break;
 				case MAP_ELEMENT_DIRECTION_SOUTH:
-					x -= trackBlock->y;
-					y += trackBlock->x;
+					tile.x -= trackBlock->y;
+					tile.y += trackBlock->x;
 					break;
 				}
 
-				if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
-					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
+				if (tile.x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = tile.x;
 				}
 
-				if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
-					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
+				if (tile.x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = tile.x;
 				}
 
-				if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
-					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
+				if (tile.y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = tile.y;
 				}
 
-				if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
-					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
+				if (tile.y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
+					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = tile.y;
 				}
 
 				uint8 new_tile = 1;
 				rct_xy16* selectionTile = gMapSelectionTiles;
 				for (; selectionTile->x != -1; selectionTile++){
-					if (selectionTile->x == x && selectionTile->y == y){
+					if (selectionTile->x == tile.x && selectionTile->y == tile.y){
 						new_tile = 0;
 						break;
 					}
@@ -906,15 +909,43 @@ int sub_6D01B3(int bl, int x, int y, int z)
 					}
 				}
 				if (new_tile){
-					selectionTile->x = x;
-					selectionTile->y = y;
+					selectionTile->x = tile.x;
+					selectionTile->y = tile.y;
 					selectionTile++;
 					selectionTile->x = -1;
 				}
 			}
 		}
 
-		//6d03d8
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
+			const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
+
+			//di
+			int temp_z = z;
+			temp_z -= track_coordinates->z_negative;
+			rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
+
+			temp_z += trackBlock->z;
+			// rotation in bh
+			// track_type in dl
+			game_do_command(x, 0x69 | (rotation & 3) << 8, y, track_type, GAME_COMMAND_4, temp_z, 0);
+		}
+		
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
+			RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
+			RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
+			RCT2_GLOBAL(0x00F440D4, uint8) == 5){
+			const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
+
+			//di
+			int temp_z = z;
+			temp_z -= track_coordinates->z_negative;
+			uint32 edi = ((track->flags & 0xF) << 17) |
+				((track->flags & 0xF) << 28) |
+				(((track->flags >> 4) & 0x3) << 24);
+
+			//6d0496
+		}
 	}
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
