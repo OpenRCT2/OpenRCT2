@@ -930,7 +930,7 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			// track_type in dl
 			game_do_command(x, 0x69 | (rotation & 3) << 8, y, track_type, GAME_COMMAND_4, temp_z, 0);
 		}
-		
+
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
@@ -944,9 +944,129 @@ int sub_6D01B3(int bl, int x, int y, int z)
 				((track->flags & 0xF) << 28) |
 				(((track->flags >> 4) & 0x3) << 24);
 
-			//6d0496
+			int edx = RCT2_GLOBAL(0x00F440A7, uint8) | (track_type << 8);
+
+			if (track->flags & 0x80)edx |= 0x10000;
+			if (track->flags & 0x40)edx |= 0x20000;
+
+			uint8 bl = 1;
+			if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
+			if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
+			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
+
+			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
+			money32 cost = game_do_command(x, bl, y, edx, GAME_COMMAND_3, edi, 0);
+			RCT2_GLOBAL(0x00F440D5, money32) += cost;
+
+			if (cost == MONEY32_UNDEFINED){
+				RCT2_GLOBAL(0x00F440D5, money32) = cost;
+				// 0x006D0FE6
+				break;
+			}
+		}
+
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
+			for (rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
+				trackBlock->var_00 != 0xFF;
+				trackBlock++){
+				rct_xy16 tile;
+				tile.x = x;
+				tile.y = y;
+
+				switch (rotation & 3){
+				case MAP_ELEMENT_DIRECTION_WEST:
+					tile.x += trackBlock->x;
+					tile.y += trackBlock->y;
+					break;
+				case MAP_ELEMENT_DIRECTION_NORTH:
+					tile.x += trackBlock->y;
+					tile.y -= trackBlock->x;
+					break;
+				case MAP_ELEMENT_DIRECTION_EAST:
+					tile.x -= trackBlock->x;
+					tile.y -= trackBlock->y;
+					break;
+				case MAP_ELEMENT_DIRECTION_SOUTH:
+					tile.x -= trackBlock->y;
+					tile.y += trackBlock->x;
+					break;
+				}
+
+				if (tile.x > 0x1FFF)
+					continue;
+
+				if (tile.y > 0x1FFF)
+					continue;
+
+				rct_map_element* map_element = map_get_surface_element_at(tile.x / 32, tile.y / 32);
+
+				int height = map_element->base_height * 8;
+				if (map_element->properties.surface.slope & 0xF){
+					height += 16;
+					if (map_element->properties.surface.slope & 0x10){
+						height += 16;
+					}
+				}
+
+				uint8 water_height = 16 * map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+				if (water_height){
+					if (water_height > height){
+						height = water_height;
+					}
+				}
+				int temp_z = z + RCT2_GLOBAL(0x00F440D5, sint16);
+				temp_z -= height;
+
+				if (temp_z < 0){
+					RCT2_GLOBAL(0x00F440D5, sint16) -= temp_z;
+				}
+			}
+		}
+
+		const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
+
+		switch (rotation & 3){
+		case 0:
+			x += track_coordinates->x;
+			y += track_coordinates->y;
+			break;
+		case 1:
+			x += track_coordinates->y;
+			y -= track_coordinates->x;
+			break;
+		case 2:
+			x -= track_coordinates->x;
+			y -= track_coordinates->y;
+			break;
+		case 3:
+			x -= track_coordinates->y;
+			y += track_coordinates->x;
+			break;
+		}
+
+		z -= track_coordinates->z_negative;
+		z += track_coordinates->z_positive;
+
+		rotation += track_coordinates->rotation_positive - track_coordinates->rotation_negative;
+		rotation &= 3;
+		if (track_coordinates->rotation_positive & (1 << 2))
+			rotation |= (1 << 2);
+
+		if (!(rotation & (1 << 2))){
+			x += RCT2_ADDRESS(0x00993CCC, sint16)[rotation];
+			y += RCT2_ADDRESS(0x00993CCE, sint16)[rotation];
 		}
 	}
+	//0x6D06D8
+
+	//0x6D0FE6
+	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
+		RCT2_GLOBAL(0x009DE58A, uint16) |= 0x6;
+		RCT2_GLOBAL(0x009DE58A, uint16) &= ~(1<<3);
+		map_invalidate_map_selection_tiles();
+	}
+
+	return RCT2_GLOBAL(0x00F440D5, uint32);
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
