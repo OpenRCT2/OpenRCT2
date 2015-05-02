@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../common.h"
+#include "../sprites.h"
 #include "drawing.h"
 
 typedef struct {
@@ -28,6 +29,14 @@ typedef struct {
 } rct_g1_header;
 
 void *_g1Buffer = NULL;
+
+typedef struct {
+	rct_g1_header header;
+	rct_g1_element *elements;
+	void *data;
+} rct_gx;
+
+rct_gx g2;
 
 /**
  * 
@@ -71,6 +80,41 @@ int gfx_load_g1()
 
 	// Unsuccessful
 	log_fatal("Unable to load g1 graphics");
+	return 0;
+}
+
+int gfx_load_g2()
+{
+	log_verbose("loading g2 graphics");
+
+	FILE *file;
+	unsigned int i;
+
+	file = fopen("data/g2.dat", "rb");
+	if (file != NULL) {
+		if (fread(&g2.header, 8, 1, file) == 1) {
+			// Read element headers
+			g2.elements = malloc(g2.header.num_entries * sizeof(rct_g1_element));
+			fread(g2.elements, g2.header.num_entries * sizeof(rct_g1_element), 1, file);
+
+			// Read element data
+			g2.data = malloc(g2.header.total_size);
+			fread(g2.data, g2.header.total_size, 1, file);
+
+			fclose(file);
+
+			// Fix entry data offsets
+			for (i = 0; i < g2.header.num_entries; i++)
+				g2.elements[i].offset += (int)g2.data;
+
+			// Successful
+			return 1;
+		}
+		fclose(file);
+	}
+
+	// Unsuccessful
+	log_fatal("Unable to load g2 graphics");
 	return 0;
 }
 
@@ -418,11 +462,17 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 * x (cx)
 * y (dx)
 */
-void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer){
-	int image_element = 0x7FFFF&image_id;
+void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
+{
+	int image_element = image_id & 0x7FFFF;
 	int image_type = (image_id & 0xE0000000) >> 28;
 	
-	rct_g1_element* g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+	rct_g1_element* g1_source;
+	if (image_element < SPR_G2_BEGIN) {
+		g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+	} else {
+		g1_source = &g2.elements[image_element - SPR_G2_BEGIN];
+	}
 
 	//Zooming code has been integrated into main code.
 	//if (dpi->zoom_level >= 1){ //These have not been tested

@@ -284,6 +284,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 	outElement->flags = G1_FLAG_RLE_COMPRESSION;
 	outElement->x_offset = 0;
 	outElement->y_offset = 0;
+	outElement->zoomed_offset = 0;
 
 	*outBuffer = buffer;
 	*outBufferLength = bufferLength;
