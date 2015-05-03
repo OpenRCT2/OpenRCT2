@@ -28,6 +28,7 @@
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../world/park.h"
+#include "../world/scenery.h"
 #include "../world/footpath.h"
 #include "../windows/error.h"
 #include "ride_ratings.h"
@@ -879,10 +880,46 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 				int z;
 				switch (entry_type){
 				case OBJECT_TYPE_SMALL_SCENERY:
-					//6d0b51
+					//bl
+					rotation += scenery->flags;
+					rotation &= 3;
+
+					//bh
+					uint8 quadrant = (scenery->flags >> 2) + rotation;
+					quadrant &= 3;
+					quadrant <<= 6;
+
+					uint8 bh = rotation | (quadrant << 6) | 0xC;
+
+					rct_scenery_entry* small_scenery = g_smallSceneryEntries[entry_index];
+					if (!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
+						(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)){
+						bh = bh;
+					}
+					else if (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG20)){
+						bh &= 0x3F;
+					}
+
+					z = (scenery->z * 8 + originZ) / 8;
+					game_do_command(
+						mapCoord.x,
+						0x69 | bh << 8,
+						mapCoord.y,
+						(entry_index << 8) | z,
+						GAME_COMMAND_REMOVE_SCENERY,
+						0,
+						0);
 					break;
 				case OBJECT_TYPE_LARGE_SCENERY:
-					//6d0bc6
+					z = (scenery->z * 8 + originZ) / 8;
+					game_do_command(
+						mapCoord.x,
+						0x69 | (((rotation + scenery->flags) & 0x3) << 8),
+						mapCoord.y,
+						z,
+						GAME_COMMAND_REMOVE_LARGE_SCENERY,
+						0,
+						0);
 					break;
 				case OBJECT_TYPE_WALLS:
 					z = (scenery->z * 8 + originZ) / 8;
@@ -902,7 +939,13 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 				}
 			}
 
-			// 6d0bf7
+			if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
+				int z = scenery->z * 8 + originZ;
+				if (z < RCT2_GLOBAL(0x00F44129, sint16)){
+					RCT2_GLOBAL(0x00F44129, sint16) = z;
+				}
+			}
+			// 6d0c23
 		}
 	}
 }
