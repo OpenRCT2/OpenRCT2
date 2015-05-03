@@ -1084,9 +1084,9 @@ void window_staff_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int z;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL, NULL);
-	if (z == 0)
+	int interactionType;
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	x--;
