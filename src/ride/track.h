@@ -435,7 +435,7 @@ int track_rename(const char *text);
 int track_delete();
 void reset_track_list_cache();
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
-int sub_6D01B3(int bl, int x, int y, int z);
+int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z);
 int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
 void window_track_list_format_name(char *dst, const char *src, char colour, char quotes);
