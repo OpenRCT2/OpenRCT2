@@ -42,7 +42,7 @@ typedef struct {
 	uint8 var_00;
 	sint16 x;		// 0x01
 	sint16 y;		// 0x03
-	uint16 z;
+	sint16 z;
 	uint8 pad_07;
 	uint8 var_08;
 	uint8 var_09;

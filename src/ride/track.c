@@ -817,7 +817,7 @@ int sub_6D01B3(int bl, int x, int y, int z)
 		RCT2_GLOBAL(0x009DEA4E, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
-	RCT2_GLOBAL(0x00F440D5, uint8) = 0;
+	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
 	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 
 	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
@@ -928,7 +928,7 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			temp_z += trackBlock->z;
 			// rotation in bh
 			// track_type in dl
-			game_do_command(x, 0x69 | (rotation & 3) << 8, y, track_type, GAME_COMMAND_4, temp_z, 0);
+			game_do_command(x, 0x69 | ((rotation & 3) << 8), y, track_type, GAME_COMMAND_4, temp_z, 0);
 		}
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
@@ -942,7 +942,8 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			temp_z -= track_coordinates->z_negative;
 			uint32 edi = ((track->flags & 0xF) << 17) |
 				((track->flags & 0xF) << 28) |
-				(((track->flags >> 4) & 0x3) << 24);
+				(((track->flags >> 4) & 0x3) << 24)| 
+				(temp_z & 0xFFFF);
 
 			int edx = RCT2_GLOBAL(0x00F440A7, uint8) | (track_type << 8);
 
@@ -955,7 +956,7 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
 			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
-			money32 cost = game_do_command(x, bl, y, edx, GAME_COMMAND_3, edi, 0);
+			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_3, edi, 0);
 			RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
 			if (cost == MONEY32_UNDEFINED){
@@ -1024,7 +1025,7 @@ int sub_6D01B3(int bl, int x, int y, int z)
 		}
 
 		const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
-
+		rotation &= 3;
 		switch (rotation & 3){
 		case 0:
 			x += track_coordinates->x;
@@ -1053,20 +1054,31 @@ int sub_6D01B3(int bl, int x, int y, int z)
 			rotation |= (1 << 2);
 
 		if (!(rotation & (1 << 2))){
-			x += RCT2_ADDRESS(0x00993CCC, sint16)[rotation];
-			y += RCT2_ADDRESS(0x00993CCE, sint16)[rotation];
+			x += RCT2_ADDRESS(0x00993CCC, sint16)[rotation * 2];
+			y += RCT2_ADDRESS(0x00993CCE, sint16)[rotation * 2];
 		}
 	}
 	//0x6D06D8
 
+	// 0x6D093D
+	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
+		RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, RCT2_GLOBAL(0x00F440A7, uint8), 0, 0, 0);
+		rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0x00F440A7, uint8));
+		user_string_free(ride->name);
+		ride->type = RIDE_TYPE_NULL;
+	}
+	//0x06D0964
+	
 	//0x6D0FE6
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
 		RCT2_GLOBAL(0x009DE58A, uint16) |= 0x6;
-		RCT2_GLOBAL(0x009DE58A, uint16) &= ~(1<<3);
+		RCT2_GLOBAL(0x009DE58A, uint16) &= ~(1 << 3);
 		map_invalidate_map_selection_tiles();
 	}
 
-	return RCT2_GLOBAL(0x00F440D5, uint32);
+	if (bl == 3)
+		return RCT2_GLOBAL(0x00F440D5, sint16);
+	return RCT2_GLOBAL(0x00F440D5, money32);
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;

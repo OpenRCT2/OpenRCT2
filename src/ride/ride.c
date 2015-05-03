@@ -3872,7 +3872,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			RCT2_CALLPROC_X(0x00696707, 0, 0, 0, ride_id, 0, 0, 0);
 			*ebx = ride_get_refund_price(ride_id);
 
-			RCT2_CALLPROC(0x006CB945);
+			RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, ride_id, 0, 0, 0);
 			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 			
 			for(int i = 0; i < MAX_BANNERS; i++){
