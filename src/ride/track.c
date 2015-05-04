@@ -788,8 +788,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 7))
 			continue;
 
-		for (rct_track_scenery* scenery = scenery_start; scenery->scenery_object.flags & 0xFF != 0xFF; scenery++){
-			continue;
+		for (rct_track_scenery* scenery = scenery_start; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++){
 
 			uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 
@@ -945,7 +944,124 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					RCT2_GLOBAL(0x00F44129, sint16) = z;
 				}
 			}
-			// 6d0c23
+			
+			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
+				RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
+				RCT2_GLOBAL(0x00F440D4, uint8) == 3 ||
+				RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
+				RCT2_GLOBAL(0x00F440D4, uint8) == 5){
+
+				uint8 entry_type, entry_index;
+				if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index)){
+					entry_type = scenery->scenery_object.flags & 0xF;
+					if (entry_type != OBJECT_TYPE_PATHS){
+						RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
+						continue;
+					}
+
+					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8)&SCREEN_FLAGS_TRACK_DESIGNER){
+						RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
+						continue;
+					}
+
+					entry_index = 0;
+					for (rct_path_type* path = g_pathTypeEntries;
+						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
+						path = g_pathTypeEntries[entry_index], entry_index++){
+
+						if (path == (rct_path_type*)-1)
+							continue;
+						if (path->flags & (1 << 2))
+							continue;
+					}
+
+					if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS]){
+						RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
+						continue;
+					}
+				}
+
+				money32 cost;
+
+				switch (entry_type){
+				case OBJECT_TYPE_SMALL_SCENERY:
+					//6d0e74
+					break;
+				case OBJECT_TYPE_LARGE_SCENERY:
+					//6d0f0f
+					break;
+				case OBJECT_TYPE_WALLS:
+					//6d0ddf
+					break;
+				case OBJECT_TYPE_PATHS:
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 3)
+						continue;
+
+					sint16 z = (scenery->z * 8 + originZ) / 8;
+
+					if (mode == 0){
+						if (scenery->flags & (1 << 7)){
+							//dh
+							entry_index |= (1 << 7);
+						}
+
+						uint8 bh = ((scenery->flags & 0xF) << rotation);
+						uint8 bl = bh >> 4;
+						bh = (bh | bl) & 0xF;
+						bl = (((scenery->flags >> 5) + rotation) & 3) << 5;
+						bh |= bl;
+
+						bh |= scenery->flags & 0x90;
+
+						bl = 1;
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
+
+						RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
+						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z, GAME_COMMAND_18, 0, 0);
+					}
+					else{
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)
+							continue;
+
+						rct_map_element* map_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+
+						if (map_element == NULL)
+							continue;
+
+						RCT2_CALLPROC_EBPSAFE(0x006A7594);
+						sub_6A6AA7(mapCoord.x, mapCoord.y, map_element);
+
+						uint8 bl = 1;
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
+						if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
+
+						sub_6A6C66(mapCoord.x, mapCoord.y, map_element, bl);
+						sub_6A759F();
+						continue;
+					}
+					break;
+				default:
+					RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
+					continue;
+					break;
+				}
+				RCT2_GLOBAL(0x00F440D5, money32) += cost;
+				if (RCT2_GLOBAL(0x00F440D4, uint8) != 2){
+					if (cost == MONEY32_UNDEFINED){
+						RCT2_GLOBAL(0x00F440D5, money32) = MONEY32_UNDEFINED;
+					}
+				}
+
+				if (RCT2_GLOBAL(0x00F440D5, money32) != MONEY32_UNDEFINED)
+					continue;
+
+				if (RCT2_GLOBAL(0x00F440D4, uint8) == 2)
+					continue;
+
+				return;
+			}
 		}
 	}
 }
