@@ -255,6 +255,10 @@ static void window_loadsave_mouseup()
 		char filename[MAX_PATH], filter[MAX_PATH];
 		int result;
 
+		strcpy(filename, _directory);
+		if (_type & LOADSAVETYPE_SAVE){
+			strcat(filename, (char*)RCT2_ADDRESS_SCENARIO_NAME);
+		}
 		memset(filter, '\0', MAX_PATH);
 		strncpy(filter, "*", MAX_PATH);
 		strncat(filter, _extension, MAX_PATH);

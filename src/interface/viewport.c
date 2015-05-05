@@ -1885,7 +1885,7 @@ void store_interaction_info(paint_struct *ps)
 	uint16 mask;
 	if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER)
 		// I think CS made a typo here. Let's replicate the original behaviour.
-		mask = 1 << 9;
+		mask = 1 << (ps->sprite_type - 3);
 	else
 		mask = 1 << (ps->sprite_type - 1);
 

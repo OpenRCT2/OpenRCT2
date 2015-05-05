@@ -637,10 +637,10 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	// edx
 	rct_map_element* map_element;
 	uint16 flags =
-		~((1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)) |
-		(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)) |
-		(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)) |
-		(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)));
+		VIEWPORT_INTERACTION_MASK_SCENERY &
+		VIEWPORT_INTERACTION_MASK_WALL &
+		VIEWPORT_INTERACTION_MASK_LARGE_SCENERY &
+		VIEWPORT_INTERACTION_MASK_BANNER;
 	// This is -2 as banner is 12 but flags are offset different
 
 	// not used
@@ -826,7 +826,13 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			// CTRL pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1)){
 				rct_map_element* map_element;
-				uint16 flags = 0xFCCA;
+				uint16 flags =
+					VIEWPORT_INTERACTION_MASK_TERRAIN &
+					VIEWPORT_INTERACTION_MASK_RIDE &
+					VIEWPORT_INTERACTION_MASK_SCENERY &
+					VIEWPORT_INTERACTION_MASK_FOOTPATH &
+					VIEWPORT_INTERACTION_MASK_WALL &
+					VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
 				int interaction_type;
 				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
@@ -880,7 +886,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 				sub_689604(x, y, grid_x, grid_y, &cl);
 
-				if (*grid_x == 0x8000)
+				if (*grid_x == (sint16)0x8000)
 					return;
 
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
@@ -922,7 +928,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 			}
 
-			if (*grid_x == 0x8000)
+			if (*grid_x == (sint16)0x8000)
 				return;
 
 			uint8 rotation = window_scenery_rotation;
@@ -943,7 +949,9 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			uint16 flags = 0xFFF6;
+			uint16 flags = 
+				VIEWPORT_INTERACTION_MASK_TERRAIN &
+				VIEWPORT_INTERACTION_MASK_WATER;
 			int interaction_type = 0;
 			rct_map_element* map_element;
 
@@ -999,7 +1007,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
-		if (*grid_x == 0x8000)
+		if (*grid_x == (sint16)0x8000)
 			return;
 
 		*grid_x &= 0xFFE0;
@@ -1023,7 +1031,9 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	{
 		// Path bits
 
-		uint16 flags = 0xFF9F;
+		uint16 flags = 
+			VIEWPORT_INTERACTION_MASK_FOOTPATH &
+			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 		int interaction_type = 0;
 		rct_map_element* map_element;
 
@@ -1054,7 +1064,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			sub_689692(x, y, grid_x, grid_y, &cl);
 
-			if (*grid_x == 0x8000)
+			if (*grid_x == (sint16)0x8000)
 				return;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
@@ -1094,7 +1104,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
-		if (*grid_x == 0x8000)
+		if (*grid_x == (sint16)0x8000)
 			return;
 
 		RCT2_GLOBAL(0x00F64F15, uint8) = window_scenery_secondary_colour;
@@ -1113,7 +1123,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
 			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
 
-			if (*grid_x == 0x8000)
+			if (*grid_x == (sint16)0x8000)
 				return;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
@@ -1153,7 +1163,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
 		}
 
-		if (*grid_x == 0x8000)
+		if (*grid_x == (sint16)0x8000)
 			return;
 
 		*grid_x &= 0xFFE0;
@@ -1172,7 +1182,9 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	{
 		// Banner
 
-		uint16 flags = 0xFF9F;
+		uint16 flags =
+			VIEWPORT_INTERACTION_MASK_FOOTPATH &
+			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 		int interaction_type = 0;
 		rct_map_element* map_element;
 
@@ -1232,7 +1244,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 	sub_6E1F34(x, y, selected_tab, &grid_x, &grid_y, &parameter_1, &parameter_2, &parameter_3);
 
-	if (grid_x == 0x8000)return;
+	if (grid_x == (sint16)0x8000)return;
 	
 	switch (scenery_type){
 	case 0:

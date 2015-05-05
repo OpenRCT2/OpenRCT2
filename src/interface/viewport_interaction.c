@@ -568,7 +568,7 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 	int my_x, my_y, z, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 		*x = 0x8000;
