@@ -79,7 +79,7 @@ typedef struct{
 	rct_object_entry scenery_object; // 0x00
 	uint8 x;                        // 0x10
 	uint8 y;                        // 0x11
-	uint8 z;                        // 0x12
+	sint8 z;                        // 0x12
 	uint8 flags;                    // 0x13 direction quadrant tertiary colour
 	uint8 primary_colour;           // 0x14
 	uint8 secondary_colour;         // 0x15

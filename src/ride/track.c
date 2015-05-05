@@ -731,47 +731,47 @@ void blank_map(){
 
 /* rct2: 0x006ABDB0 */
 void load_track_scenery_objects(){
-uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
-rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
+	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
+	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
 
-rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
-memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
+	rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
+	memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
 
-object_unload_all();
-object_load(-1, copied_entry, 0);
-uint8 entry_type;
-find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
-RCT2_GLOBAL(0xF44157, uint8) = entry_index;
+	object_unload_all();
+	object_load(-1, copied_entry, 0);
+	uint8 entry_type;
+	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
+	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
-rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
-uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
 
-if (track_design->type == RIDE_TYPE_MAZE){
-	// Skip all of the maze track elements
-	while (*(uint32*)track_elements != 0)track_elements += sizeof(rct_maze_element);
-	track_elements += sizeof(rct_maze_element);
-}
-else{
-	// Skip track_elements
-	while (*track_elements != 255) track_elements += sizeof(rct_track_element);
-	track_elements++;
-
-	// Skip entrance exit elements
-	while (*track_elements != 255) track_elements += sizeof(rct_track_entrance);
-	track_elements++;
-}
-
-while (*track_elements != 255){
-	rct_track_scenery* scenery_entry = (rct_track_scenery*)track_elements;
-
-	if (!find_object_in_entry_group(&scenery_entry->scenery_object, &entry_type, &entry_index)){
-		object_load(-1, &scenery_entry->scenery_object, 0);
+	if (track_design->type == RIDE_TYPE_MAZE){
+		// Skip all of the maze track elements
+		while (*(uint32*)track_elements != 0)track_elements += sizeof(rct_maze_element);
+		track_elements += sizeof(rct_maze_element);
 	}
-	// Skip object and location/direction/colour
-	track_elements += sizeof(rct_track_scenery);
-}
+	else{
+		// Skip track_elements
+		while (*track_elements != 255) track_elements += sizeof(rct_track_element);
+		track_elements++;
 
-reset_loaded_objects();
+		// Skip entrance exit elements
+		while (*track_elements != 255) track_elements += sizeof(rct_track_entrance);
+		track_elements++;
+	}
+
+	while (*track_elements != 255){
+		rct_track_scenery* scenery_entry = (rct_track_scenery*)track_elements;
+
+		if (!find_object_in_entry_group(&scenery_entry->scenery_object, &entry_type, &entry_index)){
+			object_load(-1, &scenery_entry->scenery_object, 0);
+		}
+		// Skip object and location/direction/colour
+		track_elements += sizeof(rct_track_scenery);
+	}
+
+	reset_loaded_objects();
 }
 
 /* rct2: 0x006D0964 */
@@ -782,7 +782,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 	RCT2_GLOBAL(0x00F44154, uint8) = 0;
 
 	for (uint8 mode = 0; mode <= 1; mode++){
-		if (scenery_start->scenery_object.flags & 0xFF != 0xFF)
+		if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF)
 			RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 2;
 
 		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 7))
@@ -863,7 +863,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						entry_type = 0xFF;
 
 					entry_index = 0;
-					for (rct_path_type* path = g_pathTypeEntries; 
+					for (rct_path_type* path = g_pathTypeEntries[0]; 
 						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS]; 
 						path = g_pathTypeEntries[entry_index], entry_index++){
 
@@ -939,7 +939,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 			}
 
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
-				int z = scenery->z * 8 + originZ;
+				int z = scenery->z * 8 + RCT2_GLOBAL(0x00F440D5, sint16);
 				if (z < RCT2_GLOBAL(0x00F44129, sint16)){
 					RCT2_GLOBAL(0x00F44129, sint16) = z;
 				}
@@ -965,7 +965,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					}
 
 					entry_index = 0;
-					for (rct_path_type* path = g_pathTypeEntries;
+					for (rct_path_type* path = g_pathTypeEntries[0];
 						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
 						path = g_pathTypeEntries[entry_index], entry_index++){
 
@@ -985,12 +985,15 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 
 				switch (entry_type){
 				case OBJECT_TYPE_SMALL_SCENERY:
+					cost = 0;
 					//6d0e74
 					break;
 				case OBJECT_TYPE_LARGE_SCENERY:
+					cost = 0;
 					//6d0f0f
 					break;
 				case OBJECT_TYPE_WALLS:
+					cost = 0;
 					//6d0ddf
 					break;
 				case OBJECT_TYPE_PATHS:
@@ -1019,7 +1022,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
 						RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
-						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z, GAME_COMMAND_18, 0, 0);
+						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8), GAME_COMMAND_18, 0, 0);
 					}
 					else{
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)
@@ -1060,7 +1063,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 				if (RCT2_GLOBAL(0x00F440D4, uint8) == 2)
 					continue;
 
-				return;
+				return 0;
 			}
 		}
 	}
@@ -1452,7 +1455,7 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 				rct_map_element* map_element = map_get_first_element_at(tile.x / 32, tile.y / 32);
 				z = RCT2_GLOBAL(0x00F44146, sint16) / 8;
 
-				z += (entrance->z & (1 << 7)) ? -1 : entrance->z;
+				z += (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 
 				do{
 					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
@@ -1482,7 +1485,7 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 			}
 			else{
 				//dl
-				z = (entrance->z & (1 << 7)) ? -1 : entrance->z;
+				z = (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 				z *= 8;
 				z += RCT2_GLOBAL(0x00F44146, sint16);
 				z /= 16;
