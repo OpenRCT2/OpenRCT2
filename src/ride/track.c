@@ -982,6 +982,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 				}
 
 				money32 cost;
+				sint16 z;
 
 				switch (entry_type){
 				case OBJECT_TYPE_SMALL_SCENERY:
@@ -993,14 +994,40 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					//6d0f0f
 					break;
 				case OBJECT_TYPE_WALLS:
-					cost = 0;
-					//6d0ddf
+					if (mode != 0)
+						continue;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 3)
+						continue;
+
+					z = scenery->z * 8 + originZ;
+					rotation += scenery->flags;
+					rotation &= 3;
+
+					uint8 bl = 1;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 0xA9;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
+
+					RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 1811;
+
+					cost = game_do_command(
+						mapCoord.x, 
+						bl | (entry_index << 8), 
+						mapCoord.y, 
+						rotation | (scenery->primary_colour << 8), 
+						GAME_COMMAND_41, 
+						z, 
+						scenery->secondary_colour | ((scenery->flags & 0xFC) << 6)
+						);
+
+					if (cost == MONEY32_UNDEFINED)
+						cost = 0;
 					break;
 				case OBJECT_TYPE_PATHS:
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 3)
 						continue;
 
-					sint16 z = (scenery->z * 8 + originZ) / 8;
+					z = (scenery->z * 8 + originZ) / 8;
 
 					if (mode == 0){
 						if (scenery->flags & (1 << 7)){
