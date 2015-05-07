@@ -265,6 +265,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 	}
 
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE)) != (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE))
 		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
