@@ -866,7 +866,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int 
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		num_items,
 		widget->right - widget->left - 3
 	);

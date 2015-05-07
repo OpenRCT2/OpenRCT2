@@ -253,7 +253,15 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_STATUS + i;
 		}		
-		window_dropdown_show_text_custom_width(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0x80, numItems, widget->right - widget->left - 3);
+		window_dropdown_show_text_custom_width(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			numItems,
+			widget->right - widget->left - 3
+		);
 		gDropdownItemsChecked |= (1 << _window_ride_list_information_type);
 	}
 }

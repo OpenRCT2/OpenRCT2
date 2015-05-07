@@ -273,7 +273,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 					w->y + dropdownWidget->top,
 					dropdownWidget->bottom - dropdownWidget->top + 1,
 					w->colours[1],
-					0x80,
+					DROPDOWN_FLAG_STAY_OPEN,
 					numItems,
 					dropdownWidget->right - dropdownWidget->left - 3
 				);
@@ -295,7 +295,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 				w->y + dropdownWidget->top,
 				dropdownWidget->bottom - dropdownWidget->top + 1,
 				w->colours[1],
-				0x80,
+				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				dropdownWidget->right - dropdownWidget->left - 3
 			);

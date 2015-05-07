@@ -33,6 +33,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../world/footpath.h"
+#include "../input.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -555,7 +556,7 @@ void window_guest_overview_close(){
 	
 	window_get_register(w);
 	
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<3)){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) && 
 		    w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber)) 
 			tool_cancel();
@@ -645,7 +646,7 @@ void window_guest_overview_mouse_up(){
 
 /* rct2: 0x696AA0 */
 void window_guest_set_page(rct_window* w, int page){
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
 		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))

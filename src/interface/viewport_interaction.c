@@ -29,6 +29,7 @@
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
+#include "../input.h"
 #include "viewport.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
@@ -264,7 +265,6 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 	}
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & 0x48) != 0x48)
 		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
