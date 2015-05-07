@@ -758,14 +758,30 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 
 		if(*ebx & GAME_COMMAND_FLAG_APPLY){
 			rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
-			while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE ||
-				(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction ||
-				map_element->properties.scenerymultiple.type >> 10 != i ||
-				map_element->base_height != base_height){
-				map_element++;
+			uint8 tile_not_found = 1;
+			do
+			{
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+					continue;
+
+				if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+					continue;
+
+				if ((map_element->properties.scenerymultiple.type >> 10) != i)
+					continue;
+
+				if (map_element->base_height != z3 / 8)
+					continue;
+
+				map_invalidate_tile_full(x3, y3);
+				map_element_remove(map_element);
+				tile_not_found = 0;
+				break;
+			} while (!map_element_is_last_for_tile(map_element++));
+
+			if (tile_not_found){
+				log_error("Tile not found when trying to remove element!");
 			}
-			map_invalidate_tile_full(x3, y3);
-			map_element_remove(map_element);
 		}
 		
 		i++;
