@@ -133,6 +133,7 @@ private:
 	double rate;
 	int volume;
 	float volume_l, volume_r;
+	float oldvolume_l, oldvolume_r;
 	float pan;
 	bool done;
 	bool deleteondone;

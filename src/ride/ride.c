@@ -2447,32 +2447,34 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 
 		uint8 vol1 = -1;
 		uint8 vol2 = -1;
-		if (pany < 0) {
-			pany = -pany;
+		int panx2 = panx;
+		int pany2 = pany;
+		if (pany2 < 0) {
+			pany2 = -pany2;
 		}
-		if (pany > 6143) {
-			pany = 6143;
+		if (pany2 > 6143) {
+			pany2 = 6143;
 		}
-		pany -= 2048;
-		if (pany > 0) {
-			pany = -((pany / 4) - 1024) / 4;
-			vol1 = (uint8)pany;
-			if (pany >= 256) {
+		pany2 -= 2048;
+		if (pany2 > 0) {
+			pany2 = -((pany2 / 4) - 1024) / 4;
+			vol1 = (uint8)pany2;
+			if (pany2 >= 256) {
 				vol1 = -1;
 			}
 		}
 
-		if (panx < 0) {
-			panx = -panx;
+		if (panx2 < 0) {
+			panx2 = -panx2;
 		}
-		if (panx > 6143) {
-			panx = 6143;
+		if (panx2 > 6143) {
+			panx2 = 6143;
 		}
-		panx -= 2048;
-		if (panx > 0) {
-			panx = -((panx / 4) - 1024) / 4;
-			vol2 = (uint8)panx;
-			if (panx >= 256) {
+		panx2 -= 2048;
+		if (panx2 > 0) {
+			panx2 = -((panx2 / 4) - 1024) / 4;
+			vol2 = (uint8)panx2;
+			if (panx2 >= 256) {
 				vol2 = -1;
 			}
 		}
