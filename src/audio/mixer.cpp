@@ -268,8 +268,10 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		log_verbose("Could not find FMT chunk");
 		return false;
 	}
+	Uint64 chunkstart = SDL_RWtell(rw);
 	PCMWAVEFORMAT waveformat;
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
+	SDL_RWseek(rw, chunkstart + fmtchunk_size, RW_SEEK_SET);
 	if (waveformat.wf.wFormatTag != WAVE_FORMAT_PCM) {
 		log_verbose("Not in proper format");
 		return false;
