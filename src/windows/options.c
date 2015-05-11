@@ -396,12 +396,15 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsChecked = gConfigGeneral.show_height_as_units ? 1 : 2;
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
-		num_items = 3;
+		num_items = 4;
 
-		for (i = 0; i < num_items; i++) {
+		for (i = 0; i < num_items - 1; i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = 2739 + i;
 		}
+		// Random title music
+		gDropdownItemsFormat[3] = 1142;
+		gDropdownItemsArgs[3] = 5126;
 
 		window_options_show_dropdown(w, widget, num_items);
 
@@ -556,7 +559,7 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
-		if (dropdownIndex == 1 && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
+		if ((dropdownIndex == 1 || dropdownIndex == 3) && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
 			window_error_open(2742, 2743);
 		} else {
 			gConfigSound.title_music = (sint8)dropdownIndex;
@@ -837,7 +840,7 @@ static void window_options_paint()
 		gfx_draw_string_left(dpi, 2738, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_TITLE_MUSIC].top + 1);
 		gfx_draw_string_left(
 			dpi,
-			2739 + gConfigSound.title_music,
+			(gConfigSound.title_music == 3 ? 5126 : 2739 + gConfigSound.title_music),
 			NULL,
 			12,
 			w->x + window_options_widgets[WIDX_TITLE_MUSIC].left + 1,
