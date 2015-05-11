@@ -345,9 +345,6 @@ void rct2_update_2()
 		title_update();
 	else
 		game_update();
-
-	// Update the windowed mode size in the config file if needed
-	platform_update_config_window_size();
 }
 
 void rct2_endupdate()
