@@ -453,6 +453,23 @@ static void platform_close_window()
 	platform_unload_cursors();
 }
 
+void platform_update_config_window_size()
+{
+	// Check if the window has been resized in windowed mode and update the config file accordingly
+	// This is called in rct2_update_2 and is only called after resizing a window has finished
+	int width, height;
+	uint32 flags = SDL_GetWindowFlags(gWindow);
+	if ((flags & (SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED |
+				SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP)) == 0) {
+		SDL_GetWindowSize(gWindow, &width, &height);
+		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
+			gConfigGeneral.window_width = width;
+			gConfigGeneral.window_height = height;
+			config_save_default();
+		}
+	}
+}
+
 void platform_init()
 {
 	platform_create_window();

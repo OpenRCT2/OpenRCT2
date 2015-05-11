@@ -80,6 +80,7 @@ void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
 void platform_start_text_input(char* buffer, int max_length);
 void platform_stop_text_input();
+void platform_update_config_window_size();
 
 // Platform specific definitions
 char platform_get_path_separator();
