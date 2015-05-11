@@ -3471,3 +3471,4 @@ STR_5122    :Show all vehicles sharing a track/ride type
 STR_5123    :Renew rides
 STR_5124    :No Six Flags
 STR_5125    :All destructable
+STR_5126    :Random title music

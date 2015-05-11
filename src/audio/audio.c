@@ -1549,6 +1549,12 @@ void start_title_music()
 	case 2:
 		musicPathId = PATH_ID_CSS17;
 		break;
+	case 3:
+		if (rand() & 1)
+			musicPathId = PATH_ID_CSS50;
+		else
+			musicPathId = PATH_ID_CSS17;
+		break;
 	}
 
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1
