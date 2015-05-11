@@ -884,18 +884,17 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					rotation &= 3;
 
 					//bh
-					uint8 quadrant = (scenery->flags >> 2) + rotation;
+					uint8 quadrant = (scenery->flags >> 2) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 					quadrant &= 3;
-					quadrant <<= 6;
 
-					uint8 bh = rotation | (quadrant << 6) | 0xC;
+					uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
 
 					rct_scenery_entry* small_scenery = g_smallSceneryEntries[entry_index];
 					if (!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
 						(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 						bh = bh;
 					}
-					else if (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG20)){
+					else if (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
 						bh &= 0x3F;
 					}
 
@@ -983,15 +982,68 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 
 				money32 cost;
 				sint16 z;
+				uint8 bl;
 
 				switch (entry_type){
 				case OBJECT_TYPE_SMALL_SCENERY:
-					cost = 0;
-					//6d0e74
+					if (mode != 0)
+						continue;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 3)
+						continue;
+
+					rotation += scenery->flags;
+					rotation &= 3;
+					z = scenery->z * 8 + originZ;
+					uint8 quadrant = ((scenery->flags >> 2) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)) & 3;
+
+					bl = 0x81;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 0xA9;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0xE9;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0x80;
+
+					RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 1161;
+
+					cost = game_do_command(
+						mapCoord.x,
+						bl | (entry_index << 8),
+						mapCoord.y,
+						quadrant | (scenery->primary_colour << 8),
+						GAME_COMMAND_15,
+						rotation | (scenery->secondary_colour << 16),
+						z
+						);
+
+					if (cost == MONEY32_UNDEFINED)
+						cost = 0;
 					break;
 				case OBJECT_TYPE_LARGE_SCENERY:
-					cost = 0;
-					//6d0f0f
+					if (mode != 0)
+						continue;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 3)
+						continue;
+
+					rotation += scenery->flags;
+					rotation &= 3;
+
+					z = scenery->z * 8 + originZ;
+
+					bl = 0x81;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 0xA9;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0xE9;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0x80;
+
+					cost = game_do_command(
+						mapCoord.x,
+						bl | (rotation << 8),
+						mapCoord.y,
+						scenery->primary_colour | (scenery->secondary_colour << 8),
+						GAME_COMMAND_43,
+						entry_index,
+						z
+						);
+
+					if (cost == MONEY32_UNDEFINED)
+						cost = 0;
 					break;
 				case OBJECT_TYPE_WALLS:
 					if (mode != 0)
@@ -1003,7 +1055,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					rotation += scenery->flags;
 					rotation &= 3;
 
-					uint8 bl = 1;
+					bl = 1;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 0xA9;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
@@ -1036,7 +1088,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						}
 
 						uint8 bh = ((scenery->flags & 0xF) << rotation);
-						uint8 bl = bh >> 4;
+						bl = bh >> 4;
 						bh = (bh | bl) & 0xF;
 						bl = (((scenery->flags >> 5) + rotation) & 3) << 5;
 						bh |= bl;
@@ -1063,7 +1115,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						RCT2_CALLPROC_EBPSAFE(0x006A7594);
 						sub_6A6AA7(mapCoord.x, mapCoord.y, map_element);
 
-						uint8 bl = 1;
+						bl = 1;
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 
@@ -2027,8 +2079,8 @@ int copy_scenery_to_track(uint8** track_pointer){
 			track_scenery->flags &= 0xF0;
 			track_scenery->flags |= (direction & 3) | ((quadrant & 3) << 2);
 		}
-		int x = track_scenery->x * 32 - RCT2_GLOBAL(0x00F44142, sint16);
-		int y = track_scenery->y * 32 - RCT2_GLOBAL(0x00F44144, sint16);
+		int x = ((uint8)track_scenery->x) * 32 - RCT2_GLOBAL(0x00F44142, sint16);
+		int y = ((uint8)track_scenery->y) * 32 - RCT2_GLOBAL(0x00F44144, sint16);
 
 		switch (RCT2_GLOBAL(0x00F4414D, uint8)){
 		case 0:
@@ -2478,9 +2530,12 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 
 	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
 
-	// Previously you had to save start_x, y, z but 
-	// no need since global vars not used
 	sub_6D01B3(0, 0, 4096, 4096, 0);
+
+	// Resave global vars for scenery reasons.
+	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
+	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
+	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
 	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
