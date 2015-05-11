@@ -244,7 +244,7 @@ void game_update()
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESET ||
 					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_NORMAL
 				) {
-					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32)) {
+					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_VIEWPORT_SCROLLING) {
 						RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 						break;
 					}
@@ -655,11 +655,11 @@ int game_load_save(const char *path)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<5)){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
 			RCT2_GLOBAL(0x14241BC, uint32) = 2;
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(0x9DE518, uint32) &= ~(1<<5);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		title_load();
 		rct2_endupdate();

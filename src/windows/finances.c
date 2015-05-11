@@ -1375,7 +1375,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);

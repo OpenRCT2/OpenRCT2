@@ -25,6 +25,11 @@
 
 #define DROPDOWN_SEPARATOR 0
 
+enum
+{
+	DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
+};
+
 extern int gAppropriateImageDropdownItemsPerRow[];
 
 extern int gDropdownNumItems;

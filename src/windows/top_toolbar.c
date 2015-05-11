@@ -347,7 +347,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			numItems
 		);
 		break;

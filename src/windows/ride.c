@@ -2308,7 +2308,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - dropdownWidget->left
 		);
@@ -2321,7 +2321,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			ride->var_0CC,
 			widget->right - dropdownWidget->left
 		);
@@ -2343,7 +2343,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			maxCars - minCars + 1,
 			widget->right - dropdownWidget->left
 		);
@@ -2759,7 +2759,7 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		numAvailableModes,
 		widget->right - dropdownWidget->left
 	);
@@ -2791,7 +2791,7 @@ static void window_ride_load_dropdown(rct_window *w, rct_widget *widget)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		5,
 		widget->right - dropdownWidget->left
 	);
@@ -3323,7 +3323,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		7,
 		widget->right - dropdownWidget->left
 	);
@@ -3676,7 +3676,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			4,
 			widget->right - dropdownWidget->left
 		);
@@ -3703,7 +3703,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			4,
 			widget->right - dropdownWidget->left
 		);
@@ -3725,7 +3725,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			countof(window_ride_entrance_style_list),
 			widget->right - dropdownWidget->left
 		);
@@ -3743,7 +3743,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			rideEntry->max_cars_in_train > 1 ? 3 : 2,
 			widget->right - dropdownWidget->left
 		);
@@ -3766,7 +3766,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - dropdownWidget->left
 		);
@@ -4327,21 +4327,24 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
 	}
 
+	for (i = 0; i < numItems; i++) {
+		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsArgs[i] = STR_MUSIC_STYLE_START + window_ride_current_music_style_order[i];
+	}
+
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		numItems,
 		widget->right - dropdownWidget->left
 	);
 
 	for (i = 0; i < numItems; i++) {
-		gDropdownItemsFormat[i] = 1142;
 		if (window_ride_current_music_style_order[i] == ride->music)
 			gDropdownItemsChecked = (1 << i);
-		gDropdownItemsArgs[i] = STR_MUSIC_STYLE_START + window_ride_current_music_style_order[i];
 	}
 }
 

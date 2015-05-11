@@ -319,8 +319,8 @@ static void window_map_mouseup()
 
 		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
 		
-		if (!(RCT2_GLOBAL(0x9DE518, sint32) & (1 << 6))) // Remove?
-			RCT2_GLOBAL(0x9DE518, sint32) |= (1 << 6);
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) & INPUT_FLAG_6)) // Remove?
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) |= INPUT_FLAG_6;
 
 		show_gridlines();
 		show_land_rights();
