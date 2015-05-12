@@ -53,8 +53,6 @@ static void window_water_mouseup();
 static void window_water_update();
 static void window_water_invalidate();
 static void window_water_paint();
-static void window_water_textinput();
-static void window_water_inputsize(rct_window *w);
 
 static void* window_water_events[] = {
 	window_water_close,
@@ -76,7 +74,7 @@ static void* window_water_events[] = {
 	window_water_emptysub,
 	window_water_emptysub,
 	window_water_emptysub,
-	window_water_textinput,
+	window_water_emptysub,
 	window_water_emptysub,
 	window_water_emptysub,
 	window_water_emptysub,
@@ -101,7 +99,7 @@ void window_water_open()
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76, 29, 76, 77, (uint32*)window_water_events, WC_WATER, 0);
 	window->widgets = window_water_widgets;
-	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
+	window->enabled_widgets = 0x04 | 0x10 | 0x20;
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
@@ -164,36 +162,7 @@ static void window_water_mouseup()
 		// Invalidate the window
 		window_invalidate(w);
 		break;
-	case WIDX_PREVIEW:
-		window_water_inputsize(w);
-		break;
 	}
-}
-
-static void window_water_textinput()
-{
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
-	int size;
-	char* end;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
-		return;
-
-	size = strtol(text, &end, 10);
-	if (size >= 1 && size <= 64 && *end == '\0') {
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
-		window_invalidate(w);
-	}
-}
-
-static void window_water_inputsize(rct_window *w)
-{
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5130, STR_NONE, STR_NONE, 3);
 }
 
 /**

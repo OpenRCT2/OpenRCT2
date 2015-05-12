@@ -36,19 +36,17 @@ enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_INCREMENT,
 	WIDX_FLOOR,
 	WIDX_WALL,
-	WIDX_PAINTMODE,
 };
 
 static rct_widget window_land_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	125,	-1,			STR_NONE },						// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,		STR_LAND,	STR_WINDOW_TITLE_TIP },			// title bar
 	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,		824,		STR_CLOSE_WINDOW_TIP },			// close x button
-	{ WWT_IMGBTN,	0,	10,	53,	17,	48,		5503,		STR_NONE },						// preview box
-	{ WWT_TRNBTN,	1,	11,	26,	18,	33,		0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },	// decrement size
-	{ WWT_TRNBTN,	1,	37,	52,	32,	47,		0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },	// increment size
+	{ WWT_IMGBTN,	0,	27,	70,	17,	48,		5503,		STR_NONE },						// preview box
+	{ WWT_TRNBTN,	1,	28,	43,	18,	33,		0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },	// decrement size
+	{ WWT_TRNBTN,	1,	54,	69,	32,	47,		0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },	// increment size
 	{ WWT_FLATBTN,	1,	2,	48,	75,	110,	0xFFFFFFFF,	STR_CHANGE_BASE_LAND_TIP },		// floor texture
 	{ WWT_FLATBTN,	1,	49,	95,	75,	110,	0xFFFFFFFF,	STR_CHANGE_VERTICAL_LAND_TIP },	// wall texture
-	{ WWT_FLATBTN,  1,	64,	87,	21,	44,		5173,		5127 }, // paint mode
 	{ WIDGETS_END },
 };
 
@@ -60,9 +58,6 @@ static void window_land_dropdown();
 static void window_land_update(rct_window *w);
 static void window_land_invalidate();
 static void window_land_paint();
-static void window_land_textinput();
-static void window_land_inputsize(rct_window *w);
-
 
 static void* window_land_events[] = {
 	window_land_close,
@@ -84,7 +79,7 @@ static void* window_land_events[] = {
 	window_land_emptysub,
 	window_land_emptysub,
 	window_land_emptysub,
-	window_land_textinput,
+	window_land_emptysub,
 	window_land_emptysub,
 	window_land_emptysub,
 	window_land_emptysub,
@@ -135,15 +130,12 @@ void window_land_open()
 		(1 << WIDX_DECREMENT) |
 		(1 << WIDX_INCREMENT) |
 		(1 << WIDX_FLOOR) |
-		(1 << WIDX_WALL) |
-		(1 << WIDX_PAINTMODE) |
-		(1 << WIDX_PREVIEW);
+		(1 << WIDX_WALL);
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
-	LandPaintMode = false;
 	_selectedFloorTexture = 0;
 	_selectedWallTexture = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = MONEY32_UNDEFINED;
@@ -208,13 +200,6 @@ static void window_land_mouseup()
 		// Invalidate the window
 		window_invalidate(w);
 		break;
-	case WIDX_PAINTMODE:
-		LandPaintMode ^= 1;
-		window_invalidate(w);
-		break;
-	case WIDX_PREVIEW:
-		window_land_inputsize(w);
-		break;
 	}
 }
 
@@ -260,9 +245,6 @@ static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[4]
 		);
-		break;
-	case WIDX_PREVIEW:
-		window_land_inputsize(w);
 		break;
 	}
 }
@@ -315,32 +297,6 @@ static void window_land_dropdown()
 	}
 }
 
-static void window_land_textinput()
-{
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
-	int size;
-	char* end;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
-		return;
-
-	size = strtol(text, &end, 10);
-	if (size >= 0 && size <= 64 && *end == '\0') {
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
-		window_invalidate(w);
-	}
-}
-
-static void window_land_inputsize(rct_window *w)
-{
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
-}
-
 /**
  *
  *  rct2: 0x00664272
@@ -367,8 +323,6 @@ static void window_land_invalidate()
 		w->pressed_widgets |= (1 << WIDX_FLOOR);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) != 255)
 		w->pressed_widgets |= (1 << WIDX_WALL);
-	if (LandPaintMode != 0)
-		w->pressed_widgets |= (1 << WIDX_PAINTMODE);
 
 	window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
 	window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
@@ -404,7 +358,6 @@ static void window_land_paint()
 		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, (void*)0x013CE952);
 	}
 
-	x = w->x + (window_land_widgets[WIDX_PREVIEW].left + window_land_widgets[WIDX_PREVIEW].right) / 2 + 17;
 	y = w->y + window_land_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw raise cost amount
