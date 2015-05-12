@@ -185,9 +185,7 @@ static void window_water_textinput()
 		return;
 
 	size = strtol(text, &end, 10);
-	if (*end == '\0') {
-		if (size < 1) size = 1;
-		if (size > 64) size = 64;
+	if (size >= 1 && size <= 64 && *end == '\0') {
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}

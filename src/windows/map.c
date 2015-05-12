@@ -409,18 +409,14 @@ static void window_map_textinput()
 	if (result) {
 		if (widgetIndex == WIDX_LAND_TOOL) {
 			size = strtol(text, &end, 10);
-			if (*end == '\0') {
-				if (size < 1) size = 1;
-				if (size > 64) size = 64;
+			if (size >= 1 && size <= 64 && *end == '\0') {
 				RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 				window_invalidate(w);
 			}
 		}
 		else if (widgetIndex == WIDX_MAP_SIZE_SPINNER) {
 			size = strtol(text, &end, 10);
-			if (*end == '\0') {
-				if (size < 50) size = 50;
-				if (size > 256) size = 256;
+			if (size >= 50 && size <= 256 && *end == '\0') {
 				int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 				while (size < currentSize) {
 					RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
