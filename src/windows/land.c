@@ -330,7 +330,9 @@ static void window_land_textinput()
 		return;
 
 	size = strtol(text, &end, 10);
-	if (size >= 0 && size <= 64 && *end == '\0') {
+	if (*end == '\0') {
+		if (size < 0) size = 0;
+		if (size > 64) size = 64;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}

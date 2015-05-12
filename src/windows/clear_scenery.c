@@ -184,7 +184,9 @@ static void window_clear_scenery_textinput()
 		return;
 
 	size = strtol(text, &end, 10);
-	if (size >= 1 && size <= 7 && *end == '\0') {
+	if (*end == '\0') {
+		if (size < 1) size = 1;
+		if (size > 7) size = 7;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}
