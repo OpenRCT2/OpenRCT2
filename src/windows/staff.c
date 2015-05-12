@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -319,9 +320,18 @@ void window_staff_open(rct_peep* peep)
 
 		w->flags = 1 << 8;
 
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
+		if(!gConfigInterface.rct1_colour_scheme)
+		{
+			w->colours[0] = 1;
+			w->colours[1] = 4;
+			w->colours[2] = 4;
+		}
+		else
+		{
+			w->colours[0] = 12;
+			w->colours[1] = 4;
+			w->colours[2] = 4;
+		}
 	}
 	w->page = 0;
 	window_invalidate(w);

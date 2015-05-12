@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../world/map.h"
 #include "../management/marketing.h"
@@ -507,9 +508,20 @@ void window_guest_open(rct_peep* peep){
 		window->flags = WF_RESIZABLE;
 		window->no_list_items = 0;
 		window->selected_list_item = -1;
-		window->colours[0] = 1;
-		window->colours[1] = 15;
-		window->colours[2] = 15;
+
+		if(!gConfigInterface.rct1_colour_scheme)
+		{
+			window->colours[0] = 1;
+			window->colours[1] = 15;
+			window->colours[2] = 15;
+		}
+		else
+		{
+			window->colours[0] = 22;
+			window->colours[1] = 26;
+			window->colours[2] = 26;			
+		}
+
 		window->viewport_focus_coordinates.y = -1;
 	}
 	

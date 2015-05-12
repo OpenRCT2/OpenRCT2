@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -82,9 +83,19 @@ void window_title_options_open()
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
-	window->colours[0] = 140;
-	window->colours[1] = 140;
-	window->colours[2] = 140;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		window->colours[0] = 140;
+		window->colours[1] = 140;
+		window->colours[2] = 140;
+	}
+	else
+	{
+		window->colours[0] = 129;
+		window->colours[1] = 129;
+		window->colours[2] = 129;
+	}
 }
 
 static void window_title_options_mouseup()
