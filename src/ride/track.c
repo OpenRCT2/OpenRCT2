@@ -1169,7 +1169,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						bl | (entry_index << 8),
 						mapCoord.y,
 						quadrant | (scenery->primary_colour << 8),
-						GAME_COMMAND_15,
+						GAME_COMMAND_PLACE_SCENERY,
 						rotation | (scenery->secondary_colour << 16),
 						z
 						);
