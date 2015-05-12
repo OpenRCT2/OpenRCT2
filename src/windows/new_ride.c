@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../management/news_item.h"
@@ -410,9 +411,20 @@ rct_window *window_new_ride_open()
 	window_init_scroll_widgets(w);
 
 	w->frame_no = 0;
-	w->colours[0] = 24;
-	w->colours[1] = 26;
-	w->colours[2] = 26;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 24;
+		w->colours[1] = 26;
+		w->colours[2] = 26;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 1;
+	}
+
 	w->new_ride.selected_ride_id = -1;
 	w->new_ride.highlighted_ride_id = -1;
 	_lastTrackDesignCountRideType.type = 255;

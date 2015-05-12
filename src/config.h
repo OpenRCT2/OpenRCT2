@@ -135,6 +135,7 @@ typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 allow_subtype_switching;
+	uint8 rct1_colour_scheme;
 } interface_configuration;
 
 typedef struct {

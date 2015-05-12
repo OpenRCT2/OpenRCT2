@@ -1172,9 +1172,19 @@ rct_window *window_ride_open(int rideIndex)
 	w->max_width = 500;
 	w->max_height = 450;
 	w->flags |= WF_RESIZABLE;
-	w->colours[0] = 1;
-	w->colours[1] = 26;
-	w->colours[2] = 11;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 26;
+		w->colours[2] = 11;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 11;
+	}
 
 	ride = GET_RIDE(rideIndex);
 	numSubTypes = 0;

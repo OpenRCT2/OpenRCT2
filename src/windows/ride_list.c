@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
@@ -161,9 +162,20 @@ void window_ride_list_open()
 		window->max_width = 400;
 		window->max_height = 450;
 		window->flags |= WF_RESIZABLE;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
 		window->colours[0] = 1;
 		window->colours[1] = 26;
 		window->colours[2] = 26;
+	}
+	else
+	{
+		window->colours[0] = 26;
+		window->colours[1] = 1;
+		window->colours[2] = 1;
+	}
+
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;

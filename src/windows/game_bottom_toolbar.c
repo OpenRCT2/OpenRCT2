@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -148,9 +149,19 @@ void window_game_bottom_toolbar_open()
 
 	window->frame_no = 0;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 140;
-	window->colours[1] = 140;
-	window->colours[2] = 0;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		window->colours[0] = 140;
+		window->colours[1] = 140;
+		window->colours[2] = 0;
+	}
+	else
+	{
+		window->colours[0] = 129;
+		window->colours[1] = 129;
+		window->colours[2] = 0;
+	}
 }
 
 /**
@@ -429,10 +440,12 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	);
 
 	// Draw park rating
+	int park_rating_bar_colour=!gConfigInterface.rct1_colour_scheme ? 14 : 18;
+
 	window_game_bottom_toolbar_draw_park_rating(
 		dpi,
 		w,
-		14,
+		park_rating_bar_colour,
 		w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
 		max(10, ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) / 4) * 263) / 256)
