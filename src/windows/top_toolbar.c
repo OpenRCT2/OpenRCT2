@@ -1470,7 +1470,11 @@ static void window_top_toolbar_tool_update()
 		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_LAND:
-		RCT2_CALLPROC_X(0x00664280, x, y, 0, widgetIndex, (int)w, 0, 0);
+		if (LandPaintMode)
+			// Use the method that allows dragging the selection area
+			RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
+		else
+			RCT2_CALLPROC_X(0x00664280, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
 	case WIDX_WATER:
 		RCT2_CALLPROC_X(0x006E6BDC, x, y, 0, widgetIndex, (int)w, 0, 0);
@@ -1752,7 +1756,25 @@ static void window_top_toolbar_tool_drag()
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
 		break;
 	case WIDX_LAND:
-		window_top_toolbar_land_tool_drag(x, y);
+		// Custom setting to only change land style instead of raising or lowering land
+		if (LandPaintMode) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1387;
+				game_do_command(
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+					1,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) | (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) << 8),
+					GAME_COMMAND_CHANGE_SURFACE_STYLE,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+					);
+				// The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
+			}
+		} else {
+			window_top_toolbar_land_tool_drag(x, y);
+		}
 		break;
 	case WIDX_WATER:
 		window_top_toolbar_water_tool_drag(x, y);
@@ -1873,7 +1895,6 @@ void top_toolbar_view_menu_dropdown(short dropdownIndex) {
 		window_invalidate(w);
 	}
 }
-
 
 /**
  *

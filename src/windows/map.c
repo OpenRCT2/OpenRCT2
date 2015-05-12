@@ -95,6 +95,9 @@ static void window_map_invalidate();
 static void window_map_paint();
 static void window_map_scrollpaint();
 static void window_map_tooltip();
+static void window_map_textinput();
+static void window_map_inputsize_land(rct_window *w);
+static void window_map_inputsize_map(rct_window *w);
 
 static void window_map_set_bounds(rct_window* w);
 
@@ -121,7 +124,7 @@ static void* window_map_events[] = {
 	window_map_scrollmousedown,
 	window_map_scrollmousedown,
 	window_map_emptysub,
-	window_map_emptysub,
+	window_map_textinput,
 	window_map_emptysub,
 	window_map_emptysub,
 	window_map_tooltip,
@@ -160,8 +163,10 @@ void window_map_open()
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_PEOPLE_TAB) |
 		(1 << WIDX_RIDES_TAB) |
+		(1 << WIDX_MAP_SIZE_SPINNER) |
 		(1 << WIDX_MAP_SIZE_SPINNER_UP) |
 		(1 << WIDX_MAP_SIZE_SPINNER_DOWN) |
+		(1 << WIDX_LAND_TOOL) |
 		(1 << WIDX_LAND_TOOL_SMALLER) |
 		(1 << WIDX_LAND_TOOL_LARGER) |
 		(1 << WIDX_SET_LAND_RIGHTS) |
@@ -345,6 +350,12 @@ static void window_map_mouseup()
 		show_land_rights();
 		show_construction_rights();
 		break;
+	case WIDX_LAND_TOOL:
+		window_map_inputsize_land(var_w);
+		break;
+	case WIDX_MAP_SIZE_SPINNER:
+		window_map_inputsize_map(var_w);
+		break;
 
 	default:
 		if (var_idx >= WIDX_PEOPLE_TAB && var_idx <= WIDX_RIDES_TAB)
@@ -382,6 +393,57 @@ static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widg
 		// stay in the map window.
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 	}
+}
+
+static void window_map_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+	int size;
+	char* end;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (result) {
+		if (widgetIndex == WIDX_LAND_TOOL) {
+			size = strtol(text, &end, 10);
+			if (*end == '\0') {
+				if (size < 1) size = 1;
+				if (size > 64) size = 64;
+				RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+				window_invalidate(w);
+			}
+		}
+		else if (widgetIndex == WIDX_MAP_SIZE_SPINNER) {
+			size = strtol(text, &end, 10);
+			if (*end == '\0') {
+				if (size < 50) size = 50;
+				if (size > 256) size = 256;
+				int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+				while (size < currentSize) {
+					RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+					currentSize--;
+				}
+				while (size > currentSize) {
+					RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+					currentSize++;
+				}
+				window_invalidate(w);
+			}
+		}
+	}
+}
+
+static void window_map_inputsize_land(rct_window *w)
+{
+	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5130, STR_NONE, STR_NONE, 3);
+}
+
+static void window_map_inputsize_map(rct_window *w)
+{
+	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5132, 5133, STR_NONE, STR_NONE, 4);
 }
 
 /**
