@@ -56,14 +56,27 @@ typedef enum {
 	SMALL_SCENERY_FLAG18 = (1 << 17),							// 0x20000
 	SMALL_SCENERY_FLAG19 = (1 << 18),							// 0x40000
 	SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),		// 0x80000
+	SMALL_SCENERY_FLAG20 = (1 << 20),							// 0x100000
+	SMALL_SCENERY_FLAG21 = (1 << 21),							// 0x200000
+	SMALL_SCENERY_FLAG22 = (1 << 22),							// 0x400000
+	SMALL_SCENERY_FLAG23 = (1 << 23),							// 0x800000
+	SMALL_SCENERY_FLAG24 = (1 << 24),							// 0x1000000
+	SMALL_SCENERY_FLAG25 = (1 << 25),							// 0x2000000
 } SMALL_SCENERY_FLAGS;
+
+typedef struct {
+	sint16 x_offset;
+	sint16 y_offset;
+	sint16 z_offset;
+	uint8 pad_6[3];
+} rct_large_scenery_tile;
 
 typedef struct {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	sint16 removal_price;	// 0x0A
-	uint32 var_0C;
+	rct_large_scenery_tile* tiles; // 0x0C
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
 	uint32 var_12;
@@ -141,6 +154,9 @@ enum {
 #define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
 #define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
 #define g_bannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
+
+// Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used 
+// because 0 represents no path bits on a path. So remember to remove 1 when using it for 0x009ADA50
 #define g_pathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
 #define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
@@ -159,5 +175,6 @@ void init_scenery();
 void scenery_update_tile(int x, int y);
 void scenery_update_age(int x, int y, rct_map_element *mapElement);
 void scenery_set_default_placement_configuration();
+void scenery_remove_ghost_tool_placement();
 
 #endif

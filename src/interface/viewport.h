@@ -46,10 +46,11 @@ enum {
 
 enum {
 	VIEWPORT_INTERACTION_ITEM_NONE,
-	
-	VIEWPORT_INTERACTION_ITEM_SPRITE = 2,
+	VIEWPORT_INTERACTION_ITEM_TERRAIN,
+	VIEWPORT_INTERACTION_ITEM_SPRITE,
 	VIEWPORT_INTERACTION_ITEM_RIDE,
-	VIEWPORT_INTERACTION_ITEM_SCENERY = 5,
+	VIEWPORT_INTERACTION_ITEM_WATER,
+	VIEWPORT_INTERACTION_ITEM_SCENERY,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
 	VIEWPORT_INTERACTION_ITEM_PARK,
@@ -57,6 +58,21 @@ enum {
 	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
 	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
 
+};
+
+enum {
+	VIEWPORT_INTERACTION_MASK_NONE = 0,
+	VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (VIEWPORT_INTERACTION_ITEM_TERRAIN - 1)),
+	VIEWPORT_INTERACTION_MASK_SPRITE = ~(1 << (VIEWPORT_INTERACTION_ITEM_SPRITE - 1)),
+	VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (VIEWPORT_INTERACTION_ITEM_RIDE - 1)),
+	VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (VIEWPORT_INTERACTION_ITEM_WATER - 1)),
+	VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)),
+	VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH - 1)),
+	VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM - 1)),
+	VIEWPORT_INTERACTION_MASK_PARK = ~(1 << (VIEWPORT_INTERACTION_ITEM_PARK - 1)),
+	VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)),
+	VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)),
+	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
 typedef struct {
@@ -97,7 +113,7 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement, rct_viewport **viewport);
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
 
 int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_left_over(int x, int y);
@@ -105,5 +121,6 @@ int viewport_interaction_left_click(int x, int y);
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
+void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
 
 #endif

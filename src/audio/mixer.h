@@ -43,45 +43,73 @@ struct AudioFormat {
 	int channels;
 };
 
-class Sample
+class Source
 {
 public:
-	Sample();
-	~Sample();
-	bool Load(const char* filename);
-	bool LoadCSS1(const char* filename, unsigned int offset);
-	void Unload();
-	bool Loaded();
-	bool Convert(AudioFormat format);
-	const uint8* Data();
-	unsigned long Length();
-
-	friend class Stream;
-
-private:
-	AudioFormat format;
-	uint8* data;
-	unsigned long length;
-	bool issdlwav;
-};
-
-class Stream
-{
-public:
-	Stream();
+	virtual ~Source();
 	unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
 	unsigned long Length();
-	void SetSource_Sample(Sample& sample);
-	const AudioFormat* Format();
+	const AudioFormat& Format();
 
 	friend class Mixer;
 
+protected:
+	virtual unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) = 0;
+
+	AudioFormat format;
+	unsigned long length;
+};
+
+class Source_Null : public Source
+{
+public:
+	Source_Null();
+
+protected:
+	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
+};
+
+class Source_Sample : public Source
+{
+public:
+	Source_Sample();
+	~Source_Sample();
+	bool LoadWAV(const char* filename);
+	bool LoadCSS1(const char* filename, unsigned int offset);
+
+	friend class Mixer;
+
+protected:
+	bool Convert(AudioFormat format);
+
 private:
-	enum {
-		SOURCE_NONE = 0,
-		SOURCE_SAMPLE
-	} sourcetype;
-	Sample* sample;
+	void Unload();
+
+	uint8* data;
+	bool issdlwav;
+
+protected:
+	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
+};
+
+class Source_SampleStream : public Source
+{
+public:
+	Source_SampleStream();
+	~Source_SampleStream();
+	bool LoadWAV(SDL_RWops* rw);
+
+private:
+	Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id);
+	void Unload();
+
+	SDL_RWops* rw;
+	Uint64 databegin;
+	uint8* buffer;
+	unsigned long buffersize;
+
+protected:
+	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
 };
 
 class Channel
@@ -89,7 +117,7 @@ class Channel
 public:
 	Channel();
 	~Channel();
-	void Play(Stream& stream, int loop);
+	void Play(Source& source, int loop);
 	void SetRate(double rate);
 	void SetVolume(int volume);
 	void SetPan(float pan);
@@ -105,28 +133,31 @@ private:
 	double rate;
 	int volume;
 	float volume_l, volume_r;
+	float oldvolume_l, oldvolume_r;
 	float pan;
 	bool done;
 	bool deleteondone;
+	bool deletesourceondone;
 	bool stopping;
 	int oldvolume;
 	SpeexResamplerState* resampler;
-	Stream* stream;
+	Source* source;
 };
 
 class Mixer
 {
 public:
+	Mixer();
 	void Init(const char* device);
 	void Close();
 	void Lock();
 	void Unlock();
-	Channel* Play(Stream& stream, int loop, bool deleteondone);
+	Channel* Play(Source& source, int loop, bool deleteondone, bool deletesourceondone);
 	void Stop(Channel& channel);
 	bool LoadMusic(int pathid);
 
-	Stream css1streams[SOUND_MAXID];
-	Stream musicstreams[PATH_ID_END];
+	Source* css1sources[SOUND_MAXID];
+	Source* musicsources[PATH_ID_END];
 
 private:
 	static void SDLCALL Callback(void* arg, uint8* data, int length);
@@ -135,14 +166,13 @@ private:
 	void EffectPanU8(Channel& channel, uint8* data, int length);
 	void EffectFadeS16(sint16* data, int length, int startvolume, int endvolume);
 	void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume);
-	bool MustConvert(Stream& stream);
+	bool MustConvert(Source& source);
 	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
 	SDL_AudioDeviceID deviceid;
 	AudioFormat format;
 	uint8* effectbuffer;
-	Sample css1samples[SOUND_MAXID];
-	Sample musicsamples[PATH_ID_END];
 	std::list<Channel*> channels;
+	Source_Null source_null;
 };
 
 extern "C"
@@ -158,7 +188,7 @@ void Mixer_Channel_Rate(void* channel, double rate);
 int Mixer_Channel_IsPlaying(void* channel);
 unsigned long Mixer_Channel_GetOffset(void* channel);
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset);
-void* Mixer_Play_Music(int pathid);
+void* Mixer_Play_Music(int pathid, int streaming);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };

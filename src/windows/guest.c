@@ -33,6 +33,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../world/footpath.h"
+#include "../input.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -555,7 +556,7 @@ void window_guest_overview_close(){
 	
 	window_get_register(w);
 	
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<3)){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) && 
 		    w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber)) 
 			tool_cancel();
@@ -622,7 +623,7 @@ void window_guest_overview_mouse_up(){
 		
 		w->var_48C = peep->x;
 
-		RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+		remove_peep_from_ride(peep);
 		invalidate_sprite((rct_sprite*)peep);
 
 		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
@@ -645,7 +646,7 @@ void window_guest_overview_mouse_up(){
 
 /* rct2: 0x696AA0 */
 void window_guest_set_page(rct_window* w, int page){
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
 		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
@@ -1157,9 +1158,9 @@ void window_guest_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
-	if (ebx == 0)
+	int interactionType;
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	x--;
@@ -1171,7 +1172,7 @@ void window_guest_overview_tool_update(){
 	
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
-	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
+	int ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
 	ebx += w->var_492 >> 2;
 
 	int ebp = peep->tshirt_colour << 19;
@@ -1237,8 +1238,7 @@ void window_guest_overview_tool_down(){
 	peep->action_sprite_type = 0xFF;
 	peep->var_C4 = 0;
 
-	peep->happiness_growth_rate -= 10;
-	if (peep->happiness_growth_rate < 0)peep->happiness_growth_rate = 0;
+	peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
 
 	sub_693B58(peep);
 	tool_cancel();

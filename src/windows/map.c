@@ -319,8 +319,8 @@ static void window_map_mouseup()
 
 		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
 		
-		if (!(RCT2_GLOBAL(0x9DE518, sint32) & (1 << 6))) // Remove?
-			RCT2_GLOBAL(0x9DE518, sint32) |= (1 << 6);
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) & INPUT_FLAG_6)) // Remove?
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) |= INPUT_FLAG_6;
 
 		show_gridlines();
 		show_land_rights();
@@ -369,13 +369,18 @@ static void window_map_mouseup()
 */
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	// The normal map window doesn't have widget 8 or 9.
-	// I assume these widgets refer to the Scenario Editor's map window.
-	if (widgetIndex == 8) {
+	// These widgets all refer to the Scenario Editor's map window.
+	if (widgetIndex == WIDX_MAP_SIZE_SPINNER_UP) {
 		RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 	}
-	else if (widgetIndex == 9) {
+	else if (widgetIndex == WIDX_MAP_SIZE_SPINNER_DOWN) {
 		RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	}
+	else if (widgetIndex == WIDX_SET_LAND_RIGHTS)
+	{
+		// When unselecting the land rights tool, reset the size so the number doesn't
+		// stay in the map window.
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 	}
 }
 

@@ -130,7 +130,7 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			3
 		);
 	} else if (widgetIndex == WIDX_GAME_TOOLS) {
@@ -143,7 +143,7 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			4
 		);
 	}

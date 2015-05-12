@@ -907,10 +907,11 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 			chunk += 1038;
 		}
 
-		scenery_type->large_scenery.var_0C = (uint32)chunk;
+		scenery_type->large_scenery.tiles = (rct_large_scenery_tile*)chunk;
 
+		// skip over large scenery tiles
 		while (*((uint16*)chunk) != 0xFFFF){
-			chunk += 9;
+			chunk += sizeof(rct_large_scenery_tile);
 		}
 
 		chunk += 2;
@@ -937,7 +938,7 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
 		scenery_type->name = 0;
 		scenery_type->image = 0;
-		scenery_type->large_scenery.var_0C = 0;
+		scenery_type->large_scenery.tiles = 0;
 		scenery_type->large_scenery.scenery_tab_id = 0;
 		scenery_type->large_scenery.var_12 = 0;
 		scenery_type->large_scenery.var_16 = 0;

@@ -201,7 +201,7 @@ static void window_banner_mouseup()
 		window_close(w);
 		break;
 	case WIDX_BANNER_DEMOLISH:
-		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_51, 0, 0);
+		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
 		break;
 	case WIDX_BANNER_TEXT:
 		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0, 32);
@@ -244,7 +244,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 			widget->top + w->y, 
 			widget->bottom - widget->top + 1,
 			w->colours[1], 
-			0x80, 
+			DROPDOWN_FLAG_STAY_OPEN,
 			13, 
 			widget->right - widget->left - 3);
 		

@@ -136,9 +136,9 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_1 | INPUT_FLAG_2);
-	if (flags & 0x80)
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_1;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	if (flags & DROPDOWN_FLAG_STAY_OPEN)
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
@@ -213,9 +213,9 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_1 | INPUT_FLAG_2);
-	if (flags & 0x80)
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_1;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	if (flags & DROPDOWN_FLAG_STAY_OPEN)
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
 
 	// Close existing dropdown
 	window_dropdown_close();
@@ -411,19 +411,6 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		if (availableColours & (1 << i))
 			numItems++;
 
-	// Show dropdown
-	window_dropdown_show_image(
-		w->x + widget->left,
-		w->y + widget->top,
-		widget->bottom - widget->top + 1,
-		dropdownColour,
-		0x80,
-		numItems,
-		12,
-		12,
-		gAppropriateImageDropdownItemsPerRow[numItems]
-	);
-
 	// Set items
 	for (i = 0; i < 32; i++) {
 		if (availableColours & (1 << i)) {
@@ -434,4 +421,18 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
 		}
 	}
+
+	// Show dropdown
+	window_dropdown_show_image(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		dropdownColour,
+		DROPDOWN_FLAG_STAY_OPEN,
+		numItems,
+		12,
+		12,
+		gAppropriateImageDropdownItemsPerRow[numItems]
+	);
+
 }

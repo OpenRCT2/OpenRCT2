@@ -842,7 +842,7 @@ STR_0837    :Unable to initialize graphics system
 STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
+STR_0841    :En une fenêtre
 STR_0842    :640x480 plein écran
 STR_0843    :800x600 plein écran
 STR_0844    :1024x768 plein écran
@@ -1336,10 +1336,10 @@ STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VEL
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
+STR_1335    :{STRINGID} - Entrée{POP16}{POP16}
+STR_1336    :{STRINGID} - Entrée de station {POP16}{COMMA16}
+STR_1337    :{STRINGID} - Sortie{POP16}{POP16}
+STR_1338    :{STRINGID} - Sortie de station {POP16}{COMMA16}
 STR_1339    :{BLACK}No test results yet...
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
@@ -1416,7 +1416,7 @@ STR_1411    :{STRINGID} in the way
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
+STR_1415    :{WINDOW_COLOUR_2}Vitesse
 STR_1416    :{WINDOW_COLOUR_2}Altitude
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
@@ -1436,9 +1436,9 @@ STR_1431    :Marche
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
 STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
+STR_1435    :En {STRINGID}
+STR_1436    :Dans {STRINGID}
+STR_1437    :A {STRINGID}
 STR_1438    :Sitting
 STR_1439    :(select location)
 STR_1440    :Mowing grass
@@ -1469,7 +1469,7 @@ STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
-STR_1468    :Staff
+STR_1468    :Personnel
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
 STR_1471    :{WINDOW_COLOUR_2}Vitesse:
@@ -2681,37 +2681,37 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2680    :All research complete
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
+STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2685    :Simplex Noise Parameters
+STR_2686    :{WINDOW_COLOUR_2}Low:
+STR_2687    :{WINDOW_COLOUR_2}High:
+STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
+STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2690    :Map Generation
+STR_2691    :{WINDOW_COLOUR_2}Base height:
+STR_2692    :{WINDOW_COLOUR_2}Water level:
+STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
-STR_2705    :???
-STR_2706    :???
-STR_2707    :???
-STR_2708    :???
-STR_2709    :???
-STR_2710    :???
+STR_2700    :Autosave frequency
+STR_2701    :Every week
+STR_2702    :Every 2 weeks
+STR_2703    :Every month
+STR_2704    :Every 4 months
+STR_2705    :Every year
+STR_2706    :Jamais
+STR_2707    :Open new window
+STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
+STR_2709    :Overwrite
+STR_2710    :Type the name of the file.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2719,50 +2719,50 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
+STR_2718    :(up)
+STR_2719    :(nouveau fichier)
+STR_2720    :{UINT16}s
+STR_2721    :{UINT16}s
+STR_2722    :{UINT16}m {UINT16}s
+STR_2723    :{UINT16}m {UINT16}s
+STR_2724    :{UINT16}mins:{UINT16}s
+STR_2725    :{UINT16}m {UINT16}s
+STR_2726    :{UINT16}m
+STR_2727    :{UINT16}m
+STR_2728    :{UINT16}h {UINT16}m
+STR_2729    :{UINT16}h {UINT16}m
+STR_2730    :{UINT16}h {UINT16}m
+STR_2731    :{UINT16}h {UINT16}m
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, an {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, an {COMMA16}
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+STR_2738    :Title screen music
+STR_2739    :Aucun
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :css50.dat n'est pas trouvé
+STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
+STR_2749    :Mon nouveau scénario
+STR_2750    :Move all items to top
+STR_2751    :Move all items to bottom
+STR_2752    :Clear grass
+STR_2753    :Mowed grass
+STR_2754    :Water plants
+STR_2755    :Fix vandalism
+STR_2756    :Remove litter
+STR_2757    :Force Sun
+STR_2758    :Force Thunder
+STR_2759    :Zero Clearance
 # New strings used in the cheats window previously these were ???
-STR_2760    :+5K Money
+STR_2760    :+5000 d'argent
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
 STR_2763    :???
@@ -2771,19 +2771,19 @@ STR_2765    :Large Tram
 STR_2766    :???
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
-STR_2769    :Open Park
-STR_2770    :Close Park
+STR_2769    :Ouvrir le parc
+STR_2770    :Fermer le parc
 STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
-STR_2773    :Windowed
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
+STR_2773    :En une fenêtre
+STR_2774    :Plein écran
+STR_2775    :Plein écran (desktop)
 STR_2776    :Langue
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
-STR_2779    :???
-STR_2780    :???
+STR_2779    :Viewport #{COMMA16}
+STR_2780    :Extra viewport
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
@@ -2798,14 +2798,14 @@ STR_2791    :Enter name
 STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
-STR_2795    :Sort
+STR_2795    :Trier
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
 STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
+STR_2802    :Plan
 STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
 STR_2805    :{SMALLFONT}{BLACK}Show map of park
@@ -2984,7 +2984,7 @@ STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}Accès interdit - - 
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
@@ -3059,7 +3059,7 @@ STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
 STR_3055    :Blanc
-STR_3056    :Translucent
+STR_3056    :Transparent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
 STR_3059    :Hedges
@@ -3160,9 +3160,9 @@ STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
 STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
 STR_3155    :
 STR_3156    :
-STR_3157    :map
-STR_3158    :graph
-STR_3159    :list
+STR_3157    :plan
+STR_3158    :graphique
+STR_3159    :liste
 STR_3160    :RollerCoaster Tycoon 2: Première visite...
 STR_3161    :RollerCoaster Tycoon 2: Checking object files...
 STR_3162    :Unable to allocate enough memory
@@ -3170,8 +3170,8 @@ STR_3163    :Installing new data:
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
-STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
-STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
+STR_3167    :{WINDOW_COLOUR_2}Inclut: {BLACK}{COMMA16} objets
+STR_3168    :{WINDOW_COLOUR_2}Texte: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
@@ -3208,7 +3208,7 @@ STR_3201    :Sélection des objets
 STR_3202    :Editeur de paysage
 STR_3203    :Liste d'inventions
 STR_3204    :Sélection des options
-STR_3205    :Objective Selection
+STR_3205    :Selection d'objectif
 STR_3206    :Sauvegarder scénario
 STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
@@ -3289,9 +3289,9 @@ STR_3282    :{SMALLFONT}{BLACK}Choisir objectif et nom du parc
 STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
 STR_3284    :Sélection des objectifs
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :{SMALLFONT}{BLACK}Selecter un objectif pour ce scénario
 STR_3287    :{WINDOW_COLOUR_2}Objectif:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
+STR_3288    :{SMALLFONT}{BLACK}Selecter climat
 STR_3289    :{WINDOW_COLOUR_2}Climat:
 STR_3290    :Frais et humide
 STR_3291    :Chaud
@@ -3325,11 +3325,11 @@ STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
 STR_3321    :New objects installed successfully
-STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
+STR_3322    :{WINDOW_COLOUR_2}Objectif: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
 STR_3324    :Requires Add-On Pack: 
 STR_3325    :Requires an Add-On Pack
-STR_3326    :{WINDOW_COLOUR_2}(no image)
+STR_3326    :{WINDOW_COLOUR_2}(aucune image)
 STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
 STR_3329    :Park entrance not yet built
@@ -3450,3 +3450,11 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Définir Zone de Patrouille
 STR_3446    :Annuler Zone de Patrouille
+
+# New strings, cleaner
+STR_5120 :Show finances button on toolbar
+STR_5121 :Show research button on toolbar
+STR_5122 :Show all vehicles sharing a track/ride type
+STR_5123 :Renouveler attr.
+STR_5124 :Pas de Six Flags
+STR_5125 :All destructable

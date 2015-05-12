@@ -169,7 +169,7 @@ rct_window *window_construction_open()
 	window_push_others_right(w);
 	show_gridlines();
 
-	RCT2_GLOBAL(0xF44070, uint32) = 0x80000000;
+	RCT2_GLOBAL(0xF44070, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(0xF440CD, uint8) = 8;
 	RCT2_GLOBAL(0xF440CE, uint8) = 18;
 	RCT2_GLOBAL(0xF440CF, uint8) = 4;
@@ -307,7 +307,7 @@ void window_construction_mouseup_demolish(rct_window* w){
 	RCT2_CALLPROC_X(0x6C9BA5, 0, 0, 0, 0, (int)w, 0, 0);
 	return;
 
-	RCT2_GLOBAL(0xF44070, uint32) = 0x80000000;
+	RCT2_GLOBAL(0xF44070, uint32) = MONEY32_UNDEFINED;
 	sub_6C9627();
 
 	RCT2_GLOBAL(0xF440B8, uint8) = 3;
@@ -440,7 +440,7 @@ void window_construction_paint()
 	short string_y = RCT2_GLOBAL(0x9D7C08, int16_t) + w->y - 23;
 	if (RCT2_GLOBAL(0xF440A6, uint8_t) != 4) gfx_draw_string_centred(dpi, 1407, string_x, string_y, 0, w);
 	string_y += 11;
-	if (RCT2_GLOBAL(0xF44070, uint32_t) != 0x80000000 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32_t) & 0x800))
+	if (RCT2_GLOBAL(0xF44070, uint32_t) != MONEY32_UNDEFINED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32_t) & 0x800))
 		gfx_draw_string_centred(dpi, 1408, string_x, string_y, 0, (void*)0xF44070);
 }
 

@@ -389,7 +389,7 @@ typedef struct {
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	sint8 happiness_growth_rate;	// 0x3B
+	uint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
 	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E
@@ -570,6 +570,7 @@ int peep_check_easteregg_name(int index, rct_peep *peep);
 int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
 int peep_has_food(rct_peep* peep);
+void peep_sprite_remove(rct_peep* peep);
 
 void peep_window_state_update(rct_peep* peep);
 void peep_decrement_num_riders(rct_peep* peep);
@@ -583,6 +584,7 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 
 void peep_set_map_tooltip(rct_peep *peep);
 void sub_693B58(rct_peep* peep);
+void remove_peep_from_ride(rct_peep* peep);
 void remove_peep_from_queue(rct_peep* peep);
 
 #endif

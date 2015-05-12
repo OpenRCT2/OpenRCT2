@@ -865,7 +865,7 @@ static void window_finances_financial_graph_paint()
 	money32 *balanceHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
 		money32 balance = balanceHistory[i];
-		if (balance == 0x80000000)
+		if (balance == MONEY32_UNDEFINED)
 			continue;
 
 		// Modifier balance then keep halfing until less than 127 pixels
@@ -983,7 +983,7 @@ static void window_finances_park_value_graph_paint()
 	money32 *parkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
 		money32 balance = parkValueHistory[i];
-		if (balance == 0x80000000)
+		if (balance == MONEY32_UNDEFINED)
 			continue;
 
 		// Modifier balance then keep halfing until less than 255 pixels
@@ -1101,7 +1101,7 @@ static void window_finances_profit_graph_paint()
 	money32 *weeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
 		money32 balance = weeklyProfitHistory[i];
-		if (balance == 0x80000000)
+		if (balance == MONEY32_UNDEFINED)
 			continue;
 
 		// Modifier balance then keep halfing until less than 127 pixels
@@ -1375,7 +1375,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);

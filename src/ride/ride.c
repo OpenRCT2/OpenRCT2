@@ -27,12 +27,14 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"
+#include "../world/banner.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "ride.h"
@@ -556,7 +558,7 @@ int ride_create_ride(ride_list_item listItem)
 
 	esi = GAME_COMMAND_6;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx == 0x80000000 ? -1 : edi;
+	return ebx == MONEY32_UNDEFINED ? -1 : edi;
 }
 
 /**
@@ -2445,32 +2447,34 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 
 		uint8 vol1 = -1;
 		uint8 vol2 = -1;
-		if (pany < 0) {
-			pany = -pany;
+		int panx2 = panx;
+		int pany2 = pany;
+		if (pany2 < 0) {
+			pany2 = -pany2;
 		}
-		if (pany > 6143) {
-			pany = 6143;
+		if (pany2 > 6143) {
+			pany2 = 6143;
 		}
-		pany -= 2048;
-		if (pany > 0) {
-			pany = -((pany / 4) - 1024) / 4;
-			vol1 = (uint8)pany;
-			if (pany >= 256) {
+		pany2 -= 2048;
+		if (pany2 > 0) {
+			pany2 = -((pany2 / 4) - 1024) / 4;
+			vol1 = (uint8)pany2;
+			if (pany2 >= 256) {
 				vol1 = -1;
 			}
 		}
 
-		if (panx < 0) {
-			panx = -panx;
+		if (panx2 < 0) {
+			panx2 = -panx2;
 		}
-		if (panx > 6143) {
-			panx = 6143;
+		if (panx2 > 6143) {
+			panx2 = 6143;
 		}
-		panx -= 2048;
-		if (panx > 0) {
-			panx = -((panx / 4) - 1024) / 4;
-			vol2 = (uint8)panx;
-			if (panx >= 256) {
+		panx2 -= 2048;
+		if (panx2 > 0) {
+			panx2 = -((panx2 / 4) - 1024) / 4;
+			vol2 = (uint8)panx2;
+			if (panx2 >= 256) {
 				vol2 = -1;
 			}
 		}
@@ -2660,7 +2664,7 @@ void ride_music_update_final()
 								rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
 #ifdef USE_MIXER
 								rct_ride_music* ride_music = &gRideMusicList[ebx];
-								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid);
+								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, true);
 								if (ride_music->sound_channel) {
 									ride_music->volume = ride_music_params->volume;
 									ride_music->pan = ride_music_params->pan;
@@ -2676,7 +2680,7 @@ void ride_music_update_final()
 									}
 									Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
 								} else {
-									RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
+									//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 								}
 #else
 								const char* filename = get_file_path(ride_music_info->pathid);
@@ -2781,13 +2785,13 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 	if (setting == 0){
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1796;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 
 		if (ride->status != RIDE_STATUS_CLOSED){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1006;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
@@ -2796,7 +2800,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		if (setting == 0 || setting == 4 || setting == 8 || setting == 9)
 		{ 
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1797;
-			*ebx = 0x80000000;
+			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
@@ -2805,7 +2809,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT &&
 		new_value > 1){
 		RCT2_GLOBAL(0x141E9AC, uint16) = 3141;
-		*ebx = 0x80000000;
+		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
@@ -3587,6 +3591,262 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		user_string_free(newUserStringId);
 	}
 
+	*ebx = 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006CB7FB
+ */
+int ride_get_refund_price(int ride_id)
+{
+	uint8 oldpaused = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
+	RCT2_GLOBAL(0x00F4413A, int) = 0;
+	for(int x = 0; x < 8192; x += 32){
+		for(int y = 0; y < 8192; y += 32){
+			int tile_idx = ((y * 256) + x) / 32;
+			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
+			do{
+				if((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK && map_element->properties.track.ride_index == ride_id){
+					int eax, ebx, ecx, edx, esi, edi, ebp;
+					eax = x;
+					ebx = ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8) | 0x01;
+					ecx = y;
+					edx = map_element->properties.track.type;
+					edi = map_element->base_height * 8;
+					if(map_element->properties.track.type == 101){
+						edx = 2 << 8 | map_element->properties.track.ride_index;
+						int oldeax = eax;
+						int oldebx = ebx;
+						int oldecx = ecx;
+						int oldedx = edx;
+
+						ebx = oldebx;
+						ebx |= 0 << 0;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						
+						ebx = oldebx;
+						ebx |= 1 << 8;
+						ecx = oldecx;
+						ecx += 16;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+						ebx = oldebx;
+						ebx |= 2 << 8;
+						eax = oldeax;
+						eax += 16;
+						ecx = oldecx;
+						ecx += 16;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+						ebx = oldebx;
+						ebx |= 3 << 8;
+						eax = oldeax;
+						eax += 16;
+						ecx = oldecx;
+						edx = oldedx;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					}else{
+						edx |= 0xFF << 8;
+						edx &= ((map_element->properties.track.sequence & 0xF) << 8) | 0xFF;
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+					}
+					y -= 32;
+					break;
+				}
+				map_element++;
+			}while(!((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		}
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = oldpaused;
+	return RCT2_GLOBAL(0x00F4413A, int);
+}
+
+/**
+ * 
+ *  rct2: 0x006B49D9
+ */
+void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	uint8 ride_id = *(uint8*)edx;
+
+	RCT2_GLOBAL(0x009DEA5E, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA60, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA62, uint16) = 0;
+	rct_ride *ride = &g_ride_list[ride_id];
+	int x = 0, y = 0, z = 0;
+	if(ride->overall_view != (uint16)-1){
+		x = ((ride->overall_view & 0xFF) * 32) + 16;
+		y = ((ride->overall_view >> 8) * 32) + 16;
+		z = map_element_height(x, y);
+		RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+		RCT2_GLOBAL(0x009DEA60, uint16) = y;
+		RCT2_GLOBAL(0x009DEA62, uint16) = z;
+	}
+	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}else{
+		if(*ebx & GAME_COMMAND_FLAG_APPLY){
+			if(!(*ebx & 8)){
+				window_close_by_number(WC_RIDE_CONSTRUCTION, ride_id);
+			}
+			window_close_by_number(WC_RIDE, ride_id);
+			window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, ride_id);
+			window_close_by_class(WC_NEW_CAMPAIGN);
+			if(RCT2_GLOBAL(0x01358103, uint8) && ride_id == RCT2_GLOBAL(0x01358117, uint8)){
+				RCT2_GLOBAL(0x01358103, uint8) = 0;
+			}
+			if(RCT2_GLOBAL(0x01358107, uint8) && ride_id == RCT2_GLOBAL(0x0135811B, uint8)){
+				RCT2_GLOBAL(0x01358107, uint8) = 0;
+			}
+			ride_clear_for_construction(ride_id);
+			ride_remove_peeps(ride_id);
+			RCT2_CALLPROC_X(0x00696707, 0, 0, 0, ride_id, 0, 0, 0);
+			*ebx = ride_get_refund_price(ride_id);
+
+			RCT2_CALLPROC(0x006CB945);
+			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
+			
+			for(int i = 0; i < MAX_BANNERS; i++){
+				rct_banner *banner = &gBanners[i];
+				if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_2 && banner->colour == ride_id){
+					banner->flags &= 0xFB;
+					banner->string_idx = 778;
+				}
+			}
+
+			uint16 spriteIndex;
+			rct_peep *peep;	
+			FOR_ALL_GUESTS(spriteIndex, peep){
+				uint8 ride_id_bit = ride_id & 0x3;
+				uint8 ride_id_offset = ride_id / 8;
+				peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit); // clear ride from potentially being in rides_been_on
+				if(peep->state == PEEP_STATE_WATCHING){
+					if(peep->current_ride == ride_id){
+						peep->current_ride = MAX_RIDES;
+						if(peep->time_to_stand >= 50){ // make peep stop watching the ride
+							peep->time_to_stand = 50;
+						}
+					}
+				}
+				// remove any free voucher for this ride from peep
+				if(peep->item_standard_flags & PEEP_ITEM_VOUCHER){
+					if(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == ride_id){
+						peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
+					}
+				}
+				// remove any photos of this ride from peep
+				if(peep->item_standard_flags & PEEP_ITEM_PHOTO){
+					if(peep->photo1_ride_ref == ride_id){
+						peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO2){
+					if(peep->photo2_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO3){
+					if(peep->photo3_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+					}
+				}
+				if(peep->item_extra_flags && PEEP_ITEM_PHOTO4){
+					if(peep->photo4_ride_ref == ride_id){
+						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+					}
+				}
+				if(peep->guest_heading_to_ride_id == ride_id){
+					peep->guest_heading_to_ride_id = MAX_RIDES;
+				}
+				if(peep->favourite_ride == ride_id){
+					peep->favourite_ride = MAX_RIDES;
+				}
+				for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+					if(peep->thoughts[i].item == ride_id){
+						// Clear top thought, push others up
+						memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
+						peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+					}
+				}
+			}
+
+			user_string_free(ride->name);
+			ride->type = RIDE_TYPE_NULL;
+			window_invalidate_by_class(WC_RIDE_LIST);
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+			RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+			RCT2_GLOBAL(0x009DEA60, uint16) = y;
+			RCT2_GLOBAL(0x009DEA62, uint16) = z;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+			return;
+		}else{
+			*ebx = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+			return;
+		}
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006B2FC5
+ */
+void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		uint8 ride_id = *edx;
+		uint8 type = *ebx >> 8;
+		uint8 value = *edx >> 8;
+		int index = *edi;
+		rct_ride *ride = &g_ride_list[ride_id];
+		switch(type){
+			case 0:
+				ride->track_colour_main[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 1:
+				ride->track_colour_additional[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 2:
+				*((uint8*)(&ride->vehicle_colours[index])) = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 3:
+				*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 4:
+				ride->track_colour_supports[index] = value;
+				gfx_invalidate_screen();
+				break;
+			case 5:
+				ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
+				ride->colour_scheme_type |= value;
+				for(int i = 1; i < countof(ride->vehicle_colours); i++){
+					ride->vehicle_colours[i] = ride->vehicle_colours[0];
+					ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
+				}
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+			case 6:
+				ride->entrance_style = value;
+				RCT2_GLOBAL(0x01358840, uint8) = value;
+				gfx_invalidate_screen();
+				break;
+			case 7:
+				ride->vehicle_colours_extended[index] = value;
+				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				break;
+		}
+		window_invalidate_by_number(WC_RIDE, ride_id);
+	}
 	*ebx = 0;
 }
 

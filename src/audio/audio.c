@@ -1427,13 +1427,8 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
 		int volume = 0;
 		if (ebx == 0x8001) {
-			sint16 x2 = x & 0xFFE0; // round by 32
-			sint16 y2 = y & 0xFFE0;
-			if (x2 < 0x1FFF && y2 < 0x1FFF) {
-				rct_map_element* mapelement = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[((y2 * 256 + x2) & 0xFFFF) / 8];
-				while (map_element_get_type(mapelement) != MAP_ELEMENT_TYPE_SURFACE) {
-					mapelement++;
-				}
+			rct_map_element* mapelement = map_get_surface_element_at(x / 32, y / 32);
+			if (mapelement) {
 				if ((mapelement->base_height * 8) - 5 > z) {
 					RCT2_GLOBAL(0x00F438AD, uint8) = 10;
 				}
@@ -1554,13 +1549,19 @@ void start_title_music()
 	case 2:
 		musicPathId = PATH_ID_CSS17;
 		break;
+	case 3:
+		if (rand() & 1)
+			musicPathId = PATH_ID_CSS50;
+		else
+			musicPathId = PATH_ID_CSS17;
+		break;
 	}
 
 	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1
 			&& RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gTitleMusicChannel = Mixer_Play_Music(musicPathId);
+			gTitleMusicChannel = Mixer_Play_Music(musicPathId, true);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(musicPathId), 0);

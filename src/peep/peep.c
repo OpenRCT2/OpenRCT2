@@ -175,6 +175,21 @@ static void sub_693BE5(rct_peep* peep, uint8 al){
 	sub_693B58(peep);
 }
 
+/**
+*
+*  rct2: 0x0069A512
+*/
+void remove_peep_from_ride(rct_peep* peep)
+{
+	if (peep->state == PEEP_STATE_QUEUING) {
+		remove_peep_from_queue(peep);
+	}
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_1;
+	peep_window_state_update(peep);
+	sub_693BE5(peep, 0);
+}
+
 static void peep_state_reset(rct_peep* peep){
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_1;
@@ -198,8 +213,8 @@ void peep_check_if_lost(rct_peep* peep){
 		peep->var_F4 = 230;
 	}
 	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, 0xFF);
-	if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-	else peep->happiness_growth_rate -= 30;
+
+	peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 }
 
 /* rct2: 0x69C26B
@@ -211,8 +226,7 @@ void peep_check_cant_find_ride(rct_peep* peep){
 	if (peep->var_C6 == 30 || peep->var_C6 == 60){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND, peep->guest_heading_to_ride_id);
 
-		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-		else peep->happiness_growth_rate -= 30;
+		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
 	peep->var_C6--;
@@ -237,8 +251,7 @@ void peep_check_cant_find_exit(rct_peep* peep){
 	if (peep->var_C6 == 1){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
 
-		if (peep->happiness_growth_rate < 30) peep->happiness_growth_rate = 0;
-		else peep->happiness_growth_rate -= 30;
+		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
 	if (--peep->var_C6 == 0) peep->var_C6 = 90;
@@ -558,7 +571,7 @@ void peep_sprite_remove(rct_peep* peep){
 	//RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
 	//return;
 
-	RCT2_CALLPROC_X(0x0069A512, 0, 0, 0, 0, (int)peep, 0, 0);
+	remove_peep_from_ride(peep);
 	invalidate_sprite((rct_sprite*)peep);
 
 	window_close_by_number(WC_PEEP, peep->sprite_index);
@@ -575,7 +588,7 @@ void peep_sprite_remove(rct_peep* peep){
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] = 0;
 		peep->type = 0xFF;
-		sub_6C0C3F();
+		staff_update_greyed_patrol_areas();
 		peep->type = PEEP_TYPE_STAFF;
 
 		news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
@@ -3109,7 +3122,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x2))return 0;
 
@@ -3186,7 +3199,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x1))return 0;
 
@@ -3263,7 +3276,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	uint8 additions = map_element->properties.path.additions & 0xF;
 
 	if (!additions) return;
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x4))return;
 
@@ -3439,7 +3452,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
-		rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 		if (!(sceneryEntry->path_bit.var_06 & 1)){
 			peep_state_reset(peep);
 			return;
@@ -3830,7 +3843,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 
 	if (additions == 0)return 0;
 
-	rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 	if (!(sceneryEntry->path_bit.var_06 & 1))
 		return 0;
@@ -4123,7 +4136,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (additions){
 		if (!(map_element->properties.path.additions & 0x80)){
-			rct_scenery_entry* sceneryEntry = RCT2_ADDRESS(0x9ADA50, rct_scenery_entry*)[additions];
+			rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
 
 			if (!(sceneryEntry->path_bit.var_06 & 0x2)) ebp = 9;
 		}
@@ -4564,7 +4577,7 @@ void peep_update_crowd_noise()
 			// Load and play crowd noise
 #ifdef USE_MIXER
 			if (!gCrowdSoundChannel) {
-				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2);
+				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, false);
 			}
 			if (gCrowdSoundChannel) {
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
