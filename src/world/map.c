@@ -47,6 +47,8 @@ const rct_xy16 TileDirectionDelta[] = {
 
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 
+bool LandPaintMode;
+
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
 
