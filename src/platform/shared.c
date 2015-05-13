@@ -402,7 +402,12 @@ void platform_process_messages()
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
 			}
+			// Checks GUI modifier key for Macs otherwise ctrl key
+#ifdef MAC
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput) {
+#else
 			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput) {
+#endif
 				if (SDL_HasClipboardText()) {
 					char* text = SDL_GetClipboardText();
 
