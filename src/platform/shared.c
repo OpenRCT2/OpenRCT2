@@ -402,6 +402,29 @@ void platform_process_messages()
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
 			}
+			// Checks GUI modifier key for Macs otherwise ctrl key
+#ifdef MAC
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput) {
+#else
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput) {
+#endif
+				if (SDL_HasClipboardText()) {
+					char* text = SDL_GetClipboardText();
+
+					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
+						// If inserting in center of string make space for new letter
+						if (gTextInputLength > gTextInputCursorPosition){
+							memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
+							gTextInput[gTextInputCursorPosition] = text[i];
+							gTextInputLength++;
+						}
+						else gTextInput[gTextInputLength++] = text[i];
+
+						gTextInputCursorPosition++;
+					}
+
+				}
+			}
 			break;
 		case SDL_MULTIGESTURE:
 			if (e.mgesture.numFingers == 2) {
