@@ -428,7 +428,7 @@ static void window_track_place_mouseup()
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
-		RCT2_CALLPROC_EBPSAFE(0x006D2436);
+		track_mirror();
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;

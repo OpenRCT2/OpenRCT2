@@ -433,6 +433,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview);
 rct_track_td6* load_track_design(const char *path);
 int track_rename(const char *text);
 int track_delete();
+void track_mirror();
 void reset_track_list_cache();
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z);

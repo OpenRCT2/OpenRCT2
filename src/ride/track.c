@@ -721,7 +721,7 @@ void blank_map(){
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 2;
 		map_element->clearance_height = 0;
-		map_element->properties.surface.slope = 0;		
+		map_element->properties.surface.slope = 0;
 		map_element->properties.surface.terrain = 0;
 		map_element->properties.surface.grass_length = 1;
 		map_element->properties.surface.ownership = OWNERSHIP_OWNED;
@@ -772,6 +772,74 @@ void load_track_scenery_objects(){
 	}
 
 	reset_loaded_objects();
+}
+
+/* rct2: 0x006D247A */
+void track_mirror_scenery(uint8** track_elements){
+	rct_track_scenery* scenery = (rct_track_scenery*)*track_elements;
+	for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++){
+		//0x006d2484
+	}
+}
+
+/* rct2: 0x006D2443 */
+void track_mirror_ride(uint8** track_elements){
+	rct_track_element* track = (rct_track_element*)*track_elements;
+	for (; track->type != 0xFF; track++){
+		track->type = RCT2_ADDRESS(0x0099EA1C, uint8)[track->type];
+	}
+	*track_elements = (uint8*)track + 1;
+
+	rct_track_entrance* entrance = (rct_track_entrance*)*track_elements;
+	for (; entrance->z != -1; entrance++){
+		entrance->y = -entrance->y;
+		if (entrance->direction & 1){
+			entrance->direction ^= (1 << 1);
+		}
+	}
+	*track_elements = (uint8*)entrance + 1;
+}
+
+/* rct2: 0x006D25FA */
+void track_mirror_maze(uint8** track_elements){
+	rct_maze_element* maze = (rct_maze_element*)*track_elements;
+	for (; maze->all != 0; maze++){
+		maze->y = -maze->y;
+
+		if (maze->type == 0x8 || maze->type == 0x80){
+			if (maze->unk_2 & 1){
+				maze->unk_2 ^= (1 << 1);
+			}
+			continue;
+		}
+
+		uint16 maze_entry = maze->maze_entry;
+		uint16 new_entry = 0;
+		for (uint8 position = bitscanforward(maze_entry);
+			position != 0xFF;
+			position = bitscanforward(maze_entry)){
+			maze_entry &= ~(1 << position);
+			new_entry |= (1 << RCT2_ADDRESS(0x00993EDC, uint8)[position]);
+		}
+		maze->maze_entry = new_entry;
+	}
+	*track_elements = (uint8*)maze + 4;
+}
+
+/* rct2: 0x006D2436 */
+void track_mirror(){
+	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
+
+	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+
+	if (track_design->type == RIDE_TYPE_MAZE){
+		track_mirror_maze(&track_elements);
+	}
+	else{
+		track_mirror_ride(&track_elements);
+	}
+
+	track_mirror_scenery(&track_elements);
 }
 
 void track_update_max_min_coordinates(sint16 x, sint16 y, sint16 z){
