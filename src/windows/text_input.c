@@ -249,7 +249,7 @@ static void window_text_input_paint(){
 			}
 
 			if (w->frame_no > 15){
-				uint8 colour = RCT2_ADDRESS(0x0141FC4A, uint8)[w->colours[1] * 8];
+				uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
 				gfx_fill_rect(dpi, cur_x, y + 9, cur_x + width, y + 9, colour + 5);
 			}
 
