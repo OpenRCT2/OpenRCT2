@@ -402,6 +402,24 @@ void platform_process_messages()
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
 			}
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput) {
+				if (SDL_HasClipboardText()) {
+					char* text = SDL_GetClipboardText();
+
+					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
+						// If inserting in center of string make space for new letter
+						if (gTextInputLength > gTextInputCursorPosition){
+							memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
+							gTextInput[gTextInputCursorPosition] = text[i];
+							gTextInputLength++;
+						}
+						else gTextInput[gTextInputLength++] = text[i];
+
+						gTextInputCursorPosition++;
+					}
+
+				}
+			}
 			break;
 		case SDL_MULTIGESTURE:
 			if (e.mgesture.numFingers == 2) {
