@@ -3462,8 +3462,6 @@ STR_5125    :All destructable
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
 STR_5128    :Selection size
-STR_5129    :Enter selection size between 0 and 64
-STR_5130    :Enter selection size between 1 and 64
-STR_5131    :Enter selection size between 1 and 7
-STR_5132    :Map size
-STR_5133    :Enter map size between 50 and 256
+STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
+STR_5130    :Map size
+STR_5131    :Enter map size between {COMMA16} and {COMMA16}

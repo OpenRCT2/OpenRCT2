@@ -195,7 +195,9 @@ static void window_water_textinput()
 
 static void window_water_inputsize(rct_window *w)
 {
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5130, STR_NONE, STR_NONE, 3);
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 /**

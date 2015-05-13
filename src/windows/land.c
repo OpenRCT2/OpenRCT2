@@ -340,6 +340,8 @@ static void window_land_textinput()
 
 static void window_land_inputsize(rct_window *w)
 {
+	((uint16*)TextInputDescriptionArgs)[0] = 0;
+	((uint16*)TextInputDescriptionArgs)[1] = 64;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 

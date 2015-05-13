@@ -30,6 +30,7 @@
 
 struct rct_window;
 union rct_window_event;
+extern uint8 TextInputDescriptionArgs[8];
 
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 

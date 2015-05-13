@@ -438,12 +438,16 @@ static void window_map_textinput()
 
 static void window_map_inputsize_land(rct_window *w)
 {
-	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5130, STR_NONE, STR_NONE, 3);
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 static void window_map_inputsize_map(rct_window *w)
 {
-	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5132, 5133, STR_NONE, STR_NONE, 4);
+	((uint16*)TextInputDescriptionArgs)[0] = 50;
+	((uint16*)TextInputDescriptionArgs)[1] = 256;
+	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
 }
 
 /**

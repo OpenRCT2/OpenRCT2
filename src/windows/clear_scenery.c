@@ -194,7 +194,9 @@ static void window_clear_scenery_textinput()
 
 static void window_clear_scenery_inputsize(rct_window *w)
 {
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5131, STR_NONE, STR_NONE, 3);
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 7;
+	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 /**
