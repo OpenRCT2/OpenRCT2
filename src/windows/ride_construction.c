@@ -322,7 +322,7 @@ void window_construction_mouseup_demolish(rct_window* w){
 			ecx = RCT2_GLOBAL(0xF440AA, uint16),
 			edx = RCT2_GLOBAL(0xF440AC, uint16);
 
-		sub_6C683D(&eax, &ecx, edx, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
+		sub_6C683D(&eax, &ecx, &edx, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
 	}
 
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);

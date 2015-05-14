@@ -24,6 +24,7 @@
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
+#include "vehicle.h"
 
 typedef fixed16_2dp ride_rating;
 
@@ -138,7 +139,7 @@ typedef struct {
 	uint16 pad_002;
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
-	uint16 vehicle_colours[32];		// 0x006
+	rct_vehicle_colour vehicle_colours[32];		// 0x006
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
@@ -753,7 +754,7 @@ void ride_breakdown_add_news_item(int rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection);
 int sub_6CC3FB(int rideIndex);
 void sub_6C9627();
-int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi, int ebp);
+int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element** output_element, uint16 flags);
 void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();

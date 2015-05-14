@@ -174,6 +174,22 @@ rct_map_element *map_get_surface_element_at(int x, int y)
 	return mapElement;
 }
 
+rct_map_element* map_get_path_element_at(int x, int y, int z){
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
+
+	uint8 mapFound = 0;
+	// Find the path element at known z
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
 /**
  * 
  *  rct2: 0x0068AB4C

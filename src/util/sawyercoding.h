@@ -55,6 +55,8 @@ int sawyercoding_decode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_sc4(char *src, char *dst, int length);
 int sawyercoding_encode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_td6(char *src, char *dst, int length);
+int sawyercoding_encode_td6(char* src, char* dst, int length);
+int sawyercoding_validate_track_checksum(char* src, int length);
 
 int sawyercoding_detect_file_type(char *src, int length);
 
