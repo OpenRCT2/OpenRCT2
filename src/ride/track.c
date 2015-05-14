@@ -778,7 +778,88 @@ void load_track_scenery_objects(){
 void track_mirror_scenery(uint8** track_elements){
 	rct_track_scenery* scenery = (rct_track_scenery*)*track_elements;
 	for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++){
-		//0x006d2484
+		uint8 entry_type, entry_index;
+		if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index)){
+			entry_type = scenery->scenery_object.flags & 0xF;
+			if (entry_type != OBJECT_TYPE_PATHS)
+				continue;
+		}
+
+		rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[entry_type].chunks[entry_index];
+
+		switch (entry_type){
+		case OBJECT_TYPE_LARGE_SCENERY:
+		{
+			sint16 x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+			for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles;
+				tile->x_offset != -1;
+				tile++)
+			{
+				if (x1 > tile->x_offset)
+					x1 = tile->x_offset;
+				if (x2 < tile->x_offset)
+					x2 = tile->x_offset;
+				if (y1 > tile->y_offset)
+					y1 = tile->y_offset;
+				if (y2 > tile->y_offset)
+					y2 = tile->y_offset;
+			}
+
+			switch (scenery->flags & 3){
+			case 0:
+				scenery->y = (-(scenery->y * 32 + y1) - y2) / 32;
+				break;
+			case 1:
+				scenery->x = (scenery->x * 32 + y2 + y1) / 32;
+				scenery->y = (-(scenery->y * 32)) / 32;
+				scenery->flags ^= (1 << 1);
+				break;
+			case 2:
+				scenery->y = (-(scenery->y * 32 - y2) + y1) / 32;
+				break;
+			case 3:
+				scenery->x = (scenery->x * 32 - y2 - y1) / 32;
+				scenery->y = (-(scenery->y * 32)) / 32;
+				scenery->flags ^= (1 << 1);
+				break;
+			}
+			break;
+		}
+		case OBJECT_TYPE_SMALL_SCENERY:
+			scenery->y = -scenery->y;
+
+			if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9){
+				scenery->flags ^= (1 << 0);
+				if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+					scenery->flags ^= (1 << 2);
+				}
+				break;
+			}
+			if (scenery->flags & (1 << 0))
+				scenery->flags ^= (1 << 1);
+
+			scenery->flags ^= (1 << 2);
+			break;
+
+		case OBJECT_TYPE_WALLS:
+			scenery->y = -scenery->y;
+			if (scenery->flags & (1 << 0))
+				scenery->flags ^= (1 << 1);
+			break;
+
+		case OBJECT_TYPE_PATHS:
+			scenery->y = -scenery->y;
+
+			if (scenery->flags & (1 << 5)){
+				scenery->flags ^= (1 << 6);
+			}
+
+			uint8 flags = scenery->flags;
+			flags = ((flags& (1 << 3)) >> 2) | ((flags & (1 << 1)) << 2);
+			scenery->flags &= 0xF5;
+			scenery->flags |= flags;
+		}
+
 	}
 }
 
