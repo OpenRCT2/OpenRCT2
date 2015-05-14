@@ -2753,15 +2753,6 @@ STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
 STR_2749    :My new scenario
 
-
-
-
-
-
-
-
-
-
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
@@ -2779,7 +2770,7 @@ STR_2762    :Pay For Rides
 STR_2763    :???
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
-STR_2766    :???
+STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :Open Park
@@ -3472,3 +3463,8 @@ STR_5123    :Renew rides
 STR_5124    :No Six Flags
 STR_5125    :All destructable
 STR_5126    :Random title music
+STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5128    :Selection size
+STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
+STR_5130    :Map size
+STR_5131    :Enter map size between {COMMA16} and {COMMA16}

@@ -3451,3 +3451,9 @@ STR_5122    :Alle voertuigen met hetzelfde baan- of attractietype tonen
 STR_5123    :Attr. vernieuwen
 STR_5124    :Six Flags weg
 STR_5125    :Afbreekbaar maken
+STR_5126    :Willekeurige titelmuziek
+STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
+STR_5128    :Selectiegrootte
+STR_5129    :Voer een selectiegrootte in tussen {COMMA16} en {COMMA16}
+STR_5130    :Kaartgrootte
+STR_5131    :Voer een kaartgrootte in tussen {COMMA16} en {COMMA16}
