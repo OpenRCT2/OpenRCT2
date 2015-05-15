@@ -177,10 +177,15 @@ config_property_definition _soundDefinitions[] = {
 	{ offsetof(sound_configuration, ride_music),						"ride_music",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 };
 
+config_property_definition _cheatDefinitions[] = {
+	{ offsetof(cheat_configuration, fast_lift_hill),					"fast_lift_hill",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+};
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
-	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) }
+	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) },
+	{ &gConfigCheat, "cheat", _cheatDefinitions, countof(_cheatDefinitions) }
 };
 
 #pragma endregion
@@ -188,6 +193,7 @@ config_section_definition _sectionDefinitions[] = {
 general_configuration gConfigGeneral;
 interface_configuration gConfigInterface;
 sound_configuration gConfigSound;
+cheat_configuration gConfigCheat;
 
 bool config_open(const utf8string path);
 bool config_save(const utf8string path);
