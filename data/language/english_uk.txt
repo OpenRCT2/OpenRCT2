@@ -3466,3 +3466,7 @@ STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
 STR_5131    :Enter map size between {COMMA16} and {COMMA16}
 STR_5132    :Fix all rides
+STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
+STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5136    :Land rights
