@@ -244,6 +244,8 @@ extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
 // Used in the land tool window to allow dragging and changing land styles
 extern bool LandPaintMode;
+// Used in the land rights tool window to either buy land rights or construction rights
+extern bool LandRightsMode;
 
 void map_init(int size);
 void map_update_tile_pointers();
