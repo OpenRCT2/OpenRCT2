@@ -397,14 +397,23 @@ static void cheat_remove_litter()
 
 static void cheat_fix_rides()
 {
-	int i;
+	int rideIndex;
 	rct_ride *ride;
+	rct_peep *mechanic;
 
-	FOR_ALL_RIDES(i, ride) {
-		if (!ride->breakdown_reason){
-			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+	FOR_ALL_RIDES(rideIndex, ride)
+	{
+		if ((ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING) && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+		{
+			mechanic = ride_get_assigned_mechanic(ride);
+
+			if (mechanic != NULL){
+				remove_peep_from_ride(mechanic);
+			}
+
+			RCT2_CALLPROC_X(0x006B7481, 0, 0, 0, rideIndex, 0, 0, 0);
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
-		
 	}
 }
 
