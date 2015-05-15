@@ -72,7 +72,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_WIN_SCENARIO,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
-	WIDX_MAKE_DESTRUCTIBLE
+	WIDX_MAKE_DESTRUCTIBLE,
+	WIDX_FIX_ALL
 };
 
 #pragma region MEASUREMENTS
@@ -160,6 +161,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		5123,			STR_NONE},					// Renew rides
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		5124,			STR_NONE},					// Remove flags
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		5132,			STR_NONE },					// Fix all rides
 	{ WIDGETS_END },
 };
 
@@ -318,7 +320,7 @@ static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -398,11 +400,11 @@ static void cheat_fix_rides()
 	int i;
 	rct_ride *ride;
 
-	// TODO doesn't quite work, probably need to call the correct fix ride function
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
+		if (!ride->breakdown_reason){
 			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
 		}
+		
 	}
 }
 
@@ -648,6 +650,9 @@ static void window_cheats_rides_mouseup()
 		break;
 	case WIDX_MAKE_DESTRUCTIBLE:
 		cheat_make_destructible();
+		break;
+	case WIDX_FIX_ALL:
+		cheat_fix_rides();
 		break;
 	}
 }
