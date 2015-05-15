@@ -43,13 +43,13 @@ enum WINDOW_WATER_WIDGET_IDX {
 
 static rct_widget window_land_rights_widgets[] = {
 	{ WWT_FRAME,	0,	0,	97,	0,	93,	-1,											STR_NONE },							// panel / background
-	{ WWT_CAPTION,	0,	1,	96,	1,	14,	5132,										STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CAPTION,	0,	1,	96,	1,	14,	5136,										STR_WINDOW_TITLE_TIP },				// title bar
 	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	824,										STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,						STR_NONE },							// preview box
-	{ WWT_TRNBTN,	2,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,		5133 },		// decrement size
-	{ WWT_TRNBTN,	2,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,		5134 },		// increment size
-	{ WWT_FLATBTN,	2,	22, 45, 53, 76, 0x20000000 | SPR_BUY_LAND_RIGHTS,			5136 },		// land rights
-	{ WWT_FLATBTN,	2,	52, 75, 53, 76, 0x20000000 | SPR_BUY_CONSTRUCTION_RIGHTS,	5137 },		// construction rights
+	{ WWT_TRNBTN,	2,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,		5133 },								// decrement size
+	{ WWT_TRNBTN,	2,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,		5134 },								// increment size
+	{ WWT_FLATBTN,	2,	22, 45, 53, 76, 0x20000000 | SPR_BUY_LAND_RIGHTS,			SPR_BUY_LAND_RIGHTS_TIP },			// land rights
+	{ WWT_FLATBTN,	2,	52, 75, 53, 76, 0x20000000 | SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// construction rights
 	{ WIDGETS_END },
 };
 
