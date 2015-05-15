@@ -50,7 +50,6 @@ enum {
 	WIDX_CONSTRUCT_RIDE,
 	WIDX_RIDES,
 	WIDX_PARK,
-	WIDX_LAND_RIGHTS,
 	WIDX_STAFF,
 	WIDX_GUESTS,
 	WIDX_CLEAR_SCENERY,
@@ -105,7 +104,6 @@ static const int left_aligned_widgets_order[] = {
 static const int right_aligned_widgets_order[] = {
 	WIDX_GUESTS,
 	WIDX_STAFF,
-	WIDX_LAND_RIGHTS,
 	WIDX_PARK,
 	WIDX_RIDES,
 	WIDX_RESEARCH,
@@ -139,7 +137,6 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	2,	0x0183,	0x01A0,	0,						27,		0x20000000 | SPR_TOOLBAR_CONSTRUCT_RIDE,	STR_BUILD_RIDE_TIP },				// Construct ride
 	{ WWT_TRNBTN,	3,	0x01EA,	0x0207,	0,						27,		0x20000000 | SPR_TOOLBAR_RIDES,				STR_RIDES_IN_PARK_TIP },			// Rides
 	{ WWT_TRNBTN,	3,	0x0208,	0x0225,	0,						27,		0x20000000 | SPR_TOOLBAR_PARK,				STR_PARK_INFORMATION_TIP },			// Park
-	{ WWT_TRNBTN,	3,	0x0208,	0x0225,	0,						27,		0x20000000 | 0x15F9,						5135 },								// Land rights
 	{ WWT_TRNBTN,	3,	0x0226,	0x0243,	0,						27,		0x20000000 | 0x15F9,						STR_STAFF_TIP },					// Staff
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
@@ -200,7 +197,6 @@ void toggle_footpath_window();
 void toggle_land_window(rct_window *topToolbar, int widgetIndex);
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex);
 void toggle_water_window(rct_window *topToolbar, int widgetIndex);
-void toggle_land_rights_window(rct_window *topToolbar, int widgetIndex);
 
 /**
  * Creates the main game top toolbar window.
@@ -299,9 +295,6 @@ static void window_top_toolbar_mouseup()
 		break;
 	case WIDX_PARK:
 		window_park_entrance_open();
-		break;
-	case WIDX_LAND_RIGHTS:
-		toggle_land_rights_window(w, WIDX_LAND_RIGHTS);
 		break;
 	case WIDX_STAFF:
 		window_staff_list_open();
@@ -489,7 +482,6 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_RIDES].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_PARK].type = WWT_TRNBTN;
-	window_top_toolbar_widgets[WIDX_LAND_RIGHTS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_STAFF].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_TRNBTN;
@@ -500,7 +492,6 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_PARK].type = WWT_EMPTY;
-		window_top_toolbar_widgets[WIDX_LAND_RIGHTS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_STAFF].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
@@ -628,14 +619,6 @@ static void window_top_toolbar_paint()
 		if (widget_is_pressed(w, WIDX_STAFF))
 			imgId++;
 		imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
-		gfx_draw_sprite(dpi, imgId, x, y, 0);
-	}
-
-	// Draw land rights button
-	if (window_top_toolbar_widgets[WIDX_LAND_RIGHTS].type != WWT_EMPTY) {
-		x = w->x + window_top_toolbar_widgets[WIDX_LAND_RIGHTS].left + 3;
-		y = w->y + window_top_toolbar_widgets[WIDX_LAND_RIGHTS].top + 1;
-		imgId = SPR_BUY_LAND_RIGHTS;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 
@@ -1499,30 +1482,6 @@ static void window_top_toolbar_tool_update()
 	case WIDX_SCENERY:
 		RCT2_CALLPROC_X(0x006E287B, x, y, 0, widgetIndex, (int)w, 0, 0);
 		break;
-	case WIDX_LAND_RIGHTS:
-		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
-		RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-			0,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-			LandRightsMode ? 0x00E : 0x20F,
-			35,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-			);
-		//map_invalidate_selection_rect();
-		//RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		//screen_pos_to_map_pos(&x, &y, NULL);
-		/*if (x != SPRITE_LOCATION_NULL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
-			map_invalidate_selection_rect();
-		}*/
-		break;
 	}
 }
 
@@ -1576,40 +1535,6 @@ static void window_top_toolbar_tool_down(){
 		break;
 	case WIDX_SCENERY:
 		window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
-		break;
-	case WIDX_LAND_RIGHTS:
-		if (LandRightsMode) {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
-				//game_do_command(x, 1, y, 0x00E, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x00E,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
-		else {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
-				//game_do_command(x, 1, y, 0x20F, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x20F,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
 		break;
 	}
 }
@@ -1858,40 +1783,6 @@ static void window_top_toolbar_tool_drag()
 		if (window_scenery_is_repaint_scenery_tool_on & 1)
 			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
-	case WIDX_LAND_RIGHTS:
-		if (LandRightsMode) {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
-				//game_do_command(x, 1, y, 0x00E, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x00E,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
-		else {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
-				//game_do_command(x, 1, y, 0x20F, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x20F,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
-		break;
 	}
 }
 
@@ -2067,19 +1958,5 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
-	}
-}
-
-void toggle_land_rights_window(rct_window *topToolbar, int widgetIndex)
-{
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 14) {
-		tool_cancel();
-	}
-	else {
-		show_gridlines();
-		tool_set(topToolbar, widgetIndex, 19);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
-		window_land_rights_open();
 	}
 }

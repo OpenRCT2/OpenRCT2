@@ -69,6 +69,7 @@ void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, 
 void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void sub_6EC847(int x, int y, int z0, int z1);
 

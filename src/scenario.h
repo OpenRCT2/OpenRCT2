@@ -415,6 +415,4 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
 
-void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-
 #endif

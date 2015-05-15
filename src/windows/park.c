@@ -66,7 +66,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 	WIDX_STATUS,
 	WIDX_OPEN_OR_CLOSE,
 	WIDX_BUY_LAND_RIGHTS,
-	WIDX_BUY_CONSTRUCTION_RIGHTS,
+	//WIDX_BUY_CONSTRUCTION_RIGHTS,
 	WIDX_LOCATE,
 	WIDX_RENAME,
 
@@ -96,10 +96,10 @@ static rct_widget window_park_entrance_widgets[] = {
 	{ WWT_VIEWPORT,			1,	3,		204,	46,		160,	0x0FFFFFFFF,					STR_NONE },							// viewport
 	{ WWT_12,				1,	3,		204,	161,	171,	0x0FFFFFFFF,					STR_NONE },							// status
 	{ WWT_FLATBTN,			1,	205,	228,	49,		72,		0x0FFFFFFFF,					STR_OPEN_OR_CLOSE_PARK_TIP },		// open / close
-	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			SPR_BUY_LAND_RIGHTS_TIP },			// buy land rights
-	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
-	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
-	{ WWT_FLATBTN,			1,	205,	228,	145,	168,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
+	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			5135 },			// buy land rights
+	//{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
+	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
+	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
 	{ WIDGETS_END },
 };
 
@@ -230,6 +230,7 @@ static void window_park_entrance_toolabort();
 static void window_park_entrance_textinput();
 static void window_park_entrance_invalidate();
 static void window_park_entrance_paint();
+void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex);
 
 static void window_park_rating_mouseup();
 static void window_park_rating_resize();
@@ -511,7 +512,7 @@ static uint32 window_park_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_7) |
 	(1 << WIDX_OPEN_OR_CLOSE) |
 	(1 << WIDX_BUY_LAND_RIGHTS) |
-	(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
+	//(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
 	(1 << WIDX_LOCATE) |
 	(1 << WIDX_RENAME),
 
@@ -679,21 +680,6 @@ static void window_park_entrance_close()
 			tool_cancel();
 }
 
-
-void toggle_land_rights_window2(rct_window *topToolbar, int widgetIndex)
-{
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 14) {
-		tool_cancel();
-	}
-	else {
-		show_gridlines();
-		tool_set(topToolbar, widgetIndex, 19);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
-		window_land_rights_open();
-	}
-}
-
 /**
  *
  *  rct2: 0x0066817C
@@ -719,12 +705,12 @@ static void window_park_entrance_mouseup()
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_BUY_LAND_RIGHTS:
+		toggle_land_rights_window(w, WIDX_BUY_LAND_RIGHTS);
 		//RCT2_CALLPROC_X(0x006682F7, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-		toggle_land_rights_window2(w, WIDX_BUY_LAND_RIGHTS);
 		break;
-	case WIDX_BUY_CONSTRUCTION_RIGHTS:
-		//RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-		break;
+	//case WIDX_BUY_CONSTRUCTION_RIGHTS:
+	//	RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	//	break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
 		break;
@@ -826,26 +812,12 @@ static void window_park_entrance_toolupdate()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	/*if (widgetIndex == WIDX_BUY_LAND_RIGHTS || widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
-		map_invalidate_selection_rect();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		screen_pos_to_map_pos(&x, &y, NULL);
-		if (x != SPRITE_LOCATION_NULL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
-			map_invalidate_selection_rect();
-		}
-	}*/
 	switch (widgetIndex){
 	case WIDX_BUY_LAND_RIGHTS:
 		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
 		RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-			0,
+			0x4,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
 			LandRightsMode ? 0x00E : 0x20F,
 			35,
@@ -867,37 +839,31 @@ static void window_park_entrance_tooldown()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-
-
 	switch (widgetIndex){
 	case WIDX_BUY_LAND_RIGHTS:
 		if (LandRightsMode) {
-			//screen_pos_to_map_pos(&x, &y, NULL);
 			if (x != (sint16)0x8000) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
-				//game_do_command(x, 1, y, 0x00E, 35, 0, 0);
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
 					1,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
 					0x00E,
-					35,
+					GAME_COMMAND_BUY_LAND_RIGHTS,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
 					);
 			}
 		}
 		else {
-			//screen_pos_to_map_pos(&x, &y, NULL);
 			if (x != (sint16)0x8000) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
-				//game_do_command(x, 1, y, 0x20F, 35, 0, 0);
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
 					1,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
 					0x20F,
-					35,
+					GAME_COMMAND_BUY_LAND_RIGHTS,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
 					);
@@ -905,440 +871,6 @@ static void window_park_entrance_tooldown()
 		}
 		break;
 	}
-
-	//RCT2_CALLPROC_X(0x006681E6, x, y, 0, widgetIndex, (int)w, 0, 0);
-	/*switch (widgetIndex) {
-	case WIDX_BUY_LAND_RIGHTS:
-		screen_pos_to_map_pos(&x, &y, NULL);
-		if (x != (sint16)0x8000) {
-			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 0x6BD;
-			// I doubt the low byte of dx is required but its not cleared from earlier so copy in the widgetIndex
-			game_do_command(x, 1, y, 0x00E, 35, 0, 0);
-		}
-		break;
-	case WIDX_BUY_CONSTRUCTION_RIGHTS:
-		screen_pos_to_map_pos(&x, &y, NULL);
-		if (x != (sint16)0x8000) {
-			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 0x6C0;
-			game_do_command(x, 1, y, 0x20F, 35, 0, 0);
-		}
-	}*/
-}
-
-/*enum {
-	OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4), 0x10
-	OWNERSHIP_OWNED = (1 << 5), 0x20
-	OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6), 0x40
-	OWNERSHIP_AVAILABLE = (1 << 7) 0x80
-};*/
-
-void sub_664D05_(int x, int y)
-{
-	RCT2_CALLPROC_X(0x00664D05, x, 0, y, 0, 0, 0, 0);
-}
-
-int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
-	int y2;
-	int cost;
-	int tile_idx;
-
-	y2 = y;
-	cost = 0;
-	tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-	while ((TILE_MAP_ELEMENT_POINTER(tile_idx)->type & 0x3C) != 0) {
-		y2 += 8;
-		tile_idx = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-	}
-	uint8 ownership = TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership;
-	switch (setting) {
-	case 0:
-		if ((ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
-			cost = 0;
-			return cost;
-		}
-		else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_AVAILABLE) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
-			cost = 0;// MONEY32_UNDEFINED;
-			return cost;
-		}
-		else {
-			if ((flags & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
-				sub_664D05_(x, y);
-				sub_664D05_(x - 32, y);
-				sub_664D05_(x + 32, y);
-				sub_664D05_(x, y + 32);
-				sub_664D05_(x, y - 32);
-			}
-			cost = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
-			return cost;
-		}
-		break;
-	case 1:
-		if ((flags & 1) != 0) {
-			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xCF;
-			sub_664D05_(x, y);
-			sub_664D05_(x - 32, y);
-			sub_664D05_(x + 32, y);
-			sub_664D05_(x, y + 32);
-			sub_664D05_(x, y - 32);
-		}
-		cost = 0;
-		break;
-	case 2:
-		if ((ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
-			cost = 0;
-			return cost;
-		}
-		else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
-			cost = 0;// MONEY32_UNDEFINED;
-			return cost;
-		}
-		else {
-			if ((flags & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-				baseHeight *= 8;
-				sub_6EC847(x, y, baseHeight, baseHeight + 16);
-			}
-			cost = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
-			return cost;
-		}
-		break;
-	case 3:
-		if ((flags & 1) != 0) {
-			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xEF;
-			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-			baseHeight *= 8;
-			sub_6EC847(x, y, baseHeight, baseHeight + 16);
-		}
-		cost = 0;
-		break;
-		break;
-	case 4:
-		if ((flags & 1) != 0) {
-			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-			baseHeight *= 8;
-			sub_6EC847(x, y, baseHeight, baseHeight + 16);
-		}
-		cost = 0;
-		break;
-	case 5:
-		if ((flags & 1) != 0) {
-			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
-			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-			baseHeight *= 8;
-			sub_6EC847(x, y, baseHeight, baseHeight + 16);
-		}
-		cost = 0;
-		break;
-	default:
-		if (x <= 32) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
-			cost = 0;// MONEY32_UNDEFINED;
-			return cost;
-		}
-		else if (y <= 32) {
-			int ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
-			ebp -= 32;
-			if (x >= ebp || y >= ebp) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
-				cost = 0;// MONEY32_UNDEFINED;
-				return cost;
-			}
-			else {
-				int tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-				ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-				y2 = y;
-				do {
-					y2 += 8;
-					tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					if ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) == 0x10) {
-						cost = 0;
-						return cost;
-					}
-
-				} while ((TILE_MAP_ELEMENT_POINTER(((((y - 8) & 0xFFE0) * 256) + (x & 0xFFE0)) / 32)->flags & 0x80) == 0);
-
-				uint8 bh = (flags & 0xFF00) >> 4;
-				if (bh == (TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership & 0xF0)) {
-					cost = 0;
-					return cost;
-				}
-				else {
-					if ((cost & 1) == 0) {
-						cost = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
-						return cost;
-					}
-					if ((bh & 0xF0) == 0) {
-						uint16 bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16);
-						if (x != (bp & 0xFFE0)) {
-							bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS + 2, uint16);
-							if (y != (bp & 0xFFE0)) {
-								RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
-							}
-						}
-						bp = RCT2_GLOBAL(0x13573F8, uint16);
-						if (x != (bp & 0xFFE0)) {
-							bp = RCT2_GLOBAL(0x13573F8 + 2, uint16);
-							if (y != (bp & 0xFFE0)) {
-								RCT2_GLOBAL(0x13573F8, uint16) = 0xFFFF;
-							}
-						}
-					}
-					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0x0F;
-					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= bh;
-					sub_664D05_(x, y);
-					sub_664D05_(x - 32, y);
-					sub_664D05_(x + 32, y);
-					sub_664D05_(x, y + 32);
-					sub_664D05_(x, y - 32);
-					RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
-
-					cost = 0;
-					return cost;
-				}
-			}
-		}
-		break;
-	}
-	return cost;
-}
-
-int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
-{
-	int x, y, z;
-	money32 totalCost, cost;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
-
-	x = (x0 + x1) / 2 + 16;
-	y = (y0 + y1) / 2 + 16;
-	z = map_element_height(x, y);
-	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
-	RCT2_GLOBAL(0x009DEA60, uint16) = y;
-	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-
-	/*x0 = clamp(0, x0, 255);
-	y0 = clamp(0, y0, 255);
-	x1 = clamp(0, x1, 255);
-	y1 = clamp(0, y1, 255);*/
-
-	totalCost = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
-		for (y = y0; y <= y1; y += 32) {
-			for (x = x0; x <= x1; x += 32) {
-				cost = map_buy_land_rights_for_tile(x, y, setting, flags);
-				if (cost == MONEY32_UNDEFINED)
-					return MONEY32_UNDEFINED;
-
-				totalCost += cost;
-			}
-		}
-	}
-
-	return totalCost;
-}
-
-void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
-{
-
-	*ebx = map_buy_land_rights(
-		(*eax & 0xFFFF),
-		(*ecx & 0xFFFF),
-		(*edi & 0xFFFF),
-		(*ebp & 0xFFFF),
-		(*edx & 0xFF00) >> 8,
-		*ebx & 0xFF
-	);
-	/*RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
-	int x = *eax;
-	int y = *ecx;
-	int y2 = *ecx;
-	int z = map_element_height(x + 16, y + 16);
-
-	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
-	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
-	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
-		
-		int tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-		while ((TILE_MAP_ELEMENT_POINTER(tile_idx)->type & 0x3C) != 0) {
-			y += 8;
-			tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-		}
-		uint8 ownership = TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership;
-		uint8 flags = (*edx & 0xFF00) >> 8;
-		switch (flags) {
-		case 0:
-			if ((ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
-				*ebx = 0;
-				return;
-			} 
-			else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_AVAILABLE) == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
-				*ebx = 0x80000000;
-				return;
-			}
-			else {
-				if ((*ebx & 1) != 0) {
-					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
-					sub_664D05_(x, y2);
-					sub_664D05_(x - 32, y2);
-					sub_664D05_(x + 32, y2);
-					sub_664D05_(x, y2 + 32);
-					sub_664D05_(x, y2 - 32);
-				}
-				*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
-				return;
-			}
-			break;
-		case 1:
-			if ((*ebx & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xCF;
-				sub_664D05_(x, y2);
-				sub_664D05_(x - 32, y2);
-				sub_664D05_(x + 32, y2);
-				sub_664D05_(x, y2 + 32);
-				sub_664D05_(x, y2 - 32);
-			}
-			*ebx = 0;
-			break;
-		case 2:
-			if ((ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
-				*ebx = 0;
-				return;
-			}
-			else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
-				*ebx = 0x80000000;
-				return;
-			}
-			else {
-				if ((*ebx & 1) != 0) {
-					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-					uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-					baseHeight *= 8;
-					sub_6EC847(x, y2, baseHeight, baseHeight + 16);
-				}
-				*ebx = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
-				return;
-			}
-			break;
-		case 3:
-			if ((*ebx & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xEF;
-				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-				baseHeight *= 8;
-				sub_6EC847(x, y2, baseHeight, baseHeight + 16);
-			}
-			*ebx = 0;
-			break;
-			break;
-		case 4:
-			if ((*ebx & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-				baseHeight *= 8;
-				sub_6EC847(x, y2, baseHeight, baseHeight + 16);
-			}
-			*ebx = 0;
-			break;
-		case 5:
-			if ((*ebx & 1) != 0) {
-				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
-				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
-				baseHeight *= 8;
-				sub_6EC847(x, y2, baseHeight, baseHeight + 16);
-			}
-			*ebx = 0;
-			break;
-		default:
-			if (x <= 32) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
-				*ebx = 0x80000000;
-				return;
-			}
-			else if (y <= 32) {
-				*ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
-				*ebp -= 32;
-				if (x >= *ebp || y >= *ebp) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
-					*ebx = 0x80000000;
-					return;
-				}
-				else {
-					int tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-					do {
-						y += 8;
-						tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-						if ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) == 0x10) {
-							*ebx = 0;
-							return;
-						}
-						
-					} while ((TILE_MAP_ELEMENT_POINTER(((((y - 8) & 0xFFE0) * 256) + (x & 0xFFE0)) / 32)->flags & 0x80) == 0);
-
-					uint8 bh = (*ebx & 0xFF00) >> 4;
-					if (bh == (TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership & 0xF0)) {
-						*ebx = 0;
-						return;
-					}
-					else {
-						if ((*ebx & 1) == 0) {
-							*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
-							return;
-						}
-						if ((bh & 0xF0) == 0) {
-							uint16 bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16);
-							if (x != (bp & 0xFFE0)) {
-								bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS + 2, uint16);
-								if (y2 != (bp & 0xFFE0)) {
-									RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
-								}
-							}
-							bp = RCT2_GLOBAL(0x13573F8, uint16);
-							if (x != (bp & 0xFFE0)) {
-								bp = RCT2_GLOBAL(0x13573F8 + 2, uint16);
-								if (y2 != (bp & 0xFFE0)) {
-									RCT2_GLOBAL(0x13573F8, uint16) = 0xFFFF;
-								}
-							}
-						}
-						TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0x0F;
-						TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= bh;
-						sub_664D05_(x, y2);
-						sub_664D05_(x - 32, y2);
-						sub_664D05_(x + 32, y2);
-						sub_664D05_(x, y2 + 32);
-						sub_664D05_(x, y2 - 32);
-						RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
-
-						*ebx = 0;
-						return;
-					}
-				}
-			}
-			break;
-		}
-	}
-	else {
-		// Should this ever be called? esi is never set properly
-		if ((*ebx & 1) != 0) {
-			//TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
-			sub_664D05_(x, y);
-			sub_664D05_(x - 32, y2);
-			sub_664D05_(x + 32, y2);
-			sub_664D05_(x, y2 + 32);
-			sub_664D05_(x, y2 - 32);
-		}
-		*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
-	}*/
 }
 
 /**
@@ -1352,65 +884,41 @@ static void window_park_entrance_tooldrag()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	//RCT2_CALLPROC_X(0x006681FB, x, y, 0, widgetIndex, (int)w, 0, 0);
-
 	rct_window* w2 = window_find_by_number(0xB, 0);
-
-	/*if (!w2) {
-		switch (widgetIndex) {
+	
+	if (!w2) {
+		switch (widgetIndex){
 		case WIDX_BUY_LAND_RIGHTS:
-			screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 0x6BD;
-				// I doubt the low byte of dx is required but its not cleared from earlier so copy in the widgetIndex
-				game_do_command(x, 1, y, 0x00E, 35, 0, 0);
+			if (LandRightsMode) {
+				if (x != (sint16)0x8000) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
+					game_do_command(
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+						1,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+						0x00E,
+						GAME_COMMAND_BUY_LAND_RIGHTS,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+						);
+				}
+			}
+			else {
+				if (x != (sint16)0x8000) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
+					game_do_command(
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+						1,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+						0x20F,
+						GAME_COMMAND_BUY_LAND_RIGHTS,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+						);
+				}
 			}
 			break;
-		case WIDX_BUY_CONSTRUCTION_RIGHTS:
-			screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 0x6C0;
-				game_do_command(x, 1, y, 0x20F, 35, 0, 0);
-			}
 		}
-	}*/
-
-
-	switch (widgetIndex){
-	case WIDX_BUY_LAND_RIGHTS:
-		if (LandRightsMode) {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
-				//game_do_command(x, 1, y, 0x00E, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x00E,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
-		else {
-			//screen_pos_to_map_pos(&x, &y, NULL);
-			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
-				//game_do_command(x, 1, y, 0x20F, 35, 0, 0);
-				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-					0x20F,
-					35,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-					);
-			}
-		}
-		break;
 	}
 }
 
@@ -1427,11 +935,15 @@ static void window_park_entrance_toolabort()
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		hide_gridlines();
-		hide_land_rights();
-	} else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
-		hide_gridlines();
-		hide_construction_rights();
-	}
+		if (LandRightsMode)
+			hide_land_rights();
+		else
+			hide_construction_rights();
+	} 
+	//else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
+	//	hide_gridlines();
+	//	hide_construction_rights();
+	//}
 }
 
 /**
@@ -1494,11 +1006,11 @@ static void window_park_entrance_invalidate()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
-		window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_EMPTY;
+		//window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_EMPTY;
 	} else {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
-		window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_FLATBTN;
+		//window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_FLATBTN;
 	}
 }
 
@@ -1612,6 +1124,20 @@ static void window_park_init_viewport(rct_window *w)
 	if (w->viewport != NULL)
 		w->viewport->flags = viewportFlags;
 	window_invalidate(w);
+}
+
+void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 14) {
+		tool_cancel();
+	}
+	else {
+		show_gridlines();
+		tool_set(parkWindow, widgetIndex, 2);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		window_land_rights_open();
+	}
 }
 
 #pragma endregion
