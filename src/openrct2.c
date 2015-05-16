@@ -30,6 +30,51 @@
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
 
+#include <fossa/fossa.h>
+
+static int s_show_headers = 1;
+static int s_exit_flag = 0;
+
+static void ev_handler(struct ns_connection *nc, int ev, void *ev_data)
+{
+	struct http_message *hm = (struct http_message *) ev_data;
+
+	switch (ev) {
+	case NS_CONNECT:
+		if (*(int *)ev_data != 0) {
+			fprintf(stderr, "connect() failed: %s\n", strerror(*(int *)ev_data));
+			s_exit_flag = 1;
+		}
+		break;
+	case NS_HTTP_REPLY:
+		nc->flags |= NSF_CLOSE_IMMEDIATELY;
+		if (s_show_headers) {
+			fwrite(hm->message.p, 1, hm->message.len, stdout);
+		} else {
+			fwrite(hm->body.p, 1, hm->body.len, stdout);
+		}
+		putchar('\n');
+		s_exit_flag = 1;
+		break;
+	default:
+		break;
+	}
+}
+
+void http_test()
+{
+	struct ns_mgr mgr;
+	struct ns_connection *conn;
+
+	ns_mgr_init(&mgr, NULL);
+
+	conn = ns_connect_http(&mgr, ev_handler, "https://github.com", NULL, NULL);
+	while (s_exit_flag == 0) {
+		ns_mgr_poll(&mgr, 1000);
+	}
+	ns_mgr_free(&mgr);
+}
+
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
 
@@ -171,7 +216,7 @@ void openrct2_launch()
 		}
 		break;
 	}
-
+	http_test();
 	log_verbose("begin openrct2 loop");
 	openrct2_loop();
 	platform_free();

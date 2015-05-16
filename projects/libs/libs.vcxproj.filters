@@ -13,6 +13,9 @@
     <Filter Include="lodepng">
       <UniqueIdentifier>{7f953e55-d294-4158-b309-67f41fa82760}</UniqueIdentifier>
     </Filter>
+    <Filter Include="fossa">
+      <UniqueIdentifier>{c5f1b0fe-16e5-40eb-8814-f81ba99535ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\argparse\argparse.c">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\lodepng\lodepng.c">
       <Filter>lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\fossa\fossa.c">
+      <Filter>fossa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="..\..\lib\lodepng\lodepng.h">
       <Filter>lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\fossa\fossa.h">
+      <Filter>fossa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
