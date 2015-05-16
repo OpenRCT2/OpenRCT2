@@ -1338,7 +1338,7 @@ STR_1336    :{STRINGID} - Ingang station {POP16}{COMMA16}
 STR_1337    :{STRINGID} - Uitgang{POP16}{POP16}
 STR_1338    :{STRINGID} - Uitgang station {POP16}{COMMA16}
 STR_1339    :{BLACK}Nog geen testresultaten...
-STR_1340    :{WINDOW_COLOUR_2}Max. snlhd: {BLACK}{VELOCITY}
+STR_1340    :{WINDOW_COLOUR_2}Max. snelheid: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ritduur: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
@@ -1661,11 +1661,11 @@ STR_1659    :{WINDOW_COLOUR_2}{BLACK}tussen {COMMA16} en {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}{BLACK}meer dan {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Misselijkheidstolerantie: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Stemming:
-STR_1663    :{WINDOW_COLOUR_2}Misselijkheid:
+STR_1663    :{WINDOW_COLOUR_2}Misselijkh.:
 STR_1664    :{WINDOW_COLOUR_2}Energie:
 STR_1665    :{WINDOW_COLOUR_2}Honger:
 STR_1666    :{WINDOW_COLOUR_2}Dorst:
-STR_1667    :{WINDOW_COLOUR_2}Wc-behoefte:
+STR_1667    :{WINDOW_COLOUR_2}Wc-beh.:
 STR_1668    :{WINDOW_COLOUR_2}Voldoening: {BLACK}onbekend
 STR_1669    :{WINDOW_COLOUR_2}Voldoening: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Totaal aantal bezoekers: {BLACK}{COMMA32}
@@ -3457,3 +3457,8 @@ STR_5128    :Selectiegrootte
 STR_5129    :Voer een selectiegrootte in tussen {COMMA16} en {COMMA16}
 STR_5130    :Kaartgrootte
 STR_5131    :Voer een kaartgrootte in tussen {COMMA16} en {COMMA16}
+STR_5132    :Alle attr. repareren
+STR_5133    :{SMALLFONT}{BLACK}Een kleiner gebied landrechten aanpassen
+STR_5134    :{SMALLFONT}{BLACK}Een groter gebied landrechten aanpassen
+STR_5135    :{SMALLFONT}{BLACK}Land en bouwrechten kopen
+STR_5136    :Landrechten
