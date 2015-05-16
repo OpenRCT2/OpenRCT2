@@ -708,7 +708,7 @@ static void window_cheats_invalidate()
 			2770 : 2769;
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
-		((uint16*)TextInputDescriptionArgs)[0]=255;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
 		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gConfigCheat.fast_lift_hill);
 		break;
 	}
