@@ -2877,6 +2877,7 @@ static void window_ride_operating_resize()
 static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = GET_RIDE(w->number);
+	uint8 max_lift_hill_speed;
 
 	switch (widgetIndex) {
 	case WIDX_MODE_TWEAK_INCREASE:
@@ -2886,7 +2887,13 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
-		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8)));
+
+		if(gConfigCheat.fast_lift_hill)
+			max_lift_hill_speed = 255;
+		else
+			max_lift_hill_speed = RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
+
+		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, max_lift_hill_speed));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
 		set_operating_setting(w->number, 8, max(RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8), ride->lift_hill_speed - 1));
