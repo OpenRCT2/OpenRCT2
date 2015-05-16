@@ -403,7 +403,8 @@ enum {
 	WC_MAPGEN = 114,
 	WC_LOADSAVE = 115,
 	WC_LOADSAVE_OVERWRITE_PROMPT = 116,
-	WC_TITLE_OPTIONS = 117
+	WC_TITLE_OPTIONS = 117,
+	WC_LAND_RIGHTS = 118
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -516,6 +517,7 @@ void window_track_list_open(ride_list_item item);
 void window_clear_scenery_open();
 void window_land_open();
 void window_water_open();
+void window_land_rights_open();
 void window_staff_list_open();
 void window_guest_list_open();
 void window_guest_list_open_with_filter(int type, int index);

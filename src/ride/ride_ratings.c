@@ -51,18 +51,19 @@ static void loc_6B5BB2();
 static void ride_ratings_calculate(rct_ride *ride);
 static void ride_ratings_calculate_value(rct_ride *ride);
 
-static int sub_6C6402(rct_map_element *mapElement, int *x, int *y, int *z)
+int sub_6C6402(rct_map_element **mapElement, int *x, int *y, int *z)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
 	eax = *x;
 	ecx = *y;
-	esi = (int)mapElement;
-	RCT2_CALLFUNC_X(0x006C6402, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	esi = (int)*mapElement;
+	int result = RCT2_CALLFUNC_X(0x006C6402, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	*x = *((uint16*)&eax);
 	*y = *((uint16*)&ecx);
 	*z = *((uint8*)&edx);
-	return 1;
+	*mapElement = (rct_map_element*)esi;
+	return result & (0x100);
 }
 
 /**
@@ -338,7 +339,7 @@ static void ride_ratings_update_state_5()
 
 			x = RCT2_GLOBAL(0x0138B584, uint16);
 			y = RCT2_GLOBAL(0x0138B586, uint16);
-			if (!sub_6C6402(mapElement, &x, &y, &z)) {
+			if (!sub_6C6402(&mapElement, &x, &y, &z)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
 			}

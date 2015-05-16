@@ -147,6 +147,11 @@ typedef struct {
 } sound_configuration;
 
 typedef struct {
+	uint8 fast_lift_hill;
+} cheat_configuration;
+
+
+typedef struct {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;
@@ -154,6 +159,7 @@ typedef struct {
 extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
+extern cheat_configuration gConfigCheat;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 

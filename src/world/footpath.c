@@ -28,8 +28,7 @@
 
 void sub_673883(int x, int y, int z);
 void sub_69A48B(int x, int y, int z);
-void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags);
-void sub_6A759F();
+
 
 enum {
 	FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED = 1 << 3

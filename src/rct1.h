@@ -298,6 +298,15 @@ enum {
 	RCT1_RIDE_TYPE_LEMONADE_STALL
 };
 
+enum{
+	RCT1_TRACK_ELEM_BOOSTER = 100
+};
+
+enum{
+	RCT1_RIDE_MODE_POWERED_LAUNCH = 3,
+
+};
+
 typedef struct{
 	uint8 type;										// 0x00
 	uint8 vehicle_type;								// 0x01

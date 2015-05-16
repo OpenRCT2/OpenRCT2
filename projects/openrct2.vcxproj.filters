@@ -366,7 +366,6 @@
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\diagnostic.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -432,6 +431,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\install_track.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\land_rights.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
