@@ -58,6 +58,7 @@
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\management\research.c" />
     <ClCompile Include="..\src\network\http.c" />
+    <ClCompile Include="..\src\network\twitch.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\openrct2.c" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\management\research.h" />
     <ClInclude Include="..\src\network\http.h" />
+    <ClInclude Include="..\src\network\twitch.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />
@@ -264,7 +266,7 @@
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>

@@ -1,11 +1,12 @@
 #ifndef _HTTP_H_
 #define _HTTP_H_
 
+#include <jansson/jansson.h>
 #include "../common.h"
 
 typedef struct {
 	int status_code;
-	char *rawResponse;
+	json_t *root;
 } http_json_response;
 
 void http_init();
