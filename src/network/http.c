@@ -56,7 +56,8 @@ http_json_response *http_request_json(const char *url)
 
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 	// TODO set certificate bundle
-	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, TRUE);
+	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);

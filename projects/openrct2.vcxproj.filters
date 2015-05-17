@@ -49,6 +49,9 @@
     <None Include="..\openrct2.exe">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\curl-ca-bundle.crt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\management\award.c">
@@ -384,7 +387,6 @@
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_inventions_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
