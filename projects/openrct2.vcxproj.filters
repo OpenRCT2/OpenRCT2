@@ -654,13 +654,11 @@
     <ClInclude Include="..\src\world\fountain.h">
       <Filter>Source\World</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\src\interface\console.h">
       <Filter>Source\Interface</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="..\src\network\http.h">
       <Filter>Source\Network</Filter>
->>>>>>> clean up http requesting
     </ClInclude>
     <ClInclude Include="..\src\network\twitch.h">
       <Filter>Source\Network</Filter>
