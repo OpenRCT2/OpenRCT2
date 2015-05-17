@@ -164,6 +164,9 @@ rct_map_element *map_get_surface_element_at(int x, int y)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
 
+	if (mapElement == NULL)
+		return NULL;
+
 	// Find the first surface element
 	while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
 		if (map_element_is_last_for_tile(mapElement))
@@ -177,6 +180,9 @@ rct_map_element *map_get_surface_element_at(int x, int y)
 
 rct_map_element* map_get_path_element_at(int x, int y, int z){
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
+
+	if (mapElement == NULL)
+		return NULL;
 
 	uint8 mapFound = 0;
 	// Find the path element at known z

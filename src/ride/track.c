@@ -1450,6 +1450,10 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				continue;
 			if (mapCoord.y > 0x1FFF)
 				continue;
+			if (mapCoord.x < 0)
+				continue;
+			if (mapCoord.y < 0)
+				continue;
 
 			rct_map_element* map_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
 
@@ -1645,7 +1649,16 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				if (tile.y > 0x1FFF)
 					continue;
 
+				if (tile.x < 0)
+					continue;
+
+				if (tile.y < 0)
+					continue;
+
 				rct_map_element* map_element = map_get_surface_element_at(tile.x / 32, tile.y / 32);
+
+				if (map_element == NULL)
+					return 0;
 
 				int height = map_element->base_height * 8;
 				if (map_element->properties.surface.slope & 0xF){
