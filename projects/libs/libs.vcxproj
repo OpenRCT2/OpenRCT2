@@ -46,8 +46,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\lib\openssl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\lib\openssl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\lib\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,7 +70,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;NS_ENABLE_THREADS;NS_ENABLE_SSL;DISABLE_MD5;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
     </ClCompile>
     <Link>
@@ -79,7 +79,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>ssleay32MT.lib;libeay32MT.lib</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -87,7 +87,6 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\..\lib\fossa\fossa.c" />
     <ClCompile Include="..\..\lib\libspeex\resample.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
@@ -96,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\argparse\argparse.h" />
-    <ClInclude Include="..\..\lib\fossa\fossa.h" />
     <ClInclude Include="..\..\lib\libspeex\arch.h" />
     <ClInclude Include="..\..\lib\libspeex\config.h" />
     <ClInclude Include="..\..\lib\libspeex\os_support.h" />
