@@ -2764,7 +2764,7 @@ static void peep_update_mowing(rct_peep* peep){
 
 		if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5)){
 			map_element->properties.surface.grass_length = 0;
-			gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->base_height * 8 + 16);
+			gfx_invalidate_tile_if_zoomed(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->base_height * 8 + 16);
 		}
 		peep->staff_lawns_mown++;
 		peep->var_45 |= (1 << 5);
@@ -2814,7 +2814,7 @@ static void peep_update_watering(rct_peep* peep){
 				continue;
 			
 			map_element->properties.scenery.age = 0;
-			gfx_invalidate_scrollingtext(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+			gfx_invalidate_tile_if_zoomed(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 			peep->staff_gardens_watered++;
 			peep->var_45 |= (1 << 4);	
 		} while (!map_element_is_last_for_tile(map_element++));
@@ -2884,7 +2884,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 
 		map_element->properties.path.addition_status |= ((3 << peep->var_37) << peep->var_37);
 
-		gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->clearance_height * 8);
+		gfx_invalidate_tile_if_zoomed(peep->next_x, peep->next_y, map_element->base_height * 8, map_element->clearance_height * 8);
 
 		peep->staff_bins_emptied++;
 		peep->var_45 |= (1 << 4);
@@ -3537,7 +3537,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		// Then placeing the new value.
 		map_element->properties.path.addition_status |= rubbish_in_bin << selected_bin;
 
-		gfx_invalidate_scrollingtext(peep->next_x, peep->next_y, map_element->base_height << 3, map_element->clearance_height << 3);
+		gfx_invalidate_tile_if_zoomed(peep->next_x, peep->next_y, map_element->base_height << 3, map_element->clearance_height << 3);
 		peep_state_reset(peep);
 	}
 }
