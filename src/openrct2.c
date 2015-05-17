@@ -31,6 +31,7 @@
 #include "world/mapgen.h"
 
 #include "network/http.h"
+#include "network/twitch.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -143,6 +144,7 @@ void openrct2_launch()
 	audio_get_devices();
 	get_dsound_devices();
 	language_open(gConfigGeneral.language);
+	http_init();
 	if (!rct2_init())
 		return;
 
@@ -173,15 +175,25 @@ void openrct2_launch()
 		}
 		break;
 	}
-	
-	http_json_response *jsonResponse = http_request_json("https://github.com");
-	if (jsonResponse != NULL) {
-		printf(jsonResponse->rawResponse);
-		http_request_json_dispose(jsonResponse);
+
+	//////////////////////////////////////////////////////////////////////////////
+	// TWITCH test
+	twitch_info twitchInfo;
+	twitchInfo.channel = "<your_channel_here>";
+
+	int numFollowers;
+	char **followerNames;
+
+	if (twitch_get_followers(&twitchInfo, &numFollowers, &followerNames)) {
+		for (int i = 0; i < numFollowers; i++)
+			printf("%s\n", followerNames[i]);
 	}
+	//////////////////////////////////////////////////////////////////////////////
 
 	log_verbose("begin openrct2 loop");
 	openrct2_loop();
+
+	http_dispose();
 	platform_free();
 
 	// HACK Some threads are still running which causes the game to not terminate. Investigation required!

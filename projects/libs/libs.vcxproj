@@ -46,7 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\lib\libcurl\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -89,6 +89,17 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\dump.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\error.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\hashtable.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\hashtable_seed.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\load.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\memory.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\pack_unpack.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\strbuffer.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\strconv.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\utf.c" />
+    <ClCompile Include="..\..\lib\jansson\jansson\value.c" />
     <ClCompile Include="..\..\lib\libspeex\resample.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
@@ -97,6 +108,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\argparse\argparse.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\hashtable.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\jansson.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\jansson_private.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\lookup3.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\strbuffer.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson\utf.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson_config.h" />
+    <ClInclude Include="..\..\lib\jansson\jansson_private_config.h" />
     <ClInclude Include="..\..\lib\libspeex\arch.h" />
     <ClInclude Include="..\..\lib\libspeex\config.h" />
     <ClInclude Include="..\..\lib\libspeex\os_support.h" />

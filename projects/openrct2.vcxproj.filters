@@ -448,6 +448,9 @@
     <ClCompile Include="..\src\network\http.c">
       <Filter>Source\Network</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\network\twitch.c">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -658,6 +661,9 @@
     <ClInclude Include="..\src\network\http.h">
       <Filter>Source\Network</Filter>
 >>>>>>> clean up http requesting
+    </ClInclude>
+    <ClInclude Include="..\src\network\twitch.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

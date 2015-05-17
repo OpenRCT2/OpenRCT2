@@ -1,4 +1,5 @@
 #include <curl/curl.h>
+#include <jansson/jansson.h>
 #include "http.h"
 
 typedef struct {
@@ -82,16 +83,25 @@ http_json_response *http_request_json(const char *url)
 	writeBuffer.capacity = writeBuffer.length;
 	writeBuffer.ptr[writeBuffer.length - 1] = 0;
 
-	response = malloc(sizeof(http_json_response));
-	response->status_code = (int)httpStatusCode;
-	response->rawResponse = writeBuffer.ptr;
+	response = NULL;
+
+	// Parse as JSON
+	json_t *root;
+	json_error_t error;
+	root = json_loads(writeBuffer.ptr, 0, &error);
+	if (root != NULL) {
+		response = malloc(sizeof(http_json_response));
+		response->status_code = (int)httpStatusCode;
+		response->root = root;
+	}
+	free(writeBuffer.ptr);
 	return response;
 }
 
 void http_request_json_dispose(http_json_response *response)
 {
-	if (response->rawResponse != NULL)
-		free(response->rawResponse);
+	if (response->root != NULL)
+		json_decref(response->root);
 
 	free(response);
 }
