@@ -30,49 +30,41 @@
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
 
-#include <fossa/fossa.h>
+#include <curl/curl.h>
 
-static int s_show_headers = 1;
-static int s_exit_flag = 0;
-
-static void ev_handler(struct ns_connection *nc, int ev, void *ev_data)
+size_t write_func(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
-	struct http_message *hm = (struct http_message *) ev_data;
-
-	switch (ev) {
-	case NS_CONNECT:
-		if (*(int *)ev_data != 0) {
-			fprintf(stderr, "connect() failed: %s\n", strerror(*(int *)ev_data));
-			s_exit_flag = 1;
-		}
-		break;
-	case NS_HTTP_REPLY:
-		nc->flags |= NSF_CLOSE_IMMEDIATELY;
-		if (s_show_headers) {
-			fwrite(hm->message.p, 1, hm->message.len, stdout);
-		} else {
-			fwrite(hm->body.p, 1, hm->body.len, stdout);
-		}
-		putchar('\n');
-		s_exit_flag = 1;
-		break;
-	default:
-		break;
-	}
+	//write(STDOUT_FILENO, ptr, size*nmemb); 
+	printf("write_func\n");
+	return size * nmemb;
 }
 
-void http_test()
+int http_test()
 {
-	struct ns_mgr mgr;
-	struct ns_connection *conn;
+	CURL *curl;
+	CURLcode res;
+	CURLcode res2;
 
-	ns_mgr_init(&mgr, NULL);
+	curl = curl_easy_init();
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_easy_setopt(curl, CURLOPT_URL, "https://github.com");
+		/* example.com is redirected, so we tell libcurl to follow redirection */
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-	conn = ns_connect_http(&mgr, ev_handler, "https://github.com", NULL, NULL);
-	while (s_exit_flag == 0) {
-		ns_mgr_poll(&mgr, 1000);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_func);
+
+		/* Perform the request, res will get the return code */
+		res = curl_easy_perform(curl);
+		/* Check for errors */
+		if (res != CURLE_OK)
+			fprintf(stderr, "curl_easy_perform() failed: %s\n",
+			curl_easy_strerror(res));
+
+		/* always cleanup */
+		curl_easy_cleanup(curl);
 	}
-	ns_mgr_free(&mgr);
+	return 0;
 }
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;

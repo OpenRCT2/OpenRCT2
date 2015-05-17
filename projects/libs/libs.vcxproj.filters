@@ -13,8 +13,8 @@
     <Filter Include="lodepng">
       <UniqueIdentifier>{7f953e55-d294-4158-b309-67f41fa82760}</UniqueIdentifier>
     </Filter>
-    <Filter Include="fossa">
-      <UniqueIdentifier>{c5f1b0fe-16e5-40eb-8814-f81ba99535ce}</UniqueIdentifier>
+    <Filter Include="libcurl">
+      <UniqueIdentifier>{7b46a2d6-1095-4e7a-b98b-006b832ef7a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,9 +26,6 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\lodepng\lodepng.c">
       <Filter>lodepng</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\fossa\fossa.c">
-      <Filter>fossa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,8 +53,10 @@
     <ClInclude Include="..\..\lib\lodepng\lodepng.h">
       <Filter>lodepng</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\fossa\fossa.h">
-      <Filter>fossa</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\lib\libcurl\lib\libcurld.lib">
+      <Filter>libcurl</Filter>
+    </Library>
   </ItemGroup>
 </Project>
