@@ -54,9 +54,4 @@
       <Filter>lodepng</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\lib\libcurl\lib\libcurld.lib">
-      <Filter>libcurl</Filter>
-    </Library>
-  </ItemGroup>
 </Project>

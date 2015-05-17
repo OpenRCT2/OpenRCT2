@@ -55,6 +55,7 @@
     <ClCompile Include="..\src\management\marketing.c" />
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\management\research.c" />
+    <ClCompile Include="..\src\network\http.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\openrct2.c" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\src\management\marketing.h" />
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\management\research.h" />
+    <ClInclude Include="..\src\network\http.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />
@@ -301,7 +303,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;libcurl.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
