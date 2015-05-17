@@ -3462,3 +3462,4 @@ STR_5133    :{SMALLFONT}{BLACK}Een kleiner gebied landrechten aanpassen
 STR_5134    :{SMALLFONT}{BLACK}Een groter gebied landrechten aanpassen
 STR_5135    :{SMALLFONT}{BLACK}Land en bouwrechten kopen
 STR_5136    :Landrechten
+STR_5137    :Kettingliften kunnen tot {VELOCITY}
