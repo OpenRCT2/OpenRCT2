@@ -15,6 +15,9 @@ bool twitch_get_followers(const twitch_info *twitchInfo, int *outNumFollowers, c
 	jsonResponse = http_request_json(url);
 	if (jsonResponse == NULL)
 		return false;
+
+	if (jsonResponse->status_code != 200)
+		goto json_error;
 	
 	json_t *jsonFollowsArray = json_object_get(jsonResponse->root, "follows");
 	if (jsonFollowsArray == NULL || !json_is_array(jsonFollowsArray))
