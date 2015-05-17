@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build0;Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="Build0">
     <Copy SourceFiles="..\openrct2.exe" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="..\SDL2.dll" DestinationFolder="$(OutDir)" />
   </Target>
   <ItemGroup Label="ProjectConfigurations">
@@ -15,6 +16,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\curl-ca-bundle.crt" />
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
