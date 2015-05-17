@@ -30,6 +30,8 @@
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
 
+#include "network/http.h"
+
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
 
@@ -170,6 +172,12 @@ void openrct2_launch()
 			editor_load_landscape(gOpenRCT2StartupActionPath);
 		}
 		break;
+	}
+	
+	http_json_response *jsonResponse = http_request_json("https://github.com");
+	if (jsonResponse != NULL) {
+		printf(jsonResponse->rawResponse);
+		http_request_json_dispose(jsonResponse);
 	}
 
 	log_verbose("begin openrct2 loop");

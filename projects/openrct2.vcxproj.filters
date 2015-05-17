@@ -41,9 +41,15 @@
     <Filter Include="Source\Peep">
       <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Network">
+      <UniqueIdentifier>{ae88ed08-902b-4167-a78c-9b521ce67749}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\curl-ca-bundle.crt">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -369,7 +375,6 @@
     <ClCompile Include="..\src\diagnostic.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -379,11 +384,9 @@
     <ClCompile Include="..\src\windows\editor_object_selection.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_inventions_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -435,6 +438,9 @@
     </ClCompile>
     <ClCompile Include="..\src\windows\land_rights.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\network\http.c">
+      <Filter>Source\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -638,6 +644,9 @@
     </ClInclude>
     <ClInclude Include="..\src\world\fountain.h">
       <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\http.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

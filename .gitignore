@@ -11,6 +11,9 @@ distribution/windows/*.exe
 # Build artifacts
 .cache
 
+#libcurl
+lib/libcurl/
+
 #################
 ## Eclipse
 #################

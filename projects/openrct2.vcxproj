@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build0;Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="Build0">
     <Copy SourceFiles="..\openrct2.exe" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="..\SDL2.dll" DestinationFolder="$(OutDir)" />
   </Target>
   <ItemGroup Label="ProjectConfigurations">
@@ -15,6 +16,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\curl-ca-bundle.crt" />
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +55,7 @@
     <ClCompile Include="..\src\management\marketing.c" />
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\management\research.c" />
+    <ClCompile Include="..\src\network\http.c" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\openrct2.c" />
@@ -179,6 +182,7 @@
     <ClInclude Include="..\src\management\marketing.h" />
     <ClInclude Include="..\src\management\news_item.h" />
     <ClInclude Include="..\src\management\research.h" />
+    <ClInclude Include="..\src\network\http.h" />
     <ClInclude Include="..\src\object.h" />
     <ClInclude Include="..\src\openrct2.h" />
     <ClInclude Include="..\src\peep\peep.h" />
@@ -257,8 +261,8 @@
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -284,13 +288,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>
       </SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers>
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
