@@ -75,7 +75,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_REMOVE_SIX_FLAGS,
 	WIDX_MAKE_DESTRUCTIBLE,
 	WIDX_FIX_ALL,
-	WIDX_FAST_LIFT_HILL
+	WIDX_FAST_LIFT_HILL,
+	WIDX_DISABLE_BRAKES_FAILURE
 };
 
 #pragma region MEASUREMENTS
@@ -169,6 +170,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		5132,			STR_NONE },					// Fix all rides
 	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(8),OHPL(8),		5137,			STR_NONE }, 				// 410 km/h lift hill
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(7),OHPL(7),		5140,			STR_NONE }, 				// Disable brakes failure
 	{ WIDGETS_END },
 };
 
@@ -327,7 +329,7 @@ static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -674,6 +676,12 @@ static void window_cheats_rides_mouseup()
 		gConfigCheat.fast_lift_hill ^= 1;
 		config_save_default();
 		window_invalidate(w);
+		break;
+	case WIDX_DISABLE_BRAKES_FAILURE:
+		gConfigCheat.disable_brakes_failure ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
 	}
 }
 
@@ -710,6 +718,7 @@ static void window_cheats_invalidate()
 	case WINDOW_CHEATS_PAGE_RIDES:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
 		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gConfigCheat.fast_lift_hill);
+		widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gConfigCheat.disable_brakes_failure);
 		break;
 	}
 

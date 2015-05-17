@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -1603,12 +1604,16 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	if (breakdownProblem != BREAKDOWN_BRAKES_FAILURE)
 		return breakdownProblem;
 
-	// Breaks failure can not happen if block breaks are used (so long as there is more than one vehicle)
-	// However if this is the case, break failure should be taken out the equation, otherwise block brake
+	// Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
+	// However if this is the case, brake failure should be taken out the equation, otherwise block brake
 	// rides have a lower probability to break down due to a random implementation reason.
 	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
 		if (ride->num_vehicles != 1)
 			return -1;
+
+	// If brakes failure is disabled, also take it out of the equation (see above comment why)
+	if(gConfigCheat.disable_brakes_failure)
+		return -1;
 
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
 	if (monthsOld < 16 || ride->reliability > (50 << 8) || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
