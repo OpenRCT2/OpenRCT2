@@ -2700,7 +2700,10 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(w->number);
 	uint8 value = ride->var_0D0;
-	if (value < RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8))
+	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
+	uint8 max_value = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+
+	if (value < max_value)
 		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
 	window_ride_mode_tweak_set(w, value);
