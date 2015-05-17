@@ -2149,5 +2149,5 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 	mapElement->properties.surface.grass_length = length;
 	z0 = mapElement->base_height * 8;
 	z1 = z0 + 16;
-	sub_6EC847(x, y, z0, z1);
+	invalidate_viewport_tile(x, y, z0, z1);
 }
