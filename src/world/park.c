@@ -833,7 +833,7 @@ void update_park_fences(int x, int y)
 		if (TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership & newOwnership) {
 			int z0 = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height * 8;
 			int z1 = z0 + 16;
-			invalidate_viewport_tile(x, y, z0, z1);
+			gfx_invalidate_viewport_tile(x, y, z0, z1);
 		}
 		TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership = newOwnership;
 	}
