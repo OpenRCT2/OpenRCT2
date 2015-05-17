@@ -1450,6 +1450,10 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				continue;
 			if (mapCoord.y > 0x1FFF)
 				continue;
+			if (mapCoord.x < 0)
+				continue;
+			if (mapCoord.y < 0)
+				continue;
 
 			rct_map_element* map_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
 
@@ -1645,7 +1649,16 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				if (tile.y > 0x1FFF)
 					continue;
 
+				if (tile.x < 0)
+					continue;
+
+				if (tile.y < 0)
+					continue;
+
 				rct_map_element* map_element = map_get_surface_element_at(tile.x / 32, tile.y / 32);
+
+				if (map_element == NULL)
+					return 0;
 
 				int height = map_element->base_height * 8;
 				if (map_element->properties.surface.slope & 0xF){
@@ -1900,8 +1913,8 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 
 	//0x6D0FE6
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
-		RCT2_GLOBAL(0x009DE58A, uint16) |= 0x6;
-		RCT2_GLOBAL(0x009DE58A, uint16) &= ~(1 << 3);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 0x6;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 3);
 		map_invalidate_map_selection_tiles();
 	}
 
@@ -2574,8 +2587,8 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 	// no need since global vars not used
 	sub_6D01B3(0, 0, 4096, 4096, 0);
 
-	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
-	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
@@ -2833,8 +2846,8 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
-	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF9;
-	RCT2_GLOBAL(0x009DE58A, sint16) &= 0xFFF7;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
