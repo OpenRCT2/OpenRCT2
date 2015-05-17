@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../audio/audio.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -290,7 +291,7 @@ static void window_scenarioselect_invalidate()
 
 static void window_scenarioselect_paint()
 {
-	int i, x, y;
+	int i, x, y, format;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
@@ -299,6 +300,9 @@ static void window_scenarioselect_paint()
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+
+	// Use small text for the tabs when the RCT1 colour scheme is selected.
+	format = (gConfigInterface.rct1_colour_scheme) ? 5138 : 1193;
 
 	// Text for each tab
 	for (i = 0; i < 5; i++) {
@@ -309,7 +313,7 @@ static void window_scenarioselect_paint()
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 		RCT2_GLOBAL(0x013CE952 + 0, short) = STR_BEGINNER_PARKS + i;
-		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, 1193, 10);
+		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, format, 10);
 	}
 
 	// Return if no scenario highlighted
@@ -352,7 +356,7 @@ static void window_scenarioselect_paint()
 
 static void window_scenarioselect_scrollpaint()
 {
-	int i, y, colour, highlighted;
+	int i, y, colour, highlighted, highlighted_format, unhighlighted_format;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_scenario_basic *scenario;
@@ -362,6 +366,10 @@ static void window_scenarioselect_scrollpaint()
 	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
+
+	// Use white text for the scenario names when the RCT1 colour scheme is selected
+	highlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1193;
+	unhighlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1191;
 
 	y = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
@@ -383,7 +391,7 @@ static void window_scenarioselect_scrollpaint()
 		// Draw scenario name
 		strcpy((char*)0x009BC677, scenario->name);
 		RCT2_GLOBAL(0x013CE952, short) = 3165;
-		gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 1, 0, (void*)0x013CE952);
+		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
 
 		// Check if scenario is completed
 		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
