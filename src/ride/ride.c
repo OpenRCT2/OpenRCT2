@@ -1415,7 +1415,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
 		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), sint16);
 
-		gfx_invalidate_scrollingtext(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		gfx_invalidate_tile_if_zoomed(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
 

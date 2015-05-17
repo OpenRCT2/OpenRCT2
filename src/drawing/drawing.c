@@ -185,7 +185,7 @@ void load_palette(){
 * @param base_height (di)
 * @param clearance_height (si)
 */
-void gfx_invalidate_scrollingtext(int x, int y, int base_height, int clearance_height)
+void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_height)
 {
 	x += 16;
 	y += 16;
