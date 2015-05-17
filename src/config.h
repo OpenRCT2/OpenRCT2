@@ -149,6 +149,7 @@ typedef struct {
 typedef struct {
 	uint8 fast_lift_hill;
 	uint8 disable_brakes_failure;
+	uint8 disable_all_breakdowns;
 } cheat_configuration;
 
 

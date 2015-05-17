@@ -3474,3 +3474,4 @@ STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
+STR_5141    :Disable all breakdowns
