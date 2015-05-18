@@ -101,7 +101,8 @@ static void window_title_logo_paint()
 
 	window_paint_get_registers(w, dpi);
 
-	gfx_draw_sprite(dpi, SPR_MENU_LOGO, w->x, w->y, 0);
+	// gfx_draw_sprite(dpi, SPR_MENU_LOGO, w->x, w->y, 0);
+	gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x, w->y, 0);
 	window_title_logo_draw_expansion_packs(dpi);
 }
 

@@ -27,5 +27,6 @@
 extern int gExitCode;
 
 int cmdline_run(const char **argv, int argc);
+int cmdline_for_sprite(const char **argv, int argc);
 
 #endif

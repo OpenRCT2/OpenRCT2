@@ -94,6 +94,7 @@ int rct2_init()
 	track_load_list(item);
 
 	gfx_load_g1();
+	gfx_load_g2();
 	gfx_load_character_widths();
 	platform_init();
 	audio_init1();
