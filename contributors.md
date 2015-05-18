@@ -29,6 +29,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Vijfhoek) - Misc.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
+* Robert Jordan (trigger-death) - New UI features, misc.
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
