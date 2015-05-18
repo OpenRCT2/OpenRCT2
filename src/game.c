@@ -60,12 +60,18 @@ int gGameSpeed = 1;
 
 void game_increase_game_speed()
 {
-	gGameSpeed = min(8, gGameSpeed + 1);
+	gGameSpeed = min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+	if (gGameSpeed == 5)
+		gGameSpeed = 8;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 void game_reduce_game_speed()
 {
 	gGameSpeed = max(1, gGameSpeed - 1);
+	if (gGameSpeed == 7)
+		gGameSpeed = 4;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 /**
@@ -256,6 +262,9 @@ void game_update()
 		}
 	}
 
+	news_item_update_current();
+	window_dispatch_update_all();
+
 	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
@@ -324,11 +333,10 @@ void game_logic_update()
 	vehicle_sounds_update();
 	peep_update_crowd_noise();
 	climate_update_sound();
-	news_item_update_current();
 	editor_open_windows_for_current_step();
 
 	// Update windows
-	window_dispatch_update_all();
+	//window_dispatch_update_all();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
 		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
@@ -865,6 +873,7 @@ void game_load_or_quit_no_save_prompt()
 			RCT2_CALLPROC_EBPSAFE(0x0040705E);
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
+		gGameSpeed = 1;
 		title_load();
 		rct2_endupdate();
 	} else {
