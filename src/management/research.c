@@ -278,17 +278,17 @@ void sub_684AC3(){
 	for (; research->entryIndex != -3; research += 2){
 		if (scenario_rand() & 1) continue;
 
-		
 		rct_research_item* edx;
 		rct_research_item* ebp;
-		for (rct_research_item* inner_research = gResearchItems; inner_research->entryIndex != -2; inner_research++){
+		rct_research_item* inner_research = gResearchItems;
+		do{
 			if (research->entryIndex == inner_research->entryIndex){
 				edx = inner_research;
 			}
 			if ((research + 1)->entryIndex == inner_research->entryIndex){
 				ebp = inner_research;
 			}
-		}
+		} while ((inner_research++)->entryIndex != -2);
 		edx->entryIndex = research->entryIndex;
 		ebp->entryIndex = (research + 1)->entryIndex;
 
