@@ -119,6 +119,7 @@ typedef struct {
 	sint8 landscape_smoothing;
 	sint8 show_height_as_units;
 	sint8 save_plugin_data;
+	uint8 debugging_tools;
 
 	//new
 	uint8 fullscreen_mode;
@@ -134,6 +135,7 @@ typedef struct {
 typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
+	uint8 toolbar_show_cheats;
 	uint8 allow_subtype_switching;
 	uint8 rct1_colour_scheme;
 } interface_configuration;

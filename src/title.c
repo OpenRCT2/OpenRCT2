@@ -278,6 +278,7 @@ void title_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
 
 	window_map_tooltip_update_visibility();
+	window_dispatch_update_all();
 	window_update_all();
 	DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
 
