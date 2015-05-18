@@ -191,6 +191,7 @@ static void platform_resize(int width, int height)
 	rct_drawpixelinfo *screenDPI;
 	int newScreenBufferSize;
 	void *newScreenBuffer;
+	uint32 flags;
 
 	if (_surface != NULL)
 		SDL_FreeSurface(_surface);
@@ -247,6 +248,18 @@ static void platform_resize(int width, int height)
 	window_relocate_windows(width, height);
 
 	gfx_invalidate_screen();
+
+	// Check if the window has been resized in windowed mode and update the config file accordingly
+	// This is called in rct2_update_2 and is only called after resizing a window has finished
+	flags = SDL_GetWindowFlags(gWindow);
+	if ((flags & (SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED |
+		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP)) == 0) {
+		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
+			gConfigGeneral.window_width = width;
+			gConfigGeneral.window_height = height;
+			config_save_default();
+		}
+	}
 }
 
 void platform_update_palette(char* colours, int start_index, int num_colours)
@@ -388,6 +401,29 @@ void platform_process_messages()
 			}
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
+			}
+			// Checks GUI modifier key for Macs otherwise ctrl key
+#ifdef MAC
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput) {
+#else
+			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput) {
+#endif
+				if (SDL_HasClipboardText()) {
+					char* text = SDL_GetClipboardText();
+
+					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
+						// If inserting in center of string make space for new letter
+						if (gTextInputLength > gTextInputCursorPosition){
+							memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
+							gTextInput[gTextInputCursorPosition] = text[i];
+							gTextInputLength++;
+						}
+						else gTextInput[gTextInputLength++] = text[i];
+
+						gTextInputCursorPosition++;
+					}
+
+				}
 			}
 			break;
 		case SDL_MULTIGESTURE:

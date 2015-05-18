@@ -244,7 +244,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 			widget->top + w->y, 
 			widget->bottom - widget->top + 1,
 			w->colours[1], 
-			0x80, 
+			DROPDOWN_FLAG_STAY_OPEN,
 			13, 
 			widget->right - widget->left - 3);
 		

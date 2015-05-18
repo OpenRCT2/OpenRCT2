@@ -658,14 +658,149 @@ int park_get_entrance_index(int x, int y, int z)
 	return -1;
 }
 
-void sub_6EC847(int x, int y, int z0, int z1)
+/**
+*
+*  rct2: 0x006EC847
+*/
+void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1)
 {
-	RCT2_CALLPROC_X(0x006EC847, x, 0, y, 0, z1, z0, 0);
+	int x1, y1, x2, y2;
+	int tempx;
+	x += 16;
+	y += 16;
+	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	switch (rotation) {
+	case 0:
+		tempx = x;
+		x = -x + y;
+		y += tempx;
+		break;
+	case 1:
+		x = -x;
+		tempx = x;
+		x -= y;
+		y += tempx;
+		break;
+	case 2:
+		tempx = x;
+		x -= y;
+		y = -y - tempx;
+		break;
+	case 3:
+		tempx = x;
+		x += y;
+		y = -y + tempx;
+		break;
+	}
+	y /= 2;
+	x2 = x;
+	y2 = y;
+
+	x -= 32;
+	y -= 32;
+	y -= z0;
+	x2 += 32;
+	y2 += 32;
+	y2 += z1;
+
+	x1 = x;
+	y1 = y;
+	rct_viewport* viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	while (viewport->width != 0) {
+		int viewport_x2 = viewport->view_x + viewport->view_width;
+		int viewport_y2 = viewport->view_y + viewport->view_height;
+		if (x2 > viewport_x2 && y2 > viewport_y2) {
+			if (x1 < viewport->view_x)
+				x1 = viewport->view_x;
+			if (x2 > viewport_x2)
+				x2 = viewport_x2;
+			if (y1 < viewport->view_y)
+				y1 = viewport->view_y;
+			if (y2 > viewport_y2)
+				y2 = viewport_y2;
+
+			uint8 zoom = 1 << viewport->zoom;
+			x1 -= viewport->view_x;
+			y1 -= viewport->view_y;
+			x2 -= viewport->view_x;
+			y2 -= viewport->view_y;
+			x1 /= zoom;
+			y1 /= zoom;
+			x2 /= zoom;
+			y2 /= zoom;
+			x1 += viewport->x;
+			y1 += viewport->y;
+			x2 += viewport->x;
+			y2 += viewport->y;
+			gfx_set_dirty_blocks(x1, y1, x2, y2);
+		}
+		viewport++;
+	}
 }
 
-void sub_664D05(int x, int y)
+/**
+*
+*  rct2: 0x00664D05
+*/
+void update_park_fences(int x, int y)
 {
-	RCT2_CALLPROC_X(0x00664D05, x, 0, y, 0, 0, 0, 0);
+	if (x > 0x1FFF)
+		return;
+	if (y > 0x1FFF)
+		return;
+	
+	rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
+	if (sufaceElement == NULL)return;
+
+	uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
+	if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
+		uint8 fence_required = 1;
+
+		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+		// If an entrance element do not place flags around surface
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+				
+			if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+				continue;
+
+			if (!(mapElement->flags & MAP_ELEMENT_FLAG_5)){
+				fence_required = 0;
+				break;
+			}
+		} while (!map_element_is_last_for_tile(mapElement));
+
+		if (fence_required) {
+			// As map_is_location_in_park sets the error text
+			// will require to back it up.
+			rct_string_id previous_error = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+			if (map_is_location_in_park(x - 32, y)){
+				newOwnership |= 0x8;
+			}
+
+			if (map_is_location_in_park(x, y - 32)){
+				newOwnership |= 0x4;
+			}
+
+			if (map_is_location_in_park(x + 32, y)){
+				newOwnership |= 0x2;
+			}
+
+			if (map_is_location_in_park(x, y + 32)){
+				newOwnership |= 0x1;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = previous_error;
+		}
+	}
+
+	if (sufaceElement->properties.surface.ownership != newOwnership) {
+		int z0 = sufaceElement->base_height * 8;
+		int z1 = z0 + 16;
+		gfx_invalidate_viewport_tile(x, y, z0, z1);	
+		sufaceElement->properties.surface.ownership = newOwnership;
+	}
 }
 
 void park_remove_entrance_segment(int x, int y, int z)
@@ -681,9 +816,9 @@ void park_remove_entrance_segment(int x, int y, int z)
 		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
 			continue;
 
-		sub_6EC847(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		gfx_invalidate_viewport_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 		map_element_remove(mapElement);
-		sub_664D05(x, y);
+		update_park_fences(x, y);
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
@@ -805,4 +940,414 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	*ebx = 0;
+}
+
+int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
+	int y2;
+	int cost;
+	int tile_idx;
+
+	y2 = y;
+	cost = 0;
+	tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+	while ((TILE_MAP_ELEMENT_POINTER(tile_idx)->type & 0x3C) != 0) {
+		y2 += 8;
+		tile_idx = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+	}
+	uint8 ownership = TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership;
+	switch (setting) {
+	case 0:
+		if ((ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
+			cost = 0;
+			return cost;
+		}
+		else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_AVAILABLE) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
+			cost = 0;// MONEY32_UNDEFINED;
+			return cost;
+		}
+		else {
+			if ((flags & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
+				update_park_fences(x, y);
+				update_park_fences(x - 32, y);
+				update_park_fences(x + 32, y);
+				update_park_fences(x, y + 32);
+				update_park_fences(x, y - 32);
+			}
+			cost = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+			return cost;
+		}
+		break;
+	case 1:
+		if ((flags & 1) != 0) {
+			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xCF;
+			update_park_fences(x, y);
+			update_park_fences(x - 32, y);
+			update_park_fences(x + 32, y);
+			update_park_fences(x, y + 32);
+			update_park_fences(x, y - 32);
+		}
+		cost = 0;
+		break;
+	case 2:
+		if ((ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
+			cost = 0;
+			return cost;
+		}
+		else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
+			cost = 0;// MONEY32_UNDEFINED;
+			return cost;
+		}
+		else {
+			if ((flags & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+				baseHeight *= 8;
+				gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+			}
+			cost = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
+			return cost;
+		}
+		break;
+	case 3:
+		if ((flags & 1) != 0) {
+			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xEF;
+			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+			baseHeight *= 8;
+			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+		}
+		cost = 0;
+		break;
+		break;
+	case 4:
+		if ((flags & 1) != 0) {
+			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+			baseHeight *= 8;
+			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+		}
+		cost = 0;
+		break;
+	case 5:
+		if ((flags & 1) != 0) {
+			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+			baseHeight *= 8;
+			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+		}
+		cost = 0;
+		break;
+	default:
+		if (x <= 32) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+			cost = 0;// MONEY32_UNDEFINED;
+			return cost;
+		}
+		else if (y <= 32) {
+			int ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
+			ebp -= 32;
+			if (x >= ebp || y >= ebp) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+				cost = 0;// MONEY32_UNDEFINED;
+				return cost;
+			}
+			else {
+				int tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+				ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
+				y2 = y;
+				do {
+					y2 += 8;
+					tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+					if ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) == 0x10) {
+						cost = 0;
+						return cost;
+					}
+
+				} while ((TILE_MAP_ELEMENT_POINTER(((((y - 8) & 0xFFE0) * 256) + (x & 0xFFE0)) / 32)->flags & 0x80) == 0);
+
+				uint8 bh = (flags & 0xFF00) >> 4;
+				if (bh == (TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership & 0xF0)) {
+					cost = 0;
+					return cost;
+				}
+				else {
+					if ((cost & 1) == 0) {
+						cost = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+						return cost;
+					}
+					if ((bh & 0xF0) == 0) {
+						uint16 bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16);
+						if (x != (bp & 0xFFE0)) {
+							bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS + 2, uint16);
+							if (y != (bp & 0xFFE0)) {
+								RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
+							}
+						}
+						bp = RCT2_GLOBAL(0x13573F8, uint16);
+						if (x != (bp & 0xFFE0)) {
+							bp = RCT2_GLOBAL(0x13573F8 + 2, uint16);
+							if (y != (bp & 0xFFE0)) {
+								RCT2_GLOBAL(0x13573F8, uint16) = 0xFFFF;
+							}
+						}
+					}
+					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0x0F;
+					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= bh;
+					update_park_fences(x, y);
+					update_park_fences(x - 32, y);
+					update_park_fences(x + 32, y);
+					update_park_fences(x, y + 32);
+					update_park_fences(x, y - 32);
+					RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
+
+					cost = 0;
+					return cost;
+				}
+			}
+		}
+		break;
+	}
+	return cost;
+}
+
+int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
+{
+	int x, y, z;
+	money32 totalCost, cost;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
+
+	if (x1 == 0 && y1 == 0) {
+		x1 = x0;
+		y1 = y0;
+	}
+
+	x = (x0 + x1) / 2 + 16;
+	y = (y0 + y1) / 2 + 16;
+	z = map_element_height(x, y);
+	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+
+	// Game command modified to accept selection size
+	totalCost = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+		for (y = y0; y <= y1; y += 32) {
+			for (x = x0; x <= x1; x += 32) {
+				cost = map_buy_land_rights_for_tile(x, y, setting, flags);
+				if (cost == MONEY32_UNDEFINED)
+					return MONEY32_UNDEFINED;
+
+				totalCost += cost;
+			}
+		}
+	}
+
+	return totalCost;
+}
+
+/**
+*
+*  rct2: 0x006649BD
+*/
+void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	*ebx = map_buy_land_rights(
+		(*eax & 0xFFFF),
+		(*ecx & 0xFFFF),
+		(*edi & 0xFFFF),
+		(*ebp & 0xFFFF),
+		(*edx & 0xFF00) >> 8,
+		*ebx & 0xFF
+	);
+	// Original decompiled function for Duncan to look at:
+
+	/*RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
+	int x = *eax;
+	int y = *ecx;
+	int y2 = *ecx;
+	int z = map_element_height(x + 16, y + 16);
+
+	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+		
+		int tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+		while ((TILE_MAP_ELEMENT_POINTER(tile_idx)->type & 0x3C) != 0) {
+			y += 8;
+			tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+		}
+		uint8 ownership = TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership;
+		uint8 flags = (*edx & 0xFF00) >> 8;
+		switch (flags) {
+		case 0:
+			if ((ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
+				*ebx = 0;
+				return;
+			} 
+			else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_AVAILABLE) == 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
+				*ebx = 0x80000000;
+				return;
+			}
+			else {
+				if ((*ebx & 1) != 0) {
+					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
+					update_park_fences(x, y2);
+					update_park_fences(x - 32, y2);
+					update_park_fences(x + 32, y2);
+					update_park_fences(x, y2 + 32);
+					update_park_fences(x, y2 - 32);
+				}
+				*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+				return;
+			}
+			break;
+		case 1:
+			if ((*ebx & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xCF;
+				update_park_fences(x, y2);
+				update_park_fences(x - 32, y2);
+				update_park_fences(x + 32, y2);
+				update_park_fences(x, y2 + 32);
+				update_park_fences(x, y2 - 32);
+			}
+			*ebx = 0;
+			break;
+		case 2:
+			if ((ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
+				*ebx = 0;
+				return;
+			}
+			else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
+				*ebx = 0x80000000;
+				return;
+			}
+			else {
+				if ((*ebx & 1) != 0) {
+					TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+					uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+					baseHeight *= 8;
+					gfx_invalidate_viewport_tile(x, y2, baseHeight, baseHeight + 16);
+				}
+				*ebx = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
+				return;
+			}
+			break;
+		case 3:
+			if ((*ebx & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xEF;
+				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+				baseHeight *= 8;
+				gfx_invalidate_viewport_tile(x, y2, baseHeight, baseHeight + 16);
+			}
+			*ebx = 0;
+			break;
+			break;
+		case 4:
+			if ((*ebx & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+				baseHeight *= 8;
+				gfx_invalidate_viewport_tile(x, y2, baseHeight, baseHeight + 16);
+			}
+			*ebx = 0;
+			break;
+		case 5:
+			if ((*ebx & 1) != 0) {
+				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
+				baseHeight *= 8;
+				gfx_invalidate_viewport_tile(x, y2, baseHeight, baseHeight + 16);
+			}
+			*ebx = 0;
+			break;
+		default:
+			if (x <= 32) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+				*ebx = 0x80000000;
+				return;
+			}
+			else if (y <= 32) {
+				*ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
+				*ebp -= 32;
+				if (x >= *ebp || y >= *ebp) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+					*ebx = 0x80000000;
+					return;
+				}
+				else {
+					int tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
+					do {
+						y += 8;
+						tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
+						if ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) == 0x10) {
+							*ebx = 0;
+							return;
+						}
+						
+					} while ((TILE_MAP_ELEMENT_POINTER(((((y - 8) & 0xFFE0) * 256) + (x & 0xFFE0)) / 32)->flags & 0x80) == 0);
+
+					uint8 bh = (*ebx & 0xFF00) >> 4;
+					if (bh == (TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership & 0xF0)) {
+						*ebx = 0;
+						return;
+					}
+					else {
+						if ((*ebx & 1) == 0) {
+							*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+							return;
+						}
+						if ((bh & 0xF0) == 0) {
+							uint16 bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16);
+							if (x != (bp & 0xFFE0)) {
+								bp = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS + 2, uint16);
+								if (y2 != (bp & 0xFFE0)) {
+									RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
+								}
+							}
+							bp = RCT2_GLOBAL(0x13573F8, uint16);
+							if (x != (bp & 0xFFE0)) {
+								bp = RCT2_GLOBAL(0x13573F8 + 2, uint16);
+								if (y2 != (bp & 0xFFE0)) {
+									RCT2_GLOBAL(0x13573F8, uint16) = 0xFFFF;
+								}
+							}
+						}
+						TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0x0F;
+						TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= bh;
+						update_park_fences(x, y2);
+						update_park_fences(x - 32, y2);
+						update_park_fences(x + 32, y2);
+						update_park_fences(x, y2 + 32);
+						update_park_fences(x, y2 - 32);
+						RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
+
+						*ebx = 0;
+						return;
+					}
+				}
+			}
+			break;
+		}
+	}
+	else {
+		// Should this ever be called? esi is never set properly
+		if ((*ebx & 1) != 0) {
+			//TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_OWNED;
+			update_park_fences(x, y);
+			update_park_fences(x - 32, y2);
+			update_park_fences(x + 32, y2);
+			update_park_fences(x, y2 + 32);
+			update_park_fences(x, y2 - 32);
+		}
+		*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+	}*/
 }

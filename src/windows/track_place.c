@@ -308,7 +308,8 @@ static void window_track_place_clear_provisional()
 {
 	if (_window_track_place_last_was_valid) {
 		sub_6D01B3(
-			(RCT2_GLOBAL(0x00F440EB, uint8) << 8) | 6,
+			6,
+			RCT2_GLOBAL(0x00F440EB, uint8), 
 			_window_track_place_last_valid_x,
 			_window_track_place_last_valid_y,
 			_window_track_place_last_valid_z
@@ -342,7 +343,7 @@ static int window_track_place_get_base_z(int x, int y)
 	if (mapElement->properties.surface.terrain & 0x1F)
 		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
 	
-	return z + sub_6D01B3(3, x, y, z);
+	return z + sub_6D01B3(3, 0, x, y, z);
 }
 
 static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
@@ -354,7 +355,7 @@ static void window_track_place_attempt_placement(int x, int y, int z, int bl, mo
 	ebx = bl;
 	ecx = y;
 	edi = z;
-	result = game_do_command_p(GAME_COMMAND_47, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (cost != NULL) *cost = result;
 	if (rideIndex != NULL) *rideIndex = edi & 0xFF;
@@ -427,7 +428,7 @@ static void window_track_place_mouseup()
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
-		RCT2_CALLPROC_EBPSAFE(0x006D2436);
+		track_mirror();
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
@@ -477,7 +478,7 @@ static void window_track_place_toolupdate()
 
 	// Check if tool map position has changed since last update
 	if (x == _window_track_place_last_x && y == _window_track_place_last_y) {
-		sub_6D01B3(0, x, y, 0);
+		sub_6D01B3(0, 0, x, y, 0);
 		return;
 	}
 
@@ -510,7 +511,7 @@ static void window_track_place_toolupdate()
 		widget_invalidate(w, WIDX_PRICE);
 	}
 	
-	sub_6D01B3(0, x, y, z);
+	sub_6D01B3(0, 0, x, y, z);
 }
 
 /**

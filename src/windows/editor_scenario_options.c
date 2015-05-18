@@ -1049,7 +1049,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top - 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			dropdownWidget->right - dropdownWidget->left - 3
 		);

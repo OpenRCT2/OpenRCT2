@@ -53,6 +53,8 @@ static void window_clear_scenery_mouseup();
 static void window_clear_scenery_update(rct_window *w);
 static void window_clear_scenery_invalidate();
 static void window_clear_scenery_paint();
+static void window_clear_scenery_textinput();
+static void window_clear_scenery_inputsize(rct_window *w);
 
 static void* window_clear_scenery_events[] = {
 	window_clear_scenery_close,
@@ -74,7 +76,7 @@ static void* window_clear_scenery_events[] = {
 	window_clear_scenery_emptysub,
 	window_clear_scenery_emptysub,
 	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	window_clear_scenery_textinput,
 	window_clear_scenery_emptysub,
 	window_clear_scenery_emptysub,
 	window_clear_scenery_emptysub,
@@ -99,7 +101,7 @@ void window_clear_scenery_open()
 
 	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 67, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
-	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
+	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW);
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
@@ -161,7 +163,40 @@ static void window_clear_scenery_mouseup()
 		// Invalidate the window
 		window_invalidate(w);
 		break;
+	case WIDX_PREVIEW:
+		window_clear_scenery_inputsize(w);
+		break;
 	}
+}
+
+static void window_clear_scenery_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+	int size;
+	char* end;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (widgetIndex != WIDX_PREVIEW || !result)
+		return;
+
+	size = strtol(text, &end, 10);
+	if (*end == '\0') {
+		if (size < 1) size = 1;
+		if (size > 7) size = 7;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+		window_invalidate(w);
+	}
+}
+
+static void window_clear_scenery_inputsize(rct_window *w)
+{
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 7;
+	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 /**

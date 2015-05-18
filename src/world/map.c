@@ -47,6 +47,9 @@ const rct_xy16 TileDirectionDelta[] = {
 
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 
+bool LandPaintMode;
+bool LandRightsMode;
+
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
 
@@ -161,6 +164,9 @@ rct_map_element *map_get_surface_element_at(int x, int y)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
 
+	if (mapElement == NULL)
+		return NULL;
+
 	// Find the first surface element
 	while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
 		if (map_element_is_last_for_tile(mapElement))
@@ -172,6 +178,25 @@ rct_map_element *map_get_surface_element_at(int x, int y)
 	return mapElement;
 }
 
+rct_map_element* map_get_path_element_at(int x, int y, int z){
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
+
+	if (mapElement == NULL)
+		return NULL;
+
+	uint8 mapFound = 0;
+	// Find the path element at known z
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
 /**
  * 
  *  rct2: 0x0068AB4C
@@ -749,23 +774,41 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		x3 += x2;
 		y3 += y2;
 		z3 += z2;
-		if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
-			if(!map_is_location_owned(x3, y3, z3)){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+			if (!map_is_location_owned(x3, y3, z3)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
-			if(*ebx & GAME_COMMAND_FLAG_APPLY){
-				rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
-				while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE ||
-					(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction ||
-					map_element->properties.scenerymultiple.type >> 10 != i ||
-					map_element->base_height != base_height){
-					map_element++;
-				}
+		}
+
+		if(*ebx & GAME_COMMAND_FLAG_APPLY){
+			rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
+			uint8 tile_not_found = 1;
+			do
+			{
+				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+					continue;
+
+				if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+					continue;
+
+				if ((map_element->properties.scenerymultiple.type >> 10) != i)
+					continue;
+
+				if (map_element->base_height != z3 / 8)
+					continue;
+
 				map_invalidate_tile_full(x3, y3);
 				map_element_remove(map_element);
+				tile_not_found = 0;
+				break;
+			} while (!map_element_is_last_for_tile(map_element++));
+
+			if (tile_not_found){
+				log_error("Tile not found when trying to remove element!");
 			}
 		}
+		
 		i++;
 	}
 }
@@ -837,33 +880,35 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
-		if(!map_is_location_owned(x, y, z)){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+		if (!map_is_location_owned(x, y, z)){
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
-		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-		while(map_element->type != map_element_type ||
-			map_element->base_height != base_height ||
-			map_element->properties.scenery.type != scenery_type){
-			map_element++;
-			if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-				*ebx = 0;
-				return;
-			}
-		}
-		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+	}
+
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	while(map_element->type != map_element_type ||
+		map_element->base_height != base_height ||
+		map_element->properties.scenery.type != scenery_type){
+		map_element++;
+		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 			*ebx = 0;
 			return;
 		}
-		if(*ebx & GAME_COMMAND_FLAG_APPLY){
-			map_element->properties.scenery.colour_1 &= 0xE0;
-			map_element->properties.scenery.colour_1 |= color1;
-			map_element->properties.scenery.colour_2 &= 0xE0;
-			map_element->properties.scenery.colour_2 |= color2;
-			map_invalidate_tile_full(x, y);
-		}
 	}
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+		*ebx = 0;
+		return;
+	}
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		map_element->properties.scenery.colour_1 &= 0xE0;
+		map_element->properties.scenery.colour_1 |= color1;
+		map_element->properties.scenery.colour_2 &= 0xE0;
+		map_element->properties.scenery.colour_2 |= color2;
+		map_invalidate_tile_full(x, y);
+	}
+	
 	*ebx = 0;
 }
 
@@ -1012,26 +1057,28 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 		x3 += x2;
 		y3 += y2;
 		z3 += z2;
-		if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
-			if(!map_is_location_owned(x3, y3, z3)){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+			if (!map_is_location_owned(x3, y3, z3)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
-			if(*ebx & GAME_COMMAND_FLAG_APPLY){
-				rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
-				while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE ||
-					(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction ||
-					map_element->properties.scenerymultiple.type >> 10 != i ||
-					map_element->base_height != base_height){
-					map_element++;
-				}
-				map_element->properties.scenerymultiple.colour[0] &= 0xE0;
-				map_element->properties.scenerymultiple.colour[0] |= color1;
-				map_element->properties.scenerymultiple.colour[1] &= 0xE0;
-				map_element->properties.scenerymultiple.colour[1] |= color2;
-				map_invalidate_tile_full(x3, y3);
-			}
 		}
+
+		if(*ebx & GAME_COMMAND_FLAG_APPLY){
+			rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
+			while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE ||
+				(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction ||
+				map_element->properties.scenerymultiple.type >> 10 != i ||
+				map_element->base_height != base_height){
+				map_element++;
+			}
+			map_element->properties.scenerymultiple.colour[0] &= 0xE0;
+			map_element->properties.scenerymultiple.colour[0] |= color1;
+			map_element->properties.scenerymultiple.colour[1] &= 0xE0;
+			map_element->properties.scenerymultiple.colour[1] |= color2;
+			map_invalidate_tile_full(x3, y3);
+		}
+		
 		i++;
 	}
 	*ebx = 0;
@@ -1054,29 +1101,31 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
 
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
-		if(!map_is_location_owned(x, y, z - 16)){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+		if (!map_is_location_owned(x, y, z - 16)){
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
-		if(*ebx & GAME_COMMAND_FLAG_APPLY){
-			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-			while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
-				map_element->properties.banner.position != banner_position){
-				map_element++;
-				if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}
-			}
-			rct_window* window = window_find_by_number(WC_BANNER, map_element->properties.banner.index);
-			if(window){
-				window_invalidate(window);
-			}
-			gBanners[map_element->properties.banner.index].colour = color;
-			map_invalidate_tile(x, y, z, z + 32);
-		}
 	}
+
+	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+		while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
+			map_element->properties.banner.position != banner_position){
+			map_element++;
+			if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
+		}
+		rct_window* window = window_find_by_number(WC_BANNER, map_element->properties.banner.index);
+		if(window){
+			window_invalidate(window);
+		}
+		gBanners[map_element->properties.banner.index].colour = color;
+		map_invalidate_tile(x, y, z, z + 32);
+	}
+	
 	*ebx = 0;
 }
 
@@ -2100,5 +2149,5 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 	mapElement->properties.surface.grass_length = length;
 	z0 = mapElement->base_height * 8;
 	z1 = z0 + 16;
-	sub_6EC847(x, y, z0, z1);
+	gfx_invalidate_viewport_tile(x, y, z0, z1);
 }

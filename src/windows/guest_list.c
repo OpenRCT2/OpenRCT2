@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -173,9 +174,19 @@ void window_guest_list_open()
 	window->max_width = 500;
 	window->max_height = 450;
 	window->flags |= WF_RESIZABLE;
-	window->colours[0] = 1;
-	window->colours[1] = 15;
-	window->colours[2] = 15;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		window->colours[0] = 1;
+		window->colours[1] = 15;
+		window->colours[2] = 15;
+	}
+	else
+	{
+		window->colours[0] = 22;
+		window->colours[1] = 26;
+		window->colours[2] = 26;
+	}
 }
 
 /**
@@ -339,7 +350,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			_window_guest_list_num_pages,
 			widget->right - widget->left - 3
 		);
@@ -363,7 +374,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			widget->right - widget->left - 3
 		);

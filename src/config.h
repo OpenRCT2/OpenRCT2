@@ -119,6 +119,7 @@ typedef struct {
 	sint8 landscape_smoothing;
 	sint8 show_height_as_units;
 	sint8 save_plugin_data;
+	uint8 debugging_tools;
 
 	//new
 	uint8 fullscreen_mode;
@@ -134,7 +135,9 @@ typedef struct {
 typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
+	uint8 toolbar_show_cheats;
 	uint8 allow_subtype_switching;
+	uint8 rct1_colour_scheme;
 } interface_configuration;
 
 typedef struct {
@@ -146,6 +149,13 @@ typedef struct {
 } sound_configuration;
 
 typedef struct {
+	uint8 fast_lift_hill;
+	uint8 disable_brakes_failure;
+	uint8 disable_all_breakdowns;
+} cheat_configuration;
+
+
+typedef struct {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;
@@ -153,6 +163,7 @@ typedef struct {
 extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
+extern cheat_configuration gConfigCheat;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 

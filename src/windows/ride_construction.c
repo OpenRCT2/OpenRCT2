@@ -203,6 +203,7 @@ rct_window *window_construction_open()
 	return w;
 }
 
+/* rct2: 0x006C845D */
 void window_construction_close()
 {
 	rct_window *w;
@@ -214,7 +215,11 @@ void window_construction_close()
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(0x9DE58A, uint16) &= 0xFFFD;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+
+	// In order to cancel the yellow arrow correctly the
+	// selection tool should be cancelled.
+	tool_cancel();
 
 	hide_gridlines();
 
@@ -242,7 +247,11 @@ void window_construction_maze_close(){
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(0x9DE58A, uint16) &= 0xFFFD;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+
+	// In order to cancel the yellow arrow correctly the
+	// selection tool should be cancelled.
+	tool_cancel();
 
 	hide_gridlines();
 
@@ -322,7 +331,7 @@ void window_construction_mouseup_demolish(rct_window* w){
 			ecx = RCT2_GLOBAL(0xF440AA, uint16),
 			edx = RCT2_GLOBAL(0xF440AC, uint16);
 
-		sub_6C683D(&eax, &ecx, edx, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
+		sub_6C683D(&eax, &ecx, &edx, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), RCT2_GLOBAL(0xF440AF, uint8) & 0x3FF, 0, 0, 0);
 	}
 
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);

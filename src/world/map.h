@@ -242,6 +242,10 @@ typedef struct {
 
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
+// Used in the land tool window to allow dragging and changing land styles
+extern bool LandPaintMode;
+// Used in the land rights tool window to either buy land rights or construction rights
+extern bool LandRightsMode;
 
 void map_init(int size);
 void map_update_tile_pointers();
@@ -254,6 +258,7 @@ void map_element_set_terrain(rct_map_element *element, int terrain);
 void map_element_set_terrain_edge(rct_map_element *element, int terrain);
 int map_height_from_slope(int x, int y, int slope);
 rct_map_element *map_get_surface_element_at(int x, int y);
+rct_map_element* map_get_path_element_at(int x, int y, int z);
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);

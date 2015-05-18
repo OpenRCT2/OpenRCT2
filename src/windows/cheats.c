@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -59,8 +60,6 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TRAM_GUESTS,
 	WIDX_FREEZE_CLIMATE = 8,
 	WIDX_OPEN_CLOSE_PARK,
-	WIDX_DECREASE_GAME_SPEED,
-	WIDX_INCREASE_GAME_SPEED,
 	WIDX_ZERO_CLEARANCE,
 	WIDX_WEATHER_SUN,
 	WIDX_WEATHER_THUNDER,
@@ -72,7 +71,11 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_WIN_SCENARIO,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
-	WIDX_MAKE_DESTRUCTIBLE
+	WIDX_MAKE_DESTRUCTIBLE,
+	WIDX_FIX_ALL,
+	WIDX_FAST_LIFT_HILL,
+	WIDX_DISABLE_BRAKES_FAILURE,
+	WIDX_DISABLE_ALL_BREAKDOWNS
 };
 
 #pragma region MEASUREMENTS
@@ -85,10 +88,14 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define YOS TAB_HEIGHT	+ YSPA	//Y offset ofrom top (includes tabs height)
 #define BTNW 110		//button width
 #define BTNH 16			//button height
+#define OPTW 220		//Option (checkbox) width (two colums)
+#define OPTH 10			//Option (checkbox) height (two colums)
 #define YPL(ROW) YOS + ((BTNH + YSPA) * ROW)
 #define HPL(ROW) YPL(ROW) + BTNH
+#define OHPL(ROW) YPL(ROW) + OPTH
 #define XPL(COL) XOS + ((BTNW + XSPA) * COL)
 #define WPL(COL) XPL(COL) + BTNW
+#define OWPL XPL(0) + OPTW
 
 #define TXTO 3	//text horizontal offset from button left (for button text)
 #pragma endregion
@@ -117,7 +124,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462 },						// tab 3
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// happy guests
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// large tram
 	{ WIDGETS_END },
 };
 
@@ -133,8 +140,6 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2767,			STR_NONE},					// Freeze climate
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2769,			STR_NONE},					// open / close park
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2771,			STR_NONE},					// decrease game speed
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2772,			STR_NONE},					// increase game speed
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2757,			STR_NONE},					// Sun
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2758,			STR_NONE},					// Thunder
@@ -160,6 +165,10 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		5123,			STR_NONE},					// Renew rides
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		5124,			STR_NONE},					// Remove flags
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		5132,			STR_NONE },					// Fix all rides
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(8),OHPL(8),		5137,			STR_NONE }, 				// 410 km/h lift hill
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(6),OHPL(6),		5140,			STR_NONE }, 				// Disable brakes failure
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(7),OHPL(7),		5141,			STR_NONE }, 				// Disable all breakdowns
 	{ WIDGETS_END },
 };
 
@@ -317,8 +326,8 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_DECREASE_GAME_SPEED) | (1 << WIDX_INCREASE_GAME_SPEED) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -395,13 +404,22 @@ static void cheat_remove_litter()
 
 static void cheat_fix_rides()
 {
-	int i;
+	int rideIndex;
 	rct_ride *ride;
+	rct_peep *mechanic;
 
-	// TODO doesn't quite work, probably need to call the correct fix ride function
-	FOR_ALL_RIDES(i, ride) {
-		if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
-			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+	FOR_ALL_RIDES(rideIndex, ride)
+	{
+		if ((ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING) && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+		{
+			mechanic = ride_get_assigned_mechanic(ride);
+
+			if (mechanic != NULL){
+				remove_peep_from_ride(mechanic);
+			}
+
+			RCT2_CALLPROC_X(0x006B7481, 0, 0, 0, rideIndex, 0, 0, 0);
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
 	}
 }
@@ -585,12 +603,6 @@ static void window_cheats_misc_mouseup()
 	case WIDX_OPEN_CLOSE_PARK:
 		park_set_open(park_is_open() ? 0 : 1);
 		break;
-	case WIDX_DECREASE_GAME_SPEED:
-		game_reduce_game_speed();
-		break;
-	case WIDX_INCREASE_GAME_SPEED:
-		game_increase_game_speed();
-		break;
 	case WIDX_ZERO_CLEARANCE:
 		if (tool_set(w, widgetIndex, 7)) {
 			return;
@@ -649,6 +661,24 @@ static void window_cheats_rides_mouseup()
 	case WIDX_MAKE_DESTRUCTIBLE:
 		cheat_make_destructible();
 		break;
+	case WIDX_FIX_ALL:
+		cheat_fix_rides();
+		break;
+	case WIDX_FAST_LIFT_HILL:
+		gConfigCheat.fast_lift_hill ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_DISABLE_BRAKES_FAILURE:
+		gConfigCheat.disable_brakes_failure ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_DISABLE_ALL_BREAKDOWNS:
+		gConfigCheat.disable_all_breakdowns ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
 	}
 }
 
@@ -681,6 +711,12 @@ static void window_cheats_invalidate()
 	case WINDOW_CHEATS_PAGE_MISC:
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
 			2770 : 2769;
+		break;
+	case WINDOW_CHEATS_PAGE_RIDES:
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
+		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gConfigCheat.fast_lift_hill);
+		widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gConfigCheat.disable_brakes_failure);
+		widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gConfigCheat.disable_all_breakdowns);
 		break;
 	}
 

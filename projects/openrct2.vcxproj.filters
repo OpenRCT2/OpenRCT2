@@ -436,6 +436,9 @@
     <ClCompile Include="..\src\cmdline_sprite.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\land_rights.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

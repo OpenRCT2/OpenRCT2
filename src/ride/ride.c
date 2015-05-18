@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../config.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -769,10 +770,173 @@ static void ride_remove_peeps(int rideIndex)
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
-int sub_6C683D(int* x, int* y, int z, int direction, int type, int esi, int edi, int ebp)
+/* rct2: 0x006C683D 
+ * ax : x
+ * bx : direction << 8, type
+ * cx : y
+ * dx : z
+ * si : extra_params
+ * di : output_element
+ * bp : flags
+ */
+int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element** output_element, uint16 flags)
 {
-	int ebx = (direction << 8) | type;
-	return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
+	//int ebx = (direction << 8) | type;
+	//return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
+
+	rct_map_element* map_element = map_get_first_element_at(*x / 32, *y / 32);
+	rct_map_element* success_map = NULL;
+
+	do{
+		if (map_element->base_height != *z / 8)
+			continue;
+
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+			continue;
+
+		if (type != map_element->properties.track.type)
+			continue;
+
+		success_map = map_element;
+		if (!(map_element->properties.track.sequence & 0xF))
+			break;
+	}while(!map_element_is_last_for_tile(map_element++));
+
+	map_element = success_map;
+
+	if (map_element == NULL){
+		return 1;
+	}
+
+	// Possibly z should be &0xF8
+	rct_ride* ride = GET_RIDE(map_element->properties.track.ride_index);
+	rct_preview_track *trackBlock;
+
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_SELLS_FOOD){
+		trackBlock = RCT2_ADDRESS(0x00994A38, rct_preview_track*)[type];
+	}
+	else{
+		trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[type];
+	}
+
+	int sequence = map_element->properties.track.sequence & 0xF;
+
+	uint8 map_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
+	switch (map_direction){
+	case MAP_ELEMENT_DIRECTION_WEST:
+		*x -= trackBlock[sequence].x;
+		*y -= trackBlock[sequence].y;
+		break;
+	case MAP_ELEMENT_DIRECTION_NORTH:
+		*x -= trackBlock[sequence].y;
+		*y += trackBlock[sequence].x;
+		break;
+	case MAP_ELEMENT_DIRECTION_EAST:
+		*x += trackBlock[sequence].x;
+		*y += trackBlock[sequence].y;
+		break;
+	case MAP_ELEMENT_DIRECTION_SOUTH:
+		*x += trackBlock[sequence].y;
+		*y -= trackBlock[sequence].x;
+		break;
+	}
+
+	*z -= trackBlock[sequence].z;
+
+	int start_x = *x, start_y = *y, start_z = *z;
+
+	*z += trackBlock[0].z;
+
+	for (int i = 0; trackBlock[i].var_00 != 0xFF; ++i){
+		int cur_x = start_x, cur_y = start_y, cur_z = start_z;
+
+		switch (map_direction){
+		case MAP_ELEMENT_DIRECTION_WEST:
+			cur_x += trackBlock[i].x;
+			cur_y += trackBlock[i].y;
+			break;
+		case MAP_ELEMENT_DIRECTION_NORTH:
+			cur_x += trackBlock[i].y;
+			cur_y -= trackBlock[i].x;
+			break;
+		case MAP_ELEMENT_DIRECTION_EAST:
+			cur_x -= trackBlock[i].x;
+			cur_y -= trackBlock[i].y;
+			break;
+		case MAP_ELEMENT_DIRECTION_SOUTH:
+			cur_x -= trackBlock[i].y;
+			cur_y += trackBlock[i].x;
+			break;
+		}
+
+		cur_z += trackBlock[i].z;
+
+		map_invalidate_tile_full(cur_x, cur_y);
+
+		map_element = map_get_first_element_at(cur_x / 32, cur_y / 32);
+		success_map = NULL;
+
+		do{
+			if (map_element->base_height != cur_z / 8)
+				continue;
+
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+
+			if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+				continue;
+
+			if ((map_element->properties.track.sequence & 0xF) != trackBlock[i].var_00)
+				continue;
+
+			if (type == map_element->properties.track.type)
+			{
+				success_map = map_element;
+				break;
+			}
+		} while (!map_element_is_last_for_tile(map_element++));
+
+		if (success_map == NULL){
+			return 1;
+		}
+
+		if (i == 0 && output_element != NULL)
+			*output_element = map_element;
+
+		if (flags & (1 << 0)){
+			// Quadrant related ??
+			map_element->type &= ~(1 << 6);
+		}
+
+		if (flags & (1 << 1)){
+			// Quadrant related ??
+			map_element->type |= (1 << 6);
+		}
+
+		if (flags & (1 << 2)){
+			map_element->properties.track.colour &= 0xFC;
+			map_element->properties.track.colour |= extra_params & 0xFF;
+		}
+
+		if (flags & (1 << 5)){
+			map_element->properties.track.colour &= 0x0F;
+			map_element->properties.track.colour |= (extra_params & 0xFF) << 4;
+		}
+
+		if (flags & (1 << 3)){
+			map_element->properties.track.colour |= (1 << 3);
+		}
+
+		if (flags & (1 << 4)){
+			map_element->properties.track.colour &= 0xF7;
+		}
+	}
+
+	return 0;
 }
 
 void sub_6C96C0()
@@ -785,11 +949,11 @@ void sub_6C9627()
 	switch (RCT2_GLOBAL(0x00F440A6, uint8)) {
 	case 3:
 	{
-		int x = RCT2_GLOBAL(0x00F440A8, uint16), y = RCT2_GLOBAL(0x00F440AA, uint16);
+		int x = RCT2_GLOBAL(0x00F440A8, uint16), y = RCT2_GLOBAL(0x00F440AA, uint16), z = RCT2_GLOBAL(0x00F440AC, uint16);
 		sub_6C683D(
 			&x,
 			&y,
-			RCT2_GLOBAL(0x00F440AC, uint16),
+			&z,
 			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) & 3,
 			RCT2_GLOBAL(0x00F440AF, uint8),
 			0,
@@ -969,7 +1133,7 @@ int ride_modify(rct_xy_element *input)
 	direction = mapElement.element->type & 3;
 	type = mapElement.element->properties.track.type;
 	
-	if (sub_6C683D(&x, &y, z, direction, type, 0, 0, 0))
+	if (sub_6C683D(&x, &y, &z, direction, type, 0, 0, 0))
 		return 0;
 
 	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
@@ -1251,7 +1415,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
 		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), sint16);
 
-		gfx_invalidate_scrollingtext(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		gfx_invalidate_tile_if_zoomed(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
 
@@ -1389,7 +1553,7 @@ static void ride_breakdown_update(int rideIndex)
 	//
 	// a 0.8% chance, less the breakdown factor which accumulates as the game
 	// continues.
-	if (ride->reliability == 0 || (int)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability) {
+	if ((ride->reliability == 0 || (int)(scenario_rand() & 0x2FFFFF) <= 1 + RIDE_INITIAL_RELIABILITY - ride->reliability) && !gConfigCheat.disable_all_breakdowns) {
 		breakdownReason = ride_get_new_breakdown_problem(ride);
 		if (breakdownReason != -1)
 			ride_prepare_breakdown(rideIndex, breakdownReason);
@@ -1440,12 +1604,16 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	if (breakdownProblem != BREAKDOWN_BRAKES_FAILURE)
 		return breakdownProblem;
 
-	// Breaks failure can not happen if block breaks are used (so long as there is more than one vehicle)
-	// However if this is the case, break failure should be taken out the equation, otherwise block brake
+	// Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
+	// However if this is the case, brake failure should be taken out the equation, otherwise block brake
 	// rides have a lower probability to break down due to a random implementation reason.
 	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
 		if (ride->num_vehicles != 1)
 			return -1;
+
+	// If brakes failure is disabled, also take it out of the equation (see above comment why)
+	if(gConfigCheat.disable_brakes_failure)
+		return -1;
 
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
 	if (monthsOld < 16 || ride->reliability > (50 << 8) || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
@@ -2094,8 +2262,8 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 {
 	vehicle_colour result;
-	result.main = ride->vehicle_colours[vehicleIndex] & 0xFF;
-	result.additional_1 = ride->vehicle_colours[vehicleIndex] >> 8;
+	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
+	result.additional_1 = ride->vehicle_colours[vehicleIndex].trim_colour;
 	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
 	return result;
 }
@@ -2447,32 +2615,34 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 
 		uint8 vol1 = -1;
 		uint8 vol2 = -1;
-		if (pany < 0) {
-			pany = -pany;
+		int panx2 = panx;
+		int pany2 = pany;
+		if (pany2 < 0) {
+			pany2 = -pany2;
 		}
-		if (pany > 6143) {
-			pany = 6143;
+		if (pany2 > 6143) {
+			pany2 = 6143;
 		}
-		pany -= 2048;
-		if (pany > 0) {
-			pany = -((pany / 4) - 1024) / 4;
-			vol1 = (uint8)pany;
-			if (pany >= 256) {
+		pany2 -= 2048;
+		if (pany2 > 0) {
+			pany2 = -((pany2 / 4) - 1024) / 4;
+			vol1 = (uint8)pany2;
+			if (pany2 >= 256) {
 				vol1 = -1;
 			}
 		}
 
-		if (panx < 0) {
-			panx = -panx;
+		if (panx2 < 0) {
+			panx2 = -panx2;
 		}
-		if (panx > 6143) {
-			panx = 6143;
+		if (panx2 > 6143) {
+			panx2 = 6143;
 		}
-		panx -= 2048;
-		if (panx > 0) {
-			panx = -((panx / 4) - 1024) / 4;
-			vol2 = (uint8)panx;
-			if (panx >= 256) {
+		panx2 -= 2048;
+		if (panx2 > 0) {
+			panx2 = -((panx2 / 4) - 1024) / 4;
+			vol2 = (uint8)panx2;
+			if (panx2 >= 256) {
 				vol2 = -1;
 			}
 		}
@@ -3707,7 +3877,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			RCT2_CALLPROC_X(0x00696707, 0, 0, 0, ride_id, 0, 0, 0);
 			*ebx = ride_get_refund_price(ride_id);
 
-			RCT2_CALLPROC(0x006CB945);
+			RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, ride_id, 0, 0, 0);
 			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 			
 			for(int i = 0; i < MAX_BANNERS; i++){

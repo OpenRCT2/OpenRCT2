@@ -3454,3 +3454,26 @@ STR_3443    :Sida 4
 STR_3444    :Sida 5
 STR_3445    :Sätt Patrullområde
 STR_3446    :Avbryt Patrullområde
+
+# New strings, cleaner
+STR_5120    :Show finances button on toolbar
+STR_5121    :Show research button on toolbar
+STR_5122    :Show all vehicles sharing a track/ride type
+STR_5123    :Renew rides
+STR_5124    :No Six Flags
+STR_5125    :All destructable
+STR_5126    :Random title music
+STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5128    :Selection size
+STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
+STR_5130    :Map size
+STR_5131    :Enter map size between {COMMA16} and {COMMA16}
+STR_5132    :Fix all rides
+STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
+STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5136    :Land rights
+STR_5137    :Allow lift hill speeds up to {VELOCITY}
+STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5139    :{WHITE}{STRINGID}
+STR_5140    :Disable brakes failure

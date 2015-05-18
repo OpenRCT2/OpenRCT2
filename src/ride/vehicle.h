@@ -23,6 +23,12 @@
 
 #include "../common.h"
 
+/* size: 0x2 */
+typedef struct{
+	uint8 body_colour;
+	uint8 trim_colour;
+} rct_vehicle_colour;
+
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;

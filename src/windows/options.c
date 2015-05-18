@@ -91,12 +91,14 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_HOTKEY_DROPDOWN,
 	WIDX_TOOLBAR_SHOW_FINANCES,
 	WIDX_TOOLBAR_SHOW_RESEARCH,
+	WIDX_TOOLBAR_SHOW_CHEATS,
 
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
 	WIDX_AUTOSAVE,
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
+	WIDX_DEBUGGING_TOOLS,
 	WINDOW_OPTIONS_WIDGETS_SIZE // Marks the end of the widget list, leave as last item
 };
 
@@ -149,13 +151,15 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	26,		185,	68,		78,		STR_HOTKEY,		STR_HOTKEY_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	82,		93,		5120,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	97,		108,	5121,			STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	112,	123,	5147,			STR_NONE },
 
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
 	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		STR_NONE,		STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype switching
+	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype 
+	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5150,			STR_NONE }, // enabled debugging tools
 	{ WIDGETS_END },
 };
 
@@ -252,6 +256,7 @@ void window_options_open()
 		(1ULL << WIDX_SCREEN_EDGE_SCROLLING) |
 		(1ULL << WIDX_TOOLBAR_SHOW_FINANCES) |
 		(1ULL << WIDX_TOOLBAR_SHOW_RESEARCH) |
+		(1ULL << WIDX_TOOLBAR_SHOW_CHEATS) |
 		(1ULL << WIDX_REAL_NAME_CHECKBOX) |
 		(1ULL << WIDX_CONSTRUCTION_MARKER) |
 		(1ULL << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
@@ -262,7 +267,8 @@ void window_options_open()
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
-		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING);
+		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
+		(1ULL << WIDX_DEBUGGING_TOOLS);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
@@ -313,11 +319,22 @@ static void window_options_mouseup()
 		window_invalidate(w);
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
 		break;
+	case WIDX_TOOLBAR_SHOW_CHEATS:
+		gConfigInterface.toolbar_show_cheats ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		window_invalidate_by_class(WC_TOP_TOOLBAR);
+		break;
 	case WIDX_ALLOW_SUBTYPE_SWITCHING:
 		gConfigInterface.allow_subtype_switching ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		window_invalidate_by_class(WC_RIDE);
+		break;
+	case WIDX_DEBUGGING_TOOLS:
+		gConfigGeneral.debugging_tools ^= 1;
+		config_save_default();
+		window_invalidate(w);
 		break;
 	case WIDX_REAL_NAME_CHECKBOX:
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -396,12 +413,15 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		gDropdownItemsChecked = gConfigGeneral.show_height_as_units ? 1 : 2;
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
-		num_items = 3;
+		num_items = 4;
 
-		for (i = 0; i < num_items; i++) {
+		for (i = 0; i < num_items - 1; i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = 2739 + i;
 		}
+		// Random title music
+		gDropdownItemsFormat[3] = 1142;
+		gDropdownItemsArgs[3] = 5126;
 
 		window_options_show_dropdown(w, widget, num_items);
 
@@ -556,7 +576,7 @@ static void window_options_dropdown()
 		window_options_update_height_markers();
 		break;
 	case WIDX_TITLE_MUSIC_DROPDOWN:
-		if (dropdownIndex == 1 && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
+		if ((dropdownIndex == 1 || dropdownIndex == 3) && !platform_file_exists(get_file_path(PATH_ID_CSS50))) {
 			window_error_open(2742, 2743);
 		} else {
 			gConfigSound.title_music = (sint8)dropdownIndex;
@@ -747,11 +767,13 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
 
 		window_options_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
 		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);
@@ -778,11 +800,14 @@ static void window_options_invalidate()
 		else
 			window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
+		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+
 		window_options_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		break;
 	}
 }
@@ -837,7 +862,7 @@ static void window_options_paint()
 		gfx_draw_string_left(dpi, 2738, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_TITLE_MUSIC].top + 1);
 		gfx_draw_string_left(
 			dpi,
-			2739 + gConfigSound.title_music,
+			(gConfigSound.title_music == 3 ? 5126 : 2739 + gConfigSound.title_music),
 			NULL,
 			12,
 			w->x + window_options_widgets[WIDX_TITLE_MUSIC].left + 1,
@@ -866,7 +891,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int 
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		num_items,
 		widget->right - widget->left - 3
 	);

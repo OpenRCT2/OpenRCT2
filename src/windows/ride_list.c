@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
@@ -161,9 +162,20 @@ void window_ride_list_open()
 		window->max_width = 400;
 		window->max_height = 450;
 		window->flags |= WF_RESIZABLE;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
 		window->colours[0] = 1;
 		window->colours[1] = 26;
 		window->colours[2] = 26;
+	}
+	else
+	{
+		window->colours[0] = 26;
+		window->colours[1] = 1;
+		window->colours[2] = 1;
+	}
+
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
@@ -253,7 +265,15 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_STATUS + i;
 		}		
-		window_dropdown_show_text_custom_width(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0x80, numItems, widget->right - widget->left - 3);
+		window_dropdown_show_text_custom_width(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			numItems,
+			widget->right - widget->left - 3
+		);
 		gDropdownItemsChecked |= (1 << _window_ride_list_information_type);
 	}
 }

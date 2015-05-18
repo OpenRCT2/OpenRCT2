@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../world/map.h"
 #include "../management/marketing.h"
@@ -33,6 +34,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../world/footpath.h"
+#include "../input.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -506,9 +508,20 @@ void window_guest_open(rct_peep* peep){
 		window->flags = WF_RESIZABLE;
 		window->no_list_items = 0;
 		window->selected_list_item = -1;
-		window->colours[0] = 1;
-		window->colours[1] = 15;
-		window->colours[2] = 15;
+
+		if(!gConfigInterface.rct1_colour_scheme)
+		{
+			window->colours[0] = 1;
+			window->colours[1] = 15;
+			window->colours[2] = 15;
+		}
+		else
+		{
+			window->colours[0] = 22;
+			window->colours[1] = 26;
+			window->colours[2] = 26;			
+		}
+
 		window->viewport_focus_coordinates.y = -1;
 	}
 	
@@ -555,7 +568,7 @@ void window_guest_overview_close(){
 	
 	window_get_register(w);
 	
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<3)){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) && 
 		    w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber)) 
 			tool_cancel();
@@ -645,7 +658,7 @@ void window_guest_overview_mouse_up(){
 
 /* rct2: 0x696AA0 */
 void window_guest_set_page(rct_window* w, int page){
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
 		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
@@ -1157,9 +1170,9 @@ void window_guest_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int ebx;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &ebx, NULL, NULL);
-	if (ebx == 0)
+	int interactionType;
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	x--;
@@ -1171,7 +1184,7 @@ void window_guest_overview_tool_update(){
 	
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
-	ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
+	int ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
 	ebx += w->var_492 >> 2;
 
 	int ebp = peep->tshirt_colour << 19;

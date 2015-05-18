@@ -209,7 +209,7 @@ static void window_text_input_paint(){
 	int font_height = 0;
 	
 
-	gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], 0);
+	gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
 
 	y += 25;
 
@@ -249,7 +249,8 @@ static void window_text_input_paint(){
 			}
 
 			if (w->frame_no > 15){
-				gfx_fill_rect(dpi, cur_x, y + 9, cur_x + width, y + 9, w->colours[1]);
+				uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+				gfx_fill_rect(dpi, cur_x, y + 9, cur_x + width, y + 9, colour + 5);
 			}
 
 			cur_drawn++;

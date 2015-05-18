@@ -97,6 +97,7 @@
     <ClCompile Include="..\src\windows\guest_list.c" />
     <ClCompile Include="..\src\windows\install_track.c" />
     <ClCompile Include="..\src\windows\land.c" />
+    <ClCompile Include="..\src\windows\land_rights.c" />
     <ClCompile Include="..\src\windows\loadsave.c" />
     <ClCompile Include="..\src\windows\main.c" />
     <ClCompile Include="..\src\windows\map.c" />

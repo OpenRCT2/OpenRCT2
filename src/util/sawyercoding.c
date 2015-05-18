@@ -225,6 +225,43 @@ int sawyercoding_decode_td6(char *src, char *dst, int length)
 	return decode_chunk_rle(src, dst, length - 4);
 }
 
+int sawyercoding_encode_td6(char* src, char* dst, int length){
+	int output_length = encode_chunk_rle(src, dst, length);
+
+	uint32 checksum = 0;
+	for (int i = 0; i < output_length; i++){
+		uint8 new_byte = ((checksum & 0xFF) + dst[i]) & 0xFF;
+		checksum = (checksum & 0xFFFFFF00) + new_byte;
+		checksum = rol32(checksum, 3);
+	}
+	checksum -= 0x1D4C1;
+
+	*((uint32*)&dst[output_length]) = checksum;
+	output_length += 4;
+	return output_length;
+}
+
+/* Based off of rct2: 0x006770C1 */
+int sawyercoding_validate_track_checksum(char* src, int length){
+	uint32 file_checksum = *((uint32*)&src[length - 4]);
+
+	uint32 checksum = 0;
+	for (int i = 0; i < length - 4; i++){
+		uint8 new_byte = ((checksum & 0xFF) + src[i]) & 0xFF;
+		checksum = (checksum & 0xFFFFFF00) + new_byte;
+		checksum = rol32(checksum, 3);
+	}
+
+	if (checksum - 0x1D4C1 == file_checksum)
+		return 1;	// .TD6
+	else if (checksum - 0x1A67C == file_checksum)
+		return 1;	// .TD4
+	else if (checksum - 0x1A650 == file_checksum)
+		return 1;	// .TD4 
+	else
+		return 0;
+}
+
 #pragma region Decoding
 
 /**
@@ -318,14 +355,14 @@ static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 
 	while (src < end_src - 1){
 
-		if ((count && *src == src[1]) || count > 120){
+		if ((count && *src == src[1]) || count > 125){
 			*dst++ = count - 1;
 			for (; count != 0; --count){
 				*dst++ = *src_norm_start++;
 			}
 		}
 		if (*src == src[1]){
-			for (; (count < 120) && ((src + count) < end_src); count++){
+			for (; (count < 125) && ((src + count) < end_src); count++){
 				if (*src != src[count]) break;
 			}
 			*dst++ = 257 - count;

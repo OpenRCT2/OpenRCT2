@@ -1006,11 +1006,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				skip_char = 1;
 				break;
 			}
-			ebx = *((uint16*)(buffer - 3));
-			eax = ebx & 0x7FFFF;
-			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+			uint32 image_id = *((uint32*)(buffer - 3));
+			uint32 image_offset = image_id & 0x7FFFF;
+			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_offset]);
 
-			gfx_draw_sprite(dpi, ebx, max_x, max_y, 0);
+			gfx_draw_sprite(dpi, image_id, max_x, max_y, 0);
 
 			max_x = max_x + g1_element->width;
 			break;

@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
@@ -30,6 +31,7 @@
 #include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"
+#include "../input.h"
 #include "dropdown.h"
 #include "error.h"
 
@@ -318,9 +320,18 @@ void window_staff_open(rct_peep* peep)
 
 		w->flags = 1 << 8;
 
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
+		if(!gConfigInterface.rct1_colour_scheme)
+		{
+			w->colours[0] = 1;
+			w->colours[1] = 4;
+			w->colours[2] = 4;
+		}
+		else
+		{
+			w->colours[0] = 12;
+			w->colours[1] = 4;
+			w->colours[2] = 4;
+		}
 	}
 	w->page = 0;
 	window_invalidate(w);
@@ -375,7 +386,7 @@ void window_staff_overview_close()
 
 	window_get_register(w);
 
-	if (RCT2_GLOBAL(0x9DE518, uint32) & (1 << 3)){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
@@ -388,7 +399,7 @@ void window_staff_overview_close()
  */
 void window_staff_set_page(rct_window* w, int page)
 {
-	if (RCT2_GLOBAL(0x9DE518,uint32) & (1 << 3))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
 		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
@@ -1084,9 +1095,9 @@ void window_staff_overview_tool_update(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
-	int z;
-	get_map_coordinates_from_pos(x, y, 0, NULL, NULL, &z, NULL, NULL);
-	if (z == 0)
+	int interactionType;
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 
 	x--;
@@ -1356,7 +1367,7 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	int y = widget->top + w->y;
 	int extray = widget->bottom - widget->top + 1;
 	int width = widget->right - widget->left - 3;
-	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], 0x80, no_entries, width);
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, no_entries, width);
 	
 	// See above note.
 	gDropdownItemsChecked = item_checked;

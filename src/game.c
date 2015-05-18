@@ -41,6 +41,7 @@
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
+#include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
 #include "tutorial.h"
@@ -59,12 +60,18 @@ int gGameSpeed = 1;
 
 void game_increase_game_speed()
 {
-	gGameSpeed = min(8, gGameSpeed + 1);
+	gGameSpeed = min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+	if (gGameSpeed == 5)
+		gGameSpeed = 8;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 void game_reduce_game_speed()
 {
 	gGameSpeed = max(1, gGameSpeed - 1);
+	if (gGameSpeed == 7)
+		gGameSpeed = 4;
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 /**
@@ -244,7 +251,7 @@ void game_update()
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESET ||
 					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_NORMAL
 				) {
-					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32)) {
+					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_VIEWPORT_SCROLLING) {
 						RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 						break;
 					}
@@ -254,6 +261,9 @@ void game_update()
 			}
 		}
 	}
+
+	news_item_update_current();
+	window_dispatch_update_all();
 
 	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
 
@@ -323,11 +333,10 @@ void game_logic_update()
 	vehicle_sounds_update();
 	peep_update_crowd_noise();
 	climate_update_sound();
-	news_item_update_current();
 	editor_open_windows_for_current_step();
 
 	// Update windows
-	window_dispatch_update_all();
+	//window_dispatch_update_all();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
 		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
@@ -655,11 +664,11 @@ int game_load_save(const char *path)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(0x9DE518,uint32) & (1<<5)){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
 			RCT2_GLOBAL(0x14241BC, uint32) = 2;
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(0x9DE518, uint32) &= ~(1<<5);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		title_load();
 		rct2_endupdate();
@@ -864,6 +873,7 @@ void game_load_or_quit_no_save_prompt()
 			RCT2_CALLPROC_EBPSAFE(0x0040705E);
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
+		gGameSpeed = 1;
 		title_load();
 		rct2_endupdate();
 	} else {
@@ -909,7 +919,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0x006649BD,
+	0,//0x006649BD, //buy_land_rights
 	0x006666E7,
 	0,
 	0x006CD8CE,
@@ -921,7 +931,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0x006D13FE,
+	0,
 	0,
 	0x006CDEE4,
 	0, // 50
@@ -972,7 +982,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_staff_order,
 	game_command_set_park_name,
 	game_command_set_park_open,
-	game_command_emptysub,
+	game_command_buy_land_rights, //game_command_emptysub,//game_command_buy_land_rights,
 	game_command_emptysub,
 	game_command_remove_park_entrance,
 	game_command_emptysub,
@@ -984,7 +994,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
-	game_command_emptysub,
+	game_command_place_track,
 	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_place_banner, // 50

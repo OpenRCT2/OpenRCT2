@@ -29,6 +29,7 @@
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
+#include "../input.h"
 #include "viewport.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
@@ -58,7 +59,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, 0xFF79, &info->x, &info->y, &info->type, &info->mapElement, NULL);
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &info->x, &info->y, &info->type, &info->mapElement, NULL);
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 
@@ -178,7 +179,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, 9, &info->x, &info->y, &info->type, &info->mapElement, NULL);
+	get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &info->x, &info->y, &info->type, &info->mapElement, NULL);
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 
@@ -264,7 +265,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 	}
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & 0x48) != 0x48)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE)) != (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE))
 		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -565,21 +566,20 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
  */
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
 {
-	int my_x, my_y, z;
+	int my_x, my_y, z, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	get_map_coordinates_from_pos(screenX, screenY, 0xFFF6, &my_x, &my_y, &z, &myMapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
 
-	if (z == 0) {
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 		*x = 0x8000;
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F1AD3E, uint8) = z;
+	RCT2_GLOBAL(0x00F1AD3E, uint8) = interactionType;
 	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
 
-	if (z == 4) {
-		// myMapElement appears to be water
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
 		z = myMapElement->properties.surface.terrain;
 		z = (z & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
 	}

@@ -1172,9 +1172,19 @@ rct_window *window_ride_open(int rideIndex)
 	w->max_width = 500;
 	w->max_height = 450;
 	w->flags |= WF_RESIZABLE;
-	w->colours[0] = 1;
-	w->colours[1] = 26;
-	w->colours[2] = 11;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 26;
+		w->colours[2] = 11;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 11;
+	}
 
 	ride = GET_RIDE(rideIndex);
 	numSubTypes = 0;
@@ -2308,7 +2318,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - dropdownWidget->left
 		);
@@ -2321,7 +2331,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			ride->var_0CC,
 			widget->right - dropdownWidget->left
 		);
@@ -2343,7 +2353,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			maxCars - minCars + 1,
 			widget->right - dropdownWidget->left
 		);
@@ -2690,7 +2700,10 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(w->number);
 	uint8 value = ride->var_0D0;
-	if (value < RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8))
+	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
+	uint8 max_value = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+
+	if (value < max_value)
 		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
 	window_ride_mode_tweak_set(w, value);
@@ -2759,7 +2772,7 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		numAvailableModes,
 		widget->right - dropdownWidget->left
 	);
@@ -2791,7 +2804,7 @@ static void window_ride_load_dropdown(rct_window *w, rct_widget *widget)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		5,
 		widget->right - dropdownWidget->left
 	);
@@ -2867,6 +2880,7 @@ static void window_ride_operating_resize()
 static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = GET_RIDE(w->number);
+	uint8 max_lift_hill_speed;
 
 	switch (widgetIndex) {
 	case WIDX_MODE_TWEAK_INCREASE:
@@ -2876,7 +2890,13 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
-		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8)));
+
+		if(gConfigCheat.fast_lift_hill)
+			max_lift_hill_speed = 255;
+		else
+			max_lift_hill_speed = RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
+
+		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, max_lift_hill_speed));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
 		set_operating_setting(w->number, 8, max(RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8), ride->lift_hill_speed - 1));
@@ -3323,7 +3343,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		7,
 		widget->right - dropdownWidget->left
 	);
@@ -3545,9 +3565,9 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 
 	newColourScheme = (uint8)(*((uint16*)&w->var_494));
 
-	int z;
+	int interactionType;
 
-	get_map_coordinates_from_pos(x, y, -5, &x, &y, &z, &mapElement, NULL);
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &x, &y, &interactionType, &mapElement, NULL);
 	// Get map coordinates from point
 	/*int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
@@ -3558,7 +3578,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 	y = ecx & 0xFFFF;
 	mapElement = (rct_map_element*)edx;*/
 
-	if ((/*ebx*/z & 0xFF) != 3)
+	if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
 		return;
 	if (mapElement->properties.track.ride_index != w->number)
 		return;
@@ -3676,7 +3696,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			4,
 			widget->right - dropdownWidget->left
 		);
@@ -3703,7 +3723,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			4,
 			widget->right - dropdownWidget->left
 		);
@@ -3725,7 +3745,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			countof(window_ride_entrance_style_list),
 			widget->right - dropdownWidget->left
 		);
@@ -3743,7 +3763,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0,
+			DROPDOWN_FLAG_STAY_OPEN,
 			rideEntry->max_cars_in_train > 1 ? 3 : 2,
 			widget->right - dropdownWidget->left
 		);
@@ -3766,7 +3786,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			w->y + dropdownWidget->top,
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			numItems,
 			widget->right - dropdownWidget->left
 		);
@@ -4327,21 +4347,24 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
 	}
 
+	for (i = 0; i < numItems; i++) {
+		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsArgs[i] = STR_MUSIC_STYLE_START + window_ride_current_music_style_order[i];
+	}
+
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		numItems,
 		widget->right - dropdownWidget->left
 	);
 
 	for (i = 0; i < numItems; i++) {
-		gDropdownItemsFormat[i] = 1142;
 		if (window_ride_current_music_style_order[i] == ride->music)
 			gDropdownItemsChecked = (1 << i);
-		gDropdownItemsArgs[i] = STR_MUSIC_STYLE_START + window_ride_current_music_style_order[i];
 	}
 }
 

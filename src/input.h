@@ -26,11 +26,12 @@
 enum {
 	INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
-	// Related to dropdowns, set on flag 0x80
-	INPUT_FLAG_1 = (1 << 1),
+	// The dropdown can stay open if the mouse is released, set on flag DROPDOWN_FLAG_STAY_OPEN
+	INPUT_FLAG_DROPDOWN_STAY_OPEN = (1 << 1),
 
-	// Related to dropdowns
-	INPUT_FLAG_2 = (1 << 2),
+	// The mouse has been released and the dropdown is still open
+	// INPUT_FLAG_DROPDOWN_STAY_OPEN is already set if this happens
+	INPUT_FLAG_DROPDOWN_MOUSE_UP = (1 << 2),
 
 	INPUT_FLAG_TOOL_ACTIVE = (1 << 3),
 

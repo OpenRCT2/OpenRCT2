@@ -19,6 +19,7 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/graph.h"
 #include "../interface/widget.h"
@@ -540,9 +541,19 @@ void window_finances_open()
 		w = window_create_auto_pos(530, 257, window_finances_page_events[0], WC_FINANCES, WF_10);
 		w->number = 0;
 		w->frame_no = 0;
-		w->colours[0] = 1;
-		w->colours[1] = 19;
-		w->colours[2] = 19;
+
+		if(!gConfigInterface.rct1_colour_scheme)
+		{
+			w->colours[0] = 1;
+			w->colours[1] = 19;
+			w->colours[2] = 19;
+		}
+		else
+		{
+			w->colours[0] = 4;
+			w->colours[1] = 1;
+			w->colours[2] = 1;
+		}
 		research_update_uncompleted_types();
 	}
 
@@ -1375,7 +1386,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);

@@ -362,6 +362,7 @@ void format_length(char **dest, sint16 value)
 
 	uint16 *argRef = &value;
 	format_string_part(dest, stringId, (char**)&argRef);
+	(*dest)--;
 }
 
 void format_velocity(char **dest, uint16 value)
@@ -375,6 +376,7 @@ void format_velocity(char **dest, uint16 value)
 
 	uint16 *argRef = &value;
 	format_string_part(dest, stringId, (char**)&argRef);
+	(*dest)--;
 }
 
 void format_duration(char **dest, uint16 value)
@@ -397,6 +399,7 @@ void format_duration(char **dest, uint16 value)
 		stringId++;
 
 	format_string_part(dest, stringId, (char**)&argsRef);
+	(*dest)--;
 }
 
 void format_realtime(char **dest, uint16 value)
@@ -419,6 +422,7 @@ void format_realtime(char **dest, uint16 value)
 		stringId++;
 
 	format_string_part(dest, stringId, (char**)&argsRef);
+	(*dest)--;
 }
 
 void format_string_code(unsigned char format_code, char **dest, char **args)

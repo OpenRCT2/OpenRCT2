@@ -507,7 +507,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		numItems,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
@@ -537,7 +537,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
@@ -561,7 +561,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		5,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
