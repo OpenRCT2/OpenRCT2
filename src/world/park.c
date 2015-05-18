@@ -719,15 +719,15 @@ void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1)
 			if (y2 > viewport_y2)
 				y2 = viewport_y2;
 
-			uint8 zoom = viewport->zoom;
+			uint8 zoom = 1 << viewport->zoom;
 			x1 -= viewport->view_x;
 			y1 -= viewport->view_y;
 			x2 -= viewport->view_x;
 			y2 -= viewport->view_y;
-			x1 >>= zoom;
-			y1 >>= zoom;
-			x2 >>= zoom;
-			y2 >>= zoom;
+			x1 /= zoom;
+			y1 /= zoom;
+			x2 /= zoom;
+			y2 /= zoom;
 			x1 += viewport->x;
 			y1 += viewport->y;
 			x2 += viewport->x;
@@ -744,100 +744,63 @@ void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1)
 */
 void update_park_fences(int x, int y)
 {
-	if (x <= 0x1FFF && y <= 0x1FFF) {
-		int y2;
-		int tile_idx, tile_idx2;
+	if (x > 0x1FFF)
+		return;
+	if (y > 0x1FFF)
+		return;
+	
+	rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
+	if (sufaceElement == NULL)return;
 
-		y2 = y;
-		tile_idx = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-		while ((TILE_MAP_ELEMENT_POINTER(tile_idx)->type & 0x3C) != 0) {
-			y2 += 8;
-			tile_idx = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-		}
+	uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
+	if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
+		uint8 fence_required = 1;
 
-		uint8 ownership = TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership;
-		uint8 newOwnership = ownership & 0xF0;
-		if ((ownership & OWNERSHIP_OWNED) == 0) {
-			y2 = y;
-			bool breaked = false;
-			do {
-				tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-				uint8 type = TILE_MAP_ELEMENT_POINTER(tile_idx2)->type;
-				uint8 slope = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.slope;
-				uint8 flags = TILE_MAP_ELEMENT_POINTER(tile_idx2)->flags;
-				if ((type & 0x3C) == 0x10 && (flags & 0x10) == 0 && slope == 0x2) {
-					breaked = true;
-					break;
-				}
-				y2 += 8;
-			} while ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->flags & 0x80) == 0);
-			if (!breaked) {
-				x -= 32;
-				if (x <= 0x1FFF) {
-					y2 = y;
-					tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					while ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) != 0) {
-						y2 += 8;
-						tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					}
-					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-					if ((ownership & OWNERSHIP_OWNED) != 0) {
-						newOwnership |= 0x8;
-					}
-				}
-				x += 32;
-				y -= 32;
-				if (y <= 0x1FFF) {
-					y2 = y;
-					tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					while ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) != 0) {
-						y2 += 8;
-						tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					}
-					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-					if ((ownership & OWNERSHIP_OWNED) != 0) {
-						newOwnership |= 0x4;
-					}
-				}
-				x += 32;
-				y += 32;
-				if (x <= 0x1FFF) {
-					y2 = y;
-					tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					while ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) != 0) {
-						y2 += 8;
-						tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					}
-					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-					if ((ownership & OWNERSHIP_OWNED) != 0) {
-						newOwnership |= 0x2;
-					}
-				}
-				x -= 32;
-				y += 32;
-				if (y <= 0x1FFF) {
-					y2 = y;
-					tile_idx2 = (((y & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					while ((TILE_MAP_ELEMENT_POINTER(tile_idx2)->type & 0x3C) != 0) {
-						y2 += 8;
-						tile_idx2 = (((y2 & 0xFFE0) * 256) + (x & 0xFFE0)) / 32;
-					}
-					ownership = TILE_MAP_ELEMENT_POINTER(tile_idx2)->properties.surface.ownership;
-					if ((ownership & OWNERSHIP_OWNED) != 0) {
-						newOwnership |= 0x1;
-					}
-				}
-				y -= 32;
+		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+		// If an entrance element do not place flags around surface
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+				
+			if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+				continue;
+
+			if (!(mapElement->flags & MAP_ELEMENT_FLAG_5)){
+				fence_required = 0;
+				break;
 			}
+		} while (!map_element_is_last_for_tile(mapElement));
+
+		if (fence_required) {
+			// As map_is_location_in_park sets the error text
+			// will require to back it up.
+			rct_string_id previous_error = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+			if (map_is_location_in_park(x - 32, y)){
+				newOwnership |= 0x8;
+			}
+
+			if (map_is_location_in_park(x, y - 32)){
+				newOwnership |= 0x4;
+			}
+
+			if (map_is_location_in_park(x + 32, y)){
+				newOwnership |= 0x2;
+			}
+
+			if (map_is_location_in_park(x, y + 32)){
+				newOwnership |= 0x1;
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = previous_error;
 		}
-		if (TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership & newOwnership) {
-			int z0 = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height * 8;
-			int z1 = z0 + 16;
-			gfx_invalidate_viewport_tile(x, y, z0, z1);
-		}
-		TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership = newOwnership;
 	}
 
+	if (sufaceElement->properties.surface.ownership != newOwnership) {
+		int z0 = sufaceElement->base_height * 8;
+		int z1 = z0 + 16;
+		gfx_invalidate_viewport_tile(x, y, z0, z1);	
+		sufaceElement->properties.surface.ownership = newOwnership;
+	}
 }
 
 void park_remove_entrance_segment(int x, int y, int z)
