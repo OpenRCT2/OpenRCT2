@@ -54,7 +54,8 @@ enum {
 	WIDX_GUESTS,
 	WIDX_CLEAR_SCENERY,
 
-	//WIDX_FASTFORWARD,
+	WIDX_FASTFORWARD,
+	WIDX_CHEATS,
 	WIDX_FINANCES,
 	WIDX_RESEARCH,
 
@@ -88,8 +89,9 @@ typedef enum {
 // from left to right
 static const int left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
-	//WIDX_FASTFORWARD,
+	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_CHEATS,
 
 	WIDX_SEPARATOR,
 
@@ -141,7 +143,8 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	//{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_NONE },							// Fast forward
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
 	{ WWT_TRNBTN,	3,	0x001E, 0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	
@@ -192,6 +195,8 @@ static void* window_top_toolbar_events[] = {
 
 void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_view_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_fastforward_menu_dropdown(short dropdownIndex);
 
 void toggle_footpath_window();
 void toggle_land_window(rct_window *topToolbar, int widgetIndex);
@@ -248,15 +253,6 @@ static void window_top_toolbar_mouseup()
 	case WIDX_PAUSE:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
 		break;
-	// case WIDX_FASTFORWARD:
-	// 	// This is an excellent place to add in debugging statements and
-	// 	// print routines, that will be triggered when you press the
-	// 	// button in the game. Use "git update-index --skip-worktree
-	// 	// src/window_top_toolbar" to avoid committing these changes to
-	// 	// version control.
-	// 	window_cheats_open();
-	// 	break;
-
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
 			window_zoom_out(mainWindow);
@@ -307,6 +303,9 @@ static void window_top_toolbar_mouseup()
 		break;
 	case WIDX_RESEARCH:
 		window_research_open();
+		break;
+	case WIDX_CHEATS:
+		window_cheats_open();
 		break;
 	}
 }
@@ -385,6 +384,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
+	case WIDX_FASTFORWARD:
+		top_toolbar_init_fastforward_menu(w, widget);
+		break;
 	}
 }
 
@@ -452,6 +454,9 @@ static void window_top_toolbar_dropdown()
 			break;
 		}
 		break;
+	case WIDX_FASTFORWARD:
+		top_toolbar_fastforward_menu_dropdown(dropdownIndex);
+		break;
 	}
 }
 
@@ -487,6 +492,8 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -496,6 +503,7 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -508,6 +516,7 @@ static void window_top_toolbar_invalidate()
 		
 		if (g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
 		}
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
@@ -522,6 +531,9 @@ static void window_top_toolbar_invalidate()
 
 		if (!gConfigInterface.toolbar_show_research)
 			window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
+
+		if (!gConfigInterface.toolbar_show_cheats)
+			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
 	}
 
 	enabledWidgets = 0;
@@ -622,10 +634,43 @@ static void window_top_toolbar_paint()
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 
+	// Draw fast forward button
+	if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0;
+		y = w->y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0;
+		if (widget_is_pressed(w, WIDX_FASTFORWARD))
+			y++;
+		//imgId = 5229;//SPR_NEXT;
+		//gfx_draw_sprite(dpi, imgId, x - 1, y - 2, 0);
+		imgId = SPR_NEXT;
+		gfx_draw_sprite(dpi, imgId, x + 4, y, 0);
+
+		char speedStr[] = { FORMAT_MEDIUMFONT, FORMAT_OUTLINE,
+			(gGameSpeed >= 5 ? FORMAT_YELLOW : FORMAT_GREEN),
+			175, (gGameSpeed >= 2 ? 175 : '\0'), (gGameSpeed >= 3 ? 175 : '\0'), (gGameSpeed >= 4 ? 175 : '\0'), '\0'
+		};
+		char* buffer;
+		buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+		format_string_part_from_raw(&buffer, &speedStr, NULL);
+		gfx_draw_string(dpi, speedStr, 0, x + 5, y + 14);
+	}
+
+	// Draw cheats button
+	if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1;
+		y = w->y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
+		if (widget_is_pressed(w, WIDX_CHEATS))
+			y++;
+		imgId = SPR_TAB_OBJECTIVE_0;
+		gfx_draw_sprite(dpi, imgId, x, y, 3);
+	}
+
 	// Draw research button
 	if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY) {
 		x = w->x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1;
 		y = w->y + window_top_toolbar_widgets[WIDX_RESEARCH].top;
+		if (widget_is_pressed(w, WIDX_RESEARCH))
+			y++;
 		imgId = SPR_TAB_FINANCES_RESEARCH_0;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
@@ -634,6 +679,8 @@ static void window_top_toolbar_paint()
 	if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY) {
 		x = w->x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3;
 		y = w->y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1;
+		if (widget_is_pressed(w, WIDX_FINANCES))
+			y++;
 		imgId = SPR_FINANCE;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
@@ -1783,6 +1830,60 @@ static void window_top_toolbar_tool_drag()
 		if (window_scenery_is_repaint_scenery_tool_on & 1)
 			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
+	}
+}
+
+
+void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
+	int num_items = 4;
+	gDropdownItemsFormat[0] = 1156;
+	gDropdownItemsFormat[1] = 1156;
+	gDropdownItemsFormat[2] = 1156;
+	gDropdownItemsFormat[3] = 1156;
+	if (gConfigGeneral.debugging_tools) {
+		gDropdownItemsFormat[4] = 0;
+		gDropdownItemsFormat[5] = 1156;
+		gDropdownItemsArgs[5] = 5146;
+		num_items = 6;
+	}
+
+	gDropdownItemsArgs[0] = 5142;
+	gDropdownItemsArgs[1] = 5143;
+	gDropdownItemsArgs[2] = 5144;
+	gDropdownItemsArgs[3] = 5145;
+	
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[0] | 0x80,
+		0,
+		num_items
+		);
+
+	// Set checkmarks
+	if (gGameSpeed <= 4)
+		gDropdownItemsChecked |= (1 << (gGameSpeed - 1));
+	if (gGameSpeed == 8)
+		gDropdownItemsChecked |= (1 << 5);
+
+	if (gConfigGeneral.debugging_tools)
+		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed == 8 ? 0 : gGameSpeed);
+	else
+		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+}
+
+void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		if (dropdownIndex >= 0 && dropdownIndex <= 5) {
+			gGameSpeed = dropdownIndex + 1;
+			if (gGameSpeed >= 5)
+				gGameSpeed = 8;
+			window_invalidate(w);
+		}
 	}
 }
 
