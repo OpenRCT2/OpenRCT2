@@ -3462,7 +3462,8 @@ STR_5133    :{SMALLFONT}{BLACK}Een kleiner gebied landrechten aanpassen
 STR_5134    :{SMALLFONT}{BLACK}Een groter gebied landrechten aanpassen
 STR_5135    :{SMALLFONT}{BLACK}Land en bouwrechten kopen
 STR_5136    :Landrechten
-STR_5137    :Kettingliften kunnen tot {VELOCITY}
+STR_5137    :Kettingliften en lanceringen{NEWLINE}kunnen tot {VELOCITY}
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Defecte remmen onmogelijk maken
+STR_5141    :Attractiedefecten uitschakelen
