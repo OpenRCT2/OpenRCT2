@@ -3479,7 +3479,7 @@ STR_5142    :Normal Speed
 STR_5143    :Quick Speed
 STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
-STR_5146    :Ludicrous Speed
+STR_5146    :Hyper Speed
 STR_5147    :Show cheats button on toolbar
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
