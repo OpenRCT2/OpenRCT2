@@ -769,7 +769,7 @@ void update_park_fences(int x, int y)
 				fence_required = 0;
 				break;
 			}
-		} while (!map_element_is_last_for_tile(mapElement));
+		} while (!map_element_is_last_for_tile(mapElement++));
 
 		if (fence_required) {
 			// As map_is_location_in_park sets the error text
