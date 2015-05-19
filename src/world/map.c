@@ -58,6 +58,28 @@ static void sub_6A87BB(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 
+void rotate_map_coordinates(sint16* x, sint16* y, uint8 rotation){
+	int temp;
+	switch (rotation){
+	case MAP_ELEMENT_DIRECTION_WEST:
+		break;
+	case MAP_ELEMENT_DIRECTION_NORTH:
+		temp = *x;
+		*x = *y;
+		*y = -temp;
+		break;
+	case MAP_ELEMENT_DIRECTION_EAST:
+		*x = -*x;
+		*y = -*y;
+		break;
+	case MAP_ELEMENT_DIRECTION_SOUTH:
+		temp = *y;
+		*y = *x;
+		*x = -temp;
+		break;
+	}
+}
+
 void map_element_iterator_begin(map_element_iterator *it)
 {
 	it->x = 0;
@@ -691,17 +713,30 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		return;
 	}
 
+	uint8 element_found = 0;
 	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-	while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE ||
-		map_element->base_height != base_height ||
-		map_element->properties.scenerymultiple.type >> 10 != scenerymultiple_index ||
-		(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction){
-		map_element++;
-		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = 0;
-			return;
-		}
+	do {
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+			continue;
+
+		if (map_element->base_height != base_height)
+			continue;
+
+		if ((map_element->properties.scenerymultiple.type >> 10) != scenerymultiple_index)
+			continue;
+
+		if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+			continue;
+
+		element_found = 1;
+		break;
+	} while (!map_element_is_last_for_tile(map_element++));
+
+	if (!element_found){
+		*ebx = 0;
+		return;
 	}
+
 	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
 		*ebx = 0;
 		return;
@@ -718,99 +753,75 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 			user_string_free(gBanners[banner_num].string_idx);
 		}
 	}
-	int x2 = scenery_entry->large_scenery.tiles[ecx2].x_offset;
-	int y2 = scenery_entry->large_scenery.tiles[ecx2].y_offset;
-	int z2 = (base_height * 8) - scenery_entry->large_scenery.tiles[ecx2].z_offset;
-	switch(map_element->type & MAP_ELEMENT_DIRECTION_MASK){
-		case MAP_ELEMENT_DIRECTION_WEST:
-			break;
-		case MAP_ELEMENT_DIRECTION_NORTH:{
-			int temp = x2;
-			x2 = y2;
-			y2 = -temp;
-			}break;
-		case MAP_ELEMENT_DIRECTION_EAST:
-			x2 = -x2;
-			y2 = -y2;
-			break;
-		case MAP_ELEMENT_DIRECTION_SOUTH:{
-			int temp = y2;
-			y2 = x2;
-			x2 = -temp;
-			}break;
-	}
-	x2 = -x2 + x;
-	y2 = -y2 + y;
-	int i = 0;
-	while(1){
-		if(scenery_entry->large_scenery.tiles[i].x_offset == -1){
-			*ebx = scenery_entry->large_scenery.removal_price * 10;
-			if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
-				*ebx = 0;
-			}
-			return;
-		}
-		int x3 = scenery_entry->large_scenery.tiles[i].x_offset;
-		int y3 = scenery_entry->large_scenery.tiles[i].y_offset;
-		int z3 = scenery_entry->large_scenery.tiles[i].z_offset;
-		switch(map_element->type & MAP_ELEMENT_DIRECTION_MASK){
-			case MAP_ELEMENT_DIRECTION_WEST:
-				break;
-			case MAP_ELEMENT_DIRECTION_NORTH:{
-				int temp = x3;
-				x3 = y3;
-				y3 = -temp;
-				}break;
-			case MAP_ELEMENT_DIRECTION_EAST:
-				x3 = -x3;
-				y3 = -y3;
-				break;
-			case MAP_ELEMENT_DIRECTION_SOUTH:{
-				int temp = y3;
-				y3 = x3;
-				x3 = -temp;
-				}break;
-		}
-		x3 += x2;
-		y3 += y2;
-		z3 += z2;
+
+	rct_xyz16 firstTile = { 
+		.x = scenery_entry->large_scenery.tiles[ecx2].x_offset, 
+		.y = scenery_entry->large_scenery.tiles[ecx2].y_offset,
+		.z = (base_height * 8) - scenery_entry->large_scenery.tiles[ecx2].z_offset
+	};
+
+	rotate_map_coordinates(&firstTile.x, &firstTile.y, map_element_direction);
+
+	firstTile.x = x - firstTile.x;
+	firstTile.y = y - firstTile.y;
+
+	for (int i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++){
+
+		rct_xyz16 currentTile = {
+			.x = scenery_entry->large_scenery.tiles[i].x_offset,
+			.y = scenery_entry->large_scenery.tiles[i].y_offset,
+			.z = scenery_entry->large_scenery.tiles[i].z_offset
+		};
+
+		rotate_map_coordinates(&currentTile.x, &currentTile.y, map_element_direction);
+
+		currentTile.x += firstTile.x;
+		currentTile.y += firstTile.y;
+		currentTile.z += firstTile.z;
+
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
-			if (!map_is_location_owned(x3, y3, z3)){
+			if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
 		}
 
-		if(*ebx & GAME_COMMAND_FLAG_APPLY){
-			rct_map_element* map_element = map_get_first_element_at(x3 / 32, y3 / 32);
-			uint8 tile_not_found = 1;
-			do
-			{
-				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
-					continue;
-
-				if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
-					continue;
-
-				if ((map_element->properties.scenerymultiple.type >> 10) != i)
-					continue;
-
-				if (map_element->base_height != z3 / 8)
-					continue;
-
-				map_invalidate_tile_full(x3, y3);
-				map_element_remove(map_element);
-				tile_not_found = 0;
-				break;
-			} while (!map_element_is_last_for_tile(map_element++));
-
-			if (tile_not_found){
-				log_error("Tile not found when trying to remove element!");
-			}
-		}
+		// If not applying then no need to delete the actual element
+		if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
+			continue;
 		
-		i++;
+		rct_map_element* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
+		uint8 tile_not_found = 1;
+		do
+		{
+			if (map_element_get_type(sceneryElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+				continue;
+
+			if ((sceneryElement->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+				continue;
+
+			if ((sceneryElement->properties.scenerymultiple.type >> 10) != i)
+				continue;
+
+			if (sceneryElement->base_height != currentTile.z / 8)
+				continue;
+
+			map_invalidate_tile_full(currentTile.x, currentTile.y);
+			map_element_remove(sceneryElement);
+			tile_not_found = 0;
+			break;
+		} while (!map_element_is_last_for_tile(sceneryElement++));
+
+		if (tile_not_found){
+			log_error("Tile not found when trying to remove element!");
+		}
 	}
+
+	*ebx = scenery_entry->large_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+		*ebx = 0;
+	}
+	return;
 }
 
 /**
