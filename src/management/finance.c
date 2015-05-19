@@ -157,7 +157,8 @@ void finance_reset_history()
 */
 void finance_init() {
 
-	for (short i = 0; i < 56; i++) {
+	// It only initializes the first month
+	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
 		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
 	}
 
@@ -297,4 +298,33 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 
 	*ebx = 0;
+}
+
+/**
+* Shift the expenditure table history one month to the left
+* If the table is full, acumulate the sum of the oldest month first
+* rct2: 0x0069DEAD
+*/
+
+void finance_shift_expenditure_table() {
+
+	// If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= EXPENDITURE_TABLE_MONTH_COUNT) {
+		money32 sum = 0;
+		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
+			sum += RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i];
+		}
+		RCT2_GLOBAL(0x013587D0, money32) += sum;
+	}
+	// Shift the table
+	for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--) {
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] =
+			RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i - RCT_EXPENDITURE_TYPE_COUNT];
+	}
+	// Zero the beggining of the table, which is the new month
+	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+	}
+	// Invalidate the expenditure table window
+	window_invalidate_by_number(0x1C, 0);
 }
