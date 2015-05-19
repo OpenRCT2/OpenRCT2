@@ -24,6 +24,7 @@
 #include "../config.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
+#include "../interface/console.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../input.h"
@@ -384,23 +385,29 @@ void platform_process_messages()
 				gTextInput[gTextInputLength - 1] = '\0';
 				gTextInputCursorPosition--;
 				gTextInputLength--;
+				console_refresh_carot();
 			}
 			if (e.key.keysym.sym == SDLK_END){
 				gTextInputCursorPosition = gTextInputLength;
+				console_refresh_carot();
 			}
 			if (e.key.keysym.sym == SDLK_HOME){
 				gTextInputCursorPosition = 0;
+				console_refresh_carot();
 			}
 			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != gTextInputLength){
 				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, gTextInputMaxLength - gTextInputCursorPosition - 1);
 				gTextInput[gTextInputMaxLength - 1] = '\0';
 				gTextInputLength--;
+				console_refresh_carot();
 			}
 			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
 				if (gTextInputCursorPosition) gTextInputCursorPosition--;
+				console_refresh_carot();
 			}
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
+				console_refresh_carot();
 			}
 			// Checks GUI modifier key for Macs otherwise ctrl key
 #ifdef MAC
@@ -450,6 +457,8 @@ void platform_process_messages()
 			if (gTextInputLength < gTextInputMaxLength && gTextInput){
 				// Convert the utf-8 code into rct ascii
 				char new_char;
+				if (e.text.text[0] == '`' && gConsoleOpen)
+					continue;
 				if (!(e.text.text[0] & 0x80))
 					new_char = *e.text.text;
 				else if (!(e.text.text[0] & 0x20))
@@ -466,6 +475,7 @@ void platform_process_messages()
 				}
 
 				gTextInputCursorPosition++;
+				console_refresh_carot();
 			}
 			break;
 		default:

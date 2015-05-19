@@ -15,7 +15,10 @@ void console_draw(rct_drawpixelinfo *dpi);
 void console_input(int c);
 void console_write(const char *src);
 void console_writeline(const char *src);
+void console_printf(const char *format, ...);
 void console_execute(const char *src);
 void console_clear();
+void console_clear_line();
+void console_refresh_carot();
 
 #endif

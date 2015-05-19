@@ -1,8 +1,10 @@
+#include <stdarg.h>
 #include <SDL_scancode.h>
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../object.h"
 #include "console.h"
 #include "window.h"
 
@@ -21,6 +23,7 @@ static char *_consoleViewBufferStart = _consoleBuffer;
 static char _consoleCurrentLine[CONSOLE_INPUT_SIZE];
 static char *_consoleCurrentLinePointer = _consoleCurrentLine;
 static int _consoleCaretTicks;
+static char _consolePrintfBuffer[CONSOLE_BUFFER_SIZE];
 
 static char _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
 static int _consoleHistoryIndex = 0;
@@ -33,9 +36,12 @@ static void console_clear_input();
 static void console_history_add(const char *src);
 static void console_write_all_commands();
 
+static int cc_help(const char **argv, int argc);
+
 void console_open()
 {
 	gConsoleOpen = true;
+	console_refresh_carot();
 	console_update_scroll();
 	platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
@@ -110,6 +116,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Set font
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
 
 	// Background
 	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 0);
@@ -149,7 +156,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 	gfx_draw_string(dpi, _consoleCurrentLine, 255, x, y);
 
 	// Draw caret
-	if (_consoleCaretTicks >= 15) {
+	if (_consoleCaretTicks < 15) {
 		memcpy(lineBuffer, _consoleCurrentLine, gTextInputCursorPosition);
 		lineBuffer[gTextInputCursorPosition] = 0;
 		int caretX = x + gfx_get_string_width(lineBuffer);
@@ -157,7 +164,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_GREEN);
 	}
-
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom + 1, _consoleRight, _consoleBottom + 1, 14);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom + 2, _consoleRight, _consoleBottom + 2, 11);
 }
 
 void console_input(int c)
@@ -165,6 +173,7 @@ void console_input(int c)
 	switch (c) {
 	case SDL_SCANCODE_ESCAPE:
 		console_clear_input();
+		console_refresh_carot();
 		break;
 	case SDL_SCANCODE_RETURN:
 		if (_consoleCurrentLine[0] != 0) {
@@ -172,6 +181,7 @@ void console_input(int c)
 			console_execute(_consoleCurrentLine);
 			console_write_prompt();
 			console_clear_input();
+			console_refresh_carot();
 		}
 		break;
 	case SDL_SCANCODE_UP:
@@ -226,6 +236,15 @@ void console_writeline(const char *src)
 	console_write("\n");
 }
 
+void console_printf(const char *format, ...)
+{
+	va_list list;
+	va_start(list, format);
+	
+	vsprintf(_consolePrintfBuffer, format, list);
+	console_writeline(_consolePrintfBuffer);
+}
+
 static void console_update_scroll()
 {
 	int lines = 0;
@@ -246,6 +265,17 @@ void console_clear()
 {
 	_consoleBuffer[0] = 0;
 	_consoleBufferPointer = _consoleBuffer;
+}
+
+void console_clear_line()
+{
+	_consoleCurrentLine[0] = 0;
+	console_refresh_carot();
+}
+
+void console_refresh_carot()
+{
+	_consoleCaretTicks = 0;
 }
 
 static void console_clear_input()
@@ -279,23 +309,40 @@ static int cc_echo(const char **argv, int argc)
 	return 0;
 }
 
-static int cc_help(const char **argv, int argc)
+static int cc_object_count(const char **argv, int argc)
 {
-	console_write_all_commands();
+	console_printf("%d total rides\n%d total large scenery", object_entry_group_counts[0], object_entry_group_counts[1]);
 	return 0;
 }
+
 
 typedef int (*console_command_func)(const char **argv, int argc);
 typedef struct {
 	char *command;
 	console_command_func func;
+	char *help;
 } console_command;
 
 console_command console_command_table[] = {
-	{ "clear", cc_clear },
-	{ "echo", cc_echo },
-	{ "help", cc_help }
+	{ "clear", cc_clear, "Clears the console." },
+	{ "echo", cc_echo, "Echos the text to the console.\necho text" },
+	{ "help", cc_help, "Lists commands or info about a command.\nhelp [command]" },
+	{ "object_count", cc_object_count, "Lists the total objecst in the scenario.\nobject_count" }
 };
+
+static int cc_help(const char **argv, int argc)
+{
+	if (argc > 0) {
+		for (int i = 0; i < countof(console_command_table); i++) {
+			if (strcmp(console_command_table[i].command, argv[0]) == 0)
+				console_writeline(console_command_table[i].help);
+		}
+	}
+	else {
+		console_write_all_commands();
+	}
+	return 0;
+}
 
 static void console_write_all_commands()
 {
