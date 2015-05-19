@@ -2703,6 +2703,10 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
 	uint8 max_value = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
 
+	//Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
+	if(ride->mode == RIDE_MODE_MAZE && !gConfigCheat.fast_lift_hill)
+		max_value = 64;
+
 	if (value < max_value)
 		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
@@ -2920,7 +2924,7 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_load_dropdown(w, widget);
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, 7));
+		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, 20));
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
 		set_operating_setting(w->number, 9, max(1, ride->num_circuits - 1));
