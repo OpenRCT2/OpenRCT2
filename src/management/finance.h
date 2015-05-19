@@ -39,8 +39,12 @@ enum {
 	RCT_EXPENDITURE_TYPE_WAGES,
 	RCT_EXPENDITURE_TYPE_MARKETING,
 	RCT_EXPENDITURE_TYPE_RESEARCH,
-	RCT_EXPENDITURE_TYPE_INTEREST
+	RCT_EXPENDITURE_TYPE_INTEREST,
+	RCT_EXPENDITURE_TYPE_COUNT
 };
+
+#define EXPENDITURE_TABLE_MONTH_COUNT 16
+#define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 
 extern const money32 research_cost_table[4];
 
@@ -52,6 +56,7 @@ void finance_pay_ride_upkeep();
 void finance_reset_history();
 void finance_init();
 void finance_update_daily_profit();
+void finance_shift_expenditure_table();
 void sub_69E869();
 
 void finance_set_loan(money32 loan);
