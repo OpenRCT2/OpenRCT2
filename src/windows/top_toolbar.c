@@ -640,17 +640,16 @@ static void window_top_toolbar_paint()
 		y = w->y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0;
 		if (widget_is_pressed(w, WIDX_FASTFORWARD))
 			y++;
-		//imgId = 5229;//SPR_NEXT;
-		//gfx_draw_sprite(dpi, imgId, x - 1, y - 2, 0);
-		imgId = SPR_NEXT;
-		gfx_draw_sprite(dpi, imgId, x + 4, y, 0);
+		imgId = SPR_G2_FASTFORWARD;
+		gfx_draw_sprite(dpi, imgId, x + 6, y + 3, 0);
 
-		char speedStr[] = { FORMAT_MEDIUMFONT, FORMAT_OUTLINE,
-			(gGameSpeed >= 5 ? FORMAT_YELLOW : FORMAT_GREEN),
-			175, (gGameSpeed >= 2 ? 175 : '\0'), (gGameSpeed >= 3 ? 175 : '\0'), (gGameSpeed >= 4 ? 175 : '\0'), '\0'
-		};
-		format_string_raw(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), speedStr, NULL);
-		gfx_draw_string(dpi, speedStr, 0, x + 5, y + 14);
+
+		for (int i = 0; i < gGameSpeed && gGameSpeed <= 4; i++) {
+			gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
+		}
+		if (gGameSpeed == 8) {
+			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
+		}
 	}
 
 	// Draw cheats button
