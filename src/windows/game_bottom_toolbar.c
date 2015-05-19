@@ -150,6 +150,10 @@ void window_game_bottom_toolbar_open()
 	window->frame_no = 0;
 	window_init_scroll_widgets(window);
 
+	// Reset the middle widget to not show by default.
+	// If it is required to be shown news_update will reshow it.
+	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
+
 	if(!gConfigInterface.rct1_colour_scheme)
 	{
 		window->colours[0] = 140;

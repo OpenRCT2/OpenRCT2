@@ -2618,20 +2618,14 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 		return 0;
 	}
 
-	int x = trackElement.x, y = trackElement.y, z = 0;
-	rct_map_element* map_element = trackElement.element;
-
+	int z = 0;
 	//6ce69e
-
-	if (!(sub_6C6402(&map_element, &x, &y, &z))){
-		trackElement.element = map_element;
-		trackElement.x = x;
-		trackElement.y = y;
-		rct_map_element* initial_map = map_element;
+	if (!(sub_6C6402(&trackElement.element, &trackElement.x, &trackElement.y, &z))){
+		rct_map_element* initial_map = trackElement.element;
 		do {
-			x = trackElement.x;
-			y = trackElement.y;
-			map_element = trackElement.element;
+			int x = trackElement.x;
+			int y = trackElement.y;
+			rct_map_element* map_element = trackElement.element;
 			if (sub_6C6402(&map_element, &x, &y, &z)){
 				break;
 			}
@@ -2641,9 +2635,9 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 		} while (initial_map != trackElement.element);
 	}
 
-	z = map_element->base_height * 8;
-	uint8 track_type = map_element->properties.track.type;
-	uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	z = trackElement.element->base_height * 8;
+	uint8 track_type = trackElement.element->properties.track.type;
+	uint8 direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
 	RCT2_GLOBAL(0x00F4414D, uint8) = direction;
 
 	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)){
@@ -2762,10 +2756,10 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			if (location == 0xFFFF)
 				continue;
 
-			x = (location & 0xFF) * 32;
-			y = ((location & 0xFF00) >> 8) * 32;
+			int x = (location & 0xFF) * 32;
+			int y = ((location & 0xFF00) >> 8) * 32;
 
-			map_element = map_get_first_element_at(x / 32, y / 32);
+			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 			do{
 				if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_ENTRANCE)
@@ -2849,10 +2843,10 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
+	int x = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) -
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
 
-	y = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) -
+	int y = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) -
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
 
 	x /= 32;
