@@ -78,7 +78,8 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		gExitCode = cmdline_call_action(argv, argc);
-		return 0;
+		if (gExitCode != 0)
+			return 0;
 	}
 
 	print_launch_information();

@@ -35,6 +35,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
     <ClCompile Include="..\src\input.c" />
+    <ClCompile Include="..\src\interface\console.c" />
     <ClCompile Include="..\src\interface\graph.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c" />
     <ClCompile Include="..\src\interface\screenshot.c" />
@@ -162,6 +163,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
+    <ClInclude Include="..\src\interface\console.h" />
     <ClInclude Include="..\src\interface\graph.h" />
     <ClInclude Include="..\src\interface\keyboard_shortcut.h" />
     <ClInclude Include="..\src\interface\screenshot.h" />

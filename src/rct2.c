@@ -28,6 +28,7 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "interface/console.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -72,7 +73,7 @@ int rct2_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
-	srand(time(0));
+	srand((unsigned int)time(0));
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, short);
 	if (!rct2_init_directories())
@@ -346,6 +347,9 @@ void rct2_update_2()
 		title_update();
 	else
 		game_update();
+
+	console_update();
+	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }
 
 void rct2_endupdate()

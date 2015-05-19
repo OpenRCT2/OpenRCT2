@@ -4,7 +4,6 @@
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>
-    </LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2\Scenarios\Lucky Lake.SC6"</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

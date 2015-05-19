@@ -460,8 +460,10 @@ void platform_process_messages()
 					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
 					gTextInput[gTextInputCursorPosition] = new_char;
 					gTextInputLength++;
+				} else {
+					gTextInput[gTextInputLength++] = new_char;
+					gTextInput[gTextInputLength++] = 0;
 				}
-				else gTextInput[gTextInputLength++] = new_char;
 
 				gTextInputCursorPosition++;
 			}

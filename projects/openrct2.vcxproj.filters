@@ -369,7 +369,6 @@
     <ClCompile Include="..\src\diagnostic.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -438,6 +437,9 @@
     </ClCompile>
     <ClCompile Include="..\src\windows\land_rights.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\console.c">
+      <Filter>Source\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -641,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="..\src\world\fountain.h">
       <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\console.h">
+      <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

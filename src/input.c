@@ -25,6 +25,7 @@
 #include "cursors.h"
 #include "game.h"
 #include "input.h"
+#include "interface/console.h"
 #include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
 #include "interface/widget.h"
@@ -1140,24 +1141,26 @@ void game_handle_keyboard_input()
 	rct_window *w;
 	int key;
 
-	// Handle mouse scrolling
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
-			if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 1)
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
-					game_handle_edge_scroll();
-
-	// Handle modifier keys and key scrolling
-	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
-	if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
-		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
-		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
-		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+	if (!gConsoleOpen) {
+		// Handle mouse scrolling
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-			game_handle_key_scroll();
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
+				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == 1)
+					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
+						game_handle_edge_scroll();
+
+		// Handle modifier keys and key scrolling
+		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+		if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
+			if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
+			if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
+				game_handle_key_scroll();
+		}
 	}
 
 
@@ -1165,6 +1168,16 @@ void game_handle_keyboard_input()
 	while ((key = get_next_key()) != 0) {
 		if (key == 255)
 			continue;
+
+		// Reserve backtick for console
+		if (key == SDL_SCANCODE_GRAVE) {
+			if (gConfigGeneral.debugging_tools || gConsoleOpen)
+				console_toggle();
+			continue;
+		} else if (gConsoleOpen) {
+			console_input(key);
+			continue;
+		}
 
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
 

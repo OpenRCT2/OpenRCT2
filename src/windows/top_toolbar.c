@@ -649,9 +649,7 @@ static void window_top_toolbar_paint()
 			(gGameSpeed >= 5 ? FORMAT_YELLOW : FORMAT_GREEN),
 			175, (gGameSpeed >= 2 ? 175 : '\0'), (gGameSpeed >= 3 ? 175 : '\0'), (gGameSpeed >= 4 ? 175 : '\0'), '\0'
 		};
-		char* buffer;
-		buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-		format_string_part_from_raw(&buffer, &speedStr, NULL);
+		format_string_raw(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), speedStr, NULL);
 		gfx_draw_string(dpi, speedStr, 0, x + 5, y + 14);
 	}
 

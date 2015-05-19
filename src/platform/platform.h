@@ -61,6 +61,7 @@ extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
 extern unsigned int gLastKeyPressed;
 extern int gTextInputCursorPosition;
+extern int gTextInputLength;
 
 extern int gResolutionsAllowAnyAspectRatio;
 extern int gNumResolutions;

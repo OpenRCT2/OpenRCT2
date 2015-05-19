@@ -27,7 +27,7 @@
 #include "string_ids.h"
 
 void format_string(char *dest, rct_string_id format, void *args);
-void format_string_part_from_raw(char **dest, const char *src, char **args);
+void format_string_raw(char *dest, char *src, void *args);
 void generate_string_file();
 void error_string_quit(int error, rct_string_id format);
 int get_string_length(char* buffer);

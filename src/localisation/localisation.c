@@ -638,6 +638,11 @@ void format_string(char *dest, rct_string_id format, void *args)
 	format_string_part(&dest, format, (char**)&args);
 }
 
+void format_string_raw(char *dest, char *src, void *args)
+{
+	format_string_part_from_raw(&dest, src, &args);
+}
+
 /**
  *  rct2: 0x006E37F7
  *  error  (eax)
