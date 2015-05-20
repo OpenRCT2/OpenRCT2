@@ -245,14 +245,17 @@ static void platform_resize(int width, int height)
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
-	window_resize_gui(width, height);
-	window_relocate_windows(width, height);
+	flags = SDL_GetWindowFlags(gWindow);
+
+	if ((flags & SDL_WINDOW_MINIMIZED) == 0) {
+		window_resize_gui(width, height);
+		window_relocate_windows(width, height);
+	}
 
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly
 	// This is called in rct2_update_2 and is only called after resizing a window has finished
-	flags = SDL_GetWindowFlags(gWindow);
 	if ((flags & (SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED |
 		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP)) == 0) {
 		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
