@@ -796,7 +796,7 @@ static void* window_ride_music_events[] = {
 
 // 0x0098DE14
 static void* window_ride_measurements_events[] = {
-	window_ride_emptysub,
+	window_ride_measurements_close,
 	window_ride_measurements_mouseup,
 	window_ride_measurements_resize,
 	window_ride_measurements_mousedown,
