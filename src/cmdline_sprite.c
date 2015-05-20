@@ -415,7 +415,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 	}
 	else if (_strcmpi(argv[0], "build") == 0) {
 		if (argc < 3) {
-			fprintf(stderr, "usage: sprite build <spritefile> <resourcedir> [-s]\n");
+			fprintf(stderr, "usage: sprite build <spritefile> <resourcedir> [silent]\n");
 			return -1;
 		}
 
@@ -424,7 +424,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		char imagePath[256], number[8];
 		int resourceLength = strlen(resourcePath);
 
-		bool silent = (argc >= 4 && strcmp(argv[3], "-s") == 0);
+		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 		bool fileExists = true;
 		FILE *file;
 
@@ -436,7 +436,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		for (int i = 0; fileExists; i++) {
 			itoa(i, number, 10);
 			strcpy(imagePath, resourcePath);
-			if (resourceLength == 0 || resourcePath[resourceLength - 1] != '/')
+			if (resourceLength == 0 || (resourcePath[resourceLength - 1] != '/' && resourcePath[resourceLength - 1] != '\\'))
 				strcat(imagePath, "/");
 			strcat(imagePath, number);
 			strcat(imagePath, ".png");
@@ -484,7 +484,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	} else {
 		fprintf(stderr, "Unknown sprite command.");
-		return -1;
+		return 1;
 	}
 }
 
