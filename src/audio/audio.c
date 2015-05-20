@@ -23,6 +23,7 @@
 #include "../config.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
+#include "../localisation/language.h"
 #include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -68,11 +69,11 @@ void audio_get_devices()
 		gAudioDeviceCount++;
 		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
 
-		strcpy(gAudioDevices[0].name, "Default sound device");
+		strcpy(gAudioDevices[0].name, language_get_string(5151));
 		for (i = 1; i < gAudioDeviceCount; i++) {
 			const char *utf8_name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
 			if (utf8_name == NULL)
-				utf8_name = "(UNKNOWN)";
+				utf8_name = language_get_string(5152);
 
 			strcpy(gAudioDevices[i].name, utf8_name);
 		}
