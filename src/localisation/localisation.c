@@ -640,7 +640,7 @@ void format_string(char *dest, rct_string_id format, void *args)
 
 void format_string_raw(char *dest, char *src, void *args)
 {
-	format_string_part_from_raw(&dest, src, &args);
+	format_string_part_from_raw(&dest, src, (char**)&args);
 }
 
 /**
