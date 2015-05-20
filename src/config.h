@@ -138,6 +138,7 @@ typedef struct {
 	uint8 toolbar_show_cheats;
 	uint8 allow_subtype_switching;
 	uint8 rct1_colour_scheme;
+	uint8 console_small_font;
 } interface_configuration;
 
 typedef struct {

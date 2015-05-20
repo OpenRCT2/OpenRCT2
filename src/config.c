@@ -169,6 +169,7 @@ config_property_definition _interfaceDefinitions[] = {
 	{ offsetof(interface_configuration, toolbar_show_cheats),			"toolbar_show_cheats",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, allow_subtype_switching),		"allow_subtype_switching",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, rct1_colour_scheme),			"rct1_colour_scheme",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(interface_configuration, console_small_font),			"console_small_font",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _soundDefinitions[] = {

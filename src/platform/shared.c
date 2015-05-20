@@ -318,6 +318,10 @@ void platform_process_messages()
 			gCursorState.y = e.motion.y;
 			break;
 		case SDL_MOUSEWHEEL:
+			if (gConsoleOpen) {
+				console_scroll(e.wheel.y);
+				break;
+			}
 			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
@@ -458,7 +462,7 @@ void platform_process_messages()
 				// Convert the utf-8 code into rct ascii
 				char new_char;
 				if (e.text.text[0] == '`' && gConsoleOpen)
-					continue;
+					break;
 				if (!(e.text.text[0] & 0x80))
 					new_char = *e.text.text;
 				else if (!(e.text.text[0] & 0x20))
@@ -471,7 +475,7 @@ void platform_process_messages()
 					gTextInputLength++;
 				} else {
 					gTextInput[gTextInputLength++] = new_char;
-					gTextInput[gTextInputLength++] = 0;
+					gTextInput[gTextInputLength] = 0;
 				}
 
 				gTextInputCursorPosition++;
