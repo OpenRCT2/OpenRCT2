@@ -22,7 +22,7 @@ void console_execute(const char *src);
 void console_execute_silent(const char *src);
 void console_clear();
 void console_clear_line();
-void console_refresh_carot();
+void console_refresh_caret();
 void console_scroll(int delta);
 
 #endif

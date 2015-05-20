@@ -389,29 +389,29 @@ void platform_process_messages()
 				gTextInput[gTextInputLength - 1] = '\0';
 				gTextInputCursorPosition--;
 				gTextInputLength--;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_END){
 				gTextInputCursorPosition = gTextInputLength;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_HOME){
 				gTextInputCursorPosition = 0;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput && gTextInputCursorPosition != gTextInputLength){
 				memmove(gTextInput + gTextInputCursorPosition, gTextInput + gTextInputCursorPosition + 1, gTextInputMaxLength - gTextInputCursorPosition - 1);
 				gTextInput[gTextInputMaxLength - 1] = '\0';
 				gTextInputLength--;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
 				if (gTextInputCursorPosition) gTextInputCursorPosition--;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput){
 				if (gTextInputCursorPosition < gTextInputLength) gTextInputCursorPosition++;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			// Checks GUI modifier key for Macs otherwise ctrl key
 #ifdef MAC
@@ -479,7 +479,7 @@ void platform_process_messages()
 				}
 
 				gTextInputCursorPosition++;
-				console_refresh_carot();
+				console_refresh_caret();
 			}
 			break;
 		default:

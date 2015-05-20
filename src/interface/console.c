@@ -55,7 +55,7 @@ void console_open()
 {
 	gConsoleOpen = true;
 	_consoleScrollPos = 0;
-	console_refresh_carot();
+	console_refresh_caret();
 	console_update_scroll();
 	platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
@@ -220,7 +220,7 @@ void console_input(int c)
 	switch (c) {
 	case SDL_SCANCODE_ESCAPE:
 		console_clear_input();
-		console_refresh_carot();
+		console_refresh_caret();
 		break;
 	case SDL_SCANCODE_RETURN:
 		if (_consoleCurrentLine[0] != 0) {
@@ -228,7 +228,7 @@ void console_input(int c)
 			console_execute(_consoleCurrentLine);
 			console_write_prompt();
 			console_clear_input();
-			console_refresh_carot();
+			console_refresh_caret();
 		}
 		break;
 	case SDL_SCANCODE_UP:
@@ -365,10 +365,10 @@ void console_clear()
 void console_clear_line()
 {
 	_consoleCurrentLine[0] = 0;
-	console_refresh_carot();
+	console_refresh_caret();
 }
 
-void console_refresh_carot()
+void console_refresh_caret()
 {
 	_consoleCaretTicks = 0;
 }
@@ -610,6 +610,8 @@ static int cc_set(const char **argv, int argc)
 		else {
 			console_writeline_error("Invalid variable or value.");
 		}
+
+		gfx_invalidate_screen();
 	}
 	return 0;
 }
