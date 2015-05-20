@@ -412,6 +412,75 @@ int cmdline_for_sprite(const char **argv, int argc)
 			return -1;
 
 		return 1;
+	}
+	else if (_strcmpi(argv[0], "build") == 0) {
+		/*if (argc < 3) {
+			fprintf(stderr, "usage: sprite build [spritefile] [resources]\n");
+			return -1;
+		}*/
+
+		const char *spriteFilePath = "../../data/g2.dat";
+		const char *resourcePath = "../../resources/g2/";
+		char imagePath[256], number[8];
+
+		bool fileExists = true;
+		FILE *file;
+
+		spriteFileHeader.num_entries = 0;
+		spriteFileHeader.total_size = 0;
+		sprite_file_save(spriteFilePath);
+
+		//sprite_file_close();
+
+		printf("Building: %s\n", spriteFilePath);
+		for (int i = 0; fileExists; i++) {
+			itoa(i, number, 10);
+			strcpy(imagePath, resourcePath);
+			strcat(imagePath, number);
+			strcat(imagePath, ".png");
+			if (file = fopen(imagePath, "r")) {
+				fclose(file);
+				rct_g1_element spriteElement;
+				uint8 *buffer;
+				int bufferLength;
+				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength)) {
+					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
+					printf("Could not import image file: %s\nCanceling\n", imagePath);
+					return -1;
+				}
+
+				if (!sprite_file_open(spriteFilePath)) {
+					fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
+					printf("Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
+					return -1;
+				}
+
+				spriteFileHeader.num_entries++;
+				spriteFileHeader.total_size += bufferLength;
+				spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+				spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+				spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
+				memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
+				spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
+
+				free(buffer);
+
+				if (!sprite_file_save(spriteFilePath)) {
+					printf("Could not save sprite file: %s\nCanceling\n", imagePath);
+					return -1;
+				}
+				printf("Added: %s\n", imagePath);
+			}
+			else {
+
+				printf("Could not find file: %s\n", imagePath);
+				fileExists = false;
+			}
+		}
+
+
+		printf("Finished\n", imagePath);
+		return 1;
 	} else {
 		fprintf(stderr, "Unknown sprite command.");
 		return -1;

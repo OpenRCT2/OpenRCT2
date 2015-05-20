@@ -647,9 +647,12 @@ static void window_top_toolbar_paint()
 		for (int i = 0; i < gGameSpeed && gGameSpeed <= 4; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
 		}
-		if (gGameSpeed == 8) {
-			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
+		for (int i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
+			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
+		/*if (gGameSpeed >= 8) {
+			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
+		}*/
 	}
 
 	// Draw cheats button
