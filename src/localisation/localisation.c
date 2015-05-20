@@ -176,6 +176,8 @@ void format_comma_separated_integer(char **dest, long long value)
 	char *dst = *dest;
 	char *finish;
 	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *ch;
 
 	// Negative sign
 	if (value < 0) {
@@ -194,7 +196,11 @@ void format_comma_separated_integer(char **dest, long long value)
 			// Append group seperator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				*dst++ = ',';
+				
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
 			}
 
 			digit = value % 10;
@@ -224,6 +230,9 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 	char *dst = *dest;
 	char *finish;
 	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *decimalMark = language_get_string(5152);
+	const char *ch;
 
 	// Negative sign
 	if (value < 0) {
@@ -240,7 +249,11 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 	digit = value % 10;
 	value /= 10;
 	*dst++ = '0' + digit;
-	*dst++ = '.';
+
+	ch = decimalMark;
+	while (*ch != 0) {
+		*dst++ = *ch++;
+	}
 
 	if (value == 0) {
 		*dst++ = '0';
@@ -251,7 +264,11 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 			// Append group seperator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				*dst++ = ',';
+				
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
 			}
 
 			digit = value % 10;
