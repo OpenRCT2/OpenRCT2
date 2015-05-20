@@ -890,7 +890,7 @@ void window_scenery_invalidate()
 
 	uint16 tabIndex = window_scenery_active_tab_index;
 	uint32 titleStringId = 1813;
-	if (tabIndex <= 19)
+	if (tabIndex < 19)
 		titleStringId = g_scenerySetEntries[tabIndex]->name;
 	
 	window_scenery_widgets[WIDX_SCENERY_TITLE].image = titleStringId;
