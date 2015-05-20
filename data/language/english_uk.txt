@@ -3484,3 +3484,5 @@ STR_5147    :Show cheats button on toolbar
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
+STR_5151    :Default sound device
+STR_5152    :(UNKNOWN)
