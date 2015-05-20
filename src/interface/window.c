@@ -140,7 +140,7 @@ void window_dispatch_update_all()
 	rct_window *w;
 
 	RCT2_GLOBAL(0x01423604, sint32)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
+	//RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
 
