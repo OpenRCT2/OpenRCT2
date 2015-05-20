@@ -3467,3 +3467,12 @@ STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Defecte remmen onmogelijk maken
 STR_5141    :Attractiedefecten uitschakelen
+STR_5142    :Normaal
+STR_5143    :Vlot
+STR_5144    :Hard
+STR_5145    :Turbo
+STR_5146    :Nitro
+STR_5147    :'Cheats'-knop in de werkbalk tonen
+STR_5148    :{SMALLFONT}{BLACK}Spelsnelheid veranderen
+STR_5149    :{SMALLFONT}{BLACK}Het cheatsvenster openen
+STR_5150    :Debugging-hulpmiddelen inschakelen
