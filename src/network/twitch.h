@@ -9,4 +9,6 @@ typedef struct {
 
 bool twitch_get_followers(const twitch_info *twitchInfo, int *outNumFollowers, char ***outFollowerNames);
 
+void twitch_update_peeps();
+
 #endif

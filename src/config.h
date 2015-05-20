@@ -155,6 +155,9 @@ typedef struct {
 	uint8 disable_all_breakdowns;
 } cheat_configuration;
 
+typedef struct {
+	utf8string channel;
+} twitch_configuration;
 
 typedef struct {
 	uint8 key;
@@ -165,6 +168,7 @@ extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
+extern twitch_configuration gConfigTwitch;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 

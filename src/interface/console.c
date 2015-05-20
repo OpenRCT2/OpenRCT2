@@ -9,6 +9,7 @@
 #include "../cursors.h"
 #include "../game.h"
 #include "../input.h"
+#include "../network/twitch.h"
 #include "../object.h"
 #include "console.h"
 #include "window.h"
@@ -616,6 +617,11 @@ static int cc_set(const char **argv, int argc)
 	return 0;
 }
 
+static int cc_twitch(const char **argv, int argc)
+{
+	twitch_update_peeps();
+	return 0;
+}
 
 typedef int (*console_command_func)(const char **argv, int argc);
 typedef struct {
@@ -657,6 +663,7 @@ console_command console_command_table[] = {
 	{ "help", cc_help, "Lists commands or info about a command.\nhelp [command]" },
 	{ "get", cc_get, "Gets the value of the specified variable.\nget variable" },
 	{ "set", cc_set, "Sets the variable to the specified value.\nset variable value" },
+	{ "twitch", cc_twitch, "Twitch API" },
 	{ "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set." }
 };
 
