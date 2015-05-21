@@ -475,9 +475,11 @@ config_section_definition *config_get_section_def(const utf8 *name, int size)
 {
 	int i;
 
-	for (i = 0; i < countof(_sectionDefinitions); i++)
-		if (_strnicmp(_sectionDefinitions[i].section_name, name, size) == 0)
+	for (i = 0; i < countof(_sectionDefinitions); i++) {
+		const_utf8string sectionName = _sectionDefinitions[i].section_name;
+		if (sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
 			return &_sectionDefinitions[i];
+	}
 
 	return NULL;
 }
@@ -486,9 +488,11 @@ config_property_definition *config_get_property_def(config_section_definition *s
 {
 	int i;
 
-	for (i = 0; i < section->property_definitions_count; i++)
-		if (_strnicmp(section->property_definitions[i].property_name, name, size) == 0)
+	for (i = 0; i < section->property_definitions_count; i++) {
+		const_utf8string propertyName = section->property_definitions[i].property_name;
+		if (propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
 			return &section->property_definitions[i];
+	}
 
 	return NULL;
 }
