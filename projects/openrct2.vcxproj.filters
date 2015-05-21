@@ -396,7 +396,6 @@
     <ClCompile Include="..\src\windows\editor_scenario_options.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\map_helpers.c">
       <Filter>Source\World</Filter>
     </ClCompile>
