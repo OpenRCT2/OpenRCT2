@@ -23,6 +23,8 @@
 
 char *gUserStrings = (char*)0x0135A8F4;
 
+static bool user_string_exists(const char *text);
+
 /**
  *
  *  rct2: 0x006C4209
@@ -38,13 +40,24 @@ void user_string_clear_all()
  */
 rct_string_id user_string_allocate(int base, const char *text)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int highBits = (base & 0x7F) << 9;
+	bool allowDuplicates = base & 0x80;
 
-	ecx = base;
-	edi = (int)text;
-	RCT2_CALLFUNC_X(0x006C421D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	
-	return eax & 0xFFFF;
+	if (!allowDuplicates && user_string_exists(text)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CHOSEN_NAME_IN_USE_ALREADY;
+		return 0;
+	}
+
+	char *userString = gUserStrings;
+	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+		if (userString[0] != 0)
+			continue;
+
+		strncpy(userString, text, USER_STRING_MAX_LENGTH - 1);
+		return 0x8000 + (i | highBits);
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_NAMES_DEFINED;
+	return 0;
 }
 
 /**
@@ -53,9 +66,27 @@ rct_string_id user_string_allocate(int base, const char *text)
  */
 void user_string_free(rct_string_id id)
 {
-	if (id < 0x8000 || id >= 0x9000)
+	if (!is_user_string_id(id))
 		return;
 
 	id %= MAX_USER_STRINGS;
 	gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
+}
+
+static bool user_string_exists(const char *text)
+{
+	char *userString = gUserStrings;
+	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+		if (userString[0] == 0)
+			continue;
+
+		if (_stricmp(userString, text) == 0)
+			return true;
+	}
+	return false;
+}
+
+bool is_user_string_id(rct_string_id stringId)
+{
+	return stringId >= 0x8000 && id < 0x9000;
 }
