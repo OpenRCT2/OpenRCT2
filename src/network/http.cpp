@@ -123,9 +123,8 @@ void http_request_json_async(const char *url, void (*callback)(http_json_respons
 		TempThreadArgs *args = (TempThreadArgs*)ptr;
 
 		http_json_response *response = http_request_json(args->url);
-		free(args);
-
 		args->callback(response);
+		free(args);
 		return 0;
 	}, NULL, args);
 
