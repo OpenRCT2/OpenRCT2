@@ -378,7 +378,6 @@
     <ClCompile Include="..\src\windows\editor_object_selection.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
