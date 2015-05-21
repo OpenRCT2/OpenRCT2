@@ -11,7 +11,7 @@ SET(PKG_CONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
 #   -fshort-wchar -fshort-enums -mms-bitfields
 #
 set(CMAKE_C_FLAGS "-masm=intel -std=gnu99 -fpack-struct=1" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS "-masm=intel -std=c++11 -std=gnu++11 -fpack-struct=1" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS "-masm=intel -fpack-struct=1" CACHE STRING "" FORCE)
 set(CMAKE_SHARED_LINKER_FLAGS "-static-libgcc -static-libstdc++" CACHE STRING "" FORCE)
 
 # find and include SDL2
