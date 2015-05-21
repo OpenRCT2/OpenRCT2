@@ -836,7 +836,7 @@ int Mixer_Channel_SetOffset(void* channel, unsigned long offset)
 	return ((Channel*)channel)->SetOffset(offset);
 }
 
-void* Mixer_Play_Music(int pathid, int streaming)
+void* Mixer_Play_Music(int pathid, int loop, int streaming)
 {
 	if (streaming) {
 		const char* filename = get_file_path(pathid);
@@ -850,7 +850,7 @@ void* Mixer_Play_Music(int pathid, int streaming)
 		}
 		Source_SampleStream* source_samplestream = new Source_SampleStream;
 		if (source_samplestream->LoadWAV(rw)) {
-			Channel* channel = gMixer.Play(*source_samplestream, MIXER_LOOP_INFINITE, false, true);
+			Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
 			if (!channel) {
 				delete source_samplestream;
 			}

@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../common.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -1940,6 +1941,45 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 
 #pragma region Music functions
 
+#define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
+
+//0x009AEF28
+uint8 *ride_music_style_tuneids[] = {
+	MAKE_TUNEID_LIST(13), // MUSIC_STYLE_DODGEMS_BEAT
+	MAKE_TUNEID_LIST(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), // MUSIC_STYLE_FAIRGROUND_ORGAN
+	MAKE_TUNEID_LIST(15), // MUSIC_STYLE_ROMAN_FANFARE
+	MAKE_TUNEID_LIST(16), // MUSIC_STYLE_ORIENTAL
+	MAKE_TUNEID_LIST(17), // MUSIC_STYLE_MARTIAN
+	MAKE_TUNEID_LIST(18), // MUSIC_STYLE_JUNGLE_DRUMS
+	MAKE_TUNEID_LIST(19), // MUSIC_STYLE_EGYPTIAN
+	MAKE_TUNEID_LIST(20), // MUSIC_STYLE_TOYLAND
+	MAKE_TUNEID_LIST(21), // MUSIC_STYLE_8
+	MAKE_TUNEID_LIST(22), // MUSIC_STYLE_SPACE
+	MAKE_TUNEID_LIST(23), // MUSIC_STYLE_HORROR
+	MAKE_TUNEID_LIST(24), // MUSIC_STYLE_TECHNO
+	MAKE_TUNEID_LIST(25), // MUSIC_STYLE_GENTLE
+	MAKE_TUNEID_LIST(26), // MUSIC_STYLE_SUMMER
+	MAKE_TUNEID_LIST(27), // MUSIC_STYLE_WATER
+	MAKE_TUNEID_LIST(28), // MUSIC_STYLE_WILD_WEST
+	MAKE_TUNEID_LIST(29), // MUSIC_STYLE_JURASSIC
+	MAKE_TUNEID_LIST(30), // MUSIC_STYLE_ROCK
+	MAKE_TUNEID_LIST(31), // MUSIC_STYLE_RAGTIME
+	MAKE_TUNEID_LIST(32), // MUSIC_STYLE_FANTASY
+	MAKE_TUNEID_LIST(33), // MUSIC_STYLE_ROCK_STYLE_2
+	MAKE_TUNEID_LIST(34), // MUSIC_STYLE_ICE
+	MAKE_TUNEID_LIST(35), // MUSIC_STYLE_SNOW
+	MAKE_TUNEID_LIST(36), // MUSIC_STYLE_CUSTOM_MUSIC_1
+	MAKE_TUNEID_LIST(37), // MUSIC_STYLE_CUSTOM_MUSIC_2
+	MAKE_TUNEID_LIST(38), // MUSIC_STYLE_MEDIEVAL
+	MAKE_TUNEID_LIST(39), // MUSIC_STYLE_URBAN
+	MAKE_TUNEID_LIST(40), // MUSIC_STYLE_ORGAN
+	MAKE_TUNEID_LIST(41), // MUSIC_STYLE_MECHANICAL
+	MAKE_TUNEID_LIST(42), // MUSIC_STYLE_MODERN
+	MAKE_TUNEID_LIST(43), // MUSIC_STYLE_PIRATES
+	MAKE_TUNEID_LIST(44), // MUSIC_STYLE_ROCK_STYLE_3
+	MAKE_TUNEID_LIST(45), // MUSIC_STYLE_CANDY_STYLE
+};
+
 /**
  *
  *  rct2: 0x006ABE85
@@ -1991,7 +2031,7 @@ static void ride_music_update(int rideIndex)
 
 	// Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
 	if (ride->music_tune_id == 255) {
-		uint8 *musicStyleTunes = RCT2_ADDRESS(0x009AEF28, uint8*)[ride->music];
+		uint8 *musicStyleTunes = ride_music_style_tuneids[ride->music];
 		uint8 numTunes = *musicStyleTunes++;
 		ride->music_tune_id = musicStyleTunes[scenario_rand() % numTunes];
 		ride->music_position = 0;
@@ -2672,8 +2712,8 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 				ride_music++;
 				channel++;
 				if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-					rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId];
-					a1 = position + ride_music_info->var_4;
+					rct_ride_music_info* ride_music_info = ride_music_info_list[*tuneId];
+					a1 = position + ride_music_info->offset;
 					goto label51;
 				}
 			}
@@ -2696,7 +2736,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 #endif
 		label51:
-			if (a1 < RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId].var_0) {
+			if (a1 < ride_music_info_list[*tuneId]->length) {
 				position = a1;
 				rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*);
 				if (ride_music_params < &gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC]/*(rct_ride_music_params*)0x009AF46C*/) {
@@ -2715,9 +2755,9 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		} else {
 		label58:
 			;
-			rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[*tuneId];
-			position += ride_music_info->var_4;
-			if (position < ride_music_info->var_0) {
+			rct_ride_music_info* ride_music_info = ride_music_info_list[*tuneId];
+			position += ride_music_info->offset;
+			if (position < ride_music_info->length) {
 				return position;
 			} else {
 				*tuneId = 0xFF;
@@ -2727,6 +2767,58 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 	}
 	return position;
 }
+
+#define INIT_MUSIC_INFO(pathid, offset, length, unknown) (rct_ride_music_info[]){length, offset, pathid, unknown}
+
+//0x009AF1C8
+rct_ride_music_info* ride_music_info_list[] = {
+	INIT_MUSIC_INFO(PATH_ID_CSS4, 1378, 8139054, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS5, 1378, 7796656, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS6, 1378, 15787850, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS7, 1378, 15331658, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS8, 1378, 17503414, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS9, 1378, 7005802, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS10, 1378, 0, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS11, 1378, 7023288, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS12, 1378, 2767948, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS13, 1378, 3373390, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS14, 1378, 20783042, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS15, 1378, 10009312, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS16, 1378, 0, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS3, 689, 1244886, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS17, 2756, -1, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS18, 2756, 8429568, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS19, 2756, 10143784, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS20, 2756, 12271656, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS21, 2756, 9680968, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS22, 2756, 10062056, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS23, 2756, 11067432, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS24, 2756, 12427456, 0),
+	INIT_MUSIC_INFO(PATH_ID_CSS25, 2756, 15181512, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS26, 2756, 10694816, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS27, 2756, 10421232, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS28, 2756, 13118376, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS29, 2756, 15310892, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS30, 2756, 10215464, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS31, 2756, 11510316, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS32, 2756, 11771944, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS33, 2756, 10759724, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS34, 2756, 14030716, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS35, 2756, 11642576, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS36, 2756, 8953764, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS37, 2756, 13303852, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS38, 2756, 10093888, 1),
+	INIT_MUSIC_INFO(PATH_ID_CUSTOM1, 2756, 16620, 1),
+	INIT_MUSIC_INFO(PATH_ID_CUSTOM2, 2756, 13055722, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS39, 2756, 7531564, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS40, 1378, 5291306, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS41, 2756, 27860700, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS42, 2756, 6774090, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS43, 2756, 15630412, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS44, 2756, 8209704, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS45, 2756, 10006740, 1),
+	INIT_MUSIC_INFO(PATH_ID_CSS46, 2756, 6772776, 1),
+};
 
 /**
 *  Play/update ride music based on structs updated in 0x006BC3AC
@@ -2746,7 +2838,7 @@ void ride_music_update_final()
 					rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];//&RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
 					while (ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/) {
 						if (ride_music_params->rideid != (uint8)-1) {
-							rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
+							rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
 							if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->pathid]) { // file_on_cdrom[]
 								v8++;
 								if (v9 >= ride_music_params->volume) {
@@ -2829,10 +2921,10 @@ void ride_music_update_final()
 							ride_music++;
 							channel++;
 							if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-								rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
+								rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
 #ifdef USE_MIXER
 								rct_ride_music* ride_music = &gRideMusicList[ebx];
-								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, true);
+								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, MIXER_LOOP_NONE, true);
 								if (ride_music->sound_channel) {
 									ride_music->volume = ride_music_params->volume;
 									ride_music->pan = ride_music_params->pan;

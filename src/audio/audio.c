@@ -1561,7 +1561,7 @@ void start_title_music()
 			&& RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
-			gTitleMusicChannel = Mixer_Play_Music(musicPathId, true);
+			gTitleMusicChannel = Mixer_Play_Music(musicPathId, MIXER_LOOP_INFINITE, true);
 #else
 			RCT2_GLOBAL(0x014241BC, uint32) = 1;
 			int result = sound_channel_load_file2(3, (char*)get_file_path(musicPathId), 0);
@@ -1702,7 +1702,7 @@ void audio_init1()
 	audio_init2(devicenum);
 	int m = 0;
 	do {
-		rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[m];
+		rct_ride_music_info* ride_music_info = ride_music_info_list[m];
 		const char* path = get_file_path(ride_music_info->pathid);
 		FILE *file = fopen(path, "rb");
 		if (file != NULL) {
@@ -1710,7 +1710,7 @@ void audio_init1()
 			fclose(file);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
-				ride_music_info->var_0 = 0;
+				ride_music_info->length = 0;
 			}
 		}
 		m++;
