@@ -25,13 +25,11 @@
 #include "config.h"
 #include "editor.h"
 #include "localisation/localisation.h"
+#include "network/http.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
-
-#include "network/http.h"
-#include "network/twitch.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -175,20 +173,6 @@ void openrct2_launch()
 		}
 		break;
 	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	// TWITCH test
-	twitch_info twitchInfo;
-	twitchInfo.channel = "<your_channel_here>";
-
-	int numFollowers;
-	char **followerNames;
-
-	if (twitch_get_followers(&twitchInfo, &numFollowers, &followerNames)) {
-		for (int i = 0; i < numFollowers; i++)
-			printf("%s\n", followerNames[i]);
-	}
-	//////////////////////////////////////////////////////////////////////////////
 
 	log_verbose("begin openrct2 loop");
 	openrct2_loop();

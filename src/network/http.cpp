@@ -1,6 +1,17 @@
+extern "C" {
+	#include "http.h"
+}
+
+#ifdef DISABLE_HTTP
+
+void http_init() { }
+void http_dispose() { }
+
+#else
+
+#include <SDL.h>
 #include <curl/curl.h>
 #include <jansson/jansson.h>
-#include "http.h"
 
 typedef struct {
 	char *ptr;
@@ -30,7 +41,7 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 			newCapacity = max(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
-			writeBuffer->ptr = realloc(writeBuffer->ptr, newCapacity);
+			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
 			writeBuffer->capacity = newCapacity;
 		}
 
@@ -78,7 +89,7 @@ http_json_response *http_request_json(const char *url)
 
 	// Null terminate the response buffer
 	writeBuffer.length++;
-	writeBuffer.ptr = realloc(writeBuffer.ptr, writeBuffer.length);
+	writeBuffer.ptr = (char*)realloc(writeBuffer.ptr, writeBuffer.length);
 	writeBuffer.capacity = writeBuffer.length;
 	writeBuffer.ptr[writeBuffer.length - 1] = 0;
 
@@ -89,12 +100,39 @@ http_json_response *http_request_json(const char *url)
 	json_error_t error;
 	root = json_loads(writeBuffer.ptr, 0, &error);
 	if (root != NULL) {
-		response = malloc(sizeof(http_json_response));
+		response = (http_json_response*)malloc(sizeof(http_json_response));
 		response->status_code = (int)httpStatusCode;
 		response->root = root;
 	}
 	free(writeBuffer.ptr);
 	return response;
+}
+
+void http_request_json_async(const char *url, void (*callback)(http_json_response*))
+{
+	struct TempThreadArgs {
+		const char *url;
+		void (*callback)(http_json_response*);
+	};
+
+	TempThreadArgs *args = (TempThreadArgs*)malloc(sizeof(TempThreadArgs));
+	args->url = url;
+	args->callback = callback;
+
+	SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
+		TempThreadArgs *args = (TempThreadArgs*)ptr;
+
+		http_json_response *response = http_request_json(args->url);
+		free(args);
+
+		args->callback(response);
+		return 0;
+	}, NULL, args);
+
+	if (thread == NULL) {
+		log_error("Unable to create thread!");
+		callback(NULL);
+	}
 }
 
 void http_request_json_dispose(http_json_response *response)
@@ -104,3 +142,5 @@ void http_request_json_dispose(http_json_response *response)
 
 	free(response);
 }
+
+#endif

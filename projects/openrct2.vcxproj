@@ -57,8 +57,8 @@
     <ClCompile Include="..\src\management\marketing.c" />
     <ClCompile Include="..\src\management\news_item.c" />
     <ClCompile Include="..\src\management\research.c" />
-    <ClCompile Include="..\src\network\http.c" />
-    <ClCompile Include="..\src\network\twitch.c" />
+    <ClCompile Include="..\src\network\http.cpp" />
+    <ClCompile Include="..\src\network\twitch.cpp" />
     <ClCompile Include="..\src\object.c" />
     <ClCompile Include="..\src\object_list.c" />
     <ClCompile Include="..\src\openrct2.c" />

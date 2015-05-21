@@ -444,10 +444,10 @@
     <ClCompile Include="..\src\interface\console.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\network\http.c">
+    <ClCompile Include="..\src\network\twitch.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\network\twitch.c">
+    <ClCompile Include="..\src\network\http.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
   </ItemGroup>

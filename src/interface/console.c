@@ -619,7 +619,11 @@ static int cc_set(const char **argv, int argc)
 
 static int cc_twitch(const char **argv, int argc)
 {
-	twitch_update_peeps();
+#ifdef DISABLE_TWITCH
+	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
+#else
+	// twitch_update_peeps();
+#endif
 	return 0;
 }
 

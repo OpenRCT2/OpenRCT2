@@ -2,6 +2,7 @@
 #define _CONSOLE_H_
 
 #include "../common.h"
+#include "../drawing/drawing.h"
 
 extern bool gConsoleOpen;
 

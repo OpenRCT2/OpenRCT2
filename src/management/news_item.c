@@ -250,6 +250,15 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  **/
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
+	char *buffer = (char*)0x0141EF68;
+	void *args = (void*)0x013CE952;
+
+	format_string(buffer, string_id, args); // overflows possible?
+	news_item_add_to_queue_raw(type, buffer, assoc);
+}
+
+void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
+{
 	int i = 0;
 	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
@@ -268,10 +277,8 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-
-	format_string((char*)0x0141EF68, string_id, (void*)0x013CE952); // overflows possible?
-	newsItem->colour = ((char*)0x0141EF68)[0];
-	strncpy(newsItem->text, (char*)0x0141EF68, 255);
+	newsItem->colour = text[0];
+	strncpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.

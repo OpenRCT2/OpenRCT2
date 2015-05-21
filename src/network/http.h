@@ -12,6 +12,7 @@ typedef struct {
 void http_init();
 void http_dispose();
 http_json_response *http_request_json(const char *url);
+void http_request_json_async(const char *url, void (*callback)(http_json_response*));
 void http_request_json_dispose(http_json_response *response);
 
 #endif
