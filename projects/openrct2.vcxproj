@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build0;Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="Build0">
     <Copy SourceFiles="..\openrct2.exe" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="..\curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="..\SDL2.dll" DestinationFolder="$(OutDir)" />
   </Target>
   <ItemGroup Label="ProjectConfigurations">
@@ -15,12 +16,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\curl-ca-bundle.crt" />
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\cmdline.c" />
+    <ClCompile Include="..\src\cmdline_sprite.c" />
     <ClCompile Include="..\src\config.c" />
     <ClCompile Include="..\src\cursors.c" />
     <ClCompile Include="..\src\diagnostic.c" />
@@ -34,6 +37,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
     <ClCompile Include="..\src\input.c" />
+    <ClCompile Include="..\src\interface\console.c" />
     <ClCompile Include="..\src\interface\graph.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c" />
     <ClCompile Include="..\src\interface\screenshot.c" />
@@ -163,6 +167,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
+    <ClInclude Include="..\src\interface\console.h" />
     <ClInclude Include="..\src\interface\graph.h" />
     <ClInclude Include="..\src\interface\keyboard_shortcut.h" />
     <ClInclude Include="..\src\interface\screenshot.h" />
