@@ -3487,3 +3487,7 @@ STR_5147    :Show cheats button on toolbar
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
+#Thousands separator
+STR_5151    :,
+#Decimals separator
+STR_5152    :. 

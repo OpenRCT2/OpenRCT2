@@ -3445,6 +3445,8 @@ STR_3443    :Pagina 4
 STR_3444    :Pagina 5
 STR_3445    :Werkgebied instellen
 STR_3446    :Werkgebied wissen
+
+#Start van OpenRCT2-indices
 STR_5120    :'Financiën'-knop in de werkbalk tonen
 STR_5121    :'Onderzoek'-knop in de werkbalk tonen
 STR_5122    :Alle voertuigen met hetzelfde baan- of attractietype tonen
@@ -3476,3 +3478,7 @@ STR_5147    :'Cheats'-knop in de werkbalk tonen
 STR_5148    :{SMALLFONT}{BLACK}Spelsnelheid veranderen
 STR_5149    :{SMALLFONT}{BLACK}Het cheatsvenster openen
 STR_5150    :Debugging-hulpmiddelen inschakelen
+#Scheidingsteken voor duizendtallen
+STR_5151    :.
+#Scheidingsteken voor decimalen
+STR_5152    :, 
