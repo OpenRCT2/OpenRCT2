@@ -116,9 +116,11 @@ void window_save_prompt_open()
 	uint64 enabled_widgets;
 
 	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
+	if (prompt_mode == PM_QUIT)
+		prompt_mode = PM_SAVE_BEFORE_QUIT;
 
 	// do not show save prompt if we're in the title demo and click on load game
-	if (prompt_mode != PM_QUIT && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
 		game_load_or_quit_no_save_prompt();
 		return;
 	}
@@ -129,7 +131,7 @@ void window_save_prompt_open()
 		window_close(window);
 	}
 
-	if (prompt_mode == PM_QUIT) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		widgets = window_quit_prompt_widgets;
 		enabled_widgets =
 			(1 << WQIDX_CLOSE) |
@@ -181,11 +183,6 @@ void window_save_prompt_open()
 		 * and game_load_or_quit() are not called by the original binary anymore.
 		 */
 		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
-			game_load_or_quit_no_save_prompt();
-			return;
-		}
-		
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
 			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
 				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
@@ -226,16 +223,13 @@ static void window_save_prompt_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
-	short prompt_mode;
 
 	window_widget_get_registers(w, widgetIndex);
 
-	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
-
-	if (prompt_mode == PM_QUIT) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
 		case WQIDX_OK:
-			openrct2_finish();
+			game_load_or_quit_no_save_prompt();
 			break;
 		case WQIDX_CLOSE:
 		case WQIDX_CANCEL:
@@ -260,12 +254,6 @@ static void window_save_prompt_mouseup()
 			window_close(w);
 			return;
 		}
-	}
-	
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0D) {
-		game_load_or_quit_no_save_prompt();
-		return;
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {

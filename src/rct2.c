@@ -58,12 +58,10 @@ static void rct2_update_2();
 
 static jmp_buf _end_update_jump;
 
-void rct2_quit() {
-	if (gConfigGeneral.confirmation_prompt) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
-		window_save_prompt_open();
-	} else
-		openrct2_finish();
+void rct2_quit()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	window_save_prompt_open();
 }
 
 int rct2_init()

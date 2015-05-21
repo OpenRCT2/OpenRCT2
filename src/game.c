@@ -35,6 +35,7 @@
 #include "management/news_item.h"
 #include "management/research.h"
 #include "object.h"
+#include "openrct2.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
@@ -852,6 +853,7 @@ void rct2_exit()
 {
 	RCT2_CALLPROC_EBPSAFE(0x006E3879);
 	//Post quit message does not work in 0x6e3879 as its windows only.
+	openrct2_finish();
 }
 
 /**
