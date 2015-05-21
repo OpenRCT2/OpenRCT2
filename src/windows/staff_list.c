@@ -168,19 +168,6 @@ void window_staff_list_open()
 	window->max_width = 500;
 	window->max_height = 450;
 	window->flags |= WF_RESIZABLE;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		window->colours[0] = 1;
-		window->colours[1] = 4;
-		window->colours[2] = 4;
-	}
-	else
-	{
-		window->colours[0] = 12;
-		window->colours[1] = 4;
-		window->colours[2] = 4;
-	}
 }
 
 void window_staff_list_cancel_tools(rct_window *w) {
@@ -468,6 +455,19 @@ void window_staff_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
+	}
+	else
+	{
+		w->colours[0] = 12;
+		w->colours[1] = 4;
+		w->colours[2] = 4;
+	}
 
 	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
 	uint8 tabIndex = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);

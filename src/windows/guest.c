@@ -419,6 +419,8 @@ void* window_guest_page_events[] = {
 	window_guest_inventory_events
 };
 
+void window_guest_set_colours();
+
 //0x981D3C
 uint32 window_guest_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
@@ -508,19 +510,6 @@ void window_guest_open(rct_peep* peep){
 		window->flags = WF_RESIZABLE;
 		window->no_list_items = 0;
 		window->selected_list_item = -1;
-
-		if(!gConfigInterface.rct1_colour_scheme)
-		{
-			window->colours[0] = 1;
-			window->colours[1] = 15;
-			window->colours[2] = 15;
-		}
-		else
-		{
-			window->colours[0] = 22;
-			window->colours[1] = 26;
-			window->colours[2] = 26;			
-		}
 
 		window->viewport_focus_coordinates.y = -1;
 	}
@@ -1039,6 +1028,7 @@ void window_guest_overview_paint(){
 void window_guest_overview_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
 	
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1343,6 +1333,7 @@ void window_guest_stats_update(){
 void window_guest_stats_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
 
 	if (w->widgets != window_guest_page_widgets[w->page]) {
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1674,6 +1665,8 @@ void window_guest_rides_scroll_mouse_over(){
 void window_guest_rides_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
+
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
 		window_init_scroll_widgets(w);
@@ -1796,6 +1789,7 @@ void window_guest_finance_update(){
 void window_guest_finance_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1935,6 +1929,7 @@ void window_guest_thoughts_update(){
 void window_guest_thoughts_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -2037,6 +2032,7 @@ void window_guest_inventory_update(){
 void window_guest_inventory_invalidate(){
 	rct_window* w;
 	window_get_register(w);
+	window_guest_set_colours();
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -2194,5 +2190,24 @@ void window_guest_inventory_paint(){
 
 	if (!no_items){
 		gfx_draw_string_left(dpi, 2293, (void*)0, 0, x, y);
+	}
+}
+
+void window_guest_set_colours()
+{
+	rct_window* w;
+	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 15;
+		w->colours[2] = 15;
+	}
+	else
+	{
+		w->colours[0] = 22;
+		w->colours[1] = 26;
+		w->colours[2] = 26;			
 	}
 }

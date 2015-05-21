@@ -153,19 +153,6 @@ void window_game_bottom_toolbar_open()
 	// Reset the middle widget to not show by default.
 	// If it is required to be shown news_update will reshow it.
 	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		window->colours[0] = 140;
-		window->colours[1] = 140;
-		window->colours[2] = 0;
-	}
-	else
-	{
-		window->colours[0] = 129;
-		window->colours[1] = 129;
-		window->colours[2] = 0;
-	}
 }
 
 /**
@@ -281,6 +268,19 @@ static void window_game_bottom_toolbar_invalidate()
 	rct_news_item *newsItem;
 
 	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 140;
+		w->colours[1] = 140;
+		w->colours[2] = 0;
+	}
+	else
+	{
+		w->colours[0] = 129;
+		w->colours[1] = 129;
+		w->colours[2] = 0;
+	}
 
 	// Anchor the middle and right panel to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
