@@ -57,6 +57,9 @@ void twitch_update()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 			return;
 
+		if (gConfigTwitch.channel == NULL || gConfigTwitch.channel[0] == 0)
+			return;
+
 		switch (_twitchState) {
 		case TWITCH_STATE_LEFT:
 			twitch_join();
@@ -65,8 +68,10 @@ void twitch_update()
 		{
 			uint32 currentTime = SDL_GetTicks();
 			uint32 timeSinceLastPulse = _twitchLastPulseTick - currentTime;
-			if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PULSE_TIME)
+			if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PULSE_TIME) {
+				_twitchLastPulseTick = currentTime;
 				twitch_get_followers();
+			}
 			break;
 		}
 		case TWITCH_STATE_GET_FOLLOWERS:

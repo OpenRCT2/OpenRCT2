@@ -131,6 +131,8 @@ void http_request_json_async(const char *url, void (*callback)(http_json_respons
 	if (thread == NULL) {
 		log_error("Unable to create thread!");
 		callback(NULL);
+	} else {
+		SDL_DetachThread(thread);
 	}
 }
 

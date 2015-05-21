@@ -157,6 +157,11 @@ typedef struct {
 
 typedef struct {
 	utf8string channel;
+	uint8 enable_follower_peep_names;
+	uint8 enable_follower_peep_tracking;
+	uint8 enable_chat_peep_names;
+	uint8 enable_chat_peep_tracking;
+	uint8 enable_news;
 } twitch_configuration;
 
 typedef struct {
