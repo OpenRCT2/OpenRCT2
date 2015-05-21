@@ -602,6 +602,8 @@ static void window_ride_customer_update(rct_window *w);
 static void window_ride_customer_invalidate();
 static void window_ride_customer_paint();
 
+static void window_ride_set_colours();
+
 // 0x0098DFD4
 static void* window_ride_main_events[] = {
 	window_ride_emptysub,
@@ -1172,19 +1174,6 @@ rct_window *window_ride_open(int rideIndex)
 	w->max_width = 500;
 	w->max_height = 450;
 	w->flags |= WF_RESIZABLE;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 26;
-		w->colours[2] = 11;
-	}
-	else
-	{
-		w->colours[0] = 26;
-		w->colours[1] = 1;
-		w->colours[2] = 11;
-	}
 
 	ride = GET_RIDE(rideIndex);
 	numSubTypes = 0;
@@ -1986,6 +1975,8 @@ static void window_ride_main_invalidate()
 
 	window_get_register(w);
 
+	window_ride_set_colours();
+
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
@@ -2435,6 +2426,7 @@ static void window_ride_vehicle_invalidate()
 	int carsPerTrain;
 	
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -2998,6 +2990,7 @@ static void window_ride_operating_invalidate()
 	rct_string_id format, caption, tooltip;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -3405,6 +3398,7 @@ static void window_ride_maintenance_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -3923,6 +3917,7 @@ static void window_ride_colour_invalidate()
 	int vehicleColourSchemeType;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -4416,6 +4411,7 @@ static void window_ride_music_invalidate()
 	int isMusicActivated;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -4708,6 +4704,7 @@ static void window_ride_measurements_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -5158,6 +5155,7 @@ static void window_ride_graphs_invalidate()
 	int x, y;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -5503,6 +5501,7 @@ static void window_ride_income_invalidate()
 	int primaryItem, secondaryItem;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -5784,6 +5783,7 @@ static void window_ride_customer_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	window_ride_set_colours();
 
 	widgets = window_ride_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -5920,6 +5920,25 @@ static void window_ride_customer_paint()
 			STR_BUILT_LAST_YEAR :
 			STR_BUILT_YEARS_AGO;
 	gfx_draw_string_left(dpi, stringId, &age, 0, x, y);
+}
+
+static void window_ride_set_colours()
+{
+	rct_window *w;
+	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 26;
+		w->colours[2] = 11;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 11;
+	}
 }
 
 #pragma endregion

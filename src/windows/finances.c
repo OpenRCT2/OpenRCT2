@@ -437,6 +437,8 @@ static void* window_finances_page_events[] = {
 	window_finances_research_events
 };
 
+static void window_finances_set_colours();
+
 #pragma endregion
 
 #pragma region Enabled widgets
@@ -542,18 +544,6 @@ void window_finances_open()
 		w->number = 0;
 		w->frame_no = 0;
 
-		if(!gConfigInterface.rct1_colour_scheme)
-		{
-			w->colours[0] = 1;
-			w->colours[1] = 19;
-			w->colours[2] = 19;
-		}
-		else
-		{
-			w->colours[0] = 4;
-			w->colours[1] = 1;
-			w->colours[2] = 1;
-		}
 		research_update_uncompleted_types();
 	}
 
@@ -650,6 +640,7 @@ static void window_finances_summary_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
@@ -823,6 +814,7 @@ static void window_finances_financial_graph_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
@@ -945,6 +937,7 @@ static void window_finances_park_value_graph_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH];
@@ -1063,6 +1056,7 @@ static void window_finances_profit_graph_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH];
@@ -1185,6 +1179,7 @@ static void window_finances_marketing_invalidate()
 	int i;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING];
@@ -1434,6 +1429,7 @@ static void window_finances_research_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	window_finances_set_colours();
 
 	if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH]) {
 		w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH];
@@ -1563,6 +1559,25 @@ static void window_finances_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *
 	window_finances_draw_tab_image(dpi, w, WINDOW_FINANCES_PAGE_PROFIT_GRAPH, SPR_TAB_FINANCES_PROFIT_GRAPH_0);
 	window_finances_draw_tab_image(dpi, w, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
 	window_finances_draw_tab_image(dpi, w, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
+}
+
+static void window_finances_set_colours()
+{
+	rct_window *w;
+	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 19;
+		w->colours[2] = 19;
+	}
+	else
+	{
+		w->colours[0] = 4;
+		w->colours[1] = 1;
+		w->colours[2] = 1;
+	}
 }
 
 #pragma endregion

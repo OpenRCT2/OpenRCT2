@@ -33,6 +33,7 @@ static rct_widget window_title_options_widgets[] = {
 static void window_title_options_emptysub() {}
 static void window_title_options_paint();
 static void window_title_options_mouseup();
+static void window_title_options_invalidate();
 
 static void* window_title_options_events[] = {
 	window_title_options_emptysub,
@@ -60,7 +61,7 @@ static void* window_title_options_events[] = {
 	window_title_options_emptysub,
 	window_title_options_emptysub,
 	window_title_options_emptysub,
-	window_title_options_emptysub,
+	window_title_options_invalidate,
 	window_title_options_paint,
 	window_title_options_emptysub
 };
@@ -83,19 +84,6 @@ void window_title_options_open()
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
 	window->flags |= 16;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		window->colours[0] = 140;
-		window->colours[1] = 140;
-		window->colours[2] = 140;
-	}
-	else
-	{
-		window->colours[0] = 129;
-		window->colours[1] = 129;
-		window->colours[2] = 129;
-	}
 }
 
 static void window_title_options_mouseup()
@@ -120,4 +108,23 @@ static void window_title_options_paint()
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+}
+
+static void window_title_options_invalidate()
+{
+	rct_window *w;
+	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 140;
+		w->colours[1] = 140;
+		w->colours[2] = 140;
+	}
+	else
+	{
+		w->colours[0] = 129;
+		w->colours[1] = 129;
+		w->colours[2] = 129;
+	}
 }
