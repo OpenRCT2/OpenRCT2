@@ -88,5 +88,5 @@ static bool user_string_exists(const char *text)
 
 bool is_user_string_id(rct_string_id stringId)
 {
-	return stringId >= 0x8000 && id < 0x9000;
+	return stringId >= 0x8000 && stringId < 0x9000;
 }
