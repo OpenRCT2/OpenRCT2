@@ -13,6 +13,8 @@ distribution/windows/*.exe
 
 #libcurl
 lib/libcurl/
+#libjansson
+lib/jansson/
 
 #################
 ## Eclipse
