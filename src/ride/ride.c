@@ -1360,6 +1360,23 @@ static void ride_chairlift_update(rct_ride *ride)
 	map_invalidate_tile(x, y, z, z + (4 * 8));
 }
 
+/**
+ * rct2: 0x0069A3A2
+ * edi: ride (in code as bytes offset from start of rides list)
+ * bl: happiness
+ */
+void ride_update_satisfaction(rct_ride* ride, uint8 happiness) {
+	ride->satisfaction_next += happiness;
+	ride->satisfaction_time_out++;
+	if (ride->satisfaction_time_out >= 20) {
+		ride->satisfaction = ride->satisfaction_next >> 2;
+		ride->satisfaction_next = 0;
+		ride->satisfaction_time_out = 0;
+		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+
+	}
+}
+
 /* rct2: 0x0069A3D7
  * Updates the ride popularity
  * edi : ride

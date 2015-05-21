@@ -2517,7 +2517,7 @@ static void peep_update_ride_sub_state_21(rct_peep* peep){
 	ride->total_customers++;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-	RCT2_CALLPROC_X(0x0069A3A2, 0, peep->happiness / 64, 0, 0, 0, peep->current_ride * sizeof(rct_ride), 0);
+	ride_update_satisfaction(ride, peep->happiness / 64);
 }
 
 /* rct2: 0x691A30 
