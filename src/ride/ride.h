@@ -731,6 +731,7 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_update_all();
 void ride_check_all_reachable();
+void ride_update_satisfaction(rct_ride* ride, uint8 happiness);
 void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 int sub_6CAF80(int rideIndex, rct_xy_element *output);
 int track_get_next(rct_xy_element *input, rct_xy_element *output);
