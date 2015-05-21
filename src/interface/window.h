@@ -456,6 +456,7 @@ int window_find_widget_from_point(rct_window *w, int x, int y);
 void window_invalidate(rct_window *window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
+void window_invalidate_all();
 void widget_invalidate(rct_window *w, int widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, int widgetIndex);
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, int widgetIndex);
