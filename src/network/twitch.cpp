@@ -71,7 +71,7 @@ void twitch_update()
 		case TWITCH_STATE_JOINED:
 		{
 			uint32 currentTime = SDL_GetTicks();
-			uint32 timeSinceLastPulse = _twitchLastPulseTick - currentTime;
+			uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
 			if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PULSE_TIME) {
 				_twitchLastPulseTick = currentTime;
 				twitch_get_followers();
@@ -110,6 +110,7 @@ static void twitch_join()
 	
 		http_request_json_dispose(jsonResponse);
 
+		_twitchLastPulseTick = 0;
 		_twitchIdle = true;
 		console_writeline("Connected to twitch channel.");
 	});
@@ -120,18 +121,22 @@ static void twitch_join()
  */
 static void twitch_leave()
 {
-	char url[256];
-	sprintf(url, "%sleave/%s", TwitchExtendedBaseUrl, gConfigTwitch.channel);
+	if (_twitchJsonResponse != NULL)
+		http_request_json_dispose(_twitchJsonResponse);
 
-	_twitchState = TWITCH_STATE_LEAVING;
-	_twitchIdle = false;
-	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
-		http_request_json_dispose(jsonResponse);
-		_twitchState = TWITCH_STATE_LEFT;
-		_twitchIdle = true;
+	_twitchState = TWITCH_STATE_LEFT;
 
-		console_writeline("Left twitch channel.");
-	});
+	// char url[256];
+	// sprintf(url, "%sleave/%s", TwitchExtendedBaseUrl, gConfigTwitch.channel);
+	// _twitchState = TWITCH_STATE_LEAVING;
+	// _twitchIdle = false;
+	// http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
+	// 	http_request_json_dispose(jsonResponse);
+	// 	_twitchState = TWITCH_STATE_LEFT;
+	// 	_twitchIdle = true;
+	// 
+	// 	console_writeline("Left twitch channel.");
+	// });
 }
 
 /**
@@ -159,6 +164,7 @@ static void twitch_parse_followers()
 		bool isInChat;
 		bool isMod;
 		bool exists;
+		bool shouldTrack;
 	};
 
 	std::vector<AudienceMember> members;
@@ -184,9 +190,15 @@ static void twitch_parse_followers()
 		member.isInChat = json_boolean_value(isInChat);
 		member.isMod = json_boolean_value(isMod);
 		member.exists = false;
+		member.shouldTrack = false;
 
 		if (member.name == NULL || member.name[0] == 0)
 			continue;
+
+		if (member.isInChat && gConfigTwitch.enable_chat_peep_tracking)
+			member.shouldTrack = true;
+		else if (member.isFollower && gConfigTwitch.enable_follower_peep_tracking)
+			member.shouldTrack = true;
 
 		if (gConfigTwitch.enable_chat_peep_names && member.isInChat)
 			members.push_back(member);
@@ -200,14 +212,33 @@ static void twitch_parse_followers()
 
 	// Check what followers are already in the park
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (!is_user_string_id(peep->name_string_idx)) {
+		if (is_user_string_id(peep->name_string_idx)) {
 			format_string(buffer, peep->name_string_idx, NULL);
 		
+			AudienceMember *member = NULL;
 			for (size_t i = 0; i < members.size(); i++) {
 				if (_strcmpi(buffer, members[i].name) == 0) {
+					member = &members[i];
 					members[i].exists = true;
 					break;
 				}
+			}
+
+			if (peep->flags & PEEP_FLAGS_TWITCH) {
+				if (member == NULL) {
+					// Member no longer peep name worthy
+					peep->flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+
+					// TODO set peep name back to number / real name
+				} else if (!member->shouldTrack) {
+					// Member no longer tracked
+					peep->flags &= ~(PEEP_FLAGS_TRACKING);
+				}
+			} else if (member != NULL && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+				// Peep with same name already exists but not twitch
+				peep->flags |= PEEP_FLAGS_TWITCH;
+				if (member->shouldTrack)
+					peep->flags |= PEEP_FLAGS_TRACKING;
 			}
 		}
 	}
@@ -228,24 +259,27 @@ static void twitch_parse_followers()
 		
 			AudienceMember *member = &members[memberIndex];
 			if (!is_user_string_id(peep->name_string_idx) && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+				// Rename peep and add flags
 				rct_string_id newStringId = user_string_allocate(4, member->name);
 				if (newStringId != 0) {
 					peep->name_string_idx = newStringId;
-
-					if (member->isInChat && gConfigTwitch.enable_chat_peep_tracking)
-						peep->flags |= PEEP_FLAGS_TRACKING;
-					else if (member->isFollower && gConfigTwitch.enable_follower_peep_tracking)
+					peep->flags |= PEEP_FLAGS_TWITCH;
+					if (member->shouldTrack)
 						peep->flags |= PEEP_FLAGS_TRACKING;
 				}
 			} else {
+				// Peep still yet to be found for member
 				memberIndex--;
 			}
 		}
 	}
 
 json_error:
-	http_request_json_dispose(jsonResponse);
+	http_request_json_dispose(_twitchJsonResponse);
+	_twitchJsonResponse = NULL;
 	_twitchState = TWITCH_STATE_JOINED;
+
+	gfx_invalidate_screen();
 }
 
 /**

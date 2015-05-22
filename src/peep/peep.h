@@ -269,7 +269,9 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
-	PEEP_FLAGS_ICE_CREAM = (1 << 25) // Unconfirmed
+	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
+
+	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
 
 enum PEEP_NAUSEA_TOLERANCE {
