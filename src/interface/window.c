@@ -718,6 +718,17 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
+  * Invalidates all windows.
+  */
+void window_invalidate_all()
+{
+	rct_window* w;
+
+	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		window_invalidate(w);
+}
+
+/**
  * Invalidates the specified widget of a window.
  *  rct2: 0x006EC402
  */

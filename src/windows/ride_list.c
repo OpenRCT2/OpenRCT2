@@ -162,20 +162,6 @@ void window_ride_list_open()
 		window->max_width = 400;
 		window->max_height = 450;
 		window->flags |= WF_RESIZABLE;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		window->colours[0] = 1;
-		window->colours[1] = 26;
-		window->colours[2] = 26;
-	}
-	else
-	{
-		window->colours[0] = 26;
-		window->colours[1] = 1;
-		window->colours[2] = 1;
-	}
-
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
@@ -434,6 +420,19 @@ static void window_ride_list_invalidate()
 	w->widgets[WIDX_LIST].bottom = w->height - 4;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].left = w->width - 25;
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 26;
+		w->colours[2] = 26;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 1;
+	}
 }
 
 /**

@@ -92,6 +92,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TOOLBAR_SHOW_FINANCES,
 	WIDX_TOOLBAR_SHOW_RESEARCH,
 	WIDX_TOOLBAR_SHOW_CHEATS,
+	WIDX_RCT1_COLOUR_SCHEME,
 
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
@@ -152,6 +153,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	82,		93,		5120,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	97,		108,	5121,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	112,	123,	5147,			STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	127,	138,	5153,			STR_NONE }, // rct1 colour scheme
 
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
@@ -268,7 +270,8 @@ void window_options_open()
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
-		(1ULL << WIDX_DEBUGGING_TOOLS);
+		(1ULL << WIDX_DEBUGGING_TOOLS) |
+		(1ULL << WIDX_RCT1_COLOUR_SCHEME);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
@@ -324,6 +327,11 @@ static void window_options_mouseup()
 		config_save_default();
 		window_invalidate(w);
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
+		break;
+	case WIDX_RCT1_COLOUR_SCHEME:
+		gConfigInterface.rct1_colour_scheme ^= 1;
+		config_save_default();
+		window_invalidate_all();
 		break;
 	case WIDX_ALLOW_SUBTYPE_SWITCHING:
 		gConfigInterface.allow_subtype_switching ^= 1;
@@ -768,12 +776,14 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+		widget_set_checkbox_value(w, WIDX_RCT1_COLOUR_SCHEME, gConfigInterface.rct1_colour_scheme);
 
 		window_options_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_RCT1_COLOUR_SCHEME].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
 		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);

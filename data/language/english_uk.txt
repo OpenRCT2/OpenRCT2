@@ -3486,3 +3486,4 @@ STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
+STR_5153    :RCT1 colour scheme

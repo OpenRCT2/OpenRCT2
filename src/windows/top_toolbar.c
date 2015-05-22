@@ -221,21 +221,6 @@ void window_top_toolbar_open()
 	window->widgets = window_top_toolbar_widgets;
 
 	window_init_scroll_widgets(window);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		window->colours[0] = 7;
-		window->colours[1] = 12;
-		window->colours[2] = 24;
-		window->colours[3] = 1;
-	}
-	else
-	{
-		window->colours[0] = 1;
-		window->colours[1] = 1;
-		window->colours[2] = 1;
-		window->colours[3] = 1;
-	}
 }
 
 /**
@@ -471,6 +456,21 @@ static void window_top_toolbar_invalidate()
 	rct_widget *widget;
 
 	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 7;
+		w->colours[1] = 12;
+		w->colours[2] = 24;
+		w->colours[3] = 1;
+	}
+	else
+	{
+		w->colours[0] = 1;
+		w->colours[1] = 1;
+		w->colours[2] = 1;
+		w->colours[3] = 1;
+	}
 
 	// Enable / disable buttons
 	window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_TRNBTN;
@@ -1356,7 +1356,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
 
-				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_15, RCT2_GLOBAL(0x00F64EC0, uint8) | (parameter_3 & 0xFFFF0000), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY, RCT2_GLOBAL(0x00F64EC0, uint8) | (parameter_3 & 0xFFFF0000), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
 
 				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;

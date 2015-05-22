@@ -412,19 +412,6 @@ rct_window *window_new_ride_open()
 
 	w->frame_no = 0;
 
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 24;
-		w->colours[1] = 26;
-		w->colours[2] = 26;
-	}
-	else
-	{
-		w->colours[0] = 26;
-		w->colours[1] = 1;
-		w->colours[2] = 1;
-	}
-
 	w->new_ride.selected_ride_id = -1;
 	w->new_ride.highlighted_ride_id = -1;
 	_lastTrackDesignCountRideType.type = 255;
@@ -740,6 +727,19 @@ static void window_new_ride_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+
+	if(!gConfigInterface.rct1_colour_scheme)
+	{
+		w->colours[0] = 24;
+		w->colours[1] = 26;
+		w->colours[2] = 26;
+	}
+	else
+	{
+		w->colours[0] = 26;
+		w->colours[1] = 1;
+		w->colours[2] = 1;
+	}
 
 	window_new_ride_set_pressed_tab(w);
 
