@@ -10,6 +10,7 @@
 
 // REQUIRES HTTP
 
+#include <vector>
 #include <SDL.h>
 
 extern "C" {
@@ -35,7 +36,7 @@ enum {
 	TWITCH_STATE_LEFT
 };
 
-#define PULSE_TIME (5 * 60 * 1000)
+#define PULSE_TIME (2 * 60 * 1000)
 
 const char *TwitchBaseUrl = "https://api.twitch.tv/kraken/";
 const char *TwitchExtendedBaseUrl = "http://openrct.ursalabs.co/api/1/";
@@ -43,10 +44,13 @@ const char *TwitchExtendedBaseUrl = "http://openrct.ursalabs.co/api/1/";
 static int _twitchState = TWITCH_STATE_LEFT;
 static bool _twitchIdle = true;
 static uint32 _twitchLastPulseTick = 0;
+static http_json_response *_twitchJsonResponse;
 
 static void twitch_join();
 static void twitch_leave();
 static void twitch_get_followers();
+
+static void twitch_parse_followers();
 
 void twitch_update()
 {
@@ -75,6 +79,7 @@ void twitch_update()
 			break;
 		}
 		case TWITCH_STATE_GET_FOLLOWERS:
+			twitch_parse_followers();
 			break;
 		}
 	} else {
@@ -130,161 +135,118 @@ static void twitch_leave()
 }
 
 /**
- * GET /follows/:channel
+ * GET /channel/:channel/audience
  */
 static void twitch_get_followers()
 {
+	char url[256];
+	sprintf(url, "%schannel/%s/audience", TwitchExtendedBaseUrl, gConfigTwitch.channel);
 
+	_twitchState = TWITCH_STATE_WAITING;
+	_twitchIdle = false;
+	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
+		_twitchJsonResponse = jsonResponse;
+		_twitchState = TWITCH_STATE_GET_FOLLOWERS;
+		_twitchIdle = true;
+	});
 }
 
+static void twitch_parse_followers()
+{
+	struct AudienceMember {
+		const char *name;
+		bool isFollower;
+		bool isInChat;
+		bool isMod;
+		bool exists;
+	};
 
+	std::vector<AudienceMember> members;
 
+	http_json_response *jsonResponse = _twitchJsonResponse;
+	if (!json_is_array(jsonResponse->root))
+		goto json_error;
 
+	int audienceCount = json_array_size(jsonResponse->root);
+	for (int i = 0; i < audienceCount; i++) {
+		json_t *audienceMember = json_array_get(jsonResponse->root, i);
+		if (!json_is_object(audienceMember))
+			continue;
 
+		json_t *name = json_object_get(audienceMember, "name");
+		json_t *isFollower = json_object_get(audienceMember, "isFollower");
+		json_t *isInChat = json_object_get(audienceMember, "inChat");
+		json_t *isMod = json_object_get(audienceMember, "isMod");
 
+		AudienceMember member;
+		member.name = json_string_value(name);
+		member.isFollower = json_boolean_value(isFollower);
+		member.isInChat = json_boolean_value(isInChat);
+		member.isMod = json_boolean_value(isMod);
+		member.exists = false;
 
+		if (member.name == NULL || member.name[0] == 0)
+			continue;
 
+		if (gConfigTwitch.enable_chat_peep_names && member.isInChat)
+			members.push_back(member);
+		else if (gConfigTwitch.enable_follower_peep_names && member.isFollower)
+			members.push_back(member);
+	}
 
-///**
-// * https://api.twitch.tv/kraken/channels/:channel/follows
-// */
-//bool twitch_get_followers(const twitch_info *twitchInfo, int *outNumFollowers, char ***outFollowerNames)
-//{
-//	char url[256];
-//	http_json_response *jsonResponse;
-//
-//	sprintf(url, "%schannels/%s/follows", TwitchBaseUrl, twitchInfo->channel);
-//	jsonResponse = http_request_json(url);
-//	if (jsonResponse == NULL)
-//		return false;
-//
-//	if (jsonResponse->status_code != 200)
-//		goto json_error;
-//	
-//	json_t *jsonFollowsArray = json_object_get(jsonResponse->root, "follows");
-//	if (jsonFollowsArray == NULL || !json_is_array(jsonFollowsArray))
-//		goto json_error;
-//
-//	int numFollowers = json_array_size(jsonFollowsArray);
-//	char **followerNames = (char**)malloc(numFollowers * sizeof(char*));
-//	for (int i = 0; i < numFollowers; i++) {
-//		json_t *jsonFollowObject = json_array_get(jsonFollowsArray, i);
-//		if (!json_is_object(jsonFollowObject))
-//			goto json_error;
-//
-//		json_t *jsonUserObject = json_object_get(jsonFollowObject, "user");
-//		if (jsonUserObject == NULL)
-//			goto json_error;
-//
-//		json_t *jsonDisplayName = json_object_get(jsonUserObject, "display_name");
-//		if (jsonDisplayName == NULL)
-//			goto json_error;
-//
-//		followerNames[i] = _strdup(json_string_value(jsonDisplayName));
-//	}
-//
-//	http_request_json_dispose(jsonResponse);
-//
-//	*outNumFollowers = numFollowers;
-//	*outFollowerNames = followerNames;
-//	return true;
-//
-//json_error:
-//	http_request_json_dispose(jsonResponse);
-//	return false;
-//}
-//
-//void twitch_get_followers_async(const twitch_info *twitchInfo, void (*callback)(int numFollowers, char **followerNames))
-//{
-//	struct TempThreadArgs {
-//		const twitch_info *twitchInfo;
-//		void (*callback)(int numFollowers, char **followerNames);
-//	};
-//
-//	TempThreadArgs *args = (TempThreadArgs*)malloc(sizeof(TempThreadArgs));
-//	args->twitchInfo = twitchInfo;
-//	args->callback = callback;
-//
-//	SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
-//		TempThreadArgs *args = (TempThreadArgs*)ptr;
-//
-//		int numFollowers;
-//		char **followers;
-//		bool result = twitch_get_followers(args->twitchInfo, &numFollowers, &followers);
-//		free(args);
-//
-//		if (result)
-//			args->callback(numFollowers, followers);
-//
-//		return 0;
-//	}, NULL, args);
-//
-//	if (thread == NULL) {
-//		log_error("Unable to create thread!");
-//	}
-//}
-//
-//void twitch_update_peeps()
-//{
-//	twitch_info twitchInfo;
-//
-//	twitchInfo.channel = gConfigTwitch.channel;
-//	if (twitchInfo.channel == NULL)
-//		return;
-//
-//	twitch_get_followers_async(&twitchInfo, [](int numFollowers, char **followers) -> void {
-//		char buffer[256];
-//
-//		bool *followerExists = (bool*)calloc(numFollowers, sizeof(bool));
-//		int peepsToName = numFollowers;
-//
-//		uint16 spriteIndex;
-//		rct_peep *peep;
-//
-//		// Check what followers are already in the park
-//		FOR_ALL_PEEPS(spriteIndex, peep) {
-//			if (peep->name_string_idx >= 0x8000 && peep->name_string_idx < 0x9000) {
-//				format_string(buffer, peep->name_string_idx, NULL);
-//
-//				for (int i = 0; i < numFollowers; i++) {
-//					if (_strcmpi(buffer, followers[i]) == 0) {
-//						followerExists[i] = true;
-//						peepsToName--;
-//						break;
-//					}
-//				}
-//			}
-//		}
-//
-//		// Rename non-named peeps to followers that aren't currently in the park.
-//		if (peepsToName > 0) {
-//			int followerIndex = -1;
-//			FOR_ALL_PEEPS(spriteIndex, peep) {
-//				for (int i = followerIndex + 1; i < numFollowers; i++) {
-//					if (!followerExists[i]) {
-//						followerIndex = i;
-//						break;
-//					}
-//				}
-//
-//				if (peep->name_string_idx < 0x8000 || peep->name_string_idx >= 0x9000) {
-//					rct_string_id newStringId = user_string_allocate(4, followers[followerIndex]);
-//					if (newStringId != STR_NONE) {
-//						peep->name_string_idx = newStringId;
-//						peep->flags |= PEEP_FLAGS_TRACKING;
-//
-//						peepsToName--;
-//						if (peepsToName == 0)
-//							break;
-//					}
-//				}
-//			}
-//		}
-//
-//		free(followers);
-//		free(followerExists);
-//	});
-//}
+	uint16 spriteIndex;
+	rct_peep *peep;
+	char buffer[256];
+
+	// Check what followers are already in the park
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if (!is_user_string_id(peep->name_string_idx)) {
+			format_string(buffer, peep->name_string_idx, NULL);
+		
+			for (size_t i = 0; i < members.size(); i++) {
+				if (_strcmpi(buffer, members[i].name) == 0) {
+					members[i].exists = true;
+					break;
+				}
+			}
+		}
+	}
+		
+	// Rename non-named peeps to followers that aren't currently in the park.
+	if (members.size() > 0) {
+		int memberIndex = -1;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
+			int originalMemberIndex = memberIndex;
+			for (size_t i = memberIndex + 1; i < members.size(); i++) {
+				if (!members[i].exists) {
+					memberIndex = i;
+					break;
+				}
+			}
+			if (originalMemberIndex == memberIndex)
+				break;
+		
+			AudienceMember *member = &members[memberIndex];
+			if (!is_user_string_id(peep->name_string_idx) && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+				rct_string_id newStringId = user_string_allocate(4, member->name);
+				if (newStringId != 0) {
+					peep->name_string_idx = newStringId;
+
+					if (member->isInChat && gConfigTwitch.enable_chat_peep_tracking)
+						peep->flags |= PEEP_FLAGS_TRACKING;
+					else if (member->isFollower && gConfigTwitch.enable_follower_peep_tracking)
+						peep->flags |= PEEP_FLAGS_TRACKING;
+				}
+			} else {
+				memberIndex--;
+			}
+		}
+	}
+
+json_error:
+	http_request_json_dispose(jsonResponse);
+	_twitchState = TWITCH_STATE_JOINED;
+}
 
 /**
  * Like strchr but allows searching for one of many characters.
