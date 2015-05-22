@@ -170,111 +170,109 @@ static void twitch_parse_followers()
 	std::vector<AudienceMember> members;
 
 	http_json_response *jsonResponse = _twitchJsonResponse;
-	if (!json_is_array(jsonResponse->root))
-		goto json_error;
+	if (json_is_array(jsonResponse->root)) {
+		int audienceCount = json_array_size(jsonResponse->root);
+		for (int i = 0; i < audienceCount; i++) {
+			json_t *audienceMember = json_array_get(jsonResponse->root, i);
+			if (!json_is_object(audienceMember))
+				continue;
 
-	int audienceCount = json_array_size(jsonResponse->root);
-	for (int i = 0; i < audienceCount; i++) {
-		json_t *audienceMember = json_array_get(jsonResponse->root, i);
-		if (!json_is_object(audienceMember))
-			continue;
+			json_t *name = json_object_get(audienceMember, "name");
+			json_t *isFollower = json_object_get(audienceMember, "isFollower");
+			json_t *isInChat = json_object_get(audienceMember, "inChat");
+			json_t *isMod = json_object_get(audienceMember, "isMod");
 
-		json_t *name = json_object_get(audienceMember, "name");
-		json_t *isFollower = json_object_get(audienceMember, "isFollower");
-		json_t *isInChat = json_object_get(audienceMember, "inChat");
-		json_t *isMod = json_object_get(audienceMember, "isMod");
+			AudienceMember member;
+			member.name = json_string_value(name);
+			member.isFollower = json_boolean_value(isFollower);
+			member.isInChat = json_boolean_value(isInChat);
+			member.isMod = json_boolean_value(isMod);
+			member.exists = false;
+			member.shouldTrack = false;
 
-		AudienceMember member;
-		member.name = json_string_value(name);
-		member.isFollower = json_boolean_value(isFollower);
-		member.isInChat = json_boolean_value(isInChat);
-		member.isMod = json_boolean_value(isMod);
-		member.exists = false;
-		member.shouldTrack = false;
+			if (member.name == NULL || member.name[0] == 0)
+				continue;
 
-		if (member.name == NULL || member.name[0] == 0)
-			continue;
+			if (member.isInChat && gConfigTwitch.enable_chat_peep_tracking)
+				member.shouldTrack = true;
+			else if (member.isFollower && gConfigTwitch.enable_follower_peep_tracking)
+				member.shouldTrack = true;
 
-		if (member.isInChat && gConfigTwitch.enable_chat_peep_tracking)
-			member.shouldTrack = true;
-		else if (member.isFollower && gConfigTwitch.enable_follower_peep_tracking)
-			member.shouldTrack = true;
-
-		if (gConfigTwitch.enable_chat_peep_names && member.isInChat)
-			members.push_back(member);
-		else if (gConfigTwitch.enable_follower_peep_names && member.isFollower)
-			members.push_back(member);
-	}
-
-	uint16 spriteIndex;
-	rct_peep *peep;
-	char buffer[256];
-
-	// Check what followers are already in the park
-	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (is_user_string_id(peep->name_string_idx)) {
-			format_string(buffer, peep->name_string_idx, NULL);
-		
-			AudienceMember *member = NULL;
-			for (size_t i = 0; i < members.size(); i++) {
-				if (_strcmpi(buffer, members[i].name) == 0) {
-					member = &members[i];
-					members[i].exists = true;
-					break;
-				}
-			}
-
-			if (peep->flags & PEEP_FLAGS_TWITCH) {
-				if (member == NULL) {
-					// Member no longer peep name worthy
-					peep->flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
-
-					// TODO set peep name back to number / real name
-				} else if (!member->shouldTrack) {
-					// Member no longer tracked
-					peep->flags &= ~(PEEP_FLAGS_TRACKING);
-				}
-			} else if (member != NULL && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
-				// Peep with same name already exists but not twitch
-				peep->flags |= PEEP_FLAGS_TWITCH;
-				if (member->shouldTrack)
-					peep->flags |= PEEP_FLAGS_TRACKING;
-			}
+			if (gConfigTwitch.enable_chat_peep_names && member.isInChat)
+				members.push_back(member);
+			else if (gConfigTwitch.enable_follower_peep_names && member.isFollower)
+				members.push_back(member);
 		}
-	}
-		
-	// Rename non-named peeps to followers that aren't currently in the park.
-	if (members.size() > 0) {
-		int memberIndex = -1;
+
+		uint16 spriteIndex;
+		rct_peep *peep;
+		char buffer[256];
+
+		// Check what followers are already in the park
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			int originalMemberIndex = memberIndex;
-			for (size_t i = memberIndex + 1; i < members.size(); i++) {
-				if (!members[i].exists) {
-					memberIndex = i;
-					break;
+			if (is_user_string_id(peep->name_string_idx)) {
+				format_string(buffer, peep->name_string_idx, NULL);
+
+				AudienceMember *member = NULL;
+				for (size_t i = 0; i < members.size(); i++) {
+					if (_strcmpi(buffer, members[i].name) == 0) {
+						member = &members[i];
+						members[i].exists = true;
+						break;
+					}
 				}
-			}
-			if (originalMemberIndex == memberIndex)
-				break;
-		
-			AudienceMember *member = &members[memberIndex];
-			if (!is_user_string_id(peep->name_string_idx) && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
-				// Rename peep and add flags
-				rct_string_id newStringId = user_string_allocate(4, member->name);
-				if (newStringId != 0) {
-					peep->name_string_idx = newStringId;
+
+				if (peep->flags & PEEP_FLAGS_TWITCH) {
+					if (member == NULL) {
+						// Member no longer peep name worthy
+						peep->flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+
+						// TODO set peep name back to number / real name
+					} else if (!member->shouldTrack) {
+						// Member no longer tracked
+						peep->flags &= ~(PEEP_FLAGS_TRACKING);
+					}
+				} else if (member != NULL && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+					// Peep with same name already exists but not twitch
 					peep->flags |= PEEP_FLAGS_TWITCH;
 					if (member->shouldTrack)
 						peep->flags |= PEEP_FLAGS_TRACKING;
 				}
-			} else {
-				// Peep still yet to be found for member
-				memberIndex--;
+			}
+		}
+
+		// Rename non-named peeps to followers that aren't currently in the park.
+		if (members.size() > 0) {
+			int memberIndex = -1;
+			FOR_ALL_GUESTS(spriteIndex, peep) {
+				int originalMemberIndex = memberIndex;
+				for (size_t i = memberIndex + 1; i < members.size(); i++) {
+					if (!members[i].exists) {
+						memberIndex = i;
+						break;
+					}
+				}
+				if (originalMemberIndex == memberIndex)
+					break;
+
+				AudienceMember *member = &members[memberIndex];
+				if (!is_user_string_id(peep->name_string_idx) && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+					// Rename peep and add flags
+					rct_string_id newStringId = user_string_allocate(4, member->name);
+					if (newStringId != 0) {
+						peep->name_string_idx = newStringId;
+						peep->flags |= PEEP_FLAGS_TWITCH;
+						if (member->shouldTrack)
+							peep->flags |= PEEP_FLAGS_TRACKING;
+					}
+				} else {
+					// Peep still yet to be found for member
+					memberIndex--;
+				}
 			}
 		}
 	}
 
-json_error:
 	http_request_json_dispose(_twitchJsonResponse);
 	_twitchJsonResponse = NULL;
 	_twitchState = TWITCH_STATE_JOINED;
