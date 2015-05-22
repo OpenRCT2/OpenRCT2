@@ -77,6 +77,7 @@ void platform_free();
 void platform_update_palette(char* colours, int start_index, int num_colours);
 void platform_set_fullscreen_mode(int mode);
 void platform_set_cursor(char cursor);
+void platform_refresh_video();
 void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
 void platform_start_text_input(char* buffer, int max_length);

@@ -45,12 +45,16 @@ int gNumResolutions = 0;
 resolution *gResolutions = NULL;
 int gResolutionsAllowAnyAspectRatio = 0;
 
-SDL_Window *gWindow;
+SDL_Window *gWindow = NULL;
+SDL_Renderer *gRenderer = NULL;
+SDL_Texture *gBufferTexture = NULL;
+SDL_Color gPalette[256];
 
 static SDL_Surface *_surface;
 static SDL_Palette *_palette;
 static int _screenBufferSize;
 static void *_screenBuffer;
+static int _screenBufferPitch;
 static SDL_Cursor* _cursors[CURSOR_COUNT];
 static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 static unsigned int _lastGestureTimestamp;
@@ -162,28 +166,63 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 
 void platform_draw()
 {
-	// Lock the surface before setting its pixels
-	if (SDL_MUSTLOCK(_surface))
-		if (SDL_LockSurface(_surface) < 0) {
-			RCT2_ERROR("locking failed %s", SDL_GetError());
-			return;
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+
+	if (gConfigGeneral.hardware_display) {
+		void *pixels;
+		int pitch;
+		if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
+			uint8 *dst = pixels;
+			uint8 *src = (uint8*)_screenBuffer;
+
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					uint8 paletteIndex = *src;
+					SDL_Color colour = gPalette[paletteIndex];
+
+					dst[0] = 255;
+					dst[1] = colour.b;
+					dst[2] = colour.g;
+					dst[3] = colour.r;
+
+					src += 1;
+					dst += 4;
+				}
+
+				src += _screenBufferPitch - width;
+				dst += pitch - (width * 4);
+			}
+			SDL_UnlockTexture(gBufferTexture);
 		}
 
-	// Copy pixels from the virtual screen buffer to the surface
-	memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
+		SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
+		SDL_RenderPresent(gRenderer);
+	} else {
+		// Lock the surface before setting its pixels
+		if (SDL_MUSTLOCK(_surface)) {
+			if (SDL_LockSurface(_surface) < 0) {
+				log_error("locking failed %s", SDL_GetError());
+				return;
+			}
+		}
 
-	// Unlock the surface
-	if (SDL_MUSTLOCK(_surface))
-		SDL_UnlockSurface(_surface);
+		// Copy pixels from the virtual screen buffer to the surface
+		memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
 
-	// Copy the surface to the window
-	if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-		RCT2_ERROR("SDL_BlitSurface %s", SDL_GetError());
-		exit(1);
-	}
-	if (SDL_UpdateWindowSurface(gWindow)) {
-		RCT2_ERROR("SDL_UpdateWindowSurface %s", SDL_GetError());
-		exit(1);
+		// Unlock the surface
+		if (SDL_MUSTLOCK(_surface))
+			SDL_UnlockSurface(_surface);
+
+		// Copy the surface to the window
+		if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
+			log_fatal("SDL_BlitSurface %s", SDL_GetError());
+			exit(1);
+		}
+		if (SDL_UpdateWindowSurface(gWindow)) {
+			log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
+			exit(1);
+		}
 	}
 }
 
@@ -194,25 +233,12 @@ static void platform_resize(int width, int height)
 	void *newScreenBuffer;
 	uint32 flags;
 
-	if (_surface != NULL)
-		SDL_FreeSurface(_surface);
-	if (_palette != NULL)
-		SDL_FreePalette(_palette);
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) = width;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) = height;
 
-	_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
-	_palette = SDL_AllocPalette(256);
+	platform_refresh_video();
 
-	if (!_surface || !_palette) {
-		RCT2_ERROR("%p || %p == NULL %s", _surface, _palette, SDL_GetError());
-		exit(-1);
-	}
-
-	if (SDL_SetSurfacePalette(_surface, _palette)) {
-		RCT2_ERROR("SDL_SetSurfacePalette failed %s", SDL_GetError());
-		exit(-1);
-	}
-
-	newScreenBufferSize = _surface->pitch * _surface->h;
+	newScreenBufferSize = _screenBufferPitch * height;
 	newScreenBuffer = malloc(newScreenBufferSize);
 	if (_screenBuffer == NULL) {
 		memset(newScreenBuffer, 0, newScreenBufferSize);
@@ -226,16 +252,13 @@ static void platform_resize(int width, int height)
 	_screenBuffer = newScreenBuffer;
 	_screenBufferSize = newScreenBufferSize;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) = width;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) = height;
-
 	screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	screenDPI->bits = _screenBuffer;
 	screenDPI->x = 0;
 	screenDPI->y = 0;
 	screenDPI->width = width;
 	screenDPI->height = height;
-	screenDPI->pitch = _surface->pitch - _surface->w;
+	screenDPI->pitch = _screenBufferPitch - width;
 
 	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
@@ -268,27 +291,28 @@ static void platform_resize(int width, int height)
 
 void platform_update_palette(char* colours, int start_index, int num_colours)
 {
-	SDL_Color base[256];
 	SDL_Surface *surface;
 	int i;
 
-	surface = SDL_GetWindowSurface(gWindow);
-	if (!surface) {
-		RCT2_ERROR("SDL_GetWindowSurface failed %s", SDL_GetError());
-		exit(1);
-	}
-
 	for (i = 0; i < 256; i++) {
-		base[i].r = colours[2];
-		base[i].g = colours[1];
-		base[i].b = colours[0];
-		base[i].a = 0;
+		gPalette[i].r = colours[2];
+		gPalette[i].g = colours[1];
+		gPalette[i].b = colours[0];
+		gPalette[i].a = 0;
 		colours += 4;
 	}
 
-	if (SDL_SetPaletteColors(_palette, base, 0, 256)) {
-		RCT2_ERROR("SDL_SetPaletteColors failed %s", SDL_GetError());
-		exit(1);
+	if (!gConfigGeneral.hardware_display) {
+		surface = SDL_GetWindowSurface(gWindow);
+		if (!surface) {
+			log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
+			exit(1);
+		}
+
+		if (_palette != NULL && SDL_SetPaletteColors(_palette, gPalette, 0, 256)) {
+			log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
+			exit(1);
+		}
 	}
 }
 
@@ -521,9 +545,11 @@ static void platform_create_window()
 	int width, height;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		RCT2_ERROR("SDL_Init %s", SDL_GetError());
+		log_fatal("SDL_Init %s", SDL_GetError());
 		exit(-1);
 	}
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 
 	platform_load_cursors();
 	RCT2_CALLPROC_EBPSAFE(0x0068371D);
@@ -711,4 +737,41 @@ int platform_get_cursor_pos(int* x, int* y)
 	GetCursorPos(&point);
 	*x = point.x;
 	*y = point.y;
+}
+
+void platform_refresh_video()
+{
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+
+	if (gConfigGeneral.hardware_display) {
+		if (gRenderer == NULL)
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+
+		if (gBufferTexture != NULL)
+			SDL_DestroyTexture(gBufferTexture);
+	
+		gBufferTexture = SDL_CreateTexture(gRenderer, SDL_PIXELFORMAT_RGBX8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+		_screenBufferPitch = width;
+	} else {
+		if (_surface != NULL)
+			SDL_FreeSurface(_surface);
+		if (_palette != NULL)
+			SDL_FreePalette(_palette);
+
+		_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
+		_palette = SDL_AllocPalette(256);
+
+		if (!_surface || !_palette) {
+			log_fatal("%p || %p == NULL %s", _surface, _palette, SDL_GetError());
+			exit(-1);
+		}
+
+		if (SDL_SetSurfacePalette(_surface, _palette)) {
+			log_fatal("SDL_SetSurfacePalette failed %s", SDL_GetError());
+			exit(-1);
+		}
+
+		_screenBufferPitch = _surface->pitch;
+	}
 }

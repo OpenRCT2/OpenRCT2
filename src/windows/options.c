@@ -68,6 +68,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_GRIDLINES_CHECKBOX,
 	WIDX_CONSTRUCTION_MARKER,
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
+	WIDX_HARDWARE_DISPLAY_CHECKBOX,
 	
 	WIDX_LANGUAGE,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -126,6 +127,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			0,	10,		299,	99,		110,	STR_GRIDLINES,	STR_GRIDLINES_TIP },
 	{ WWT_DROPDOWN,			0,	155,	299,	113,	124,	STR_NONE,		STR_NONE },	// construction marker
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	114,	123,	876,			STR_NONE },
+	{ WWT_CHECKBOX,			0,	10,		290,	129,	140,	5154,			STR_NONE },
 
 	// Culture / units tab
 	{ WWT_DROPDOWN,			0,	155,	299,	53,		64,		STR_NONE,		STR_NONE },	// language
@@ -266,6 +268,7 @@ void window_options_open()
 		(1ULL << WIDX_HEIGHT_LABELS_DROPDOWN) |
 		(1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
+		(1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
@@ -363,6 +366,12 @@ static void window_options_mouseup()
 			else 
 				w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
 		}
+		break;
+	case WIDX_HARDWARE_DISPLAY_CHECKBOX:
+		gConfigGeneral.hardware_display ^= 1;
+		platform_refresh_video();
+		config_save_default();
+		window_invalidate(w);
 		break;
 	case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
 		gConfigGeneral.save_plugin_data ^= 1;
@@ -708,6 +717,12 @@ static void window_options_invalidate()
 		else
 			w->pressed_widgets &= ~(1ULL << WIDX_GRIDLINES_CHECKBOX);
 
+		// show hardware display
+		if (gConfigGeneral.hardware_display)
+			w->pressed_widgets |= (1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX);
+		else
+			w->pressed_widgets &= ~(1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX);
+
 		// construction marker: celsius/fahrenheit
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
 
@@ -719,6 +734,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_GRIDLINES_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
