@@ -3488,3 +3488,5 @@ STR_5151    :,
 STR_5152    :.
 STR_5153    :RCT1 colour scheme
 STR_5154    :Hardware display
+STR_5155    :Allow testing of unfinished tracks
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
