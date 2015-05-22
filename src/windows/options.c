@@ -101,11 +101,12 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
 	WIDX_DEBUGGING_TOOLS,
+	WIDX_TEST_UNFINISHED_TRACKS,
 	WINDOW_OPTIONS_WIDGETS_SIZE // Marks the end of the widget list, leave as last item
 };
 
 #define WW 310
-#define WH 153
+#define WH 183
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
@@ -164,6 +165,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype 
 	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5150,			STR_NONE }, // enabled debugging tools
+	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5155,			5156 }, // test unfinished tracks
 	{ WIDGETS_END },
 };
 
@@ -274,6 +276,7 @@ void window_options_open()
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 		(1ULL << WIDX_DEBUGGING_TOOLS) |
+		(1ULL << WIDX_TEST_UNFINISHED_TRACKS) |
 		(1ULL << WIDX_RCT1_COLOUR_SCHEME);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
@@ -344,6 +347,11 @@ static void window_options_mouseup()
 		break;
 	case WIDX_DEBUGGING_TOOLS:
 		gConfigGeneral.debugging_tools ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_TEST_UNFINISHED_TRACKS:
+		gConfigGeneral.test_unfinished_tracks ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
@@ -827,6 +835,7 @@ static void window_options_invalidate()
 			window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
 
 		window_options_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
@@ -834,6 +843,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
 		break;
 	}
 }
