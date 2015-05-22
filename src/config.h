@@ -154,6 +154,7 @@ typedef struct {
 	uint8 fast_lift_hill;
 	uint8 disable_brakes_failure;
 	uint8 disable_all_breakdowns;
+	uint8 unlock_all_prices;
 } cheat_configuration;
 
 

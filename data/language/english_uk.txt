@@ -3488,3 +3488,4 @@ STR_5151    :,
 STR_5152    :.
 STR_5153    :RCT1 colour scheme
 STR_5154    :Hardware display
+STR_5155    :Unlock all prices
