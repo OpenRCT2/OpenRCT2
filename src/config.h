@@ -130,6 +130,7 @@ typedef struct {
 	uint16 language;
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
+	uint8 hardware_display;
 } general_configuration;
 
 typedef struct {
